@@ -1,0 +1,86 @@
+{
+  "failing_gates": [
+    "G-R3A-NO-FORK"
+  ],
+  "failures": [
+    {
+      "gate": "G-R3A-NO-FORK",
+      "gate_result": {
+        "base_commit": "be2de377eda80f513d82173ea363282f8d1f1a37",
+        "forbidden_runtime_diff": "",
+        "frozen_modules_diffstat": "",
+        "provenance": {
+          "aggregation_rule": "frozen diffstat empty, trace hook present/default-off, forbidden paths clean, regression commands exit 0",
+          "code_path_hash": "c7cf1aaade0bbe68ff415cd3fa44c9311a9edab2c58926255412904ab3abba09",
+          "episode_ids": [],
+          "input_artifacts": [
+            "git diff L1..HEAD",
+            "EgoDesktop npm test",
+            "pytest corpus/parity",
+            "lint_repo",
+            "verify_repo fast"
+          ],
+          "producer_function": "runNoForkAndRegressionGate",
+          "run_id": "r3_adoption_20260707153154",
+          "seed_context": []
+        },
+        "regression_commands": [
+          {
+            "duration_ms": 1154,
+            "exit_code": 0,
+            "label": "kernel_adoption_node_test",
+            "stderr_tail": "",
+            "stdout_tail": "TAP version 13\n# Subtest: parity vectors cover the declared parity-safe value domain\nok 1 - parity vectors cover the declared parity-safe value domain\n  ---\n  duration_ms: 4.0826\n  type: 'test'\n  ...\n# Subtest: kernel state hash controls are process-stable and mutation-sensitive\nok 2 - kernel state hash controls are process-stable and mutation-sensitive\n  ---\n  duration_ms: 93.7247\n  type: 'test'\n  ...\n# Subtest: fresh-process replay x2 plus mid-episode resume has zero mismatches\nok 3 - fresh-process replay x2 plus mid-episode resume has zero mismatches\n  ---\n  duration_ms: 661.946\n  type: 'test'\n  ...\n# Subtest: LLM-swap invariance keeps A/B kernel fields identical and flags leaky renderer C\nok 4 - LLM-swap invariance keeps A/B kernel fields identical and flags leaky renderer C\n  ---\n  duration_ms: 0.9744\n  type: 'test'\n  ...\n# Subtest: trace runner hook is additive/default-off and frozen modules remain untouched\nok 5 - trace runner hook is additive/default-off and frozen modules remain untouched\n  ---\n  duration_ms: 83.4048\n  type: 'test'\n  ...\n# Subtest: config_frozen is byte-stable and runner prints matching config\nok 6 - config_frozen is byte-stable and runner prints matching config\n  ---\n  duration_ms: 103.5242\n  type: 'test'\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 1072.7886\n"
+          },
+          {
+            "duration_ms": 3,
+            "exit_code": 124,
+            "label": "egodesktop_npm_test",
+            "stderr_tail": "",
+            "stdout_tail": ""
+          },
+          {
+            "duration_ms": 1006,
+            "exit_code": 0,
+            "label": "python_parity_test",
+            "stderr_tail": "",
+            "stdout_tail": "..                                                                       [100%]\r\n2 passed in 0.22s\r\n"
+          },
+          {
+            "duration_ms": 120006,
+            "exit_code": 124,
+            "label": "joi_corpus_admission",
+            "stderr_tail": "",
+            "stdout_tail": ""
+          },
+          {
+            "duration_ms": 91,
+            "exit_code": 0,
+            "label": "py_compile_parity_test",
+            "stderr_tail": "",
+            "stdout_tail": ""
+          },
+          {
+            "duration_ms": 1655,
+            "exit_code": 0,
+            "label": "lint_repo",
+            "stderr_tail": "",
+            "stdout_tail": "Codex repo lint\r\n============================================================\r\npython files checked: 127\r\ntext files checked: 871\r\n\r\nOK: no lint failures detected\r\n"
+          },
+          {
+            "duration_ms": 5380,
+            "exit_code": 0,
+            "label": "verify_repo_fast",
+            "stderr_tail": "",
+            "stdout_tail": ": true\r\n}\r\n{\r\n  \"status\": \"pass\",\r\n  \"archive_tag\": \"legacy-pre-operator-mainline-before-purge\",\r\n  \"archive_commit\": \"67347a759b5911f14e151748f294938fe53058ae\",\r\n  \"removed_dirs_absent\": [\r\n    \"legacy/ego-pre-handmade-mainline/EgoCore\",\r\n    \"legacy/ego-pre-handmade-mainline/OpenEmotion\",\r\n    \"legacy/ego-pre-handmade-mainline/ego_desktop_lab\"\r\n  ],\r\n  \"runtime_owner\": \"EgoOperator\"\r\n}\r\n{\r\n  \"status\": \"pass\",\r\n  \"active_runtime_files_checked\": 13,\r\n  \"pspc_adapter_contracts_checked\": 4,\r\n  \"claim_ceiling\": \"runtime authority boundary static check only\"\r\n}\r\nCodex verify summary (mode=fast)\r\n================================================================================================\r\ncategory     status   name                                       source                           note\r\n------------------------------------------------------------------------------------------------\r\nlint         success  Codex repo lint                            scripts/codex/lint_repo.py       ok\r\n  command: C:\\Python313\\python.exe scripts/codex/lint_repo.py\r\ngovernance   success  Program-state integrity gate               scripts/codex/check_program_stat ok\r\n  command: C:\\Python313\\python.exe scripts/codex/check_program_state_integrity.py --skip-diff-check\r\ngovernance   success  Route-convergence drift gate               scripts/codex/verify_route_conve ok\r\n  command: C:\\Python313\\python.exe scripts/codex/verify_route_convergence.py\r\ngovernance   success  Mainline clarity and staged-exhaust gate   scripts/codex/verify_mainline_cl ok\r\n  command: C:\\Python313\\python.exe scripts/codex/verify_mainline_clarity.py\r\ngovernance   success  Legacy archival purge anti-regression gate scripts/codex/verify_legacy_arch ok\r\n  command: C:\\Python313\\python.exe scripts/codex/verify_legacy_archival_purge.py\r\ngovernance   success  Runtime authority boundary gate            scripts/codex/check_runtime_auth ok\r\n  command: C:\\Python313\\python.exe scripts/codex/check_runtime_authority_boundaries.py\r\n"
+          }
+        ],
+        "regression_pass": false,
+        "status": "fail",
+        "trace_runner_hook_only": true
+      }
+    }
+  ],
+  "schema_version": "ego.r3_adoption.failure_manifest.v0",
+  "verdict": "r3_adoption_fail_g_r3a_no_fork"
+}

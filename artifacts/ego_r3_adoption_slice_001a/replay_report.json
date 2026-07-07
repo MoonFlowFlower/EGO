@@ -1,0 +1,85 @@
+{
+  "aggregation_rule": "sum mismatches across two fresh-process replays and one resume replay per episode",
+  "fresh_process_mismatch_count": 0,
+  "fresh_process_runs": 2,
+  "mismatch_total": 0,
+  "per_episode": [
+    {
+      "episode_id": "episode_001",
+      "fresh_process_mismatches": 0,
+      "fresh_process_runs": 2,
+      "resume_index": 1,
+      "resume_mismatch_count": 0
+    },
+    {
+      "episode_id": "episode_002",
+      "fresh_process_mismatches": 0,
+      "fresh_process_runs": 2,
+      "resume_index": 1,
+      "resume_mismatch_count": 0
+    }
+  ],
+  "producer_function": "runReplayChecks",
+  "provenance": {
+    "aggregation_rule": "sum mismatches across two fresh-process replays and one resume replay per episode",
+    "code_path_hash": "d38c8008dfd24827110f841b49325b6e99af4d8c770300221006c9c9cd5e77cc",
+    "episode_ids": [
+      "episode_001",
+      "episode_002"
+    ],
+    "input_artifacts": [
+      "serialized initial envelopes",
+      "input logs",
+      "trace rows"
+    ],
+    "producer_function": "adapter.runKernelAdoptionFixture.replay_report",
+    "run_id": "r3_adoption_20260707153154",
+    "seed_context": [
+      {
+        "episode_id": "episode_001",
+        "seed_registry": {
+          "base": {
+            "draw_index": 0,
+            "seed": 248601923591930
+          },
+          "episode_001_step_1": {
+            "draw_index": 1,
+            "seed": 235703894379550
+          },
+          "episode_001_step_2": {
+            "draw_index": 2,
+            "seed": 51279983127523
+          },
+          "episode_001_step_3": {
+            "draw_index": 3,
+            "seed": 132015114813162
+          }
+        }
+      },
+      {
+        "episode_id": "episode_002",
+        "seed_registry": {
+          "base": {
+            "draw_index": 0,
+            "seed": 47517306391185
+          },
+          "episode_002_step_1": {
+            "draw_index": 1,
+            "seed": 66521162338649
+          },
+          "episode_002_step_2": {
+            "draw_index": 2,
+            "seed": 29780991925848
+          },
+          "episode_002_step_3": {
+            "draw_index": 3,
+            "seed": 46113242692242
+          }
+        }
+      }
+    ]
+  },
+  "resume_mismatch_count": 0,
+  "schema_version": "ego.r3_adoption.replay_report.v0",
+  "status": "pass"
+}

@@ -1,0 +1,413 @@
+{
+  "claim_ceiling": "r3_adoption_engineering_only",
+  "config_frozen_readback": {
+    "byte_match": true,
+    "parity_vector_sha256": "ed51b1b67f6fe9f86c111a2679fa8fe6fe255883070af23a754a1b500811b87c",
+    "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\ego_r3_adoption_slice_001a\\config_frozen.json",
+    "sha256": "8de6448c0f96a4d2c6bb36631bbc3a10b075e5623c04d8127ee191f4a8e0490c"
+  },
+  "failing_gates": [
+    "G-R3A-NO-FORK"
+  ],
+  "gates": {
+    "G-R3A-NO-FORK": {
+      "base_commit": "be2de377eda80f513d82173ea363282f8d1f1a37",
+      "forbidden_runtime_diff": "",
+      "frozen_modules_diffstat": "",
+      "provenance": {
+        "aggregation_rule": "frozen diffstat empty, trace hook present/default-off, forbidden paths clean, regression commands exit 0",
+        "code_path_hash": "c7cf1aaade0bbe68ff415cd3fa44c9311a9edab2c58926255412904ab3abba09",
+        "episode_ids": [],
+        "input_artifacts": [
+          "git diff L1..HEAD",
+          "EgoDesktop npm test",
+          "pytest corpus/parity",
+          "lint_repo",
+          "verify_repo fast"
+        ],
+        "producer_function": "runNoForkAndRegressionGate",
+        "run_id": "r3_adoption_20260707153154",
+        "seed_context": []
+      },
+      "regression_commands": [
+        {
+          "duration_ms": 1154,
+          "exit_code": 0,
+          "label": "kernel_adoption_node_test",
+          "stderr_tail": "",
+          "stdout_tail": "TAP version 13\n# Subtest: parity vectors cover the declared parity-safe value domain\nok 1 - parity vectors cover the declared parity-safe value domain\n  ---\n  duration_ms: 4.0826\n  type: 'test'\n  ...\n# Subtest: kernel state hash controls are process-stable and mutation-sensitive\nok 2 - kernel state hash controls are process-stable and mutation-sensitive\n  ---\n  duration_ms: 93.7247\n  type: 'test'\n  ...\n# Subtest: fresh-process replay x2 plus mid-episode resume has zero mismatches\nok 3 - fresh-process replay x2 plus mid-episode resume has zero mismatches\n  ---\n  duration_ms: 661.946\n  type: 'test'\n  ...\n# Subtest: LLM-swap invariance keeps A/B kernel fields identical and flags leaky renderer C\nok 4 - LLM-swap invariance keeps A/B kernel fields identical and flags leaky renderer C\n  ---\n  duration_ms: 0.9744\n  type: 'test'\n  ...\n# Subtest: trace runner hook is additive/default-off and frozen modules remain untouched\nok 5 - trace runner hook is additive/default-off and frozen modules remain untouched\n  ---\n  duration_ms: 83.4048\n  type: 'test'\n  ...\n# Subtest: config_frozen is byte-stable and runner prints matching config\nok 6 - config_frozen is byte-stable and runner prints matching config\n  ---\n  duration_ms: 103.5242\n  type: 'test'\n  ...\n1..6\n# tests 6\n# suites 0\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 1072.7886\n"
+        },
+        {
+          "duration_ms": 3,
+          "exit_code": 124,
+          "label": "egodesktop_npm_test",
+          "stderr_tail": "",
+          "stdout_tail": ""
+        },
+        {
+          "duration_ms": 1006,
+          "exit_code": 0,
+          "label": "python_parity_test",
+          "stderr_tail": "",
+          "stdout_tail": "..                                                                       [100%]\r\n2 passed in 0.22s\r\n"
+        },
+        {
+          "duration_ms": 120006,
+          "exit_code": 124,
+          "label": "joi_corpus_admission",
+          "stderr_tail": "",
+          "stdout_tail": ""
+        },
+        {
+          "duration_ms": 91,
+          "exit_code": 0,
+          "label": "py_compile_parity_test",
+          "stderr_tail": "",
+          "stdout_tail": ""
+        },
+        {
+          "duration_ms": 1655,
+          "exit_code": 0,
+          "label": "lint_repo",
+          "stderr_tail": "",
+          "stdout_tail": "Codex repo lint\r\n============================================================\r\npython files checked: 127\r\ntext files checked: 871\r\n\r\nOK: no lint failures detected\r\n"
+        },
+        {
+          "duration_ms": 5380,
+          "exit_code": 0,
+          "label": "verify_repo_fast",
+          "stderr_tail": "",
+          "stdout_tail": ": true\r\n}\r\n{\r\n  \"status\": \"pass\",\r\n  \"archive_tag\": \"legacy-pre-operator-mainline-before-purge\",\r\n  \"archive_commit\": \"67347a759b5911f14e151748f294938fe53058ae\",\r\n  \"removed_dirs_absent\": [\r\n    \"legacy/ego-pre-handmade-mainline/EgoCore\",\r\n    \"legacy/ego-pre-handmade-mainline/OpenEmotion\",\r\n    \"legacy/ego-pre-handmade-mainline/ego_desktop_lab\"\r\n  ],\r\n  \"runtime_owner\": \"EgoOperator\"\r\n}\r\n{\r\n  \"status\": \"pass\",\r\n  \"active_runtime_files_checked\": 13,\r\n  \"pspc_adapter_contracts_checked\": 4,\r\n  \"claim_ceiling\": \"runtime authority boundary static check only\"\r\n}\r\nCodex verify summary (mode=fast)\r\n================================================================================================\r\ncategory     status   name                                       source                           note\r\n------------------------------------------------------------------------------------------------\r\nlint         success  Codex repo lint                            scripts/codex/lint_repo.py       ok\r\n  command: C:\\Python313\\python.exe scripts/codex/lint_repo.py\r\ngovernance   success  Program-state integrity gate               scripts/codex/check_program_stat ok\r\n  command: C:\\Python313\\python.exe scripts/codex/check_program_state_integrity.py --skip-diff-check\r\ngovernance   success  Route-convergence drift gate               scripts/codex/verify_route_conve ok\r\n  command: C:\\Python313\\python.exe scripts/codex/verify_route_convergence.py\r\ngovernance   success  Mainline clarity and staged-exhaust gate   scripts/codex/verify_mainline_cl ok\r\n  command: C:\\Python313\\python.exe scripts/codex/verify_mainline_clarity.py\r\ngovernance   success  Legacy archival purge anti-regression gate scripts/codex/verify_legacy_arch ok\r\n  command: C:\\Python313\\python.exe scripts/codex/verify_legacy_archival_purge.py\r\ngovernance   success  Runtime authority boundary gate            scripts/codex/check_runtime_auth ok\r\n  command: C:\\Python313\\python.exe scripts/codex/check_runtime_authority_boundaries.py\r\n"
+        }
+      ],
+      "regression_pass": false,
+      "status": "fail",
+      "trace_runner_hook_only": true
+    },
+    "G-R3A-PARITY": {
+      "command": {
+        "command": [
+          "python",
+          "-c",
+          "import json,sys\nfrom scripts.ego_kernel.state import canonical_json_dumps, canonical_sha256\nvectors=json.load(sys.stdin)\nout=[]\nfor v in vectors:\n    out.append({'id':v['id'],'py_canonical':canonical_json_dumps(v['value']),'py_hash':canonical_sha256(v['value'])})\nprint(json.dumps(out, ensure_ascii=False, sort_keys=True, separators=(',', ':')))"
+        ],
+        "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+        "duration_ms": 113,
+        "exit_code": 0,
+        "label": "python_parity",
+        "signal": "",
+        "stderr": "",
+        "stdout": "[{\"id\":\"unicode_string_beta_cjk\",\"py_canonical\":\"{\\\"text\\\":\\\"βeta 椰果\\\"}\",\"py_hash\":\"e337207079359dd9f8aecc69ba18541b28716d51e55454f1682795b72f2b5d3a\"},{\"id\":\"cjk_keys_sorted\",\"py_canonical\":\"{\\\"丁\\\":\\\"four\\\",\\\"乙\\\":\\\"two\\\",\\\"甲\\\":\\\"one\\\"}\",\"py_hash\":\"e69a82b56941dfb47e373a17db94c7dbe0c2aed9b301b36e4f120ca5870c206f\"},{\"id\":\"nested_object_array\",\"py_canonical\":\"{\\\"a\\\":{\\\"x\\\":true,\\\"y\\\":false},\\\"z\\\":[{\\\"a\\\":1,\\\"b\\\":2}]}\",\"py_hash\":\"60d99df6613ab0ede4fd1167a667e295e0f7169b20cc824a7e0230bfcb60e44e\"},{\"id\":\"negative_int\",\"py_canonical\":\"{\\\"n\\\":-123456789}\",\"py_hash\":\"a9f5f240f89347146edaf46c3a3ee0d4219a2874d99f588a3f205adc75e0a653\"},{\"id\":\"max_safe_integer_2pow53_minus_1\",\"py_canonical\":\"{\\\"max\\\":9007199254740991}\",\"py_hash\":\"5274eb3771d44c0dc4c8145127c27d94a9a8128420eb69f1ea038d267ac28b06\"},{\"id\":\"bool_null_mix\",\"py_canonical\":\"{\\\"falsehood\\\":false,\\\"none\\\":null,\\\"truth\\\":true}\",\"py_hash\":\"e780f8a77c9c357c05039efe5e25df5dcdba9bfefb734e0dcfa02512ac4c916a\"},{\"id\":\"empty_containers\",\"py_canonical\":\"{\\\"arr\\\":[],\\\"obj\\\":{}}\",\"py_hash\":\"7c557880ceed861401b04be6735c9708e326427e072562fd259da6f6a2612b96\"},{\"id\":\"decimal_string_float_positive\",\"py_canonical\":\"{\\\"fixed\\\":\\\"1.250000\\\"}\",\"py_hash\":\"587880b4b7ae3a1f16fce1e79cf5fdc6925253f643882e906cd53d2c1081eb73\"},{\"id\":\"decimal_string_float_negative\",\"py_canonical\":\"{\\\"fixed\\\":\\\"-0.125000\\\"}\",\"py_hash\":\"5fc17ff052ec17645838a16c927509f8ec0c335d4953de1f49f24a6f24dfa558\"},{\"id\":\"key_order_trap_ascii\",\"py_canonical\":\"{\\\"a\\\":3,\\\"aa\\\":2,\\\"b\\\":1}\",\"py_hash\":\"bd7224df5337c578f99ad62b82d9417539a04989859d75708e1c02d055dd5b9b\"},{\"id\":\"key_order_trap_nested_cjk\",\"py_canonical\":\"{\\\"outer\\\":{\\\"a\\\":\\\"latin\\\",\\\"龙\\\":\\\"dragon\\\",\\\"龟\\\":\\\"turtle\\\"}}\",\"py_hash\":\"3e86aed3e1e5e6dff5eb6109c2c4574142da89aaf562e188e3f182d00d9fd966\"},{\"id\":\"array_preserves_order\",\"py_canonical\":\"[\\\"z\\\",\\\"a\\\",{\\\"a\\\":\\\"sorted\\\",\\\"b\\\":\\\"kept\\\"}]\",\"py_hash\":\"e196eeaf65eae1da22edf0b8c86b764b9ba0d1059133682f33701ec10ab77d15\"},{\"id\":\"zero_and_negative_one\",\"py_canonical\":\"{\\\"minus_one\\\":-1,\\\"zero\\\":0}\",\"py_hash\":\"964c648c78b71d0306e2ad6e833e57720153da02529be2643bb83fabc55ce342\"},{\"id\":\"escaped_string_controls\",\"py_canonical\":\"{\\\"backslash\\\":\\\"\\\\\\\\\\\",\\\"newline\\\":\\\"\\\\n\\\",\\\"quote\\\":\\\"\\\\\\\"\\\"}\",\"py_hash\":\"3dd8be3bcf567dfd65a1f7ba3f8d4fbb8ebeeae38e38903222433ae2ad2c3ea2\"},{\"id\":\"deep_null_bool_cjk\",\"py_canonical\":\"{\\\"层\\\":[{\\\"inner\\\":null},{\\\"ok\\\":true}]}\",\"py_hash\":\"cb14587685529c893c38b00885ce494da55ff80b9208717072a8d99833adf10c\"},{\"id\":\"seed_registry_shape\",\"py_canonical\":\"{\\\"seed_registry\\\":{\\\"step_1\\\":{\\\"draw_index\\\":0,\\\"seed\\\":61}}}\",\"py_hash\":\"c6d56c9cc55a71bd42489522901a70d437c0ad3bf40d0cf92c15d4da4bb46479\"}]\r\n"
+      },
+      "details": [
+        {
+          "canonical_equal": true,
+          "hash_equal": true,
+          "id": "unicode_string_beta_cjk",
+          "js_hash": "e337207079359dd9f8aecc69ba18541b28716d51e55454f1682795b72f2b5d3a",
+          "py_hash": "e337207079359dd9f8aecc69ba18541b28716d51e55454f1682795b72f2b5d3a"
+        },
+        {
+          "canonical_equal": true,
+          "hash_equal": true,
+          "id": "cjk_keys_sorted",
+          "js_hash": "e69a82b56941dfb47e373a17db94c7dbe0c2aed9b301b36e4f120ca5870c206f",
+          "py_hash": "e69a82b56941dfb47e373a17db94c7dbe0c2aed9b301b36e4f120ca5870c206f"
+        },
+        {
+          "canonical_equal": true,
+          "hash_equal": true,
+          "id": "nested_object_array",
+          "js_hash": "60d99df6613ab0ede4fd1167a667e295e0f7169b20cc824a7e0230bfcb60e44e",
+          "py_hash": "60d99df6613ab0ede4fd1167a667e295e0f7169b20cc824a7e0230bfcb60e44e"
+        },
+        {
+          "canonical_equal": true,
+          "hash_equal": true,
+          "id": "negative_int",
+          "js_hash": "a9f5f240f89347146edaf46c3a3ee0d4219a2874d99f588a3f205adc75e0a653",
+          "py_hash": "a9f5f240f89347146edaf46c3a3ee0d4219a2874d99f588a3f205adc75e0a653"
+        },
+        {
+          "canonical_equal": true,
+          "hash_equal": true,
+          "id": "max_safe_integer_2pow53_minus_1",
+          "js_hash": "5274eb3771d44c0dc4c8145127c27d94a9a8128420eb69f1ea038d267ac28b06",
+          "py_hash": "5274eb3771d44c0dc4c8145127c27d94a9a8128420eb69f1ea038d267ac28b06"
+        },
+        {
+          "canonical_equal": true,
+          "hash_equal": true,
+          "id": "bool_null_mix",
+          "js_hash": "e780f8a77c9c357c05039efe5e25df5dcdba9bfefb734e0dcfa02512ac4c916a",
+          "py_hash": "e780f8a77c9c357c05039efe5e25df5dcdba9bfefb734e0dcfa02512ac4c916a"
+        },
+        {
+          "canonical_equal": true,
+          "hash_equal": true,
+          "id": "empty_containers",
+          "js_hash": "7c557880ceed861401b04be6735c9708e326427e072562fd259da6f6a2612b96",
+          "py_hash": "7c557880ceed861401b04be6735c9708e326427e072562fd259da6f6a2612b96"
+        },
+        {
+          "canonical_equal": true,
+          "hash_equal": true,
+          "id": "decimal_string_float_positive",
+          "js_hash": "587880b4b7ae3a1f16fce1e79cf5fdc6925253f643882e906cd53d2c1081eb73",
+          "py_hash": "587880b4b7ae3a1f16fce1e79cf5fdc6925253f643882e906cd53d2c1081eb73"
+        },
+        {
+          "canonical_equal": true,
+          "hash_equal": true,
+          "id": "decimal_string_float_negative",
+          "js_hash": "5fc17ff052ec17645838a16c927509f8ec0c335d4953de1f49f24a6f24dfa558",
+          "py_hash": "5fc17ff052ec17645838a16c927509f8ec0c335d4953de1f49f24a6f24dfa558"
+        },
+        {
+          "canonical_equal": true,
+          "hash_equal": true,
+          "id": "key_order_trap_ascii",
+          "js_hash": "bd7224df5337c578f99ad62b82d9417539a04989859d75708e1c02d055dd5b9b",
+          "py_hash": "bd7224df5337c578f99ad62b82d9417539a04989859d75708e1c02d055dd5b9b"
+        },
+        {
+          "canonical_equal": true,
+          "hash_equal": true,
+          "id": "key_order_trap_nested_cjk",
+          "js_hash": "3e86aed3e1e5e6dff5eb6109c2c4574142da89aaf562e188e3f182d00d9fd966",
+          "py_hash": "3e86aed3e1e5e6dff5eb6109c2c4574142da89aaf562e188e3f182d00d9fd966"
+        },
+        {
+          "canonical_equal": true,
+          "hash_equal": true,
+          "id": "array_preserves_order",
+          "js_hash": "e196eeaf65eae1da22edf0b8c86b764b9ba0d1059133682f33701ec10ab77d15",
+          "py_hash": "e196eeaf65eae1da22edf0b8c86b764b9ba0d1059133682f33701ec10ab77d15"
+        },
+        {
+          "canonical_equal": true,
+          "hash_equal": true,
+          "id": "zero_and_negative_one",
+          "js_hash": "964c648c78b71d0306e2ad6e833e57720153da02529be2643bb83fabc55ce342",
+          "py_hash": "964c648c78b71d0306e2ad6e833e57720153da02529be2643bb83fabc55ce342"
+        },
+        {
+          "canonical_equal": true,
+          "hash_equal": true,
+          "id": "escaped_string_controls",
+          "js_hash": "3dd8be3bcf567dfd65a1f7ba3f8d4fbb8ebeeae38e38903222433ae2ad2c3ea2",
+          "py_hash": "3dd8be3bcf567dfd65a1f7ba3f8d4fbb8ebeeae38e38903222433ae2ad2c3ea2"
+        },
+        {
+          "canonical_equal": true,
+          "hash_equal": true,
+          "id": "deep_null_bool_cjk",
+          "js_hash": "cb14587685529c893c38b00885ce494da55ff80b9208717072a8d99833adf10c",
+          "py_hash": "cb14587685529c893c38b00885ce494da55ff80b9208717072a8d99833adf10c"
+        },
+        {
+          "canonical_equal": true,
+          "hash_equal": true,
+          "id": "seed_registry_shape",
+          "js_hash": "c6d56c9cc55a71bd42489522901a70d437c0ad3bf40d0cf92c15d4da4bb46479",
+          "py_hash": "c6d56c9cc55a71bd42489522901a70d437c0ad3bf40d0cf92c15d4da4bb46479"
+        }
+      ],
+      "equal_count": 16,
+      "parity_vector_sha256": "ed51b1b67f6fe9f86c111a2679fa8fe6fe255883070af23a754a1b500811b87c",
+      "provenance": {
+        "aggregation_rule": "all 16 vectors require canonical string and sha256 equality",
+        "code_path_hash": "7dbe79852c97b030bb844da5cf5eb2568494f309cf8e7dcb4e08e50eb1496102",
+        "episode_ids": [],
+        "input_artifacts": [
+          "EgoDesktop/src/joiRealLoopGAblationKernelStateAdapter.js",
+          "scripts/ego_kernel/state.py"
+        ],
+        "producer_function": "runParityGate",
+        "run_id": "r3_adoption_20260707153154",
+        "seed_context": []
+      },
+      "status": "pass",
+      "total_count": 16
+    },
+    "G-R3A-REPLAY": {
+      "aggregation_rule": "sum mismatches across two fresh-process replays and one resume replay per episode",
+      "fresh_process_mismatch_count": 0,
+      "fresh_process_runs": 2,
+      "mismatch_total": 0,
+      "per_episode": [
+        {
+          "episode_id": "episode_001",
+          "fresh_process_mismatches": 0,
+          "fresh_process_runs": 2,
+          "resume_index": 1,
+          "resume_mismatch_count": 0
+        },
+        {
+          "episode_id": "episode_002",
+          "fresh_process_mismatches": 0,
+          "fresh_process_runs": 2,
+          "resume_index": 1,
+          "resume_mismatch_count": 0
+        }
+      ],
+      "producer_function": "runReplayChecks",
+      "provenance": {
+        "aggregation_rule": "sum mismatches across two fresh-process replays and one resume replay per episode",
+        "code_path_hash": "d38c8008dfd24827110f841b49325b6e99af4d8c770300221006c9c9cd5e77cc",
+        "episode_ids": [
+          "episode_001",
+          "episode_002"
+        ],
+        "input_artifacts": [
+          "serialized initial envelopes",
+          "input logs",
+          "trace rows"
+        ],
+        "producer_function": "adapter.runKernelAdoptionFixture.replay_report",
+        "run_id": "r3_adoption_20260707153154",
+        "seed_context": [
+          {
+            "episode_id": "episode_001",
+            "seed_registry": {
+              "base": {
+                "draw_index": 0,
+                "seed": 248601923591930
+              },
+              "episode_001_step_1": {
+                "draw_index": 1,
+                "seed": 235703894379550
+              },
+              "episode_001_step_2": {
+                "draw_index": 2,
+                "seed": 51279983127523
+              },
+              "episode_001_step_3": {
+                "draw_index": 3,
+                "seed": 132015114813162
+              }
+            }
+          },
+          {
+            "episode_id": "episode_002",
+            "seed_registry": {
+              "base": {
+                "draw_index": 0,
+                "seed": 47517306391185
+              },
+              "episode_002_step_1": {
+                "draw_index": 1,
+                "seed": 66521162338649
+              },
+              "episode_002_step_2": {
+                "draw_index": 2,
+                "seed": 29780991925848
+              },
+              "episode_002_step_3": {
+                "draw_index": 3,
+                "seed": 46113242692242
+              }
+            }
+          }
+        ]
+      },
+      "resume_mismatch_count": 0,
+      "schema_version": "ego.r3_adoption.replay_report.v0",
+      "status": "pass"
+    },
+    "G-R3A-SCHEMA": {
+      "config_frozen_byte_match": true,
+      "provenance": {
+        "aggregation_rule": "notes mention block and decimal rule, config bytes match, every trace row carries kernel block",
+        "code_path_hash": "06bf2ceba60fcfdc42fd06178d551daf323f16db091610d6186e3bda65c79b30",
+        "episode_ids": [],
+        "input_artifacts": [
+          "docs/codex/tasks/ego-r3-adoption-slice-001a/SCHEMA_NOTES.md",
+          "config_frozen.json",
+          "trace jsonl"
+        ],
+        "producer_function": "runSchemaGate",
+        "run_id": "r3_adoption_20260707153154",
+        "seed_context": []
+      },
+      "schema_notes_has_decimal_rule": true,
+      "schema_notes_has_trace_block": true,
+      "schema_notes_path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\ego-r3-adoption-slice-001a\\SCHEMA_NOTES.md",
+      "status": "pass",
+      "trace_row_count": 6,
+      "trace_rows_with_block": 6
+    },
+    "G-R3A-STATE-HASH": {
+      "command": {
+        "command": [
+          "C:\\Program Files\\nodejs\\node.exe",
+          "-e",
+          "const adapter=require(\"D:\\\\Project\\\\AIProject\\\\MyProject\\\\Ego\\\\EgoDesktop\\\\src\\\\joiRealLoopGAblationKernelStateAdapter.js\");\nconst state=JSON.parse(process.argv[1]);\nprocess.stdout.write(adapter.canonicalSha256(state));",
+          "{\"schema_version\":\"kernel_state_v0\",\"task_id\":\"ego-r3-adoption-slice-001a\",\"run_id\":\"r3_adoption_20260707153154\",\"episode_id\":\"state_hash_control\",\"step_id\":1,\"substates\":{\"joi_loop_state_v0\":{\"decimal\":\"1.250000\",\"semantic_label\":\"same\"}},\"seed_registry\":{\"step_1\":{\"draw_index\":1,\"seed\":123}},\"ablations\":{\"llm_mode\":\"replay_locked\"}}"
+        ],
+        "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+        "duration_ms": 88,
+        "exit_code": 0,
+        "label": "node_state_hash_fresh_process",
+        "signal": "",
+        "stderr": "",
+        "stdout": "e66fc175c015a9acf00d497c31d90df45ae98d2f39d3fdeae221b8c631a64dc9"
+      },
+      "decimal_control": "1.250000",
+      "fresh_process_equal": true,
+      "hashes": {
+        "freshProcessHash": "e66fc175c015a9acf00d497c31d90df45ae98d2f39d3fdeae221b8c631a64dc9",
+        "hash": "e66fc175c015a9acf00d497c31d90df45ae98d2f39d3fdeae221b8c631a64dc9",
+        "mutatedHash": "54dd0c4a663e21736f158fa7602f33a576b11590305192b09f3c82f9f49b7af7",
+        "sameHash": "e66fc175c015a9acf00d497c31d90df45ae98d2f39d3fdeae221b8c631a64dc9"
+      },
+      "mutated_hash_differs": true,
+      "provenance": {
+        "aggregation_rule": "same envelope same hash; mutated substate different; fresh process same",
+        "code_path_hash": "14bf6766cb8d9e0136e53d0a1218259d596e70547a558461189045b25bfc967e",
+        "episode_ids": [],
+        "input_artifacts": [
+          "EgoDesktop/src/joiRealLoopGAblationKernelStateAdapter.js"
+        ],
+        "producer_function": "runStateHashGate",
+        "run_id": "r3_adoption_20260707153154",
+        "seed_context": []
+      },
+      "same_hash_equal": true,
+      "status": "pass"
+    },
+    "G-R3A-SWAP": {
+      "ab_kernel_field_leak_count": 0,
+      "ab_kernel_fields_identical": true,
+      "aggregation_rule": "count per-turn kernel_adoption_v0 projection mismatches",
+      "leaky_renderer_c_leak_count": 3,
+      "positive_control_c_detected": true,
+      "producer_function": "runSwapInvarianceCheck",
+      "provenance": {
+        "aggregation_rule": "count per-turn kernel_adoption_v0 projection mismatches",
+        "code_path_hash": "870986627aca65feafbca618807cc6bd5951dc24cf5a910b172b668c82f41537",
+        "episode_ids": [],
+        "input_artifacts": [
+          "deterministic renderers A/B/C",
+          "kernel_adoption_v0 projections"
+        ],
+        "producer_function": "adapter.runSwapInvarianceCheck",
+        "run_id": "r3_adoption_20260707153154",
+        "seed_context": []
+      },
+      "renderer_surface_texts_differ": true,
+      "run_id": "r3_adoption_20260707153154_swap",
+      "schema_version": "ego.r3_adoption.swap_report.v0",
+      "status": "pass"
+    }
+  },
+  "guard": {
+    "breached": false,
+    "duration_ms": 130289,
+    "guard_seconds": 1800
+  },
+  "run_id": "r3_adoption_20260707153154",
+  "schema_version": "ego.r3_adoption.result.v0",
+  "verdict": "r3_adoption_fail_g_r3a_no_fork",
+  "what_this_does_not_prove": "does not prove mechanism validity, learning, durable memory efficacy, runtime integration safety, stable user benefit, live autonomy, functional selfhood, agency, consciousness, subjective experience, or real emotion"
+}

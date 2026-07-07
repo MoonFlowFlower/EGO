@@ -1,0 +1,138 @@
+[
+  {
+    "id": "unicode_string_beta_cjk",
+    "value": {
+      "text": "βeta 椰果"
+    }
+  },
+  {
+    "id": "cjk_keys_sorted",
+    "value": {
+      "丁": "four",
+      "乙": "two",
+      "甲": "one"
+    }
+  },
+  {
+    "id": "nested_object_array",
+    "value": {
+      "a": {
+        "x": true,
+        "y": false
+      },
+      "z": [
+        {
+          "a": 1,
+          "b": 2
+        }
+      ]
+    }
+  },
+  {
+    "id": "negative_int",
+    "value": {
+      "n": -123456789
+    }
+  },
+  {
+    "id": "max_safe_integer_2pow53_minus_1",
+    "value": {
+      "max": 9007199254740991
+    }
+  },
+  {
+    "id": "bool_null_mix",
+    "value": {
+      "falsehood": false,
+      "none": null,
+      "truth": true
+    }
+  },
+  {
+    "id": "empty_containers",
+    "value": {
+      "arr": [],
+      "obj": {}
+    }
+  },
+  {
+    "id": "decimal_string_float_positive",
+    "value": {
+      "fixed": "1.250000"
+    }
+  },
+  {
+    "id": "decimal_string_float_negative",
+    "value": {
+      "fixed": "-0.125000"
+    }
+  },
+  {
+    "id": "key_order_trap_ascii",
+    "value": {
+      "a": 3,
+      "aa": 2,
+      "b": 1
+    }
+  },
+  {
+    "id": "key_order_trap_nested_cjk",
+    "value": {
+      "outer": {
+        "a": "latin",
+        "龙": "dragon",
+        "龟": "turtle"
+      }
+    }
+  },
+  {
+    "id": "array_preserves_order",
+    "value": [
+      "z",
+      "a",
+      {
+        "a": "sorted",
+        "b": "kept"
+      }
+    ]
+  },
+  {
+    "id": "zero_and_negative_one",
+    "value": {
+      "minus_one": -1,
+      "zero": 0
+    }
+  },
+  {
+    "id": "escaped_string_controls",
+    "value": {
+      "backslash": "\\",
+      "newline": "\n",
+      "quote": "\""
+    }
+  },
+  {
+    "id": "deep_null_bool_cjk",
+    "value": {
+      "层": [
+        {
+          "inner": null
+        },
+        {
+          "ok": true
+        }
+      ]
+    }
+  },
+  {
+    "id": "seed_registry_shape",
+    "value": {
+      "seed_registry": {
+        "step_1": {
+          "draw_index": 0,
+          "seed": 61
+        }
+      }
+    }
+  }
+]
