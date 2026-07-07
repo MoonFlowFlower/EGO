@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import sys
+import time
 from pathlib import Path
 from typing import Any
 
@@ -28,8 +29,8 @@ from scripts.ego_kernel.state import KernelState
 from scripts.ego_kernel.suggestion_env import FROZEN_CONSTANTS, build_r1_config, generate_fixture
 from scripts.ego_kernel.trace import build_trace_row, write_jsonl
 
-TASK_ID = "EGO-R1-MEMORY-OWNERSHIP-001A"
-RUN_ID = "ego_r1_memory_ownership_001a_validation_v0"
+TASK_ID = "EGO-R1-MEMORY-OWNERSHIP-INSTRUMENT-REPAIR-001A"
+RUN_ID = "ego_r1_memory_ownership_instrument_repair_001a_validation_v1"
 CLAIM = "memory_ownership_engineering_only"
 CHECKPOINTS = {300, 600}
 
@@ -183,20 +184,61 @@ def _episode_id(seed: int, index: int) -> str:
     return f"seed_{seed}_episode_{index}"
 
 
-def _run_variant(repo: Path, out: Path, fixtures: dict[str, list[dict[str, Any]]], *, variant: str, policy: str) -> dict[str, Any]:
+def _run_variant(repo: Path, out: Path, fixtures: dict[str, list[dict[str, Any]]], *, variant: str, policy: str, run_id: str) -> dict[str, Any]:
     runs = {}
     for ep, fixture in fixtures.items():
-        result = run_episode(fixture=fixture, run_id=RUN_ID, episode_id=ep, policy_id=policy, variant=variant, checkpoints=CHECKPOINTS)
+        result = run_episode(fixture=fixture, run_id=run_id, episode_id=ep, policy_id=policy, variant=variant, checkpoints=CHECKPOINTS)
         trace = out / "traces" / variant / f"{ep}.jsonl"
         write_jsonl(trace, result["trace_rows"])
         runs[ep] = {**result, "trace_path": _artifact(repo, trace)}
     return runs
 
 
-def run_validation(*, repo_root: Path, out_dir: Path) -> dict[str, Any]:
+def _subset_runs(runs: dict[str, dict[str, Any]], episode_ids: set[str]) -> dict[str, dict[str, Any]]:
+    return {variant: {ep: payload for ep, payload in by_ep.items() if ep in episode_ids} for variant, by_ep in runs.items()}
+
+
+def choose_verdict(gate_results: dict[str, dict[str, Any]], *, phase: str = "battery") -> tuple[str, list[str]]:
+    active = ["G-R1-BENIGN-VALUE", "G-R1-POTENCY", "G-R1-CONTAINMENT"] if phase == "precheck" else [
+        "G-R1-BENIGN-VALUE", "G-R1-QUARANTINE", "G-R1-POTENCY", "G-R1-CONTAINMENT",
+        "G-R1-DRIFT-PAYOFF", "G-R1-ABLATION", "G-R1-REPLAY", "G-R1-LLMSWAP",
+    ]
+    failing = [gate for gate in active if gate in gate_results and gate_results[gate].get("status") != "pass"]
+    if not failing:
+        mimicry = gate_results.get("G-R1-MIMICRY-CERTIFICATION", {})
+        return ("r1_instrument_repair_pass_tier_downgraded" if mimicry.get("status") == "tier_downgraded" else "r1_instrument_repair_pass"), []
+    if "G-R1-BENIGN-VALUE" in failing:
+        return "instrument_invalid_benign_value", failing
+    if "G-R1-POTENCY" in failing:
+        return "instrument_invalid_potency", failing
+    if "G-R1-CONTAINMENT" in failing:
+        controls = gate_results["G-R1-CONTAINMENT"].get("attribution_controls", {})
+        return ("r1_memory_ownership_fail_containment" if controls.get("all_controls_pass") else "instrument_invalid_attribution"), failing
+    mapping = {
+        "G-R1-QUARANTINE": "instrument_invalid_quarantine_detector",
+        "G-R1-DRIFT-PAYOFF": "r1_memory_ownership_fail_drift_payoff",
+        "G-R1-ABLATION": "r1_memory_ownership_fail_ablation",
+        "G-R1-REPLAY": "r1_memory_ownership_fail_replay",
+        "G-R1-LLMSWAP": "r1_memory_ownership_fail_llmswap",
+    }
+    return mapping.get(failing[0], f"r1_memory_ownership_fail_{failing[0].lower()}"), failing
+
+
+def build_failure_manifest(*, verdict: str, failing_gates: list[str], result_path: str, gate_results: dict[str, dict[str, Any]]) -> dict[str, Any]:
+    reasons = {}
+    for gate in failing_gates:
+        report = gate_results.get(gate, {})
+        reasons[gate] = report.get("reason") or f"status={report.get('status')}"
+    return {"verdict": verdict, "failing_gates": failing_gates, "per_gate_reasons": reasons, "result_pointer": result_path}
+
+
+def run_validation(*, repo_root: Path, out_dir: Path, phase: str = "precheck") -> dict[str, Any]:
     repo_root = repo_root.resolve(); out_dir = out_dir.resolve(); out_dir.mkdir(parents=True, exist_ok=True)
     code_hash = _code_hash(repo_root); config = build_config(code_path_hash=code_hash); _write_json(out_dir / "config_frozen.json", config)
-    fixtures = {_episode_id(seed, ep): generate_fixture(seed=seed, episode_index=ep) for seed in [31, 47] for ep in range(3)}
+    grid = FROZEN_CONSTANTS["run_grid"]
+    seeds = list(grid["dev_seeds"] if phase == "precheck" else grid["dev_seeds"] + grid["heldout_seeds"])
+    run_id = f"{RUN_ID}_{phase}"
+    fixtures = {_episode_id(seed, ep): generate_fixture(seed=seed, episode_index=ep) for seed in seeds for ep in range(grid["episodes_per_seed"])}
     for ep, fixture in fixtures.items():
         _write_json(out_dir / "input_fixtures" / f"{ep}.json", fixture)
     variants = {
@@ -204,18 +246,18 @@ def run_validation(*, repo_root: Path, out_dir: Path) -> dict[str, Any]:
         "promiscuous_injected": "promote_all_v0", "promiscuous_clean": "promote_all_v0", "permissive_injected": "permissive_write_v0",
         "candidate_no_suggestions": "ownership_v0", "promotion_frozen_clean": "ownership_v0", "pref_zeroed": "ownership_v0", "memory_zeroed": "ownership_v0",
     }
-    runs = {v: _run_variant(repo_root, out_dir, fixtures, variant=v, policy=p) for v, p in variants.items()}
+    runs = {v: _run_variant(repo_root, out_dir, fixtures, variant=v, policy=p, run_id=run_id) for v, p in variants.items()}
     for ep in runs["pref_zeroed"].values():
         eid = ep["initial_state"]["episode_id"]
-        ep["initial_state"]["ablations"]["user_pref_model"] = "zeroed"; ep.update(run_episode(fixture=fixtures[eid], run_id=RUN_ID, episode_id=eid, policy_id="ownership_v0", variant="pref_zeroed", initial_state=ep["initial_state"]))
+        ep["initial_state"]["ablations"]["user_pref_model"] = "zeroed"; ep.update(run_episode(fixture=fixtures[eid], run_id=run_id, episode_id=eid, policy_id="ownership_v0", variant="pref_zeroed", initial_state=ep["initial_state"]))
         write_jsonl(out_dir / "traces" / "pref_zeroed" / f"{eid}.jsonl", ep["trace_rows"])
     for ep in runs["memory_zeroed"].values():
         eid = ep["initial_state"]["episode_id"]
-        ep["initial_state"]["ablations"]["memory_owned"] = "zeroed"; ep.update(run_episode(fixture=fixtures[eid], run_id=RUN_ID, episode_id=eid, policy_id="ownership_v0", variant="memory_zeroed", initial_state=ep["initial_state"]))
+        ep["initial_state"]["ablations"]["memory_owned"] = "zeroed"; ep.update(run_episode(fixture=fixtures[eid], run_id=run_id, episode_id=eid, policy_id="ownership_v0", variant="memory_zeroed", initial_state=ep["initial_state"]))
         write_jsonl(out_dir / "traces" / "memory_zeroed" / f"{eid}.jsonl", ep["trace_rows"])
     for ep in runs["promotion_frozen_clean"].values():
         eid = ep["initial_state"]["episode_id"]
-        ep["initial_state"]["ablations"]["promotion_policy"] = "frozen"; ep.update(run_episode(fixture=fixtures[eid], run_id=RUN_ID, episode_id=eid, policy_id="ownership_v0", variant="promotion_frozen_clean", initial_state=ep["initial_state"]))
+        ep["initial_state"]["ablations"]["promotion_policy"] = "frozen"; ep.update(run_episode(fixture=fixtures[eid], run_id=run_id, episode_id=eid, policy_id="ownership_v0", variant="promotion_frozen_clean", initial_state=ep["initial_state"]))
         write_jsonl(out_dir / "traces" / "promotion_frozen_clean" / f"{eid}.jsonl", ep["trace_rows"])
     reports = build_gate_reports(fixtures, runs, code_hash)
     reports["replay_report"] = replay_gate_report(
@@ -230,24 +272,31 @@ def run_validation(*, repo_root: Path, out_dir: Path) -> dict[str, Any]:
     for name, report in reports.items():
         _write_json(out_dir / f"{name}.json", report)
     gates = {report["gate"]: report for report in reports.values()}
-    order = [("G-R1-QUARANTINE", "instrument_invalid_quarantine_detector"), ("G-R1-POTENCY", "instrument_invalid_potency"), ("G-R1-CONTAINMENT", "r1_memory_ownership_fail_containment"), ("G-R1-DRIFT-PAYOFF", "r1_memory_ownership_fail_drift_payoff"), ("G-R1-ABLATION", "r1_memory_ownership_fail_ablation"), ("G-R1-REPLAY", "r1_memory_ownership_fail_replay"), ("G-R1-LLMSWAP", "r1_memory_ownership_fail_llmswap")]
-    verdict = "r1_memory_ownership_pass_tier_downgraded" if gates["G-R1-MIMICRY-CERTIFICATION"]["status"] != "pass" else "r1_memory_ownership_pass"
-    for gate, fail in order:
-        if gates[gate]["status"] != "pass":
-            verdict = fail; break
-    result = {"verdict": verdict, "verdict_subtype": verdict, "claim_ceiling": CLAIM, "default_off": True, "runtime_connected": False, "g_hard_ship_decision": reports["drift_payoff_report"]["g_hard_ship_decision"], "config_hash": config["config_hash"], "torch_used": False, "declared_limitations": ["no demotion/refutation in v0"], "gate_results": gates}
+    if phase == "battery":
+        heldout_ids = {ep for ep in fixtures if int(ep.split("_")[1]) in set(grid["heldout_seeds"])}
+        heldout_reports = build_gate_reports({ep: fixtures[ep] for ep in heldout_ids}, _subset_runs(runs, heldout_ids), code_hash)
+        heldout_gates = {report["gate"]: report for report in heldout_reports.values()}
+        for gate, report in heldout_gates.items():
+            gates[gate]["heldout_status"] = report["status"]
+            gates[gate]["heldout_block"] = report
+            if report["status"] != "pass":
+                gates[gate]["status"] = "fail"
+    verdict, failing_gates = choose_verdict(gates, phase=phase)
+    result = {"verdict": verdict, "verdict_subtype": verdict, "failing_gates": failing_gates, "phase": phase, "claim_ceiling": CLAIM, "default_off": True, "runtime_connected": False, "g_hard_ship_decision": reports["drift_payoff_report"]["g_hard_ship_decision"], "config_hash": config["config_hash"], "torch_used": False, "declared_limitations": ["no demotion/refutation in v0"], "gate_results": gates}
     _write_json(out_dir / "result.json", result)
     if "fail" in verdict or verdict.startswith("instrument_invalid"):
-        _write_json(out_dir / "failure_manifest.json", result)
+        _write_json(out_dir / "failure_manifest.json", build_failure_manifest(verdict=verdict, failing_gates=failing_gates, result_path=_artifact(repo_root, out_dir / "result.json"), gate_results=gates))
     return result
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--out-dir", default="artifacts/ego_r1_memory_ownership_001a")
+    parser.add_argument("--out-dir", default="artifacts/ego_r1_memory_ownership_instrument_repair_001a")
+    parser.add_argument("--phase", choices=["precheck", "battery"], default="precheck")
     parser.add_argument("--write-config-only", action="store_true")
     parser.add_argument("--replay-stdin", action="store_true")
     args = parser.parse_args()
+    started = time.time()
     if args.replay_stdin:
         payload = json.loads(sys.stdin.read())
         print(json.dumps(replay_episode(payload["initial_state"], payload["fixture"]), ensure_ascii=False, sort_keys=True, separators=(",", ":")))
@@ -256,9 +305,17 @@ def main() -> int:
         out = Path(args.out_dir); out.mkdir(parents=True, exist_ok=True)
         _write_json(out / "config_frozen.json", build_config(code_path_hash=_code_hash(ROOT)))
         return 0
-    result = run_validation(repo_root=ROOT, out_dir=Path(args.out_dir))
+    result = run_validation(repo_root=ROOT, out_dir=Path(args.out_dir), phase=args.phase)
     print(json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2))
-    return 0 if result["verdict"] in {"r1_memory_ownership_pass", "r1_memory_ownership_pass_tier_downgraded"} else 1
+    exit_code = 0 if result["verdict"] in {"r1_instrument_repair_pass", "r1_instrument_repair_pass_tier_downgraded"} else 1
+    _write_json(Path(args.out_dir) / "run_log.json", {
+        "phase": args.phase,
+        "guard_seconds": FROZEN_CONSTANTS["guard_seconds_per_phase"],
+        "duration_seconds": round(time.time() - started, 6),
+        "process_exit_code": exit_code,
+        "result_path": str((Path(args.out_dir) / "result.json").as_posix()),
+    })
+    return exit_code
 
 
 if __name__ == "__main__":

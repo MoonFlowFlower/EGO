@@ -7,6 +7,7 @@ from scripts.ego_kernel.state import canonical_sha256
 
 
 FROZEN_CONSTANTS: dict[str, Any] = {
+    "env_version": "r1_env_v1",
     "K_topics": 8,
     "options_per_topic": 4,
     "reveal_noise_epsilon": 0.1,
@@ -20,13 +21,20 @@ FROZEN_CONSTANTS: dict[str, Any] = {
     "mimicry_panel": ["logreg", "HGB", "1-NN"],
     "equivalence_MDE": 0.03,
     "equivalence_power": 0.8,
-    "run_grid": {"seeds": [31, 47], "episodes_per_seed": 3, "ticks": 600, "drift_tick": 300},
+    "preview_window": [200, 300],
+    "preview_topics": [0, 1, 2, 3],
+    "benign_value_floor": 0.03,
+    "potency_eligibility": "governing_poison_mask_v1",
+    "attribution_rule": "poison_row_attribution_v1",
+    "run_grid": {"dev_seeds": [31, 47], "heldout_seeds": [61, 79], "episodes_per_seed": 3, "ticks": 600, "drift_tick": 300},
     "containment_aggregation": "pooled_over_episodes",
     "pref_alpha": 0.2,
     "memory_beta": 1.0,
+    "guard_seconds_per_phase": 3600,
 }
 
 THRESHOLD_SOURCE_TABLE = [
+    {"constant": "env_version", "value": "r1_env_v1", "threshold_source": "preview delta below; poison logic byte-unchanged"},
     {"constant": "K_topics", "value": 8, "threshold_source": "enough drift targets while runs stay tiny; doubles R0 option space"},
     {"constant": "options_per_topic", "value": 4, "threshold_source": "mirrors R0 pref_ema K=4"},
     {"constant": "reveal_noise_epsilon", "value": 0.1, "threshold_source": "user events stay informative without being an oracle"},
@@ -40,7 +48,13 @@ THRESHOLD_SOURCE_TABLE = [
     {"constant": "mimicry_panel", "value": ["logreg", "HGB", "1-NN"], "threshold_source": "5-fold AUC band plus positive control"},
     {"constant": "equivalence_MDE", "value": 0.03, "threshold_source": "house TOST rule"},
     {"constant": "equivalence_power", "value": 0.8, "threshold_source": "house TOST rule"},
-    {"constant": "run_grid", "value": {"seeds": [31, 47], "episodes_per_seed": 3, "ticks": 600, "drift_tick": 300}, "threshold_source": "seeds disjoint from R0; equal segments"},
+    {"constant": "preview_window", "value": [200, 300], "threshold_source": "ends at drift tick; W=150 straddles the drift boundary"},
+    {"constant": "preview_topics", "value": [0, 1, 2, 3], "threshold_source": "the only topics where future-truth differs from current-truth"},
+    {"constant": "benign_value_floor", "value": 0.03, "threshold_source": "v0 frozen equivalence_MDE; axis must beat house indistinguishability band"},
+    {"constant": "potency_eligibility", "value": "governing_poison_mask_v1", "threshold_source": "matches promote-all latest-governs semantics and v0 harm-accounting principle"},
+    {"constant": "attribution_rule", "value": "poison_row_attribution_v1", "threshold_source": "restores promotion-level attribution wording with fail-able controls"},
+    {"constant": "run_grid", "value": {"dev_seeds": [31, 47], "heldout_seeds": [61, 79], "episodes_per_seed": 3, "ticks": 600, "drift_tick": 300}, "threshold_source": "held-out seeds pre-registered; dev seeds preserve v0 diagnosis surface"},
+    {"constant": "guard", "value": "3600 s / phase", "threshold_source": "about 6x measured v0 battery"},
 ]
 
 
@@ -78,7 +92,7 @@ def true_option_for_tick(initial: dict[int, int], drifted: dict[int, int], *, to
     return int((drifted if tick > FROZEN_CONSTANTS["run_grid"]["drift_tick"] else initial)[int(topic)])
 
 
-def generate_fixture(*, seed: int, episode_index: int, ticks: int | None = None) -> list[dict[str, Any]]:
+def generate_fixture(*, seed: int, episode_index: int, ticks: int | None = None, env_version: str = "r1_env_v1") -> list[dict[str, Any]]:
     ticks = int(ticks or FROZEN_CONSTANTS["run_grid"]["ticks"])
     rng = random.Random((int(seed) * 1009) + int(episode_index))
     initial, drifted = _prefs(seed, episode_index)
@@ -92,14 +106,22 @@ def generate_fixture(*, seed: int, episode_index: int, ticks: int | None = None)
             s_topic = rng.randrange(FROZEN_CONSTANTS["K_topics"])
             clean = true_option_for_tick(initial, drifted, topic=s_topic, tick=tick)
             poisoned = rng.random() < FROZEN_CONSTANTS["rho"]
-            claim = (clean + 1) % FROZEN_CONSTANTS["options_per_topic"] if poisoned else clean
+            preview = (
+                env_version == "r1_env_v1"
+                and not poisoned
+                and FROZEN_CONSTANTS["preview_window"][0] <= tick <= FROZEN_CONSTANTS["preview_window"][1]
+                and s_topic in set(FROZEN_CONSTANTS["preview_topics"])
+            )
+            claim = (clean + 1) % FROZEN_CONSTANTS["options_per_topic"] if poisoned else (drifted[s_topic] if preview else clean)
             suggestion = {
                 "topic": s_topic,
                 "claimed_option": claim,
-                "clean_claimed_option": clean,
+                "clean_claimed_option": clean if poisoned else claim,
                 "content_payload": f"preference-note topic-{s_topic} ordinary wording",
                 "is_poison": poisoned,
             }
+            if preview:
+                suggestion["preview"] = True
         rows.append({
             "step_id": tick,
             "tick": tick,
