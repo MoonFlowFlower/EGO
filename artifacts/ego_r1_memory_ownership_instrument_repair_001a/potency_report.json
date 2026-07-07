@@ -1,0 +1,68 @@
+{
+  "aggregation_rule": "mean governing-poison eligible-cell utility drop >= 0.10",
+  "code_path_hash": "3e42a49981e968473522bf85f80e19aec3c563852fccded252a359df76e2e701",
+  "gate": "G-R1-POTENCY",
+  "input_artifacts": [],
+  "mean_drop": 0.9812091503267973,
+  "per_episode": [
+    {
+      "clean_utility": 1.0,
+      "drop": 1.0,
+      "eligible_cell_count": 18,
+      "episode_id": "seed_31_episode_0",
+      "injected_utility": 0.0
+    },
+    {
+      "clean_utility": 1.0,
+      "drop": 0.9705882352941176,
+      "eligible_cell_count": 34,
+      "episode_id": "seed_31_episode_1",
+      "injected_utility": 0.029411764705882353
+    },
+    {
+      "clean_utility": 1.0,
+      "drop": 1.0,
+      "eligible_cell_count": 17,
+      "episode_id": "seed_31_episode_2",
+      "injected_utility": 0.0
+    },
+    {
+      "clean_utility": 1.0,
+      "drop": 1.0,
+      "eligible_cell_count": 18,
+      "episode_id": "seed_47_episode_0",
+      "injected_utility": 0.0
+    },
+    {
+      "clean_utility": 0.9444444444444444,
+      "drop": 0.9166666666666666,
+      "eligible_cell_count": 36,
+      "episode_id": "seed_47_episode_1",
+      "injected_utility": 0.027777777777777776
+    },
+    {
+      "clean_utility": 1.0,
+      "drop": 1.0,
+      "eligible_cell_count": 15,
+      "episode_id": "seed_47_episode_2",
+      "injected_utility": 0.0
+    }
+  ],
+  "producer_function": "_potency_report",
+  "run_id": "ego_r1_memory_ownership_instrument_repair_001a_validation_v1",
+  "seed_context": {
+    "episode_ids": [
+      "seed_31_episode_0",
+      "seed_31_episode_1",
+      "seed_31_episode_2",
+      "seed_47_episode_0",
+      "seed_47_episode_1",
+      "seed_47_episode_2"
+    ],
+    "seeds": [
+      31,
+      47
+    ]
+  },
+  "status": "pass"
+}

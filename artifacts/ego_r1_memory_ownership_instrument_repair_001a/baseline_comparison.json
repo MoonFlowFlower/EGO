@@ -1,0 +1,151 @@
+{
+  "aggregation_rule": "report separations and equivalences; no fail on equivalence",
+  "code_path_hash": "3e42a49981e968473522bf85f80e19aec3c563852fccded252a359df76e2e701",
+  "comparators": {
+    "graph_cache": {
+      "mean_delta": -0.029444444444444457,
+      "per_episode": [
+        {
+          "baseline_utility": 1.0,
+          "candidate_utility": 0.97,
+          "delta": -0.030000000000000027,
+          "episode_id": "seed_31_episode_0"
+        },
+        {
+          "baseline_utility": 0.99,
+          "candidate_utility": 0.9633333333333334,
+          "delta": -0.026666666666666616,
+          "episode_id": "seed_31_episode_1"
+        },
+        {
+          "baseline_utility": 1.0,
+          "candidate_utility": 0.97,
+          "delta": -0.030000000000000027,
+          "episode_id": "seed_31_episode_2"
+        },
+        {
+          "baseline_utility": 1.0,
+          "candidate_utility": 0.97,
+          "delta": -0.030000000000000027,
+          "episode_id": "seed_47_episode_0"
+        },
+        {
+          "baseline_utility": 0.9866666666666667,
+          "candidate_utility": 0.96,
+          "delta": -0.026666666666666727,
+          "episode_id": "seed_47_episode_1"
+        },
+        {
+          "baseline_utility": 1.0,
+          "candidate_utility": 0.9666666666666667,
+          "delta": -0.033333333333333326,
+          "episode_id": "seed_47_episode_2"
+        }
+      ],
+      "verdict": "equivalent_engineering_value"
+    },
+    "lookup": {
+      "mean_delta": 0.4477777777777778,
+      "per_episode": [
+        {
+          "baseline_utility": 0.55,
+          "candidate_utility": 0.97,
+          "delta": 0.41999999999999993,
+          "episode_id": "seed_31_episode_0"
+        },
+        {
+          "baseline_utility": 0.5266666666666666,
+          "candidate_utility": 0.9633333333333334,
+          "delta": 0.43666666666666676,
+          "episode_id": "seed_31_episode_1"
+        },
+        {
+          "baseline_utility": 0.5066666666666667,
+          "candidate_utility": 0.97,
+          "delta": 0.46333333333333326,
+          "episode_id": "seed_31_episode_2"
+        },
+        {
+          "baseline_utility": 0.5066666666666667,
+          "candidate_utility": 0.97,
+          "delta": 0.46333333333333326,
+          "episode_id": "seed_47_episode_0"
+        },
+        {
+          "baseline_utility": 0.5166666666666667,
+          "candidate_utility": 0.96,
+          "delta": 0.44333333333333325,
+          "episode_id": "seed_47_episode_1"
+        },
+        {
+          "baseline_utility": 0.5066666666666667,
+          "candidate_utility": 0.9666666666666667,
+          "delta": 0.45999999999999996,
+          "episode_id": "seed_47_episode_2"
+        }
+      ],
+      "verdict": "candidate_separates"
+    },
+    "raw_rag": {
+      "mean_delta": 0.05888888888888888,
+      "per_episode": [
+        {
+          "baseline_utility": 0.9266666666666666,
+          "candidate_utility": 0.97,
+          "delta": 0.043333333333333335,
+          "episode_id": "seed_31_episode_0"
+        },
+        {
+          "baseline_utility": 0.92,
+          "candidate_utility": 0.9633333333333334,
+          "delta": 0.043333333333333335,
+          "episode_id": "seed_31_episode_1"
+        },
+        {
+          "baseline_utility": 0.9133333333333333,
+          "candidate_utility": 0.97,
+          "delta": 0.05666666666666664,
+          "episode_id": "seed_31_episode_2"
+        },
+        {
+          "baseline_utility": 0.8933333333333333,
+          "candidate_utility": 0.97,
+          "delta": 0.07666666666666666,
+          "episode_id": "seed_47_episode_0"
+        },
+        {
+          "baseline_utility": 0.9066666666666666,
+          "candidate_utility": 0.96,
+          "delta": 0.053333333333333344,
+          "episode_id": "seed_47_episode_1"
+        },
+        {
+          "baseline_utility": 0.8866666666666667,
+          "candidate_utility": 0.9666666666666667,
+          "delta": 0.07999999999999996,
+          "episode_id": "seed_47_episode_2"
+        }
+      ],
+      "verdict": "candidate_separates"
+    }
+  },
+  "gate": "G-R1-BASELINE-HONESTY",
+  "input_artifacts": [],
+  "producer_function": "_baseline_comparison",
+  "run_id": "ego_r1_memory_ownership_instrument_repair_001a_validation_v1",
+  "seed_context": {
+    "episode_ids": [
+      "seed_31_episode_0",
+      "seed_31_episode_1",
+      "seed_31_episode_2",
+      "seed_47_episode_0",
+      "seed_47_episode_1",
+      "seed_47_episode_2"
+    ],
+    "seeds": [
+      31,
+      47
+    ]
+  },
+  "status": "pass"
+}

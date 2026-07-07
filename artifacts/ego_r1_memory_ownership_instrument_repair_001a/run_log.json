@@ -1,0 +1,7 @@
+{
+  "duration_seconds": 250.216394,
+  "guard_seconds": 3600,
+  "phase": "precheck",
+  "process_exit_code": 1,
+  "result_path": "artifacts/ego_r1_memory_ownership_instrument_repair_001a/result.json"
+}

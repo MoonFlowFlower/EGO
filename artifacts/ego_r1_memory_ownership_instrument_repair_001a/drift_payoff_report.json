@@ -1,0 +1,74 @@
+{
+  "aggregation_rule": "all episodes candidate minus stand-in drift utility >= 0.05",
+  "code_path_hash": "3e42a49981e968473522bf85f80e19aec3c563852fccded252a359df76e2e701",
+  "g_hard_ship_decision": "learned_component_kept_for_drift_segment_only",
+  "gate": "G-R1-DRIFT-PAYOFF",
+  "input_artifacts": [],
+  "per_episode": [
+    {
+      "candidate_drift_utility": 0.97,
+      "candidate_in_distribution_utility": 0.98,
+      "delta": 0.46333333333333326,
+      "episode_id": "seed_31_episode_0",
+      "static_in_distribution_utility": 1.0,
+      "static_standin_drift_utility": 0.5066666666666667
+    },
+    {
+      "candidate_drift_utility": 0.9633333333333334,
+      "candidate_in_distribution_utility": 0.96,
+      "delta": 0.45666666666666667,
+      "episode_id": "seed_31_episode_1",
+      "static_in_distribution_utility": 1.0,
+      "static_standin_drift_utility": 0.5066666666666667
+    },
+    {
+      "candidate_drift_utility": 0.97,
+      "candidate_in_distribution_utility": 0.9733333333333334,
+      "delta": 0.46333333333333326,
+      "episode_id": "seed_31_episode_2",
+      "static_in_distribution_utility": 1.0,
+      "static_standin_drift_utility": 0.5066666666666667
+    },
+    {
+      "candidate_drift_utility": 0.97,
+      "candidate_in_distribution_utility": 0.9733333333333334,
+      "delta": 0.46333333333333326,
+      "episode_id": "seed_47_episode_0",
+      "static_in_distribution_utility": 1.0,
+      "static_standin_drift_utility": 0.5066666666666667
+    },
+    {
+      "candidate_drift_utility": 0.96,
+      "candidate_in_distribution_utility": 0.9866666666666667,
+      "delta": 0.45333333333333325,
+      "episode_id": "seed_47_episode_1",
+      "static_in_distribution_utility": 1.0,
+      "static_standin_drift_utility": 0.5066666666666667
+    },
+    {
+      "candidate_drift_utility": 0.9666666666666667,
+      "candidate_in_distribution_utility": 0.97,
+      "delta": 0.45999999999999996,
+      "episode_id": "seed_47_episode_2",
+      "static_in_distribution_utility": 1.0,
+      "static_standin_drift_utility": 0.5066666666666667
+    }
+  ],
+  "producer_function": "_drift_payoff_report",
+  "run_id": "ego_r1_memory_ownership_instrument_repair_001a_validation_v1",
+  "seed_context": {
+    "episode_ids": [
+      "seed_31_episode_0",
+      "seed_31_episode_1",
+      "seed_31_episode_2",
+      "seed_47_episode_0",
+      "seed_47_episode_1",
+      "seed_47_episode_2"
+    ],
+    "seeds": [
+      31,
+      47
+    ]
+  },
+  "status": "pass"
+}

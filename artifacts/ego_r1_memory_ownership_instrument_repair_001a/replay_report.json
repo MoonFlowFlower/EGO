@@ -1,0 +1,27 @@
+{
+  "aggregation_rule": "fresh subprocess x2 plus mid-episode resume zero mismatch",
+  "code_path_hash": "3e42a49981e968473522bf85f80e19aec3c563852fccded252a359df76e2e701",
+  "fresh_subprocess_runs_per_episode": 2,
+  "gate": "G-R1-REPLAY",
+  "input_artifacts": [],
+  "mid_episode_resume_tick": 300,
+  "mismatches": [],
+  "mismatches_total": 0,
+  "producer_function": "_replay_report",
+  "run_id": "ego_r1_memory_ownership_instrument_repair_001a_validation_v1",
+  "seed_context": {
+    "episode_ids": [
+      "seed_31_episode_0",
+      "seed_31_episode_1",
+      "seed_31_episode_2",
+      "seed_47_episode_0",
+      "seed_47_episode_1",
+      "seed_47_episode_2"
+    ],
+    "seeds": [
+      31,
+      47
+    ]
+  },
+  "status": "pass"
+}

@@ -1,0 +1,10 @@
+{
+  "failing_gates": [
+    "G-R1-BENIGN-VALUE"
+  ],
+  "per_gate_reasons": {
+    "G-R1-BENIGN-VALUE": "status=fail"
+  },
+  "result_pointer": "artifacts/ego_r1_memory_ownership_instrument_repair_001a/result.json",
+  "verdict": "instrument_invalid_benign_value"
+}

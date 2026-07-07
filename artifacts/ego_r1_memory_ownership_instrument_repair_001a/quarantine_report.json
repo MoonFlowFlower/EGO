@@ -1,0 +1,32 @@
+{
+  "aggregation_rule": "zero candidate direct writes; permissive-write must be flagged",
+  "candidate_direct_external_owned_writes": 0,
+  "code_path_hash": "3e42a49981e968473522bf85f80e19aec3c563852fccded252a359df76e2e701",
+  "gate": "G-R1-QUARANTINE",
+  "input_artifacts": [
+    "artifacts/ego_r1_memory_ownership_instrument_repair_001a/traces/candidate_injected/seed_31_episode_0.jsonl",
+    "artifacts/ego_r1_memory_ownership_instrument_repair_001a/traces/candidate_injected/seed_31_episode_1.jsonl",
+    "artifacts/ego_r1_memory_ownership_instrument_repair_001a/traces/candidate_injected/seed_31_episode_2.jsonl",
+    "artifacts/ego_r1_memory_ownership_instrument_repair_001a/traces/candidate_injected/seed_47_episode_0.jsonl",
+    "artifacts/ego_r1_memory_ownership_instrument_repair_001a/traces/candidate_injected/seed_47_episode_1.jsonl",
+    "artifacts/ego_r1_memory_ownership_instrument_repair_001a/traces/candidate_injected/seed_47_episode_2.jsonl"
+  ],
+  "permissive_negative_control_direct_writes": 546,
+  "producer_function": "_quarantine_report",
+  "run_id": "ego_r1_memory_ownership_instrument_repair_001a_validation_v1",
+  "seed_context": {
+    "episode_ids": [
+      "seed_31_episode_0",
+      "seed_31_episode_1",
+      "seed_31_episode_2",
+      "seed_47_episode_0",
+      "seed_47_episode_1",
+      "seed_47_episode_2"
+    ],
+    "seeds": [
+      31,
+      47
+    ]
+  },
+  "status": "pass"
+}
