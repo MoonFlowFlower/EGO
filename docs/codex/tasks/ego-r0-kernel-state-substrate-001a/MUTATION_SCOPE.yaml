@@ -4,6 +4,8 @@ expected_mutation_surface:
   - card-first anchor for R0 kernel state substrate predeclared gates
   - default-off Python kernel substrate library, runner, focused tests, and artifacts
   - completion-only PROGRAM_STATE entry and regenerated derived views if gates pass
+  - evidence-ledger entry for the computed R0 substrate result
+  - route-convergence generated task-lane index entry for the new default-off task directory
   - no EgoDesktop/src or EgoOperator modification
   - no runtime registration, gate/approval/transport/proactive path, network call, API key, or real LLM call
 allowed_mutation_paths:
@@ -15,4 +17,6 @@ allowed_mutation_paths:
   - docs/PROGRAM_STATE_UNIFIED.yaml
   - docs/STATUS.md
   - artifacts/reports/program_state_summary.md
+  - artifacts/evidence_ledger/index.yaml
+  - docs/codex/tasks/TASK_LANE_INDEX.md
 claim_ceiling: "kernel_substrate_engineering_only; no mechanism validity, learning, durable memory efficacy, runtime integration safety, route-I headroom, stable user benefit, live autonomy, functional selfhood, consciousness, subjective experience, or real emotion claim"
