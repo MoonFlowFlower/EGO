@@ -8,6 +8,7 @@ expected_mutation_surface:
   - PROGRAM_STATE_UNIFIED.yaml is touched exactly once in the state-update step (R1 lineage completion entry supplied verbatim by the instruction) and not by the landing/implementation commits
   - landing commit touches only this task package plus the task-lane index entry
   - no EgoOperator, PSPC, gate/approval/transport/proactive path, live-proactive behavior, network call, API key, or real LLM call
+  - scope correction per CODEX-INSTRUCTION-R3-ADOPTION-20260707A-SCOPE-CORRECTION-2: program-state derived views (docs/STATUS.md, artifacts/reports/program_state_summary.md, docs/REPO_HYGIENE_POLICY.md) may be regenerated and staged only via scripts/codex/generate_program_state_views.py, never hand-edited
 allowed_mutation_paths:
   - docs/codex/tasks/ego-r3-adoption-slice-001a/
   - EgoDesktop/src/joiRealLoopGAblationKernelStateAdapter.js
@@ -18,6 +19,9 @@ allowed_mutation_paths:
   - artifacts/ego_r3_adoption_slice_001a/
   - docs/codex/tasks/TASK_LANE_INDEX.md
   - docs/PROGRAM_STATE_UNIFIED.yaml
+  - docs/STATUS.md
+  - artifacts/reports/program_state_summary.md
+  - docs/REPO_HYGIENE_POLICY.md
 forbidden_mutation_paths:
   - EgoDesktop/src/joiRealLoopGAblationHarness.js
   - EgoDesktop/src/joiRealLoopGAblationOfflineReplay.js
