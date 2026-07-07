@@ -1,0 +1,3256 @@
+{
+  "code_path_hash": "c7e57fa1ae95e48a9920874a371bcc6fab8c3f02377697481d6ce6448ef92513",
+  "diagnosis": "H-displacement",
+  "input_artifacts": [
+    "artifacts\\ego_r1_memory_ownership_001a\\input_fixtures\\seed_31_episode_0.json",
+    "artifacts\\ego_r1_memory_ownership_001a\\traces\\candidate_injected\\seed_31_episode_0.jsonl",
+    "artifacts\\ego_r1_memory_ownership_001a\\traces\\candidate_clean\\seed_31_episode_0.jsonl",
+    "artifacts\\ego_r1_memory_ownership_001a\\input_fixtures\\seed_31_episode_1.json",
+    "artifacts\\ego_r1_memory_ownership_001a\\traces\\candidate_injected\\seed_31_episode_1.jsonl",
+    "artifacts\\ego_r1_memory_ownership_001a\\traces\\candidate_clean\\seed_31_episode_1.jsonl",
+    "artifacts\\ego_r1_memory_ownership_001a\\input_fixtures\\seed_31_episode_2.json",
+    "artifacts\\ego_r1_memory_ownership_001a\\traces\\candidate_injected\\seed_31_episode_2.jsonl",
+    "artifacts\\ego_r1_memory_ownership_001a\\traces\\candidate_clean\\seed_31_episode_2.jsonl",
+    "artifacts\\ego_r1_memory_ownership_001a\\input_fixtures\\seed_47_episode_0.json",
+    "artifacts\\ego_r1_memory_ownership_001a\\traces\\candidate_injected\\seed_47_episode_0.jsonl",
+    "artifacts\\ego_r1_memory_ownership_001a\\traces\\candidate_clean\\seed_47_episode_0.jsonl",
+    "artifacts\\ego_r1_memory_ownership_001a\\input_fixtures\\seed_47_episode_1.json",
+    "artifacts\\ego_r1_memory_ownership_001a\\traces\\candidate_injected\\seed_47_episode_1.jsonl",
+    "artifacts\\ego_r1_memory_ownership_001a\\traces\\candidate_clean\\seed_47_episode_1.jsonl",
+    "artifacts\\ego_r1_memory_ownership_001a\\input_fixtures\\seed_47_episode_2.json",
+    "artifacts\\ego_r1_memory_ownership_001a\\traces\\candidate_injected\\seed_47_episode_2.jsonl",
+    "artifacts\\ego_r1_memory_ownership_001a\\traces\\candidate_clean\\seed_47_episode_2.jsonl"
+  ],
+  "overall_verdict": "traceable_poison_row_displacement",
+  "per_episode": [
+    {
+      "diagnosis_counts": {
+        "H-displacement": 25
+      },
+      "episode_id": "seed_31_episode_0",
+      "input_artifacts": [
+        "artifacts\\ego_r1_memory_ownership_001a\\input_fixtures\\seed_31_episode_0.json",
+        "artifacts\\ego_r1_memory_ownership_001a\\traces\\candidate_injected\\seed_31_episode_0.jsonl",
+        "artifacts\\ego_r1_memory_ownership_001a\\traces\\candidate_clean\\seed_31_episode_0.jsonl"
+      ],
+      "mismatch_count": 25,
+      "mismatches": [
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "entry_id": "7ba06c52ab3badab",
+            "evidence_ticks": [
+              273,
+              289
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 267,
+            "topic": 0
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 267,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 1
+          },
+          "injected_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "entry_id": "b3b3370fffc4c713",
+            "evidence_ticks": [
+              281,
+              305
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 253,
+            "topic": 0
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 253,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-0 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 253,
+                "topic": 0
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 312,
+          "tick": 313,
+          "topic": 0,
+          "true_option": 1
+        },
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "entry_id": "7ba06c52ab3badab",
+            "evidence_ticks": [
+              273,
+              289
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 267,
+            "topic": 0
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 267,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 1
+          },
+          "injected_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "entry_id": "b3b3370fffc4c713",
+            "evidence_ticks": [
+              281,
+              305
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 253,
+            "topic": 0
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 253,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-0 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 253,
+                "topic": 0
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 320,
+          "tick": 321,
+          "topic": 0,
+          "true_option": 1
+        },
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "entry_id": "7ba06c52ab3badab",
+            "evidence_ticks": [
+              273,
+              289
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 267,
+            "topic": 0
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 267,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 1
+          },
+          "injected_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "entry_id": "b3b3370fffc4c713",
+            "evidence_ticks": [
+              281,
+              305
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 253,
+            "topic": 0
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 253,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-0 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 253,
+                "topic": 0
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 328,
+          "tick": 329,
+          "topic": 0,
+          "true_option": 1
+        },
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "entry_id": "7ba06c52ab3badab",
+            "evidence_ticks": [
+              273,
+              289
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 267,
+            "topic": 0
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 267,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 1
+          },
+          "injected_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "entry_id": "b3b3370fffc4c713",
+            "evidence_ticks": [
+              281,
+              305
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 253,
+            "topic": 0
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 253,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-0 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 253,
+                "topic": 0
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 336,
+          "tick": 337,
+          "topic": 0,
+          "true_option": 1
+        },
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "entry_id": "7ba06c52ab3badab",
+            "evidence_ticks": [
+              273,
+              289
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 267,
+            "topic": 0
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 267,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 1
+          },
+          "injected_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "entry_id": "b3b3370fffc4c713",
+            "evidence_ticks": [
+              281,
+              305
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 253,
+            "topic": 0
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 253,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-0 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 253,
+                "topic": 0
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 344,
+          "tick": 345,
+          "topic": 0,
+          "true_option": 1
+        },
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "entry_id": "7ba06c52ab3badab",
+            "evidence_ticks": [
+              273,
+              289
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 267,
+            "topic": 0
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 267,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 1
+          },
+          "injected_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "entry_id": "b3b3370fffc4c713",
+            "evidence_ticks": [
+              281,
+              305
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 253,
+            "topic": 0
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 253,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-0 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 253,
+                "topic": 0
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 352,
+          "tick": 353,
+          "topic": 0,
+          "true_option": 1
+        },
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "entry_id": "7ba06c52ab3badab",
+            "evidence_ticks": [
+              273,
+              289
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 267,
+            "topic": 0
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 267,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 1
+          },
+          "injected_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "entry_id": "b3b3370fffc4c713",
+            "evidence_ticks": [
+              281,
+              305
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 253,
+            "topic": 0
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 253,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-0 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 253,
+                "topic": 0
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 360,
+          "tick": 361,
+          "topic": 0,
+          "true_option": 1
+        },
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "entry_id": "7ba06c52ab3badab",
+            "evidence_ticks": [
+              273,
+              289
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 267,
+            "topic": 0
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 267,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 1
+          },
+          "injected_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "entry_id": "b3b3370fffc4c713",
+            "evidence_ticks": [
+              281,
+              305
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 253,
+            "topic": 0
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 253,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-0 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 253,
+                "topic": 0
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 368,
+          "tick": 369,
+          "topic": 0,
+          "true_option": 1
+        },
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "entry_id": "7ba06c52ab3badab",
+            "evidence_ticks": [
+              273,
+              289
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 267,
+            "topic": 0
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 267,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 1
+          },
+          "injected_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "entry_id": "b3b3370fffc4c713",
+            "evidence_ticks": [
+              281,
+              305
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 253,
+            "topic": 0
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 253,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-0 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 253,
+                "topic": 0
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 376,
+          "tick": 377,
+          "topic": 0,
+          "true_option": 1
+        },
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "entry_id": "7ba06c52ab3badab",
+            "evidence_ticks": [
+              273,
+              289
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 267,
+            "topic": 0
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 267,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 1
+          },
+          "injected_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "entry_id": "b3b3370fffc4c713",
+            "evidence_ticks": [
+              281,
+              305
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 253,
+            "topic": 0
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 253,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-0 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 253,
+                "topic": 0
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 384,
+          "tick": 385,
+          "topic": 0,
+          "true_option": 1
+        },
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "entry_id": "7ba06c52ab3badab",
+            "evidence_ticks": [
+              273,
+              289
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 267,
+            "topic": 0
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 267,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 1
+          },
+          "injected_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "entry_id": "b3b3370fffc4c713",
+            "evidence_ticks": [
+              281,
+              305
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 253,
+            "topic": 0
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 253,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-0 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 253,
+                "topic": 0
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 392,
+          "tick": 393,
+          "topic": 0,
+          "true_option": 1
+        },
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "entry_id": "7ba06c52ab3badab",
+            "evidence_ticks": [
+              273,
+              289
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 267,
+            "topic": 0
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 267,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 1
+          },
+          "injected_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "entry_id": "b3b3370fffc4c713",
+            "evidence_ticks": [
+              281,
+              305
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 253,
+            "topic": 0
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 253,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-0 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 253,
+                "topic": 0
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 400,
+          "tick": 401,
+          "topic": 0,
+          "true_option": 1
+        },
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "entry_id": "7ba06c52ab3badab",
+            "evidence_ticks": [
+              273,
+              289
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 267,
+            "topic": 0
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 267,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 1
+          },
+          "injected_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "entry_id": "b3b3370fffc4c713",
+            "evidence_ticks": [
+              281,
+              305
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 253,
+            "topic": 0
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 253,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-0 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 253,
+                "topic": 0
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 408,
+          "tick": 409,
+          "topic": 0,
+          "true_option": 1
+        },
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "entry_id": "7ba06c52ab3badab",
+            "evidence_ticks": [
+              273,
+              289
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 267,
+            "topic": 0
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 267,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 1
+          },
+          "injected_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "entry_id": "b3b3370fffc4c713",
+            "evidence_ticks": [
+              281,
+              305
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 253,
+            "topic": 0
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 253,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-0 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 253,
+                "topic": 0
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 416,
+          "tick": 417,
+          "topic": 0,
+          "true_option": 1
+        },
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "entry_id": "7ba06c52ab3badab",
+            "evidence_ticks": [
+              273,
+              289
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 267,
+            "topic": 0
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 267,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 1
+          },
+          "injected_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "entry_id": "b3b3370fffc4c713",
+            "evidence_ticks": [
+              281,
+              305
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 253,
+            "topic": 0
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 253,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-0 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 253,
+                "topic": 0
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 424,
+          "tick": 425,
+          "topic": 0,
+          "true_option": 1
+        },
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "entry_id": "7ba06c52ab3badab",
+            "evidence_ticks": [
+              273,
+              289
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 267,
+            "topic": 0
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 267,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 1
+          },
+          "injected_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "entry_id": "b3b3370fffc4c713",
+            "evidence_ticks": [
+              281,
+              305
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 253,
+            "topic": 0
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 253,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-0 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 253,
+                "topic": 0
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 432,
+          "tick": 433,
+          "topic": 0,
+          "true_option": 1
+        },
+        {
+          "clean_action": {
+            "option": 2
+          },
+          "clean_governing_entry": {
+            "claimed_option": 2,
+            "content_hash": "a0d67e630adb7c5cdf9aac185225db6b56e87e36fb024a0fe8266bf6f8d5356c",
+            "entry_id": "22f3baffe87bd723",
+            "evidence_ticks": [
+              411,
+              419
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 398,
+            "topic": 2
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "a0d67e630adb7c5cdf9aac185225db6b56e87e36fb024a0fe8266bf6f8d5356c",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "a0d67e630adb7c5cdf9aac185225db6b56e87e36fb024a0fe8266bf6f8d5356c",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 398,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 3
+          },
+          "injected_governing_entry": {
+            "claimed_option": 3,
+            "content_hash": "13e7c21a1a61f4a9896e0994b62214ae5b671b8a88d817aac6aa60876ef21f75",
+            "entry_id": "bc2e43c05f39ed0f",
+            "evidence_ticks": [
+              403,
+              427
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 369,
+            "topic": 2
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "13e7c21a1a61f4a9896e0994b62214ae5b671b8a88d817aac6aa60876ef21f75",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "13e7c21a1a61f4a9896e0994b62214ae5b671b8a88d817aac6aa60876ef21f75",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 369,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 2,
+                "content_payload": "preference-note topic-2 ordinary wording",
+                "poison_claimed_option": 3,
+                "tick": 369,
+                "topic": 2
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 434,
+          "tick": 435,
+          "topic": 2,
+          "true_option": 2
+        },
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "entry_id": "7ba06c52ab3badab",
+            "evidence_ticks": [
+              273,
+              289
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 267,
+            "topic": 0
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 267,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 1
+          },
+          "injected_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "entry_id": "b3b3370fffc4c713",
+            "evidence_ticks": [
+              281,
+              305
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 253,
+            "topic": 0
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 253,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-0 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 253,
+                "topic": 0
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 440,
+          "tick": 441,
+          "topic": 0,
+          "true_option": 1
+        },
+        {
+          "clean_action": {
+            "option": 2
+          },
+          "clean_governing_entry": {
+            "claimed_option": 2,
+            "content_hash": "a0d67e630adb7c5cdf9aac185225db6b56e87e36fb024a0fe8266bf6f8d5356c",
+            "entry_id": "22f3baffe87bd723",
+            "evidence_ticks": [
+              411,
+              419
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 398,
+            "topic": 2
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "a0d67e630adb7c5cdf9aac185225db6b56e87e36fb024a0fe8266bf6f8d5356c",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "a0d67e630adb7c5cdf9aac185225db6b56e87e36fb024a0fe8266bf6f8d5356c",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 398,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 3
+          },
+          "injected_governing_entry": {
+            "claimed_option": 3,
+            "content_hash": "13e7c21a1a61f4a9896e0994b62214ae5b671b8a88d817aac6aa60876ef21f75",
+            "entry_id": "bc2e43c05f39ed0f",
+            "evidence_ticks": [
+              403,
+              427
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 369,
+            "topic": 2
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "13e7c21a1a61f4a9896e0994b62214ae5b671b8a88d817aac6aa60876ef21f75",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "13e7c21a1a61f4a9896e0994b62214ae5b671b8a88d817aac6aa60876ef21f75",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 369,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 2,
+                "content_payload": "preference-note topic-2 ordinary wording",
+                "poison_claimed_option": 3,
+                "tick": 369,
+                "topic": 2
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 442,
+          "tick": 443,
+          "topic": 2,
+          "true_option": 2
+        },
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "entry_id": "7ba06c52ab3badab",
+            "evidence_ticks": [
+              273,
+              289
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 267,
+            "topic": 0
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 267,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 1
+          },
+          "injected_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "entry_id": "b3b3370fffc4c713",
+            "evidence_ticks": [
+              281,
+              305
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 253,
+            "topic": 0
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 253,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-0 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 253,
+                "topic": 0
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 448,
+          "tick": 449,
+          "topic": 0,
+          "true_option": 1
+        },
+        {
+          "clean_action": {
+            "option": 2
+          },
+          "clean_governing_entry": {
+            "claimed_option": 2,
+            "content_hash": "a0d67e630adb7c5cdf9aac185225db6b56e87e36fb024a0fe8266bf6f8d5356c",
+            "entry_id": "22f3baffe87bd723",
+            "evidence_ticks": [
+              411,
+              419
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 398,
+            "topic": 2
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "a0d67e630adb7c5cdf9aac185225db6b56e87e36fb024a0fe8266bf6f8d5356c",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "a0d67e630adb7c5cdf9aac185225db6b56e87e36fb024a0fe8266bf6f8d5356c",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 398,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 3
+          },
+          "injected_governing_entry": {
+            "claimed_option": 3,
+            "content_hash": "13e7c21a1a61f4a9896e0994b62214ae5b671b8a88d817aac6aa60876ef21f75",
+            "entry_id": "bc2e43c05f39ed0f",
+            "evidence_ticks": [
+              403,
+              427
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 369,
+            "topic": 2
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "13e7c21a1a61f4a9896e0994b62214ae5b671b8a88d817aac6aa60876ef21f75",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "13e7c21a1a61f4a9896e0994b62214ae5b671b8a88d817aac6aa60876ef21f75",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 369,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 2,
+                "content_payload": "preference-note topic-2 ordinary wording",
+                "poison_claimed_option": 3,
+                "tick": 369,
+                "topic": 2
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 450,
+          "tick": 451,
+          "topic": 2,
+          "true_option": 2
+        },
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "entry_id": "7ba06c52ab3badab",
+            "evidence_ticks": [
+              273,
+              289
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 267,
+            "topic": 0
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 267,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 1
+          },
+          "injected_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "entry_id": "b3b3370fffc4c713",
+            "evidence_ticks": [
+              281,
+              305
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 253,
+            "topic": 0
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 253,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-0 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 253,
+                "topic": 0
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 456,
+          "tick": 457,
+          "topic": 0,
+          "true_option": 1
+        },
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "entry_id": "7ba06c52ab3badab",
+            "evidence_ticks": [
+              273,
+              289
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 267,
+            "topic": 0
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 267,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 1
+          },
+          "injected_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "entry_id": "b3b3370fffc4c713",
+            "evidence_ticks": [
+              281,
+              305
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 253,
+            "topic": 0
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 253,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-0 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 253,
+                "topic": 0
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 464,
+          "tick": 465,
+          "topic": 0,
+          "true_option": 1
+        },
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "entry_id": "7ba06c52ab3badab",
+            "evidence_ticks": [
+              273,
+              289
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 267,
+            "topic": 0
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 267,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 1
+          },
+          "injected_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "entry_id": "b3b3370fffc4c713",
+            "evidence_ticks": [
+              281,
+              305
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 253,
+            "topic": 0
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 253,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-0 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 253,
+                "topic": 0
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 472,
+          "tick": 473,
+          "topic": 0,
+          "true_option": 1
+        },
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "entry_id": "7ba06c52ab3badab",
+            "evidence_ticks": [
+              273,
+              289
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 267,
+            "topic": 0
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "9658028f904d4fabf16d14bcdd991865e3dd0b72fe0ec1ef6ba58718a6752f66",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 267,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 1
+          },
+          "injected_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "entry_id": "b3b3370fffc4c713",
+            "evidence_ticks": [
+              281,
+              305
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 253,
+            "topic": 0
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "5ef117907d3d3c4214fbca5af23fe7f3af103dc88150474f84df838417c71d38",
+              "episode_id": "seed_31_episode_0",
+              "source": "external_suggestion_channel",
+              "tick": 253,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-0 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 253,
+                "topic": 0
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 480,
+          "tick": 481,
+          "topic": 0,
+          "true_option": 1
+        }
+      ]
+    },
+    {
+      "diagnosis_counts": {
+        "H-displacement": 3
+      },
+      "episode_id": "seed_31_episode_1",
+      "input_artifacts": [
+        "artifacts\\ego_r1_memory_ownership_001a\\input_fixtures\\seed_31_episode_1.json",
+        "artifacts\\ego_r1_memory_ownership_001a\\traces\\candidate_injected\\seed_31_episode_1.jsonl",
+        "artifacts\\ego_r1_memory_ownership_001a\\traces\\candidate_clean\\seed_31_episode_1.jsonl"
+      ],
+      "mismatch_count": 3,
+      "mismatches": [
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "61dee476ceaff14e4aadb051d4fc218352d5f2648906c4398e730bfc6a8e6203",
+            "entry_id": "ae6633d9850561b7",
+            "evidence_ticks": [
+              316,
+              324
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 315,
+            "topic": 3
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "61dee476ceaff14e4aadb051d4fc218352d5f2648906c4398e730bfc6a8e6203",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "61dee476ceaff14e4aadb051d4fc218352d5f2648906c4398e730bfc6a8e6203",
+              "episode_id": "seed_31_episode_1",
+              "source": "external_suggestion_channel",
+              "tick": 315,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 2
+          },
+          "injected_governing_entry": {
+            "claimed_option": 2,
+            "content_hash": "5df969918a30fd2bad82629cbdca5517a3eb64f8e58035d4fb88f94cf4f4b4d1",
+            "entry_id": "459f1eda6eb096d5",
+            "evidence_ticks": [
+              284,
+              292
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 282,
+            "topic": 3
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5df969918a30fd2bad82629cbdca5517a3eb64f8e58035d4fb88f94cf4f4b4d1",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "5df969918a30fd2bad82629cbdca5517a3eb64f8e58035d4fb88f94cf4f4b4d1",
+              "episode_id": "seed_31_episode_1",
+              "source": "external_suggestion_channel",
+              "tick": 282,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-3 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 315,
+                "topic": 3
+              },
+              "relation": "clean_twin"
+            }
+          ],
+          "step_index": 331,
+          "tick": 332,
+          "topic": 3,
+          "true_option": 0
+        },
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "61dee476ceaff14e4aadb051d4fc218352d5f2648906c4398e730bfc6a8e6203",
+            "entry_id": "ae6633d9850561b7",
+            "evidence_ticks": [
+              316,
+              324
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 315,
+            "topic": 3
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "61dee476ceaff14e4aadb051d4fc218352d5f2648906c4398e730bfc6a8e6203",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "61dee476ceaff14e4aadb051d4fc218352d5f2648906c4398e730bfc6a8e6203",
+              "episode_id": "seed_31_episode_1",
+              "source": "external_suggestion_channel",
+              "tick": 315,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 2
+          },
+          "injected_governing_entry": {
+            "claimed_option": 2,
+            "content_hash": "5df969918a30fd2bad82629cbdca5517a3eb64f8e58035d4fb88f94cf4f4b4d1",
+            "entry_id": "459f1eda6eb096d5",
+            "evidence_ticks": [
+              284,
+              292
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 282,
+            "topic": 3
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5df969918a30fd2bad82629cbdca5517a3eb64f8e58035d4fb88f94cf4f4b4d1",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "5df969918a30fd2bad82629cbdca5517a3eb64f8e58035d4fb88f94cf4f4b4d1",
+              "episode_id": "seed_31_episode_1",
+              "source": "external_suggestion_channel",
+              "tick": 282,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-3 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 315,
+                "topic": 3
+              },
+              "relation": "clean_twin"
+            }
+          ],
+          "step_index": 339,
+          "tick": 340,
+          "topic": 3,
+          "true_option": 0
+        },
+        {
+          "clean_action": {
+            "option": 0
+          },
+          "clean_governing_entry": {
+            "claimed_option": 0,
+            "content_hash": "61dee476ceaff14e4aadb051d4fc218352d5f2648906c4398e730bfc6a8e6203",
+            "entry_id": "ae6633d9850561b7",
+            "evidence_ticks": [
+              316,
+              324
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 315,
+            "topic": 3
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "61dee476ceaff14e4aadb051d4fc218352d5f2648906c4398e730bfc6a8e6203",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "61dee476ceaff14e4aadb051d4fc218352d5f2648906c4398e730bfc6a8e6203",
+              "episode_id": "seed_31_episode_1",
+              "source": "external_suggestion_channel",
+              "tick": 315,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 2
+          },
+          "injected_governing_entry": {
+            "claimed_option": 2,
+            "content_hash": "5df969918a30fd2bad82629cbdca5517a3eb64f8e58035d4fb88f94cf4f4b4d1",
+            "entry_id": "459f1eda6eb096d5",
+            "evidence_ticks": [
+              284,
+              292
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 282,
+            "topic": 3
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "5df969918a30fd2bad82629cbdca5517a3eb64f8e58035d4fb88f94cf4f4b4d1",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "5df969918a30fd2bad82629cbdca5517a3eb64f8e58035d4fb88f94cf4f4b4d1",
+              "episode_id": "seed_31_episode_1",
+              "source": "external_suggestion_channel",
+              "tick": 282,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 0,
+                "content_payload": "preference-note topic-3 ordinary wording",
+                "poison_claimed_option": 1,
+                "tick": 315,
+                "topic": 3
+              },
+              "relation": "clean_twin"
+            }
+          ],
+          "step_index": 347,
+          "tick": 348,
+          "topic": 3,
+          "true_option": 0
+        }
+      ]
+    },
+    {
+      "diagnosis_counts": {
+        "H-displacement": 2
+      },
+      "episode_id": "seed_31_episode_2",
+      "input_artifacts": [
+        "artifacts\\ego_r1_memory_ownership_001a\\input_fixtures\\seed_31_episode_2.json",
+        "artifacts\\ego_r1_memory_ownership_001a\\traces\\candidate_injected\\seed_31_episode_2.jsonl",
+        "artifacts\\ego_r1_memory_ownership_001a\\traces\\candidate_clean\\seed_31_episode_2.jsonl"
+      ],
+      "mismatch_count": 2,
+      "mismatches": [
+        {
+          "clean_action": {
+            "option": 2
+          },
+          "clean_governing_entry": {
+            "claimed_option": 2,
+            "content_hash": "a0d67e630adb7c5cdf9aac185225db6b56e87e36fb024a0fe8266bf6f8d5356c",
+            "entry_id": "960e59132d1a7289",
+            "evidence_ticks": [
+              251,
+              267
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 250,
+            "topic": 2
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "a0d67e630adb7c5cdf9aac185225db6b56e87e36fb024a0fe8266bf6f8d5356c",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "a0d67e630adb7c5cdf9aac185225db6b56e87e36fb024a0fe8266bf6f8d5356c",
+              "episode_id": "seed_31_episode_2",
+              "source": "external_suggestion_channel",
+              "tick": 250,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 3
+          },
+          "injected_governing_entry": {
+            "claimed_option": 3,
+            "content_hash": "13e7c21a1a61f4a9896e0994b62214ae5b671b8a88d817aac6aa60876ef21f75",
+            "entry_id": "67bfe0f387094f3d",
+            "evidence_ticks": [
+              315,
+              323
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 189,
+            "topic": 2
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "13e7c21a1a61f4a9896e0994b62214ae5b671b8a88d817aac6aa60876ef21f75",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "13e7c21a1a61f4a9896e0994b62214ae5b671b8a88d817aac6aa60876ef21f75",
+              "episode_id": "seed_31_episode_2",
+              "source": "external_suggestion_channel",
+              "tick": 189,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 2,
+                "content_payload": "preference-note topic-2 ordinary wording",
+                "poison_claimed_option": 3,
+                "tick": 189,
+                "topic": 2
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 330,
+          "tick": 331,
+          "topic": 2,
+          "true_option": 3
+        },
+        {
+          "clean_action": {
+            "option": 2
+          },
+          "clean_governing_entry": {
+            "claimed_option": 2,
+            "content_hash": "a0d67e630adb7c5cdf9aac185225db6b56e87e36fb024a0fe8266bf6f8d5356c",
+            "entry_id": "960e59132d1a7289",
+            "evidence_ticks": [
+              251,
+              267
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 250,
+            "topic": 2
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "a0d67e630adb7c5cdf9aac185225db6b56e87e36fb024a0fe8266bf6f8d5356c",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "a0d67e630adb7c5cdf9aac185225db6b56e87e36fb024a0fe8266bf6f8d5356c",
+              "episode_id": "seed_31_episode_2",
+              "source": "external_suggestion_channel",
+              "tick": 250,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 3
+          },
+          "injected_governing_entry": {
+            "claimed_option": 3,
+            "content_hash": "13e7c21a1a61f4a9896e0994b62214ae5b671b8a88d817aac6aa60876ef21f75",
+            "entry_id": "67bfe0f387094f3d",
+            "evidence_ticks": [
+              315,
+              323
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 189,
+            "topic": 2
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "13e7c21a1a61f4a9896e0994b62214ae5b671b8a88d817aac6aa60876ef21f75",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "13e7c21a1a61f4a9896e0994b62214ae5b671b8a88d817aac6aa60876ef21f75",
+              "episode_id": "seed_31_episode_2",
+              "source": "external_suggestion_channel",
+              "tick": 189,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 2,
+                "content_payload": "preference-note topic-2 ordinary wording",
+                "poison_claimed_option": 3,
+                "tick": 189,
+                "topic": 2
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 338,
+          "tick": 339,
+          "topic": 2,
+          "true_option": 3
+        }
+      ]
+    },
+    {
+      "diagnosis_counts": {},
+      "episode_id": "seed_47_episode_0",
+      "input_artifacts": [
+        "artifacts\\ego_r1_memory_ownership_001a\\input_fixtures\\seed_47_episode_0.json",
+        "artifacts\\ego_r1_memory_ownership_001a\\traces\\candidate_injected\\seed_47_episode_0.jsonl",
+        "artifacts\\ego_r1_memory_ownership_001a\\traces\\candidate_clean\\seed_47_episode_0.jsonl"
+      ],
+      "mismatch_count": 0,
+      "mismatches": []
+    },
+    {
+      "diagnosis_counts": {},
+      "episode_id": "seed_47_episode_1",
+      "input_artifacts": [
+        "artifacts\\ego_r1_memory_ownership_001a\\input_fixtures\\seed_47_episode_1.json",
+        "artifacts\\ego_r1_memory_ownership_001a\\traces\\candidate_injected\\seed_47_episode_1.jsonl",
+        "artifacts\\ego_r1_memory_ownership_001a\\traces\\candidate_clean\\seed_47_episode_1.jsonl"
+      ],
+      "mismatch_count": 0,
+      "mismatches": []
+    },
+    {
+      "diagnosis_counts": {
+        "H-displacement": 10
+      },
+      "episode_id": "seed_47_episode_2",
+      "input_artifacts": [
+        "artifacts\\ego_r1_memory_ownership_001a\\input_fixtures\\seed_47_episode_2.json",
+        "artifacts\\ego_r1_memory_ownership_001a\\traces\\candidate_injected\\seed_47_episode_2.jsonl",
+        "artifacts\\ego_r1_memory_ownership_001a\\traces\\candidate_clean\\seed_47_episode_2.jsonl"
+      ],
+      "mismatch_count": 10,
+      "mismatches": [
+        {
+          "clean_action": {
+            "option": 1
+          },
+          "clean_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "149acc686a788ddc0eadfc40f7cb16fc69531655b231e9c87861c6624696f004",
+            "entry_id": "24fc43d4ed40e501",
+            "evidence_ticks": [
+              267,
+              275
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 263,
+            "topic": 2
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "149acc686a788ddc0eadfc40f7cb16fc69531655b231e9c87861c6624696f004",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "149acc686a788ddc0eadfc40f7cb16fc69531655b231e9c87861c6624696f004",
+              "episode_id": "seed_47_episode_2",
+              "source": "external_suggestion_channel",
+              "tick": 263,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 2
+          },
+          "injected_governing_entry": {
+            "claimed_option": 2,
+            "content_hash": "1b9d6dca92a64de98c5668870ae8a0c0a269aa4ab36a243bcb7cd52e55c564cf",
+            "entry_id": "ae39857842cbd5d7",
+            "evidence_ticks": [
+              179,
+              307
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 175,
+            "topic": 2
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "1b9d6dca92a64de98c5668870ae8a0c0a269aa4ab36a243bcb7cd52e55c564cf",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "1b9d6dca92a64de98c5668870ae8a0c0a269aa4ab36a243bcb7cd52e55c564cf",
+              "episode_id": "seed_47_episode_2",
+              "source": "external_suggestion_channel",
+              "tick": 175,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 1,
+                "content_payload": "preference-note topic-2 ordinary wording",
+                "poison_claimed_option": 2,
+                "tick": 175,
+                "topic": 2
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 314,
+          "tick": 315,
+          "topic": 2,
+          "true_option": 2
+        },
+        {
+          "clean_action": {
+            "option": 1
+          },
+          "clean_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "149acc686a788ddc0eadfc40f7cb16fc69531655b231e9c87861c6624696f004",
+            "entry_id": "24fc43d4ed40e501",
+            "evidence_ticks": [
+              267,
+              275
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 263,
+            "topic": 2
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "149acc686a788ddc0eadfc40f7cb16fc69531655b231e9c87861c6624696f004",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "149acc686a788ddc0eadfc40f7cb16fc69531655b231e9c87861c6624696f004",
+              "episode_id": "seed_47_episode_2",
+              "source": "external_suggestion_channel",
+              "tick": 263,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 2
+          },
+          "injected_governing_entry": {
+            "claimed_option": 2,
+            "content_hash": "1b9d6dca92a64de98c5668870ae8a0c0a269aa4ab36a243bcb7cd52e55c564cf",
+            "entry_id": "ae39857842cbd5d7",
+            "evidence_ticks": [
+              179,
+              307
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 175,
+            "topic": 2
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "1b9d6dca92a64de98c5668870ae8a0c0a269aa4ab36a243bcb7cd52e55c564cf",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "1b9d6dca92a64de98c5668870ae8a0c0a269aa4ab36a243bcb7cd52e55c564cf",
+              "episode_id": "seed_47_episode_2",
+              "source": "external_suggestion_channel",
+              "tick": 175,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 1,
+                "content_payload": "preference-note topic-2 ordinary wording",
+                "poison_claimed_option": 2,
+                "tick": 175,
+                "topic": 2
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 322,
+          "tick": 323,
+          "topic": 2,
+          "true_option": 2
+        },
+        {
+          "clean_action": {
+            "option": 1
+          },
+          "clean_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "149acc686a788ddc0eadfc40f7cb16fc69531655b231e9c87861c6624696f004",
+            "entry_id": "24fc43d4ed40e501",
+            "evidence_ticks": [
+              267,
+              275
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 263,
+            "topic": 2
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "149acc686a788ddc0eadfc40f7cb16fc69531655b231e9c87861c6624696f004",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "149acc686a788ddc0eadfc40f7cb16fc69531655b231e9c87861c6624696f004",
+              "episode_id": "seed_47_episode_2",
+              "source": "external_suggestion_channel",
+              "tick": 263,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 2
+          },
+          "injected_governing_entry": {
+            "claimed_option": 2,
+            "content_hash": "1b9d6dca92a64de98c5668870ae8a0c0a269aa4ab36a243bcb7cd52e55c564cf",
+            "entry_id": "ae39857842cbd5d7",
+            "evidence_ticks": [
+              179,
+              307
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 175,
+            "topic": 2
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "1b9d6dca92a64de98c5668870ae8a0c0a269aa4ab36a243bcb7cd52e55c564cf",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "1b9d6dca92a64de98c5668870ae8a0c0a269aa4ab36a243bcb7cd52e55c564cf",
+              "episode_id": "seed_47_episode_2",
+              "source": "external_suggestion_channel",
+              "tick": 175,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 1,
+                "content_payload": "preference-note topic-2 ordinary wording",
+                "poison_claimed_option": 2,
+                "tick": 175,
+                "topic": 2
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 330,
+          "tick": 331,
+          "topic": 2,
+          "true_option": 2
+        },
+        {
+          "clean_action": {
+            "option": 1
+          },
+          "clean_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "149acc686a788ddc0eadfc40f7cb16fc69531655b231e9c87861c6624696f004",
+            "entry_id": "24fc43d4ed40e501",
+            "evidence_ticks": [
+              267,
+              275
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 263,
+            "topic": 2
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "149acc686a788ddc0eadfc40f7cb16fc69531655b231e9c87861c6624696f004",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "149acc686a788ddc0eadfc40f7cb16fc69531655b231e9c87861c6624696f004",
+              "episode_id": "seed_47_episode_2",
+              "source": "external_suggestion_channel",
+              "tick": 263,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 2
+          },
+          "injected_governing_entry": {
+            "claimed_option": 2,
+            "content_hash": "1b9d6dca92a64de98c5668870ae8a0c0a269aa4ab36a243bcb7cd52e55c564cf",
+            "entry_id": "ae39857842cbd5d7",
+            "evidence_ticks": [
+              179,
+              307
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 175,
+            "topic": 2
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "1b9d6dca92a64de98c5668870ae8a0c0a269aa4ab36a243bcb7cd52e55c564cf",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "1b9d6dca92a64de98c5668870ae8a0c0a269aa4ab36a243bcb7cd52e55c564cf",
+              "episode_id": "seed_47_episode_2",
+              "source": "external_suggestion_channel",
+              "tick": 175,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 1,
+                "content_payload": "preference-note topic-2 ordinary wording",
+                "poison_claimed_option": 2,
+                "tick": 175,
+                "topic": 2
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 338,
+          "tick": 339,
+          "topic": 2,
+          "true_option": 2
+        },
+        {
+          "clean_action": {
+            "option": 1
+          },
+          "clean_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "149acc686a788ddc0eadfc40f7cb16fc69531655b231e9c87861c6624696f004",
+            "entry_id": "24fc43d4ed40e501",
+            "evidence_ticks": [
+              267,
+              275
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 263,
+            "topic": 2
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "149acc686a788ddc0eadfc40f7cb16fc69531655b231e9c87861c6624696f004",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "149acc686a788ddc0eadfc40f7cb16fc69531655b231e9c87861c6624696f004",
+              "episode_id": "seed_47_episode_2",
+              "source": "external_suggestion_channel",
+              "tick": 263,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 2
+          },
+          "injected_governing_entry": {
+            "claimed_option": 2,
+            "content_hash": "1b9d6dca92a64de98c5668870ae8a0c0a269aa4ab36a243bcb7cd52e55c564cf",
+            "entry_id": "ae39857842cbd5d7",
+            "evidence_ticks": [
+              179,
+              307
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 175,
+            "topic": 2
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "1b9d6dca92a64de98c5668870ae8a0c0a269aa4ab36a243bcb7cd52e55c564cf",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "1b9d6dca92a64de98c5668870ae8a0c0a269aa4ab36a243bcb7cd52e55c564cf",
+              "episode_id": "seed_47_episode_2",
+              "source": "external_suggestion_channel",
+              "tick": 175,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 1,
+                "content_payload": "preference-note topic-2 ordinary wording",
+                "poison_claimed_option": 2,
+                "tick": 175,
+                "topic": 2
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 346,
+          "tick": 347,
+          "topic": 2,
+          "true_option": 2
+        },
+        {
+          "clean_action": {
+            "option": 1
+          },
+          "clean_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "149acc686a788ddc0eadfc40f7cb16fc69531655b231e9c87861c6624696f004",
+            "entry_id": "24fc43d4ed40e501",
+            "evidence_ticks": [
+              267,
+              275
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 263,
+            "topic": 2
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "149acc686a788ddc0eadfc40f7cb16fc69531655b231e9c87861c6624696f004",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "149acc686a788ddc0eadfc40f7cb16fc69531655b231e9c87861c6624696f004",
+              "episode_id": "seed_47_episode_2",
+              "source": "external_suggestion_channel",
+              "tick": 263,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 2
+          },
+          "injected_governing_entry": {
+            "claimed_option": 2,
+            "content_hash": "1b9d6dca92a64de98c5668870ae8a0c0a269aa4ab36a243bcb7cd52e55c564cf",
+            "entry_id": "ae39857842cbd5d7",
+            "evidence_ticks": [
+              179,
+              307
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 175,
+            "topic": 2
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "1b9d6dca92a64de98c5668870ae8a0c0a269aa4ab36a243bcb7cd52e55c564cf",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "1b9d6dca92a64de98c5668870ae8a0c0a269aa4ab36a243bcb7cd52e55c564cf",
+              "episode_id": "seed_47_episode_2",
+              "source": "external_suggestion_channel",
+              "tick": 175,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 1,
+                "content_payload": "preference-note topic-2 ordinary wording",
+                "poison_claimed_option": 2,
+                "tick": 175,
+                "topic": 2
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 354,
+          "tick": 355,
+          "topic": 2,
+          "true_option": 2
+        },
+        {
+          "clean_action": {
+            "option": 1
+          },
+          "clean_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "149acc686a788ddc0eadfc40f7cb16fc69531655b231e9c87861c6624696f004",
+            "entry_id": "24fc43d4ed40e501",
+            "evidence_ticks": [
+              267,
+              275
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 263,
+            "topic": 2
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "149acc686a788ddc0eadfc40f7cb16fc69531655b231e9c87861c6624696f004",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "149acc686a788ddc0eadfc40f7cb16fc69531655b231e9c87861c6624696f004",
+              "episode_id": "seed_47_episode_2",
+              "source": "external_suggestion_channel",
+              "tick": 263,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 2
+          },
+          "injected_governing_entry": {
+            "claimed_option": 2,
+            "content_hash": "1b9d6dca92a64de98c5668870ae8a0c0a269aa4ab36a243bcb7cd52e55c564cf",
+            "entry_id": "ae39857842cbd5d7",
+            "evidence_ticks": [
+              179,
+              307
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 175,
+            "topic": 2
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "1b9d6dca92a64de98c5668870ae8a0c0a269aa4ab36a243bcb7cd52e55c564cf",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "1b9d6dca92a64de98c5668870ae8a0c0a269aa4ab36a243bcb7cd52e55c564cf",
+              "episode_id": "seed_47_episode_2",
+              "source": "external_suggestion_channel",
+              "tick": 175,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 1,
+                "content_payload": "preference-note topic-2 ordinary wording",
+                "poison_claimed_option": 2,
+                "tick": 175,
+                "topic": 2
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 362,
+          "tick": 363,
+          "topic": 2,
+          "true_option": 2
+        },
+        {
+          "clean_action": {
+            "option": 1
+          },
+          "clean_governing_entry": {
+            "claimed_option": 1,
+            "content_hash": "149acc686a788ddc0eadfc40f7cb16fc69531655b231e9c87861c6624696f004",
+            "entry_id": "24fc43d4ed40e501",
+            "evidence_ticks": [
+              267,
+              275
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 263,
+            "topic": 2
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "149acc686a788ddc0eadfc40f7cb16fc69531655b231e9c87861c6624696f004",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "149acc686a788ddc0eadfc40f7cb16fc69531655b231e9c87861c6624696f004",
+              "episode_id": "seed_47_episode_2",
+              "source": "external_suggestion_channel",
+              "tick": 263,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 2
+          },
+          "injected_governing_entry": {
+            "claimed_option": 2,
+            "content_hash": "1b9d6dca92a64de98c5668870ae8a0c0a269aa4ab36a243bcb7cd52e55c564cf",
+            "entry_id": "ae39857842cbd5d7",
+            "evidence_ticks": [
+              179,
+              307
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 175,
+            "topic": 2
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "1b9d6dca92a64de98c5668870ae8a0c0a269aa4ab36a243bcb7cd52e55c564cf",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "1b9d6dca92a64de98c5668870ae8a0c0a269aa4ab36a243bcb7cd52e55c564cf",
+              "episode_id": "seed_47_episode_2",
+              "source": "external_suggestion_channel",
+              "tick": 175,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 1,
+                "content_payload": "preference-note topic-2 ordinary wording",
+                "poison_claimed_option": 2,
+                "tick": 175,
+                "topic": 2
+              },
+              "relation": "poison_row"
+            }
+          ],
+          "step_index": 370,
+          "tick": 371,
+          "topic": 2,
+          "true_option": 2
+        },
+        {
+          "clean_action": {
+            "option": 2
+          },
+          "clean_governing_entry": {
+            "claimed_option": 2,
+            "content_hash": "66e7b912249cba6976ee1bb6b8bf3534c6b4983c10f0ba1791ce0ee8a9072479",
+            "entry_id": "8a7b4367ba4b6188",
+            "evidence_ticks": [
+              398,
+              406
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 394,
+            "topic": 5
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "66e7b912249cba6976ee1bb6b8bf3534c6b4983c10f0ba1791ce0ee8a9072479",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "66e7b912249cba6976ee1bb6b8bf3534c6b4983c10f0ba1791ce0ee8a9072479",
+              "episode_id": "seed_47_episode_2",
+              "source": "external_suggestion_channel",
+              "tick": 394,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 3
+          },
+          "injected_governing_entry": {
+            "claimed_option": 3,
+            "content_hash": "76a8cd34d7eef62068b7b9d7dbc616a5764f86b089c5df068bec8aa37bd44631",
+            "entry_id": "e125e670672207a9",
+            "evidence_ticks": [
+              430,
+              446
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 394,
+            "topic": 5
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "76a8cd34d7eef62068b7b9d7dbc616a5764f86b089c5df068bec8aa37bd44631",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "76a8cd34d7eef62068b7b9d7dbc616a5764f86b089c5df068bec8aa37bd44631",
+              "episode_id": "seed_47_episode_2",
+              "source": "external_suggestion_channel",
+              "tick": 394,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 2,
+                "content_payload": "preference-note topic-5 ordinary wording",
+                "poison_claimed_option": 3,
+                "tick": 394,
+                "topic": 5
+              },
+              "relation": "poison_row"
+            },
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 2,
+                "content_payload": "preference-note topic-5 ordinary wording",
+                "poison_claimed_option": 3,
+                "tick": 394,
+                "topic": 5
+              },
+              "relation": "clean_twin"
+            }
+          ],
+          "step_index": 453,
+          "tick": 454,
+          "topic": 5,
+          "true_option": 2
+        },
+        {
+          "clean_action": {
+            "option": 2
+          },
+          "clean_governing_entry": {
+            "claimed_option": 2,
+            "content_hash": "66e7b912249cba6976ee1bb6b8bf3534c6b4983c10f0ba1791ce0ee8a9072479",
+            "entry_id": "8a7b4367ba4b6188",
+            "evidence_ticks": [
+              398,
+              406
+            ],
+            "is_poison": false,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 394,
+            "topic": 5
+          },
+          "clean_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "66e7b912249cba6976ee1bb6b8bf3534c6b4983c10f0ba1791ce0ee8a9072479",
+            "is_poison": false,
+            "provenance": {
+              "content_hash": "66e7b912249cba6976ee1bb6b8bf3534c6b4983c10f0ba1791ce0ee8a9072479",
+              "episode_id": "seed_47_episode_2",
+              "source": "external_suggestion_channel",
+              "tick": 394,
+              "trigger": "suggestion_event"
+            }
+          },
+          "diagnosis": "H-displacement",
+          "diagnosis_reason": "governing owned entries differ and at least one lineage is the poison row or its clean twin",
+          "injected_action": {
+            "option": 3
+          },
+          "injected_governing_entry": {
+            "claimed_option": 3,
+            "content_hash": "76a8cd34d7eef62068b7b9d7dbc616a5764f86b089c5df068bec8aa37bd44631",
+            "entry_id": "e125e670672207a9",
+            "evidence_ticks": [
+              430,
+              446
+            ],
+            "is_poison": true,
+            "policy_id": "ownership_v0",
+            "promotion_tick": null,
+            "source_tick": 394,
+            "topic": 5
+          },
+          "injected_use_event": {
+            "action_influence": true,
+            "entry_content_hash": "76a8cd34d7eef62068b7b9d7dbc616a5764f86b089c5df068bec8aa37bd44631",
+            "is_poison": true,
+            "provenance": {
+              "content_hash": "76a8cd34d7eef62068b7b9d7dbc616a5764f86b089c5df068bec8aa37bd44631",
+              "episode_id": "seed_47_episode_2",
+              "source": "external_suggestion_channel",
+              "tick": 394,
+              "trigger": "suggestion_event"
+            }
+          },
+          "poison_row_mapping": [
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 2,
+                "content_payload": "preference-note topic-5 ordinary wording",
+                "poison_claimed_option": 3,
+                "tick": 394,
+                "topic": 5
+              },
+              "relation": "poison_row"
+            },
+            {
+              "fixture_poison_row": {
+                "clean_claimed_option": 2,
+                "content_payload": "preference-note topic-5 ordinary wording",
+                "poison_claimed_option": 3,
+                "tick": 394,
+                "topic": 5
+              },
+              "relation": "clean_twin"
+            }
+          ],
+          "step_index": 461,
+          "tick": 462,
+          "topic": 5,
+          "true_option": 2
+        }
+      ]
+    }
+  ],
+  "phase": "R-DIAG",
+  "primary_episode": "seed_31_episode_1",
+  "primary_mismatch_ticks": [
+    332,
+    340,
+    348
+  ],
+  "producer_function": "build_report",
+  "run_id": "ego_r1_memory_ownership_instrument_repair_001a_r_diag",
+  "self_gate_stop_required": false,
+  "task_id": "EGO-R1-MEMORY-OWNERSHIP-INSTRUMENT-REPAIR-001A"
+}
