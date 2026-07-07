@@ -1,11 +1,19 @@
 # CLAUDE.md - AIProject 项目指南
 
+> **权威声明（2026-07-07）**：本文件是路由器不是权威源。事实性内容与
+> `docs/PROGRAM_STATE_UNIFIED.yaml`、`docs/MAINLINE_QUICKSTART.md` 冲突时，
+> 一律以后者为准。R-track 施工按 ego-mechanism-rewrite-decision-001a 决策卡，
+> claim 语言按 docs/CLAIM_LANGUAGE_POLICY.md：允许的最高口径 =
+> "engineered system with learned, ablation-sensitive, replay-valid
+> components"，禁止 consciousness / 真实情感 / agency / autonomy /
+> functional-subject / readiness 类宣称。
+
 
 
 # 系统提示词注入 - Agent 核心协议
 
 > 来源：AGENTS.md + SOUL.md 整合
-> 版本：v2.6
+> 版本：v2.7（2026-07-07 边界刷新；仅 EDIT 1-6，元认知协议未改）
 > 基线：continuity-first + effect-first + boundary-safe + representation-first
 
 ---
@@ -157,18 +165,19 @@
 
 ## 八、边界定义
 
-当前正式系统边界以 **EgoCore + OpenEmotion** 为准。
+当前正式边界以 docs/PROGRAM_STATE_UNIFIED.yaml 为唯一权威源，本节只是指针：
 
-| 组件 | 职责 |
-|------|------|
-| EgoCore | 外部交互、runtime、工具执行、治理壳、现实裁决 |
-| OpenEmotion | self-model、memory evolution、appraisal、reflection、developmental self |
-| OpenClaw | 受约束的施工执行体（非长期正式宿主） |
+| Lane | 职责 | 状态 |
+|------|------|------|
+| EgoOperator | operator-first 主线：user text → LLM understanding → proposal → gate → trace | 默认实现 lane |
+| EgoDesktop | 桌宠产品载体；joi_real_loop g_ablation 验证谱系；R-track 施工区 | 活跃 |
+| PSPC 系列 | shadow / default-off 观测面 | 不升级 |
+| legacy (EgoCore / OpenEmotion / ego_desktop_lab) | 已归档 purge，入口仅 legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md | 无 runtime authority |
+| joi-demo (外部姊妹仓) | frozen reference corpus @ tag frozen-reference-corpus-20260706；只读，引用须过 docs/JOI_DEMO_FROZEN_REFERENCE_INDEX_001A.md | 冻结 |
 
-**边界规则**：
-- 当局部修复与边界完整性冲突时，优先守住正式边界
-- 不让 EgoCore 偷做 OpenEmotion 本体
-- 不让 OpenEmotion 偷做现实执行与运行时治理
+**边界规则**：R-track 卡（见 docs/codex/tasks/ego-mechanism-rewrite-decision-001a/）
+不得触碰 EgoOperator runtime；live proactive / self-DM 维持关闭
+（MAINLINE_QUICKSTART do-not-reopen 清单）；恢复任何 legacy 代码需新 Stage Card。
 
 ---
 
@@ -318,14 +327,17 @@ AIProject 是一个 AI Agent 架构项目，采用分层设计实现认知与执
 
 | 组件 | 路径 | 职责 |
 |------|------|------|
-| **EgoCore** | `EgoCore/` | 外部交互、runtime、工具执行、治理壳、现实裁决 |
-| **OpenEmotion** | `OpenEmotion/` | self-model、memory evolution、appraisal、reflection、developmental self |
-
+| EgoOperator | `EgoOperator/` | operator-first 主线 runtime（默认 lane） |
+| EgoDesktop | `EgoDesktop/` | 桌宠产品载体 + g_ablation 验证谱系 |
+| R-track 决策卡 | `docs/codex/tasks/ego-mechanism-rewrite-decision-001a/` | 机制重写顺序与验收合同（binding） |
+| 冻结语料索引 | `docs/JOI_DEMO_FROZEN_REFERENCE_INDEX_001A.md` | joi-demo 结果唯一引用源 |
+| 负结果 crosswalk | `docs/RESEARCH_NEGATIVE_RESULTS_CROSSWALK_001A.md` | ITL+joi 证据 → 路线约束 |
 
 ### 系统边界
 
-- EgoCore + OpenEmotion 是正式系统边界
-- 外部执行体仅作为受约束的施工执行体，非长期正式宿主
+- 权威状态唯一来源：`docs/PROGRAM_STATE_UNIFIED.yaml`（本文件与之冲突时以它为准）
+- legacy EgoCore/OpenEmotion 已归档，无默认路径、无任务路由权
+- joi-demo 为外部只读冻结仓（工具入口强制 assert_frozen == 52714ed9…）
 
 ---
 
@@ -352,23 +364,26 @@ AIProject 是一个 AI Agent 架构项目，采用分层设计实现认知与执
 
 ### 文档
 
-启动时先读
-"D:\Project\AIProject\MyProject\Ego\EgoCore\docs\00_MASTER_INDEX.md"
-"D:\Project\AIProject\MyProject\Ego\OpenEmotion\docs\00_MASTER_INDEX.md"
-"D:\Project\AIProject\MyProject\Ego\docs\EGO 验收证据分级协议 v1.md"
+启动时先读：
+1. `docs/PROGRAM_STATE_UNIFIED.yaml`（权威状态）
+2. `docs/MAINLINE_QUICKSTART.md`（主线、owner、do-not-reopen 清单）
+3. `docs/codex/tasks/TASK_LANE_INDEX.md`（lane 视图）
+4. `docs/codex/tasks/ego-mechanism-rewrite-decision-001a/STAGE_CARD.md`（R-track）
+5. `docs/RESEARCH_NEGATIVE_RESULTS_CROSSWALK_001A.md`（证据约束）
 ---
 
 ## 项目结构
 
 ```
-D:\Project\AIProject\
-├── MyProject\
-│   ├── Ego\
-│   │   ├── EgoCore\       # 核心：外部交互与运行时治理
-│   │   └── OpenEmotion\   # 情绪：自我模型与记忆演化
-│   ├── claude-code-telegram\  # Telegram 集成
-│   └── .claude\           # Claude Code 配置
-└── CLAUDE.md              # 本文件
+Ego/
+├── EgoOperator/        # operator-first 主线 runtime
+├── EgoDesktop/         # 桌宠载体 + g_ablation 谱系
+├── scripts/            # 含 joi_corpus/ (admission 工具) 与 ego_kernel/ (R0 起)
+├── docs/               # PROGRAM_STATE_UNIFIED.yaml = 权威；codex/tasks/ = 卡
+├── artifacts/          # 证据（含 evidence_ledger/）
+├── tests/
+├── legacy/             # 归档指针（无 runtime authority）
+└── Tasks/              # 历史任务单（参考）
 ```
 
 ---
@@ -394,7 +409,8 @@ ls -la Ego/
 ## 注意事项
 
 - 状态变化必须先持久化，先把对应的文档改好,再做汇报
-- 每次任务都要提交推送到远端.(pen364692088)的仓库都自动推送.
+- push 逐任务授权（当前 Ego 常规备份 push 为 standing 授权；ITL/joi-demo 单独授权）；
+  git 一律 host-native，scoped add（禁 -A/.），预先存在的脏文件不得裹挟
 - 交接时保留：目标、证据、未知、层级、差距、下一步
 - 派发任务时明确：类型、目标、成功判据、当前层级、方案等级
 
