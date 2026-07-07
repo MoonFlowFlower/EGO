@@ -1,0 +1,105 @@
+{
+  "claim_ceiling": "memory_ownership_engineering_only",
+  "code_path_hash": "06d2bca87f9344c2762ca7754af361c880442f6d5891dd7f1e88a7542ec1c04a",
+  "config_hash": "fe9855ef868068cfb0e0ac3c6837dc96bd236926eac5cf943c336fa880d6fa72",
+  "containment_aggregation": "pooled_over_episodes",
+  "containment_interpretation_rationale": "pooled policy-attributed mismatch avoids predictable false-fail from ex-ante noise arithmetic; unattributed mismatch remains per-episode hard zero",
+  "declared_limitations": [
+    "no demotion/refutation in v0"
+  ],
+  "default_off": true,
+  "memory_beta": 1.0,
+  "pref_alpha": 0.2,
+  "run_id": "ego_r1_memory_ownership_001a_validation_v0",
+  "runtime_connected": false,
+  "score_composition": "pref_ema[T][x] + beta * promoted_memory_claims_x_on_T",
+  "task_id": "EGO-R1-MEMORY-OWNERSHIP-001A",
+  "threshold_source_table": [
+    {
+      "constant": "K_topics",
+      "threshold_source": "enough drift targets while runs stay tiny; doubles R0 option space",
+      "value": 8
+    },
+    {
+      "constant": "options_per_topic",
+      "threshold_source": "mirrors R0 pref_ema K=4",
+      "value": 4
+    },
+    {
+      "constant": "reveal_noise_epsilon",
+      "threshold_source": "user events stay informative without being an oracle",
+      "value": 0.1
+    },
+    {
+      "constant": "p_sugg",
+      "threshold_source": "about 90 suggestions per episode",
+      "value": 0.15
+    },
+    {
+      "constant": "rho",
+      "threshold_source": "rare tier; about 4-5 poison per episode",
+      "value": 0.05
+    },
+    {
+      "constant": "C_corroboration",
+      "threshold_source": "C=1 promiscuous-adjacent; C=3 starves promotion",
+      "value": 2
+    },
+    {
+      "constant": "W_window_ticks",
+      "threshold_source": "about 18 same-topic user events per window",
+      "value": 150
+    },
+    {
+      "constant": "delta_potency",
+      "threshold_source": "conservative floor below promote-all arithmetic",
+      "value": 0.1
+    },
+    {
+      "constant": "delta_drift_per_episode",
+      "threshold_source": "conservative floor below stand-in drift gap",
+      "value": 0.05
+    },
+    {
+      "constant": "containment",
+      "threshold_source": "quarantine implies injected equals clean except policy-legitimate promotions",
+      "value": {
+        "attributed_max": 0.05,
+        "unattributed_mismatch": 0
+      }
+    },
+    {
+      "constant": "mimicry_panel",
+      "threshold_source": "5-fold AUC band plus positive control",
+      "value": [
+        "logreg",
+        "HGB",
+        "1-NN"
+      ]
+    },
+    {
+      "constant": "equivalence_MDE",
+      "threshold_source": "house TOST rule",
+      "value": 0.03
+    },
+    {
+      "constant": "equivalence_power",
+      "threshold_source": "house TOST rule",
+      "value": 0.8
+    },
+    {
+      "constant": "run_grid",
+      "threshold_source": "seeds disjoint from R0; equal segments",
+      "value": {
+        "drift_tick": 300,
+        "episodes_per_seed": 3,
+        "seeds": [
+          31,
+          47
+        ],
+        "ticks": 600
+      }
+    }
+  ],
+  "torch_used": false
+}
