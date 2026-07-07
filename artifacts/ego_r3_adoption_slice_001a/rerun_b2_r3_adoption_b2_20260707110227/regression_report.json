@@ -1,0 +1,229 @@
+{
+  "base_commit": "be2de377eda80f513d82173ea363282f8d1f1a37",
+  "forbidden_runtime_diff": "",
+  "frozen_modules_diffstat": "",
+  "provenance": {
+    "aggregation_rule": "frozen diffstat empty, trace hook present/default-off, forbidden paths clean, regression commands exit 0",
+    "code_path_hash": "c7cf1aaade0bbe68ff415cd3fa44c9311a9edab2c58926255412904ab3abba09",
+    "episode_ids": [],
+    "input_artifacts": [
+      "git diff L1..HEAD",
+      "EgoDesktop npm test",
+      "pytest corpus/parity",
+      "lint_repo",
+      "verify_repo fast"
+    ],
+    "producer_function": "runNoForkAndRegressionGate",
+    "run_id": "r3_adoption_b2_20260707110227",
+    "seed_context": []
+  },
+  "regression_commands": [
+    {
+      "command": [
+        "node",
+        "--test",
+        "EgoDesktop/tests/joi_real_loop_g_ablation_kernel_adoption.test.js"
+      ],
+      "command_line": "node --test EgoDesktop/tests/joi_real_loop_g_ablation_kernel_adoption.test.js",
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "duration_ms": 1388,
+      "error": {
+        "code": "",
+        "message": "",
+        "name": ""
+      },
+      "exit_code": 0,
+      "label": "kernel_adoption_node_test",
+      "resolved_command": [
+        "node",
+        "--test",
+        "EgoDesktop/tests/joi_real_loop_g_ablation_kernel_adoption.test.js"
+      ],
+      "result_kind": "exit",
+      "shell": false,
+      "signal": "",
+      "stderr_tail": "",
+      "stdout_tail": "TAP version 13\n# Subtest: parity vectors cover the declared parity-safe value domain\nok 1 - parity vectors cover the declared parity-safe value domain\n  ---\n  duration_ms: 4.5875\n  type: 'test'\n  ...\n# Subtest: kernel state hash controls are process-stable and mutation-sensitive\nok 2 - kernel state hash controls are process-stable and mutation-sensitive\n  ---\n  duration_ms: 132.3069\n  type: 'test'\n  ...\n# Subtest: fresh-process replay x2 plus mid-episode resume has zero mismatches\nok 3 - fresh-process replay x2 plus mid-episode resume has zero mismatches\n  ---\n  duration_ms: 686.362\n  type: 'test'\n  ...\n# Subtest: LLM-swap invariance keeps A/B kernel fields identical and flags leaky renderer C\nok 4 - LLM-swap invariance keeps A/B kernel fields identical and flags leaky renderer C\n  ---\n  duration_ms: 1.1649\n  type: 'test'\n  ...\n# Subtest: trace runner hook is additive/default-off and frozen modules remain untouched\nok 5 - trace runner hook is additive/default-off and frozen modules remain untouched\n  ---\n  duration_ms: 94.2439\n  type: 'test'\n  ...\n# Subtest: config_frozen is byte-stable and runner prints matching config\nok 6 - config_frozen is byte-stable and runner prints matching config\n  ---\n  duration_ms: 96.7478\n  type: 'test'\n  ...\n# Subtest: battery regression executor uses configured timeout and preserves spawn_error detail\nok 7 - battery regression executor uses configured timeout and preserves spawn_error detail\n  ---\n  duration_ms: 131.4523\n  type: 'test'\n  ...\n1..7\n# tests 7\n# suites 0\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 1286.2094\n",
+      "timeout_ms": 900000
+    },
+    {
+      "command": [
+        "npm",
+        "test"
+      ],
+      "command_line": "npm.cmd test",
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego\\EgoDesktop",
+      "duration_ms": 2227,
+      "error": {
+        "code": "",
+        "message": "",
+        "name": ""
+      },
+      "exit_code": 0,
+      "label": "egodesktop_npm_test",
+      "resolved_command": [
+        "npm.cmd",
+        "test"
+      ],
+      "result_kind": "exit",
+      "shell": true,
+      "signal": "",
+      "stderr_tail": "",
+      "stdout_tail": "ntext wiring remains separated from PSPC reply preview context\nok 93 - session context wiring remains separated from PSPC reply preview context\n  ---\n  duration_ms: 1.2104\n  type: 'test'\n  ...\n# Subtest: viewer signal frame consumes only gated presence and visible expression intent\nok 94 - viewer signal frame consumes only gated presence and visible expression intent\n  ---\n  duration_ms: 1.1655\n  type: 'test'\n  ...\n# Subtest: speech turn guard supersedes stale TTS results\nok 95 - speech turn guard supersedes stale TTS results\n  ---\n  duration_ms: 2.4284\n  type: 'test'\n  ...\n# Subtest: builds TTS request only for admitted bot text\nok 96 - builds TTS request only for admitted bot text\n  ---\n  duration_ms: 1.84\n  type: 'test'\n  ...\n# Subtest: builds TTS request from displayed bot text before raw bot text\nok 97 - builds TTS request from displayed bot text before raw bot text\n  ---\n  duration_ms: 0.512\n  type: 'test'\n  ...\n# Subtest: sanitizes emoji and pictographic symbols out of TTS text\nok 98 - sanitizes emoji and pictographic symbols out of TTS text\n  ---\n  duration_ms: 0.1859\n  type: 'test'\n  ...\n# Subtest: builds TTS request from displayed text but removes emoji for speech\nok 99 - builds TTS request from displayed text but removes emoji for speech\n  ---\n  duration_ms: 1.3475\n  type: 'test'\n  ...\n# Subtest: does not synthesize disabled, empty, error, emoji-only, or too-long text\nok 100 - does not synthesize disabled, empty, error, emoji-only, or too-long text\n  ---\n  duration_ms: 0.8396\n  type: 'test'\n  ...\n# Subtest: resolves only contained TTS audio files\nok 101 - resolves only contained TTS audio files\n  ---\n  duration_ms: 5.6988\n  type: 'test'\n  ...\n# Subtest: TtsWorkerClient sends JSON requests and returns contained audio URLs\nok 102 - TtsWorkerClient sends JSON requests and returns contained audio URLs\n  ---\n  duration_ms: 185.1547\n  type: 'test'\n  ...\n1..102\n# tests 102\n# suites 0\n# pass 102\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 1815.5514\n",
+      "timeout_ms": 900000
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_ego_r3_adoption_parity.py"
+      ],
+      "command_line": "python -m pytest -q tests/test_ego_r3_adoption_parity.py",
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "duration_ms": 877,
+      "error": {
+        "code": "",
+        "message": "",
+        "name": ""
+      },
+      "exit_code": 0,
+      "label": "python_parity_test",
+      "resolved_command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_ego_r3_adoption_parity.py"
+      ],
+      "result_kind": "exit",
+      "shell": false,
+      "signal": "",
+      "stderr_tail": "",
+      "stdout_tail": "..                                                                       [100%]\r\n2 passed in 0.20s\r\n",
+      "timeout_ms": 900000
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_joi_corpus_admission.py"
+      ],
+      "command_line": "python -m pytest -q tests/test_joi_corpus_admission.py",
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "duration_ms": 237982,
+      "error": {
+        "code": "",
+        "message": "",
+        "name": ""
+      },
+      "exit_code": 0,
+      "label": "joi_corpus_admission",
+      "resolved_command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_joi_corpus_admission.py"
+      ],
+      "result_kind": "exit",
+      "shell": false,
+      "signal": "",
+      "stderr_tail": "",
+      "stdout_tail": ".....                                                                    [100%]\r\n5 passed in 237.58s (0:03:57)\r\n",
+      "timeout_ms": 900000
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "py_compile",
+        "tests/test_ego_r3_adoption_parity.py"
+      ],
+      "command_line": "python -m py_compile tests/test_ego_r3_adoption_parity.py",
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "duration_ms": 91,
+      "error": {
+        "code": "",
+        "message": "",
+        "name": ""
+      },
+      "exit_code": 0,
+      "label": "py_compile_parity_test",
+      "resolved_command": [
+        "python",
+        "-m",
+        "py_compile",
+        "tests/test_ego_r3_adoption_parity.py"
+      ],
+      "result_kind": "exit",
+      "shell": false,
+      "signal": "",
+      "stderr_tail": "",
+      "stdout_tail": "",
+      "timeout_ms": 900000
+    },
+    {
+      "command": [
+        "python",
+        "scripts/codex/lint_repo.py"
+      ],
+      "command_line": "python scripts/codex/lint_repo.py",
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "duration_ms": 1577,
+      "error": {
+        "code": "",
+        "message": "",
+        "name": ""
+      },
+      "exit_code": 0,
+      "label": "lint_repo",
+      "resolved_command": [
+        "python",
+        "scripts/codex/lint_repo.py"
+      ],
+      "result_kind": "exit",
+      "shell": false,
+      "signal": "",
+      "stderr_tail": "",
+      "stdout_tail": "Codex repo lint\r\n============================================================\r\npython files checked: 127\r\ntext files checked: 871\r\n\r\nOK: no lint failures detected\r\n",
+      "timeout_ms": 900000
+    },
+    {
+      "command": [
+        "python",
+        "scripts/codex/verify_repo.py",
+        "--mode",
+        "fast"
+      ],
+      "command_line": "python scripts/codex/verify_repo.py --mode fast",
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "duration_ms": 5219,
+      "error": {
+        "code": "",
+        "message": "",
+        "name": ""
+      },
+      "exit_code": 0,
+      "label": "verify_repo_fast",
+      "resolved_command": [
+        "python",
+        "scripts/codex/verify_repo.py",
+        "--mode",
+        "fast"
+      ],
+      "result_kind": "exit",
+      "shell": false,
+      "signal": "",
+      "stderr_tail": "",
+      "stdout_tail": ": true\r\n}\r\n{\r\n  \"status\": \"pass\",\r\n  \"archive_tag\": \"legacy-pre-operator-mainline-before-purge\",\r\n  \"archive_commit\": \"67347a759b5911f14e151748f294938fe53058ae\",\r\n  \"removed_dirs_absent\": [\r\n    \"legacy/ego-pre-handmade-mainline/EgoCore\",\r\n    \"legacy/ego-pre-handmade-mainline/OpenEmotion\",\r\n    \"legacy/ego-pre-handmade-mainline/ego_desktop_lab\"\r\n  ],\r\n  \"runtime_owner\": \"EgoOperator\"\r\n}\r\n{\r\n  \"status\": \"pass\",\r\n  \"active_runtime_files_checked\": 13,\r\n  \"pspc_adapter_contracts_checked\": 4,\r\n  \"claim_ceiling\": \"runtime authority boundary static check only\"\r\n}\r\nCodex verify summary (mode=fast)\r\n================================================================================================\r\ncategory     status   name                                       source                           note\r\n------------------------------------------------------------------------------------------------\r\nlint         success  Codex repo lint                            scripts/codex/lint_repo.py       ok\r\n  command: C:\\Python313\\python.exe scripts/codex/lint_repo.py\r\ngovernance   success  Program-state integrity gate               scripts/codex/check_program_stat ok\r\n  command: C:\\Python313\\python.exe scripts/codex/check_program_state_integrity.py --skip-diff-check\r\ngovernance   success  Route-convergence drift gate               scripts/codex/verify_route_conve ok\r\n  command: C:\\Python313\\python.exe scripts/codex/verify_route_convergence.py\r\ngovernance   success  Mainline clarity and staged-exhaust gate   scripts/codex/verify_mainline_cl ok\r\n  command: C:\\Python313\\python.exe scripts/codex/verify_mainline_clarity.py\r\ngovernance   success  Legacy archival purge anti-regression gate scripts/codex/verify_legacy_arch ok\r\n  command: C:\\Python313\\python.exe scripts/codex/verify_legacy_archival_purge.py\r\ngovernance   success  Runtime authority boundary gate            scripts/codex/check_runtime_auth ok\r\n  command: C:\\Python313\\python.exe scripts/codex/check_runtime_authority_boundaries.py\r\n",
+      "timeout_ms": 900000
+    }
+  ],
+  "regression_pass": true,
+  "status": "pass",
+  "trace_runner_hook_only": true
+}

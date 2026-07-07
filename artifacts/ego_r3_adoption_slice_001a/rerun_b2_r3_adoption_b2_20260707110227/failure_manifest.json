@@ -1,0 +1,6 @@
+{
+  "failing_gates": [],
+  "failures": [],
+  "schema_version": "ego.r3_adoption.failure_manifest.v0",
+  "verdict": "r3_adoption_slice_pass"
+}

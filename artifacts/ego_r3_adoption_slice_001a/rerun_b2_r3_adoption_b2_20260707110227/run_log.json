@@ -1,0 +1,21 @@
+{
+  "artifact_dir": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\ego_r3_adoption_slice_001a\\rerun_b2_r3_adoption_b2_20260707110227",
+  "command": [
+    "C:\\Program Files\\nodejs\\node.exe",
+    "D:\\Project\\AIProject\\MyProject\\Ego\\EgoDesktop\\scripts\\run-joi-g-ablation-kernel-adoption.js",
+    "--out",
+    "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\ego_r3_adoption_slice_001a\\rerun_b2_r3_adoption_b2_20260707110227",
+    "--run-id",
+    "r3_adoption_b2_20260707110227",
+    "--guard-seconds",
+    "1800",
+    "--base-commit",
+    "be2de377eda80f513d82173ea363282f8d1f1a37"
+  ],
+  "duration_ms": 250446,
+  "exit_code": 0,
+  "guard_seconds": 1800,
+  "run_id": "r3_adoption_b2_20260707110227",
+  "schema_version": "ego.r3_adoption.run_log.v0",
+  "started_at_unix_ms": 1783440147958
+}

@@ -1,0 +1,24 @@
+{
+  "ab_kernel_field_leak_count": 0,
+  "ab_kernel_fields_identical": true,
+  "aggregation_rule": "count per-turn kernel_adoption_v0 projection mismatches",
+  "leaky_renderer_c_leak_count": 3,
+  "positive_control_c_detected": true,
+  "producer_function": "runSwapInvarianceCheck",
+  "provenance": {
+    "aggregation_rule": "count per-turn kernel_adoption_v0 projection mismatches",
+    "code_path_hash": "870986627aca65feafbca618807cc6bd5951dc24cf5a910b172b668c82f41537",
+    "episode_ids": [],
+    "input_artifacts": [
+      "deterministic renderers A/B/C",
+      "kernel_adoption_v0 projections"
+    ],
+    "producer_function": "adapter.runSwapInvarianceCheck",
+    "run_id": "r3_adoption_b2_20260707110227",
+    "seed_context": []
+  },
+  "renderer_surface_texts_differ": true,
+  "run_id": "r3_adoption_b2_20260707110227_swap",
+  "schema_version": "ego.r3_adoption.swap_report.v0",
+  "status": "pass"
+}

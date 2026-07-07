@@ -1,0 +1,32 @@
+{
+  "claim_ceiling": "r3_adoption_engineering_only",
+  "llm_mode": "LLM_REPLAY_LOCKED",
+  "parity_vectors": {
+    "count": 16,
+    "sha256": "ed51b1b67f6fe9f86c111a2679fa8fe6fe255883070af23a754a1b500811b87c",
+    "value_domain": "object/array/string/bool/null/safe-int; non-integer numerics encoded as fixed_6 decimal strings before hashing"
+  },
+  "schema_version": "ego.r3_adoption.config_frozen.v0",
+  "task": "ego-r3-adoption-slice-001a",
+  "thresholds": {
+    "episodes": 2,
+    "guard_seconds": 1800,
+    "leaky_renderer_positive_control_required": true,
+    "parity_required_equal": "16/16",
+    "replay_fresh_process_runs": 2,
+    "replay_resume": "floor(turns/2)",
+    "swap_ab_kernel_leak_floor": 0
+  },
+  "trace_block": {
+    "additive_only": true,
+    "default_off": true,
+    "fields": [
+      "state_before_hash",
+      "state_after_hash",
+      "step_id",
+      "seed_context"
+    ],
+    "name": "kernel_adoption_v0"
+  },
+  "version_probe": "R3-ADOPTION-SLICE-001A rev-A 2026-07-07"
+}
