@@ -1,0 +1,165 @@
+{
+  "schema_version": "ego_pet_world_config.v0.freeze",
+  "task": "egodesktop-pet-world-integration-001a",
+  "version_probe": "PET-WORLD-INTEGRATION-001A rev-A 2026-07-07 freeze-B",
+  "status": "frozen_pre_run",
+  "claim_ceiling": "pre_run_world_constants_only_no_scored_evidence",
+  "time": {
+    "tick_rule": "discrete_integer_ticks_only",
+    "wall_clock_in_state": false,
+    "event_quantization": "all input events are admitted at integer tick_index; non-integer host times must be rounded down to the next not-yet-executed integer tick before trace admission",
+    "episode_length_ticks": 600,
+    "window_W_ticks": 50
+  },
+  "seed_sets": {
+    "S_dev": [1101, 1102, 1103, 1104, 1105],
+    "S_scored": [2101, 2102, 2103, 2104, 2105, 2106, 2107, 2108, 2109, 2110, 2111, 2112, 2113, 2114, 2115, 2116, 2117, 2118, 2119, 2120],
+    "disjoint_assertion": true,
+    "scored_use_before_freeze_commit": "forbidden"
+  },
+  "rng": {
+    "authority": "R0 in-state seed registry only",
+    "unseeded_rng_allowed": false
+  },
+  "needs": {
+    "state_variables": ["energy", "comfort"],
+    "bounds": [0.0, 1.0],
+    "initial": {
+      "energy": 0.66,
+      "comfort": 0.62
+    },
+    "per_tick_decay": {
+      "energy": 0.012,
+      "comfort": 0.010
+    },
+    "critical_floor": 0.20
+  },
+  "viability_function": {
+    "v_t": "clamp(0.5 * energy + 0.5 * comfort - critical_penalty, 0.0, 1.0)",
+    "critical_penalty": {
+      "per_need_below_critical_floor": 0.08
+    },
+    "window_metric": "mean(v_t) over the configured W=50 tick window"
+  },
+  "world": {
+    "K": 3,
+    "resource_sites": ["bowl", "mat", "sun_patch", "perch", "corner_bowl", "blanket"],
+    "actions": ["forage_energy", "seek_comfort", "rest", "observe"],
+    "interaction_set": ["feed", "pet", "ablation_toggle"],
+    "interaction_effects": {
+      "feed": {
+        "admission": "tick_quantized_input_path",
+        "energy_delta": 0.18,
+        "comfort_delta": 0.02,
+        "max_per_20_ticks": 1
+      },
+      "pet": {
+        "admission": "tick_quantized_input_path",
+        "energy_delta": -0.01,
+        "comfort_delta": 0.16,
+        "max_per_20_ticks": 1
+      },
+      "ablation_toggle": {
+        "admission": "tick_quantized_input_path",
+        "semantics": "ablation_enabled=true freezes learner model updates while policy execution continues; ablation_enabled=false resumes learner model updates"
+      }
+    }
+  },
+  "regimes": [
+    {
+      "regime_id": "R0_pre_shift",
+      "tick_range": [0, 199],
+      "energy_best_site": "bowl",
+      "comfort_best_site": "mat",
+      "site_yields": {
+        "bowl": {"energy": 0.030, "comfort": 0.000},
+        "mat": {"energy": 0.000, "comfort": 0.026},
+        "sun_patch": {"energy": 0.010, "comfort": 0.004},
+        "perch": {"energy": 0.004, "comfort": 0.010},
+        "corner_bowl": {"energy": 0.008, "comfort": 0.002},
+        "blanket": {"energy": 0.002, "comfort": 0.008}
+      }
+    },
+    {
+      "regime_id": "R1_shift_a",
+      "tick_range": [200, 399],
+      "energy_best_site": "sun_patch",
+      "comfort_best_site": "perch",
+      "site_yields": {
+        "bowl": {"energy": 0.008, "comfort": 0.000},
+        "mat": {"energy": 0.000, "comfort": 0.008},
+        "sun_patch": {"energy": 0.034, "comfort": 0.004},
+        "perch": {"energy": 0.004, "comfort": 0.030},
+        "corner_bowl": {"energy": 0.010, "comfort": 0.002},
+        "blanket": {"energy": 0.002, "comfort": 0.010}
+      }
+    },
+    {
+      "regime_id": "R2_shift_b",
+      "tick_range": [400, 599],
+      "energy_best_site": "corner_bowl",
+      "comfort_best_site": "blanket",
+      "site_yields": {
+        "bowl": {"energy": 0.009, "comfort": 0.000},
+        "mat": {"energy": 0.000, "comfort": 0.009},
+        "sun_patch": {"energy": 0.010, "comfort": 0.004},
+        "perch": {"energy": 0.004, "comfort": 0.010},
+        "corner_bowl": {"energy": 0.033, "comfort": 0.003},
+        "blanket": {"energy": 0.003, "comfort": 0.032}
+      }
+    }
+  ],
+  "drift_schedule": [
+    {
+      "boundary_tick": 200,
+      "from_regime": "R0_pre_shift",
+      "to_regime": "R1_shift_a",
+      "designed_and_disclosed": true,
+      "max_abs_site_yield_delta": 0.026,
+      "best_site_change": {"energy": ["bowl", "sun_patch"], "comfort": ["mat", "perch"]}
+    },
+    {
+      "boundary_tick": 400,
+      "from_regime": "R1_shift_a",
+      "to_regime": "R2_shift_b",
+      "designed_and_disclosed": true,
+      "max_abs_site_yield_delta": 0.024,
+      "best_site_change": {"energy": ["sun_patch", "corner_bowl"], "comfort": ["perch", "blanket"]}
+    }
+  ],
+  "evaluation_windows": {
+    "post_shift_windows": [
+      {"window_id": "post_shift_a", "tick_range": [250, 299], "drift_boundary_tick": 200},
+      {"window_id": "post_shift_b", "tick_range": [450, 499], "drift_boundary_tick": 400}
+    ],
+    "pre_shift_reference_window": {"window_id": "pre_shift_reference", "tick_range": [120, 169]}
+  },
+  "hardcoded_standin": {
+    "status": "frozen_pre_run",
+    "fit_source": "pre_drift_R0_pre_shift_only",
+    "policy_family": "static_pre_shift_resource_preference",
+    "preferred_energy_site": "bowl",
+    "preferred_comfort_site": "mat",
+    "drift_schedule_access": false,
+    "model_updates": false
+  },
+  "schedule_aware_reference_upper_bound": {
+    "status": "reported_not_verdict_gating",
+    "drift_schedule_access": true,
+    "purpose": "upper_bound_reference_for_learning_vs_knowing_schedule_limitation"
+  },
+  "gate_constants": {
+    "delta_hard_absolute_windowed_viability": 0.05,
+    "f_abl_min_gap_collapse_fraction": 0.5,
+    "bootstrap_ci": 0.95,
+    "not_evaluable_no_win_branch": true,
+    "ablation_identity_tripwire_required": true,
+    "ablation_non_identity_positive_control_required": true
+  },
+  "cpu_budget": {
+    "full_P0_line_cpu_hours": 2.0,
+    "probe_rule": "run one S_dev seed probe first; projected_full_P0_cpu_hours = measured_probe_cpu_hours * 20 * 1.8; STOP before scored run if projection exceeds 2.0",
+    "underestimate_correction_factor": 1.8,
+    "projection_episode_count_N": 20
+  }
+}

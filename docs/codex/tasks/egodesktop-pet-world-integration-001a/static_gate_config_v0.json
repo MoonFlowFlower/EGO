@@ -1,0 +1,77 @@
+{
+  "schema_version": "ego_pet_static_gate_config.v0.freeze",
+  "task": "egodesktop-pet-world-integration-001a",
+  "version_probe": "PET-WORLD-INTEGRATION-001A rev-A 2026-07-07 freeze-B",
+  "status": "frozen_pre_run",
+  "claim_ceiling": "static_user_facing_bubble_gate_config_only_no_learned_initiative",
+  "surface": {
+    "allowed_surface": "in_window_speech_bubble_only",
+    "os_notifications": false,
+    "sounds_as_alerts": false,
+    "external_transports": false,
+    "chat_or_llm_surface": false
+  },
+  "learner_boundary": {
+    "learner_readable": false,
+    "creature_policy_may_emit_user_facing_text": false,
+    "bubble_text_source": "static_gate_template_only",
+    "trace_provenance_required": true
+  },
+  "conditions": {
+    "low_energy_bubble": {
+      "enabled": true,
+      "energy_below": 0.28,
+      "comfort_min": 0.20,
+      "template_id": "static_need_energy"
+    },
+    "low_comfort_bubble": {
+      "enabled": true,
+      "comfort_below": 0.28,
+      "energy_min": 0.20,
+      "template_id": "static_need_comfort"
+    },
+    "drift_disclosure_bubble": {
+      "enabled": true,
+      "emit_once_within_ticks_after_boundary": 20,
+      "template_id": "static_drift_disclosure"
+    },
+    "ablation_state_bubble": {
+      "enabled": true,
+      "emit_on_toggle": true,
+      "template_id_prefix": "static_ablation_state"
+    },
+    "post_user_care_ack": {
+      "enabled": true,
+      "input_events": ["feed", "pet"],
+      "emit_after_ticks": 1,
+      "template_id": "static_care_ack"
+    }
+  },
+  "rate_limit": {
+    "min_ticks_between_bubbles": 80,
+    "max_bubbles_per_episode": 5,
+    "max_bubbles_per_200_ticks": 2,
+    "quiet_after_user_input_ticks_except_ack": 8,
+    "quiet_when_ablation_toggle_in_last_ticks_except_state": 5
+  },
+  "templates": {
+    "static_need_energy": "我现在的能量偏低。这个提示来自静态规则，不是学出来的主动性。",
+    "static_need_comfort": "我现在的舒适度偏低。这个提示来自静态规则，不是学出来的主动性。",
+    "static_drift_disclosure": "环境漂移是预设且公开的；学习只在漂移窗口接受检验。",
+    "static_ablation_state_on": "学习更新已冻结：这是实验开关，不代表情绪或自主意愿。",
+    "static_ablation_state_off": "学习更新已恢复：后续结果仍以 trace/replay 为准。",
+    "static_care_ack": "收到这个互动；可见气泡由静态 gate 控制。"
+  },
+  "trace_fields": {
+    "required": [
+      "tick_index",
+      "surface",
+      "template_id",
+      "static_gate_config_sha256",
+      "condition_id",
+      "rate_limit_decision",
+      "learner_originated"
+    ],
+    "learner_originated_value_must_be": false
+  }
+}

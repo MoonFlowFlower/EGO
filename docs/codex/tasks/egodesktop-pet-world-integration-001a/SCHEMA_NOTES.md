@@ -1,6 +1,6 @@
 # SCHEMA NOTES - egodesktop-pet-world-integration-001a
 
-Status: LANDING_STUB / EXECUTABLE-PENDING-CLAUDE-PRECHECK.
+Status: LANDING_STUB / EXECUTABLE.
 
 - Reuse `kernel_trace_v0` as the trace envelope; no new trace authority is introduced by this landing package.
 - Pet substates are named `pet_world_v0`, `pet_creature_v0`, `pet_memory_v0` (R1 store), and `pet_static_gate_v0`.

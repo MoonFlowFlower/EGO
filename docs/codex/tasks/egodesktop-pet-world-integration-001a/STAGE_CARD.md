@@ -3,7 +3,7 @@
 Version probe: PET-WORLD-INTEGRATION-001A rev-A 2026-07-07 / ego_pet_world_v0 /
 assembly-of-banked-components / no-new-mechanism-claim / default-off.
 
-Status: EXECUTABLE-PENDING-CLAUDE-PRECHECK
+Status: EXECUTABLE (Claude pre-check PASS 2026-07-07)
 Lane: Ego PRODUCT lane, EgoDesktop carrier (per decision card "EgoDesktop =
 product carrier"). This is a PRODUCT card in the sense of R2 closure §6(b):
 rival gates with pre-committed kills decide what ships. It is NOT an R-card
