@@ -1,0 +1,6 @@
+{
+  "exit_codes": [],
+  "failing_gates": [],
+  "producer_function": "run_p0",
+  "verdict": "part0_certificate_pass"
+}
