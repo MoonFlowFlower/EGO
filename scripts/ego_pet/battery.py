@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import hashlib
 import json
 import os
@@ -376,20 +377,77 @@ def replay_report(runs: dict[str, dict[str, Any]], *, repo_root: Path, run_id: s
     }
 
 
-def rng_audit(*, code_hash: str, run_id: str) -> dict[str, Any]:
-    files = sorted((ROOT / "scripts" / "ego_pet").glob("*.py"))
+def _path_label(path: Path) -> str:
+    try:
+        return str(path.resolve().relative_to(ROOT.resolve())).replace("\\", "/")
+    except ValueError:
+        return str(path.resolve()).replace("\\", "/")
+
+
+def _dotted_name(node: ast.AST) -> str:
+    if isinstance(node, ast.Name):
+        return node.id
+    if isinstance(node, ast.Attribute):
+        prefix = _dotted_name(node.value)
+        return f"{prefix}.{node.attr}" if prefix else node.attr
+    return ""
+
+
+def _rng_usage_hits(path: Path) -> list[dict[str, Any]]:
+    label = _path_label(path)
+    tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+    hits: list[dict[str, Any]] = []
+    rng_modules = {"numpy", "torch", "random", "secrets"}
+    call_prefixes = (
+        "numpy.random.",
+        "np.random.",
+        "random.",
+        "secrets.",
+        "torch.rand",
+    )
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            for alias in node.names:
+                root = str(alias.name).split(".", 1)[0]
+                if root in rng_modules:
+                    hits.append({
+                        "file": label,
+                        "kind": "rng_framework_import",
+                        "token": alias.name,
+                        "lineno": int(node.lineno),
+                    })
+        elif isinstance(node, ast.ImportFrom):
+            root = str(node.module or "").split(".", 1)[0]
+            if root in rng_modules:
+                hits.append({
+                    "file": label,
+                    "kind": "rng_framework_import",
+                    "token": str(node.module),
+                    "lineno": int(node.lineno),
+                })
+        elif isinstance(node, ast.Call):
+            name = _dotted_name(node.func)
+            if any(name.startswith(prefix) for prefix in call_prefixes):
+                hits.append({
+                    "file": label,
+                    "kind": "rng_call_site",
+                    "token": name,
+                    "lineno": int(node.lineno),
+                })
+    return hits
+
+
+def rng_audit(*, code_hash: str, run_id: str, scan_files: list[Path] | None = None) -> dict[str, Any]:
+    files = sorted(scan_files) if scan_files is not None else sorted((ROOT / "scripts" / "ego_pet").glob("*.py"))
     forbidden_hits = []
     for path in files:
-        text = path.read_text(encoding="utf-8")
-        for token in ("secrets.", "random.", "np.random", "torch.rand"):
-            if token in text:
-                forbidden_hits.append({"file": str(path.relative_to(ROOT)).replace("\\", "/"), "token": token})
+        forbidden_hits.extend(_rng_usage_hits(path))
     return {
         "producer_function": "rng_audit",
-        "input_artifacts": [str(p.relative_to(ROOT)).replace("\\", "/") for p in files],
+        "input_artifacts": [_path_label(p) for p in files],
         "run_id": run_id,
         "seed_ids": [],
-        "aggregation_rule": "grep-level audit for unregistered RNG framework calls in scripts/ego_pet",
+        "aggregation_rule": "AST-level audit for RNG framework imports and call sites in all scanned pet files; detector literals are not executable usage",
         "code_path_hash": code_hash,
         "forbidden_hits": forbidden_hits,
         "status": "pass" if not forbidden_hits else "fail",
@@ -457,6 +515,8 @@ def run_battery(*, phase: str, out_dir: Path, seed: int | None = None) -> dict[s
     mem = mem_path_report(run_id=run_id, code_hash=code_hash)
     rng = rng_audit(code_hash=code_hash, run_id=run_id)
     verdict, failing = choose_verdict(hard, abl, replay, mem, rng)
+    if phase == "probe" and verdict == "pet_integration_p0_pass":
+        verdict = "pet_integration_probe_clean"
     cpu_hours = (time.process_time() - started) / 3600.0
     projected = cpu_hours * 20.0 * float(config["cpu_budget"]["underestimate_correction_factor"]) if phase == "probe" else None
     result = {
@@ -485,7 +545,7 @@ def run_battery(*, phase: str, out_dir: Path, seed: int | None = None) -> dict[s
         },
         "verdict": verdict,
         "failing_gates": failing,
-        "positive_claim_flag": verdict == "pet_integration_p0_pass",
+        "positive_claim_flag": phase == "scored" and verdict == "pet_integration_p0_pass",
         "what_this_does_not_prove": [
             "no EgoDesktop runtime wiring",
             "no P1 schema/static-gate audit",
@@ -497,6 +557,7 @@ def run_battery(*, phase: str, out_dir: Path, seed: int | None = None) -> dict[s
     out_dir.mkdir(parents=True, exist_ok=True)
     if phase == "probe":
         write_json(out_dir / "probe_report.json", result)
+        write_json(out_dir / "rng_audit_report.json", rng)
     else:
         write_json(out_dir / "result.json", result)
         write_json(out_dir / "baseline_comparison.json", hard)
@@ -542,4 +603,3 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

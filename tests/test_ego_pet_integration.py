@@ -6,6 +6,7 @@ from scripts.ego_pet.battery import (
     baseline_comparison,
     code_path_hash,
     replay_episode,
+    rng_audit,
     run_arm_set,
     run_battery,
     run_episode,
@@ -98,3 +99,40 @@ def test_probe_path_uses_dev_seed_and_writes_probe_report(tmp_path):
     assert (tmp_path / "probe_report.json").exists()
     assert result["cpu"]["projected_full_p0_cpu_hours"] is not None
 
+
+def test_rng_audit_catches_unseeded_calls(tmp_path):
+    fixtures = {
+        "numpy_default_rng.py": "import numpy as np\nnp.random.default_rng()\n",
+        "python_random.py": "import random\nrandom.random()\n",
+        "torch_rand.py": "import torch\ntorch.rand(3)\n",
+        "numpy_random_rand.py": "import numpy as np\nnp.random.rand(2)\n",
+    }
+
+    for name, source in fixtures.items():
+        path = tmp_path / name
+        path.write_text(source, encoding="utf-8")
+        report = rng_audit(code_hash="unit-hash", run_id=f"unit-{name}", scan_files=[path])
+        assert report["status"] == "fail", name
+        assert report["forbidden_hits"], name
+
+
+def test_rng_audit_passes_clean_pet_package():
+    report = rng_audit(code_hash="unit-hash", run_id="clean-pet-package")
+
+    assert report["status"] == "pass"
+    assert report["forbidden_hits"] == []
+
+
+def test_rng_audit_scans_battery_and_no_self_match():
+    report = rng_audit(code_hash="unit-hash", run_id="battery-self-scan")
+
+    assert "scripts/ego_pet/battery.py" in report["input_artifacts"]
+    assert all(hit["file"] != "scripts/ego_pet/battery.py" for hit in report["forbidden_hits"])
+
+
+def test_probe_never_emits_positive_claim(tmp_path):
+    result = run_battery(phase="probe", out_dir=tmp_path, seed=1105)
+
+    assert result["verdict"] != "pet_integration_p0_pass"
+    assert result["verdict"] == "pet_integration_probe_clean"
+    assert result["positive_claim_flag"] is False
