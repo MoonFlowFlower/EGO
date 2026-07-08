@@ -1,0 +1,84 @@
+{
+  "artifact_type": "claude_full_hostile_audit",
+  "audit_id": "PET-001A-P0-SCORED-CLAUDE-FULL-HOSTILE-001",
+  "audit_verdict": "HIGH_SCORE_NO_ATTRIBUTION",
+  "blocking_findings": [
+    {
+      "evidence": "world.py:153 observe returns full true current-regime site_yields for all 6 sites; creature.py:166 overwrites the entire model with it. Trace: candidate performs exactly 3 observe actions per episode at ticks [0,201,401] (init + one per drift at 200/400), each a 6-site full-truth map, across all sampled seeds.",
+      "id": "B1_observe_oracle",
+      "implication": "Drift-adaptation is oracle-refresh, not experiential learning."
+    },
+    {
+      "evidence": "creature.py:66-75 _derived_prediction_error_trigger computes the re-observe threshold from the config true drift_schedule magnitudes.",
+      "id": "B2_schedule_derived_trigger",
+      "implication": "The when-to-re-sense decision embeds ground-truth drift knowledge (partial schedule access)."
+    },
+    {
+      "evidence": "Arm set = candidate/standin/random/static/frozen_updates/schedule_aware_reference. The frozen_updates ablation disables BOTH oracle-observe refresh AND per-site updates at once; there is no local/partial-observe arm and no recency/count/lookup baseline.",
+      "id": "B3_no_isolating_control",
+      "implication": "The win over stand-in cannot be attributed to learning versus oracle refresh; attribution is unfalsifiable with the current arms."
+    },
+    {
+      "evidence": "DERIVATION_NOTES.md delta_hard reachability explicitly states it 'ignores any benefit from the observe action' and premises reachability on a learner identifying the changed best-site pair experientially; the implementation instead relies on the observe oracle as the primary recovery channel.",
+      "id": "B4_card_mechanism_mismatch",
+      "implication": "The intended experiential mechanism was not tested; a different oracle mechanism passed the gate."
+    }
+  ],
+  "clean_verified": [
+    "Integrity: all scored artifact sha256 match the Codex report.",
+    "Ancestry: 7c8a91ad parent is the Claude-cleared 53496a38; ADDENDUM_003 9d71102c, repaired rng_audit cac86977, and freeze 5a41e62 are all ancestors.",
+    "Scope: the scored commit added artifacts only; zero code/config/threshold edits; the stale run1 failure_manifest was removed with .selfmatch_run1 preserved.",
+    "Replay: 120 episodes fresh-process x2, 0 mismatch.",
+    "Ablation instrument sound: identity tripwire real (0 identical pairs), non-identity positive control real.",
+    "RNG audit (AST) pass, battery.py scanned, 0 forbidden hits."
+  ],
+  "date": "2026-07-07",
+  "defensible_claim_ceiling": "pet_integration_engineering_only: an end-to-end, default-off, offline desktop-pet P0 loop that is deterministic and fresh-process replay-valid (120 episodes / 0 mismatch), with an honestly-labeled static user-facing gate, an online-update path that is load-bearing versus a frozen-updates ablation, and resistance to a single MINJA-class poison fixture. NOT a learned world model, NOT experiential drift-adaptation, NOT mechanism validation.",
+  "machine_gate_outcome_as_banked": {
+    "note": "All five P0 gates passed at scored scale. This records the gate conjunction ONLY; it is NOT a mechanism-validity claim. Must be read together with audit_verdict.",
+    "positive_claim_flag": true,
+    "verdict": "pet_integration_p0_pass"
+  },
+  "non_blocking_findings": [
+    "build_observation (world.py:73) emits regime_id every tick; the candidate does not consume it, but the label is on the wire - clean the observation surface.",
+    "Contamination resistance is a single MINJA-class fixture; keep the claim narrow.",
+    "The tight bootstrap CI reflects oracle-driven near-determinism, not robustness."
+  ],
+  "one_line": "G-PET-HARD passes by a large margin, but candidate drift-adaptation is driven by an omniscient observe oracle plus a drift-schedule-derived trigger, not by a genuine learned world model; no control isolates learning from oracle refresh.",
+  "positive_mechanism_claim": "BLOCKED",
+  "product_vs_science": "Product: shipping a default-off engineered pet carrier (P1) is an operator decision and is not blocked by this audit, provided all user-facing and claim strings avoid learns / adapts-by-learning and stay at the engineering ceiling. Science: the positive learned-mechanism claim is BLOCKED pending the discriminating controls above.",
+  "required_before_any_learned_claim": [
+    "Add a local/partial-observe control arm (observe returns only the visited site yield, not the full map).",
+    "Add a trivial adaptive baseline (recency/count go-to-best-recently-experienced-site, no world model).",
+    "Replace the drift-schedule-derived observe trigger with a purely observed error threshold.",
+    "Remove regime_id from the candidate-visible observation.",
+    "Pre-register; a learned-attribution claim requires the candidate to still beat stand-in AND beat the recency baseline under local-observe."
+  ],
+  "role": "independent_red_team_auditor",
+  "subject": {
+    "code_path_hash": "4bc8f2fdd0b980ea9f405feb09293ac70f08b811363ab23553184c893dda2eb2",
+    "phase": "P0_scored",
+    "result_json_sha256": "f8a654da485885b8d29f070c7c1b7547698504df9deaf8845feaf476277a514b",
+    "subject_commit": "7c8a91ad8448d0639ab2500fa8404182652b2289",
+    "task": "egodesktop-pet-world-integration-001a"
+  },
+  "supporting_numbers": {
+    "candidate_mean": 0.99598,
+    "candidate_minus_standin_ci_high": 0.76330925,
+    "candidate_minus_standin_ci_low": 0.76313575,
+    "frozen_updates_mean": 0.14842,
+    "note": "candidate approximately equals the schedule-omniscient upper bound because the candidate holds an equivalent oracle channel; the CI is extremely tight because the oracle makes the outcome near-deterministic (RNG barely matters).",
+    "random_mean": 0.02726,
+    "schedule_omniscient_reference_mean": 0.99625,
+    "standin_mean": 0.23275
+  },
+  "what_this_does_not_prove": [
+    "no mechanism validity",
+    "no learned world model",
+    "no experiential adaptation",
+    "no consciousness, subjective experience, real emotion, agency, autonomy, or functional selfhood",
+    "no companion readiness",
+    "no stable user benefit",
+    "no EGO-mainline readiness"
+  ]
+}
