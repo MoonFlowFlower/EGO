@@ -128,7 +128,7 @@ program:
     - "Which legacy algorithms should be reimplemented as EgoOperator primitives, and which should remain reference-only."
     - "Whether future command/network transaction approvals should be added after file-write transaction approval has proved ergonomic."
     - "What evidence threshold should trigger any future deletion of legacy code rather than reference preservation."
-  next_minimal_action: "Execute EGO-R2-CONTROLLED-INITIATIVE-001A I1/P0 per the operator-issued 2026-07-07 execution instruction; P2 is gated by a valid `artifacts/ego-r2-controlled-initiative-001a/p0/part0_certificate.json`. Claim ceiling remains offline-simulator engineering evidence only; no runtime wiring, live proactive behavior, autonomy, agency, mechanism-validity, or user-benefit claim."
+  next_minimal_action: "R-track decision-card sequence complete (R0/R1/R3 closed at engineering ceilings; R2 closed negative). Any R2-prime drift-regime initiative claim requires a new decision-card row gated by a paper discriminability note that must defeat cheap-adaptive static rivals on paper first. Product-side static initiative gating choice (tuned threshold vs behavior tree) is an operator product decision outside R-track."
   last_verified_commit: "af561e0d"
   last_verified_at: "2026-05-18T03:48:22Z"
   status_owner: "EgoOperator"
@@ -166,12 +166,12 @@ workstreams:
     summary: "Root-level program state, derived views, evidence ledger, templates, integrity gates, and a fixed collaboration-loop contract are being wired into the repo governance path."
   - id: "joi_like_mechanism_rewrite_r_track"
     owner: "Operator + Claude + Codex"
-    status: "r0_r1_r3_closed__r2_landed_execution_authorized"
+    status: "r0_r1_r3_closed__r2_closed_fail_win__route_i_closed"
     evidence_level: "E3"
     verification_level: "V3"
     mainline_connected: false
     enabled: false
-    summary: "R-track mechanism rewrite state machine records R0 kernel substrate, R1 memory ownership, and R3 adoption as closed at their engineering-only/default-off claim ceilings. R2 controlled initiative card landed frozen at `84272490b6aa47e41e28d94aadcad6f0df6f7ac6`; execution was authorized by the operator on 2026-07-07 for offline-simulator-only I1/P0/P2, with the pre-committed threshold/behavior-tree kill intact. The operator chose R2 over the product-side adoption option. The decision card contains no literal `roadmap_v1` citation in the landing readback at `84272490b6aa47e41e28d94aadcad6f0df6f7ac6`; R2 design source is the in-card restatement in the landed 001A card, decision card section R2 prevails, and `docs/Joi-like_bounded_mechanism_proxy_roadmap_v1.md` remains a non-normative reference. No runtime wiring, live proactive behavior, autonomy, agency, mechanism-validity, or user-benefit claim is made."
+    summary: "R-track mechanism rewrite state machine records R0 kernel substrate, R1 memory ownership, and R3 adoption as closed at their engineering-only/default-off claim ceilings. R2 controlled initiative closes negative: P2 run1 `r2_fail_win` at `7726d66cea537dde8bf55f610268c9047ba449fc`, with candidate conformant per SC1 readback and decisive G-R2-WIN CI-separated loss pooled and held-out. Route I is closed per pre-committed kill logic, a fortiori from the tie clause. Attribution-side instrument defects (A2 arm breach / A3 missing / ablation reporting artifact) are recorded in `docs/codex/tasks/ego-r2-controlled-initiative-001a/CLOSURE_RECORD.md` without rewriting banked artifacts. Closure is scoped to the product claim; the mechanism-capability question is recorded separately as `low_score_signature_present` in `CLOSURE_RECORD.md` §4a, weak-but-present at engineering-observation ceiling. No runtime wiring, live proactive behavior, autonomy, agency, mechanism-validity, or user-benefit claim is made."
   - id: "codex_exploration_cycles"
     owner: "Codex"
     status: "integrating"
