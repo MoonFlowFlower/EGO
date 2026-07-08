@@ -1,0 +1,213 @@
+{
+  "schema_version": "egodesktop_pet_world_integration_001a.p1_suite_baseline.v0",
+  "producer_function": "codex_step1_p1_suite_baseline_record",
+  "task_id": "egodesktop-pet-world-integration-001a",
+  "run_id": "p1_suite_baseline_6948427a_red_route_b_20260707k",
+  "baseline_commit": "6948427a",
+  "baseline_commit_full": "6948427ad4f58535db5b66c8b4bf656f1d772f77",
+  "baseline_mode": "closed_allowlist_no_new_failures_beyond_baseline",
+  "route": "B_before_A",
+  "claim_ceiling": "p1_suite_baseline_governance_record_only",
+  "input_artifacts": [
+    "artifacts/egodesktop_pet_world_integration_001a/p1/baseline_6948427a_pytest_q.log",
+    "artifacts/egodesktop_pet_world_integration_001a/p1/baseline_6948427a_pytest_targeted_vv_rA.log",
+    "C:/Users/LEO/AppData/Local/Packages/CLAUDE~1/LOCALC~1/Roaming/Claude/LOCAL-~1/840EF4~1/5B836E~1/LO8D76~1/outputs/COAA6E~1.MD"
+  ],
+  "pytest_baseline_evidence": {
+    "p1_absent_procedure": "stashed P1 working tree in current repo at 6948427a, ran full python -m pytest -q, then restored P1 working tree",
+    "full_pytest_command": "python -m pytest -q",
+    "full_pytest_log": "artifacts/egodesktop_pet_world_integration_001a/p1/baseline_6948427a_pytest_q.log",
+    "full_pytest_log_sha256": "c109acba4572d47c679a87d10189231f74d8f54fb1d0b679d8d437673f84b2d9",
+    "full_pytest_observed_summary": "3 failed, 1053 passed, 1 skipped in 607.06s (0:10:07)",
+    "full_pytest_process_note": "outer Codex shell timeout fired after pytest had printed the final summary; targeted verbose run below provides exact failing assertions with normal pytest exit 1",
+    "log_text_normalization": "trailing whitespace stripped after capture for git diff --check; assertion text and pytest summaries retained",
+    "targeted_verbose_command": "python -m pytest -q -vv -rA labs/virtual_cat_pspc_v0/tests/test_admission_packet_contract.py::test_admission_packet_contract_has_no_egooperator_import_or_adapter_file labs/virtual_cat_pspc_v0/tests/test_report_generation.py::test_experiment_runner_writes_canonical_reports tests/test_ego_kernel_substrate.py::test_validation_runner_writes_contract_artifacts_and_passes",
+    "targeted_verbose_log": "artifacts/egodesktop_pet_world_integration_001a/p1/baseline_6948427a_pytest_targeted_vv_rA.log",
+    "targeted_verbose_log_sha256": "3222496637bd42dd9c948b609d3bb0c8f4080e2b0e673934f6704cfa59879072",
+    "targeted_verbose_observed_summary": "3 failed in 37.76s"
+  },
+  "pre_existing_failures": [
+    {
+      "node_id": "labs/virtual_cat_pspc_v0/tests/test_admission_packet_contract.py::test_admission_packet_contract_has_no_egooperator_import_or_adapter_file",
+      "failing_assertion": "assert not adapter_path.exists() where adapter_path is WindowsPath('EgoOperator/adapters/pspc_lab_adapter.py') and exists() is True",
+      "root_cause": "Governance conflict: a Jun-4 sanctioned read-only PSPC lab adapter exists while the virtual_cat_pspc_v0 admission contract test still forbids an EgoOperator adapter file.",
+      "p1_independent": true,
+      "debt_card": "Route A required: operator decision to permit adapter and update contract test [Red], or remove adapter under a separate EgoOperator card; do not resolve in P1 Route B."
+    },
+    {
+      "node_id": "labs/virtual_cat_pspc_v0/tests/test_report_generation.py::test_experiment_runner_writes_canonical_reports",
+      "failing_assertion": "assert summary[\"go_no_go_review_status\"] == \"go\" but observed 'no_go'",
+      "root_cause": "virtual_cat_pspc_v0 experiment-runner canonical reports currently produce no_go in the GO/NO-GO review while the test expects go.",
+      "p1_independent": true,
+      "debt_card": "Route A required: lab-internal diagnosis for canonical report/go-no-go status; do not resolve in P1 Route B."
+    },
+    {
+      "node_id": "tests/test_ego_kernel_substrate.py::test_validation_runner_writes_contract_artifacts_and_passes",
+      "failing_assertion": "assert result[\"verdict\"] == \"r0_substrate_pass\" but observed 'r0_substrate_fail_hygiene'",
+      "root_cause": "R0 hygiene gate fails on pre-existing EgoDesktop references under the current tree; highest-priority Route A debt is deciding sanctioned allowlist [Red] versus removal.",
+      "p1_independent": true,
+      "debt_card": "Route A highest priority: R0 foundation hygiene decision for sanctioned allowlist [Red] versus removal; do not resolve in P1 Route B."
+    }
+  ],
+  "closed_allowlist_rule": {
+    "suite_green_iff": [
+      "set(current repo_pytest failing_tests) - set(pre_existing_failures.node_id) == empty",
+      "p1_egooperator_ref_delta == 0"
+    ],
+    "unexpectedly_passing": "set(pre_existing_failures.node_id) - set(current repo_pytest failing_tests)",
+    "wildcards_allowed": false,
+    "any_fourth_failure_fails_gate": true
+  },
+  "p1_independence_proof": {
+    "p1_changed_files_current": [
+      "EgoDesktop/src/main.js",
+      "EgoDesktop/src/petKernelBridge.js",
+      "EgoDesktop/src/petLive2dObserverMap.js",
+      "EgoDesktop/src/petMode.js",
+      "EgoDesktop/src/petSuiteBaselineGate.js",
+      "EgoDesktop/src/preload.js",
+      "EgoDesktop/tests/pet_mode.test.js",
+      "EgoDesktop/tests/pet_static_gate_audit.test.js",
+      "EgoDesktop/tests/pet_suite_baseline_gate.test.js",
+      "EgoDesktop/viewer/pet.css",
+      "EgoDesktop/viewer/pet.html",
+      "EgoDesktop/viewer/petRenderer.js",
+      "artifacts/egodesktop_pet_world_integration_001a/p1/baseline_6948427a_pytest_q.log",
+      "artifacts/egodesktop_pet_world_integration_001a/p1/baseline_6948427a_pytest_targeted_vv_rA.log",
+      "artifacts/egodesktop_pet_world_integration_001a/p1/failure_manifest.json",
+      "artifacts/egodesktop_pet_world_integration_001a/p1/schema_report.json",
+      "artifacts/egodesktop_pet_world_integration_001a/p1/static_gate_audit.json",
+      "artifacts/egodesktop_pet_world_integration_001a/p1/suite_baseline.json",
+      "artifacts/egodesktop_pet_world_integration_001a/p1/trace.jsonl",
+      "docs/codex/tasks/egodesktop-pet-world-integration-001a/ADDENDUM_P1_SUITE_BASELINE.md"
+    ],
+    "p1_added_pet_files_grep_pattern": "EgoOperator",
+    "p1_added_pet_files": [
+      "EgoDesktop/src/petKernelBridge.js",
+      "EgoDesktop/src/petLive2dObserverMap.js",
+      "EgoDesktop/src/petMode.js",
+      "EgoDesktop/src/petSuiteBaselineGate.js",
+      "EgoDesktop/tests/pet_mode.test.js",
+      "EgoDesktop/tests/pet_static_gate_audit.test.js",
+      "EgoDesktop/tests/pet_suite_baseline_gate.test.js",
+      "EgoDesktop/viewer/pet.css",
+      "EgoDesktop/viewer/pet.html",
+      "EgoDesktop/viewer/petRenderer.js"
+    ],
+    "p1_added_pet_files_egooperator_hits": [],
+    "p1_added_pet_files_egooperator_hit_count": 0,
+    "p1_touched_preexisting_hits_note": "The only runtime-owner token hits in P1-touched source files are the two pre-existing EgoDesktop/src/main.js runEgoOperatorDesktopTurn lines; P1-added pet files have zero hits.",
+    "p1_touched_current_hits": [
+      {
+        "file": "EgoDesktop/src/main.js",
+        "line": 158,
+        "excerpt": "function runEgoOperatorDesktopTurn(turnPayload, timeoutMs) {"
+      },
+      {
+        "file": "EgoDesktop/src/main.js",
+        "line": 690,
+        "excerpt": "const backend = await runEgoOperatorDesktopTurn(turnPayload, args[\"chat-timeout-ms\"]);"
+      }
+    ]
+  },
+  "p1_egooperator_ref_count_in_p1_changed_files": 0,
+  "p1_egooperator_ref_scope": {
+    "meaning": "P1-added pet source/test/viewer files required by card STEP1 grep evidence",
+    "files": [
+      "EgoDesktop/src/petKernelBridge.js",
+      "EgoDesktop/src/petLive2dObserverMap.js",
+      "EgoDesktop/src/petMode.js",
+      "EgoDesktop/src/petSuiteBaselineGate.js",
+      "EgoDesktop/tests/pet_mode.test.js",
+      "EgoDesktop/tests/pet_static_gate_audit.test.js",
+      "EgoDesktop/tests/pet_suite_baseline_gate.test.js",
+      "EgoDesktop/viewer/pet.css",
+      "EgoDesktop/viewer/pet.html",
+      "EgoDesktop/viewer/petRenderer.js"
+    ],
+    "count": 0
+  },
+  "p1_egooperator_ref_delta_scope": {
+    "meaning": "P1-touched source/test/viewer files used by the re-scoped suite gate to prevent a P1-introduced runtime-owner reference from being masked by the closed baseline",
+    "files": [
+      "EgoDesktop/src/main.js",
+      "EgoDesktop/src/preload.js",
+      "EgoDesktop/src/petKernelBridge.js",
+      "EgoDesktop/src/petLive2dObserverMap.js",
+      "EgoDesktop/src/petMode.js",
+      "EgoDesktop/src/petSuiteBaselineGate.js",
+      "EgoDesktop/tests/pet_mode.test.js",
+      "EgoDesktop/tests/pet_static_gate_audit.test.js",
+      "EgoDesktop/tests/pet_suite_baseline_gate.test.js",
+      "EgoDesktop/viewer/pet.css",
+      "EgoDesktop/viewer/pet.html",
+      "EgoDesktop/viewer/petRenderer.js"
+    ],
+    "baseline_count": 2,
+    "baseline_hits": [
+      "HEAD:EgoDesktop/src/main.js:158:function runEgoOperatorDesktopTurn(turnPayload, timeoutMs)",
+      "HEAD:EgoDesktop/src/main.js:689:    const backend = await runEgoOperatorDesktopTurn(turnPayload, args[\"chat-timeout-ms\"]);"
+    ],
+    "current_count": 2,
+    "current_hits": [
+      {
+        "file": "EgoDesktop/src/main.js",
+        "line": 158,
+        "excerpt": "function runEgoOperatorDesktopTurn(turnPayload, timeoutMs) {"
+      },
+      {
+        "file": "EgoDesktop/src/main.js",
+        "line": 690,
+        "excerpt": "const backend = await runEgoOperatorDesktopTurn(turnPayload, args[\"chat-timeout-ms\"]);"
+      }
+    ],
+    "p1_egooperator_ref_delta": 0
+  },
+  "pre_existing_egodesktop_egooperator_reference_enumeration": {
+    "command": "git grep -n EgoOperator HEAD -- 'EgoDesktop/*.js' 'EgoDesktop/**/*.js'",
+    "count": 12,
+    "references": [
+      "HEAD:EgoDesktop/scripts/build_pspc_perception_demo_report.js:172:- [ ] Verify no EgoOperator gate, memory, transport, approval, or proactive path is invoked.",
+      "HEAD:EgoDesktop/scripts/build_pspc_perception_demo_report.js:206:This does not prove PSPC runtime integration, adapter readiness, EgoOperator efficacy, real user benefit, durable memory efficacy, live autonomy, consciousness, subjective experience, real emotion, or that the product should ship.",
+      "HEAD:EgoDesktop/scripts/build_pspc_reply_preview_report.js:269:This does not prove PSPC production integration, EgoOperator runtime integration safety, adapter readiness, stable real user benefit, durable memory efficacy, live autonomy, consciousness, subjective experience, or real emotion. It also does not prove the session-local classifier is a learned PSPC mechanism.",
+      "HEAD:EgoDesktop/scripts/build_session_context_report.js:99:EgoDesktop can package recent window-local user/assistant turns into a bounded \\`desktop_session_context\\` and pass it to the desktop turn script as temporary in-session context. This fixes the single-turn backend gap for local desktop chat continuity without writing real EgoOperator memory.",
+      "HEAD:EgoDesktop/scripts/build_session_context_report.js:119:This does not prove durable memory, preference promotion, PSPC durable memory, EgoOperator runtime integration safety, stable real user benefit, live autonomy, consciousness, subjective experience, or real emotion.",
+      "HEAD:EgoDesktop/scripts/run-joi-g-ablation-kernel-adoption.js:24:  \"EgoOperator\",",
+      "HEAD:EgoDesktop/src/main.js:158:function runEgoOperatorDesktopTurn(turnPayload, timeoutMs) {",
+      "HEAD:EgoDesktop/src/main.js:689:    const backend = await runEgoOperatorDesktopTurn(turnPayload, args[\"chat-timeout-ms\"]);",
+      "HEAD:EgoDesktop/src/pspcPerceptionDemo.js:212:      \"This does not prove PSPC runtime integration, adapter readiness, EgoOperator efficacy, real user benefit, durable memory efficacy, live autonomy, consciousness, subjective experience, real emotion, or stable market appeal.\",",
+      "HEAD:EgoDesktop/src/pspcPerceptionDemo.js:214:      \"Human perception review and Bilibili/Steam market validation scripts only; no EgoOperator adapter or runtime integration.\",",
+      "HEAD:EgoDesktop/src/pspcVisualShim.js:254:      \"This does not prove PSPC runtime integration, adapter readiness, EgoOperator efficacy, real user benefit, live autonomy, durable memory efficacy, consciousness, subjective experience, or real emotion.\",",
+      "HEAD:EgoDesktop/tests/pspc_visual_shim.test.js:90:  assert.equal(source.includes(\"runEgoOperatorDesktopTurn\"), false);"
+    ],
+    "raw_all_egodesktop_command": "git grep -n EgoOperator HEAD -- EgoDesktop",
+    "raw_all_egodesktop_count": 14,
+    "raw_all_egodesktop_references": [
+      "HEAD:EgoDesktop/package.json:5:  \"description\": \"Local Live2D desktop viewer for EgoOperator gated presence signals.\",",
+      "HEAD:EgoDesktop/scripts/build_pspc_perception_demo_report.js:172:- [ ] Verify no EgoOperator gate, memory, transport, approval, or proactive path is invoked.",
+      "HEAD:EgoDesktop/scripts/build_pspc_perception_demo_report.js:206:This does not prove PSPC runtime integration, adapter readiness, EgoOperator efficacy, real user benefit, durable memory efficacy, live autonomy, consciousness, subjective experience, real emotion, or that the product should ship.",
+      "HEAD:EgoDesktop/scripts/build_pspc_reply_preview_report.js:269:This does not prove PSPC production integration, EgoOperator runtime integration safety, adapter readiness, stable real user benefit, durable memory efficacy, live autonomy, consciousness, subjective experience, or real emotion. It also does not prove the session-local classifier is a learned PSPC mechanism.",
+      "HEAD:EgoDesktop/scripts/build_session_context_report.js:99:EgoDesktop can package recent window-local user/assistant turns into a bounded \\`desktop_session_context\\` and pass it to the desktop turn script as temporary in-session context. This fixes the single-turn backend gap for local desktop chat continuity without writing real EgoOperator memory.",
+      "HEAD:EgoDesktop/scripts/build_session_context_report.js:119:This does not prove durable memory, preference promotion, PSPC durable memory, EgoOperator runtime integration safety, stable real user benefit, live autonomy, consciousness, subjective experience, or real emotion.",
+      "HEAD:EgoDesktop/scripts/run-joi-g-ablation-kernel-adoption.js:24:  \"EgoOperator\",",
+      "HEAD:EgoDesktop/src/main.js:158:function runEgoOperatorDesktopTurn(turnPayload, timeoutMs) {",
+      "HEAD:EgoDesktop/src/main.js:689:    const backend = await runEgoOperatorDesktopTurn(turnPayload, args[\"chat-timeout-ms\"]);",
+      "HEAD:EgoDesktop/src/pspcPerceptionDemo.js:212:      \"This does not prove PSPC runtime integration, adapter readiness, EgoOperator efficacy, real user benefit, durable memory efficacy, live autonomy, consciousness, subjective experience, real emotion, or stable market appeal.\",",
+      "HEAD:EgoDesktop/src/pspcPerceptionDemo.js:214:      \"Human perception review and Bilibili/Steam market validation scripts only; no EgoOperator adapter or runtime integration.\",",
+      "HEAD:EgoDesktop/src/pspcVisualShim.js:254:      \"This does not prove PSPC runtime integration, adapter readiness, EgoOperator efficacy, real user benefit, live autonomy, durable memory efficacy, consciousness, subjective experience, or real emotion.\",",
+      "HEAD:EgoDesktop/tests/pspc_visual_shim.test.js:90:  assert.equal(source.includes(\"runEgoOperatorDesktopTurn\"), false);",
+      "HEAD:EgoDesktop/viewer/index.html:17:      <section id=\"chat-panel\" aria-label=\"EgoOperator desktop chat\">"
+    ],
+    "note": "Card's 12-reference count corresponds to HEAD JavaScript source/report/test references. Raw all-file grep also sees package metadata and viewer label, yielding 14."
+  },
+  "computed_evidence_provenance": {
+    "producer_function": "codex_step1_p1_suite_baseline_record",
+    "aggregation_rule": "closed three-node-id allowlist; no wildcard; P1 source owner-reference delta guard must remain zero",
+    "code_path_hash": "manual_governance_record_from_pytest_logs_and_git_grep_sha256_pinned_above"
+  },
+  "what_this_does_not_prove": [
+    "does not prove the three Route A debts are resolved",
+    "does not prove P1 pass or product readiness",
+    "does not prove runtime integration safety, stable user benefit, autonomy, agency, subjectivity, consciousness, or real emotion"
+  ]
+}
