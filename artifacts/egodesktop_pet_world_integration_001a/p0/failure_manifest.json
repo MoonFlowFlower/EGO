@@ -1,0 +1,51 @@
+{
+  "claim_ceiling": "pet_integration_engineering_only",
+  "code_path_hash": "b066e1fa84b199bf811eff180d5b6c11177227091dd97a7de338a66778bef701",
+  "config_shas": {
+    "ADDENDUM_002.md": "27f50799d95667c29a136738710f5a80f57d9e3665a4c45d100bac9c9de389b1",
+    "static_gate_config_v0.json": "728009d5b88c5238075ebdcfd613c1a6e25f39abddb2d0f05211059a9cdcd2f3",
+    "world_config_v0.json": "f97cfe07786551a0caddb2c9ee88e546cb263e5769218da639ff0e5e6fe7075c"
+  },
+  "failing_gates": [
+    "rng_audit"
+  ],
+  "input_artifacts": [
+    "artifacts/egodesktop_pet_world_integration_001a/p0/probe_report.json"
+  ],
+  "per_gate_reasons": {
+    "UNSEEDED-RNG-AUDIT": {
+      "forbidden_hits": [
+        {
+          "file": "scripts/ego_pet/battery.py",
+          "token": "secrets."
+        },
+        {
+          "file": "scripts/ego_pet/battery.py",
+          "token": "random."
+        },
+        {
+          "file": "scripts/ego_pet/battery.py",
+          "token": "np.random"
+        },
+        {
+          "file": "scripts/ego_pet/battery.py",
+          "token": "torch.rand"
+        }
+      ],
+      "note": "Card requires STOP on unseeded RNG evidence-validity anomaly; no scored run was launched.",
+      "status": "fail"
+    }
+  },
+  "phase": "probe",
+  "probe_cpu": {
+    "line_cpu_hours": 2.0,
+    "measured_cpu_hours": 0.000603298611,
+    "projected_full_p0_cpu_hours": 0.02171875,
+    "projection_rule": "run one S_dev seed probe first; projected_full_P0_cpu_hours = measured_probe_cpu_hours * 20 * 1.8; STOP before scored run if projection exceeds 2.0"
+  },
+  "producer_function": "build_probe_failure_manifest_from_probe_report",
+  "run_id": "egodesktop_pet_world_integration_001a_p0_v1_probe_seed_1101",
+  "scored_run_launched": false,
+  "stop_reason": "STEP3_probe_unseeded_rng_audit_failed__S_scored_not_launched",
+  "verdict": "pet_integration_fail_unseeded_rng_audit"
+}
