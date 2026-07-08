@@ -1,7 +1,7 @@
 {
   "aggregation_rule": "P0 gate conjunction with carded downgrade on G-PET-HARD fail",
   "claim_ceiling": "pet_integration_engineering_only",
-  "code_path_hash": "4bc8f2fdd0b980ea9f405feb09293ac70f08b811363ab23553184c893dda2eb2",
+  "code_path_hash": "b066e1fa84b199bf811eff180d5b6c11177227091dd97a7de338a66778bef701",
   "config_shas": {
     "ADDENDUM_002.md": "27f50799d95667c29a136738710f5a80f57d9e3665a4c45d100bac9c9de389b1",
     "static_gate_config_v0.json": "728009d5b88c5238075ebdcfd613c1a6e25f39abddb2d0f05211059a9cdcd2f3",
@@ -9,8 +9,8 @@
   },
   "cpu": {
     "line_cpu_hours": 2.0,
-    "measured_cpu_hours": 0.000568576389,
-    "projected_full_p0_cpu_hours": 0.02046875,
+    "measured_cpu_hours": 0.000603298611,
+    "projected_full_p0_cpu_hours": 0.02171875,
     "projection_rule": "run one S_dev seed probe first; projected_full_P0_cpu_hours = measured_probe_cpu_hours * 20 * 1.8; STOP before scored run if projection exceeds 2.0"
   },
   "episode_ids": [
@@ -21,11 +21,13 @@
     "p0_frozen_updates_seed_1101",
     "p0_schedule_aware_reference_seed_1101"
   ],
-  "failing_gates": [],
+  "failing_gates": [
+    "rng_audit"
+  ],
   "gate_results": {
     "G-PET-ABLATION": {
       "aggregation_rule": "mean collapse fraction of candidate-vs-standin post_shift gap under frozen-updates arm",
-      "code_path_hash": "4bc8f2fdd0b980ea9f405feb09293ac70f08b811363ab23553184c893dda2eb2",
+      "code_path_hash": "b066e1fa84b199bf811eff180d5b6c11177227091dd97a7de338a66778bef701",
       "episode_ids": [
         "p0_frozen_updates_seed_1101"
       ],
@@ -60,7 +62,7 @@
         "low": 0.763185,
         "mean": 0.763185
       },
-      "code_path_hash": "4bc8f2fdd0b980ea9f405feb09293ac70f08b811363ab23553184c893dda2eb2",
+      "code_path_hash": "b066e1fa84b199bf811eff180d5b6c11177227091dd97a7de338a66778bef701",
       "delta_hard": 0.05,
       "episode_ids": [
         "p0_candidate_seed_1101"
@@ -91,7 +93,7 @@
     },
     "G-PET-MEM-PATH": {
       "aggregation_rule": "single positive-control poisoned suggestion through product input path must quarantine with zero unauthorized promotion",
-      "code_path_hash": "4bc8f2fdd0b980ea9f405feb09293ac70f08b811363ab23553184c893dda2eb2",
+      "code_path_hash": "b066e1fa84b199bf811eff180d5b6c11177227091dd97a7de338a66778bef701",
       "direct_external_owned_writes": 0,
       "episode_ids": [
         "pet_mem_path_probe"
@@ -138,7 +140,7 @@
     },
     "G-PET-REPLAY": {
       "aggregation_rule": "fresh subprocess replay x2, compare state_before_hash/action/state_after_hash",
-      "code_path_hash": "4bc8f2fdd0b980ea9f405feb09293ac70f08b811363ab23553184c893dda2eb2",
+      "code_path_hash": "b066e1fa84b199bf811eff180d5b6c11177227091dd97a7de338a66778bef701",
       "episode_count": 6,
       "episode_ids": [
         "p0_candidate_seed_1101",
@@ -164,9 +166,26 @@
       "status": "pass"
     },
     "UNSEEDED-RNG-AUDIT": {
-      "aggregation_rule": "AST-level audit for RNG framework imports and call sites in all scanned pet files; detector literals are not executable usage",
-      "code_path_hash": "4bc8f2fdd0b980ea9f405feb09293ac70f08b811363ab23553184c893dda2eb2",
-      "forbidden_hits": [],
+      "aggregation_rule": "grep-level audit for unregistered RNG framework calls in scripts/ego_pet",
+      "code_path_hash": "b066e1fa84b199bf811eff180d5b6c11177227091dd97a7de338a66778bef701",
+      "forbidden_hits": [
+        {
+          "file": "scripts/ego_pet/battery.py",
+          "token": "secrets."
+        },
+        {
+          "file": "scripts/ego_pet/battery.py",
+          "token": "random."
+        },
+        {
+          "file": "scripts/ego_pet/battery.py",
+          "token": "np.random"
+        },
+        {
+          "file": "scripts/ego_pet/battery.py",
+          "token": "torch.rand"
+        }
+      ],
       "input_artifacts": [
         "scripts/ego_pet/__init__.py",
         "scripts/ego_pet/battery.py",
@@ -179,7 +198,7 @@
       "producer_function": "rng_audit",
       "run_id": "egodesktop_pet_world_integration_001a_p0_v1_probe_seed_1101",
       "seed_ids": [],
-      "status": "pass"
+      "status": "fail"
     }
   },
   "phase": "probe",
@@ -190,7 +209,7 @@
     1101
   ],
   "task": "egodesktop-pet-world-integration-001a",
-  "verdict": "pet_integration_probe_clean",
+  "verdict": "pet_integration_fail_unseeded_rng_audit",
   "what_this_does_not_prove": [
     "no EgoDesktop runtime wiring",
     "no P1 schema/static-gate audit",

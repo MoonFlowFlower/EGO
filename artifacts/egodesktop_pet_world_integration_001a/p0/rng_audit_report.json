@@ -1,0 +1,18 @@
+{
+  "aggregation_rule": "AST-level audit for RNG framework imports and call sites in all scanned pet files; detector literals are not executable usage",
+  "code_path_hash": "4bc8f2fdd0b980ea9f405feb09293ac70f08b811363ab23553184c893dda2eb2",
+  "forbidden_hits": [],
+  "input_artifacts": [
+    "scripts/ego_pet/__init__.py",
+    "scripts/ego_pet/battery.py",
+    "scripts/ego_pet/creature.py",
+    "scripts/ego_pet/memory_wiring.py",
+    "scripts/ego_pet/standin.py",
+    "scripts/ego_pet/static_gate.py",
+    "scripts/ego_pet/world.py"
+  ],
+  "producer_function": "rng_audit",
+  "run_id": "egodesktop_pet_world_integration_001a_p0_v1_probe_seed_1101",
+  "seed_ids": [],
+  "status": "pass"
+}
