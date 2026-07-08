@@ -1,0 +1,264 @@
+{
+  "aggregation_rule": "paired candidate_minus_hardcoded_standin post_shift_mean over frozen S_scored/S_dev subset with deterministic bootstrap CI",
+  "ci": {
+    "high": 0.76330925,
+    "low": 0.76313575,
+    "mean": 0.76323125
+  },
+  "code_path_hash": "4bc8f2fdd0b980ea9f405feb09293ac70f08b811363ab23553184c893dda2eb2",
+  "delta_hard": 0.05,
+  "episode_ids": [
+    "p0_candidate_seed_2101",
+    "p0_candidate_seed_2102",
+    "p0_candidate_seed_2103",
+    "p0_candidate_seed_2104",
+    "p0_candidate_seed_2105",
+    "p0_candidate_seed_2106",
+    "p0_candidate_seed_2107",
+    "p0_candidate_seed_2108",
+    "p0_candidate_seed_2109",
+    "p0_candidate_seed_2110",
+    "p0_candidate_seed_2111",
+    "p0_candidate_seed_2112",
+    "p0_candidate_seed_2113",
+    "p0_candidate_seed_2114",
+    "p0_candidate_seed_2115",
+    "p0_candidate_seed_2116",
+    "p0_candidate_seed_2117",
+    "p0_candidate_seed_2118",
+    "p0_candidate_seed_2119",
+    "p0_candidate_seed_2120"
+  ],
+  "gate": "G-PET-HARD",
+  "input_artifacts": [
+    "world_config_v0.json",
+    "ADDENDUM_002.md"
+  ],
+  "per_seed": [
+    {
+      "candidate": 0.996215,
+      "candidate_minus_standin": 0.763465,
+      "frozen_updates": 0.15012,
+      "random": 0.05376,
+      "schedule_aware_reference": 0.99625,
+      "seed": 2101,
+      "standin": 0.23275,
+      "static": 0.23275
+    },
+    {
+      "candidate": 0.996075,
+      "candidate_minus_standin": 0.763325,
+      "frozen_updates": 0.14497,
+      "random": 0.05233,
+      "schedule_aware_reference": 0.99625,
+      "seed": 2102,
+      "standin": 0.23275,
+      "static": 0.23275
+    },
+    {
+      "candidate": 0.996075,
+      "candidate_minus_standin": 0.763325,
+      "frozen_updates": 0.14374,
+      "random": 0.0,
+      "schedule_aware_reference": 0.99625,
+      "seed": 2103,
+      "standin": 0.23275,
+      "static": 0.23275
+    },
+    {
+      "candidate": 0.99599,
+      "candidate_minus_standin": 0.76324,
+      "frozen_updates": 0.14784,
+      "random": 0.0,
+      "schedule_aware_reference": 0.99625,
+      "seed": 2104,
+      "standin": 0.23275,
+      "static": 0.23275
+    },
+    {
+      "candidate": 0.995835,
+      "candidate_minus_standin": 0.763085,
+      "frozen_updates": 0.15131,
+      "random": 0.06146,
+      "schedule_aware_reference": 0.99625,
+      "seed": 2105,
+      "standin": 0.23275,
+      "static": 0.23275
+    },
+    {
+      "candidate": 0.996045,
+      "candidate_minus_standin": 0.763295,
+      "frozen_updates": 0.14732,
+      "random": 0.01854,
+      "schedule_aware_reference": 0.99625,
+      "seed": 2106,
+      "standin": 0.23275,
+      "static": 0.23275
+    },
+    {
+      "candidate": 0.995875,
+      "candidate_minus_standin": 0.763125,
+      "frozen_updates": 0.14758,
+      "random": 0.00837,
+      "schedule_aware_reference": 0.99625,
+      "seed": 2107,
+      "standin": 0.23275,
+      "static": 0.23275
+    },
+    {
+      "candidate": 0.99585,
+      "candidate_minus_standin": 0.7631,
+      "frozen_updates": 0.15174,
+      "random": 0.0,
+      "schedule_aware_reference": 0.99625,
+      "seed": 2108,
+      "standin": 0.23275,
+      "static": 0.23275
+    },
+    {
+      "candidate": 0.996125,
+      "candidate_minus_standin": 0.763375,
+      "frozen_updates": 0.14251,
+      "random": 0.05891,
+      "schedule_aware_reference": 0.99625,
+      "seed": 2109,
+      "standin": 0.23275,
+      "static": 0.23275
+    },
+    {
+      "candidate": 0.995385,
+      "candidate_minus_standin": 0.762635,
+      "frozen_updates": 0.14401,
+      "random": 0.0,
+      "schedule_aware_reference": 0.99625,
+      "seed": 2110,
+      "standin": 0.23275,
+      "static": 0.23275
+    },
+    {
+      "candidate": 0.9958,
+      "candidate_minus_standin": 0.76305,
+      "frozen_updates": 0.14251,
+      "random": 0.0233,
+      "schedule_aware_reference": 0.99625,
+      "seed": 2111,
+      "standin": 0.23275,
+      "static": 0.23275
+    },
+    {
+      "candidate": 0.99615,
+      "candidate_minus_standin": 0.7634,
+      "frozen_updates": 0.14966,
+      "random": 0.001755,
+      "schedule_aware_reference": 0.99625,
+      "seed": 2112,
+      "standin": 0.23275,
+      "static": 0.23275
+    },
+    {
+      "candidate": 0.995975,
+      "candidate_minus_standin": 0.763225,
+      "frozen_updates": 0.1477,
+      "random": 0.05748,
+      "schedule_aware_reference": 0.99625,
+      "seed": 2113,
+      "standin": 0.23275,
+      "static": 0.23275
+    },
+    {
+      "candidate": 0.99607,
+      "candidate_minus_standin": 0.76332,
+      "frozen_updates": 0.15967,
+      "random": 0.0366,
+      "schedule_aware_reference": 0.99625,
+      "seed": 2114,
+      "standin": 0.23275,
+      "static": 0.23275
+    },
+    {
+      "candidate": 0.99601,
+      "candidate_minus_standin": 0.76326,
+      "frozen_updates": 0.1477,
+      "random": 0.06457,
+      "schedule_aware_reference": 0.99625,
+      "seed": 2115,
+      "standin": 0.23275,
+      "static": 0.23275
+    },
+    {
+      "candidate": 0.996005,
+      "candidate_minus_standin": 0.763255,
+      "frozen_updates": 0.14896,
+      "random": 0.0,
+      "schedule_aware_reference": 0.99625,
+      "seed": 2116,
+      "standin": 0.23275,
+      "static": 0.23275
+    },
+    {
+      "candidate": 0.9958,
+      "candidate_minus_standin": 0.76305,
+      "frozen_updates": 0.15166,
+      "random": 0.02229,
+      "schedule_aware_reference": 0.99625,
+      "seed": 2117,
+      "standin": 0.23275,
+      "static": 0.23275
+    },
+    {
+      "candidate": 0.99598,
+      "candidate_minus_standin": 0.76323,
+      "frozen_updates": 0.15517,
+      "random": 0.03956,
+      "schedule_aware_reference": 0.99625,
+      "seed": 2118,
+      "standin": 0.23275,
+      "static": 0.23275
+    },
+    {
+      "candidate": 0.99625,
+      "candidate_minus_standin": 0.7635,
+      "frozen_updates": 0.14374,
+      "random": 0.038525,
+      "schedule_aware_reference": 0.99625,
+      "seed": 2119,
+      "standin": 0.23275,
+      "static": 0.23275
+    },
+    {
+      "candidate": 0.996115,
+      "candidate_minus_standin": 0.763365,
+      "frozen_updates": 0.15054,
+      "random": 0.00779,
+      "schedule_aware_reference": 0.99625,
+      "seed": 2120,
+      "standin": 0.23275,
+      "static": 0.23275
+    }
+  ],
+  "producer_function": "baseline_comparison",
+  "run_id": "egodesktop_pet_world_integration_001a_p0_v1_scored",
+  "seed_ids": [
+    2101,
+    2102,
+    2103,
+    2104,
+    2105,
+    2106,
+    2107,
+    2108,
+    2109,
+    2110,
+    2111,
+    2112,
+    2113,
+    2114,
+    2115,
+    2116,
+    2117,
+    2118,
+    2119,
+    2120
+  ],
+  "status": "pass"
+}

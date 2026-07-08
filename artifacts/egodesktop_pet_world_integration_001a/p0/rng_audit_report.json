@@ -12,7 +12,7 @@
     "scripts/ego_pet/world.py"
   ],
   "producer_function": "rng_audit",
-  "run_id": "egodesktop_pet_world_integration_001a_p0_v1_probe_seed_1101",
+  "run_id": "egodesktop_pet_world_integration_001a_p0_v1_scored",
   "seed_ids": [],
   "status": "pass"
 }

@@ -1,0 +1,68 @@
+{
+  "aggregation_rule": "mean collapse fraction of candidate-vs-standin post_shift gap under frozen-updates arm",
+  "code_path_hash": "4bc8f2fdd0b980ea9f405feb09293ac70f08b811363ab23553184c893dda2eb2",
+  "episode_ids": [
+    "p0_frozen_updates_seed_2101",
+    "p0_frozen_updates_seed_2102",
+    "p0_frozen_updates_seed_2103",
+    "p0_frozen_updates_seed_2104",
+    "p0_frozen_updates_seed_2105",
+    "p0_frozen_updates_seed_2106",
+    "p0_frozen_updates_seed_2107",
+    "p0_frozen_updates_seed_2108",
+    "p0_frozen_updates_seed_2109",
+    "p0_frozen_updates_seed_2110",
+    "p0_frozen_updates_seed_2111",
+    "p0_frozen_updates_seed_2112",
+    "p0_frozen_updates_seed_2113",
+    "p0_frozen_updates_seed_2114",
+    "p0_frozen_updates_seed_2115",
+    "p0_frozen_updates_seed_2116",
+    "p0_frozen_updates_seed_2117",
+    "p0_frozen_updates_seed_2118",
+    "p0_frozen_updates_seed_2119",
+    "p0_frozen_updates_seed_2120"
+  ],
+  "f_abl": 0.5,
+  "gate": "G-PET-ABLATION",
+  "identity_tripwire": {
+    "identical_pairs": 0,
+    "status": "pass"
+  },
+  "input_artifacts": [
+    "baseline_comparison.json",
+    "world_config_v0.json"
+  ],
+  "mean_collapse_fraction": 1.110487599677,
+  "non_identity_positive_control": {
+    "actions_differ": true,
+    "fixture": "post_shift_non_identity_constructed_fixture_seed_9991",
+    "producer_function": "ablation_positive_control",
+    "status": "pass"
+  },
+  "producer_function": "ablation_report",
+  "run_id": "egodesktop_pet_world_integration_001a_p0_v1_scored",
+  "seed_ids": [
+    2101,
+    2102,
+    2103,
+    2104,
+    2105,
+    2106,
+    2107,
+    2108,
+    2109,
+    2110,
+    2111,
+    2112,
+    2113,
+    2114,
+    2115,
+    2116,
+    2117,
+    2118,
+    2119,
+    2120
+  ],
+  "status": "pass"
+}
