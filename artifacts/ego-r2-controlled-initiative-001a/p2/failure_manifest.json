@@ -1,0 +1,27 @@
+{
+  "blocker": "official_runner_refused_invalid_legacy_p0_certificate",
+  "claim_ceiling": "p2 not started; start-blocker evidence only",
+  "command": [
+    "C:\\Python313\\python.exe",
+    "-m",
+    "scripts.ego_r2_controlled_initiative.runner",
+    "--phase",
+    "p2",
+    "--out-dir",
+    "artifacts/ego-r2-controlled-initiative-001a/p2",
+    "--n-ep",
+    "40"
+  ],
+  "expected_certificate_checked_by_runner": "artifacts\\ego-r2-controlled-initiative-001a\\p0\\part0_certificate.json",
+  "heldout_burned": false,
+  "legacy_p0_certificate_sha256": "D520E0EE7FC6BBB8F05360D410F7B9AB29CE5230680170F7EA26CC6983DF89CC",
+  "p2_scoring_started": false,
+  "phase": "p2_start",
+  "producer_function": "bank_p2_start_blocker_subprocess",
+  "returncode": 1,
+  "status": "blocked_before_scoring",
+  "stderr": "P2 refused: invalid certificate artifacts\\ego-r2-controlled-initiative-001a\\p0\\part0_certificate.json\n",
+  "stdout": "",
+  "valid_addendum001_certificate": "artifacts\\ego-r2-controlled-initiative-001a\\p0_rerun_addendum001\\part0_certificate.json",
+  "valid_addendum001_certificate_sha256": "21338A2AB6E4247C894B9959A24CA25901E26DB94D236717BDDAF123B88FC15D"
+}

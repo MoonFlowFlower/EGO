@@ -1,0 +1,9 @@
+{
+  "blocker": "official runner checks the banked v1 p0 certificate, which remains invalid, while the valid ADDENDUM-001 certificate is under p0_rerun_addendum001; no P2 scoring started",
+  "claim_ceiling": "p2 not started; start-blocker evidence only",
+  "failing_gates": [],
+  "heldout_burned": false,
+  "phase": "p2",
+  "producer_function": "bank_p2_start_blocker_subprocess",
+  "verdict": "p2_not_started_certificate_path_blocker"
+}
