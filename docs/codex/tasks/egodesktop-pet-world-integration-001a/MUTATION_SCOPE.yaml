@@ -1,0 +1,65 @@
+schema_version: codex.mutation_scope.v1
+task: egodesktop-pet-world-integration-001a
+version_probe: "PET-WORLD-INTEGRATION-001A rev-A 2026-07-07"
+expected_mutation_surface:
+  - product integration assembly only; no new mechanism claim; all learned-component claims re-earned by this card's own battery (joi BAR1 cited only through JOI_DEMO_FROZEN_REFERENCE_INDEX_001A at recorded ceilings)
+  - new isolated Python package scripts/ego_pet/ (world, creature learner clean rewrite, hardcoded stand-in, static gate, battery runner); imports scripts/ego_kernel READ-ONLY — zero edits to existing ego_kernel files
+  - EgoDesktop pet mode strictly additive and default-off behind a developer flag; new files only, plus at most ONE additive flag hook each in main.js and preload.js, each a single guarded require/branch, listed in the landing diff explicitly
+  - viewer is pure observer + tick-quantized input relay; every cross-boundary event is in kernel trace; replay reconstructs sessions without the viewer
+  - five g_ablation modules byte-frozen (sha-checked in G-PET-SCHEMA); R3 adapter reused additively, never forked
+  - all gate constants frozen at landing; DERIVATION_NOTES.md reachability check before any scored run; changes only via ADDENDUM landed pre-run (commit-order = ex-ante proof)
+  - PROGRAM_STATE_UNIFIED.yaml touched exactly once in the completion state-update step with a verbatim entry; never by landing/implementation commits; derived views regenerated only via scripts/codex/generate_program_state_views.py
+  - landing commit touches only this task package plus regenerated lane-index views
+allowed_mutation_paths:
+  - docs/codex/tasks/egodesktop-pet-world-integration-001a/
+  - scripts/ego_pet/
+  - scripts/run_ego_pet_integration_battery.py
+  - tests/test_ego_pet_world.py
+  - tests/test_ego_pet_integration.py
+  - EgoDesktop/src/petMode.js
+  - EgoDesktop/src/petKernelBridge.js
+  - EgoDesktop/src/petLive2dObserverMap.js
+  - EgoDesktop/src/main.js            # single additive default-off flag hook only
+  - EgoDesktop/src/preload.js         # single additive default-off flag hook only
+  - EgoDesktop/viewer/pet.html
+  - EgoDesktop/viewer/petRenderer.js
+  - EgoDesktop/viewer/pet.css
+  - EgoDesktop/tests/pet_mode.test.js
+  - EgoDesktop/tests/pet_static_gate_audit.test.js
+  - artifacts/egodesktop_pet_world_integration_001a/
+  - docs/codex/tasks/TASK_LANE_INDEX.md          # regenerated via script only
+  - docs/PROGRAM_STATE_UNIFIED.yaml              # completion step only, verbatim entry
+  - docs/STATUS.md                               # regenerated via script only
+  - artifacts/reports/program_state_summary.md   # regenerated via script only
+  - docs/REPO_HYGIENE_POLICY.md                  # regenerated via script only
+forbidden_mutation_paths:
+  - scripts/ego_kernel/                # reuse via import only; zero edits
+  - EgoDesktop/src/joiRealLoopGAblationHarness.js
+  - EgoDesktop/src/joiRealLoopGAblationOfflineReplay.js
+  - EgoDesktop/src/joiRealLoopGAblationReplayEvaluator.js
+  - EgoDesktop/src/joiRealLoopGAblationCalibrationReference.js
+  - EgoDesktop/src/joiRealLoopGAblationTraceRunner.js
+  - EgoDesktop/src/joiRealLoopGAblationKernelStateAdapter.js   # reuse, no edits (additive consumers live in new files)
+  - EgoDesktop/src/chatTurn.js
+  - EgoDesktop/src/tts.js
+  - EgoDesktop/src/ttsWorkerClient.js
+  - EgoDesktop/src/pspcPerceptionDemo.js
+  - EgoDesktop/src/pspcReplyPreview.js
+  - EgoDesktop/src/pspcSignalExtractor.js
+  - EgoDesktop/src/pspcVisualShim.js
+  - EgoDesktop/src/server.js
+  - EgoOperator/
+  - artifacts/ego_r0_kernel_state_substrate_001a/
+  - artifacts/ego_r1_memory_ownership_001a/
+  - artifacts/ego_r1_memory_ownership_instrument_repair_001a/
+  - artifacts/ego_r1_memory_ownership_instrument_repair_001b/
+  - artifacts/ego_r3_adoption_slice_001a/
+  - artifacts/ego-r2-controlled-initiative-001a/
+  - docs/codex/tasks/ego-mechanism-rewrite-decision-001a/
+  - docs/codex/tasks/ego-r2-controlled-initiative-001a/
+  - docs/JOI_DEMO_FROZEN_REFERENCE_INDEX_001A.md
+  - gate/approval/transport/proactive paths
+  - live-proactive behavior, OS notifications, external transports
+  - LLM integration, network calls, API keys
+  - screen capture / computer-operation surfaces
+claim_ceiling: "pet_integration_engineering_only; default-off; bounded engineering integration evidence that banked R0/R1/R3 components plus a clean-rewrite BAR1-shaped learner assemble into a replayable desktop-pet loop with live ablation, ownership-gated memory wiring, static honestly-labeled user-facing gate, and designed disclosed mild drift; subclaims valid only per passed gates; if stand-in ships, ceiling drops to engineered-companion-with-replay-valid-substrate; no mechanism validity, no joi Bar-1 transfer, no learned initiative, no autonomy, agency, emotion, subjectivity, consciousness, functional selfhood, companion readiness, stable user benefit, or EGO-mainline readiness; no ITL result flow"
