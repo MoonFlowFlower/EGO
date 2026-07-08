@@ -95,7 +95,8 @@ update; zeroed = substate reset each tick).
   kernel trace fields. Real-LLM enforcement is R3-adoption scope.
 - **Hygiene gates**: no `EgoOperator` import anywhere in `scripts/ego_kernel`;
   no modification to `EgoDesktop/**` or `EgoOperator/**`; default-off scan
-  (PSPC pattern) over both = 0 references; pytest green; verify scripts 4/4;
+  (PSPC pattern) over both = 0 UNDECLARED references (sanctioned-adopter
+  allowlist; see parent ADDENDUM_20260708); pytest green; verify scripts 4/4;
   admission-tools regression untouched (`tests/test_joi_corpus_admission.py`
   still green).
 
