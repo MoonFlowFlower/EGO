@@ -1,0 +1,23 @@
+{
+  "behavior_tree_arm_used": "behavior_tree_th0.65_c20",
+  "behavior_tree_window_utility": {
+    "other": -417.59999999998985,
+    "window1": 261.40000000000015,
+    "window2": 183.60000000000002,
+    "window3": 162.40000000000003
+  },
+  "candidate_window_utility": {
+    "other": -1060.000000000091,
+    "window1": 953.3999999999983,
+    "window2": 932.1999999999985,
+    "window3": 956.9999999999978
+  },
+  "diff": {
+    "other": -642.400000000101,
+    "window1": 691.9999999999982,
+    "window2": 748.5999999999984,
+    "window3": 794.5999999999979
+  },
+  "pass": true,
+  "uniform_win_red_flag": false
+}

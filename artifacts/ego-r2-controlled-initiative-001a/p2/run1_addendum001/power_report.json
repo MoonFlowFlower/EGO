@@ -1,0 +1,669 @@
+{
+  "certificate": {
+    "code_path_hash": "d8996efbe15ae1d768b730d93274d001a596def26b2796fc7ee0cfd7ee2eb050",
+    "dev_seeds": [
+      31,
+      47
+    ],
+    "gate_results": {
+      "G-P0-BUDGET": {
+        "budget_seconds": 14400.0,
+        "pass": true,
+        "projection_seconds": 395.4627337501443
+      },
+      "G-P0-DECODER": {
+        "ideal_mean": 0.9951298701298701,
+        "margin": 0.8135822510822511,
+        "obs_decoder_mean": 0.18154761904761899,
+        "pass": true
+      },
+      "G-P0-DEGEN": {
+        "always_act_ci_high": -0.07711038961038966,
+        "always_act_mean": -0.12148268398268398,
+        "always_silent_mean": 0.0,
+        "pass": true
+      },
+      "G-P0-HEADROOM": {
+        "ideal_mean": 0.9951298701298701,
+        "margin": 0.23877164502164483,
+        "max_static_family": "single_threshold_x1_0.80",
+        "max_static_mean": 0.7563582251082253,
+        "pass": true
+      },
+      "G-P0-INTERVENTION-CARRIER": {
+        "divergence_rate": 1.0,
+        "pass": true,
+        "producer_function": "_intervention_carrier",
+        "rows": [
+          {
+            "diverged": true,
+            "episode_index": 0,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 1,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 2,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 3,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 4,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 5,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 6,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 7,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 8,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 9,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 10,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 11,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 12,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 13,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 14,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 15,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 16,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 17,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 18,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 19,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 20,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 21,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 22,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 23,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 24,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 25,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 26,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 27,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 28,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 29,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 30,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 31,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 32,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 33,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 34,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 35,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 36,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 37,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 38,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 39,
+            "l1_s_trajectory": 2.999999999999999,
+            "master_seed": 31,
+            "utility_delta": 0.9999999999999993
+          },
+          {
+            "diverged": true,
+            "episode_index": 0,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 1,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 2,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 3,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 4,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 5,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 6,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 7,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 8,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 9,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 10,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 11,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 12,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 13,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 14,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 15,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 16,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 17,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 18,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 19,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 20,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 21,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 22,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 23,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 24,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 25,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 26,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 27,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 28,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 29,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 30,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 31,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 32,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 33,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 34,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 35,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 36,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 37,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 38,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          },
+          {
+            "diverged": true,
+            "episode_index": 39,
+            "l1_s_trajectory": 12.899999999999999,
+            "master_seed": 47,
+            "utility_delta": 2.6000000000000005
+          }
+        ]
+      },
+      "G-P0-LEAK": {
+        "clean_scan": {
+          "hits": [],
+          "leak_found": false,
+          "positive_control_key": "s_t",
+          "producer_function": "scan_visible_payload"
+        },
+        "pass": true,
+        "positive_control": {
+          "scan": {
+            "hits": [
+              {
+                "key": "s_t",
+                "path": "$.candidate_visible.s_t"
+              }
+            ],
+            "leak_found": true,
+            "positive_control_key": "s_t",
+            "producer_function": "scan_visible_payload"
+          },
+          "status": "pass"
+        }
+      },
+      "G-P0-POWER": {
+        "heldout_block": {
+          "mde_80": 0.04925605060646821,
+          "n": 80,
+          "pass": true,
+          "sigma_pair": 0.1573426820846181
+        },
+        "pass": true,
+        "pooled": {
+          "mde_80": 0.03482928739830143,
+          "n": 160,
+          "pass": true,
+          "sigma_pair": 0.1573426820846181
+        }
+      },
+      "G-P0-REPLAY": {
+        "digest_1": "694624a38663264565069e6c94fb9d32f9162c33c0453d52ca3484421a54579e",
+        "digest_2": "694624a38663264565069e6c94fb9d32f9162c33c0453d52ca3484421a54579e",
+        "pass": true,
+        "phase": "p0-digest",
+        "process_reports": [
+          {
+            "returncode": 0,
+            "status": "ok",
+            "stderr_tail": [],
+            "stdout_tail": [
+              "{\"digest\": \"694624a38663264565069e6c94fb9d32f9162c33c0453d52ca3484421a54579e\"}"
+            ]
+          },
+          {
+            "returncode": 0,
+            "status": "ok",
+            "stderr_tail": [],
+            "stdout_tail": [
+              "{\"digest\": \"694624a38663264565069e6c94fb9d32f9162c33c0453d52ca3484421a54579e\"}"
+            ]
+          }
+        ],
+        "producer_function": "_fresh_digest",
+        "status": "pass"
+      }
+    },
+    "n_ep": 40,
+    "status": "valid",
+    "task_id": "ego-r2-controlled-initiative-001a"
+  }
+}

@@ -1,0 +1,1927 @@
+{
+  "divergence_rate": 1.0,
+  "pass": true,
+  "producer_function": "_candidate_intervention",
+  "rows": [
+    {
+      "diverged": true,
+      "episode_index": 0,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 1,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 2,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 3,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 4,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 5,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 6,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 7,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 8,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 9,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 10,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 11,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 12,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 13,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 14,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 15,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 16,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 17,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 18,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 19,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 20,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 21,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 22,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 23,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 24,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 25,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 26,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 27,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 28,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 29,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 30,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 31,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 32,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 33,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 34,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 35,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 36,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 37,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 38,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 39,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 31,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": -2.400000000000004
+    },
+    {
+      "diverged": true,
+      "episode_index": 0,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 1,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 2,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 3,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 4,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 5,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 6,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 7,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 8,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 9,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 10,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 11,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 12,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 13,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 14,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 15,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 16,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 17,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 18,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 19,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 20,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 21,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 22,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 23,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 24,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 25,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 26,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 27,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 28,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 29,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 30,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 31,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 32,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 33,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 34,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 35,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 36,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 37,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 38,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 39,
+      "l1_s_trajectory": 0.19999999999999996,
+      "master_seed": 47,
+      "suppressed_ticks": [
+        94,
+        100,
+        106
+      ],
+      "utility_delta": 1.200000000000001
+    },
+    {
+      "diverged": true,
+      "episode_index": 0,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 1,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 2,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 3,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 4,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 5,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 6,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 7,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 8,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 9,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 10,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 11,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 12,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 13,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 14,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 15,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 16,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 17,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 18,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 19,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 20,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 21,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 22,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 23,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 24,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 25,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 26,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 27,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 28,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 29,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 30,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 31,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 32,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 33,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 34,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 35,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 36,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 37,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 38,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 39,
+      "l1_s_trajectory": 0.9999999999999998,
+      "master_seed": 61,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 4.000000000000006
+    },
+    {
+      "diverged": true,
+      "episode_index": 0,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 1,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 2,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 3,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 4,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 5,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 6,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 7,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 8,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 9,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 10,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 11,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 12,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 13,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 14,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 15,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 16,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 17,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 18,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 19,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 20,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 21,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 22,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 23,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 24,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 25,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 26,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 27,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 28,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 29,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 30,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 31,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 32,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 33,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 34,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 35,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 36,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 37,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 38,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    },
+    {
+      "diverged": true,
+      "episode_index": 39,
+      "l1_s_trajectory": 2.9,
+      "master_seed": 79,
+      "suppressed_ticks": [
+        90,
+        96,
+        102
+      ],
+      "utility_delta": 5.2000000000000055
+    }
+  ]
+}

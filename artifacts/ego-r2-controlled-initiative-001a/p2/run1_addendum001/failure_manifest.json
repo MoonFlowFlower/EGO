@@ -1,0 +1,9 @@
+{
+  "exit_codes": [],
+  "failing_gates": [
+    "G-R2-WIN",
+    "G-R2-ABLATION"
+  ],
+  "producer_function": "run_p2",
+  "verdict": "r2_fail_win"
+}

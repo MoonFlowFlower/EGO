@@ -1,0 +1,2368 @@
+{
+  "episodes": [
+    {
+      "accepts": 19,
+      "actions": 52,
+      "episode_index": 0,
+      "episode_seed": 3100000,
+      "ignores": 28,
+      "master_seed": 31,
+      "normalized_utility": 0.45454545454545464,
+      "raw_utility": 8.400000000000002,
+      "rejects": 5
+    },
+    {
+      "accepts": 21,
+      "actions": 65,
+      "episode_index": 1,
+      "episode_seed": 3100001,
+      "ignores": 41,
+      "master_seed": 31,
+      "normalized_utility": 0.53030303030303,
+      "raw_utility": 9.799999999999995,
+      "rejects": 3
+    },
+    {
+      "accepts": 22,
+      "actions": 55,
+      "episode_index": 2,
+      "episode_seed": 3100002,
+      "ignores": 28,
+      "master_seed": 31,
+      "normalized_utility": 0.616883116883117,
+      "raw_utility": 11.400000000000004,
+      "rejects": 5
+    },
+    {
+      "accepts": 22,
+      "actions": 58,
+      "episode_index": 3,
+      "episode_seed": 3100003,
+      "ignores": 31,
+      "master_seed": 31,
+      "normalized_utility": 0.5844155844155843,
+      "raw_utility": 10.799999999999997,
+      "rejects": 5
+    },
+    {
+      "accepts": 19,
+      "actions": 53,
+      "episode_index": 4,
+      "episode_seed": 3100004,
+      "ignores": 29,
+      "master_seed": 31,
+      "normalized_utility": 0.44372294372294385,
+      "raw_utility": 8.200000000000003,
+      "rejects": 5
+    },
+    {
+      "accepts": 22,
+      "actions": 54,
+      "episode_index": 5,
+      "episode_seed": 3100005,
+      "ignores": 24,
+      "master_seed": 31,
+      "normalized_utility": 0.49783549783549796,
+      "raw_utility": 9.200000000000003,
+      "rejects": 8
+    },
+    {
+      "accepts": 21,
+      "actions": 53,
+      "episode_index": 6,
+      "episode_seed": 3100006,
+      "ignores": 27,
+      "master_seed": 31,
+      "normalized_utility": 0.5735930735930733,
+      "raw_utility": 10.599999999999996,
+      "rejects": 5
+    },
+    {
+      "accepts": 21,
+      "actions": 50,
+      "episode_index": 7,
+      "episode_seed": 3100007,
+      "ignores": 23,
+      "master_seed": 31,
+      "normalized_utility": 0.562770562770563,
+      "raw_utility": 10.400000000000006,
+      "rejects": 6
+    },
+    {
+      "accepts": 22,
+      "actions": 57,
+      "episode_index": 8,
+      "episode_seed": 3100008,
+      "ignores": 30,
+      "master_seed": 31,
+      "normalized_utility": 0.5952380952380952,
+      "raw_utility": 11.0,
+      "rejects": 5
+    },
+    {
+      "accepts": 24,
+      "actions": 64,
+      "episode_index": 9,
+      "episode_seed": 3100009,
+      "ignores": 35,
+      "master_seed": 31,
+      "normalized_utility": 0.6493506493506499,
+      "raw_utility": 12.00000000000001,
+      "rejects": 5
+    },
+    {
+      "accepts": 22,
+      "actions": 55,
+      "episode_index": 10,
+      "episode_seed": 3100010,
+      "ignores": 28,
+      "master_seed": 31,
+      "normalized_utility": 0.6168831168831169,
+      "raw_utility": 11.4,
+      "rejects": 5
+    },
+    {
+      "accepts": 26,
+      "actions": 63,
+      "episode_index": 11,
+      "episode_seed": 3100011,
+      "ignores": 33,
+      "master_seed": 31,
+      "normalized_utility": 0.8333333333333336,
+      "raw_utility": 15.400000000000006,
+      "rejects": 4
+    },
+    {
+      "accepts": 21,
+      "actions": 60,
+      "episode_index": 12,
+      "episode_seed": 3100012,
+      "ignores": 34,
+      "master_seed": 31,
+      "normalized_utility": 0.4978354978354979,
+      "raw_utility": 9.200000000000001,
+      "rejects": 5
+    },
+    {
+      "accepts": 27,
+      "actions": 65,
+      "episode_index": 13,
+      "episode_seed": 3100013,
+      "ignores": 33,
+      "master_seed": 31,
+      "normalized_utility": 0.8333333333333341,
+      "raw_utility": 15.400000000000016,
+      "rejects": 5
+    },
+    {
+      "accepts": 24,
+      "actions": 57,
+      "episode_index": 14,
+      "episode_seed": 3100014,
+      "ignores": 27,
+      "master_seed": 31,
+      "normalized_utility": 0.6818181818181822,
+      "raw_utility": 12.600000000000009,
+      "rejects": 6
+    },
+    {
+      "accepts": 23,
+      "actions": 62,
+      "episode_index": 15,
+      "episode_seed": 3100015,
+      "ignores": 35,
+      "master_seed": 31,
+      "normalized_utility": 0.6493506493506502,
+      "raw_utility": 12.000000000000016,
+      "rejects": 4
+    },
+    {
+      "accepts": 27,
+      "actions": 62,
+      "episode_index": 16,
+      "episode_seed": 3100016,
+      "ignores": 31,
+      "master_seed": 31,
+      "normalized_utility": 0.9090909090909097,
+      "raw_utility": 16.80000000000001,
+      "rejects": 4
+    },
+    {
+      "accepts": 24,
+      "actions": 58,
+      "episode_index": 17,
+      "episode_seed": 3100017,
+      "ignores": 29,
+      "master_seed": 31,
+      "normalized_utility": 0.7142857142857146,
+      "raw_utility": 13.200000000000006,
+      "rejects": 5
+    },
+    {
+      "accepts": 18,
+      "actions": 64,
+      "episode_index": 18,
+      "episode_seed": 3100018,
+      "ignores": 43,
+      "master_seed": 31,
+      "normalized_utility": 0.34632034632034614,
+      "raw_utility": 6.399999999999997,
+      "rejects": 3
+    },
+    {
+      "accepts": 25,
+      "actions": 64,
+      "episode_index": 19,
+      "episode_seed": 3100019,
+      "ignores": 36,
+      "master_seed": 31,
+      "normalized_utility": 0.8008658008658013,
+      "raw_utility": 14.800000000000008,
+      "rejects": 3
+    },
+    {
+      "accepts": 23,
+      "actions": 52,
+      "episode_index": 20,
+      "episode_seed": 3100020,
+      "ignores": 25,
+      "master_seed": 31,
+      "normalized_utility": 0.7575757575757578,
+      "raw_utility": 14.000000000000004,
+      "rejects": 4
+    },
+    {
+      "accepts": 22,
+      "actions": 58,
+      "episode_index": 21,
+      "episode_seed": 3100021,
+      "ignores": 32,
+      "master_seed": 31,
+      "normalized_utility": 0.6277056277056281,
+      "raw_utility": 11.600000000000009,
+      "rejects": 4
+    },
+    {
+      "accepts": 22,
+      "actions": 55,
+      "episode_index": 22,
+      "episode_seed": 3100022,
+      "ignores": 27,
+      "master_seed": 31,
+      "normalized_utility": 0.5735930735930733,
+      "raw_utility": 10.599999999999996,
+      "rejects": 6
+    },
+    {
+      "accepts": 20,
+      "actions": 54,
+      "episode_index": 23,
+      "episode_seed": 3100023,
+      "ignores": 28,
+      "master_seed": 31,
+      "normalized_utility": 0.45454545454545464,
+      "raw_utility": 8.400000000000002,
+      "rejects": 6
+    },
+    {
+      "accepts": 28,
+      "actions": 66,
+      "episode_index": 24,
+      "episode_seed": 3100024,
+      "ignores": 34,
+      "master_seed": 31,
+      "normalized_utility": 0.9307359307359319,
+      "raw_utility": 17.20000000000002,
+      "rejects": 4
+    },
+    {
+      "accepts": 19,
+      "actions": 51,
+      "episode_index": 25,
+      "episode_seed": 3100025,
+      "ignores": 27,
+      "master_seed": 31,
+      "normalized_utility": 0.46536796536796526,
+      "raw_utility": 8.599999999999998,
+      "rejects": 5
+    },
+    {
+      "accepts": 22,
+      "actions": 59,
+      "episode_index": 26,
+      "episode_seed": 3100026,
+      "ignores": 31,
+      "master_seed": 31,
+      "normalized_utility": 0.5303030303030305,
+      "raw_utility": 9.800000000000004,
+      "rejects": 6
+    },
+    {
+      "accepts": 17,
+      "actions": 55,
+      "episode_index": 27,
+      "episode_seed": 3100027,
+      "ignores": 33,
+      "master_seed": 31,
+      "normalized_utility": 0.29220779220779214,
+      "raw_utility": 5.399999999999999,
+      "rejects": 5
+    },
+    {
+      "accepts": 26,
+      "actions": 61,
+      "episode_index": 28,
+      "episode_seed": 3100028,
+      "ignores": 32,
+      "master_seed": 31,
+      "normalized_utility": 0.8982683982683991,
+      "raw_utility": 16.600000000000016,
+      "rejects": 3
+    },
+    {
+      "accepts": 26,
+      "actions": 54,
+      "episode_index": 29,
+      "episode_seed": 3100029,
+      "ignores": 23,
+      "master_seed": 31,
+      "normalized_utility": 0.8874458874458881,
+      "raw_utility": 16.400000000000013,
+      "rejects": 5
+    },
+    {
+      "accepts": 25,
+      "actions": 56,
+      "episode_index": 30,
+      "episode_seed": 3100030,
+      "ignores": 25,
+      "master_seed": 31,
+      "normalized_utility": 0.7575757575757576,
+      "raw_utility": 14.0,
+      "rejects": 6
+    },
+    {
+      "accepts": 20,
+      "actions": 59,
+      "episode_index": 31,
+      "episode_seed": 3100031,
+      "ignores": 34,
+      "master_seed": 31,
+      "normalized_utility": 0.4437229437229441,
+      "raw_utility": 8.200000000000006,
+      "rejects": 5
+    },
+    {
+      "accepts": 27,
+      "actions": 54,
+      "episode_index": 32,
+      "episode_seed": 3100032,
+      "ignores": 19,
+      "master_seed": 31,
+      "normalized_utility": 0.8225108225108229,
+      "raw_utility": 15.200000000000006,
+      "rejects": 8
+    },
+    {
+      "accepts": 23,
+      "actions": 57,
+      "episode_index": 33,
+      "episode_seed": 3100033,
+      "ignores": 31,
+      "master_seed": 31,
+      "normalized_utility": 0.746753246753247,
+      "raw_utility": 13.800000000000004,
+      "rejects": 3
+    },
+    {
+      "accepts": 22,
+      "actions": 53,
+      "episode_index": 34,
+      "episode_seed": 3100034,
+      "ignores": 25,
+      "master_seed": 31,
+      "normalized_utility": 0.5952380952380952,
+      "raw_utility": 11.0,
+      "rejects": 6
+    },
+    {
+      "accepts": 18,
+      "actions": 50,
+      "episode_index": 35,
+      "episode_seed": 3100035,
+      "ignores": 27,
+      "master_seed": 31,
+      "normalized_utility": 0.4112554112554111,
+      "raw_utility": 7.599999999999997,
+      "rejects": 5
+    },
+    {
+      "accepts": 21,
+      "actions": 56,
+      "episode_index": 36,
+      "episode_seed": 3100036,
+      "ignores": 32,
+      "master_seed": 31,
+      "normalized_utility": 0.6277056277056281,
+      "raw_utility": 11.600000000000009,
+      "rejects": 3
+    },
+    {
+      "accepts": 21,
+      "actions": 54,
+      "episode_index": 37,
+      "episode_seed": 3100037,
+      "ignores": 28,
+      "master_seed": 31,
+      "normalized_utility": 0.5627705627705627,
+      "raw_utility": 10.399999999999999,
+      "rejects": 5
+    },
+    {
+      "accepts": 20,
+      "actions": 58,
+      "episode_index": 38,
+      "episode_seed": 3100038,
+      "ignores": 36,
+      "master_seed": 31,
+      "normalized_utility": 0.5844155844155843,
+      "raw_utility": 10.799999999999997,
+      "rejects": 2
+    },
+    {
+      "accepts": 18,
+      "actions": 55,
+      "episode_index": 39,
+      "episode_seed": 3100039,
+      "ignores": 30,
+      "master_seed": 31,
+      "normalized_utility": 0.2705627705627707,
+      "raw_utility": 5.000000000000003,
+      "rejects": 7
+    },
+    {
+      "accepts": 23,
+      "actions": 53,
+      "episode_index": 0,
+      "episode_seed": 4700000,
+      "ignores": 26,
+      "master_seed": 47,
+      "normalized_utility": 0.7467532467532472,
+      "raw_utility": 13.800000000000008,
+      "rejects": 4
+    },
+    {
+      "accepts": 22,
+      "actions": 59,
+      "episode_index": 1,
+      "episode_seed": 4700001,
+      "ignores": 34,
+      "master_seed": 47,
+      "normalized_utility": 0.6601731601731605,
+      "raw_utility": 12.200000000000006,
+      "rejects": 3
+    },
+    {
+      "accepts": 20,
+      "actions": 52,
+      "episode_index": 2,
+      "episode_seed": 4700002,
+      "ignores": 26,
+      "master_seed": 47,
+      "normalized_utility": 0.47619047619047633,
+      "raw_utility": 8.800000000000002,
+      "rejects": 6
+    },
+    {
+      "accepts": 20,
+      "actions": 52,
+      "episode_index": 3,
+      "episode_seed": 4700003,
+      "ignores": 27,
+      "master_seed": 47,
+      "normalized_utility": 0.5194805194805194,
+      "raw_utility": 9.6,
+      "rejects": 5
+    },
+    {
+      "accepts": 20,
+      "actions": 59,
+      "episode_index": 4,
+      "episode_seed": 4700004,
+      "ignores": 35,
+      "master_seed": 47,
+      "normalized_utility": 0.487012987012987,
+      "raw_utility": 9.0,
+      "rejects": 4
+    },
+    {
+      "accepts": 22,
+      "actions": 52,
+      "episode_index": 5,
+      "episode_seed": 4700005,
+      "ignores": 24,
+      "master_seed": 47,
+      "normalized_utility": 0.6060606060606064,
+      "raw_utility": 11.200000000000006,
+      "rejects": 6
+    },
+    {
+      "accepts": 21,
+      "actions": 52,
+      "episode_index": 6,
+      "episode_seed": 4700006,
+      "ignores": 25,
+      "master_seed": 47,
+      "normalized_utility": 0.541125541125541,
+      "raw_utility": 9.999999999999998,
+      "rejects": 6
+    },
+    {
+      "accepts": 26,
+      "actions": 63,
+      "episode_index": 7,
+      "episode_seed": 4700007,
+      "ignores": 34,
+      "master_seed": 47,
+      "normalized_utility": 0.8766233766233775,
+      "raw_utility": 16.200000000000017,
+      "rejects": 3
+    },
+    {
+      "accepts": 25,
+      "actions": 62,
+      "episode_index": 8,
+      "episode_seed": 4700008,
+      "ignores": 34,
+      "master_seed": 47,
+      "normalized_utility": 0.8225108225108229,
+      "raw_utility": 15.200000000000006,
+      "rejects": 3
+    },
+    {
+      "accepts": 22,
+      "actions": 62,
+      "episode_index": 9,
+      "episode_seed": 4700009,
+      "ignores": 36,
+      "master_seed": 47,
+      "normalized_utility": 0.5844155844155843,
+      "raw_utility": 10.799999999999997,
+      "rejects": 4
+    },
+    {
+      "accepts": 25,
+      "actions": 58,
+      "episode_index": 10,
+      "episode_seed": 4700010,
+      "ignores": 28,
+      "master_seed": 47,
+      "normalized_utility": 0.7792207792207795,
+      "raw_utility": 14.400000000000006,
+      "rejects": 5
+    },
+    {
+      "accepts": 19,
+      "actions": 62,
+      "episode_index": 11,
+      "episode_seed": 4700011,
+      "ignores": 41,
+      "master_seed": 47,
+      "normalized_utility": 0.4761904761904762,
+      "raw_utility": 8.8,
+      "rejects": 2
+    },
+    {
+      "accepts": 20,
+      "actions": 59,
+      "episode_index": 12,
+      "episode_seed": 4700012,
+      "ignores": 34,
+      "master_seed": 47,
+      "normalized_utility": 0.4437229437229437,
+      "raw_utility": 8.2,
+      "rejects": 5
+    },
+    {
+      "accepts": 27,
+      "actions": 55,
+      "episode_index": 13,
+      "episode_seed": 4700013,
+      "ignores": 22,
+      "master_seed": 47,
+      "normalized_utility": 0.8982683982683987,
+      "raw_utility": 16.60000000000001,
+      "rejects": 6
+    },
+    {
+      "accepts": 24,
+      "actions": 63,
+      "episode_index": 14,
+      "episode_seed": 4700014,
+      "ignores": 37,
+      "master_seed": 47,
+      "normalized_utility": 0.7900432900432903,
+      "raw_utility": 14.600000000000005,
+      "rejects": 2
+    },
+    {
+      "accepts": 24,
+      "actions": 51,
+      "episode_index": 15,
+      "episode_seed": 4700015,
+      "ignores": 22,
+      "master_seed": 47,
+      "normalized_utility": 0.7900432900432904,
+      "raw_utility": 14.600000000000009,
+      "rejects": 5
+    },
+    {
+      "accepts": 18,
+      "actions": 54,
+      "episode_index": 16,
+      "episode_seed": 4700016,
+      "ignores": 30,
+      "master_seed": 47,
+      "normalized_utility": 0.3246753246753245,
+      "raw_utility": 5.999999999999997,
+      "rejects": 6
+    },
+    {
+      "accepts": 25,
+      "actions": 62,
+      "episode_index": 17,
+      "episode_seed": 4700017,
+      "ignores": 33,
+      "master_seed": 47,
+      "normalized_utility": 0.7792207792207798,
+      "raw_utility": 14.400000000000011,
+      "rejects": 4
+    },
+    {
+      "accepts": 22,
+      "actions": 65,
+      "episode_index": 18,
+      "episode_seed": 4700018,
+      "ignores": 39,
+      "master_seed": 47,
+      "normalized_utility": 0.5519480519480521,
+      "raw_utility": 10.200000000000003,
+      "rejects": 4
+    },
+    {
+      "accepts": 21,
+      "actions": 51,
+      "episode_index": 19,
+      "episode_seed": 4700019,
+      "ignores": 23,
+      "master_seed": 47,
+      "normalized_utility": 0.5086580086580086,
+      "raw_utility": 9.399999999999999,
+      "rejects": 7
+    },
+    {
+      "accepts": 24,
+      "actions": 61,
+      "episode_index": 20,
+      "episode_seed": 4700020,
+      "ignores": 33,
+      "master_seed": 47,
+      "normalized_utility": 0.7251082251082258,
+      "raw_utility": 13.400000000000013,
+      "rejects": 4
+    },
+    {
+      "accepts": 25,
+      "actions": 58,
+      "episode_index": 21,
+      "episode_seed": 4700021,
+      "ignores": 27,
+      "master_seed": 47,
+      "normalized_utility": 0.7359307359307365,
+      "raw_utility": 13.600000000000012,
+      "rejects": 6
+    },
+    {
+      "accepts": 22,
+      "actions": 55,
+      "episode_index": 22,
+      "episode_seed": 4700022,
+      "ignores": 30,
+      "master_seed": 47,
+      "normalized_utility": 0.7034632034632032,
+      "raw_utility": 12.999999999999996,
+      "rejects": 3
+    },
+    {
+      "accepts": 22,
+      "actions": 54,
+      "episode_index": 23,
+      "episode_seed": 4700023,
+      "ignores": 26,
+      "master_seed": 47,
+      "normalized_utility": 0.5844155844155848,
+      "raw_utility": 10.800000000000008,
+      "rejects": 6
+    },
+    {
+      "accepts": 24,
+      "actions": 61,
+      "episode_index": 24,
+      "episode_seed": 4700024,
+      "ignores": 34,
+      "master_seed": 47,
+      "normalized_utility": 0.7683982683982684,
+      "raw_utility": 14.200000000000001,
+      "rejects": 3
+    },
+    {
+      "accepts": 20,
+      "actions": 58,
+      "episode_index": 25,
+      "episode_seed": 4700025,
+      "ignores": 35,
+      "master_seed": 47,
+      "normalized_utility": 0.5411255411255409,
+      "raw_utility": 9.999999999999996,
+      "rejects": 3
+    },
+    {
+      "accepts": 25,
+      "actions": 63,
+      "episode_index": 26,
+      "episode_seed": 4700026,
+      "ignores": 34,
+      "master_seed": 47,
+      "normalized_utility": 0.7683982683982685,
+      "raw_utility": 14.200000000000003,
+      "rejects": 4
+    },
+    {
+      "accepts": 18,
+      "actions": 50,
+      "episode_index": 27,
+      "episode_seed": 4700027,
+      "ignores": 26,
+      "master_seed": 47,
+      "normalized_utility": 0.36796536796536783,
+      "raw_utility": 6.799999999999998,
+      "rejects": 6
+    },
+    {
+      "accepts": 22,
+      "actions": 56,
+      "episode_index": 28,
+      "episode_seed": 4700028,
+      "ignores": 29,
+      "master_seed": 47,
+      "normalized_utility": 0.6060606060606064,
+      "raw_utility": 11.200000000000006,
+      "rejects": 5
+    },
+    {
+      "accepts": 21,
+      "actions": 54,
+      "episode_index": 29,
+      "episode_seed": 4700029,
+      "ignores": 29,
+      "master_seed": 47,
+      "normalized_utility": 0.6060606060606062,
+      "raw_utility": 11.200000000000003,
+      "rejects": 4
+    },
+    {
+      "accepts": 22,
+      "actions": 61,
+      "episode_index": 30,
+      "episode_seed": 4700030,
+      "ignores": 35,
+      "master_seed": 47,
+      "normalized_utility": 0.5952380952380949,
+      "raw_utility": 10.999999999999995,
+      "rejects": 4
+    },
+    {
+      "accepts": 21,
+      "actions": 58,
+      "episode_index": 31,
+      "episode_seed": 4700031,
+      "ignores": 32,
+      "master_seed": 47,
+      "normalized_utility": 0.51948051948052,
+      "raw_utility": 9.60000000000001,
+      "rejects": 5
+    },
+    {
+      "accepts": 22,
+      "actions": 56,
+      "episode_index": 32,
+      "episode_seed": 4700032,
+      "ignores": 28,
+      "master_seed": 47,
+      "normalized_utility": 0.5627705627705629,
+      "raw_utility": 10.400000000000002,
+      "rejects": 6
+    },
+    {
+      "accepts": 19,
+      "actions": 63,
+      "episode_index": 33,
+      "episode_seed": 4700033,
+      "ignores": 41,
+      "master_seed": 47,
+      "normalized_utility": 0.42207792207792194,
+      "raw_utility": 7.799999999999997,
+      "rejects": 3
+    },
+    {
+      "accepts": 21,
+      "actions": 56,
+      "episode_index": 34,
+      "episode_seed": 4700034,
+      "ignores": 30,
+      "master_seed": 47,
+      "normalized_utility": 0.5411255411255413,
+      "raw_utility": 10.000000000000004,
+      "rejects": 5
+    },
+    {
+      "accepts": 22,
+      "actions": 62,
+      "episode_index": 35,
+      "episode_seed": 4700035,
+      "ignores": 34,
+      "master_seed": 47,
+      "normalized_utility": 0.4978354978354978,
+      "raw_utility": 9.2,
+      "rejects": 6
+    },
+    {
+      "accepts": 18,
+      "actions": 61,
+      "episode_index": 36,
+      "episode_seed": 4700036,
+      "ignores": 38,
+      "master_seed": 47,
+      "normalized_utility": 0.29220779220779186,
+      "raw_utility": 5.399999999999993,
+      "rejects": 5
+    },
+    {
+      "accepts": 17,
+      "actions": 62,
+      "episode_index": 37,
+      "episode_seed": 4700037,
+      "ignores": 42,
+      "master_seed": 47,
+      "normalized_utility": 0.30303030303030287,
+      "raw_utility": 5.599999999999997,
+      "rejects": 3
+    },
+    {
+      "accepts": 23,
+      "actions": 51,
+      "episode_index": 38,
+      "episode_seed": 4700038,
+      "ignores": 19,
+      "master_seed": 47,
+      "normalized_utility": 0.5519480519480519,
+      "raw_utility": 10.2,
+      "rejects": 9
+    },
+    {
+      "accepts": 22,
+      "actions": 58,
+      "episode_index": 39,
+      "episode_seed": 4700039,
+      "ignores": 32,
+      "master_seed": 47,
+      "normalized_utility": 0.6277056277056287,
+      "raw_utility": 11.600000000000017,
+      "rejects": 4
+    },
+    {
+      "accepts": 17,
+      "actions": 53,
+      "episode_index": 0,
+      "episode_seed": 6100000,
+      "ignores": 32,
+      "master_seed": 61,
+      "normalized_utility": 0.357142857142857,
+      "raw_utility": 6.599999999999997,
+      "rejects": 4
+    },
+    {
+      "accepts": 22,
+      "actions": 51,
+      "episode_index": 1,
+      "episode_seed": 6100001,
+      "ignores": 24,
+      "master_seed": 61,
+      "normalized_utility": 0.6601731601731605,
+      "raw_utility": 12.200000000000006,
+      "rejects": 5
+    },
+    {
+      "accepts": 23,
+      "actions": 56,
+      "episode_index": 2,
+      "episode_seed": 6100002,
+      "ignores": 28,
+      "master_seed": 61,
+      "normalized_utility": 0.6709956709956713,
+      "raw_utility": 12.400000000000006,
+      "rejects": 5
+    },
+    {
+      "accepts": 16,
+      "actions": 55,
+      "episode_index": 3,
+      "episode_seed": 6100003,
+      "ignores": 35,
+      "master_seed": 61,
+      "normalized_utility": 0.2705627705627704,
+      "raw_utility": 4.999999999999997,
+      "rejects": 4
+    },
+    {
+      "accepts": 25,
+      "actions": 59,
+      "episode_index": 4,
+      "episode_seed": 6100004,
+      "ignores": 31,
+      "master_seed": 61,
+      "normalized_utility": 0.8549783549783557,
+      "raw_utility": 15.800000000000015,
+      "rejects": 3
+    },
+    {
+      "accepts": 25,
+      "actions": 58,
+      "episode_index": 5,
+      "episode_seed": 6100005,
+      "ignores": 28,
+      "master_seed": 61,
+      "normalized_utility": 0.7792207792207799,
+      "raw_utility": 14.400000000000013,
+      "rejects": 5
+    },
+    {
+      "accepts": 21,
+      "actions": 62,
+      "episode_index": 6,
+      "episode_seed": 6100006,
+      "ignores": 37,
+      "master_seed": 61,
+      "normalized_utility": 0.5194805194805193,
+      "raw_utility": 9.599999999999998,
+      "rejects": 4
+    },
+    {
+      "accepts": 23,
+      "actions": 60,
+      "episode_index": 7,
+      "episode_seed": 6100007,
+      "ignores": 33,
+      "master_seed": 61,
+      "normalized_utility": 0.6709956709956718,
+      "raw_utility": 12.400000000000015,
+      "rejects": 4
+    },
+    {
+      "accepts": 20,
+      "actions": 59,
+      "episode_index": 8,
+      "episode_seed": 6100008,
+      "ignores": 35,
+      "master_seed": 61,
+      "normalized_utility": 0.4870129870129872,
+      "raw_utility": 9.000000000000004,
+      "rejects": 4
+    },
+    {
+      "accepts": 24,
+      "actions": 63,
+      "episode_index": 9,
+      "episode_seed": 6100009,
+      "ignores": 36,
+      "master_seed": 61,
+      "normalized_utility": 0.7467532467532473,
+      "raw_utility": 13.80000000000001,
+      "rejects": 3
+    },
+    {
+      "accepts": 22,
+      "actions": 57,
+      "episode_index": 10,
+      "episode_seed": 6100010,
+      "ignores": 31,
+      "master_seed": 61,
+      "normalized_utility": 0.6385281385281388,
+      "raw_utility": 11.800000000000006,
+      "rejects": 4
+    },
+    {
+      "accepts": 24,
+      "actions": 59,
+      "episode_index": 11,
+      "episode_seed": 6100011,
+      "ignores": 31,
+      "master_seed": 61,
+      "normalized_utility": 0.7467532467532467,
+      "raw_utility": 13.8,
+      "rejects": 4
+    },
+    {
+      "accepts": 22,
+      "actions": 51,
+      "episode_index": 12,
+      "episode_seed": 6100012,
+      "ignores": 24,
+      "master_seed": 61,
+      "normalized_utility": 0.6601731601731607,
+      "raw_utility": 12.20000000000001,
+      "rejects": 5
+    },
+    {
+      "accepts": 21,
+      "actions": 57,
+      "episode_index": 13,
+      "episode_seed": 6100013,
+      "ignores": 30,
+      "master_seed": 61,
+      "normalized_utility": 0.4870129870129869,
+      "raw_utility": 8.999999999999998,
+      "rejects": 6
+    },
+    {
+      "accepts": 24,
+      "actions": 64,
+      "episode_index": 14,
+      "episode_seed": 6100014,
+      "ignores": 38,
+      "master_seed": 61,
+      "normalized_utility": 0.7792207792207797,
+      "raw_utility": 14.40000000000001,
+      "rejects": 2
+    },
+    {
+      "accepts": 20,
+      "actions": 61,
+      "episode_index": 15,
+      "episode_seed": 6100015,
+      "ignores": 39,
+      "master_seed": 61,
+      "normalized_utility": 0.5519480519480526,
+      "raw_utility": 10.200000000000014,
+      "rejects": 2
+    },
+    {
+      "accepts": 23,
+      "actions": 55,
+      "episode_index": 16,
+      "episode_seed": 6100016,
+      "ignores": 28,
+      "master_seed": 61,
+      "normalized_utility": 0.7251082251082256,
+      "raw_utility": 13.40000000000001,
+      "rejects": 4
+    },
+    {
+      "accepts": 21,
+      "actions": 63,
+      "episode_index": 17,
+      "episode_seed": 6100017,
+      "ignores": 39,
+      "master_seed": 61,
+      "normalized_utility": 0.5519480519480519,
+      "raw_utility": 10.199999999999998,
+      "rejects": 3
+    },
+    {
+      "accepts": 26,
+      "actions": 59,
+      "episode_index": 18,
+      "episode_seed": 6100018,
+      "ignores": 28,
+      "master_seed": 61,
+      "normalized_utility": 0.8333333333333336,
+      "raw_utility": 15.400000000000006,
+      "rejects": 5
+    },
+    {
+      "accepts": 24,
+      "actions": 53,
+      "episode_index": 19,
+      "episode_seed": 6100019,
+      "ignores": 25,
+      "master_seed": 61,
+      "normalized_utility": 0.8116883116883119,
+      "raw_utility": 15.000000000000004,
+      "rejects": 4
+    },
+    {
+      "accepts": 21,
+      "actions": 47,
+      "episode_index": 20,
+      "episode_seed": 6100020,
+      "ignores": 21,
+      "master_seed": 61,
+      "normalized_utility": 0.6385281385281389,
+      "raw_utility": 11.800000000000008,
+      "rejects": 5
+    },
+    {
+      "accepts": 20,
+      "actions": 58,
+      "episode_index": 21,
+      "episode_seed": 6100021,
+      "ignores": 32,
+      "master_seed": 61,
+      "normalized_utility": 0.4112554112554111,
+      "raw_utility": 7.599999999999997,
+      "rejects": 6
+    },
+    {
+      "accepts": 23,
+      "actions": 58,
+      "episode_index": 22,
+      "episode_seed": 6100022,
+      "ignores": 31,
+      "master_seed": 61,
+      "normalized_utility": 0.6926406926406934,
+      "raw_utility": 12.800000000000013,
+      "rejects": 4
+    },
+    {
+      "accepts": 21,
+      "actions": 53,
+      "episode_index": 23,
+      "episode_seed": 6100023,
+      "ignores": 28,
+      "master_seed": 61,
+      "normalized_utility": 0.6168831168831168,
+      "raw_utility": 11.399999999999999,
+      "rejects": 4
+    },
+    {
+      "accepts": 22,
+      "actions": 58,
+      "episode_index": 24,
+      "episode_seed": 6100024,
+      "ignores": 32,
+      "master_seed": 61,
+      "normalized_utility": 0.627705627705628,
+      "raw_utility": 11.600000000000005,
+      "rejects": 4
+    },
+    {
+      "accepts": 23,
+      "actions": 59,
+      "episode_index": 25,
+      "episode_seed": 6100025,
+      "ignores": 32,
+      "master_seed": 61,
+      "normalized_utility": 0.6818181818181822,
+      "raw_utility": 12.600000000000009,
+      "rejects": 4
+    },
+    {
+      "accepts": 21,
+      "actions": 61,
+      "episode_index": 26,
+      "episode_seed": 6100026,
+      "ignores": 34,
+      "master_seed": 61,
+      "normalized_utility": 0.44372294372294385,
+      "raw_utility": 8.200000000000003,
+      "rejects": 6
+    },
+    {
+      "accepts": 27,
+      "actions": 58,
+      "episode_index": 27,
+      "episode_seed": 6100027,
+      "ignores": 27,
+      "master_seed": 61,
+      "normalized_utility": 0.9523809523809524,
+      "raw_utility": 17.6,
+      "rejects": 4
+    },
+    {
+      "accepts": 23,
+      "actions": 57,
+      "episode_index": 28,
+      "episode_seed": 6100028,
+      "ignores": 30,
+      "master_seed": 61,
+      "normalized_utility": 0.7034632034632035,
+      "raw_utility": 13.0,
+      "rejects": 4
+    },
+    {
+      "accepts": 21,
+      "actions": 59,
+      "episode_index": 29,
+      "episode_seed": 6100029,
+      "ignores": 33,
+      "master_seed": 61,
+      "normalized_utility": 0.5086580086580088,
+      "raw_utility": 9.400000000000002,
+      "rejects": 5
+    },
+    {
+      "accepts": 21,
+      "actions": 57,
+      "episode_index": 30,
+      "episode_seed": 6100030,
+      "ignores": 32,
+      "master_seed": 61,
+      "normalized_utility": 0.5735930735930733,
+      "raw_utility": 10.599999999999996,
+      "rejects": 4
+    },
+    {
+      "accepts": 21,
+      "actions": 58,
+      "episode_index": 31,
+      "episode_seed": 6100031,
+      "ignores": 34,
+      "master_seed": 61,
+      "normalized_utility": 0.6060606060606065,
+      "raw_utility": 11.200000000000008,
+      "rejects": 3
+    },
+    {
+      "accepts": 20,
+      "actions": 63,
+      "episode_index": 32,
+      "episode_seed": 6100032,
+      "ignores": 41,
+      "master_seed": 61,
+      "normalized_utility": 0.5303030303030303,
+      "raw_utility": 9.8,
+      "rejects": 2
+    },
+    {
+      "accepts": 20,
+      "actions": 62,
+      "episode_index": 33,
+      "episode_seed": 6100033,
+      "ignores": 38,
+      "master_seed": 61,
+      "normalized_utility": 0.45454545454545425,
+      "raw_utility": 8.399999999999995,
+      "rejects": 4
+    },
+    {
+      "accepts": 24,
+      "actions": 53,
+      "episode_index": 34,
+      "episode_seed": 6100034,
+      "ignores": 24,
+      "master_seed": 61,
+      "normalized_utility": 0.7683982683982685,
+      "raw_utility": 14.200000000000003,
+      "rejects": 5
+    },
+    {
+      "accepts": 24,
+      "actions": 51,
+      "episode_index": 35,
+      "episode_seed": 6100035,
+      "ignores": 22,
+      "master_seed": 61,
+      "normalized_utility": 0.7900432900432902,
+      "raw_utility": 14.600000000000003,
+      "rejects": 5
+    },
+    {
+      "accepts": 20,
+      "actions": 60,
+      "episode_index": 36,
+      "episode_seed": 6100036,
+      "ignores": 33,
+      "master_seed": 61,
+      "normalized_utility": 0.34632034632034625,
+      "raw_utility": 6.399999999999999,
+      "rejects": 7
+    },
+    {
+      "accepts": 23,
+      "actions": 59,
+      "episode_index": 37,
+      "episode_seed": 6100037,
+      "ignores": 31,
+      "master_seed": 61,
+      "normalized_utility": 0.6385281385281392,
+      "raw_utility": 11.800000000000011,
+      "rejects": 5
+    },
+    {
+      "accepts": 27,
+      "actions": 54,
+      "episode_index": 38,
+      "episode_seed": 6100038,
+      "ignores": 21,
+      "master_seed": 61,
+      "normalized_utility": 0.9090909090909093,
+      "raw_utility": 16.800000000000004,
+      "rejects": 6
+    },
+    {
+      "accepts": 23,
+      "actions": 57,
+      "episode_index": 39,
+      "episode_seed": 6100039,
+      "ignores": 31,
+      "master_seed": 61,
+      "normalized_utility": 0.7467532467532474,
+      "raw_utility": 13.800000000000011,
+      "rejects": 3
+    },
+    {
+      "accepts": 19,
+      "actions": 60,
+      "episode_index": 0,
+      "episode_seed": 7900000,
+      "ignores": 37,
+      "master_seed": 79,
+      "normalized_utility": 0.411255411255411,
+      "raw_utility": 7.599999999999995,
+      "rejects": 4
+    },
+    {
+      "accepts": 23,
+      "actions": 62,
+      "episode_index": 1,
+      "episode_seed": 7900001,
+      "ignores": 36,
+      "master_seed": 79,
+      "normalized_utility": 0.6926406926406934,
+      "raw_utility": 12.800000000000015,
+      "rejects": 3
+    },
+    {
+      "accepts": 23,
+      "actions": 54,
+      "episode_index": 2,
+      "episode_seed": 7900002,
+      "ignores": 25,
+      "master_seed": 79,
+      "normalized_utility": 0.6493506493506496,
+      "raw_utility": 12.000000000000004,
+      "rejects": 6
+    },
+    {
+      "accepts": 21,
+      "actions": 52,
+      "episode_index": 3,
+      "episode_seed": 7900003,
+      "ignores": 27,
+      "master_seed": 79,
+      "normalized_utility": 0.6277056277056275,
+      "raw_utility": 11.599999999999998,
+      "rejects": 4
+    },
+    {
+      "accepts": 19,
+      "actions": 54,
+      "episode_index": 4,
+      "episode_seed": 7900004,
+      "ignores": 30,
+      "master_seed": 79,
+      "normalized_utility": 0.4329004329004329,
+      "raw_utility": 8.0,
+      "rejects": 5
+    },
+    {
+      "accepts": 18,
+      "actions": 58,
+      "episode_index": 5,
+      "episode_seed": 7900005,
+      "ignores": 37,
+      "master_seed": 79,
+      "normalized_utility": 0.411255411255411,
+      "raw_utility": 7.599999999999995,
+      "rejects": 3
+    },
+    {
+      "accepts": 25,
+      "actions": 63,
+      "episode_index": 6,
+      "episode_seed": 7900006,
+      "ignores": 35,
+      "master_seed": 79,
+      "normalized_utility": 0.811688311688312,
+      "raw_utility": 15.000000000000007,
+      "rejects": 3
+    },
+    {
+      "accepts": 26,
+      "actions": 62,
+      "episode_index": 7,
+      "episode_seed": 7900007,
+      "ignores": 33,
+      "master_seed": 79,
+      "normalized_utility": 0.8874458874458883,
+      "raw_utility": 16.400000000000016,
+      "rejects": 3
+    },
+    {
+      "accepts": 21,
+      "actions": 61,
+      "episode_index": 8,
+      "episode_seed": 7900008,
+      "ignores": 37,
+      "master_seed": 79,
+      "normalized_utility": 0.573593073593074,
+      "raw_utility": 10.600000000000009,
+      "rejects": 3
+    },
+    {
+      "accepts": 23,
+      "actions": 54,
+      "episode_index": 9,
+      "episode_seed": 7900009,
+      "ignores": 25,
+      "master_seed": 79,
+      "normalized_utility": 0.6493506493506496,
+      "raw_utility": 12.000000000000004,
+      "rejects": 6
+    },
+    {
+      "accepts": 21,
+      "actions": 64,
+      "episode_index": 10,
+      "episode_seed": 7900010,
+      "ignores": 39,
+      "master_seed": 79,
+      "normalized_utility": 0.49783549783549796,
+      "raw_utility": 9.200000000000003,
+      "rejects": 4
+    },
+    {
+      "accepts": 19,
+      "actions": 54,
+      "episode_index": 11,
+      "episode_seed": 7900011,
+      "ignores": 28,
+      "master_seed": 79,
+      "normalized_utility": 0.3463203463203461,
+      "raw_utility": 6.399999999999996,
+      "rejects": 7
+    },
+    {
+      "accepts": 20,
+      "actions": 50,
+      "episode_index": 12,
+      "episode_seed": 7900012,
+      "ignores": 24,
+      "master_seed": 79,
+      "normalized_utility": 0.49783549783549796,
+      "raw_utility": 9.200000000000003,
+      "rejects": 6
+    },
+    {
+      "accepts": 20,
+      "actions": 55,
+      "episode_index": 13,
+      "episode_seed": 7900013,
+      "ignores": 30,
+      "master_seed": 79,
+      "normalized_utility": 0.4870129870129868,
+      "raw_utility": 8.999999999999996,
+      "rejects": 5
+    },
+    {
+      "accepts": 20,
+      "actions": 52,
+      "episode_index": 14,
+      "episode_seed": 7900014,
+      "ignores": 27,
+      "master_seed": 79,
+      "normalized_utility": 0.5194805194805193,
+      "raw_utility": 9.599999999999998,
+      "rejects": 5
+    },
+    {
+      "accepts": 21,
+      "actions": 63,
+      "episode_index": 15,
+      "episode_seed": 7900015,
+      "ignores": 40,
+      "master_seed": 79,
+      "normalized_utility": 0.595238095238096,
+      "raw_utility": 11.000000000000014,
+      "rejects": 2
+    },
+    {
+      "accepts": 17,
+      "actions": 54,
+      "episode_index": 16,
+      "episode_seed": 7900016,
+      "ignores": 31,
+      "master_seed": 79,
+      "normalized_utility": 0.2597402597402596,
+      "raw_utility": 4.799999999999997,
+      "rejects": 6
+    },
+    {
+      "accepts": 20,
+      "actions": 66,
+      "episode_index": 17,
+      "episode_seed": 7900017,
+      "ignores": 43,
+      "master_seed": 79,
+      "normalized_utility": 0.45454545454545425,
+      "raw_utility": 8.399999999999995,
+      "rejects": 3
+    },
+    {
+      "accepts": 21,
+      "actions": 50,
+      "episode_index": 18,
+      "episode_seed": 7900018,
+      "ignores": 23,
+      "master_seed": 79,
+      "normalized_utility": 0.5627705627705629,
+      "raw_utility": 10.400000000000002,
+      "rejects": 6
+    },
+    {
+      "accepts": 17,
+      "actions": 56,
+      "episode_index": 19,
+      "episode_seed": 7900019,
+      "ignores": 35,
+      "master_seed": 79,
+      "normalized_utility": 0.32467532467532445,
+      "raw_utility": 5.9999999999999964,
+      "rejects": 4
+    },
+    {
+      "accepts": 24,
+      "actions": 64,
+      "episode_index": 20,
+      "episode_seed": 7900020,
+      "ignores": 38,
+      "master_seed": 79,
+      "normalized_utility": 0.7792207792207799,
+      "raw_utility": 14.400000000000013,
+      "rejects": 2
+    },
+    {
+      "accepts": 22,
+      "actions": 58,
+      "episode_index": 21,
+      "episode_seed": 7900021,
+      "ignores": 33,
+      "master_seed": 79,
+      "normalized_utility": 0.6709956709956711,
+      "raw_utility": 12.400000000000002,
+      "rejects": 3
+    },
+    {
+      "accepts": 22,
+      "actions": 60,
+      "episode_index": 22,
+      "episode_seed": 7900022,
+      "ignores": 35,
+      "master_seed": 79,
+      "normalized_utility": 0.6493506493506497,
+      "raw_utility": 12.000000000000007,
+      "rejects": 3
+    },
+    {
+      "accepts": 22,
+      "actions": 64,
+      "episode_index": 23,
+      "episode_seed": 7900023,
+      "ignores": 40,
+      "master_seed": 79,
+      "normalized_utility": 0.6493506493506501,
+      "raw_utility": 12.000000000000014,
+      "rejects": 2
+    },
+    {
+      "accepts": 23,
+      "actions": 59,
+      "episode_index": 24,
+      "episode_seed": 7900024,
+      "ignores": 33,
+      "master_seed": 79,
+      "normalized_utility": 0.7251082251082256,
+      "raw_utility": 13.40000000000001,
+      "rejects": 3
+    },
+    {
+      "accepts": 25,
+      "actions": 59,
+      "episode_index": 25,
+      "episode_seed": 7900025,
+      "ignores": 28,
+      "master_seed": 79,
+      "normalized_utility": 0.725108225108225,
+      "raw_utility": 13.399999999999999,
+      "rejects": 6
+    },
+    {
+      "accepts": 25,
+      "actions": 55,
+      "episode_index": 26,
+      "episode_seed": 7900026,
+      "ignores": 26,
+      "master_seed": 79,
+      "normalized_utility": 0.8549783549783556,
+      "raw_utility": 15.800000000000011,
+      "rejects": 4
+    },
+    {
+      "accepts": 21,
+      "actions": 56,
+      "episode_index": 27,
+      "episode_seed": 7900027,
+      "ignores": 30,
+      "master_seed": 79,
+      "normalized_utility": 0.541125541125541,
+      "raw_utility": 9.999999999999998,
+      "rejects": 5
+    },
+    {
+      "accepts": 21,
+      "actions": 60,
+      "episode_index": 28,
+      "episode_seed": 7900028,
+      "ignores": 34,
+      "master_seed": 79,
+      "normalized_utility": 0.4978354978354978,
+      "raw_utility": 9.2,
+      "rejects": 5
+    },
+    {
+      "accepts": 14,
+      "actions": 47,
+      "episode_index": 29,
+      "episode_seed": 7900029,
+      "ignores": 24,
+      "master_seed": 79,
+      "normalized_utility": 0.010822510822510735,
+      "raw_utility": 0.1999999999999984,
+      "rejects": 9
+    },
+    {
+      "accepts": 19,
+      "actions": 52,
+      "episode_index": 30,
+      "episode_seed": 7900030,
+      "ignores": 28,
+      "master_seed": 79,
+      "normalized_utility": 0.4545454545454545,
+      "raw_utility": 8.399999999999999,
+      "rejects": 5
+    },
+    {
+      "accepts": 21,
+      "actions": 60,
+      "episode_index": 31,
+      "episode_seed": 7900031,
+      "ignores": 37,
+      "master_seed": 79,
+      "normalized_utility": 0.6277056277056285,
+      "raw_utility": 11.600000000000016,
+      "rejects": 2
+    },
+    {
+      "accepts": 22,
+      "actions": 53,
+      "episode_index": 32,
+      "episode_seed": 7900032,
+      "ignores": 26,
+      "master_seed": 79,
+      "normalized_utility": 0.6385281385281385,
+      "raw_utility": 11.8,
+      "rejects": 5
+    },
+    {
+      "accepts": 21,
+      "actions": 59,
+      "episode_index": 33,
+      "episode_seed": 7900033,
+      "ignores": 33,
+      "master_seed": 79,
+      "normalized_utility": 0.5086580086580085,
+      "raw_utility": 9.399999999999997,
+      "rejects": 5
+    },
+    {
+      "accepts": 23,
+      "actions": 57,
+      "episode_index": 34,
+      "episode_seed": 7900034,
+      "ignores": 29,
+      "master_seed": 79,
+      "normalized_utility": 0.6601731601731602,
+      "raw_utility": 12.200000000000001,
+      "rejects": 5
+    },
+    {
+      "accepts": 25,
+      "actions": 63,
+      "episode_index": 35,
+      "episode_seed": 7900035,
+      "ignores": 35,
+      "master_seed": 79,
+      "normalized_utility": 0.8116883116883118,
+      "raw_utility": 15.000000000000002,
+      "rejects": 3
+    },
+    {
+      "accepts": 18,
+      "actions": 44,
+      "episode_index": 36,
+      "episode_seed": 7900036,
+      "ignores": 20,
+      "master_seed": 79,
+      "normalized_utility": 0.4329004329004328,
+      "raw_utility": 7.999999999999998,
+      "rejects": 6
+    },
+    {
+      "accepts": 21,
+      "actions": 51,
+      "episode_index": 37,
+      "episode_seed": 7900037,
+      "ignores": 23,
+      "master_seed": 79,
+      "normalized_utility": 0.5086580086580086,
+      "raw_utility": 9.399999999999999,
+      "rejects": 7
+    },
+    {
+      "accepts": 22,
+      "actions": 55,
+      "episode_index": 38,
+      "episode_seed": 7900038,
+      "ignores": 27,
+      "master_seed": 79,
+      "normalized_utility": 0.5735930735930737,
+      "raw_utility": 10.600000000000001,
+      "rejects": 6
+    },
+    {
+      "accepts": 19,
+      "actions": 58,
+      "episode_index": 39,
+      "episode_seed": 7900039,
+      "ignores": 34,
+      "master_seed": 79,
+      "normalized_utility": 0.38961038961038996,
+      "raw_utility": 7.200000000000006,
+      "rejects": 5
+    }
+  ],
+  "family": {
+    "always_act": {
+      "ci_high": -0.10240800865800867,
+      "ci_low": -0.1697781385281385,
+      "mean": -0.13541666666666666,
+      "n": 160
+    },
+    "always_silent": {
+      "ci_high": 0.0,
+      "ci_low": 0.0,
+      "mean": 0.0,
+      "n": 160
+    },
+    "behavior_tree_th0.65_c20": {
+      "ci_high": 0.09719967532467531,
+      "ci_low": 0.06114718614718613,
+      "mean": 0.07927489177489176,
+      "n": 160
+    },
+    "fixed_rate_0.02": {
+      "ci_high": -0.007643398268398274,
+      "ci_low": -0.03984036796536797,
+      "mean": -0.02367424242424243,
+      "n": 160
+    },
+    "single_threshold_x1_0.80": {
+      "ci_high": 0.7600125135281387,
+      "ci_low": 0.7129312094155845,
+      "mean": 0.7362689393939396,
+      "n": 160
+    },
+    "single_threshold_x1_0.80__eval_oracle": {
+      "ci_high": 0.7600125135281387,
+      "ci_low": 0.7129312094155845,
+      "mean": 0.7362689393939396,
+      "n": 160
+    }
+  },
+  "selection": {
+    "behavior_tree_v0": {
+      "best_label": "behavior_tree_th0.65_c20",
+      "candidates": [
+        {
+          "label": "behavior_tree_th0.55_c20",
+          "mean": 0.04099025974025974,
+          "summary": {
+            "ci_high": 0.06858766233766232,
+            "ci_low": 0.01420454545454545,
+            "mean": 0.04099025974025974,
+            "n": 80
+          }
+        },
+        {
+          "label": "behavior_tree_th0.55_c40",
+          "mean": -0.006222943722943719,
+          "summary": {
+            "ci_high": 0.01217532467532468,
+            "ci_low": -0.02421536796536796,
+            "mean": -0.006222943722943719,
+            "n": 80
+          }
+        },
+        {
+          "label": "behavior_tree_th0.60_c20",
+          "mean": 0.06371753246753245,
+          "summary": {
+            "ci_high": 0.09158549783549781,
+            "ci_low": 0.035984848484848474,
+            "mean": 0.06371753246753245,
+            "n": 80
+          }
+        },
+        {
+          "label": "behavior_tree_th0.60_c40",
+          "mean": -0.0012175324675324634,
+          "summary": {
+            "ci_high": 0.017992424242424244,
+            "ci_low": -0.020021645021645017,
+            "mean": -0.0012175324675324634,
+            "n": 80
+          }
+        },
+        {
+          "label": "behavior_tree_th0.65_c20",
+          "mean": 0.07643398268398267,
+          "summary": {
+            "ci_high": 0.1029525162337662,
+            "ci_low": 0.04991883116883116,
+            "mean": 0.07643398268398267,
+            "n": 80
+          }
+        },
+        {
+          "label": "behavior_tree_th0.65_c40",
+          "mean": 0.02637987012987013,
+          "summary": {
+            "ci_high": 0.045048701298701296,
+            "ci_low": 0.007711038961038967,
+            "mean": 0.02637987012987013,
+            "n": 80
+          }
+        }
+      ],
+      "name": "behavior_tree_v0"
+    },
+    "fixed_rate": {
+      "best_label": "fixed_rate_0.02",
+      "candidates": [
+        {
+          "label": "fixed_rate_0.02",
+          "mean": -0.02448593073593074,
+          "summary": {
+            "ci_high": -0.0025703463203463226,
+            "ci_low": -0.04640151515151515,
+            "mean": -0.02448593073593074,
+            "n": 80
+          }
+        },
+        {
+          "label": "fixed_rate_0.05",
+          "mean": -0.035849567099567124,
+          "summary": {
+            "ci_high": -0.00405844155844159,
+            "ci_low": -0.0676440746753247,
+            "mean": -0.035849567099567124,
+            "n": 80
+          }
+        },
+        {
+          "label": "fixed_rate_0.1",
+          "mean": -0.08225108225108228,
+          "summary": {
+            "ci_high": -0.04491341991341996,
+            "ci_low": -0.12053571428571433,
+            "mean": -0.08225108225108228,
+            "n": 80
+          }
+        },
+        {
+          "label": "fixed_rate_0.2",
+          "mean": -0.094426406926407,
+          "summary": {
+            "ci_high": -0.05627705627705635,
+            "ci_low": -0.13257575757575762,
+            "mean": -0.094426406926407,
+            "n": 80
+          }
+        }
+      ],
+      "name": "fixed_rate"
+    },
+    "single_threshold_eval_oracle": {
+      "best_label": "single_threshold_x1_0.80",
+      "candidates": [
+        {
+          "label": "single_threshold_x1_0.30",
+          "mean": 0.19162608225108219,
+          "summary": {
+            "ci_high": 0.22247023809523805,
+            "ci_low": 0.16145833333333326,
+            "mean": 0.19162608225108219,
+            "n": 160
+          }
+        },
+        {
+          "label": "single_threshold_x1_0.35",
+          "mean": 0.2397862554112554,
+          "summary": {
+            "ci_high": 0.2729318858225107,
+            "ci_low": 0.20698051948051943,
+            "mean": 0.2397862554112554,
+            "n": 160
+          }
+        },
+        {
+          "label": "single_threshold_x1_0.40",
+          "mean": 0.30390963203463206,
+          "summary": {
+            "ci_high": 0.3352966044372295,
+            "ci_low": 0.2725919913419913,
+            "mean": 0.30390963203463206,
+            "n": 160
+          }
+        },
+        {
+          "label": "single_threshold_x1_0.45",
+          "mean": 0.37405303030303033,
+          "summary": {
+            "ci_high": 0.40631933170995677,
+            "ci_low": 0.3410443722943723,
+            "mean": 0.37405303030303033,
+            "n": 160
+          }
+        },
+        {
+          "label": "single_threshold_x1_0.50",
+          "mean": 0.44115259740259755,
+          "summary": {
+            "ci_high": 0.4715909090909093,
+            "ci_low": 0.41091720779220786,
+            "mean": 0.44115259740259755,
+            "n": 160
+          }
+        },
+        {
+          "label": "single_threshold_x1_0.55",
+          "mean": 0.5144074675324676,
+          "summary": {
+            "ci_high": 0.5448474702380953,
+            "ci_low": 0.48423802759740264,
+            "mean": 0.5144074675324676,
+            "n": 160
+          }
+        },
+        {
+          "label": "single_threshold_x1_0.60",
+          "mean": 0.5549918831168833,
+          "summary": {
+            "ci_high": 0.5849567099567101,
+            "ci_low": 0.5258370535714286,
+            "mean": 0.5549918831168833,
+            "n": 160
+          }
+        },
+        {
+          "label": "single_threshold_x1_0.65",
+          "mean": 0.6185064935064937,
+          "summary": {
+            "ci_high": 0.644414569805195,
+            "ci_low": 0.5921266233766235,
+            "mean": 0.6185064935064937,
+            "n": 160
+          }
+        },
+        {
+          "label": "single_threshold_x1_0.70",
+          "mean": 0.6848620129870131,
+          "summary": {
+            "ci_high": 0.7109730113636366,
+            "ci_low": 0.6587510146103898,
+            "mean": 0.6848620129870131,
+            "n": 160
+          }
+        },
+        {
+          "label": "single_threshold_x1_0.75",
+          "mean": 0.7070481601731603,
+          "summary": {
+            "ci_high": 0.7350547889610392,
+            "ci_low": 0.6806682900432902,
+            "mean": 0.7070481601731603,
+            "n": 160
+          }
+        },
+        {
+          "label": "single_threshold_x1_0.80",
+          "mean": 0.7362689393939396,
+          "summary": {
+            "ci_high": 0.7600125135281387,
+            "ci_low": 0.7129312094155845,
+            "mean": 0.7362689393939396,
+            "n": 160
+          }
+        },
+        {
+          "label": "single_threshold_x2_0.30",
+          "mean": -0.060944264069264134,
+          "summary": {
+            "ci_high": -0.02780032467532472,
+            "ci_low": -0.09368235930735938,
+            "mean": -0.060944264069264134,
+            "n": 160
+          }
+        },
+        {
+          "label": "single_threshold_x2_0.35",
+          "mean": -0.03530844155844165,
+          "summary": {
+            "ci_high": -0.005073051948052049,
+            "ci_low": -0.06635551948051957,
+            "mean": -0.03530844155844165,
+            "n": 160
+          }
+        },
+        {
+          "label": "single_threshold_x2_0.40",
+          "mean": -0.01400162337662345,
+          "summary": {
+            "ci_high": 0.018601190476190403,
+            "ci_low": -0.045456236471861554,
+            "mean": -0.01400162337662345,
+            "n": 160
+          }
+        },
+        {
+          "label": "single_threshold_x2_0.45",
+          "mean": -0.00013528138528149796,
+          "summary": {
+            "ci_high": 0.031249999999999896,
+            "ci_low": -0.030167748917749027,
+            "mean": -0.00013528138528149796,
+            "n": 160
+          }
+        },
+        {
+          "label": "single_threshold_x2_0.50",
+          "mean": 0.03625541125541114,
+          "summary": {
+            "ci_high": 0.06973755411255403,
+            "ci_low": 0.003382034632034522,
+            "mean": 0.03625541125541114,
+            "n": 160
+          }
+        },
+        {
+          "label": "single_threshold_x2_0.55",
+          "mean": 0.03733766233766224,
+          "summary": {
+            "ci_high": 0.06912878787878778,
+            "ci_low": 0.005478896103896024,
+            "mean": 0.03733766233766224,
+            "n": 160
+          }
+        },
+        {
+          "label": "single_threshold_x2_0.60",
+          "mean": 0.054653679653679545,
+          "summary": {
+            "ci_high": 0.08536424512987002,
+            "ci_low": 0.024890083874458752,
+            "mean": 0.054653679653679545,
+            "n": 160
+          }
+        },
+        {
+          "label": "single_threshold_x2_0.65",
+          "mean": 0.07264610389610379,
+          "summary": {
+            "ci_high": 0.10112283549783538,
+            "ci_low": 0.043966450216450105,
+            "mean": 0.07264610389610379,
+            "n": 160
+          }
+        },
+        {
+          "label": "single_threshold_x2_0.70",
+          "mean": 0.12026515151515142,
+          "summary": {
+            "ci_high": 0.15002705627705618,
+            "ci_low": 0.09023268398268387,
+            "mean": 0.12026515151515142,
+            "n": 160
+          }
+        },
+        {
+          "label": "single_threshold_x2_0.75",
+          "mean": 0.1362283549783549,
+          "summary": {
+            "ci_high": 0.1661948728354977,
+            "ci_low": 0.10612655573593062,
+            "mean": 0.1362283549783549,
+            "n": 160
+          }
+        },
+        {
+          "label": "single_threshold_x2_0.80",
+          "mean": 0.1462391774891774,
+          "summary": {
+            "ci_high": 0.17633928571428562,
+            "ci_low": 0.11539502164502155,
+            "mean": 0.1462391774891774,
+            "n": 160
+          }
+        }
+      ],
+      "name": "single_threshold_eval_oracle"
+    },
+    "single_threshold_train_selected": {
+      "best_label": "single_threshold_x1_0.80",
+      "candidates": [
+        {
+          "label": "single_threshold_x1_0.30",
+          "mean": 0.18574134199134193,
+          "summary": {
+            "ci_high": 0.2324134199134198,
+            "ci_low": 0.1415043290043289,
+            "mean": 0.18574134199134193,
+            "n": 80
+          }
+        },
+        {
+          "label": "single_threshold_x1_0.35",
+          "mean": 0.22240259740259738,
+          "summary": {
+            "ci_high": 0.27016030844155836,
+            "ci_low": 0.17613298160173152,
+            "mean": 0.22240259740259738,
+            "n": 80
+          }
+        },
+        {
+          "label": "single_threshold_x1_0.40",
+          "mean": 0.3119588744588745,
+          "summary": {
+            "ci_high": 0.3556547619047619,
+            "ci_low": 0.2694805194805195,
+            "mean": 0.3119588744588745,
+            "n": 80
+          }
+        },
+        {
+          "label": "single_threshold_x1_0.45",
+          "mean": 0.363771645021645,
+          "summary": {
+            "ci_high": 0.41152597402597413,
+            "ci_low": 0.3169642857142857,
+            "mean": 0.363771645021645,
+            "n": 80
+          }
+        },
+        {
+          "label": "single_threshold_x1_0.50",
+          "mean": 0.4253246753246754,
+          "summary": {
+            "ci_high": 0.4688886634199135,
+            "ci_low": 0.38284632034632043,
+            "mean": 0.4253246753246754,
+            "n": 80
+          }
+        },
+        {
+          "label": "single_threshold_x1_0.55",
+          "mean": 0.5143398268398269,
+          "summary": {
+            "ci_high": 0.5564157196969698,
+            "ci_low": 0.47226731601731603,
+            "mean": 0.5143398268398269,
+            "n": 80
+          }
+        },
+        {
+          "label": "single_threshold_x1_0.60",
+          "mean": 0.575081168831169,
+          "summary": {
+            "ci_high": 0.6151244588744591,
+            "ci_low": 0.5340909090909093,
+            "mean": 0.575081168831169,
+            "n": 80
+          }
+        },
+        {
+          "label": "single_threshold_x1_0.65",
+          "mean": 0.6309523809523812,
+          "summary": {
+            "ci_high": 0.667748917748918,
+            "ci_low": 0.5942911255411257,
+            "mean": 0.6309523809523812,
+            "n": 80
+          }
+        },
+        {
+          "label": "single_threshold_x1_0.70",
+          "mean": 0.6942640692640694,
+          "summary": {
+            "ci_high": 0.7275432900432902,
+            "ci_low": 0.6598992153679656,
+            "mean": 0.6942640692640694,
+            "n": 80
+          }
+        },
+        {
+          "label": "single_threshold_x1_0.75",
+          "mean": 0.7237554112554114,
+          "summary": {
+            "ci_high": 0.7614989177489179,
+            "ci_low": 0.6858766233766236,
+            "mean": 0.7237554112554114,
+            "n": 80
+          }
+        },
+        {
+          "label": "single_threshold_x1_0.80",
+          "mean": 0.7563582251082253,
+          "summary": {
+            "ci_high": 0.789637445887446,
+            "ci_low": 0.7205086580086582,
+            "mean": 0.7563582251082253,
+            "n": 80
+          }
+        },
+        {
+          "label": "single_threshold_x2_0.30",
+          "mean": -0.041260822510822574,
+          "summary": {
+            "ci_high": 0.0006764069264068471,
+            "ci_low": -0.08266030844155851,
+            "mean": -0.041260822510822574,
+            "n": 80
+          }
+        },
+        {
+          "label": "single_threshold_x2_0.35",
+          "mean": -0.006899350649350743,
+          "summary": {
+            "ci_high": 0.03598484848484842,
+            "ci_low": -0.049242424242424296,
+            "mean": -0.006899350649350743,
+            "n": 80
+          }
+        },
+        {
+          "label": "single_threshold_x2_0.40",
+          "mean": -0.014204545454545534,
+          "summary": {
+            "ci_high": 0.02989718614718606,
+            "ci_low": -0.05790381493506504,
+            "mean": -0.014204545454545534,
+            "n": 80
+          }
+        },
+        {
+          "label": "single_threshold_x2_0.45",
+          "mean": 0.010416666666666536,
+          "summary": {
+            "ci_high": 0.05573931277056264,
+            "ci_low": -0.03341788419913433,
+            "mean": 0.010416666666666536,
+            "n": 80
+          }
+        },
+        {
+          "label": "single_threshold_x2_0.50",
+          "mean": 0.04247835497835485,
+          "summary": {
+            "ci_high": 0.08265692640692626,
+            "ci_low": 0.0017586580086578747,
+            "mean": 0.04247835497835485,
+            "n": 80
+          }
+        },
+        {
+          "label": "single_threshold_x2_0.55",
+          "mean": 0.03896103896103885,
+          "summary": {
+            "ci_high": 0.08117221320346307,
+            "ci_low": -0.0035173160173161077,
+            "mean": 0.03896103896103885,
+            "n": 80
+          }
+        },
+        {
+          "label": "single_threshold_x2_0.60",
+          "mean": 0.05668290043290032,
+          "summary": {
+            "ci_high": 0.0982176677489176,
+            "ci_low": 0.016504329004328883,
+            "mean": 0.05668290043290032,
+            "n": 80
+          }
+        },
+        {
+          "label": "single_threshold_x2_0.65",
+          "mean": 0.07399891774891762,
+          "summary": {
+            "ci_high": 0.10701095779220764,
+            "ci_low": 0.040990259740259626,
+            "mean": 0.07399891774891762,
+            "n": 80
+          }
+        },
+        {
+          "label": "single_threshold_x2_0.70",
+          "mean": 0.14380411255411246,
+          "summary": {
+            "ci_high": 0.1822240259740259,
+            "ci_low": 0.10606060606060597,
+            "mean": 0.14380411255411246,
+            "n": 80
+          }
+        },
+        {
+          "label": "single_threshold_x2_0.75",
+          "mean": 0.15300324675324667,
+          "summary": {
+            "ci_high": 0.19101731601731592,
+            "ci_low": 0.11607142857142846,
+            "mean": 0.15300324675324667,
+            "n": 80
+          }
+        },
+        {
+          "label": "single_threshold_x2_0.80",
+          "mean": 0.15868506493506485,
+          "summary": {
+            "ci_high": 0.20089285714285704,
+            "ci_low": 0.11688311688311681,
+            "mean": 0.15868506493506485,
+            "n": 80
+          }
+        }
+      ],
+      "name": "single_threshold_train_selected"
+    }
+  }
+}

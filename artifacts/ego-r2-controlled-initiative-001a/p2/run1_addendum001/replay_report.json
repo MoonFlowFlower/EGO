@@ -1,0 +1,26 @@
+{
+  "digest_1": "18e1adb05339de08a7119b6b90b0ce0cef0f68005285427f85e56a67f499c731",
+  "digest_2": "18e1adb05339de08a7119b6b90b0ce0cef0f68005285427f85e56a67f499c731",
+  "pass": true,
+  "phase": "p2-digest",
+  "process_reports": [
+    {
+      "returncode": 0,
+      "status": "ok",
+      "stderr_tail": [],
+      "stdout_tail": [
+        "{\"digest\": \"18e1adb05339de08a7119b6b90b0ce0cef0f68005285427f85e56a67f499c731\"}"
+      ]
+    },
+    {
+      "returncode": 0,
+      "status": "ok",
+      "stderr_tail": [],
+      "stdout_tail": [
+        "{\"digest\": \"18e1adb05339de08a7119b6b90b0ce0cef0f68005285427f85e56a67f499c731\"}"
+      ]
+    }
+  ],
+  "producer_function": "_fresh_digest",
+  "status": "pass"
+}
