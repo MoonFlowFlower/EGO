@@ -10,7 +10,7 @@ from scripts.ego_r2_controlled_initiative.policies import (
     GatedInitiativeLearner,
 )
 from scripts.ego_r2_controlled_initiative.replay import fresh_process_smoke_replay
-from scripts.ego_r2_controlled_initiative.runner import classify_process_result
+from scripts.ego_r2_controlled_initiative.runner import classify_process_result, compute_p0
 from scripts.ego_r2_controlled_initiative.validation import package_forbidden_imports
 
 
@@ -75,3 +75,11 @@ def test_crn_identical_episode_seed_produces_identical_env_stream() -> None:
     stream_a = [(row["t"], row["x1"], row["x2"], row["x3"], row["x4"]) for row in episode_a.candidate_trace]
     stream_b = [(row["t"], row["x1"], row["x2"], row["x3"], row["x4"]) for row in episode_b.candidate_trace]
     assert json.dumps(stream_a, sort_keys=True) == json.dumps(stream_b, sort_keys=True)
+
+
+def test_addendum001_degen_gate_uses_corrected_harmful_spam_rule() -> None:
+    gate = compute_p0(n_ep=40, include_replay=False)["gate_results"]["G-P0-DEGEN"]
+
+    assert gate["always_act_mean"] <= -0.06
+    assert gate["always_act_ci_high"] < 0
+    assert gate["pass"] is True

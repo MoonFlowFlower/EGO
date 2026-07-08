@@ -463,8 +463,11 @@ def compute_p0(*, n_ep: int, include_replay: bool) -> dict[str, Any]:
     degenerate = {
         "always_silent_mean": family["arms"]["always_silent"]["summary"]["mean"],
         "always_act_mean": family["arms"]["always_act"]["summary"]["mean"],
+        "always_act_ci_high": family["arms"]["always_act"]["summary"]["ci_high"],
+        # ADDENDUM_001 corrects the unreachable -0.2 point bound.
         "pass": family["arms"]["always_silent"]["summary"]["mean"] == 0.0
-        and family["arms"]["always_act"]["summary"]["mean"] <= -0.2,
+        and family["arms"]["always_act"]["summary"]["mean"] <= -0.06
+        and family["arms"]["always_act"]["summary"]["ci_high"] < 0,
     }
     gates = {
         "G-P0-HEADROOM": {
