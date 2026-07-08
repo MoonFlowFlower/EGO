@@ -1,0 +1,97 @@
+{
+  "task_id": "PSPC-ADAPTER-LAB-CONTRACT-RECONCILE-001A",
+  "producer_function": "inline evidence manifest builder (hash/log parser only)",
+  "run_id": "20260708-pspc-adapter-lab-contract-reconcile-001a",
+  "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+  "started_from_head": "80c76b69032beceb36222f562e04e249a8254ec8",
+  "amendment_commit": "ff04debd3fdbc155efd6927013d24c27916f3668",
+  "test_commit": "d25a358306b0f217a4238c5282ea7b758563cfa4",
+  "current_head_before_evidence_commit": "d25a358306b0f217a4238c5282ea7b758563cfa4",
+  "claim_ceiling": "lab-only proposal contract / engineering governance only",
+  "logs": [
+    {
+      "path": "D:/Project/AIProject/MyProject/Ego/artifacts/pspc_adapter_lab_contract_reconcile_001a/pytest_admission_packet_contract_q.log",
+      "sha256": "A788B746310F16C8A2513BAB4A784ADF1C9E2610122B75D0E82BEAD54BB7172F",
+      "exit_code": 0
+    },
+    {
+      "path": "D:/Project/AIProject/MyProject/Ego/artifacts/pspc_adapter_lab_contract_reconcile_001a/pytest_admission_packet_contract_vv.log",
+      "sha256": "DB2B15DE46149BC193B5FFB0A21C8EA9C95D153081910180EF4FF885C092D7C8",
+      "exit_code": 0
+    },
+    {
+      "path": "D:/Project/AIProject/MyProject/Ego/artifacts/pspc_adapter_lab_contract_reconcile_001a/pytest_pspc_lab_adapter_contract_q.log",
+      "sha256": "416844144342B536D8ADF5F13AB1C3CF02FA4E974A6FF246E16A258E39568B17",
+      "exit_code": 0
+    },
+    {
+      "path": "D:/Project/AIProject/MyProject/Ego/artifacts/pspc_adapter_lab_contract_reconcile_001a/runtime_authority_boundaries.log",
+      "sha256": "DE66FCB0AFB85834EEF6AC54FDF17670807A965EBBD191A26E5E32977DDC0803",
+      "exit_code": 0
+    },
+    {
+      "path": "D:/Project/AIProject/MyProject/Ego/artifacts/pspc_adapter_lab_contract_reconcile_001a/pytest_full_repo_q.log",
+      "sha256": "4F623F4621F028B38CD5F442F93980B3C70F010C90BE8048FC90032730EB0BA1",
+      "exit_code": 1
+    },
+    {
+      "path": "D:/Project/AIProject/MyProject/Ego/artifacts/pspc_adapter_lab_contract_reconcile_001a/pytest_full_repo_q_normalized.log",
+      "sha256": "57D2342BBE3F3A64A8E0732B5BB406D9147A35A73149C11CCA6646811C2DCC7F",
+      "exit_code": 1
+    },
+    {
+      "path": "D:/Project/AIProject/MyProject/Ego/artifacts/pspc_adapter_lab_contract_reconcile_001a/forbidden_path_diff_guard.log",
+      "sha256": "0F832A4ADDF7D4AB92AF5B4A7B75ACEAA6E11865F991BFF30D5D12589F5CD851",
+      "exit_code": null
+    }
+  ],
+  "source_hashes": [
+    {
+      "path": "docs/codex/tasks/virtual-cat-pspc-v0/ADMISSION_PACKET_CONTRACT.md",
+      "exists": true,
+      "sha256": "DEA83CCB5568E2A0A34B966E94EF618DE2D28C32430EE8AC6C28A68A668C49A4"
+    },
+    {
+      "path": "labs/virtual_cat_pspc_v0/tests/test_admission_packet_contract.py",
+      "exists": true,
+      "sha256": "E3E82768135AA917E0AEC4A053284B4D451E77E1CD089A14D6E3E1B43EC1E3A1"
+    },
+    {
+      "path": "EgoOperator/adapters/pspc_lab_adapter.py",
+      "exists": true,
+      "sha256": "4DC2D334C92B17AA5DC0EEE9E10007FDF26FA81BD4742769166B1265747B0193"
+    },
+    {
+      "path": "tests/test_pspc_lab_adapter_contract.py",
+      "exists": true,
+      "sha256": "97BEC7C84F6884B2D7F17800FBE0610750415AA1B8CAF40ADA5CE0767A952243"
+    },
+    {
+      "path": "scripts/codex/check_runtime_authority_boundaries.py",
+      "exists": true,
+      "sha256": "814403C54CBE08DABB181592693A1CE68478C1DF1185651AB71A630BB89E99BF"
+    },
+    {
+      "path": "artifacts/egodesktop_pet_world_integration_001a/p1/suite_baseline.json",
+      "exists": true,
+      "sha256": "FB6F06576F324E42F433AF8B8F859828095ED735CFA767831EBF39DC948ADA15"
+    },
+    {
+      "path": "C:\\Users\\LEO\\AppData\\Local\\Packages\\CLAUDE~1\\LOCALC~1\\Roaming\\Claude\\LOCAL-~1\\840EF4~1\\5B836E~1\\LO1591~1\\outputs\\CODEX-~2.MD",
+      "exists": true,
+      "sha256": "71725FB25D4DE89138FA790FA9E27F36F21FCCD3E01A12E2E16923D8D0D4F97B"
+    }
+  ],
+  "full_pytest": {
+    "exit_code": 1,
+    "summary": "1 failed, 1060 passed, 1 skipped",
+    "failed_ids": [
+      "labs/virtual_cat_pspc_v0/tests/test_report_generation.py::test_experiment_runner_writes_canonical_reports"
+    ],
+    "new_failure_assessment": "only pre-existing virtual_cat report_generation no_go failure observed in this run; adapter-exists failure absent"
+  },
+  "negative_control_evidence": "pytest_admission_packet_contract_vv.log lists three negative-control tests as PASSED; each asserts injected violations are non-empty, not unconditional pass.",
+  "forbidden_path_guard": "forbidden_path_diff_guard.log must contain NO_DIFF for adapter source, adapter contract test, lab body/runner, and pet suite baseline.",
+  "pet_baseline_note": "suite_baseline.json preserved at FB6F06576F324E42F433AF8B8F859828095ED735CFA767831EBF39DC948ADA15; adapter-exists stale baseline cleanup is deliberately out of scope.",
+  "aggregation_rule": "no score aggregation; preserve command exit codes, failure IDs, and sha256 hashes"
+}

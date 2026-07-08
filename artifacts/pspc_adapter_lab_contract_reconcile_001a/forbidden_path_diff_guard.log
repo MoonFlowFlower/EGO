@@ -1,0 +1,2 @@
+﻿COMMAND: git diff --name-status 80c76b69 -- <forbidden/pet paths>
+NO_DIFF
