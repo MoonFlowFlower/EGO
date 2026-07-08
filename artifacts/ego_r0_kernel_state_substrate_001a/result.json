@@ -4,7 +4,7 @@
   "gate_results": {
     "G-R0-CAUSALITY": {
       "aggregation_rule": "predeclared all-episodes gate; zero tolerance unless a floor is named in STAGE_CARD",
-      "code_path_hash": "eb6b8992b5726b3fac8d82196d98eaa86d32fb22dde95f80542977874cbe6746",
+      "code_path_hash": "1288183b98714f56f20bb6d4d036374f386545ae2467e7280194e1e0c8b658b4",
       "gate": "G-R0-CAUSALITY",
       "input_artifacts": [],
       "left_direction_agreement": 1.0,
@@ -29,7 +29,7 @@
     },
     "G-R0-LLMSWAP-HARNESS": {
       "aggregation_rule": "predeclared all-episodes gate; zero tolerance unless a floor is named in STAGE_CARD",
-      "code_path_hash": "eb6b8992b5726b3fac8d82196d98eaa86d32fb22dde95f80542977874cbe6746",
+      "code_path_hash": "1288183b98714f56f20bb6d4d036374f386545ae2467e7280194e1e0c8b658b4",
       "delta_count": 300,
       "gate": "G-R0-LLMSWAP-HARNESS",
       "input_artifacts": [],
@@ -52,7 +52,7 @@
     },
     "G-R0-REPLAY": {
       "aggregation_rule": "predeclared all-episodes gate; zero tolerance unless a floor is named in STAGE_CARD",
-      "code_path_hash": "eb6b8992b5726b3fac8d82196d98eaa86d32fb22dde95f80542977874cbe6746",
+      "code_path_hash": "1288183b98714f56f20bb6d4d036374f386545ae2467e7280194e1e0c8b658b4",
       "fresh_subprocess_runs_per_episode": 2,
       "gate": "G-R0-REPLAY",
       "input_artifacts": [
@@ -85,7 +85,7 @@
     },
     "G-R0-SEED-NEGCTRL": {
       "aggregation_rule": "predeclared all-episodes gate; zero tolerance unless a floor is named in STAGE_CARD",
-      "code_path_hash": "eb6b8992b5726b3fac8d82196d98eaa86d32fb22dde95f80542977874cbe6746",
+      "code_path_hash": "1288183b98714f56f20bb6d4d036374f386545ae2467e7280194e1e0c8b658b4",
       "gate": "G-R0-SEED-NEGCTRL",
       "input_artifacts": [
         "artifacts/ego_r0_kernel_state_substrate_001a/input_logs/seed_11_episode_0.json"
@@ -109,14 +109,38 @@
     },
     "HYGIENE": {
       "aggregation_rule": "predeclared all-episodes gate; zero tolerance unless a floor is named in STAGE_CARD",
-      "code_path_hash": "eb6b8992b5726b3fac8d82196d98eaa86d32fb22dde95f80542977874cbe6746",
+      "code_path_hash": "1288183b98714f56f20bb6d4d036374f386545ae2467e7280194e1e0c8b658b4",
+      "declared_adopter_count": 2,
+      "declared_adopters": [
+        {
+          "authorizing_card": "ego-r3-adoption-slice-001a",
+          "path": "EgoDesktop/scripts/run-joi-g-ablation-kernel-adoption.js",
+          "rationale": "R3 adoption card uses the EgoDesktop g_ablation lineage to adopt the R0 serialized-state and replay substrate."
+        },
+        {
+          "authorizing_card": "egodesktop-pet-world-integration-001a",
+          "path": "EgoDesktop/tests/pet_suite_baseline_gate.test.js",
+          "rationale": "PET P1 suite-baseline gate tests the closed R0 hygiene debt boundary after the sanctioned desktop-pet integration path."
+        }
+      ],
       "ego_operator_imports_in_kernel": [],
-      "egodesktop_egooperator_reference_count": 0,
-      "egodesktop_egooperator_references": [],
+      "egodesktop_egooperator_reference_count": 2,
+      "egodesktop_egooperator_references": [
+        "EgoDesktop/scripts/run-joi-g-ablation-kernel-adoption.js",
+        "EgoDesktop/tests/pet_suite_baseline_gate.test.js"
+      ],
       "gate": "HYGIENE",
-      "input_artifacts": [],
+      "input_artifacts": [
+        "docs/codex/tasks/ego-r0-kernel-state-substrate-001a/sanctioned_kernel_adopters.json"
+      ],
+      "node_modules_excluded": true,
       "producer_function": "_hygiene_gate",
       "run_id": "ego_r0_kernel_state_substrate_001a_validation_v0",
+      "sanctioned_adopters_config": {
+        "errors": [],
+        "path": "docs/codex/tasks/ego-r0-kernel-state-substrate-001a/sanctioned_kernel_adopters.json",
+        "sha256": "46d115e64495d2e750dce050fcc88848cccba9afb6c39787f813862d8b0c38a4"
+      },
       "seed_context": {
         "episode_ids": [],
         "seeds": [
@@ -124,7 +148,9 @@
           23
         ]
       },
-      "status": "pass"
+      "status": "pass",
+      "undeclared_reference_count": 0,
+      "undeclared_references": []
     }
   },
   "verdict": "r0_substrate_pass"
