@@ -97,3 +97,26 @@ This does not prove adapter readiness, EgoOperator runtime efficacy, stable real
 ## Rollback
 
 Remove this contract doc, `labs/virtual_cat_pspc_v0/admission_packet.py`, its tests, generated schema/report artifacts, and related status/ledger entries. No EgoOperator rollback is needed because no adapter or runtime integration exists.
+
+## Amendment 2026-07-08 — "no adapter file exists" invariant superseded (operator/lab-owner)
+Authorized by operator (Zhouyu), 2026-07-08. Implements: PSPC-ADAPTER-LAB-CONTRACT-RECONCILE-001A.
+This is a FORMAL SUPERSESSION of a deliberately frozen clause, not a correction of a mistaken test.
+
+The frozen invariant "no adapter file exists" (and the `assert not adapter_path.exists()` in
+test_admission_packet_contract.py) is SUPERSEDED. The read-only adapter anticipated by this contract
+("A future adapter design may read PSPC traces and reports and emit this packet for a separate
+EgoOperator runtime gate") now exists as EgoOperator/adapters/pspc_lab_adapter.py, created and
+maintained by the sanctioned PSPC read-only adapter lineage and enforced INERT by
+tests/test_pspc_lab_adapter_contract.py and scripts/codex/check_runtime_authority_boundaries.py.
+
+Superseded: the "no adapter FILE EXISTS" existence invariant only.
+Preserved and still enforced: (a) lab self-isolation — labs/virtual_cat_pspc_v0/admission_packet.py
+imports no EgoOperator and the lab runner receives no runtime authority; (b) the adapter's inert
+contract — disabled / mainline_connected False / runtime_authority "none" / not imported or
+registered by any EgoOperator runtime source / no action, message, memory, gate, transport, or
+user-visible side effect. The admission packet stays proposal-only and lab-only.
+
+Contract-test effect: the test no longer asserts adapter-file non-existence; IF the adapter file
+exists it MUST satisfy the inert-adapter contract, and the lab self-isolation assertion is retained
+with a fail-able negative control. Claim ceiling unchanged (lab-only proposal contract; proves no
+adapter readiness, EgoOperator runtime efficacy, autonomy, consciousness, or subjective experience).
