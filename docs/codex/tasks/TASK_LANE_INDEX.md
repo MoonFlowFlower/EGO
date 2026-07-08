@@ -18,10 +18,10 @@
 | lane | count |
 |---|---:|
 | `active_default` | 1 |
-| `supporting_active` | 2 |
+| `supporting_active` | 1 |
 | `parked` | 1 |
-| `closed_evidence` | 20 |
-| `reference_only` | 229 |
+| `closed_evidence` | 19 |
+| `reference_only` | 225 |
 
 ## Active Default
 
@@ -33,7 +33,6 @@
 
 | entry | kind | workstream | paths | why |
 |---|---|---|---|---|
-| Repo Cleanup Route Convergence | `codex_task` | `repo_cleanup_route_convergence` | `docs/codex/tasks/repo-cleanup-route-convergence/` | Supporting cleanup lane for route index, hygiene gate, and Stage 1 evidence convergence; must not replace the active default track. Current workstream status: `supporting_active`. |
 | Repo Mainline Clarity v1 | `codex_task` | n/a | `docs/codex/tasks/repo-mainline-clarity-v1/` | Supporting repo-view slice for mainline onboarding, surface-map clarity, and staged operational-exhaust hygiene; must not replace the active default track. |
 
 ## Parked
@@ -63,7 +62,6 @@
 | Runtime Proximal Post Stronger Selection Coherence Runner Implementation | `codex_task` | n/a | `docs/codex/tasks/runtime-proximal-post-stronger-selection-coherence-runner-implementation/` | Runtime-proximal runner/planning slices are now frozen bounded evidence, not active route contenders. |
 | Runtime Proximal Stronger Admission Planning | `codex_task` | n/a | `docs/codex/tasks/runtime-proximal-stronger-admission-planning/` | Runtime-proximal runner/planning slices are now frozen bounded evidence, not active route contenders. |
 | Runtime Proximal Stronger Admission Runner Implementation | `codex_task` | n/a | `docs/codex/tasks/runtime-proximal-stronger-admission-runner-implementation/` | Runtime-proximal runner/planning slices are now frozen bounded evidence, not active route contenders. |
-| Subject System v1 Governed Proactivity | `codex_task` | `subject_system_v1_governed_proactivity` | `docs/codex/tasks/subject-system-v1-governed-proactivity/` | Legacy pre-EgoOperator governed-proactivity evidence; preserved for reference and fallback, not the active default route. Current workstream status: `legacy_reference__pre_ego_operator_evidence_preserved`. |
 | Telegram Subject Mainline Audit | `codex_task` | `live_subject_ingress_observation` | `docs/codex/tasks/telegram-subject-mainline-audit/` | Pre-EgoOperator subject-ingress audit evidence retained for history only; it does not route new default work. Current workstream status: `closed_evidence__legacy_subject_ingress_preserved`. |
 | Unified Host Contract Correctness | `codex_task` | `unified_host_contract_correctness` | `docs/codex/tasks/unified-host-contract-correctness/` | Frozen predecessor tranche retained as closed evidence, not a current supporting route. Current workstream status: `closed_evidence__legacy_host_contract_preserved`. |
 
@@ -71,9 +69,6 @@
 
 | entry | kind | workstream | paths | why |
 |---|---|---|---|---|
-| Autopilot Doctor Auth Check | `codex_task` | n/a | `docs/codex/tasks/autopilot-doctor-auth-check/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
-| Autopilot Ego Reconnect Smoke | `codex_task` | n/a | `docs/codex/tasks/autopilot-ego-reconnect-smoke/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
-| Autopilot Smoke | `codex_task` | n/a | `docs/codex/tasks/autopilot-smoke/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Codex Autopilot Epic Rollup V1 | `codex_task` | n/a | `docs/codex/tasks/codex-autopilot-epic-rollup-v1/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Codex Autopilot L2 Dirty Baseline V1 | `codex_task` | n/a | `docs/codex/tasks/codex-autopilot-l2-dirty-baseline-v1/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Codex Autopilot L3 L4 V2 | `codex_task` | n/a | `docs/codex/tasks/codex-autopilot-l3-l4-v2/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
@@ -243,7 +238,6 @@
 | Mvs H1 External Eval Corpus | `codex_task` | n/a | `docs/codex/tasks/mvs-h1-external-eval-corpus/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | Mvs H1 External Raw Extraction Replay | `codex_task` | n/a | `docs/codex/tasks/mvs-h1-external-raw-extraction-replay/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | Mvs H1 External Replay Execution | `codex_task` | n/a | `docs/codex/tasks/mvs-h1-external-replay-execution/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
-| Mvs V1 + Controlled Proactivity Sandbox | `codex_task` | n/a | `docs/codex/tasks/MVS v1 + Controlled Proactivity Sandbox/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Openemotion Candidate Hash Stabilization | `codex_task` | n/a | `docs/codex/tasks/openemotion-candidate-hash-stabilization/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | Openemotion Daemon Lifecycle Stabilization | `codex_task` | n/a | `docs/codex/tasks/openemotion-daemon-lifecycle-stabilization/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
 | Openemotion Env Health Stabilization | `codex_task` | n/a | `docs/codex/tasks/openemotion-env-health-stabilization/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |
