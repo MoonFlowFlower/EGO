@@ -12,6 +12,11 @@ from scripts.ego_kernel.probe_substate import (
 
 
 ProvenanceFn = Callable[[str, list[str], str, list[str]], dict[str, Any]]
+DEFAULT_SANCTIONED_ADOPTERS_PATH = (
+    "docs/codex/tasks/ego-r0-kernel-state-substrate-001a/sanctioned_kernel_adopters.json"
+)
+REFERENCE_PATTERNS = ("ego_kernel", "EGO-R0-KERNEL", "ego_r0_kernel", "kernel_trace_v0")
+REFERENCE_SUFFIXES = {".py", ".js", ".ts", ".json", ".md"}
 
 
 def _render(action: dict[str, Any], renderer: str) -> str:
@@ -52,6 +57,115 @@ def llm_swap_gate(
     }
 
 
+def _normalize_repo_path(path: str | Path) -> str:
+    return str(path).replace("\\", "/").strip()
+
+
+def _has_wildcard(path: str) -> bool:
+    return any(token in path for token in ("*", "?", "[", "]"))
+
+
+def load_sanctioned_adopters(
+    repo_root: Path,
+    relative_path: str = DEFAULT_SANCTIONED_ADOPTERS_PATH,
+) -> dict[str, Any]:
+    config_path = repo_root / relative_path
+    if not config_path.exists():
+        return {
+            "path": relative_path,
+            "sha256": None,
+            "sanctioned_adopters": [],
+            "errors": [{"reason": "missing_sanctioned_adopters_config", "path": relative_path}],
+        }
+    raw = config_path.read_text(encoding="utf-8")
+    payload = json.loads(raw)
+    errors = []
+    adopters = []
+    for entry in payload.get("sanctioned_adopters", []):
+        adopter_path = _normalize_repo_path(entry.get("path", ""))
+        authorizing_card = str(entry.get("authorizing_card", "")).strip()
+        rationale = str(entry.get("rationale", "")).strip()
+        if not adopter_path:
+            errors.append({"reason": "missing_path", "entry": entry})
+        if _has_wildcard(adopter_path):
+            errors.append({"reason": "wildcard_path_forbidden", "path": adopter_path})
+        if not authorizing_card:
+            errors.append({"reason": "missing_authorizing_card", "path": adopter_path})
+        elif not (repo_root / "docs" / "codex" / "tasks" / authorizing_card).exists():
+            errors.append({
+                "reason": "authorizing_card_missing",
+                "path": adopter_path,
+                "authorizing_card": authorizing_card,
+            })
+        if not rationale:
+            errors.append({"reason": "missing_rationale", "path": adopter_path})
+        adopters.append({
+            "path": adopter_path,
+            "authorizing_card": authorizing_card,
+            "rationale": rationale,
+        })
+    return {
+        "path": relative_path,
+        "sha256": _sha256_text(raw),
+        "sanctioned_adopters": adopters,
+        "errors": errors,
+    }
+
+
+def classify_kernel_references(
+    references: list[str],
+    sanctioned_adopters: list[dict[str, Any]],
+) -> list[str]:
+    declared_paths = {_normalize_repo_path(entry.get("path", "")) for entry in sanctioned_adopters}
+    return [
+        reference
+        for reference in [_normalize_repo_path(item) for item in references]
+        if reference not in declared_paths
+    ]
+
+
+def declared_kernel_adopters(
+    references: list[str],
+    sanctioned_adopters: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    reference_set = {_normalize_repo_path(item) for item in references}
+    return [
+        {
+            "path": _normalize_repo_path(entry.get("path", "")),
+            "authorizing_card": str(entry.get("authorizing_card", "")).strip(),
+            "rationale": str(entry.get("rationale", "")).strip(),
+        }
+        for entry in sanctioned_adopters
+        if _normalize_repo_path(entry.get("path", "")) in reference_set
+    ]
+
+
+def hygiene_status(ego_operator_imports: list[str], undeclared_references: list[str], config_errors: list[dict[str, Any]] | None = None) -> str:
+    return "pass" if not ego_operator_imports and not undeclared_references and not (config_errors or []) else "fail"
+
+
+def _sha256_text(text: str) -> str:
+    import hashlib
+
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def scan_kernel_references(repo_root: Path) -> list[str]:
+    references = []
+    for base in (repo_root / "EgoDesktop", repo_root / "EgoOperator"):
+        if not base.exists():
+            continue
+        for path in base.rglob("*"):
+            relative_parts = path.relative_to(repo_root).parts
+            if "node_modules" in relative_parts:
+                continue
+            if path.is_file() and path.suffix.lower() in REFERENCE_SUFFIXES:
+                text = path.read_text(encoding="utf-8", errors="ignore")
+                if any(pattern in text for pattern in REFERENCE_PATTERNS):
+                    references.append(_normalize_repo_path(path.relative_to(repo_root)))
+    return sorted(references)
+
+
 def hygiene_gate(repo_root: Path, code_hash: str, provenance: ProvenanceFn) -> dict[str, Any]:
     kernel_files = list((repo_root / "scripts" / "ego_kernel").glob("*.py"))
     ego_operator_imports = []
@@ -60,21 +174,25 @@ def hygiene_gate(repo_root: Path, code_hash: str, provenance: ProvenanceFn) -> d
             stripped = line.strip()
             if stripped.startswith("import EgoOperator") or stripped.startswith("from EgoOperator"):
                 ego_operator_imports.append(str(path))
-    patterns = ("ego_kernel", "EGO-R0-KERNEL", "ego_r0_kernel", "kernel_trace_v0")
-    references = []
-    for base in (repo_root / "EgoDesktop", repo_root / "EgoOperator"):
-        if not base.exists():
-            continue
-        for path in base.rglob("*"):
-            if path.is_file() and path.suffix.lower() in {".py", ".js", ".ts", ".json", ".md"}:
-                text = path.read_text(encoding="utf-8", errors="ignore")
-                if any(pattern in text for pattern in patterns):
-                    references.append(str(path.relative_to(repo_root)))
+    references = scan_kernel_references(repo_root)
+    allowlist = load_sanctioned_adopters(repo_root)
+    undeclared_references = classify_kernel_references(references, allowlist["sanctioned_adopters"])
+    declared_adopters = declared_kernel_adopters(references, allowlist["sanctioned_adopters"])
     return {
         "gate": "HYGIENE",
-        "status": "pass" if not ego_operator_imports and not references else "fail",
+        "status": hygiene_status(ego_operator_imports, undeclared_references, allowlist["errors"]),
         "ego_operator_imports_in_kernel": ego_operator_imports,
         "egodesktop_egooperator_reference_count": len(references),
         "egodesktop_egooperator_references": references,
-        **provenance("_hygiene_gate", [], code_hash, []),
+        "declared_adopters": declared_adopters,
+        "declared_adopter_count": len(declared_adopters),
+        "undeclared_references": undeclared_references,
+        "undeclared_reference_count": len(undeclared_references),
+        "sanctioned_adopters_config": {
+            "path": allowlist["path"],
+            "sha256": allowlist["sha256"],
+            "errors": allowlist["errors"],
+        },
+        "node_modules_excluded": True,
+        **provenance("_hygiene_gate", [allowlist["path"]], code_hash, []),
     }

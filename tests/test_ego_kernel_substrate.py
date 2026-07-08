@@ -12,6 +12,7 @@ from scripts.ego_kernel.replay import (
     replay_in_process,
 )
 from scripts.ego_kernel.state import KernelState
+from scripts.ego_kernel.validation_gates import classify_kernel_references, hygiene_status
 from scripts.run_ego_kernel_substrate_validation import run_validation
 
 
@@ -86,7 +87,10 @@ def test_validation_runner_writes_contract_artifacts_and_passes(tmp_path):
     assert result["gate_results"]["G-R0-SEED-NEGCTRL"]["perturbed_seed_detected"] is True
     assert result["gate_results"]["G-R0-SEED-NEGCTRL"]["missing_registry_nondeterminism_detected"] is True
     assert result["gate_results"]["G-R0-LLMSWAP-HARNESS"]["state_action_deltas_identical"] is True
-    assert result["gate_results"]["HYGIENE"]["egodesktop_egooperator_reference_count"] == 0
+    hygiene = result["gate_results"]["HYGIENE"]
+    assert hygiene["ego_operator_imports_in_kernel"] == []
+    assert hygiene["undeclared_references"] == []
+    assert hygiene["declared_adopter_count"] == 2
 
     expected_artifacts = [
         "result.json",
@@ -101,3 +105,48 @@ def test_validation_runner_writes_contract_artifacts_and_passes(tmp_path):
 
     result_payload = json.loads((tmp_path / "result.json").read_text(encoding="utf-8"))
     assert result_payload["verdict"] == "r0_substrate_pass"
+
+
+def test_hygiene_negative_control_rejects_undeclared_kernel_reference():
+    allowlist = [
+        {
+            "path": "EgoDesktop/scripts/run-joi-g-ablation-kernel-adoption.js",
+            "authorizing_card": "ego-r3-adoption-slice-001a",
+            "rationale": "sanctioned adopter",
+        }
+    ]
+    references = [
+        "EgoDesktop/scripts/run-joi-g-ablation-kernel-adoption.js",
+        "EgoDesktop/src/unregistered_kernel_consumer.js",
+    ]
+
+    undeclared = classify_kernel_references(references, allowlist)
+
+    assert undeclared == ["EgoDesktop/src/unregistered_kernel_consumer.js"]
+    assert hygiene_status([], undeclared) == "fail"
+
+
+def test_hygiene_allowlist_ablation_is_load_bearing():
+    references = [
+        "EgoDesktop/scripts/run-joi-g-ablation-kernel-adoption.js",
+        "EgoDesktop/tests/pet_suite_baseline_gate.test.js",
+    ]
+    allowlist = [
+        {
+            "path": "EgoDesktop/scripts/run-joi-g-ablation-kernel-adoption.js",
+            "authorizing_card": "ego-r3-adoption-slice-001a",
+            "rationale": "sanctioned R3 adopter",
+        },
+        {
+            "path": "EgoDesktop/tests/pet_suite_baseline_gate.test.js",
+            "authorizing_card": "egodesktop-pet-world-integration-001a",
+            "rationale": "sanctioned PET P1 baseline adopter",
+        },
+    ]
+
+    ablated = [entry for entry in allowlist if entry["path"] != references[0]]
+    undeclared = classify_kernel_references(references, ablated)
+
+    assert references[0] in undeclared
+    assert hygiene_status([], undeclared) == "fail"
+    assert hygiene_status([], classify_kernel_references(references, allowlist)) == "pass"

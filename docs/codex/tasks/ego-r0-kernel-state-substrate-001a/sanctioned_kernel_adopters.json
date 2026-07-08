@@ -1,0 +1,18 @@
+{
+  "schema_version": "ego.r0.sanctioned_kernel_adopters.v0",
+  "task_id": "ego-r0-kernel-state-substrate-001a",
+  "claim_ceiling": "kernel_substrate_engineering_only",
+  "wildcards_allowed": false,
+  "sanctioned_adopters": [
+    {
+      "path": "EgoDesktop/scripts/run-joi-g-ablation-kernel-adoption.js",
+      "authorizing_card": "ego-r3-adoption-slice-001a",
+      "rationale": "R3 adoption card uses the EgoDesktop g_ablation lineage to adopt the R0 serialized-state and replay substrate."
+    },
+    {
+      "path": "EgoDesktop/tests/pet_suite_baseline_gate.test.js",
+      "authorizing_card": "egodesktop-pet-world-integration-001a",
+      "rationale": "PET P1 suite-baseline gate tests the closed R0 hygiene debt boundary after the sanctioned desktop-pet integration path."
+    }
+  ]
+}
