@@ -6,7 +6,11 @@ from pathlib import Path
 from typing import Dict, Iterable, List
 
 from .admission_packet import schema_copy
-from .admission_review import run_go_no_go_review
+from .admission_review import (
+    adapter_contract_facts_from_source,
+    egooperator_imports_in_source,
+    run_go_no_go_review,
+)
 from .experiments import (
     ConditionResult,
     evaluate_seeds,
@@ -30,6 +34,8 @@ REPORTS = {
     "NO_PREDICTION_ERROR_LEARNING_ABLATION.md": "no_prediction_error_learning",
     "REPLAY_DETERMINISM_REPORT.md": "replay_determinism",
 }
+
+ROOT = Path(__file__).resolve().parents[2]
 
 
 def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
@@ -155,12 +161,27 @@ def run_experiments(out: str | Path, seeds: Iterable[int]) -> Dict[str, object]:
             "subjective experience",
         ],
     }
+    adapter_path = ROOT / "EgoOperator" / "adapters" / "pspc_lab_adapter.py"
+    adapter_exists = adapter_path.exists()
+    adapter_contract = (
+        adapter_contract_facts_from_source(
+            adapter_path.read_text(encoding="utf-8"),
+            runtime_registration_refs=_runtime_registration_refs_for_pspc_adapter(),
+        )
+        if adapter_exists
+        else None
+    )
     go_no_go_review = run_go_no_go_review(
         summary=summary,
-        adapter_exists=Path("EgoOperator/adapters/pspc_lab_adapter.py").exists(),
+        adapter_exists=adapter_exists,
+        adapter_contract=adapter_contract,
+        lab_egooperator_import_refs=_lab_egooperator_import_refs(),
     )
     summary["go_no_go_review_status"] = go_no_go_review["status"]
     summary["go_no_go_review_verdict"] = go_no_go_review["verdict"]
+    summary["go_no_go_review_adapter_contract_status"] = go_no_go_review["scope_limits"][
+        "adapter_contract_status"
+    ]
     summary["go_no_go_review"] = "artifacts/virtual_cat_pspc_v0/go_no_go_review.json"
 
     (out_path / "admission_packet_contract.schema.json").write_text(
@@ -187,6 +208,7 @@ def _render_go_no_go_review(review: Dict[str, object]) -> str:
     conditions = review.get("go_conditions") if isinstance(review.get("go_conditions"), list) else []
     no_go_triggers = review.get("no_go_triggers") if isinstance(review.get("no_go_triggers"), list) else []
     scope_limits = review.get("scope_limits") if isinstance(review.get("scope_limits"), dict) else {}
+    provenance = review.get("provenance") if isinstance(review.get("provenance"), dict) else {}
     return "\n".join(
         [
             "# VirtualCatPSPC v0 Go / No-Go Review",
@@ -196,11 +218,12 @@ def _render_go_no_go_review(review: Dict[str, object]) -> str:
             "- trace_hash: `go_no_go_review_contract_audit`",
             "- claim_level: `lab_only_proto_self_mechanism_candidate`",
             f"- adapter_created: `{str(scope_limits.get('adapter_created')).lower()}`",
+            f"- adapter_contract_status: `{scope_limits.get('adapter_contract_status')}`",
             f"- mainline_connected: `{str(scope_limits.get('mainline_connected')).lower()}`",
             f"- enabled: `{str(scope_limits.get('enabled')).lower()}`",
             "",
             "## Summary",
-            "This Task 8 review checks whether PSPC v0 may move to a separate future read-only adapter design review. It does not create an adapter and does not connect PSPC to EgoOperator.",
+            "This Task 8 review checks whether PSPC v0 may move to a separate future read-only adapter design review. It does not create or approve an adapter and does not connect PSPC to EgoOperator; if an adapter file is already present, it must satisfy the independently scanned inert-adapter contract.",
             "",
             "## Go Conditions",
             "| condition | status | actual | gate |",
@@ -209,6 +232,32 @@ def _render_go_no_go_review(review: Dict[str, object]) -> str:
             "",
             "## No-Go Triggers",
             "\n".join(f"- `{trigger}`" for trigger in no_go_triggers) if no_go_triggers else "- none",
+            "",
+            "## Scope Guards",
+            "\n".join(
+                f"- {key}: `{value}`"
+                for key, value in sorted(scope_limits.items())
+                if key
+                in {
+                    "adapter_created",
+                    "adapter_contract_status",
+                    "mainline_connected",
+                    "enabled",
+                    "repo_wide_evidence_remains",
+                    "ego_operator_runtime_change_allowed",
+                    "repo_wide_claim_ceiling_change_allowed",
+                    "user_facing_route_creation_allowed",
+                }
+            ),
+            "",
+            "## Provenance",
+            f"- producer_function: `{provenance.get('producer_function')}`",
+            f"- run_id: `{provenance.get('run_id')}`",
+            f"- seed_ids: `{provenance.get('seed_ids')}`",
+            f"- aggregation_rule: `{provenance.get('aggregation_rule')}`",
+            f"- code_path_hash: `{provenance.get('code_path_hash')}`",
+            "- input_artifacts:",
+            *[f"  - `{artifact}`" for artifact in provenance.get("input_artifacts", [])],
             "",
             "## What It Proves",
             str(review["what_it_proves"]),
@@ -220,7 +269,7 @@ def _render_go_no_go_review(review: Dict[str, object]) -> str:
             "If this review returns `no_go`, at least one core evidence gate is missing, contradicted, or out of scope, so adapter design must not start until that gate is repaired and rerun.",
             "",
             "## Rollback Note",
-            "Remove the Task 8 review module, tests, generated review artifacts, and status/ledger updates. No EgoOperator rollback is needed because no adapter or runtime integration exists.",
+            "Remove the Task 8 review module, tests, generated review artifacts, and status/ledger updates. No EgoOperator runtime rollback is needed because this review does not modify or register the adapter.",
             "",
         ]
     )
@@ -234,6 +283,31 @@ def _go_no_go_condition_row(condition: object) -> str:
         actual=item.get("actual", "unknown"),
         gate=item.get("gate_key") or "none",
     )
+
+
+def _runtime_registration_refs_for_pspc_adapter() -> List[str]:
+    refs: List[str] = []
+    runtime_root = ROOT / "EgoOperator"
+    if not runtime_root.exists():
+        return refs
+    for path in sorted(runtime_root.rglob("*.py")):
+        if "adapters" in path.parts or "tests" in path.parts or "__pycache__" in path.parts:
+            continue
+        text = path.read_text(encoding="utf-8")
+        if "pspc_lab_adapter" in text or "PSPCLabAdapter" in text:
+            refs.append(path.relative_to(ROOT).as_posix())
+    return refs
+
+
+def _lab_egooperator_import_refs() -> List[str]:
+    refs: List[str] = []
+    lab_root = ROOT / "labs" / "virtual_cat_pspc_v0"
+    for path in sorted(lab_root.rglob("*.py")):
+        if "tests" in path.parts or "__pycache__" in path.parts:
+            continue
+        imports = egooperator_imports_in_source(path.read_text(encoding="utf-8"))
+        refs.extend(f"{path.relative_to(ROOT).as_posix()}:{import_name}" for import_name in imports)
+    return refs
 
 
 def _render_admission_packet_contract(status: str) -> str:

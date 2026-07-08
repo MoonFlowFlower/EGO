@@ -13,10 +13,11 @@ Task 8 local verification passed for this milestone. Publication is handled by t
 - Keep repo authority unchanged: `docs/PROGRAM_STATE_UNIFIED.yaml` remains at `highest_evidence_level=E3`.
 - Treat PSPC-local `E4_passed` and Task 8 `go` as local lab/review status only.
 - Keep `mainline_connected:false` and `enabled:false` for PSPC.
-- Do not create `EgoOperator/adapters/pspc_lab_adapter.py`.
+- Task 8 itself does not create `EgoOperator/adapters/pspc_lab_adapter.py`; after the 2026-07-08 sanctioned adapter lineage, report generation may see that file only if the inert static contract scan passes.
 - Do not design or implement an adapter in this milestone.
 - Interpret the Task 8 verdict as `go_for_separate_read_only_adapter_design_review_only`, not adapter approval.
 - A future adapter design still needs a separate Stage Card, separate contract, and runtime-gate review.
+- The old adapter-existence no-go is superseded only for the sanctioned disabled read-only adapter; non-inert adapter facts, lab EgoOperator imports, active runtime registration, side-effect fields, enabled/mainline flags, or runtime authority still force `no_go`.
 
 ## Evidence Added This Milestone
 
@@ -41,7 +42,7 @@ Task 8 local verification passed for this milestone. Publication is handled by t
 - `python scripts\codex\check_program_state_integrity.py` - pass
 - `python scripts\codex\verify_route_convergence.py` - pass
 - `python scripts\codex\verify_mainline_clarity.py` - pass
-- `if (Test-Path EgoOperator\adapters\pspc_lab_adapter.py) { Write-Error 'adapter exists'; exit 1 } else { 'adapter absent' }` - pass, adapter absent
+- superseded historical check: `if (Test-Path EgoOperator\adapters\pspc_lab_adapter.py) { Write-Error 'adapter exists'; exit 1 } else { 'adapter absent' }` - was pass at Task 8 time; replaced by inert adapter static contract checks after 2026-07-08.
 - `python -m pytest -q labs\virtual_cat_pspc_v0\tests\test_go_no_go_review.py labs\virtual_cat_pspc_v0\tests\test_contract_docs.py labs\virtual_cat_pspc_v0\tests\test_report_generation.py --basetemp $env:TEMP\pytest-pspc-task8-directed-final` - pass, `8 passed`
 - `python -m pytest -q labs\virtual_cat_pspc_v0\tests --basetemp $env:TEMP\pytest-pspc-task8-full` - pass, `31 passed`
 - `python scripts\codex\lint_repo.py` - pass
@@ -59,7 +60,7 @@ The Task 8 review proves only that the current PSPC-local evidence chain passes 
 - memory deletion/corruption passed
 - homeostatic anti-hacking passed
 - admission packet contract passed
-- no adapter file exists
+- sanctioned adapter file may exist only under the separate inert adapter lineage, and current report-generation logic statically verifies `adapter_contract_status=pass`
 - PSPC remains disabled and disconnected from mainline
 
 ## What This Does Not Prove
@@ -68,4 +69,4 @@ It does not prove adapter readiness, EgoOperator runtime efficacy, stable real u
 
 ## Rollback
 
-Remove this milestone's go/no-go review module, tests, task review doc, generated review artifacts, summary fields, and status/ledger updates. No EgoOperator rollback is needed because no adapter or runtime integration exists.
+Remove this milestone's go/no-go review module, tests, task review doc, generated review artifacts, summary fields, and status/ledger updates. No EgoOperator runtime rollback is needed because this status update does not modify or register the adapter; adapter rollback remains owned by the separate sanctioned adapter lineage.

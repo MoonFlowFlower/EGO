@@ -25,7 +25,7 @@ This is not a plan to implement consciousness, a Joi-like companion, a user-faci
 4. Self-model causal strength.
 5. Memory consolidation admission.
 6. Homeostatic value anti-reward-hacking.
-7. Admission packet contract, with no adapter.
+7. Admission packet contract, originally with no adapter; the 2026-07-08 contract amendment supersedes only the adapter-file non-existence invariant for the sanctioned inert adapter lineage.
 8. Go / no-go review for a future read-only adapter design.
 
 ## Current Milestone
@@ -34,8 +34,8 @@ Task 8 only: go / no-go review for a future read-only adapter design.
 
 ## Out Of Scope For This Milestone
 
-- adapter design or implementation
-- EgoOperator adapter file creation
+- adapter design or implementation by this milestone
+- EgoOperator adapter file creation by this milestone
 - EgoOperator runtime imports or edits
 - user-facing route creation
 - repo-wide evidence ceiling uplift
@@ -45,9 +45,9 @@ Task 8 only: go / no-go review for a future read-only adapter design.
 - `docs/codex/tasks/virtual-cat-pspc-v0/GO_NO_GO_REVIEW.md` exists.
 - `artifacts/virtual_cat_pspc_v0/GO_NO_GO_REVIEW.md` and `go_no_go_review.json` exist.
 - The review checks all go conditions: anti-hardcoding, multi-seed generalization, world-model ablation, self-model ablation, memory deletion/corruption, homeostatic anti-hacking, and admission packet contract.
-- The review checks no-go triggers: failed ablation degradation, object-name dependence, planner not depending on world/self rollout, memory deletion not affecting behavior, single-reward value collapse, premature adapter creation, and mainline/enablement drift.
+- The review checks no-go triggers: failed ablation degradation, object-name dependence, planner not depending on world/self rollout, memory deletion not affecting behavior, single-reward value collapse, unsanctioned/non-inert adapter state, lab EgoOperator import, active runtime registration, runtime authority or side-effect fields, and mainline/enablement drift.
 - The verdict is `go_for_separate_read_only_adapter_design_review_only`, not adapter approval.
-- Tests prove no `EgoOperator/adapters/pspc_lab_adapter.py` file.
+- Tests originally proved no `EgoOperator/adapters/pspc_lab_adapter.py` file; after the 2026-07-08 sanctioned adapter lineage, tests must prove any present adapter is inert, disabled, mainline-disconnected, runtime-authority-free, and unregistered.
 - The report includes what this proves, what this does not prove, failure meaning, and rollback note.
 
 ## What This Milestone Can Prove

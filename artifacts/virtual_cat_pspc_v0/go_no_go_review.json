@@ -65,10 +65,39 @@
     }
   ],
   "no_go_triggers": [],
+  "provenance": {
+    "aggregation_rule": "all_go_conditions_pass_and_no_no_go_triggers",
+    "code_path_hash": "60699a3cbff024477e541c19bc752aabcaf544ddab176c0a48c2c746d4865183",
+    "context_ids": [
+      "virtual_cat_pspc_v0_report_generation"
+    ],
+    "episode_ids": [],
+    "input_artifacts": [
+      "EgoOperator/adapters/pspc_lab_adapter.py",
+      "artifacts/virtual_cat_pspc_v0/admission_packet_contract.schema.json",
+      "artifacts/virtual_cat_pspc_v0/anti_hardcoding_audit.json",
+      "artifacts/virtual_cat_pspc_v0/generalization_matrix.json",
+      "artifacts/virtual_cat_pspc_v0/homeostatic_value_anti_hacking.json",
+      "artifacts/virtual_cat_pspc_v0/memory_consolidation_admission.json",
+      "artifacts/virtual_cat_pspc_v0/self_model_causal_strength.json",
+      "artifacts/virtual_cat_pspc_v0/traces",
+      "artifacts/virtual_cat_pspc_v0/world_model_causal_strength.json"
+    ],
+    "producer_function": "labs.virtual_cat_pspc_v0.admission_review.run_go_no_go_review",
+    "run_id": "go_no_go_review_cf6b15aa69a4273e",
+    "seed_ids": [
+      101,
+      102,
+      103
+    ]
+  },
   "scope_limits": {
-    "adapter_created": false,
+    "adapter_contract_status": "pass",
+    "adapter_contract_violations": [],
+    "adapter_created": true,
     "ego_operator_runtime_change_allowed": false,
     "enabled": false,
+    "lab_egooperator_import_refs": [],
     "mainline_connected": false,
     "repo_wide_claim_ceiling_change_allowed": false,
     "repo_wide_evidence_remains": "E3",
@@ -77,5 +106,5 @@
   "status": "go",
   "verdict": "go_for_separate_read_only_adapter_design_review_only",
   "what_it_does_not_prove": "This does not prove adapter readiness, EgoOperator runtime efficacy, stable real user benefit, live autonomy, production integration safety, consciousness, or subjective experience.",
-  "what_it_proves": "The current PSPC-local evidence is strong enough to justify a future read-only adapter design review under a separate task and gate, while keeping PSPC disabled and disconnected from mainline."
+  "what_it_proves": "The current PSPC-local evidence is strong enough to justify a future read-only adapter design review under a separate task and gate, while any present adapter is independently checked as inert, disabled, and disconnected from mainline."
 }

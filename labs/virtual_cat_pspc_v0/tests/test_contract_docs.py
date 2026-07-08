@@ -63,7 +63,9 @@ def test_go_no_go_review_records_limited_future_adapter_design_verdict():
         "anti-hardcoding passed",
         "world model ablation passed",
         "memory deletion/corruption passed",
-        "adapter already exists before admission review: not triggered",
+        "adapter exists without sanctioned inert contract: not triggered",
+        "lab imports EgoOperator or adapter is registered by runtime sources: not triggered",
+        "computed scope guard",
         "What This Proves",
         "What This Does Not Prove",
     ]:
