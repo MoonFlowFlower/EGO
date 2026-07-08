@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import subprocess
@@ -78,6 +79,46 @@ def _write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
     with path.open("w", encoding="utf-8", newline="\n") as handle:
         for row in rows:
             handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n")
+
+
+def _sha256_file(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest().upper()
+
+
+def _certificate_verdict(certificate: dict[str, Any]) -> str | None:
+    # ADDENDUM_001 P0R artifacts use the original certificate schema:
+    # `status=valid` is the persisted part0 pass verdict.
+    if certificate.get("verdict") is not None:
+        return str(certificate.get("verdict"))
+    if certificate.get("status") == "valid":
+        return "part0_certificate_pass"
+    return certificate.get("status")
+
+
+def load_valid_part0_certificate(certificate_path: Path | str | None) -> dict[str, Any]:
+    if certificate_path is None:
+        raise SystemExit("P2 refused: instrument_invalid_certificate missing --certificate")
+    path = Path(certificate_path)
+    if not path.exists():
+        raise SystemExit(f"P2 refused: instrument_invalid_certificate missing certificate {path}")
+    try:
+        certificate = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise SystemExit(f"P2 refused: instrument_invalid_certificate unparsable certificate {path}: {exc}") from exc
+    if _certificate_verdict(certificate) != "part0_certificate_pass":
+        raise SystemExit(f"P2 refused: instrument_invalid_certificate invalid verdict {path}")
+    gate_results = certificate.get("gate_results")
+    if not isinstance(gate_results, dict) or not gate_results:
+        raise SystemExit(f"P2 refused: instrument_invalid_certificate missing gate_results {path}")
+    failing_gates = [
+        name
+        for name, gate in gate_results.items()
+        if not isinstance(gate, dict) or gate.get("pass") is not True
+    ]
+    if failing_gates:
+        joined = ",".join(sorted(failing_gates))
+        raise SystemExit(f"P2 refused: instrument_invalid_certificate nonpassing gates {path}: {joined}")
+    return {"certificate": certificate, "certificate_path": str(path), "certificate_sha256": _sha256_file(path)}
 
 
 def _policy_from_object(policy_obj: Any) -> tuple[Callable[..., Any], Callable[..., None] | None]:
@@ -382,7 +423,7 @@ def _intervention_carrier(
     return {"producer_function": "_intervention_carrier", "divergence_rate": rate, "pass": rate >= 0.80, "rows": rows}
 
 
-def _fresh_digest(phase: str, *, n_ep: int, timeout: int = 3600) -> dict[str, Any]:
+def _fresh_digest(phase: str, *, n_ep: int, timeout: int = 3600, certificate_path: str | None = None) -> dict[str, Any]:
     cmd = [
         sys.executable,
         "-m",
@@ -392,6 +433,8 @@ def _fresh_digest(phase: str, *, n_ep: int, timeout: int = 3600) -> dict[str, An
         "--n-ep",
         str(n_ep),
     ]
+    if certificate_path is not None:
+        cmd.extend(["--certificate", certificate_path])
     env = dict(os.environ)
     env["PYTHONHASHSEED"] = "0"
     outputs = []
@@ -635,7 +678,7 @@ def _candidate_intervention(
     return {"producer_function": "_candidate_intervention", "divergence_rate": rate, "pass": rate >= 0.80, "rows": rows}
 
 
-def compute_p2(*, n_ep: int, include_replay: bool) -> dict[str, Any]:
+def compute_p2(*, n_ep: int, include_replay: bool, certificate_path: str | None = None) -> dict[str, Any]:
     config = R2Config()
     seeds = list(DEV_SEEDS + HELDOUT_SEEDS)
     trained = train_candidate(config, DEV_SEEDS, n_ep)
@@ -678,7 +721,11 @@ def compute_p2(*, n_ep: int, include_replay: bool) -> dict[str, Any]:
     geography_diff = {key: geography_candidate[key] - geography_bt.get(key, 0.0) for key in geography_candidate}
     uniform_win = all(value > 0 for value in geography_diff.values())
     geography_pass = not uniform_win and geography_diff["window2"] + geography_diff["window3"] >= geography_diff["window1"]
-    replay = _fresh_digest("p2-digest", n_ep=n_ep) if include_replay else {"status": "not_run_digest_mode"}
+    replay = (
+        _fresh_digest("p2-digest", n_ep=n_ep, certificate_path=certificate_path)
+        if include_replay
+        else {"status": "not_run_digest_mode"}
+    )
     heldout_slice = [idx for idx, row in enumerate(candidate["episodes"]) if row["master_seed"] in HELDOUT_SEEDS]
     pooled_gate = candidate_summary["mean"] >= max_family["summary"]["mean"] + 0.05 and candidate_summary["ci_low"] > max_family["summary"]["ci_high"]
     held_candidate_values = [candidate["values"][idx] for idx in heldout_slice]
@@ -748,17 +795,15 @@ def compute_p2(*, n_ep: int, include_replay: bool) -> dict[str, Any]:
     }
 
 
-def run_p2(out_dir: Path, *, n_ep: int) -> dict[str, Any]:
-    cert_path = ARTIFACT_ROOT / "p0" / "part0_certificate.json"
-    if not cert_path.exists():
-        raise SystemExit(f"P2 refused: missing certificate {cert_path}")
-    cert = json.loads(cert_path.read_text(encoding="utf-8"))
-    if cert.get("status") != "valid":
-        raise SystemExit(f"P2 refused: invalid certificate {cert_path}")
+def run_p2(out_dir: Path, *, n_ep: int, certificate_path: Path | str | None) -> dict[str, Any]:
+    validated = load_valid_part0_certificate(certificate_path)
+    cert = validated["certificate"]
     certified_n = int(cert.get("n_ep", n_ep))
     start = time.perf_counter()
-    result = compute_p2(n_ep=certified_n, include_replay=True)
+    result = compute_p2(n_ep=certified_n, include_replay=True, certificate_path=validated["certificate_path"])
     result["measured_cpu_seconds"] = time.perf_counter() - start
+    result["certificate_path"] = validated["certificate_path"]
+    result["certificate_sha256"] = validated["certificate_sha256"]
     trace = result.pop("_trace")
     judge_trace = result.pop("_judge_trace")
     episodes = result.pop("_episodes")
@@ -796,6 +841,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out-dir", default=None)
     parser.add_argument("--n-ep", type=int, default=DEFAULT_N_EP)
     parser.add_argument("--master-seed", type=int, default=31)
+    parser.add_argument("--certificate", default=None)
     args = parser.parse_args(argv)
     os.environ["PYTHONHASHSEED"] = "0"
     if args.phase == "smoke-digest":
@@ -806,7 +852,8 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps({"digest": digest_payload(payload)}, sort_keys=True))
         return 0
     if args.phase == "p2-digest":
-        payload = compute_p2(n_ep=args.n_ep, include_replay=False)
+        validated = load_valid_part0_certificate(args.certificate)
+        payload = compute_p2(n_ep=args.n_ep, include_replay=False, certificate_path=validated["certificate_path"])
         payload.pop("_trace", None)
         payload.pop("_judge_trace", None)
         payload.pop("_episodes", None)
@@ -819,7 +866,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if args.phase == "p2":
         out_dir = Path(args.out_dir) if args.out_dir else ARTIFACT_ROOT / "p2"
-        result = run_p2(out_dir, n_ep=args.n_ep)
+        result = run_p2(out_dir, n_ep=args.n_ep, certificate_path=args.certificate)
         print(json.dumps({"verdict": result["verdict"], "failing_gates": result["failing_gates"], "out_dir": str(out_dir)}, sort_keys=True))
         return 0
     raise AssertionError(args.phase)

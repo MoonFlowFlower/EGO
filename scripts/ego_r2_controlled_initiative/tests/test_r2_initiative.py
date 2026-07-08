@@ -3,6 +3,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
+import scripts.ego_r2_controlled_initiative.runner as runner
 from scripts.ego_r2_controlled_initiative.env import R2Config, simulate_episode
 from scripts.ego_r2_controlled_initiative.leak import scan_visible_payload
 from scripts.ego_r2_controlled_initiative.policies import (
@@ -83,3 +86,32 @@ def test_addendum001_degen_gate_uses_corrected_harmful_spam_rule() -> None:
     assert gate["always_act_mean"] <= -0.06
     assert gate["always_act_ci_high"] < 0
     assert gate["pass"] is True
+
+
+def test_p2_refuses_when_certificate_argument_missing() -> None:
+    with pytest.raises(SystemExit) as exc:
+        runner.load_valid_part0_certificate(None)
+
+    assert "instrument_invalid_certificate" in str(exc.value)
+    assert "--certificate" in str(exc.value)
+
+
+def test_p2_refuses_banked_v1_failing_certificate_read_only() -> None:
+    cert_path = Path("artifacts/ego-r2-controlled-initiative-001a/p0/part0_certificate.json")
+
+    with pytest.raises(SystemExit) as exc:
+        runner.load_valid_part0_certificate(cert_path)
+
+    assert "instrument_invalid_certificate" in str(exc.value)
+    assert str(cert_path) in str(exc.value)
+
+
+def test_p2_accepts_addendum001_p0r_certificate_without_scoring() -> None:
+    cert_path = Path("artifacts/ego-r2-controlled-initiative-001a/p0_rerun_addendum001/part0_certificate.json")
+
+    validated = runner.load_valid_part0_certificate(cert_path)
+
+    assert validated["certificate_path"] == str(cert_path)
+    assert validated["certificate_sha256"]
+    assert validated["certificate"]["status"] == "valid"
+    assert all(gate.get("pass") is True for gate in validated["certificate"]["gate_results"].values())
