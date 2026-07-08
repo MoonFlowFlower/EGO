@@ -17,6 +17,16 @@ contextBridge.exposeInMainWorld("egoDesktop", {
     ipcRenderer.on("ego-desktop:pspc-reply-preview-updated", listener);
     return () => ipcRenderer.off("ego-desktop:pspc-reply-preview-updated", listener);
   },
+  petMode: {
+    getSnapshot: () => ipcRenderer.invoke("ego-desktop:pet-get-snapshot"),
+    sendInput: (payload) => ipcRenderer.invoke("ego-desktop:pet-input", payload),
+    tick: (payload) => ipcRenderer.invoke("ego-desktop:pet-tick", payload),
+    onStateFrame: (callback) => {
+      const listener = (_event, payload) => callback(payload);
+      ipcRenderer.on("ego-desktop:pet-state-frame", listener);
+      return () => ipcRenderer.off("ego-desktop:pet-state-frame", listener);
+    },
+  },
   sendChatTurn: (payload) => ipcRenderer.invoke("ego-desktop:chat-turn", payload),
   synthesizeSpeech: (payload) => ipcRenderer.invoke("ego-desktop:synthesize-speech", payload),
   cancelSpeech: () => ipcRenderer.invoke("ego-desktop:cancel-speech"),

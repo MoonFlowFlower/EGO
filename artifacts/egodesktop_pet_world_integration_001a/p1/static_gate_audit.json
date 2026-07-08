@@ -1,0 +1,79 @@
+{
+  "producer_function": "staticGateAuditReport",
+  "input_artifacts": [
+    "docs/codex/tasks/egodesktop-pet-world-integration-001a/static_gate_config_v0.json",
+    "artifacts/egodesktop_pet_world_integration_001a/p1/trace.jsonl"
+  ],
+  "run_id": "egodesktop_pet_world_integration_001a_p1_v1_static_gate_audit",
+  "task_id": "egodesktop-pet-world-integration-001a",
+  "verdict": "g_pet_static_gate_pass",
+  "status": "pass",
+  "claim_ceiling": "pet_p1_default_off_engineering_wiring_only",
+  "code_path_hash": "8ed55ba1912ecb6156fa90af568eda71e2b2ba2fc69991cb45cf72bd2dcab41e",
+  "seed_context": {
+    "seed": 3101,
+    "episode_id": "p1_schema_static_gate_audit"
+  },
+  "aggregation_rule": "all user-facing bubbles require static-gate provenance, zero learner-originated emissions, no external transports, and no P1 learning/adaptation wording",
+  "static_gate_config_sha256": "728009d5b88c5238075ebdcfd613c1a6e25f39abddb2d0f05211059a9cdcd2f3",
+  "gate_config_sha_pinned": true,
+  "user_facing_emission_count": 2,
+  "user_facing_emissions": [
+    {
+      "schema_version": "ego_desktop.pet_p1_user_facing_bubble.v0",
+      "surface": "in_window_speech_bubble_only",
+      "template_id": "static_care_ack",
+      "text": "收到这个互动；可见气泡由静态 gate 控制。",
+      "static_gate_config_sha256": "728009d5b88c5238075ebdcfd613c1a6e25f39abddb2d0f05211059a9cdcd2f3",
+      "condition_id": "post_user_care_ack",
+      "rate_limit_decision": "emit",
+      "learner_originated": false
+    },
+    {
+      "schema_version": "ego_desktop.pet_p1_user_facing_bubble.v0",
+      "surface": "in_window_speech_bubble_only",
+      "template_id": "static_care_ack",
+      "text": "收到这个互动；可见气泡由静态 gate 控制。",
+      "static_gate_config_sha256": "728009d5b88c5238075ebdcfd613c1a6e25f39abddb2d0f05211059a9cdcd2f3",
+      "condition_id": "post_user_care_ack",
+      "rate_limit_decision": "emit",
+      "learner_originated": false
+    }
+  ],
+  "user_facing_without_static_provenance_count": 0,
+  "learner_originated_user_facing_count": 0,
+  "blocked_claim_user_facing_count": 0,
+  "blocked_claim_template_count": 2,
+  "suppressed_static_gate_templates": [
+    {
+      "schema_version": "ego_desktop.pet_p1_bubble_suppression.v0",
+      "reason": "honest_label_firewall_p1",
+      "source_template_id": "static_ablation_state_on",
+      "static_gate_config_sha256": "728009d5b88c5238075ebdcfd613c1a6e25f39abddb2d0f05211059a9cdcd2f3",
+      "blocked_term_present": true,
+      "learner_originated": false
+    },
+    {
+      "schema_version": "ego_desktop.pet_p1_bubble_suppression.v0",
+      "reason": "honest_label_firewall_p1",
+      "source_template_id": "static_ablation_state_off",
+      "static_gate_config_sha256": "728009d5b88c5238075ebdcfd613c1a6e25f39abddb2d0f05211059a9cdcd2f3",
+      "blocked_term_present": true,
+      "learner_originated": false
+    }
+  ],
+  "surface_policy": {
+    "allowed_surface": "in_window_speech_bubble_only",
+    "os_notifications": false,
+    "sounds_as_alerts": false,
+    "external_transports": false,
+    "chat_or_llm_surface": false
+  },
+  "external_transport_detected": false,
+  "what_this_does_not_prove": [
+    "no learned initiative",
+    "no P2 honest-label gate",
+    "no live-session evidence",
+    "no stable user benefit autonomy agency emotion subjectivity consciousness or companion readiness"
+  ]
+}

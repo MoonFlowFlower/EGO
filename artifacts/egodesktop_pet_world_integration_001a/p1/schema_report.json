@@ -1,0 +1,173 @@
+{
+  "producer_function": "schemaReport",
+  "input_artifacts": [
+    "docs/codex/tasks/egodesktop-pet-world-integration-001a/world_config_v0.json",
+    "docs/codex/tasks/egodesktop-pet-world-integration-001a/static_gate_config_v0.json",
+    "artifacts/egodesktop_pet_world_integration_001a/p1/trace.jsonl",
+    "artifacts/egodesktop_pet_world_integration_001a/p0/result.json"
+  ],
+  "run_id": "egodesktop_pet_world_integration_001a_p1_v1_schema_gate",
+  "task_id": "egodesktop-pet-world-integration-001a",
+  "verdict": "g_pet_schema_pass",
+  "status": "pass",
+  "claim_ceiling": "pet_p1_default_off_engineering_wiring_only",
+  "code_path_hash": "8ed55ba1912ecb6156fa90af568eda71e2b2ba2fc69991cb45cf72bd2dcab41e",
+  "seed_context": {
+    "seed": 3101,
+    "episode_id": "p1_schema_static_gate_audit"
+  },
+  "aggregation_rule": "G-PET-SCHEMA conjunction: kernel_trace_v0 shape, kernel_adoption_v0-compatible frames, replay round-trip, corpus core fields, and frozen g_ablation module hashes",
+  "trace_validation": {
+    "status": "pass",
+    "row_count": 12,
+    "failures": []
+  },
+  "kernel_adoption_envelope_validation": {
+    "status": "pass",
+    "frame_count": 12,
+    "failures": []
+  },
+  "trace_round_trip": {
+    "schema_version": "ego_desktop.pet_p1_trace_roundtrip.v0",
+    "status": "pass",
+    "viewer_required": false,
+    "replay_rows": 12,
+    "expected_rows": 12,
+    "mismatch_count": 0,
+    "mismatches": []
+  },
+  "corpus_schema_core_fields": {
+    "status": "pass",
+    "contract_path": "docs/codex/tasks/joi-demo-history-to-ego-reference-admission-001a/CORPUS_SCHEMA_CONTRACT.md",
+    "rule": "core fields task_id, verdict, claim_ceiling, and provenance/run_id when present",
+    "required": [
+      "task_id",
+      "verdict",
+      "claim_ceiling",
+      "run_id"
+    ],
+    "missing": [],
+    "trace_rows_missing_task_or_run_id": 0
+  },
+  "frozen_g_ablation_modules": {
+    "status": "pass",
+    "shas": {
+      "EgoDesktop/src/joiRealLoopGAblationHarness.js": "51b2342e0cf06bb2e789b5a61bea1a37262e2f7da000036418e55ecc0b7742ea",
+      "EgoDesktop/src/joiRealLoopGAblationOfflineReplay.js": "7f13b67680b64969cb09fd578386cc28b599f8e0d8adfe1e4feaa8aadcfe380f",
+      "EgoDesktop/src/joiRealLoopGAblationReplayEvaluator.js": "e4b8e07ef60af51c8aea1870d3cd10eeecad009474388694ad55efaea4834ffe",
+      "EgoDesktop/src/joiRealLoopGAblationCalibrationReference.js": "089516bb62db3c76ae11d0e079df6da62239e1977d296d19cf4529d4d8a7cf40",
+      "EgoDesktop/src/joiRealLoopGAblationTraceRunner.js": "a1c051921827a11089efea78538f538a72cafe676f8bf023186d2cfad46bd847"
+    },
+    "head_shas": {
+      "EgoDesktop/src/joiRealLoopGAblationHarness.js": "51b2342e0cf06bb2e789b5a61bea1a37262e2f7da000036418e55ecc0b7742ea",
+      "EgoDesktop/src/joiRealLoopGAblationOfflineReplay.js": "7f13b67680b64969cb09fd578386cc28b599f8e0d8adfe1e4feaa8aadcfe380f",
+      "EgoDesktop/src/joiRealLoopGAblationReplayEvaluator.js": "e4b8e07ef60af51c8aea1870d3cd10eeecad009474388694ad55efaea4834ffe",
+      "EgoDesktop/src/joiRealLoopGAblationCalibrationReference.js": "089516bb62db3c76ae11d0e079df6da62239e1977d296d19cf4529d4d8a7cf40",
+      "EgoDesktop/src/joiRealLoopGAblationTraceRunner.js": "a1c051921827a11089efea78538f538a72cafe676f8bf023186d2cfad46bd847"
+    },
+    "working_tree_diff_paths": [],
+    "head_sha_mismatches": []
+  },
+  "suite_results_gate": {
+    "status": "pass",
+    "rule": "suite green iff current repo_pytest failures are a subset of the closed baseline and P1 owner-reference delta is zero",
+    "baseline_path": "artifacts/egodesktop_pet_world_integration_001a/p1/suite_baseline.json",
+    "baseline_sha256": "fb6f06576f324e42f433af8b8f859828095ed735cfa767831ebf39dc948ada15",
+    "baseline_commit": "6948427a",
+    "baseline_failure_ids": [
+      "labs/virtual_cat_pspc_v0/tests/test_admission_packet_contract.py::test_admission_packet_contract_has_no_egooperator_import_or_adapter_file",
+      "labs/virtual_cat_pspc_v0/tests/test_report_generation.py::test_experiment_runner_writes_canonical_reports",
+      "tests/test_ego_kernel_substrate.py::test_validation_runner_writes_contract_artifacts_and_passes"
+    ],
+    "repo_pytest_current_failing_tests": [
+      "labs/virtual_cat_pspc_v0/tests/test_admission_packet_contract.py::test_admission_packet_contract_has_no_egooperator_import_or_adapter_file",
+      "labs/virtual_cat_pspc_v0/tests/test_report_generation.py::test_experiment_runner_writes_canonical_reports",
+      "tests/test_ego_kernel_substrate.py::test_validation_runner_writes_contract_artifacts_and_passes"
+    ],
+    "unexpected_failures": [],
+    "unexpectedly_passing": [],
+    "p1_owner_reference_guard": {
+      "producer_function": "collectP1OwnerRefReport",
+      "rule": "count runtime-owner token references in closed P1 pet source/test scope and require delta from baseline to remain zero",
+      "token_literal": "split_runtime_owner_token",
+      "scope_files": [
+        "EgoDesktop/src/main.js",
+        "EgoDesktop/src/preload.js",
+        "EgoDesktop/src/petKernelBridge.js",
+        "EgoDesktop/src/petLive2dObserverMap.js",
+        "EgoDesktop/src/petMode.js",
+        "EgoDesktop/src/petSuiteBaselineGate.js",
+        "EgoDesktop/tests/pet_mode.test.js",
+        "EgoDesktop/tests/pet_static_gate_audit.test.js",
+        "EgoDesktop/tests/pet_suite_baseline_gate.test.js",
+        "EgoDesktop/viewer/pet.css",
+        "EgoDesktop/viewer/pet.html",
+        "EgoDesktop/viewer/petRenderer.js"
+      ],
+      "baseline_count": 2,
+      "current_count": 2,
+      "p1_egooperator_ref_delta": 0,
+      "hits": [
+        {
+          "file": "EgoDesktop/src/main.js",
+          "line": 158,
+          "excerpt": "function runEgoOperatorDesktopTurn(turnPayload, timeoutMs) {"
+        },
+        {
+          "file": "EgoDesktop/src/main.js",
+          "line": 690,
+          "excerpt": "const backend = await runEgoOperatorDesktopTurn(turnPayload, args[\"chat-timeout-ms\"]);"
+        }
+      ]
+    },
+    "failures": [],
+    "pending": [],
+    "results": {
+      "repo_pytest": {
+        "command": "python -m pytest -q",
+        "status": "failed",
+        "exit_code": 1,
+        "log_path": "artifacts/egodesktop_pet_world_integration_001a/p1/step4_repo_pytest_q.log",
+        "observed_summary": "3 failed, 1053 passed, 1 skipped in 511.05s (0:08:31)",
+        "failing_tests": [
+          "labs/virtual_cat_pspc_v0/tests/test_admission_packet_contract.py::test_admission_packet_contract_has_no_egooperator_import_or_adapter_file",
+          "labs/virtual_cat_pspc_v0/tests/test_report_generation.py::test_experiment_runner_writes_canonical_reports",
+          "tests/test_ego_kernel_substrate.py::test_validation_runner_writes_contract_artifacts_and_passes"
+        ]
+      },
+      "egodesktop_node_test": {
+        "command": "node --test EgoDesktop/tests/*.test.js",
+        "status": "pass",
+        "exit_code": 0,
+        "log_path": "artifacts/egodesktop_pet_world_integration_001a/p1/step4_egodesktop_node_test.log",
+        "observed_summary": "# pass 112 | # fail 0"
+      }
+    }
+  },
+  "suite_results": {
+    "repo_pytest": {
+      "command": "python -m pytest -q",
+      "status": "failed",
+      "exit_code": 1,
+      "log_path": "artifacts/egodesktop_pet_world_integration_001a/p1/step4_repo_pytest_q.log",
+      "observed_summary": "3 failed, 1053 passed, 1 skipped in 511.05s (0:08:31)",
+      "failing_tests": [
+        "labs/virtual_cat_pspc_v0/tests/test_admission_packet_contract.py::test_admission_packet_contract_has_no_egooperator_import_or_adapter_file",
+        "labs/virtual_cat_pspc_v0/tests/test_report_generation.py::test_experiment_runner_writes_canonical_reports",
+        "tests/test_ego_kernel_substrate.py::test_validation_runner_writes_contract_artifacts_and_passes"
+      ]
+    },
+    "egodesktop_node_test": {
+      "command": "node --test EgoDesktop/tests/*.test.js",
+      "status": "pass",
+      "exit_code": 0,
+      "log_path": "artifacts/egodesktop_pet_world_integration_001a/p1/step4_egodesktop_node_test.log",
+      "observed_summary": "# pass 112 | # fail 0"
+    }
+  },
+  "what_this_does_not_prove": [
+    "no P2 live-session evidence",
+    "no mechanism validity or learning attribution",
+    "no stable user benefit autonomy agency emotion subjectivity consciousness or EGO-mainline readiness"
+  ]
+}

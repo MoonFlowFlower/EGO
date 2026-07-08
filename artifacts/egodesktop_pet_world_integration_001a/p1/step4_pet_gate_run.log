@@ -1,0 +1,81 @@
+﻿{
+  "schema_status": "pass",
+  "schema_verdict": "g_pet_schema_pass",
+  "static_gate_status": "pass",
+  "static_gate_verdict": "g_pet_static_gate_pass",
+  "learner_originated_user_facing_count": 0,
+  "suite_gate_status": "pass",
+  "repo_pytest_current_failing_tests": [
+    "labs/virtual_cat_pspc_v0/tests/test_admission_packet_contract.py::test_admission_packet_contract_has_no_egooperator_import_or_adapter_file",
+    "labs/virtual_cat_pspc_v0/tests/test_report_generation.py::test_experiment_runner_writes_canonical_reports",
+    "tests/test_ego_kernel_substrate.py::test_validation_runner_writes_contract_artifacts_and_passes"
+  ],
+  "unexpected_failures": [],
+  "unexpectedly_passing": [],
+  "p1_owner_reference_guard": {
+    "producer_function": "collectP1OwnerRefReport",
+    "rule": "count runtime-owner token references in closed P1 pet source/test scope and require delta from baseline to remain zero",
+    "token_literal": "split_runtime_owner_token",
+    "scope_files": [
+      "EgoDesktop/src/main.js",
+      "EgoDesktop/src/preload.js",
+      "EgoDesktop/src/petKernelBridge.js",
+      "EgoDesktop/src/petLive2dObserverMap.js",
+      "EgoDesktop/src/petMode.js",
+      "EgoDesktop/src/petSuiteBaselineGate.js",
+      "EgoDesktop/tests/pet_mode.test.js",
+      "EgoDesktop/tests/pet_static_gate_audit.test.js",
+      "EgoDesktop/tests/pet_suite_baseline_gate.test.js",
+      "EgoDesktop/viewer/pet.css",
+      "EgoDesktop/viewer/pet.html",
+      "EgoDesktop/viewer/petRenderer.js"
+    ],
+    "baseline_count": 2,
+    "current_count": 2,
+    "p1_egooperator_ref_delta": 0,
+    "hits": [
+      {
+        "file": "EgoDesktop/src/main.js",
+        "line": 158,
+        "excerpt": "function runEgoOperatorDesktopTurn(turnPayload, timeoutMs) {"
+      },
+      {
+        "file": "EgoDesktop/src/main.js",
+        "line": 690,
+        "excerpt": "const backend = await runEgoOperatorDesktopTurn(turnPayload, args[\"chat-timeout-ms\"]);"
+      }
+    ]
+  },
+  "frozen_g_ablation_status": "pass",
+  "failure_manifest_status": "not_applicable",
+  "failure_manifest_verdict": "not_applicable_no_failing_p1_gate",
+  "suite_results": {
+    "repo_pytest": {
+      "command": "python -m pytest -q",
+      "status": "failed",
+      "exit_code": 1,
+      "log_path": "artifacts/egodesktop_pet_world_integration_001a/p1/step4_repo_pytest_q.log",
+      "observed_summary": "3 failed, 1053 passed, 1 skipped in 511.05s (0:08:31)",
+      "failing_tests": [
+        "labs/virtual_cat_pspc_v0/tests/test_admission_packet_contract.py::test_admission_packet_contract_has_no_egooperator_import_or_adapter_file",
+        "labs/virtual_cat_pspc_v0/tests/test_report_generation.py::test_experiment_runner_writes_canonical_reports",
+        "tests/test_ego_kernel_substrate.py::test_validation_runner_writes_contract_artifacts_and_passes"
+      ]
+    },
+    "egodesktop_node_test": {
+      "command": "node --test EgoDesktop/tests/*.test.js",
+      "status": "pass",
+      "exit_code": 0,
+      "log_path": "artifacts/egodesktop_pet_world_integration_001a/p1/step4_egodesktop_node_test.log",
+      "observed_summary": "# pass 112 | # fail 0"
+    }
+  },
+  "output_artifacts": [
+    "artifacts\\egodesktop_pet_world_integration_001a\\p1\\trace.jsonl",
+    "artifacts\\egodesktop_pet_world_integration_001a\\p1\\schema_report.json",
+    "artifacts\\egodesktop_pet_world_integration_001a\\p1\\static_gate_audit.json",
+    "artifacts\\egodesktop_pet_world_integration_001a\\p1\\failure_manifest.json",
+    "artifacts/egodesktop_pet_world_integration_001a/p1/step4_repo_pytest_q.log",
+    "artifacts/egodesktop_pet_world_integration_001a/p1/step4_egodesktop_node_test.log"
+  ]
+}

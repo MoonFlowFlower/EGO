@@ -1,0 +1,25 @@
+{
+  "producer_function": "writePetP1FailureManifest",
+  "input_artifacts": [
+    "artifacts/egodesktop_pet_world_integration_001a/p1/schema_report.json",
+    "artifacts/egodesktop_pet_world_integration_001a/p1/static_gate_audit.json"
+  ],
+  "run_id": "egodesktop_pet_world_integration_001a_p1_v1_failure_manifest",
+  "task_id": "egodesktop-pet-world-integration-001a",
+  "verdict": "not_applicable_no_failing_p1_gate",
+  "status": "not_applicable",
+  "claim_ceiling": "pet_p1_default_off_engineering_wiring_only",
+  "code_path_hash": "8ed55ba1912ecb6156fa90af568eda71e2b2ba2fc69991cb45cf72bd2dcab41e",
+  "seed_context": {
+    "seed": 3101,
+    "episode_id": "p1_schema_static_gate_audit"
+  },
+  "aggregation_rule": "failure manifest emitted when either P1 gate is not pass",
+  "failing_gates": [],
+  "stop_rule": "G-PET-STATIC-GATE fail -> bubble off and re-audit once; second fail -> STOP",
+  "what_this_does_not_prove": [
+    "does not prove P1 integration pass",
+    "does not prove product readiness",
+    "does not prove stable user benefit autonomy agency emotion subjectivity consciousness or EGO-mainline readiness"
+  ]
+}

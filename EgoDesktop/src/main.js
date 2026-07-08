@@ -593,6 +593,7 @@ async function run() {
     developerSettingsReport: launchProfile.report,
     debugOverlayDefaultVisible: Boolean(developerSettings.debug_overlay_default_visible),
   };
+  const petModeHook = args["ego-pet-mode"] ? require("./petMode").installPetModeMainHook({ args, config, ipcMain, window, repoRoot }) : null;
   function currentPspcReplyPreviewPayload() {
     const context = buildPspcReplyPreviewContext(pspcReplyPreviewState);
     return {
@@ -830,7 +831,7 @@ async function run() {
     }, smokeTimeoutMs).unref();
   }
 
-  await window.loadURL(`${baseUrl}/viewer/index.html`);
+  await window.loadURL(`${baseUrl}/viewer/${config.petModeViewerPage || "index.html"}`);
 }
 
 app.whenReady().then(run).catch((error) => {

@@ -1,0 +1,682 @@
+﻿TAP version 13
+# Subtest: routes user and bot text to matching Live2D expression names
+ok 1 - routes user and bot text to matching Live2D expression names
+  ---
+  duration_ms: 1.2594
+  type: 'test'
+  ...
+# Subtest: does not route neutral chat to visually unsafe front-lean expression
+ok 2 - does not route neutral chat to visually unsafe front-lean expression
+  ---
+  duration_ms: 0.426
+  type: 'test'
+  ...
+# Subtest: desktop chat turn is side-effect free and carries expression intent
+ok 3 - desktop chat turn is side-effect free and carries expression intent
+  ---
+  duration_ms: 0.165
+  type: 'test'
+  ...
+# Subtest: desktop recovery context records timeout as one-turn local recovery only
+ok 4 - desktop recovery context records timeout as one-turn local recovery only
+  ---
+  duration_ms: 2.6641
+  type: 'test'
+  ...
+# Subtest: desktop recovery context is cleared after a successful backend turn
+ok 5 - desktop recovery context is cleared after a successful backend turn
+  ---
+  duration_ms: 0.7107
+  type: 'test'
+  ...
+# Subtest: desktop timeout fallback hides raw backend marker and preserves local-only claim
+ok 6 - desktop timeout fallback hides raw backend marker and preserves local-only claim
+  ---
+  duration_ms: 1.4061
+  type: 'test'
+  ...
+# Subtest: ordinary affectionate turns are not classified as creative recovery
+ok 7 - ordinary affectionate turns are not classified as creative recovery
+  ---
+  duration_ms: 0.4031
+  type: 'test'
+  ...
+# Subtest: only explicit story roleplay or adult writing turns enter creative recovery
+ok 8 - only explicit story roleplay or adult writing turns enter creative recovery
+  ---
+  duration_ms: 0.3091
+  type: 'test'
+  ...
+# Subtest: recorded affectionate timeout stores general chat recovery intent
+ok 9 - recorded affectionate timeout stores general chat recovery intent
+  ---
+  duration_ms: 0.3137
+  type: 'test'
+  ...
+# Subtest: EgoDesktop wires recovery context without changing PSPC or session claim ceilings
+ok 10 - EgoDesktop wires recovery context without changing PSPC or session claim ceilings
+  ---
+  duration_ms: 1.2266
+  type: 'test'
+  ...
+# Subtest: developer settings load defaults when no settings file exists
+ok 11 - developer settings load defaults when no settings file exists
+  ---
+  duration_ms: 12.4182
+  type: 'test'
+  ...
+# Subtest: developer settings save and reload selected launch profile fields
+ok 12 - developer settings save and reload selected launch profile fields
+  ---
+  duration_ms: 4.6625
+  type: 'test'
+  ...
+# Subtest: developer settings reject unknown executable or authority fields
+ok 13 - developer settings reject unknown executable or authority fields
+  ---
+  duration_ms: 1.6819
+  type: 'test'
+  ...
+# Subtest: saved settings affect startup args while explicit CLI args override saved values
+ok 14 - saved settings affect startup args while explicit CLI args override saved values
+  ---
+  duration_ms: 3.4207
+  type: 'test'
+  ...
+# Subtest: smoke mode ignores persisted developer settings
+ok 15 - smoke mode ignores persisted developer settings
+  ---
+  duration_ms: 3.3804
+  type: 'test'
+  ...
+# Subtest: live developer settings update only admits safe live fields
+ok 16 - live developer settings update only admits safe live fields
+  ---
+  duration_ms: 1.9992
+  type: 'test'
+  ...
+# Subtest: developer settings file path stays under Electron userData
+ok 17 - developer settings file path stays under Electron userData
+  ---
+  duration_ms: 0.4915
+  type: 'test'
+  ...
+# Subtest: EgoDesktop exposes developer settings UI and IPC without runtime authority
+ok 18 - EgoDesktop exposes developer settings UI and IPC without runtime authority
+  ---
+  duration_ms: 3.366
+  type: 'test'
+  ...
+# Subtest: backend adapter output is source-limited and carries no runtime authority
+ok 19 - backend adapter output is source-limited and carries no runtime authority
+  ---
+  duration_ms: 2.4345
+  type: 'test'
+  ...
+# Subtest: evaluator removes placeholder blockers but still blocks collect-only non-replay rows
+ok 20 - evaluator removes placeholder blockers but still blocks collect-only non-replay rows
+  ---
+  duration_ms: 7.6085
+  type: 'test'
+  ...
+# Subtest: blocker delta gate uses placeholder positive control, not report wording
+ok 21 - blocker delta gate uses placeholder positive control, not report wording
+  ---
+  duration_ms: 18.6477
+  type: 'test'
+  ...
+# Subtest: blocker delta gate fails if placeholder positive control does not fire
+ok 22 - blocker delta gate fails if placeholder positive control does not fire
+  ---
+  duration_ms: 4.0426
+  type: 'test'
+  ...
+# Subtest: main process passes backend snapshot at the existing chat-turn trace seam
+ok 23 - main process passes backend snapshot at the existing chat-turn trace seam
+  ---
+  duration_ms: 1.1468
+  type: 'test'
+  ...
+# Subtest: split partition manifest freezes disjoint calibration and heldout sources with overlap positive control
+ok 24 - split partition manifest freezes disjoint calibration and heldout sources with overlap positive control
+  ---
+  duration_ms: 34.4173
+  type: 'test'
+  ...
+# Subtest: captured calibration reference rejects heldout-only or synthetic calibration sources
+ok 25 - captured calibration reference rejects heldout-only or synthetic calibration sources
+  ---
+  duration_ms: 2.576
+  type: 'test'
+  ...
+# Subtest: captured calibration reference feeds input-blind heldout replay without synthetic fallback
+ok 26 - captured calibration reference feeds input-blind heldout replay without synthetic fallback
+  ---
+  duration_ms: 10.3825
+  type: 'test'
+  ...
+# Subtest: calibration-reference CLI and heldout builder CLI produce captured-reference replay row
+ok 27 - calibration-reference CLI and heldout builder CLI produce captured-reference replay row
+  ---
+  duration_ms: 483.7696
+  type: 'test'
+  ...
+# Subtest: main config exposes only explicit chat-turn trace smoke prompt
+ok 28 - main config exposes only explicit chat-turn trace smoke prompt
+  ---
+  duration_ms: 3.5503
+  type: 'test'
+  ...
+# Subtest: renderer drives chat-turn trace smoke through preload IPC before renderer-ready
+ok 29 - renderer drives chat-turn trace smoke through preload IPC before renderer-ready
+  ---
+  duration_ms: 3.3669
+  type: 'test'
+  ...
+# Subtest: default contract is disabled and has no runtime authority
+ok 30 - default contract is disabled and has no runtime authority
+  ---
+  duration_ms: 2.0104
+  type: 'test'
+  ...
+# Subtest: enabled contract blocks missing flags and unlocked LLM
+ok 31 - enabled contract blocks missing flags and unlocked LLM
+  ---
+  duration_ms: 0.6662
+  type: 'test'
+  ...
+# Subtest: enabled contract is ready only under explicit non-default flags
+ok 32 - enabled contract is ready only under explicit non-default flags
+  ---
+  duration_ms: 0.2551
+  type: 'test'
+  ...
+# Subtest: contract rejects recursive runtime authority fields
+ok 33 - contract rejects recursive runtime authority fields
+  ---
+  duration_ms: 1.8761
+  type: 'test'
+  ...
+# Subtest: trace row records replay fields and renderer idle exclusion
+ok 34 - trace row records replay fields and renderer idle exclusion
+  ---
+  duration_ms: 3.3961
+  type: 'test'
+  ...
+# Subtest: trace row rejects unknown conditions and authority-bearing adapter payloads
+ok 35 - trace row rejects unknown conditions and authority-bearing adapter payloads
+  ---
+  duration_ms: 0.5429
+  type: 'test'
+  ...
+# Subtest: baseline plan preserves decisive floors and strongest same-access battery
+ok 36 - baseline plan preserves decisive floors and strongest same-access battery
+  ---
+  duration_ms: 0.6837
+  type: 'test'
+  ...
+# Subtest: verdict helper blocks positive attribution under closure and invalidity signals
+ok 37 - verdict helper blocks positive attribution under closure and invalidity signals
+  ---
+  duration_ms: 0.4551
+  type: 'test'
+  ...
+# Subtest: required condition list preserves joi-demo real-loop contract surface
+ok 38 - required condition list preserves joi-demo real-loop contract surface
+  ---
+  duration_ms: 0.762
+  type: 'test'
+  ...
+# Subtest: parity vectors cover the declared parity-safe value domain
+ok 39 - parity vectors cover the declared parity-safe value domain
+  ---
+  duration_ms: 7.6133
+  type: 'test'
+  ...
+# Subtest: kernel state hash controls are process-stable and mutation-sensitive
+ok 40 - kernel state hash controls are process-stable and mutation-sensitive
+  ---
+  duration_ms: 209.3327
+  type: 'test'
+  ...
+# Subtest: fresh-process replay x2 plus mid-episode resume has zero mismatches
+ok 41 - fresh-process replay x2 plus mid-episode resume has zero mismatches
+  ---
+  duration_ms: 1146.4696
+  type: 'test'
+  ...
+# Subtest: LLM-swap invariance keeps A/B kernel fields identical and flags leaky renderer C
+ok 42 - LLM-swap invariance keeps A/B kernel fields identical and flags leaky renderer C
+  ---
+  duration_ms: 1.3531
+  type: 'test'
+  ...
+# Subtest: trace runner hook is additive/default-off and frozen modules remain untouched
+ok 43 - trace runner hook is additive/default-off and frozen modules remain untouched
+  ---
+  duration_ms: 114.936
+  type: 'test'
+  ...
+# Subtest: config_frozen is byte-stable and runner prints matching config
+ok 44 - config_frozen is byte-stable and runner prints matching config
+  ---
+  duration_ms: 135.0137
+  type: 'test'
+  ...
+# Subtest: battery regression executor uses configured timeout and preserves spawn_error detail
+ok 45 - battery regression executor uses configured timeout and preserves spawn_error detail
+  ---
+  duration_ms: 137.4026
+  type: 'test'
+  ...
+# Subtest: TraceRunner no-fork detector rejects any removed body line
+ok 46 - TraceRunner no-fork detector rejects any removed body line
+  ---
+  duration_ms: 1.2379
+  type: 'test'
+  ...
+# Subtest: OFF_STATIC_REPLAY_HELDOUT row is replayable from serialized state plus observation
+ok 47 - OFF_STATIC_REPLAY_HELDOUT row is replayable from serialized state plus observation
+  ---
+  duration_ms: 18.1341
+  type: 'test'
+  ...
+# Subtest: LLM replay exception rejects D-field smuggling despite self-reported flags
+ok 48 - LLM replay exception rejects D-field smuggling despite self-reported flags
+  ---
+  duration_ms: 25.3717
+  type: 'test'
+  ...
+# Subtest: builder CLI writes one heldout row and evaluator precondition passes without verdict
+ok 49 - builder CLI writes one heldout row and evaluator precondition passes without verdict
+  ---
+  duration_ms: 508.4101
+  type: 'test'
+  ...
+# Subtest: evaluator blocks placeholder rows while recomputing row hashes
+ok 50 - evaluator blocks placeholder rows while recomputing row hashes
+  ---
+  duration_ms: 8.0335
+  type: 'test'
+  ...
+# Subtest: leakage positive control is detected and required
+ok 51 - leakage positive control is detected and required
+  ---
+  duration_ms: 1.8813
+  type: 'test'
+  ...
+# Subtest: tampered row hashes block integrity preflight
+ok 52 - tampered row hashes block integrity preflight
+  ---
+  duration_ms: 1.2601
+  type: 'test'
+  ...
+# Subtest: jsonl parser and writer produce underclaiming reports
+ok 53 - jsonl parser and writer produce underclaiming reports
+  ---
+  duration_ms: 12.3532
+  type: 'test'
+  ...
+# Subtest: report markdown distinguishes no-blocker preflight pass from scoring authorization
+ok 54 - report markdown distinguishes no-blocker preflight pass from scoring authorization
+  ---
+  duration_ms: 0.7218
+  type: 'test'
+  ...
+# Subtest: 007 scoring precondition blocks collect-only rows before any scoring run
+ok 55 - 007 scoring precondition blocks collect-only rows before any scoring run
+  ---
+  duration_ms: 18.9208
+  type: 'test'
+  ...
+# Subtest: CLI aborts when 007 scoring precondition is requested for current collect-only rows
+ok 56 - CLI aborts when 007 scoring precondition is requested for current collect-only rows
+  ---
+  duration_ms: 296.3364
+  type: 'test'
+  ...
+# Subtest: absent experiment flag keeps runner inert and writes no artifacts
+ok 57 - absent experiment flag keeps runner inert and writes no artifacts
+  ---
+  duration_ms: 6.4797
+  type: 'test'
+  ...
+# Subtest: unlocked LLM mode blocks trace writes with explicit contract status
+ok 58 - unlocked LLM mode blocks trace writes with explicit contract status
+  ---
+  duration_ms: 4.2719
+  type: 'test'
+  ...
+# Subtest: enabled runner writes trace row through existing harness contract
+ok 59 - enabled runner writes trace row through existing harness contract
+  ---
+  duration_ms: 15.8397
+  type: 'test'
+  ...
+# Subtest: ipc entrypoint provenance separates real IPC rows from direct trace-runner calls
+ok 60 - ipc entrypoint provenance separates real IPC rows from direct trace-runner calls
+  ---
+  duration_ms: 14.174
+  type: 'test'
+  ...
+# Subtest: renderer-ready metadata is recorded only when contract is enabled
+ok 61 - renderer-ready metadata is recorded only when contract is enabled
+  ---
+  duration_ms: 9.5983
+  type: 'test'
+  ...
+# Subtest: authority-bearing adapter payload is rejected before artifact write
+ok 62 - authority-bearing adapter payload is rejected before artifact write
+  ---
+  duration_ms: 4.2465
+  type: 'test'
+  ...
+# Subtest: report text stays below route and subjectivity claims
+ok 63 - report text stays below route and subjectivity claims
+  ---
+  duration_ms: 0.423
+  type: 'test'
+  ...
+# Subtest: main process wires trace runner only through chat-turn and renderer-ready seams
+ok 64 - main process wires trace runner only through chat-turn and renderer-ready seams
+  ---
+  duration_ms: 0.8065
+  type: 'test'
+  ...
+# Subtest: normalizes positional smoke args including TTS smoke text
+ok 65 - normalizes positional smoke args including TTS smoke text
+  ---
+  duration_ms: 3.1
+  type: 'test'
+  ...
+# Subtest: resolves either a model3 json file or its containing directory
+ok 66 - resolves either a model3 json file or its containing directory
+  ---
+  duration_ms: 15.5014
+  type: 'test'
+  ...
+# Subtest: decodes Chinese model URLs while staying inside the selected model directory
+ok 67 - decodes Chinese model URLs while staying inside the selected model directory
+  ---
+  duration_ms: 13.3748
+  type: 'test'
+  ...
+# Subtest: rejects model request traversal outside the selected directory
+ok 68 - rejects model request traversal outside the selected directory
+  ---
+  duration_ms: 12.8474
+  type: 'test'
+  ...
+# Subtest: normalizes model3 settings that omit HitAreas
+ok 69 - normalizes model3 settings that omit HitAreas
+  ---
+  duration_ms: 0.5882
+  type: 'test'
+  ...
+# Subtest: injects exp directory expressions into model3 settings without editing model assets
+ok 70 - injects exp directory expressions into model3 settings without editing model assets
+  ---
+  duration_ms: 36.0189
+  type: 'test'
+  ...
+# Subtest: pet mode is default-off and only enabled by the explicit developer flag
+ok 71 - pet mode is default-off and only enabled by the explicit developer flag
+  ---
+  duration_ms: 2.2667
+  type: 'test'
+  ...
+# Subtest: main and preload expose exactly one additive pet hook each
+ok 72 - main and preload expose exactly one additive pet hook each
+  ---
+  duration_ms: 2.0163
+  type: 'test'
+  ...
+# Subtest: kernel bridge is the tick authority, records tick-quantized inputs, and replays without viewer
+ok 73 - kernel bridge is the tick authority, records tick-quantized inputs, and replays without viewer
+  ---
+  duration_ms: 672.7032
+  type: 'test'
+  ...
+# Subtest: Live2D pet observer map is pure renderer projection, not evidence
+ok 74 - Live2D pet observer map is pure renderer projection, not evidence
+  ---
+  duration_ms: 0.9341
+  type: 'test'
+  ...
+# Subtest: G-PET-SCHEMA and G-PET-STATIC-GATE reports are computed from the P1 bridge trace
+ok 75 - G-PET-SCHEMA and G-PET-STATIC-GATE reports are computed from the P1 bridge trace
+  ---
+  duration_ms: 1245.2776
+  type: 'test'
+  ...
+# Subtest: suite baseline gate passes when repo pytest failures are exactly the closed baseline
+ok 76 - suite baseline gate passes when repo pytest failures are exactly the closed baseline
+  ---
+  duration_ms: 16.7209
+  type: 'test'
+  ...
+# Subtest: suite baseline gate fails on any repo pytest failure outside the closed baseline
+ok 77 - suite baseline gate fails on any repo pytest failure outside the closed baseline
+  ---
+  duration_ms: 9.0948
+  type: 'test'
+  ...
+# Subtest: suite baseline gate emits unexpectedly_passing when a baseline debt disappears
+ok 78 - suite baseline gate emits unexpectedly_passing when a baseline debt disappears
+  ---
+  duration_ms: 6.9218
+  type: 'test'
+  ...
+# Subtest: suite baseline gate fails when the P1 owner-reference delta is nonzero
+ok 79 - suite baseline gate fails when the P1 owner-reference delta is nonzero
+  ---
+  duration_ms: 5.9061
+  type: 'test'
+  ...
+# Subtest: builds deterministic same-trigger PSPC perception scenarios
+ok 80 - builds deterministic same-trigger PSPC perception scenarios
+  ---
+  duration_ms: 9.8612
+  type: 'test'
+  ...
+# Subtest: perception playback order and timing are recording friendly
+ok 81 - perception playback order and timing are recording friendly
+  ---
+  duration_ms: 3.8479
+  type: 'test'
+  ...
+# Subtest: debug overlay is hidden by default and exposes audit-only fields
+ok 82 - debug overlay is hidden by default and exposes audit-only fields
+  ---
+  duration_ms: 2.9058
+  type: 'test'
+  ...
+# Subtest: perception demo rejects runtime authority and side effects
+ok 83 - perception demo rejects runtime authority and side effects
+  ---
+  duration_ms: 2.7757
+  type: 'test'
+  ...
+# Subtest: viewer perception demo controls stay outside chat and runtime paths
+ok 84 - viewer perception demo controls stay outside chat and runtime paths
+  ---
+  duration_ms: 2.0707
+  type: 'test'
+  ...
+# Subtest: reply preview state maps session histories to deterministic styles
+ok 85 - reply preview state maps session histories to deterministic styles
+  ---
+  duration_ms: 12.1154
+  type: 'test'
+  ...
+# Subtest: reply preview exposes proxy bars for standard history groups
+ok 86 - reply preview exposes proxy bars for standard history groups
+  ---
+  duration_ms: 1.9231
+  type: 'test'
+  ...
+# Subtest: fanfic continuation log remains neutral and visibly inactive
+ok 87 - fanfic continuation log remains neutral and visibly inactive
+  ---
+  duration_ms: 2.4947
+  type: 'test'
+  ...
+# Subtest: natural companion interaction semantic packets activate trust and approach without keyword matching
+ok 88 - natural companion interaction semantic packets activate trust and approach without keyword matching
+  ---
+  duration_ms: 2.7465
+  type: 'test'
+  ...
+# Subtest: semantic event kind canonicalizes category when extractor category is weak
+ok 89 - semantic event kind canonicalizes category when extractor category is weak
+  ---
+  duration_ms: 0.7817
+  type: 'test'
+  ...
+# Subtest: extractor unavailable and forbidden semantic packets do not update preview state
+ok 90 - extractor unavailable and forbidden semantic packets do not update preview state
+  ---
+  duration_ms: 2.6105
+  type: 'test'
+  ...
+# Subtest: reply preview context is local-only and non-executable
+ok 91 - reply preview context is local-only and non-executable
+  ---
+  duration_ms: 4.0157
+  type: 'test'
+  ...
+# Subtest: reply preview scenario is presentation-only and follows the current style
+ok 92 - reply preview scenario is presentation-only and follows the current style
+  ---
+  duration_ms: 1.1142
+  type: 'test'
+  ...
+# Subtest: normal mode has no PSPC reply preview context wiring
+ok 93 - normal mode has no PSPC reply preview context wiring
+  ---
+  duration_ms: 0.7473
+  type: 'test'
+  ...
+# Subtest: EgoDesktop wires preview mode without hiding chat or invoking demo chat bypass
+ok 94 - EgoDesktop wires preview mode without hiding chat or invoking demo chat bypass
+  ---
+  duration_ms: 3.775
+  type: 'test'
+  ...
+# Subtest: maps all PSPC proposal-hint packets into local visual states
+ok 95 - maps all PSPC proposal-hint packets into local visual states
+  ---
+  duration_ms: 6.7855
+  type: 'test'
+  ...
+# Subtest: rejects PSPC packets that carry runtime authority or executable fields
+ok 96 - rejects PSPC packets that carry runtime authority or executable fields
+  ---
+  duration_ms: 2.143
+  type: 'test'
+  ...
+# Subtest: PSPC visual shim source stays presentation-only
+ok 97 - PSPC visual shim source stays presentation-only
+  ---
+  duration_ms: 0.7233
+  type: 'test'
+  ...
+# Subtest: viewer PSPC demo controls do not route through chat turn
+ok 98 - viewer PSPC demo controls do not route through chat turn
+  ---
+  duration_ms: 2.3474
+  type: 'test'
+  ...
+# Subtest: session context starts empty and appends successful turns
+ok 99 - session context starts empty and appends successful turns
+  ---
+  duration_ms: 4.0417
+  type: 'test'
+  ...
+# Subtest: session context does not append failed backend turns
+ok 100 - session context does not append failed backend turns
+  ---
+  duration_ms: 0.2783
+  type: 'test'
+  ...
+# Subtest: session context trims old turns and long message content
+ok 101 - session context trims old turns and long message content
+  ---
+  duration_ms: 1.6907
+  type: 'test'
+  ...
+# Subtest: session context enforces total character budget
+ok 102 - session context enforces total character budget
+  ---
+  duration_ms: 0.7538
+  type: 'test'
+  ...
+# Subtest: session context wiring remains separated from PSPC reply preview context
+ok 103 - session context wiring remains separated from PSPC reply preview context
+  ---
+  duration_ms: 1.0895
+  type: 'test'
+  ...
+# Subtest: viewer signal frame consumes only gated presence and visible expression intent
+ok 104 - viewer signal frame consumes only gated presence and visible expression intent
+  ---
+  duration_ms: 2.172
+  type: 'test'
+  ...
+# Subtest: speech turn guard supersedes stale TTS results
+ok 105 - speech turn guard supersedes stale TTS results
+  ---
+  duration_ms: 3.3433
+  type: 'test'
+  ...
+# Subtest: builds TTS request only for admitted bot text
+ok 106 - builds TTS request only for admitted bot text
+  ---
+  duration_ms: 2.0664
+  type: 'test'
+  ...
+# Subtest: builds TTS request from displayed bot text before raw bot text
+ok 107 - builds TTS request from displayed bot text before raw bot text
+  ---
+  duration_ms: 0.7276
+  type: 'test'
+  ...
+# Subtest: sanitizes emoji and pictographic symbols out of TTS text
+ok 108 - sanitizes emoji and pictographic symbols out of TTS text
+  ---
+  duration_ms: 0.3197
+  type: 'test'
+  ...
+# Subtest: builds TTS request from displayed text but removes emoji for speech
+ok 109 - builds TTS request from displayed text but removes emoji for speech
+  ---
+  duration_ms: 1.2344
+  type: 'test'
+  ...
+# Subtest: does not synthesize disabled, empty, error, emoji-only, or too-long text
+ok 110 - does not synthesize disabled, empty, error, emoji-only, or too-long text
+  ---
+  duration_ms: 0.6629
+  type: 'test'
+  ...
+# Subtest: resolves only contained TTS audio files
+ok 111 - resolves only contained TTS audio files
+  ---
+  duration_ms: 4.6347
+  type: 'test'
+  ...
+# Subtest: TtsWorkerClient sends JSON requests and returns contained audio URLs
+ok 112 - TtsWorkerClient sends JSON requests and returns contained audio URLs
+  ---
+  duration_ms: 168.2152
+  type: 'test'
+  ...
+1..112
+# tests 112
+# suites 0
+# pass 112
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2289.2501
