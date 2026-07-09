@@ -1,0 +1,36 @@
+{
+  "max_part_bytes": 90000000,
+  "original_bytes": 189037653,
+  "original_lines": 91800,
+  "original_path": "trace.jsonl",
+  "original_sha256": "3727f7d592af41f05e308e52d9356969d761b258d41ed76c99e52317aa911f52",
+  "parts": [
+    {
+      "bytes": 89999827,
+      "lines": 43708,
+      "path": "trace.jsonl.part0001",
+      "sha256": "9fcab2c101a028b5290c6d83566986ef1e139fadd80a92907dc5d7d4256a79dd"
+    },
+    {
+      "bytes": 89999301,
+      "lines": 43706,
+      "path": "trace.jsonl.part0002",
+      "sha256": "e6d91ef02c28cf56d42e1a8406407dd4b6d21b2ddc6d40fc27442c712a2aba6f"
+    },
+    {
+      "bytes": 9038525,
+      "lines": 4386,
+      "path": "trace.jsonl.part0003",
+      "sha256": "3ec163189398a275a502704ca3fe920843724dcb0f8abacd66e131b9bda6e5a9"
+    }
+  ],
+  "producer_function": "split_large_artifact_for_git_transport",
+  "reason": "raw scored trace.jsonl exceeded GitHub 100 MB single-file transport limit; split preserves exact bytes and newline boundaries",
+  "reconstruction": "python -c \"from pathlib import Path; root=Path('.'); open('trace.jsonl','wb').write(b''.join((root/p['path']).read_bytes() for p in __import__('json').loads((root/'trace_transport_manifest.json').read_text())['parts']))\"",
+  "verification": {
+    "bytes_reconstructed_from_parts": 189037653,
+    "lines_reconstructed_from_parts": 91800,
+    "sha256_reconstructed_from_parts": "3727f7d592af41f05e308e52d9356969d761b258d41ed76c99e52317aa911f52",
+    "status": "pass"
+  }
+}

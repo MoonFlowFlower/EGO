@@ -1,0 +1,31 @@
+{
+  "aggregation_rule": "Nonzero PE-reflex records are attributed to C-PE; nonzero Pair-C write-window matches are attributed to C-forage.",
+  "channel_split_counts": {
+    "C-PE": 18,
+    "C-forage": 6
+  },
+  "channel_split_rates": {
+    "C-PE": 0.75,
+    "C-forage": 0.25
+  },
+  "code_path_hash": "008eaa0d0b3f0ecbe9cae813725e7d24a54d078d8510481b0a385fd494bc2126",
+  "direct_write_disclosure": "C-forage write is model[site]=actual for the visited site; direct single-site overwrite, not inference.",
+  "episode_ids": [
+    "candidate:1107",
+    "frozen_updates:1107",
+    "static:1107",
+    "candidate_ablated:1107",
+    "schedule_reobserve:1107"
+  ],
+  "fixed_threshold_disclosure": "_derived_prediction_error_trigger(config) is fixed/config-derived; PE reflex is not update-gated and not adaptation.",
+  "gate": "G-E",
+  "input_artifacts": [
+    "trace.jsonl"
+  ],
+  "producer_function": "channel_report",
+  "run_id": "ego_pet_capability_conformance_001a_c_forage_pe_003_probe",
+  "seed_ids": [
+    1107
+  ],
+  "status": "pass"
+}

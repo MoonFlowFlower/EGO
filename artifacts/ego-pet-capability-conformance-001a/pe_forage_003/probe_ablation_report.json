@@ -1,0 +1,53 @@
+{
+  "aggregation_rule": "G-W forage-write: W(arm)=rate[_best_site(model,need)==Pair-C target] over persistence windows; candidate >=0.60 and write controls <=0.05.",
+  "by_arm": {
+    "candidate": {
+      "W_rate": 1.0,
+      "matches": 6,
+      "total": 6
+    },
+    "candidate_ablated": {
+      "W_rate": 0.0,
+      "matches": 0,
+      "total": 6
+    },
+    "frozen_updates": {
+      "W_rate": 0.0,
+      "matches": 0,
+      "total": 6
+    },
+    "schedule_reobserve": {
+      "W_rate": 0.8,
+      "matches": 12,
+      "total": 15
+    },
+    "static": {
+      "W_rate": 0.0,
+      "matches": 0,
+      "total": 300
+    }
+  },
+  "code_path_hash": "008eaa0d0b3f0ecbe9cae813725e7d24a54d078d8510481b0a385fd494bc2126",
+  "episode_ids": [
+    "candidate:1107",
+    "frozen_updates:1107",
+    "static:1107",
+    "candidate_ablated:1107",
+    "schedule_reobserve:1107"
+  ],
+  "gate": "G-W",
+  "input_artifacts": [
+    "trace.jsonl",
+    "baseline_comparison.json"
+  ],
+  "producer_function": "ablation_report",
+  "run_id": "ego_pet_capability_conformance_001a_c_forage_pe_003_probe",
+  "seed_ids": [
+    1107
+  ],
+  "status": "pass",
+  "thresholds": {
+    "candidate_W_min": 0.6,
+    "write_control_W_max": 0.05
+  }
+}
