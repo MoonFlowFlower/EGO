@@ -1,0 +1,66 @@
+schema_version: codex.mutation_scope.v1
+task: ego-k0-foundation-001a
+expected_mutation_surface:
+  - locally banked child-card package pinned to the canonical ITL supersession parent
+  - standalone default-off kernel contracts/state/event/trace/replay package foundation
+  - external SQLite EventStorePort adapter outside the package and future wheel
+  - focused validation runner, tests, and computed engineering artifacts
+  - landing-only disabled non-mainline K0 workstream + explicit child lane classifications + mechanically regenerated views
+  - no EgoOperator/EgoDesktop/runtime/mainline authority mutation
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-k0-foundation-001a/
+  - packages/ego_k0_kernel/pyproject.toml
+  - packages/ego_k0_kernel/src/ego_k0_kernel/__init__.py
+  - packages/ego_k0_kernel/src/ego_k0_kernel/contracts.py
+  - packages/ego_k0_kernel/src/ego_k0_kernel/state.py
+  - packages/ego_k0_kernel/src/ego_k0_kernel/events.py
+  - packages/ego_k0_kernel/src/ego_k0_kernel/ports.py
+  - packages/ego_k0_kernel/src/ego_k0_kernel/trace.py
+  - packages/ego_k0_kernel/src/ego_k0_kernel/replay.py
+  - packages/ego_k0_kernel/src/ego_k0_kernel/cli.py
+  - scripts/ego_k0_adapters/__init__.py
+  - scripts/ego_k0_adapters/sqlite_event_store.py
+  - scripts/run_ego_k0_foundation_validation.py
+  - tests/test_ego_k0_foundation.py
+  - artifacts/ego_k0_foundation_001a/
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - scripts/codex/route_convergence_common.py
+  - docs/STATUS.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - docs/REPO_HYGIENE_POLICY.md
+  - artifacts/reports/program_state_summary.md
+forbidden_mutation_paths:
+  - artifacts/evidence_ledger/
+  - Tasks/TASK_BOARD.yaml
+  - .codex/project_contract.yaml
+  - scripts/ego_kernel/
+  - scripts/ego_pet/
+  - scripts/ego_pet_capability/
+  - EgoDesktop/
+  - EgoOperator/
+  - artifacts/egodesktop_pet_world_integration_001a/
+  - artifacts/ego-pet-capability-conformance-001a/
+  - docs/codex/tasks/egodesktop-pet-world-integration-001a/
+  - dist/
+  - build/
+auto_remote_anchor: forbidden
+claim_ceiling: "shared event/state contracts, external persistence-adapter conformance, serialization, and recomputing trace/replay engineering only; no learned model, learning/replay/memory contribution, transfer, specialness, initiative, agency, autonomy, subjectivity, functional-subject status, electronic life, product benefit, EGO/companion readiness, or mainline effect"
+phase_scopes:
+  card_bank:
+    - docs/codex/tasks/ego-k0-foundation-001a/
+  route_registration:
+    - docs/PROGRAM_STATE_UNIFIED.yaml
+    - scripts/codex/route_convergence_common.py
+    - docs/STATUS.md
+    - docs/codex/tasks/TASK_LANE_INDEX.md
+    - docs/REPO_HYGIENE_POLICY.md
+    - artifacts/reports/program_state_summary.md
+  implementation:
+    - packages/ego_k0_kernel/pyproject.toml
+    - packages/ego_k0_kernel/src/ego_k0_kernel/
+    - scripts/ego_k0_adapters/
+    - scripts/run_ego_k0_foundation_validation.py
+    - tests/test_ego_k0_foundation.py
+  evidence_bank:
+    - artifacts/ego_k0_foundation_001a/
+phase_rule: "one phase per commit; union in allowed_mutation_paths is not blanket cross-phase authority"
