@@ -18,8 +18,8 @@
 | lane | count |
 |---|---:|
 | `active_default` | 1 |
-| `supporting_active` | 1 |
-| `parked` | 1 |
+| `supporting_active` | 2 |
+| `parked` | 2 |
 | `closed_evidence` | 19 |
 | `reference_only` | 226 |
 
@@ -33,12 +33,14 @@
 
 | entry | kind | workstream | paths | why |
 |---|---|---|---|---|
+| EGO K0 Foundation 001A | `codex_task` | `k0_developmental_kernel_dual_track` | `docs/codex/tasks/ego-k0-foundation-001a/` | Default-off local engineering foundation authorized only through the canonical ITL K0 parent; no runtime or mechanism claim. Current workstream status: `all_child_cards_banked__ready_transition_required__no_implementation_authorized`. |
 | Repo Mainline Clarity v1 | `codex_task` | n/a | `docs/codex/tasks/repo-mainline-clarity-v1/` | Supporting repo-view slice for mainline onboarding, surface-map clarity, and staged operational-exhaust hygiene; must not replace the active default track. |
 
 ## Parked
 
 | entry | kind | workstream | paths | why |
 |---|---|---|---|---|
+| EGO K0 Reference Kernel 001A | `codex_task` | `k0_developmental_kernel_dual_track` | `docs/codex/tasks/ego-k0-reference-kernel-001a/` | Reference learned-kernel card is banked but blocked on accepted Foundation plus banked ITL H0 readback. Current workstream status: `all_child_cards_banked__ready_transition_required__no_implementation_authorized`. |
 | WP17 / MVP22 Authority Refs | `authority_refs` | `wp17_bounded_continuity_lane` | `Tasks/MVP22_task_plan.md`<br>`Tasks/active/mvp22_long_horizon_self_continuity/STATUS.md` | Authority-frozen bounded continuity lane; preserved but parked behind the active default track. |
 
 ## Closed Evidence

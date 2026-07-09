@@ -8,6 +8,6 @@
 - verification: `V3`
 - mainline_connected: `True`
 - enabled: `True`
-- next_minimal_action: R-track decision-card sequence complete (R0/R1/R3 closed at engineering ceilings; R2 closed negative). Any R2-prime drift-regime initiative claim requires a new decision-card row gated by a paper discriminability note that must defeat cheap-adaptive static rivals on paper first. Product-side static initiative gating choice (tuned threshold vs behavior tree) is an operator product decision outside R-track.
+- next_minimal_action: Keep EgoOperator as the active default. For the separate disabled K0 workstream, all five child cards are banked; next author and bank the canonical fail-closed READY_TO_IMPLEMENT transition that pins 13bd9268, 0f043254, and 56f56a99. Until then do not execute Foundation/H0, do not start K0-R, and do not reopen the closed R-track.
 - highest ledger entry: `mvp16_controlled_completion_current` / `E5`
 
