@@ -60,4 +60,3 @@ def test_rng_audit_positive_control_detects_forbidden_random(tmp_path: Path) -> 
     report = rng_audit(code_hash="unit", run_id="unit", scan_files=[offender])
     assert report["status"] == "fail"
     assert report["forbidden_hits"]
-

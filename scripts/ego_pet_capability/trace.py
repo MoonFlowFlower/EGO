@@ -73,4 +73,3 @@ def write_jsonl(path: Path, rows: Iterable[dict[str, Any]]) -> None:
         for row in rows:
             handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
             handle.write("\n")
-
