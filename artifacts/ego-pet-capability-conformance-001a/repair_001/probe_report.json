@@ -1,0 +1,1461 @@
+{
+  "aggregation_rule": "frozen PREREG gate conjunction over deterministic _best_site(model_before, need) persistence windows; no threshold tuning",
+  "claim_ceiling": "capability_conformance_engineering_only",
+  "code_path_hash": "418407f002eecffd4fb346a87e2f43ffc4e7b581062352b115f295fc5fe280dd",
+  "config_shas": {
+    "MUTATION_SCOPE.yaml": "417784c5c09cdea13061a1c5f2ef72059ed582895729a526e9927f8bf873988f",
+    "PREREG_ADDENDUM_001.md": "49a0e0ff28e4f205439bbb339ac6608df57535d1d54863c2a3e9802db55f3e51",
+    "PREREG_ADDENDUM_002_INSTRUMENT_REPAIR.md": "0294c8ac4d3ce5e5b545f6ba967c848edf69358f6a872183573828707ef2da9b",
+    "STAGE_CARD.md": "a967afced42e2cf9d4a165a348d46a2ef5012e25d4f1d34c4cedb344c33e0644",
+    "world_config_v0.json": "f97cfe07786551a0caddb2c9ee88e546cb263e5769218da639ff0e5e6fe7075c"
+  },
+  "cpu": {
+    "measured_cpu_hours": 0.000998263889
+  },
+  "episode_ids": [
+    "seed_1106:observe:R0:tick_0:candidate:A",
+    "seed_1106:observe:R0:tick_0:candidate:B",
+    "seed_1106:observe:R0:tick_0:candidate:C",
+    "seed_1106:observe:R0:tick_0:frozen_updates:A",
+    "seed_1106:observe:R0:tick_0:frozen_updates:B",
+    "seed_1106:observe:R0:tick_0:frozen_updates:C",
+    "seed_1106:observe:R0:tick_0:static:A",
+    "seed_1106:observe:R0:tick_0:static:B",
+    "seed_1106:observe:R0:tick_0:static:C",
+    "seed_1106:observe:R0:tick_0:candidate_ablated:A",
+    "seed_1106:observe:R0:tick_0:candidate_ablated:B",
+    "seed_1106:observe:R0:tick_0:candidate_ablated:C",
+    "seed_1106:observe:R1:tick_201:candidate:A",
+    "seed_1106:observe:R1:tick_201:candidate:B",
+    "seed_1106:observe:R1:tick_201:candidate:C",
+    "seed_1106:observe:R1:tick_201:frozen_updates:A",
+    "seed_1106:observe:R1:tick_201:frozen_updates:B",
+    "seed_1106:observe:R1:tick_201:frozen_updates:C",
+    "seed_1106:observe:R1:tick_201:static:A",
+    "seed_1106:observe:R1:tick_201:static:B",
+    "seed_1106:observe:R1:tick_201:static:C",
+    "seed_1106:observe:R1:tick_201:candidate_ablated:A",
+    "seed_1106:observe:R1:tick_201:candidate_ablated:B",
+    "seed_1106:observe:R1:tick_201:candidate_ablated:C",
+    "seed_1106:observe:R2:tick_401:candidate:A",
+    "seed_1106:observe:R2:tick_401:candidate:B",
+    "seed_1106:observe:R2:tick_401:candidate:C",
+    "seed_1106:observe:R2:tick_401:frozen_updates:A",
+    "seed_1106:observe:R2:tick_401:frozen_updates:B",
+    "seed_1106:observe:R2:tick_401:frozen_updates:C",
+    "seed_1106:observe:R2:tick_401:static:A",
+    "seed_1106:observe:R2:tick_401:static:B",
+    "seed_1106:observe:R2:tick_401:static:C",
+    "seed_1106:observe:R2:tick_401:candidate_ablated:A",
+    "seed_1106:observe:R2:tick_401:candidate_ablated:B",
+    "seed_1106:observe:R2:tick_401:candidate_ablated:C",
+    "seed_1106:forage:energy:R0:tick_3:candidate:A",
+    "seed_1106:forage:energy:R0:tick_3:candidate:B",
+    "seed_1106:forage:energy:R0:tick_3:candidate:C",
+    "seed_1106:forage:energy:R0:tick_3:frozen_updates:A",
+    "seed_1106:forage:energy:R0:tick_3:frozen_updates:B",
+    "seed_1106:forage:energy:R0:tick_3:frozen_updates:C",
+    "seed_1106:forage:energy:R0:tick_3:static:A",
+    "seed_1106:forage:energy:R0:tick_3:static:B",
+    "seed_1106:forage:energy:R0:tick_3:static:C",
+    "seed_1106:forage:energy:R0:tick_3:candidate_ablated:A",
+    "seed_1106:forage:energy:R0:tick_3:candidate_ablated:B",
+    "seed_1106:forage:energy:R0:tick_3:candidate_ablated:C",
+    "seed_1106:forage:comfort:R0:tick_1:candidate:A",
+    "seed_1106:forage:comfort:R0:tick_1:candidate:B",
+    "seed_1106:forage:comfort:R0:tick_1:candidate:C",
+    "seed_1106:forage:comfort:R0:tick_1:frozen_updates:A",
+    "seed_1106:forage:comfort:R0:tick_1:frozen_updates:B",
+    "seed_1106:forage:comfort:R0:tick_1:frozen_updates:C",
+    "seed_1106:forage:comfort:R0:tick_1:static:A",
+    "seed_1106:forage:comfort:R0:tick_1:static:B",
+    "seed_1106:forage:comfort:R0:tick_1:static:C",
+    "seed_1106:forage:comfort:R0:tick_1:candidate_ablated:A",
+    "seed_1106:forage:comfort:R0:tick_1:candidate_ablated:B",
+    "seed_1106:forage:comfort:R0:tick_1:candidate_ablated:C",
+    "seed_1106:forage:energy:R1:tick_202:candidate:A",
+    "seed_1106:forage:energy:R1:tick_202:candidate:B",
+    "seed_1106:forage:energy:R1:tick_202:candidate:C",
+    "seed_1106:forage:energy:R1:tick_202:frozen_updates:A",
+    "seed_1106:forage:energy:R1:tick_202:frozen_updates:B",
+    "seed_1106:forage:energy:R1:tick_202:frozen_updates:C",
+    "seed_1106:forage:energy:R1:tick_202:static:A",
+    "seed_1106:forage:energy:R1:tick_202:static:B",
+    "seed_1106:forage:energy:R1:tick_202:static:C",
+    "seed_1106:forage:energy:R1:tick_202:candidate_ablated:A",
+    "seed_1106:forage:energy:R1:tick_202:candidate_ablated:B",
+    "seed_1106:forage:energy:R1:tick_202:candidate_ablated:C",
+    "seed_1106:forage:comfort:R1:tick_200:candidate:A",
+    "seed_1106:forage:comfort:R1:tick_200:candidate:B",
+    "seed_1106:forage:comfort:R1:tick_200:candidate:C",
+    "seed_1106:forage:comfort:R1:tick_200:frozen_updates:A",
+    "seed_1106:forage:comfort:R1:tick_200:frozen_updates:B",
+    "seed_1106:forage:comfort:R1:tick_200:frozen_updates:C",
+    "seed_1106:forage:comfort:R1:tick_200:static:A",
+    "seed_1106:forage:comfort:R1:tick_200:static:B",
+    "seed_1106:forage:comfort:R1:tick_200:static:C",
+    "seed_1106:forage:comfort:R1:tick_200:candidate_ablated:A",
+    "seed_1106:forage:comfort:R1:tick_200:candidate_ablated:B",
+    "seed_1106:forage:comfort:R1:tick_200:candidate_ablated:C",
+    "seed_1106:forage:energy:R2:tick_400:candidate:A",
+    "seed_1106:forage:energy:R2:tick_400:candidate:B",
+    "seed_1106:forage:energy:R2:tick_400:candidate:C",
+    "seed_1106:forage:energy:R2:tick_400:frozen_updates:A",
+    "seed_1106:forage:energy:R2:tick_400:frozen_updates:B",
+    "seed_1106:forage:energy:R2:tick_400:frozen_updates:C",
+    "seed_1106:forage:energy:R2:tick_400:static:A",
+    "seed_1106:forage:energy:R2:tick_400:static:B",
+    "seed_1106:forage:energy:R2:tick_400:static:C",
+    "seed_1106:forage:energy:R2:tick_400:candidate_ablated:A",
+    "seed_1106:forage:energy:R2:tick_400:candidate_ablated:B",
+    "seed_1106:forage:energy:R2:tick_400:candidate_ablated:C",
+    "seed_1106:forage:comfort:R2:tick_403:candidate:A",
+    "seed_1106:forage:comfort:R2:tick_403:candidate:B",
+    "seed_1106:forage:comfort:R2:tick_403:candidate:C",
+    "seed_1106:forage:comfort:R2:tick_403:frozen_updates:A",
+    "seed_1106:forage:comfort:R2:tick_403:frozen_updates:B",
+    "seed_1106:forage:comfort:R2:tick_403:frozen_updates:C",
+    "seed_1106:forage:comfort:R2:tick_403:static:A",
+    "seed_1106:forage:comfort:R2:tick_403:static:B",
+    "seed_1106:forage:comfort:R2:tick_403:static:C",
+    "seed_1106:forage:comfort:R2:tick_403:candidate_ablated:A",
+    "seed_1106:forage:comfort:R2:tick_403:candidate_ablated:B",
+    "seed_1106:forage:comfort:R2:tick_403:candidate_ablated:C"
+  ],
+  "event_count": 9,
+  "failing_gates": [],
+  "gate_results": {
+    "G-A/G-B": {
+      "G_A_status": "pass",
+      "G_B_candidate_delta_status": "pass",
+      "G_B_control_raw_status": "pass",
+      "G_B_status": "pass",
+      "aggregation_rule": "G-A withhold separation plus repaired G-B directional delta over post-drift observe-intervention metric windows; primary metric is _best_site(model_before, need)",
+      "by_arm": {
+        "candidate": {
+          "post_drift_observe_G_A": {
+            "divergent": 3,
+            "rate": 0.6,
+            "total": 5
+          },
+          "post_drift_observe_G_B_delta": {
+            "delta_vs_frozen_updates": 1.0,
+            "floor_raw": {
+              "matches": 0,
+              "rate": 0.0,
+              "total": 200
+            },
+            "floor_reference_arm": "frozen_updates",
+            "raw": {
+              "matches": 6,
+              "rate": 1.0,
+              "total": 6
+            }
+          },
+          "post_drift_observe_G_B_raw": {
+            "matches": 6,
+            "rate": 1.0,
+            "total": 6
+          },
+          "r0_initial_observe_should_lose_G_A": {
+            "divergent": 0,
+            "rate": 0.0,
+            "total": 4
+          }
+        },
+        "candidate_ablated": {
+          "post_drift_observe_G_A": {
+            "divergent": 0,
+            "rate": 0.0,
+            "total": 200
+          },
+          "post_drift_observe_G_B_delta": {
+            "delta_vs_frozen_updates": 0.0,
+            "floor_raw": {
+              "matches": 0,
+              "rate": 0.0,
+              "total": 200
+            },
+            "floor_reference_arm": "frozen_updates",
+            "raw": {
+              "matches": 0,
+              "rate": 0.0,
+              "total": 200
+            }
+          },
+          "post_drift_observe_G_B_raw": {
+            "matches": 0,
+            "rate": 0.0,
+            "total": 200
+          },
+          "r0_initial_observe_should_lose_G_A": {
+            "divergent": 0,
+            "rate": 0.0,
+            "total": 100
+          }
+        },
+        "frozen_updates": {
+          "post_drift_observe_G_A": {
+            "divergent": 0,
+            "rate": 0.0,
+            "total": 200
+          },
+          "post_drift_observe_G_B_delta": {
+            "delta_vs_frozen_updates": 0.0,
+            "floor_raw": {
+              "matches": 0,
+              "rate": 0.0,
+              "total": 200
+            },
+            "floor_reference_arm": "frozen_updates",
+            "raw": {
+              "matches": 0,
+              "rate": 0.0,
+              "total": 200
+            }
+          },
+          "post_drift_observe_G_B_raw": {
+            "matches": 0,
+            "rate": 0.0,
+            "total": 200
+          },
+          "r0_initial_observe_should_lose_G_A": {
+            "divergent": 0,
+            "rate": 0.0,
+            "total": 100
+          }
+        },
+        "static": {
+          "post_drift_observe_G_A": {
+            "divergent": 0,
+            "rate": 0.0,
+            "total": 200
+          },
+          "post_drift_observe_G_B_delta": {
+            "delta_vs_frozen_updates": 0.0,
+            "floor_raw": {
+              "matches": 0,
+              "rate": 0.0,
+              "total": 200
+            },
+            "floor_reference_arm": "frozen_updates",
+            "raw": {
+              "matches": 0,
+              "rate": 0.0,
+              "total": 200
+            }
+          },
+          "post_drift_observe_G_B_raw": {
+            "matches": 0,
+            "rate": 0.0,
+            "total": 200
+          },
+          "r0_initial_observe_should_lose_G_A": {
+            "divergent": 0,
+            "rate": 0.0,
+            "total": 100
+          }
+        }
+      },
+      "code_path_hash": "418407f002eecffd4fb346a87e2f43ffc4e7b581062352b115f295fc5fe280dd",
+      "directional_delta": {
+        "aggregate": {
+          "by_arm": {
+            "candidate": {
+              "delta_vs_frozen_updates": 1.0,
+              "floor_raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 200
+              },
+              "floor_reference_arm": "frozen_updates",
+              "raw": {
+                "matches": 6,
+                "rate": 1.0,
+                "total": 6
+              }
+            },
+            "candidate_ablated": {
+              "delta_vs_frozen_updates": 0.0,
+              "floor_raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 200
+              },
+              "floor_reference_arm": "frozen_updates",
+              "raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 200
+              }
+            },
+            "frozen_updates": {
+              "delta_vs_frozen_updates": 0.0,
+              "floor_raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 200
+              },
+              "floor_reference_arm": "frozen_updates",
+              "raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 200
+              }
+            },
+            "static": {
+              "delta_vs_frozen_updates": 0.0,
+              "floor_raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 200
+              },
+              "floor_reference_arm": "frozen_updates",
+              "raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 200
+              }
+            }
+          }
+        },
+        "aggregation_rule": "For each scored post-drift observe leg L, D_dir(arm,L)=rate_match(arm,L)-rate_match(frozen_updates,L); gate on pooled per-leg delta and raw control floors; report per-need and aggregate.",
+        "candidate_delta_status": "pass",
+        "code_path_hash": "418407f002eecffd4fb346a87e2f43ffc4e7b581062352b115f295fc5fe280dd",
+        "control_raw_status": "pass",
+        "episode_ids": [
+          "candidate:1106",
+          "frozen_updates:1106",
+          "static:1106",
+          "candidate_ablated:1106"
+        ],
+        "gate": "G-B",
+        "input_artifacts": [
+          "trace.jsonl",
+          "world_config_v0.json",
+          "PREREG_ADDENDUM_002_INSTRUMENT_REPAIR.md"
+        ],
+        "per_leg": {
+          "R1_shift_a<-R2_shift_b": {
+            "candidate_delta_status": "pass",
+            "control_raw_status": "pass",
+            "per_need": {
+              "comfort": {
+                "by_arm": {
+                  "candidate": {
+                    "delta_vs_frozen_updates": 1.0,
+                    "floor_raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    },
+                    "floor_reference_arm": "frozen_updates",
+                    "raw": {
+                      "matches": 2,
+                      "rate": 1.0,
+                      "total": 2
+                    }
+                  },
+                  "candidate_ablated": {
+                    "delta_vs_frozen_updates": 0.0,
+                    "floor_raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    },
+                    "floor_reference_arm": "frozen_updates",
+                    "raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    }
+                  },
+                  "frozen_updates": {
+                    "delta_vs_frozen_updates": 0.0,
+                    "floor_raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    },
+                    "floor_reference_arm": "frozen_updates",
+                    "raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    }
+                  },
+                  "static": {
+                    "delta_vs_frozen_updates": 0.0,
+                    "floor_raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    },
+                    "floor_reference_arm": "frozen_updates",
+                    "raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    }
+                  }
+                }
+              },
+              "energy": {
+                "by_arm": {
+                  "candidate": {
+                    "delta_vs_frozen_updates": 1.0,
+                    "floor_raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    },
+                    "floor_reference_arm": "frozen_updates",
+                    "raw": {
+                      "matches": 1,
+                      "rate": 1.0,
+                      "total": 1
+                    }
+                  },
+                  "candidate_ablated": {
+                    "delta_vs_frozen_updates": 0.0,
+                    "floor_raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    },
+                    "floor_reference_arm": "frozen_updates",
+                    "raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    }
+                  },
+                  "frozen_updates": {
+                    "delta_vs_frozen_updates": 0.0,
+                    "floor_raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    },
+                    "floor_reference_arm": "frozen_updates",
+                    "raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    }
+                  },
+                  "static": {
+                    "delta_vs_frozen_updates": 0.0,
+                    "floor_raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    },
+                    "floor_reference_arm": "frozen_updates",
+                    "raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    }
+                  }
+                }
+              }
+            },
+            "pooled": {
+              "by_arm": {
+                "candidate": {
+                  "delta_vs_frozen_updates": 1.0,
+                  "floor_raw": {
+                    "matches": 0,
+                    "rate": 0.0,
+                    "total": 100
+                  },
+                  "floor_reference_arm": "frozen_updates",
+                  "raw": {
+                    "matches": 3,
+                    "rate": 1.0,
+                    "total": 3
+                  }
+                },
+                "candidate_ablated": {
+                  "delta_vs_frozen_updates": 0.0,
+                  "floor_raw": {
+                    "matches": 0,
+                    "rate": 0.0,
+                    "total": 100
+                  },
+                  "floor_reference_arm": "frozen_updates",
+                  "raw": {
+                    "matches": 0,
+                    "rate": 0.0,
+                    "total": 100
+                  }
+                },
+                "frozen_updates": {
+                  "delta_vs_frozen_updates": 0.0,
+                  "floor_raw": {
+                    "matches": 0,
+                    "rate": 0.0,
+                    "total": 100
+                  },
+                  "floor_reference_arm": "frozen_updates",
+                  "raw": {
+                    "matches": 0,
+                    "rate": 0.0,
+                    "total": 100
+                  }
+                },
+                "static": {
+                  "delta_vs_frozen_updates": 0.0,
+                  "floor_raw": {
+                    "matches": 0,
+                    "rate": 0.0,
+                    "total": 100
+                  },
+                  "floor_reference_arm": "frozen_updates",
+                  "raw": {
+                    "matches": 0,
+                    "rate": 0.0,
+                    "total": 100
+                  }
+                }
+              }
+            }
+          },
+          "R2_shift_b<-R1_shift_a": {
+            "candidate_delta_status": "pass",
+            "control_raw_status": "pass",
+            "per_need": {
+              "comfort": {
+                "by_arm": {
+                  "candidate": {
+                    "delta_vs_frozen_updates": 1.0,
+                    "floor_raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    },
+                    "floor_reference_arm": "frozen_updates",
+                    "raw": {
+                      "matches": 2,
+                      "rate": 1.0,
+                      "total": 2
+                    }
+                  },
+                  "candidate_ablated": {
+                    "delta_vs_frozen_updates": 0.0,
+                    "floor_raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    },
+                    "floor_reference_arm": "frozen_updates",
+                    "raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    }
+                  },
+                  "frozen_updates": {
+                    "delta_vs_frozen_updates": 0.0,
+                    "floor_raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    },
+                    "floor_reference_arm": "frozen_updates",
+                    "raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    }
+                  },
+                  "static": {
+                    "delta_vs_frozen_updates": 0.0,
+                    "floor_raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    },
+                    "floor_reference_arm": "frozen_updates",
+                    "raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    }
+                  }
+                }
+              },
+              "energy": {
+                "by_arm": {
+                  "candidate": {
+                    "delta_vs_frozen_updates": 1.0,
+                    "floor_raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    },
+                    "floor_reference_arm": "frozen_updates",
+                    "raw": {
+                      "matches": 1,
+                      "rate": 1.0,
+                      "total": 1
+                    }
+                  },
+                  "candidate_ablated": {
+                    "delta_vs_frozen_updates": 0.0,
+                    "floor_raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    },
+                    "floor_reference_arm": "frozen_updates",
+                    "raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    }
+                  },
+                  "frozen_updates": {
+                    "delta_vs_frozen_updates": 0.0,
+                    "floor_raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    },
+                    "floor_reference_arm": "frozen_updates",
+                    "raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    }
+                  },
+                  "static": {
+                    "delta_vs_frozen_updates": 0.0,
+                    "floor_raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    },
+                    "floor_reference_arm": "frozen_updates",
+                    "raw": {
+                      "matches": 0,
+                      "rate": 0.0,
+                      "total": 50
+                    }
+                  }
+                }
+              }
+            },
+            "pooled": {
+              "by_arm": {
+                "candidate": {
+                  "delta_vs_frozen_updates": 1.0,
+                  "floor_raw": {
+                    "matches": 0,
+                    "rate": 0.0,
+                    "total": 100
+                  },
+                  "floor_reference_arm": "frozen_updates",
+                  "raw": {
+                    "matches": 3,
+                    "rate": 1.0,
+                    "total": 3
+                  }
+                },
+                "candidate_ablated": {
+                  "delta_vs_frozen_updates": 0.0,
+                  "floor_raw": {
+                    "matches": 0,
+                    "rate": 0.0,
+                    "total": 100
+                  },
+                  "floor_reference_arm": "frozen_updates",
+                  "raw": {
+                    "matches": 0,
+                    "rate": 0.0,
+                    "total": 100
+                  }
+                },
+                "frozen_updates": {
+                  "delta_vs_frozen_updates": 0.0,
+                  "floor_raw": {
+                    "matches": 0,
+                    "rate": 0.0,
+                    "total": 100
+                  },
+                  "floor_reference_arm": "frozen_updates",
+                  "raw": {
+                    "matches": 0,
+                    "rate": 0.0,
+                    "total": 100
+                  }
+                },
+                "static": {
+                  "delta_vs_frozen_updates": 0.0,
+                  "floor_raw": {
+                    "matches": 0,
+                    "rate": 0.0,
+                    "total": 100
+                  },
+                  "floor_reference_arm": "frozen_updates",
+                  "raw": {
+                    "matches": 0,
+                    "rate": 0.0,
+                    "total": 100
+                  }
+                }
+              }
+            }
+          }
+        },
+        "producer_function": "directional_delta_report",
+        "run_id": "ego_pet_capability_conformance_001a_feedback_to_behavior_r2_probe",
+        "seed_ids": [
+          1106
+        ],
+        "status": "pass",
+        "thresholds": {
+          "candidate_delta_per_leg_min": 0.6,
+          "floor_static_ablated_raw_per_leg_max": 0.05
+        }
+      },
+      "episode_ids": [
+        "candidate:1106",
+        "frozen_updates:1106",
+        "static:1106",
+        "candidate_ablated:1106"
+      ],
+      "gate": "G-A/G-B",
+      "input_artifacts": [
+        "trace.jsonl",
+        "world_config_v0.json",
+        "PREREG_ADDENDUM_002_INSTRUMENT_REPAIR.md"
+      ],
+      "producer_function": "baseline_comparison_report",
+      "run_id": "ego_pet_capability_conformance_001a_feedback_to_behavior_r2_probe",
+      "seed_ids": [
+        1106
+      ],
+      "status": "pass",
+      "thresholds": {
+        "G_A_R0_candidate_max": 0.05,
+        "G_A_candidate_min": 0.6,
+        "G_A_controls_required": 0.0,
+        "G_B_candidate_delta_per_leg_min": 0.6,
+        "G_B_control_raw_per_leg_max": 0.05
+      }
+    },
+    "G-C": {
+      "aggregation_rule": "candidate_ablated observe-intervention G-A <= 0.02 and D_dir(candidate_ablated,L) <= 0.05 for each scored post-drift leg",
+      "candidate_ablated_G_A": {
+        "divergent": 0,
+        "rate": 0.0,
+        "total": 200
+      },
+      "candidate_ablated_directional_delta_per_leg": {
+        "R1_shift_a<-R2_shift_b": 0.0,
+        "R2_shift_b<-R1_shift_a": 0.0
+      },
+      "candidate_ablated_directional_delta_status": "pass",
+      "code_path_hash": "418407f002eecffd4fb346a87e2f43ffc4e7b581062352b115f295fc5fe280dd",
+      "episode_ids": [
+        "candidate_ablated:1106"
+      ],
+      "gate": "G-C",
+      "input_artifacts": [
+        "baseline_comparison.json",
+        "trace.jsonl"
+      ],
+      "producer_function": "ablation_report",
+      "run_id": "ego_pet_capability_conformance_001a_feedback_to_behavior_r2_probe",
+      "seed_ids": [
+        1106
+      ],
+      "status": "pass"
+    },
+    "G-D": {
+      "aggregation_rule": "fresh subprocess replay x2 recomputes every pair from serialized_state + event observation protocol; compare canonical trace digest",
+      "code_path_hash": "418407f002eecffd4fb346a87e2f43ffc4e7b581062352b115f295fc5fe280dd",
+      "episode_ids": [
+        "seed_1106:observe:R0:tick_0:candidate:A",
+        "seed_1106:observe:R0:tick_0:candidate:B",
+        "seed_1106:observe:R0:tick_0:candidate:C",
+        "seed_1106:observe:R0:tick_0:frozen_updates:A",
+        "seed_1106:observe:R0:tick_0:frozen_updates:B",
+        "seed_1106:observe:R0:tick_0:frozen_updates:C",
+        "seed_1106:observe:R0:tick_0:static:A",
+        "seed_1106:observe:R0:tick_0:static:B",
+        "seed_1106:observe:R0:tick_0:static:C",
+        "seed_1106:observe:R0:tick_0:candidate_ablated:A",
+        "seed_1106:observe:R0:tick_0:candidate_ablated:B",
+        "seed_1106:observe:R0:tick_0:candidate_ablated:C",
+        "seed_1106:observe:R1:tick_201:candidate:A",
+        "seed_1106:observe:R1:tick_201:candidate:B",
+        "seed_1106:observe:R1:tick_201:candidate:C",
+        "seed_1106:observe:R1:tick_201:frozen_updates:A",
+        "seed_1106:observe:R1:tick_201:frozen_updates:B",
+        "seed_1106:observe:R1:tick_201:frozen_updates:C",
+        "seed_1106:observe:R1:tick_201:static:A",
+        "seed_1106:observe:R1:tick_201:static:B",
+        "seed_1106:observe:R1:tick_201:static:C",
+        "seed_1106:observe:R1:tick_201:candidate_ablated:A",
+        "seed_1106:observe:R1:tick_201:candidate_ablated:B",
+        "seed_1106:observe:R1:tick_201:candidate_ablated:C",
+        "seed_1106:observe:R2:tick_401:candidate:A",
+        "seed_1106:observe:R2:tick_401:candidate:B",
+        "seed_1106:observe:R2:tick_401:candidate:C",
+        "seed_1106:observe:R2:tick_401:frozen_updates:A",
+        "seed_1106:observe:R2:tick_401:frozen_updates:B",
+        "seed_1106:observe:R2:tick_401:frozen_updates:C",
+        "seed_1106:observe:R2:tick_401:static:A",
+        "seed_1106:observe:R2:tick_401:static:B",
+        "seed_1106:observe:R2:tick_401:static:C",
+        "seed_1106:observe:R2:tick_401:candidate_ablated:A",
+        "seed_1106:observe:R2:tick_401:candidate_ablated:B",
+        "seed_1106:observe:R2:tick_401:candidate_ablated:C",
+        "seed_1106:forage:energy:R0:tick_3:candidate:A",
+        "seed_1106:forage:energy:R0:tick_3:candidate:B",
+        "seed_1106:forage:energy:R0:tick_3:candidate:C",
+        "seed_1106:forage:energy:R0:tick_3:frozen_updates:A",
+        "seed_1106:forage:energy:R0:tick_3:frozen_updates:B",
+        "seed_1106:forage:energy:R0:tick_3:frozen_updates:C",
+        "seed_1106:forage:energy:R0:tick_3:static:A",
+        "seed_1106:forage:energy:R0:tick_3:static:B",
+        "seed_1106:forage:energy:R0:tick_3:static:C",
+        "seed_1106:forage:energy:R0:tick_3:candidate_ablated:A",
+        "seed_1106:forage:energy:R0:tick_3:candidate_ablated:B",
+        "seed_1106:forage:energy:R0:tick_3:candidate_ablated:C",
+        "seed_1106:forage:comfort:R0:tick_1:candidate:A",
+        "seed_1106:forage:comfort:R0:tick_1:candidate:B",
+        "seed_1106:forage:comfort:R0:tick_1:candidate:C",
+        "seed_1106:forage:comfort:R0:tick_1:frozen_updates:A",
+        "seed_1106:forage:comfort:R0:tick_1:frozen_updates:B",
+        "seed_1106:forage:comfort:R0:tick_1:frozen_updates:C",
+        "seed_1106:forage:comfort:R0:tick_1:static:A",
+        "seed_1106:forage:comfort:R0:tick_1:static:B",
+        "seed_1106:forage:comfort:R0:tick_1:static:C",
+        "seed_1106:forage:comfort:R0:tick_1:candidate_ablated:A",
+        "seed_1106:forage:comfort:R0:tick_1:candidate_ablated:B",
+        "seed_1106:forage:comfort:R0:tick_1:candidate_ablated:C",
+        "seed_1106:forage:energy:R1:tick_202:candidate:A",
+        "seed_1106:forage:energy:R1:tick_202:candidate:B",
+        "seed_1106:forage:energy:R1:tick_202:candidate:C",
+        "seed_1106:forage:energy:R1:tick_202:frozen_updates:A",
+        "seed_1106:forage:energy:R1:tick_202:frozen_updates:B",
+        "seed_1106:forage:energy:R1:tick_202:frozen_updates:C",
+        "seed_1106:forage:energy:R1:tick_202:static:A",
+        "seed_1106:forage:energy:R1:tick_202:static:B",
+        "seed_1106:forage:energy:R1:tick_202:static:C",
+        "seed_1106:forage:energy:R1:tick_202:candidate_ablated:A",
+        "seed_1106:forage:energy:R1:tick_202:candidate_ablated:B",
+        "seed_1106:forage:energy:R1:tick_202:candidate_ablated:C",
+        "seed_1106:forage:comfort:R1:tick_200:candidate:A",
+        "seed_1106:forage:comfort:R1:tick_200:candidate:B",
+        "seed_1106:forage:comfort:R1:tick_200:candidate:C",
+        "seed_1106:forage:comfort:R1:tick_200:frozen_updates:A",
+        "seed_1106:forage:comfort:R1:tick_200:frozen_updates:B",
+        "seed_1106:forage:comfort:R1:tick_200:frozen_updates:C",
+        "seed_1106:forage:comfort:R1:tick_200:static:A",
+        "seed_1106:forage:comfort:R1:tick_200:static:B",
+        "seed_1106:forage:comfort:R1:tick_200:static:C",
+        "seed_1106:forage:comfort:R1:tick_200:candidate_ablated:A",
+        "seed_1106:forage:comfort:R1:tick_200:candidate_ablated:B",
+        "seed_1106:forage:comfort:R1:tick_200:candidate_ablated:C",
+        "seed_1106:forage:energy:R2:tick_400:candidate:A",
+        "seed_1106:forage:energy:R2:tick_400:candidate:B",
+        "seed_1106:forage:energy:R2:tick_400:candidate:C",
+        "seed_1106:forage:energy:R2:tick_400:frozen_updates:A",
+        "seed_1106:forage:energy:R2:tick_400:frozen_updates:B",
+        "seed_1106:forage:energy:R2:tick_400:frozen_updates:C",
+        "seed_1106:forage:energy:R2:tick_400:static:A",
+        "seed_1106:forage:energy:R2:tick_400:static:B",
+        "seed_1106:forage:energy:R2:tick_400:static:C",
+        "seed_1106:forage:energy:R2:tick_400:candidate_ablated:A",
+        "seed_1106:forage:energy:R2:tick_400:candidate_ablated:B",
+        "seed_1106:forage:energy:R2:tick_400:candidate_ablated:C",
+        "seed_1106:forage:comfort:R2:tick_403:candidate:A",
+        "seed_1106:forage:comfort:R2:tick_403:candidate:B",
+        "seed_1106:forage:comfort:R2:tick_403:candidate:C",
+        "seed_1106:forage:comfort:R2:tick_403:frozen_updates:A",
+        "seed_1106:forage:comfort:R2:tick_403:frozen_updates:B",
+        "seed_1106:forage:comfort:R2:tick_403:frozen_updates:C",
+        "seed_1106:forage:comfort:R2:tick_403:static:A",
+        "seed_1106:forage:comfort:R2:tick_403:static:B",
+        "seed_1106:forage:comfort:R2:tick_403:static:C",
+        "seed_1106:forage:comfort:R2:tick_403:candidate_ablated:A",
+        "seed_1106:forage:comfort:R2:tick_403:candidate_ablated:B",
+        "seed_1106:forage:comfort:R2:tick_403:candidate_ablated:C"
+      ],
+      "expected": {
+        "pair_count": 108,
+        "trace_digest": {
+          "row_count": 5508,
+          "sha256": "439eb709eebe00ad7b1e340ed6827e5b405a86c1cb2a428e6ea89b89b4aa1a29"
+        }
+      },
+      "fresh_subprocess_runs": 2,
+      "gate": "G-D",
+      "input_artifacts": [
+        "serialized pair initial_state + event + variant payload",
+        "trace.jsonl"
+      ],
+      "mismatches": [],
+      "mismatches_total": 0,
+      "pair_count": 108,
+      "producer_function": "replay_report",
+      "run_id": "ego_pet_capability_conformance_001a_feedback_to_behavior_r2_probe",
+      "seed_ids": [
+        1106
+      ],
+      "status": "pass"
+    },
+    "G-E": {
+      "aggregation_rule": "all nonzero divergence/directional records must map to disclosed C-observe or C-forage channel",
+      "channel_split_counts": {
+        "forage": 4,
+        "observe": 12
+      },
+      "channel_split_rates": {
+        "forage": 0.25,
+        "observe": 0.75
+      },
+      "code_path_hash": "418407f002eecffd4fb346a87e2f43ffc4e7b581062352b115f295fc5fe280dd",
+      "episode_ids": [
+        "candidate:1106",
+        "frozen_updates:1106",
+        "static:1106",
+        "candidate_ablated:1106"
+      ],
+      "gate": "G-E",
+      "input_artifacts": [
+        "trace.jsonl"
+      ],
+      "invalid_channel_records": [],
+      "nonzero_record_count": 9,
+      "producer_function": "channel_report",
+      "run_id": "ego_pet_capability_conformance_001a_feedback_to_behavior_r2_probe",
+      "seed_ids": [
+        1106
+      ],
+      "status": "pass"
+    },
+    "UNSEEDED-RNG-AUDIT": {
+      "aggregation_rule": "AST-level audit for RNG framework imports/calls and builtin hash() in capability harness files",
+      "code_path_hash": "418407f002eecffd4fb346a87e2f43ffc4e7b581062352b115f295fc5fe280dd",
+      "episode_ids": [],
+      "forbidden_hits": [],
+      "input_artifacts": [
+        "scripts/ego_pet_capability/__init__.py",
+        "scripts/ego_pet_capability/feedback_to_behavior.py",
+        "scripts/ego_pet_capability/trace.py"
+      ],
+      "positive_control": "tests/test_feedback_to_behavior.py::test_rng_audit_positive_control_detects_forbidden_random",
+      "producer_function": "rng_audit",
+      "run_id": "ego_pet_capability_conformance_001a_feedback_to_behavior_r2_probe",
+      "seed_ids": [],
+      "status": "pass"
+    }
+  },
+  "pair_count": 108,
+  "per_leg_delta_table": {
+    "R1_shift_a<-R2_shift_b": {
+      "candidate_delta_status": "pass",
+      "control_raw_status": "pass",
+      "per_need": {
+        "comfort": {
+          "by_arm": {
+            "candidate": {
+              "delta_vs_frozen_updates": 1.0,
+              "floor_raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              },
+              "floor_reference_arm": "frozen_updates",
+              "raw": {
+                "matches": 2,
+                "rate": 1.0,
+                "total": 2
+              }
+            },
+            "candidate_ablated": {
+              "delta_vs_frozen_updates": 0.0,
+              "floor_raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              },
+              "floor_reference_arm": "frozen_updates",
+              "raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              }
+            },
+            "frozen_updates": {
+              "delta_vs_frozen_updates": 0.0,
+              "floor_raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              },
+              "floor_reference_arm": "frozen_updates",
+              "raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              }
+            },
+            "static": {
+              "delta_vs_frozen_updates": 0.0,
+              "floor_raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              },
+              "floor_reference_arm": "frozen_updates",
+              "raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              }
+            }
+          }
+        },
+        "energy": {
+          "by_arm": {
+            "candidate": {
+              "delta_vs_frozen_updates": 1.0,
+              "floor_raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              },
+              "floor_reference_arm": "frozen_updates",
+              "raw": {
+                "matches": 1,
+                "rate": 1.0,
+                "total": 1
+              }
+            },
+            "candidate_ablated": {
+              "delta_vs_frozen_updates": 0.0,
+              "floor_raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              },
+              "floor_reference_arm": "frozen_updates",
+              "raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              }
+            },
+            "frozen_updates": {
+              "delta_vs_frozen_updates": 0.0,
+              "floor_raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              },
+              "floor_reference_arm": "frozen_updates",
+              "raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              }
+            },
+            "static": {
+              "delta_vs_frozen_updates": 0.0,
+              "floor_raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              },
+              "floor_reference_arm": "frozen_updates",
+              "raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              }
+            }
+          }
+        }
+      },
+      "pooled": {
+        "by_arm": {
+          "candidate": {
+            "delta_vs_frozen_updates": 1.0,
+            "floor_raw": {
+              "matches": 0,
+              "rate": 0.0,
+              "total": 100
+            },
+            "floor_reference_arm": "frozen_updates",
+            "raw": {
+              "matches": 3,
+              "rate": 1.0,
+              "total": 3
+            }
+          },
+          "candidate_ablated": {
+            "delta_vs_frozen_updates": 0.0,
+            "floor_raw": {
+              "matches": 0,
+              "rate": 0.0,
+              "total": 100
+            },
+            "floor_reference_arm": "frozen_updates",
+            "raw": {
+              "matches": 0,
+              "rate": 0.0,
+              "total": 100
+            }
+          },
+          "frozen_updates": {
+            "delta_vs_frozen_updates": 0.0,
+            "floor_raw": {
+              "matches": 0,
+              "rate": 0.0,
+              "total": 100
+            },
+            "floor_reference_arm": "frozen_updates",
+            "raw": {
+              "matches": 0,
+              "rate": 0.0,
+              "total": 100
+            }
+          },
+          "static": {
+            "delta_vs_frozen_updates": 0.0,
+            "floor_raw": {
+              "matches": 0,
+              "rate": 0.0,
+              "total": 100
+            },
+            "floor_reference_arm": "frozen_updates",
+            "raw": {
+              "matches": 0,
+              "rate": 0.0,
+              "total": 100
+            }
+          }
+        }
+      }
+    },
+    "R2_shift_b<-R1_shift_a": {
+      "candidate_delta_status": "pass",
+      "control_raw_status": "pass",
+      "per_need": {
+        "comfort": {
+          "by_arm": {
+            "candidate": {
+              "delta_vs_frozen_updates": 1.0,
+              "floor_raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              },
+              "floor_reference_arm": "frozen_updates",
+              "raw": {
+                "matches": 2,
+                "rate": 1.0,
+                "total": 2
+              }
+            },
+            "candidate_ablated": {
+              "delta_vs_frozen_updates": 0.0,
+              "floor_raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              },
+              "floor_reference_arm": "frozen_updates",
+              "raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              }
+            },
+            "frozen_updates": {
+              "delta_vs_frozen_updates": 0.0,
+              "floor_raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              },
+              "floor_reference_arm": "frozen_updates",
+              "raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              }
+            },
+            "static": {
+              "delta_vs_frozen_updates": 0.0,
+              "floor_raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              },
+              "floor_reference_arm": "frozen_updates",
+              "raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              }
+            }
+          }
+        },
+        "energy": {
+          "by_arm": {
+            "candidate": {
+              "delta_vs_frozen_updates": 1.0,
+              "floor_raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              },
+              "floor_reference_arm": "frozen_updates",
+              "raw": {
+                "matches": 1,
+                "rate": 1.0,
+                "total": 1
+              }
+            },
+            "candidate_ablated": {
+              "delta_vs_frozen_updates": 0.0,
+              "floor_raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              },
+              "floor_reference_arm": "frozen_updates",
+              "raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              }
+            },
+            "frozen_updates": {
+              "delta_vs_frozen_updates": 0.0,
+              "floor_raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              },
+              "floor_reference_arm": "frozen_updates",
+              "raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              }
+            },
+            "static": {
+              "delta_vs_frozen_updates": 0.0,
+              "floor_raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              },
+              "floor_reference_arm": "frozen_updates",
+              "raw": {
+                "matches": 0,
+                "rate": 0.0,
+                "total": 50
+              }
+            }
+          }
+        }
+      },
+      "pooled": {
+        "by_arm": {
+          "candidate": {
+            "delta_vs_frozen_updates": 1.0,
+            "floor_raw": {
+              "matches": 0,
+              "rate": 0.0,
+              "total": 100
+            },
+            "floor_reference_arm": "frozen_updates",
+            "raw": {
+              "matches": 3,
+              "rate": 1.0,
+              "total": 3
+            }
+          },
+          "candidate_ablated": {
+            "delta_vs_frozen_updates": 0.0,
+            "floor_raw": {
+              "matches": 0,
+              "rate": 0.0,
+              "total": 100
+            },
+            "floor_reference_arm": "frozen_updates",
+            "raw": {
+              "matches": 0,
+              "rate": 0.0,
+              "total": 100
+            }
+          },
+          "frozen_updates": {
+            "delta_vs_frozen_updates": 0.0,
+            "floor_raw": {
+              "matches": 0,
+              "rate": 0.0,
+              "total": 100
+            },
+            "floor_reference_arm": "frozen_updates",
+            "raw": {
+              "matches": 0,
+              "rate": 0.0,
+              "total": 100
+            }
+          },
+          "static": {
+            "delta_vs_frozen_updates": 0.0,
+            "floor_raw": {
+              "matches": 0,
+              "rate": 0.0,
+              "total": 100
+            },
+            "floor_reference_arm": "frozen_updates",
+            "raw": {
+              "matches": 0,
+              "rate": 0.0,
+              "total": 100
+            }
+          }
+        }
+      }
+    }
+  },
+  "phase": "probe",
+  "positive_claim": false,
+  "positive_claim_stop_required": false,
+  "prereg_validation": {
+    "designated_best_sites_derived_from_config": {
+      "R0_pre_shift": {
+        "comfort": "mat",
+        "energy": "bowl"
+      },
+      "R1_shift_a": {
+        "comfort": "perch",
+        "energy": "sun_patch"
+      },
+      "R2_shift_b": {
+        "comfort": "blanket",
+        "energy": "corner_bowl"
+      }
+    },
+    "directional_injection_map_assertion": {
+      "failures": [],
+      "injection_map": {
+        "R0_pre_shift": "R1_shift_a",
+        "R1_shift_a": "R2_shift_b",
+        "R2_shift_b": "R1_shift_a"
+      },
+      "input_artifacts": [
+        "world_config_v0.json",
+        "PREREG_ADDENDUM_002_INSTRUMENT_REPAIR.md"
+      ],
+      "producer_function": "validate_directional_injection_map",
+      "scored_legs": [
+        {
+          "current_true_site": "sun_patch",
+          "differs_from_current_true": true,
+          "differs_from_r0_prior": true,
+          "injected_regime_id": "R2_shift_b",
+          "injected_regime_index": 2,
+          "leg_id": "R1_shift_a<-R2_shift_b",
+          "need": "energy",
+          "r0_prior_site": "bowl",
+          "regime_id": "R1_shift_a",
+          "regime_index": 1,
+          "status": "pass",
+          "target_site": "corner_bowl"
+        },
+        {
+          "current_true_site": "perch",
+          "differs_from_current_true": true,
+          "differs_from_r0_prior": true,
+          "injected_regime_id": "R2_shift_b",
+          "injected_regime_index": 2,
+          "leg_id": "R1_shift_a<-R2_shift_b",
+          "need": "comfort",
+          "r0_prior_site": "mat",
+          "regime_id": "R1_shift_a",
+          "regime_index": 1,
+          "status": "pass",
+          "target_site": "blanket"
+        },
+        {
+          "current_true_site": "corner_bowl",
+          "differs_from_current_true": true,
+          "differs_from_r0_prior": true,
+          "injected_regime_id": "R1_shift_a",
+          "injected_regime_index": 1,
+          "leg_id": "R2_shift_b<-R1_shift_a",
+          "need": "energy",
+          "r0_prior_site": "bowl",
+          "regime_id": "R2_shift_b",
+          "regime_index": 2,
+          "status": "pass",
+          "target_site": "sun_patch"
+        },
+        {
+          "current_true_site": "blanket",
+          "differs_from_current_true": true,
+          "differs_from_r0_prior": true,
+          "injected_regime_id": "R1_shift_a",
+          "injected_regime_index": 1,
+          "leg_id": "R2_shift_b<-R1_shift_a",
+          "need": "comfort",
+          "r0_prior_site": "mat",
+          "regime_id": "R2_shift_b",
+          "regime_index": 2,
+          "status": "pass",
+          "target_site": "perch"
+        }
+      ],
+      "scored_regime_indices": [
+        1,
+        2
+      ],
+      "status": "pass"
+    },
+    "phase": "probe",
+    "producer_function": "validate_prereg_inputs",
+    "seed_disjointness_asserted": false,
+    "seed_ids": [
+      1106
+    ],
+    "status": "pass"
+  },
+  "producer_function": "run_phase",
+  "run_id": "ego_pet_capability_conformance_001a_feedback_to_behavior_r2_probe",
+  "seed_ids": [
+    1106
+  ],
+  "signature_manifest": {
+    "G-A": "pass",
+    "G-B": "pass",
+    "G-C": "pass",
+    "G-D": "pass",
+    "G-E": "pass",
+    "UNSEEDED-RNG-AUDIT": "pass"
+  },
+  "task": "ego-pet-capability-conformance-001a",
+  "trace_artifact_scope": "trace.jsonl/probe_trace.jsonl contain observe-intervention gate rows only to keep the Git artifact under the GitHub hard file-size boundary; forage diagnostic records remain represented in metric_records.json and in the replay digest over all pairs",
+  "verdict": "CAPABILITY_PRESENT_CHANNEL_DISCLOSED",
+  "verdict_subtype": "CAPABILITY_PRESENT_CHANNEL_DISCLOSED",
+  "what_this_does_not_prove": [
+    "no learning or generalization claim",
+    "no adaptation-quality claim",
+    "no understanding or world-modeling competence claim",
+    "no self agency autonomy subjectivity emotion consciousness or EGO readiness claim",
+    "C-observe remains an oracle snapshot, not experiential learning"
+  ]
+}

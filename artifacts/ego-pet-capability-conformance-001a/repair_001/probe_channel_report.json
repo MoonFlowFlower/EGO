@@ -1,0 +1,30 @@
+{
+  "aggregation_rule": "all nonzero divergence/directional records must map to disclosed C-observe or C-forage channel",
+  "channel_split_counts": {
+    "forage": 4,
+    "observe": 12
+  },
+  "channel_split_rates": {
+    "forage": 0.25,
+    "observe": 0.75
+  },
+  "code_path_hash": "418407f002eecffd4fb346a87e2f43ffc4e7b581062352b115f295fc5fe280dd",
+  "episode_ids": [
+    "candidate:1106",
+    "frozen_updates:1106",
+    "static:1106",
+    "candidate_ablated:1106"
+  ],
+  "gate": "G-E",
+  "input_artifacts": [
+    "trace.jsonl"
+  ],
+  "invalid_channel_records": [],
+  "nonzero_record_count": 9,
+  "producer_function": "channel_report",
+  "run_id": "ego_pet_capability_conformance_001a_feedback_to_behavior_r2_probe",
+  "seed_ids": [
+    1106
+  ],
+  "status": "pass"
+}

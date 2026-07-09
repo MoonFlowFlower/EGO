@@ -1,0 +1,66 @@
+{
+  "aggregation_rule": "candidate_ablated observe-intervention G-A <= 0.02 and D_dir(candidate_ablated,L) <= 0.05 for each scored post-drift leg",
+  "candidate_ablated_G_A": {
+    "divergent": 0,
+    "rate": 0.0,
+    "total": 4000
+  },
+  "candidate_ablated_directional_delta_per_leg": {
+    "R1_shift_a<-R2_shift_b": 0.0,
+    "R2_shift_b<-R1_shift_a": 0.0
+  },
+  "candidate_ablated_directional_delta_status": "pass",
+  "code_path_hash": "418407f002eecffd4fb346a87e2f43ffc4e7b581062352b115f295fc5fe280dd",
+  "episode_ids": [
+    "candidate_ablated:4101",
+    "candidate_ablated:4102",
+    "candidate_ablated:4103",
+    "candidate_ablated:4104",
+    "candidate_ablated:4105",
+    "candidate_ablated:4106",
+    "candidate_ablated:4107",
+    "candidate_ablated:4108",
+    "candidate_ablated:4109",
+    "candidate_ablated:4110",
+    "candidate_ablated:4111",
+    "candidate_ablated:4112",
+    "candidate_ablated:4113",
+    "candidate_ablated:4114",
+    "candidate_ablated:4115",
+    "candidate_ablated:4116",
+    "candidate_ablated:4117",
+    "candidate_ablated:4118",
+    "candidate_ablated:4119",
+    "candidate_ablated:4120"
+  ],
+  "gate": "G-C",
+  "input_artifacts": [
+    "baseline_comparison.json",
+    "trace.jsonl"
+  ],
+  "producer_function": "ablation_report",
+  "run_id": "ego_pet_capability_conformance_001a_feedback_to_behavior_r2_scored",
+  "seed_ids": [
+    4101,
+    4102,
+    4103,
+    4104,
+    4105,
+    4106,
+    4107,
+    4108,
+    4109,
+    4110,
+    4111,
+    4112,
+    4113,
+    4114,
+    4115,
+    4116,
+    4117,
+    4118,
+    4119,
+    4120
+  ],
+  "status": "pass"
+}

@@ -1,0 +1,28 @@
+{
+  "aggregation_rule": "candidate_ablated observe-intervention G-A <= 0.02 and D_dir(candidate_ablated,L) <= 0.05 for each scored post-drift leg",
+  "candidate_ablated_G_A": {
+    "divergent": 0,
+    "rate": 0.0,
+    "total": 200
+  },
+  "candidate_ablated_directional_delta_per_leg": {
+    "R1_shift_a<-R2_shift_b": 0.0,
+    "R2_shift_b<-R1_shift_a": 0.0
+  },
+  "candidate_ablated_directional_delta_status": "pass",
+  "code_path_hash": "418407f002eecffd4fb346a87e2f43ffc4e7b581062352b115f295fc5fe280dd",
+  "episode_ids": [
+    "candidate_ablated:1106"
+  ],
+  "gate": "G-C",
+  "input_artifacts": [
+    "baseline_comparison.json",
+    "trace.jsonl"
+  ],
+  "producer_function": "ablation_report",
+  "run_id": "ego_pet_capability_conformance_001a_feedback_to_behavior_r2_probe",
+  "seed_ids": [
+    1106
+  ],
+  "status": "pass"
+}
