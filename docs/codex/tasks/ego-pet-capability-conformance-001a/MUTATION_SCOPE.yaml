@@ -1,0 +1,21 @@
+schema_version: codex.mutation_scope.v1
+task: ego-pet-capability-conformance-001a
+version_probe: "CAPABILITY-CONFORMANCE-PET-001A impl rev-A 2026-07-08"
+expected_mutation_surface:
+  - new isolated capability-conformance harness under scripts/ego_pet_capability/ (read-only import of frozen scripts.ego_pet.*; no edit to frozen pet code)
+  - focused tests under scripts/ego_pet_capability/tests/
+  - machine-readable evidence under artifacts/ego-pet-capability-conformance-001a/
+  - task package docs (this MUTATION_SCOPE.yaml alongside the banked STAGE_CARD + PREREG)
+  - no EgoDesktop/src, no EgoOperator, no g_ablation, no runtime wiring, no network/LLM
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-pet-capability-conformance-001a/
+  - scripts/ego_pet_capability/
+  - artifacts/ego-pet-capability-conformance-001a/
+forbidden_mutation_paths:
+  - scripts/ego_pet/           # P0-frozen; import read-only, never edit
+  - .codex/project_contract.yaml   # do NOT widen the global allowlist for this task
+  - EgoOperator/
+  - EgoDesktop/src/                              # includes joiRealLoopGAblation*.js (g_ablation modules) + petSuiteBaselineGate.js — byte-frozen
+  - artifacts/egodesktop_pet_world_integration_001a/   # pet suite_baseline.json (p1/) + prior pet artifacts frozen
+  - docs/codex/tasks/egodesktop-pet-world-integration-001a/   # world_config_v0.json + static_gate_config frozen
+claim_ceiling: "capability_conformance_engineering_only; bounded offline evidence that the pet's subsequent action selection is causally conditioned on earlier feedback content via disclosed model-persistence channels (C-observe oracle snapshot / C-forage single-site real yield); discriminative vs feedback-blind + static controls, directional, ablation-sensitive, replay-valid, channel-disclosed under world_config_v0 + the pre-registered seeds ONLY. Proves NO learning, generalization, adaptation quality, understanding, world-modeling, self/agency/autonomy, subjectivity, emotion, consciousness, or EGO/companion readiness. C-observe is an oracle snapshot, disclosed as such — not experiential learning."
