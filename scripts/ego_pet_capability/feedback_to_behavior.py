@@ -887,9 +887,11 @@ def choose_verdict(baseline: dict[str, Any], ablation: dict[str, Any], replay: d
     return "CAPABILITY_PRESENT_CHANNEL_DISCLOSED", []
 
 
-def flatten_pair_trace(pair_runs: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def flatten_pair_trace(pair_runs: list[dict[str, Any]], *, gate_only: bool = False) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for run in sorted(pair_runs, key=lambda item: str(item["pair_id"])):
+        if gate_only and str(run["event"].get("event_kind")) != "observe":
+            continue
         rows.extend(run["trace_rows"])
     return rows
 
@@ -953,6 +955,11 @@ def run_phase(
         "episode_ids": [str(run["pair_id"]) for run in pair_runs],
         "event_count": len(events),
         "pair_count": len(pair_runs),
+        "trace_artifact_scope": (
+            "trace.jsonl/probe_trace.jsonl contain observe-intervention gate rows only to keep the Git artifact under "
+            "the GitHub hard file-size boundary; forage diagnostic records remain represented in metric_records.json "
+            "and in the replay digest over all pairs"
+        ),
         "aggregation_rule": "frozen PREREG gate conjunction over deterministic _best_site(model_before, need) persistence windows; no threshold tuning",
         "prereg_validation": prereg,
         "cpu": {"measured_cpu_hours": round(cpu_hours, 12)},
@@ -980,7 +987,7 @@ def run_phase(
             write_json(target / "probe_ablation_report.json", ablation)
             write_json(target / "probe_replay_report.json", replay)
             write_json(target / "probe_channel_report.json", channel)
-            write_jsonl(target / "probe_trace.jsonl", flatten_pair_trace(pair_runs))
+            write_jsonl(target / "probe_trace.jsonl", flatten_pair_trace(pair_runs, gate_only=True))
         else:
             write_json(target / "result.json", result)
             write_json(target / "baseline_comparison.json", baseline)
@@ -988,7 +995,7 @@ def run_phase(
             write_json(target / "replay_report.json", replay)
             write_json(target / "channel_report.json", channel)
             write_json(target / "metric_records.json", metric_records)
-            write_jsonl(target / "trace.jsonl", flatten_pair_trace(pair_runs))
+            write_jsonl(target / "trace.jsonl", flatten_pair_trace(pair_runs, gate_only=True))
             (target / "claim_ceiling.txt").write_text(CLAIM_CEILING + "\n", encoding="utf-8")
             if verdict != "CAPABILITY_PRESENT_CHANNEL_DISCLOSED":
                 write_json(
