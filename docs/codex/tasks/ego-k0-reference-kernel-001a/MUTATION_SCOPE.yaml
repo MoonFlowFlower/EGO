@@ -1,0 +1,65 @@
+schema_version: codex.mutation_scope.v1
+task: ego-k0-reference-kernel-001a
+expected_mutation_surface:
+  - card package may be banked while implementation remains blocked
+  - after Foundation acceptance and H0 bank, additive learned reference-kernel modules only
+  - dev-only fixtures/smoke, no sealed heldout and no formal component verdict
+  - default-off explicit local CLI; no runtime/mainline/user-visible effect
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-k0-reference-kernel-001a/
+  - packages/ego_k0_kernel/src/ego_k0_kernel/outcome_model.py
+  - packages/ego_k0_kernel/src/ego_k0_kernel/online_update.py
+  - packages/ego_k0_kernel/src/ego_k0_kernel/replay_buffer.py
+  - packages/ego_k0_kernel/src/ego_k0_kernel/planner.py
+  - packages/ego_k0_kernel/src/ego_k0_kernel/reference_kernel.py
+  - packages/ego_k0_kernel/src/ego_k0_kernel/__init__.py
+  - packages/ego_k0_kernel/src/ego_k0_kernel/cli.py
+  - tests/test_ego_k0_reference_kernel.py
+  - tests/test_ego_k0_reference_prerequisites.py
+  - scripts/run_ego_k0_reference_smoke.py
+  - scripts/verify_ego_k0_reference_prerequisites.py
+  - scripts/ego_k0_reference_dev/__init__.py
+  - scripts/ego_k0_reference_dev/adapter.py
+  - scripts/ego_k0_reference_dev/fixture_loader.py
+  - scripts/ego_k0_reference_dev/public_dev_fixture_manifest.json
+  - scripts/ego_k0_reference_dev/smoke_contract.json
+  - artifacts/ego_k0_reference_kernel_001a/
+forbidden_mutation_paths:
+  - scripts/ego_k0_adapters/
+  - scripts/ego_kernel/
+  - scripts/ego_pet/
+  - scripts/ego_pet_capability/
+  - EgoDesktop/
+  - EgoOperator/
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - docs/STATUS.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - docs/REPO_HYGIENE_POLICY.md
+  - artifacts/reports/program_state_summary.md
+  - artifacts/egodesktop_pet_world_integration_001a/
+  - artifacts/ego-pet-capability-conformance-001a/
+  - dist/
+  - build/
+auto_remote_anchor: forbidden
+claim_ceiling: "reference implementation; each dev-only load-bearing subclaim is conditional on its own passed directional smoke and failed/unrun subclaims remain implementation-path existence only; no formal component presence, headroom, transfer, specialness, consolidation, learned memory writes, initiative, agency, autonomy, subjectivity, consciousness, functional subject, electronic life, EGO/companion readiness, product benefit, or mainline effect"
+phase_scopes:
+  card_bank:
+    - docs/codex/tasks/ego-k0-reference-kernel-001a/
+  prerequisite_verification:
+    - scripts/verify_ego_k0_reference_prerequisites.py
+    - tests/test_ego_k0_reference_prerequisites.py
+    - artifacts/ego_k0_reference_kernel_001a/prerequisite_report.json
+  implementation:
+    - packages/ego_k0_kernel/src/ego_k0_kernel/outcome_model.py
+    - packages/ego_k0_kernel/src/ego_k0_kernel/online_update.py
+    - packages/ego_k0_kernel/src/ego_k0_kernel/replay_buffer.py
+    - packages/ego_k0_kernel/src/ego_k0_kernel/planner.py
+    - packages/ego_k0_kernel/src/ego_k0_kernel/reference_kernel.py
+    - packages/ego_k0_kernel/src/ego_k0_kernel/__init__.py
+    - packages/ego_k0_kernel/src/ego_k0_kernel/cli.py
+    - scripts/ego_k0_reference_dev/
+    - scripts/run_ego_k0_reference_smoke.py
+    - tests/test_ego_k0_reference_kernel.py
+  evidence_bank:
+    - artifacts/ego_k0_reference_kernel_001a/
+phase_rule: "one phase per commit; __init__ is export-only, cli is additive, and Foundation regressions/hashes are mandatory"
