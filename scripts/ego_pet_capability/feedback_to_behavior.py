@@ -330,15 +330,6 @@ def run_step(
         event_id="baseline" if event is None else event.event_id,
         event_kind="baseline" if event is None else event.event_kind,
         intervention_applied=intervention_applied,
-        attribution={
-            **attribution,
-            "component": "ego_pet_capability_feedback_to_behavior",
-            "arm": arm,
-            "policy_arm": _policy_arm(arm),
-            "updates_enabled": updates_enabled,
-            "true_feedback": true_feedback,
-            "intervention": intervention_meta,
-        },
     )
     return state_after, row
 

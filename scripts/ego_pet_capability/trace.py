@@ -35,7 +35,6 @@ def build_capability_trace_row(
     event_id: str,
     event_kind: str,
     intervention_applied: bool,
-    attribution: dict[str, Any],
 ) -> dict[str, Any]:
     before_best = best_sites(model_before)
     after_best = best_sites(model_after)
@@ -63,7 +62,6 @@ def build_capability_trace_row(
         "state_before_hash": state_before_hash,
         "state_after_hash": state_after_hash,
         "seed_context": seed_context,
-        "component_attribution": attribution,
     }
 
 
