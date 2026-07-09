@@ -29,18 +29,37 @@ from scripts.ego_pet_capability.trace import build_capability_trace_row, write_j
 ROOT = Path(__file__).resolve().parents[2]
 TASK_DIR = ROOT / "docs" / "codex" / "tasks" / TASK_ID
 STAGE_CARD_PATH = TASK_DIR / "STAGE_CARD.md"
-PREREG_PATH = TASK_DIR / "PREREG_ADDENDUM_001.md"
+PREREG_001_PATH = TASK_DIR / "PREREG_ADDENDUM_001.md"
+PREREG_REPAIR_PATH = TASK_DIR / "PREREG_ADDENDUM_002_INSTRUMENT_REPAIR.md"
 MUTATION_SCOPE_PATH = TASK_DIR / "MUTATION_SCOPE.yaml"
 ARTIFACT_ROOT = ROOT / "artifacts" / TASK_ID
 
-PROBE_SEED = 1101
+PROBE_SEED = 1106
 S_DEV_RESERVED = set(range(1101, 1106))
 P0_SCORED_RESERVED = set(range(2101, 2121))
-SCORED_SEEDS = list(range(3101, 3121))
+CAPABILITY_001_SCORED_RESERVED = set(range(3101, 3121))
+SCORED_SEEDS = list(range(4101, 4121))
 ARMS = ("candidate", "frozen_updates", "static", "candidate_ablated")
 VARIANTS = ("A", "B", "C")
 NEEDS = ("energy", "comfort")
 HORIZON = 50
+SCORED_DIRECTIONAL_REGIME_INDICES = (1, 2)
+DIRECTIONAL_INJECTION_MAP = {
+    0: 1,  # R0 initial observe is should-lose only; excluded from directional scoring.
+    1: 2,  # R1 <- R2
+    2: 1,  # R2 <- R1
+}
+
+
+class InstrumentInvalidError(ValueError):
+    def __init__(self, message: str, manifest: dict[str, Any] | None = None) -> None:
+        super().__init__(message)
+        self.manifest = manifest or {
+            "producer_function": "instrument_invalid_error",
+            "status": "fail",
+            "reason": message,
+            "failing_gates": ["PREREG_VALIDATION"],
+        }
 
 
 def jcopy(value: Any) -> Any:
@@ -78,6 +97,7 @@ def code_path_hash(repo_root: Path = ROOT) -> str:
         "scripts/ego_kernel/tick.py",
         "docs/codex/tasks/ego-pet-capability-conformance-001a/STAGE_CARD.md",
         "docs/codex/tasks/ego-pet-capability-conformance-001a/PREREG_ADDENDUM_001.md",
+        "docs/codex/tasks/ego-pet-capability-conformance-001a/PREREG_ADDENDUM_002_INSTRUMENT_REPAIR.md",
         "docs/codex/tasks/ego-pet-capability-conformance-001a/MUTATION_SCOPE.yaml",
         "docs/codex/tasks/egodesktop-pet-world-integration-001a/world_config_v0.json",
     ]
@@ -93,7 +113,8 @@ def config_shas() -> dict[str, str]:
     return {
         "world_config_v0.json": sha256_file(WORLD_CONFIG_PATH),
         "STAGE_CARD.md": sha256_file(STAGE_CARD_PATH),
-        "PREREG_ADDENDUM_001.md": sha256_file(PREREG_PATH),
+        "PREREG_ADDENDUM_001.md": sha256_file(PREREG_001_PATH),
+        "PREREG_ADDENDUM_002_INSTRUMENT_REPAIR.md": sha256_file(PREREG_REPAIR_PATH),
         "MUTATION_SCOPE.yaml": sha256_file(MUTATION_SCOPE_PATH),
     }
 
@@ -172,16 +193,129 @@ def _derived_designations(config: dict[str, Any]) -> dict[str, dict[str, str]]:
     return designations
 
 
+def _format_injection_map(config: dict[str, Any], injection_map: dict[int, int]) -> dict[str, str]:
+    regimes = list(config["regimes"])
+    return {
+        str(regimes[int(source)]["regime_id"]): str(regimes[int(target)]["regime_id"])
+        for source, target in sorted(injection_map.items())
+    }
+
+
+def validate_directional_injection_map(
+    config: dict[str, Any],
+    injection_map: dict[int, int] | None = None,
+) -> dict[str, Any]:
+    active_map = dict(DIRECTIONAL_INJECTION_MAP if injection_map is None else injection_map)
+    regimes = list(config["regimes"])
+    designations = _derived_designations(config)
+    prior_id = str(regimes[0]["regime_id"])
+    failures: list[dict[str, Any]] = []
+    leg_rows: list[dict[str, Any]] = []
+    for current_index in SCORED_DIRECTIONAL_REGIME_INDICES:
+        if current_index not in active_map:
+            failures.append({"kind": "missing_scored_leg", "regime_index": current_index})
+            continue
+        injected_index = int(active_map[current_index])
+        if injected_index < 0 or injected_index >= len(regimes):
+            failures.append(
+                {
+                    "kind": "invalid_injected_regime_index",
+                    "regime_index": current_index,
+                    "injected_regime_index": injected_index,
+                }
+            )
+            continue
+        current_id = str(regimes[current_index]["regime_id"])
+        injected_id = str(regimes[injected_index]["regime_id"])
+        if injected_index == 0:
+            failures.append(
+                {
+                    "kind": "scored_leg_injects_R0_forbidden",
+                    "regime_index": current_index,
+                    "regime_id": current_id,
+                    "injected_regime_index": injected_index,
+                    "injected_regime_id": injected_id,
+                }
+            )
+        for need in NEEDS:
+            target_site = designations[injected_id][need]
+            prior_site = designations[prior_id][need]
+            current_site = designations[current_id][need]
+            differs_from_prior = target_site != prior_site
+            differs_from_current = target_site != current_site
+            leg_row = {
+                "leg_id": f"{current_id}<-{injected_id}",
+                "regime_index": current_index,
+                "regime_id": current_id,
+                "injected_regime_index": injected_index,
+                "injected_regime_id": injected_id,
+                "need": need,
+                "target_site": target_site,
+                "r0_prior_site": prior_site,
+                "current_true_site": current_site,
+                "differs_from_r0_prior": differs_from_prior,
+                "differs_from_current_true": differs_from_current,
+                "status": "pass" if differs_from_prior and differs_from_current else "fail",
+            }
+            leg_rows.append(leg_row)
+            if not differs_from_prior or not differs_from_current:
+                failures.append({"kind": "degenerate_directional_leg", **leg_row})
+    report = {
+        "producer_function": "validate_directional_injection_map",
+        "input_artifacts": ["world_config_v0.json", "PREREG_ADDENDUM_002_INSTRUMENT_REPAIR.md"],
+        "injection_map": _format_injection_map(config, active_map),
+        "scored_regime_indices": list(SCORED_DIRECTIONAL_REGIME_INDICES),
+        "scored_legs": leg_rows,
+        "failures": failures,
+        "status": "pass" if not failures else "fail",
+    }
+    if failures:
+        raise InstrumentInvalidError(
+            "directional injection map de-degeneracy assertion failed",
+            {
+                "producer_function": "validate_directional_injection_map",
+                "verdict": "INSTRUMENT_INVALID",
+                "failing_gates": ["DE_DEGENERACY_ASSERTION"],
+                "report": report,
+            },
+        )
+    return report
+
+
 def _injected_regime_index(config: dict[str, Any], regime_index: int) -> int:
-    return (int(regime_index) + 1) % len(config["regimes"])
+    active_map = DIRECTIONAL_INJECTION_MAP
+    index = int(regime_index)
+    if index not in active_map:
+        raise InstrumentInvalidError(
+            f"directional injection map missing regime index {index}",
+            {"producer_function": "_injected_regime_index", "verdict": "INSTRUMENT_INVALID", "failing_gates": ["DE_DEGENERACY_ASSERTION"]},
+        )
+    injected = int(active_map[index])
+    if injected < 0 or injected >= len(config["regimes"]):
+        raise InstrumentInvalidError(
+            f"directional injection map has invalid target {injected} for regime index {index}",
+            {"producer_function": "_injected_regime_index", "verdict": "INSTRUMENT_INVALID", "failing_gates": ["DE_DEGENERACY_ASSERTION"]},
+        )
+    return injected
 
 
 def assert_seed_disjointness(seeds: list[int]) -> None:
     seed_set = set(int(seed) for seed in seeds)
     if seed_set & S_DEV_RESERVED:
-        raise ValueError(f"seed-disjointness assertion failed vs S_dev reserved: {sorted(seed_set & S_DEV_RESERVED)}")
+        raise InstrumentInvalidError(
+            f"seed-disjointness assertion failed vs S_dev reserved: {sorted(seed_set & S_DEV_RESERVED)}",
+            {"producer_function": "assert_seed_disjointness", "verdict": "INSTRUMENT_INVALID", "failing_gates": ["SEED_DISJOINTNESS"]},
+        )
     if seed_set & P0_SCORED_RESERVED:
-        raise ValueError(f"seed-disjointness assertion failed vs prior P0 S_scored reserved: {sorted(seed_set & P0_SCORED_RESERVED)}")
+        raise InstrumentInvalidError(
+            f"seed-disjointness assertion failed vs prior P0 S_scored reserved: {sorted(seed_set & P0_SCORED_RESERVED)}",
+            {"producer_function": "assert_seed_disjointness", "verdict": "INSTRUMENT_INVALID", "failing_gates": ["SEED_DISJOINTNESS"]},
+        )
+    if seed_set & CAPABILITY_001_SCORED_RESERVED:
+        raise InstrumentInvalidError(
+            f"seed-disjointness assertion failed vs capability 001 scored reserved: {sorted(seed_set & CAPABILITY_001_SCORED_RESERVED)}",
+            {"producer_function": "assert_seed_disjointness", "verdict": "INSTRUMENT_INVALID", "failing_gates": ["SEED_DISJOINTNESS"]},
+        )
 
 
 def validate_prereg_inputs(config: dict[str, Any], *, phase: str, seeds: list[int]) -> dict[str, Any]:
@@ -190,17 +324,25 @@ def validate_prereg_inputs(config: dict[str, Any], *, phase: str, seeds: list[in
     if int(config["time"]["window_W_ticks"]) != HORIZON:
         raise ValueError("frozen persistence horizon mismatch")
     designations = _derived_designations(config)
+    injection_report = validate_directional_injection_map(config)
     if phase == "scored":
         assert_seed_disjointness(seeds)
         if seeds != SCORED_SEEDS:
-            raise ValueError("scored seed list differs from frozen 3101..3120 block")
+            raise InstrumentInvalidError(
+                "scored seed list differs from frozen 4101..4120 block",
+                {"producer_function": "validate_prereg_inputs", "verdict": "INSTRUMENT_INVALID", "failing_gates": ["SEED_DISJOINTNESS"]},
+            )
     if phase == "probe" and seeds != [PROBE_SEED]:
-        raise ValueError("probe seed differs from frozen 1101")
+        raise InstrumentInvalidError(
+            "probe seed differs from frozen 1106",
+            {"producer_function": "validate_prereg_inputs", "verdict": "INSTRUMENT_INVALID", "failing_gates": ["SEED_DISJOINTNESS"]},
+        )
     return {
         "producer_function": "validate_prereg_inputs",
         "phase": phase,
         "seed_ids": seeds,
         "designated_best_sites_derived_from_config": designations,
+        "directional_injection_map_assertion": injection_report,
         "seed_disjointness_asserted": phase == "scored",
         "status": "pass",
     }
@@ -537,6 +679,13 @@ def _rate(numer: int, denom: int) -> float:
     return round(float(numer) / float(denom), 12) if denom else 0.0
 
 
+def _leg_id(config: dict[str, Any], event: InterventionEvent) -> str:
+    return (
+        f"{config['regimes'][event.regime_index]['regime_id']}"
+        f"<-{config['regimes'][event.injected_regime_index]['regime_id']}"
+    )
+
+
 def metric_records_for_event(
     *,
     config: dict[str, Any],
@@ -576,6 +725,10 @@ def metric_records_for_event(
                 "channel": event.channel,
                 "regime_id": event.regime_id,
                 "regime_index": event.regime_index,
+                "injected_regime_id": event.injected_regime_id,
+                "injected_regime_index": event.injected_regime_index,
+                "leg_id": _leg_id(config, event),
+                "directional_scored_leg": event.event_kind == "observe" and event.gate_scope == "post_drift_observe",
                 "gate_scope": event.gate_scope,
                 "need": need,
                 "intervention_tick": event.tick_index,
@@ -589,6 +742,8 @@ def metric_records_for_event(
                 "c_target_site": target,
                 "c_directional_match_count": len(c_matches),
                 "c_directional_rate": _rate(len(c_matches), len(c_ticks)),
+                "c_raw_match_count": len(c_matches),
+                "c_raw_rate": _rate(len(c_matches), len(c_ticks)),
                 "c_matches": c_matches[:10],
             }
         )
@@ -639,43 +794,123 @@ def _aggregate_c(records: list[dict[str, Any]]) -> dict[str, Any]:
     return {"matches": match, "total": total, "rate": _rate(match, total)}
 
 
+def _arm_directional_delta(
+    records: list[dict[str, Any]],
+    *,
+    arm: str,
+    floor_arm: str = "frozen_updates",
+) -> dict[str, Any]:
+    raw = _aggregate_c([record for record in records if record["arm"] == arm])
+    floor = _aggregate_c([record for record in records if record["arm"] == floor_arm])
+    return {
+        "raw": raw,
+        "floor_reference_arm": floor_arm,
+        "floor_raw": floor,
+        "delta_vs_frozen_updates": round(float(raw["rate"]) - float(floor["rate"]), 12),
+    }
+
+
+def directional_delta_report(metric_records: list[dict[str, Any]], *, run_id: str, code_hash: str, seeds: list[int]) -> dict[str, Any]:
+    post_observe = [
+        record
+        for record in metric_records
+        if record["event_kind"] == "observe" and record["gate_scope"] == "post_drift_observe"
+    ]
+    leg_ids = sorted({str(record["leg_id"]) for record in post_observe})
+    per_leg: dict[str, Any] = {}
+    candidate_leg_statuses: list[str] = []
+    control_leg_statuses: list[str] = []
+    for leg_id in leg_ids:
+        leg_records = [record for record in post_observe if record["leg_id"] == leg_id]
+        per_need: dict[str, Any] = {}
+        for need in NEEDS:
+            need_records = [record for record in leg_records if record["need"] == need]
+            per_need[need] = {"by_arm": {arm: _arm_directional_delta(need_records, arm=arm) for arm in ARMS}}
+        pooled = {"by_arm": {arm: _arm_directional_delta(leg_records, arm=arm) for arm in ARMS}}
+        candidate_delta = pooled["by_arm"]["candidate"]["delta_vs_frozen_updates"]
+        floor_raw = pooled["by_arm"]["frozen_updates"]["raw"]["rate"]
+        static_raw = pooled["by_arm"]["static"]["raw"]["rate"]
+        ablated_raw = pooled["by_arm"]["candidate_ablated"]["raw"]["rate"]
+        candidate_status = "pass" if candidate_delta >= 0.60 else "fail"
+        control_status = "pass" if floor_raw <= 0.05 and static_raw <= 0.05 and ablated_raw <= 0.05 else "fail"
+        candidate_leg_statuses.append(candidate_status)
+        control_leg_statuses.append(control_status)
+        per_leg[leg_id] = {
+            "pooled": pooled,
+            "per_need": per_need,
+            "candidate_delta_status": candidate_status,
+            "control_raw_status": control_status,
+        }
+    aggregate = {"by_arm": {arm: _arm_directional_delta(post_observe, arm=arm) for arm in ARMS}}
+    return {
+        "producer_function": "directional_delta_report",
+        "input_artifacts": ["trace.jsonl", "world_config_v0.json", "PREREG_ADDENDUM_002_INSTRUMENT_REPAIR.md"],
+        "run_id": run_id,
+        "seed_ids": seeds,
+        "episode_ids": [f"{arm}:{seed}" for arm in ARMS for seed in seeds],
+        "aggregation_rule": "For each scored post-drift observe leg L, D_dir(arm,L)=rate_match(arm,L)-rate_match(frozen_updates,L); gate on pooled per-leg delta and raw control floors; report per-need and aggregate.",
+        "code_path_hash": code_hash,
+        "gate": "G-B",
+        "thresholds": {
+            "candidate_delta_per_leg_min": 0.60,
+            "floor_static_ablated_raw_per_leg_max": 0.05,
+        },
+        "per_leg": per_leg,
+        "aggregate": aggregate,
+        "candidate_delta_status": "pass" if candidate_leg_statuses and all(status == "pass" for status in candidate_leg_statuses) else "fail",
+        "control_raw_status": "pass" if control_leg_statuses and all(status == "pass" for status in control_leg_statuses) else "fail",
+        "status": (
+            "pass"
+            if candidate_leg_statuses
+            and control_leg_statuses
+            and all(status == "pass" for status in candidate_leg_statuses)
+            and all(status == "pass" for status in control_leg_statuses)
+            else "fail"
+        ),
+    }
+
+
 def baseline_comparison_report(metric_records: list[dict[str, Any]], *, run_id: str, code_hash: str, seeds: list[int]) -> dict[str, Any]:
     post_observe = [r for r in metric_records if r["event_kind"] == "observe" and r["gate_scope"] == "post_drift_observe"]
     r0_observe = [r for r in metric_records if r["event_kind"] == "observe" and r["gate_scope"] == "r0_should_lose"]
+    directional = directional_delta_report(metric_records, run_id=run_id, code_hash=code_hash, seeds=seeds)
     by_arm: dict[str, dict[str, Any]] = {}
     for arm in ARMS:
         arm_post = [r for r in post_observe if r["arm"] == arm]
         arm_r0 = [r for r in r0_observe if r["arm"] == arm]
         by_arm[arm] = {
             "post_drift_observe_G_A": _aggregate_ab(arm_post),
-            "post_drift_observe_G_B": _aggregate_c(arm_post),
+            "post_drift_observe_G_B_raw": _aggregate_c(arm_post),
+            "post_drift_observe_G_B_delta": directional["aggregate"]["by_arm"][arm],
             "r0_initial_observe_should_lose_G_A": _aggregate_ab(arm_r0),
         }
     candidate_ga = by_arm["candidate"]["post_drift_observe_G_A"]["rate"]
     frozen_ga = by_arm["frozen_updates"]["post_drift_observe_G_A"]["rate"]
     static_ga = by_arm["static"]["post_drift_observe_G_A"]["rate"]
     r0_candidate = by_arm["candidate"]["r0_initial_observe_should_lose_G_A"]["rate"]
-    candidate_gb = by_arm["candidate"]["post_drift_observe_G_B"]["rate"]
     return {
         "producer_function": "baseline_comparison_report",
-        "input_artifacts": ["trace.jsonl", "world_config_v0.json", "PREREG_ADDENDUM_001.md"],
+        "input_artifacts": ["trace.jsonl", "world_config_v0.json", "PREREG_ADDENDUM_002_INSTRUMENT_REPAIR.md"],
         "run_id": run_id,
         "seed_ids": seeds,
         "episode_ids": [f"{arm}:{seed}" for arm in ARMS for seed in seeds],
-        "aggregation_rule": "G-A/G-B over post-drift observe-intervention metric windows; primary metric is _best_site(model_before, need)",
+        "aggregation_rule": "G-A withhold separation plus repaired G-B directional delta over post-drift observe-intervention metric windows; primary metric is _best_site(model_before, need)",
         "code_path_hash": code_hash,
         "gate": "G-A/G-B",
         "thresholds": {
             "G_A_candidate_min": 0.60,
             "G_A_controls_required": 0.0,
             "G_A_R0_candidate_max": 0.05,
-            "G_B_candidate_min": 0.80,
-            "G_B_controls_expected_max": 0.20,
+            "G_B_candidate_delta_per_leg_min": 0.60,
+            "G_B_control_raw_per_leg_max": 0.05,
         },
         "by_arm": by_arm,
+        "directional_delta": directional,
         "G_A_status": "pass" if candidate_ga >= 0.60 and frozen_ga == 0.0 and static_ga == 0.0 and r0_candidate <= 0.05 else "fail",
-        "G_B_status": "pass" if candidate_gb >= 0.80 else "fail",
-        "status": "pass" if candidate_ga >= 0.60 and frozen_ga == 0.0 and static_ga == 0.0 and r0_candidate <= 0.05 and candidate_gb >= 0.80 else "fail",
+        "G_B_status": directional["status"],
+        "G_B_candidate_delta_status": directional["candidate_delta_status"],
+        "G_B_control_raw_status": directional["control_raw_status"],
+        "status": "pass" if candidate_ga >= 0.60 and frozen_ga == 0.0 and static_ga == 0.0 and r0_candidate <= 0.05 and directional["status"] == "pass" else "fail",
     }
 
 
@@ -686,19 +921,25 @@ def ablation_report(metric_records: list[dict[str, Any]], *, run_id: str, code_h
         if r["arm"] == "candidate_ablated" and r["event_kind"] == "observe" and r["gate_scope"] == "post_drift_observe"
     ]
     ga = _aggregate_ab(post_ablation)
-    gb = _aggregate_c(post_ablation)
-    status = "pass" if ga["rate"] <= 0.02 and gb["rate"] <= 0.25 else "fail"
+    directional = directional_delta_report(metric_records, run_id=run_id, code_hash=code_hash, seeds=seeds)
+    per_leg_delta = {
+        leg_id: leg["pooled"]["by_arm"]["candidate_ablated"]["delta_vs_frozen_updates"]
+        for leg_id, leg in directional["per_leg"].items()
+    }
+    delta_status = "pass" if per_leg_delta and all(value <= 0.05 for value in per_leg_delta.values()) else "fail"
+    status = "pass" if ga["rate"] <= 0.02 and delta_status == "pass" else "fail"
     return {
         "producer_function": "ablation_report",
         "input_artifacts": ["baseline_comparison.json", "trace.jsonl"],
         "run_id": run_id,
         "seed_ids": seeds,
         "episode_ids": [f"candidate_ablated:{seed}" for seed in seeds],
-        "aggregation_rule": "candidate_ablated observe-intervention G-A <= 0.02 and G-B <= 0.25",
+        "aggregation_rule": "candidate_ablated observe-intervention G-A <= 0.02 and D_dir(candidate_ablated,L) <= 0.05 for each scored post-drift leg",
         "code_path_hash": code_hash,
         "gate": "G-C",
         "candidate_ablated_G_A": ga,
-        "candidate_ablated_G_B": gb,
+        "candidate_ablated_directional_delta_per_leg": per_leg_delta,
+        "candidate_ablated_directional_delta_status": delta_status,
         "status": status,
     }
 
@@ -876,14 +1117,16 @@ def choose_verdict(baseline: dict[str, Any], ablation: dict[str, Any], replay: d
         failing.append("FROZEN_UPDATES_CONTROL_CONTAMINATION")
     if by_arm["static"]["post_drift_observe_G_A"]["rate"] != 0.0:
         failing.append("STATIC_CONTROL_CONTAMINATION")
+    if baseline["directional_delta"]["control_raw_status"] != "pass":
+        failing.append("G-B-CONTROL-RAW")
     if failing:
         return "INSTRUMENT_INVALID", failing
+    if ablation.get("status") != "pass":
+        return "INSTRUMENT_INVALID", ["G-C"]
     if baseline["G_A_status"] != "pass":
         return "CAPABILITY_ABSENT", ["G-A"]
     if baseline["G_B_status"] != "pass":
         return "PERTURBATION_ONLY_NONDIRECTIONAL", ["G-B"]
-    if ablation.get("status") != "pass":
-        return "INSTRUMENT_INVALID", ["G-C"]
     return "CAPABILITY_PRESENT_CHANNEL_DISCLOSED", []
 
 
@@ -894,6 +1137,72 @@ def flatten_pair_trace(pair_runs: list[dict[str, Any]], *, gate_only: bool = Fal
             continue
         rows.extend(run["trace_rows"])
     return rows
+
+
+def _write_invalid_artifacts(target: Path, *, phase: str, result: dict[str, Any], failure_manifest: dict[str, Any]) -> None:
+    target.mkdir(parents=True, exist_ok=True)
+    if phase == "probe":
+        write_json(target / "probe_report.json", result)
+    else:
+        write_json(target / "result.json", result)
+    write_json(target / "failure_manifest.json", failure_manifest)
+
+
+def instrument_invalid_result(
+    *,
+    phase: str,
+    run_id: str,
+    seeds: list[int],
+    code_hash: str,
+    error: InstrumentInvalidError,
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    manifest = {
+        "producer_function": "failure_manifest",
+        "verdict": "INSTRUMENT_INVALID",
+        "failing_gates": list(error.manifest.get("failing_gates", ["PREREG_VALIDATION"])),
+        "reason": str(error),
+        "source_manifest": error.manifest,
+        "code_path_hash": code_hash,
+    }
+    result = {
+        "producer_function": "run_phase",
+        "task": TASK_ID,
+        "phase": phase,
+        "run_id": run_id,
+        "verdict": "INSTRUMENT_INVALID",
+        "verdict_subtype": "INSTRUMENT_INVALID",
+        "positive_claim": False,
+        "positive_claim_stop_required": False,
+        "claim_ceiling": CLAIM_CEILING,
+        "signature_manifest": {
+            "PREREG-VALIDATION": "fail",
+            "G-A": "not_run",
+            "G-B": "not_run",
+            "G-C": "not_run",
+            "G-D": "not_run",
+            "G-E": "not_run",
+            "UNSEEDED-RNG-AUDIT": "not_run",
+        },
+        "failing_gates": manifest["failing_gates"],
+        "code_path_hash": code_hash,
+        "config_shas": config_shas(),
+        "seed_ids": seeds,
+        "episode_ids": [],
+        "event_count": 0,
+        "pair_count": 0,
+        "per_leg_delta_table": {},
+        "aggregation_rule": "fail-closed pre-run validation; no gated pairs executed after instrument invalidation",
+        "prereg_validation": {"status": "fail", "reason": str(error), "source_manifest": error.manifest},
+        "gate_results": {},
+        "what_this_does_not_prove": [
+            "no learning or generalization claim",
+            "no adaptation-quality claim",
+            "no understanding or world-modeling competence claim",
+            "no self agency autonomy subjectivity emotion consciousness or EGO readiness claim",
+            "C-observe remains an oracle snapshot, not experiential learning",
+        ],
+    }
+    return result, manifest
 
 
 def run_phase(
@@ -907,8 +1216,20 @@ def run_phase(
     config = load_world_config()
     seeds = [PROBE_SEED] if phase == "probe" else list(SCORED_SEEDS)
     run_id = f"{RUN_ID_BASE}_{phase}"
-    prereg = validate_prereg_inputs(config, phase=phase, seeds=seeds)
     code_hash = code_path_hash()
+    try:
+        prereg = validate_prereg_inputs(config, phase=phase, seeds=seeds)
+    except InstrumentInvalidError as exc:
+        result, failure_manifest = instrument_invalid_result(
+            phase=phase,
+            run_id=run_id,
+            seeds=seeds,
+            code_hash=code_hash,
+            error=exc,
+        )
+        if write_artifacts:
+            _write_invalid_artifacts(out_dir or ARTIFACT_ROOT, phase=phase, result=result, failure_manifest=failure_manifest)
+        return result
     bundles = [run_pair_bundle_for_seed(config, seed=seed, run_id=run_id) for seed in seeds]
     pair_runs = [run for bundle in bundles for run in bundle["pair_runs"]]
     metric_records = [record for bundle in bundles for record in bundle["metric_records"]]
@@ -955,6 +1276,7 @@ def run_phase(
         "episode_ids": [str(run["pair_id"]) for run in pair_runs],
         "event_count": len(events),
         "pair_count": len(pair_runs),
+        "per_leg_delta_table": baseline["directional_delta"]["per_leg"],
         "trace_artifact_scope": (
             "trace.jsonl/probe_trace.jsonl contain observe-intervention gate rows only to keep the Git artifact under "
             "the GitHub hard file-size boundary; forage diagnostic records remain represented in metric_records.json "
