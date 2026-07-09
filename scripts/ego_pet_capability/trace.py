@@ -2,9 +2,16 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Callable, Iterable
 
 from scripts.ego_pet.creature import _best_site
+
+
+MAX_CAPABILITY_TRACE_BYTES = 26_214_400
+
+
+class CapabilityTraceTooLargeError(RuntimeError):
+    pass
 
 
 def best_sites(model: dict[str, dict[str, float]]) -> dict[str, str]:
@@ -66,8 +73,49 @@ def build_capability_trace_row(
 
 
 def write_jsonl(path: Path, rows: Iterable[dict[str, Any]]) -> None:
+    write_gate_scoped_jsonl(path, rows, lambda _row: True)
+
+
+def assert_capability_trace_size(path: Path, *, max_bytes: int = MAX_CAPABILITY_TRACE_BYTES) -> dict[str, Any]:
+    size = path.stat().st_size
+    if size > max_bytes:
+        raise CapabilityTraceTooLargeError(
+            f"capability trace exceeds {max_bytes} bytes: {path} is {size} bytes; "
+            "gate-scope the trace rows instead of splitting or committing a full per-tick dump"
+        )
+    return {
+        "producer_function": "assert_capability_trace_size",
+        "path": str(path),
+        "bytes": size,
+        "max_bytes": int(max_bytes),
+        "status": "pass",
+    }
+
+
+def write_gate_scoped_jsonl(
+    path: Path,
+    rows: Iterable[dict[str, Any]],
+    keep_predicate: Callable[[dict[str, Any]], bool],
+    *,
+    max_bytes: int = MAX_CAPABILITY_TRACE_BYTES,
+) -> dict[str, Any]:
     path.parent.mkdir(parents=True, exist_ok=True)
+    kept = 0
+    seen = 0
     with path.open("w", encoding="utf-8", newline="\n") as handle:
         for row in rows:
+            seen += 1
+            if not keep_predicate(row):
+                continue
+            kept += 1
             handle.write(json.dumps(row, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
             handle.write("\n")
+    size_report = assert_capability_trace_size(path, max_bytes=max_bytes)
+    return {
+        "producer_function": "write_gate_scoped_jsonl",
+        "path": str(path),
+        "rows_seen": seen,
+        "rows_written": kept,
+        "size_guard": size_report,
+        "status": "pass",
+    }

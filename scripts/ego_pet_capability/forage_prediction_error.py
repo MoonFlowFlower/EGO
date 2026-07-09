@@ -29,7 +29,7 @@ from scripts.ego_pet.world import (
     zero_world_state,
 )
 from scripts.ego_pet_capability import CLAIM_CEILING, TASK_ID
-from scripts.ego_pet_capability.trace import build_capability_trace_row, write_jsonl
+from scripts.ego_pet_capability.trace import build_capability_trace_row, write_gate_scoped_jsonl
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -1023,6 +1023,31 @@ def flatten_pair_trace(pair_runs: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return rows
 
 
+def gate_trace_keys_from_metric_records(metric_records: list[dict[str, Any]]) -> set[tuple[str, int]]:
+    keys: set[tuple[str, int]] = set()
+    for record in metric_records:
+        event_id = str(record["event_id"])
+        arm = str(record["arm"])
+        intervention_tick = int(record["intervention_tick"])
+        for variant in VARIANTS:
+            keys.add((f"{event_id}:{arm}:{variant}", intervention_tick))
+        for variant in ("B", "C"):
+            keys.add((f"{event_id}:{arm}:{variant}", intervention_tick + 1))
+        for tick in record["w_window_ticks"]:
+            keys.add((f"{event_id}:{arm}:C", int(tick)))
+    return keys
+
+
+def gate_trace_keep_predicate(metric_records: list[dict[str, Any]]):
+    keys = gate_trace_keys_from_metric_records(metric_records)
+    return lambda row: (str(row["pair_id"]), int(row["tick_index"])) in keys
+
+
+def gate_scoped_pair_trace(pair_runs: list[dict[str, Any]], metric_records: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    keep = gate_trace_keep_predicate(metric_records)
+    return [row for row in flatten_pair_trace(pair_runs) if keep(row)]
+
+
 def invalid_result(
     *,
     phase: str,
@@ -1166,7 +1191,7 @@ def run_phase(
             write_json(target / "probe_ablation_report.json", ablation)
             write_json(target / "probe_replay_report.json", replay)
             write_json(target / "probe_channel_report.json", channel)
-            write_jsonl(target / "probe_trace.jsonl", flatten_pair_trace(pair_runs))
+            write_gate_scoped_jsonl(target / "probe_trace.jsonl", flatten_pair_trace(pair_runs), gate_trace_keep_predicate(metric_records))
         else:
             write_json(target / "result.json", result)
             write_json(target / "baseline_comparison.json", baseline)
@@ -1174,7 +1199,7 @@ def run_phase(
             write_json(target / "replay_report.json", replay)
             write_json(target / "channel_report.json", channel)
             write_json(target / "metric_records.json", metric_records)
-            write_jsonl(target / "trace.jsonl", flatten_pair_trace(pair_runs))
+            write_gate_scoped_jsonl(target / "trace.jsonl", flatten_pair_trace(pair_runs), gate_trace_keep_predicate(metric_records))
             if verdict not in POSITIVE_VERDICTS:
                 write_json(
                     target / "failure_manifest.json",

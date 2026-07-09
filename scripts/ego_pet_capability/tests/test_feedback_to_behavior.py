@@ -3,19 +3,27 @@ from __future__ import annotations
 from pathlib import Path
 
 from scripts.ego_pet_capability.feedback_to_behavior import (
+    ARMS,
     DIRECTIONAL_INJECTION_MAP,
     InstrumentInvalidError,
+    InterventionEvent,
     PROBE_SEED,
     SCORED_SEEDS,
+    VARIANTS,
     _derived_designations,
     assert_seed_disjointness,
     directional_delta_report,
+    flatten_pair_trace,
+    gate_scoped_pair_trace,
+    gate_trace_keep_predicate,
     load_world_config,
+    metric_records_for_event,
     rng_audit,
     run_pair_bundle_for_seed,
     run_phase,
     validate_directional_injection_map,
 )
+from scripts.ego_pet_capability.trace import MAX_CAPABILITY_TRACE_BYTES, write_gate_scoped_jsonl
 
 
 def test_derived_designations_match_frozen_config() -> None:
@@ -103,6 +111,45 @@ def test_probe_bundle_has_candidate_observe_events_and_control_zero_ga() -> None
     ]
     assert static_records
     assert sum(record["ab_divergence_count"] for record in static_records) == 0
+
+
+def test_feedback_gate_scoped_trace_preserves_observe_gate_records(tmp_path: Path) -> None:
+    config = load_world_config()
+    bundle = run_pair_bundle_for_seed(config, seed=PROBE_SEED, run_id="unit_probe_gate_trace")
+    full_rows = flatten_pair_trace(bundle["pair_runs"])
+    scoped_rows = gate_scoped_pair_trace(bundle["pair_runs"], bundle["metric_records"])
+    report = write_gate_scoped_jsonl(
+        tmp_path / "probe_trace.jsonl",
+        full_rows,
+        gate_trace_keep_predicate(bundle["metric_records"]),
+    )
+    assert 0 < len(scoped_rows) < len(full_rows)
+    assert report["rows_written"] == len(scoped_rows)
+    assert report["size_guard"]["bytes"] < MAX_CAPABILITY_TRACE_BYTES
+
+    rows_by_pair: dict[str, list[dict[str, object]]] = {}
+    for row in scoped_rows:
+        rows_by_pair.setdefault(str(row["pair_id"]), []).append(row)
+
+    recomputed_records = []
+    for event_payload in bundle["events"]:
+        event = InterventionEvent.from_dict(event_payload)
+        if event.event_kind != "observe":
+            continue
+        for arm in ARMS:
+            recomputed_records.extend(
+                metric_records_for_event(
+                    config=config,
+                    arm=arm,
+                    event=event,
+                    variant_rows={
+                        variant: rows_by_pair.get(f"{event.event_id}:{arm}:{variant}", [])
+                        for variant in VARIANTS
+                    },
+                )
+            )
+    observe_records = [record for record in bundle["metric_records"] if record["event_kind"] == "observe"]
+    assert recomputed_records == observe_records
 
 
 def test_probe_phase_without_replay_is_deterministic_and_artifact_free(tmp_path: Path) -> None:

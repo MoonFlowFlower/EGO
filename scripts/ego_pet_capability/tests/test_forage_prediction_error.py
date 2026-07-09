@@ -2,22 +2,35 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from scripts.ego_pet.creature import _best_site, zero_creature_state
 from scripts.ego_pet_capability.forage_prediction_error import (
     ARMS,
+    ForageEvent,
     PROBE_SEED,
     SCORED_SEEDS,
+    VARIANTS,
     InstrumentInvalidError,
     ablation_report,
     assert_seed_disjointness,
     baseline_comparison_report,
     code_path_hash,
+    flatten_pair_trace,
+    gate_scoped_pair_trace,
+    gate_trace_keep_predicate,
     load_world_config,
+    metric_records_for_event,
     pair_c_yield,
     pe_fidelity_report,
     rng_audit,
     run_pair_bundle_for_seed,
     run_phase,
+)
+from scripts.ego_pet_capability.trace import (
+    CapabilityTraceTooLargeError,
+    MAX_CAPABILITY_TRACE_BYTES,
+    write_gate_scoped_jsonl,
 )
 
 
@@ -70,6 +83,51 @@ def test_probe_bundle_decomposition_signatures() -> None:
     assert baseline["by_arm"]["candidate_ablated"]["C_delta"] >= 0.60
     assert ablation["by_arm"]["frozen_updates"]["W_rate"] == 0.0
     assert ablation["by_arm"]["candidate_ablated"]["W_rate"] == 0.0
+
+
+def test_forage_gate_scoped_trace_preserves_gate_records(tmp_path: Path) -> None:
+    config = load_world_config()
+    bundle = run_pair_bundle_for_seed(config, seed=PROBE_SEED, run_id="unit_pe_probe_gate_trace")
+    full_rows = flatten_pair_trace(bundle["pair_runs"])
+    scoped_rows = gate_scoped_pair_trace(bundle["pair_runs"], bundle["metric_records"])
+    report = write_gate_scoped_jsonl(
+        tmp_path / "probe_trace.jsonl",
+        full_rows,
+        gate_trace_keep_predicate(bundle["metric_records"]),
+    )
+    assert 0 < len(scoped_rows) < len(full_rows)
+    assert report["rows_written"] == len(scoped_rows)
+    assert report["size_guard"]["bytes"] < MAX_CAPABILITY_TRACE_BYTES
+
+    rows_by_pair: dict[str, list[dict[str, object]]] = {}
+    for row in scoped_rows:
+        rows_by_pair.setdefault(str(row["pair_id"]), []).append(row)
+
+    recomputed_records = []
+    for event_payload in bundle["events"]:
+        event = ForageEvent.from_dict(event_payload)
+        for arm in ARMS:
+            recomputed_records.extend(
+                metric_records_for_event(
+                    arm=arm,
+                    event=event,
+                    variant_runs={
+                        variant: {"trace_rows": rows_by_pair.get(f"{event.event_id}:{arm}:{variant}", [])}
+                        for variant in VARIANTS
+                    },
+                )
+            )
+    assert recomputed_records == bundle["metric_records"]
+
+
+def test_capability_trace_size_guard_fail_closed(tmp_path: Path) -> None:
+    with pytest.raises(CapabilityTraceTooLargeError, match="gate-scope"):
+        write_gate_scoped_jsonl(
+            tmp_path / "too_large_trace.jsonl",
+            [{"payload": "x" * 1024}],
+            lambda _row: True,
+            max_bytes=64,
+        )
 
 
 def test_probe_phase_without_replay_is_deterministic_and_artifact_free(tmp_path: Path) -> None:
