@@ -1,0 +1,66 @@
+{
+  "aggregation_rule": "candidate_ablated observe-intervention G-A <= 0.02 and G-B <= 0.25",
+  "candidate_ablated_G_A": {
+    "divergent": 0,
+    "rate": 0.0,
+    "total": 4000
+  },
+  "candidate_ablated_G_B": {
+    "matches": 2000,
+    "rate": 0.5,
+    "total": 4000
+  },
+  "code_path_hash": "d23f2515b4b83413c3d1ceed01a2c025e802ee8be2330dba36de065d69f68972",
+  "episode_ids": [
+    "candidate_ablated:3101",
+    "candidate_ablated:3102",
+    "candidate_ablated:3103",
+    "candidate_ablated:3104",
+    "candidate_ablated:3105",
+    "candidate_ablated:3106",
+    "candidate_ablated:3107",
+    "candidate_ablated:3108",
+    "candidate_ablated:3109",
+    "candidate_ablated:3110",
+    "candidate_ablated:3111",
+    "candidate_ablated:3112",
+    "candidate_ablated:3113",
+    "candidate_ablated:3114",
+    "candidate_ablated:3115",
+    "candidate_ablated:3116",
+    "candidate_ablated:3117",
+    "candidate_ablated:3118",
+    "candidate_ablated:3119",
+    "candidate_ablated:3120"
+  ],
+  "gate": "G-C",
+  "input_artifacts": [
+    "baseline_comparison.json",
+    "trace.jsonl"
+  ],
+  "producer_function": "ablation_report",
+  "run_id": "ego_pet_capability_conformance_001a_feedback_to_behavior_v1_scored",
+  "seed_ids": [
+    3101,
+    3102,
+    3103,
+    3104,
+    3105,
+    3106,
+    3107,
+    3108,
+    3109,
+    3110,
+    3111,
+    3112,
+    3113,
+    3114,
+    3115,
+    3116,
+    3117,
+    3118,
+    3119,
+    3120
+  ],
+  "status": "fail"
+}

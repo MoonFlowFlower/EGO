@@ -1,0 +1,9 @@
+{
+  "code_path_hash": "d23f2515b4b83413c3d1ceed01a2c025e802ee8be2330dba36de065d69f68972",
+  "failing_gates": [
+    "G-C"
+  ],
+  "producer_function": "failure_manifest",
+  "result_pointer": "artifacts/ego-pet-capability-conformance-001a/result.json",
+  "verdict": "INSTRUMENT_INVALID"
+}

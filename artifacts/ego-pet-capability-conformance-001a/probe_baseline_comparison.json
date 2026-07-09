@@ -1,0 +1,101 @@
+{
+  "G_A_status": "pass",
+  "G_B_status": "pass",
+  "aggregation_rule": "G-A/G-B over post-drift observe-intervention metric windows; primary metric is _best_site(model_before, need)",
+  "by_arm": {
+    "candidate": {
+      "post_drift_observe_G_A": {
+        "divergent": 4,
+        "rate": 0.8,
+        "total": 5
+      },
+      "post_drift_observe_G_B": {
+        "matches": 6,
+        "rate": 1.0,
+        "total": 6
+      },
+      "r0_initial_observe_should_lose_G_A": {
+        "divergent": 0,
+        "rate": 0.0,
+        "total": 4
+      }
+    },
+    "candidate_ablated": {
+      "post_drift_observe_G_A": {
+        "divergent": 0,
+        "rate": 0.0,
+        "total": 200
+      },
+      "post_drift_observe_G_B": {
+        "matches": 100,
+        "rate": 0.5,
+        "total": 200
+      },
+      "r0_initial_observe_should_lose_G_A": {
+        "divergent": 0,
+        "rate": 0.0,
+        "total": 100
+      }
+    },
+    "frozen_updates": {
+      "post_drift_observe_G_A": {
+        "divergent": 0,
+        "rate": 0.0,
+        "total": 200
+      },
+      "post_drift_observe_G_B": {
+        "matches": 100,
+        "rate": 0.5,
+        "total": 200
+      },
+      "r0_initial_observe_should_lose_G_A": {
+        "divergent": 0,
+        "rate": 0.0,
+        "total": 100
+      }
+    },
+    "static": {
+      "post_drift_observe_G_A": {
+        "divergent": 0,
+        "rate": 0.0,
+        "total": 200
+      },
+      "post_drift_observe_G_B": {
+        "matches": 100,
+        "rate": 0.5,
+        "total": 200
+      },
+      "r0_initial_observe_should_lose_G_A": {
+        "divergent": 0,
+        "rate": 0.0,
+        "total": 100
+      }
+    }
+  },
+  "code_path_hash": "d23f2515b4b83413c3d1ceed01a2c025e802ee8be2330dba36de065d69f68972",
+  "episode_ids": [
+    "candidate:1101",
+    "frozen_updates:1101",
+    "static:1101",
+    "candidate_ablated:1101"
+  ],
+  "gate": "G-A/G-B",
+  "input_artifacts": [
+    "trace.jsonl",
+    "world_config_v0.json",
+    "PREREG_ADDENDUM_001.md"
+  ],
+  "producer_function": "baseline_comparison_report",
+  "run_id": "ego_pet_capability_conformance_001a_feedback_to_behavior_v1_probe",
+  "seed_ids": [
+    1101
+  ],
+  "status": "pass",
+  "thresholds": {
+    "G_A_R0_candidate_max": 0.05,
+    "G_A_candidate_min": 0.6,
+    "G_A_controls_required": 0.0,
+    "G_B_candidate_min": 0.8,
+    "G_B_controls_expected_max": 0.2
+  }
+}
