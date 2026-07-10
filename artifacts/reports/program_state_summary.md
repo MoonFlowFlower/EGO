@@ -8,6 +8,6 @@
 - verification: `V3`
 - mainline_connected: `True`
 - enabled: `True`
-- next_minimal_action: Keep EgoOperator as the active default. For the separate disabled K0 workstream, all five child cards are banked; next author and bank the canonical fail-closed READY_TO_IMPLEMENT transition that pins 13bd9268, 0f043254, and 56f56a99. Until then do not execute Foundation/H0, do not start K0-R, and do not reopen the closed R-track.
+- next_minimal_action: Keep EgoOperator as the active default. For the separate disabled K0 workstream, only EGO-K0-FOUNDATION-001A is authorized_ready_to_implement; Foundation remains enabled=false, mainline_connected=false, and runtime_authority=none, while H0, Reference Kernel/K0-R, H1, Freeze, and Formal remain false/blocked. The next minimal action is to execute only the Foundation implementation phase in a separate session against canonical ITL readback commit 07c0f1f85a3c855511ff1610ec9629f8e94e89b1; do not reopen the closed R-track.
 - highest ledger entry: `mvp16_controlled_completion_current` / `E5`
 
