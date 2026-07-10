@@ -1,0 +1,44 @@
+schema_version: codex.mutation_scope.v1
+task: ego-k0-foundation-ready-sync-001a
+expected_mutation_surface:
+  - bank the bounded cross-repo Foundation READY synchronization card
+  - synchronize the canonical Ego K0 workstream/current-focus/next-action authority from pinned read-only ITL route artifacts
+  - regenerate only existing program-state and route-convergence views through canonical generators
+  - keep Foundation disabled, non-mainline, without runtime authority, and without implementation or evidence paths
+  - keep EgoOperator as the active default and preserve the closed R-track, global evidence ceiling, evidence ledger, and task board
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-k0-foundation-ready-sync-001a/STAGE_CARD.md
+  - docs/codex/tasks/ego-k0-foundation-ready-sync-001a/MUTATION_SCOPE.yaml
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - docs/STATUS.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - docs/REPO_HYGIENE_POLICY.md
+  - artifacts/reports/program_state_summary.md
+forbidden_mutation_paths:
+  - packages/ego_k0_kernel/
+  - scripts/ego_k0_adapters/
+  - scripts/run_ego_k0_foundation_validation.py
+  - tests/test_ego_k0_foundation.py
+  - artifacts/ego_k0_foundation_001a/
+  - scripts/codex/route_convergence_common.py
+  - artifacts/evidence_ledger/
+  - Tasks/TASK_BOARD.yaml
+  - .codex/project_contract.yaml
+  - scripts/ego_kernel/
+  - scripts/ego_pet/
+  - scripts/ego_pet_capability/
+  - EgoDesktop/
+  - EgoOperator/
+auto_remote_anchor: forbidden
+claim_ceiling: "local cross-repo Foundation READY authority synchronization only; Foundation implementation may be authorized for a separate session while runtime enabled, mainline connection, runtime authority, and real trigger evidence remain false, false, none, and absent; no Foundation engineering, mechanism, runtime, readiness, agency, subjectivity, consciousness, or user-benefit claim"
+phase_scopes:
+  task_card_bank:
+    - docs/codex/tasks/ego-k0-foundation-ready-sync-001a/STAGE_CARD.md
+    - docs/codex/tasks/ego-k0-foundation-ready-sync-001a/MUTATION_SCOPE.yaml
+  program_state_synchronization_and_generated_views:
+    - docs/PROGRAM_STATE_UNIFIED.yaml
+    - docs/STATUS.md
+    - docs/codex/tasks/TASK_LANE_INDEX.md
+    - docs/REPO_HYGIENE_POLICY.md
+    - artifacts/reports/program_state_summary.md
+phase_rule: "one phase per commit; the allowed path union is not blanket cross-phase authority; stage only literal actual changed paths; do not stage byte-unchanged regenerated files"
