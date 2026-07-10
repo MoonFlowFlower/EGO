@@ -76,6 +76,23 @@ from scripts.run_ego_k0_foundation_validation import (  # noqa: E402
 )
 
 
+def _tree_snapshot(target: Path) -> dict[str, Any]:
+    files = sorted(
+        (path for path in target.rglob("*") if path.is_file()),
+        key=lambda path: path.relative_to(target).as_posix(),
+    )
+    return {
+        "exists": target.exists(),
+        "files": tuple(
+            (
+                path.relative_to(target).as_posix(),
+                hashlib.sha256(path.read_bytes()).hexdigest(),
+            )
+            for path in files
+        ),
+    }
+
+
 def _build_source(tmp_path: Path, *, steps: int = 4) -> dict[str, Any]:
     episode_id = "test-episode"
     database_path = tmp_path / "events.sqlite3"
@@ -231,6 +248,8 @@ def test_validation_runner_executes_two_fresh_replays_and_computed_provenance(
     tmp_path: Path,
 ) -> None:
     output = tmp_path / "validation"
+    canonical_artifact = REPO_ROOT / "artifacts" / "ego_k0_foundation_001a"
+    canonical_artifact_before = _tree_snapshot(canonical_artifact)
     report = run_validation(output_dir=output, run_id="pytest-validation")
     assert report["task_local_implementation_acceptance"] is True
     assert report["status"] == "implementation_validation_ok"
@@ -281,7 +300,7 @@ def test_validation_runner_executes_two_fresh_replays_and_computed_provenance(
         "execution_authority_hash",
     ):
         assert report[key]
-    assert not (REPO_ROOT / "artifacts" / "ego_k0_foundation_001a").exists()
+    assert _tree_snapshot(canonical_artifact) == canonical_artifact_before
 
 
 def test_removing_stored_actions_still_recomputes_proposals_and_state(tmp_path: Path) -> None:
