@@ -21,7 +21,7 @@
 | `supporting_active` | 2 |
 | `parked` | 2 |
 | `closed_evidence` | 19 |
-| `reference_only` | 227 |
+| `reference_only` | 228 |
 
 ## Active Default
 
@@ -170,6 +170,7 @@
 | Ego Handmade Operator Runtime Contract V1 | `codex_task` | n/a | `docs/codex/tasks/ego-handmade-operator-runtime-contract-v1/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Handmade Real Use Memory Gate V1 | `codex_task` | n/a | `docs/codex/tasks/ego-handmade-real-use-memory-gate-v1/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Joi Companion Roadmap V1 | `codex_task` | n/a | `docs/codex/tasks/ego-joi-companion-roadmap-v1/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| Ego K0 Foundation Evidence Atomicity Correction 001A | `codex_task` | n/a | `docs/codex/tasks/ego-k0-foundation-evidence-atomicity-correction-001a/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego K0 Foundation Ready Sync 001A | `codex_task` | n/a | `docs/codex/tasks/ego-k0-foundation-ready-sync-001a/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Mechanism Rewrite Decision 001A | `codex_task` | n/a | `docs/codex/tasks/ego-mechanism-rewrite-decision-001a/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Outcomepredictor V0 Planner Input | `codex_task` | n/a | `docs/codex/tasks/ego-outcomepredictor-v0-planner-input/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |

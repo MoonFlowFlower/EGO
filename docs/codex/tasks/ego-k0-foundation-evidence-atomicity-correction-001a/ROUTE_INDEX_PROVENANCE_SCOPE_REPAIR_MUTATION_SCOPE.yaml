@@ -1,0 +1,84 @@
+schema_version: codex.mutation_scope.v1
+task: ego-k0-foundation-route-provenance-scope-repair-001a
+expected_mutation_surface:
+  - additive route-index and provenance-scope repair in the existing correction task directory
+  - one exact three-path intermediate route-scope commit
+  - preserved six-file dirty carryover that remains unstaged and raw-byte identical during the intermediate commit
+  - one exact six-path final Phase-B implementation commit
+  - no official evidence bank, program-state, renderer, runtime, ITL, evidence-ledger, task-board, or publication mutation
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-k0-foundation-evidence-atomicity-correction-001a/ROUTE_INDEX_PROVENANCE_SCOPE_REPAIR_ADDENDUM.md
+  - docs/codex/tasks/ego-k0-foundation-evidence-atomicity-correction-001a/ROUTE_INDEX_PROVENANCE_SCOPE_REPAIR_MUTATION_SCOPE.yaml
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - packages/ego_k0_kernel/src/ego_k0_kernel/__init__.py
+  - packages/ego_k0_kernel/src/ego_k0_kernel/ports.py
+  - packages/ego_k0_kernel/src/ego_k0_kernel/replay.py
+  - scripts/ego_k0_adapters/sqlite_event_store.py
+  - scripts/run_ego_k0_foundation_validation.py
+  - tests/test_ego_k0_foundation.py
+phase_scopes:
+  route_scope_commit:
+    exact_staged_paths:
+      - docs/codex/tasks/ego-k0-foundation-evidence-atomicity-correction-001a/ROUTE_INDEX_PROVENANCE_SCOPE_REPAIR_ADDENDUM.md
+      - docs/codex/tasks/ego-k0-foundation-evidence-atomicity-correction-001a/ROUTE_INDEX_PROVENANCE_SCOPE_REPAIR_MUTATION_SCOPE.yaml
+      - docs/codex/tasks/TASK_LANE_INDEX.md
+    exact_changed_paths_after_commit:
+      - docs/codex/tasks/ego-k0-foundation-evidence-atomicity-correction-001a/ROUTE_INDEX_PROVENANCE_SCOPE_REPAIR_ADDENDUM.md
+      - docs/codex/tasks/ego-k0-foundation-evidence-atomicity-correction-001a/ROUTE_INDEX_PROVENANCE_SCOPE_REPAIR_MUTATION_SCOPE.yaml
+      - docs/codex/tasks/TASK_LANE_INDEX.md
+  preserved_dirty_carryover:
+    required_state: unstaged_and_raw_sha256_unchanged_during_route_scope_commit
+    paths:
+      - packages/ego_k0_kernel/src/ego_k0_kernel/__init__.py
+      - packages/ego_k0_kernel/src/ego_k0_kernel/ports.py
+      - packages/ego_k0_kernel/src/ego_k0_kernel/replay.py
+      - scripts/ego_k0_adapters/sqlite_event_store.py
+      - scripts/run_ego_k0_foundation_validation.py
+      - tests/test_ego_k0_foundation.py
+    preflight_raw_sha256:
+      packages/ego_k0_kernel/src/ego_k0_kernel/__init__.py: 05b488f9bce5f5eaa67357a8da1e4338b810e7c5a6da7d37d84edd3007441505
+      packages/ego_k0_kernel/src/ego_k0_kernel/ports.py: b43fae2937f971ae03de67350aad5fa2f55b703539dc2ca1eab3dcd7839232b8
+      packages/ego_k0_kernel/src/ego_k0_kernel/replay.py: a1fb6cacc5b16490566d8ca058f57aa8ba2478b00bfe6715f5951e4a489faad0
+      scripts/ego_k0_adapters/sqlite_event_store.py: 0cf8e081eb4d801af1487cbde73b5537ff836a9a99c7924904b14466232f3876
+      scripts/run_ego_k0_foundation_validation.py: 243a6652d7f3bf16698f99963a5df036d732468bbb9c46e5227c474baa25be01
+      tests/test_ego_k0_foundation.py: 211a1ffa12f966a93a6cbacdcfcf9bc85d038e63d811f26eed75df4c83eea5b4
+  final_phase_b:
+    exact_staged_paths:
+      - packages/ego_k0_kernel/src/ego_k0_kernel/__init__.py
+      - packages/ego_k0_kernel/src/ego_k0_kernel/ports.py
+      - packages/ego_k0_kernel/src/ego_k0_kernel/replay.py
+      - scripts/ego_k0_adapters/sqlite_event_store.py
+      - scripts/run_ego_k0_foundation_validation.py
+      - tests/test_ego_k0_foundation.py
+    exact_changed_paths_after_commit:
+      - packages/ego_k0_kernel/src/ego_k0_kernel/__init__.py
+      - packages/ego_k0_kernel/src/ego_k0_kernel/ports.py
+      - packages/ego_k0_kernel/src/ego_k0_kernel/replay.py
+      - scripts/ego_k0_adapters/sqlite_event_store.py
+      - scripts/run_ego_k0_foundation_validation.py
+      - tests/test_ego_k0_foundation.py
+forbidden:
+  rule: all_paths_outside_the_exact_current_phase_scope
+  explicit_paths:
+    - docs/PROGRAM_STATE_UNIFIED.yaml
+    - docs/REPO_HYGIENE_POLICY.md
+    - docs/REPO_SURFACE_MAP.md
+    - docs/STATUS.md
+    - artifacts/reports/program_state_summary.md
+    - scripts/codex/generate_route_convergence_views.py
+    - scripts/codex/route_convergence_common.py
+    - scripts/codex/verify_route_convergence.py
+    - artifacts/ego_k0_foundation_001a/
+    - artifacts/evidence_ledger/
+    - Tasks/TASK_BOARD.yaml
+    - .codex/project_contract.yaml
+    - EgoOperator/
+    - EgoDesktop/
+    - D:/Project/AIProject/MyProject/intelligence-theory-lab/
+phase_rule: one exact phase per local commit; route-scope files must be clean during final Phase-B staging
+closeout_allowances:
+  - push_pending
+  - declared_preserved_dirty_carryover_during_route_scope_commit
+auto_remote_anchor: forbidden
+official_evidence_bank: false
+claim_ceiling: additive generated-route-view synchronization, portable provenance enforcement, Foundation atomic persistence, and evidence-producer engineering only
