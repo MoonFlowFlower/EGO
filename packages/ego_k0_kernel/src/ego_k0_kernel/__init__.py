@@ -17,7 +17,12 @@ from .contracts import (
     canonical_json_bytes,
     stable_id,
 )
-from .ports import EventStorePort, PolicyPort, TraceSinkPort
+from .ports import (
+    EventStorePort,
+    PolicyPort,
+    PostCommitTraceDeliveryError,
+    TraceSinkPort,
+)
 from .replay import (
     ReplayMismatch,
     ReplayResult,
@@ -43,6 +48,7 @@ __all__ = [
     "KernelStateRecord",
     "ObservationRecord",
     "PolicyPort",
+    "PostCommitTraceDeliveryError",
     "ReplayMismatch",
     "ReplayResult",
     "SchemaVersionError",

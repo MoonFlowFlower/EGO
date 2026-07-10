@@ -19,6 +19,7 @@ from ego_k0_kernel.ports import (
     assert_capability_allowed,
     validate_adapter_manifest,
 )
+from ego_k0_kernel.trace import TraceRow
 
 
 class EventStoreError(RuntimeError):
@@ -35,6 +36,12 @@ class DuplicateRecordError(EventStoreError):
 
 class WritesFrozenError(EventStoreError):
     """The validation freeze intervention blocks further writes."""
+
+
+class AtomicStepCommitError(EventStoreError):
+    """The event/trace pair failed and the transaction was rolled back."""
+
+    committed = False
 
 
 class SQLiteEventStore:
@@ -54,8 +61,8 @@ class SQLiteEventStore:
         self.manifest = validate_adapter_manifest(
             AdapterCapabilityManifest(
                 adapter_id="ego_k0.sqlite_event_store.v1",
-                readable_fields=("events", "checkpoints"),
-                writable_ports=("append_events", "write_checkpoint"),
+                readable_fields=("events", "trace_rows", "checkpoints"),
+                writable_ports=("append_events", "append_step", "write_checkpoint"),
                 forbidden_capabilities=tuple(sorted(REQUIRED_DENIED_CAPABILITIES)),
             )
         )
@@ -83,6 +90,17 @@ class SQLiteEventStore:
             );
             CREATE INDEX IF NOT EXISTS checkpoints_episode_sequence
             ON checkpoints (episode_id, last_event_sequence DESC, checkpoint_id DESC);
+            CREATE TABLE IF NOT EXISTS trace_outbox (
+                episode_id TEXT NOT NULL,
+                sequence INTEGER NOT NULL,
+                step_id INTEGER NOT NULL,
+                schema_version TEXT NOT NULL,
+                trace_hash TEXT NOT NULL UNIQUE,
+                trace_json BLOB NOT NULL,
+                PRIMARY KEY (episode_id, sequence),
+                FOREIGN KEY (episode_id, sequence)
+                    REFERENCES events (episode_id, sequence) ON DELETE RESTRICT
+            );
             """
         )
 
@@ -110,6 +128,10 @@ class SQLiteEventStore:
             (episode_id,),
         ).fetchone()
         return int(row[0])
+
+    def _rollback_step_if_active(self) -> None:
+        if self._connection.in_transaction:
+            self._connection.execute("ROLLBACK")
 
     def append_events(
         self, expected_sequence: int, events: Sequence[EventRecord]
@@ -165,6 +187,83 @@ class SQLiteEventStore:
             raise
         return expected_sequence + len(records)
 
+    def append_step(
+        self,
+        expected_sequence: int,
+        source_event: EventRecord,
+        trace_row: TraceRow,
+    ) -> int:
+        """Atomically append one source event and its canonical trace row."""
+
+        assert_capability_allowed(self.manifest, "append_step")
+        self._ensure_writable()
+        if not isinstance(source_event, EventRecord):
+            raise ContractValidationError("append_step requires one EventRecord")
+        if not isinstance(trace_row, TraceRow):
+            raise ContractValidationError("append_step requires one TraceRow")
+        committed_sequence = expected_sequence + 1
+        source_observation = source_event.payload.get("observation")
+        if (
+            source_event.sequence != committed_sequence
+            or trace_row.episode_id != source_event.episode_id
+            or trace_row.step_id != source_event.step_id
+            or trace_row.event_sequence_before != expected_sequence
+            or trace_row.event_sequence_after != committed_sequence
+            or source_observation != trace_row.observation
+        ):
+            raise ContractValidationError(
+                "source event and canonical trace do not describe one atomic step"
+            )
+
+        try:
+            self._connection.execute("BEGIN IMMEDIATE")
+            current = self._current_sequence(source_event.episode_id)
+            if current != expected_sequence:
+                raise SequenceConflictError(
+                    f"expected sequence {expected_sequence}, committed sequence is {current}"
+                )
+            self._connection.execute(
+                """
+                INSERT INTO events (
+                    episode_id, sequence, event_id, schema_version, event_hash, event_json
+                ) VALUES (?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    source_event.episode_id,
+                    source_event.sequence,
+                    source_event.event_id,
+                    source_event.schema_version,
+                    source_event.event_hash,
+                    canonical_json_bytes(source_event),
+                ),
+            )
+            self._connection.execute(
+                """
+                INSERT INTO trace_outbox (
+                    episode_id, sequence, step_id, schema_version, trace_hash, trace_json
+                ) VALUES (?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    trace_row.episode_id,
+                    trace_row.event_sequence_after,
+                    trace_row.step_id,
+                    trace_row.schema_version,
+                    trace_row.trace_hash,
+                    canonical_json_bytes(trace_row.to_dict()),
+                ),
+            )
+            self._connection.execute("COMMIT")
+        except SequenceConflictError:
+            self._rollback_step_if_active()
+            raise
+        except sqlite3.IntegrityError as exc:
+            self._rollback_step_if_active()
+            raise AtomicStepCommitError(str(exc)) from exc
+        except Exception as exc:
+            self._rollback_step_if_active()
+            raise AtomicStepCommitError(str(exc)) from exc
+        return committed_sequence
+
     def read_events(self, episode_id: str, after_sequence: int) -> tuple[EventRecord, ...]:
         assert_capability_allowed(self.manifest, "read_events")
         rows = self._connection.execute(
@@ -194,6 +293,42 @@ class SQLiteEventStore:
                 or record.event_hash != event_hash
             ):
                 raise ContractValidationError("event metadata does not match canonical bytes")
+            records.append(record)
+        return tuple(records)
+
+    def read_trace_rows(
+        self, episode_id: str, after_sequence: int
+    ) -> tuple[TraceRow, ...]:
+        assert_capability_allowed(self.manifest, "read_trace_rows")
+        rows = self._connection.execute(
+            """
+            SELECT episode_id, sequence, step_id, schema_version, trace_hash, trace_json
+            FROM trace_outbox
+            WHERE episode_id = ? AND sequence > ?
+            ORDER BY sequence ASC
+            """,
+            (episode_id, after_sequence),
+        ).fetchall()
+        records = []
+        for (
+            row_episode_id,
+            row_sequence,
+            row_step_id,
+            schema_version,
+            trace_hash,
+            trace_json,
+        ) in rows:
+            record = TraceRow.from_dict(json.loads(bytes(trace_json).decode("utf-8")))
+            if (
+                record.episode_id != row_episode_id
+                or record.event_sequence_after != row_sequence
+                or record.step_id != row_step_id
+                or record.schema_version != schema_version
+                or record.trace_hash != trace_hash
+            ):
+                raise ContractValidationError(
+                    "trace metadata does not match canonical bytes"
+                )
             records.append(record)
         return tuple(records)
 

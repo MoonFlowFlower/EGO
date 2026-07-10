@@ -20,7 +20,12 @@ from .events import (
     state_transition_event,
     verify_event_sequence,
 )
-from .ports import EventStorePort, PolicyPort, TraceSinkPort
+from .ports import (
+    EventStorePort,
+    PolicyPort,
+    PostCommitTraceDeliveryError,
+    TraceSinkPort,
+)
 from .state import apply_observation
 from .trace import TraceRow, build_trace_row, validate_action_removed_trace
 
@@ -160,7 +165,7 @@ def execute_observation(
     code_path_hash: str,
     contract_hash: str,
 ) -> StepComputation:
-    """Compute, transactionally persist the source event, then emit the trace."""
+    """Atomically persist source event plus trace, then deliver a trace copy."""
 
     step = compute_step(
         state=state,
@@ -172,12 +177,22 @@ def execute_observation(
         code_path_hash=code_path_hash,
         contract_hash=contract_hash,
     )
-    committed = event_store.append_events(expected_sequence, (step.source_event,))
+    committed = event_store.append_step(
+        expected_sequence, step.source_event, step.trace_row
+    )
     if committed != expected_sequence + 1:
         raise ContractValidationError(
             f"EventStorePort returned sequence {committed}, expected {expected_sequence + 1}"
         )
-    trace_sink.append(step.trace_row)
+    try:
+        trace_sink.append(step.trace_row)
+    except Exception as exc:
+        raise PostCommitTraceDeliveryError(
+            episode_id=step.observation.episode_id,
+            step_id=step.observation.step_id,
+            committed_sequence=committed,
+            trace_hash=step.trace_row.trace_hash,
+        ) from exc
     return step
 
 

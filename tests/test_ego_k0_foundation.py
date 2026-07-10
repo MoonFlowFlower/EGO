@@ -9,7 +9,7 @@ import sqlite3
 import subprocess
 import sys
 from types import MappingProxyType
-from typing import Any
+from typing import Any, Mapping
 
 import pytest
 
@@ -31,6 +31,7 @@ from ego_k0_kernel import (  # noqa: E402
     HashMismatchError,
     KernelStateRecord,
     ObservationRecord,
+    PostCommitTraceDeliveryError,
     SchemaVersionError,
     TraceRow,
     canonical_hash,
@@ -46,18 +47,30 @@ from ego_k0_kernel.ports import (  # noqa: E402
     validate_adapter_manifest,
 )
 from scripts.ego_k0_adapters.sqlite_event_store import (  # noqa: E402
+    AtomicStepCommitError,
     DuplicateRecordError,
     SequenceConflictError,
     SQLiteEventStore,
     WritesFrozenError,
 )
+import scripts.run_ego_k0_foundation_validation as foundation_runner  # noqa: E402
 from scripts.run_ego_k0_foundation_validation import (  # noqa: E402
     CLAIM_CEILING,
+    REQUIRED_FORMAL_GATE_NAMES,
     TASK_ID,
     CollectingTraceSink,
     DeterministicProbePolicy,
     _checkpoint,
     _observation,
+    _require_clean_repo,
+    _require_direct_child,
+    _require_exact_changed_paths,
+    _verify_canonical_route_index,
+    _verify_git_object_pin,
+    _verify_git_working_file,
+    _verify_itl_authority,
+    resolve_foundation_verdict,
+    run_evidence_producer,
     run_validation,
     scan_forbidden_package_imports,
 )
@@ -225,6 +238,33 @@ def test_validation_runner_executes_two_fresh_replays_and_computed_provenance(
     assert report["official_evidence_bank"] is False
     assert report["claim_ceiling"] == CLAIM_CEILING
     assert all(item["ok"] for item in report["per_gate_outcomes"].values())
+    original_gate_names = {
+        "typed_schema_contracts",
+        "canonical_fresh_process_stability",
+        "restart_recovery",
+        "fresh_process_replay_x2",
+        "mid_chain_checkpoint_resume",
+        "stored_action_removal_recomputes",
+        "event_tamper_positive_control",
+        "sqlite_metadata_tamper_positive_controls",
+        "corrupt_state_trace_hash_positive_controls",
+        "nested_trace_schema_positive_control",
+        "freeze_writes_intervention",
+        "sequence_duplicate_fail_closed",
+        "package_import_leakage_scan",
+        "forbidden_input_leakage_positive_controls",
+        "import_without_cli_side_effect_free",
+        "adapter_capability_fail_closed",
+        "byte_independent_store_records",
+        "trace_sink_no_same_round_feedback",
+    }
+    assert len(original_gate_names) == 18
+    assert original_gate_names.issubset(report["per_gate_outcomes"])
+    assert {
+        "canonical_transactional_trace_outbox",
+        "atomic_second_write_rollback",
+        "post_commit_trace_delivery_recovery",
+    }.issubset(report["per_gate_outcomes"])
     assert report["per_gate_outcomes"]["fresh_process_replay_x2"]["ok"]
     for key in (
         "producer_function",
@@ -436,3 +476,830 @@ def test_trace_sink_copy_cannot_feed_back_into_same_round(tmp_path: Path) -> Non
     assert result.state_after.state_hash != "mutated-sink-copy"
     assert result.proposal.selected_action_id != "mutated"
     assert result.trace_row.state_after_hash == result.state_after.state_hash
+
+
+def test_atomic_step_rolls_back_event_and_trace_when_second_write_fails(
+    tmp_path: Path,
+) -> None:
+    database = tmp_path / "atomic-second-write.sqlite3"
+    with SQLiteEventStore(database):
+        pass
+    connection = sqlite3.connect(str(database))
+    try:
+        connection.execute(
+            """
+            CREATE TRIGGER force_trace_outbox_failure
+            BEFORE INSERT ON trace_outbox
+            BEGIN
+                SELECT RAISE(ROLLBACK, 'forced second write failure');
+            END;
+            """
+        )
+        connection.commit()
+    finally:
+        connection.close()
+
+    episode_id = "atomic-rollback-episode"
+    sink = CollectingTraceSink()
+    with SQLiteEventStore(database) as store:
+        with pytest.raises(AtomicStepCommitError) as captured:
+            execute_observation(
+                state=initial_state(episode_id, seed=101),
+                observation=_observation(episode_id, 1),
+                policy=DeterministicProbePolicy(),
+                event_store=store,
+                trace_sink=sink,
+                expected_sequence=0,
+                task_id=TASK_ID,
+                run_id="atomic-rollback-test",
+                code_path_hash="a" * 64,
+                contract_hash="b" * 64,
+            )
+        assert captured.value.committed is False
+        assert store.read_events(episode_id, 0) == ()
+        assert store.read_trace_rows(episode_id, 0) == ()
+    assert sink.rows == []
+
+
+def test_atomic_step_wraps_non_integrity_second_write_failure_as_not_committed(
+    tmp_path: Path,
+) -> None:
+    database = tmp_path / "atomic-operational-failure.sqlite3"
+    with SQLiteEventStore(database):
+        pass
+    connection = sqlite3.connect(str(database))
+    try:
+        connection.execute(
+            """
+            CREATE TRIGGER force_trace_outbox_operational_failure
+            BEFORE INSERT ON trace_outbox
+            BEGIN
+                SELECT no_such_function();
+            END;
+            """
+        )
+        connection.commit()
+    finally:
+        connection.close()
+
+    episode_id = "atomic-operational-failure-episode"
+    with SQLiteEventStore(database) as store:
+        with pytest.raises(AtomicStepCommitError) as captured:
+            execute_observation(
+                state=initial_state(episode_id, seed=102),
+                observation=_observation(episode_id, 1),
+                policy=DeterministicProbePolicy(),
+                event_store=store,
+                trace_sink=CollectingTraceSink(),
+                expected_sequence=0,
+                task_id=TASK_ID,
+                run_id="atomic-operational-failure-test",
+                code_path_hash="a" * 64,
+                contract_hash="b" * 64,
+            )
+        assert isinstance(captured.value.__cause__, sqlite3.OperationalError)
+        assert captured.value.committed is False
+        assert store.read_events(episode_id, 0) == ()
+        assert store.read_trace_rows(episode_id, 0) == ()
+
+
+def test_throwing_sink_exposes_committed_receipt_recovery_replay_and_retry_guard(
+    tmp_path: Path,
+) -> None:
+    class ThrowingSink:
+        def append(self, row: TraceRow) -> None:
+            raise RuntimeError(f"forced sink failure for {row.trace_hash}")
+
+    database = tmp_path / "throwing-sink.sqlite3"
+    episode_id = "throwing-sink-episode"
+    state = initial_state(episode_id, seed=103)
+    observation = _observation(episode_id, 1)
+    initial = _checkpoint(state, 0, "throwing-sink")
+    with SQLiteEventStore(database) as store:
+        with pytest.raises(PostCommitTraceDeliveryError) as captured:
+            execute_observation(
+                state=state,
+                observation=observation,
+                policy=DeterministicProbePolicy(),
+                event_store=store,
+                trace_sink=ThrowingSink(),
+                expected_sequence=0,
+                task_id=TASK_ID,
+                run_id="throwing-sink-test",
+                code_path_hash="a" * 64,
+                contract_hash="b" * 64,
+            )
+        receipt = captured.value
+        events = store.read_events(episode_id, 0)
+        traces = store.read_trace_rows(episode_id, 0)
+        with pytest.raises(SequenceConflictError):
+            execute_observation(
+                state=state,
+                observation=observation,
+                policy=DeterministicProbePolicy(),
+                event_store=store,
+                trace_sink=CollectingTraceSink(),
+                expected_sequence=0,
+                task_id=TASK_ID,
+                run_id="throwing-sink-retry-test",
+                code_path_hash="a" * 64,
+                contract_hash="b" * 64,
+            )
+    assert isinstance(receipt.__cause__, RuntimeError)
+    assert receipt.committed is True
+    assert receipt.committed_sequence == 1
+    assert receipt.step_id == 1
+    assert len(events) == len(traces) == 1
+    assert receipt.trace_hash == traces[0].trace_hash
+    replay = replay_from_checkpoint(
+        checkpoint=initial,
+        events=events,
+        policy=DeterministicProbePolicy(),
+        task_id=TASK_ID,
+        run_id="throwing-sink-recovery-replay",
+        code_path_hash="a" * 64,
+        contract_hash="b" * 64,
+        context_ids=("throwing_sink_recovery",),
+        expected_traces=[traces[0].to_dict()],
+    )
+    assert replay.ok
+
+
+def test_formal_verdict_resolver_uses_computed_pass_fail_and_detector_mutations() -> None:
+    passing = {name: {"ok": True} for name in REQUIRED_FORMAL_GATE_NAMES}
+    for detector, fields in foundation_runner.DETECTOR_POSITIVE_CONTROL_FIELDS.items():
+        passing[detector].update({field: True for field in fields})
+    assert resolve_foundation_verdict(passing) == "foundation_engineering_pass"
+    missing_gate = dict(passing)
+    missing_gate.pop("restart_recovery")
+    assert resolve_foundation_verdict(missing_gate) == (
+        "foundation_engineering_fail_missing_gate_restart_recovery"
+    )
+
+    ordinary_failure = {**passing, "typed_schema_contracts": {"ok": False}}
+    assert resolve_foundation_verdict(ordinary_failure) == (
+        "foundation_engineering_fail_typed_schema_contracts"
+    )
+
+    blind_detector = {
+        **ordinary_failure,
+        "event_tamper_positive_control": {"ok": False, "detector_fired": False},
+    }
+    assert resolve_foundation_verdict(blind_detector) == (
+        "foundation_instrument_invalid_event_tamper_positive_control"
+    )
+
+    inconsistent_blind_detector = {
+        **passing,
+        "event_tamper_positive_control": {"ok": True, "detector_fired": False},
+    }
+    assert resolve_foundation_verdict(inconsistent_blind_detector) == (
+        "foundation_instrument_invalid_event_tamper_positive_control"
+    )
+
+    live_detector_with_engineering_failure = {
+        **passing,
+        "package_import_leakage_scan": {
+            "ok": False,
+            "actual_scan_clean": False,
+            "positive_control_fired": True,
+        },
+    }
+    assert resolve_foundation_verdict(live_detector_with_engineering_failure) == (
+        "foundation_engineering_fail_package_import_leakage_scan"
+    )
+
+
+def test_callable_gate_mutations_rerun_validation_and_drive_resolver(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    with monkeypatch.context() as ordinary_mutation:
+        ordinary_mutation.setattr(
+            foundation_runner,
+            "_typed_contract_gate",
+            lambda: {"ok": False, "forced_mutation": "typed_contract_gate"},
+        )
+        ordinary_report = run_validation(
+            output_dir=tmp_path / "ordinary-gate-mutation",
+            run_id="ordinary-gate-mutation",
+        )
+    assert ordinary_report["task_local_implementation_acceptance"] is False
+    assert resolve_foundation_verdict(ordinary_report["per_gate_outcomes"]) == (
+        "foundation_engineering_fail_typed_schema_contracts"
+    )
+
+    with monkeypatch.context() as detector_mutation:
+        detector_mutation.setattr(
+            foundation_runner,
+            "_import_leakage_gate",
+            lambda: {
+                "ok": False,
+                "actual_findings": [],
+                "actual_scan_clean": True,
+                "positive_control_fired": False,
+                "positive_control_findings": [],
+                "forced_mutation": "blind_positive_control",
+            },
+        )
+        detector_report = run_validation(
+            output_dir=tmp_path / "detector-gate-mutation",
+            run_id="detector-gate-mutation",
+        )
+    assert detector_report["task_local_implementation_acceptance"] is False
+    assert resolve_foundation_verdict(detector_report["per_gate_outcomes"]) == (
+        "foundation_instrument_invalid_package_import_leakage_scan"
+    )
+
+
+def _git_command(repo: Path, *args: str) -> str:
+    return subprocess.check_output(
+        ["git", "-C", str(repo), *args], text=True
+    ).strip()
+
+
+def _init_git_fixture(
+    tmp_path: Path,
+    relative_path: str,
+    content: str,
+    *,
+    autocrlf: str = "false",
+    suffix: str = "",
+) -> tuple[Path, str]:
+    identity = f"{relative_path}:{suffix}"
+    repo = tmp_path / f"git-fixture-{hashlib.sha256(identity.encode()).hexdigest()[:8]}"
+    repo.mkdir()
+    subprocess.run(["git", "-C", str(repo), "init", "-q"], check=True)
+    subprocess.run(
+        ["git", "-C", str(repo), "config", "user.email", "fixture@example.invalid"],
+        check=True,
+    )
+    subprocess.run(
+        ["git", "-C", str(repo), "config", "user.name", "Fixture"], check=True
+    )
+    subprocess.run(
+        ["git", "-C", str(repo), "config", "core.autocrlf", autocrlf], check=True
+    )
+    path = repo / Path(relative_path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(content.encode("utf-8"))
+    subprocess.run(["git", "-C", str(repo), "add", "--", relative_path], check=True)
+    subprocess.run(
+        ["git", "-C", str(repo), "commit", "-q", "-m", "fixture"], check=True
+    )
+    head = _git_command(repo, "rev-parse", "HEAD")
+    path.write_bytes(
+        subprocess.check_output(["git", "-C", str(repo), "show", f"{head}:{relative_path}"])
+    )
+    return repo, head
+
+
+def _commit_fixture_files(repo: Path, files: Mapping[str, str], message: str) -> str:
+    for relative_path, content in files.items():
+        path = repo / Path(relative_path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(content.encode("utf-8"))
+    subprocess.run(
+        ["git", "-C", str(repo), "add", "--", *files.keys()], check=True
+    )
+    subprocess.run(
+        ["git", "-C", str(repo), "commit", "-q", "-m", message], check=True
+    )
+    return _git_command(repo, "rev-parse", "HEAD")
+
+
+def test_git_provenance_helpers_fail_closed_on_wrong_parent_untracked_and_semantic_change(
+    tmp_path: Path,
+) -> None:
+    repo, head = _init_git_fixture(tmp_path, "source.py", "print('clean')\n")
+    (repo / "second.txt").write_text("second\n", encoding="utf-8")
+    subprocess.run(["git", "-C", str(repo), "add", "--", "second.txt"], check=True)
+    subprocess.run(
+        ["git", "-C", str(repo), "commit", "-q", "-m", "second"], check=True
+    )
+    head = _git_command(repo, "rev-parse", "HEAD")
+    _require_clean_repo(repo)
+    verified_file = _verify_git_working_file(repo, "source.py", head=head)
+    assert verified_file["raw_sha256_parity"] is True
+    with pytest.raises(foundation_runner.EvidenceProvenanceError, match="wrong direct parent"):
+        _require_direct_child(repo, head, "0" * 40)
+
+    (repo / "dirty.txt").write_text("dirty\n", encoding="utf-8")
+    with pytest.raises(foundation_runner.EvidenceProvenanceError, match="dirty"):
+        _require_clean_repo(repo)
+    (repo / "dirty.txt").unlink()
+
+    (repo / "source.py").write_text("print('tampered')\n", encoding="utf-8")
+    with pytest.raises(
+        foundation_runner.EvidenceProvenanceError, match="working bytes"
+    ):
+        _verify_git_working_file(repo, "source.py", head=head)
+
+
+def test_git_eol_materialization_uses_clean_filter_parity_and_rejects_semantic_change(
+    tmp_path: Path,
+) -> None:
+    repo, head = _init_git_fixture(
+        tmp_path,
+        "source.py",
+        "print('clean')\n",
+        autocrlf="true",
+        suffix="eol",
+    )
+    source = repo / "source.py"
+    canonical_bytes = subprocess.check_output(
+        ["git", "-C", str(repo), "show", f"{head}:source.py"]
+    )
+    assert b"\r\n" not in canonical_bytes
+
+    source.write_bytes(canonical_bytes.replace(b"\n", b"\r\n"))
+    semantic_status = _require_clean_repo(repo)
+    verified = _verify_git_working_file(repo, "source.py", head=head)
+    assert semantic_status["index_semantically_clean"] is True
+    assert semantic_status["worktree_semantically_clean"] is True
+    assert verified["hash_object_parity"] is True
+    assert verified["raw_sha256_parity"] is False
+    assert verified["working_representation_differs"] is True
+    assert verified["raw_working_sha256"] != verified["canonical_git_blob_sha256"]
+
+    source.write_bytes(b"print('semantic mutation')\r\n")
+    with pytest.raises(
+        foundation_runner.EvidenceProvenanceError, match="working bytes"
+    ):
+        _verify_git_working_file(repo, "source.py", head=head)
+    with pytest.raises(foundation_runner.EvidenceProvenanceError, match="dirty"):
+        _require_clean_repo(repo)
+
+
+def test_direct_child_requires_exactly_one_parent(tmp_path: Path) -> None:
+    repo, root = _init_git_fixture(
+        tmp_path, "base.txt", "base\n", suffix="parents"
+    )
+    child = _commit_fixture_files(repo, {"child.txt": "child\n"}, "child")
+    _require_direct_child(repo, child, root)
+    with pytest.raises(foundation_runner.EvidenceProvenanceError, match="wrong direct parent"):
+        _require_direct_child(repo, child, "0" * 40)
+
+    tree = _git_command(repo, "rev-parse", f"{child}^{{tree}}")
+    merge = subprocess.check_output(
+        [
+            "git",
+            "-C",
+            str(repo),
+            "commit-tree",
+            tree,
+            "-p",
+            child,
+            "-p",
+            root,
+        ],
+        input="synthetic merge\n",
+        text=True,
+    ).strip()
+    with pytest.raises(foundation_runner.EvidenceProvenanceError, match="wrong direct parent"):
+        _require_direct_child(repo, merge, child)
+
+
+def test_intermediate_topology_paths_object_pins_and_canonical_index_fail_closed(
+    tmp_path: Path,
+) -> None:
+    repo, base = _init_git_fixture(
+        tmp_path, "base.txt", "base\n", suffix="route-scope"
+    )
+    route_paths = {
+        "docs/task/ADDENDUM.md": "# addendum\n",
+        "docs/task/SCOPE.yaml": "scope: exact\n",
+        "docs/TASK_LANE_INDEX.md": "# canonical index\n",
+    }
+    intermediate = _commit_fixture_files(repo, route_paths, "intermediate")
+    final = _commit_fixture_files(repo, {"producer.py": "print('final')\n"}, "final")
+    _require_direct_child(repo, intermediate, base)
+    _require_direct_child(repo, final, intermediate)
+    _require_exact_changed_paths(
+        repo,
+        intermediate,
+        tuple(route_paths),
+        label="route/provenance scope-repair commit",
+    )
+    with pytest.raises(foundation_runner.EvidenceProvenanceError, match="path set drifted"):
+        _require_exact_changed_paths(
+            repo,
+            intermediate,
+            (*route_paths, "unexpected.txt"),
+            label="route/provenance scope-repair commit",
+        )
+    drift_commit = _commit_fixture_files(
+        repo, {"unexpected.txt": "unexpected path\n"}, "intermediate path drift"
+    )
+    with pytest.raises(foundation_runner.EvidenceProvenanceError, match="path set drifted"):
+        _require_exact_changed_paths(
+            repo,
+            drift_commit,
+            tuple(route_paths),
+            label="route/provenance scope-repair commit",
+        )
+    with pytest.raises(foundation_runner.EvidenceProvenanceError, match="wrong direct parent"):
+        _require_direct_child(repo, final, base)
+    with pytest.raises(foundation_runner.EvidenceProvenanceError, match="wrong direct parent"):
+        _require_direct_child(repo, intermediate, "0" * 40)
+
+    pins = []
+    for path in route_paths:
+        raw = subprocess.check_output(
+            ["git", "-C", str(repo), "show", f"{intermediate}:{path}"]
+        )
+        pins.append(
+            {
+                "commit": intermediate,
+                "path": path,
+                "blob": _git_command(repo, "rev-parse", f"{intermediate}:{path}"),
+                "sha256": hashlib.sha256(raw).hexdigest(),
+            }
+        )
+    for pin in pins:
+        verified = _verify_git_object_pin(
+            repo,
+            head=final,
+            commit=intermediate,
+            path=pin["path"],
+            expected_blob=pin["blob"],
+            expected_sha256=pin["sha256"],
+        )
+        assert verified["ancestor_of_head"] is True
+        with pytest.raises(foundation_runner.EvidenceProvenanceError, match="pin mismatch"):
+            _verify_git_object_pin(
+                repo,
+                head=final,
+                commit=intermediate,
+                path=pin["path"],
+                expected_blob="0" * 40,
+                expected_sha256=pin["sha256"],
+            )
+
+    index_pin = next(
+        item for item in pins if item["path"] == "docs/TASK_LANE_INDEX.md"
+    )
+    index = _verify_canonical_route_index(
+        repo,
+        head=final,
+        intermediate_commit=intermediate,
+        pin=index_pin,
+        renderer=lambda: route_paths["docs/TASK_LANE_INDEX.md"],
+    )
+    assert index["renderer_matches_pinned_bytes"] is True
+    with pytest.raises(foundation_runner.EvidenceProvenanceError, match="renderer output"):
+        _verify_canonical_route_index(
+            repo,
+            head=final,
+            intermediate_commit=intermediate,
+            pin=index_pin,
+            renderer=lambda: "# tampered renderer output\n",
+        )
+    with pytest.raises(foundation_runner.EvidenceProvenanceError, match="intermediate commit"):
+        _verify_canonical_route_index(
+            repo,
+            head=final,
+            intermediate_commit=base,
+            pin=index_pin,
+            renderer=lambda: route_paths["docs/TASK_LANE_INDEX.md"],
+        )
+    tampered_head = _commit_fixture_files(
+        repo,
+        {"docs/TASK_LANE_INDEX.md": "# committed index tamper\n"},
+        "tamper canonical index",
+    )
+    with pytest.raises(foundation_runner.EvidenceProvenanceError, match="no longer inherits"):
+        _verify_canonical_route_index(
+            repo,
+            head=tampered_head,
+            intermediate_commit=intermediate,
+            pin=index_pin,
+            renderer=lambda: route_paths["docs/TASK_LANE_INDEX.md"],
+        )
+
+
+def test_card_object_pin_fails_closed_on_wrong_blob_and_ancestry(tmp_path: Path) -> None:
+    repo, head = _init_git_fixture(tmp_path, "card.md", "# card\n")
+    blob = _git_command(repo, "rev-parse", f"{head}:card.md")
+    raw = subprocess.check_output(["git", "-C", str(repo), "show", f"{head}:card.md"])
+    sha256 = hashlib.sha256(raw).hexdigest()
+    verified = _verify_git_object_pin(
+        repo,
+        head=head,
+        commit=head,
+        path="card.md",
+        expected_blob=blob,
+        expected_sha256=sha256,
+    )
+    assert verified["ancestor_of_head"] is True
+    with pytest.raises(foundation_runner.EvidenceProvenanceError, match="pin mismatch"):
+        _verify_git_object_pin(
+            repo,
+            head=head,
+            commit=head,
+            path="card.md",
+            expected_blob="0" * 40,
+            expected_sha256=sha256,
+        )
+    with pytest.raises(foundation_runner.EvidenceProvenanceError, match="not an ancestor"):
+        _verify_git_object_pin(
+            repo,
+            head="0" * 40,
+            commit=head,
+            path="card.md",
+            expected_blob=blob,
+            expected_sha256=sha256,
+        )
+
+
+def _foundation_route_payload() -> dict[str, Any]:
+    blocked = {
+        "ITL-K0-H0-H1-INSTRUMENT-001A:H0": False,
+        "EGO-K0-REFERENCE-KERNEL-001A": False,
+        "ITL-K0-H0-H1-INSTRUMENT-001A:H1": False,
+        "K0-IMMUTABLE-FREEZE-001A": False,
+        "ITL-K0-FORMAL-EVIDENCE-001A": False,
+    }
+    return {
+        "implementation_authorized": True,
+        "authorized_implementation_targets": [TASK_ID],
+        "authorizations": {"foundation_implementation": True, "formal_run": False},
+        "child_authorizations": {TASK_ID: True, **blocked},
+        "current_state": "READY_TO_IMPLEMENT",
+    }
+
+
+def _itl_fixture(
+    tmp_path: Path, *, suffix: str, route: Mapping[str, Any] | None = None
+) -> tuple[Path, str, str, dict[str, str]]:
+    route_path = (
+        "artifacts/ROUTE-STATE-MACHINE-001A/routes/"
+        "K0-DUAL-TRACK-SUPERSESSION-001A/state.json"
+    )
+    route_text = json.dumps(route or _foundation_route_payload(), sort_keys=True) + "\n"
+    repo, authority_commit = _init_git_fixture(
+        tmp_path, route_path, route_text, suffix=suffix
+    )
+    canonical = subprocess.check_output(
+        ["git", "-C", str(repo), "show", f"{authority_commit}:{route_path}"]
+    )
+    pins = {
+        "authority_commit": authority_commit,
+        "route_path": route_path,
+        "route_blob": _git_command(repo, "rev-parse", f"{authority_commit}:{route_path}"),
+        "route_sha256": hashlib.sha256(canonical).hexdigest(),
+    }
+    return repo, authority_commit, route_path, pins
+
+
+def test_itl_authority_accepts_unrelated_descendant_and_untracked_context(
+    tmp_path: Path,
+) -> None:
+    repo, authority_commit, _, pins = _itl_fixture(
+        tmp_path, suffix="unrelated-context"
+    )
+    initial = _verify_itl_authority(repo, pins)
+    descendant = _commit_fixture_files(
+        repo, {"docs/unrelated.md": "unrelated descendant\n"}, "unrelated descendant"
+    )
+    untracked = repo / "docs" / "codex" / "tasks" / "UNRELATED.md"
+    untracked.parent.mkdir(parents=True, exist_ok=True)
+    untracked.write_text("unrelated untracked\n", encoding="utf-8")
+    verified = _verify_itl_authority(repo, pins)
+    assert verified["authority_commit"] == authority_commit
+    assert verified["live_head"] == descendant
+    assert verified["authority_commit_ancestor_of_live_head"] is True
+    assert verified["live_route_blob"] == pins["route_blob"]
+    assert "docs/codex/tasks/UNRELATED.md" in verified["unrelated_untracked_paths"]
+    assert canonical_hash(verified["authority_hash_material"]) == canonical_hash(
+        initial["authority_hash_material"]
+    )
+    with pytest.raises(foundation_runner.EvidenceProvenanceError, match="path/blob parity"):
+        _verify_itl_authority(repo, {**pins, "route_blob": "0" * 40})
+
+
+def test_itl_authority_rejects_nonancestor_live_route_change_and_dirty_path(
+    tmp_path: Path,
+) -> None:
+    repo, authority_commit, route_path, pins = _itl_fixture(
+        tmp_path, suffix="authority-mutations"
+    )
+    tree = _git_command(repo, "rev-parse", f"{authority_commit}^{{tree}}")
+    unrelated_root = subprocess.check_output(
+        ["git", "-C", str(repo), "commit-tree", tree],
+        input="unrelated root\n",
+        text=True,
+    ).strip()
+    with pytest.raises(
+        foundation_runner.EvidenceProvenanceError, match="not an ancestor"
+    ):
+        _verify_itl_authority(
+            repo, {**pins, "authority_commit": unrelated_root}
+        )
+
+    changed_route = _foundation_route_payload()
+    changed_route["route_id"] = "semantic-route-change"
+    _commit_fixture_files(
+        repo,
+        {route_path: json.dumps(changed_route, sort_keys=True) + "\n"},
+        "change live route",
+    )
+    with pytest.raises(
+        foundation_runner.EvidenceProvenanceError, match="path/blob parity"
+    ):
+        _verify_itl_authority(repo, pins)
+
+    dirty_repo, dirty_commit, dirty_path, dirty_pins = _itl_fixture(
+        tmp_path, suffix="dirty-authority"
+    )
+    canonical = subprocess.check_output(
+        ["git", "-C", str(dirty_repo), "show", f"{dirty_commit}:{dirty_path}"]
+    )
+    (dirty_repo / dirty_path).write_bytes(canonical + b"semantic working mutation\n")
+    with pytest.raises(
+        foundation_runner.EvidenceProvenanceError, match="path/blob parity"
+    ):
+        _verify_itl_authority(dirty_repo, dirty_pins)
+    (dirty_repo / dirty_path).write_bytes(canonical + b"semantic staged mutation\n")
+    subprocess.run(
+        ["git", "-C", str(dirty_repo), "add", "--", dirty_path], check=True
+    )
+    with pytest.raises(
+        foundation_runner.EvidenceProvenanceError, match="path/blob parity"
+    ):
+        _verify_itl_authority(dirty_repo, dirty_pins)
+
+
+def test_itl_authority_parses_pinned_object_and_rejects_non_foundation_authority(
+    tmp_path: Path,
+) -> None:
+    invalid_route = _foundation_route_payload()
+    invalid_route["authorizations"]["formal_run"] = True
+    repo, _, _, pins = _itl_fixture(
+        tmp_path, suffix="non-foundation", route=invalid_route
+    )
+    with pytest.raises(
+        foundation_runner.EvidenceProvenanceError, match="Foundation-only"
+    ):
+        _verify_itl_authority(repo, pins)
+
+
+def test_evidence_producer_exception_always_writes_machine_failure_files(
+    tmp_path: Path,
+) -> None:
+    output = tmp_path / "producer-exception"
+
+    def provenance_stub(**_: Any) -> dict[str, Any]:
+        return {"execution_authority_hash": "a" * 64, "verified": True}
+
+    def throwing_validation(**_: Any) -> dict[str, Any]:
+        raise RuntimeError("forced producer exception")
+
+    result = run_evidence_producer(
+        output_dir=output,
+        run_id="producer-exception-test",
+        official=False,
+        validation_producer=throwing_validation,
+        provenance_producer=provenance_stub,
+    )
+    assert result["producer_completed"] is False
+    assert result["official_evidence_bank"] is False
+    stored_result = json.loads((output / "result.json").read_text(encoding="utf-8"))
+    failure = json.loads((output / "failure_manifest.json").read_text(encoding="utf-8"))
+    assert stored_result["candidate_verdict"] == (
+        "foundation_engineering_fail_producer_computed_gates"
+    )
+    assert failure["exception_type"] == "RuntimeError"
+    assert failure["phase"] == "computed_gates"
+
+
+def test_evidence_producer_setup_exception_writes_machine_failure_files(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    output = tmp_path / "producer-setup-exception"
+    monkeypatch.setattr(
+        foundation_runner,
+        "_code_path_hash",
+        lambda: (_ for _ in ()).throw(RuntimeError("forced setup exception")),
+    )
+    result = run_evidence_producer(
+        output_dir=output,
+        run_id="producer-setup-exception-test",
+        official=False,
+        provenance_producer=lambda **_: {
+            "execution_authority_hash": "a" * 64,
+            "verified": True,
+        },
+    )
+    failure = json.loads((output / "failure_manifest.json").read_text(encoding="utf-8"))
+    assert result["candidate_verdict"] == (
+        "foundation_engineering_fail_producer_producer_setup"
+    )
+    assert result["code_path_hash"] == "UNAVAILABLE_DUE_TO_PRODUCER_SETUP_FAILURE"
+    assert failure["phase"] == "producer_setup"
+    assert failure["exception_type"] == "RuntimeError"
+
+
+def test_official_producer_rejects_injected_computation_paths(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    output = tmp_path / "official-injection-refusal"
+    monkeypatch.setattr(foundation_runner, "OFFICIAL_OUTPUT_DIR", output)
+    result = run_evidence_producer(
+        output_dir=output,
+        run_id="official-injection-refusal-test",
+        official=True,
+        validation_producer=lambda **_: {"per_gate_outcomes": {}},
+        provenance_producer=lambda **_: {
+            "execution_authority_hash": "a" * 64,
+            "verified": True,
+        },
+    )
+    assert result["producer_completed"] is False
+    assert result["official_evidence_bank"] is False
+    assert result["candidate_verdict"] == (
+        "foundation_engineering_fail_producer_producer_setup"
+    )
+    failure = json.loads((output / "failure_manifest.json").read_text(encoding="utf-8"))
+    assert failure["exception_type"] == "EvidenceProvenanceError"
+    assert "forbids injected" in failure["exception_message"]
+
+
+def test_wrong_official_target_writes_machine_failure_without_adjudication(
+    tmp_path: Path,
+) -> None:
+    output = tmp_path / "wrong-official-target"
+    result = run_evidence_producer(
+        output_dir=output,
+        run_id="wrong-official-target-test",
+        official=True,
+    )
+    assert result["producer_completed"] is False
+    assert result["official_evidence_bank"] is False
+    assert result["candidate_verdict"] == (
+        "foundation_engineering_fail_producer_producer_setup"
+    )
+    stored = json.loads((output / "result.json").read_text(encoding="utf-8"))
+    failure = json.loads((output / "failure_manifest.json").read_text(encoding="utf-8"))
+    assert stored["verdict"] == "NOT_ADJUDICATED_PRODUCER_FAILURE"
+    assert stored["foundation_task_final_acceptance"] == "NOT_ADJUDICATED"
+    assert failure["phase"] == "producer_setup"
+    assert "official evidence target must be" in failure["exception_message"]
+
+
+def test_evidence_producer_trial_resolves_callable_gates_and_is_not_official(
+    tmp_path: Path,
+) -> None:
+    output = tmp_path / "producer-trial"
+
+    def provenance_stub(**_: Any) -> dict[str, Any]:
+        return {"execution_authority_hash": "b" * 64, "verified": True}
+
+    def validation_stub(*, output_dir: Path, run_id: str) -> dict[str, Any]:
+        output_dir.mkdir(parents=True)
+        gates = {
+            name: {"ok": True, "producer": "validation_stub"}
+            for name in REQUIRED_FORMAL_GATE_NAMES
+        }
+        for detector, fields in foundation_runner.DETECTOR_POSITIVE_CONTROL_FIELDS.items():
+            gates[detector].update({field: True for field in fields})
+        return {
+            "episode_ids": ["trial-episode"],
+            "context_ids": ["trial-context"],
+            "seed_context": {"seed": 1, "used": True},
+            "code_path_hash": "c" * 64,
+            "contract_hashes": {"trial": "d" * 64},
+            "input_artifact_hashes": {"trial": "e" * 64},
+            "per_gate_outcomes": gates,
+            "run_id": run_id,
+        }
+
+    result = run_evidence_producer(
+        output_dir=output,
+        run_id="producer-trial-test",
+        official=False,
+        validation_producer=validation_stub,
+        provenance_producer=provenance_stub,
+    )
+    assert result["candidate_verdict"] == "foundation_engineering_pass"
+    assert result["verdict"] == "NOT_ADJUDICATED_TRIAL"
+    assert result["foundation_task_final_acceptance"] == "NOT_ADJUDICATED"
+    assert result["official_evidence_bank"] is False
+    assert (output / "result.json").is_file()
+
+
+def test_official_producer_refuses_existing_output_without_overwrite(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    output = tmp_path / "already-exists"
+    output.mkdir()
+    sentinel = output / "sentinel.txt"
+    sentinel.write_text("preserve", encoding="utf-8")
+    monkeypatch.setattr(foundation_runner, "OFFICIAL_OUTPUT_DIR", output)
+    with pytest.raises(foundation_runner.OutputTargetExistsError, match="will not be overwritten"):
+        run_evidence_producer(
+            output_dir=output,
+            run_id="official-overwrite-refusal",
+            official=True,
+        )
+    assert sentinel.read_text(encoding="utf-8") == "preserve"
+    assert sorted(item.name for item in output.iterdir()) == ["sentinel.txt"]
