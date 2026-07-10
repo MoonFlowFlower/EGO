@@ -1,0 +1,51 @@
+schema_version: codex.mutation_scope.v1
+task: ego-k0-foundation-evidence-atomicity-correction-001a
+expected_mutation_surface:
+  - additive correction card bank for Foundation persistence and evidence-producer gaps
+  - atomic source-event plus canonical-trace SQLite outbox implementation
+  - typed post-commit non-authoritative trace-delivery error and recovery readback
+  - callable formal provenance verification and verdict adjudication without an official run
+  - focused regression and mutation coverage in the existing Foundation test file
+  - no program-state, evidence-ledger, task-board, runtime, mainline, ITL, artifact-bank, or publication mutation
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-k0-foundation-evidence-atomicity-correction-001a/STAGE_CARD.md
+  - docs/codex/tasks/ego-k0-foundation-evidence-atomicity-correction-001a/MUTATION_SCOPE.yaml
+  - docs/codex/tasks/ego-k0-foundation-evidence-atomicity-correction-001a/ATOMIC_STEP_COMMIT_ADDENDUM.md
+  - packages/ego_k0_kernel/src/ego_k0_kernel/__init__.py
+  - packages/ego_k0_kernel/src/ego_k0_kernel/ports.py
+  - packages/ego_k0_kernel/src/ego_k0_kernel/replay.py
+  - scripts/ego_k0_adapters/sqlite_event_store.py
+  - scripts/run_ego_k0_foundation_validation.py
+  - tests/test_ego_k0_foundation.py
+forbidden_mutation_paths:
+  - artifacts/ego_k0_foundation_001a/
+  - artifacts/evidence_ledger/
+  - Tasks/TASK_BOARD.yaml
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - .codex/project_contract.yaml
+  - packages/ego_k0_kernel/pyproject.toml
+  - packages/ego_k0_kernel/src/ego_k0_kernel/contracts.py
+  - packages/ego_k0_kernel/src/ego_k0_kernel/events.py
+  - packages/ego_k0_kernel/src/ego_k0_kernel/state.py
+  - packages/ego_k0_kernel/src/ego_k0_kernel/trace.py
+  - packages/ego_k0_kernel/src/ego_k0_kernel/cli.py
+  - scripts/ego_k0_adapters/__init__.py
+  - scripts/ego_kernel/
+  - EgoOperator/
+  - EgoDesktop/
+auto_remote_anchor: forbidden
+claim_ceiling: "Foundation atomic persistence, canonical trace recovery, and formal evidence-producer engineering only; no mechanism claim or mainline effect"
+phase_scopes:
+  card_bank:
+    - docs/codex/tasks/ego-k0-foundation-evidence-atomicity-correction-001a/STAGE_CARD.md
+    - docs/codex/tasks/ego-k0-foundation-evidence-atomicity-correction-001a/MUTATION_SCOPE.yaml
+    - docs/codex/tasks/ego-k0-foundation-evidence-atomicity-correction-001a/ATOMIC_STEP_COMMIT_ADDENDUM.md
+  implementation_correction:
+    - packages/ego_k0_kernel/src/ego_k0_kernel/__init__.py
+    - packages/ego_k0_kernel/src/ego_k0_kernel/ports.py
+    - packages/ego_k0_kernel/src/ego_k0_kernel/replay.py
+    - scripts/ego_k0_adapters/sqlite_event_store.py
+    - scripts/run_ego_k0_foundation_validation.py
+    - tests/test_ego_k0_foundation.py
+phase_rule: "one phase per exact-scope local commit; the union is not blanket cross-phase authority"
+push_pending_policy: "publication-only non-blocker; repo_global_closeout_eligible remains false"
