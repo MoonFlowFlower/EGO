@@ -1,0 +1,77 @@
+schema_version: codex.mutation_scope.v1
+task: ego-k0-verifier-family-downgrade-product-science-decoupling-sync-001a
+
+expected_mutation_surface:
+  - bank the bounded Ego K0 verifier-family downgrade and product-science dependency sync card
+  - synchronize the pinned ITL operator route decision into Ego local governance views without claiming independent validator acceptance
+  - preserve all three verifier-family negative verdicts and close the repair family with no further repair
+  - preserve the official Foundation bounded engineering evidence without rerun or reinterpretation
+  - keep all root, route, and child authorizations false and authorized implementation targets empty
+  - move the unexecuted old K0 Reference Kernel card from parked to reference-only
+  - record the future learned-outcome-kernel capability task only as an absent default-off non-mainline dependency requiring a separate Stage Card and fresh authorization
+  - update only the existing governance renderer and verifier sinks
+  - regenerate only existing program-state and route-convergence views
+  - preserve EgoOperator as the sole active default
+
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-k0-verifier-family-downgrade-product-science-decoupling-sync-001a/STAGE_CARD.md
+  - docs/codex/tasks/ego-k0-verifier-family-downgrade-product-science-decoupling-sync-001a/MUTATION_SCOPE.yaml
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - artifacts/evidence_ledger/index.yaml
+  - scripts/codex/route_convergence_common.py
+  - scripts/codex/verify_route_convergence.py
+  - docs/STATUS.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - artifacts/reports/program_state_summary.md
+
+forbidden_mutation_paths:
+  - D:/Project/AIProject/MyProject/intelligence-theory-lab/
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/
+  - docs/codex/tasks/ego-k0-foundation-001a/
+  - docs/codex/tasks/ego-k0-reference-kernel-001a/
+  - docs/codex/tasks/ego-k0-foundation-acceptance-route-view-sync-001a/
+  - packages/ego_k0_kernel/
+  - scripts/ego_k0_adapters/
+  - scripts/run_ego_k0_foundation_validation.py
+  - tests/test_ego_k0_foundation.py
+  - artifacts/ego_k0_foundation_001a/
+  - scripts/codex/program_state_common.py
+  - scripts/codex/generate_program_state_views.py
+  - scripts/codex/generate_route_convergence_views.py
+  - EgoOperator/
+  - EgoDesktop/
+  - Tasks/TASK_BOARD.yaml
+  - .codex/project_contract.yaml
+  - docs/REPO_HYGIENE_POLICY.md
+  - docs/REPO_SURFACE_MAP.md
+
+auto_remote_anchor: forbidden
+
+claim_ceiling: >-
+  Ego-local governance mirror synchronization, negative-evidence preservation,
+  and old-science/future-product-card dependency decoupling only; no independent
+  validator acceptance, science adjudication, mechanism validity, learning,
+  learned-kernel capability, runtime/mainline effect, product readiness,
+  agency, subjectivity, consciousness, EGO readiness, or stable user-benefit
+  claim.
+
+phase_scopes:
+  task_bank:
+    - docs/codex/tasks/ego-k0-verifier-family-downgrade-product-science-decoupling-sync-001a/STAGE_CARD.md
+    - docs/codex/tasks/ego-k0-verifier-family-downgrade-product-science-decoupling-sync-001a/MUTATION_SCOPE.yaml
+
+  authority_negative_ledger_governance_sinks_and_generated_views:
+    - docs/PROGRAM_STATE_UNIFIED.yaml
+    - artifacts/evidence_ledger/index.yaml
+    - scripts/codex/route_convergence_common.py
+    - scripts/codex/verify_route_convergence.py
+    - docs/STATUS.md
+    - docs/codex/tasks/TASK_LANE_INDEX.md
+    - artifacts/reports/program_state_summary.md
+
+phase_rule: >-
+  one phase per exact-scope local commit; the allowed path union is not blanket
+  cross-phase authority; stage only literal phase paths; git add -A is
+  forbidden; docs/REPO_HYGIENE_POLICY.md and docs/REPO_SURFACE_MAP.md must
+  remain byte-identical and unstaged; stop after the second local commit; no
+  push, tag, or remote anchor.
