@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+from typing import Any
 
 from route_convergence_common import (
     HYGIENE_RULES,
@@ -15,6 +16,156 @@ from route_convergence_common import (
     render_repo_hygiene_policy,
     render_repo_surface_map,
     render_task_lane_index,
+)
+
+
+EXPECTED_K0_STATUS = (
+    "foundation_engineering_accepted_bounded__old_science_route_operator_closed_without_science_adjudication__"
+    "verifier_family_closed_invalid__independent_acceptance_unavailable__product_science_decoupled__"
+    "all_authorizations_false__runtime_disabled__non_mainline"
+)
+
+EXPECTED_GOVERNANCE_SYNC: dict[str, Any] = {
+    "record_type": "SOURCE_PINNED_DERIVED_READBACK",
+    "ego_synced_to_itl_operator_close": True,
+    "sync_claim": "LOCAL_EGO_GOVERNANCE_VIEW_ONLY",
+    "runtime_trigger_evidence": "ABSENT",
+    "source_itl": {
+        "repo": "intelligence-theory-lab",
+        "head": "b67c94fe1244ef6006ed3af8e924d4c670fe64bb",
+        "tree": "2caa9a8ad5587d284ec0da01c4d07a5ed53e9ea7",
+        "task_id": "K0-VERIFIER-FAMILY-DOWNGRADE-AND-PRODUCT-SCIENCE-DECOUPLING-001A",
+        "card_path": (
+            "docs/codex/tasks/"
+            "K0-VERIFIER-FAMILY-DOWNGRADE-AND-PRODUCT-SCIENCE-DECOUPLING-001A.md"
+        ),
+        "card_blob": "add0d7823fb824e4ee1d74edbe9f88f8a726f36a",
+        "card_raw_sha256": "4a765fee0e910018cef46a7b4734d08cf5014e012b874b1150543a179dcbc663",
+    },
+    "operator_route_decision": {
+        "route_id": "K0-DUAL-TRACK-SUPERSESSION-001A",
+        "artifact_current_state": "ADJUDICATED",
+        "phase": "K0_SCIENCE_ROUTE_CLOSED_WITHOUT_SCIENCE_ADJUDICATION",
+        "closure_type": "CLOSED_WITHOUT_SCIENCE_ADJUDICATION",
+        "route_disposition": "CLOSED_WITHOUT_EXECUTION",
+        "operator_decision": "CLOSE_CURRENT_K0_SCIENCE_ROUTE",
+        "adjudication_scope": "ROUTE_GOVERNANCE_ONLY",
+        "science_adjudication": "NOT_PERFORMED",
+        "instrument_validity": "NOT_TESTED",
+        "mechanism_evidence": "NOT_TESTED",
+        "theory_falsification": "NO_THEORY_FALSIFICATION",
+        "mechanism_verdict": "NO_MECHANISM_VERDICT",
+        "active_mechanism_frontier": "none",
+    },
+    "verifier_family": {
+        "original_execution_verdict": "NOT_ACCEPTED_PROCEDURAL_NONCONFORMANCE",
+        "first_repair_review_verdict": "NOT_ACCEPTED__STRUCTURAL_TERMINAL_LATCH_FAIL_OPEN",
+        "replacement_review_verdict": "REPLACEMENT_VERIFIER_INVALID",
+        "family_disposition": "CLOSED_INVALID_NO_FURTHER_REPAIR",
+        "independent_validator_acceptance": "UNAVAILABLE",
+        "operator_closure_acceptance_from_this_family": "UNAVAILABLE",
+        "stored_validation_report_treatment": "FROZEN_EXECUTOR_OUTPUT_NOT_ACCEPTANCE_EVIDENCE",
+    },
+    "foundation_evidence": {
+        "engineering_evidence": "BANKED_ACCEPTED_BOUNDED",
+        "preservation": "FOUNDATION_EVIDENCE_PRESERVED",
+        "implementation_authorized": False,
+        "enabled": False,
+        "mainline_connected": False,
+        "runtime_authority": "none",
+        "artifact_commit": "8318bb33212f79e1e0a9cea15cad7b9cd176a0f5",
+        "artifact_tree": "907457e7d3028ba5437cf0e7730ec068a21cbf6b",
+        "result_blob": "a8b3237afc40a1f56df3906870ff94c5db9c10ff",
+        "result_sha256": "834b4764514062f8937488fd4b89684b5ae684e9522d67f440ed3c077f077067",
+        "mechanism_meaning_inherited": False,
+    },
+    "component_status": {
+        "foundation_engineering_evidence": "BANKED_ACCEPTED_BOUNDED",
+        "h0": "NOT_TESTED",
+        "k0_reference": "BLOCKED_NOT_TESTED",
+        "h1": "BLOCKED_NOT_TESTED",
+        "freeze": "BLOCKED_NOT_TESTED",
+        "formal": "BLOCKED_NOT_TESTED",
+    },
+    "root_authorizations": {
+        "implementation_authorized": False,
+        "authorized_implementation_targets": [],
+        "runtime_authorized": False,
+        "mainline_authorized": False,
+        "science_execution_authorized": False,
+        "mechanism_evidence_authorized": False,
+        "theory_pressure_authorized": False,
+        "science_successor_authorized": False,
+        "capability_route_registered": False,
+        "capability_implementation_authorized": False,
+    },
+    "route_authorizations": {
+        "agency": False,
+        "autonomy": False,
+        "code_first_prebank_implementation": False,
+        "consciousness": False,
+        "ego_mainline_runtime": False,
+        "experiment_execution": False,
+        "formal_run": False,
+        "foundation_implementation": False,
+        "freeze": False,
+        "h0_implementation": False,
+        "h1_implementation": False,
+        "k0_reference_implementation": False,
+        "mechanism_validity": False,
+        "remote_anchor": False,
+        "scoring": False,
+        "subjectivity": False,
+        "theory_pressure": False,
+        "ui_llm_deployment": False,
+    },
+    "child_authorizations": {
+        "EGO-K0-FOUNDATION-001A": False,
+        "EGO-K0-REFERENCE-KERNEL-001A": False,
+        "ITL-K0-H0-H1-INSTRUMENT-001A:H0": False,
+        "ITL-K0-H0-H1-INSTRUMENT-001A:H1": False,
+        "K0-IMMUTABLE-FREEZE-001A": False,
+        "ITL-K0-FORMAL-EVIDENCE-001A": False,
+    },
+    "future_product_route": {
+        "task_id": "EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-001A",
+        "current_status": "NOT_CREATED_OR_REGISTERED",
+        "this_sync_creates_card": False,
+        "route_registered": False,
+        "implementation_authorized": False,
+        "enabled": False,
+        "default_off_required": True,
+        "mainline_connected": False,
+        "non_mainline_required": True,
+        "runtime_authority": "none",
+        "old_science_acceptance_required_for_product_card": False,
+        "decoupling_scope": "PRODUCT_CARD_DEPENDENCY_ONLY_NO_EXECUTION_AUTHORITY",
+        "requires_separate_bounded_stage_card": True,
+        "requires_fresh_operator_authorization": True,
+        "inherits_old_k0r_authority": False,
+        "inherits_old_science_attribution": False,
+        "inherits_old_h0_h1_freeze_formal_contracts": False,
+        "inherits_old_sealed_fixtures_or_heldout_data": False,
+        "old_k0r_bypass": False,
+        "may_satisfy_old_h1_freeze_formal": False,
+        "may_reopen_old_science_route": False,
+        "foundation_engineering_dependency_redeclaration_required": True,
+        "foundation_mechanism_meaning_inherited": False,
+    },
+    "science_route_firewall": {
+        "science_successor_authorized": False,
+        "product_results_have_science_weight": False,
+        "product_results_can_supply_mechanism_attribution": False,
+        "science_successor_requires_separate_candidate_independent_headroom_prototype": True,
+        "product_route_cannot_satisfy_or_bypass_that_requirement": True,
+    },
+}
+
+STALE_K0_SEMANTICS = (
+    "closure_review_required",
+    "governance_stop",
+    "operator replace-versus-close decision pending",
+    "operator_decision_required",
 )
 
 
@@ -40,17 +191,21 @@ def _check_generated_file(path, expected: str, errors: list[str]) -> None:
         errors.append(f"generated file drift detected: {path}")
 
 
-def main() -> int:
+def validate_route_convergence(
+    program_state: dict[str, Any],
+    entries: list[Any],
+    *,
+    check_generated_files: bool = True,
+) -> list[str]:
     errors: list[str] = []
-    program_state = load_program_state()
-    entries = build_route_entries(program_state)
-    expected_lane_index = render_task_lane_index(program_state)
-    expected_hygiene_policy = render_repo_hygiene_policy()
-    expected_surface_map = render_repo_surface_map()
+    if check_generated_files:
+        expected_lane_index = render_task_lane_index(program_state)
+        expected_hygiene_policy = render_repo_hygiene_policy()
+        expected_surface_map = render_repo_surface_map()
 
-    _check_generated_file(TASK_LANE_INDEX_PATH, expected_lane_index, errors)
-    _check_generated_file(REPO_HYGIENE_POLICY_PATH, expected_hygiene_policy, errors)
-    _check_generated_file(REPO_SURFACE_MAP_PATH, expected_surface_map, errors)
+        _check_generated_file(TASK_LANE_INDEX_PATH, expected_lane_index, errors)
+        _check_generated_file(REPO_HYGIENE_POLICY_PATH, expected_hygiene_policy, errors)
+        _check_generated_file(REPO_SURFACE_MAP_PATH, expected_surface_map, errors)
 
     active_default_entries = [entry for entry in entries if entry.lane == "active_default"]
     if len(active_default_entries) != 1:
@@ -89,18 +244,32 @@ def main() -> int:
         errors.append(f"expected exactly one Reference Kernel route entry, found {len(reference_kernel_entries)}")
     else:
         reference_kernel_entry = reference_kernel_entries[0]
-        if reference_kernel_entry.lane != "parked":
-            errors.append("Reference Kernel must appear only in `parked`")
+        if reference_kernel_entry.lane != "reference_only":
+            errors.append("Reference Kernel must appear only in `reference_only`")
         reference_why = reference_kernel_entry.why.lower()
         required_reference_semantics = (
-            "foundation accepted",
-            "h0 closed pre-run and not_tested",
-            "all children false",
-            "operator replace-versus-close decision pending",
+            "old science-attribution plan",
+            "not executed",
+            "blocked_not_tested",
+            "operator closed the old route without science adjudication",
+            "independent validator acceptance unavailable",
+            "no implementation authority",
+            "not the future product route",
         )
         for phrase in required_reference_semantics:
             if phrase not in reference_why:
                 errors.append(f"Reference Kernel route explanation missing `{phrase}`")
+
+    disallowed_reference_lanes = {
+        entry.lane
+        for entry in reference_kernel_entries
+        if entry.lane in {"parked", "active_default", "supporting_active", "closed_evidence"}
+    }
+    if disallowed_reference_lanes:
+        errors.append(
+            "Reference Kernel appears in disallowed lane(s): "
+            + ", ".join(sorted(disallowed_reference_lanes))
+        )
 
     workstreams = {item.get("id"): item for item in program_state.get("workstreams") or []}
     active_ws = workstreams.get("ego_operator_first_transition") or {}
@@ -113,27 +282,28 @@ def main() -> int:
         errors.append("repo_cleanup_route_convergence workstream must exist and stay `supporting_active`")
 
     foundation_ws = workstreams.get("k0_developmental_kernel_dual_track") or {}
-    expected_foundation_status = (
-        "foundation_engineering_accepted_bounded__authorization_consumed__"
-        "operator_decision_required__runtime_disabled__non_mainline"
-    )
-    if foundation_ws.get("status") != expected_foundation_status:
-        errors.append("K0 Foundation workstream must record bounded acceptance and consumed authorization")
+    if foundation_ws.get("status") != EXPECTED_K0_STATUS:
+        errors.append("K0 workstream must record the exact closed-invalid governance-sync status")
     if foundation_ws.get("evidence_level") != "E3" or foundation_ws.get("verification_level") != "V3":
         errors.append("K0 Foundation workstream must retain the bounded Ego E3/V3 governance classification")
     if foundation_ws.get("enabled") is not False or foundation_ws.get("mainline_connected") is not False:
         errors.append("K0 Foundation workstream must remain disabled and non-mainline")
+
+    governance_sync = foundation_ws.get("governance_sync")
+    if governance_sync != EXPECTED_GOVERNANCE_SYNC:
+        errors.append("K0 governance_sync mapping does not match the pinned closed-invalid contract")
 
     foundation_sink_text = " ".join(
         (
             str(foundation_ws.get("status") or ""),
             str(foundation_ws.get("summary") or ""),
             foundation_entries[0].why if len(foundation_entries) == 1 else "",
+            reference_kernel_entries[0].why if len(reference_kernel_entries) == 1 else "",
         )
     ).lower()
-    for stale_phrase in ("authorized_ready_to_implement", "authorized only"):
+    for stale_phrase in (*STALE_K0_SEMANTICS, "authorized_ready_to_implement", "authorized only"):
         if stale_phrase in foundation_sink_text:
-            errors.append(f"stale Foundation authorization semantics remain: `{stale_phrase}`")
+            errors.append(f"stale K0 pending/actionable semantics remain: `{stale_phrase}`")
 
     gitignore_text = (REPO_HYGIENE_POLICY_PATH.parents[1] / ".gitignore").read_text(encoding="utf-8")
 
@@ -155,16 +325,37 @@ def main() -> int:
                 f"new tracked operational exhaust detected under {rule.path_prefix}: {', '.join(sorted(added)[:5])}"
             )
 
+    return errors
+
+
+def main() -> int:
+    program_state = load_program_state()
+    entries = build_route_entries(program_state)
+    errors = validate_route_convergence(program_state, entries)
     if errors:
         print(json.dumps({"status": "fail", "errors": errors}, ensure_ascii=False, indent=2))
         return 1
 
+    workstreams = {item.get("id"): item for item in program_state.get("workstreams") or []}
+    k0_workstream = workstreams.get("k0_developmental_kernel_dual_track") or {}
+    governance_sync = k0_workstream.get("governance_sync") or {}
+    verifier_family = governance_sync.get("verifier_family") or {}
+    future_product_route = governance_sync.get("future_product_route") or {}
+    reference_kernel_entries = [entry for entry in entries if entry.key == "ego-k0-reference-kernel-001a"]
+    active_default_entries = [entry for entry in entries if entry.lane == "active_default"]
     print(
         json.dumps(
             {
                 "status": "pass",
                 "active_default": active_default_entries[0].key if active_default_entries else None,
                 "supporting_active_count": sum(1 for entry in entries if entry.lane == "supporting_active"),
+                "k0_workstream_status": k0_workstream.get("status"),
+                "old_reference_kernel_lane": (
+                    reference_kernel_entries[0].lane if len(reference_kernel_entries) == 1 else None
+                ),
+                "verifier_family_disposition": verifier_family.get("family_disposition"),
+                "independent_validator_acceptance": verifier_family.get("independent_validator_acceptance"),
+                "future_product_route_status": future_product_route.get("current_status"),
                 "route_index": str(TASK_LANE_INDEX_PATH.relative_to(REPO_HYGIENE_POLICY_PATH.parents[1])),
                 "hygiene_policy": str(REPO_HYGIENE_POLICY_PATH.relative_to(REPO_HYGIENE_POLICY_PATH.parents[1])),
             },

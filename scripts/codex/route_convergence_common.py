@@ -60,9 +60,9 @@ TASK_OVERRIDES: dict[str, dict[str, Any]] = {
         "workstream_id": "k0_developmental_kernel_dual_track",
     },
     "ego-k0-reference-kernel-001a": {
-        "lane": "parked",
+        "lane": "reference_only",
         "label": "EGO K0 Reference Kernel 001A",
-        "why": "Foundation accepted; H0 closed pre-run and NOT_TESTED; all children false; operator replace-versus-close decision pending.",
+        "why": "Old science-attribution plan; not executed; BLOCKED_NOT_TESTED; operator closed the old route without science adjudication; independent validator acceptance unavailable; no implementation authority; not the future product route.",
         "workstream_id": "k0_developmental_kernel_dual_track",
     },
     "ego-operator-human-operator-trial-v2": {

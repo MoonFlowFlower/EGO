@@ -8,6 +8,6 @@
 - verification: `V3`
 - mainline_connected: `True`
 - enabled: `True`
-- next_minimal_action: Keep EgoOperator as the active default. For the separate disabled K0 workstream, Foundation bounded engineering evidence is banked/accepted and its implementation authorization is consumed; enabled=false, mainline_connected=false, runtime_authority=none, and runtime trigger evidence remains absent. H0 is NOT_TESTED; Reference Kernel/K0-R, H1, Freeze, and Formal remain BLOCKED_NOT_TESTED with all route and child authorizations false and authorized implementation targets empty. The next K0 action requires an operator replace-versus-close decision: replace the closed H0 branch or close the K0 science route. Do not execute Foundation again or start K0-R.
+- next_minimal_action: Keep EgoOperator as the active default. Preserve the closed old K0 science route, the terminally invalid verifier family, `independent_validator_acceptance=UNAVAILABLE`, and unchanged Foundation bounded engineering evidence with all old root, route, and child authorizations false. Old K0-R is not actionable. The next possible K0 action is to author a separate bounded Stage Card for `EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-001A` and obtain fresh operator authorization; this sync does not create, register, or authorize that future product route or its implementation.
 - highest ledger entry: `mvp16_controlled_completion_current` / `E5`
 
