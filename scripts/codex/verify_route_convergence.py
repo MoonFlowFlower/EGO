@@ -58,6 +58,50 @@ def main() -> int:
     elif active_default_entries[0].key != "ego-operator-human-operator-trial-v2":
         errors.append("active_default entry must be `ego-operator-human-operator-trial-v2` during EgoOperator human-observation gate")
 
+    foundation_entries = [entry for entry in entries if entry.key == "ego-k0-foundation-001a"]
+    if len(foundation_entries) != 1:
+        errors.append(f"expected exactly one Foundation route entry, found {len(foundation_entries)}")
+    else:
+        foundation_entry = foundation_entries[0]
+        if foundation_entry.lane != "closed_evidence":
+            errors.append("Foundation must appear only in `closed_evidence`")
+        foundation_why = foundation_entry.why.lower()
+        required_foundation_semantics = (
+            "bounded engineering evidence",
+            "banked/accepted",
+            "authorization consumed",
+            "disabled",
+            "non-mainline",
+            "no runtime authority",
+        )
+        for phrase in required_foundation_semantics:
+            if phrase not in foundation_why:
+                errors.append(f"Foundation route explanation missing `{phrase}`")
+
+    supporting_foundation_entries = [
+        entry for entry in entries if entry.key == "ego-k0-foundation-001a" and entry.lane == "supporting_active"
+    ]
+    if supporting_foundation_entries:
+        errors.append("Foundation must not appear in `supporting_active`")
+
+    reference_kernel_entries = [entry for entry in entries if entry.key == "ego-k0-reference-kernel-001a"]
+    if len(reference_kernel_entries) != 1:
+        errors.append(f"expected exactly one Reference Kernel route entry, found {len(reference_kernel_entries)}")
+    else:
+        reference_kernel_entry = reference_kernel_entries[0]
+        if reference_kernel_entry.lane != "parked":
+            errors.append("Reference Kernel must appear only in `parked`")
+        reference_why = reference_kernel_entry.why.lower()
+        required_reference_semantics = (
+            "foundation accepted",
+            "h0 closed pre-run and not_tested",
+            "all children false",
+            "operator replace-versus-close decision pending",
+        )
+        for phrase in required_reference_semantics:
+            if phrase not in reference_why:
+                errors.append(f"Reference Kernel route explanation missing `{phrase}`")
+
     workstreams = {item.get("id"): item for item in program_state.get("workstreams") or []}
     active_ws = workstreams.get("ego_operator_first_transition") or {}
     if not active_ws:
@@ -67,6 +111,29 @@ def main() -> int:
     supporting_ws = workstreams.get("repo_cleanup_route_convergence") or {}
     if supporting_ws.get("status") != "supporting_active":
         errors.append("repo_cleanup_route_convergence workstream must exist and stay `supporting_active`")
+
+    foundation_ws = workstreams.get("k0_developmental_kernel_dual_track") or {}
+    expected_foundation_status = (
+        "foundation_engineering_accepted_bounded__authorization_consumed__"
+        "operator_decision_required__runtime_disabled__non_mainline"
+    )
+    if foundation_ws.get("status") != expected_foundation_status:
+        errors.append("K0 Foundation workstream must record bounded acceptance and consumed authorization")
+    if foundation_ws.get("evidence_level") != "E3" or foundation_ws.get("verification_level") != "V3":
+        errors.append("K0 Foundation workstream must retain the bounded Ego E3/V3 governance classification")
+    if foundation_ws.get("enabled") is not False or foundation_ws.get("mainline_connected") is not False:
+        errors.append("K0 Foundation workstream must remain disabled and non-mainline")
+
+    foundation_sink_text = " ".join(
+        (
+            str(foundation_ws.get("status") or ""),
+            str(foundation_ws.get("summary") or ""),
+            foundation_entries[0].why if len(foundation_entries) == 1 else "",
+        )
+    ).lower()
+    for stale_phrase in ("authorized_ready_to_implement", "authorized only"):
+        if stale_phrase in foundation_sink_text:
+            errors.append(f"stale Foundation authorization semantics remain: `{stale_phrase}`")
 
     gitignore_text = (REPO_HYGIENE_POLICY_PATH.parents[1] / ".gitignore").read_text(encoding="utf-8")
 

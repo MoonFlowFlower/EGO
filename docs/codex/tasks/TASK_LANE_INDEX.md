@@ -18,10 +18,10 @@
 | lane | count |
 |---|---:|
 | `active_default` | 1 |
-| `supporting_active` | 2 |
+| `supporting_active` | 1 |
 | `parked` | 2 |
-| `closed_evidence` | 19 |
-| `reference_only` | 228 |
+| `closed_evidence` | 20 |
+| `reference_only` | 229 |
 
 ## Active Default
 
@@ -33,14 +33,13 @@
 
 | entry | kind | workstream | paths | why |
 |---|---|---|---|---|
-| EGO K0 Foundation 001A | `codex_task` | `k0_developmental_kernel_dual_track` | `docs/codex/tasks/ego-k0-foundation-001a/` | Default-off local engineering foundation authorized only through the canonical ITL K0 parent; no runtime or mechanism claim. Current workstream status: `foundation_authorized_ready_to_implement__runtime_disabled__non_mainline`. |
 | Repo Mainline Clarity v1 | `codex_task` | n/a | `docs/codex/tasks/repo-mainline-clarity-v1/` | Supporting repo-view slice for mainline onboarding, surface-map clarity, and staged operational-exhaust hygiene; must not replace the active default track. |
 
 ## Parked
 
 | entry | kind | workstream | paths | why |
 |---|---|---|---|---|
-| EGO K0 Reference Kernel 001A | `codex_task` | `k0_developmental_kernel_dual_track` | `docs/codex/tasks/ego-k0-reference-kernel-001a/` | Reference learned-kernel card is banked but blocked on accepted Foundation plus banked ITL H0 readback. Current workstream status: `foundation_authorized_ready_to_implement__runtime_disabled__non_mainline`. |
+| EGO K0 Reference Kernel 001A | `codex_task` | `k0_developmental_kernel_dual_track` | `docs/codex/tasks/ego-k0-reference-kernel-001a/` | Foundation accepted; H0 closed pre-run and NOT_TESTED; all children false; operator replace-versus-close decision pending. Current workstream status: `foundation_engineering_accepted_bounded__authorization_consumed__operator_decision_required__runtime_disabled__non_mainline`. |
 | WP17 / MVP22 Authority Refs | `authority_refs` | `wp17_bounded_continuity_lane` | `Tasks/MVP22_task_plan.md`<br>`Tasks/active/mvp22_long_horizon_self_continuity/STATUS.md` | Authority-frozen bounded continuity lane; preserved but parked behind the active default track. |
 
 ## Closed Evidence
@@ -49,6 +48,7 @@
 |---|---|---|---|---|
 | Active-Inference Mainline Activation | `codex_task` | `active_inference_mainline_activation` | `docs/codex/tasks/active-inference-mainline-activation/` | Frozen dashboard-only bounded predecessor tranche; preserve as closed evidence, not the active default route. Current workstream status: `closed_evidence__dashboard_stage1_3_frozen`. |
 | AI Self-Awareness Minimal Framework | `codex_task` | `ai_self_awareness_research` | `docs/codex/tasks/ai-self-awareness-minimal-framework/` | Selection closeout and MVS demotion authority live here; this is closed research evidence, not the current runtime owner. Current workstream status: `selection_closed_handoff`. |
+| EGO K0 Foundation 001A | `codex_task` | `k0_developmental_kernel_dual_track` | `docs/codex/tasks/ego-k0-foundation-001a/` | Bounded engineering evidence banked/accepted; authorization consumed; disabled; non-mainline; no runtime authority. Current workstream status: `foundation_engineering_accepted_bounded__authorization_consumed__operator_decision_required__runtime_disabled__non_mainline`. |
 | Ego Mainline Demotion v1 | `codex_task` | `ego_operator_first_transition` | `docs/codex/tasks/ego-mainline-demotion-v1/` | Previous operator-first transition record; superseded by the EgoOperator rename/docs-safety task while preserving legacy demotion evidence. Current workstream status: `human_operator_trial_v2_human_review_template_ready`. |
 | EgoOperator Rename + Docs Safety v1 | `codex_task` | `ego_operator_first_transition` | `docs/codex/tasks/ego-operator-rename-docs-safety-v1/` | Previous EgoOperator naming and reader-safety transition record; superseded by the human operator trial v2 task as the active observation owner. Current workstream status: `human_operator_trial_v2_human_review_template_ready`. |
 | MVS-Aligned Compact Closed Evidence | `authority_refs` | n/a | `docs/codex/tasks/ai-self-awareness-minimal-framework/SELECTION_CLOSEOUT.md`<br>`docs/codex/tasks/ai-self-awareness-minimal-framework/MVS_ALIGNED_COMPACT_PROTOTYPE_DESIGN.md` | Closed evidence only; selection closeout keeps it out of the default implementation track. |
@@ -170,6 +170,7 @@
 | Ego Handmade Operator Runtime Contract V1 | `codex_task` | n/a | `docs/codex/tasks/ego-handmade-operator-runtime-contract-v1/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Handmade Real Use Memory Gate V1 | `codex_task` | n/a | `docs/codex/tasks/ego-handmade-real-use-memory-gate-v1/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Joi Companion Roadmap V1 | `codex_task` | n/a | `docs/codex/tasks/ego-joi-companion-roadmap-v1/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| Ego K0 Foundation Acceptance Route View Sync 001A | `codex_task` | n/a | `docs/codex/tasks/ego-k0-foundation-acceptance-route-view-sync-001a/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego K0 Foundation Evidence Atomicity Correction 001A | `codex_task` | n/a | `docs/codex/tasks/ego-k0-foundation-evidence-atomicity-correction-001a/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego K0 Foundation Ready Sync 001A | `codex_task` | n/a | `docs/codex/tasks/ego-k0-foundation-ready-sync-001a/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Mechanism Rewrite Decision 001A | `codex_task` | n/a | `docs/codex/tasks/ego-mechanism-rewrite-decision-001a/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |

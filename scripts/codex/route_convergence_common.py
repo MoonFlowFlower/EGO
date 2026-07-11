@@ -54,15 +54,15 @@ class HygieneRule:
 
 TASK_OVERRIDES: dict[str, dict[str, Any]] = {
     "ego-k0-foundation-001a": {
-        "lane": "supporting_active",
+        "lane": "closed_evidence",
         "label": "EGO K0 Foundation 001A",
-        "why": "Default-off local engineering foundation authorized only through the canonical ITL K0 parent; no runtime or mechanism claim.",
+        "why": "Bounded engineering evidence banked/accepted; authorization consumed; disabled; non-mainline; no runtime authority.",
         "workstream_id": "k0_developmental_kernel_dual_track",
     },
     "ego-k0-reference-kernel-001a": {
         "lane": "parked",
         "label": "EGO K0 Reference Kernel 001A",
-        "why": "Reference learned-kernel card is banked but blocked on accepted Foundation plus banked ITL H0 readback.",
+        "why": "Foundation accepted; H0 closed pre-run and NOT_TESTED; all children false; operator replace-versus-close decision pending.",
         "workstream_id": "k0_developmental_kernel_dual_track",
     },
     "ego-operator-human-operator-trial-v2": {
