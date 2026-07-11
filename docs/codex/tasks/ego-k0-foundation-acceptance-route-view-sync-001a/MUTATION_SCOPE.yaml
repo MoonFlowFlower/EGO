@@ -1,0 +1,45 @@
+schema_version: codex.mutation_scope.v1
+task: ego-k0-foundation-acceptance-route-view-sync-001a
+expected_mutation_surface:
+  - bank the bounded Foundation acceptance route-view synchronization card
+  - synchronize the existing bounded Foundation engineering acceptance into the single Ego program-state authority and additive evidence ledger
+  - correct only the existing route renderer and verifier sinks so Foundation is closed evidence and Reference Kernel remains parked
+  - regenerate only existing program-state and route-convergence views through canonical generators
+  - preserve EgoOperator as active default and keep K0 disabled, non-mainline, without runtime authority or runtime trigger evidence
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-k0-foundation-acceptance-route-view-sync-001a/STAGE_CARD.md
+  - docs/codex/tasks/ego-k0-foundation-acceptance-route-view-sync-001a/MUTATION_SCOPE.yaml
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - artifacts/evidence_ledger/index.yaml
+  - scripts/codex/route_convergence_common.py
+  - scripts/codex/verify_route_convergence.py
+  - docs/STATUS.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - artifacts/reports/program_state_summary.md
+forbidden_mutation_paths:
+  - D:/Project/AIProject/MyProject/intelligence-theory-lab/
+  - packages/ego_k0_kernel/
+  - scripts/ego_k0_adapters/
+  - scripts/run_ego_k0_foundation_validation.py
+  - tests/test_ego_k0_foundation.py
+  - artifacts/ego_k0_foundation_001a/
+  - scripts/codex/program_state_common.py
+  - EgoOperator/
+  - EgoDesktop/
+  - Tasks/TASK_BOARD.yaml
+  - .codex/project_contract.yaml
+auto_remote_anchor: forbidden
+claim_ceiling: "local Ego authority, additive-ledger, and generated-view synchronization for the existing bounded Foundation engineering acceptance only; K0 remains disabled, non-mainline, without runtime authority or runtime trigger evidence; no learning, mechanism, runtime, readiness, agency, subjectivity, consciousness, or user-benefit claim"
+phase_scopes:
+  task_bank:
+    - docs/codex/tasks/ego-k0-foundation-acceptance-route-view-sync-001a/STAGE_CARD.md
+    - docs/codex/tasks/ego-k0-foundation-acceptance-route-view-sync-001a/MUTATION_SCOPE.yaml
+  authority_ledger_renderer_and_generated_views:
+    - docs/PROGRAM_STATE_UNIFIED.yaml
+    - artifacts/evidence_ledger/index.yaml
+    - scripts/codex/route_convergence_common.py
+    - scripts/codex/verify_route_convergence.py
+    - docs/STATUS.md
+    - docs/codex/tasks/TASK_LANE_INDEX.md
+    - artifacts/reports/program_state_summary.md
+phase_rule: "one phase per exact-scope local commit; the allowed path union is not blanket cross-phase authority; stage only literal paths; docs/REPO_HYGIENE_POLICY.md and docs/REPO_SURFACE_MAP.md must remain byte-identical and unstaged"
