@@ -1,0 +1,46 @@
+schema_version: codex.mutation_scope.v1
+task: ego-learned-outcome-kernel-capability-preflight-p1c-closeout
+
+authorization_scope: >-
+  Consume temporary P1 instrument authority and synchronize only the instrument
+  bank or blocker status into existing canonical governance and program-state
+  views. Do not run or recompute formal evidence.
+
+allowed_mutation_paths:
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - scripts/codex/verify_route_convergence.py
+  - docs/STATUS.md
+  - artifacts/reports/program_state_summary.md
+
+forbidden_mutation_paths:
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/
+  - scripts/ego_learned_outcome_kernel_capability_preflight_001a/
+  - scripts/run_ego_learned_outcome_kernel_capability_preflight_001a.py
+  - tests/test_ego_learned_outcome_kernel_capability_preflight_001a.py
+  - artifacts/ego_learned_outcome_kernel_capability_preflight_001a/
+  - artifacts/evidence_ledger/index.yaml
+  - scripts/codex/route_convergence_common.py
+  - scripts/codex/program_state_common.py
+  - scripts/codex/generate_program_state_views.py
+  - scripts/codex/generate_route_convergence_views.py
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - docs/REPO_HYGIENE_POLICY.md
+  - docs/REPO_SURFACE_MAP.md
+  - packages/ego_learned_outcome_kernel/
+  - packages/ego_k0_kernel/
+  - EgoOperator/
+  - EgoDesktop/
+  - D:/Project/AIProject/MyProject/intelligence-theory-lab/
+
+phase_rule: >-
+  Exact four-path P1C commit. Generate program-state views only. Consume all
+  temporary P1 authority whether P1B succeeded or was blocked. Do not modify
+  evidence ledger or route views. git add -A is forbidden.
+
+auto_remote_anchor: forbidden
+push: forbidden
+tag: forbidden
+
+claim_ceiling: >-
+  Local governance synchronization of instrument bank/blocker status and
+  authorization consumption only. No formal preflight or capability evidence.

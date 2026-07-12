@@ -30,6 +30,25 @@ FUTURE_PRODUCT_TASK_KEY = "ego-learned-outcome-kernel-capability-001a"
 FUTURE_PRODUCT_STAGE_CARD_PATH = (
     "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/STAGE_CARD.md"
 )
+P1_TASK_CARD_PATH = (
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1_INSTRUMENT_TASK_CARD.md"
+)
+P1_TASK_CARD_BLOB = "26c53396c88de3a0c35494665085a3b6c298e56c"
+P1_TASK_CARD_SHA256 = "93608561afcd4ab35abae5bf6257f1ad5b8a35b779e0bee0a03a238012724a95"
+P1_INSTRUMENT_TARGETS = [
+    "scripts/ego_learned_outcome_kernel_capability_preflight_001a/__init__.py",
+    "scripts/ego_learned_outcome_kernel_capability_preflight_001a/contract.py",
+    "scripts/ego_learned_outcome_kernel_capability_preflight_001a/workload.py",
+    "scripts/ego_learned_outcome_kernel_capability_preflight_001a/oracles.py",
+    "scripts/ego_learned_outcome_kernel_capability_preflight_001a/baselines.py",
+    "scripts/ego_learned_outcome_kernel_capability_preflight_001a/metrics.py",
+    "scripts/ego_learned_outcome_kernel_capability_preflight_001a/leakage.py",
+    "scripts/ego_learned_outcome_kernel_capability_preflight_001a/replay.py",
+    "scripts/ego_learned_outcome_kernel_capability_preflight_001a/producer.py",
+    "scripts/run_ego_learned_outcome_kernel_capability_preflight_001a.py",
+    "tests/test_ego_learned_outcome_kernel_capability_preflight_001a.py",
+]
+FORMAL_ARTIFACT_PATH = "artifacts/ego_learned_outcome_kernel_capability_preflight_001a"
 
 EXPECTED_GOVERNANCE_SYNC: dict[str, Any] = {
     "record_type": "SOURCE_PINNED_DERIVED_READBACK",
@@ -135,7 +154,7 @@ EXPECTED_GOVERNANCE_SYNC: dict[str, Any] = {
     },
     "future_product_route": {
         "task_id": "EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-001A",
-        "current_status": "CARD_BANKED_REFERENCE_ONLY_NOT_REGISTERED_NOT_AUTHORIZED",
+        "current_status": "P1_INSTRUMENT_DEV_ONLY_AUTHORIZED__FORMAL_NOT_AUTHORIZED",
         "prior_governance_sync_created_card": False,
         "this_card_bank_creates_card": True,
         "stage_card_banked": True,
@@ -153,7 +172,7 @@ EXPECTED_GOVERNANCE_SYNC: dict[str, Any] = {
         "mainline_connected": False,
         "non_mainline_required": True,
         "runtime_authority": "none",
-        "current_operator_authorization_scope": "CARD_BANK_AND_GOVERNANCE_SYNC_ONLY",
+        "current_operator_authorization_scope": "P1_INSTRUMENT_IMPLEMENTATION_AND_DEV_CONTROLS_ONLY",
         "requires_separate_bounded_stage_card": False,
         "requires_fresh_operator_authorization": True,
         "requires_fresh_candidate_preflight_authorization": True,
@@ -170,6 +189,22 @@ EXPECTED_GOVERNANCE_SYNC: dict[str, Any] = {
         "foundation_engineering_dependency_redeclared_for_card_only": True,
         "foundation_engineering_dependency_redeclaration_required_for_execution": True,
         "foundation_mechanism_meaning_inherited": False,
+        "candidate_independent_preflight": {
+            "task_id": "EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-PREFLIGHT-001A",
+            "prereg_banked": True,
+            "prereg_commit": "ff1ab23e1db303a882cec17374b9ea3903fe03c6",
+            "prereg_contract_blob": "d09235eff74ec68b5cc5004873af1b1186d7ee39",
+            "prereg_contract_sha256": "d9c2d8a12b41ab9b0482b270b63578631b88901ca78854da92853779e95858c3",
+            "instrument_implementation_authorized": True,
+            "dev_instrument_execution_authorized": True,
+            "formal_preflight_authorized": False,
+            "p1_authorization_single_transaction": True,
+            "p1_authorization_consumption_required": True,
+            "p1_task_card_path": P1_TASK_CARD_PATH,
+            "p1_task_card_blob": P1_TASK_CARD_BLOB,
+            "p1_task_card_sha256": P1_TASK_CARD_SHA256,
+            "authorized_preflight_instrument_targets": P1_INSTRUMENT_TARGETS,
+        },
     },
     "science_route_firewall": {
         "science_successor_authorized": False,
@@ -347,6 +382,23 @@ def validate_route_convergence(
     card_bytes = _git_bytes(["cat-file", "blob", f"{bank_commit}:{card_path}"])
     if card_bytes is None or hashlib.sha256(card_bytes).hexdigest() != card_sha256:
         errors.append("learned-outcome capability Stage Card SHA-256 pin does not match committed bytes")
+
+    repo_root = REPO_HYGIENE_POLICY_PATH.parents[1]
+    p1_task_card = repo_root / P1_TASK_CARD_PATH
+    if not p1_task_card.is_file():
+        errors.append("P1 instrument task card is missing from the working tree")
+    else:
+        p1_bytes = p1_task_card.read_bytes()
+        git_blob = hashlib.sha1(
+            f"blob {len(p1_bytes)}\0".encode("ascii") + p1_bytes,
+            usedforsecurity=False,
+        ).hexdigest()
+        if git_blob != P1_TASK_CARD_BLOB:
+            errors.append("P1 instrument task-card working blob does not match the temporary authorization pin")
+        if hashlib.sha256(p1_bytes).hexdigest() != P1_TASK_CARD_SHA256:
+            errors.append("P1 instrument task-card working SHA-256 does not match the temporary authorization pin")
+    if (repo_root / FORMAL_ARTIFACT_PATH).exists():
+        errors.append("formal learned-outcome preflight artifact path must remain absent during P1")
 
     foundation_sink_text = " ".join(
         (

@@ -1,0 +1,72 @@
+schema_version: codex.mutation_scope.v1
+task: ego-learned-outcome-kernel-capability-preflight-p1b-instrument
+
+authorization_scope: >-
+  Implement and DEV-test the frozen candidate-independent preflight instrument
+  on exactly eleven source/test paths. Formal seeds, formal artifacts, product
+  candidate code and governance mutations are forbidden.
+
+allowed_mutation_paths:
+  - scripts/ego_learned_outcome_kernel_capability_preflight_001a/__init__.py
+  - scripts/ego_learned_outcome_kernel_capability_preflight_001a/contract.py
+  - scripts/ego_learned_outcome_kernel_capability_preflight_001a/workload.py
+  - scripts/ego_learned_outcome_kernel_capability_preflight_001a/oracles.py
+  - scripts/ego_learned_outcome_kernel_capability_preflight_001a/baselines.py
+  - scripts/ego_learned_outcome_kernel_capability_preflight_001a/metrics.py
+  - scripts/ego_learned_outcome_kernel_capability_preflight_001a/leakage.py
+  - scripts/ego_learned_outcome_kernel_capability_preflight_001a/replay.py
+  - scripts/ego_learned_outcome_kernel_capability_preflight_001a/producer.py
+  - scripts/run_ego_learned_outcome_kernel_capability_preflight_001a.py
+  - tests/test_ego_learned_outcome_kernel_capability_preflight_001a.py
+
+forbidden_mutation_paths:
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - scripts/codex/
+  - docs/STATUS.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - artifacts/reports/program_state_summary.md
+  - artifacts/evidence_ledger/index.yaml
+  - artifacts/ego_learned_outcome_kernel_capability_preflight_001a/
+  - packages/ego_learned_outcome_kernel/
+  - packages/ego_k0_kernel/
+  - scripts/ego_k0_adapters/
+  - tests/test_ego_k0_foundation.py
+  - scripts/run_ego_k0_foundation_validation.py
+  - artifacts/ego_k0_foundation_001a/
+  - EgoOperator/
+  - EgoDesktop/
+  - D:/Project/AIProject/MyProject/intelligence-theory-lab/
+
+allowed_seed_domains:
+  - dev_history
+  - dev_outcome
+  - dev_action_order
+  - leakage_positive_control
+
+forbidden_seed_domains:
+  - train_history
+  - train_outcome
+  - train_action_order
+  - validation_history
+  - validation_outcome
+  - validation_action_order
+  - formal_history
+  - formal_outcome
+  - formal_action_order
+  - fresh_replay_one
+  - fresh_replay_two
+
+phase_rule: >-
+  Exact eleven-path P1B commit only. All DEV output resolves under a verified
+  system temporary directory and is not committed. Formal mode must fail before
+  forbidden seed derivation or output creation. git add -A is forbidden.
+
+auto_remote_anchor: forbidden
+push: forbidden
+tag: forbidden
+
+claim_ceiling: >-
+  Evidence-instrument implementation and DEV control-path checks only. No
+  formal preflight result, headroom, learned capability, product readiness or
+  runtime/mainline effect.

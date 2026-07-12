@@ -1,0 +1,56 @@
+schema_version: codex.mutation_scope.v1
+task: ego-learned-outcome-kernel-capability-preflight-p1a-authorization
+
+authorization_scope: >-
+  Bank the P1 instrument task card and phase-specific scopes, and temporarily
+  authorize only the exact candidate-independent evidence-instrument paths and
+  DEV controls. Formal preflight, product implementation, route registration,
+  runtime/mainline/science work and formal artifacts remain forbidden.
+
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1_INSTRUMENT_TASK_CARD.md
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1A_AUTHORIZATION_MUTATION_SCOPE.yaml
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1B_INSTRUMENT_MUTATION_SCOPE.yaml
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1C_CLOSEOUT_MUTATION_SCOPE.yaml
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - scripts/codex/verify_route_convergence.py
+  - docs/STATUS.md
+  - artifacts/reports/program_state_summary.md
+
+forbidden_mutation_paths:
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/STAGE_CARD.md
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/MUTATION_SCOPE.yaml
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/PREFLIGHT_STAGE_CARD.md
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/PREFLIGHT_MUTATION_SCOPE.yaml
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/PREFLIGHT_CONTRACT.json
+  - scripts/ego_learned_outcome_kernel_capability_preflight_001a/
+  - scripts/run_ego_learned_outcome_kernel_capability_preflight_001a.py
+  - tests/test_ego_learned_outcome_kernel_capability_preflight_001a.py
+  - artifacts/ego_learned_outcome_kernel_capability_preflight_001a/
+  - artifacts/evidence_ledger/index.yaml
+  - scripts/codex/route_convergence_common.py
+  - scripts/codex/program_state_common.py
+  - scripts/codex/generate_program_state_views.py
+  - scripts/codex/generate_route_convergence_views.py
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - docs/REPO_HYGIENE_POLICY.md
+  - docs/REPO_SURFACE_MAP.md
+  - packages/ego_learned_outcome_kernel/
+  - packages/ego_k0_kernel/
+  - EgoOperator/
+  - EgoDesktop/
+  - D:/Project/AIProject/MyProject/intelligence-theory-lab/
+
+phase_rule: >-
+  Exact eight-path P1A commit only. The P1B source paths remain forbidden until
+  P1A is committed. Generate only program-state views. Do not generate route
+  views. git add -A is forbidden.
+
+auto_remote_anchor: forbidden
+push: forbidden
+tag: forbidden
+
+claim_ceiling: >-
+  Temporary exact-path evidence-instrument and DEV-control authorization only.
+  No formal preflight, surface verdict, product implementation, runtime,
+  mainline or science authorization.

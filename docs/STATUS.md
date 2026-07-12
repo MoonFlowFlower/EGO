@@ -145,7 +145,7 @@ Keep one default operator-first path where EgoOperator preserves natural-languag
 
 ## Next Minimal Action
 
-Keep EgoOperator as the active default. Preserve the closed old K0 science route, the terminally invalid verifier family, `independent_validator_acceptance=UNAVAILABLE`, unchanged Foundation bounded engineering evidence, and all old root, route, and child authorizations as false. `EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-001A` is banked reference-only but not registered or authorized. The next possible K0 action is fresh operator authorization for candidate-independent preflight under a separate bounded execution transaction; implementation remains unauthorized.
+Complete only the exact P1 candidate-independent preflight instrument and DEV controls under the temporary task-local authorization, then consume that authorization. Formal seed use, formal artifacts, product implementation, route registration, runtime/mainline/science execution, push, tag, and remote anchor remain unauthorized.
 
 ## Real Trigger Evidence
 
