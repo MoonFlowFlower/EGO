@@ -130,7 +130,7 @@ program:
     - "Which legacy algorithms should be reimplemented as EgoOperator primitives, and which should remain reference-only."
     - "Whether future command/network transaction approvals should be added after file-write transaction approval has proved ergonomic."
     - "What evidence threshold should trigger any future deletion of legacy code rather than reference preservation."
-  next_minimal_action: "Complete only the exact P1 candidate-independent preflight instrument and DEV controls under the temporary task-local authorization, then consume that authorization. Formal seed use, formal artifacts, product implementation, route registration, runtime/mainline/science execution, push, tag, and remote anchor remain unauthorized."
+  next_minimal_action: "Keep the P1 instrument transaction blocked and its temporary authorization consumed. Any replacement instrument requires a new bounded task; formal seed use, formal artifacts, product implementation, route registration, runtime/mainline/science execution, push, tag, and remote anchor remain unauthorized."
   last_verified_commit: "af561e0d"
   last_verified_at: "2026-05-18T03:48:22Z"
   status_owner: "EgoOperator"
@@ -284,7 +284,7 @@ workstreams:
 
       future_product_route:
         task_id: "EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-001A"
-        current_status: "P1_INSTRUMENT_DEV_ONLY_AUTHORIZED__FORMAL_NOT_AUTHORIZED"
+        current_status: "P1_INSTRUMENT_BLOCKED__AUTHORIZATION_CONSUMED__FORMAL_EXECUTION_NOT_AUTHORIZED"
         prior_governance_sync_created_card: false
         this_card_bank_creates_card: true
         stage_card_banked: true
@@ -302,7 +302,7 @@ workstreams:
         mainline_connected: false
         non_mainline_required: true
         runtime_authority: "none"
-        current_operator_authorization_scope: "P1_INSTRUMENT_IMPLEMENTATION_AND_DEV_CONTROLS_ONLY"
+        current_operator_authorization_scope: "P1_INSTRUMENT_AUTHORIZATION_CONSUMED__P2_REQUIRES_FRESH_AUTHORIZATION"
         requires_separate_bounded_stage_card: false
         requires_fresh_operator_authorization: true
         requires_fresh_candidate_preflight_authorization: true
@@ -325,26 +325,19 @@ workstreams:
           prereg_commit: "ff1ab23e1db303a882cec17374b9ea3903fe03c6"
           prereg_contract_blob: "d09235eff74ec68b5cc5004873af1b1186d7ee39"
           prereg_contract_sha256: "d9c2d8a12b41ab9b0482b270b63578631b88901ca78854da92853779e95858c3"
-          instrument_implementation_authorized: true
-          dev_instrument_execution_authorized: true
+          p1_authorization_commit: "fdbc5dea725d635ee21ba7490d7b5b03b3ce11cc"
+          p1_instrument_banked: false
+          p1_blocker_status: "P1_BLOCKED_BASELINE_PANEL_SMC_FORMAL_PIPELINE_AND_REPLAY_NONCONFORMANCE"
+          p1_authorization_consumed: true
+          instrument_implementation_authorized: false
+          dev_instrument_execution_authorized: false
           formal_preflight_authorized: false
           p1_authorization_single_transaction: true
-          p1_authorization_consumption_required: true
+          p1_authorization_consumption_required: false
           p1_task_card_path: "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1_INSTRUMENT_TASK_CARD.md"
           p1_task_card_blob: "26c53396c88de3a0c35494665085a3b6c298e56c"
           p1_task_card_sha256: "93608561afcd4ab35abae5bf6257f1ad5b8a35b779e0bee0a03a238012724a95"
-          authorized_preflight_instrument_targets:
-            - "scripts/ego_learned_outcome_kernel_capability_preflight_001a/__init__.py"
-            - "scripts/ego_learned_outcome_kernel_capability_preflight_001a/contract.py"
-            - "scripts/ego_learned_outcome_kernel_capability_preflight_001a/workload.py"
-            - "scripts/ego_learned_outcome_kernel_capability_preflight_001a/oracles.py"
-            - "scripts/ego_learned_outcome_kernel_capability_preflight_001a/baselines.py"
-            - "scripts/ego_learned_outcome_kernel_capability_preflight_001a/metrics.py"
-            - "scripts/ego_learned_outcome_kernel_capability_preflight_001a/leakage.py"
-            - "scripts/ego_learned_outcome_kernel_capability_preflight_001a/replay.py"
-            - "scripts/ego_learned_outcome_kernel_capability_preflight_001a/producer.py"
-            - "scripts/run_ego_learned_outcome_kernel_capability_preflight_001a.py"
-            - "tests/test_ego_learned_outcome_kernel_capability_preflight_001a.py"
+          authorized_preflight_instrument_targets: []
 
       science_route_firewall:
         science_successor_authorized: false

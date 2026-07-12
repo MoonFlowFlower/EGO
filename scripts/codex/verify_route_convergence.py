@@ -49,6 +49,9 @@ P1_INSTRUMENT_TARGETS = [
     "tests/test_ego_learned_outcome_kernel_capability_preflight_001a.py",
 ]
 FORMAL_ARTIFACT_PATH = "artifacts/ego_learned_outcome_kernel_capability_preflight_001a"
+P1_AUTHORIZATION_COMMIT = "fdbc5dea725d635ee21ba7490d7b5b03b3ce11cc"
+P0_PREREG_COMMIT = "ff1ab23e1db303a882cec17374b9ea3903fe03c6"
+EVIDENCE_LEDGER_BLOB = "7634cdccd69d25277bfeaab7e87865fd9e5bff0d"
 
 EXPECTED_GOVERNANCE_SYNC: dict[str, Any] = {
     "record_type": "SOURCE_PINNED_DERIVED_READBACK",
@@ -154,7 +157,7 @@ EXPECTED_GOVERNANCE_SYNC: dict[str, Any] = {
     },
     "future_product_route": {
         "task_id": "EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-001A",
-        "current_status": "P1_INSTRUMENT_DEV_ONLY_AUTHORIZED__FORMAL_NOT_AUTHORIZED",
+        "current_status": "P1_INSTRUMENT_BLOCKED__AUTHORIZATION_CONSUMED__FORMAL_EXECUTION_NOT_AUTHORIZED",
         "prior_governance_sync_created_card": False,
         "this_card_bank_creates_card": True,
         "stage_card_banked": True,
@@ -172,7 +175,7 @@ EXPECTED_GOVERNANCE_SYNC: dict[str, Any] = {
         "mainline_connected": False,
         "non_mainline_required": True,
         "runtime_authority": "none",
-        "current_operator_authorization_scope": "P1_INSTRUMENT_IMPLEMENTATION_AND_DEV_CONTROLS_ONLY",
+        "current_operator_authorization_scope": "P1_INSTRUMENT_AUTHORIZATION_CONSUMED__P2_REQUIRES_FRESH_AUTHORIZATION",
         "requires_separate_bounded_stage_card": False,
         "requires_fresh_operator_authorization": True,
         "requires_fresh_candidate_preflight_authorization": True,
@@ -195,15 +198,19 @@ EXPECTED_GOVERNANCE_SYNC: dict[str, Any] = {
             "prereg_commit": "ff1ab23e1db303a882cec17374b9ea3903fe03c6",
             "prereg_contract_blob": "d09235eff74ec68b5cc5004873af1b1186d7ee39",
             "prereg_contract_sha256": "d9c2d8a12b41ab9b0482b270b63578631b88901ca78854da92853779e95858c3",
-            "instrument_implementation_authorized": True,
-            "dev_instrument_execution_authorized": True,
+            "p1_authorization_commit": P1_AUTHORIZATION_COMMIT,
+            "p1_instrument_banked": False,
+            "p1_blocker_status": "P1_BLOCKED_BASELINE_PANEL_SMC_FORMAL_PIPELINE_AND_REPLAY_NONCONFORMANCE",
+            "p1_authorization_consumed": True,
+            "instrument_implementation_authorized": False,
+            "dev_instrument_execution_authorized": False,
             "formal_preflight_authorized": False,
             "p1_authorization_single_transaction": True,
-            "p1_authorization_consumption_required": True,
+            "p1_authorization_consumption_required": False,
             "p1_task_card_path": P1_TASK_CARD_PATH,
             "p1_task_card_blob": P1_TASK_CARD_BLOB,
             "p1_task_card_sha256": P1_TASK_CARD_SHA256,
-            "authorized_preflight_instrument_targets": P1_INSTRUMENT_TARGETS,
+            "authorized_preflight_instrument_targets": [],
         },
     },
     "science_route_firewall": {
@@ -399,6 +406,32 @@ def validate_route_convergence(
             errors.append("P1 instrument task-card working SHA-256 does not match the temporary authorization pin")
     if (repo_root / FORMAL_ARTIFACT_PATH).exists():
         errors.append("formal learned-outcome preflight artifact path must remain absent during P1")
+    authorization_parent = _git_lines(["rev-parse", f"{P1_AUTHORIZATION_COMMIT}^"])
+    if authorization_parent != [P0_PREREG_COMMIT]:
+        errors.append("P1 authorization commit is not the direct child of the frozen prereg commit")
+    authorization_paths = set(
+        _git_lines(["diff-tree", "--no-commit-id", "--name-only", "-r", P1_AUTHORIZATION_COMMIT])
+    )
+    expected_authorization_paths = {
+        "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1_INSTRUMENT_TASK_CARD.md",
+        "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1A_AUTHORIZATION_MUTATION_SCOPE.yaml",
+        "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1B_INSTRUMENT_MUTATION_SCOPE.yaml",
+        "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1C_CLOSEOUT_MUTATION_SCOPE.yaml",
+        "docs/PROGRAM_STATE_UNIFIED.yaml",
+        "scripts/codex/verify_route_convergence.py",
+        "docs/STATUS.md",
+        "artifacts/reports/program_state_summary.md",
+    }
+    if authorization_paths != expected_authorization_paths:
+        errors.append("P1 authorization commit does not contain the exact eight-path set")
+    instrument_paths_present = [
+        relative for relative in P1_INSTRUMENT_TARGETS if (repo_root / relative).exists()
+    ]
+    if instrument_paths_present:
+        errors.append("blocked P1 instrument paths must be absent after authorization consumption")
+    ledger_blob = _git_lines(["rev-parse", "HEAD:artifacts/evidence_ledger/index.yaml"])
+    if ledger_blob != [EVIDENCE_LEDGER_BLOB]:
+        errors.append("evidence ledger changed during the P1 instrument transaction")
 
     foundation_sink_text = " ".join(
         (

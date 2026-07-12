@@ -8,6 +8,6 @@
 - verification: `V3`
 - mainline_connected: `True`
 - enabled: `True`
-- next_minimal_action: Complete only the exact P1 candidate-independent preflight instrument and DEV controls under the temporary task-local authorization, then consume that authorization. Formal seed use, formal artifacts, product implementation, route registration, runtime/mainline/science execution, push, tag, and remote anchor remain unauthorized.
+- next_minimal_action: Keep the P1 instrument transaction blocked and its temporary authorization consumed. Any replacement instrument requires a new bounded task; formal seed use, formal artifacts, product implementation, route registration, runtime/mainline/science execution, push, tag, and remote anchor remain unauthorized.
 - highest ledger entry: `mvp16_controlled_completion_current` / `E5`
 
