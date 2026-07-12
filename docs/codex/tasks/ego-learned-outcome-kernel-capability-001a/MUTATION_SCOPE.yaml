@@ -1,0 +1,108 @@
+
+schema_version: codex.mutation_scope.v1
+task: ego-learned-outcome-kernel-capability-001a
+
+authorization_scope: >-
+  Bank the bounded learned-outcome-kernel product-capability design card and
+  synchronize only the card-existence fact into existing Ego governance
+  authority, the existing route verifier, and existing generated views.
+  Candidate preflight, implementation, experiment execution, route
+  registration, runtime/mainline integration, science execution and evidence
+  production remain unauthorized.
+
+current_layer: Layer 2 engineering/evidence-governance
+
+mainline_target: none
+enabled: false
+mainline_connected: false
+runtime_authority: none
+real_runtime_trigger_evidence: absent
+route_registered: false
+candidate_preflight_authorized: false
+implementation_authorized: false
+authorized_implementation_targets: []
+
+expected_mutation_surface:
+  - bank the exact Stage Card and Mutation Scope
+  - change future product-card status from absent to card-banked reference-only
+  - preserve route_registered=false
+  - preserve candidate_preflight_authorized=false
+  - preserve implementation_authorized=false
+  - preserve enabled=false, mainline_connected=false, runtime_authority=none
+  - preserve authorized_implementation_targets as an empty list
+  - preserve independent_validator_acceptance=UNAVAILABLE
+  - preserve verifier-family disposition CLOSED_INVALID_NO_FURTHER_REPAIR
+  - preserve all old K0 child authorizations as false
+  - preserve old K0-R as reference-only and BLOCKED_NOT_TESTED
+  - preserve product science weight and mechanism attribution as false
+  - regenerate only existing governance views
+  - leave the new task in the default reference-only lane
+  - preserve EgoOperator as the sole active default
+  - create no capability or experimental evidence entry
+
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/STAGE_CARD.md
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/MUTATION_SCOPE.yaml
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - scripts/codex/verify_route_convergence.py
+  - docs/STATUS.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - artifacts/reports/program_state_summary.md
+
+forbidden_mutation_paths:
+  - D:/Project/AIProject/MyProject/intelligence-theory-lab/
+  - packages/ego_k0_kernel/
+  - packages/ego_learned_outcome_kernel/
+  - scripts/ego_k0_adapters/
+  - scripts/ego_learned_outcome_kernel_capability_001a/
+  - tests/ego_learned_outcome_kernel_capability_001a/
+  - artifacts/ego_learned_outcome_kernel_capability_001a/
+  - docs/codex/tasks/ego-k0-reference-kernel-001a/
+  - docs/codex/tasks/ego-k0-foundation-001a/
+  - docs/codex/tasks/ego-k0-foundation-acceptance-route-view-sync-001a/
+  - artifacts/ego_k0_foundation_001a/
+  - artifacts/evidence_ledger/index.yaml
+  - scripts/codex/route_convergence_common.py
+  - scripts/codex/program_state_common.py
+  - scripts/codex/generate_program_state_views.py
+  - scripts/codex/generate_route_convergence_views.py
+  - docs/REPO_HYGIENE_POLICY.md
+  - docs/REPO_SURFACE_MAP.md
+  - scripts/run_ego_k0_foundation_validation.py
+  - tests/test_ego_k0_foundation.py
+  - EgoOperator/
+  - EgoDesktop/
+  - Tasks/TASK_BOARD.yaml
+  - .codex/project_contract.yaml
+
+phase_scopes:
+  phase_a_card_bank:
+    - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/STAGE_CARD.md
+    - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/MUTATION_SCOPE.yaml
+
+  phase_b_card_existence_governance_sync:
+    - docs/PROGRAM_STATE_UNIFIED.yaml
+    - scripts/codex/verify_route_convergence.py
+    - docs/STATUS.md
+    - docs/codex/tasks/TASK_LANE_INDEX.md
+    - artifacts/reports/program_state_summary.md
+
+phase_rule: >-
+  One phase per exact-scope local commit. The allowed path union is not blanket
+  cross-phase authority. Stage only literal paths. git add -A is forbidden.
+  Phase A must finish and be read back before Phase B begins. Phase B must not
+  modify route_convergence_common.py, either generator, the evidence ledger,
+  Foundation, old K0-R, runtime surfaces or ITL. Stop after the second local
+  commit.
+
+auto_remote_anchor: forbidden
+push: forbidden
+tag: forbidden
+
+claim_ceiling: >-
+  Local governance/design-card banking, evidence-contract preservation,
+  reference-only visibility, and product/science dependency isolation only.
+  No candidate preflight, implementation, learned capability, scientific
+  adjudication, independent validator acceptance, mechanism validity,
+  product readiness, runtime/mainline effect, stable user benefit, agency,
+  autonomy, subjectivity, consciousness, real emotion or EGO readiness.
