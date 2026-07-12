@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import hashlib
 import json
 import subprocess
 import sys
@@ -23,6 +24,11 @@ EXPECTED_K0_STATUS = (
     "foundation_engineering_accepted_bounded__old_science_route_operator_closed_without_science_adjudication__"
     "verifier_family_closed_invalid__independent_acceptance_unavailable__product_science_decoupled__"
     "all_authorizations_false__runtime_disabled__non_mainline"
+)
+
+FUTURE_PRODUCT_TASK_KEY = "ego-learned-outcome-kernel-capability-001a"
+FUTURE_PRODUCT_STAGE_CARD_PATH = (
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/STAGE_CARD.md"
 )
 
 EXPECTED_GOVERNANCE_SYNC: dict[str, Any] = {
@@ -129,19 +135,31 @@ EXPECTED_GOVERNANCE_SYNC: dict[str, Any] = {
     },
     "future_product_route": {
         "task_id": "EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-001A",
-        "current_status": "NOT_CREATED_OR_REGISTERED",
-        "this_sync_creates_card": False,
+        "current_status": "CARD_BANKED_REFERENCE_ONLY_NOT_REGISTERED_NOT_AUTHORIZED",
+        "prior_governance_sync_created_card": False,
+        "this_card_bank_creates_card": True,
+        "stage_card_banked": True,
+        "stage_card_lane": "reference_only",
+        "stage_card_path": FUTURE_PRODUCT_STAGE_CARD_PATH,
+        "stage_card_bank_commit": "a5b33745c785676f6c63cadf7946997ba8426b8c",
+        "stage_card_bank_parent": "6f5a45545c78ab446ad77fed1f0c46bc70fbb07a",
+        "stage_card_blob": "9675a6baeafed8eab6cbcc9b2da7a2be226aac3e",
+        "stage_card_sha256": "ec41623c48eaf518a033d47b927fa4e9efc511d923c9091c30f80e0fccc0e3ad",
         "route_registered": False,
+        "candidate_preflight_authorized": False,
         "implementation_authorized": False,
         "enabled": False,
         "default_off_required": True,
         "mainline_connected": False,
         "non_mainline_required": True,
         "runtime_authority": "none",
-        "old_science_acceptance_required_for_product_card": False,
-        "decoupling_scope": "PRODUCT_CARD_DEPENDENCY_ONLY_NO_EXECUTION_AUTHORITY",
-        "requires_separate_bounded_stage_card": True,
+        "current_operator_authorization_scope": "CARD_BANK_AND_GOVERNANCE_SYNC_ONLY",
+        "requires_separate_bounded_stage_card": False,
         "requires_fresh_operator_authorization": True,
+        "requires_fresh_candidate_preflight_authorization": True,
+        "requires_fresh_implementation_authorization": True,
+        "old_science_acceptance_required_for_product_card": False,
+        "decoupling_scope": "PRODUCT_CARD_BANKED_NO_EXECUTION_AUTHORITY",
         "inherits_old_k0r_authority": False,
         "inherits_old_science_attribution": False,
         "inherits_old_h0_h1_freeze_formal_contracts": False,
@@ -149,7 +167,8 @@ EXPECTED_GOVERNANCE_SYNC: dict[str, Any] = {
         "old_k0r_bypass": False,
         "may_satisfy_old_h1_freeze_formal": False,
         "may_reopen_old_science_route": False,
-        "foundation_engineering_dependency_redeclaration_required": True,
+        "foundation_engineering_dependency_redeclared_for_card_only": True,
+        "foundation_engineering_dependency_redeclaration_required_for_execution": True,
         "foundation_mechanism_meaning_inherited": False,
     },
     "science_route_firewall": {
@@ -180,6 +199,16 @@ def _git_lines(args: list[str]) -> list[str]:
     if proc.returncode != 0:
         return []
     return [line.strip() for line in proc.stdout.splitlines() if line.strip()]
+
+
+def _git_bytes(args: list[str]) -> bytes | None:
+    proc = subprocess.run(
+        ["git", *args],
+        cwd=REPO_HYGIENE_POLICY_PATH.parents[1],
+        capture_output=True,
+        check=False,
+    )
+    return proc.stdout if proc.returncode == 0 else None
 
 
 def _check_generated_file(path, expected: str, errors: list[str]) -> None:
@@ -271,6 +300,16 @@ def validate_route_convergence(
             + ", ".join(sorted(disallowed_reference_lanes))
         )
 
+    future_product_entries = [entry for entry in entries if entry.key == FUTURE_PRODUCT_TASK_KEY]
+    if len(future_product_entries) != 1:
+        errors.append(f"expected exactly one learned-outcome capability card entry, found {len(future_product_entries)}")
+    else:
+        future_product_entry = future_product_entries[0]
+        if future_product_entry.lane != "reference_only":
+            errors.append("learned-outcome capability card must appear only in `reference_only`")
+        if future_product_entry.lane in {"parked", "supporting_active", "active_default"}:
+            errors.append("learned-outcome capability card appears in a disallowed actionable lane")
+
     workstreams = {item.get("id"): item for item in program_state.get("workstreams") or []}
     active_ws = workstreams.get("ego_operator_first_transition") or {}
     if not active_ws:
@@ -292,6 +331,22 @@ def validate_route_convergence(
     governance_sync = foundation_ws.get("governance_sync")
     if governance_sync != EXPECTED_GOVERNANCE_SYNC:
         errors.append("K0 governance_sync mapping does not match the pinned closed-invalid contract")
+
+    future_product_route = (governance_sync or {}).get("future_product_route") or {}
+    bank_commit = str(future_product_route.get("stage_card_bank_commit") or "")
+    bank_parent = str(future_product_route.get("stage_card_bank_parent") or "")
+    card_path = str(future_product_route.get("stage_card_path") or "")
+    card_blob = str(future_product_route.get("stage_card_blob") or "")
+    card_sha256 = str(future_product_route.get("stage_card_sha256") or "")
+    actual_parent = _git_lines(["rev-parse", f"{bank_commit}^"])
+    if actual_parent != [bank_parent]:
+        errors.append("learned-outcome capability card bank parent pin does not match git object readback")
+    actual_blob = _git_lines(["rev-parse", f"{bank_commit}:{card_path}"])
+    if actual_blob != [card_blob]:
+        errors.append("learned-outcome capability Stage Card blob pin does not match git object readback")
+    card_bytes = _git_bytes(["cat-file", "blob", f"{bank_commit}:{card_path}"])
+    if card_bytes is None or hashlib.sha256(card_bytes).hexdigest() != card_sha256:
+        errors.append("learned-outcome capability Stage Card SHA-256 pin does not match committed bytes")
 
     foundation_sink_text = " ".join(
         (
@@ -342,6 +397,7 @@ def main() -> int:
     verifier_family = governance_sync.get("verifier_family") or {}
     future_product_route = governance_sync.get("future_product_route") or {}
     reference_kernel_entries = [entry for entry in entries if entry.key == "ego-k0-reference-kernel-001a"]
+    future_product_entries = [entry for entry in entries if entry.key == FUTURE_PRODUCT_TASK_KEY]
     active_default_entries = [entry for entry in entries if entry.lane == "active_default"]
     print(
         json.dumps(
@@ -356,6 +412,9 @@ def main() -> int:
                 "verifier_family_disposition": verifier_family.get("family_disposition"),
                 "independent_validator_acceptance": verifier_family.get("independent_validator_acceptance"),
                 "future_product_route_status": future_product_route.get("current_status"),
+                "future_product_route_lane": (
+                    future_product_entries[0].lane if len(future_product_entries) == 1 else None
+                ),
                 "route_index": str(TASK_LANE_INDEX_PATH.relative_to(REPO_HYGIENE_POLICY_PATH.parents[1])),
                 "hygiene_policy": str(REPO_HYGIENE_POLICY_PATH.relative_to(REPO_HYGIENE_POLICY_PATH.parents[1])),
             },

@@ -24,9 +24,9 @@ program:
     - "Use human-observable operator samples as part of acceptance when experience is the target; tests alone are not sufficient proof of natural interaction quality."
     - "Keep all claims bounded to local candidate / transition evidence until real user operation proves stable behavior."
     - "R-track mechanism rewrite state machine remains closed: R0/R1/R3 stay at engineering-only/default-off ceilings and R2 stays negative; do not reopen or reinterpret those rows from K0."
-    - "K0 dual-track remains a separate disabled non-mainline workstream. Ego preserves the pinned ITL operator decision to close the old K0 science-attribution route without science adjudication. The verifier family is terminally closed invalid with no further repair, and independent validator acceptance is UNAVAILABLE. Foundation remains BANKED_ACCEPTED_BOUNDED at the existing E3/V3 engineering-governance ceiling with enabled=false, mainline_connected=false, runtime_authority=none, and runtime trigger evidence absent. H0 is NOT_TESTED; the old Reference Kernel/K0-R, H1, Freeze, and Formal are BLOCKED_NOT_TESTED; all root, route, and child authorizations are false with authorized implementation targets empty. Old K0-R is an unexecuted reference-only plan and is not actionable or the future product route. `EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-001A` is not created, registered, or authorized; the next possible K0 action is a separately authored and separately authorized bounded Stage Card for that future capability task."
+    - "K0 dual-track remains a separate disabled non-mainline workstream. Ego preserves the pinned ITL operator decision to close the old K0 science-attribution route without science adjudication. The verifier family is terminally closed invalid with no further repair, and independent validator acceptance is UNAVAILABLE. Foundation remains BANKED_ACCEPTED_BOUNDED at the existing E3/V3 engineering-governance ceiling with enabled=false, mainline_connected=false, runtime_authority=none, and runtime trigger evidence absent. H0 is NOT_TESTED; the old Reference Kernel/K0-R, H1, Freeze, and Formal are BLOCKED_NOT_TESTED; all root, route, and child authorizations are false with authorized implementation targets empty. Old K0-R is an unexecuted reference-only plan and is not actionable or the future product route. `EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-001A` is now banked in the default reference-only lane but remains unregistered, unauthorized, disabled, non-mainline, and without runtime authority or trigger evidence. Card banking creates no capability evidence; the next possible K0 action requires fresh operator authorization for candidate-independent preflight, not implementation."
   completed_since_last:
-    - "EGO K0 governance mirror sync preserves the pinned ITL operator close without science adjudication, records the original/first-repair/replacement verifier verdicts and terminal `CLOSED_INVALID_NO_FURTHER_REPAIR` disposition with `independent_validator_acceptance=UNAVAILABLE`, preserves Foundation bounded engineering evidence unchanged, moves the unexecuted old K0-R plan to reference-only with all authorizations false, and separates any future product capability Stage Card from old science-route authority. This is local governance/view synchronization only; no future capability route or implementation is created or authorized."
+    - "EGO Learned Outcome Kernel Capability 001A banks a governance/design Stage Card in the default reference-only lane and synchronizes that card-existence fact without registering a route, authorizing candidate preflight or implementation, enabling runtime, connecting mainline, or creating capability evidence. The old K0 science route, terminal verifier-family disposition, `independent_validator_acceptance=UNAVAILABLE`, Foundation bounded engineering pins, all root/route/child authorizations, and the product/science firewall remain unchanged."
     - "EGO R3 Adoption Slice 001A closes with verdict `r3_adoption_slice_pass` at `24e8bfc623265304ae2cefac35a3a76660c71d06`: the in-flight EgoDesktop joi_real_loop g_ablation loop, in harness context only, now emits the R0 kernel_state_v0-compatible envelope through an 11-line purely-additive default-off TraceRunner hook (host git diff banked as evidence), with 16/16 cross-language canonical-hash parity, fresh-process replay x2 plus mid-episode resume at zero mismatch, and first-enforced LLM-swap invariance whose leak detector carries a firing positive control; a failed B1 battery (embedded regression executor spawn/timeout defects) is preserved as negative evidence beside the passing B2 rerun. Claim ceiling `r3_adoption_engineering_only`, default-off, no runtime wiring; this re-adjudicates no g_ablation verdict and does not prove mechanism validity, prediction-error-loop scientific status, learning, durable memory efficacy, runtime integration safety, stable user benefit, live autonomy, functional selfhood, consciousness, subjective experience, or real emotion."
     - "EGO R1 Memory Ownership lineage is complete at engineering scope and closes the R1 row of EGO-MECHANISM-REWRITE-DECISION-001A: the v0 battery banked `instrument_invalid_potency` (`cb94184e9747d40e7cb99be27b37329eb44af1e6`; full-episode-average dilution, attribution gap, un-instantiated benign axis; candidate unadjudicated), repair card 001A validated the governing-poison potency mask (masked drop 0.981) and displacement-inclusive attribution with fail-able controls while correctly stopping at `instrument_invalid_benign_value` (`bec289569662321d2749d85f392653ed6a4252c2`; pooled drifted uplift 0.0211 < 0.03), and repair card 001B (r1_env_v2: second drift wave at tick 450, second preview window, guaranteed deterministic preview coverage, theorem-grounded ablation re-scope with pref_zeroed as annotation) passed the full battery pooled AND on held-out seeds {61,79} with verdict `r1_instrument_repair_pass` at `9978f649b00b094917a55feb3bf5ef204589dcd1` — benign uplift 0.0469 pooled / 0.0472 held-out, masked potency 0.986 / 0.990, containment unattributed 0 with attributed 0.0021, fresh-process replay x2 plus mid-episode resume clean, mimicry-certified content-mimetic tier, and the candidate separating from raw-RAG / lookup / graph-cache comparators on identical fixtures. Ship decision `ownership_gated_cache_kept__pref_epiphenomenal_by_dominance`; no learned-component claim (dominance theorem: promoted claims override pref arithmetically). Claim ceiling `memory_ownership_engineering_only`, default-off, not runtime connected; this authorizes drafting the R3-adoption slice card only and does not prove mechanism validity, durable memory efficacy, runtime integration safety, route-I headroom, stable user benefit, live autonomy, functional selfhood, consciousness, subjective experience, or real emotion."
     - "EGO R0 Kernel State Substrate 001A implements `scripts/ego_kernel/*` (state container with canonical serialization + sha256 hashing + in-state seed registry, deterministic tick loop, kernel_trace_v0, fresh-process replay harness with mid-episode resume, state-causality smoke, seed negative-control, LLM-swap invariance harness skeleton with deterministic stub renderers) validated against a constructed probe substate, recording verdict `r0_substrate_pass` under `artifacts/ego_r0_kernel_state_substrate_001a/`. Default-off library and harness only: no EgoDesktop/src or EgoOperator modification, no runtime registration, no gate/approval/transport/proactive path, no network or LLM calls. Claim ceiling `kernel_substrate_engineering_only`; this does not prove mechanism validity, learning, durable memory efficacy, runtime integration safety, route-I headroom, stable user benefit, live autonomy, functional selfhood, consciousness, subjective experience, or real emotion."
@@ -130,7 +130,7 @@ program:
     - "Which legacy algorithms should be reimplemented as EgoOperator primitives, and which should remain reference-only."
     - "Whether future command/network transaction approvals should be added after file-write transaction approval has proved ergonomic."
     - "What evidence threshold should trigger any future deletion of legacy code rather than reference preservation."
-  next_minimal_action: "Keep EgoOperator as the active default. Preserve the closed old K0 science route, the terminally invalid verifier family, `independent_validator_acceptance=UNAVAILABLE`, and unchanged Foundation bounded engineering evidence with all old root, route, and child authorizations false. Old K0-R is not actionable. The next possible K0 action is to author a separate bounded Stage Card for `EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-001A` and obtain fresh operator authorization; this sync does not create, register, or authorize that future product route or its implementation."
+  next_minimal_action: "Keep EgoOperator as the active default. Preserve the closed old K0 science route, the terminally invalid verifier family, `independent_validator_acceptance=UNAVAILABLE`, unchanged Foundation bounded engineering evidence, and all old root, route, and child authorizations as false. `EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-001A` is banked reference-only but not registered or authorized. The next possible K0 action is fresh operator authorization for candidate-independent preflight under a separate bounded execution transaction; implementation remains unauthorized."
   last_verified_commit: "af561e0d"
   last_verified_at: "2026-05-18T03:48:22Z"
   status_owner: "EgoOperator"
@@ -181,7 +181,7 @@ workstreams:
     verification_level: "V3"
     mainline_connected: false
     enabled: false
-    summary: "Ego locally mirrors the pinned ITL operator decision that closed the old K0 science-attribution route without science adjudication. The verifier family is terminally invalid and closed with no further repair; independent validator acceptance and operator-closure acceptance from this family are UNAVAILABLE, and the stored validation report remains frozen executor output rather than acceptance evidence. Foundation bounded engineering evidence remains BANKED_ACCEPTED_BOUNDED at the existing E3/V3 governance ceiling, unchanged, disabled, non-mainline, and without runtime authority or trigger evidence. H0 is NOT_TESTED; old Reference Kernel/K0-R, H1, Freeze, and Formal are BLOCKED_NOT_TESTED. All root, route, and six child authorizations are false and authorized implementation targets are empty. Old K0-R is an unexecuted reference-only science plan, not an actionable route and not the future product route. `EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-001A` remains absent, unregistered, unauthorized, disabled, non-mainline, default-off, and requires a separate bounded Stage Card plus fresh operator authorization; product results receive no science weight and cannot reopen or bypass the old science route."
+    summary: "Ego locally mirrors the pinned ITL operator decision that closed the old K0 science-attribution route without science adjudication. The verifier family is terminally invalid and closed with no further repair; independent validator acceptance and operator-closure acceptance from this family are UNAVAILABLE, and the stored validation report remains frozen executor output rather than acceptance evidence. Foundation bounded engineering evidence remains BANKED_ACCEPTED_BOUNDED at the existing E3/V3 governance ceiling, unchanged, disabled, non-mainline, and without runtime authority or trigger evidence. H0 is NOT_TESTED; old Reference Kernel/K0-R, H1, Freeze, and Formal are BLOCKED_NOT_TESTED. All root, route, and six child authorizations are false and authorized implementation targets are empty. Old K0-R is an unexecuted reference-only science plan, not an actionable route and not the future product route. `EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-001A` is banked reference-only at Phase A commit `a5b33745c785676f6c63cadf7946997ba8426b8c` but remains unregistered, unauthorized, disabled, non-mainline, default-off, and without runtime authority or trigger evidence. Card banking creates no capability evidence; any candidate-independent preflight requires fresh operator authorization, and product results receive no science weight and cannot reopen or bypass the old science route."
     governance_sync:
       record_type: "SOURCE_PINNED_DERIVED_READBACK"
       ego_synced_to_itl_operator_close: true
@@ -284,19 +284,31 @@ workstreams:
 
       future_product_route:
         task_id: "EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-001A"
-        current_status: "NOT_CREATED_OR_REGISTERED"
-        this_sync_creates_card: false
+        current_status: "CARD_BANKED_REFERENCE_ONLY_NOT_REGISTERED_NOT_AUTHORIZED"
+        prior_governance_sync_created_card: false
+        this_card_bank_creates_card: true
+        stage_card_banked: true
+        stage_card_lane: "reference_only"
+        stage_card_path: "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/STAGE_CARD.md"
+        stage_card_bank_commit: "a5b33745c785676f6c63cadf7946997ba8426b8c"
+        stage_card_bank_parent: "6f5a45545c78ab446ad77fed1f0c46bc70fbb07a"
+        stage_card_blob: "9675a6baeafed8eab6cbcc9b2da7a2be226aac3e"
+        stage_card_sha256: "ec41623c48eaf518a033d47b927fa4e9efc511d923c9091c30f80e0fccc0e3ad"
         route_registered: false
+        candidate_preflight_authorized: false
         implementation_authorized: false
         enabled: false
         default_off_required: true
         mainline_connected: false
         non_mainline_required: true
         runtime_authority: "none"
-        old_science_acceptance_required_for_product_card: false
-        decoupling_scope: "PRODUCT_CARD_DEPENDENCY_ONLY_NO_EXECUTION_AUTHORITY"
-        requires_separate_bounded_stage_card: true
+        current_operator_authorization_scope: "CARD_BANK_AND_GOVERNANCE_SYNC_ONLY"
+        requires_separate_bounded_stage_card: false
         requires_fresh_operator_authorization: true
+        requires_fresh_candidate_preflight_authorization: true
+        requires_fresh_implementation_authorization: true
+        old_science_acceptance_required_for_product_card: false
+        decoupling_scope: "PRODUCT_CARD_BANKED_NO_EXECUTION_AUTHORITY"
         inherits_old_k0r_authority: false
         inherits_old_science_attribution: false
         inherits_old_h0_h1_freeze_formal_contracts: false
@@ -304,7 +316,8 @@ workstreams:
         old_k0r_bypass: false
         may_satisfy_old_h1_freeze_formal: false
         may_reopen_old_science_route: false
-        foundation_engineering_dependency_redeclaration_required: true
+        foundation_engineering_dependency_redeclared_for_card_only: true
+        foundation_engineering_dependency_redeclaration_required_for_execution: true
         foundation_mechanism_meaning_inherited: false
 
       science_route_firewall:
