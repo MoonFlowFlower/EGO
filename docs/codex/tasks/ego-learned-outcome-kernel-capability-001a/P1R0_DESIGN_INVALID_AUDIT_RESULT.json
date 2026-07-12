@@ -1,0 +1,405 @@
+{
+  "admissibility_computation": {
+    "p1r1": "no independent semantic findings",
+    "p2": "p1r1 admissible AND banked P1B/P1R1 commit present AND formal artifact absent AND P2 authorization absent"
+  },
+  "aggregation_rule": "INVALID iff one or more independently computed semantic blocking findings exist; no score or compensation",
+  "blocking_finding_count": 23,
+  "blocking_findings": [
+    {
+      "blocking": true,
+      "check_id": "module_keys:contract.py",
+      "expected": [
+        "/computed_provenance",
+        "/seed_plan",
+        "/splits",
+        "/surface",
+        "/surface_selection"
+      ],
+      "json_pointer": "/module_designs/contract.py/frozen_contract_keys_consumed",
+      "observed": [
+        "/authorization",
+        "/computed_provenance",
+        "/information_boundary"
+      ],
+      "reason": "Module-specific frozen inputs are not mapped; non-empty generic keys are insufficient."
+    },
+    {
+      "blocking": true,
+      "check_id": "module_keys:workload.py",
+      "expected": [
+        "/collection_policy",
+        "/information_boundary",
+        "/information_interventions",
+        "/seed_plan",
+        "/splits",
+        "/surface"
+      ],
+      "json_pointer": "/module_designs/workload.py/frozen_contract_keys_consumed",
+      "observed": [
+        "/authorization",
+        "/computed_provenance",
+        "/information_boundary"
+      ],
+      "reason": "Module-specific frozen inputs are not mapped; non-empty generic keys are insufficient."
+    },
+    {
+      "blocking": true,
+      "check_id": "module_keys:oracles.py",
+      "expected": [
+        "/information_boundary",
+        "/instrument_controls",
+        "/surface",
+        "/targets_and_oracles"
+      ],
+      "json_pointer": "/module_designs/oracles.py/frozen_contract_keys_consumed",
+      "observed": [
+        "/authorization",
+        "/computed_provenance",
+        "/information_boundary"
+      ],
+      "reason": "Module-specific frozen inputs are not mapped; non-empty generic keys are insufficient."
+    },
+    {
+      "blocking": true,
+      "check_id": "module_keys:baselines.py",
+      "expected": [
+        "/accessibility_witness",
+        "/baseline_adequacy",
+        "/baseline_role_registry",
+        "/information_boundary"
+      ],
+      "json_pointer": "/module_designs/baselines.py/frozen_contract_keys_consumed",
+      "observed": [
+        "/authorization",
+        "/computed_provenance",
+        "/information_boundary"
+      ],
+      "reason": "Module-specific frozen inputs are not mapped; non-empty generic keys are insufficient."
+    },
+    {
+      "blocking": true,
+      "check_id": "module_keys:metrics.py",
+      "expected": [
+        "/computed_provenance",
+        "/metrics",
+        "/positive_acceptance_rule",
+        "/statistical_contract",
+        "/verdict_priority"
+      ],
+      "json_pointer": "/module_designs/metrics.py/frozen_contract_keys_consumed",
+      "observed": [
+        "/authorization",
+        "/computed_provenance",
+        "/information_boundary"
+      ],
+      "reason": "Module-specific frozen inputs are not mapped; non-empty generic keys are insufficient."
+    },
+    {
+      "blocking": true,
+      "check_id": "module_keys:leakage.py",
+      "expected": [
+        "/information_boundary",
+        "/leakage_scanner"
+      ],
+      "json_pointer": "/module_designs/leakage.py/frozen_contract_keys_consumed",
+      "observed": [
+        "/authorization",
+        "/computed_provenance",
+        "/information_boundary"
+      ],
+      "reason": "Module-specific frozen inputs are not mapped; non-empty generic keys are insufficient."
+    },
+    {
+      "blocking": true,
+      "check_id": "module_keys:replay.py",
+      "expected": [
+        "/computed_provenance",
+        "/information_interventions",
+        "/replay"
+      ],
+      "json_pointer": "/module_designs/replay.py/frozen_contract_keys_consumed",
+      "observed": [
+        "/authorization",
+        "/computed_provenance",
+        "/information_boundary"
+      ],
+      "reason": "Module-specific frozen inputs are not mapped; non-empty generic keys are insufficient."
+    },
+    {
+      "blocking": true,
+      "check_id": "module_keys:producer.py",
+      "expected": [
+        "/anti_zeno",
+        "/authorization",
+        "/future_artifacts",
+        "/positive_acceptance_rule",
+        "/stop_conditions",
+        "/verdict_priority"
+      ],
+      "json_pointer": "/module_designs/producer.py/frozen_contract_keys_consumed",
+      "observed": [
+        "/authorization",
+        "/computed_provenance",
+        "/information_boundary"
+      ],
+      "reason": "Module-specific frozen inputs are not mapped; non-empty generic keys are insufficient."
+    },
+    {
+      "blocking": true,
+      "check_id": "module_keys:template_collapse",
+      "expected": "module-specific key sets",
+      "json_pointer": "/module_designs",
+      "observed": [
+        [
+          "/authorization",
+          "/information_boundary",
+          "/computed_provenance"
+        ]
+      ],
+      "reason": "All module designs reuse one generic frozen-key set."
+    },
+    {
+      "blocking": true,
+      "check_id": "traceability:callable_mapping",
+      "expected": "26 exact callable or state-transition mappings",
+      "json_pointer": "/traceability/P1-DEV-CHECK-01..26",
+      "observed": {
+        "check_count": 26,
+        "generic_callable_count": 26
+      },
+      "reason": "Requirement IDs exist, but callable ownership remains a generic placeholder."
+    },
+    {
+      "blocking": true,
+      "check_id": "traceability:failure_mapping",
+      "expected": "exact failure status per check",
+      "json_pointer": "/traceability/P1-DEV-CHECK-01..26",
+      "observed": {
+        "generic_failure_count": 26
+      },
+      "reason": "Failure-path mapping is generic rather than executable."
+    },
+    {
+      "blocking": true,
+      "check_id": "baseline:no_feedback_access",
+      "expected": "no feedback/history fields",
+      "json_pointer": "/baseline_designs/no_feedback_public_prior/legal_input_fields",
+      "observed": [
+        "history_length",
+        "prior_chosen_action_descriptors",
+        "prior_legal_context_descriptors",
+        "prior_observed_binary_outcomes"
+      ],
+      "reason": "A no-feedback public-prior control must not read history."
+    },
+    {
+      "blocking": true,
+      "check_id": "baseline:observation_only_access",
+      "expected": "current context and queried action only",
+      "json_pointer": "/baseline_designs/observation_action_logistic/legal_input_fields",
+      "observed": [
+        "history_length",
+        "prior_chosen_action_descriptors",
+        "prior_legal_context_descriptors",
+        "prior_observed_binary_outcomes"
+      ],
+      "reason": "The observation-only control is designed with history access."
+    },
+    {
+      "blocking": true,
+      "check_id": "baseline:matched_marginal_target",
+      "expected": "fit train observed-outcome marginal, then sample matched seeded probabilities",
+      "json_pointer": "/baseline_designs/random_probability_matched_marginal",
+      "observed": {
+        "dataset": "current legal packet/episode only",
+        "target": "legal q(H,x,a) or declared legal decision"
+      },
+      "reason": "The design uses current-packet/legal-q semantics instead of the frozen train marginal."
+    },
+    {
+      "blocking": true,
+      "check_id": "baseline:legal_map_semantics",
+      "expected": "episode legal-history maximum-likelihood public latent and public-family prediction",
+      "json_pointer": "/baseline_designs/legal_map_estimator",
+      "observed": {
+        "dataset": "legal train rows; selection on legal validation rows only",
+        "semantics": "maximum-likelihood public latent state from legal history, then public-family prediction",
+        "target": "observed chosen-action binary outcome only"
+      },
+      "reason": "The design turns the legal-history MAP rival into a train/validation label-fit route."
+    },
+    {
+      "blocking": true,
+      "check_id": "baseline:specialist_target",
+      "expected": "evaluator-only task-specialist prediction/decision envelope",
+      "json_pointer": "/baseline_designs/per_task_specialist_envelope/fit_update_target",
+      "observed": "instrument-control expected status",
+      "reason": "The capability rival is mapped to a control-status target rather than a specialist envelope."
+    },
+    {
+      "blocking": true,
+      "check_id": "seed_firewall:fitted_history_meta_mlp",
+      "expected": "an explicit mapping from the fixed estimator RNG to an allowed DEV domain without a second seed path",
+      "json_pointer": "/baseline_designs/fitted_history_meta_mlp/seed_policy/p1r1_dev",
+      "observed": "DEV domains only; retain frozen random_state",
+      "reason": "The blueprint repeats both the fixed random_state and DEV-only firewall without resolving their RNG provenance."
+    },
+    {
+      "blocking": true,
+      "check_id": "seed_firewall:from_scratch_online_logistic",
+      "expected": "an explicit mapping from the fixed estimator RNG to an allowed DEV domain without a second seed path",
+      "json_pointer": "/baseline_designs/from_scratch_online_logistic/seed_policy/p1r1_dev",
+      "observed": "DEV domains only; retain frozen random_state",
+      "reason": "The blueprint repeats both the fixed random_state and DEV-only firewall without resolving their RNG provenance."
+    },
+    {
+      "blocking": true,
+      "check_id": "formal:authorization_contract",
+      "expected": [
+        "authorization_commit_ancestor_check",
+        "authorization_object_path",
+        "clean_worktree_and_index_check",
+        "current_head_self_assertion_forbidden",
+        "formal_output_absence_check",
+        "formal_run_limit_check",
+        "p1r1_commit_pin_check",
+        "p1r1_path_byte_identity_check",
+        "required_authorization_fields"
+      ],
+      "json_pointer": "/formal_pipeline",
+      "observed": [
+        "first_transition_to_states_5_through_9",
+        "formal_artifact_write_policy",
+        "future_production_success_path_exists",
+        "mode_variation_only",
+        "ordinary_p1r1_behavior",
+        "p1r1_tests",
+        "shared_pipeline_symbols",
+        "state_machine_callable",
+        "states",
+        "transitions",
+        "unconditional_reject_forbidden"
+      ],
+      "reason": "The future success path lacks exact authorization, ancestry, byte-pin, clean-repo, output-absence and run-limit fields."
+    },
+    {
+      "blocking": true,
+      "check_id": "formal:transition_guards",
+      "expected": "state-specific production guard contracts",
+      "json_pointer": "/formal_pipeline/transitions/*/guard",
+      "observed": [
+        "production previous-state and committed-pin guard"
+      ],
+      "reason": "All formal transitions reuse one generic guard sentence."
+    },
+    {
+      "blocking": true,
+      "check_id": "seed:formal_phase_mapping",
+      "expected": "domain-specific future phase and consumer callable mappings",
+      "json_pointer": "/seed_consumption_matrix",
+      "observed": {
+        "callables": [
+          "derive_phase_seed -> run_shared_pipeline"
+        ],
+        "phases": [
+          "state 6 or authorized formal replay"
+        ],
+        "reserved_domain_count": 14,
+        "unique_callable_count": 1,
+        "unique_phase_count": 1
+      },
+      "reason": "Fourteen distinct formal/reference/replay domains collapse to one generic phase/callable mapping."
+    },
+    {
+      "blocking": true,
+      "check_id": "embedded_lint:blocked_branch",
+      "expected": "hard-integrity support for both FEASIBLE and BLOCKED records",
+      "json_pointer": "/structural_lint/producer_source",
+      "observed": "task-card-valid BLOCKED probe evaluates false",
+      "reason": "A task-card-valid BLOCKED blueprint cannot pass the embedded lint."
+    },
+    {
+      "blocking": true,
+      "check_id": "embedded_lint:semantic_coverage",
+      "expected": "semantic checks that directly feed comp/hard and the final result decision",
+      "json_pointer": "/structural_lint/producer_source",
+      "observed": [
+        "frozen_contract_keys_consumed",
+        "fit_update_target",
+        "fit_update_dataset_boundary",
+        "owned_callable_or_state_transition"
+      ],
+      "reason": "The lint omits admission-gating semantics or reads them decoratively without feeding the final decision."
+    }
+  ],
+  "claim_ceiling": "Independent semantic invalidation of the stored P1R0 design-admission verdict only. This does not prove that the frozen surface is impossible, that a mechanism is invalid, or that learning/product/runtime claims fail.",
+  "code_path_hash": "eb3214cb792fadc8b27377ae20716c95cb9965357dc5884cf4de58075b77bc9b",
+  "computed_verdict": "P1R0_EXECUTABLE_DESIGN_FEASIBILITY_FALSE_POSITIVE__P1R1_NOT_ADMISSIBLE__CURRENT_INSTRUMENT_FAMILY_CLOSEOUT_REQUIRED",
+  "embedded_lint_recorded_result": "PASS_STRUCTURAL_DESIGN_ONLY",
+  "input_artifact_blobs": {
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_EXECUTABLE_DESIGN_BLUEPRINT.json": "385808733e8f1c6bd17cc8733e1a9ff342d9c06d",
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_EXECUTABLE_DESIGN_TASK_CARD.md": "8e3bd21529a62b9894c1105ac090396bcc90983c",
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1_INSTRUMENT_TASK_CARD.md": "26c53396c88de3a0c35494665085a3b6c298e56c",
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/PREFLIGHT_CONTRACT.json": "d09235eff74ec68b5cc5004873af1b1186d7ee39"
+  },
+  "input_artifact_hashes": {
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_EXECUTABLE_DESIGN_BLUEPRINT.json": "f793d7b8580ab561a7c834f3dc365b4c771027434a03418042b3429fa8fadf42",
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_EXECUTABLE_DESIGN_TASK_CARD.md": "0cde94c3a272a83327d443f9d2ba8b6e6689aabe97ec5306d454d87b638c223f",
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1_INSTRUMENT_TASK_CARD.md": "93608561afcd4ab35abae5bf6257f1ad5b8a35b779e0bee0a03a238012724a95",
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/PREFLIGHT_CONTRACT.json": "d9c2d8a12b41ab9b0482b270b63578631b88901ca78854da92853779e95858c3"
+  },
+  "input_artifact_paths": [
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_EXECUTABLE_DESIGN_BLUEPRINT.json",
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/PREFLIGHT_CONTRACT.json",
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1_INSTRUMENT_TASK_CARD.md",
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_EXECUTABLE_DESIGN_TASK_CARD.md"
+  ],
+  "p1r1_admissible": false,
+  "p2_admissible": false,
+  "policy_boundaries": {
+    "formal_authorization": false,
+    "independent_validator_acceptance": "UNAVAILABLE",
+    "local_callable_is_independent_validator": false,
+    "surface_impossibility_not_claimed": true,
+    "surface_mathematical_status": "NOT_ADJUDICATED"
+  },
+  "producer_function": "audit_blueprint",
+  "producer_script": "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_DESIGN_INVALID_SEMANTIC_AUDIT.py",
+  "run_id": "p1r0-semantic-audit-5e7a43afa2eb1344",
+  "schema_version": "ego.p1r0.design_invalid_audit.v1",
+  "self_test": {
+    "all_pass": true,
+    "checks": {
+      "baseline_negative_clean": true,
+      "baseline_positive_detected": true,
+      "formal_negative_clean": true,
+      "formal_positive_detected": true,
+      "lint_negative_clean": true,
+      "lint_positive_detected": true,
+      "module_negative_clean": true,
+      "module_positive_detected": true,
+      "seed_phase_negative_clean": true,
+      "seed_phase_positive_detected": true,
+      "trace_negative_clean": true,
+      "trace_positive_detected": true
+    }
+  },
+  "semantic_input_consumption": {
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_EXECUTABLE_DESIGN_TASK_CARD.md": [
+      "section 24 Anti-Zeno route"
+    ],
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1_INSTRUMENT_TASK_CARD.md": [
+      "section 7 module responsibilities",
+      "section 9 seed firewall",
+      "section 10 required DEV checks"
+    ],
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/PREFLIGHT_CONTRACT.json": [
+      "/baseline_role_registry",
+      "/seed_plan/stream_domains"
+    ]
+  },
+  "source_commit": "8365911743aadf1ee508fb42336cfb0a9710aaed",
+  "stored_blockers": [],
+  "stored_feasibility_verdict": "P1R0_EXECUTABLE_DESIGN_FEASIBLE_FOR_ONE_P1R1_ATTEMPT_ONLY"
+}

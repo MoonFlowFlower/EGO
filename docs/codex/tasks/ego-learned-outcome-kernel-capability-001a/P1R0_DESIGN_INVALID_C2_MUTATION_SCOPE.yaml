@@ -1,0 +1,52 @@
+schema_version: codex.mutation_scope.v1
+task: ego-learned-outcome-kernel-capability-p1r0-design-invalid-c2-governance-closeout
+task_id: EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-PREFLIGHT-P1R0-DESIGN-INVALID-FAMILY-CLOSEOUT-001A
+phase: c2_governance_closeout
+expected_parent_relation: direct_child_of_c1_audit_bank
+expected_clean_before_edit: true
+
+authorization_scope: >-
+  After a committed and replay-matched C1 INVALID audit, update exactly Program
+  State, the route-convergence verifier, the evidence ledger, STATUS and
+  program-state summary to close the current P0/P1/P1R0 instrument-design
+  lineage. No implementation, DEV,
+  formal, runtime, mainline, science or remote authority is granted.
+
+allowed_mutation_paths:
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - scripts/codex/verify_route_convergence.py
+  - docs/STATUS.md
+  - artifacts/reports/program_state_summary.md
+  - artifacts/evidence_ledger/index.yaml
+
+expected_mutation_surface:
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - scripts/codex/verify_route_convergence.py
+  - docs/STATUS.md
+  - artifacts/reports/program_state_summary.md
+  - artifacts/evidence_ledger/index.yaml
+
+forbidden_mutation_paths:
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - scripts/codex/route_convergence_common.py
+  - scripts/codex/program_state_common.py
+  - scripts/codex/generate_program_state_views.py
+  - scripts/codex/generate_route_convergence_views.py
+  - packages/
+  - EgoOperator/
+  - EgoDesktop/
+  - D:/Project/AIProject/MyProject/intelligence-theory-lab/
+
+phase_rule: >-
+  Exact five-path C2 governance/evidence-view commit only. C1 and all prior
+  evidence entries are immutable; exactly one additive negative-evidence ledger
+  entry is required. Broad view generators and git add -A are forbidden.
+
+auto_remote_anchor: forbidden
+push: forbidden
+tag: forbidden
+
+claim_ceiling: >-
+  Current P0/P1/P1R0 instrument-design lineage closure, negative-evidence
+  preservation and authorization denial only.

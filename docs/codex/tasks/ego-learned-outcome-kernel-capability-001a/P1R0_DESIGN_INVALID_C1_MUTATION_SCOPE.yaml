@@ -1,0 +1,48 @@
+schema_version: codex.mutation_scope.v1
+task: ego-learned-outcome-kernel-capability-p1r0-design-invalid-c1-audit-bank
+task_id: EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-PREFLIGHT-P1R0-DESIGN-INVALID-FAMILY-CLOSEOUT-001A
+phase: c1_independent_audit_bank
+expected_head: 8365911743aadf1ee508fb42336cfb0a9710aaed
+expected_tree: 9643e70f7ee22d2cc52e42f39c862219b5d42fda
+expected_raw_behind_ahead: [0, 21]
+expected_clean: true
+
+authorization_scope: >-
+  Bank one source-pinned callable semantic auditor, its computed invalidity
+  result, this task card and two phase scopes. No governance, implementation,
+  DEV, formal, runtime, mainline, science or remote authority is granted.
+
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_DESIGN_INVALID_FAMILY_CLOSEOUT_TASK_CARD.md
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_DESIGN_INVALID_C1_MUTATION_SCOPE.yaml
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_DESIGN_INVALID_C2_MUTATION_SCOPE.yaml
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_DESIGN_INVALID_SEMANTIC_AUDIT.py
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_DESIGN_INVALID_AUDIT_RESULT.json
+
+expected_mutation_surface:
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_DESIGN_INVALID_FAMILY_CLOSEOUT_TASK_CARD.md
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_DESIGN_INVALID_C1_MUTATION_SCOPE.yaml
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_DESIGN_INVALID_C2_MUTATION_SCOPE.yaml
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_DESIGN_INVALID_SEMANTIC_AUDIT.py
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_DESIGN_INVALID_AUDIT_RESULT.json
+
+forbidden_mutation_paths:
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - scripts/codex/
+  - docs/STATUS.md
+  - artifacts/
+  - packages/
+  - EgoOperator/
+  - EgoDesktop/
+  - D:/Project/AIProject/MyProject/intelligence-theory-lab/
+
+phase_rule: >-
+  Exact five-path C1 addition commit only. git add -A is forbidden. P0, P1,
+  P1R0, governance, implementation, artifact and cross-repo paths are read-only.
+
+auto_remote_anchor: forbidden
+push: forbidden
+tag: forbidden
+
+claim_ceiling: >-
+  Independent semantic audit and negative-evidence banking only.
