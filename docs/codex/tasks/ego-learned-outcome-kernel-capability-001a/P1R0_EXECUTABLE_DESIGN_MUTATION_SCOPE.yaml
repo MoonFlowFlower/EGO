@@ -1,0 +1,122 @@
+
+schema_version: "codex.mutation_scope.v1"
+task: "ego-learned-outcome-kernel-capability-preflight-p1r0-executable-design-freeze"
+task_id: "EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-PREFLIGHT-P1R0-EXECUTABLE-DESIGN-FREEZE-001A"
+phase: "docs_only_executable_design_freeze"
+repo: "D:/Project/AIProject/MyProject/Ego"
+branch: "main"
+expected_head: "96428d303baa6bb98593d554a3f7b0afb1b804e1"
+expected_tree: "1d46bda576a22ed3438a1d9a6b397b864e08ba05"
+expected_raw_behind_ahead: [0, 20]
+expected_clean: true
+expected_index_lock_absent: true
+
+authorization_scope: >-
+  Bank exactly four docs-only P1R0 executable-design records. This scope does
+  not authorize instrument source, DEV/formal execution, candidate/product
+  implementation, governance mutation, runtime/mainline/science work, push,
+  tag or remote anchor.
+
+source_pins:
+  p0_prereg_commit: "ff1ab23e1db303a882cec17374b9ea3903fe03c6"
+  p1a_authorization_commit: "fdbc5dea725d635ee21ba7490d7b5b03b3ce11cc"
+  p1c_blocked_closeout_commit: "96428d303baa6bb98593d554a3f7b0afb1b804e1"
+  preflight_contract_blob: "d09235eff74ec68b5cc5004873af1b1186d7ee39"
+  preflight_stage_card_blob: "06e1484a61ed18a863f4ecdb8352aab951bbfb07"
+  preflight_mutation_scope_blob: "883703d79dbdfbca3792df3efc815fefc9b851fe"
+  p1_task_card_blob: "26c53396c88de3a0c35494665085a3b6c298e56c"
+  p1a_scope_blob: "5b3e192fe06791533b9f2292d9372bc559d9a253"
+  p1b_scope_blob: "c87bc1847d8e29e5e90e07e6c58c02ec9bbd3f87"
+  p1c_scope_blob: "58a1687a278403fb82e0f4774e3a424bdb624a8d"
+  program_state_blob: "d27c6c729afefd1d5a5a4805846bb94252026b2d"
+  route_verifier_blob: "0cbba339016a086b4a8e8156c7dfe54c8757131f"
+  evidence_ledger_blob: "7634cdccd69d25277bfeaab7e87865fd9e5bff0d"
+  task_lane_index_blob: "c53712f36d19c0e8bf1166937c5977e5a00d39d1"
+  route_common_blob: "f9550bc3c4a1cc881a603ec8c542c1b141435fbe"
+  foundation_package_tree: "43380f76c37b05f36a4a4ef45354048787cafe68"
+  foundation_artifact_tree: "907457e7d3028ba5437cf0e7730ec068a21cbf6b"
+
+cross_repo_pin:
+  repo: "D:/Project/AIProject/MyProject/intelligence-theory-lab"
+  branch: "codex/meta-theory-scaffold"
+  head: "b67c94fe1244ef6006ed3af8e924d4c670fe64bb"
+  tree: "2caa9a8ad5587d284ec0da01c4d07a5ed53e9ea7"
+  ahead_behind: [7, 0]
+  clean: true
+  mutation_forbidden: true
+
+allowed_mutation_paths:
+  - "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_EXECUTABLE_DESIGN_TASK_CARD.md"
+  - "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_EXECUTABLE_DESIGN_MUTATION_SCOPE.yaml"
+  - "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_PRIOR_BLOCKER_RECORD.json"
+  - "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_EXECUTABLE_DESIGN_BLUEPRINT.json"
+
+expected_mutation_surface:
+  - "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_EXECUTABLE_DESIGN_TASK_CARD.md"
+  - "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_EXECUTABLE_DESIGN_MUTATION_SCOPE.yaml"
+  - "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_PRIOR_BLOCKER_RECORD.json"
+  - "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_EXECUTABLE_DESIGN_BLUEPRINT.json"
+
+required_absent_paths:
+  - "scripts/ego_learned_outcome_kernel_capability_preflight_001a"
+  - "scripts/run_ego_learned_outcome_kernel_capability_preflight_001a.py"
+  - "tests/test_ego_learned_outcome_kernel_capability_preflight_001a.py"
+  - "artifacts/ego_learned_outcome_kernel_capability_preflight_001a"
+  - "packages/ego_learned_outcome_kernel"
+  - "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P2_FORMAL_AUTHORIZATION.json"
+
+forbidden_mutation_paths:
+  - "docs/PROGRAM_STATE_UNIFIED.yaml"
+  - "scripts/codex/verify_route_convergence.py"
+  - "docs/STATUS.md"
+  - "artifacts/reports/program_state_summary.md"
+  - "artifacts/evidence_ledger/index.yaml"
+  - "docs/codex/tasks/TASK_LANE_INDEX.md"
+  - "scripts/codex/route_convergence_common.py"
+  - "packages/**"
+  - "EgoOperator/**"
+  - "EgoDesktop/**"
+  - "artifacts/**"
+  - "intelligence-theory-lab/**"
+  - "dependency or lock files"
+  - "runtime/mainline/UI/LLM/network paths"
+
+authorization:
+  docs_only_design_bank: true
+  instrument_implementation: false
+  dev_execution: false
+  formal_preflight: false
+  candidate_preflight: false
+  candidate_implementation: false
+  product_implementation: false
+  route_registration: false
+  runtime: false
+  mainline: false
+  science: false
+  remote_anchor: false
+
+staging:
+  git_add_all_forbidden: true
+  literal_paths_only: true
+  exact_staged_path_count: 4
+
+phase_rule: >-
+  One exact four-path docs-only commit. Existing files and every source,
+  artifact, governance, runtime, mainline and cross-repo path remain forbidden.
+  git add -A is forbidden.
+
+commit:
+  authorized: true
+  subject: "docs: freeze P1 replacement executable design"
+  expected_parent: "96428d303baa6bb98593d554a3f7b0afb1b804e1"
+  expected_commit_count: 1
+
+auto_remote_anchor: "forbidden"
+push: "forbidden"
+tag: "forbidden"
+network: "forbidden"
+dependency_install: "forbidden"
+
+success_verdict: "P1R0_EXECUTABLE_DESIGN_BANKED__P1R1_AND_FORMAL_NOT_AUTHORIZED"
+blocked_verdict: "P1R0_EXECUTABLE_DESIGN_BLOCKED__P1_FAMILY_CLOSURE_OR_SURFACE_REPLACEMENT_REQUIRED"
+claim_ceiling: "Docs-only negative-evidence preservation and machine-readable executable-design feasibility only."

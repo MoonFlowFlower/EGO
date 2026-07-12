@@ -1,0 +1,104 @@
+
+{
+  "schema_version": "ego.learned_outcome_kernel.p1r0_prior_blocker.v1",
+  "task_id": "EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-PREFLIGHT-P1R0-EXECUTABLE-DESIGN-FREEZE-001A",
+  "record_type": "OPERATOR_RECEIPT_PLUS_GIT_OBJECT_READBACK",
+  "source_receipt": {
+    "thread_id": "019f5462-b4e6-7372-904b-02dbb6de9f26",
+    "turn_id": "019f5462-bd6d-7e21-a16e-bb72d33d8e12",
+    "final_answer_utf8_bytes": 6712,
+    "final_answer_sha256": "17be3412fc9ce794cfb8f12a2f3126b4cb0c40e69339b8be52db062921057910",
+    "receipt_verdict": "P1_INSTRUMENT_BLOCKED__AUTHORIZATION_CONSUMED__FORMAL_EXECUTION_NOT_AUTHORIZED"
+  },
+  "independently_git_verifiable": {
+    "ego_branch": "main",
+    "ego_head": "96428d303baa6bb98593d554a3f7b0afb1b804e1",
+    "ego_tree": "1d46bda576a22ed3438a1d9a6b397b864e08ba05",
+    "p1a_commit": "fdbc5dea725d635ee21ba7490d7b5b03b3ce11cc",
+    "p1a_parent": "ff1ab23e1db303a882cec17374b9ea3903fe03c6",
+    "p1a_exact_path_count": 8,
+    "p1b_commit": null,
+    "p1c_commit": "96428d303baa6bb98593d554a3f7b0afb1b804e1",
+    "p1c_parent": "fdbc5dea725d635ee21ba7490d7b5b03b3ce11cc",
+    "p1c_exact_path_count": 4,
+    "p1_instrument_banked": false,
+    "p1_authorization_consumed": true,
+    "p1_blocker_status": "P1_BLOCKED_BASELINE_PANEL_SMC_FORMAL_PIPELINE_AND_REPLAY_NONCONFORMANCE",
+    "instrument_paths_present": [],
+    "formal_artifact_present": false,
+    "p2_authorization_present": false,
+    "all_instrument_formal_candidate_runtime_mainline_science_authorizations_false": true
+  },
+  "receipt_only_unbanked_diagnostics": {
+    "provenance_status": "EXTERNAL_EXECUTOR_RECEIPT_ONLY_NOT_INDEPENDENTLY_RECOMPUTABLE",
+    "temporary_focused_pytest": {
+      "passed": 30,
+      "warning_count": 1
+    },
+    "temporary_mlp": {
+      "n_iter": 56,
+      "first_loss_approx": 0.6401,
+      "final_loss_approx": 0.00145
+    },
+    "temporary_leakage_positive_controls_detected": "4/4",
+    "temporary_dev_recompute_digest_match": true,
+    "temporary_formal_refusal_return_code": 2,
+    "reported_formal_seed_consumption": [],
+    "reported_formal_output_created": false,
+    "critic_findings": [
+      "baseline producers included empty mappings, wrong targets or degenerate placeholders",
+      "SMC was an exact posterior on a deterministic subset rather than sequential update with ESS and systematic resampling",
+      "formal mode was fixed to reject even under future legal authorization",
+      "checkpoint AUC, best-invalidating panel and non-compensating two-axis gate were incomplete",
+      "replay did not fully cover interventions, counterfactuals and DEV subprocess salts"
+    ],
+    "may_support_p1_bank": false,
+    "may_support_p2_entry": false,
+    "may_support_surface_admissibility": false
+  },
+  "negative_evidence_preservation": {
+    "prior_p1_verdict_preserved": true,
+    "temporary_green_results_explicitly_downgraded": true,
+    "detailed_failure_provenance_available_in_repo": false,
+    "independent_recomputation_available": false,
+    "claim": "P1 was blocked and no instrument was banked. Detailed technical findings remain receipt-only diagnostics."
+  },
+  "control_session_residue_readback": {
+    "canonical_evidence": false,
+    "required_to_remain_present": false,
+    "content_read_forbidden": true,
+    "ignored_timestamp_pyc": [
+      {
+        "path": "scripts/__pycache__/run_ego_learned_outcome_kernel_capability_preflight_001a.cpython-313.pyc",
+        "size": 2894,
+        "sha256": "b661ad374361d8ef23a67b4a96a6062f4c2ca88c3e2edc746283df367225143c"
+      },
+      {
+        "path": "tests/__pycache__/test_ego_learned_outcome_kernel_capability_preflight_001a.cpython-313-pytest-9.0.2.pyc",
+        "size": 62112,
+        "sha256": "e41f0526b880243cf0bd3afba07cc0eaff291b8f78c9c5cd7af3cfc1e58a9639"
+      },
+      {
+        "path": "tests/__pycache__/test_ego_learned_outcome_kernel_capability_preflight_001a.cpython-313.pyc",
+        "size": 20697,
+        "sha256": "3b57e447d0551366cd41192fc1a526999cabbb920ab4966286d4d8971caa4c35"
+      }
+    ],
+    "temp_dev_json_glob": "C:/Users/LEO/AppData/Local/Temp/ego-p1-*.json",
+    "observed_temp_dev_json_count": 14,
+    "import_risk": "Current orphan PEP 3147 timestamp pyc files are not importable without source, and Temp JSON is outside sys.path. Future P1R1 must still forbid fixed-name/temp-glob reuse and use a new run-scoped temp directory."
+  },
+  "authorization_boundary": {
+    "p1r0_docs_only": true,
+    "p1r1_implementation_authorized": false,
+    "p2_formal_authorized": false,
+    "runtime_mainline_science_authorized": false
+  },
+  "p2_dependency_clarification": {
+    "current_operator_authorization_scope_string": "P1_INSTRUMENT_AUTHORIZATION_CONSUMED__P2_REQUIRES_FRESH_AUTHORIZATION",
+    "scope_string_alone_authorizes_p2": false,
+    "p2_requires_committed_conformant_replacement_instrument": true,
+    "current_p2_entry": "FORBIDDEN"
+  },
+  "claim_ceiling": "Governance negative-evidence preservation only; not computed instrument or mechanism evidence."
+}
