@@ -1,0 +1,65 @@
+schema_version: codex.mutation_scope.v1
+task: ego-learned-outcome-kernel-compositional-transfer-preflight-001a
+task_id: EGO-LEARNED-OUTCOME-KERNEL-COMPOSITIONAL-TRANSFER-PREFLIGHT-001A
+phase: p0a_docs_only_prereg_draft
+expected_head: 84a7e20ad653894fc743195a9ccaf8fe3381a657
+expected_tree: 08b3d00534545b6a1c360b7042ff0878c07dfc48
+expected_raw_behind_ahead: [0, 24]
+expected_clean: true
+
+authorization_scope: >-
+  Add exactly one CAOT-v1 Stage Card, one Mutation Scope and one concrete
+  P0A prereg contract with fail-closed pending variance/sample-size freeze;
+  canonically regenerate only TASK_LANE_INDEX.md; and replace only that lane's
+  old protected-object blob literal with the exact new blob in
+  verify_route_convergence.py. No generator logic, verifier logic/control flow,
+  instrument, baseline, candidate, execution, artifact, other canonical sink,
+  runtime, mainline, science or remote authority is granted.
+
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-learned-outcome-kernel-compositional-transfer-preflight-001a/STAGE_CARD.md
+  - docs/codex/tasks/ego-learned-outcome-kernel-compositional-transfer-preflight-001a/MUTATION_SCOPE.yaml
+  - docs/codex/tasks/ego-learned-outcome-kernel-compositional-transfer-preflight-001a/PREFLIGHT_CONTRACT.json
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - scripts/codex/verify_route_convergence.py
+
+expected_mutation_surface:
+  - docs/codex/tasks/ego-learned-outcome-kernel-compositional-transfer-preflight-001a/STAGE_CARD.md
+  - docs/codex/tasks/ego-learned-outcome-kernel-compositional-transfer-preflight-001a/MUTATION_SCOPE.yaml
+  - docs/codex/tasks/ego-learned-outcome-kernel-compositional-transfer-preflight-001a/PREFLIGHT_CONTRACT.json
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - scripts/codex/verify_route_convergence.py
+
+forbidden_mutation_paths:
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - scripts/ego_learned_outcome_kernel_caot_preflight_001a/
+  - scripts/run_ego_learned_outcome_kernel_caot_preflight_001a.py
+  - scripts/codex/route_convergence_common.py
+  - scripts/codex/program_state_common.py
+  - scripts/codex/generate_program_state_views.py
+  - scripts/codex/generate_route_convergence_views.py
+  - tests/
+  - artifacts/
+  - packages/
+  - EgoOperator/
+  - EgoDesktop/
+  - docs/STATUS.md
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-new-surface-selection-001a/
+  - D:/Project/AIProject/MyProject/intelligence-theory-lab/
+
+phase_rule: >-
+  One exact 3-addition plus 2-modification transaction. TASK_LANE_INDEX.md must
+  be the pinned canonical render. verify_route_convergence.py may change only
+  by replacing the single old lane blob pin with the exact new lane blob pin;
+  no logic, control-flow, verdict or other protected-object change is allowed.
+  Numeric gate remains fail-closed pending a later separately authorized
+  computation. git add -A and all executable work are forbidden.
+
+auto_remote_anchor: forbidden
+push: forbidden
+tag: forbidden
+
+claim_ceiling: >-
+  Docs-only CAOT-v1 prereg draft and future evidence contract; no empirical
+  headroom, learning, mechanism, product, runtime or subjectivity claim.

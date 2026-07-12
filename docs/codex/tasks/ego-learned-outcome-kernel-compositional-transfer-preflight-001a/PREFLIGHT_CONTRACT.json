@@ -1,0 +1,2577 @@
+{
+  "schema_version": "ego.caot_preflight_prereg.v1",
+  "task_id": "EGO-LEARNED-OUTCOME-KERNEL-COMPOSITIONAL-TRANSFER-PREFLIGHT-001A",
+  "surface_id": "COMPOSITIONAL-ACTION-OUTCOME-TRANSFER-SURFACE-v1",
+  "contract_id": "CAOT-v1-P0A",
+  "contract_status": "PREREG_DRAFT_SAMPLE_SIZE_FREEZE_PENDING",
+  "registration_status": "UNREGISTERED_REFERENCE_ONLY",
+  "candidate_present": false,
+  "candidate_scores": [],
+  "operator_selection": {
+    "directive": "SELECT COMPOSITIONAL-ACTION-OUTCOME-TRANSFER-SURFACE-v1",
+    "selected_surface_id": "COMPOSITIONAL-ACTION-OUTCOME-TRANSFER-SURFACE-v1",
+    "selection_packet_commit": "84a7e20ad653894fc743195a9ccaf8fe3381a657",
+    "selection_packet_blob": "ab11ff1d8ac61e5009aff629d45a1287a2142bb4",
+    "selected_candidate_canonical_sha256": "a59182a7bdb1ee2be2824c71713ae600c5a4d49b4fc07d9536b0178558e8050a",
+    "selection_scope": "FRESH_PREREG_DRAFT_ONLY"
+  },
+  "authorization": {
+    "docs_only_prereg_bank": true,
+    "numeric_freeze_execution_authorized": false,
+    "instrument_design_authorized": false,
+    "instrument_implementation_authorized": false,
+    "instrument_execution_authorized": false,
+    "candidate_implementation_authorized": false,
+    "product_implementation_authorized": false,
+    "route_registered": false,
+    "enabled": false,
+    "mainline_connected": false,
+    "runtime_authority": "none",
+    "science_execution_authorized": false,
+    "remote_anchor_authorized": false,
+    "authorized_implementation_targets": []
+  },
+  "source_pins": {
+    "ego_parent_commit": "84a7e20ad653894fc743195a9ccaf8fe3381a657",
+    "ego_parent_tree": "08b3d00534545b6a1c360b7042ff0878c07dfc48",
+    "selection_stage_card_blob": "70d92a8d4621ecc455f5cd9f886ae5925c1aded0",
+    "selection_scope_blob": "098825065b81e711601d1bd3cf027a9022716f00",
+    "selection_candidates_blob": "ab11ff1d8ac61e5009aff629d45a1287a2142bb4",
+    "prior_p1r0_invalid_audit_blob": "b8fa7cf552efb41323a34d723653ff81cfa8c4db",
+    "prior_p1r0_invalid_audit_sha256": "a2aed0bc994592b54f260d74923896eabc0982d3e47ea6c3b1a64879be7061ec",
+    "prior_p1r0_family_closeout_card_blob": "811fc223c47879064a6582d63a6abd51c620db37",
+    "prior_p1r0_family_closeout_card_sha256": "eaa3c6af7f0bf29bd6cb84f49f78042acf1ac98a0b7a85c0c05580839efc18f9",
+    "itl_head": "b67c94fe1244ef6006ed3af8e924d4c670fe64bb",
+    "interpretability_standard_blob": "0ef77cf4a81c39c0a7c3a238285cbecbd02c5a30",
+    "learning_success_standard_blob": "eb7e0e990d7795dcaa265122de7044dd681fb1b7",
+    "baseline_immunity_standard_blob": "adfeaab2be3d44c2d7ac75b848217e8cff71af93"
+  },
+  "prior_negative_evidence": {
+    "stored_p1r0_output_preserved": "P1R0_EXECUTABLE_DESIGN_FEASIBLE_FOR_ONE_P1R1_ATTEMPT_ONLY",
+    "callable_audit_computed_verdict": "P1R0_EXECUTABLE_DESIGN_FEASIBILITY_FALSE_POSITIVE__P1R1_NOT_ADMISSIBLE__CURRENT_INSTRUMENT_FAMILY_CLOSEOUT_REQUIRED",
+    "blocking_finding_count": 23,
+    "old_lineage_disposition": "CLOSED_INVALID_NO_P1R1_NO_P2",
+    "old_surface_mathematical_status": "NOT_ADJUDICATED",
+    "reuse_or_repair_allowed": false,
+    "authority_inherited_by_caot_v1": false,
+    "claim_ceiling": "Invalidates old P1R0 design admission and closes that instrument family only; does not prove either surface impossible or adjudicate learning/mechanism/product claims."
+  },
+  "inheritance_firewall": {
+    "inherits_closed_surface": false,
+    "inherits_old_generator": false,
+    "inherits_old_fixed_eight_actions": false,
+    "inherits_old_static_latent": false,
+    "inherits_old_latent_parity_split": false,
+    "inherits_old_smc_or_bayes256": false,
+    "inherits_old_fixtures": false,
+    "inherits_old_seeds": false,
+    "inherits_old_thresholds": false,
+    "inherits_old_baseline_panel": false,
+    "inherits_old_admission_verdict": false,
+    "inherits_old_authority": false,
+    "old_k0r_bypass": false
+  },
+  "surface": {
+    "kind": "offline_synthetic_typed_compositional_binary_outcome",
+    "primitive_roles": [
+      "role_0",
+      "role_1",
+      "role_2"
+    ],
+    "primitive_slots_per_role": 4,
+    "public_primitive_token_format": "role_{r}:primitive_{p}",
+    "public_context_tokens": [
+      "context_0",
+      "context_1",
+      "context_2",
+      "context_3"
+    ],
+    "typed_composition": {
+      "arity": 3,
+      "one_primitive_per_role": true,
+      "canonical_role_order": [
+        "role_0",
+        "role_1",
+        "role_2"
+      ],
+      "composition_count": 64,
+      "opaque_action_id_present": false,
+      "role_permutation_is_alias": true,
+      "canonicalizer": "sort fields by frozen role order; reject duplicate or missing roles"
+    },
+    "feature_maps": {
+      "phi_global": {
+        "dimension": 113,
+        "ordered_blocks": [
+          "intercept:1",
+          "context_one_hot:4",
+          "role_primitive_main_effects:12",
+          "context_x_role_primitive:48",
+          "pairwise_role_primitive_interactions:48"
+        ],
+        "pairwise_role_edges": [
+          "role_0-role_1",
+          "role_0-role_2",
+          "role_1-role_2"
+        ],
+        "values": "all active features are 1.0; inactive features are 0.0"
+      },
+    "psi_task_local": {
+      "dimension": 4,
+      "parity_class_formula": "parity_class(slot)=slot mod 2",
+      "exact_vector_formula": "psi(a)=[1, +1 if parity_class(slot_role_0)=parity_class(slot_role_1) else -1, +1 if parity_class(slot_role_1)=parity_class(slot_role_2) else -1, +1 if parity_class(slot_role_0)=parity_class(slot_role_2) else -1]",
+      "ordered_terms": [
+        "intercept",
+        "same_parity_class(role_0,role_1)",
+        "same_parity_class(role_1,role_2)",
+        "same_parity_class(role_0,role_2)"
+        ],
+      "parity_term_values": {
+        "same_parity_class": 1.0,
+        "different_parity_class": -1.0
+      }
+      }
+    },
+    "outcome_law": {
+      "eta": "dot(theta, phi_global(context, composition)) + dot(u_task, psi_task_local(composition))",
+      "eta_clip": [
+        -3.0,
+        3.0
+      ],
+      "probability": "sigmoid(clipped_eta)",
+      "outcome_distribution": "Bernoulli(probability)",
+      "feedback_delay_steps": 1,
+      "same_complete_task_and_legal_history_state_same_distribution": true,
+      "current_descriptor_alone_determines_task_local_probability": false,
+      "exact_task_residual_recovery_claimed": false,
+      "legal_identifiability_gate": "budget-faithful reference must show powered incremental prediction from legal feedback; private residual access is forbidden"
+    },
+    "parameter_priors": {
+      "theta_shared": {
+        "distribution": "independent_normal",
+        "mean": 0.0,
+        "standard_deviation": 0.18,
+        "draw_once_per_surface_instance": true
+      },
+      "u_task_local": {
+        "distribution": "independent_normal",
+        "mean": 0.0,
+        "standard_deviation": 0.25,
+        "fresh_draw_per_task": true
+      }
+    },
+    "material_novelty": [
+      "typed three-role compositions rather than fixed eight actions",
+      "shared compositional structure plus fresh task-local residual rather than one static hidden latent",
+      "exact-zero-overlap composition transfer plus unqueried probes",
+      "separate forward-transfer and within-task-adaptation axes",
+      "fresh schemas, generator, split, seeds, baselines and artifacts"
+    ]
+  },
+  "information_boundary": {
+    "legal_initialize_fields": [
+      "surface_schema_version",
+      "public role descriptors",
+      "public primitive descriptors",
+      "public context descriptors",
+      "resource budgets after numeric freeze"
+    ],
+    "legal_predict_fields": [
+      "serialized learner/reference state",
+      "current public context descriptor",
+      "canonical typed legal composition descriptors"
+    ],
+    "legal_observe_fields": [
+      "serialized learner/reference state",
+      "current public context descriptor",
+      "chosen canonical typed composition descriptor",
+      "observed binary outcome"
+    ],
+    "legal_history_for_rivals_only": [
+      "prior public contexts",
+      "prior chosen canonical compositions",
+      "prior observed binary outcomes"
+    ],
+    "evaluator_only_fields": [
+      "task identity",
+      "split identity",
+      "seed material",
+      "surface instance identity",
+      "realized theta",
+      "realized u_task",
+      "true outcome probability",
+      "counterfactual outcomes",
+      "oracle prediction",
+      "probe membership",
+      "verdict"
+    ],
+    "forbidden_model_inputs": [
+      "task_id",
+      "split_id",
+      "seed",
+      "fixture_name",
+      "artifact_path",
+      "surface_instance_id",
+      "realized_theta",
+      "realized_u_task",
+      "true_probability",
+      "counterfactual_outcome",
+      "oracle_prediction",
+      "probe_flag",
+      "evaluator_verdict",
+      "opaque_action_id"
+    ],
+    "ground_truth_writer": "future frozen evaluator generator only",
+    "model_can_write_ground_truth": false
+  },
+  "composition_partitions": {
+    "partition_function": "s=(slot_role_0+slot_role_1+slot_role_2) mod 4",
+    "source_train": "s in {0,1}; 32 compositions",
+    "numeric_calibration": "s=2; 16 compositions",
+    "numeric_calibration_query": "numeric_calibration and slot_role_0 in {0,1}; 8 compositions",
+    "numeric_calibration_probe": "numeric_calibration and slot_role_0 in {2,3}; 8 compositions",
+    "heldout_pool": "s=3; 16 compositions",
+    "adaptation_query": "heldout_pool and slot_role_0 in {0,1}; 8 compositions",
+    "unqueried_probe": "heldout_pool and slot_role_0 in {2,3}; 8 compositions",
+    "full_canonical_overlap_required": 0,
+    "adaptation_query_psi_rank_required": 4,
+    "probe_psi_rank_required": 4,
+    "probe_span_subset_query_span_required": true,
+    "numeric_calibration_query_psi_rank_required": 4,
+    "numeric_calibration_probe_psi_rank_required": 4,
+    "numeric_calibration_probe_span_subset_query_span_required": true,
+    "every_probe_primitive_has_source_support_required": true,
+    "probe_outcomes_enter_legal_history": false,
+    "subcomposition_overlap_treatment": "reported as primitive/pair support; not full-composition overlap and not hidden",
+    "alias_checks": [
+      "raw tuple identity",
+      "canonical typed tuple identity",
+      "role-order serialization aliases",
+      "duplicate-role aliases",
+      "legal-descriptor aliases"
+    ]
+  },
+  "task_partitions": {
+    "source_train_task_count": 128,
+    "numeric_calibration_task_count": 128,
+    "heldout_eval_task_count": "PENDING_FIXED_GRID_SELECTION",
+    "heldout_eval_task_count_grid": [
+      64,
+      128,
+      256,
+      512
+    ],
+    "source_rows_per_composition_context": 2,
+    "source_compositions_per_task": 32,
+    "numeric_calibration_compositions_per_task": 16,
+    "public_contexts_per_task": 4,
+    "source_rows_per_task": 256,
+    "numeric_calibration_legal_feedback_rows_per_task": 16,
+    "numeric_calibration_evaluator_probe_queries_per_checkpoint": 32,
+    "numeric_calibration_sampled_probe_outcomes_per_task": 0,
+    "task_seed_sets_pairwise_disjoint": true,
+    "calibration_data_enters_final_scoring": false,
+    "heldout_eval_consumed_before_numeric_freeze": false
+  },
+  "episode_contract": {
+    "feedback_checkpoints": [
+      0,
+      2,
+      4,
+      8,
+      16
+    ],
+    "adaptation_query_budget": 16,
+    "adaptation_query_composition_schedule": [
+      "(0,0,3)",
+      "(0,1,2)",
+      "(1,0,2)",
+      "(1,1,1)",
+      "(0,2,1)",
+      "(0,3,0)",
+      "(1,2,0)",
+      "(1,3,3)",
+      "(0,1,2)",
+      "(1,0,2)",
+      "(1,1,1)",
+      "(0,2,1)",
+      "(0,3,0)",
+      "(1,2,0)",
+      "(1,3,3)",
+      "(0,0,3)"
+    ],
+    "adaptation_query_context_schedule": [
+      "context_0",
+      "context_1",
+      "context_2",
+      "context_3",
+      "context_0",
+      "context_1",
+      "context_2",
+      "context_3",
+      "context_0",
+      "context_1",
+      "context_2",
+      "context_3",
+      "context_0",
+      "context_1",
+      "context_2",
+      "context_3"
+    ],
+    "query_rank_rule": "the first four query rows have exact psi vectors [1,1,-1,-1], [1,-1,-1,1], [1,-1,1,-1], [1,1,1,1] and rank four under parity_class(slot)=slot mod 2; later prefixes preserve rank four; checkpoint two is reported but not claimed fully identified",
+    "probe_schedule": "all 8 unqueried probes across all 4 contexts at every scoring checkpoint",
+    "open_loop_collection": true,
+    "model_controls_collection": false,
+    "probe_feedback_prohibited": true,
+    "query_order_rule": "the frozen 16-row query/context schedule is consumed in exact listed order and is never permuted, shuffled or selected by any seed",
+    "probe_scoring_order": "ascending canonical typed composition, then ascending public context token at every checkpoint; ordering cannot change the arithmetic-mean score",
+    "same_schedule_for_all_comparators": true
+  },
+  "numeric_calibration_episode_contract": {
+    "purpose": "estimate paired task-difference variance only; never select an observed mean gap, threshold, model, grid or checkpoint",
+    "composition_pool": "s=2 only",
+    "query_compositions": [
+      "(0,0,2)",
+      "(0,1,1)",
+      "(0,2,0)",
+      "(0,3,3)",
+      "(1,0,1)",
+      "(1,1,0)",
+      "(1,2,3)",
+      "(1,3,2)"
+    ],
+    "probe_compositions": [
+      "(2,0,0)",
+      "(2,1,3)",
+      "(2,2,2)",
+      "(2,3,1)",
+      "(3,0,3)",
+      "(3,1,2)",
+      "(3,2,1)",
+      "(3,3,0)"
+    ],
+    "feedback_checkpoints": [
+      0,
+      2,
+      4,
+      8,
+      16
+    ],
+    "query_budget": 16,
+    "query_composition_schedule": [
+      "(0,0,2)",
+      "(0,1,1)",
+      "(1,0,1)",
+      "(1,1,0)",
+      "(0,2,0)",
+      "(0,3,3)",
+      "(1,2,3)",
+      "(1,3,2)",
+      "(0,1,1)",
+      "(1,0,1)",
+      "(1,1,0)",
+      "(0,2,0)",
+      "(0,3,3)",
+      "(1,2,3)",
+      "(1,3,2)",
+      "(0,0,2)"
+    ],
+    "query_context_schedule": [
+      "context_0",
+      "context_1",
+      "context_2",
+      "context_3",
+      "context_0",
+      "context_1",
+      "context_2",
+      "context_3",
+      "context_0",
+      "context_1",
+      "context_2",
+      "context_3",
+      "context_0",
+      "context_1",
+      "context_2",
+      "context_3"
+    ],
+    "query_rank_rule": "the first four query rows have exact psi vectors [1,1,1,1], [1,-1,1,-1], [1,-1,-1,1], [1,1,-1,-1] and rank four; later prefixes preserve rank four",
+    "query_order_rule": "the frozen 16-row query/context schedule is consumed in exact listed order and is never permuted, shuffled or selected by any seed",
+    "probe_scoring_population": "all 8 numeric-calibration probes across all 4 public contexts at checkpoints [0,2,4,8,16] using evaluator-only true probabilities for expected Brier loss",
+    "probe_scoring_order": "ascending canonical typed composition, then ascending public context token at every checkpoint; ordering cannot change the arithmetic-mean score",
+    "probe_outcomes_sampled": false,
+    "probe_feedback_prohibited": true,
+    "same_schedule_for_all_comparators": true,
+    "forward_task_difference_by_control": "at checkpoint zero and for every fixed forward invalidating-control ID separately, that control's task loss minus feasible-reference task loss over the same 32 probe/context predictions; no per-task or mean-loss control selection",
+    "adaptation_task_difference_by_control": "for every fixed adaptation invalidating-control ID separately, that control's normalized task AULC minus live feasible-reference normalized task AULC over the same 32 probe/context predictions at all five checkpoints; no per-task or mean-AULC control selection",
+    "task_difference_variance_aggregation": "for every axis/control pair separately, unbiased sample variance with denominator numeric_calibration_task_count-1 across the 128 paired task differences",
+    "heldout_eval_access": false,
+    "calibration_results_enter_final_effect_estimate": false
+  },
+  "seed_domains": {
+    "status": "NAMES_AND_DERIVATION_FROZEN_VALUES_DERIVED_AFTER_PREREG_COMMIT",
+    "derivation": "sha256(committed_prereg_commit || task_id || domain || ordinal), first 64 bits unsigned",
+    "derivation_owner_module_path": "scripts/ego_learned_outcome_kernel_caot_preflight_001a/seeds.py",
+    "other_modules_may_derive_or_relabel_seeds": false,
+    "domains": [
+      "shared_parameter_generation",
+      "source_task_residual",
+      "calibration_task_residual",
+      "heldout_task_residual",
+      "source_outcome",
+      "calibration_outcome",
+      "heldout_outcome",
+      "calibration_random_control_prediction",
+      "heldout_random_control_prediction",
+      "leakage_positive_control",
+      "replay_process"
+    ],
+    "numeric_freeze_required_domains": [
+      "shared_parameter_generation",
+      "source_task_residual",
+      "calibration_task_residual",
+      "source_outcome",
+      "calibration_outcome",
+      "calibration_random_control_prediction"
+    ],
+    "future_headroom_reserved_domains": [
+      "heldout_task_residual",
+      "heldout_outcome",
+      "heldout_random_control_prediction",
+      "leakage_positive_control",
+      "replay_process"
+    ],
+    "domain_reuse_forbidden": true,
+    "unused_required_domain_within_authorized_stage_blocks_that_stage_evidence": true,
+    "reserved_future_domain_must_not_be_consumed_early": true,
+    "reserved_future_domain_does_not_block_numeric_freeze_when_unconsumed": true,
+    "future_headroom_common_state_rule": "future headroom must source-pin and load the numeric-freeze surface_manifest.json and source_fit_report.json byte-identically; it must not consume shared/source seed domains again, regenerate theta/source tasks/outcomes, or refit a second global model",
+    "seed_material_model_visible": false
+  },
+  "seed_consumption_contract": {
+    "derive_callable": "seeds.derive_domain_seed",
+    "record_callable": "seeds.record_seed_consumption",
+    "validate_callable": "seeds.validate_stage_seed_consumption",
+    "immutable_token_fields": [
+      "base_prereg_commit",
+      "task_id",
+      "stage",
+      "domain",
+      "ordinal",
+      "seed_u64",
+      "caller_callable",
+      "token_digest"
+    ],
+    "token_digest_rule": "SHA256 over canonical JSON bytes of all token fields except token_digest using sort_keys=true, separators=(',',':'), ensure_ascii=false",
+    "derive_rule": "derive_domain_seed returns exactly one immutable structured token per authorized (stage,domain,ordinal,caller) invocation and performs no artifact write",
+    "record_rule": "record_seed_consumption accepts only the exact derive return, serializes it exactly once byte-identically into an in-memory ledger entry, and cannot derive, relabel, replace or normalize any token field",
+    "consumer_rule": "every generator, random baseline or other RNG consumer output record must include the exact token_digest it consumed; raw seed_u64 remains evaluator-only and is never written into a legal model packet or serialized model state",
+    "validation_rule": "validate_stage_seed_consumption proves one-to-one equality among actual derive invocation, exactly one record entry and at least one declared consumer-lineage token hash, with no extra, missing, duplicate, orphan, relabeled or cross-stage token",
+    "artifact_writer": "numeric_freeze.prepare_numeric_freeze_inputs",
+    "artifact_file": "seed_consumption_report.json",
+    "failure_status": "INSTRUMENT_INVALID_SEED_CONSUMPTION"
+  },
+  "resource_parity": {
+    "status": "LIMITS_FROZEN_BEFORE_CALIBRATION",
+    "dimensions": [
+      "source data rows",
+      "heldout feedback rows",
+      "prediction queries",
+      "update opportunities",
+      "hyperparameter trials",
+      "wall-clock-equivalent compute",
+      "serialized memory bytes"
+    ],
+    "same_legal_data_required": true,
+    "same_query_schedule_required": true,
+    "same_update_opportunity_required": true,
+    "private_state_forbidden": true,
+    "hyperparameter_trial_count": 1,
+    "global_optimizer_max_iterations": 50,
+    "local_optimizer_max_iterations_per_feedback": 5,
+    "prediction_query_count_per_task_checkpoint": 32,
+    "serialized_memory_limit_bytes": 1048576,
+    "compute_accounting": "count objective, gradient, Hessian solve, prediction and update calls; no wall-clock substitution"
+  },
+  "feasible_reference": {
+    "id": "regularized_compositional_logistic_glm_plus_online_map_residual",
+    "admission_role": "REQUIRED_LEGAL_BUDGET_FAITHFUL_REACHABILITY_WITNESS",
+    "global_model": {
+      "family": "logistic GLM over frozen phi_global",
+      "objective": "mean Bernoulli negative log likelihood plus L2 penalty",
+      "optimizer": "deterministic full-batch Newton-Raphson with zero initialization, exact analytic gradient/Hessian, numpy.linalg.solve, maximum 50 iterations and parameter-infinity-norm tolerance 1e-8",
+      "l2_regularization": 1.0,
+      "intercept_penalized": false,
+      "hyperparameter_selection": "none",
+      "selection_data": "not applicable; all values frozen before calibration",
+      "private_fields_allowed": false
+    },
+    "task_local_update": {
+      "family": "online MAP/Newton update over frozen four-dimensional psi residual with global coefficients frozen",
+      "initial_mean": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "prior_precision": 4.0,
+      "maximum_newton_steps_per_feedback": 5,
+      "tolerance": 1e-10,
+      "serialized_state_required": true
+    },
+    "must_change_after_informative_feedback": true,
+    "must_match_frozen_reference_at_checkpoint_zero": true,
+    "candidate_status": "NOT_A_CANDIDATE"
+  },
+  "diagnostic_ideal": {
+    "id": "visible_channel_hierarchical_bayes_logistic_posterior",
+    "role": "DIAGNOSTIC_ONLY_NOT_VALID_FOR_ADMISSION",
+    "legal_data_only": true,
+    "true_realized_parameters_visible": false,
+    "private_task_state_visible": false
+  },
+  "baseline_role_matrix": [
+    {
+      "id": "constant_global_mean",
+      "role_by_axis": {
+        "forward_transfer": "invalidating_control",
+        "within_task_adaptation": "invalidating_control"
+      },
+      "callable": "baselines.constant_global_mean_predict",
+      "access": "source outcomes for the frozen mean; no heldout outcome update"
+    },
+    {
+      "id": "seeded_random_probability",
+      "role_by_axis": {
+        "forward_transfer": "invalidating_control",
+        "within_task_adaptation": "invalidating_control"
+      },
+      "callable": "baselines.seeded_random_probability_predict",
+      "access": "no source or heldout data; evaluator supplies only the stage-specific random-control domain internally, never through a legal model packet"
+    },
+    {
+      "id": "exact_canonical_composition_lookup",
+      "role_by_axis": {
+        "forward_transfer": "invalidating_control",
+        "within_task_adaptation": "invalidating_control"
+      },
+      "callable": "baselines.exact_lookup_predict",
+      "access": "same legal source and heldout feedback; unseen canonical composition fallback frozen"
+    },
+    {
+      "id": "count_table",
+      "role_by_axis": {
+        "forward_transfer": "invalidating_control",
+        "within_task_adaptation": "invalidating_control"
+      },
+      "callable": "baselines.count_table_predict",
+      "access": "same legal rows and canonical descriptors"
+    },
+    {
+      "id": "graph_lookup",
+      "role_by_axis": {
+        "forward_transfer": "invalidating_control",
+        "within_task_adaptation": "invalidating_control"
+      },
+      "callable": "baselines.graph_lookup_predict",
+      "access": "same legal source rows and heldout feedback represented only as public context/role-primitive feature-node outcome counts"
+    },
+    {
+      "id": "episodic_traversal",
+      "role_by_axis": {
+        "forward_transfer": "invalidating_control",
+        "within_task_adaptation": "invalidating_control"
+      },
+      "callable": "baselines.episodic_traversal_predict",
+      "access": "same legal source episodes and heldout feedback through a frozen public-feature bipartite traversal; no task/split/seed/private state"
+    },
+    {
+      "id": "nearest_neighbor_descriptor",
+      "role_by_axis": {
+        "forward_transfer": "invalidating_control",
+        "within_task_adaptation": "invalidating_control"
+      },
+      "callable": "baselines.nearest_neighbor_predict",
+      "access": "same legal rows and frozen descriptor distance"
+    },
+    {
+      "id": "no_meta_from_scratch_residual",
+      "role_by_axis": {
+        "forward_transfer": "invalidating_control",
+        "within_task_adaptation": "capability_comparator"
+      },
+      "callable": "baselines.from_scratch_residual_predict",
+      "access": "heldout legal feedback only; no source-trained coefficients"
+    },
+    {
+      "id": "no_source_current_packet_descriptor_model",
+      "role_by_axis": {
+        "forward_transfer": "invalidating_control",
+        "within_task_adaptation": "not_applicable"
+      },
+      "callable": "baselines.no_source_descriptor_predict",
+      "access": "current public context/composition descriptors with no source-task outcomes and no heldout feedback"
+    },
+    {
+      "id": "source_trained_current_packet_static",
+      "role_by_axis": {
+        "forward_transfer": "capability_comparator_and_reference_component",
+        "within_task_adaptation": "invalidating_frozen_no_update_control"
+      },
+      "callable": "baselines.frozen_source_model_predict",
+      "access": "same source data; no heldout update"
+    },
+    {
+      "id": "source_trained_primitive_additive_only",
+      "role_by_axis": {
+        "forward_transfer": "capability_rival_and_structure_challenger",
+        "within_task_adaptation": "not_applicable"
+      },
+      "callable": "baselines.primitive_additive_predict",
+      "access": "same source data and current packet; pairwise interaction block removed"
+    },
+    {
+      "id": "source_trained_pairwise_factorization_static",
+      "role_by_axis": {
+        "forward_transfer": "capability_rival_and_structure_challenger",
+        "within_task_adaptation": "mechanism_challenger"
+      },
+      "callable": "baselines.pairwise_factorization_predict",
+      "access": "same source data/current packet; static factorized parameters with no task-local update"
+    },
+    {
+      "id": "no_feedback_history_deleted",
+      "role_by_axis": {
+        "forward_transfer": "not_applicable",
+        "within_task_adaptation": "invalidating_control"
+      },
+      "callable": "baselines.history_deleted_predict",
+      "access": "same source state with heldout feedback removed"
+    },
+    {
+      "id": "feedback_shuffled",
+      "role_by_axis": {
+        "forward_transfer": "not_applicable",
+        "within_task_adaptation": "invalidating_control"
+      },
+      "callable": "baselines.feedback_shuffled_predict",
+      "access": "same legal heldout rows with deterministic outcome permutation"
+    },
+    {
+      "id": "fitted_legal_full_history_decoder",
+      "role_by_axis": {
+        "forward_transfer": "capability_rival",
+        "within_task_adaptation": "mechanism_challenger"
+      },
+      "callable": "baselines.full_history_decoder_predict",
+      "access": "full legal history only, with resource usage separately reported"
+    },
+    {
+      "id": "legal_recency_ewma",
+      "role_by_axis": {
+        "forward_transfer": "not_applicable",
+        "within_task_adaptation": "mechanism_challenger"
+      },
+      "callable": "baselines.recency_ewma_predict",
+      "access": "same legal history and fixed decay selected on calibration only"
+    },
+    {
+      "id": "per_task_specialist_panel",
+      "role_by_axis": {
+        "forward_transfer": "capability_rival",
+        "within_task_adaptation": "capability_rival"
+      },
+      "callable": "baselines.per_task_specialist_predict",
+      "access": "evaluator-only breadth comparison; never an invalidating control by narrow-task peak"
+    },
+    {
+      "id": "future_candidate_own_batch_offline_rule",
+      "role_by_axis": {
+        "forward_transfer": "DEFERRED_REQUIRED_AT_FUTURE_CANDIDATE_CARD",
+        "within_task_adaptation": "DEFERRED_REQUIRED_AT_FUTURE_CANDIDATE_CARD"
+      },
+      "callable": "FORBIDDEN_TO_FABRICATE_WHILE_CANDIDATE_ABSENT",
+      "access": "not invoked in P0A"
+    }
+  ],
+  "baseline_implementation_contracts": {
+    "constant_global_mean": {
+      "model": "Beta(1,1)-smoothed mean of all legal source outcomes",
+      "update_on_heldout_feedback": false,
+      "fallback": "not applicable",
+      "tie_break": "not applicable"
+    },
+    "seeded_random_probability": {
+      "model": "counter-based deterministic Uniform(0,1) probability control",
+      "stage_seed_domains": {
+        "numeric_freeze": "calibration_random_control_prediction",
+        "future_headroom": "heldout_random_control_prediction"
+      },
+      "counter_bytes": "UTF-8(stage || evaluator_task_ordinal || public_context_token || canonical_typed_composition)",
+      "draw_formula": "d=SHA256(unsigned-64-bit domain_seed big-endian || counter_bytes); u64=unsigned big-endian integer d[0:8]; predicted_probability=(u64+0.5)/2**64",
+      "checkpoint_invariant": true,
+      "source_data_used": false,
+      "heldout_feedback_used": false,
+      "raw_seed_in_legal_packet_or_serialized_model_state": false,
+      "ranking_tie_break": "ascending canonical typed composition if floating probabilities are exactly equal"
+    },
+    "exact_canonical_composition_lookup": {
+      "key": "(public_context_token, canonical_typed_composition)",
+      "estimate": "Beta(1,1)-smoothed mean of matching legal outcomes",
+      "heldout_update": "add only legally observed adaptation-query outcomes to their exact key",
+      "unseen_probe_fallback": "Beta(1,1)-smoothed public-context mean",
+      "tie_break": "not applicable"
+    },
+    "count_table": {
+      "key": "(public_context_token, psi_task_local tuple)",
+      "estimate": "Beta(1,1)-smoothed mean",
+      "heldout_update": "legal adaptation-query outcomes update the matching key",
+      "fallback": "Beta(1,1)-smoothed global source mean",
+      "tie_break": "not applicable"
+    },
+    "graph_lookup": {
+      "graph_schema": "four public feature-node types: one context token plus one role-specific primitive token for each of three roles; each legal episode contributes its binary outcome to all four incident feature nodes",
+      "prediction": "for the query's four feature nodes compute each Beta(1,1)-smoothed incident-outcome mean and return their unweighted arithmetic mean",
+      "heldout_update": "each legally observed adaptation-query outcome increments exactly its four public feature-node success/count pairs",
+      "missing_node_fallback": "Beta(1,1)-smoothed global source mean for that node contribution",
+      "private_or_exact_composition_key_used": false,
+      "tie_break": "not applicable"
+    },
+    "episodic_traversal": {
+      "graph_schema": "bipartite graph of legal episode nodes and the same four public feature nodes; an episode is incident to its context and three role-specific primitive tokens",
+      "traversal": "from each of the query's four feature nodes traverse feature->episode_1->feature->episode_2; for every stored episode_2, weight equals the exact count of such length-3 edge paths, including repeated paths but excluding any episode without a path",
+      "prediction": "(1 + sum_episode weight*binary_outcome)/(2 + sum_episode weight); if total weight is zero use Beta(1,1)-smoothed global source mean",
+      "heldout_update": "append each legally observed adaptation-query episode and its four incidences before the next checkpoint",
+      "depth": 2,
+      "future_or_private_fields_used": false,
+      "tie_break": "ascending canonical source-row ordinal then ascending heldout-history ordinal during graph construction; accumulation is integer and order-invariant"
+    },
+    "nearest_neighbor_descriptor": {
+      "feature": "concatenated public context one-hot plus three role-slot one-hots",
+      "distance": "unweighted Hamming distance",
+      "k": 5,
+      "estimate": "uniform mean of the five nearest legal rows",
+      "heldout_update": "legally observed adaptation-query rows join the neighbor pool",
+      "tie_break": "ascending canonical composition then ascending context token then source-row ordinal"
+    },
+    "no_meta_from_scratch_residual": {
+      "global_logit": 0.0,
+      "local_model": "same four-dimensional MAP/Newton residual update as feasible reference",
+      "source_data_used": false,
+      "checkpoint_zero_probability": 0.5
+    },
+    "no_source_current_packet_descriptor_model": {
+      "model": "fixed zero-logit current-packet decoder",
+      "source_data_used": false,
+      "heldout_feedback_used": false,
+      "probability": 0.5
+    },
+    "source_trained_current_packet_static": {
+      "model": "exact frozen global component of feasible reference with u_task=[0,0,0,0]",
+      "source_data": "same 128 source tasks and rows",
+      "heldout_update": false
+    },
+    "source_trained_primitive_additive_only": {
+      "model": "same deterministic logistic Newton fit restricted to intercept, context, role-primitive and context-by-role-primitive blocks",
+      "pairwise_interaction_block": "removed",
+      "l2_regularization": 1.0,
+      "heldout_update": false
+    },
+    "source_trained_pairwise_factorization_static": {
+      "model": "smoothed pair-logit factorization",
+      "pair_key": "(public_context_token, role_edge, primitive_slot_left, primitive_slot_right)",
+      "pair_estimate": "Beta(1,1)-smoothed source mean converted to logit with probability clamped to [1e-6,1-1e-6]",
+      "prediction_logit": "public-context smoothed logit plus one third of the sum over three edges of (pair_logit - public-context logit)",
+      "heldout_update": false,
+      "fallback": "public-context smoothed logit"
+    },
+    "no_feedback_history_deleted": {
+      "model": "source_trained_current_packet_static",
+      "heldout_history": "deleted before every prediction"
+    },
+    "feedback_shuffled": {
+      "model": "feasible reference global model plus local MAP update",
+      "mutation": "for each prefix with at least two outcomes, cyclically rotate observed outcomes left by one while holding contexts/compositions fixed; a one-row prefix uses the frozen source prediction and records insufficient-shuffle coverage",
+      "seed_use": "none; deterministic"
+    },
+    "fitted_legal_full_history_decoder": {
+      "model": "at each checkpoint recompute the exact feasible-reference local MAP optimum from zero using the complete legal history prefix and frozen global coefficients",
+      "persistent_task_local_state": false,
+      "private_fields_used": false,
+      "role": "mechanism attribution rival only"
+    },
+    "legal_recency_ewma": {
+      "key": "(public_context_token, psi_task_local tuple)",
+      "decay": 0.5,
+      "initial_value": "frozen source-model prediction for the query packet",
+      "update": "EWMA with legally observed outcomes for matching key",
+      "fallback": "frozen source-model prediction"
+    },
+    "per_task_specialist_panel": {
+      "members": [
+        "intercept_only_local_MAP",
+        "role_0_role_1_parity_only_local_MAP",
+        "role_1_role_2_parity_only_local_MAP",
+        "role_0_role_2_parity_only_local_MAP",
+        "full_four_term_local_MAP"
+      ],
+      "data": "same legal adaptation-query history only",
+      "reporting": "evaluator reports the lowest-loss member per task as a breadth rival envelope",
+      "admission_role": "never an invalidating control and never a legal feasible reference"
+    },
+    "future_candidate_own_batch_offline_rule": {
+      "status": "DEFERRED_REQUIRED_AT_FUTURE_CANDIDATE_CARD",
+      "implementation_in_P0A": false
+    }
+  },
+  "graph_cache_applicability": {
+    "trigger": "typed-compositional representation/environment claim under the pinned baseline-immunity and learning-success standards",
+    "fail_closed_rule": "every six-member graph-cache family ID must be present exactly once as APPLICABLE_IMPLEMENTED or NOT_APPLICABLE_WITH_SCHEMA_WITNESS; any later addition of a required transition/state field invalidates the N/A disposition and blocks execution pending a fresh prereg",
+    "members": [
+      {
+        "id": "graph_lookup",
+        "disposition": "APPLICABLE_IMPLEMENTED",
+        "baseline_id": "graph_lookup",
+        "callable": "baselines.graph_lookup_predict",
+        "reason": "public typed composition features define a legal graph lookup without private state"
+      },
+      {
+        "id": "transition_table",
+        "disposition": "NOT_APPLICABLE_WITH_SCHEMA_WITNESS",
+        "required_absent_fields": [
+          "next_state",
+          "action_conditioned_state_transition",
+          "transition_reward"
+        ],
+        "reason": "the surface emits a one-step Bernoulli outcome and has no next-state or action-conditioned environment transition"
+      },
+      {
+        "id": "successor_map",
+        "disposition": "NOT_APPLICABLE_WITH_SCHEMA_WITNESS",
+        "required_absent_fields": [
+          "state_id",
+          "next_state",
+          "successor_features"
+        ],
+        "reason": "there is no public or private state-transition graph on which successor occupancy can be defined"
+      },
+      {
+        "id": "count_table",
+        "disposition": "APPLICABLE_IMPLEMENTED",
+        "baseline_id": "count_table",
+        "callable": "baselines.count_table_predict",
+        "reason": "the finite public context-plus-psi key supports a legal count-table control"
+      },
+      {
+        "id": "fsm_planner",
+        "disposition": "NOT_APPLICABLE_WITH_SCHEMA_WITNESS",
+        "required_absent_fields": [
+          "state_id",
+          "next_state",
+          "model_selected_action",
+          "multi_step_return"
+        ],
+        "reason": "collection is open-loop with a fixed query schedule, no model-selected action and no multi-step planning objective"
+      },
+      {
+        "id": "episodic_traversal",
+        "disposition": "APPLICABLE_IMPLEMENTED",
+        "baseline_id": "episodic_traversal",
+        "callable": "baselines.episodic_traversal_predict",
+        "reason": "legal source and heldout episodes support a public-feature bipartite traversal challenger"
+      }
+    ],
+    "required_family_order": [
+      "graph_lookup",
+      "transition_table",
+      "successor_map",
+      "count_table",
+      "fsm_planner",
+      "episodic_traversal"
+    ],
+    "silent_omission_allowed": false
+  },
+  "baseline_dispatch_contract": {
+    "owner_callable": "baselines.invoke_baseline",
+    "registry_callable": "baselines.build_independent_baseline_registry",
+    "record_callable": "baselines.record_baseline_invocation",
+    "mapping_source": "/baseline_role_matrix",
+    "dispatch_rule": "for each non-deferred baseline_id, resolve exactly its declared callable, delegate exactly once with byte-identical immutable inputs, and return the owner callable's prediction, serialized-state hash, callable lineage and code-path hash byte-identically",
+    "dispatcher_may_compute_or_modify_prediction": false,
+    "dispatcher_may_call_deferred_candidate": false,
+    "record_rule": "record_baseline_invocation serializes only the exact dispatcher return plus input hashes; it may not recompute, normalize, clamp or replace a prediction or state hash",
+    "required_failure_cases": [
+      "missing owner call",
+      "extra owner call",
+      "wrong owner call",
+      "dispatcher input mutation",
+      "dispatcher-side prediction computation",
+      "owner output alteration or discard",
+      "callable lineage or state-hash alteration",
+      "deferred candidate dispatch"
+    ],
+    "failure_status": "INSTRUMENT_INVALID_BASELINE_PANEL"
+  },
+  "axes": {
+    "no_compensation": true,
+    "forward_transfer": {
+      "checkpoint": "zero heldout feedback",
+      "score_population": "unqueried probes across all contexts and heldout eval tasks",
+      "per_prediction_loss": "(predicted_probability - evaluator_only_true_probability)^2",
+      "per_task_loss": "arithmetic mean of per_prediction_loss across the 8 unqueried probes and 4 public contexts",
+      "aggregate_loss": "unweighted arithmetic mean of per_task_loss across heldout eval tasks",
+      "primary_metric": "task-clustered expected-Brier excess loss",
+      "reference": "feasible_reference with source-trained global coefficients and zero local residual mean",
+      "invalidating_control_envelope": [
+        "constant_global_mean",
+        "seeded_random_probability",
+        "exact_canonical_composition_lookup",
+        "count_table",
+        "graph_lookup",
+        "episodic_traversal",
+        "nearest_neighbor_descriptor",
+        "no_meta_from_scratch_residual",
+        "no_source_current_packet_descriptor_model"
+      ],
+      "control_envelope_rule": "compute every fixed control-minus-reference task-difference mean separately; the reported envelope effect is their minimum, and no control is selected by calibration mean, checkpoint or bootstrap winner",
+      "effect_definition": "minimum across the 9 fixed forward controls of mean_task(control_loss_at_checkpoint_0 - feasible_reference_loss_at_checkpoint_0)",
+      "pass_direction": "every one of the 9 per-control Bonferroni one-sided normal lower bounds must exceed fixed SESOI_forward_Brier; no compensation",
+      "source_trained_static_role": "capability comparator; not an observation-only invalidator"
+    },
+    "within_task_adaptation": {
+      "checkpoints": [
+        0,
+        2,
+        4,
+        8,
+        16
+      ],
+      "score_population": "same unqueried probes across all contexts and heldout eval tasks",
+      "per_checkpoint_task_loss": "same expected-Brier excess task loss as forward axis",
+      "AULC_formula": "sum over adjacent checkpoints (k_i-k_(i-1))*(loss(k_(i-1))+loss(k_i))/2 divided by 16",
+      "aggregate_AULC": "unweighted arithmetic mean of per-task normalized AULC",
+      "primary_metric": "task-clustered normalized expected-Brier AULC",
+      "reference": "live feasible_reference task-local residual updater",
+      "invalidating_control_envelope": [
+        "constant_global_mean",
+        "seeded_random_probability",
+        "exact_canonical_composition_lookup",
+        "count_table",
+        "graph_lookup",
+        "episodic_traversal",
+        "nearest_neighbor_descriptor",
+        "source_trained_current_packet_static",
+        "no_feedback_history_deleted",
+        "feedback_shuffled"
+      ],
+      "control_envelope_rule": "compute every fixed control-minus-reference normalized task-AULC difference separately; the reported envelope effect is their minimum, and no control is selected by calibration mean, checkpoint or bootstrap winner",
+      "effect_definition": "minimum across the 10 fixed adaptation controls of mean_task(control_AULC - live_reference_AULC)",
+      "pass_direction": "every one of the 10 per-control Bonferroni one-sided normal lower bounds must exceed fixed SESOI_adaptation_Brier_AULC; no compensation",
+      "checkpoint_zero_identity_required": "live and frozen reference predictions and serialized global state hashes identical"
+    },
+    "diagnostic_ranking": {
+      "metric": "top-action expected regret using evaluator-only true probabilities",
+      "admission_role": "DIAGNOSTIC_ONLY_UNTIL_SEPARATE_SESOI_AND_POWER_FREEZE",
+      "predictor_path_must_feed_ranker": true,
+      "second_selector_forbidden": true
+    },
+    "full_history_attribution_rule": {
+      "powered_equivalence_status": "MUTABLE_UPDATE_NOT_REQUIRED",
+      "underpowered_status": "ATTRIBUTION_UNKNOWN",
+      "surface_rejection_from_equivalence_alone": false
+    }
+  },
+  "canonical_metric_core": {
+    "owner_module_path": "scripts/ego_learned_outcome_kernel_caot_preflight_001a/metrics.py",
+    "brier_callable": "metrics.compute_task_brier_loss",
+    "aulc_callable": "metrics.compute_normalized_task_aulc",
+    "per_control_difference_callable": "metrics.compute_per_control_task_differences",
+    "consumer_paths": [
+      "scripts/ego_learned_outcome_kernel_caot_preflight_001a/numeric_freeze.py",
+      "scripts/ego_learned_outcome_kernel_caot_preflight_001a/producer.py"
+    ],
+    "single_logic_path_rule": "numeric calibration and final heldout scoring must call these exact metrics.py callables with the applicable frozen episode contract; neither consumer may implement Brier, AULC, control-envelope or task-difference arithmetic",
+    "byte_equal_fixture_rule": "the same serialized per-prediction fixture passed through numeric-freeze and final-producer adapters must yield byte-identical task-loss, AULC and per-control-difference records from the canonical callables",
+    "formula_copy_in_other_module_forbidden": true,
+    "stored_metric_trust": false,
+    "failure_status": "INSTRUMENT_INVALID_METRIC_SCHEMA_SPLIT"
+  },
+  "numeric_freeze": {
+    "status": "PENDING_CALIBRATION_VARIANCE_AND_SAMPLE_SIZE_FREEZE",
+    "execution_authorized": false,
+    "unfrozen_fields": [
+      "heldout_eval_task_count"
+    ],
+    "fixed_before_any_outcome_calibration": {
+      "SESOI_forward_Brier": 0.005,
+      "SESOI_adaptation_Brier_AULC": 0.005,
+      "equivalence_band_full_history_Brier_AULC": 0.0025,
+      "familywise_alpha": 0.05,
+      "primary_comparison_count": 19,
+      "primary_multiplicity_method": "Bonferroni over the exact 9 forward plus 10 adaptation invalidating-control comparisons; per-comparison alpha=0.05/19",
+      "target_joint_power": 0.9,
+      "per_comparison_beta_for_union_bound": "0.10/19",
+      "material_null_margin": "SESOI for the corresponding axis",
+      "power_planning_alternative": "every invalidating-control difference equals 2*SESOI for its axis, leaving a one-SESOI separation from the material null margin",
+      "final_confidence_interval_method": "for each fixed control separately, one-sided normal lower bound mean_task_difference - NormalDist.inv_cdf(1-0.05/19)*sqrt(unbiased_task_difference_variance/N); no winner-selected or envelope bootstrap",
+      "full_history_equivalence_method": "two one-sided task-cluster tests at alpha 0.05; underpowered maps to ATTRIBUTION_UNKNOWN",
+      "source_train_task_count": 128,
+      "numeric_calibration_task_count": 128,
+      "heldout_eval_task_count_grid": [
+        64,
+        128,
+        256,
+        512
+      ],
+      "feedback_checkpoints": [
+        0,
+        2,
+        4,
+        8,
+        16
+      ],
+      "adaptation_query_budget": 16,
+      "global_l2_regularization": 1.0,
+      "local_prior_precision": 4.0,
+      "global_optimizer_max_iterations": 50,
+      "local_optimizer_max_iterations_per_feedback": 5,
+      "global_optimizer_tolerance": 1e-8,
+      "local_optimizer_tolerance": 1e-10,
+      "serialized_memory_limit_bytes": 1048576,
+      "hyperparameter_trial_count": 1
+    },
+    "callable_chain": {
+      "strict_order": [
+        "numeric_freeze.prepare_numeric_freeze_inputs",
+        "numeric_freeze.compute_calibration_task_differences",
+        "numeric_freeze.estimate_task_difference_variances",
+        "numeric_freeze.select_heldout_task_count",
+        "numeric_freeze.write_numeric_freeze_provenance",
+        "numeric_freeze.write_numeric_freeze_artifact_hash_manifest",
+        "numeric_freeze.write_numeric_freeze_record"
+      ],
+      "step_contracts": [
+        {
+          "callable": "numeric_freeze.prepare_numeric_freeze_inputs",
+          "nested_required_call_order": [
+            "seeds.derive_domain_seed",
+            "seeds.record_seed_consumption",
+            "generator.generate_surface_instance",
+            "generator.generate_task",
+            "generator.sample_outcome",
+            "numeric_freeze.build_numeric_calibration_episodes",
+            "reference.fit_source_global_model",
+            "reference.initialize_local_residual",
+            "reference.update_local_residual",
+            "reference.predict_probability",
+            "baselines.build_independent_baseline_registry",
+            "baselines.invoke_baseline",
+            "baselines.record_baseline_invocation",
+            "seeds.validate_stage_seed_consumption"
+          ],
+          "seed_call_rule": "for every RNG consumer invocation, derive returns one token, record serializes that exact token once before consumer use, consumer output carries token_digest, and validate closes the exact one-to-one chain before artifacts are published",
+          "baseline_delegation_rule": "baselines.invoke_baseline must call every exact baseline callable required by the 19 frozen comparisons and no other prediction implementation",
+          "only_outputs": [
+            "surface_manifest.json",
+            "source_fit_report.json",
+            "calibration_episode_manifest.json",
+            "seed_consumption_report.json",
+            "calibration_prediction_records.jsonl",
+            "baseline_invocation_report.json"
+          ],
+          "may_compute_metrics": false,
+          "anonymous_or_in_memory_only_prediction_input_forbidden": true
+        },
+        {
+          "callable": "numeric_freeze.compute_calibration_task_differences",
+          "only_input": "the exact hashed calibration_episode_manifest.json and calibration_prediction_records.jsonl owned by prepare_numeric_freeze_inputs",
+          "only_output": "calibration_task_differences.json",
+          "nested_required_call": "metrics.compute_per_control_task_differences exactly once per task/axis bundle using metrics.compute_task_brier_loss and metrics.compute_normalized_task_aulc internally",
+          "must_delegate_metric_arithmetic": true,
+          "formula_copy_or_local_metric_fallback_forbidden": true
+        },
+        {
+          "callable": "numeric_freeze.estimate_task_difference_variances",
+          "only_input": "calibration_task_differences.json",
+          "only_output": "variance_report.json",
+          "may_select_sample_size": false
+        },
+        {
+          "callable": "numeric_freeze.select_heldout_task_count",
+          "only_input": "variance_report.json plus immutable numeric contract fields",
+          "only_output": "sample_size_selection.json",
+          "output_authority_status": "PROVISIONAL_NON_AUTHORITATIVE_UNTIL_ADDITIVE_RECORD_COMMITTED",
+          "may_recompute_episode_metric_or_variance": false
+        },
+        {
+          "callable": "numeric_freeze.write_numeric_freeze_provenance",
+          "only_input": "all prior strict-chain invocation records and exact owned artifact paths/hashes through sample_size_selection.json",
+          "only_outputs": [
+            "numeric_freeze_provenance.json",
+            "claim_ceiling.txt"
+          ],
+          "may_compute_or_change_any_metric_variance_threshold_or_selection": false
+        },
+        {
+          "callable": "numeric_freeze.write_numeric_freeze_artifact_hash_manifest",
+          "only_input": "the exact closed success artifacts in required_record_input_artifact_paths",
+          "only_output": "artifact_hash_manifest.json",
+          "rule": "hash exact bytes once after provenance/claim closure; no listed artifact may change afterward"
+        },
+        {
+          "callable": "numeric_freeze.write_numeric_freeze_record",
+          "only_input": "variance_report.json, sample_size_selection.json, numeric_freeze_provenance.json, artifact_hash_manifest.json and immutable base contract only",
+          "only_output": "NUMERIC_FREEZE_RECORD.json",
+          "may_compute_or_change_any_score_variance_threshold_or_selection": false
+        }
+      ],
+      "failure_path_callable": "numeric_freeze.write_numeric_freeze_failure_manifest",
+      "failure_path_rule": "on any step exception or contract mismatch, write exactly failure_manifest.json atomically with completed-step invocations and hashes; preserve any already completed artifacts, including a possible sample_size_selection.json, as non-authoritative negative/provisional evidence; never write NUMERIC_FREEZE_RECORD.json and never apply the overlay",
+      "every_step_invocation_record_required": true,
+      "skip_reorder_duplicate_or_hidden_step_status": "NUMERIC_FREEZE_INSTRUMENT_INVALID"
+    },
+    "variance_only_calibration_algorithm": {
+      "allowed_data": "frozen source-train tasks for global fitting plus exactly the s=2 query/probe tasks, schedules and scoring population in /numeric_calibration_episode_contract for paired task-difference variance only",
+      "heldout_eval_access": false,
+      "candidate_access": false,
+      "mean_gap_may_affect_selection": false,
+      "threshold_or_model_change_allowed": false,
+      "variance_estimands": [
+        "for each ID in /axes/forward_transfer/invalidating_control_envelope, unbiased sample variance across 128 numeric-calibration tasks of that fixed control's /numeric_calibration_episode_contract/forward_task_difference_by_control",
+        "for each ID in /axes/within_task_adaptation/invalidating_control_envelope, unbiased sample variance across 128 numeric-calibration tasks of that fixed control's /numeric_calibration_episode_contract/adaptation_task_difference_by_control"
+      ],
+      "comparison_count": "exactly 19 from the frozen ordered concatenation of the 9 forward and 10 adaptation invalidating-control envelopes",
+      "required_n_formula": "ceil(((NormalDist.inv_cdf(1-0.05/19)+NormalDist.inv_cdf(1-0.10/19))**2 * sample_variance) / SESOI**2)",
+      "per_control_required_n": "apply the required_n_formula separately to every fixed axis/control variance with that axis's frozen SESOI; this plans each comparison at alpha=0.05/19 and beta=0.10/19 for the 2*SESOI planning alternative; observed mean gaps never enter",
+      "axis_required_n": "maximum per-control required_n within the exact frozen invalidating_control_envelope for that axis; no control is selected or removed by calibration mean loss",
+      "joint_required_n": "max(forward_required_n, adaptation_required_n)",
+      "joint_power_rule": "under the frozen normal planning approximation, per-comparison beta=0.10/19 and the union bound make the probability that all 19 material comparisons pass at least 0.90 when every true control difference equals 2*SESOI",
+      "final_inference_rule": "heldout computes every fixed per-control task-difference mean/variance and its Bonferroni lower bound; an axis passes only if every one of its control lower bounds exceeds that axis's SESOI; the reported envelope effect is the minimum per-control mean difference and no control is selected by calibration data or bootstrap winner switching",
+      "selection_rule": "choose the smallest value in [64,128,256,512] greater than or equal to joint_required_n",
+      "ceiling_rule": "if joint_required_n exceeds 512, emit INCONCLUSIVE_UNDERPOWERED_CLOSE_CAOT without threshold, model, generator or grid change",
+      "tie_rule": "the smallest sufficient grid value always wins",
+      "calibration_attempt_limit": 1
+    },
+    "evidence_artifact_contract": {
+      "artifact_root": "artifacts/ego_learned_outcome_kernel_caot_numeric_freeze_001a/",
+      "artifact_hash_manifest_path": "artifacts/ego_learned_outcome_kernel_caot_numeric_freeze_001a/artifact_hash_manifest.json",
+      "required_success_artifacts": [
+        "surface_manifest.json",
+        "source_fit_report.json",
+        "calibration_episode_manifest.json",
+        "seed_consumption_report.json",
+        "calibration_prediction_records.jsonl",
+        "calibration_task_differences.json",
+        "variance_report.json",
+        "sample_size_selection.json",
+        "baseline_invocation_report.json",
+        "numeric_freeze_provenance.json",
+        "artifact_hash_manifest.json",
+        "claim_ceiling.txt"
+      ],
+      "required_record_input_artifact_paths": [
+        "artifacts/ego_learned_outcome_kernel_caot_numeric_freeze_001a/surface_manifest.json",
+        "artifacts/ego_learned_outcome_kernel_caot_numeric_freeze_001a/source_fit_report.json",
+        "artifacts/ego_learned_outcome_kernel_caot_numeric_freeze_001a/calibration_episode_manifest.json",
+        "artifacts/ego_learned_outcome_kernel_caot_numeric_freeze_001a/seed_consumption_report.json",
+        "artifacts/ego_learned_outcome_kernel_caot_numeric_freeze_001a/calibration_prediction_records.jsonl",
+        "artifacts/ego_learned_outcome_kernel_caot_numeric_freeze_001a/calibration_task_differences.json",
+        "artifacts/ego_learned_outcome_kernel_caot_numeric_freeze_001a/variance_report.json",
+        "artifacts/ego_learned_outcome_kernel_caot_numeric_freeze_001a/sample_size_selection.json",
+        "artifacts/ego_learned_outcome_kernel_caot_numeric_freeze_001a/baseline_invocation_report.json",
+        "artifacts/ego_learned_outcome_kernel_caot_numeric_freeze_001a/numeric_freeze_provenance.json",
+        "artifacts/ego_learned_outcome_kernel_caot_numeric_freeze_001a/claim_ceiling.txt"
+      ],
+      "artifact_owners": {
+        "surface_manifest.json": "numeric_freeze.prepare_numeric_freeze_inputs",
+        "source_fit_report.json": "numeric_freeze.prepare_numeric_freeze_inputs",
+        "calibration_episode_manifest.json": "numeric_freeze.prepare_numeric_freeze_inputs",
+        "seed_consumption_report.json": "numeric_freeze.prepare_numeric_freeze_inputs",
+        "calibration_prediction_records.jsonl": "numeric_freeze.prepare_numeric_freeze_inputs",
+        "baseline_invocation_report.json": "numeric_freeze.prepare_numeric_freeze_inputs",
+        "calibration_task_differences.json": "numeric_freeze.compute_calibration_task_differences",
+        "variance_report.json": "numeric_freeze.estimate_task_difference_variances",
+        "sample_size_selection.json": "numeric_freeze.select_heldout_task_count",
+        "numeric_freeze_provenance.json": "numeric_freeze.write_numeric_freeze_provenance",
+        "artifact_hash_manifest.json": "numeric_freeze.write_numeric_freeze_artifact_hash_manifest",
+        "claim_ceiling.txt": "numeric_freeze.write_numeric_freeze_provenance",
+        "failure_manifest.json": "numeric_freeze.write_numeric_freeze_failure_manifest"
+      },
+      "additive_record_owner": "numeric_freeze.write_numeric_freeze_record",
+      "multiple_or_missing_owner_allowed": false,
+      "calibration_prediction_record_required_fields": [
+        "task_id",
+        "episode_id",
+        "axis",
+        "checkpoint_id",
+        "context_id",
+        "canonical_typed_composition",
+        "reference_probability",
+        "invalidating_control_probabilities",
+        "evaluator_only_true_probability",
+        "serialized_reference_state_hash",
+        "serialized_baseline_state_hashes",
+        "producer_functions",
+        "input_artifact_hashes",
+        "seed_domain_ids",
+        "seed_token_digests",
+        "code_path_hashes"
+      ],
+      "seed_consumption_report_schema": {
+        "schema_version": "ego.caot_seed_consumption_report.v1",
+        "required_fields": [
+          "schema_version",
+          "task_id",
+          "run_id",
+          "stage",
+          "required_domain_order",
+          "derive_invocation_count",
+          "record_count",
+          "consumer_lineage_count",
+          "token_records",
+          "validation_result",
+          "producer_function",
+          "code_path_hash"
+        ],
+        "token_records_rule": "every token record contains all /seed_consumption_contract/immutable_token_fields and consumer artifact/path/hash lineage; raw seed_u64 is evaluator-only in this artifact and scanner-prohibited from model packets/state",
+        "validation_result_required": "EXACT_ONE_TO_ONE_DERIVE_RECORD_CONSUMER_LINEAGE"
+      },
+      "calibration_task_differences_required_fields": [
+        "task_id",
+        "episode_id",
+        "task_ordinal",
+        "context_ids",
+        "checkpoint_ids",
+        "forward_control_order",
+        "adaptation_control_order",
+        "forward_reference_loss",
+        "forward_invalidating_control_losses",
+        "forward_task_difference_by_control",
+        "adaptation_reference_losses_by_checkpoint",
+        "adaptation_invalidating_control_losses_by_checkpoint",
+        "adaptation_invalidating_control_AULC_by_control",
+        "adaptation_reference_AULC",
+        "adaptation_task_difference_by_control",
+        "producer_function",
+        "input_artifact_hashes",
+        "seed_domain_ids",
+        "code_path_hash"
+      ],
+      "variance_report_schema": {
+        "schema_version": "ego.caot_numeric_variance_report.v1",
+        "required_fields": [
+          "schema_version",
+          "task_id",
+          "run_id",
+          "comparison_order",
+          "task_ids",
+          "episode_ids",
+          "context_ids",
+          "checkpoint_ids",
+          "aggregation_rule",
+          "forward_task_difference_variance_by_control",
+          "adaptation_task_difference_variance_by_control",
+          "producer_function",
+          "input_artifact_paths",
+          "input_artifact_hashes",
+          "code_path_hash"
+        ],
+        "input_rule": "task/control arrays and IDs are canonical-value byte-equal to calibration_task_differences.json; no mean gap or selection field is allowed"
+      },
+      "sample_size_selection_schema": {
+        "schema_version": "ego.caot_sample_size_selection.v1",
+        "required_fields": [
+          "schema_version",
+          "task_id",
+          "run_id",
+          "comparison_order",
+          "comparison_count",
+          "per_comparison_alpha",
+          "per_comparison_beta",
+          "forward_required_n_by_control",
+          "adaptation_required_n_by_control",
+          "forward_required_n",
+          "adaptation_required_n",
+          "joint_required_n",
+          "selected_heldout_eval_task_count",
+          "selection_rule",
+          "decision",
+          "authority_status",
+          "producer_function",
+          "variance_report_path",
+          "variance_report_sha256",
+          "code_path_hash"
+        ],
+        "input_rule": "comparison order and every variance input are canonical-value byte-equal to variance_report.json; this artifact may calculate N/decision only and may not copy or calculate task metrics",
+        "authority_status_rule": "exact PROVISIONAL_NON_AUTHORITATIVE_UNTIL_ADDITIVE_RECORD_COMMITTED; the selection artifact alone never overlays the prereg or authorizes headroom execution"
+      },
+      "numeric_freeze_provenance_schema": {
+        "schema_version": "ego.caot_numeric_freeze_provenance.v1",
+        "required_fields": [
+          "schema_version",
+          "task_id",
+          "run_id",
+          "record_writer_producer_function",
+          "record_writer_producer_script",
+          "base_prereg_commit",
+          "base_contract_blob",
+          "base_contract_sha256",
+          "seed_domain_ids",
+          "task_ids",
+          "context_ids",
+          "episode_ids",
+          "checkpoint_ids",
+          "aggregation_rule",
+          "comparison_order",
+          "comparison_count",
+          "per_comparison_alpha",
+          "per_comparison_beta",
+          "strict_chain_invocations",
+          "strict_chain_artifact_paths",
+          "strict_chain_artifact_hashes",
+          "all_callable_code_path_hash"
+        ],
+        "byte_source_rule": "IDs, ordering, aggregation and comparison constants are copied canonical-value byte-equal from their owned artifacts/base contract; strict-chain entries contain actual callable lineage and hashes"
+      },
+      "artifact_hash_manifest_schema": {
+        "schema_version": "ego.caot_artifact_hash_manifest.v1",
+        "required_fields": [
+          "schema_version",
+          "task_id",
+          "run_id",
+          "input_artifact_paths",
+          "input_artifact_hashes",
+          "producer_function",
+          "code_path_hash"
+        ],
+        "path_rule": "input_artifact_paths exact-equals /numeric_freeze/evidence_artifact_contract/required_record_input_artifact_paths; hashes are SHA-256 over exact bytes after all listed artifacts are closed and before the additive record is written"
+      },
+      "calibration_task_difference_count": 128,
+      "missing_or_duplicate_task_record_status": "NUMERIC_FREEZE_INSTRUMENT_INVALID",
+      "anonymous_prediction_input_allowed": false,
+      "artifact_without_exact_owner_status": "NUMERIC_FREEZE_INSTRUMENT_INVALID",
+      "chain_external_artifact_write_status": "NUMERIC_FREEZE_INSTRUMENT_INVALID",
+      "failure_manifest_required_on_any_failure": true,
+      "artifact_overwrite_forbidden": true
+    },
+    "additive_record_contract": {
+      "task_id": "EGO-LEARNED-OUTCOME-KERNEL-COMPOSITIONAL-TRANSFER-NUMERIC-FREEZE-001A",
+      "path": "docs/codex/tasks/ego-learned-outcome-kernel-compositional-transfer-preflight-001a/NUMERIC_FREEZE_RECORD.json",
+      "schema_version": "ego.caot_numeric_freeze.v1",
+      "required_fields": [
+        "schema_version",
+        "task_id",
+        "producer_function",
+        "producer_script",
+        "base_prereg_commit",
+        "base_contract_blob",
+        "base_contract_sha256",
+        "input_artifact_paths",
+        "input_artifact_hashes",
+        "artifact_hash_manifest_path",
+        "artifact_hash_manifest_sha256",
+        "run_id",
+        "seed_domain_ids",
+        "task_ids",
+        "context_ids",
+        "episode_ids",
+        "checkpoint_ids",
+        "aggregation_rule",
+        "comparison_order",
+        "comparison_count",
+        "per_comparison_alpha",
+        "per_comparison_beta",
+        "forward_task_difference_variance_by_control",
+        "adaptation_task_difference_variance_by_control",
+        "forward_required_n_by_control",
+        "adaptation_required_n_by_control",
+        "forward_required_n",
+        "adaptation_required_n",
+        "joint_required_n",
+        "selected_heldout_eval_task_count",
+        "selection_rule",
+        "decision",
+        "code_path_hash"
+      ],
+      "field_contracts": {
+        "schema_version": "exact string ego.caot_numeric_freeze.v1",
+        "task_id": "exact string EGO-LEARNED-OUTCOME-KERNEL-COMPOSITIONAL-TRANSFER-NUMERIC-FREEZE-001A",
+        "producer_function": "non-empty callable identifier",
+        "producer_script": "repo-relative path under the separately authorized numeric-freeze scope",
+        "base_prereg_commit": "40-character lowercase Git commit hex",
+        "base_contract_blob": "40-character lowercase Git blob hex",
+        "base_contract_sha256": "64-character lowercase SHA-256 hex",
+        "input_artifact_paths": "exact array equal to /numeric_freeze/evidence_artifact_contract/required_record_input_artifact_paths in frozen order",
+        "input_artifact_hashes": "object with exactly one lowercase SHA-256 hex for every required_record_input_artifact_path and no extra key",
+        "artifact_hash_manifest_path": "exact path artifacts/ego_learned_outcome_kernel_caot_numeric_freeze_001a/artifact_hash_manifest.json",
+        "artifact_hash_manifest_sha256": "64-character lowercase SHA-256 over exact closed manifest bytes",
+        "run_id": "non-empty unique string",
+        "seed_domain_ids": "array exactly equal to /seed_domains/numeric_freeze_required_domains in frozen order; future_headroom_reserved_domains are forbidden",
+        "task_ids": "array of exactly 128 unique evaluator-only numeric-calibration task IDs in ascending ordinal order, byte-equal to the calibration_task_differences artifact",
+        "context_ids": "exact array [context_0,context_1,context_2,context_3]",
+        "episode_ids": "array of exactly 128 unique numeric-calibration episode IDs in the same task order, byte-equal to the calibration episode manifest and task-differences artifact",
+        "checkpoint_ids": "exact integer array [0,2,4,8,16]",
+        "aggregation_rule": "exact string: per task and per fixed invalidating control compute that control loss minus reference loss, using checkpoint-zero loss for forward and normalized AULC for adaptation; for each of the 19 axis/control pairs use unbiased sample variance across 128 differences with denominator 127; apply the frozen Bonferroni and union-bound NormalDist formula to every pair; take the maximum per control within each axis, then the maximum across axes; select the smallest sufficient frozen grid value; never use a per-task minimum or observed mean gap",
+        "comparison_order": "exact ordered array of strings forward_transfer:<control_id> for /axes/forward_transfer/invalidating_control_envelope followed by within_task_adaptation:<control_id> for /axes/within_task_adaptation/invalidating_control_envelope",
+        "comparison_count": "exact integer 19",
+        "per_comparison_alpha": "exact finite number 0.05/19",
+        "per_comparison_beta": "exact finite number 0.10/19",
+        "forward_task_difference_variance_by_control": "object whose keys exactly equal /axes/forward_transfer/invalidating_control_envelope and whose values are finite numbers greater than or equal to zero",
+        "adaptation_task_difference_variance_by_control": "object whose keys exactly equal /axes/within_task_adaptation/invalidating_control_envelope and whose values are finite numbers greater than or equal to zero",
+        "forward_required_n_by_control": "object with the same exact forward control keys and nonnegative integer values computed by the frozen formula",
+        "adaptation_required_n_by_control": "object with the same exact adaptation control keys and nonnegative integer values computed by the frozen formula",
+        "forward_required_n": "integer equal to max(forward_required_n_by_control.values())",
+        "adaptation_required_n": "integer equal to max(adaptation_required_n_by_control.values())",
+        "joint_required_n": "integer equal to max(forward_required_n, adaptation_required_n)",
+        "selected_heldout_eval_task_count": "integer in [64,128,256,512] iff decision=SAMPLE_SIZE_FROZEN; exact string NOT_SELECTED_UNDERPOWERED iff decision=INCONCLUSIVE_UNDERPOWERED_CLOSE_CAOT",
+        "selection_rule": "exact byte-equal copy of /numeric_freeze/variance_only_calibration_algorithm/selection_rule",
+        "decision": "one exact allowed_decisions value",
+        "code_path_hash": "64-character lowercase SHA-256 over all callable producer source bytes"
+      },
+      "record_field_source_map": {
+        "schema_version": "PREFLIGHT_CONTRACT.json#/numeric_freeze/additive_record_contract/schema_version",
+        "task_id": "PREFLIGHT_CONTRACT.json#/numeric_freeze/additive_record_contract/task_id",
+        "producer_function": "numeric_freeze_provenance.json#/record_writer_producer_function",
+        "producer_script": "numeric_freeze_provenance.json#/record_writer_producer_script",
+        "base_prereg_commit": "numeric_freeze_provenance.json#/base_prereg_commit",
+        "base_contract_blob": "numeric_freeze_provenance.json#/base_contract_blob",
+        "base_contract_sha256": "numeric_freeze_provenance.json#/base_contract_sha256",
+        "input_artifact_paths": "artifact_hash_manifest.json#/input_artifact_paths",
+        "input_artifact_hashes": "artifact_hash_manifest.json#/input_artifact_hashes",
+        "artifact_hash_manifest_path": "PREFLIGHT_CONTRACT.json#/numeric_freeze/evidence_artifact_contract/artifact_hash_manifest_path",
+        "artifact_hash_manifest_sha256": "WRITER_COMPUTED_SHA256_OF_EXACT_CLOSED_artifact_hash_manifest.json_BYTES",
+        "run_id": "numeric_freeze_provenance.json#/run_id",
+        "seed_domain_ids": "numeric_freeze_provenance.json#/seed_domain_ids",
+        "task_ids": "numeric_freeze_provenance.json#/task_ids",
+        "context_ids": "numeric_freeze_provenance.json#/context_ids",
+        "episode_ids": "numeric_freeze_provenance.json#/episode_ids",
+        "checkpoint_ids": "numeric_freeze_provenance.json#/checkpoint_ids",
+        "aggregation_rule": "numeric_freeze_provenance.json#/aggregation_rule",
+        "comparison_order": "numeric_freeze_provenance.json#/comparison_order",
+        "comparison_count": "numeric_freeze_provenance.json#/comparison_count",
+        "per_comparison_alpha": "numeric_freeze_provenance.json#/per_comparison_alpha",
+        "per_comparison_beta": "numeric_freeze_provenance.json#/per_comparison_beta",
+        "forward_task_difference_variance_by_control": "variance_report.json#/forward_task_difference_variance_by_control",
+        "adaptation_task_difference_variance_by_control": "variance_report.json#/adaptation_task_difference_variance_by_control",
+        "forward_required_n_by_control": "sample_size_selection.json#/forward_required_n_by_control",
+        "adaptation_required_n_by_control": "sample_size_selection.json#/adaptation_required_n_by_control",
+        "forward_required_n": "sample_size_selection.json#/forward_required_n",
+        "adaptation_required_n": "sample_size_selection.json#/adaptation_required_n",
+        "joint_required_n": "sample_size_selection.json#/joint_required_n",
+        "selected_heldout_eval_task_count": "sample_size_selection.json#/selected_heldout_eval_task_count",
+        "selection_rule": "sample_size_selection.json#/selection_rule",
+        "decision": "sample_size_selection.json#/decision",
+        "code_path_hash": "numeric_freeze_provenance.json#/all_callable_code_path_hash"
+      },
+      "record_copy_rule": "for every ordinary mapped field, canonical JSON value bytes using sort_keys=true, separators=(',',':'), ensure_ascii=false must be byte-identical to the source pointer; the only writer computation allowed is SHA-256 of the closed artifact_hash_manifest.json bytes",
+      "unmapped_or_multiply_mapped_record_field_status": "NUMERIC_FREEZE_INSTRUMENT_INVALID",
+      "allowed_decisions": [
+        "SAMPLE_SIZE_FROZEN",
+        "INCONCLUSIVE_UNDERPOWERED_CLOSE_CAOT"
+      ],
+      "base_contract_immutable": true,
+      "only_authority_boundary": "a valid committed NUMERIC_FREEZE_RECORD.json whose full source map and hashes pass; no intermediate artifact has overlay or execution authority",
+      "only_overlay_target": "/task_partitions/heldout_eval_task_count",
+      "overlay_precedence": "base contract supplies every field except the single allowed target; the record supplies selected_heldout_eval_task_count only after all source pins and fixed values byte-match",
+      "loader_requirement": "future contract loader must require both immutable base contract and additive numeric record and reject any extra override"
+    },
+    "forbidden_selection_inputs": [
+      "observed reference-control mean gap",
+      "heldout evaluation data",
+      "candidate scores",
+      "best checkpoint",
+      "post-calibration threshold change",
+      "post-calibration resource-grid change"
+    ],
+    "heldout_eval_access": false,
+    "candidate_access": false,
+    "required_output": "one immutable computed evidence bundle under the frozen artifact root plus one additive source-pinned variance/sample-size record at the frozen docs path and schema",
+    "underpowered_status": "INCONCLUSIVE_UNDERPOWERED",
+    "repair_or_threshold_tuning_after_result": false
+  },
+  "interventions": [
+    {
+      "id": "delete_source_trained_global_state",
+      "axis": "forward_transfer",
+      "callable": "interventions.delete_source_trained_global_state",
+      "owner_module_path": "scripts/ego_learned_outcome_kernel_caot_preflight_001a/interventions.py",
+      "state_or_input_mutation": "construct a copy of the serialized feasible-reference state with the fitted global coefficient vector replaced by an equal-length zero vector and all source-fit sufficient-statistic payloads removed; preserve the heldout task, legal packets, query/probe schedules and outcomes byte-identically, then rerun every checkpoint",
+      "consumed_json_pointers": [
+        "/feasible_reference",
+        "/axes/forward_transfer",
+        "/episode_contract",
+        "/information_boundary"
+      ],
+      "rerun_artifact": {
+        "file": "ablation_report.json",
+        "json_pointer": "/interventions/delete_source_trained_global_state"
+      },
+      "expected_direction": "destroy or reduce forward-transfer advantage",
+      "result_status_if_expected_direction_absent": "NO_SOURCE_GLOBAL_STATE_SENSITIVITY",
+      "failure_status": "INSTRUMENT_INVALID_INTERVENTION_DELETE_SOURCE_GLOBAL_STATE",
+      "rerun_required": true
+    },
+    {
+      "id": "freeze_task_local_update",
+      "axis": "within_task_adaptation",
+      "callable": "interventions.freeze_task_local_update",
+      "owner_module_path": "scripts/ego_learned_outcome_kernel_caot_preflight_001a/interventions.py",
+      "state_or_input_mutation": "initialize task-local state exactly as the live reference at checkpoint zero, then replace every later update with identity(state) while preserving the fitted global state, legal feedback packets, query/probe schedules and outcomes",
+      "consumed_json_pointers": [
+        "/feasible_reference",
+        "/axes/within_task_adaptation",
+        "/episode_contract"
+      ],
+      "rerun_artifact": {
+        "file": "ablation_report.json",
+        "json_pointer": "/interventions/freeze_task_local_update"
+      },
+      "expected_direction": "remove adaptation advantage while preserving checkpoint-zero identity",
+      "result_status_if_expected_direction_absent": "NO_TASK_LOCAL_UPDATE_SENSITIVITY",
+      "failure_status": "INSTRUMENT_INVALID_INTERVENTION_FREEZE_TASK_LOCAL_UPDATE",
+      "rerun_required": true
+    },
+    {
+      "id": "shuffle_heldout_feedback",
+      "axis": "within_task_adaptation",
+      "callable": "interventions.shuffle_heldout_feedback",
+      "owner_module_path": "scripts/ego_learned_outcome_kernel_caot_preflight_001a/interventions.py",
+      "state_or_input_mutation": "at every legal history prefix of length at least two, cyclically rotate observed outcomes left by one while holding each context, typed composition, schedule position and checkpoint fixed; for a one-row prefix retain the frozen checkpoint-zero state and record insufficient-shuffle coverage",
+      "consumed_json_pointers": [
+        "/baseline_implementation_contracts/feedback_shuffled",
+        "/episode_contract",
+        "/axes/within_task_adaptation"
+      ],
+      "rerun_artifact": {
+        "file": "ablation_report.json",
+        "json_pointer": "/interventions/shuffle_heldout_feedback"
+      },
+      "expected_direction": "remove legal feedback alignment",
+      "result_status_if_expected_direction_absent": "NO_FEEDBACK_ALIGNMENT_SENSITIVITY",
+      "failure_status": "INSTRUMENT_INVALID_INTERVENTION_SHUFFLE_HELDOUT_FEEDBACK",
+      "rerun_required": true
+    },
+    {
+      "id": "delete_heldout_feedback_history",
+      "axis": "within_task_adaptation",
+      "callable": "interventions.delete_heldout_feedback_history",
+      "owner_module_path": "scripts/ego_learned_outcome_kernel_caot_preflight_001a/interventions.py",
+      "state_or_input_mutation": "replace the legal feedback-history prefix with an empty sequence before each checkpoint prediction and update while preserving the current legal descriptor, fitted source-global state, task schedule and outcomes used only by the evaluator",
+      "consumed_json_pointers": [
+        "/baseline_implementation_contracts/no_feedback_history_deleted",
+        "/episode_contract",
+        "/axes/within_task_adaptation",
+        "/information_boundary"
+      ],
+      "rerun_artifact": {
+        "file": "ablation_report.json",
+        "json_pointer": "/interventions/delete_heldout_feedback_history"
+      },
+      "expected_direction": "collapse adaptation to frozen source model",
+      "result_status_if_expected_direction_absent": "NO_LEGAL_HISTORY_SENSITIVITY",
+      "failure_status": "INSTRUMENT_INVALID_INTERVENTION_DELETE_HELDOUT_HISTORY",
+      "rerun_required": true
+    },
+    {
+      "id": "reset_or_swap_task_local_state",
+      "axis": "within_task_adaptation",
+      "callable": "interventions.reset_or_swap_task_local_state",
+      "owner_module_path": "scripts/ego_learned_outcome_kernel_caot_preflight_001a/interventions.py",
+      "state_or_input_mutation": "for each checkpoint greater than zero pair heldout tasks by adjacent ascending evaluator task ordinal and swap only their serialized task-local residual/update state; keep each task's fitted global state, public descriptors, legal history, schedule and evaluator outcomes in place; odd final task maps to an all-zero local state",
+      "consumed_json_pointers": [
+        "/feasible_reference",
+        "/axes/within_task_adaptation",
+        "/episode_contract",
+        "/replay"
+      ],
+      "rerun_artifact": {
+        "file": "ablation_report.json",
+        "json_pointer": "/interventions/reset_or_swap_task_local_state"
+      },
+      "expected_direction": "degrade task-specific predictions without changing public descriptors",
+      "result_status_if_expected_direction_absent": "NO_TASK_LOCAL_STATE_SPECIFICITY",
+      "failure_status": "INSTRUMENT_INVALID_INTERVENTION_SWAP_TASK_LOCAL_STATE",
+      "rerun_required": true
+    },
+    {
+      "id": "semantics_preserving_descriptor_serialization_permutation",
+      "axis": "integrity",
+      "callable": "interventions.permute_descriptor_serialization",
+      "owner_module_path": "scripts/ego_learned_outcome_kernel_caot_preflight_001a/interventions.py",
+      "state_or_input_mutation": "round-trip every legal packet through a reverse-lexicographic JSON object-key insertion order with different whitespace while preserving role labels, primitive tokens, context tokens, list element order and scalar values; canonicalize before prediction",
+      "consumed_json_pointers": [
+        "/surface/typed_composition",
+        "/information_boundary",
+        "/replay"
+      ],
+      "rerun_artifact": {
+        "file": "ablation_report.json",
+        "json_pointer": "/interventions/semantics_preserving_descriptor_serialization_permutation"
+      },
+      "expected_direction": "prediction keyed by canonical semantics remains invariant",
+      "result_status_if_expected_direction_absent": "INSTRUMENT_INVALID_INTERVENTION_DESCRIPTOR_SERIALIZATION",
+      "failure_status": "INSTRUMENT_INVALID_INTERVENTION_DESCRIPTOR_SERIALIZATION",
+      "rerun_required": true
+    },
+    {
+      "id": "predictor_bypass_neutral_scorer",
+      "axis": "ranking_diagnostic",
+      "callable": "interventions.bypass_predictor_with_neutral_scores",
+      "owner_module_path": "scripts/ego_learned_outcome_kernel_caot_preflight_001a/interventions.py",
+      "state_or_input_mutation": "replace the predictor probability vector presented to the single diagnostic ranker with an equal-length vector of 0.5 values, retain the same action list and deterministic canonical tie-break, and rerun only the diagnostic ranking calculation",
+      "consumed_json_pointers": [
+        "/axes/diagnostic_ranking",
+        "/diagnostic_ideal",
+        "/information_boundary"
+      ],
+      "rerun_artifact": {
+        "file": "ablation_report.json",
+        "json_pointer": "/interventions/predictor_bypass_neutral_scorer"
+      },
+      "expected_direction": "remove any later predictor-dependent ranking advantage",
+      "result_status_if_expected_direction_absent": "RANKING_DIAGNOSTIC_NOT_PREDICTOR_DEPENDENT",
+      "failure_status": "INSTRUMENT_INVALID_INTERVENTION_PREDICTOR_BYPASS",
+      "rerun_required": true
+    },
+    {
+      "id": "fresh_process_restart",
+      "axis": "replay",
+      "callable": "replay.recompute_in_fresh_process",
+      "owner_module_path": "scripts/ego_learned_outcome_kernel_caot_preflight_001a/replay.py",
+      "state_or_input_mutation": "launch two fresh interpreter processes, load only the serialized state plus legal replay inputs, recompute pre-update predictions, apply the next legal observation, serialize the post-update state and recompute post-update predictions; do not load stored predictions or actions",
+      "consumed_json_pointers": [
+        "/replay",
+        "/computed_provenance",
+        "/future_artifacts"
+      ],
+      "rerun_artifact": {
+        "file": "ablation_report.json",
+        "json_pointer": "/interventions/fresh_process_restart"
+      },
+      "expected_direction": "recomputed outputs match without stored prediction trust",
+      "result_status_if_expected_direction_absent": "INSTRUMENT_INVALID_INTERVENTION_FRESH_PROCESS_RESTART",
+      "failure_status": "INSTRUMENT_INVALID_INTERVENTION_FRESH_PROCESS_RESTART",
+      "rerun_required": true
+    }
+  ],
+  "intervention_record_contract": {
+    "artifact_file": "ablation_report.json",
+    "required_fields_per_intervention": [
+      "intervention_id",
+      "callable",
+      "owner_module_path",
+      "delegated_by",
+      "actual_callable_lineage",
+      "call_graph_hash",
+      "consumed_json_pointers",
+      "pre_mutation_state_or_input_hashes",
+      "post_mutation_state_or_input_hashes",
+      "mutation_applied",
+      "rerun_episode_ids",
+      "rerun_artifact_paths",
+      "producer_function",
+      "run_id",
+      "seed_domain_ids",
+      "aggregation_rule",
+      "code_path_hash",
+      "observed_direction",
+      "result_status",
+      "failure_status"
+    ],
+    "single_owner_rule": "each intervention ID has exactly one callable and one owner_module_path; no other module may implement or directly apply that mutation/restart",
+    "orchestration_wrapper_rule": "interventions.run_and_record_intervention may validate and dispatch only; it must call the exact declared callable, must not directly mutate state/input or recompute outputs, and must record actual callable lineage plus pre/post hashes byte-identical to the owner callable return",
+    "replay_module_rule": "replay.py may serialize, fresh-process recompute and compare only; it must not delete source state, freeze updates, shuffle/delete feedback, swap local state, permute descriptors or bypass the predictor",
+    "stored_metric_copy_forbidden": true,
+    "real_episode_rerun_required": true,
+    "missing_intervention_record_status": "INSTRUMENT_INVALID_INTERVENTION_PANEL"
+  },
+  "leakage": {
+    "scanner_callable": "leakage.scan_packet_state_trace_and_artifacts",
+    "scan_surfaces": [
+      "field names",
+      "field values",
+      "structural layout and ordering",
+      "typed composition canonicalization",
+      "filenames and artifact paths",
+      "serialized reference/baseline state",
+      "task/split/seed identifiers",
+      "private parameters and probabilities",
+      "train/calibration/query/probe overlap and aliases"
+    ],
+    "positive_controls": [
+      "planted opaque action ID",
+      "planted task and split ID",
+      "planted seed value",
+      "planted realized task residual",
+      "planted true probability and verdict",
+      "planted role-order alias overlap",
+      "planted legal-descriptor alias overlap",
+      "planted serialized private-parameter leak",
+      "planted artifact-path split leak"
+    ],
+    "all_positive_controls_must_fire": true,
+    "branching_on_positive_control_id_forbidden": true,
+    "missed_positive_control_status": "INSTRUMENT_INVALID_LEAKAGE_SCANNER_FALSE_NEGATIVE"
+  },
+  "replay": {
+    "fresh_process_count": 2,
+    "inputs": [
+      "serialized model/reference/baseline state",
+      "serialized optimizer or update state",
+      "serialized RNG state where applicable",
+      "current legal context",
+      "canonical typed legal compositions",
+      "new observed outcome for update replay"
+    ],
+    "recompute": [
+      "pre-update predictions",
+      "post-update state",
+      "post-update predictions",
+      "diagnostic ranking through the same predictor path"
+    ],
+    "stored_prediction_trust": false,
+    "stored_action_trust": false,
+    "hash_only_replay": false,
+    "mutation_implementation_allowed_in_replay_module": false,
+    "counterfactual_execution_owner": "the exact intervention callable and owner_module_path declared in /interventions",
+    "intervention_records_requiring_replay_comparison": [
+      "delete_source_trained_global_state",
+      "reset_or_swap_task_local_state"
+    ],
+    "comparison_rule": "replay.compare_recomputed_outputs may compare owner-callable outputs and serialized hashes but may not recreate or alter the intervention mutation",
+    "mismatch_status": "INSTRUMENT_INVALID_REPLAY_MISMATCH"
+  },
+  "statistics": {
+    "aggregation_unit": "heldout task",
+    "within_task_average": "mean across all unqueried probes and all public contexts",
+    "across_task_aggregation": "unweighted macro mean",
+    "control_envelope": "compute all 19 fixed per-control task-difference means and unbiased variances; each axis effect estimate is the minimum mean in its frozen control set, but admission requires every corresponding lower bound and never selects a control by favorable result",
+    "confidence_and_power": "familywise alpha 0.05 via Bonferroni alpha=0.05/19 over 9 forward plus 10 adaptation comparisons; material null margin is the axis SESOI; sample sizing uses beta=0.10/19 per comparison and a 2*SESOI planning alternative so the union-bound planned joint power is at least 0.9 under the frozen normal approximation",
+    "composite_compensation": false,
+    "best_checkpoint_selection": false,
+    "calibration_tasks_in_final_estimate": false
+  },
+  "computed_provenance": {
+    "required_score_fields": [
+      "producer_function",
+      "producer_script",
+      "input_artifact_paths",
+      "input_artifact_hashes",
+      "run_id",
+      "seed_domain_ids",
+      "task_ids",
+      "context_ids",
+      "episode_ids",
+      "checkpoint_ids",
+      "aggregation_rule",
+      "code_path_hash"
+    ],
+    "literal_score_or_verdict_forbidden": true,
+    "static_clean_report_forbidden": true,
+    "baseline_invocation_records_required": true,
+    "intervention_rerun_records_required": true,
+    "unused_required_input_within_current_authorized_stage_blocks_evidence": true,
+    "future_reserved_input_consumed_early_blocks_evidence": true
+  },
+  "future_module_contracts": [
+    {
+      "path": "scripts/ego_learned_outcome_kernel_caot_preflight_001a/contract.py",
+      "required_symbols": [
+        "load_and_validate_contract",
+        "canonicalize_typed_composition",
+        "validate_legal_packet",
+        "validate_graph_cache_applicability"
+      ],
+      "consumed_json_pointers": [
+        "/source_pins",
+        "/prior_negative_evidence",
+        "/graph_cache_applicability",
+        "/surface",
+        "/information_boundary",
+        "/composition_partitions",
+        "/numeric_freeze",
+        "/authorization"
+      ],
+      "failure_status": "INSTRUMENT_INVALID_CONTRACT"
+    },
+    {
+      "path": "scripts/ego_learned_outcome_kernel_caot_preflight_001a/generator.py",
+      "required_symbols": [
+        "generate_surface_instance",
+        "generate_task",
+        "sample_outcome"
+      ],
+      "consumed_json_pointers": [
+        "/surface/feature_maps",
+        "/surface/outcome_law",
+        "/surface/parameter_priors",
+        "/seed_domains"
+      ],
+      "failure_status": "INSTRUMENT_INVALID_GENERATOR",
+      "ownership_rule": "returns generated in-memory records to the authorized orchestrator and never writes a numeric-freeze artifact directly"
+    },
+    {
+      "path": "scripts/ego_learned_outcome_kernel_caot_preflight_001a/seeds.py",
+      "required_symbols": [
+        "derive_domain_seed",
+        "record_seed_consumption",
+        "validate_stage_seed_consumption"
+      ],
+      "consumed_json_pointers": [
+        "/task_id",
+        "/seed_domains",
+        "/seed_consumption_contract",
+        "/numeric_freeze",
+        "/computed_provenance"
+      ],
+      "failure_status": "INSTRUMENT_INVALID_SEED_CONSUMPTION",
+      "ownership_rule": "sole seed-derivation/record/validation owner: derive returns immutable token, record serializes exactly that return once without derivation or mutation, validate proves derive-record-consumer lineage one-to-one; consumers may not derive, rename or reuse a domain"
+    },
+    {
+      "path": "scripts/ego_learned_outcome_kernel_caot_preflight_001a/splits.py",
+      "required_symbols": [
+        "build_composition_partitions",
+        "verify_zero_overlap_and_aliases",
+        "verify_residual_rank_and_span"
+      ],
+      "consumed_json_pointers": [
+        "/composition_partitions",
+        "/task_partitions",
+        "/episode_contract",
+        "/numeric_calibration_episode_contract"
+      ],
+      "failure_status": "INSTRUMENT_INVALID_SPLIT_OR_IDENTIFIABILITY"
+    },
+    {
+      "path": "scripts/ego_learned_outcome_kernel_caot_preflight_001a/reference.py",
+      "required_symbols": [
+        "fit_source_global_model",
+        "initialize_local_residual",
+        "update_local_residual",
+        "predict_probability",
+        "serialize_reference_state"
+      ],
+      "consumed_json_pointers": [
+        "/feasible_reference",
+        "/information_boundary",
+        "/resource_parity",
+        "/numeric_freeze"
+      ],
+      "failure_status": "REFERENCE_INADEQUATE_OR_ILLEGAL",
+      "ownership_rule": "returns fitted state, predictions and serialization records to the authorized orchestrator and never writes surface/source-fit/prediction artifacts directly"
+    },
+    {
+      "path": "scripts/ego_learned_outcome_kernel_caot_preflight_001a/baselines.py",
+      "required_symbols": [
+        "build_independent_baseline_registry",
+        "invoke_baseline",
+        "record_baseline_invocation",
+        "constant_global_mean_predict",
+        "seeded_random_probability_predict",
+        "exact_lookup_predict",
+        "count_table_predict",
+        "graph_lookup_predict",
+        "episodic_traversal_predict",
+        "nearest_neighbor_predict",
+        "from_scratch_residual_predict",
+        "no_source_descriptor_predict",
+        "frozen_source_model_predict",
+        "primitive_additive_predict",
+        "pairwise_factorization_predict",
+        "history_deleted_predict",
+        "feedback_shuffled_predict",
+        "full_history_decoder_predict",
+        "recency_ewma_predict",
+        "per_task_specialist_predict"
+      ],
+      "consumed_json_pointers": [
+        "/baseline_role_matrix",
+        "/baseline_implementation_contracts",
+        "/baseline_dispatch_contract",
+        "/graph_cache_applicability",
+        "/resource_parity",
+        "/axes",
+        "/numeric_freeze"
+      ],
+      "failure_status": "INSTRUMENT_INVALID_BASELINE_PANEL",
+      "ownership_rule": "each baseline callable alone owns its prediction; invoke_baseline is exactly-once immutable dispatch only and record_baseline_invocation is serialization only; both must propagate owner values/hashes/lineage byte-identically, while prepare_numeric_freeze_inputs is the sole artifact writer"
+    },
+    {
+      "path": "scripts/ego_learned_outcome_kernel_caot_preflight_001a/interventions.py",
+      "required_symbols": [
+        "delete_source_trained_global_state",
+        "freeze_task_local_update",
+        "shuffle_heldout_feedback",
+        "delete_heldout_feedback_history",
+        "reset_or_swap_task_local_state",
+        "permute_descriptor_serialization",
+        "bypass_predictor_with_neutral_scores",
+        "run_and_record_intervention"
+      ],
+      "consumed_json_pointers": [
+        "/interventions",
+        "/intervention_record_contract",
+        "/axes",
+        "/episode_contract",
+        "/replay",
+        "/computed_provenance",
+        "/future_artifacts"
+      ],
+      "failure_status": "INSTRUMENT_INVALID_INTERVENTION_PANEL",
+      "ownership_rule": "owns the seven declared mutation callables; run_and_record_intervention is validation/dispatch only and cannot implement a mutation or recomputation path"
+    },
+    {
+      "path": "scripts/ego_learned_outcome_kernel_caot_preflight_001a/numeric_freeze.py",
+      "required_symbols": [
+        "prepare_numeric_freeze_inputs",
+        "build_numeric_calibration_episodes",
+        "compute_calibration_task_differences",
+        "estimate_task_difference_variances",
+        "select_heldout_task_count",
+        "write_numeric_freeze_provenance",
+        "write_numeric_freeze_artifact_hash_manifest",
+        "write_numeric_freeze_failure_manifest",
+        "write_numeric_freeze_record"
+      ],
+      "consumed_json_pointers": [
+        "/composition_partitions",
+        "/task_partitions",
+        "/numeric_calibration_episode_contract",
+        "/feasible_reference",
+        "/baseline_role_matrix",
+        "/baseline_implementation_contracts",
+        "/axes",
+        "/canonical_metric_core",
+        "/numeric_freeze",
+        "/seed_domains",
+        "/computed_provenance"
+      ],
+      "failure_status": "NUMERIC_FREEZE_INSTRUMENT_INVALID",
+      "ownership_rule": "owns one preparation orchestrator, episode assembly, metric-core adapter, variance estimation, sample-size selection, provenance/claim writer, closed-artifact hash-manifest writer, failure writer and record writer as non-overlapping stages; every success artifact has one exact owner and it may not implement Brier/AULC/task-difference formulas owned by metrics.py"
+    },
+    {
+      "path": "scripts/ego_learned_outcome_kernel_caot_preflight_001a/metrics.py",
+      "required_symbols": [
+        "compute_task_brier_loss",
+        "compute_normalized_task_aulc",
+        "compute_per_control_task_differences",
+        "compute_forward_transfer_axis",
+        "compute_adaptation_axis",
+        "compute_full_history_attribution",
+        "aggregate_task_cluster_statistics"
+      ],
+      "consumed_json_pointers": [
+        "/axes",
+        "/canonical_metric_core",
+        "/statistics",
+        "/numeric_freeze",
+        "/verdict_priority"
+      ],
+      "failure_status": "INSTRUMENT_INVALID_METRICS_OR_POWER"
+    },
+    {
+      "path": "scripts/ego_learned_outcome_kernel_caot_preflight_001a/leakage.py",
+      "required_symbols": [
+        "scan_packet_state_trace_and_artifacts",
+        "inject_positive_control",
+        "verify_all_positive_controls_fired"
+      ],
+      "consumed_json_pointers": [
+        "/information_boundary",
+        "/composition_partitions",
+        "/leakage"
+      ],
+      "failure_status": "INSTRUMENT_INVALID_LEAKAGE"
+    },
+    {
+      "path": "scripts/ego_learned_outcome_kernel_caot_preflight_001a/replay.py",
+      "required_symbols": [
+        "serialize_replay_state",
+        "recompute_in_fresh_process",
+        "compare_recomputed_outputs"
+      ],
+      "consumed_json_pointers": [
+        "/replay",
+        "/interventions",
+        "/computed_provenance"
+      ],
+      "failure_status": "INSTRUMENT_INVALID_REPLAY",
+      "ownership_rule": "owns serialization, fresh-process recomputation and comparison only; no counterfactual mutation implementation is permitted"
+    },
+    {
+      "path": "scripts/ego_learned_outcome_kernel_caot_preflight_001a/trace.py",
+      "required_symbols": [
+        "build_trace_record",
+        "validate_trace_record",
+        "write_trace_jsonl"
+      ],
+      "consumed_json_pointers": [
+        "/episode_contract",
+        "/information_boundary",
+        "/computed_provenance",
+        "/future_artifacts"
+      ],
+      "failure_status": "INSTRUMENT_INVALID_TRACE"
+    },
+    {
+      "path": "scripts/ego_learned_outcome_kernel_caot_preflight_001a/producer.py",
+      "required_symbols": [
+        "run_candidate_independent_headroom_screen",
+        "write_artifacts_atomically",
+        "derive_verdict_from_computed_reports"
+      ],
+      "consumed_json_pointers": [
+        "/authorization",
+        "/numeric_freeze",
+        "/future_artifacts",
+        "/verdict_priority",
+        "/computed_provenance",
+        "/canonical_metric_core",
+        "/interventions",
+        "/intervention_record_contract",
+        "/anti_zeno",
+        "/future_executable_stop_conditions",
+        "/claim_ceiling"
+      ],
+      "failure_status": "INSTRUMENT_INVALID_PRODUCER"
+    }
+  ],
+  "future_required_tests": [
+    {
+      "test_id": "CAOT-P0A-TEST-01",
+      "assertion": "contract schema, authorization and numeric-freeze boundary reject drift",
+      "owned_callable": "contract.load_and_validate_contract",
+      "expected_failure_status": "INSTRUMENT_INVALID_CONTRACT"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-02",
+      "assertion": "private evaluator fields and opaque action IDs are rejected from legal packets",
+      "owned_callable": "contract.validate_legal_packet",
+      "expected_failure_status": "INSTRUMENT_INVALID_CONTRACT"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-03",
+      "assertion": "composition partitions have exact counts 32,16,8,8 and zero full canonical overlap",
+      "owned_callable": "splits.build_composition_partitions",
+      "expected_failure_status": "INSTRUMENT_INVALID_SPLIT_OR_IDENTIFIABILITY"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-04",
+      "assertion": "role-order and descriptor-alias planted overlap is detected",
+      "owned_callable": "splits.verify_zero_overlap_and_aliases",
+      "expected_failure_status": "INSTRUMENT_INVALID_SPLIT_OR_IDENTIFIABILITY"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-05",
+      "assertion": "adaptation-query and probe psi matrices each have rank four and probe span is within query span",
+      "owned_callable": "splits.verify_residual_rank_and_span",
+      "expected_failure_status": "INSTRUMENT_INVALID_SPLIT_OR_IDENTIFIABILITY"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-06",
+      "assertion": "all seed domains are disjoint and evaluator-only; validate_stage_seed_consumption proves every numeric-freeze derive invocation has exactly one byte-identical record and matching consumer token hash with no extra/missing/orphan token, while every future-headroom reserved domain remains unconsumed until its separately authorized stage",
+      "owned_callable": "seeds.validate_stage_seed_consumption",
+      "expected_failure_status": "INSTRUMENT_INVALID_SEED_CONSUMPTION"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-07",
+      "assertion": "generator is deterministic under identical evaluator state and changes under domain-separated seeds",
+      "owned_callable": "generator.generate_task",
+      "expected_failure_status": "INSTRUMENT_INVALID_GENERATOR"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-08",
+      "assertion": "true probability, realized parameters and probe membership never enter model packets or serialized model state",
+      "owned_callable": "leakage.scan_packet_state_trace_and_artifacts",
+      "expected_failure_status": "INSTRUMENT_INVALID_LEAKAGE"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-09",
+      "assertion": "feasible reference performs a real legal source fit and records parameter lineage",
+      "owned_callable": "reference.fit_source_global_model",
+      "expected_failure_status": "REFERENCE_INADEQUATE_OR_ILLEGAL"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-10",
+      "assertion": "live and frozen feasible references are byte and score identical at checkpoint zero",
+      "owned_callable": "reference.initialize_local_residual",
+      "expected_failure_status": "REFERENCE_INADEQUATE_OR_ILLEGAL"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-11",
+      "assertion": "every non-deferred baseline ID invokes its exact independent registered callable with an invocation record; future_candidate_own_batch_offline_rule is explicitly excluded while candidate_present=false and remains forbidden to fabricate",
+      "owned_callable": "baselines.build_independent_baseline_registry",
+      "expected_failure_status": "INSTRUMENT_INVALID_BASELINE_PANEL"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-12",
+      "assertion": "record_baseline_invocation serializes the exact dispatcher-returned prediction/state hashes/callable lineage and data/feedback/query/update/hyperparameter/compute/memory parity fields byte-identically, and cannot compute, clamp, normalize or replace any value",
+      "owned_callable": "baselines.record_baseline_invocation",
+      "expected_failure_status": "INSTRUMENT_INVALID_BASELINE_PANEL"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-13",
+      "assertion": "forward-transfer control envelope excludes source-trained capability rivals and uses no best-checkpoint selection",
+      "owned_callable": "metrics.compute_forward_transfer_axis",
+      "expected_failure_status": "INSTRUMENT_INVALID_METRICS_OR_POWER"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-14",
+      "assertion": "adaptation control envelope uses frozen, no-feedback and shuffled controls with checkpoint-zero identity",
+      "owned_callable": "metrics.compute_adaptation_axis",
+      "expected_failure_status": "INSTRUMENT_INVALID_METRICS_OR_POWER"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-15",
+      "assertion": "powered full-history equivalence produces attribution downgrade rather than automatic surface rejection",
+      "owned_callable": "metrics.compute_full_history_attribution",
+      "expected_mechanism_attribution_status": "MUTABLE_UPDATE_NOT_REQUIRED"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-16",
+      "assertion": "every leakage positive control fires without control-ID branching",
+      "owned_callable": "leakage.verify_all_positive_controls_fired",
+      "expected_failure_status": "INSTRUMENT_INVALID_LEAKAGE"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-19",
+      "assertion": "unused frozen input, seed, checkpoint or comparator blocks evidence",
+      "owned_callable": "producer.derive_verdict_from_computed_reports",
+      "expected_failure_status": "INSTRUMENT_INVALID_PRODUCER"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-20",
+      "assertion": "literal scores, unconditional verdicts and static clean reports are rejected",
+      "owned_callable": "producer.derive_verdict_from_computed_reports",
+      "expected_failure_status": "INSTRUMENT_INVALID_PRODUCER"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-21",
+      "intervention_id": "delete_source_trained_global_state",
+      "assertion": "delete_source_trained_global_state performs the exact zero-global-state/source-lineage deletion mutation, reruns the forward axis and writes its exact ablation_report pointer",
+      "owned_callable": "interventions.delete_source_trained_global_state",
+      "expected_failure_status": "INSTRUMENT_INVALID_INTERVENTION_DELETE_SOURCE_GLOBAL_STATE"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-22",
+      "intervention_id": "freeze_task_local_update",
+      "assertion": "freeze_task_local_update preserves checkpoint-zero identity, blocks every later update, reruns adaptation and writes its exact ablation_report pointer",
+      "owned_callable": "interventions.freeze_task_local_update",
+      "expected_failure_status": "INSTRUMENT_INVALID_INTERVENTION_FREEZE_TASK_LOCAL_UPDATE"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-23",
+      "intervention_id": "shuffle_heldout_feedback",
+      "assertion": "shuffle_heldout_feedback applies the frozen deterministic prefix rotation without schedule mutation, reruns adaptation and writes its exact ablation_report pointer",
+      "owned_callable": "interventions.shuffle_heldout_feedback",
+      "expected_failure_status": "INSTRUMENT_INVALID_INTERVENTION_SHUFFLE_HELDOUT_FEEDBACK"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-24",
+      "intervention_id": "delete_heldout_feedback_history",
+      "assertion": "delete_heldout_feedback_history empties only the legal history channel at every checkpoint, reruns adaptation and writes its exact ablation_report pointer",
+      "owned_callable": "interventions.delete_heldout_feedback_history",
+      "expected_failure_status": "INSTRUMENT_INVALID_INTERVENTION_DELETE_HELDOUT_HISTORY"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-25",
+      "intervention_id": "reset_or_swap_task_local_state",
+      "assertion": "reset_or_swap_task_local_state uses the frozen adjacent-task pairing without changing public descriptors, reruns adaptation and writes its exact ablation_report pointer",
+      "owned_callable": "interventions.reset_or_swap_task_local_state",
+      "expected_failure_status": "INSTRUMENT_INVALID_INTERVENTION_SWAP_TASK_LOCAL_STATE"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-26",
+      "intervention_id": "semantics_preserving_descriptor_serialization_permutation",
+      "assertion": "semantics-preserving descriptor serialization permutation changes bytes but not canonical semantics or recomputed probabilities and writes its exact ablation_report pointer",
+      "owned_callable": "interventions.permute_descriptor_serialization",
+      "expected_failure_status": "INSTRUMENT_INVALID_INTERVENTION_DESCRIPTOR_SERIALIZATION"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-27",
+      "intervention_id": "predictor_bypass_neutral_scorer",
+      "assertion": "predictor bypass feeds an all-0.5 vector through the single diagnostic ranker and writes its exact ablation_report pointer without affecting primary admission axes",
+      "owned_callable": "interventions.bypass_predictor_with_neutral_scores",
+      "expected_failure_status": "INSTRUMENT_INVALID_INTERVENTION_PREDICTOR_BYPASS"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-28",
+      "assertion": "fresh_process_restart is owned only by replay.recompute_in_fresh_process, launches two fresh processes, recomputes pre-update predictions/update state/post-update predictions without stored-output trust, and returns its exact hashes to the non-mutating intervention dispatcher for the exact ablation_report pointer",
+      "intervention_id": "fresh_process_restart",
+      "owned_callable": "replay.recompute_in_fresh_process",
+      "expected_failure_status": "INSTRUMENT_INVALID_INTERVENTION_FRESH_PROCESS_RESTART"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-29",
+      "assertion": "non-deferred baseline IDs, baseline implementation contracts and baselines.py callable symbols are exact one-to-one; intervention IDs, exact owner-module callables, rerun pointers, failure statuses and dedicated tests are exact one-to-one; replay and intervention modules have no duplicate mutation/recompute owner and any dispatcher is validation-only",
+      "owned_callable": "contract.load_and_validate_contract",
+      "expected_failure_status": "INSTRUMENT_INVALID_CONTRACT"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-30",
+      "baseline_id": "constant_global_mean",
+      "assertion": "uses only legal source outcomes, computes the exact Beta(1,1)-smoothed global mean, never updates from heldout feedback and emits its own invocation lineage",
+      "owned_callable": "baselines.constant_global_mean_predict",
+      "expected_failure_status": "INSTRUMENT_INVALID_BASELINE_PANEL"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-31",
+      "baseline_id": "exact_canonical_composition_lookup",
+      "assertion": "uses exact (public_context_token, canonical_typed_composition) keys, Beta(1,1) smoothing, legal heldout exact-key updates and the frozen public-context fallback",
+      "owned_callable": "baselines.exact_lookup_predict",
+      "expected_failure_status": "INSTRUMENT_INVALID_BASELINE_PANEL"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-32",
+      "baseline_id": "count_table",
+      "assertion": "uses exact (public_context_token, psi_task_local tuple) keys, Beta(1,1) smoothing, matching legal heldout updates and the frozen global-source fallback",
+      "owned_callable": "baselines.count_table_predict",
+      "expected_failure_status": "INSTRUMENT_INVALID_BASELINE_PANEL"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-33",
+      "baseline_id": "nearest_neighbor_descriptor",
+      "assertion": "uses the frozen descriptor feature, unweighted Hamming distance, k=5 uniform estimate, legal heldout pool updates and exact deterministic tie-break",
+      "owned_callable": "baselines.nearest_neighbor_predict",
+      "expected_failure_status": "INSTRUMENT_INVALID_BASELINE_PANEL"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-34",
+      "baseline_id": "no_meta_from_scratch_residual",
+      "assertion": "uses zero global logit, no source data, checkpoint-zero probability 0.5 and the same four-dimensional bounded local MAP/Newton update budget",
+      "owned_callable": "baselines.from_scratch_residual_predict",
+      "expected_failure_status": "INSTRUMENT_INVALID_BASELINE_PANEL"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-35",
+      "baseline_id": "no_source_current_packet_descriptor_model",
+      "assertion": "returns exact probability 0.5 from a fixed zero logit and consumes neither source data nor heldout feedback",
+      "owned_callable": "baselines.no_source_descriptor_predict",
+      "expected_failure_status": "INSTRUMENT_INVALID_BASELINE_PANEL"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-36",
+      "baseline_id": "source_trained_current_packet_static",
+      "assertion": "uses the exact frozen fitted global component, exact zero task-local residual and no heldout update at every checkpoint",
+      "owned_callable": "baselines.frozen_source_model_predict",
+      "expected_failure_status": "INSTRUMENT_INVALID_BASELINE_PANEL"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-37",
+      "baseline_id": "source_trained_primitive_additive_only",
+      "assertion": "fits only intercept/context/role-primitive/context-by-role-primitive blocks with L2=1.0, removes all pairwise interactions and performs no heldout update",
+      "owned_callable": "baselines.primitive_additive_predict",
+      "expected_failure_status": "INSTRUMENT_INVALID_BASELINE_PANEL"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-38",
+      "baseline_id": "source_trained_pairwise_factorization_static",
+      "assertion": "uses the exact frozen pair key, Beta smoothing, probability clamp, one-third centered pair-logit formula, context fallback and no heldout update",
+      "owned_callable": "baselines.pairwise_factorization_predict",
+      "expected_failure_status": "INSTRUMENT_INVALID_BASELINE_PANEL"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-39",
+      "baseline_id": "no_feedback_history_deleted",
+      "assertion": "deletes the full heldout history before every prediction and is byte/score equivalent to the frozen source model at every checkpoint",
+      "owned_callable": "baselines.history_deleted_predict",
+      "expected_failure_status": "INSTRUMENT_INVALID_BASELINE_PANEL"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-40",
+      "baseline_id": "feedback_shuffled",
+      "assertion": "uses the exact deterministic left rotation for prefixes of length at least two, frozen-source fallback at length one and no seed-conditioned branch",
+      "owned_callable": "baselines.feedback_shuffled_predict",
+      "expected_failure_status": "INSTRUMENT_INVALID_BASELINE_PANEL"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-41",
+      "baseline_id": "fitted_legal_full_history_decoder",
+      "assertion": "recomputes the exact local MAP optimum from zero at every checkpoint using only complete legal history and frozen global coefficients, with no persistent task-local state",
+      "owned_callable": "baselines.full_history_decoder_predict",
+      "expected_failure_status": "INSTRUMENT_INVALID_BASELINE_PANEL"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-42",
+      "baseline_id": "legal_recency_ewma",
+      "assertion": "uses the exact context-plus-psi key, decay 0.5, frozen-source initialization, matching-key legal outcome updates and frozen-source fallback",
+      "owned_callable": "baselines.recency_ewma_predict",
+      "expected_failure_status": "INSTRUMENT_INVALID_BASELINE_PANEL"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-43",
+      "baseline_id": "per_task_specialist_panel",
+      "assertion": "runs exactly the intercept-only, each single-parity-term and full-four-term legal-history MAP members and reports the frozen per-task lowest-loss breadth rival without invalidating admission",
+      "owned_callable": "baselines.per_task_specialist_predict",
+      "expected_failure_status": "INSTRUMENT_INVALID_BASELINE_PANEL"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-47",
+      "baseline_id": "seeded_random_probability",
+      "assertion": "uses only the exact stage-specific random-control seed domain and frozen SHA256 counter formula, emits one checkpoint-invariant Uniform(0,1) probability per task/context/composition, consumes no source/history/outcome data and never exposes raw seed material in a legal packet or serialized model state",
+      "owned_callable": "baselines.seeded_random_probability_predict",
+      "expected_failure_status": "INSTRUMENT_INVALID_BASELINE_PANEL"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-44",
+      "assertion": "numeric-calibration s=2 query/probe sets are exact disjoint 8/8 partitions, both psi matrices have rank four, probe span is contained in query span, the first four scheduled query rows have rank four and all eight query compositions occur exactly twice",
+      "owned_callable": "numeric_freeze.build_numeric_calibration_episodes",
+      "expected_failure_status": "NUMERIC_FREEZE_INSTRUMENT_INVALID"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-45",
+      "assertion": "numeric freeze computes paired task-difference variance and required_n separately for the exact ordered 19 axis/control comparisons from frozen calibration episodes, uses alpha=0.05/19 and beta=0.10/19 with the 2*SESOI planning alternative, never uses a per-task minimum, calibration mean gap, selected calibration control or heldout data, takes maximum N across all comparisons, then emits only the smallest sufficient grid value or frozen underpowered closure",
+      "owned_callable": "numeric_freeze.select_heldout_task_count",
+      "expected_failure_status": "NUMERIC_FREEZE_INSTRUMENT_INVALID"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-46",
+      "assertion": "run_and_record_intervention spies the exact declared owner and delegates exactly once with byte-identical immutable inputs; the wrapper performs no mutation or recomputation and propagates owner-returned pre/post hashes, callable lineage, call_graph_hash and artifact pointer byte-identically; missing, extra or wrong-owner calls, wrapper-side writes, or any returned-field alteration fail closed",
+      "owned_callable": "interventions.run_and_record_intervention",
+      "expected_failure_status": "INSTRUMENT_INVALID_INTERVENTION_PANEL"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-48",
+      "assertion": "derive_domain_seed is the sole derivation path, reproduces the exact SHA256 formula from the committed prereg pin, returns one immutable structured token with exact digest for every authorized domain/ordinal/caller, rejects relabel/reuse and any consumer-side derivation; future headroom loads pinned numeric-freeze surface/source state and cannot consume shared/source domains again",
+      "owned_callable": "seeds.derive_domain_seed",
+      "expected_failure_status": "INSTRUMENT_INVALID_SEED_CONSUMPTION"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-49",
+      "baseline_id": "graph_lookup",
+      "assertion": "builds only the four public feature-node outcome-count graph, computes four independent Beta(1,1)-smoothed node means and their unweighted mean, applies exact legal heldout updates and never keys on exact composition or private task state",
+      "owned_callable": "baselines.graph_lookup_predict",
+      "expected_failure_status": "INSTRUMENT_INVALID_BASELINE_PANEL"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-50",
+      "baseline_id": "episodic_traversal",
+      "assertion": "builds the frozen legal episode-feature bipartite graph, counts exactly the declared length-3 traversal paths, applies the Beta-smoothed weighted outcome formula, appends only legal heldout episodes and consumes no task/split/seed/private field",
+      "owned_callable": "baselines.episodic_traversal_predict",
+      "expected_failure_status": "INSTRUMENT_INVALID_BASELINE_PANEL"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-51",
+      "assertion": "graph-cache applicability contains the exact six-member frozen order; graph_lookup/count_table/episodic_traversal map one-to-one to implemented baseline callables, transition_table/successor_map/fsm_planner each prove every required field absent, and any later transition/state/planning field invalidates N/A fail-closed",
+      "owned_callable": "contract.validate_graph_cache_applicability",
+      "expected_failure_status": "INSTRUMENT_INVALID_CONTRACT"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-52",
+      "assertion": "compute_normalized_task_aulc alone implements the frozen trapezoidal [0,2,4,8,16] AULC divided by 16, rejects missing/extra/reordered checkpoints and is byte-identical for calibration and heldout adapters",
+      "owned_callable": "metrics.compute_normalized_task_aulc",
+      "expected_failure_status": "INSTRUMENT_INVALID_METRIC_SCHEMA_SPLIT"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-53",
+      "assertion": "compute_per_control_task_differences alone owns Brier/AULC control-minus-reference arithmetic; numeric-freeze and final-producer adapters pass the same serialized fixture and obtain byte-identical records, while any local copied formula or fallback fails closed",
+      "owned_callable": "metrics.compute_per_control_task_differences",
+      "expected_failure_status": "INSTRUMENT_INVALID_METRIC_SCHEMA_SPLIT"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-54",
+      "assertion": "compute_calibration_task_differences consumes only the episode manifest plus hashed predictions, delegates every metric calculation to the exact canonical metric core, emits exactly 128 task records and cannot calculate or copy Brier/AULC locally",
+      "owned_callable": "numeric_freeze.compute_calibration_task_differences",
+      "expected_failure_status": "NUMERIC_FREEZE_INSTRUMENT_INVALID"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-55",
+      "assertion": "estimate_task_difference_variances consumes only calibration_task_differences.json, emits every one of the exact 19 unbiased denominator-127 variances to variance_report.json and cannot select N or read mean gaps",
+      "owned_callable": "numeric_freeze.estimate_task_difference_variances",
+      "expected_failure_status": "NUMERIC_FREEZE_INSTRUMENT_INVALID"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-56",
+      "assertion": "write_numeric_freeze_record reads only the exact base contract, variance/selection/provenance/hash-manifest artifacts, maps every required field through record_field_source_map with canonical-value byte equality, computes only the closed hash-manifest SHA-256, and fails closed on any unmapped/multiply mapped/changed/fabricated metric, provenance, variance, N, decision or hash",
+      "owned_callable": "numeric_freeze.write_numeric_freeze_record",
+      "expected_failure_status": "NUMERIC_FREEZE_INSTRUMENT_INVALID"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-57",
+      "assertion": "compute_task_brier_loss alone computes (predicted_probability-evaluator_true_probability)^2 per prediction and the unweighted mean across the exact 32 probe/context predictions, rejecting missing/duplicate/extra probe rows",
+      "owned_callable": "metrics.compute_task_brier_loss",
+      "expected_failure_status": "INSTRUMENT_INVALID_METRIC_SCHEMA_SPLIT"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-58",
+      "assertion": "aggregate_task_cluster_statistics computes all fixed per-control means, denominator-(N-1) variances, Bonferroni lower bounds and minimum envelope effect through the canonical records only; it cannot select, omit or recompute a control or use compensation",
+      "owned_callable": "metrics.aggregate_task_cluster_statistics",
+      "expected_failure_status": "INSTRUMENT_INVALID_METRIC_SCHEMA_SPLIT"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-59",
+      "assertion": "prepare_numeric_freeze_inputs is the sole prediction/input producer, follows the exact nested seeds/generator/reference/baseline call graph, invokes every comparison baseline through the canonical dispatcher, and owns exactly surface/source-fit/episode/prediction/baseline-invocation artifacts; anonymous predictions, hidden producers or chain-external writes fail closed",
+      "owned_callable": "numeric_freeze.prepare_numeric_freeze_inputs",
+      "expected_failure_status": "NUMERIC_FREEZE_INSTRUMENT_INVALID"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-60",
+      "assertion": "write_numeric_freeze_provenance consumes only completed strict-chain invocation records and exact artifact hashes through selection, writes only provenance plus claim ceiling, and cannot compute or change a prediction, metric, variance, threshold, N or decision",
+      "owned_callable": "numeric_freeze.write_numeric_freeze_provenance",
+      "expected_failure_status": "NUMERIC_FREEZE_INSTRUMENT_INVALID"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-61",
+      "assertion": "write_numeric_freeze_failure_manifest is the sole failure-artifact owner, atomically records completed-step invocations/hashes on any failure, preserves already completed artifacts only as non-authoritative negative/provisional evidence, and prevents NUMERIC_FREEZE_RECORD.json plus any overlay/authorization from being written or applied",
+      "owned_callable": "numeric_freeze.write_numeric_freeze_failure_manifest",
+      "expected_failure_status": "NUMERIC_FREEZE_INSTRUMENT_INVALID"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-62",
+      "assertion": "write_numeric_freeze_artifact_hash_manifest runs only after every required record-input artifact is closed, writes the exact frozen path array and exact-byte SHA-256 map once, rejects missing/extra/mutated artifacts and prevents any listed artifact write after manifest closure",
+      "owned_callable": "numeric_freeze.write_numeric_freeze_artifact_hash_manifest",
+      "expected_failure_status": "NUMERIC_FREEZE_INSTRUMENT_INVALID"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-63",
+      "assertion": "invoke_baseline spies the exact role-matrix owner for every non-deferred baseline ID, delegates exactly once with byte-identical immutable inputs, performs no prediction computation, and propagates owner prediction/state hashes/callable lineage byte-identically into the returned invocation record; missing/extra/wrong-owner calls, input writes, output alteration/discard or deferred dispatch fail closed",
+      "owned_callable": "baselines.invoke_baseline",
+      "expected_failure_status": "INSTRUMENT_INVALID_BASELINE_PANEL"
+    },
+    {
+      "test_id": "CAOT-P0A-TEST-64",
+      "assertion": "record_seed_consumption spies the exact derive return, serializes it exactly once byte-identically without derivation/relabel/replacement, and binds the same token_digest to the actual consumer output lineage; tamper, duplicate, missing, orphan, extra, wrong-caller or consumer-hash mismatch fails closed",
+      "owned_callable": "seeds.record_seed_consumption",
+      "expected_failure_status": "INSTRUMENT_INVALID_SEED_CONSUMPTION"
+    }
+  ],
+  "future_entrypoints": {
+    "runner": "scripts/run_ego_learned_outcome_kernel_caot_preflight_001a.py",
+    "test": "tests/test_ego_learned_outcome_kernel_caot_preflight_001a.py",
+    "artifact_root": "artifacts/ego_learned_outcome_kernel_caot_preflight_001a/",
+    "current_authorization": "ABSENT"
+  },
+  "future_artifacts": [
+    "surface_manifest.json",
+    "run_ledger.json",
+    "split_manifest.json",
+    "reference_report.json",
+    "baseline_comparison.json",
+    "headroom_report.json",
+    "ablation_report.json",
+    "leakage_report.json",
+    "replay_report.json",
+    "trace.jsonl",
+    "failure_manifest.json",
+    "result.json",
+    "claim_ceiling.txt"
+  ],
+  "result_schema": {
+    "surface_verdict_field": "surface_verdict",
+    "mechanism_attribution_field": "mechanism_attribution_status",
+    "intervention_statuses_field": "intervention_statuses",
+    "fields_are_orthogonal": true,
+    "intervention_direction_statuses_cannot_overwrite_surface_verdict": true,
+    "full_history_equivalence_cannot_overwrite_surface_verdict": true,
+    "both_fields_derived_from_callable_reports": true
+  },
+  "verdict_priority": [
+    "INSTRUMENT_INVALID_CONTRACT",
+    "NUMERIC_FREEZE_INSTRUMENT_INVALID",
+    "INSTRUMENT_INVALID_GENERATOR",
+    "INSTRUMENT_INVALID_SEED_CONSUMPTION",
+    "INSTRUMENT_INVALID_SPLIT_OR_IDENTIFIABILITY",
+    "INSTRUMENT_INVALID_INTERVENTION_PANEL",
+    "INSTRUMENT_INVALID_INTERVENTION_DELETE_SOURCE_GLOBAL_STATE",
+    "INSTRUMENT_INVALID_INTERVENTION_FREEZE_TASK_LOCAL_UPDATE",
+    "INSTRUMENT_INVALID_INTERVENTION_SHUFFLE_HELDOUT_FEEDBACK",
+    "INSTRUMENT_INVALID_INTERVENTION_DELETE_HELDOUT_HISTORY",
+    "INSTRUMENT_INVALID_INTERVENTION_SWAP_TASK_LOCAL_STATE",
+    "INSTRUMENT_INVALID_INTERVENTION_DESCRIPTOR_SERIALIZATION",
+    "INSTRUMENT_INVALID_INTERVENTION_PREDICTOR_BYPASS",
+    "INSTRUMENT_INVALID_INTERVENTION_FRESH_PROCESS_RESTART",
+    "INSTRUMENT_INVALID_METRIC_SCHEMA_SPLIT",
+    "INSTRUMENT_INVALID_LEAKAGE",
+    "INSTRUMENT_INVALID_REPLAY",
+    "INSTRUMENT_INVALID_TRACE",
+    "INSTRUMENT_INVALID_BASELINE_PANEL",
+    "INSTRUMENT_INVALID_METRICS_OR_POWER",
+    "INSTRUMENT_INVALID_PRODUCER",
+    "REFERENCE_INADEQUATE_OR_ILLEGAL",
+    "INCONCLUSIVE_UNDERPOWERED",
+    "NO_FORWARD_TRANSFER_HEADROOM",
+    "NO_WITHIN_TASK_ADAPTATION_HEADROOM",
+    "CAOT_V1_SURFACE_ADMISSIBLE_FOR_ONE_CANDIDATE_PREREG_DRAFT_ONLY"
+  ],
+  "mechanism_attribution_status_priority": [
+    "ATTRIBUTION_UNKNOWN",
+    "MUTABLE_UPDATE_NOT_REQUIRED",
+    "MUTABLE_UPDATE_SEPARATES_FROM_FULL_HISTORY_RIVAL"
+  ],
+  "positive_acceptance_rule": {
+    "current_status": "BLOCKED_PENDING_SAMPLE_SIZE_FREEZE",
+    "current_computed_acceptance_evidence_available": false,
+    "rule_semantics": "required future predicates only; required_value literals are schema conditions and are not current results or evidence",
+    "candidate_present_must_equal": false,
+    "candidate_scores_must_equal": [],
+    "future_required_computed_predicates": [
+      {
+        "artifact_pointer": "split_manifest.json#/all_structural_integrity_checks_pass",
+        "required_value": true
+      },
+      {
+        "artifact_pointer": "leakage_report.json#/all_positive_controls_fired",
+        "required_value": true
+      },
+      {
+        "artifact_pointer": "reference_report.json#/legal_and_budget_adequate",
+        "required_value": true
+      },
+      {
+        "artifact_pointer": "headroom_report.json#/forward_transfer/separately_powered_and_passed",
+        "required_value": true
+      },
+      {
+        "artifact_pointer": "headroom_report.json#/within_task_adaptation/separately_powered_and_passed",
+        "required_value": true
+      },
+      {
+        "artifact_pointer": "headroom_report.json#/composite_compensation_used",
+        "required_value": false
+      }
+    ],
+    "mechanism_attribution_status_may_equal": [
+      "ATTRIBUTION_UNKNOWN",
+      "MUTABLE_UPDATE_NOT_REQUIRED",
+      "MUTABLE_UPDATE_SEPARATES_FROM_FULL_HISTORY_RIVAL"
+    ],
+    "mechanism_attribution_does_not_replace_surface_verdict": true,
+    "maximum_future_verdict": "CAOT_V1_SURFACE_ADMISSIBLE_FOR_ONE_CANDIDATE_PREREG_DRAFT_ONLY",
+    "authorizes": "drafting one candidate prereg card only after a separate operator decision"
+  },
+  "anti_zeno": {
+    "prereg_transaction_limit": 1,
+    "numeric_freeze_attempt_limit": 1,
+    "candidate_independent_headroom_instrument_attempt_limit": 1,
+    "custom_verifier_family_allowed": false,
+    "instrument_repair_family_allowed": false,
+    "threshold_tuning_after_result": false,
+    "surface_tuning_after_result": false,
+    "negative_and_invalid_evidence_preserved": true,
+    "close_on_instrument_invalidity": true,
+    "close_on_control_saturation": true,
+    "close_on_no_headroom": true
+  },
+  "future_executable_stop_conditions": [
+    "source or operator-selection drift",
+    "numeric freeze absent when a future executable screen is requested",
+    "candidate or product package present",
+    "old surface or authority inheritance",
+    "private evaluator field enters legal input",
+    "canonical probe overlap or alias",
+    "adaptation-query psi rank below four",
+    "probe psi outside query span",
+    "calibration data enters final scoring",
+    "resource parity violation",
+    "baseline role reassignment",
+    "diagnostic ideal supplies admission",
+    "missed leakage positive control",
+    "stored-output or hash-only replay",
+    "unused stage-required seed/input or early consumption of a future-reserved seed/input",
+    "literal score or unconditional verdict",
+    "underpowered axis",
+    "second numeric-freeze or headroom attempt",
+    "runtime, mainline, UI, LLM, network or science mutation",
+    "push, tag or remote anchor"
+  ],
+  "claim_ceiling": "Docs-only CAOT-v1 P0A surface semantics, identifiability conditions and future evidence contract. No empirical headroom, surface admission, learning, adaptation, mutable-state necessity, mechanism validity, product/runtime/mainline readiness, agency, autonomy, subjectivity or consciousness claim."
+}

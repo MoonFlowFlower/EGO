@@ -21,7 +21,7 @@
 | `supporting_active` | 1 |
 | `parked` | 1 |
 | `closed_evidence` | 20 |
-| `reference_only` | 232 |
+| `reference_only` | 234 |
 
 ## Active Default
 
@@ -175,6 +175,8 @@
 | EGO K0 Reference Kernel 001A | `codex_task` | `k0_developmental_kernel_dual_track` | `docs/codex/tasks/ego-k0-reference-kernel-001a/` | Old science-attribution plan; not executed; BLOCKED_NOT_TESTED; operator closed the old route without science adjudication; independent validator acceptance unavailable; no implementation authority; not the future product route. Current workstream status: `foundation_engineering_accepted_bounded__old_science_route_operator_closed_without_science_adjudication__verifier_family_closed_invalid__independent_acceptance_unavailable__product_science_decoupled__all_authorizations_false__runtime_disabled__non_mainline`. |
 | Ego K0 Verifier Family Downgrade Product Science Decoupling Sync 001A | `codex_task` | n/a | `docs/codex/tasks/ego-k0-verifier-family-downgrade-product-science-decoupling-sync-001a/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Learned Outcome Kernel Capability 001A | `codex_task` | n/a | `docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| Ego Learned Outcome Kernel Capability New Surface Selection 001A | `codex_task` | n/a | `docs/codex/tasks/ego-learned-outcome-kernel-capability-new-surface-selection-001a/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| Ego Learned Outcome Kernel Compositional Transfer Preflight 001A | `codex_task` | n/a | `docs/codex/tasks/ego-learned-outcome-kernel-compositional-transfer-preflight-001a/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Mechanism Rewrite Decision 001A | `codex_task` | n/a | `docs/codex/tasks/ego-mechanism-rewrite-decision-001a/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Outcomepredictor V0 Planner Input | `codex_task` | n/a | `docs/codex/tasks/ego-outcomepredictor-v0-planner-input/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Pet Capability Conformance 001A | `codex_task` | n/a | `docs/codex/tasks/ego-pet-capability-conformance-001a/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
