@@ -1,0 +1,131 @@
+{
+  "schema_version": "ego.caot_numeric_freeze_prereq_closeout.v1",
+  "task_id": "EGO-LEARNED-OUTCOME-KERNEL-COMPOSITIONAL-TRANSFER-NUMERIC-FREEZE-PREREQ-INVALID-CLOSEOUT-001A",
+  "base_prereg": {
+    "commit": "19d9d76bd79b861b57784ea5cdfb75df1e9f00d5",
+    "tree": "41b14beb28de66fcdbabed265fc3251fcb202972",
+    "stage_card_blob": "51df2c010db493978fa210e2b7a2b3508377bc05",
+    "mutation_scope_blob": "8d6d9b64dd4584b838004c403e00ba7baaef3d3e",
+    "contract_blob": "ae3796c2f17462e31ae79fa1969df931a38a3f21",
+    "contract_sha256": "53ac3cc695f28db11b61b464738c031593f7133f4940f77723ddb786c4e2fdb4"
+  },
+  "evidence_type": "OPERATOR_GOVERNANCE_SOURCE_READBACK_NOT_EXPERIMENTAL_EVIDENCE",
+  "numeric_freeze": {
+    "design_authorized": false,
+    "implementation_authorized": false,
+    "execution_authorized": false,
+    "executed": false,
+    "acceptance": "UNAVAILABLE_NOT_EXECUTED",
+    "artifact_root_created": false,
+    "additive_record_created": false,
+    "selected_heldout_eval_task_count": "NOT_COMPUTED"
+  },
+  "blocking_findings": [
+    {
+      "finding_id": "NF-SEM-001-SEED-DERIVATION-AND-CARDINALITY-UNFROZEN",
+      "contract_pointers": [
+        "/seed_domains/derivation",
+        "/seed_domains/numeric_freeze_required_domains",
+        "/seed_consumption_contract/derive_rule"
+      ],
+      "finding": "The committed derivation text does not freeze concatenation encoding or delimiters, ordinal encoding/byte order, or exact per-domain invocation cardinality and ordinal mapping. Per-domain, per-task and per-row mappings can all satisfy the text but induce different dependence and variance.",
+      "outcome_affecting": true
+    },
+    {
+      "finding_id": "NF-SEM-002-RNG-REALIZATION-UNFROZEN",
+      "contract_pointers": [
+        "/surface/parameter_priors",
+        "/surface/outcome_law",
+        "/future_module_contracts"
+      ],
+      "finding": "Normal prior and Bernoulli law names are frozen, but the deterministic RNG engine, normal transform, uniform conversion and draw order are not. Multiple implementations yield different generated tasks and calibration variances.",
+      "outcome_affecting": true
+    },
+    {
+      "finding_id": "NF-SEM-003-LOCAL-MAP-UPDATE-SEMANTICS-UNFROZEN",
+      "contract_pointers": [
+        "/feasible_reference/task_local_update",
+        "/baseline_implementation_contracts/no_meta_from_scratch_residual",
+        "/baseline_implementation_contracts/feedback_shuffled"
+      ],
+      "finding": "The committed contract does not uniquely fix sum-versus-mean likelihood scaling, full-prefix versus newest-row objective, clipped-logit derivative behavior, Newton failure/damping behavior or exact convergence state transition. These choices alter adaptation predictions and variance.",
+      "outcome_affecting": true
+    },
+    {
+      "finding_id": "NF-SEM-004-REQUIRED-ARTIFACT-SCHEMAS-INCOMPLETE",
+      "contract_pointers": [
+        "/numeric_freeze/evidence_artifact_contract/required_success_artifacts",
+        "/numeric_freeze/evidence_artifact_contract/artifact_owners"
+      ],
+      "finding": "Complete required-field and canonical-serialization schemas are absent for surface_manifest.json, source_fit_report.json, calibration_episode_manifest.json, baseline_invocation_report.json and failure_manifest.json; prediction-record top-level cardinality/closure is also not uniquely frozen.",
+      "outcome_affecting": false,
+      "authority_affecting": true
+    },
+    {
+      "finding_id": "NF-SEM-005-NUMERIC-STAGE-APPLICABILITY-UNRESOLVED",
+      "contract_pointers": [
+        "/future_module_contracts",
+        "/future_required_tests",
+        "/computed_provenance/intervention_rerun_records_required",
+        "/numeric_freeze/callable_chain/strict_order",
+        "/numeric_freeze/evidence_artifact_contract/required_success_artifacts",
+        "/leakage"
+      ],
+      "finding": "No stage applicability is frozen, so the contract does not uniquely determine whether global intervention/leakage obligations apply to the numeric chain or which module/test/baseline subset is mandatory; applying versus deferring them are both plausible and the numeric success-artifact set does not adjudicate.",
+      "outcome_affecting": false,
+      "authority_affecting": true
+    },
+    {
+      "finding_id": "NF-SEM-006-RUNNER-SERIALIZATION-AND-CODE-HASH-UNFROZEN",
+      "contract_pointers": [
+        "/future_entrypoints",
+        "/computed_provenance/required_score_fields",
+        "/numeric_freeze/evidence_artifact_contract/numeric_freeze_provenance_schema"
+      ],
+      "finding": "The contract names a future preflight runner path but does not freeze a numeric-freeze invocation/argument protocol, general canonical artifact serialization rule, evaluator task/episode ID format or all-callable code-path hash concatenation/order.",
+      "outcome_affecting": false,
+      "authority_affecting": true
+    },
+    {
+      "finding_id": "NF-SEM-007-UNDERPOWERED-STATUS-MAPPING-DIVERGENT",
+      "contract_pointers": [
+        "/numeric_freeze/variance_only_calibration_algorithm/ceiling_rule",
+        "/numeric_freeze/additive_record_contract/allowed_decisions",
+        "/numeric_freeze/underpowered_status",
+        "/verdict_priority"
+      ],
+      "finding": "The decision/sentinel pair is defined, but no exact mapping connects INCONCLUSIVE_UNDERPOWERED_CLOSE_CAOT to underpowered_status=INCONCLUSIVE_UNDERPOWERED, verdict priority and lineage closure.",
+      "outcome_affecting": false,
+      "authority_affecting": true
+    }
+  ],
+  "blocking_finding_count": 7,
+  "anti_zeno_basis": {
+    "committed_rule": "a semantic defect closes this CAOT-v1 prereg under this task ID rather than starting a repair family",
+    "prereg_transaction_limit": 1,
+    "instrument_repair_family_allowed": false,
+    "post_prereg_execution_spec_allowed": false
+  },
+  "verdict": "CAOT_V1_PREREG_BLOCKED_AT_DESIGN__NO_EXECUTION_AUTHORITY",
+  "lineage_disposition": "CLOSED_DESIGN_BLOCKED__NUMERIC_FREEZE_NOT_EXECUTED__HEADROOM_NOT_TESTED__CANDIDATE_NOT_IMPLEMENTED",
+  "surface_mathematical_status": "NOT_ADJUDICATED",
+  "surface_infeasibility_claimed": false,
+  "broader_learned_outcome_kernel_hypothesis_closed": false,
+  "authority": {
+    "numeric_freeze_design_authorized": false,
+    "numeric_freeze_implementation_authorized": false,
+    "numeric_freeze_execution_authorized": false,
+    "headroom_instrument_authorized": false,
+    "candidate_implementation_authorized": false,
+    "product_implementation_authorized": false,
+    "route_registered": false,
+    "enabled": false,
+    "mainline_connected": false,
+    "runtime_authority": "none",
+    "science_execution_authorized": false,
+    "remote_anchor_authorized": false,
+    "authorized_implementation_targets": []
+  },
+  "next_action": "SEPARATE_OPERATOR_ROUTE_DECISION_FOR_NEW_SURFACE_OR_VERSION_ONLY",
+  "claim_ceiling": "Governance/source-readback evidence that the committed CAOT-v1 P0A prereg is semantically underdetermined for canonical numeric-freeze execution under its own Anti-Zeno rule. This does not establish surface infeasibility, no headroom, learning or mechanism invalidity, product unreadiness, agency, subjectivity or consciousness."
+}

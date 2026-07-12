@@ -1,0 +1,63 @@
+schema_version: codex.mutation_scope.v1
+task: ego-learned-outcome-kernel-compositional-transfer-numeric-freeze-prereq-invalid-closeout-001a
+task_id: EGO-LEARNED-OUTCOME-KERNEL-COMPOSITIONAL-TRANSFER-NUMERIC-FREEZE-PREREQ-INVALID-CLOSEOUT-001A
+phase: docs_only_operator_closeout
+expected_head: 19d9d76bd79b861b57784ea5cdfb75df1e9f00d5
+expected_tree: 41b14beb28de66fcdbabed265fc3251fcb202972
+expected_raw_behind_ahead: [0, 25]
+expected_clean: true
+
+authorization_scope: >-
+  Add exactly one closeout task card, one mutation scope and one machine-readable
+  findings record inside the existing CAOT-v1 prereg directory. Preserve the
+  P0A contract and all existing objects. Close the current CAOT-v1 lineage as
+  design-blocked without implementing or running numeric freeze.
+
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-learned-outcome-kernel-compositional-transfer-preflight-001a/NUMERIC_FREEZE_PREREQ_INVALID_CLOSEOUT_TASK_CARD.md
+  - docs/codex/tasks/ego-learned-outcome-kernel-compositional-transfer-preflight-001a/NUMERIC_FREEZE_PREREQ_INVALID_MUTATION_SCOPE.yaml
+  - docs/codex/tasks/ego-learned-outcome-kernel-compositional-transfer-preflight-001a/NUMERIC_FREEZE_PREREQ_INVALID_RESULT.json
+
+expected_mutation_surface:
+  - docs/codex/tasks/ego-learned-outcome-kernel-compositional-transfer-preflight-001a/NUMERIC_FREEZE_PREREQ_INVALID_CLOSEOUT_TASK_CARD.md
+  - docs/codex/tasks/ego-learned-outcome-kernel-compositional-transfer-preflight-001a/NUMERIC_FREEZE_PREREQ_INVALID_MUTATION_SCOPE.yaml
+  - docs/codex/tasks/ego-learned-outcome-kernel-compositional-transfer-preflight-001a/NUMERIC_FREEZE_PREREQ_INVALID_RESULT.json
+
+forbidden_mutation_paths:
+  - docs/codex/tasks/ego-learned-outcome-kernel-compositional-transfer-preflight-001a/STAGE_CARD.md
+  - docs/codex/tasks/ego-learned-outcome-kernel-compositional-transfer-preflight-001a/MUTATION_SCOPE.yaml
+  - docs/codex/tasks/ego-learned-outcome-kernel-compositional-transfer-preflight-001a/PREFLIGHT_CONTRACT.json
+  - docs/codex/tasks/ego-learned-outcome-kernel-compositional-transfer-preflight-001a/NUMERIC_FREEZE_RECORD.json
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - docs/STATUS.md
+  - docs/REPO_HYGIENE_POLICY.md
+  - docs/REPO_SURFACE_MAP.md
+  - artifacts/evidence_ledger/
+  - artifacts/ego_learned_outcome_kernel_caot_numeric_freeze_001a/
+  - artifacts/reports/program_state_summary.md
+  - scripts/ego_learned_outcome_kernel_caot_preflight_001a/
+  - scripts/run_ego_learned_outcome_kernel_caot_preflight_001a.py
+  - scripts/run_ego_learned_outcome_kernel_caot_numeric_freeze_001a.py
+  - scripts/codex/
+  - tests/
+  - packages/
+  - EgoOperator/
+  - EgoDesktop/
+  - D:/Project/AIProject/MyProject/intelligence-theory-lab/
+
+phase_rule: >-
+  Exact three-path additions-only docs transaction inside the existing task
+  directory. No existing byte may change. git add -A, implementation,
+  execution, generated-view mutation, repair, push, tag and remote anchor are
+  forbidden.
+
+auto_remote_anchor: forbidden
+push: forbidden
+tag: forbidden
+
+claim_ceiling: >-
+  Governance finding, evidence preservation and Anti-Zeno closeout for the
+  semantically underdetermined CAOT-v1 numeric-freeze prerequisite only; no
+  empirical headroom, learning, mechanism, product, runtime, agency,
+  subjectivity or consciousness claim.
