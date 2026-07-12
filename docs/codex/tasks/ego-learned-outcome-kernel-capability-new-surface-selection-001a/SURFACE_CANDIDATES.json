@@ -1,0 +1,385 @@
+
+{
+  "schema_version": "ego.learned_outcome.new_surface_selection.v1",
+  "task_id": "EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-NEW-SURFACE-SELECTION-001A",
+  "packet_kind": "OPERATOR_DECISION_SUPPORT_ONLY",
+  "assessment_basis": "QUALITATIVE_PAPER_COLLISION_SCREEN_NO_EMPIRICAL_SCORE",
+  "source_pins": {
+    "ego_head": "811f1a760997c5f5995d9cbcd76f8550b0ff2ff5",
+    "ego_tree": "02e9d094ba46baefc3fd6acbb8f19b9f8c4fba2e",
+    "closeout_c1_commit": "6f49f80d5877d5b0920d17222d5455ed1d3dd86b",
+    "closeout_c2_commit": "811f1a760997c5f5995d9cbcd76f8550b0ff2ff5",
+    "closeout_audit_result_blob": "b8fa7cf552efb41323a34d723653ff81cfa8c4db",
+    "closed_p0_contract_blob": "d09235eff74ec68b5cc5004873af1b1186d7ee39",
+    "parent_product_stage_card_blob": "9675a6baeafed8eab6cbcc9b2da7a2be226aac3e",
+    "itl_head": "b67c94fe1244ef6006ed3af8e924d4c670fe64bb"
+  },
+  "old_lineage_boundary": {
+    "surface_id": "FACTORED-STOCHASTIC-OUTCOME-SURFACE-v1",
+    "disposition": "CLOSED_INVALID_NO_P1R1_NO_P2",
+    "same_surface_successor_authorized": false,
+    "current_surface_reuse_authorized": false,
+    "new_surface_requires_fresh_task_id": true,
+    "surface_mathematical_status": "NOT_ADJUDICATED",
+    "independent_validator_acceptance": "UNAVAILABLE",
+    "inherits_old_surface_authority": false,
+    "inherits_old_data": false,
+    "inherits_old_fixtures": false,
+    "inherits_old_seeds": false,
+    "inherits_old_thresholds": false,
+    "inherits_old_admission_verdict": false
+  },
+  "selection_rule": {
+    "candidate_count": 3,
+    "required_axes": [
+      "forward_transfer",
+      "within_task_adaptation"
+    ],
+    "no_compensation_between_axes": true,
+    "operator_must_select": true,
+    "no_go_is_valid": true,
+    "empirical_scores_allowed": false,
+    "fourth_candidate_after_failure_allowed": false
+  },
+  "candidates": [
+    {
+      "surface_id": "COMPOSITIONAL-ACTION-OUTCOME-TRANSFER-SURFACE-v1",
+      "short_id": "CAOT-v1",
+      "paper_screen_disposition": "PAPER_HYPOTHESIS_SURVIVES_FOR_PREREG_SCREEN_ONLY",
+      "operator_selectable": true,
+      "product_observable": "One fixed learner uses cross-task experience plus bounded current-task feedback to predict and rank unseen typed action-primitive compositions.",
+      "legal_packet": {
+        "current_observation": "visible bounded context descriptors",
+        "legal_actions": "canonical typed primitive-composition descriptors without action, task or split IDs",
+        "history": "prior legal observations, chosen composition descriptors and observed bounded outcomes",
+        "feedback": "bounded scalar outcome for the chosen legal composition only"
+      },
+      "evaluator_only_fields": [
+        "generator family identity",
+        "task and split identity",
+        "generator seed material",
+        "true cross-task composition parameters",
+        "true task-local residual",
+        "counterfactual outcomes",
+        "oracle prediction",
+        "verdict"
+      ],
+      "statistical_identifiability_assumption": "Train tasks expose reusable primitive effects; held-out tasks contain novel primitive compositions, and bounded legal feedback identifies a task-local residual without exposing private task identity.",
+      "identifiability_test_plan": "A candidate-independent future screen must compare current-observation-only, legal full-history, no-meta and budget-faithful feasible-reference predictions on exact-zero-overlap held-out compositions at transfer and adaptation checkpoints.",
+      "identifiability_kill_criterion": "Reject if the legal feasible reference cannot separate from observation/no-feedback/lookup controls on both axes, if legal history adds no information on the adaptation axis, or if held-out composition lookup coverage is nonzero.",
+      "capability_axes": {
+        "forward_transfer": "At zero or few held-out feedback steps, cross-task structure improves novel-composition prediction over no-meta, descriptor-blind lookup and from-scratch controls.",
+        "within_task_adaptation": "At later checkpoints, legal held-out outcomes improve task-local predictions over frozen-global, no-update and no-feedback controls."
+      },
+      "strongest_equal_access_invalidating_controls": [
+        "constant/global-mean predictor",
+        "observation-only decoder",
+        "exact action-tuple lookup",
+        "count table",
+        "nearest-neighbor memorizer",
+        "no-meta from-scratch learner",
+        "frozen-global/no-update learner",
+        "feedback-shuffled learner",
+        "candidate-own batch/offline update rule"
+      ],
+      "mechanism_challengers_and_capability_rivals": [
+        "fitted legal full-history static decoder",
+        "per-task specialist panel as breadth rival"
+      ],
+      "budget_faithful_feasible_reference": {
+        "model": "regularized compositional GLM with online task-local residual update",
+        "legal_access_only": true,
+        "parity_required": [
+          "data",
+          "update count",
+          "action queries",
+          "compute",
+          "memory"
+        ],
+        "admission_role": "Required to show that both axes are reachable from the legal channel under the frozen budget; it supplies no candidate or mechanism claim."
+      },
+      "diagnostic_ideal_ceiling": {
+        "model": "exact visible-channel hierarchical Bayes or mixed-effects posterior",
+        "admission_role": "DIAGNOSTIC_ONLY_NOT_VALID_FOR_ADMISSION",
+        "private_state_input_forbidden": true
+      },
+      "decode_and_saturation_risks": {
+        "observation_decode": "Typed descriptors may directly determine outcomes if the generator lacks hidden task-local variation.",
+        "history_decode": "A static full-history decoder may saturate if adaptation requires no mutable state beyond the packet.",
+        "lookup_cache": "Novel-composition coverage is fake if held-out tuples or equivalent canonical keys occur in train.",
+        "specialist": "A per-task specialist may dominate narrow tasks but is a rival, not an invalidating control."
+      },
+      "required_ablations": [
+        "remove cross-task source data",
+        "freeze task-local update",
+        "shuffle or delete held-out outcomes",
+        "swap/reset serialized state",
+        "permute action descriptors while preserving semantics",
+        "bypass predictor with declared neutral scorer"
+      ],
+      "replay_design": "Fresh-process recomputation from serialized model/update state plus current legal observation and action descriptors; stored predictions and actions are forbidden.",
+      "leakage_positive_controls": [
+        "planted action-ID leak",
+        "planted task/split-ID leak",
+        "planted structural-order leak",
+        "planted serialized-state private-parameter leak",
+        "planted train-heldout composition overlap"
+      ],
+      "smallest_falsifier": "Exact held-out composition lookup coverage is nonzero, or no-meta/no-update controls erase either headroom axis under equal access.",
+      "expected_negative_mode": "Static descriptor decoding or tuple memorization explains the apparent transfer, while legal feedback adds no independent task-local information.",
+      "material_difference_from_closed_surface": [
+        "typed compositional actions instead of a fixed eight-action set",
+        "cross-task shared structure plus task-local residual instead of one static hidden 8-bit latent",
+        "held-out composition split instead of latent-parity split",
+        "separate forward-transfer and adaptation axes instead of one posterior-inference aggregate",
+        "fresh generator, schema, seeds, controls and artifact namespace"
+      ],
+      "fresh_namespace_plan": {
+        "future_task_slug": "ego-learned-outcome-kernel-compositional-transfer-preflight-001a",
+        "future_artifact_namespace": "ego_learned_outcome_kernel_compositional_transfer_preflight_001a",
+        "old_fixture_import": false
+      },
+      "epistemic_status": {
+        "fact": "The closed surface used fixed actions, a static hidden latent and a different split/metric family.",
+        "inference": "Compositional novelty plus task-local residuals may separate transfer from adaptation with simpler instrumentation.",
+        "assumption": "A legal feasible reference can achieve nontrivial performance on both axes.",
+        "unknown": "Actual oracle-to-control headroom and minimum detectable effects have not been computed."
+      }
+    },
+    {
+      "surface_id": "CAUSAL-AFFORDANCE-GRAPH-TRANSFER-SURFACE-v1",
+      "short_id": "CAGT-v1",
+      "paper_screen_disposition": "PAPER_HYPOTHESIS_SURVIVES_FOR_PREREG_SCREEN_ONLY_HIGH_COMPLEXITY",
+      "operator_selectable": true,
+      "product_observable": "One fixed learner predicts outcomes of legal interventions on held-out attributed graph motifs and adapts to task-local affordance changes from observed outcomes.",
+      "legal_packet": {
+        "current_observation": "visible attributed local graph and query context",
+        "legal_actions": "typed node/edge intervention descriptors",
+        "history": "prior visible graphs, chosen legal interventions and observed bounded outcomes",
+        "feedback": "bounded intervention outcome on the chosen graph/action pair"
+      },
+      "evaluator_only_fields": [
+        "private causal graph",
+        "hidden affordance parameters",
+        "graph family and split identity",
+        "generator seeds",
+        "counterfactual outcomes",
+        "oracle prediction",
+        "verdict"
+      ],
+      "statistical_identifiability_assumption": "Visible attributed motifs and legal intervention history contain enough information to infer reusable causal-affordance structure without private graph access.",
+      "identifiability_test_plan": "A candidate-independent future screen must compare observation-only, fitted legal full-history, graph lookup and budget-faithful graph-reference predictions on graph-isomorphism-deduplicated held-out motifs before and after legal local feedback.",
+      "identifiability_kill_criterion": "Reject if held-out motifs canonicalize to train signatures, if observation-only/graph-lookup/no-feedback/no-update controls saturate either required axis, or if the budget-faithful feasible reference cannot separate from those invalidating controls.",
+      "capability_axes": {
+        "forward_transfer": "Cross-graph structure improves prediction on held-out motifs before substantial local feedback.",
+        "within_task_adaptation": "Observed intervention outcomes update a local affordance belief and improve later predictions."
+      },
+      "strongest_equal_access_invalidating_controls": [
+        "graph signature lookup",
+        "transition table and successor map",
+        "count table",
+        "nearest graph-neighbor memorizer",
+        "FSM planner",
+        "episodic traversal",
+        "no-update and feedback-shuffled learners"
+      ],
+      "mechanism_challengers_and_capability_rivals": [
+        "fitted static legal full-history graph decoder",
+        "per-motif specialist panel"
+      ],
+      "budget_faithful_feasible_reference": {
+        "model": "bounded graph-feature/message-passing regressor with online local-affordance residual update",
+        "legal_access_only": true,
+        "parity_required": [
+          "data",
+          "update count",
+          "action queries",
+          "compute",
+          "memory"
+        ],
+        "admission_role": "Required legal-channel reachability reference for both axes; it cannot establish candidate or causal-mechanism validity."
+      },
+      "diagnostic_ideal_ceiling": {
+        "model": "exact visible-channel causal Bayesian posterior",
+        "admission_role": "DIAGNOSTIC_ONLY_NOT_VALID_FOR_ADMISSION",
+        "private_graph_input_forbidden": true
+      },
+      "decode_and_saturation_risks": {
+        "observation_decode": "Graph attributes may encode the target directly.",
+        "history_decode": "A static graph-history model may make mutable adaptation unnecessary.",
+        "lookup_cache": "Graph canonicalization may collapse held-out motifs onto seen signatures.",
+        "specialist": "Motif specialists may hide lack of breadth."
+      },
+      "required_ablations": [
+        "remove cross-graph source tasks",
+        "freeze local affordance update",
+        "shuffle intervention outcomes",
+        "delete source graph memory",
+        "swap serialized graph-belief state",
+        "permute node identifiers while preserving graph isomorphism"
+      ],
+      "replay_design": "Fresh-process recomputation from serialized learned graph state plus the visible graph and legal interventions, with isomorphism-preserving counterfactuals.",
+      "leakage_positive_controls": [
+        "planted node-ID target leak",
+        "planted graph-family/split leak",
+        "planted canonical-order leak",
+        "planted private-edge leak",
+        "planted train-heldout motif overlap"
+      ],
+      "mechanism_attribution_downgrade": "If a fitted static legal full-history graph decoder matches, block any claim that an explicit mutable online-update mechanism is required, but do not by that fact alone reject bounded product capability.",
+      "smallest_falsifier": "Graph lookup, observation-only or no-feedback/no-update controls saturate a required axis, the feasible reference is unreachable under parity, or held-out motifs are canonical aliases of train motifs.",
+      "expected_negative_mode": "Graph representation leakage or canonical lookup explains the result, and the instrument becomes more complex than the capability separator.",
+      "material_difference_from_closed_surface": [
+        "variable attributed graphs and interventions instead of fixed vector contexts/actions",
+        "held-out graph motifs rather than latent-state parity",
+        "explicit graph-isomorphism leakage tests",
+        "fresh graph generator, schema, seeds, baselines and artifacts"
+      ],
+      "fresh_namespace_plan": {
+        "future_task_slug": "ego-learned-outcome-kernel-causal-affordance-graph-preflight-001a",
+        "future_artifact_namespace": "ego_learned_outcome_kernel_causal_affordance_graph_preflight_001a",
+        "old_fixture_import": false
+      },
+      "epistemic_status": {
+        "fact": "No graph surface, generator or graph-specific artifact currently exists in this route.",
+        "inference": "Graph motif transfer could test a stronger form of structural outcome learning.",
+        "assumption": "Legal attributed graphs support a non-private feasible reference.",
+        "unknown": "Whether graph leakage and instrument complexity leave fair measurable headroom."
+      }
+    },
+    {
+      "surface_id": "DELAYED-CREDIT-REGIME-ADAPTATION-SURFACE-v1",
+      "short_id": "DCRA-v1",
+      "paper_screen_disposition": "REJECTED_AT_PAPER_SCREEN_IDENTIFIABILITY_RISK",
+      "operator_selectable": false,
+      "product_observable": "One fixed learner attributes delayed bounded outcomes to action sequences and adapts after hidden regime changes.",
+      "legal_packet": {
+        "current_observation": "visible sequential context",
+        "legal_actions": "current legal action descriptors",
+        "history": "prior legal observations/actions plus delayed outcome events when they arrive",
+        "feedback": "sparse delayed aggregate outcome"
+      },
+      "evaluator_only_fields": [
+        "private per-step causal contributions",
+        "regime identity and switch point",
+        "generator seeds",
+        "counterfactual sequence outcomes",
+        "oracle credit assignment",
+        "verdict"
+      ],
+      "statistical_identifiability_assumption": "Aggregate delayed outcomes contain enough legal information to identify both reusable sequence structure and a changed local regime within the bounded horizon.",
+      "identifiability_test_plan": "A future redesign would need a candidate-independent observational-equivalence test over legal event histories and a budget-faithful sequence reference before this surface could be reconsidered under a new selection task.",
+      "identifiability_kill_criterion": "Current paper screen rejects because multiple private per-step credit assignments may remain legal-channel equivalent and no budget-faithful legal reference has yet been shown to separate those equivalents.",
+      "capability_axes": {
+        "forward_transfer": "Cross-task sequence structure improves early held-out outcome prediction.",
+        "within_task_adaptation": "Delayed feedback after a regime change updates future sequence rankings."
+      },
+      "strongest_equal_access_invalidating_controls": [
+        "recency/EWMA",
+        "n-gram and full-bundle lookup",
+        "transition table",
+        "FSM planner",
+        "episodic traversal",
+        "no-update and delayed-feedback-shuffled learners"
+      ],
+      "mechanism_challengers_and_capability_rivals": [
+        "static fitted legal-history sequence decoder",
+        "legal recency/change-point heuristic",
+        "per-regime sequence specialist panel"
+      ],
+      "budget_faithful_feasible_reference": {
+        "model": "bounded fitted hidden-state sequence model with online legal-event filtering",
+        "legal_access_only": true,
+        "parity_required": [
+          "data",
+          "update count",
+          "action queries",
+          "compute",
+          "memory"
+        ],
+        "admission_role": "NOT_YET_SHOWN_FEASIBLE; absence of a demonstrated legal-channel reference supports the current paper rejection."
+      },
+      "diagnostic_ideal_ceiling": {
+        "model": "exact legal-event Bayesian change-point and sequence posterior",
+        "admission_role": "DIAGNOSTIC_ONLY_NOT_VALID_FOR_ADMISSION",
+        "private_credit_input_forbidden": true
+      },
+      "decode_and_saturation_risks": {
+        "observation_decode": "Visible regime-correlated context may reveal the switch.",
+        "history_decode": "A static change-point decoder may reproduce all adaptation behavior.",
+        "lookup_cache": "Repeated sequence bundles may make episodic traversal sufficient.",
+        "specialist": "Per-regime specialists may not expose a shared learner."
+      },
+      "required_ablations": [
+        "shuffle delayed outcome timing",
+        "delete pre-switch or post-switch history",
+        "freeze updates across the switch",
+        "swap serialized regime state",
+        "permute sequence bundles",
+        "bypass credit-assignment channel"
+      ],
+      "replay_design": "Fresh-process recomputation from serialized sequence/update state and the legal event stream, including counterfactual feedback timing.",
+      "leakage_positive_controls": [
+        "planted switch-index leak",
+        "planted regime-ID leak",
+        "planted sequence-order identity leak",
+        "planted private credit leak",
+        "planted train-heldout sequence overlap"
+      ],
+      "mechanism_attribution_downgrade": "If a legal recency/change-point or fitted full-history model matches, block special online-credit/update attribution; product capability would require separate bounded evaluation rather than automatic rejection.",
+      "smallest_falsifier": "Multiple private credit assignments remain observationally equivalent on the legal channel or no budget-faithful legal feasible reference exists under the bounded horizon.",
+      "expected_negative_mode": "Delayed aggregate feedback is underidentified, so apparent learning depends on private credit labels or a simple regime heuristic.",
+      "material_difference_from_closed_surface": [
+        "delayed sequential credit and regime change rather than one-step Bernoulli feedback",
+        "sequence-family novelty instead of fixed action probes",
+        "fresh event schema, generator, seeds, controls and artifacts"
+      ],
+      "fresh_namespace_plan": {
+        "future_task_slug": "ego-learned-outcome-kernel-delayed-credit-regime-preflight-001a",
+        "future_artifact_namespace": "ego_learned_outcome_kernel_delayed_credit_regime_preflight_001a",
+        "old_fixture_import": false
+      },
+      "epistemic_status": {
+        "fact": "The proposed legal channel withholds private per-step causal credit.",
+        "inference": "That withholding creates a serious identifiability risk at a bounded horizon.",
+        "assumption": "A redesigned legal event channel might later resolve the ambiguity, but that is not established here.",
+        "unknown": "Whether any fair non-private reference can separate reusable learning from recency/change-point controls."
+      }
+    }
+  ],
+  "no_go_option": {
+    "surface_id": "CLOSE_NO_NEW_SURFACE",
+    "meaning": "Select no successor and keep the learned-outcome route closed without preregistration or implementation.",
+    "valid_operator_choice": true
+  },
+  "codex_recommendation": {
+    "surface_id": "COMPOSITIONAL-ACTION-OUTCOME-TRANSFER-SURFACE-v1",
+    "authority": "NON_BINDING_OPERATOR_DECISION_SUPPORT_ONLY",
+    "basis": [
+      "cleanest material break from the fixed-action/static-latent closed surface",
+      "two separately falsifiable transfer and adaptation axes",
+      "strong equal-access lookup/no-meta/no-update controls",
+      "lower instrument complexity and leakage surface than the graph alternative",
+      "fewer identifiability risks than delayed aggregate credit assignment"
+    ]
+  },
+  "operator_decision_status": "PENDING",
+  "operator_selected_surface_id": null,
+  "fresh_prereg_task_id": null,
+  "authorizations": {
+    "surface_selected": false,
+    "preregistration_authorized": false,
+    "implementation_authorized": false,
+    "instrument_execution_authorized": false,
+    "candidate_authorized": false,
+    "product_authorized": false,
+    "route_registered": false,
+    "enabled": false,
+    "mainline_connected": false,
+    "runtime_authority": "none",
+    "science_execution_authorized": false,
+    "remote_anchor_authorized": false
+  },
+  "verdict": "NEW_SURFACE_SELECTION_PACKET_READY__OPERATOR_SELECTION_PENDING__NO_PREREG_OR_EXECUTION_AUTHORIZED",
+  "claim_ceiling": "Operator decision support and qualitative paper collision screening only; no empirical headroom, surface admission, preregistration, learning, mechanism, product, runtime, mainline, agency, subjectivity or consciousness claim."
+}

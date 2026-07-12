@@ -1,0 +1,51 @@
+
+schema_version: codex.mutation_scope.v1
+task: ego-learned-outcome-kernel-capability-new-surface-selection-001a
+task_id: EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-NEW-SURFACE-SELECTION-001A
+phase: one_shot_docs_only_operator_decision_support
+expected_head: 811f1a760997c5f5995d9cbcd76f8550b0ff2ff5
+expected_tree: 02e9d094ba46baefc3fd6acbb8f19b9f8c4fba2e
+expected_raw_behind_ahead: [0, 23]
+expected_clean: true
+
+authorization_scope: >-
+  Add exactly one Stage Card, one Mutation Scope and one three-candidate
+  operator decision-support packet. No surface selection, preregistration,
+  implementation, execution, governance sink, runtime, mainline, science or
+  remote authority is granted.
+
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-new-surface-selection-001a/STAGE_CARD.md
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-new-surface-selection-001a/MUTATION_SCOPE.yaml
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-new-surface-selection-001a/SURFACE_CANDIDATES.json
+
+expected_mutation_surface:
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-new-surface-selection-001a/STAGE_CARD.md
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-new-surface-selection-001a/MUTATION_SCOPE.yaml
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-new-surface-selection-001a/SURFACE_CANDIDATES.json
+
+forbidden_mutation_paths:
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - scripts/
+  - artifacts/
+  - packages/
+  - tests/
+  - EgoOperator/
+  - EgoDesktop/
+  - docs/STATUS.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/
+  - D:/Project/AIProject/MyProject/intelligence-theory-lab/
+
+phase_rule: >-
+  Exact three-path additions-only docs transaction. The packet may recommend
+  but must not select a surface. git add -A and all executable work are
+  forbidden.
+
+auto_remote_anchor: forbidden
+push: forbidden
+tag: forbidden
+
+claim_ceiling: >-
+  Operator decision support and paper collision screening only; no empirical
+  surface, learning, mechanism, product, runtime or subjectivity claim.
