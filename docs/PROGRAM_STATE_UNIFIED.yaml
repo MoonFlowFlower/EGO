@@ -24,7 +24,7 @@ program:
     - "Use human-observable operator samples as part of acceptance when experience is the target; tests alone are not sufficient proof of natural interaction quality."
     - "Keep all claims bounded to local candidate / transition evidence until real user operation proves stable behavior."
     - "R-track mechanism rewrite state machine remains closed: R0/R1/R3 stay at engineering-only/default-off ceilings and R2 stays negative; do not reopen or reinterpret those rows from K0."
-    - "K0 dual-track remains a separate disabled non-mainline workstream. Ego preserves the pinned ITL operator decision to close the old K0 science-attribution route without science adjudication. The verifier family is terminally closed invalid with no further repair, and independent validator acceptance is UNAVAILABLE. Foundation remains BANKED_ACCEPTED_BOUNDED at the existing E3/V3 engineering-governance ceiling with enabled=false, mainline_connected=false, runtime_authority=none, and runtime trigger evidence absent. H0 is NOT_TESTED; the old Reference Kernel/K0-R, H1, Freeze, and Formal are BLOCKED_NOT_TESTED; all root, route, and child authorizations are false with authorized implementation targets empty. Old K0-R is an unexecuted reference-only plan and is not actionable or the future product route. `EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-001A` is now banked in the default reference-only lane but remains unregistered, unauthorized, disabled, non-mainline, and without runtime authority or trigger evidence. Card banking creates no capability evidence; the next possible K0 action requires fresh operator authorization for candidate-independent preflight, not implementation."
+    - "K0 dual-track remains a separate disabled non-mainline workstream. Ego preserves the pinned ITL operator decision to close the old K0 science-attribution route without science adjudication. The verifier family is terminally closed invalid with no further repair, and independent validator acceptance is UNAVAILABLE. Foundation remains BANKED_ACCEPTED_BOUNDED at the existing E3/V3 engineering-governance ceiling with enabled=false, mainline_connected=false, runtime_authority=none, and runtime trigger evidence absent. H0 is NOT_TESTED; the old Reference Kernel/K0-R, H1, Freeze, and Formal are BLOCKED_NOT_TESTED; all root, route, and child authorizations are false with authorized implementation targets empty. The stored P1R0 FEASIBLE verdict is preserved as historical output, while the pinned callable audit independently computed INVALID with 23 blocking findings. The current FACTORED-STOCHASTIC-OUTCOME-SURFACE-v1 P0/P1/P1R0 instrument-design lineage is CLOSED_INVALID_NO_P1R1_NO_P2; P1R0 repair, P1R1, P1R2, P2, and same-surface reuse are forbidden. Independent validator acceptance remains UNAVAILABLE, the local callable is not an independent validator, and surface mathematical status remains NOT_ADJUDICATED. Any possible successor requires an operator-selected new surface, new task ID, fresh preregistration, and fresh operator decision."
   completed_since_last:
     - "EGO Learned Outcome Kernel Capability 001A banks a governance/design Stage Card in the default reference-only lane and synchronizes that card-existence fact without registering a route, authorizing candidate preflight or implementation, enabling runtime, connecting mainline, or creating capability evidence. The old K0 science route, terminal verifier-family disposition, `independent_validator_acceptance=UNAVAILABLE`, Foundation bounded engineering pins, all root/route/child authorizations, and the product/science firewall remain unchanged."
     - "EGO R3 Adoption Slice 001A closes with verdict `r3_adoption_slice_pass` at `24e8bfc623265304ae2cefac35a3a76660c71d06`: the in-flight EgoDesktop joi_real_loop g_ablation loop, in harness context only, now emits the R0 kernel_state_v0-compatible envelope through an 11-line purely-additive default-off TraceRunner hook (host git diff banked as evidence), with 16/16 cross-language canonical-hash parity, fresh-process replay x2 plus mid-episode resume at zero mismatch, and first-enforced LLM-swap invariance whose leak detector carries a firing positive control; a failed B1 battery (embedded regression executor spawn/timeout defects) is preserved as negative evidence beside the passing B2 rerun. Claim ceiling `r3_adoption_engineering_only`, default-off, no runtime wiring; this re-adjudicates no g_ablation verdict and does not prove mechanism validity, prediction-error-loop scientific status, learning, durable memory efficacy, runtime integration safety, stable user benefit, live autonomy, functional selfhood, consciousness, subjective experience, or real emotion."
@@ -130,7 +130,7 @@ program:
     - "Which legacy algorithms should be reimplemented as EgoOperator primitives, and which should remain reference-only."
     - "Whether future command/network transaction approvals should be added after file-write transaction approval has proved ergonomic."
     - "What evidence threshold should trigger any future deletion of legacy code rather than reference preservation."
-  next_minimal_action: "Keep the P1 instrument transaction blocked and its temporary authorization consumed. Any replacement instrument requires a new bounded task; formal seed use, formal artifacts, product implementation, route registration, runtime/mainline/science execution, push, tag, and remote anchor remain unauthorized."
+  next_minimal_action: "Keep the current FACTORED-STOCHASTIC-OUTCOME-SURFACE-v1 P0/P1/P1R0 instrument-design lineage closed invalid; same-lineage P1R0 repair, P1R1, P1R2, and P2 are forbidden. Any possible successor requires an operator-selected new surface, new task ID, fresh preregistration, and fresh operator decision; no candidate, product, runtime, mainline, science, push, tag, or remote-anchor authorization is granted."
   last_verified_commit: "af561e0d"
   last_verified_at: "2026-05-18T03:48:22Z"
   status_owner: "EgoOperator"
@@ -181,7 +181,7 @@ workstreams:
     verification_level: "V3"
     mainline_connected: false
     enabled: false
-    summary: "Ego locally mirrors the pinned ITL operator decision that closed the old K0 science-attribution route without science adjudication. The verifier family is terminally invalid and closed with no further repair; independent validator acceptance and operator-closure acceptance from this family are UNAVAILABLE, and the stored validation report remains frozen executor output rather than acceptance evidence. Foundation bounded engineering evidence remains BANKED_ACCEPTED_BOUNDED at the existing E3/V3 governance ceiling, unchanged, disabled, non-mainline, and without runtime authority or trigger evidence. H0 is NOT_TESTED; old Reference Kernel/K0-R, H1, Freeze, and Formal are BLOCKED_NOT_TESTED. All root, route, and six child authorizations are false and authorized implementation targets are empty. Old K0-R is an unexecuted reference-only science plan, not an actionable route and not the future product route. `EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-001A` is banked reference-only at Phase A commit `a5b33745c785676f6c63cadf7946997ba8426b8c` but remains unregistered, unauthorized, disabled, non-mainline, default-off, and without runtime authority or trigger evidence. Card banking creates no capability evidence; any candidate-independent preflight requires fresh operator authorization, and product results receive no science weight and cannot reopen or bypass the old science route."
+    summary: "Ego locally mirrors the pinned ITL operator decision that closed the old K0 science-attribution route without science adjudication. The verifier family is terminally invalid and closed with no further repair; independent validator acceptance and operator-closure acceptance from this family are UNAVAILABLE, and the stored validation report remains frozen executor output rather than acceptance evidence. Foundation bounded engineering evidence remains BANKED_ACCEPTED_BOUNDED at the existing E3/V3 governance ceiling, unchanged, disabled, non-mainline, and without runtime authority or trigger evidence. H0 is NOT_TESTED; old Reference Kernel/K0-R, H1, Freeze, and Formal are BLOCKED_NOT_TESTED. All root, route, and six child authorizations are false and authorized implementation targets are empty. The stored P1R0 verdict `P1R0_EXECUTABLE_DESIGN_FEASIBLE_FOR_ONE_P1R1_ATTEMPT_ONLY` is preserved separately from the pinned callable audit verdict `P1R0_EXECUTABLE_DESIGN_FEASIBILITY_FALSE_POSITIVE__P1R1_NOT_ADMISSIBLE__CURRENT_INSTRUMENT_FAMILY_CLOSEOUT_REQUIRED`. That audit banks bounded E2 negative evidence with 23 findings and closes only the current FACTORED-STOCHASTIC-OUTCOME-SURFACE-v1 P0/P1/P1R0 instrument-design lineage as CLOSED_INVALID_NO_P1R1_NO_P2. P1R0 repair, P1R1, P1R2, P2, and same-surface reuse remain forbidden. The local callable is not independent-validator acceptance; surface mathematical status is NOT_ADJUDICATED and impossibility is not claimed. Any successor requires an operator-selected new surface, new task ID, fresh preregistration, and fresh operator decision; product results retain no science weight or mechanism-attribution authority."
     governance_sync:
       record_type: "SOURCE_PINNED_DERIVED_READBACK"
       ego_synced_to_itl_operator_close: true
@@ -284,7 +284,7 @@ workstreams:
 
       future_product_route:
         task_id: "EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-001A"
-        current_status: "P1_INSTRUMENT_BLOCKED__AUTHORIZATION_CONSUMED__FORMAL_EXECUTION_NOT_AUTHORIZED"
+        current_status: "P1R0_DESIGN_FEASIBILITY_FALSE_POSITIVE_BANKED__CURRENT_PREFLIGHT_INSTRUMENT_FAMILY_CLOSED_INVALID__P1R1_P2_FORBIDDEN"
         prior_governance_sync_created_card: false
         this_card_bank_creates_card: true
         stage_card_banked: true
@@ -302,7 +302,10 @@ workstreams:
         mainline_connected: false
         non_mainline_required: true
         runtime_authority: "none"
-        current_operator_authorization_scope: "P1_INSTRUMENT_AUTHORIZATION_CONSUMED__P2_REQUIRES_FRESH_AUTHORIZATION"
+        current_operator_authorization_scope: "PREFLIGHT_INSTRUMENT_FAMILY_CLOSED_INVALID__NEW_SURFACE_REQUIRES_FRESH_TASK"
+        same_surface_successor_authorized: false
+        new_surface_requires_fresh_task_id: true
+        current_surface_reuse_authorized: false
         requires_separate_bounded_stage_card: false
         requires_fresh_operator_authorization: true
         requires_fresh_candidate_preflight_authorization: true
@@ -337,6 +340,27 @@ workstreams:
           p1_task_card_path: "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1_INSTRUMENT_TASK_CARD.md"
           p1_task_card_blob: "26c53396c88de3a0c35494665085a3b6c298e56c"
           p1_task_card_sha256: "93608561afcd4ab35abae5bf6257f1ad5b8a35b779e0bee0a03a238012724a95"
+          p1r0_design_banked: true
+          p1r0_design_commit: "8365911743aadf1ee508fb42336cfb0a9710aaed"
+          p1r0_stored_feasibility_verdict: "P1R0_EXECUTABLE_DESIGN_FEASIBLE_FOR_ONE_P1R1_ATTEMPT_ONLY"
+          p1r0_independent_audit_banked: true
+          p1r0_independent_audit_commit: "6f49f80d5877d5b0920d17222d5455ed1d3dd86b"
+          p1r0_independent_audit_script_path: "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_DESIGN_INVALID_SEMANTIC_AUDIT.py"
+          p1r0_independent_audit_script_blob: "3b1561126228da15beffde90a5a6f8ac5bf4f83c"
+          p1r0_independent_audit_script_sha256: "eb3214cb792fadc8b27377ae20716c95cb9965357dc5884cf4de58075b77bc9b"
+          p1r0_independent_audit_result_path: "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_DESIGN_INVALID_AUDIT_RESULT.json"
+          p1r0_independent_audit_result_blob: "b8fa7cf552efb41323a34d723653ff81cfa8c4db"
+          p1r0_independent_audit_result_sha256: "a2aed0bc994592b54f260d74923896eabc0982d3e47ea6c3b1a64879be7061ec"
+          p1r0_independent_audit_verdict: "P1R0_EXECUTABLE_DESIGN_FEASIBILITY_FALSE_POSITIVE__P1R1_NOT_ADMISSIBLE__CURRENT_INSTRUMENT_FAMILY_CLOSEOUT_REQUIRED"
+          p1r0_independent_audit_blocking_finding_count: 23
+          p1r0_feasible_admission_valid: false
+          p1r1_authorized: false
+          p2_authorized: false
+          preflight_instrument_family_disposition: "CLOSED_INVALID_NO_P1R1_NO_P2"
+          independent_validator_acceptance: "UNAVAILABLE"
+          local_callable_is_independent_validator: false
+          surface_mathematical_status: "NOT_ADJUDICATED"
+          surface_impossibility_not_claimed: true
           authorized_preflight_instrument_targets: []
 
       science_route_firewall:

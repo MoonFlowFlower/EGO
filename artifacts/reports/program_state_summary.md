@@ -8,6 +8,6 @@
 - verification: `V3`
 - mainline_connected: `True`
 - enabled: `True`
-- next_minimal_action: Keep the P1 instrument transaction blocked and its temporary authorization consumed. Any replacement instrument requires a new bounded task; formal seed use, formal artifacts, product implementation, route registration, runtime/mainline/science execution, push, tag, and remote anchor remain unauthorized.
+- next_minimal_action: Keep the current FACTORED-STOCHASTIC-OUTCOME-SURFACE-v1 P0/P1/P1R0 instrument-design lineage closed invalid; same-lineage P1R0 repair, P1R1, P1R2, and P2 are forbidden. Any possible successor requires an operator-selected new surface, new task ID, fresh preregistration, and fresh operator decision; no candidate, product, runtime, mainline, science, push, tag, or remote-anchor authorization is granted.
 - highest ledger entry: `mvp16_controlled_completion_current` / `E5`
 

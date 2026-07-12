@@ -3,8 +3,10 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import subprocess
 import sys
+import tempfile
 from typing import Any
 
 from route_convergence_common import (
@@ -51,7 +53,136 @@ P1_INSTRUMENT_TARGETS = [
 FORMAL_ARTIFACT_PATH = "artifacts/ego_learned_outcome_kernel_capability_preflight_001a"
 P1_AUTHORIZATION_COMMIT = "fdbc5dea725d635ee21ba7490d7b5b03b3ce11cc"
 P0_PREREG_COMMIT = "ff1ab23e1db303a882cec17374b9ea3903fe03c6"
-EVIDENCE_LEDGER_BLOB = "7634cdccd69d25277bfeaab7e87865fd9e5bff0d"
+C1_AUDIT_COMMIT = "6f49f80d5877d5b0920d17222d5455ed1d3dd86b"
+C1_AUDIT_PARENT = "8365911743aadf1ee508fb42336cfb0a9710aaed"
+C1_LEDGER_BLOB = "7634cdccd69d25277bfeaab7e87865fd9e5bff0d"
+P1R0_SOURCE_COMMIT = C1_AUDIT_PARENT
+P1R0_BLUEPRINT_PATH = (
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/"
+    "P1R0_EXECUTABLE_DESIGN_BLUEPRINT.json"
+)
+P1R0_BLUEPRINT_BLOB = "385808733e8f1c6bd17cc8733e1a9ff342d9c06d"
+P1R0_BLUEPRINT_SHA256 = "f793d7b8580ab561a7c834f3dc365b4c771027434a03418042b3429fa8fadf42"
+AUDIT_SCRIPT_PATH = (
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/"
+    "P1R0_DESIGN_INVALID_SEMANTIC_AUDIT.py"
+)
+AUDIT_RESULT_PATH = (
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/"
+    "P1R0_DESIGN_INVALID_AUDIT_RESULT.json"
+)
+AUDIT_INVALID_VERDICT = (
+    "P1R0_EXECUTABLE_DESIGN_FEASIBILITY_FALSE_POSITIVE__"
+    "P1R1_NOT_ADMISSIBLE__CURRENT_INSTRUMENT_FAMILY_CLOSEOUT_REQUIRED"
+)
+FAMILY_DISPOSITION = "CLOSED_INVALID_NO_P1R1_NO_P2"
+FUTURE_PRODUCT_STATUS = (
+    "P1R0_DESIGN_FEASIBILITY_FALSE_POSITIVE_BANKED__"
+    "CURRENT_PREFLIGHT_INSTRUMENT_FAMILY_CLOSED_INVALID__P1R1_P2_FORBIDDEN"
+)
+NEXT_MINIMAL_ACTION = (
+    "Keep the current FACTORED-STOCHASTIC-OUTCOME-SURFACE-v1 P0/P1/P1R0 "
+    "instrument-design lineage closed invalid; same-lineage P1R0 repair, P1R1, "
+    "P1R2, and P2 are forbidden. Any possible successor requires an "
+    "operator-selected new surface, new task ID, fresh preregistration, and fresh "
+    "operator decision; no candidate, product, runtime, mainline, science, push, "
+    "tag, or remote-anchor authorization is granted."
+)
+C1_PATH_PINS = {
+    AUDIT_RESULT_PATH: (
+        "b8fa7cf552efb41323a34d723653ff81cfa8c4db",
+        "a2aed0bc994592b54f260d74923896eabc0982d3e47ea6c3b1a64879be7061ec",
+    ),
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_DESIGN_INVALID_C1_MUTATION_SCOPE.yaml": (
+        "f5e7c456d0b928559193553d4a58f9e1fcbacea5",
+        "ee1a353d6ddea3ee6106656dadd3a0c95487ef6b740d980c0b75adbaca17ab03",
+    ),
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_DESIGN_INVALID_C2_MUTATION_SCOPE.yaml": (
+        "f8ba1b2a0a03013f153e5051ad57496687e7d119",
+        "aa003759d276e337d7597bcb19eb3711e9ca47e1776dd1e9163609fd0d46d17c",
+    ),
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_DESIGN_INVALID_FAMILY_CLOSEOUT_TASK_CARD.md": (
+        "811fc223c47879064a6582d63a6abd51c620db37",
+        "eaa3c6af7f0bf29bd6cb84f49f78042acf1ac98a0b7a85c0c05580839efc18f9",
+    ),
+    AUDIT_SCRIPT_PATH: (
+        "3b1561126228da15beffde90a5a6f8ac5bf4f83c",
+        "eb3214cb792fadc8b27377ae20716c95cb9965357dc5884cf4de58075b77bc9b",
+    ),
+}
+PROTECTED_HEAD_OBJECTS = {
+    P1R0_BLUEPRINT_PATH: P1R0_BLUEPRINT_BLOB,
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_EXECUTABLE_DESIGN_MUTATION_SCOPE.yaml": "ac53f72ba5ee441fa8e1473db892d32742ec5b80",
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_EXECUTABLE_DESIGN_TASK_CARD.md": "8e3bd21529a62b9894c1105ac090396bcc90983c",
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_PRIOR_BLOCKER_RECORD.json": "bb12ac725bcd208d5239aafe75008c5ce4c82f6e",
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/PREFLIGHT_CONTRACT.json": "d09235eff74ec68b5cc5004873af1b1186d7ee39",
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/PREFLIGHT_STAGE_CARD.md": "06e1484a61ed18a863f4ecdb8352aab951bbfb07",
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/PREFLIGHT_MUTATION_SCOPE.yaml": "883703d79dbdfbca3792df3efc815fefc9b851fe",
+    P1_TASK_CARD_PATH: P1_TASK_CARD_BLOB,
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1A_AUTHORIZATION_MUTATION_SCOPE.yaml": "5b3e192fe06791533b9f2292d9372bc559d9a253",
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1B_INSTRUMENT_MUTATION_SCOPE.yaml": "c87bc1847d8e29e5e90e07e6c58c02ec9bbd3f87",
+    "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1C_CLOSEOUT_MUTATION_SCOPE.yaml": "58a1687a278403fb82e0f4774e3a424bdb624a8d",
+    "docs/codex/tasks/TASK_LANE_INDEX.md": "c53712f36d19c0e8bf1166937c5977e5a00d39d1",
+    "scripts/codex/route_convergence_common.py": "f9550bc3c4a1cc881a603ec8c542c1b141435fbe",
+    "packages/ego_k0_kernel": "43380f76c37b05f36a4a4ef45354048787cafe68",
+    "artifacts/ego_k0_foundation_001a": "907457e7d3028ba5437cf0e7730ec068a21cbf6b",
+}
+MANDATORY_AUDIT_FINDINGS = {
+    "module_keys:contract.py",
+    "module_keys:workload.py",
+    "module_keys:oracles.py",
+    "module_keys:baselines.py",
+    "module_keys:metrics.py",
+    "module_keys:leakage.py",
+    "module_keys:replay.py",
+    "module_keys:producer.py",
+    "module_keys:template_collapse",
+    "traceability:callable_mapping",
+    "traceability:failure_mapping",
+    "baseline:no_feedback_access",
+    "baseline:observation_only_access",
+    "baseline:matched_marginal_target",
+    "baseline:legal_map_semantics",
+    "baseline:specialist_target",
+    "seed_firewall:fitted_history_meta_mlp",
+    "seed_firewall:from_scratch_online_logistic",
+    "formal:authorization_contract",
+    "formal:transition_guards",
+    "seed:formal_phase_mapping",
+    "embedded_lint:blocked_branch",
+    "embedded_lint:semantic_coverage",
+}
+EXPECTED_LEDGER_ENTRY = {
+    "evidence_id": "ego_learned_outcome_kernel_p1r0_design_invalidity_001a",
+    "status": "fail",
+    "evidence_level": "E2",
+    "source_type": "unit",
+    "artifact_path": AUDIT_RESULT_PATH,
+    "what_it_proves": (
+        "bounded callable evidence that the stored P1R0 design-admission FEASIBLE "
+        "result is a false positive and cannot admit P1R1 in the current "
+        "P0/P1/P1R0 lineage"
+    ),
+    "what_it_does_not_prove": (
+        "surface impossibility, theory or mechanism invalidity, learning, product "
+        "readiness, runtime/mainline effect, agency, subjectivity or consciousness"
+    ),
+    "related_workstream": "k0_developmental_kernel_dual_track",
+    "created_at": "2026-07-12T00:00:00Z",
+    "created_from_commit": C1_AUDIT_COMMIT,
+}
+LEDGER_APPEND_BYTES = (
+    '  - evidence_id: "ego_learned_outcome_kernel_p1r0_design_invalidity_001a"\n'
+    '    status: "fail"\n'
+    '    evidence_level: "E2"\n'
+    '    source_type: "unit"\n'
+    f'    artifact_path: "{AUDIT_RESULT_PATH}"\n'
+    '    what_it_proves: "bounded callable evidence that the stored P1R0 design-admission FEASIBLE result is a false positive and cannot admit P1R1 in the current P0/P1/P1R0 lineage"\n'
+    '    what_it_does_not_prove: "surface impossibility, theory or mechanism invalidity, learning, product readiness, runtime/mainline effect, agency, subjectivity or consciousness"\n'
+    '    related_workstream: "k0_developmental_kernel_dual_track"\n'
+    '    created_at: "2026-07-12T00:00:00Z"\n'
+    f'    created_from_commit: "{C1_AUDIT_COMMIT}"\n'
+).encode("utf-8")
 
 EXPECTED_GOVERNANCE_SYNC: dict[str, Any] = {
     "record_type": "SOURCE_PINNED_DERIVED_READBACK",
@@ -157,7 +288,7 @@ EXPECTED_GOVERNANCE_SYNC: dict[str, Any] = {
     },
     "future_product_route": {
         "task_id": "EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-001A",
-        "current_status": "P1_INSTRUMENT_BLOCKED__AUTHORIZATION_CONSUMED__FORMAL_EXECUTION_NOT_AUTHORIZED",
+        "current_status": FUTURE_PRODUCT_STATUS,
         "prior_governance_sync_created_card": False,
         "this_card_bank_creates_card": True,
         "stage_card_banked": True,
@@ -175,7 +306,12 @@ EXPECTED_GOVERNANCE_SYNC: dict[str, Any] = {
         "mainline_connected": False,
         "non_mainline_required": True,
         "runtime_authority": "none",
-        "current_operator_authorization_scope": "P1_INSTRUMENT_AUTHORIZATION_CONSUMED__P2_REQUIRES_FRESH_AUTHORIZATION",
+        "current_operator_authorization_scope": (
+            "PREFLIGHT_INSTRUMENT_FAMILY_CLOSED_INVALID__NEW_SURFACE_REQUIRES_FRESH_TASK"
+        ),
+        "same_surface_successor_authorized": False,
+        "new_surface_requires_fresh_task_id": True,
+        "current_surface_reuse_authorized": False,
         "requires_separate_bounded_stage_card": False,
         "requires_fresh_operator_authorization": True,
         "requires_fresh_candidate_preflight_authorization": True,
@@ -210,6 +346,29 @@ EXPECTED_GOVERNANCE_SYNC: dict[str, Any] = {
             "p1_task_card_path": P1_TASK_CARD_PATH,
             "p1_task_card_blob": P1_TASK_CARD_BLOB,
             "p1_task_card_sha256": P1_TASK_CARD_SHA256,
+            "p1r0_design_banked": True,
+            "p1r0_design_commit": P1R0_SOURCE_COMMIT,
+            "p1r0_stored_feasibility_verdict": (
+                "P1R0_EXECUTABLE_DESIGN_FEASIBLE_FOR_ONE_P1R1_ATTEMPT_ONLY"
+            ),
+            "p1r0_independent_audit_banked": True,
+            "p1r0_independent_audit_commit": C1_AUDIT_COMMIT,
+            "p1r0_independent_audit_script_path": AUDIT_SCRIPT_PATH,
+            "p1r0_independent_audit_script_blob": C1_PATH_PINS[AUDIT_SCRIPT_PATH][0],
+            "p1r0_independent_audit_script_sha256": C1_PATH_PINS[AUDIT_SCRIPT_PATH][1],
+            "p1r0_independent_audit_result_path": AUDIT_RESULT_PATH,
+            "p1r0_independent_audit_result_blob": C1_PATH_PINS[AUDIT_RESULT_PATH][0],
+            "p1r0_independent_audit_result_sha256": C1_PATH_PINS[AUDIT_RESULT_PATH][1],
+            "p1r0_independent_audit_verdict": AUDIT_INVALID_VERDICT,
+            "p1r0_independent_audit_blocking_finding_count": 23,
+            "p1r0_feasible_admission_valid": False,
+            "p1r1_authorized": False,
+            "p2_authorized": False,
+            "preflight_instrument_family_disposition": FAMILY_DISPOSITION,
+            "independent_validator_acceptance": "UNAVAILABLE",
+            "local_callable_is_independent_validator": False,
+            "surface_mathematical_status": "NOT_ADJUDICATED",
+            "surface_impossibility_not_claimed": True,
             "authorized_preflight_instrument_targets": [],
         },
     },
@@ -253,6 +412,161 @@ def _git_bytes(args: list[str]) -> bytes | None:
     return proc.stdout if proc.returncode == 0 else None
 
 
+def _mapping_contains_key(node: Any, key: str) -> bool:
+    if isinstance(node, dict):
+        return key in node or any(_mapping_contains_key(value, key) for value in node.values())
+    if isinstance(node, list):
+        return any(_mapping_contains_key(value, key) for value in node)
+    return False
+
+
+def _validate_committed_audit(errors: list[str]) -> dict[str, Any] | None:
+    repo_root = REPO_HYGIENE_POLICY_PATH.parents[1]
+    if _git_lines(["rev-parse", f"{C1_AUDIT_COMMIT}^"]) != [C1_AUDIT_PARENT]:
+        errors.append("C1 audit commit parent does not match the pinned P1R0 source commit")
+
+    c1_diff = set(
+        _git_lines(["diff-tree", "--no-commit-id", "--name-status", "-r", C1_AUDIT_COMMIT])
+    )
+    expected_c1_diff = {f"A\t{path}" for path in C1_PATH_PINS}
+    if c1_diff != expected_c1_diff:
+        errors.append("C1 audit commit does not contain the exact five additions")
+
+    committed_bytes: dict[str, bytes] = {}
+    for path, (expected_blob, expected_sha256) in C1_PATH_PINS.items():
+        if _git_lines(["rev-parse", f"{C1_AUDIT_COMMIT}:{path}"]) != [expected_blob]:
+            errors.append(f"C1 blob pin mismatch: {path}")
+            continue
+        data = _git_bytes(["cat-file", "blob", f"{C1_AUDIT_COMMIT}:{path}"])
+        if data is None or hashlib.sha256(data).hexdigest() != expected_sha256:
+            errors.append(f"C1 raw SHA-256 pin mismatch: {path}")
+            continue
+        committed_bytes[path] = data
+
+    if _git_lines(["rev-parse", f"{P1R0_SOURCE_COMMIT}:{P1R0_BLUEPRINT_PATH}"]) != [
+        P1R0_BLUEPRINT_BLOB
+    ]:
+        errors.append("P1R0 blueprint blob pin does not match the source commit")
+    blueprint_bytes = _git_bytes(
+        ["cat-file", "blob", f"{P1R0_SOURCE_COMMIT}:{P1R0_BLUEPRINT_PATH}"]
+    )
+    if blueprint_bytes is None or hashlib.sha256(blueprint_bytes).hexdigest() != P1R0_BLUEPRINT_SHA256:
+        errors.append("P1R0 blueprint SHA-256 pin does not match the source commit")
+
+    script_bytes = committed_bytes.get(AUDIT_SCRIPT_PATH)
+    result_bytes = committed_bytes.get(AUDIT_RESULT_PATH)
+    if script_bytes is None or result_bytes is None:
+        return None
+    if len(result_bytes) != 16589:
+        errors.append("committed audit result length is not the canonical 16589 bytes")
+
+    fd, temporary_script = tempfile.mkstemp(prefix="p1r0_committed_audit_", suffix=".py")
+    os.close(fd)
+    try:
+        with open(temporary_script, "wb") as stream:
+            stream.write(script_bytes)
+        proc = subprocess.run(
+            [
+                sys.executable,
+                temporary_script,
+                "--repo",
+                str(repo_root),
+                "--source-commit",
+                P1R0_SOURCE_COMMIT,
+                "--require-invalid",
+            ],
+            cwd=repo_root,
+            capture_output=True,
+            check=False,
+        )
+    finally:
+        try:
+            os.unlink(temporary_script)
+        except FileNotFoundError:
+            pass
+    if proc.returncode != 0:
+        errors.append(
+            "committed independent audit execution failed: "
+            + proc.stderr.decode("utf-8", errors="replace").strip()
+        )
+        return None
+    if proc.stdout != result_bytes:
+        errors.append("committed independent audit stdout does not byte-match the committed result")
+        return None
+
+    try:
+        report = json.loads(result_bytes)
+    except json.JSONDecodeError as exc:
+        errors.append(f"committed independent audit result is not valid JSON: {exc}")
+        return None
+
+    if report.get("producer_function") != "audit_blueprint":
+        errors.append("audit producer_function is not the callable audit_blueprint path")
+    if report.get("code_path_hash") != C1_PATH_PINS[AUDIT_SCRIPT_PATH][1]:
+        errors.append("audit code_path_hash does not match the committed auditor")
+    if report.get("run_id") != "p1r0-semantic-audit-5e7a43afa2eb1344":
+        errors.append("audit deterministic run_id differs from the pinned computation")
+    if report.get("source_commit") != P1R0_SOURCE_COMMIT:
+        errors.append("audit source commit differs from the pinned P1R0 commit")
+    if (report.get("self_test") or {}).get("all_pass") is not True:
+        errors.append("audit positive/negative control self-test did not pass")
+    findings = report.get("blocking_findings") or []
+    finding_ids = [item.get("check_id") for item in findings if isinstance(item, dict)]
+    if report.get("blocking_finding_count") != 23 or len(finding_ids) != 23:
+        errors.append("audit must contain exactly 23 computed blocking findings")
+    if set(finding_ids) != MANDATORY_AUDIT_FINDINGS or len(set(finding_ids)) != 23:
+        errors.append("audit mandatory finding IDs do not match the frozen 23-ID set")
+    if report.get("computed_verdict") != AUDIT_INVALID_VERDICT:
+        errors.append("audit did not compute the required INVALID verdict")
+    if report.get("stored_feasibility_verdict") != (
+        "P1R0_EXECUTABLE_DESIGN_FEASIBLE_FOR_ONE_P1R1_ATTEMPT_ONLY"
+    ):
+        errors.append("audit did not preserve the stored P1R0 FEASIBLE verdict separately")
+    if report.get("p1r1_admissible") is not False or report.get("p2_admissible") is not False:
+        errors.append("audit must deny P1R1 and P2 admissibility")
+    boundaries = report.get("policy_boundaries") or {}
+    if boundaries.get("independent_validator_acceptance") != "UNAVAILABLE":
+        errors.append("audit must retain independent validator acceptance as UNAVAILABLE")
+    if boundaries.get("local_callable_is_independent_validator") is not False:
+        errors.append("local callable audit must not be represented as an independent validator")
+    if boundaries.get("surface_mathematical_status") != "NOT_ADJUDICATED":
+        errors.append("surface mathematical status must remain NOT_ADJUDICATED")
+    if boundaries.get("surface_impossibility_not_claimed") is not True:
+        errors.append("surface impossibility must remain explicitly unclaimed")
+
+    input_hashes = report.get("input_artifact_hashes") or {}
+    input_blobs = report.get("input_artifact_blobs") or {}
+    for path, expected_sha256 in input_hashes.items():
+        source_bytes = _git_bytes(["cat-file", "blob", f"{P1R0_SOURCE_COMMIT}:{path}"])
+        if source_bytes is None or hashlib.sha256(source_bytes).hexdigest() != expected_sha256:
+            errors.append(f"audit input SHA-256 does not match pinned Git bytes: {path}")
+        if _git_lines(["rev-parse", f"{P1R0_SOURCE_COMMIT}:{path}"]) != [input_blobs.get(path)]:
+            errors.append(f"audit input blob does not match pinned Git object: {path}")
+    return report
+
+
+def _validate_additive_ledger(errors: list[str]) -> None:
+    repo_root = REPO_HYGIENE_POLICY_PATH.parents[1]
+    if _git_lines(["rev-parse", f"{C1_AUDIT_COMMIT}:artifacts/evidence_ledger/index.yaml"]) != [
+        C1_LEDGER_BLOB
+    ]:
+        errors.append("C1 pre-append evidence-ledger blob pin does not match")
+        return
+    prior_bytes = _git_bytes(
+        ["cat-file", "blob", f"{C1_AUDIT_COMMIT}:artifacts/evidence_ledger/index.yaml"]
+    )
+    current_bytes = (repo_root / "artifacts/evidence_ledger/index.yaml").read_bytes()
+    canonical_current_bytes = current_bytes.replace(b"\r\n", b"\n")
+    expected_bytes = None if prior_bytes is None else prior_bytes + LEDGER_APPEND_BYTES
+    if expected_bytes is None or canonical_current_bytes != expected_bytes:
+        errors.append("evidence ledger is not the exact byte-preserving single-entry append")
+    head_bytes = _git_bytes(["cat-file", "blob", "HEAD:artifacts/evidence_ledger/index.yaml"])
+    if head_bytes not in {prior_bytes, expected_bytes}:
+        errors.append("HEAD evidence-ledger blob is neither the pinned parent nor exact additive result")
+    if current_bytes.count(EXPECTED_LEDGER_ENTRY["evidence_id"].encode("utf-8")) != 1:
+        errors.append("bounded P1R0 invalidity ledger entry must occur exactly once")
+
+
 def _check_generated_file(path, expected: str, errors: list[str]) -> None:
     if not path.exists():
         errors.append(f"missing generated file: {path}")
@@ -269,6 +583,8 @@ def validate_route_convergence(
     check_generated_files: bool = True,
 ) -> list[str]:
     errors: list[str] = []
+    audit_report = _validate_committed_audit(errors)
+    _validate_additive_ledger(errors)
     if check_generated_files:
         expected_lane_index = render_task_lane_index(program_state)
         expected_hygiene_policy = render_repo_hygiene_policy()
@@ -375,6 +691,74 @@ def validate_route_convergence(
         errors.append("K0 governance_sync mapping does not match the pinned closed-invalid contract")
 
     future_product_route = (governance_sync or {}).get("future_product_route") or {}
+    preflight = future_product_route.get("candidate_independent_preflight") or {}
+    if program_state.get("program", {}).get("next_minimal_action") != NEXT_MINIMAL_ACTION:
+        errors.append("program.next_minimal_action does not match the exact family-closeout denial")
+    if future_product_route.get("current_status") != FUTURE_PRODUCT_STATUS:
+        errors.append("future product route status does not record the exact P1R0 invalid family closeout")
+    if future_product_route.get("current_operator_authorization_scope") != (
+        "PREFLIGHT_INSTRUMENT_FAMILY_CLOSED_INVALID__NEW_SURFACE_REQUIRES_FRESH_TASK"
+    ):
+        errors.append("current operator authorization scope does not require a fresh new-surface task")
+    expected_surface_boundaries = {
+        "same_surface_successor_authorized": False,
+        "new_surface_requires_fresh_task_id": True,
+        "current_surface_reuse_authorized": False,
+    }
+    for key, expected in expected_surface_boundaries.items():
+        if future_product_route.get(key) is not expected:
+            errors.append(f"future product route boundary mismatch: {key}")
+    if preflight.get("preflight_instrument_family_disposition") != FAMILY_DISPOSITION:
+        errors.append("current P0/P1/P1R0 instrument lineage is not closed invalid")
+    if audit_report is not None and preflight.get("p1r0_independent_audit_verdict") != audit_report.get(
+        "computed_verdict"
+    ):
+        errors.append("Program State audit verdict does not equal the recomputed callable verdict")
+    if preflight.get("p1r0_stored_feasibility_verdict") != (
+        "P1R0_EXECUTABLE_DESIGN_FEASIBLE_FOR_ONE_P1R1_ATTEMPT_ONLY"
+    ):
+        errors.append("Program State did not preserve the stored P1R0 FEASIBLE verdict")
+    if _mapping_contains_key(program_state, "product_results_have_mechanism_attribution"):
+        errors.append("wrong near-key product_results_have_mechanism_attribution is forbidden")
+
+    root_authorizations = (governance_sync or {}).get("root_authorizations") or {}
+    route_authorizations = (governance_sync or {}).get("route_authorizations") or {}
+    child_authorizations = (governance_sync or {}).get("child_authorizations") or {}
+    if root_authorizations.get("authorized_implementation_targets") != []:
+        errors.append("authorized implementation targets must remain empty")
+    if any(value is not False for key, value in root_authorizations.items() if key != "authorized_implementation_targets"):
+        errors.append("all root authorization values must remain false")
+    if any(value is not False for value in route_authorizations.values()):
+        errors.append("all route authorization values must remain false")
+    if len(child_authorizations) != 6 or any(value is not False for value in child_authorizations.values()):
+        errors.append("all six historical child authorization values must remain false")
+    for key in (
+        "route_registered",
+        "candidate_preflight_authorized",
+        "implementation_authorized",
+        "enabled",
+        "mainline_connected",
+    ):
+        if future_product_route.get(key) is not False:
+            errors.append(f"future product route execution boundary must remain false: {key}")
+    if future_product_route.get("runtime_authority") != "none":
+        errors.append("future product route runtime authority must remain none")
+    for key in (
+        "instrument_implementation_authorized",
+        "dev_instrument_execution_authorized",
+        "formal_preflight_authorized",
+        "p1r1_authorized",
+        "p2_authorized",
+    ):
+        if preflight.get(key) is not False:
+            errors.append(f"preflight authorization must remain false: {key}")
+    if preflight.get("authorized_preflight_instrument_targets") != []:
+        errors.append("authorized preflight instrument targets must remain empty")
+    firewall = (governance_sync or {}).get("science_route_firewall") or {}
+    if firewall.get("product_results_have_science_weight") is not False:
+        errors.append("product results must retain no science weight")
+    if firewall.get("product_results_can_supply_mechanism_attribution") is not False:
+        errors.append("product results must not supply mechanism attribution")
     bank_commit = str(future_product_route.get("stage_card_bank_commit") or "")
     bank_parent = str(future_product_route.get("stage_card_bank_parent") or "")
     card_path = str(future_product_route.get("stage_card_path") or "")
@@ -429,9 +813,17 @@ def validate_route_convergence(
     ]
     if instrument_paths_present:
         errors.append("blocked P1 instrument paths must be absent after authorization consumption")
-    ledger_blob = _git_lines(["rev-parse", "HEAD:artifacts/evidence_ledger/index.yaml"])
-    if ledger_blob != [EVIDENCE_LEDGER_BLOB]:
-        errors.append("evidence ledger changed during the P1 instrument transaction")
+    forbidden_execution_paths = (
+        "packages/ego_learned_outcome_kernel",
+        "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P2_FORMAL_AUTHORIZATION.json",
+    )
+    for relative in forbidden_execution_paths:
+        if (repo_root / relative).exists():
+            errors.append(f"forbidden formal/product path must remain absent: {relative}")
+
+    for path, expected_object in PROTECTED_HEAD_OBJECTS.items():
+        if _git_lines(["rev-parse", f"HEAD:{path}"]) != [expected_object]:
+            errors.append(f"protected P0/P1/P1R0/Foundation object drift: {path}")
 
     foundation_sink_text = " ".join(
         (
@@ -481,6 +873,7 @@ def main() -> int:
     governance_sync = k0_workstream.get("governance_sync") or {}
     verifier_family = governance_sync.get("verifier_family") or {}
     future_product_route = governance_sync.get("future_product_route") or {}
+    preflight = future_product_route.get("candidate_independent_preflight") or {}
     reference_kernel_entries = [entry for entry in entries if entry.key == "ego-k0-reference-kernel-001a"]
     future_product_entries = [entry for entry in entries if entry.key == FUTURE_PRODUCT_TASK_KEY]
     active_default_entries = [entry for entry in entries if entry.lane == "active_default"]
@@ -496,6 +889,16 @@ def main() -> int:
                 ),
                 "verifier_family_disposition": verifier_family.get("family_disposition"),
                 "independent_validator_acceptance": verifier_family.get("independent_validator_acceptance"),
+                "local_callable_is_independent_validator": preflight.get(
+                    "local_callable_is_independent_validator"
+                ),
+                "surface_mathematical_status": preflight.get("surface_mathematical_status"),
+                "surface_impossibility_not_claimed": preflight.get(
+                    "surface_impossibility_not_claimed"
+                ),
+                "preflight_instrument_family_disposition": preflight.get(
+                    "preflight_instrument_family_disposition"
+                ),
                 "future_product_route_status": future_product_route.get("current_status"),
                 "future_product_route_lane": (
                     future_product_entries[0].lane if len(future_product_entries) == 1 else None
