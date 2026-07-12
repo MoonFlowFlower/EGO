@@ -1,0 +1,672 @@
+{
+  "schema_version": "ego.learned_outcome_kernel.capability_preflight.v1",
+  "task_id": "EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-PREFLIGHT-001A",
+  "contract_id": "FACTORED-STOCHASTIC-OUTCOME-SURFACE-v1-prereg-001A",
+  "contract_status": "FROZEN_PREREG_ONLY_EXECUTION_NOT_AUTHORIZED",
+  "candidate_present": false,
+  "candidate_scores": [],
+  "auto_remote_anchor": "forbidden",
+  "parent": {
+    "task_id": "EGO-LEARNED-OUTCOME-KERNEL-CAPABILITY-001A",
+    "commit": "a5b33745c785676f6c63cadf7946997ba8426b8c",
+    "path": "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/STAGE_CARD.md",
+    "blob": "9675a6baeafed8eab6cbcc9b2da7a2be226aac3e",
+    "sha256": "ec41623c48eaf518a033d47b927fa4e9efc511d923c9091c30f80e0fccc0e3ad"
+  },
+  "authorization": {
+    "p0_prereg_bank": true,
+    "instrument_implementation": false,
+    "dev_execution": false,
+    "formal_execution": false,
+    "candidate_preflight_authorized": false,
+    "candidate_implementation": false,
+    "route_registration": false,
+    "runtime": false,
+    "mainline": false,
+    "science": false
+  },
+  "product_abstraction_origin": {
+    "source": "parent Stage Card section 2 narrow product observable",
+    "observation": "bounded context descriptor",
+    "legal_actions": "bounded action descriptors",
+    "feedback": "one-step delayed observed binary outcome",
+    "utility": "expected success probability",
+    "execution_authority": false,
+    "real_product_relevance_claimed": false
+  },
+  "surface_selection": {
+    "formal_surface_count": 1,
+    "formal_surface_id": "FACTORED-STOCHASTIC-OUTCOME-SURFACE-v1",
+    "alternative_surface_search_allowed": false,
+    "selection_rule": "all formal metrics use this surface; known controls are excluded from the formal aggregate",
+    "failure_repair_rule": "no environment, split, seed, metric, band or threshold change under this task id"
+  },
+  "surface": {
+    "kind": "offline_synthetic_action_conditioned_stochastic_outcome",
+    "latent": {
+      "name": "z",
+      "dimension": 8,
+      "domain": [-1, 1],
+      "state_count": 256,
+      "enumeration": "lexicographic with -1 before +1",
+      "public_prior": "uniform over all 256 states",
+      "candidate_visible": false
+    },
+    "context": {
+      "name": "x",
+      "dimension": 4,
+      "domain": [-1, 1],
+      "space": "all 16 vectors in lexicographic order"
+    },
+    "action_descriptors": [
+      [1, 1, 1, 1],
+      [1, -1, 1, -1],
+      [1, 1, -1, -1],
+      [1, -1, -1, 1],
+      [-1, -1, -1, -1],
+      [-1, 1, -1, 1],
+      [-1, -1, 1, 1],
+      [-1, 1, 1, -1]
+    ],
+    "feature_terms": [
+      "x[0]*a[0]",
+      "x[1]*a[1]",
+      "x[2]*a[2]",
+      "x[3]*a[3]",
+      "x[0]*a[1]",
+      "x[1]*a[2]",
+      "x[2]*a[3]",
+      "x[3]*a[0]"
+    ],
+    "outcome_law": {
+      "type": "bernoulli",
+      "logit": "0.7 * dot(z, phi(x,a)) / sqrt(8)",
+      "probability": "sigmoid(logit)",
+      "feedback_delay_steps": 1
+    },
+    "episode": {
+      "history_length": 32,
+      "checkpoints": [0, 2, 4, 8, 16, 32],
+      "primary_auc_checkpoints": [4, 8, 16, 32],
+      "required_consecutive_checkpoints": [8, 16],
+      "probe_contexts": "all 16 context vectors",
+      "probe_actions": "all 8 action descriptors",
+      "probe_pair_count_per_checkpoint": 128
+    }
+  },
+  "collection_policy": {
+    "candidate_independent": true,
+    "all_eight_actions_legal_each_step": true,
+    "display_order": "seeded independent permutation each step",
+    "chosen_action": "canonical action_descriptors[step_index mod 8], independent of display position and outcomes",
+    "context_order": "two independently seeded permutations of all 16 contexts",
+    "adaptive_action_selection": false,
+    "candidate_or_baseline_controls_collection": false
+  },
+  "information_boundary": {
+    "legal_packet_fields": [
+      "current_context_descriptor",
+      "randomly_ordered_legal_action_descriptors",
+      "prior_legal_context_descriptors",
+      "prior_chosen_action_descriptors",
+      "prior_observed_binary_outcomes",
+      "history_length"
+    ],
+    "evaluator_only_fields": [
+      "private_z",
+      "z_index",
+      "split_identity",
+      "seed_material",
+      "true_private_probability",
+      "oracle_posterior",
+      "optimal_action",
+      "verdict"
+    ],
+    "forbidden_candidate_inputs": [
+      "private_z",
+      "z_index",
+      "task_id",
+      "family_id",
+      "split_id",
+      "seed",
+      "sequence_position_as_task_identity",
+      "oracle_prediction",
+      "optimal_action",
+      "future_outcome",
+      "fixture_name",
+      "artifact_path",
+      "evaluator_verdict"
+    ],
+    "ground_truth_writer": "frozen generator only",
+    "candidate_can_write_ground_truth": false
+  },
+  "splits": {
+    "bit_mapping": "-1 maps to 0; +1 maps to 1",
+    "train": {
+      "rule": "all z vectors with even XOR parity",
+      "task_count": 128,
+      "episodes_per_task": 8
+    },
+    "validation": {
+      "rule": "odd-parity z vectors at even zero-based rank within the lexicographically sorted odd-parity list",
+      "task_count": 64,
+      "episodes_per_task": 4
+    },
+    "heldout_test": {
+      "rule": "odd-parity z vectors at odd zero-based rank within the lexicographically sorted odd-parity list",
+      "task_count": 64,
+      "episodes_per_task": 8
+    },
+    "overlap_allowed": false,
+    "split_identity_in_legal_packet": false,
+    "formal_bootstrap_unit": "heldout z task"
+  },
+  "seed_plan": {
+    "derivation_algorithm": "SHA-256",
+    "input_template": "contract_id|stream_domain|z_index|replicate_index|step_index",
+    "integer_conversion": "first 8 digest bytes interpreted unsigned big-endian and masked to 63 bits",
+    "stream_domains": [
+      "dev_history",
+      "dev_outcome",
+      "dev_action_order",
+      "train_history",
+      "train_outcome",
+      "train_action_order",
+      "validation_history",
+      "validation_outcome",
+      "validation_action_order",
+      "formal_history",
+      "formal_outcome",
+      "formal_action_order",
+      "smc_reference",
+      "meta_mlp_fit",
+      "online_logistic_fit",
+      "leakage_positive_control",
+      "fresh_replay_one",
+      "fresh_replay_two"
+    ],
+    "bootstrap_seed": 9001,
+    "dev_task_source": "first 8 lexicographic train tasks only",
+    "dev_replicates": [0, 1],
+    "formal_streams_forbidden_before_instrument_commit": [
+      "formal_history",
+      "formal_outcome",
+      "formal_action_order"
+    ],
+    "all_derived_seed_values_must_be_unique": true,
+    "unused_seed_is_blocking": true
+  },
+  "targets_and_oracles": {
+    "legal_target": {
+      "symbol": "q(H,x,a)",
+      "definition": "P(y=1 | uniform public family prior, complete legal history H, current context x, queried action a)",
+      "reads_private_z": false,
+      "reads_split_identity": false,
+      "reads_seed": false
+    },
+    "illegal_answer_key_diagnostic": {
+      "id": "clairvoyant_private_z_oracle",
+      "reads_private_z": true,
+      "admission_weight": 0,
+      "may_support_admission": false
+    },
+    "legal_exact_ceiling": {
+      "id": "exact_256_state_legal_bayes",
+      "implementation": "enumerate all 256 public latent states and update posterior from legal history likelihood only",
+      "reads_private_z": false,
+      "admission_role": "legal_ceiling"
+    },
+    "feasible_admission_reference": {
+      "id": "smc_128_legal_reference",
+      "implementation": "128-particle sequential Monte Carlo over the public latent family with systematic resampling",
+      "particle_count": 128,
+      "resample_when_ess_below": 64,
+      "reads_private_z": false,
+      "reads_split_identity": false,
+      "resource_budget": "CPU only; one posterior update per legal feedback row",
+      "admission_role": "feasible_reference"
+    },
+    "legality_checks": [
+      "same legal packet produces bit-exact q in fresh process",
+      "private z swap with unchanged legal packet leaves q unchanged",
+      "history removal yields the public-prior predictor",
+      "checkpoint zero legal ceiling equals no-feedback prior within equivalence band",
+      "non-reading oracle negative control scores zero on private-state recovery"
+    ]
+  },
+  "metrics": {
+    "primary_metrics_must_pass_separately": true,
+    "composite_scalar_forbidden": true,
+    "calibration": {
+      "id": "expected_proper_brier_risk",
+      "formula": "q*(1-p)^2 + (1-q)*p^2",
+      "orientation": "lower_is_better",
+      "headroom": "best_invalidating_control_risk - feasible_reference_risk"
+    },
+    "decision_quality": {
+      "id": "legal_posterior_expected_value",
+      "model_action": "argmax_a p_model(H,x,a)",
+      "value": "mean q(H,x,argmax_a p_model)",
+      "orientation": "higher_is_better",
+      "headroom": "feasible_reference_value - best_invalidating_control_value"
+    },
+    "secondary_sanity_metrics": [
+      "realized_outcome_brier",
+      "realized_outcome_negative_log_likelihood",
+      "prediction_range",
+      "action_selection_entropy"
+    ],
+    "clip_for_nll": [0.000001, 0.999999],
+    "threshold_selection_after_formal_data": false
+  },
+  "statistical_contract": {
+    "equivalence_band": 0.01,
+    "minimum_detectable_effect": 0.02,
+    "confidence_interval": "paired percentile 95%",
+    "bootstrap_unit": "heldout z task",
+    "bootstrap_replicates": 10000,
+    "bootstrap_seed": 9001,
+    "episode_or_probe_as_independent_bootstrap_unit": false,
+    "auc_aggregation": "equal-weight arithmetic mean over checkpoints 4, 8, 16 and 32",
+    "admission_headroom_rule": {
+      "auc_calibration_lower_bound_gt": 0.02,
+      "auc_decision_lower_bound_gt": 0.02,
+      "checkpoint_8_calibration_lower_bound_gt": 0.02,
+      "checkpoint_8_decision_lower_bound_gt": 0.02,
+      "checkpoint_16_calibration_lower_bound_gt": 0.02,
+      "checkpoint_16_decision_lower_bound_gt": 0.02
+    },
+    "no_best_checkpoint_selection": true
+  },
+  "baseline_role_registry": {
+    "role_semantics": {
+      "invalidating_control": "matching the legal ceiling within the equivalence band rejects shortcut-free headroom",
+      "feasible_reference": "must beat all invalidating controls for admission",
+      "capability_rival": "matching may remove novelty or superiority but does not by definition erase legal-channel adaptation",
+      "diagnostic_only": "cannot contribute to admission",
+      "deferred_candidate_dependent": "mandatory only after a product candidate exists"
+    },
+    "invalidating_controls": [
+      {
+        "id": "no_feedback_public_prior",
+        "implementation": "constant public-prior probability 0.5"
+      },
+      {
+        "id": "global_marginal_majority",
+        "implementation": "train-split observed-outcome marginal"
+      },
+      {
+        "id": "constant_probability_sweep",
+        "implementation": "probabilities 0.0 through 1.0 inclusive in increments of 0.05; selection on validation only"
+      },
+      {
+        "id": "random_probability_matched_marginal",
+        "implementation": "seeded probabilities matched to train marginal"
+      },
+      {
+        "id": "constant_action_position",
+        "implementation": "always select one displayed position; sweep all eight positions on validation"
+      },
+      {
+        "id": "random_legal_action",
+        "implementation": "seeded uniform action selection"
+      },
+      {
+        "id": "uniform_all_actions_tie",
+        "implementation": "all actions receive the same prediction"
+      },
+      {
+        "id": "observation_action_logistic",
+        "implementation": "fitted sklearn logistic regression using current context and queried action only"
+      },
+      {
+        "id": "static_full_history_ridge_decoder",
+        "implementation": "fitted static ridge/logistic decoder over padded legal history plus query; no state update at evaluation"
+      },
+      {
+        "id": "exact_history_lookup",
+        "implementation": "exact legal-history key lookup from train histories only"
+      },
+      {
+        "id": "nearest_neighbor_history",
+        "implementation": "nearest-neighbor over padded legal histories with fixed Hamming/L2 distance"
+      },
+      {
+        "id": "ngram_history_lookup",
+        "implementation": "last-k legal history n-gram lookup with k values 1, 2 and 4 selected on validation"
+      },
+      {
+        "id": "graph_lookup",
+        "implementation": "graph key from quantized legal history to empirical outcome distribution"
+      },
+      {
+        "id": "transition_table",
+        "implementation": "context-action-last-feedback transition table"
+      },
+      {
+        "id": "successor_map",
+        "implementation": "legal-history successor outcome map"
+      },
+      {
+        "id": "count_table",
+        "implementation": "beta-binomial counts by context and action descriptor"
+      },
+      {
+        "id": "fsm_planner",
+        "implementation": "finite-state predictor over last two chosen actions and outcomes"
+      },
+      {
+        "id": "episodic_traversal",
+        "implementation": "nearest training-episode prefix traversal"
+      },
+      {
+        "id": "trace_only_replay",
+        "implementation": "replay nearest stored legal trace without new posterior computation"
+      },
+      {
+        "id": "recency_ewma",
+        "implementation": "per-action exponentially weighted outcome mean with alpha values 0.1, 0.3 and 0.5 selected on validation"
+      }
+    ],
+    "feasible_reference": [
+      {
+        "id": "smc_128_legal_reference",
+        "required": true
+      }
+    ],
+    "capability_rivals": [
+      {
+        "id": "fitted_history_meta_mlp",
+        "library": "sklearn.neural_network.MLPClassifier",
+        "input": "padded legal history, history mask, current context and queried action",
+        "target": "observed chosen-action binary outcome only",
+        "hidden_layer_sizes": [64, 32],
+        "activation": "relu",
+        "solver": "adam",
+        "alpha": 0.0001,
+        "batch_size": 256,
+        "learning_rate_init": 0.001,
+        "max_iter": 200,
+        "early_stopping": false,
+        "shuffle": true,
+        "random_state": 65001,
+        "oracle_targets_forbidden": true
+      },
+      {
+        "id": "from_scratch_online_logistic",
+        "library": "sklearn.linear_model.SGDClassifier",
+        "loss": "log_loss",
+        "alpha": 0.0001,
+        "learning_rate": "constant",
+        "eta0": 0.01,
+        "random_state": 65002,
+        "update_scope": "one episode only"
+      },
+      {
+        "id": "legal_map_estimator",
+        "implementation": "maximum-likelihood public latent state from legal history, then public-family prediction"
+      },
+      {
+        "id": "drift_aware_continual_replay",
+        "implementation": "legal-history fitted estimator with bounded replay; fixed-surface no-drift status must be reported"
+      },
+      {
+        "id": "per_task_specialist_envelope",
+        "implementation": "evaluator-only specialist envelope",
+        "task_identity_visible_to_future_candidate": false
+      }
+    ],
+    "diagnostic_only": [
+      "clairvoyant_private_z_oracle",
+      "known_saturated_control",
+      "known_headroom_control",
+      "invalid_private_target_control"
+    ],
+    "deferred_candidate_dependent": [
+      "future_candidate_no_update",
+      "future_candidate_shuffled_feedback",
+      "future_candidate_own_rule_batched_offline",
+      "future_candidate_checkpoint_swap",
+      "future_candidate_predictor_bypass"
+    ],
+    "set_prediction_controls": {
+      "predict_all": "not applicable to scalar Bernoulli probability; uniform-all-actions tie is the declared analogue",
+      "predict_none": "not applicable to mandatory scalar probability; abstention is forbidden and scored as missing output",
+      "size_sweep": "not applicable to scalar probability output",
+      "all_not_applicable_reasons_must_be_reported": true
+    }
+  },
+  "baseline_adequacy": {
+    "missing_mandatory_baseline_verdict": "PREFLIGHT_INSTRUMENT_INVALID_BASELINE_PANEL",
+    "fit_failure_is_not_low_score": true,
+    "requirements": [
+      "every baseline has a callable producer and invocation record",
+      "every fitted baseline records library, fit calls, seed, iterations and convergence",
+      "fitted_history_meta_mlp parameter hash changes",
+      "fitted_history_meta_mlp n_iter is at least 10",
+      "fitted_history_meta_mlp final loss is at most 0.95 times its first recorded loss",
+      "all baselines use legal fields only",
+      "resource budgets and training rows are reported",
+      "removing the strongest baseline cannot produce an admissible verdict"
+    ]
+  },
+  "accessibility_witness": {
+    "required_model": "fitted_history_meta_mlp",
+    "comparators": [
+      "no_feedback_public_prior",
+      "observation_action_logistic"
+    ],
+    "required_auc_calibration_lower_bound_gt": 0.02,
+    "required_auc_decision_lower_bound_gt": 0.02,
+    "meaning": "legal history contains signal accessible to one preregistered fitted reference learner; not evidence for a product candidate"
+  },
+  "instrument_controls": [
+    {
+      "id": "known_saturated_control",
+      "construction": "encode target probability directly in a legal observation value",
+      "expected": "observation-only reaches the legal ceiling and surface is rejected as trivially decodable",
+      "included_in_formal_aggregate": false
+    },
+    {
+      "id": "known_headroom_control",
+      "construction": "legal feedback changes the posterior while current observation remains uninformative",
+      "expected": "legal reference beats no-feedback prior",
+      "included_in_formal_aggregate": false
+    },
+    {
+      "id": "invalid_private_target_control",
+      "construction": "score a private-z target while holding the legal packet unchanged",
+      "expected": "target-legality checker blocks",
+      "included_in_formal_aggregate": false
+    }
+  ],
+  "information_interventions": [
+    {
+      "id": "outcome_feedback_removed",
+      "rerun_required": true,
+      "expected": "at least 80 percent of feasible-reference headroom is removed and residual gain is at most 0.01"
+    },
+    {
+      "id": "feedback_shuffled_across_tasks",
+      "rerun_required": true,
+      "expected": "at least 80 percent of feasible-reference headroom is removed and residual gain is at most 0.01"
+    },
+    {
+      "id": "action_outcome_alignment_broken",
+      "rerun_required": true,
+      "expected": "at least 80 percent of feasible-reference headroom is removed and residual gain is at most 0.01"
+    },
+    {
+      "id": "legal_history_twin",
+      "rerun_required": true,
+      "expected": "same current context/actions with different legal histories changes legal posterior by mean absolute difference at least 0.05 on at least 80 percent of frozen twin pairs"
+    },
+    {
+      "id": "private_z_swap_legal_packet_fixed",
+      "rerun_required": true,
+      "expected": "legal posterior is bit-exact unchanged"
+    },
+    {
+      "id": "action_order_permutation",
+      "rerun_required": true,
+      "expected": "descriptor-keyed predictions and aggregate metrics are invariant"
+    }
+  ],
+  "leakage_scanner": {
+    "same_real_scanner_for_clean_and_positive_controls": true,
+    "scan_channels": [
+      "field names",
+      "field values and statistics",
+      "shape and structure",
+      "action descriptor order",
+      "action and fixture names",
+      "filenames and paths",
+      "seed, task and split identity",
+      "train-validation-test overlap",
+      "serialized baseline state",
+      "generator and evaluator imports",
+      "candidate-authored truth"
+    ],
+    "positive_controls": [
+      {
+        "id": "renamed_value_leak",
+        "injection": "encode private z under a neutral numeric field name",
+        "must_be_detected": true
+      },
+      {
+        "id": "structural_action_order_leak",
+        "injection": "sort displayed legal actions by legal-ceiling action value",
+        "must_be_detected": true
+      },
+      {
+        "id": "split_overlap_leak",
+        "injection": "duplicate heldout tasks or seed derivations into train",
+        "must_be_detected": true
+      },
+      {
+        "id": "serialized_state_leak",
+        "injection": "store private-z or oracle digest in a serialized baseline state field",
+        "must_be_detected": true
+      }
+    ],
+    "missed_positive_control_verdict": "PREFLIGHT_REJECTED_LEAKAGE"
+  },
+  "replay": {
+    "fresh_process_runs": 2,
+    "input": "frozen prereg contract plus derived seeds",
+    "must_regenerate_workload": true,
+    "must_refit_fitted_baselines": true,
+    "must_recompute_predictions": true,
+    "must_recompute_metrics": true,
+    "must_recompute_verdict": true,
+    "stored_score_or_hash_only_forbidden": true,
+    "history_counterfactual_required": true,
+    "private_state_counterfactual_required": true,
+    "second_aggregation_implementation_required": true,
+    "maximum_independence_claim": "local_second_implementation_match"
+  },
+  "computed_provenance": {
+    "required_score_fields": [
+      "producer_function",
+      "input_artifact_paths",
+      "input_artifact_hashes",
+      "run_id",
+      "split_id_for_evaluator_only",
+      "task_id_for_evaluator_only",
+      "episode_id",
+      "checkpoint",
+      "seed_domain",
+      "aggregation_rule",
+      "baseline_invocation_id",
+      "code_path_hash",
+      "computed_not_literal"
+    ],
+    "computed_not_literal_value": true,
+    "frozen_input_consumption_required": true,
+    "unused_frozen_input_is_blocking": true,
+    "literal_verdict_or_static_score_forbidden": true
+  },
+  "future_artifacts": [
+    "frozen_contract.json",
+    "generator_manifest.json",
+    "split_manifest.json",
+    "legal_packet_schema.json",
+    "target_legality_report.json",
+    "oracle_report.json",
+    "metric_degeneracy_report.json",
+    "baseline_comparison.json",
+    "baseline_adequacy_report.json",
+    "reference_accessibility_report.json",
+    "information_intervention_report.json",
+    "leakage_report.json",
+    "leakage_positive_controls.json",
+    "replay_report.json",
+    "trace.jsonl",
+    "metric_provenance.jsonl",
+    "invocation_ledger.jsonl",
+    "frozen_input_consumption.json",
+    "failure_manifest.json",
+    "result.json",
+    "claim_ceiling.txt"
+  ],
+  "verdict_priority": [
+    "PREFLIGHT_BLOCKED_PROVENANCE",
+    "PREFLIGHT_INSTRUMENT_INVALID_BASELINE_PANEL",
+    "PREFLIGHT_INVALID_INSTRUMENT_CONTROLS",
+    "PREFLIGHT_REJECTED_TARGET_NOT_LEGAL_CHANNEL_DETERMINED",
+    "PREFLIGHT_REJECTED_LEAKAGE",
+    "PREFLIGHT_INVALID_REPLAY",
+    "PREFLIGHT_REJECTED_METRIC_DEGENERATE",
+    "PREFLIGHT_REJECTED_TRIVIALLY_DECODABLE",
+    "PREFLIGHT_REJECTED_CONTROL_SATURATED",
+    "PREFLIGHT_REJECTED_INFORMATION_NOT_LOAD_BEARING",
+    "PREFLIGHT_REJECTED_NO_ACCESSIBLE_FAIR_HEADROOM",
+    "SYNTHETIC_OFFLINE_SURFACE_ADMISSIBLE_FOR_CANDIDATE_CARD_DRAFTING_ONLY"
+  ],
+  "positive_acceptance_rule": {
+    "candidate_present_must_equal": false,
+    "candidate_scores_must_equal": [],
+    "all_instrument_controls_pass": true,
+    "all_target_legality_checks_pass": true,
+    "all_leakage_positive_controls_detected": true,
+    "all_mandatory_baselines_adequate": true,
+    "both_primary_metrics_pass_headroom_rule": true,
+    "accessibility_witness_passes": true,
+    "all_information_interventions_match_direction": true,
+    "replay_matches": true,
+    "all_frozen_inputs_consumed": true,
+    "maximum_positive_verdict": "SYNTHETIC_OFFLINE_SURFACE_ADMISSIBLE_FOR_CANDIDATE_CARD_DRAFTING_ONLY",
+    "authorizes": "drafting a candidate implementation card only"
+  },
+  "anti_zeno": {
+    "formal_run_limit": 1,
+    "formal_output_overwrite": false,
+    "same_task_repair_after_no_headroom": false,
+    "same_task_repair_after_control_saturation": false,
+    "same_task_repair_after_invalid_instrument": false,
+    "new_surface_requires_new_task_id": true,
+    "negative_and_invalid_artifacts_must_be_preserved": true
+  },
+  "stop_conditions": [
+    "repo or source pin drift",
+    "multiple formal surfaces",
+    "candidate or product package creation",
+    "old K0-R, H0, H1, Freeze or Formal fixture or authority import",
+    "Foundation or ITL mutation or rerun",
+    "formal seed use before committed instrument",
+    "private latent, split or seed entering legal packet",
+    "missing or inadequate mandatory baseline",
+    "missed leakage positive control",
+    "train-validation-heldout overlap",
+    "unused frozen input",
+    "post-prereg metric, MDE, band, split, seed or surface change",
+    "formal output directory already exists",
+    "second formal run",
+    "stored-output replay",
+    "literal score or verdict",
+    "runtime, mainline, UI, LLM or network mutation",
+    "route or candidate implementation authorization",
+    "push, tag or remote anchor"
+  ],
+  "claim_ceiling": "Candidate-independent synthetic offline workload admissibility only. No product learner, learning result, candidate headroom, mechanism validity, science attribution, product readiness, runtime/mainline effect, stable user benefit, agency, autonomy, subjectivity, consciousness, real emotion or EGO readiness."
+}

@@ -1,0 +1,90 @@
+schema_version: codex.mutation_scope.v1
+task: ego-learned-outcome-kernel-capability-preflight-001a-p0-prereg
+
+authorization_scope: >-
+  Bank exactly three preregistration files inside the already banked parent
+  capability task directory. No preflight implementation, execution, score,
+  artifact, evidence-ledger entry, route registration, candidate authorization,
+  learned-kernel implementation, runtime or mainline work is authorized.
+
+current_layer: Layer 2 evidence engineering and workload admissibility
+
+mainline_target: none
+enabled: false
+mainline_connected: false
+runtime_authority: none
+route_registered: false
+candidate_preflight_authorized: false
+implementation_authorized: false
+authorized_implementation_targets: []
+
+expected_mutation_surface:
+  - freeze the sole formal synthetic outcome surface
+  - freeze legal and evaluator-only information boundaries
+  - freeze task splits and seed derivation
+  - freeze metrics, equivalence band, MDE, bootstrap and aggregation
+  - freeze oracle and feasible-reference separation
+  - freeze baseline roles without conflating invalidating controls and rivals
+  - freeze instrument controls, leakage controls and information interventions
+  - freeze replay, provenance, artifacts, verdict priority and stop conditions
+  - preserve all existing governance and evidence objects byte-identically
+  - create one exact-path local prereg commit and stop
+
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/PREFLIGHT_STAGE_CARD.md
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/PREFLIGHT_MUTATION_SCOPE.yaml
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/PREFLIGHT_CONTRACT.json
+
+forbidden_mutation_paths:
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/STAGE_CARD.md
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/MUTATION_SCOPE.yaml
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - artifacts/evidence_ledger/index.yaml
+  - scripts/codex/verify_route_convergence.py
+  - scripts/codex/route_convergence_common.py
+  - scripts/codex/program_state_common.py
+  - scripts/codex/generate_program_state_views.py
+  - scripts/codex/generate_route_convergence_views.py
+  - docs/STATUS.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - artifacts/reports/program_state_summary.md
+  - docs/REPO_HYGIENE_POLICY.md
+  - docs/REPO_SURFACE_MAP.md
+  - scripts/ego_learned_outcome_kernel_capability_preflight_001a/
+  - scripts/run_ego_learned_outcome_kernel_capability_preflight_001a.py
+  - tests/test_ego_learned_outcome_kernel_capability_preflight_001a.py
+  - artifacts/ego_learned_outcome_kernel_capability_preflight_001a/
+  - packages/ego_learned_outcome_kernel/
+  - packages/ego_k0_kernel/
+  - scripts/ego_k0_adapters/
+  - tests/test_ego_k0_foundation.py
+  - scripts/run_ego_k0_foundation_validation.py
+  - artifacts/ego_k0_foundation_001a/
+  - docs/codex/tasks/ego-k0-reference-kernel-001a/
+  - EgoOperator/
+  - EgoDesktop/
+  - Tasks/TASK_BOARD.yaml
+  - .codex/project_contract.yaml
+  - D:/Project/AIProject/MyProject/intelligence-theory-lab/
+
+phase_scopes:
+  p0_prereg_bank:
+    - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/PREFLIGHT_STAGE_CARD.md
+    - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/PREFLIGHT_MUTATION_SCOPE.yaml
+    - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/PREFLIGHT_CONTRACT.json
+
+phase_rule: >-
+  P0 contains one exact three-path local commit. Stage literal paths only.
+  git add -A is forbidden. No source, test, artifact, governance, ledger,
+  generated-view or parent-card path may change. Stop after committed-object
+  readback. P1 requires fresh operator authorization.
+
+auto_remote_anchor: forbidden
+push: forbidden
+tag: forbidden
+
+claim_ceiling: >-
+  Frozen candidate-independent synthetic-surface preregistration and evidence
+  contract only. No preflight result, candidate, learned capability, mechanism
+  validity, product readiness, runtime/mainline effect, stable user benefit,
+  agency, autonomy, subjectivity, consciousness, real emotion or EGO readiness.
