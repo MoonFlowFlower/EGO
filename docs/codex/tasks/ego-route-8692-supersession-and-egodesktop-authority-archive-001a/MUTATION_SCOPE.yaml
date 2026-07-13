@@ -1,0 +1,95 @@
+schema_version: codex.mutation_scope.v1
+task: ego-route-8692-supersession-and-egodesktop-authority-archive-001a
+task_id: EGO-ROUTE-8692-SUPERSESSION-AND-EGODESKTOP-AUTHORITY-ARCHIVE-001A
+task_kind: governance_authority_supersession_migration
+requested_action_id: EGO-ROUTE-8692-SUPERSESSION-AND-EGODESKTOP-AUTHORITY-ARCHIVE-001A
+source_route_revision_id: PRE_ROUTE_GUARD_MIGRATION
+source_route_fingerprint: 026535337949d5ea2857805e5d9e0d2b6bfae016154fbf58587eafcea6411aa3
+expected_target_route_revision_id: EGO_ROUTE_8692_SUPERSESSION_001A
+independent_red_review_required: true
+red_review_ref: null
+executor_session_ref: 019f5ce9-41b4-7430-b5d5-befde5cc256c
+auto_remote_anchor: forbidden
+
+migration_exception:
+  exact_task_id: EGO-ROUTE-8692-SUPERSESSION-AND-EGODESKTOP-AUTHORITY-ARCHIVE-001A
+  enabled: true
+  consumed: false
+  wildcard_allowed: false
+  operator_override_allowed: false
+
+expected_mutation_surface:
+  - additive product/capability route supersession and EgoDesktop authority archival only
+  - structured route_guard and callable fingerprint/readback enforcement
+  - callable prior-lineage inventory and disposition validation
+  - one-axis/one-authority validation with pinned ITL Git objects
+  - allowed-action binding to Card 2 banking only
+  - mechanical Red review triggers and one-task/one-session scope checks
+  - existing-generator derived views only
+
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-route-8692-supersession-and-egodesktop-authority-archive-001a/STAGE_CARD.md
+  - docs/codex/tasks/ego-route-8692-supersession-and-egodesktop-authority-archive-001a/MUTATION_SCOPE.yaml
+  - docs/codex/tasks/ego-route-8692-supersession-and-egodesktop-authority-archive-001a/COLLISION_RECORD.md
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - .codex/project_contract.yaml
+  - scripts/codex_session_guard.py
+  - scripts/tests/test_codex_session_guard.py
+  - scripts/codex/route_convergence_common.py
+  - scripts/codex/verify_route_convergence.py
+  - scripts/codex/generate_route_convergence_views.py
+  - scripts/tests/test_route_governance_supersession.py
+  - docs/STATUS.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - docs/REPO_SURFACE_MAP.md
+  - artifacts/reports/program_state_summary.md
+
+forbidden_mutation_paths:
+  - D:/Project/AIProject/MyProject/intelligence-theory-lab/
+  - EgoDesktop/
+  - EgoOperator/
+  - packages/ego_k0_kernel/
+  - labs/virtual_cat_pspc_v0/
+  - scripts/ego_pet/
+  - scripts/ego_pet_capability/
+  - artifacts/egodesktop_pet_world_integration_001a/
+  - artifacts/ego-pet-capability-conformance-001a/
+  - artifacts/evidence_ledger/
+  - Tasks/TASK_BOARD.yaml
+  - docs/codex/tasks/EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/
+  - docs/codex/tasks/ego-pet-world-v1-capability-headroom-001a/
+
+phase_scopes:
+  phase_a_task_card_bank:
+    - docs/codex/tasks/ego-route-8692-supersession-and-egodesktop-authority-archive-001a/STAGE_CARD.md
+    - docs/codex/tasks/ego-route-8692-supersession-and-egodesktop-authority-archive-001a/MUTATION_SCOPE.yaml
+    - docs/codex/tasks/ego-route-8692-supersession-and-egodesktop-authority-archive-001a/COLLISION_RECORD.md
+    - docs/codex/tasks/TASK_LANE_INDEX.md
+  phase_b_scoped_governance_implementation:
+    - docs/PROGRAM_STATE_UNIFIED.yaml
+    - .codex/project_contract.yaml
+    - scripts/codex_session_guard.py
+    - scripts/tests/test_codex_session_guard.py
+    - scripts/codex/route_convergence_common.py
+    - scripts/codex/verify_route_convergence.py
+    - scripts/codex/generate_route_convergence_views.py
+    - scripts/tests/test_route_governance_supersession.py
+    - docs/codex/tasks/ego-route-8692-supersession-and-egodesktop-authority-archive-001a/MUTATION_SCOPE.yaml
+    - docs/STATUS.md
+    - docs/codex/tasks/TASK_LANE_INDEX.md
+    - docs/REPO_SURFACE_MAP.md
+    - artifacts/reports/program_state_summary.md
+
+phase_rule: >-
+  One phase per exact-scope local commit. Stage literal phase paths only; git add -A
+  is forbidden. Phase B requires an independent Red review bound to the actual
+  diff SHA-256. No Card 2 file may be created in this task.
+
+claim_ceiling: >-
+  additive product/capability route-governance correction, legacy authority
+  archival, and next-task binding only; no mechanism, learning, headroom,
+  runtime/mainline, readiness, agency, subjectivity, consciousness, or user-benefit claim
+
+local_commit: authorized_two_phase
+push: forbidden
+tag: forbidden
