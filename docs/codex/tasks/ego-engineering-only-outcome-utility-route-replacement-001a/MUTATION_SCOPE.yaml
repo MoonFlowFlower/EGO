@@ -1,0 +1,139 @@
+schema_version: codex.mutation_scope.v1
+task: ego-engineering-only-outcome-utility-route-replacement-001a
+task_id: EGO-ENGINEERING-ONLY-OUTCOME-UTILITY-ROUTE-REPLACEMENT-001A
+expected_head: cb2c717998007f9fb01de4f195647165364a83f7
+expected_tree: c30b19b58241a8beb455dcd93735d9136d95ae3a
+expected_raw_behind_ahead: [0, 26]
+expected_clean: true
+
+authorization_scope: >-
+  Bank one new reference-only engineering workflow-replacement card and its
+  exact functional contract, transactionally converge the task-lane view and
+  its single protected blob pin, then implement and run one isolated
+  stdlib-only outcome utility functional slice. No old evidence route,
+  Program State, runtime, mainline, product or science authority is granted.
+
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-engineering-only-outcome-utility-route-replacement-001a/STAGE_CARD.md
+  - docs/codex/tasks/ego-engineering-only-outcome-utility-route-replacement-001a/MUTATION_SCOPE.yaml
+  - docs/codex/tasks/ego-engineering-only-outcome-utility-route-replacement-001a/FUNCTIONAL_CONTRACT.json
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - scripts/codex/verify_route_convergence.py
+  - packages/ego_outcome_utility/pyproject.toml
+  - packages/ego_outcome_utility/src/ego_outcome_utility/__init__.py
+  - packages/ego_outcome_utility/src/ego_outcome_utility/utility.py
+  - packages/ego_outcome_utility/src/ego_outcome_utility/functional_checks.py
+  - packages/ego_outcome_utility/src/ego_outcome_utility/cli.py
+  - scripts/run_ego_outcome_utility_001a.py
+  - tests/test_ego_outcome_utility_001a.py
+  - tests/fixtures/ego_outcome_utility_001a/transcript.json
+  - artifacts/ego_engineering_only_outcome_utility_001a/result.json
+  - artifacts/ego_engineering_only_outcome_utility_001a/trace.jsonl
+  - artifacts/ego_engineering_only_outcome_utility_001a/baseline_comparison.json
+  - artifacts/ego_engineering_only_outcome_utility_001a/ablation_report.json
+  - artifacts/ego_engineering_only_outcome_utility_001a/replay_report.json
+  - artifacts/ego_engineering_only_outcome_utility_001a/leakage_report.json
+  - artifacts/ego_engineering_only_outcome_utility_001a/claim_ceiling.txt
+  - artifacts/ego_engineering_only_outcome_utility_001a/failure_manifest.json
+  - artifacts/ego_engineering_only_outcome_utility_001a.staging/
+
+expected_mutation_surface:
+  - docs/codex/tasks/ego-engineering-only-outcome-utility-route-replacement-001a/STAGE_CARD.md
+  - docs/codex/tasks/ego-engineering-only-outcome-utility-route-replacement-001a/MUTATION_SCOPE.yaml
+  - docs/codex/tasks/ego-engineering-only-outcome-utility-route-replacement-001a/FUNCTIONAL_CONTRACT.json
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - scripts/codex/verify_route_convergence.py
+  - packages/ego_outcome_utility/pyproject.toml
+  - packages/ego_outcome_utility/src/ego_outcome_utility/__init__.py
+  - packages/ego_outcome_utility/src/ego_outcome_utility/utility.py
+  - packages/ego_outcome_utility/src/ego_outcome_utility/functional_checks.py
+  - packages/ego_outcome_utility/src/ego_outcome_utility/cli.py
+  - scripts/run_ego_outcome_utility_001a.py
+  - tests/test_ego_outcome_utility_001a.py
+  - tests/fixtures/ego_outcome_utility_001a/transcript.json
+  - artifacts/ego_engineering_only_outcome_utility_001a/result.json
+  - artifacts/ego_engineering_only_outcome_utility_001a/trace.jsonl
+  - artifacts/ego_engineering_only_outcome_utility_001a/baseline_comparison.json
+  - artifacts/ego_engineering_only_outcome_utility_001a/ablation_report.json
+  - artifacts/ego_engineering_only_outcome_utility_001a/replay_report.json
+  - artifacts/ego_engineering_only_outcome_utility_001a/leakage_report.json
+  - artifacts/ego_engineering_only_outcome_utility_001a/claim_ceiling.txt
+  - artifacts/ego_engineering_only_outcome_utility_001a/failure_manifest.json
+
+phase_surfaces:
+  phase_a:
+    - docs/codex/tasks/ego-engineering-only-outcome-utility-route-replacement-001a/STAGE_CARD.md
+    - docs/codex/tasks/ego-engineering-only-outcome-utility-route-replacement-001a/MUTATION_SCOPE.yaml
+    - docs/codex/tasks/ego-engineering-only-outcome-utility-route-replacement-001a/FUNCTIONAL_CONTRACT.json
+    - docs/codex/tasks/TASK_LANE_INDEX.md
+    - scripts/codex/verify_route_convergence.py
+  phase_b_source_test:
+    - packages/ego_outcome_utility/pyproject.toml
+    - packages/ego_outcome_utility/src/ego_outcome_utility/__init__.py
+    - packages/ego_outcome_utility/src/ego_outcome_utility/utility.py
+    - packages/ego_outcome_utility/src/ego_outcome_utility/functional_checks.py
+    - packages/ego_outcome_utility/src/ego_outcome_utility/cli.py
+    - scripts/run_ego_outcome_utility_001a.py
+    - tests/test_ego_outcome_utility_001a.py
+    - tests/fixtures/ego_outcome_utility_001a/transcript.json
+  phase_b_success_artifacts:
+    - artifacts/ego_engineering_only_outcome_utility_001a/result.json
+    - artifacts/ego_engineering_only_outcome_utility_001a/trace.jsonl
+    - artifacts/ego_engineering_only_outcome_utility_001a/baseline_comparison.json
+    - artifacts/ego_engineering_only_outcome_utility_001a/ablation_report.json
+    - artifacts/ego_engineering_only_outcome_utility_001a/replay_report.json
+    - artifacts/ego_engineering_only_outcome_utility_001a/leakage_report.json
+    - artifacts/ego_engineering_only_outcome_utility_001a/claim_ceiling.txt
+  phase_b_failure_artifacts:
+    - artifacts/ego_engineering_only_outcome_utility_001a/failure_manifest.json
+    - artifacts/ego_engineering_only_outcome_utility_001a/claim_ceiling.txt
+
+transient_mutation_paths:
+  - artifacts/ego_engineering_only_outcome_utility_001a.staging/
+
+transient_path_rule: >-
+  This exact sibling directory may exist only during one bundle_write call. It
+  must be absent before Phase B staging, commit and final receipt, may never be
+  git-added, and no other transient repo path is authorized. Success, handled
+  failure and write-failure exits must remove or atomically consume it.
+
+forbidden_mutation_paths:
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - docs/STATUS.md
+  - docs/REPO_HYGIENE_POLICY.md
+  - docs/REPO_SURFACE_MAP.md
+  - artifacts/evidence_ledger/
+  - artifacts/reports/program_state_summary.md
+  - packages/ego_k0_kernel/
+  - packages/ego_learned_outcome_kernel/
+  - docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/
+  - docs/codex/tasks/ego-learned-outcome-kernel-compositional-transfer-preflight-001a/
+  - scripts/ego_learned_outcome_kernel_caot_preflight_001a/
+  - scripts/run_ego_learned_outcome_kernel_caot_preflight_001a.py
+  - EgoOperator/
+  - EgoDesktop/
+  - Tasks/TASK_BOARD.yaml
+  - .codex/project_contract.yaml
+  - D:/Project/AIProject/MyProject/intelligence-theory-lab/
+
+phase_rule: >-
+  The success or canonical-failure path has exactly two local commits. Phase A
+  is exact 3 additions plus the canonical lane modification and one-literal
+  verifier pin refresh. Phase B is exact 8 source/test additions plus either
+  the exact 7 success artifacts or the exact 2 callable-produced handled-failure
+  artifacts. A pre-canonical STOP
+  leaves only the Phase A commit after task-owned Phase B rollback. Stage
+  literal paths only; git add -A, old-route mutation, scope expansion, push,
+  tag and remote anchor are forbidden. The one declared staging directory is
+  transient only, must be absent at staging/commit/receipt and is never added.
+
+auto_remote_anchor: forbidden
+push: forbidden
+tag: forbidden
+
+claim_ceiling: >-
+  Isolated, explicit-CLI, default-off, non-mainline engineering utility source
+  and callable functional evidence including only a key-channel leakage scan;
+  no learning/generalization,
+  headroom, capability, mechanism, product, runtime, agency, subjectivity or
+  consciousness claim.

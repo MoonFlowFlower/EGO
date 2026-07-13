@@ -21,7 +21,7 @@
 | `supporting_active` | 1 |
 | `parked` | 1 |
 | `closed_evidence` | 20 |
-| `reference_only` | 234 |
+| `reference_only` | 235 |
 
 ## Active Default
 
@@ -83,6 +83,7 @@
 | Ego Adult Fiction Sidecar Model Selection V1 | `codex_task` | n/a | `docs/codex/tasks/ego-adult-fiction-sidecar-model-selection-v1/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Adult Fiction Smoke V1 | `codex_task` | n/a | `docs/codex/tasks/ego-adult-fiction-smoke-v1/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Boundedinitiative V0 Integration | `codex_task` | n/a | `docs/codex/tasks/ego-boundedinitiative-v0-integration/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| Ego Engineering Only Outcome Utility Route Replacement 001A | `codex_task` | n/a | `docs/codex/tasks/ego-engineering-only-outcome-utility-route-replacement-001a/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Experience Roadmap Bootstrap V1 | `codex_task` | n/a | `docs/codex/tasks/ego-experience-roadmap-bootstrap-v1/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Functional Subject Adversarial Memory Approval V0 | `codex_task` | n/a | `docs/codex/tasks/ego-functional-subject-adversarial-memory-approval-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Functional Subject Ambiguous Selfhood Goal Slice | `codex_task` | n/a | `docs/codex/tasks/ego-functional-subject-ambiguous-selfhood-goal-slice/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |

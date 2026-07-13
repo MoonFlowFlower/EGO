@@ -122,7 +122,7 @@ PROTECTED_HEAD_OBJECTS = {
     "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1A_AUTHORIZATION_MUTATION_SCOPE.yaml": "5b3e192fe06791533b9f2292d9372bc559d9a253",
     "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1B_INSTRUMENT_MUTATION_SCOPE.yaml": "c87bc1847d8e29e5e90e07e6c58c02ec9bbd3f87",
     "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1C_CLOSEOUT_MUTATION_SCOPE.yaml": "58a1687a278403fb82e0f4774e3a424bdb624a8d",
-    "docs/codex/tasks/TASK_LANE_INDEX.md": "8ea76105e933c5db3bba784231a64d251a4fbe55",
+    "docs/codex/tasks/TASK_LANE_INDEX.md": "1d8489d0fb00c41deb3ce75566589aa352a7a61e",
     "scripts/codex/route_convergence_common.py": "f9550bc3c4a1cc881a603ec8c542c1b141435fbe",
     "packages/ego_k0_kernel": "43380f76c37b05f36a4a4ef45354048787cafe68",
     "artifacts/ego_k0_foundation_001a": "907457e7d3028ba5437cf0e7730ec068a21cbf6b",

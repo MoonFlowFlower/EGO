@@ -1,0 +1,1206 @@
+{
+  "schema_version": "ego.engineering_outcome_utility.functional_contract.v1",
+  "task_id": "EGO-ENGINEERING-ONLY-OUTCOME-UTILITY-ROUTE-REPLACEMENT-001A",
+  "route_id": "ENGINEERING-ONLY-OUTCOME-UTILITY-ROUTE-REPLACEMENT-v1",
+  "operator_selection": "SELECT ENGINEERING_ONLY_OUTCOME_UTILITY_ROUTE_REPLACEMENT",
+  "route_relation": "workflow_replacement_reference_only",
+  "classification": "deterministic_keyed_count_table_running_statistic_utility",
+  "authority": {
+    "bounded_local_source_creation_authorized": true,
+    "bounded_offline_functional_smoke_authorized": true,
+    "canonical_smoke_attempt_limit": 1,
+    "route_registered": false,
+    "enabled": false,
+    "mainline_connected": false,
+    "runtime_authority": "none",
+    "action_execution_authority": false,
+    "learned_kernel_candidate_authorized": false,
+    "product_implementation_authorized": false,
+    "science_execution_authorized": false,
+    "remote_anchor_authorized": false,
+    "grant_semantics": "immutable_historical_single_executor_session_grant",
+    "later_session_reuse": false,
+    "source_transaction_claim_event": "first Phase B source write",
+    "source_creation_consumption_event": "completion of the exact eight Phase B source/test additions or executor-session stop after transaction start",
+    "in_flight_exact_source_transaction_may_finish": true,
+    "in_flight_completion_limit": "same uninterrupted executor session; exact eight source/test paths; one commit or full task-owned rollback",
+    "canonical_smoke_consumption_event": "canonical validate invocation start",
+    "consumption_record": "result.json or failure_manifest.json",
+    "precanonical_stop_consumption_record": "receipt only: source CONSUMED/EXPIRED and smoke EXPIRED_UNUSED",
+    "committed_true_literal_is_current_authority": false,
+    "authorized_source_test_paths": [
+      "packages/ego_outcome_utility/pyproject.toml",
+      "packages/ego_outcome_utility/src/ego_outcome_utility/__init__.py",
+      "packages/ego_outcome_utility/src/ego_outcome_utility/utility.py",
+      "packages/ego_outcome_utility/src/ego_outcome_utility/functional_checks.py",
+      "packages/ego_outcome_utility/src/ego_outcome_utility/cli.py",
+      "scripts/run_ego_outcome_utility_001a.py",
+      "tests/test_ego_outcome_utility_001a.py",
+      "tests/fixtures/ego_outcome_utility_001a/transcript.json"
+    ],
+    "authorized_success_artifact_paths": [
+      "artifacts/ego_engineering_only_outcome_utility_001a/result.json",
+      "artifacts/ego_engineering_only_outcome_utility_001a/trace.jsonl",
+      "artifacts/ego_engineering_only_outcome_utility_001a/baseline_comparison.json",
+      "artifacts/ego_engineering_only_outcome_utility_001a/ablation_report.json",
+      "artifacts/ego_engineering_only_outcome_utility_001a/replay_report.json",
+      "artifacts/ego_engineering_only_outcome_utility_001a/leakage_report.json",
+      "artifacts/ego_engineering_only_outcome_utility_001a/claim_ceiling.txt"
+    ],
+    "authorized_handled_failure_artifact_paths": [
+      "artifacts/ego_engineering_only_outcome_utility_001a/failure_manifest.json",
+      "artifacts/ego_engineering_only_outcome_utility_001a/claim_ceiling.txt"
+    ],
+    "authorized_transient_path": "artifacts/ego_engineering_only_outcome_utility_001a.staging/"
+  },
+  "single_use_consumption": {
+    "grant_location": "this immutable Stage Card and Functional Contract only; not Program State",
+    "source_grant_postcondition": "CONSUMED_OR_EXPIRED",
+    "canonical_smoke_postcondition": "CONSUMED_OR_EXPIRED",
+    "post_consumption_fields_apply_after": "exact source transaction completion/rollback/session stop and canonical attempt completion/expiry, not while an authorized transaction is in flight",
+    "post_consumption_bounded_local_source_creation_authorized": false,
+    "post_consumption_bounded_offline_functional_smoke_authorized": false,
+    "post_consumption_authorized_implementation_targets": []
+  },
+  "lineage_firewall": {
+    "old_k0r_bypass": false,
+    "caot_v1_bypass": false,
+    "parent_evidence_route_reopened": false,
+    "parent_preflight_satisfied": false,
+    "inherits_old_code": false,
+    "inherits_old_fixture": false,
+    "inherits_old_seed": false,
+    "inherits_old_threshold": false,
+    "inherits_old_verdict": false,
+    "results_have_science_weight": false,
+    "results_can_supply_mechanism_attribution": false
+  },
+  "canonical_authority_readback": {
+    "root_authorizations": {
+      "implementation_authorized": false,
+      "authorized_implementation_targets": [],
+      "runtime_authorized": false,
+      "mainline_authorized": false,
+      "science_execution_authorized": false,
+      "mechanism_evidence_authorized": false,
+      "theory_pressure_authorized": false,
+      "science_successor_authorized": false,
+      "capability_route_registered": false,
+      "capability_implementation_authorized": false
+    },
+    "route_authorizations": {
+      "agency": false,
+      "autonomy": false,
+      "code_first_prebank_implementation": false,
+      "consciousness": false,
+      "ego_mainline_runtime": false,
+      "experiment_execution": false,
+      "formal_run": false,
+      "foundation_implementation": false,
+      "freeze": false,
+      "h0_implementation": false,
+      "h1_implementation": false,
+      "k0_reference_implementation": false,
+      "mechanism_validity": false,
+      "remote_anchor": false,
+      "scoring": false,
+      "subjectivity": false,
+      "theory_pressure": false,
+      "ui_llm_deployment": false
+    },
+    "child_authorizations": {
+      "EGO-K0-FOUNDATION-001A": false,
+      "EGO-K0-REFERENCE-KERNEL-001A": false,
+      "ITL-K0-H0-H1-INSTRUMENT-001A:H0": false,
+      "ITL-K0-H0-H1-INSTRUMENT-001A:H1": false,
+      "K0-IMMUTABLE-FREEZE-001A": false,
+      "ITL-K0-FORMAL-EVIDENCE-001A": false
+    },
+    "caot_closeout_authority": {
+      "numeric_freeze_design_authorized": false,
+      "numeric_freeze_implementation_authorized": false,
+      "numeric_freeze_execution_authorized": false,
+      "headroom_instrument_authorized": false,
+      "candidate_implementation_authorized": false,
+      "product_implementation_authorized": false,
+      "route_registered": false,
+      "enabled": false,
+      "mainline_connected": false,
+      "runtime_authority": "none",
+      "science_execution_authorized": false,
+      "remote_anchor_authorized": false,
+      "authorized_implementation_targets": []
+    },
+    "independent_validator_acceptance": "UNAVAILABLE"
+  },
+  "runtime_dependencies": {
+    "python": ">=3.11",
+    "production_package_and_runner_standard_library_only": true,
+    "focused_tests_may_import_existing_pytest": true,
+    "dependency_install_authorized": false,
+    "rng_used": false,
+    "network_used": false,
+    "database_used": false,
+    "foundation_imported": false,
+    "old_route_imported": false
+  },
+  "package_metadata_contract": {
+    "build_system_requires": [
+      "setuptools>=68"
+    ],
+    "build_backend": "setuptools.build_meta",
+    "project_name": "ego-outcome-utility",
+    "version": "0.1.0",
+    "description": "Default-off deterministic outcome utility functional slice for bounded EGO engineering evidence",
+    "requires_python": ">=3.11",
+    "dependencies": [],
+    "console_script": "ego-outcome-utility=ego_outcome_utility.cli:main",
+    "package_dir": "src",
+    "package_find_where": "src",
+    "install_or_build_required": false
+  },
+  "public_api": {
+    "module": "ego_outcome_utility.utility",
+    "required_symbols": [
+      "new_state",
+      "predict",
+      "observe_outcome",
+      "run_step",
+      "serialize_state",
+      "deserialize_state",
+      "replay"
+    ],
+    "functional_checks_module": "ego_outcome_utility.functional_checks",
+    "functional_check_symbols": [
+      "zero_utility_predict",
+      "replay_without_updates",
+      "scan_observation_mapping",
+      "run_functional_validation",
+      "resolve_verdict"
+    ]
+  },
+  "api_contract": {
+    "error_rule": "schema, identifier, canonical-byte, duplicate, hash, observation/feedback mismatch and illegal-action failures raise ValueError whose message begins EOU_<STABLE_CODE>:",
+    "input_mutation_forbidden": true,
+    "runner_import_path_rule": "the thin runner and focused test prepend only repo_root/packages/ego_outcome_utility/src to sys.path; package modules do not mutate sys.path",
+    "functions": {
+      "new_state": {
+        "signature": "new_state(model_id: str) -> dict[str, Any]",
+        "return": "an exact valid state with revision 0, empty cells, empty applied_feedback_ids and computed state_hash"
+      },
+      "predict": {
+        "signature": "predict(state: Mapping[str, Any], observation: Mapping[str, Any]) -> dict[str, Any]",
+        "return_schema": "prediction"
+      },
+      "observe_outcome": {
+        "signature": "observe_outcome(state: Mapping[str, Any], observation: Mapping[str, Any], prediction: Mapping[str, Any], feedback: Mapping[str, Any]) -> dict[str, Any]",
+        "feedback_action_rule": "feedback.action_id must equal prediction.selected_action_id",
+        "return": "new exact valid state; input state remains byte-identical"
+      },
+      "run_step": {
+        "signature": "run_step(state: Mapping[str, Any], observation: Mapping[str, Any], feedback: Mapping[str, Any]) -> dict[str, Any]",
+        "exact_return_keys": [
+          "prediction",
+          "next_state",
+          "trace_record"
+        ],
+        "call_rule": "call predict exactly once then observe_outcome exactly once"
+      },
+      "serialize_state": {
+        "signature": "serialize_state(state: Mapping[str, Any]) -> bytes",
+        "return": "canonical validated state bytes without trailing LF"
+      },
+      "deserialize_state": {
+        "signature": "deserialize_state(payload: bytes) -> dict[str, Any]",
+        "rule": "reject noncanonical bytes, duplicate JSON keys, wrong hash or any schema violation"
+      },
+      "replay": {
+        "signature": "replay(checkpoint_payload: bytes, ordered_steps: Sequence[Mapping[str, Any]], expected_trace: Sequence[Mapping[str, Any]] | None = None) -> dict[str, Any]",
+        "return_schema": "replay_result",
+        "rule": "deserialize once and call run_step once per ordered step; expected_trace is comparator only"
+      },
+      "zero_utility_predict": {
+        "signature": "zero_utility_predict(observation: Mapping[str, Any]) -> dict[str, Any]",
+        "return_schema": "baseline_prediction"
+      },
+      "replay_without_updates": {
+        "signature": "replay_without_updates(checkpoint_payload: bytes, ordered_steps: Sequence[Mapping[str, Any]]) -> dict[str, Any]",
+        "return_schema": "no_update_result"
+      },
+      "scan_observation_mapping": {
+        "signature": "scan_observation_mapping(observation: Mapping[str, Any]) -> list[dict[str, Any]]",
+        "return_schema": "ordered leakage_finding list"
+      },
+      "resolve_verdict": {
+        "signature": "resolve_verdict(*, required_check_names: Sequence[str], observed_checks: Mapping[str, bool], success_label: str, failure_label: str) -> str",
+        "rule": "missing, unknown or non-bool observed checks raise ValueError; return caller-supplied success_label only when the exact key set is present and every value is bool true, otherwise return caller-supplied failure_label",
+        "label_source": "parsed Functional Contract artifact_contract labels",
+        "synthetic_label_test": "S/F labels prove no verdict token is embedded in source"
+      },
+      "run_functional_validation": {
+        "signature": "run_functional_validation(contract_path: Path, fixture_path: Path, output_dir: Path, run_id: str) -> dict[str, Any]",
+        "rule": "compute candidate reports in memory through public callables and invoke resolve_verdict; on success atomically write the exact seven-file success bundle; on handled functional failure atomically write exactly failure_manifest.json plus claim_ceiling.txt with no partial success report; on failure-bundle write or producer-structure abort write nothing canonical and follow the frozen no-commit STOP"
+      }
+    }
+  },
+  "identifier_contract": {
+    "regex": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$",
+    "unicode_normalization": "FORBIDDEN_NON_ASCII_BY_REGEX",
+    "empty_forbidden": true
+  },
+  "schemas": {
+    "observation": {
+      "schema_version": "ego.outcome_utility.observation.v1",
+      "exact_keys": [
+        "schema_version",
+        "observation_id",
+        "episode_id",
+        "step_id",
+        "context_id",
+        "legal_action_ids"
+      ],
+      "identifier_fields": "observation_id, episode_id, context_id and every legal_action_id satisfy identifier_contract.regex",
+      "step_id": "non_bool_integer_greater_than_or_equal_to_1",
+      "legal_action_ids": "nonempty_unique_identifiers_canonical_lexicographic_order",
+      "additional_properties": false,
+      "forbidden_key_fragments": [
+        "outcome",
+        "reward",
+        "feedback",
+        "target",
+        "label",
+        "expected",
+        "verdict",
+        "selected_action"
+      ]
+    },
+    "feedback": {
+      "schema_version": "ego.outcome_utility.feedback.v1",
+      "exact_keys": [
+        "schema_version",
+        "feedback_id",
+        "observation_id",
+        "episode_id",
+        "step_id",
+        "context_id",
+        "action_id",
+        "outcome_micros"
+      ],
+      "identifier_fields": "feedback_id, observation_id, episode_id, context_id and action_id satisfy identifier_contract.regex",
+      "step_id": "non_bool_integer_greater_than_or_equal_to_1",
+      "outcome_micros": "non_bool_integer_inclusive_range_-1000000_to_1000000",
+      "must_match_observation_fields": [
+        "observation_id",
+        "episode_id",
+        "step_id",
+        "context_id"
+      ],
+      "action_must_be_legal": true,
+      "duplicate_feedback_id": "FAIL_CLOSED",
+      "additional_properties": false
+    },
+    "update_delta": {
+      "schema_version": "ego.outcome_utility.update_delta.v1",
+      "exact_keys": [
+        "schema_version",
+        "context_id",
+        "action_id",
+        "old_sum_micros",
+        "old_count",
+        "new_sum_micros",
+        "new_count",
+        "revision_before",
+        "revision_after"
+      ],
+      "new_cell_old_values": "0 and 0",
+      "additional_properties": false
+    },
+    "state": {
+      "schema_version": "ego.outcome_utility.state.v1",
+      "exact_keys": [
+        "schema_version",
+        "model_id",
+        "revision",
+        "cells",
+        "applied_feedback_ids",
+        "state_hash"
+      ],
+      "cell_exact_keys": [
+        "context_id",
+        "action_id",
+        "outcome_sum_micros",
+        "observation_count"
+      ],
+      "cells_order": "ascending_context_id_then_action_id",
+      "cells_unique": true,
+      "identifier_fields": "model_id, every context_id, every action_id and every applied_feedback_id satisfy identifier_contract.regex",
+      "integer_type_rule": "revision, outcome_sum_micros and observation_count require type(value) is int; bool is rejected",
+      "revision": "integer_greater_than_or_equal_to_0",
+      "observation_count": "integer_greater_than_or_equal_to_1",
+      "sum_bound": "abs(outcome_sum_micros)<=observation_count*1000000",
+      "feedback_ids_order": "ascending_lexicographic_unique",
+      "revision_rule": "revision==len(applied_feedback_ids)",
+      "immutability": "updates_return_new_state",
+      "state_hash_rule": "sha256(canonical_json_bytes(exact state body without state_hash))",
+      "state_hash_format": "64 lowercase hexadecimal characters",
+      "deserialize_hash_rule": "recompute and require exact lowercase state_hash match",
+      "additional_properties": false
+    },
+    "transcript": {
+      "schema_version": "ego.outcome_utility.transcript.v1",
+      "exact_keys": [
+        "schema_version",
+        "model_id",
+        "steps"
+      ],
+      "step_exact_keys": [
+        "observation",
+        "feedback"
+      ],
+      "steps": "nonempty_ordered_array_max_10000",
+      "model_id": "identifier_contract.regex",
+      "episode_and_step_order": "one_episode_and_strictly_increasing_unique_step_id",
+      "additional_properties": false
+    },
+    "prediction": {
+      "schema_version": "ego.outcome_utility.prediction.v1",
+      "exact_keys": [
+        "schema_version",
+        "model_id",
+        "observation_id",
+        "episode_id",
+        "step_id",
+        "context_id",
+        "pre_state_hash",
+        "scores",
+        "selected_action_id",
+        "producer_function"
+      ],
+      "score_exact_keys": [
+        "action_id",
+        "score_numerator",
+        "score_denominator",
+        "observation_count"
+      ],
+      "score_order": "same canonical order as observation.legal_action_ids",
+      "score_rule": "observed cell uses sum/count; unobserved uses numerator 0, denominator 1, observation_count 0",
+      "producer_function": "ego_outcome_utility.utility.predict",
+      "additional_properties": false
+    },
+    "baseline_prediction": {
+      "schema_version": "ego.outcome_utility.baseline_prediction.v1",
+      "exact_keys": [
+        "schema_version",
+        "observation_id",
+        "episode_id",
+        "step_id",
+        "context_id",
+        "scores",
+        "selected_action_id",
+        "producer_function"
+      ],
+      "score_exact_keys": [
+        "action_id",
+        "score_numerator",
+        "score_denominator"
+      ],
+      "all_scores": "0/1",
+      "producer_function": "ego_outcome_utility.functional_checks.zero_utility_predict",
+      "additional_properties": false
+    },
+    "trace_record": {
+      "schema_version": "ego.outcome_utility.trace_record.v1",
+      "exact_keys": [
+        "schema_version",
+        "model_id",
+        "observation_id",
+        "feedback_id",
+        "episode_id",
+        "step_id",
+        "context_id",
+        "legal_action_ids",
+        "pre_state_hash",
+        "prediction_scores",
+        "selected_action_id",
+        "feedback_action_id",
+        "outcome_micros",
+        "update_delta",
+        "post_state_hash",
+        "producer_functions"
+      ],
+      "prediction_scores": "exact prediction.scores array",
+      "update_delta": "exact update_delta derived from targeted pre/post cell and revisions",
+      "producer_functions": [
+        "ego_outcome_utility.utility.predict",
+        "ego_outcome_utility.utility.observe_outcome"
+      ],
+      "additional_properties": false
+    },
+    "replay_mismatch": {
+      "exact_keys": [
+        "index",
+        "path",
+        "expected_present",
+        "expected_json",
+        "actual_present",
+        "actual_json"
+      ],
+      "index": "zero_based_non_bool_integer",
+      "path": "JSON Pointer or /length",
+      "json_value_rule": "canonical JSON text when present, otherwise empty string",
+      "order": "index ascending then path ascending",
+      "additional_properties": false
+    },
+    "replay_result": {
+      "schema_version": "ego.outcome_utility.replay_result.v1",
+      "exact_keys": [
+        "schema_version",
+        "initial_state_hash",
+        "final_state",
+        "final_state_hash",
+        "trace",
+        "comparator_provided",
+        "mismatch_count",
+        "mismatches",
+        "producer_function"
+      ],
+      "trace": "ordered exact trace_record array recomputed through run_step",
+      "mismatch_count": "len(mismatches)",
+      "producer_function": "ego_outcome_utility.utility.replay",
+      "additional_properties": false
+    },
+    "no_update_result": {
+      "schema_version": "ego.outcome_utility.no_update_result.v1",
+      "exact_keys": [
+        "schema_version",
+        "initial_state_hash",
+        "final_state_hash",
+        "selection_sequence",
+        "per_step_predictions",
+        "update_invocation_count",
+        "producer_function"
+      ],
+      "final_state_hash_rule": "equals initial_state_hash",
+      "update_invocation_count": 0,
+      "producer_function": "ego_outcome_utility.functional_checks.replay_without_updates",
+      "additional_properties": false
+    },
+    "leakage_finding": {
+      "exact_keys": [
+        "json_pointer",
+        "key",
+        "fragment"
+      ],
+      "json_pointer": "RFC 6901 pointer to the offending key",
+      "key": "original string key",
+      "fragment": "matched lowercase forbidden fragment",
+      "order": "json_pointer ascending then fragment ascending",
+      "additional_properties": false
+    },
+    "process_response": {
+      "schema_version": "ego.outcome_utility.process_response.v1",
+      "exact_keys": [
+        "schema_version",
+        "model_id",
+        "selection_sequence",
+        "final_state",
+        "trace",
+        "producer_function"
+      ],
+      "producer_function": "ego_outcome_utility.cli.process_transcript",
+      "additional_properties": false
+    }
+  },
+  "canonical_serialization": {
+    "json_dumps": {
+      "ensure_ascii": false,
+      "allow_nan": false,
+      "sort_keys": true,
+      "separators": [
+        ",",
+        ":"
+      ]
+    },
+    "encoding": "UTF-8",
+    "bom": false,
+    "trailing_newline_for_state_bytes": false,
+    "duplicate_object_keys": "REJECT",
+    "deserialize_requires_exact_canonical_bytes": true
+  },
+  "prediction_algorithm": {
+    "key": [
+      "context_id",
+      "action_id"
+    ],
+    "observed_score": "outcome_sum_micros/observation_count",
+    "unobserved_score": "0/1",
+    "float_scoring_forbidden": true,
+    "comparison": "exact integer cross multiplication",
+    "sort_order": [
+      "rational_score_descending",
+      "action_id_ascending"
+    ],
+    "hidden_prior": false,
+    "smoothing": false,
+    "threshold": false,
+    "rng": false,
+    "action_name_special_case": false,
+    "prediction_has_execution_authority": false
+  },
+  "update_algorithm": {
+    "old_sum": "existing outcome_sum_micros or 0",
+    "old_count": "existing observation_count or 0",
+    "new_sum": "old_sum+feedback.outcome_micros",
+    "new_count": "old_count+1",
+    "revision": "old_revision+1",
+    "feedback_id_rule": "append then canonical lexicographic sort; duplicates fail closed",
+    "other_cells_byte_identical": true,
+    "recompute_state_hash": true
+  },
+  "one_logic_path": {
+    "source_cli": "cli.process_transcript calls utility.run_step",
+    "direct_api": "utility.run_step calls utility.predict then utility.observe_outcome",
+    "replay": "utility.replay calls utility.run_step for each step",
+    "second_predictor_or_updater_forbidden": true,
+    "stored_selected_action_as_output_forbidden": true
+  },
+  "baseline": {
+    "id": "zero_utility",
+    "callable": "functional_checks.zero_utility_predict",
+    "rule": "score every legal action 0/1 and select lexicographically first",
+    "independent_implementation": true,
+    "claim_role": "functional_control_only"
+  },
+  "ablation": {
+    "id": "no_update",
+    "callable": "functional_checks.replay_without_updates",
+    "rule": "rerun every prediction on the same ordered observations from the same checkpoint while withholding every update",
+    "may_copy_live_trace": false,
+    "claim_role": "functional_state_dependency_only"
+  },
+  "replay_contract": {
+    "full_replay_from_initial_state": true,
+    "suffix_replay_from_serialized_checkpoint": true,
+    "suffix_replay_fresh_process": true,
+    "expected_trace_comparison_only": true,
+    "recompute_prediction_and_update": true,
+    "hash_only_replay_forbidden": true,
+    "tampered_expected_trace_must_report_mismatch": true,
+    "comparison_rule": "recursively compare the complete expected and actual trace arrays by exact key sets, scalar types and values; emit one mismatch per differing leaf plus /length",
+    "checkpoint_rule": "full replay uses serialize_state(new_state(model_id)); suffix replay uses serialize_state(live next_state after step 1) and remaining transcript steps 2..N",
+    "fresh_process_payload_exact_keys": [
+      "schema_version",
+      "checkpoint_state_base64",
+      "ordered_steps",
+      "expected_trace",
+      "task_id",
+      "run_id",
+      "code_path_hash",
+      "functional_contract_hash"
+    ],
+    "fresh_process_transport": "canonical JSON payload bytes supplied on stdin to the thin runner internal replay-worker command; no command-line payload and no payload file",
+    "fresh_process_stdout": "one canonical replay_result JSON object plus LF; stderr empty on success",
+    "fresh_process_exit_code": 0,
+    "fresh_process_forbidden_payload_fields": "stored final state, stored update output, precomputed replay verdict or selected actions outside expected_trace comparator",
+    "tamper_control": "deep-copy full expected trace, replace zero-based trace[1].selected_action_id from action.b to action.a, leave every other field and checkpoint unchanged; require exactly one mismatch at index 1 path /selected_action_id with expected_json canonical string action.a and actual_json canonical string action.b"
+  },
+  "leakage_contract": {
+    "scanner": "functional_checks.scan_observation_mapping",
+    "recursive_key_scan": true,
+    "value_scan": false,
+    "list_indices_traversed": true,
+    "key_type": "every mapping key must be str",
+    "key_normalization": "ASCII lowercase",
+    "match_rule": "forbidden fragment substring",
+    "clean_fixture_required": true,
+    "positive_control_key": "target_outcome_micros",
+    "forbidden_fragments_case_insensitive": [
+      "outcome",
+      "reward",
+      "feedback",
+      "target",
+      "label",
+      "expected",
+      "verdict",
+      "selected_action"
+    ],
+    "positive_control_expected_findings": [
+      {
+        "json_pointer": "/target_outcome_micros",
+        "key": "target_outcome_micros",
+        "fragment": "outcome"
+      },
+      {
+        "json_pointer": "/target_outcome_micros",
+        "key": "target_outcome_micros",
+        "fragment": "target"
+      }
+    ],
+    "positive_control_must_fire": true,
+    "parser_must_reject_positive_control": true,
+    "scanner_limit": "key-channel hygiene only; identifier/scalar values are not adjudicated"
+  },
+  "frozen_fixture": {
+    "path": "tests/fixtures/ego_outcome_utility_001a/transcript.json",
+    "file_serialization": "canonical JSON bytes plus one LF",
+    "model_id": "model.utility.001",
+    "episode_id": "episode.001",
+    "context_id": "context.demo",
+    "legal_action_ids": [
+      "action.a",
+      "action.b"
+    ],
+    "transcript_object": {
+      "schema_version": "ego.outcome_utility.transcript.v1",
+      "model_id": "model.utility.001",
+      "steps": [
+        {
+          "observation": {
+            "schema_version": "ego.outcome_utility.observation.v1",
+            "observation_id": "observation.001",
+            "episode_id": "episode.001",
+            "step_id": 1,
+            "context_id": "context.demo",
+            "legal_action_ids": [
+              "action.a",
+              "action.b"
+            ]
+          },
+          "feedback": {
+            "schema_version": "ego.outcome_utility.feedback.v1",
+            "feedback_id": "feedback.001",
+            "observation_id": "observation.001",
+            "episode_id": "episode.001",
+            "step_id": 1,
+            "context_id": "context.demo",
+            "action_id": "action.a",
+            "outcome_micros": -1000000
+          }
+        },
+        {
+          "observation": {
+            "schema_version": "ego.outcome_utility.observation.v1",
+            "observation_id": "observation.002",
+            "episode_id": "episode.001",
+            "step_id": 2,
+            "context_id": "context.demo",
+            "legal_action_ids": [
+              "action.a",
+              "action.b"
+            ]
+          },
+          "feedback": {
+            "schema_version": "ego.outcome_utility.feedback.v1",
+            "feedback_id": "feedback.002",
+            "observation_id": "observation.002",
+            "episode_id": "episode.001",
+            "step_id": 2,
+            "context_id": "context.demo",
+            "action_id": "action.b",
+            "outcome_micros": 500000
+          }
+        },
+        {
+          "observation": {
+            "schema_version": "ego.outcome_utility.observation.v1",
+            "observation_id": "observation.003",
+            "episode_id": "episode.001",
+            "step_id": 3,
+            "context_id": "context.demo",
+            "legal_action_ids": [
+              "action.a",
+              "action.b"
+            ]
+          },
+          "feedback": {
+            "schema_version": "ego.outcome_utility.feedback.v1",
+            "feedback_id": "feedback.003",
+            "observation_id": "observation.003",
+            "episode_id": "episode.001",
+            "step_id": 3,
+            "context_id": "context.demo",
+            "action_id": "action.b",
+            "outcome_micros": 500000
+          }
+        }
+      ]
+    },
+    "expected_stateful_selections": [
+      "action.a",
+      "action.b",
+      "action.b"
+    ],
+    "expected_zero_and_no_update_selections": [
+      "action.a",
+      "action.a",
+      "action.a"
+    ],
+    "expected_final_revision": 3,
+    "expected_cells": [
+      {
+        "context_id": "context.demo",
+        "action_id": "action.a",
+        "outcome_sum_micros": -1000000,
+        "observation_count": 1
+      },
+      {
+        "context_id": "context.demo",
+        "action_id": "action.b",
+        "outcome_sum_micros": 1000000,
+        "observation_count": 2
+      }
+    ]
+  },
+  "cli_contract": {
+    "package_entrypoint": "ego-outcome-utility=ego_outcome_utility.cli:main",
+    "installed_console_script_required": false,
+    "dependency_install_forbidden": true,
+    "thin_runner": "scripts/run_ego_outcome_utility_001a.py",
+    "commands": {
+      "process": "process --input <transcript.json> --output <response.json>",
+      "validate": "validate --contract <FUNCTIONAL_CONTRACT.json> --fixture <transcript.json> --output-dir <dir> --run-id <id>",
+      "replay_worker": "internal replay-worker; read exactly one canonical payload object from stdin and write no files"
+    },
+    "process_output_schema": "process_response",
+    "validate_stdout": "one canonical JSON object plus LF with exact keys schema_version, task_id, run_id, verdict, output_files",
+    "validate_stdout_schema_version": "ego.outcome_utility.validation_stdout.v1",
+    "output_files_rule": "ascending filename array of files actually written",
+    "replay_worker_is_internal_only": true,
+    "explicit_invocation_only": true,
+    "import_side_effects": false,
+    "exit_codes": {
+      "0": "success",
+      "2": "contract_or_input_error",
+      "3": "functional_validation_failed",
+      "4": "artifact_path_exists_or_write_failure"
+    }
+  },
+  "provenance_contract": {
+    "required_fields": [
+      "producer_function",
+      "producer_script",
+      "input_artifact_paths",
+      "input_artifact_hashes",
+      "task_id",
+      "run_id",
+      "episode_ids",
+      "context_ids",
+      "seed_context",
+      "aggregation_rule",
+      "code_path_hash",
+      "functional_contract_hash"
+    ],
+    "seed_context": {
+      "rng_used": false,
+      "seed_status": "NOT_APPLICABLE_DETERMINISTIC"
+    },
+    "aggregation_rule": "report exact per-step rational predictions, selections, state revisions and mismatch counts; compute no aggregate capability score",
+    "input_artifact_paths_exact": [
+      "docs/codex/tasks/ego-engineering-only-outcome-utility-route-replacement-001a/FUNCTIONAL_CONTRACT.json",
+      "tests/fixtures/ego_outcome_utility_001a/transcript.json"
+    ],
+    "input_path_format": "repo-relative POSIX strings in the exact order above",
+    "input_artifact_hashes_format": "exact mapping from each input path to lowercase raw-byte SHA-256",
+    "producer_script_value": "scripts/run_ego_outcome_utility_001a.py",
+    "task_id_value": "EGO-ENGINEERING-ONLY-OUTCOME-UTILITY-ROUTE-REPLACEMENT-001A",
+    "run_id_rule": "identifier_contract.regex",
+    "episode_ids_rule": "ascending unique identifiers observed in the transcript",
+    "context_ids_rule": "ascending unique identifiers observed in the transcript",
+    "functional_contract_hash_rule": "lowercase SHA-256 of exact committed FUNCTIONAL_CONTRACT.json bytes including one terminal LF; require worktree input bytes equal git show HEAD:<contract-path> bytes before hashing",
+    "nondeterministic_fields_forbidden": "absolute paths, cwd, hostname, username, PID, temp path, wall-clock time and random UUID",
+    "code_path_hash": {
+      "algorithm": "SHA-256",
+      "ordered_paths": [
+        "packages/ego_outcome_utility/pyproject.toml",
+        "packages/ego_outcome_utility/src/ego_outcome_utility/__init__.py",
+        "packages/ego_outcome_utility/src/ego_outcome_utility/utility.py",
+        "packages/ego_outcome_utility/src/ego_outcome_utility/functional_checks.py",
+        "packages/ego_outcome_utility/src/ego_outcome_utility/cli.py",
+        "scripts/run_ego_outcome_utility_001a.py"
+      ],
+      "preimage_rule": "for each ordered path append uint32_be(path_utf8_length)||path_utf8||uint64_be(file_byte_length)||exact_file_bytes",
+      "digest": "lowercase_hex"
+    }
+  },
+  "artifact_contract": {
+    "root": "artifacts/ego_engineering_only_outcome_utility_001a/",
+    "staging_root": "artifacts/ego_engineering_only_outcome_utility_001a.staging/",
+    "root_must_be_absent": true,
+    "staging_root_must_be_absent_before_and_after_call": true,
+    "json_serialization": "canonical JSON bytes plus one LF",
+    "jsonl_serialization": "one canonical JSON record plus one LF per row",
+    "claim_ceiling_serialization": "exact UTF-8 text plus one LF",
+    "bundle_write": "compute and validate all records in memory, write the complete selected bundle to the exact absent staging_root, fsync/close files, then os.replace staging_root to the absent canonical root; refuse an existing staging or canonical path and leave staging_root absent on every return",
+    "success_files": [
+      "result.json",
+      "trace.jsonl",
+      "baseline_comparison.json",
+      "ablation_report.json",
+      "replay_report.json",
+      "leakage_report.json",
+      "claim_ceiling.txt"
+    ],
+    "handled_failure_files": [
+      "failure_manifest.json",
+      "claim_ceiling.txt"
+    ],
+    "failure_result_json_forbidden": true,
+    "other_artifact_names_forbidden": true,
+    "write_failure_rule": "if no callable-produced failure_manifest can be atomically finalized, do not fabricate or retry, make no Phase B commit and report FAILURE_EVIDENCE_UNAVAILABLE_WRITE_FAILURE",
+    "common_json_report_exact_keys": [
+      "schema_version",
+      "task_id",
+      "run_id",
+      "producer_function",
+      "producer_script",
+      "input_artifact_paths",
+      "input_artifact_hashes",
+      "episode_ids",
+      "context_ids",
+      "seed_context",
+      "aggregation_rule",
+      "code_path_hash",
+      "functional_contract_hash",
+      "payload"
+    ],
+    "report_schema_versions": {
+      "result.json": "ego.outcome_utility.result.v1",
+      "baseline_comparison.json": "ego.outcome_utility.baseline_comparison.v1",
+      "ablation_report.json": "ego.outcome_utility.ablation_report.v1",
+      "replay_report.json": "ego.outcome_utility.replay_report.v1",
+      "leakage_report.json": "ego.outcome_utility.leakage_report.v1",
+      "failure_manifest.json": "ego.outcome_utility.failure_manifest.v1",
+      "trace.jsonl": "ego.outcome_utility.trace_envelope.v1"
+    },
+    "producer_functions": {
+      "result.json": "ego_outcome_utility.functional_checks.run_functional_validation",
+      "baseline_comparison.json": "ego_outcome_utility.functional_checks.run_functional_validation",
+      "ablation_report.json": "ego_outcome_utility.functional_checks.run_functional_validation",
+      "replay_report.json": "ego_outcome_utility.functional_checks.run_functional_validation",
+      "leakage_report.json": "ego_outcome_utility.functional_checks.run_functional_validation",
+      "failure_manifest.json": "ego_outcome_utility.functional_checks.run_functional_validation",
+      "trace.jsonl": "ego_outcome_utility.functional_checks.run_functional_validation"
+    },
+    "payload_exact_keys": {
+      "result.json": [
+        "verdict",
+        "required_checks",
+        "check_records",
+        "computed_fixture_selections",
+        "final_revision",
+        "final_state_hash",
+        "authority_consumption",
+        "claim_ceiling",
+        "claim_ceiling_sha256"
+      ],
+      "baseline_comparison.json": [
+        "baseline_id",
+        "invocation_records",
+        "computed_fixture_selections",
+        "baseline_selections",
+        "divergence_step_ids",
+        "claim_role"
+      ],
+      "ablation_report.json": [
+        "ablation_id",
+        "checkpoint_state_hash",
+        "invocation_record",
+        "computed_fixture_selections",
+        "ablated_selections",
+        "divergence_step_ids",
+        "live_final_state_hash",
+        "ablated_final_state_hash",
+        "claim_role"
+      ],
+      "replay_report.json": [
+        "invocation_records",
+        "full_replay",
+        "fresh_suffix_replay",
+        "tamper_replay",
+        "aggregate_mismatch_count"
+      ],
+      "leakage_report.json": [
+        "invocation_records",
+        "clean_scan",
+        "positive_control_scan",
+        "parser_rejection",
+        "scanner_limit"
+      ],
+      "failure_manifest.json": [
+        "verdict",
+        "canonical_attempt_ordinal",
+        "failure_stage",
+        "failure_codes",
+        "exception_type",
+        "normalized_message",
+        "required_checks",
+        "check_records",
+        "authority_consumption",
+        "claim_ceiling",
+        "claim_ceiling_sha256",
+        "partial_evidence_authoritative"
+      ],
+      "trace.jsonl": [
+        "trace_record"
+      ]
+    },
+    "invocation_record_exact_keys": [
+      "producer_function",
+      "input_hashes",
+      "output_hash",
+      "call_count",
+      "step_ids"
+    ],
+    "nested_payload_bindings": {
+      "baseline_comparison.json": {
+        "invocation_records": "exactly three ordered zero_utility_predict records, one per fixture observation, each call_count 1 and output_hash equal to its canonical baseline_prediction hash",
+        "computed_fixture_selections": "byte-identical copy of the stateful trace selected_action_id sequence",
+        "baseline_selections": "ordered selected_action_id values copied from the three callable baseline predictions",
+        "divergence_step_ids": [
+          2,
+          3
+        ],
+        "claim_role": "functional_control_only"
+      },
+      "ablation_report.json": {
+        "invocation_record": "one replay_without_updates record over initial checkpoint plus all ordered steps; output_hash equals canonical no_update_result hash",
+        "computed_fixture_selections": "byte-identical stateful trace selection sequence",
+        "ablated_selections": "byte-identical no_update_result.selection_sequence",
+        "divergence_step_ids": [
+          2,
+          3
+        ],
+        "live_final_state_hash": "stateful final state_hash",
+        "ablated_final_state_hash": "no_update_result.final_state_hash equal to initial checkpoint hash",
+        "claim_role": "functional_state_dependency_only"
+      },
+      "replay_report.json": {
+        "invocation_records": "exactly three records in full, fresh_suffix, tamper order; each producer_function is ego_outcome_utility.utility.replay, call_count 1, step_ids match its input and output_hash equals canonical replay_result hash",
+        "full_replay": "exact replay_result callable return, no copied or additional field",
+        "fresh_suffix_replay": "exact replay_result parsed from the one fresh-worker canonical stdout line, no copied or additional field",
+        "tamper_replay": "exact replay_result callable return under the frozen comparator tamper",
+        "aggregate_mismatch_count": "full_replay.mismatch_count + fresh_suffix_replay.mismatch_count + tamper_replay.mismatch_count; frozen fixture expected value 1"
+      },
+      "leakage_report.json": {
+        "invocation_records": "exactly four ordered scan_observation_mapping records: three legal observations then the step-1 positive-control copy; each output_hash equals its canonical findings-array hash",
+        "clean_scan": "three ordered exact objects with keys observation_id,input_hash,findings; each findings value is the exact empty scanner return",
+        "positive_control_scan": "exact object with keys input_hash,findings; findings equals leakage_contract.positive_control_expected_findings",
+        "parser_rejection": "exact object with keys producer_function,input_hash,exception_type,message_prefix,rejected; rejected is bool true, exception_type is ValueError and message_prefix is EOU_",
+        "scanner_limit": "exact copy of leakage_contract.scanner_limit"
+      },
+      "trace.jsonl": {
+        "trace_record": "byte-identical canonical mapping returned by utility.run_step for the corresponding stateful fixture step"
+      }
+    },
+    "check_record_exact_keys": [
+      "check_id",
+      "producer_function",
+      "input_hashes",
+      "observed_value",
+      "expected_rule",
+      "passed"
+    ],
+    "authority_consumption_exact_keys": [
+      "source_grant_status",
+      "source_consumption_basis",
+      "canonical_smoke_grant_status",
+      "canonical_smoke_consumption_basis",
+      "canonical_attempt_ordinal"
+    ],
+    "authority_consumption_values": {
+      "source_grant_status": "CONSUMED",
+      "source_consumption_basis": "exact eight-path source/test transaction completed after token claim at first Phase B source write in the pinned uninterrupted executor session",
+      "canonical_smoke_grant_status": "CONSUMED",
+      "canonical_smoke_consumption_basis": "canonical validate invocation started",
+      "canonical_attempt_ordinal": 1
+    },
+    "trace_row_count": "exactly len(frozen transcript steps), therefore 3 for the frozen fixture",
+    "trace_row_rule": "each JSONL row is the common report envelope and payload.trace_record is the corresponding exact trace_record",
+    "claim_ceiling_text": "Isolated deterministic count-table utility implementation and one bounded callable functional run proving only feedback-dependent state update, canonical serialization/load, independent controls, key-channel leakage positive-control response and fresh-process recomputing replay. No learning/generalization, headroom, capability, mechanism, product, runtime, agency, subjectivity or consciousness claim.",
+    "failure_manifest_rules": {
+      "canonical_attempt_ordinal": 1,
+      "failure_stage_enum": [
+        "contract_parse",
+        "input_parse",
+        "functional_checks",
+        "bundle_validation"
+      ],
+      "failure_codes": "nonempty ascending unique stable codes",
+      "exception_type": "FunctionalValidationFailure for a false required check, otherwise the caught exception class __name__",
+      "normalized_message": "semicolon join of failure_codes in their sorted order; one line with no absolute path, temp path, PID, time or traceback",
+      "partial_evidence_authoritative": false,
+      "verdict": "failure label returned by resolve_verdict",
+      "required_checks": "exact key set; checks not reached are bool false",
+      "check_records": "exactly one record per required check in contract order"
+    },
+    "result_required_checks": [
+      "public_api_process_pass",
+      "fixture_live_selection_pass",
+      "state_update_pass",
+      "target_cell_only_pass",
+      "serialization_roundtrip_pass",
+      "zero_baseline_invoked",
+      "no_update_ablation_invoked",
+      "no_update_divergence_pass",
+      "full_replay_zero_mismatch",
+      "fresh_suffix_replay_zero_mismatch",
+      "tamper_replay_detected",
+      "clean_leakage_scan_pass",
+      "positive_control_leakage_detected",
+      "dynamic_identifier_test_pass",
+      "fixture_literal_source_scan_pass",
+      "single_logic_path_pass",
+      "provenance_complete",
+      "claim_ceiling_exact"
+    ],
+    "required_checks_map_rule": "exact ordered key set above; values require type(value) is bool; missing, extra or non-bool fails closed",
+    "check_records_rule": "exactly one callable-produced record per required check in contract order; passed is derived inside the named producer and is never accepted as a caller argument",
+    "draft_validation_order": "_validate_draft_bundle validates the five non-result JSON/JSONL reports, claim_ceiling.txt, and the proposed result common envelope plus stable payload fields excluding required_checks, check_records and verdict; it must not inspect or require a provisional provenance_complete value",
+    "result_postbuild_validation": "only after draft validation returns true, record provenance_complete=true, call resolve_verdict, assemble final result, then _validate_final_result_structure checks common envelope, exact payload keys, exact check order/types, verdict, authority consumption and claim binding without producing or altering any check or verdict",
+    "result_structure_abort_rule": "if _validate_final_result_structure fails, write no canonical artifact or failure manifest, make no Phase B commit, report FAILURE_EVIDENCE_UNAVAILABLE_PRODUCER_ABORT and consume the one attempt without retry",
+    "failure_manifest_postbuild_validation": "_validate_failure_manifest_structure checks the exact common envelope, failure payload keys/rules, failure resolver output, authority consumption and claim binding before the two-file bundle write; failure of this gate follows the same producer-abort rule",
+    "verdict_derivation": "functional_checks.resolve_verdict receives required names, observed checks and labels parsed from this contract; artifact writers use only its return",
+    "success_verdict": "ENGINEERING_ONLY_OUTCOME_UTILITY_FUNCTIONAL_SLICE_EXECUTED",
+    "failure_verdict": "ENGINEERING_ONLY_OUTCOME_UTILITY_FUNCTIONAL_SLICE_FAILED"
+  },
+  "check_producer_contract": {
+    "record_owner": "ego_outcome_utility.functional_checks.run_functional_validation",
+    "record_rule": "each check invokes the named callable or inspection path and constructs observed_value before deriving passed; no caller-supplied passed value",
+    "checks": {
+      "public_api_process_pass": {
+        "producer_function": "ego_outcome_utility.cli.process_transcript",
+        "formula": "process_response has exact schema, equals a direct run_step fold on the same fixture and its selection_sequence equals the direct fold"
+      },
+      "fixture_live_selection_pass": {
+        "producer_function": "ego_outcome_utility.utility.run_step",
+        "formula": "ordered trace selected_action_id sequence equals contract.frozen_fixture.expected_stateful_selections"
+      },
+      "state_update_pass": {
+        "producer_function": "ego_outcome_utility.utility.observe_outcome",
+        "formula": "for every step serialized before bytes differ from serialized after bytes, hashes differ and revision_after equals revision_before+1"
+      },
+      "target_cell_only_pass": {
+        "producer_function": "ego_outcome_utility.functional_checks._check_target_cell_only",
+        "formula": "for every step only the feedback context/action cell is added or changed; every pre-existing non-target cell canonical bytes are identical"
+      },
+      "serialization_roundtrip_pass": {
+        "producer_function": "ego_outcome_utility.utility.deserialize_state",
+        "formula": "for initial and every post-step state, serialize_state(deserialize_state(serialized_bytes)) equals serialized_bytes"
+      },
+      "zero_baseline_invoked": {
+        "producer_function": "ego_outcome_utility.functional_checks.zero_utility_predict",
+        "formula": "call_count equals transcript step count, input hash per call equals corresponding observation canonical hash and selections equal contract frozen zero sequence"
+      },
+      "no_update_ablation_invoked": {
+        "producer_function": "ego_outcome_utility.functional_checks.replay_without_updates",
+        "formula": "exactly one invocation consumes initial checkpoint and all ordered steps, returns update_invocation_count 0 and selections equal contract frozen no-update sequence"
+      },
+      "no_update_divergence_pass": {
+        "producer_function": "ego_outcome_utility.functional_checks._check_no_update_divergence",
+        "formula": "live and no-update selection sequences differ exactly at step_ids 2 and 3"
+      },
+      "full_replay_zero_mismatch": {
+        "producer_function": "ego_outcome_utility.utility.replay",
+        "formula": "one full replay from canonical initial checkpoint over all steps has comparator_provided true, mismatch_count 0 and recomputed trace exactly equals the stateful computed trace"
+      },
+      "fresh_suffix_replay_zero_mismatch": {
+        "producer_function": "ego_outcome_utility.functional_checks._run_fresh_suffix_replay",
+        "formula": "one fresh runner subprocess receives post-step-1 checkpoint and transcript steps 2..3, exits 0 with empty stderr and canonical replay_result stdout whose mismatch_count is 0 and trace equals stateful computed trace rows 2..3"
+      },
+      "tamper_replay_detected": {
+        "producer_function": "ego_outcome_utility.utility.replay",
+        "formula": "frozen tamper control returns mismatch_count 1 and the exact declared index/path/expected/actual mismatch"
+      },
+      "clean_leakage_scan_pass": {
+        "producer_function": "ego_outcome_utility.functional_checks.scan_observation_mapping",
+        "formula": "scanner returns an empty list for every frozen legal observation"
+      },
+      "positive_control_leakage_detected": {
+        "producer_function": "ego_outcome_utility.functional_checks.scan_observation_mapping",
+        "formula": "scanner finding list equals leakage_contract.positive_control_expected_findings and observation parser raises ValueError for the planted extra key"
+      },
+      "dynamic_identifier_test_pass": {
+        "producer_function": "ego_outcome_utility.functional_checks._check_dynamic_identifiers",
+        "formula": "derive suffix as first 12 hex of functional_contract_hash; run public API and roundtrip with model/context/episode/observation/feedback/action identifiers prefixed dynamic.* and require exact schema success without fixture identifiers"
+      },
+      "fixture_literal_source_scan_pass": {
+        "producer_function": "ego_outcome_utility.functional_checks._scan_production_source_literals",
+        "formula": "raw UTF-8 production source paths contain none of contract anti_hardcoding production_source_forbidden_literals"
+      },
+      "single_logic_path_pass": {
+        "producer_function": "ego_outcome_utility.functional_checks._check_single_logic_path",
+        "formula": "AST has exactly one predict and one observe_outcome definition in utility.py, none in CLI/runner; spies prove run_step invokes each once, replay invokes run_step once per step, process_transcript invokes run_step once per step and baseline still runs when utility.predict is patched to raise"
+      },
+      "provenance_complete": {
+        "producer_function": "ego_outcome_utility.functional_checks._validate_draft_bundle",
+        "formula": "follow artifact_contract.draft_validation_order, independently recomputing schemas, hashes, report producers, payload bindings, invocation records and trace cardinality without reading a provisional check or verdict; final result must then pass the non-check write gate"
+      },
+      "claim_ceiling_exact": {
+        "producer_function": "ego_outcome_utility.functional_checks._check_claim_ceiling",
+        "formula": "claim_ceiling bytes equal artifact_contract.claim_ceiling_text encoded UTF-8 plus one LF and result claim text/hash match"
+      }
+    }
+  },
+  "test_contract": {
+    "focused_test_path": "tests/test_ego_outcome_utility_001a.py",
+    "minimum_test_cases": 24,
+    "required_groups": [
+      "schema_and_identifier_validation",
+      "integer_range_and_exact_rational_ordering",
+      "targeted_immutable_update",
+      "duplicate_and_mismatch_failure_paths",
+      "canonical_roundtrip_and_tamper_rejection",
+      "full_and_fresh_suffix_replay",
+      "tampered_expected_trace_mismatch",
+      "independent_zero_and_no_update_controls",
+      "real_leakage_scanner_and_positive_control",
+      "dynamic_nonfixture_identifiers",
+      "fixture_literal_source_scan",
+      "import_side_effect_scan",
+      "CLI_subprocess_process_and_validate",
+      "deterministic_artifact_rerun",
+      "exact_success_and_handled_failure_bundle_schemas",
+      "result_postbuild_validation_failures",
+      "verdict_failure_injection",
+      "single_logic_path_spies",
+      "mainline_import_scan"
+    ]
+  },
+  "anti_hardcoding": {
+    "production_source_paths": [
+      "packages/ego_outcome_utility/pyproject.toml",
+      "packages/ego_outcome_utility/src/ego_outcome_utility/__init__.py",
+      "packages/ego_outcome_utility/src/ego_outcome_utility/utility.py",
+      "packages/ego_outcome_utility/src/ego_outcome_utility/functional_checks.py",
+      "packages/ego_outcome_utility/src/ego_outcome_utility/cli.py",
+      "scripts/run_ego_outcome_utility_001a.py"
+    ],
+    "production_source_forbidden_literals": [
+      "model.utility.001",
+      "context.demo",
+      "action.a",
+      "action.b",
+      "episode.001",
+      "observation.001",
+      "observation.002",
+      "observation.003",
+      "feedback.001",
+      "feedback.002",
+      "feedback.003",
+      "ENGINEERING_ONLY_OUTCOME_UTILITY_FUNCTIONAL_SLICE_EXECUTED",
+      "ENGINEERING_ONLY_OUTCOME_UTILITY_FUNCTIONAL_SLICE_FAILED"
+    ],
+    "model_may_branch_on_identifier": false,
+    "verdict_labels_are_contract_injected": true,
+    "fixture_expected_values_may_exist_only_in_contract_fixture_and_tests": true,
+    "second_logic_path_for_tests": false,
+    "thin_runner_rule": "runner only prepends resolved package src, imports ego_outcome_utility.cli.main and exits with main(sys.argv[1:]); it owns no parsing, prediction, update, validation, verdict or artifact logic"
+  },
+  "acceptance": {
+    "mainline_integration": "none",
+    "enabled": false,
+    "real_trigger": "explicit local CLI invocation only",
+    "maximum_verdict": "ENGINEERING_ONLY_OUTCOME_UTILITY_FUNCTIONAL_SLICE_EXECUTED",
+    "claim_ceiling": "Isolated deterministic count-table utility implementation and one bounded callable functional run proving only feedback-dependent state update, canonical serialization/load, independent controls, key-channel leakage positive-control response and fresh-process recomputing replay. No learning/generalization, headroom, capability, mechanism, product, runtime, agency, subjectivity or consciousness claim."
+  }
+}
