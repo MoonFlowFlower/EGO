@@ -1,0 +1,57 @@
+schema_version: codex.mutation_scope.v1
+task: ego-canonical-mechanism-integration-001a-m0
+task_id: EGO-CANONICAL-MECHANISM-INTEGRATION-001A
+phase: route_freeze_and_reader_safety
+expected_head: 92d13c116133b56a8c0eb61d8abb411b6b7daf3d
+expected_tree: 51f749eab22508dd6cdc4d4dc1637db596c10247
+expected_raw_behind_ahead: [0, 0]
+expected_clean: true
+auto_remote_anchor: forbidden
+expected_mutation_surface:
+  - AGENTS.md
+  - README.md
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - docs/ACTIVE_CONTEXT_PACK.md
+  - docs/MAINLINE_QUICKSTART.md
+  - docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md
+  - docs/codex/tasks/ego-canonical-mechanism-integration-001a/
+  - scripts/codex/route_convergence_common.py
+  - scripts/codex/verify_route_convergence.py
+  - docs/STATUS.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - docs/REPO_HYGIENE_POLICY.md
+  - docs/REPO_SURFACE_MAP.md
+  - artifacts/reports/program_state_summary.md
+allowed_mutation_paths:
+  - AGENTS.md
+  - README.md
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - docs/ACTIVE_CONTEXT_PACK.md
+  - docs/MAINLINE_QUICKSTART.md
+  - docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md
+  - docs/codex/tasks/ego-canonical-mechanism-integration-001a/
+  - scripts/codex/route_convergence_common.py
+  - scripts/codex/verify_route_convergence.py
+  - docs/STATUS.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - docs/REPO_HYGIENE_POLICY.md
+  - docs/REPO_SURFACE_MAP.md
+  - artifacts/reports/program_state_summary.md
+forbidden_mutation_paths:
+  - packages/ego_k0_kernel/
+  - labs/virtual_cat_pspc_v0/
+  - EgoDesktop/
+  - EgoOperator/
+  - scripts/ego_pet/
+  - scripts/ego_pet_capability/
+  - artifacts/evidence_ledger/
+  - Tasks/TASK_BOARD.yaml
+  - historical task cards and artifacts
+claim_ceiling: >-
+  canonical successor route selection, freeze, and fresh-session reader safety
+  only; no runtime integration, enabled path, real trigger, mechanism validity,
+  learning/adaptation result, mainline effect, readiness, agency, subjectivity,
+  consciousness, emotion, autonomy, or stable user benefit
+local_commit: authorized
+push: forbidden
+tag: forbidden

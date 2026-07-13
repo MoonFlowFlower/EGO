@@ -10,6 +10,26 @@ Source of truth: `docs/PROGRAM_STATE_UNIFIED.yaml`.
 
 Derived route view: `docs/codex/tasks/TASK_LANE_INDEX.md`.
 
+## Selected Mechanism Successor
+
+The current runtime owner and the selected successor are intentionally distinct.
+`EgoOperator` remains the enabled runtime until replacement evidence exists. The
+sole selected default-off successor is:
+
+```text
+K0 Foundation canonical substrate
+  -> VirtualCatPSPC-derived world/self-model adapter
+  -> EgoDesktop observer/input surface
+```
+
+Binding route and milestone state:
+
+- `docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md`
+- `docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md`
+
+Current successor milestone is M1 headless bridge; no EgoDesktop integration,
+enablement, mainline effect, or real trigger exists yet.
+
 ## Runtime Ownership
 
 - `EgoOperator` owns the current operator-first runtime candidate: natural language understanding, runtime modes, transaction approval, local operator memory, trace, and human-trial reports.
@@ -19,13 +39,14 @@ Derived route view: `docs/codex/tasks/TASK_LANE_INDEX.md`.
 - The archive pointer is `legacy-pre-operator-mainline-before-purge`. Restoring or reusing old `EgoCore / OpenEmotion / ego_desktop_lab` code requires a new Stage Card and evidence gate.
 - New work should preserve the `user text -> LLM understanding -> proposal/plan -> gate -> trace` path. Do not reintroduce keyword-first semantic routing as the default entry.
 
-## First 5 Files To Read
+## First Files To Read
 
 1. `docs/PROGRAM_STATE_UNIFIED.yaml`
-2. `docs/MAINLINE_QUICKSTART.md`
-3. `docs/codex/tasks/TASK_LANE_INDEX.md`
-4. `docs/REPO_HYGIENE_POLICY.md`
-5. `docs/codex/tasks/ego-operator-human-operator-trial-v2/STATUS.md`
+2. `docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md`
+3. `docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md`
+4. `docs/MAINLINE_QUICKSTART.md`
+5. `docs/codex/tasks/TASK_LANE_INDEX.md`
+6. `docs/REPO_HYGIENE_POLICY.md`
 
 ## Do Not Reopen By Default
 
@@ -35,10 +56,19 @@ Derived route view: `docs/codex/tasks/TASK_LANE_INDEX.md`.
 - `repo_authority_cleanup` is closeout-complete; only explicit housekeeping slices should reopen cleanup.
 - `thought_probe / weak-generic rebind / bare-continue repair / proactive timing / self-DM live gate` are regression evidence unless the active lane explicitly admits a new task.
 - Archived pre-operator `EgoCore / OpenEmotion / ego_desktop_lab` code should not become a Telegram path, GUI path, desktop executor, subject kernel, fallback runtime, or third core without a new Stage Card and evidence gate.
+- Do not run old EgoDesktop PET P2 as the selected mechanism successor.
+- Do not resume historical PSPC adapter/shadow/manual-preview `go_for_*` tasks.
+- Do not reopen the old K0 science/verifier/P1R0 lineage or the closed
+  outcome-utility runtime route.
+- Do not connect VirtualCat directly to Electron; K0 must remain the canonical
+  state/event/trace/replay authority.
 
 ## Claim Ceiling
 
-The current trial can prove at most `EgoOperator human-operator trial local observation pass` after enough real-provider human observations. It does not prove consciousness, alive status, live autonomy, runtime efficacy, stable long-term memory, or stable real user benefit.
+The current EgoOperator trial can prove at most a local human-observation result.
+The successor M0 route freeze proves only route selection and evidence hygiene.
+Neither proves mechanism validity, consciousness, alive status, live autonomy,
+runtime efficacy, stable long-term memory, or stable real user benefit.
 
 ## Minimal Verification
 

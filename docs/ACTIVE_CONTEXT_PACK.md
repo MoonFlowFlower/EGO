@@ -18,7 +18,42 @@ user text -> LLM understanding -> proposal/plan -> runtime gate -> trace
 
 ## Current Mainline Gate
 
-The current next minimal action is human review import for EgoOperator Human Operator Trial v2:
+The current runtime owner remains EgoOperator. Its human-review import remains an
+observation debt, but it no longer owns the mechanism-successor development
+route.
+
+## Canonical Mechanism Successor
+
+Mandatory route document:
+
+`docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md`
+
+Selected successor:
+
+```text
+K0 Foundation canonical substrate
+  -> VirtualCatPSPC-derived world/self-model adapter
+  -> EgoDesktop observer/input surface
+```
+
+Current successor status:
+
+- milestone: `M0_COMPLETE__M1_READY_NOT_STARTED`
+- enabled: `false`
+- mainline connected: `false`
+- runtime authority: `none`
+- real trigger evidence: absent
+
+The next minimal action is M1 headless integration only. Before any EgoDesktop
+work, prove K0 serialized state and the single source/replay path can contain and
+recompute every load-bearing model/update variable. Stop on adapter-local hidden
+state, a second transition path, replay weakness, or equal-access baseline
+equivalence.
+
+## EgoOperator Observation Debt
+
+The prior human review command remains available for the current runtime, but it
+is not the next mechanism-integration milestone:
 
 ```text
 Have a human operator fill EgoOperator/artifacts/human_operator_trial/v2_latest/human_operator_trial_human_review_notes_template.jsonl, then import it with:
@@ -47,12 +82,16 @@ Removed current-tree code paths:
 
 ## PSPC Status
 
-PSPC evidence is reference-only unless a future Stage Card explicitly admits a new review step.
+VirtualCatPSPC is a source-only candidate for the selected M1 bridge. All prior
+PSPC adapter/shadow/runtime-adjacent/manual-preview successor tasks are frozen
+historical/reference evidence. Historical `go_for_*` strings do not authorize
+continuation.
 
 Current allowed PSPC role:
 
-- lab/shadow/product-preview evidence
-- presentation/debug/style hints in EgoDesktop local preview work
+- source-only model code and bounded lab evidence for the selected M1 bridge
+- frozen historical lab/shadow/product-preview evidence used only as baselines,
+  negative evidence, or compatibility references
 - audit-only artifacts and reports
 
 Current forbidden PSPC role:
@@ -82,7 +121,10 @@ These paths are not current source, tests, or evidence unless a future Stage Car
 
 - Do not restore archived legacy code as an active runtime.
 - Do not reintroduce keyword-first semantic routing or template fallback as the default entry.
-- Do not let PSPC become runtime authority.
+- Do not run old PET P2 as a substitute for the selected mechanism route.
+- Do not continue old PSPC adapter/shadow successors or the closed K0 science route.
+- Do not connect VirtualCat directly to EgoDesktop and bypass K0.
+- Do not let PSPC or EgoDesktop become state, policy, replay, or verdict authority.
 - Do not raise repo-wide claim ceiling from local/scripted evidence.
 - Do not replace the human review import gate with scripted scores.
 - Do not treat this reader pack as a source of truth over `docs/PROGRAM_STATE_UNIFIED.yaml`.

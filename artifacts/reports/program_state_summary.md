@@ -8,6 +8,6 @@
 - verification: `V3`
 - mainline_connected: `True`
 - enabled: `True`
-- next_minimal_action: Keep the current FACTORED-STOCHASTIC-OUTCOME-SURFACE-v1 P0/P1/P1R0 instrument-design lineage closed invalid; same-lineage P1R0 repair, P1R1, P1R2, and P2 are forbidden. Any possible successor requires an operator-selected new surface, new task ID, fresh preregistration, and fresh operator decision; no candidate, product, runtime, mainline, science, push, tag, or remote-anchor authorization is granted.
+- next_minimal_action: Execute M1 of EGO-CANONICAL-MECHANISM-INTEGRATION-001A only: after fresh bootstrap and pin/clean-tree readback, build the headless default-off K0 + VirtualCat-derived canonical mechanism bridge and prove serialized model/update state plus prediction/error/update/proposal recomputation through one source/replay path. Do not touch EgoDesktop, EgoOperator, old PET/PSPC sources, historical artifacts, runtime/mainline flags, push, tag, or remote anchors in M1. Stop on second-state-authority, hidden adapter state, replay weakness, or equal-access baseline equivalence.
 - highest ledger entry: `mvp16_controlled_completion_current` / `E5`
 

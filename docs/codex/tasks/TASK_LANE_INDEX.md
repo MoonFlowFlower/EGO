@@ -18,10 +18,10 @@
 | lane | count |
 |---|---:|
 | `active_default` | 1 |
-| `supporting_active` | 1 |
+| `supporting_active` | 2 |
 | `parked` | 1 |
-| `closed_evidence` | 20 |
-| `reference_only` | 235 |
+| `closed_evidence` | 21 |
+| `reference_only` | 234 |
 
 ## Active Default
 
@@ -33,6 +33,7 @@
 
 | entry | kind | workstream | paths | why |
 |---|---|---|---|---|
+| EGO Canonical Mechanism Integration 001A | `codex_task` | `canonical_mechanism_integration_route_001a` | `docs/codex/tasks/ego-canonical-mechanism-integration-001a/` | Sole selected successor route. M0 authority freeze is complete; M1 headless K0 + VirtualCat-derived bridge is next, while enablement/mainline/runtime authority remain absent. Current workstream status: `route_frozen__m0_complete__m1_headless_bridge_ready_not_started__disabled__non_mainline`. |
 | Repo Mainline Clarity v1 | `codex_task` | n/a | `docs/codex/tasks/repo-mainline-clarity-v1/` | Supporting repo-view slice for mainline onboarding, surface-map clarity, and staged operational-exhaust hygiene; must not replace the active default track. |
 
 ## Parked
@@ -49,6 +50,7 @@
 | AI Self-Awareness Minimal Framework | `codex_task` | `ai_self_awareness_research` | `docs/codex/tasks/ai-self-awareness-minimal-framework/` | Selection closeout and MVS demotion authority live here; this is closed research evidence, not the current runtime owner. Current workstream status: `selection_closed_handoff`. |
 | EGO K0 Foundation 001A | `codex_task` | `k0_developmental_kernel_dual_track` | `docs/codex/tasks/ego-k0-foundation-001a/` | Bounded engineering evidence banked/accepted; authorization consumed; disabled; non-mainline; no runtime authority. Current workstream status: `foundation_engineering_accepted_bounded__old_science_route_operator_closed_without_science_adjudication__verifier_family_closed_invalid__independent_acceptance_unavailable__product_science_decoupled__all_authorizations_false__runtime_disabled__non_mainline`. |
 | Ego Mainline Demotion v1 | `codex_task` | `ego_operator_first_transition` | `docs/codex/tasks/ego-mainline-demotion-v1/` | Previous operator-first transition record; superseded by the EgoOperator rename/docs-safety task while preserving legacy demotion evidence. Current workstream status: `human_operator_trial_v2_human_review_template_ready`. |
+| EgoDesktop PET World Integration 001A | `codex_task` | n/a | `docs/codex/tasks/egodesktop-pet-world-integration-001a/` | Frozen predecessor engineering evidence. Unexecuted P2 is not the selected successor and must not substitute for the canonical K0 + VirtualCat-derived route. |
 | EgoOperator Rename + Docs Safety v1 | `codex_task` | `ego_operator_first_transition` | `docs/codex/tasks/ego-operator-rename-docs-safety-v1/` | Previous EgoOperator naming and reader-safety transition record; superseded by the human operator trial v2 task as the active observation owner. Current workstream status: `human_operator_trial_v2_human_review_template_ready`. |
 | MVS-Aligned Compact Closed Evidence | `authority_refs` | n/a | `docs/codex/tasks/ai-self-awareness-minimal-framework/SELECTION_CLOSEOUT.md`<br>`docs/codex/tasks/ai-self-awareness-minimal-framework/MVS_ALIGNED_COMPACT_PROTOTYPE_DESIGN.md` | Closed evidence only; selection closeout keeps it out of the default implementation track. |
 | Pre-Operator Provider/Runtime/OpenEmotion E2E Gate | `codex_task` | `provider_runtime_openemotion_e2e_gate` | `docs/codex/tasks/provider-runtime-openemotion-e2e-gate/` | Pre-EgoOperator real-channel gate evidence retained for historical comparison only; it is no longer a current supporting route. Current workstream status: `closed_evidence__legacy_e2e_preserved`. |
@@ -227,7 +229,6 @@
 | Egodesktop Joi Real Loop G Ablation Wizard Captured Calibration Reference Replay Preflight V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-captured-calibration-reference-replay-preflight-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Joi Real Loop G Ablation Wizard Selected Source Chat Smoke V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-selected-source-chat-smoke-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Joi Real Loop G Ablation Wizard Selected Source Off Static Replay Preflight V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-joi-real-loop-g-ablation-wizard-selected-source-off-static-replay-preflight-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
-| Egodesktop Pet World Integration 001A | `codex_task` | n/a | `docs/codex/tasks/egodesktop-pet-world-integration-001a/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Pspc Debug Signal Overlay V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-pspc-debug-signal-overlay-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Pspc Perception Demo V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-pspc-perception-demo-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egodesktop Pspc Reply Preview Mode V0 | `codex_task` | n/a | `docs/codex/tasks/egodesktop-pspc-reply-preview-mode-v0/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |

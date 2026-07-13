@@ -80,13 +80,22 @@ FUTURE_PRODUCT_STATUS = (
     "P1R0_DESIGN_FEASIBILITY_FALSE_POSITIVE_BANKED__"
     "CURRENT_PREFLIGHT_INSTRUMENT_FAMILY_CLOSED_INVALID__P1R1_P2_FORBIDDEN"
 )
+CANONICAL_TASK_KEY = "ego-canonical-mechanism-integration-001a"
+CANONICAL_WORKSTREAM_ID = "canonical_mechanism_integration_route_001a"
+CANONICAL_WORKSTREAM_STATUS = (
+    "route_frozen__m0_complete__m1_headless_bridge_ready_not_started__"
+    "disabled__non_mainline"
+)
+CANONICAL_ROUTE_DOC_PATH = "docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md"
 NEXT_MINIMAL_ACTION = (
-    "Keep the current FACTORED-STOCHASTIC-OUTCOME-SURFACE-v1 P0/P1/P1R0 "
-    "instrument-design lineage closed invalid; same-lineage P1R0 repair, P1R1, "
-    "P1R2, and P2 are forbidden. Any possible successor requires an "
-    "operator-selected new surface, new task ID, fresh preregistration, and fresh "
-    "operator decision; no candidate, product, runtime, mainline, science, push, "
-    "tag, or remote-anchor authorization is granted."
+    "Execute M1 of EGO-CANONICAL-MECHANISM-INTEGRATION-001A only: after fresh "
+    "bootstrap and pin/clean-tree readback, build the headless default-off K0 + "
+    "VirtualCat-derived canonical mechanism bridge and prove serialized "
+    "model/update state plus prediction/error/update/proposal recomputation "
+    "through one source/replay path. Do not touch EgoDesktop, EgoOperator, old "
+    "PET/PSPC sources, historical artifacts, runtime/mainline flags, push, tag, "
+    "or remote anchors in M1. Stop on second-state-authority, hidden adapter "
+    "state, replay weakness, or equal-access baseline equivalence."
 )
 C1_PATH_PINS = {
     AUDIT_RESULT_PATH: (
@@ -122,8 +131,6 @@ PROTECTED_HEAD_OBJECTS = {
     "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1A_AUTHORIZATION_MUTATION_SCOPE.yaml": "5b3e192fe06791533b9f2292d9372bc559d9a253",
     "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1B_INSTRUMENT_MUTATION_SCOPE.yaml": "c87bc1847d8e29e5e90e07e6c58c02ec9bbd3f87",
     "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1C_CLOSEOUT_MUTATION_SCOPE.yaml": "58a1687a278403fb82e0f4774e3a424bdb624a8d",
-    "docs/codex/tasks/TASK_LANE_INDEX.md": "1d8489d0fb00c41deb3ce75566589aa352a7a61e",
-    "scripts/codex/route_convergence_common.py": "f9550bc3c4a1cc881a603ec8c542c1b141435fbe",
     "packages/ego_k0_kernel": "43380f76c37b05f36a4a4ef45354048787cafe68",
     "artifacts/ego_k0_foundation_001a": "907457e7d3028ba5437cf0e7730ec068a21cbf6b",
 }
@@ -583,6 +590,7 @@ def validate_route_convergence(
     check_generated_files: bool = True,
 ) -> list[str]:
     errors: list[str] = []
+    repo_root = REPO_HYGIENE_POLICY_PATH.parents[1]
     audit_report = _validate_committed_audit(errors)
     _validate_additive_ledger(errors)
     if check_generated_files:
@@ -668,6 +676,39 @@ def validate_route_convergence(
         if future_product_entry.lane in {"parked", "supporting_active", "active_default"}:
             errors.append("learned-outcome capability card appears in a disallowed actionable lane")
 
+    canonical_entries = [entry for entry in entries if entry.key == CANONICAL_TASK_KEY]
+    if len(canonical_entries) != 1:
+        errors.append(
+            f"expected exactly one canonical mechanism integration entry, found {len(canonical_entries)}"
+        )
+    else:
+        canonical_entry = canonical_entries[0]
+        if canonical_entry.lane != "supporting_active":
+            errors.append("canonical mechanism integration must be `supporting_active` before M1")
+        canonical_why = canonical_entry.why.lower()
+        for phrase in (
+            "sole selected successor route",
+            "m1 headless",
+            "enablement/mainline/runtime authority remain absent",
+        ):
+            if phrase not in canonical_why:
+                errors.append(f"canonical route explanation missing `{phrase}`")
+
+    route_doc = repo_root / CANONICAL_ROUTE_DOC_PATH
+    if not route_doc.is_file():
+        errors.append(f"canonical route document missing: {CANONICAL_ROUTE_DOC_PATH}")
+    else:
+        route_text = route_doc.read_text(encoding="utf-8")
+        for phrase in (
+            "### K0 Foundation — sole substrate authority",
+            "VirtualCatPSPC-derived world/self-model adapter",
+            "EgoDesktop observer/input surface",
+            "Historical `go_for_*` text is not current authority",
+            "M1 — next action",
+        ):
+            if phrase not in route_text:
+                errors.append(f"canonical route document missing `{phrase}`")
+
     workstreams = {item.get("id"): item for item in program_state.get("workstreams") or []}
     active_ws = workstreams.get("ego_operator_first_transition") or {}
     if not active_ws:
@@ -686,6 +727,14 @@ def validate_route_convergence(
     if foundation_ws.get("enabled") is not False or foundation_ws.get("mainline_connected") is not False:
         errors.append("K0 Foundation workstream must remain disabled and non-mainline")
 
+    canonical_ws = workstreams.get(CANONICAL_WORKSTREAM_ID) or {}
+    if canonical_ws.get("status") != CANONICAL_WORKSTREAM_STATUS:
+        errors.append("canonical mechanism workstream status does not match the frozen M0 boundary")
+    if canonical_ws.get("evidence_level") != "E1" or canonical_ws.get("verification_level") != "V1":
+        errors.append("canonical M0 workstream must remain docs/governance E1/V1")
+    if canonical_ws.get("enabled") is not False or canonical_ws.get("mainline_connected") is not False:
+        errors.append("canonical mechanism successor must remain disabled and non-mainline in M0")
+
     governance_sync = foundation_ws.get("governance_sync")
     if governance_sync != EXPECTED_GOVERNANCE_SYNC:
         errors.append("K0 governance_sync mapping does not match the pinned closed-invalid contract")
@@ -693,7 +742,7 @@ def validate_route_convergence(
     future_product_route = (governance_sync or {}).get("future_product_route") or {}
     preflight = future_product_route.get("candidate_independent_preflight") or {}
     if program_state.get("program", {}).get("next_minimal_action") != NEXT_MINIMAL_ACTION:
-        errors.append("program.next_minimal_action does not match the exact family-closeout denial")
+        errors.append("program.next_minimal_action does not match the canonical M1 boundary")
     if future_product_route.get("current_status") != FUTURE_PRODUCT_STATUS:
         errors.append("future product route status does not record the exact P1R0 invalid family closeout")
     if future_product_route.get("current_operator_authorization_scope") != (

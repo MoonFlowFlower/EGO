@@ -4,17 +4,28 @@ EGO 是 AI Agent 项目的总仓。当前默认 human/operator 体验主线已�
 
 ## 新代理 / 开发者最快入口
 
+机制 successor 工作在开始前必须先读：
+
+- `docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md`
+- `docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md`
+
+当前唯一选定 successor 是
+`K0 Foundation -> VirtualCatPSPC-derived adapter -> EgoDesktop observer`。它目前仍是默认关闭、非主线、未实现 M1 bridge；
+`EgoOperator` 暂时仍是当前 runtime owner。旧 PET P2、PSPC shadow/adapter
+阶梯、旧 K0 science route 与 outcome-utility runtime 路线均不是下一步。
+
 - 先读 [docs/MAINLINE_QUICKSTART.md](docs/MAINLINE_QUICKSTART.md)，用它在 5 分钟内确认当前主线、owner 边界和禁止重开的历史线。
 - 权威状态只以 [docs/PROGRAM_STATE_UNIFIED.yaml](docs/PROGRAM_STATE_UNIFIED.yaml) 为准。
 - 当前 lane 视图看 [docs/codex/tasks/TASK_LANE_INDEX.md](docs/codex/tasks/TASK_LANE_INDEX.md)。
 - worktree / operational exhaust 边界看 [docs/REPO_HYGIENE_POLICY.md](docs/REPO_HYGIENE_POLICY.md)。
 - repo surface 分类看 [docs/REPO_SURFACE_MAP.md](docs/REPO_SURFACE_MAP.md)。
 
-## 当前权威状态（2026-05-18）
+## 当前权威状态（2026-07-13）
 
 当前正式口径如下：
 
 - `EgoOperator` 是默认 operator-first implementation lane：自然语言先由 LLM 理解，再进入 runtime gate / approval / memory / trace。
+- 唯一选定的机制 successor 是默认关闭的 `K0 Foundation -> VirtualCatPSPC-derived adapter -> EgoDesktop observer`；当前只完成 M0 路线冻结，M1 headless bridge 尚未开始。
 - 旧 `EgoCore`、`OpenEmotion`、`ego_desktop_lab` 的当前入口是 `legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md`、`docs/archive/LEGACY_ALGORITHM_INVENTORY.md` 和 `artifacts/archive/legacy_pre_operator_mainline_manifest.json`；它们没有 runtime authority、默认路径或任务路由权。
 - 旧 `subject-system-v1-governed-proactivity` 的证据链保留为 historical evidence；它不再承担默认体验主线。
 - 本阶段只记录 `EgoOperator naming/docs safety transition recorded`，不声明 live autonomy、runtime efficacy、稳定用户收益或 consciousness。

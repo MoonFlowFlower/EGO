@@ -53,6 +53,17 @@ class HygieneRule:
 
 
 TASK_OVERRIDES: dict[str, dict[str, Any]] = {
+    "ego-canonical-mechanism-integration-001a": {
+        "lane": "supporting_active",
+        "label": "EGO Canonical Mechanism Integration 001A",
+        "why": "Sole selected successor route. M0 authority freeze is complete; M1 headless K0 + VirtualCat-derived bridge is next, while enablement/mainline/runtime authority remain absent.",
+        "workstream_id": "canonical_mechanism_integration_route_001a",
+    },
+    "egodesktop-pet-world-integration-001a": {
+        "lane": "closed_evidence",
+        "label": "EgoDesktop PET World Integration 001A",
+        "why": "Frozen predecessor engineering evidence. Unexecuted P2 is not the selected successor and must not substitute for the canonical K0 + VirtualCat-derived route.",
+    },
     "ego-k0-foundation-001a": {
         "lane": "closed_evidence",
         "label": "EGO K0 Foundation 001A",
@@ -247,6 +258,17 @@ SURFACE_MAP_ROWS = (
         "authority": "Default implementation surface for new operator experience work; claims remain local/candidate unless human-observable gates pass.",
     },
     {
+        "surface": "canonical_mechanism_successor",
+        "paths": (
+            "packages/ego_k0_kernel/",
+            "labs/virtual_cat_pspc_v0/",
+            "EgoDesktop/",
+            "docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md",
+        ),
+        "role": "Selected default-off successor route: K0 canonical substrate, VirtualCat-derived auditable mechanism adapter, and observer-only EgoDesktop surface.",
+        "authority": "Route selected but M1 not started; disabled, non-mainline, no runtime authority or real trigger. Historical PET/PSPC go-for records do not override this route.",
+    },
+    {
         "surface": "legacy_reference",
         "paths": (
             "legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md",
@@ -260,6 +282,7 @@ SURFACE_MAP_ROWS = (
         "surface": "governance",
         "paths": (
             "docs/PROGRAM_STATE_UNIFIED.yaml",
+            "docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md",
             "docs/codex/tasks/TASK_LANE_INDEX.md",
             "docs/REPO_HYGIENE_POLICY.md",
             "docs/MAINLINE_QUICKSTART.md",

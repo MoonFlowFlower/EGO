@@ -7,14 +7,16 @@
 开始任何正式任务前，先按顺序读取：
 
 1. `docs/PROGRAM_STATE_UNIFIED.yaml`
-2. 如果存在当前任务单，优先读 `Tasks/active/` 下的 spec / plan / acceptance / status / review 文档
-3. 如果任务已进入 Codex 长任务闭环，再读 `docs/codex/tasks/<slug>/SPEC.md`、`PLAN.md`、`IMPLEMENT.md`、`STATUS.md`
-4. `PROJECT_MEMORY.md`
-5. `docs/AGENT_DEVELOPMENT_PLAYBOOK.md`
-6. `docs/CODEX_CLOSED_LOOP_SELF_REVIEW_WORKFLOW.md`
-7. `README.md`
-8. 如果改 `EgoOperator/`，再读 `EgoOperator/docs/ALGORITHM_INVENTORY.md`
-9. 如果只读旧参考实现，先读 `legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md`、`docs/archive/LEGACY_ALGORITHM_INVENTORY.md` 和 `artifacts/archive/legacy_pre_operator_mainline_manifest.json`
+2. `docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md`
+3. `docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md`
+4. 如果存在当前任务单，优先读 `Tasks/active/` 下的 spec / plan / acceptance / status / review 文档
+5. 如果任务已进入 Codex 长任务闭环，再读 `docs/codex/tasks/<slug>/SPEC.md`、`PLAN.md`、`IMPLEMENT.md`、`STATUS.md`
+6. `PROJECT_MEMORY.md`
+7. `docs/AGENT_DEVELOPMENT_PLAYBOOK.md`
+8. `docs/CODEX_CLOSED_LOOP_SELF_REVIEW_WORKFLOW.md`
+9. `README.md`
+10. 如果改 `EgoOperator/`，再读 `EgoOperator/docs/ALGORITHM_INVENTORY.md`
+11. 如果只读旧参考实现，先读 `legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md`、`docs/archive/LEGACY_ALGORITHM_INVENTORY.md` 和 `artifacts/archive/legacy_pre_operator_mainline_manifest.json`
 
 读取优先级：
 
@@ -39,6 +41,30 @@
 - 不要把旧 `semantic_route` / keyword-first route / template fallback 重新引回默认入口；默认路径应保持 `user text -> LLM understanding -> proposal/plan -> gate -> trace`。
 - Spend time on thinking; you do not need to use the commentary channel to report progress to me.
 - DO NOT send optional commentary.
+
+## Canonical mechanism successor freeze 001A
+
+`EgoOperator` remains the current enabled runtime, but it is not the selected
+mechanism-integration target. The sole selected successor route is:
+
+```text
+packages/ego_k0_kernel
+  -> VirtualCatPSPC-derived world/self-model adapter
+  -> EgoDesktop observer/input surface
+```
+
+Binding explanation and milestone state:
+
+- `docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md`
+- `docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md`
+- `docs/codex/tasks/ego-canonical-mechanism-integration-001a/STAGE_CARD.md`
+
+Fresh sessions must not resume old EgoDesktop PET P2, PSPC adapter/shadow
+successors, the closed K0 science/verifier lineage, or outcome-utility runtime
+admission merely because historical documents say `go_for_*`. Those strings are
+historical evidence, not current authority. Execute only the milestone named in
+the canonical integration `STATUS.md`; stop on any conflict with
+`PROGRAM_STATE_UNIFIED.yaml`.
 
 ## Directory routing
 
