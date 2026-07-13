@@ -2,12 +2,12 @@
 
 > AUTO-GENERATED FILE. Do not edit by hand.
 
-- phase: `legacy_pre_operator_mainline_archived_from_current_tree`
-- layer: `transition / operator-first`
+- phase: `ego_route_8692_superseded__egodesktop_authority_archived__card2_draft_only_bound`
+- layer: `engineering / product-capability governance`
 - highest evidence: `E3`
 - verification: `V3`
 - mainline_connected: `True`
 - enabled: `True`
-- next_minimal_action: Execute M1 of EGO-CANONICAL-MECHANISM-INTEGRATION-001A only: after fresh bootstrap and pin/clean-tree readback, build the headless default-off K0 + VirtualCat-derived canonical mechanism bridge and prove serialized model/update state plus prediction/error/update/proposal recomputation through one source/replay path. Do not touch EgoDesktop, EgoOperator, old PET/PSPC sources, historical artifacts, runtime/mainline flags, push, tag, or remote anchors in M1. Stop on second-state-authority, hidden adapter state, replay weakness, or equal-access baseline equivalence.
+- next_minimal_action: Draft and bank Card 2 only: EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A. Do not execute Card 2, C1, any science successor, runtime integration, formal scoring, or experiment; execution authorization remains false.
 - highest ledger entry: `mvp16_controlled_completion_current` / `E5`
 

@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import argparse
+import fnmatch
+import hashlib
 import json
 import re
 import shutil
@@ -21,6 +23,7 @@ DEFAULT_PROGRAM_STATE_PATH = ROOT / "docs" / "PROGRAM_STATE_UNIFIED.yaml"
 DEFAULT_CODEX_MEMORY_PATH = ROOT / "CODEX_MEMORY.md"
 DEFAULT_TASK_BOARD_PATH = ROOT / "Tasks" / "TASK_BOARD.yaml"
 DEFAULT_OUTBOX_PATH = ROOT / "artifacts" / "task_board" / "outbox.jsonl"
+ITL_ROOT = ROOT.parent / "intelligence-theory-lab"
 
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
@@ -120,6 +123,7 @@ def _load_mutation_scope(path: Path | None) -> dict[str, Any]:
             "path": None,
             "allowed_mutation_paths": [],
             "expected_mutation_surface": [],
+            "raw": {},
         }
     payload = _load_yaml(path, code="missing_mutation_scope")
     allowed_paths = _as_str_list(payload.get("allowed_mutation_paths"))
@@ -133,9 +137,21 @@ def _load_mutation_scope(path: Path | None) -> dict[str, Any]:
         "status": "loaded",
         "path": str(path),
         "task": payload.get("task"),
+        "task_id": payload.get("task_id"),
+        "task_kind": payload.get("task_kind"),
+        "requested_action_id": payload.get("requested_action_id"),
+        "source_route_revision_id": payload.get("source_route_revision_id"),
+        "source_route_fingerprint": payload.get("source_route_fingerprint"),
+        "expected_target_route_revision_id": payload.get("expected_target_route_revision_id"),
+        "independent_red_review_required": payload.get("independent_red_review_required"),
+        "red_review_ref": payload.get("red_review_ref"),
         "allowed_mutation_paths": allowed_paths,
+        "forbidden_mutation_paths": _as_str_list(payload.get("forbidden_mutation_paths")),
         "expected_mutation_surface": _as_str_list(payload.get("expected_mutation_surface")),
         "claim_ceiling": payload.get("claim_ceiling"),
+        "auto_remote_anchor": payload.get("auto_remote_anchor"),
+        "migration_exception": payload.get("migration_exception") or {},
+        "raw": payload,
     }
 
 
@@ -243,6 +259,200 @@ def read_program_state(path: Path) -> dict[str, Any]:
         "status_owner",
     ]
     return {key: program.get(key) for key in keys}
+
+
+def compute_route_fingerprint(program_state: dict[str, Any]) -> str:
+    program = program_state.get("program") or {}
+    route_guard = dict(program_state.get("route_guard") or {})
+    route_guard.pop("route_fingerprint", None)
+    canonical_subset = {
+        "program": {
+            "current_phase": program.get("current_phase"),
+            "next_minimal_action": program.get("next_minimal_action"),
+        },
+        "route_guard": route_guard,
+    }
+    encoded = json.dumps(
+        canonical_subset,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def science_authority_pin_status(program_state: dict[str, Any], runner: GuardRunner) -> dict[str, Any]:
+    route_guard = program_state.get("route_guard") or {}
+    if not route_guard:
+        return {"status": "unavailable", "expected_head": None, "actual_head": None, "failed_pins": ["route_guard"]}
+    science_axis = (route_guard.get("authority_axes") or {}).get("science_attribution") or {}
+    expected_head = str(science_axis.get("pinned_head") or "")
+    head = runner.run(["git", "-C", str(ITL_ROOT), "rev-parse", "HEAD"])
+    failures: list[str] = []
+    if head.returncode != 0 or head.stdout.strip() != expected_head:
+        failures.append("head")
+    for name, pin in (route_guard.get("science_source_pins") or {}).items():
+        if not isinstance(pin, dict):
+            failures.append(str(name))
+            continue
+        path = str(pin.get("path") or "")
+        oid = runner.run(["git", "-C", str(ITL_ROOT), "rev-parse", f"HEAD:{path}"])
+        if oid.returncode != 0 or oid.stdout.strip() != str(pin.get("git_blob_oid") or ""):
+            failures.append(str(name))
+    return {
+        "status": "pass" if not failures else "fail",
+        "expected_head": expected_head,
+        "actual_head": head.stdout.strip() if head.returncode == 0 else None,
+        "failed_pins": failures,
+    }
+
+
+def build_route_guard_readback(program_state: dict[str, Any], runner: GuardRunner) -> dict[str, Any]:
+    program = program_state.get("program") or {}
+    route_guard = program_state.get("route_guard") or {}
+    binding = route_guard.get("allowed_action_binding") or {}
+    authorizations = route_guard.get("authorizations") or {}
+    lineage = route_guard.get("lineage_inventory") or {}
+    red_review = route_guard.get("red_review") or {}
+    computed = compute_route_fingerprint(program_state)
+    stored = route_guard.get("route_fingerprint")
+    pin_status = science_authority_pin_status(program_state, runner)
+    return {
+        "route_revision_id": route_guard.get("route_revision_id"),
+        "route_fingerprint": computed if stored == computed else f"MISMATCH:{computed}",
+        "current_phase": program.get("current_phase"),
+        "current_layer": program.get("current_layer"),
+        "allowed_next_action_ids": binding.get("allowed_next_action_ids") or [],
+        "forbidden_action_classes": binding.get("forbidden_action_classes") or [],
+        "authorized_implementation_targets": authorizations.get("authorized_implementation_targets") or [],
+        "undisposed_lineage_count": lineage.get("undisposed_count"),
+        "unresolved_review_blockers": red_review.get("unresolved_review_blockers") or [],
+        "science_authority_pin_status": pin_status.get("status"),
+    }
+
+
+def classify_red_review_triggers(
+    *,
+    changed_paths: list[str],
+    diff_added_lines: dict[str, list[str]],
+    policy: dict[str, Any],
+    generated_view_matches: set[str] | None = None,
+) -> list[dict[str, Any]]:
+    generated_view_matches = generated_view_matches or set()
+    authority_patterns = [str(item) for item in policy.get("authority_path_patterns") or []]
+    claim_terms = [str(item).casefold() for item in policy.get("diff_added_claim_terms") or []]
+    generated_views = {str(item) for item in policy.get("generated_view_paths") or []}
+    triggers: list[dict[str, Any]] = []
+    for path in sorted(set(changed_paths)):
+        if path in generated_views and path in generated_view_matches:
+            continue
+        if any(fnmatch.fnmatchcase(path, pattern) for pattern in authority_patterns):
+            triggers.append({"type": "authority_path", "path": path})
+        added = "\n".join(diff_added_lines.get(path) or []).casefold()
+        matched = sorted(term for term in claim_terms if term and term in added)
+        if matched:
+            triggers.append({"type": "diff_added_claim", "path": path, "terms": matched})
+    return triggers
+
+
+def validate_route_mutation_scope(
+    *,
+    scope: dict[str, Any],
+    program_state: dict[str, Any],
+    changed_paths: list[str],
+    added_task_dirs: list[str],
+    red_triggers: list[dict[str, Any]],
+    execution_requested: bool = False,
+) -> list[dict[str, Any]]:
+    blockers: list[dict[str, Any]] = []
+    route_guard = program_state.get("route_guard") or {}
+    binding = route_guard.get("allowed_action_binding") or {}
+    required_scope_fields = (
+        "task_id",
+        "task_kind",
+        "requested_action_id",
+        "source_route_revision_id",
+        "source_route_fingerprint",
+        "expected_target_route_revision_id",
+        "independent_red_review_required",
+        "red_review_ref",
+    )
+    missing_fields = [key for key in required_scope_fields if key not in scope]
+    if missing_fields:
+        blockers.append({"reason": "route_mutation_scope_fields_missing", "fields": missing_fields})
+    task_id = scope.get("task_id")
+    if not isinstance(task_id, str) or not task_id.strip():
+        blockers.append({"reason": "mutation_scope_single_task_id_required"})
+    requested_action = scope.get("requested_action_id")
+    current_fingerprint = compute_route_fingerprint(program_state)
+    current_revision = route_guard.get("route_revision_id")
+    exact_migration_id = "EGO-ROUTE-8692-SUPERSESSION-AND-EGODESKTOP-AUTHORITY-ARCHIVE-001A"
+    migration = scope.get("migration_exception") or {}
+    migration_completion = (
+        task_id == exact_migration_id
+        and requested_action == exact_migration_id
+        and scope.get("source_route_fingerprint") == "026535337949d5ea2857805e5d9e0d2b6bfae016154fbf58587eafcea6411aa3"
+        and scope.get("expected_target_route_revision_id") == current_revision
+        and "docs/PROGRAM_STATE_UNIFIED.yaml" in changed_paths
+        and migration.get("exact_task_id") == exact_migration_id
+        and migration.get("enabled") is False
+        and migration.get("consumed") is True
+        and migration.get("wildcard_allowed") is False
+        and migration.get("operator_override_allowed") is False
+    )
+    if scope.get("source_route_fingerprint") != current_fingerprint and not migration_completion:
+        blockers.append(
+            {
+                "reason": "stale_route_fingerprint",
+                "source": scope.get("source_route_fingerprint"),
+                "current": current_fingerprint,
+            }
+        )
+    expected_source_revision = "PRE_ROUTE_GUARD_MIGRATION" if migration_completion else current_revision
+    if scope.get("source_route_revision_id") != expected_source_revision:
+        blockers.append(
+            {
+                "reason": "source_route_revision_mismatch",
+                "source": scope.get("source_route_revision_id"),
+                "expected": expected_source_revision,
+            }
+        )
+    allowed_actions = binding.get("allowed_next_action_ids") or []
+    if requested_action not in allowed_actions and not migration_completion:
+        blockers.append({"reason": "ROUTE_ACTION_NOT_BOUND", "requested_action_id": requested_action})
+    if len(set(added_task_dirs)) > 1:
+        blockers.append({"reason": "multiple_task_directories", "task_dirs": sorted(set(added_task_dirs))})
+    allowed_paths = [str(item) for item in scope.get("allowed_mutation_paths") or []]
+    out_of_scope = [path for path in changed_paths if not _path_allowed(path, allowed_paths)]
+    if out_of_scope:
+        blockers.append({"reason": "scope_outside_authority_or_route_file", "paths": out_of_scope})
+    if scope.get("expected_target_route_revision_id") != current_revision:
+        blockers.append(
+            {
+                "reason": "target_route_revision_mismatch",
+                "expected": scope.get("expected_target_route_revision_id"),
+                "actual": current_revision,
+            }
+        )
+    if red_triggers and scope.get("independent_red_review_required") is not True:
+        blockers.append({"reason": "independent_red_review_not_required_by_scope"})
+    if red_triggers and not str(scope.get("red_review_ref") or "").strip():
+        blockers.append({"reason": "authority_change_without_red_review_ref", "triggers": red_triggers})
+    task_kind = str(scope.get("task_kind") or "")
+    if current_revision == "EGO_ROUTE_8692_SUPERSESSION_001A" and "governance" in task_kind and not migration_completion:
+        blockers.append({"reason": "governance_only_successor_forbidden"})
+    if task_id == exact_migration_id and not migration_completion:
+        blockers.append({"reason": "migration_exception_reused_or_invalid"})
+    implementation_targets = binding.get("authorized_implementation_targets") or []
+    if implementation_targets:
+        blockers.append({"reason": "unauthorized_implementation_targets_nonempty"})
+    if execution_requested or bool((scope.get("raw") or {}).get("execution_requested")):
+        if binding.get("execution_authorized") is not True:
+            blockers.append({"reason": "card_execution_not_authorized"})
+    if requested_action == "bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A":
+        if task_kind != "executable_candidate_independent_headroom":
+            blockers.append({"reason": "card2_task_kind_mismatch"})
+    return blockers
 
 
 def read_codex_memory(path: Path) -> dict[str, Any]:
@@ -415,6 +625,81 @@ def github_availability(
     }
 
 
+def _dirty_paths(runner: GuardRunner) -> list[str]:
+    return sorted({entry.path for entry in codex_project_autopilot.dirty_entries(runner)})
+
+
+def _added_task_directories(runner: GuardRunner) -> list[str]:
+    directories: set[str] = set()
+    for entry in codex_project_autopilot.dirty_entries(runner):
+        path = entry.path.replace("\\", "/")
+        if not path.startswith("docs/codex/tasks/"):
+            continue
+        parts = path.split("/")
+        if len(parts) < 4 or parts[3] == "TASK_LANE_INDEX.md":
+            continue
+        status = entry.status
+        if status == "??" or "A" in status[:2]:
+            directories.add("/".join(parts[:4]))
+    return sorted(directories)
+
+
+def _diff_added_lines(runner: GuardRunner, changed_paths: list[str]) -> dict[str, list[str]]:
+    output: dict[str, list[str]] = {}
+    for path in changed_paths:
+        proc = runner.run(["git", "diff", "--unified=0", "HEAD", "--", path])
+        lines = [
+            line[1:]
+            for line in proc.stdout.splitlines()
+            if line.startswith("+") and not line.startswith("+++")
+        ]
+        if not lines:
+            absolute = ROOT / path
+            status = next(
+                (entry.status for entry in codex_project_autopilot.dirty_entries(runner) if entry.path == path),
+                "",
+            )
+            if status == "??" and absolute.is_file():
+                lines = absolute.read_text(encoding="utf-8", errors="replace").splitlines()
+        output[path] = lines
+    return output
+
+
+def _generated_view_matches(program_state: dict[str, Any]) -> set[str]:
+    codex_dir = SCRIPT_DIR / "codex"
+    if str(codex_dir) not in sys.path:
+        sys.path.insert(0, str(codex_dir))
+    try:
+        from program_state_common import (  # type: ignore
+            EVIDENCE_LEDGER_INDEX_PATH,
+            load_yaml as load_program_yaml,
+            render_status_markdown,
+            render_summary_markdown,
+        )
+        from route_convergence_common import (  # type: ignore
+            render_repo_surface_map,
+            render_task_lane_index,
+        )
+    except Exception:
+        return set()
+    try:
+        evidence_index = load_program_yaml(EVIDENCE_LEDGER_INDEX_PATH)
+        expected = {
+            "docs/STATUS.md": render_status_markdown(program_state, evidence_index),
+            "artifacts/reports/program_state_summary.md": render_summary_markdown(program_state, evidence_index),
+            "docs/codex/tasks/TASK_LANE_INDEX.md": render_task_lane_index(program_state),
+            "docs/REPO_SURFACE_MAP.md": render_repo_surface_map(program_state),
+        }
+    except Exception:
+        return set()
+    matches: set[str] = set()
+    for relative, rendered in expected.items():
+        path = ROOT / relative
+        if path.is_file() and path.read_text(encoding="utf-8") == rendered:
+            matches.add(relative)
+    return matches
+
+
 def build_bootstrap_snapshot(
     *,
     contract_path: Path = DEFAULT_CONTRACT_PATH,
@@ -429,10 +714,12 @@ def build_bootstrap_snapshot(
     board_path = task_board_path or codex_project_autopilot.task_board_path(contract)
     git_state = read_git_state(runner)
     mutation_scope = _load_mutation_scope(mutation_scope_path)
+    full_program_state = _load_yaml(program_state_path, code="missing_program_state")
     return {
         "status": "ok",
         "schema_version": "codex.session_bootstrap.v1",
         "program_state": read_program_state(program_state_path),
+        "route_guard_readback": build_route_guard_readback(full_program_state, runner),
         "codex_memory": read_codex_memory(codex_memory_path),
         "project_contract": codex_project_autopilot.contract_summary(contract),
         "session_bootstrap": contract_summary_extra(contract).get("session_bootstrap") or {},
@@ -472,6 +759,7 @@ def build_closeout_check(
     dirty = snapshot["dirty_state"]
     git_state = snapshot["git"]
     blockers: list[dict[str, Any]] = []
+    publication_pending: dict[str, Any] | None = None
 
     if snapshot["remote_contract_check"]["status"] != "ok":
         blockers.append({"reason": "remote_contract_mismatch", **snapshot["remote_contract_check"]})
@@ -485,7 +773,10 @@ def build_closeout_check(
         )
     upstream = git_state.get("upstream") or {}
     if upstream.get("returncode") == 0 and int(upstream.get("ahead") or 0) > 0:
-        blockers.append({"reason": "push_pending", "ahead": upstream.get("ahead")})
+        if (snapshot.get("task_mutation_scope") or {}).get("auto_remote_anchor") == "forbidden":
+            publication_pending = {"reason": "push_pending", "ahead": upstream.get("ahead"), "blocking": False}
+        else:
+            blockers.append({"reason": "push_pending", "ahead": upstream.get("ahead")})
     elif upstream.get("returncode") != 0:
         blockers.append({"reason": "upstream_unavailable", "stderr": upstream.get("stderr")})
 
@@ -516,6 +807,42 @@ def build_closeout_check(
             }
         )
 
+    full_program_state = _load_yaml(program_state_path, code="missing_program_state")
+    changed_paths = _dirty_paths(runner)
+    policy = extra.get("route_guard_policy") if isinstance(extra.get("route_guard_policy"), dict) else {}
+    generated_matches = _generated_view_matches(full_program_state) if policy else set()
+    red_triggers = (
+        classify_red_review_triggers(
+            changed_paths=changed_paths,
+            diff_added_lines=_diff_added_lines(runner, changed_paths),
+            policy=policy,
+            generated_view_matches=generated_matches,
+        )
+        if policy
+        else []
+    )
+    scope = snapshot.get("task_mutation_scope") or {}
+    route_scope_present = all(
+        scope.get(key) is not None
+        for key in (
+            "task_id",
+            "task_kind",
+            "requested_action_id",
+            "source_route_fingerprint",
+            "expected_target_route_revision_id",
+        )
+    )
+    route_scope_blockers: list[dict[str, Any]] = []
+    if route_scope_present:
+        route_scope_blockers = validate_route_mutation_scope(
+            scope=scope,
+            program_state=full_program_state,
+            changed_paths=changed_paths,
+            added_task_dirs=_added_task_directories(runner),
+            red_triggers=red_triggers,
+        )
+        blockers.extend(route_scope_blockers)
+
     return {
         "status": "ok",
         "schema_version": "codex.closeout_gate.v1",
@@ -528,6 +855,11 @@ def build_closeout_check(
             "verification_commands": gate.get("verification_commands") or [],
         },
         "task_mutation_scope": snapshot.get("task_mutation_scope") or {},
+        "route_guard_readback": snapshot.get("route_guard_readback") or {},
+        "route_scope_blockers": route_scope_blockers,
+        "red_review_triggers": red_triggers,
+        "generated_view_matches": sorted(generated_matches),
+        "publication_pending": publication_pending,
         "dirty_state": dirty,
         "remote_contract_check": snapshot["remote_contract_check"],
         "github_sync": github,
@@ -552,6 +884,10 @@ def render_markdown(payload: dict[str, Any]) -> str:
             f"- task_board_plan_next: `{payload.get('task_board', {}).get('plan_next', {}).get('stop_reason')}`",
             f"- dirty_scoped/task_scoped/local_only/unsafe: `{counts.get('scoped')}` / `{counts.get('task_scoped')}` / `{counts.get('local_only')}` / `{counts.get('unsafe')}`",
             f"- mutation_scope: `{scope.get('status')}` `{scope.get('path')}`",
+            f"- route_revision_id: `{payload.get('route_guard_readback', {}).get('route_revision_id')}`",
+            f"- route_fingerprint: `{payload.get('route_guard_readback', {}).get('route_fingerprint')}`",
+            f"- red_review_triggers: `{len(payload.get('red_review_triggers') or [])}`",
+            f"- publication_pending: `{payload.get('publication_pending')}`",
             "",
             "## Blocked Reasons",
         ]
@@ -580,6 +916,7 @@ def render_markdown(payload: dict[str, Any]) -> str:
     program = payload.get("program_state") or {}
     task_board = payload.get("task_board") or {}
     dirty = payload.get("dirty_state") or {}
+    route = payload.get("route_guard_readback") or {}
     lines = [
         "# Codex Boot Snapshot",
         "",
@@ -595,6 +932,19 @@ def render_markdown(payload: dict[str, Any]) -> str:
         f"- task_board_counts: `{task_board.get('counts')}`",
         f"- autopilot_plan_next: `{task_board.get('plan_next', {}).get('status')}` / `{task_board.get('plan_next', {}).get('stop_reason')}`",
         f"- github_sync: `{payload.get('github_sync', {}).get('status')}` / `{payload.get('github_sync', {}).get('reason')}`",
+        "",
+        "## route_guard_readback",
+        "",
+        f"- route_revision_id: `{route.get('route_revision_id')}`",
+        f"- route_fingerprint: `{route.get('route_fingerprint')}`",
+        f"- current_phase: `{route.get('current_phase')}`",
+        f"- current_layer: `{route.get('current_layer')}`",
+        f"- allowed_next_action_ids: `{route.get('allowed_next_action_ids')}`",
+        f"- forbidden_action_classes: `{route.get('forbidden_action_classes')}`",
+        f"- authorized_implementation_targets: `{route.get('authorized_implementation_targets')}`",
+        f"- undisposed_lineage_count: `{route.get('undisposed_lineage_count')}`",
+        f"- unresolved_review_blockers: `{route.get('unresolved_review_blockers')}`",
+        f"- science_authority_pin_status: `{route.get('science_authority_pin_status')}`",
         "",
         "## Claim Ceiling",
         payload.get("claim_ceiling", ""),

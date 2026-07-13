@@ -23,7 +23,7 @@ def main() -> int:
     program_state = load_program_state()
     _write(TASK_LANE_INDEX_PATH, render_task_lane_index(program_state))
     _write(REPO_HYGIENE_POLICY_PATH, render_repo_hygiene_policy())
-    _write(REPO_SURFACE_MAP_PATH, render_repo_surface_map())
+    _write(REPO_SURFACE_MAP_PATH, render_repo_surface_map(program_state))
     return 0
 
 

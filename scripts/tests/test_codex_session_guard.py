@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import importlib.util
 import io
 import json
@@ -370,3 +371,172 @@ def test_cli_writes_markdown_out(tmp_path: Path) -> None:
     assert code == 0
     assert "# Codex Boot Snapshot" in out_path.read_text(encoding="utf-8")
     assert "current_phase" in stream.getvalue()
+
+
+def live_route_state() -> dict:
+    return codex_session_guard._load_yaml(  # noqa: SLF001
+        ROOT / "docs" / "PROGRAM_STATE_UNIFIED.yaml",
+        code="missing_program_state",
+    )
+
+
+def valid_card2_scope(state: dict) -> dict:
+    fingerprint = codex_session_guard.compute_route_fingerprint(state)
+    revision = state["route_guard"]["route_revision_id"]
+    return {
+        "task_id": "EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A",
+        "task_kind": "executable_candidate_independent_headroom",
+        "requested_action_id": "bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A",
+        "source_route_revision_id": revision,
+        "source_route_fingerprint": fingerprint,
+        "expected_target_route_revision_id": revision,
+        "independent_red_review_required": True,
+        "red_review_ref": "CLAUDE-RED-CARD2-BANK-TEST",
+        "allowed_mutation_paths": ["docs/codex/tasks/ego-pet-world-v1-capability-headroom-001a/"],
+        "migration_exception": {},
+        "raw": {},
+    }
+
+
+def blocker_reasons(blockers: list[dict]) -> set[str]:
+    return {str(blocker.get("reason")) for blocker in blockers}
+
+
+def validate_scope(state: dict, scope: dict, **overrides) -> list[dict]:
+    params = {
+        "scope": scope,
+        "program_state": state,
+        "changed_paths": ["docs/codex/tasks/ego-pet-world-v1-capability-headroom-001a/STAGE_CARD.md"],
+        "added_task_dirs": ["docs/codex/tasks/ego-pet-world-v1-capability-headroom-001a"],
+        "red_triggers": [],
+        "execution_requested": False,
+    }
+    params.update(overrides)
+    return codex_session_guard.validate_route_mutation_scope(**params)
+
+
+def test_route_scope_rejects_stale_fingerprint() -> None:
+    state = live_route_state()
+    scope = valid_card2_scope(state)
+    scope["source_route_fingerprint"] = "0" * 64
+
+    assert "stale_route_fingerprint" in blocker_reasons(validate_scope(state, scope))
+
+
+def test_route_scope_rejects_wrong_requested_action() -> None:
+    state = live_route_state()
+    scope = valid_card2_scope(state)
+    scope["requested_action_id"] = "bank_UNBOUND_ROUTE_CARD"
+
+    assert "ROUTE_ACTION_NOT_BOUND" in blocker_reasons(validate_scope(state, scope))
+
+
+def test_route_scope_rejects_second_task_directory() -> None:
+    state = live_route_state()
+    scope = valid_card2_scope(state)
+
+    blockers = validate_scope(
+        state,
+        scope,
+        added_task_dirs=[
+            "docs/codex/tasks/ego-pet-world-v1-capability-headroom-001a",
+            "docs/codex/tasks/ego-c1-kernel-implementation-001a",
+        ],
+    )
+    assert "multiple_task_directories" in blocker_reasons(blockers)
+
+
+def test_authority_change_requires_red_review_ref() -> None:
+    state = live_route_state()
+    scope = valid_card2_scope(state)
+    scope["red_review_ref"] = None
+    scope["allowed_mutation_paths"].append("docs/PROGRAM_STATE_UNIFIED.yaml")
+
+    blockers = validate_scope(
+        state,
+        scope,
+        changed_paths=["docs/PROGRAM_STATE_UNIFIED.yaml"],
+        added_task_dirs=[],
+        red_triggers=[{"type": "authority_path", "path": "docs/PROGRAM_STATE_UNIFIED.yaml"}],
+    )
+    assert "authority_change_without_red_review_ref" in blocker_reasons(blockers)
+
+
+def test_route_scope_rejects_governance_only_successor_after_card1() -> None:
+    state = live_route_state()
+    scope = valid_card2_scope(state)
+    scope["task_kind"] = "governance_only_validator_repair"
+
+    assert "governance_only_successor_forbidden" in blocker_reasons(validate_scope(state, scope))
+
+
+def test_route_scope_rejects_consumed_migration_exception_reuse() -> None:
+    state = live_route_state()
+    scope = valid_card2_scope(state)
+    scope.update(
+        {
+            "task_id": "EGO-ROUTE-8692-SUPERSESSION-AND-EGODESKTOP-AUTHORITY-ARCHIVE-001A",
+            "task_kind": "governance_authority_supersession_migration",
+            "requested_action_id": "EGO-ROUTE-8692-SUPERSESSION-AND-EGODESKTOP-AUTHORITY-ARCHIVE-001A",
+            "migration_exception": {
+                "exact_task_id": "EGO-ROUTE-8692-SUPERSESSION-AND-EGODESKTOP-AUTHORITY-ARCHIVE-001A",
+                "enabled": False,
+                "consumed": True,
+                "wildcard_allowed": False,
+                "operator_override_allowed": False,
+            },
+        }
+    )
+
+    assert "migration_exception_reused_or_invalid" in blocker_reasons(validate_scope(state, scope))
+
+
+def test_untouched_historical_mechanism_text_does_not_trigger_red_review() -> None:
+    policy = {
+        "authority_path_patterns": ["docs/PROGRAM_STATE_UNIFIED.yaml"],
+        "diff_added_claim_terms": ["mechanism"],
+        "generated_view_paths": [],
+    }
+    triggers = codex_session_guard.classify_red_review_triggers(
+        changed_paths=["scripts/tests/test_codex_session_guard.py"],
+        diff_added_lines={
+            "scripts/tests/test_codex_session_guard.py": ["assert historical_artifact_is_untouched"],
+            "artifacts/historical/report.md": ["mechanism"],
+        },
+        policy=policy,
+    )
+
+    assert triggers == []
+
+
+def test_byte_equal_generated_view_only_does_not_trigger_red_review() -> None:
+    path = "docs/STATUS.md"
+    policy = {
+        "authority_path_patterns": ["docs/*STATUS*.md"],
+        "diff_added_claim_terms": ["enabled"],
+        "generated_view_paths": [path],
+    }
+    triggers = codex_session_guard.classify_red_review_triggers(
+        changed_paths=[path],
+        diff_added_lines={path: ["enabled"]},
+        policy=policy,
+        generated_view_matches={path},
+    )
+
+    assert triggers == []
+
+
+def test_valid_card2_scope_admits_banking_only() -> None:
+    state = live_route_state()
+    scope = valid_card2_scope(state)
+
+    assert validate_scope(state, scope) == []
+
+
+def test_card2_execution_remains_rejected() -> None:
+    state = live_route_state()
+    scope = valid_card2_scope(state)
+
+    assert "card_execution_not_authorized" in blocker_reasons(
+        validate_scope(state, scope, execution_requested=True)
+    )

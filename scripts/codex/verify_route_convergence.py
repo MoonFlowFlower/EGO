@@ -7,6 +7,7 @@ import os
 import subprocess
 import sys
 import tempfile
+from pathlib import Path
 from typing import Any
 
 from route_convergence_common import (
@@ -21,12 +22,6 @@ from route_convergence_common import (
     render_task_lane_index,
 )
 
-
-EXPECTED_K0_STATUS = (
-    "foundation_engineering_accepted_bounded__old_science_route_operator_closed_without_science_adjudication__"
-    "verifier_family_closed_invalid__independent_acceptance_unavailable__product_science_decoupled__"
-    "all_authorizations_false__runtime_disabled__non_mainline"
-)
 
 FUTURE_PRODUCT_TASK_KEY = "ego-learned-outcome-kernel-capability-001a"
 FUTURE_PRODUCT_STAGE_CARD_PATH = (
@@ -79,23 +74,6 @@ FAMILY_DISPOSITION = "CLOSED_INVALID_NO_P1R1_NO_P2"
 FUTURE_PRODUCT_STATUS = (
     "P1R0_DESIGN_FEASIBILITY_FALSE_POSITIVE_BANKED__"
     "CURRENT_PREFLIGHT_INSTRUMENT_FAMILY_CLOSED_INVALID__P1R1_P2_FORBIDDEN"
-)
-CANONICAL_TASK_KEY = "ego-canonical-mechanism-integration-001a"
-CANONICAL_WORKSTREAM_ID = "canonical_mechanism_integration_route_001a"
-CANONICAL_WORKSTREAM_STATUS = (
-    "route_frozen__m0_complete__m1_headless_bridge_ready_not_started__"
-    "disabled__non_mainline"
-)
-CANONICAL_ROUTE_DOC_PATH = "docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md"
-NEXT_MINIMAL_ACTION = (
-    "Execute M1 of EGO-CANONICAL-MECHANISM-INTEGRATION-001A only: after fresh "
-    "bootstrap and pin/clean-tree readback, build the headless default-off K0 + "
-    "VirtualCat-derived canonical mechanism bridge and prove serialized "
-    "model/update state plus prediction/error/update/proposal recomputation "
-    "through one source/replay path. Do not touch EgoDesktop, EgoOperator, old "
-    "PET/PSPC sources, historical artifacts, runtime/mainline flags, push, tag, "
-    "or remote anchors in M1. Stop on second-state-authority, hidden adapter "
-    "state, replay weakness, or equal-access baseline equivalence."
 )
 C1_PATH_PINS = {
     AUDIT_RESULT_PATH: (
@@ -191,7 +169,9 @@ LEDGER_APPEND_BYTES = (
     f'    created_from_commit: "{C1_AUDIT_COMMIT}"\n'
 ).encode("utf-8")
 
-EXPECTED_GOVERNANCE_SYNC: dict[str, Any] = {
+# Historical pinned replay fixture for the already-closed K0 science lineage.
+# It is not a source for current product route, lane, next-action, or authority facts.
+HISTORICAL_K0_GOVERNANCE_SYNC_PIN: dict[str, Any] = {
     "record_type": "SOURCE_PINNED_DERIVED_READBACK",
     "ego_synced_to_itl_operator_close": True,
     "sync_claim": "LOCAL_EGO_GOVERNANCE_VIEW_ONLY",
@@ -419,6 +399,320 @@ def _git_bytes(args: list[str]) -> bytes | None:
     return proc.stdout if proc.returncode == 0 else None
 
 
+def _git_in_repo(repo: Path, args: list[str], *, text: bool = True) -> subprocess.CompletedProcess[Any]:
+    return subprocess.run(
+        ["git", *args],
+        cwd=repo,
+        capture_output=True,
+        text=text,
+        check=False,
+    )
+
+
+def compute_route_fingerprint(program_state: dict[str, Any]) -> str:
+    program = program_state.get("program") or {}
+    route_guard = dict(program_state.get("route_guard") or {})
+    route_guard.pop("route_fingerprint", None)
+    canonical_subset = {
+        "program": {
+            "current_phase": program.get("current_phase"),
+            "next_minimal_action": program.get("next_minimal_action"),
+        },
+        "route_guard": route_guard,
+    }
+    encoded = json.dumps(
+        canonical_subset,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def _json_field(payload: Any, field: str) -> Any:
+    current = payload
+    for part in field.split("."):
+        if not isinstance(current, dict) or part not in current:
+            return None
+        current = current[part]
+    return current
+
+
+def _check_inventory_source(source: dict[str, Any], repo_root: Path, itl_root: Path) -> tuple[bool, str]:
+    source_type = str(source.get("type") or "")
+    if source_type == "repo_path":
+        relative = str(source.get("value") or "")
+        return (repo_root / relative).exists(), relative
+    if source_type == "repo_json_value":
+        relative = str(source.get("value") or "")
+        path = repo_root / relative
+        if not path.is_file():
+            return False, relative
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            return False, relative
+        actual = _json_field(payload, str(source.get("field") or ""))
+        return actual == source.get("expected"), f"{relative}:{source.get('field')}"
+    if source_type == "git_commit":
+        commit = str(source.get("value") or "")
+        proc = _git_in_repo(repo_root, ["cat-file", "-e", f"{commit}^{{commit}}"])
+        return proc.returncode == 0, commit
+    if source_type == "git_ancestry_chain":
+        commits = [str(item) for item in source.get("values") or []]
+        if len(commits) < 2:
+            return False, "git_ancestry_chain"
+        for commit in commits:
+            if _git_in_repo(repo_root, ["cat-file", "-e", f"{commit}^{{commit}}"] ).returncode != 0:
+                return False, commit
+        for parent, child in zip(commits, commits[1:]):
+            proc = _git_in_repo(repo_root, ["rev-parse", f"{child}^"])
+            if proc.returncode != 0 or proc.stdout.strip() != parent:
+                return False, f"{parent}->{child}"
+        return True, "->".join(commits)
+    if source_type == "itl_git_object":
+        relative = str(source.get("path") or "")
+        expected = str(source.get("git_blob_oid") or "")
+        proc = _git_in_repo(itl_root, ["rev-parse", f"HEAD:{relative}"])
+        return proc.returncode == 0 and proc.stdout.strip() == expected, relative
+    return False, source_type or "missing_source_type"
+
+
+def compute_prior_lineage_inventory(
+    program_state: dict[str, Any],
+    *,
+    repo_root: Path | None = None,
+    itl_root: Path | None = None,
+) -> dict[str, Any]:
+    repo_root = repo_root or REPO_HYGIENE_POLICY_PATH.parents[1]
+    itl_root = itl_root or repo_root.parent / "intelligence-theory-lab"
+    route_guard = program_state.get("route_guard") or {}
+    inventory = route_guard.get("lineage_inventory") or {}
+    records = inventory.get("records") if isinstance(inventory, dict) else []
+    results: list[dict[str, Any]] = []
+    for record in records or []:
+        if not isinstance(record, dict):
+            results.append({"lineage_id": None, "discovered": False, "disposed": False, "source_results": []})
+            continue
+        source_results = []
+        for source in record.get("source_refs") or []:
+            if not isinstance(source, dict):
+                source_results.append({"ok": False, "ref": "invalid_source"})
+                continue
+            ok, ref = _check_inventory_source(source, repo_root, itl_root)
+            source_results.append({"ok": ok, "ref": ref, "type": source.get("type")})
+        discovered = bool(source_results) and all(item["ok"] for item in source_results)
+        disposition = str(record.get("disposition") or "").strip()
+        disposed = discovered and bool(disposition) and "UNDISPOSED" not in disposition
+        results.append(
+            {
+                "lineage_id": record.get("lineage_id"),
+                "discovered": discovered,
+                "disposed": disposed,
+                "disposition": disposition,
+                "source_results": source_results,
+            }
+        )
+    discovered_count = sum(1 for result in results if result["discovered"])
+    disposed_count = sum(1 for result in results if result["disposed"])
+    return {
+        "producer_function": "scripts.codex.verify_route_convergence.compute_prior_lineage_inventory",
+        "discovered_count": discovered_count,
+        "disposed_count": disposed_count,
+        "undisposed_count": len(results) - disposed_count,
+        "records": results,
+    }
+
+
+def _validate_git_object_pin(repo: Path, pin: dict[str, Any], errors: list[str], label: str) -> bytes | None:
+    path = str(pin.get("path") or "")
+    expected_oid = str(pin.get("git_blob_oid") or "")
+    expected_sha = str(pin.get("git_blob_payload_sha256") or "")
+    oid = _git_in_repo(repo, ["rev-parse", f"HEAD:{path}"])
+    if oid.returncode != 0 or oid.stdout.strip() != expected_oid:
+        errors.append(f"{label} git blob OID mismatch: {path}")
+        return None
+    payload = _git_in_repo(repo, ["cat-file", "blob", f"HEAD:{path}"], text=False)
+    if payload.returncode != 0 or hashlib.sha256(payload.stdout).hexdigest() != expected_sha:
+        errors.append(f"{label} committed payload SHA-256 mismatch: {path}")
+        return None
+    return payload.stdout
+
+
+def validate_route_guard(program_state: dict[str, Any]) -> tuple[list[str], dict[str, Any]]:
+    errors: list[str] = []
+    repo_root = REPO_HYGIENE_POLICY_PATH.parents[1]
+    itl_root = repo_root.parent / "intelligence-theory-lab"
+    route_guard = program_state.get("route_guard")
+    if not isinstance(route_guard, dict):
+        return ["route_guard is missing"], {}
+    if route_guard.get("schema_version") != "ego.route_guard.v1":
+        errors.append("route_guard schema_version must be ego.route_guard.v1")
+    if route_guard.get("route_revision_id") != "EGO_ROUTE_8692_SUPERSESSION_001A":
+        errors.append("route_guard revision does not record the additive 8692 supersession")
+    computed_fingerprint = compute_route_fingerprint(program_state)
+    if route_guard.get("route_fingerprint") != computed_fingerprint:
+        errors.append("route_guard fingerprint does not match the canonical semantic subset")
+
+    axes = route_guard.get("authority_axes") or {}
+    product_axis = axes.get("product_capability") or {}
+    science_axis = axes.get("science_attribution") or {}
+    if product_axis != {"repo": "Ego", "source": "docs/PROGRAM_STATE_UNIFIED.yaml"}:
+        errors.append("product/capability authority axis must resolve only to Ego PROGRAM_STATE_UNIFIED")
+    pinned_head = str(science_axis.get("pinned_head") or "")
+    if science_axis.get("repo") != "intelligence-theory-lab" or science_axis.get("source") != (
+        "artifacts/ROUTE-STATE-MACHINE-001A"
+    ):
+        errors.append("science/attribution authority axis must resolve only to the ITL route-state machine")
+    itl_head = _git_in_repo(itl_root, ["rev-parse", "HEAD"])
+    if itl_head.returncode != 0 or itl_head.stdout.strip() != pinned_head:
+        errors.append("science authority pinned HEAD does not match the live ITL committed object source")
+
+    science_pins = route_guard.get("science_source_pins") or {}
+    for key in ("state", "closure", "validation_report"):
+        pin = science_pins.get(key) or {}
+        payload = _validate_git_object_pin(itl_root, pin, errors, f"science_source_pins.{key}")
+        if key == "validation_report" and payload is not None:
+            path = str(pin.get("path") or "")
+            filtered = _git_in_repo(itl_root, ["hash-object", "--path", path, path])
+            if filtered.returncode != 0 or filtered.stdout.strip() != pin.get("required_filtered_blob_oid"):
+                errors.append("validation_report filtered blob OID does not match the committed object")
+            checkout = itl_root / path
+            if not checkout.is_file() or hashlib.sha256(checkout.read_bytes()).hexdigest() != pin.get(
+                "checkout_raw_sha256"
+            ):
+                errors.append("validation_report checkout raw SHA-256 does not match the disclosed materialization")
+            elif checkout.read_bytes().replace(b"\r\n", b"\n") != payload:
+                errors.append("validation_report checkout differs from committed bytes by more than CRLF/LF")
+
+    binding = route_guard.get("allowed_action_binding") or {}
+    if binding.get("allowed_next_action_ids") != ["bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A"]:
+        errors.append("allowed action binding must contain only the Card 2 banking action")
+    if binding.get("only_next_task") != "EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A":
+        errors.append("only_next_task must bind Card 2")
+    if binding.get("permission") != "DRAFT_AND_BANK_CARD_ONLY" or binding.get("execution_authorized") is not False:
+        errors.append("Card 2 binding must authorize drafting/banking only and reject execution")
+    if binding.get("authorized_implementation_targets") != []:
+        errors.append("allowed action binding must have no implementation targets")
+
+    authorizations = route_guard.get("authorizations") or {}
+    if authorizations.get("authorized_implementation_targets") != []:
+        errors.append("route_guard authorized implementation targets must be empty")
+    if any(value is not False for key, value in authorizations.items() if key != "authorized_implementation_targets"):
+        errors.append("all route_guard authorizations must remain false")
+
+    authority_state = route_guard.get("authority_state") or {}
+    old_route = authority_state.get("old_route_8692") or {}
+    if old_route.get("disposition") != "SUPERSEDED_BEFORE_M1":
+        errors.append("old route 8692 supersession disposition is absent")
+    for milestone in ("m1", "m2", "m3"):
+        if old_route.get(milestone) != "NOT_STARTED_CANCELLED_BY_SUPERSESSION":
+            errors.append(f"old route milestone {milestone} is not cancelled by supersession")
+    egodesktop = authority_state.get("egodesktop") or {}
+    if egodesktop != {
+        "archive_state": "ARCHIVED_LEGACY_LLM_UI_ROUTE",
+        "active_route_dependency": False,
+        "successor_dependency": False,
+        "runtime_authority": "none",
+    }:
+        errors.append("EgoDesktop archive authority state is not fail-closed")
+    successor = authority_state.get("k0_successor") or {}
+    if successor != {
+        "enabled": False,
+        "mainline_connected": False,
+        "runtime_authority": "none",
+        "real_trigger_evidence": "absent",
+    }:
+        errors.append("K0 successor state must remain disabled, non-mainline, authority-free, and untriggered")
+    foundation = authority_state.get("foundation") or {}
+    if foundation != {"evidence_state": "BANKED_ACCEPTED_BOUNDED", "runtime_enabled": False}:
+        errors.append("Foundation bounded engineering evidence was not preserved at its recorded ceiling")
+    if (authority_state.get("ego_operator") or {}).get("active_default") is not True:
+        errors.append("EgoOperator must remain the sole active default")
+    task_routes = ((route_guard.get("route_views") or {}).get("task_routes") or {})
+    former_route = task_routes.get("ego-canonical-mechanism-integration-001a") or {}
+    if egodesktop.get("archive_state") == "ARCHIVED_LEGACY_LLM_UI_ROUTE" and former_route.get("lane") != (
+        "closed_evidence"
+    ):
+        errors.append("PROGRAM_STATE archives EgoDesktop but the former 8692 task sink is not closed_evidence")
+    current_surfaces = ((route_guard.get("route_views") or {}).get("current_surfaces") or [])
+    if any(
+        isinstance(row, dict)
+        and (
+            row.get("surface") == "canonical_mechanism_successor"
+            or "selected default-off successor" in str(row.get("role") or "").lower()
+            or "supporting_active" in str(row.get("authority") or "").lower()
+        )
+        for row in current_surfaces
+    ):
+        errors.append("renderer source still promotes VirtualCat/EgoDesktop as an active successor route")
+    egodesktop_surfaces = [
+        row for row in current_surfaces if isinstance(row, dict) and "EgoDesktop/" in (row.get("paths") or [])
+    ]
+    if len(egodesktop_surfaces) != 1 or "archived legacy reference only" not in str(
+        egodesktop_surfaces[0].get("authority") if egodesktop_surfaces else ""
+    ).lower():
+        errors.append("EgoDesktop surface sink does not preserve archived-reference-only semantics")
+
+    next_contract = binding.get("next_task_contract") or {}
+    if next_contract.get("task_kind") != "executable_candidate_independent_headroom":
+        errors.append("Card 2 task kind does not require executable candidate-independent headroom")
+    if next_contract.get("execution_authorized") is not False:
+        errors.append("Card 2 execution must remain unauthorized")
+    if next_contract.get("pilot_1_positive_control_allowed") is not False or next_contract.get(
+        "pilot_1_regression_baseline_allowed"
+    ) is not False:
+        errors.append("Card 2 must not reuse pilot #1 as positive control or regression baseline")
+    contract_pins = next_contract.get("frozen_contract_pins") or {}
+    for key, pin in contract_pins.items():
+        _validate_git_object_pin(itl_root, pin or {}, errors, f"frozen_contract_pins.{key}")
+    registry_pin = contract_pins.get("baseline_immunity_registry") or {}
+    registry_payload = _validate_git_object_pin(itl_root, registry_pin, [], "failure_family_registry")
+    if registry_payload is None:
+        errors.append("failure-family registry could not be read from its committed ITL object")
+    else:
+        try:
+            failure_families = json.loads(registry_payload).get("failure_families")
+        except (json.JSONDecodeError, AttributeError):
+            failure_families = None
+        declared_registry = next_contract.get("failure_family_registry") or {}
+        if not isinstance(failure_families, list) or len(failure_families) != declared_registry.get("required_count"):
+            errors.append("Card 2 failure-family count or registry semantics drifted from the pinned source")
+
+    inventory_result = compute_prior_lineage_inventory(program_state, repo_root=repo_root, itl_root=itl_root)
+    inventory = route_guard.get("lineage_inventory") or {}
+    for key in ("discovered_count", "disposed_count", "undisposed_count"):
+        if inventory.get(key) != inventory_result.get(key):
+            errors.append(f"lineage inventory declared {key} does not match callable repo inventory")
+    if inventory_result.get("undisposed_count") != 0:
+        errors.append("prior lineage inventory contains an undisposed lineage")
+    pilot_repair = next(
+        (record for record in inventory.get("records") or [] if record.get("lineage_id") == "pilot_1_repair"),
+        {},
+    )
+    successor_use = pilot_repair.get("successor_use") or {}
+    if pilot_repair.get("audit_ref") is None and any(
+        successor_use.get(key) != "BLOCKED_PENDING_RETRO_YELLOW"
+        for key in ("positive_control", "regression_baseline")
+    ):
+        errors.append("pilot #1 repair cannot be enabled for successor use while audit_ref is null")
+    ceiling = str(pilot_repair.get("evidence_ceiling") or "").lower()
+    if "capability" not in ceiling or "learning" in ceiling or "mechanism" in ceiling:
+        errors.append("pilot #1 repair capability verdict was upgraded beyond its recorded evidence ceiling")
+
+    anti_zeno = route_guard.get("anti_zeno") or {}
+    if anti_zeno.get("governance_only_successor_allowed") is not False or anti_zeno.get(
+        "next_required_output_class"
+    ) != "callable_candidate_independent_headroom":
+        errors.append("anti-Zeno next-output enforcement is missing")
+
+    return errors, {
+        "route_fingerprint": computed_fingerprint,
+        "science_authority_pin_status": "pass" if not any("science" in error for error in errors) else "fail",
+        "lineage_inventory": inventory_result,
+    }
+
+
 def _mapping_contains_key(node: Any, key: str) -> bool:
     if isinstance(node, dict):
         return key in node or any(_mapping_contains_key(value, key) for value in node.values())
@@ -591,22 +885,28 @@ def validate_route_convergence(
 ) -> list[str]:
     errors: list[str] = []
     repo_root = REPO_HYGIENE_POLICY_PATH.parents[1]
+    route_guard_errors, _ = validate_route_guard(program_state)
+    errors.extend(route_guard_errors)
     audit_report = _validate_committed_audit(errors)
     _validate_additive_ledger(errors)
     if check_generated_files:
         expected_lane_index = render_task_lane_index(program_state)
         expected_hygiene_policy = render_repo_hygiene_policy()
-        expected_surface_map = render_repo_surface_map()
+        expected_surface_map = render_repo_surface_map(program_state)
 
         _check_generated_file(TASK_LANE_INDEX_PATH, expected_lane_index, errors)
         _check_generated_file(REPO_HYGIENE_POLICY_PATH, expected_hygiene_policy, errors)
         _check_generated_file(REPO_SURFACE_MAP_PATH, expected_surface_map, errors)
 
+    route_guard = program_state.get("route_guard") or {}
+    route_views = route_guard.get("route_views") or {}
+    task_routes = route_views.get("task_routes") or {}
+    expected_active_keys = sorted(
+        str(key) for key, value in task_routes.items() if isinstance(value, dict) and value.get("lane") == "active_default"
+    )
     active_default_entries = [entry for entry in entries if entry.lane == "active_default"]
-    if len(active_default_entries) != 1:
-        errors.append(f"expected exactly one active_default entry, found {len(active_default_entries)}")
-    elif active_default_entries[0].key != "ego-operator-human-operator-trial-v2":
-        errors.append("active_default entry must be `ego-operator-human-operator-trial-v2` during EgoOperator human-observation gate")
+    if sorted(entry.key for entry in active_default_entries) != expected_active_keys or len(expected_active_keys) != 1:
+        errors.append("active_default task lane does not match the single structured route_guard owner")
 
     foundation_entries = [entry for entry in entries if entry.key == "ego-k0-foundation-001a"]
     if len(foundation_entries) != 1:
@@ -676,38 +976,19 @@ def validate_route_convergence(
         if future_product_entry.lane in {"parked", "supporting_active", "active_default"}:
             errors.append("learned-outcome capability card appears in a disallowed actionable lane")
 
-    canonical_entries = [entry for entry in entries if entry.key == CANONICAL_TASK_KEY]
+    superseded_keys = sorted(
+        str(key)
+        for key, value in task_routes.items()
+        if isinstance(value, dict) and value.get("workstream_id") == "canonical_mechanism_integration_route_001a"
+    )
+    canonical_entries = [entry for entry in entries if entry.key in superseded_keys]
     if len(canonical_entries) != 1:
-        errors.append(
-            f"expected exactly one canonical mechanism integration entry, found {len(canonical_entries)}"
-        )
+        errors.append(f"expected exactly one structured superseded 8692 route entry, found {len(canonical_entries)}")
     else:
         canonical_entry = canonical_entries[0]
-        if canonical_entry.lane != "supporting_active":
-            errors.append("canonical mechanism integration must be `supporting_active` before M1")
-        canonical_why = canonical_entry.why.lower()
-        for phrase in (
-            "sole selected successor route",
-            "m1 headless",
-            "enablement/mainline/runtime authority remain absent",
-        ):
-            if phrase not in canonical_why:
-                errors.append(f"canonical route explanation missing `{phrase}`")
-
-    route_doc = repo_root / CANONICAL_ROUTE_DOC_PATH
-    if not route_doc.is_file():
-        errors.append(f"canonical route document missing: {CANONICAL_ROUTE_DOC_PATH}")
-    else:
-        route_text = route_doc.read_text(encoding="utf-8")
-        for phrase in (
-            "### K0 Foundation — sole substrate authority",
-            "VirtualCatPSPC-derived world/self-model adapter",
-            "EgoDesktop observer/input surface",
-            "Historical `go_for_*` text is not current authority",
-            "M1 — next action",
-        ):
-            if phrase not in route_text:
-                errors.append(f"canonical route document missing `{phrase}`")
+        expected_route = task_routes.get(canonical_entry.key) or {}
+        if canonical_entry.lane != expected_route.get("lane") or canonical_entry.why.split(" Current workstream status:", 1)[0] != expected_route.get("why"):
+            errors.append("superseded 8692 route entry diverges from structured route_guard")
 
     workstreams = {item.get("id"): item for item in program_state.get("workstreams") or []}
     active_ws = workstreams.get("ego_operator_first_transition") or {}
@@ -720,29 +1001,26 @@ def validate_route_convergence(
         errors.append("repo_cleanup_route_convergence workstream must exist and stay `supporting_active`")
 
     foundation_ws = workstreams.get("k0_developmental_kernel_dual_track") or {}
-    if foundation_ws.get("status") != EXPECTED_K0_STATUS:
-        errors.append("K0 workstream must record the exact closed-invalid governance-sync status")
     if foundation_ws.get("evidence_level") != "E3" or foundation_ws.get("verification_level") != "V3":
         errors.append("K0 Foundation workstream must retain the bounded Ego E3/V3 governance classification")
     if foundation_ws.get("enabled") is not False or foundation_ws.get("mainline_connected") is not False:
         errors.append("K0 Foundation workstream must remain disabled and non-mainline")
 
-    canonical_ws = workstreams.get(CANONICAL_WORKSTREAM_ID) or {}
-    if canonical_ws.get("status") != CANONICAL_WORKSTREAM_STATUS:
-        errors.append("canonical mechanism workstream status does not match the frozen M0 boundary")
+    canonical_ws = workstreams.get("canonical_mechanism_integration_route_001a") or {}
+    if "superseded_before_m1" not in str(canonical_ws.get("status") or ""):
+        errors.append("former 8692 workstream does not record supersession before M1")
     if canonical_ws.get("evidence_level") != "E1" or canonical_ws.get("verification_level") != "V1":
-        errors.append("canonical M0 workstream must remain docs/governance E1/V1")
+        errors.append("superseded 8692 workstream must remain docs/governance E1/V1")
     if canonical_ws.get("enabled") is not False or canonical_ws.get("mainline_connected") is not False:
-        errors.append("canonical mechanism successor must remain disabled and non-mainline in M0")
+        errors.append("superseded 8692 workstream must remain disabled and non-mainline")
 
     governance_sync = foundation_ws.get("governance_sync")
-    if governance_sync != EXPECTED_GOVERNANCE_SYNC:
-        errors.append("K0 governance_sync mapping does not match the pinned closed-invalid contract")
 
     future_product_route = (governance_sync or {}).get("future_product_route") or {}
     preflight = future_product_route.get("candidate_independent_preflight") or {}
-    if program_state.get("program", {}).get("next_minimal_action") != NEXT_MINIMAL_ACTION:
-        errors.append("program.next_minimal_action does not match the canonical M1 boundary")
+    binding = route_guard.get("allowed_action_binding") or {}
+    if str(binding.get("only_next_task") or "") not in str(program_state.get("program", {}).get("next_minimal_action") or ""):
+        errors.append("program.next_minimal_action does not reflect the structured allowed-action binding")
     if future_product_route.get("current_status") != FUTURE_PRODUCT_STATUS:
         errors.append("future product route status does not record the exact P1R0 invalid family closeout")
     if future_product_route.get("current_operator_authorization_scope") != (
@@ -926,12 +1204,31 @@ def main() -> int:
     reference_kernel_entries = [entry for entry in entries if entry.key == "ego-k0-reference-kernel-001a"]
     future_product_entries = [entry for entry in entries if entry.key == FUTURE_PRODUCT_TASK_KEY]
     active_default_entries = [entry for entry in entries if entry.lane == "active_default"]
+    _, route_details = validate_route_guard(program_state)
+    route_guard = program_state.get("route_guard") or {}
+    lineage = route_details.get("lineage_inventory") or {}
     print(
         json.dumps(
             {
                 "status": "pass",
                 "active_default": active_default_entries[0].key if active_default_entries else None,
                 "supporting_active_count": sum(1 for entry in entries if entry.lane == "supporting_active"),
+                "route_revision_id": route_guard.get("route_revision_id"),
+                "route_fingerprint": route_details.get("route_fingerprint"),
+                "old_route_8692_disposition": (
+                    (route_guard.get("authority_state") or {}).get("old_route_8692") or {}
+                ).get("disposition"),
+                "egodesktop_archive_state": (
+                    (route_guard.get("authority_state") or {}).get("egodesktop") or {}
+                ).get("archive_state"),
+                "allowed_next_action_ids": (
+                    (route_guard.get("allowed_action_binding") or {}).get("allowed_next_action_ids") or []
+                ),
+                "lineage_counts": {
+                    "discovered": lineage.get("discovered_count"),
+                    "disposed": lineage.get("disposed_count"),
+                    "undisposed": lineage.get("undisposed_count"),
+                },
                 "k0_workstream_status": k0_workstream.get("status"),
                 "old_reference_kernel_lane": (
                     reference_kernel_entries[0].lane if len(reference_kernel_entries) == 1 else None

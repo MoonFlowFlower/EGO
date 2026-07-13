@@ -43,6 +43,11 @@ session_bootstrap:
     - dirty_state.counts
     - task_board.plan_next
     - github_sync.status
+    - route_guard_readback.route_revision_id
+    - route_guard_readback.route_fingerprint
+    - route_guard_readback.allowed_next_action_ids
+    - route_guard_readback.undisposed_lineage_count
+    - route_guard_readback.science_authority_pin_status
   claim_ceiling: Codex session bootstrap local workflow candidate pass
 
 closeout_gate:
@@ -66,6 +71,49 @@ closeout_gate:
     - python -m pytest -q scripts/tests/test_codex_session_guard.py scripts/tests/test_codex_project_autopilot.py
     - git diff --check
   claim_ceiling: Codex closeout gate local workflow candidate pass
+
+route_guard_policy:
+  schema_version: ego.route_guard_policy.v1
+  authority_path_patterns:
+    - docs/PROGRAM_STATE_UNIFIED.yaml
+    - docs/*ROUTE*.md
+    - docs/*STATUS*.md
+    - .codex/project_contract.yaml
+    - scripts/codex_session_guard.py
+    - scripts/codex/route_convergence_common.py
+    - scripts/codex/verify_route_convergence.py
+    - scripts/codex/*route*validator*.py
+    - artifacts/ROUTE-STATE-MACHINE-001A/**
+  diff_added_claim_terms:
+    - canonical route
+    - successor
+    - authorized
+    - mainline
+    - runtime authority
+    - mechanism attribution
+    - science evidence
+    - formal evidence
+    - H0
+    - S0X
+    - MDE
+    - headroom
+    - readiness
+    - integrated
+    - enabled
+  generated_view_paths:
+    - docs/STATUS.md
+    - docs/codex/tasks/TASK_LANE_INDEX.md
+    - docs/REPO_SURFACE_MAP.md
+    - artifacts/reports/program_state_summary.md
+  vocabulary_trigger_role: independent_red_review_required_only
+  structured_validation_remains_authoritative: true
+  historical_untouched_artifacts_scanned: false
+  exact_migration_exception:
+    task_id: EGO-ROUTE-8692-SUPERSESSION-AND-EGODESKTOP-AUTHORITY-ARCHIVE-001A
+    enabled: false
+    consumed: true
+    wildcard_allowed: false
+    operator_override_allowed: false
 
 legacy_external_refs:
   github_repos:

@@ -7,14 +7,14 @@ source_route_revision_id: PRE_ROUTE_GUARD_MIGRATION
 source_route_fingerprint: 026535337949d5ea2857805e5d9e0d2b6bfae016154fbf58587eafcea6411aa3
 expected_target_route_revision_id: EGO_ROUTE_8692_SUPERSESSION_001A
 independent_red_review_required: true
-red_review_ref: null
+red_review_ref: CLAUDE-RED-PHASE-B-20260713-EGO8692
 executor_session_ref: 019f5ce9-41b4-7430-b5d5-befde5cc256c
 auto_remote_anchor: forbidden
 
 migration_exception:
   exact_task_id: EGO-ROUTE-8692-SUPERSESSION-AND-EGODESKTOP-AUTHORITY-ARCHIVE-001A
-  enabled: true
-  consumed: false
+  enabled: false
+  consumed: true
   wildcard_allowed: false
   operator_override_allowed: false
 

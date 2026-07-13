@@ -53,16 +53,10 @@ class HygieneRule:
 
 
 TASK_OVERRIDES: dict[str, dict[str, Any]] = {
-    "ego-canonical-mechanism-integration-001a": {
-        "lane": "supporting_active",
-        "label": "EGO Canonical Mechanism Integration 001A",
-        "why": "Sole selected successor route. M0 authority freeze is complete; M1 headless K0 + VirtualCat-derived bridge is next, while enablement/mainline/runtime authority remain absent.",
-        "workstream_id": "canonical_mechanism_integration_route_001a",
-    },
     "egodesktop-pet-world-integration-001a": {
         "lane": "closed_evidence",
         "label": "EgoDesktop PET World Integration 001A",
-        "why": "Frozen predecessor engineering evidence. Unexecuted P2 is not the selected successor and must not substitute for the canonical K0 + VirtualCat-derived route.",
+        "why": "Frozen predecessor engineering evidence. P2 remains unexecuted; no historical go-for or successor text grants current authority.",
     },
     "ego-k0-foundation-001a": {
         "lane": "closed_evidence",
@@ -75,12 +69,6 @@ TASK_OVERRIDES: dict[str, dict[str, Any]] = {
         "label": "EGO K0 Reference Kernel 001A",
         "why": "Old science-attribution plan; not executed; BLOCKED_NOT_TESTED; operator closed the old route without science adjudication; independent validator acceptance unavailable; no implementation authority; not the future product route.",
         "workstream_id": "k0_developmental_kernel_dual_track",
-    },
-    "ego-operator-human-operator-trial-v2": {
-        "lane": "active_default",
-        "label": "EgoOperator Human Operator Trial v2",
-        "why": "Current EgoOperator human-observation gate; records whether the operator-first runtime is actually usable in continuous Chinese operator work.",
-        "workstream_id": "ego_operator_first_transition",
     },
     "ego-operator-rename-docs-safety-v1": {
         "lane": "closed_evidence",
@@ -250,24 +238,7 @@ HYGIENE_RULES = (
     ),
 )
 
-SURFACE_MAP_ROWS = (
-    {
-        "surface": "operator_runtime",
-        "paths": ("EgoOperator/",),
-        "role": "Current default operator-first runtime candidate: natural language understanding, approvals, memory, trace, and human trial gates.",
-        "authority": "Default implementation surface for new operator experience work; claims remain local/candidate unless human-observable gates pass.",
-    },
-    {
-        "surface": "canonical_mechanism_successor",
-        "paths": (
-            "packages/ego_k0_kernel/",
-            "labs/virtual_cat_pspc_v0/",
-            "EgoDesktop/",
-            "docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md",
-        ),
-        "role": "Selected default-off successor route: K0 canonical substrate, VirtualCat-derived auditable mechanism adapter, and observer-only EgoDesktop surface.",
-        "authority": "Route selected but M1 not started; disabled, non-mainline, no runtime authority or real trigger. Historical PET/PSPC go-for records do not override this route.",
-    },
+STATIC_SURFACE_MAP_ROWS = (
     {
         "surface": "legacy_reference",
         "paths": (
@@ -315,6 +286,23 @@ def load_program_state() -> dict[str, Any]:
     return load_yaml(PROGRAM_STATE_PATH)
 
 
+def _route_guard(program_state: dict[str, Any]) -> dict[str, Any]:
+    route_guard = program_state.get("route_guard")
+    return route_guard if isinstance(route_guard, dict) else {}
+
+
+def _current_task_overrides(program_state: dict[str, Any]) -> dict[str, dict[str, Any]]:
+    route_views = _route_guard(program_state).get("route_views") or {}
+    task_routes = route_views.get("task_routes") if isinstance(route_views, dict) else {}
+    if not isinstance(task_routes, dict):
+        return {}
+    return {
+        str(key): value
+        for key, value in task_routes.items()
+        if isinstance(value, dict)
+    }
+
+
 def _git_lines(args: list[str]) -> list[str]:
     proc = subprocess.run(
         ["git", *args],
@@ -356,9 +344,10 @@ def _default_route_for_slug(slug: str) -> tuple[str, str]:
 def build_route_entries(program_state: dict[str, Any] | None = None) -> list[RouteEntry]:
     state = program_state or load_program_state()
     workstream_statuses = {item.get("id"): item.get("status") for item in state.get("workstreams") or []}
+    current_overrides = _current_task_overrides(state)
     entries: list[RouteEntry] = []
     for slug in list_task_dirs():
-        override = TASK_OVERRIDES.get(slug)
+        override = current_overrides.get(slug) or TASK_OVERRIDES.get(slug)
         if override:
             lane = str(override["lane"])
             label = str(override["label"])
@@ -492,7 +481,28 @@ def render_repo_hygiene_policy() -> str:
     return "\n".join(lines) + "\n"
 
 
-def render_repo_surface_map() -> str:
+def build_surface_map_rows(program_state: dict[str, Any] | None = None) -> list[dict[str, Any]]:
+    state = program_state or load_program_state()
+    route_views = _route_guard(state).get("route_views") or {}
+    current_rows = route_views.get("current_surfaces") if isinstance(route_views, dict) else []
+    rows: list[dict[str, Any]] = []
+    for row in current_rows or []:
+        if not isinstance(row, dict):
+            continue
+        paths = row.get("paths")
+        rows.append(
+            {
+                "surface": str(row.get("surface") or ""),
+                "paths": tuple(str(path) for path in paths) if isinstance(paths, list) else (),
+                "role": str(row.get("role") or ""),
+                "authority": str(row.get("authority") or ""),
+            }
+        )
+    rows.extend(STATIC_SURFACE_MAP_ROWS)
+    return rows
+
+
+def render_repo_surface_map(program_state: dict[str, Any] | None = None) -> str:
     lines = [
         "# Repo Surface Map",
         "",
@@ -506,7 +516,7 @@ def render_repo_surface_map() -> str:
         "| surface | paths | role | authority boundary |",
         "|---|---|---|---|",
     ]
-    for row in SURFACE_MAP_ROWS:
+    for row in build_surface_map_rows(program_state):
         paths = "<br>".join(f"`{path}`" for path in row["paths"])
         lines.append(f"| `{row['surface']}` | {paths} | {row['role']} | {row['authority']} |")
     lines.extend(
@@ -529,10 +539,11 @@ __all__ = [
     "PROGRAM_STATE_PATH",
     "REPO_HYGIENE_POLICY_PATH",
     "REPO_SURFACE_MAP_PATH",
-    "SURFACE_MAP_ROWS",
+    "STATIC_SURFACE_MAP_ROWS",
     "TASK_LANE_INDEX_PATH",
     "build_hygiene_rows",
     "build_route_entries",
+    "build_surface_map_rows",
     "list_task_dirs",
     "load_program_state",
     "render_repo_hygiene_policy",
