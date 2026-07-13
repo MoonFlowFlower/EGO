@@ -1,0 +1,186 @@
+{
+  "ablation_results": {
+    "executed": false,
+    "status": "not_applicable_no_mechanism_run"
+  },
+  "aggregation_rule": "logical AND over named live-fact, source-integrity, parent, annex-recompute and closure-content gates",
+  "auto_remote_anchor": "forbidden_pending_yellow_post_check",
+  "baseline_results": {
+    "executed": false,
+    "status": "structural_identity_class_preemption_only",
+    "strongest_control": "equal_access_context_action_count_table"
+  },
+  "causal_ladder_provenance": "operator_standard_chat_provenance_2026-07-13",
+  "claim_ceiling": "Bounded negative admission-design evidence only: the runtime feedback -> outcome_micros mapping for the isolated outcome-utility package is closed as unidentifiable at current observational access and baseline-pre-empted for the current count-table package. The power contour is conditional because current eligible-decision traffic is unknown unless live logs prove it. This does not prove the utility mechanism is impossible in other regimes, does not prove the product never needs utility signals, and proves nothing about runtime learning, decision improvement, user value, mainline effect, subjectivity, or consciousness.",
+  "code_path_hash": "8f47732a07778c87ea147e0494cfe0cd02ed7ae623ddab36c8d97aa0e986b1bd",
+  "enabled_status": "runtime_not_registered_explicit_local_cli_only",
+  "facts": {
+    "current_traffic_below_contour_claimed": false,
+    "documentation_signature_hits_not_callers": 3,
+    "ego_branch": "main",
+    "ego_head_sha": "714c40ee038f5745fb07b455542b9e309431e783",
+    "ego_tree_sha": "c2e1d63e520218b3ed455ce670d0f454c3290485",
+    "functional_contract_enabled_fields": [
+      [
+        "/authority/enabled",
+        false
+      ],
+      [
+        "/canonical_authority_readback/caot_closeout_authority/enabled",
+        false
+      ],
+      [
+        "/acceptance/enabled",
+        false
+      ]
+    ],
+    "itl_head_sha": "b67c94fe1244ef6006ed3af8e924d4c670fe64bb",
+    "itl_tree_sha": "2caa9a8ad5587d284ec0da01c4d07a5ed53e9ea7",
+    "mainline_consumers": 0,
+    "observe_outcome_external_python_callers": 0,
+    "package_classification": "deterministic_keyed_count_table_running_statistic_utility",
+    "package_dir": "packages/ego_outcome_utility",
+    "package_import_name": "ego_outcome_utility",
+    "program_state_route_entry_present": false,
+    "runtime_enable_flag_present": false,
+    "traffic_candidate_file_count": 0,
+    "traffic_estimate": "no qualifying tracked EgoOperator runtime decision logs; traffic unknown",
+    "utility_specific_intervention_paths": 0
+  },
+  "gates": {
+    "G1a_external_python_callers_zero": true,
+    "G1b_contract_enabled_false": true,
+    "G1b_explicit_cli_only": true,
+    "G1c_ego_operator_imports_zero": true,
+    "G1c_ego_operator_output_refs_zero": true,
+    "G1d_traffic_not_fabricated": true,
+    "G2_annex_double_run_identical": true,
+    "G2_annex_input_hash_bound": true,
+    "G2_annex_rows_complete": true,
+    "G2_annex_source_hash_bound": true,
+    "G3_claim_ceiling_present": true,
+    "G3_ground_a_present": true,
+    "G3_ground_b_present": true,
+    "G3_reopen_conditions_present": true,
+    "G4_positive_claim_false_authorized": true,
+    "G5_mutation_scope_forbids_push": true,
+    "G5_remote_anchor_forbidden": true,
+    "frozen_contract_unchanged_from_head": true,
+    "itl_untouched_clean": true,
+    "parent_banked_conflict_absent": true,
+    "parent_external_verdict_matches": true,
+    "program_state_route_entry_absent": true,
+    "utility_intervention_path_absent": true,
+    "utility_source_unchanged_from_head": true
+  },
+  "grounds": [
+    "A_counterfactual_unidentifiable_at_current_observational_access",
+    "B_current_count_table_route_baseline_preempted"
+  ],
+  "input_artifacts": {
+    "D:\\Project\\AIProject\\MyProject\\EGO-OUTCOME-UTILITY-SINGLE-OWNER-SHADOW-ADAPTER-ADMISSION-001A-CONTRACT.json": "044000ef621f4e425db3a7e020748bdf2e7fe93f8f87c68f5ebeff62fe125cf6",
+    "artifacts/EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A/closure.md": "3511ed7a8bc469acbf80a97a9b244a17755f4fc9ba9ffc1c00a2ad7a66c84588",
+    "artifacts/EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A/fact_grep_evidence.txt": "b072a80558584bfb660a489e9f0b5f5d6d96cee831ab25fda4f62b877b25c69b",
+    "artifacts/EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A/power_annex.json": "d1d94e371361ac9f6f2f45b583654d1f26ab585b0485a85241535effe528e6f1",
+    "artifacts/EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A/power_annex.md": "337b7aca45d05962e0c12fcc6e7820240db4b17e32a4a59ddc7148a0b9ac7236",
+    "artifacts/EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A/power_annex.py": "82606b06daaf7765777dd498db99e3f876b972d1404de5254053166bf51be0df",
+    "docs/codex/tasks/ego-engineering-only-outcome-utility-route-replacement-001a/CLOSURE_MUTATION_SCOPE.yaml": "f34a81405ccad607c0e7cdf013276f96689350a11579406131d4a029b6a74ece",
+    "docs/codex/tasks/ego-engineering-only-outcome-utility-route-replacement-001a/FUNCTIONAL_CONTRACT.json": "ee070596203f840f202ba322e0e22b287145be9cc76b422d10b72a01e2411b3a",
+    "docs/codex/tasks/ego-engineering-only-outcome-utility-route-replacement-001a/TASK-CARD-EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A.md": "ecf58a06fc2715d78baa2c62f78b2140cca3094b303e10a5ac61d7d50a975499",
+    "packages/ego_outcome_utility/src/ego_outcome_utility/utility.py": "1e317daf324b07e57b147443b5e6bc126ad7201319c7969e66f3eaf42318e4d2"
+  },
+  "layer": "engineering_implementation_plus_bounded_mechanism_governance",
+  "mainline_integration_status": "absent",
+  "parent_record": {
+    "parsed_verdict": "ADMISSION_DESIGN_BLOCKED__FEEDBACK_MAPPING_UNGROUNDED",
+    "path": "D:\\Project\\AIProject\\MyProject\\EGO-OUTCOME-UTILITY-SINGLE-OWNER-SHADOW-ADAPTER-ADMISSION-001A-CONTRACT.json",
+    "provenance_class": "external_local_uncommitted",
+    "sha256": "044000ef621f4e425db3a7e020748bdf2e7fe93f8f87c68f5ebeff62fe125cf6"
+  },
+  "parent_verdict": "ADMISSION_DESIGN_BLOCKED__FEEDBACK_MAPPING_UNGROUNDED",
+  "positive_claim": false,
+  "power_annex": {
+    "claim_boundary": "conditional analytic bound over declared assumptions; not measured traffic or product cost",
+    "double_run_identical": true,
+    "json_sha256": "d1d94e371361ac9f6f2f45b583654d1f26ab585b0485a85241535effe528e6f1",
+    "producer_function": "power_annex.build",
+    "recheck_json_sha256": "d1d94e371361ac9f6f2f45b583654d1f26ab585b0485a85241535effe528e6f1",
+    "reopen_contour": {
+      "condition": "eps*(1-eps)*D >= 7.27",
+      "criterion": "context-stratified (k=5) effect d=0.3 reachable within the frozen drift window (60 days)",
+      "example": "at eps=0.10 requires D >= 81 eligible decisions/day"
+    },
+    "row_count": 72,
+    "source_sha256": "82606b06daaf7765777dd498db99e3f876b972d1404de5254053166bf51be0df",
+    "spot_checks": {
+      "K": 7.84888,
+      "pooled_D30_eps0.10_d0.3_k1_days": 32.3,
+      "pooled_D30_eps0.10_d0.5_k1_days": 11.6,
+      "reopen_contour_eps_1meps_D": 7.27,
+      "reopen_min_D_at_eps0.10": 81,
+      "strat_D30_eps0.10_d0.3_k5_days": 161.5
+    }
+  },
+  "prior_negative_evidence": [
+    {
+      "last_commit": "67edff12e7803f410264aee366889870c89d7245",
+      "path": "artifacts/UNCERTAINTY-VOI-REQUEST-MECHANISM-003A/result.json",
+      "repo": "D:\\Project\\AIProject\\MyProject\\intelligence-theory-lab",
+      "sha256": "c5101d5c2ebd1aefc51db9e30987ea1c8966521e68a98c3534b45dae25aa0820"
+    },
+    {
+      "last_commit": "f2c19955528c746cd2de610679de3089ee52138b",
+      "path": "artifacts/UNCERTAINTY-VOI-REQUEST-MECHANISM-003A/closure.json",
+      "repo": "D:\\Project\\AIProject\\MyProject\\intelligence-theory-lab",
+      "sha256": "8415e230c1a293f0e8577b7457669b103afb30fb0e8668aa3b6bb1db24643248"
+    },
+    {
+      "last_commit": "cb324b7806699851220e9be425ceb3ad0e746c6e",
+      "path": "docs/codex/contracts/LEARNING-SUCCESS-CRITERION-STANDARD-001A.md",
+      "repo": "D:\\Project\\AIProject\\MyProject\\intelligence-theory-lab",
+      "sha256": "1865da675e57a9e84fb9fd2409aedac9209f8f33fdee159bd559be6dfdf5f7db"
+    },
+    {
+      "last_commit": "15489ee07ad52640bde6e7b7f23d5bcbd189abdb",
+      "path": "docs/codex/contracts/BASELINE-IMMUNITY-ADMISSION-STANDARD-001A.md",
+      "repo": "D:\\Project\\AIProject\\MyProject\\intelligence-theory-lab",
+      "sha256": "7bd41a049a28aded4fb2eb23ced5bc8a71f80a5bb7fb5abd6d32931c37e80a03"
+    },
+    {
+      "last_commit": "0acb6e9f0d06439a606ea321a905d3706c5ba660",
+      "path": "docs/codex/contracts/MECHANISM-SIGNATURE-VERDICT-STANDARD-001A.md",
+      "repo": "D:\\Project\\AIProject\\MyProject\\intelligence-theory-lab",
+      "sha256": "79b83e9b0291d5e45ecc4b8c1c6d94f78864c8d50698970376a380e8b6862031"
+    },
+    {
+      "last_commit": "6948427ad4f58535db5b66c8b4bf656f1d772f77",
+      "path": "artifacts/egodesktop_pet_world_integration_001a/p0/audit_claude_full_hostile_001.json",
+      "repo": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "sha256": "137eea4e93dace1e327133edeba3ce16e6cdd7f03e4c5e5cf4fb8243d5dbd4b7"
+    }
+  ],
+  "producer_function": "build_closure_result.build_result",
+  "real_trigger_evidence": "none_for_EgoOperator",
+  "reopen_conditions": [
+    "R1: a sustained programmatically-verifiable task stream with a preregistered evaluator that explicitly defines the no-action zero point, satisfying eps*(1-eps)*D >= 7.27 under the frozen 60-day drift window, AND a new card that pre-declares count_table / lookup / no-update controls and beats them per MECHANISM-SIGNATURE-VERDICT-STANDARD-001A.",
+    "R2: true randomization infrastructure with recorded operator consent to epsilon-abstain product degradation, satisfying the same contour.",
+    "R3: multi-user deployment providing external A/B ground truth; power re-derived from measured traffic in a new card."
+  ],
+  "replay_result": {
+    "analytic_annex_recomputed_twice": true,
+    "byte_identical": true,
+    "mechanism_replay_executed": false
+  },
+  "route": "runtime_feedback_to_outcome_micros_admission",
+  "run_id": "ego-outcome-utility-adapter-closure-001a-result-v1",
+  "schema_version": "ego.outcome_utility.adapter_closure.result.v1",
+  "seed_context_episode_ids": {
+    "context_ids": "NOT_APPLICABLE_ROUTE_CLOSURE",
+    "episode_ids": "NOT_APPLICABLE_NO_EPISODES",
+    "seed_ids": "NOT_APPLICABLE_NO_RNG"
+  },
+  "stop_conditions_triggered": [],
+  "task_id": "EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A",
+  "verdict": "CLOSED_BY_BOUNDED_ANALYSIS",
+  "what_this_does_not_prove": "No general utility impossibility, product non-need, measured traffic infeasibility, runtime learning, decision improvement, user value, mainline effect, agency, subjectivity or consciousness claim."
+}

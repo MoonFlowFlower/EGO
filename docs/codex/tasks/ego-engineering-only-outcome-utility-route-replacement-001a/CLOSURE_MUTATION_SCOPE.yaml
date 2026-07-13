@@ -1,0 +1,64 @@
+schema_version: codex.mutation_scope.v1
+task: ego-outcome-utility-adapter-closure-001a
+task_id: EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A
+expected_head: 714c40ee038f5745fb07b455542b9e309431e783
+expected_tree: c2e1d63e520218b3ed455ce670d0f454c3290485
+expected_raw_behind_ahead: [0, 28]
+expected_clean: true
+
+authorization_scope: >-
+  Add one repaired bounded closure card and one callable-produced analytic
+  closure packet for the existing isolated outcome-utility lineage. Preserve
+  the package, EgoOperator, Program State, task board, evidence ledger, ITL,
+  prior artifacts and all runtime/config surfaces unchanged.
+
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-engineering-only-outcome-utility-route-replacement-001a/TASK-CARD-EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A.md
+  - docs/codex/tasks/ego-engineering-only-outcome-utility-route-replacement-001a/CLOSURE_MUTATION_SCOPE.yaml
+  - artifacts/EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A/build_closure_result.py
+  - artifacts/EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A/closure.md
+  - artifacts/EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A/fact_grep_evidence.txt
+  - artifacts/EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A/power_annex.py
+  - artifacts/EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A/power_annex.json
+  - artifacts/EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A/power_annex.md
+  - artifacts/EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A/result.json
+
+expected_mutation_surface:
+  - docs/codex/tasks/ego-engineering-only-outcome-utility-route-replacement-001a/TASK-CARD-EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A.md
+  - docs/codex/tasks/ego-engineering-only-outcome-utility-route-replacement-001a/CLOSURE_MUTATION_SCOPE.yaml
+  - artifacts/EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A/build_closure_result.py
+  - artifacts/EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A/closure.md
+  - artifacts/EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A/fact_grep_evidence.txt
+  - artifacts/EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A/power_annex.py
+  - artifacts/EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A/power_annex.json
+  - artifacts/EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A/power_annex.md
+  - artifacts/EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A/result.json
+
+forbidden_mutation_paths:
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - Tasks/TASK_BOARD.yaml
+  - artifacts/evidence_ledger/
+  - packages/ego_outcome_utility/
+  - scripts/run_ego_outcome_utility_001a.py
+  - tests/test_ego_outcome_utility_001a.py
+  - tests/fixtures/ego_outcome_utility_001a/
+  - EgoOperator/
+  - EgoDesktop/
+  - .codex/project_contract.yaml
+  - D:/Project/AIProject/MyProject/intelligence-theory-lab/
+
+phase_rule: >-
+  One additive local commit only. Stage the nine exact expected paths. Do not
+  use git add -A or git add . Do not modify or delete prior artifacts. Yellow
+  post-check is required before any later publication decision.
+
+auto_remote_anchor: forbidden
+push: forbidden
+tag: forbidden
+
+claim_ceiling: >-
+  Bounded negative admission-design evidence only; no measured traffic,
+  runtime learning, decision improvement, user value, mainline effect,
+  mechanism validity, product need, agency, subjectivity or consciousness
+  claim.

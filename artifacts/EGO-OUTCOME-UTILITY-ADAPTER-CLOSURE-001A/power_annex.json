@@ -1,0 +1,651 @@
+{
+  "artifact": "power_annex",
+  "assumptions": {
+    "drift_window_days": 60.0,
+    "grids": {
+      "decisions_per_day": [
+        10,
+        30,
+        100,
+        300
+      ],
+      "effect_d": [
+        0.2,
+        0.3,
+        0.5
+      ],
+      "epsilon": [
+        0.05,
+        0.1,
+        0.2
+      ],
+      "strata_k": [
+        1,
+        5
+      ]
+    }
+  },
+  "key_reading": [
+    "Pooled comparisons can reach power in ~1 month at D>=30, eps=0.10, d>=0.3, but the pooled average effect is exactly what a static per-action table encodes: the power-feasible regime funds the static rival, not the learner.",
+    "Context-stratified effects can fund the current context/action count table and an equal-access count_table control alike; reaching the contour would not by itself distinguish the candidate from that control."
+  ],
+  "kind": "analytic_bound_over_declared_assumptions_not_measurement",
+  "model": {
+    "K": 7.84888,
+    "alpha_two_sided": 0.05,
+    "formula_days_pooled": "K / (d^2 * eps*(1-eps) * D)",
+    "formula_days_stratified": "k * K / (d^2 * eps*(1-eps) * D)",
+    "multiple_comparison_correction": "omitted; only increases days_to_power (conservative for closure)",
+    "power": 0.8,
+    "sigma_assumption": "worst-case 0.5 on [0,1] scores; d=0.3 ~ raw gap 0.15"
+  },
+  "provenance": {
+    "aggregation_rule": "one deterministic row per Cartesian product of D_GRID, EPS_GRID, EFFECT_GRID and STRATA_GRID; no empirical aggregation",
+    "code_path_hash": "82606b06daaf7765777dd498db99e3f876b972d1404de5254053166bf51be0df",
+    "input_artifacts": [
+      {
+        "path": "artifacts/EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A/power_annex.py",
+        "sha256": "82606b06daaf7765777dd498db99e3f876b972d1404de5254053166bf51be0df"
+      }
+    ],
+    "producer_function": "power_annex.build",
+    "run_id": "ego-outcome-utility-adapter-closure-001a-power-v1",
+    "seed_context_episode_ids": {
+      "context_ids": "NOT_APPLICABLE_ASSUMPTION_GRID",
+      "episode_ids": "NOT_APPLICABLE_NO_EPISODES",
+      "seed_ids": "NOT_APPLICABLE_ANALYTIC_NO_RNG"
+    }
+  },
+  "reopen_contour": {
+    "condition": "eps*(1-eps)*D >= 7.27",
+    "criterion": "context-stratified (k=5) effect d=0.3 reachable within the frozen drift window (60 days)",
+    "example": "at eps=0.10 requires D >= 81 eligible decisions/day"
+  },
+  "rows": [
+    {
+      "days_to_power": 413.1,
+      "decisions_per_day": 10,
+      "effect_d": 0.2,
+      "epsilon": 0.05,
+      "feasible_within_drift_window": false,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 2065.5,
+      "decisions_per_day": 10,
+      "effect_d": 0.2,
+      "epsilon": 0.05,
+      "feasible_within_drift_window": false,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 183.6,
+      "decisions_per_day": 10,
+      "effect_d": 0.3,
+      "epsilon": 0.05,
+      "feasible_within_drift_window": false,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 918.0,
+      "decisions_per_day": 10,
+      "effect_d": 0.3,
+      "epsilon": 0.05,
+      "feasible_within_drift_window": false,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 66.1,
+      "decisions_per_day": 10,
+      "effect_d": 0.5,
+      "epsilon": 0.05,
+      "feasible_within_drift_window": false,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 330.5,
+      "decisions_per_day": 10,
+      "effect_d": 0.5,
+      "epsilon": 0.05,
+      "feasible_within_drift_window": false,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 218.0,
+      "decisions_per_day": 10,
+      "effect_d": 0.2,
+      "epsilon": 0.1,
+      "feasible_within_drift_window": false,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 1090.1,
+      "decisions_per_day": 10,
+      "effect_d": 0.2,
+      "epsilon": 0.1,
+      "feasible_within_drift_window": false,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 96.9,
+      "decisions_per_day": 10,
+      "effect_d": 0.3,
+      "epsilon": 0.1,
+      "feasible_within_drift_window": false,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 484.5,
+      "decisions_per_day": 10,
+      "effect_d": 0.3,
+      "epsilon": 0.1,
+      "feasible_within_drift_window": false,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 34.9,
+      "decisions_per_day": 10,
+      "effect_d": 0.5,
+      "epsilon": 0.1,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 174.4,
+      "decisions_per_day": 10,
+      "effect_d": 0.5,
+      "epsilon": 0.1,
+      "feasible_within_drift_window": false,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 122.6,
+      "decisions_per_day": 10,
+      "effect_d": 0.2,
+      "epsilon": 0.2,
+      "feasible_within_drift_window": false,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 613.2,
+      "decisions_per_day": 10,
+      "effect_d": 0.2,
+      "epsilon": 0.2,
+      "feasible_within_drift_window": false,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 54.5,
+      "decisions_per_day": 10,
+      "effect_d": 0.3,
+      "epsilon": 0.2,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 272.5,
+      "decisions_per_day": 10,
+      "effect_d": 0.3,
+      "epsilon": 0.2,
+      "feasible_within_drift_window": false,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 19.6,
+      "decisions_per_day": 10,
+      "effect_d": 0.5,
+      "epsilon": 0.2,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 98.1,
+      "decisions_per_day": 10,
+      "effect_d": 0.5,
+      "epsilon": 0.2,
+      "feasible_within_drift_window": false,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 137.7,
+      "decisions_per_day": 30,
+      "effect_d": 0.2,
+      "epsilon": 0.05,
+      "feasible_within_drift_window": false,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 688.5,
+      "decisions_per_day": 30,
+      "effect_d": 0.2,
+      "epsilon": 0.05,
+      "feasible_within_drift_window": false,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 61.2,
+      "decisions_per_day": 30,
+      "effect_d": 0.3,
+      "epsilon": 0.05,
+      "feasible_within_drift_window": false,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 306.0,
+      "decisions_per_day": 30,
+      "effect_d": 0.3,
+      "epsilon": 0.05,
+      "feasible_within_drift_window": false,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 22.0,
+      "decisions_per_day": 30,
+      "effect_d": 0.5,
+      "epsilon": 0.05,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 110.2,
+      "decisions_per_day": 30,
+      "effect_d": 0.5,
+      "epsilon": 0.05,
+      "feasible_within_drift_window": false,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 72.7,
+      "decisions_per_day": 30,
+      "effect_d": 0.2,
+      "epsilon": 0.1,
+      "feasible_within_drift_window": false,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 363.4,
+      "decisions_per_day": 30,
+      "effect_d": 0.2,
+      "epsilon": 0.1,
+      "feasible_within_drift_window": false,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 32.3,
+      "decisions_per_day": 30,
+      "effect_d": 0.3,
+      "epsilon": 0.1,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 161.5,
+      "decisions_per_day": 30,
+      "effect_d": 0.3,
+      "epsilon": 0.1,
+      "feasible_within_drift_window": false,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 11.6,
+      "decisions_per_day": 30,
+      "effect_d": 0.5,
+      "epsilon": 0.1,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 58.1,
+      "decisions_per_day": 30,
+      "effect_d": 0.5,
+      "epsilon": 0.1,
+      "feasible_within_drift_window": true,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 40.9,
+      "decisions_per_day": 30,
+      "effect_d": 0.2,
+      "epsilon": 0.2,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 204.4,
+      "decisions_per_day": 30,
+      "effect_d": 0.2,
+      "epsilon": 0.2,
+      "feasible_within_drift_window": false,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 18.2,
+      "decisions_per_day": 30,
+      "effect_d": 0.3,
+      "epsilon": 0.2,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 90.8,
+      "decisions_per_day": 30,
+      "effect_d": 0.3,
+      "epsilon": 0.2,
+      "feasible_within_drift_window": false,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 6.5,
+      "decisions_per_day": 30,
+      "effect_d": 0.5,
+      "epsilon": 0.2,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 32.7,
+      "decisions_per_day": 30,
+      "effect_d": 0.5,
+      "epsilon": 0.2,
+      "feasible_within_drift_window": true,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 41.3,
+      "decisions_per_day": 100,
+      "effect_d": 0.2,
+      "epsilon": 0.05,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 206.5,
+      "decisions_per_day": 100,
+      "effect_d": 0.2,
+      "epsilon": 0.05,
+      "feasible_within_drift_window": false,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 18.4,
+      "decisions_per_day": 100,
+      "effect_d": 0.3,
+      "epsilon": 0.05,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 91.8,
+      "decisions_per_day": 100,
+      "effect_d": 0.3,
+      "epsilon": 0.05,
+      "feasible_within_drift_window": false,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 6.6,
+      "decisions_per_day": 100,
+      "effect_d": 0.5,
+      "epsilon": 0.05,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 33.0,
+      "decisions_per_day": 100,
+      "effect_d": 0.5,
+      "epsilon": 0.05,
+      "feasible_within_drift_window": true,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 21.8,
+      "decisions_per_day": 100,
+      "effect_d": 0.2,
+      "epsilon": 0.1,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 109.0,
+      "decisions_per_day": 100,
+      "effect_d": 0.2,
+      "epsilon": 0.1,
+      "feasible_within_drift_window": false,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 9.7,
+      "decisions_per_day": 100,
+      "effect_d": 0.3,
+      "epsilon": 0.1,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 48.4,
+      "decisions_per_day": 100,
+      "effect_d": 0.3,
+      "epsilon": 0.1,
+      "feasible_within_drift_window": true,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 3.5,
+      "decisions_per_day": 100,
+      "effect_d": 0.5,
+      "epsilon": 0.1,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 17.4,
+      "decisions_per_day": 100,
+      "effect_d": 0.5,
+      "epsilon": 0.1,
+      "feasible_within_drift_window": true,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 12.3,
+      "decisions_per_day": 100,
+      "effect_d": 0.2,
+      "epsilon": 0.2,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 61.3,
+      "decisions_per_day": 100,
+      "effect_d": 0.2,
+      "epsilon": 0.2,
+      "feasible_within_drift_window": false,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 5.5,
+      "decisions_per_day": 100,
+      "effect_d": 0.3,
+      "epsilon": 0.2,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 27.3,
+      "decisions_per_day": 100,
+      "effect_d": 0.3,
+      "epsilon": 0.2,
+      "feasible_within_drift_window": true,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 2.0,
+      "decisions_per_day": 100,
+      "effect_d": 0.5,
+      "epsilon": 0.2,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 9.8,
+      "decisions_per_day": 100,
+      "effect_d": 0.5,
+      "epsilon": 0.2,
+      "feasible_within_drift_window": true,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 13.8,
+      "decisions_per_day": 300,
+      "effect_d": 0.2,
+      "epsilon": 0.05,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 68.8,
+      "decisions_per_day": 300,
+      "effect_d": 0.2,
+      "epsilon": 0.05,
+      "feasible_within_drift_window": false,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 6.1,
+      "decisions_per_day": 300,
+      "effect_d": 0.3,
+      "epsilon": 0.05,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 30.6,
+      "decisions_per_day": 300,
+      "effect_d": 0.3,
+      "epsilon": 0.05,
+      "feasible_within_drift_window": true,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 2.2,
+      "decisions_per_day": 300,
+      "effect_d": 0.5,
+      "epsilon": 0.05,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 11.0,
+      "decisions_per_day": 300,
+      "effect_d": 0.5,
+      "epsilon": 0.05,
+      "feasible_within_drift_window": true,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 7.3,
+      "decisions_per_day": 300,
+      "effect_d": 0.2,
+      "epsilon": 0.1,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 36.3,
+      "decisions_per_day": 300,
+      "effect_d": 0.2,
+      "epsilon": 0.1,
+      "feasible_within_drift_window": true,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 3.2,
+      "decisions_per_day": 300,
+      "effect_d": 0.3,
+      "epsilon": 0.1,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 16.1,
+      "decisions_per_day": 300,
+      "effect_d": 0.3,
+      "epsilon": 0.1,
+      "feasible_within_drift_window": true,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 1.2,
+      "decisions_per_day": 300,
+      "effect_d": 0.5,
+      "epsilon": 0.1,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 5.8,
+      "decisions_per_day": 300,
+      "effect_d": 0.5,
+      "epsilon": 0.1,
+      "feasible_within_drift_window": true,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 4.1,
+      "decisions_per_day": 300,
+      "effect_d": 0.2,
+      "epsilon": 0.2,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 20.4,
+      "decisions_per_day": 300,
+      "effect_d": 0.2,
+      "epsilon": 0.2,
+      "feasible_within_drift_window": true,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 1.8,
+      "decisions_per_day": 300,
+      "effect_d": 0.3,
+      "epsilon": 0.2,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 9.1,
+      "decisions_per_day": 300,
+      "effect_d": 0.3,
+      "epsilon": 0.2,
+      "feasible_within_drift_window": true,
+      "strata_k": 5
+    },
+    {
+      "days_to_power": 0.7,
+      "decisions_per_day": 300,
+      "effect_d": 0.5,
+      "epsilon": 0.2,
+      "feasible_within_drift_window": true,
+      "strata_k": 1
+    },
+    {
+      "days_to_power": 3.3,
+      "decisions_per_day": 300,
+      "effect_d": 0.5,
+      "epsilon": 0.2,
+      "feasible_within_drift_window": true,
+      "strata_k": 5
+    }
+  ],
+  "spot_checks": {
+    "K": 7.84888,
+    "pooled_D30_eps0.10_d0.3_k1_days": 32.3,
+    "pooled_D30_eps0.10_d0.5_k1_days": 11.6,
+    "reopen_contour_eps_1meps_D": 7.27,
+    "reopen_min_D_at_eps0.10": 81,
+    "strat_D30_eps0.10_d0.3_k5_days": 161.5
+  },
+  "task_id": "EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A"
+}

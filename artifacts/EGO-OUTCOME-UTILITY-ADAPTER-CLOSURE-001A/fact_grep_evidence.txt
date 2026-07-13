@@ -1,0 +1,89 @@
+task_id: EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A
+producer_function: inline_fact_gate_git_readback_v1
+head_sha: 714c40ee038f5745fb07b455542b9e309431e783
+branch: main
+package_dir: packages/ego_outcome_utility
+package_tests: tests/test_ego_outcome_utility_001a.py
+package_import_name: ego_outcome_utility
+runtime_enable_flag: absent_not_invented
+runtime_enablement_basis: no EgoOperator import/callsite/registration; explicit local CLI only; frozen functional contract authority.enabled=false
+observe_outcome_external_python_callers: 0
+ego_operator_import_name_hits: 0
+ego_operator_public_symbol_hits: 0
+mainline_consumers: 0
+traffic_fact: no qualifying tracked EgoOperator runtime decision logs; traffic unknown
+traffic_claim_boundary: tracked trial/trace candidate search found no files; no filesystem runtime telemetry or operator daily-rate measurement was supplied
+program_state_route_entry: absent
+parent_record: {"path": "D:\\Project\\AIProject\\MyProject\\EGO-OUTCOME-UTILITY-SINGLE-OWNER-SHADOW-ADAPTER-ADMISSION-001A-CONTRACT.json", "sha256": "044000ef621f4e425db3a7e020748bdf2e7fe93f8f87c68f5ebeff62fe125cf6", "status": "external_local_uncommitted", "verdict": "ADMISSION_DESIGN_BLOCKED__FEEDBACK_MAPPING_UNGROUNDED"}
+functional_contract_enabled_fields: [["/authority/enabled",false],["/canonical_authority_readback/caot_closeout_authority/enabled",false],["/acceptance/enabled",false]]
+initial_worktree_before_task: clean (read back before task-card creation)
+current_expected_new_paths_only: docs/codex/tasks/ego-engineering-only-outcome-utility-route-replacement-001a/TASK-CARD-EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A.md and artifacts/EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A
+
+=== G1A SOURCE-ONLY CALLER GREP ===
+command: git grep -n -I -F 'observe_outcome(' -- '*.py' ':(exclude)packages/ego_outcome_utility/**' ':(exclude)tests/test_ego_outcome_utility_001a.py'
+exit_code: 1
+stdout:
+<empty>
+stderr:
+<empty>
+
+=== NON-CALLER DOCUMENTATION SIGNATURES ===
+command: git grep -n -I -F 'observe_outcome(' -- '*.md' '*.json' '*.yaml' '*.yml' ':(exclude)artifacts/**'
+exit_code: 0
+stdout:
+docs/codex/tasks/ego-engineering-only-outcome-utility-route-replacement-001a/FUNCTIONAL_CONTRACT.json:196:        "signature": "observe_outcome(state: Mapping[str, Any], observation: Mapping[str, Any], prediction: Mapping[str, Any], feedback: Mapping[str, Any]) -> dict[str, Any]",
+docs/codex/tasks/ego-k0-reference-kernel-001a/REFERENCE_KERNEL_CONTRACT.md:10:observe_outcome(serialized_state, transition) -> next_state, update_record
+docs/codex/tasks/ego-k0-reference-kernel-001a/STAGE_CARD.md:137:observe_outcome(serialized_state, transition) -> next_state, update_record
+stderr:
+<empty>
+
+=== G1B/G1C EGOOPERATOR IMPORT GREP ===
+command: git grep -n -I -F 'ego_outcome_utility' -- EgoOperator
+exit_code: 1
+stdout:
+<empty>
+stderr:
+<empty>
+
+=== EXTERNAL PYTHON IMPORT REFERENCES ===
+command: git grep -n -I -F 'ego_outcome_utility' -- '*.py' exclusions
+exit_code: 0
+stdout:
+scripts/run_ego_outcome_utility_001a.py:11:    / "ego_outcome_utility"
+scripts/run_ego_outcome_utility_001a.py:16:from ego_outcome_utility.cli import main  # noqa: E402
+stderr:
+<empty>
+
+=== G1D TRACKED LOG CANDIDATES ===
+command: git ls-files 'EgoOperator/**/*.jsonl' 'EgoOperator/**/*.log' 'EgoOperator/**/*trace*.json' 'EgoOperator/**/*trial*.json'
+exit_code: 0
+stdout:
+<empty>
+stderr:
+<empty>
+
+=== PROGRAM STATE ROUTE ENTRY ===
+command: git grep -n -I -E 'outcome.utility|outcome_micros|engineering.only.outcome' -- docs/PROGRAM_STATE_UNIFIED.yaml
+exit_code: 1
+stdout:
+<empty>
+stderr:
+<empty>
+
+=== BANKED PARENT VERDICT SEARCH ===
+command: git grep -n -I -F 'FEEDBACK_MAPPING_UNGROUNDED' -- .
+exit_code: 1
+stdout:
+<empty>
+stderr:
+<empty>
+
+=== UTILITY-SPECIFIC INTERVENTION PATH SEARCH ===
+command: git grep -n -I -E 'score_no_action|epsilon[-_ ]?abstain' -- packages/ego_outcome_utility EgoOperator scripts/run_ego_outcome_utility_001a.py
+exit_code: 1
+stdout:
+<empty>
+stderr:
+<empty>
+
+intervention_path_status: no utility-specific no-action scorer or epsilon-abstain path found in package, EgoOperator, or explicit runner
