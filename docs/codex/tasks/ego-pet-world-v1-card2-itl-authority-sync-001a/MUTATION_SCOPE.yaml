@@ -1,0 +1,44 @@
+schema_version: codex.mutation_scope.v1
+task: ego-pet-world-v1-card2-itl-authority-sync-001a
+task_id: EGO-PET-WORLD-V1-CARD2-ITL-AUTHORITY-SYNC-001A
+task_kind: red_cross_repo_authority_sync_transition_card_bank
+independent_red_review_required: true
+red_review_ref: pending_phase_a_exact_diff_review
+executor_session_ref: 019f5ef6-e2a6-7161-a573-63b8ba4d339b
+auto_remote_anchor: forbidden
+
+expected_mutation_surface:
+  - phase A banks only the bounded transition card and its diff-bound review record
+  - phase B transcribes the committed ITL route and review receipt field-by-field
+  - phase B enforces action-specific paths, actual-path execution inference, fail-closed mutation scope, committed Red provenance, and independently discovered lineage
+
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/STAGE_CARD.md
+  - docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/MUTATION_SCOPE.yaml
+  - docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/COLLISION_RECORD.md
+  - docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/PHASE_A_RED_REVIEW.json
+
+forbidden_mutation_paths:
+  - D:/Project/AIProject/MyProject/intelligence-theory-lab/
+  - EgoOperator/
+  - EgoDesktop/
+  - packages/
+  - labs/
+  - scripts/
+  - tests/
+  - artifacts/
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - Tasks/TASK_BOARD.yaml
+  - docs/codex/tasks/ego-pet-world-v1-capability-headroom-001a/
+
+phase: phase_a_transition_card_bank
+phase_rule: >-
+  Stage literal Phase-A paths only. git add -A and git add . are forbidden.
+  Phase A requires an independent Claude review bound to the exact reviewed
+  diff before its single local commit. Phase B must update this scope under the
+  separately committed transition card.
+
+claim_ceiling: field-by-field authority sync task-card banking only
+local_commit: authorized_phase_a_only
+push: forbidden
+tag: forbidden

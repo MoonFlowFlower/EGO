@@ -1,0 +1,55 @@
+{
+  "base_commit": "21e09c1ede7c051a4aa969dc3fcc2d0267084570",
+  "blocking_findings": [],
+  "claim_ceiling_acknowledged": true,
+  "executor_session_id": "codex_ego_card2_itl_sync_executor_20260714",
+  "phase": "A",
+  "receipt_binding": "NONRECURSIVE_REVIEWED_DIFF__RECEIPT_EXCLUDED__COMMIT_MUST_BE_DIRECT_CHILD_WITH_EXACT_PATH_SET",
+  "review_id": "CLAUDE-RED-EGO-CARD2-SYNC-PHASE-A-20260714-002",
+  "review_source": "independent Claude web review in the existing Card2 bank-admission review session",
+  "reviewed_at_utc": "2026-07-14T05:45:00Z",
+  "reviewed_diff_canonicalization": "git diff --cached --binary --no-ext-diff --full-index -- <sorted_reviewed_paths>; raw bytes",
+  "reviewed_diff_sha256": "7c415e68197e7869541850d4e321fd71354e1688ae9b3f833e4bdc11cacadc37",
+  "reviewed_semantic_manifest": {
+    "base_commit": "21e09c1ede7c051a4aa969dc3fcc2d0267084570",
+    "per_path_base_blob_or_absent": {
+      "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/COLLISION_RECORD.md": "absent",
+      "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/MUTATION_SCOPE.yaml": "absent",
+      "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/STAGE_CARD.md": "absent"
+    },
+    "per_path_reviewed_blob_or_worktree_sha256": {
+      "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/COLLISION_RECORD.md": {
+        "reviewed_blob": "b94c2733233b7f98a2958b6a5bc8b32145c9aef7",
+        "worktree_sha256": "66dd17c00d8a9277414c49e11c42c1cfb91ae4a9b21eddab0bfbd804ee4ad3b5"
+      },
+      "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/MUTATION_SCOPE.yaml": {
+        "reviewed_blob": "642a4ede9eff9e3b5449da19c4a4a1b0abd55492",
+        "worktree_sha256": "bd808a9d1f9685b71943cae8ad6cf634f816b3547d6ff1c90d9149cd8f4cbfe5"
+      },
+      "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/STAGE_CARD.md": {
+        "reviewed_blob": "dc45a828bf51f77375f54b8111714ff175416511",
+        "worktree_sha256": "3fd17f7676f61023b785c8749626d8871913dadac228df203234dcbe91dfea20"
+      }
+    },
+    "phase": "A",
+    "schema_version": "ego-red-reviewed-semantic-manifest-001a",
+    "sorted_reviewed_paths": [
+      "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/COLLISION_RECORD.md",
+      "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/MUTATION_SCOPE.yaml",
+      "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/STAGE_CARD.md"
+    ],
+    "task_id": "EGO-PET-WORLD-V1-CARD2-ITL-AUTHORITY-SYNC-001A"
+  },
+  "reviewed_semantic_manifest_canonicalization": "UTF-8 JSON object; Python json.dumps(sort_keys=true,separators=(',',':'),ensure_ascii=false,allow_nan=false); no BOM; no trailing newline; receipt excluded",
+  "reviewed_semantic_manifest_sha256": "278b99f535c25b63a4fce1b25353ef5a25ed53c27e6f4d08e3621e229726cf89",
+  "reviewer": "Claude",
+  "reviewer_session_id": "claude_red_reviewer_ego_card2_sync_phase_a_20260714_e4b8",
+  "sorted_reviewed_paths": [
+    "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/COLLISION_RECORD.md",
+    "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/MUTATION_SCOPE.yaml",
+    "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/STAGE_CARD.md"
+  ],
+  "task_id": "EGO-PET-WORLD-V1-CARD2-ITL-AUTHORITY-SYNC-001A",
+  "verdict": "NO_BLOCKING_FINDINGS",
+  "what_this_review_proves": "Phase-A governance-card adequacy only"
+}
