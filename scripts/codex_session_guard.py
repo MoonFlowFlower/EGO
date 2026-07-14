@@ -24,6 +24,14 @@ DEFAULT_CODEX_MEMORY_PATH = ROOT / "CODEX_MEMORY.md"
 DEFAULT_TASK_BOARD_PATH = ROOT / "Tasks" / "TASK_BOARD.yaml"
 DEFAULT_OUTBOX_PATH = ROOT / "artifacts" / "task_board" / "outbox.jsonl"
 ITL_ROOT = ROOT.parent / "intelligence-theory-lab"
+CARD2_SYNC_TASK_ID = "EGO-PET-WORLD-V1-CARD2-ITL-AUTHORITY-SYNC-001A"
+CARD2_SYNC_ACTION_ID = "sync_EGO_pet_world_v1_card2_bank_admission_under_separate_task"
+CARD2_BANK_ACTION_ID = "bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A"
+CARD2_TASK_ID = "EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A"
+CARD2_TASK_PREFIX = "docs/codex/tasks/ego-pet-world-v1-capability-headroom-001a/"
+CARD2_SYNC_ROUTE_REVISION = "EGO_PET_WORLD_V1_CARD2_ITL_AUTHORITY_SYNC_001A"
+CARD2_SYNC_TASK_PREFIX = "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/"
+CARD2_SYNC_TASK_DIR = ROOT / "docs" / "codex" / "tasks" / "ego-pet-world-v1-card2-itl-authority-sync-001a"
 
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
@@ -116,6 +124,586 @@ def _as_str_list(value: Any) -> list[str]:
     return [str(value)]
 
 
+def _git_repo(
+    repo: Path,
+    args: list[str],
+    *,
+    text: bool = True,
+) -> subprocess.CompletedProcess[Any]:
+    return subprocess.run(
+        ["git", "-C", str(repo), *args],
+        capture_output=True,
+        text=text,
+        check=False,
+    )
+
+
+def _canonical_json_bytes(value: Any) -> bytes:
+    return json.dumps(
+        value,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+        allow_nan=False,
+    ).encode("utf-8")
+
+
+def _json_pointer_escape(value: str) -> str:
+    return value.replace("~", "~0").replace("/", "~1")
+
+
+def flatten_json_leaves(value: Any, pointer: str = "") -> list[tuple[str, Any]]:
+    if isinstance(value, dict) and value:
+        leaves: list[tuple[str, Any]] = []
+        for key in sorted(value):
+            leaves.extend(flatten_json_leaves(value[key], f"{pointer}/{_json_pointer_escape(str(key))}"))
+        return leaves
+    if isinstance(value, list) and value:
+        leaves = []
+        for index, item in enumerate(value):
+            leaves.extend(flatten_json_leaves(item, f"{pointer}/{index}"))
+        return leaves
+    return [(pointer or "/", value)]
+
+
+def _source_pin_records(route_guard: dict[str, Any]) -> list[dict[str, Any]]:
+    authority = route_guard.get("authority_source") or {}
+    records: list[dict[str, Any]] = []
+    for name, pin in sorted((authority.get("objects") or {}).items()):
+        if isinstance(pin, dict):
+            records.append({"name": str(name), **pin})
+    return records
+
+
+def read_itl_authority_objects(program_state: dict[str, Any]) -> dict[str, Any]:
+    route_guard = program_state.get("route_guard") or {}
+    authority = route_guard.get("authority_source") or {}
+    pinned_commit = str(authority.get("pinned_commit") or "")
+    errors: list[str] = []
+    if not pinned_commit:
+        return {"status": "fail", "errors": ["missing_itl_authority_commit"], "payloads": {}}
+    commit_probe = _git_repo(ITL_ROOT, ["cat-file", "-e", f"{pinned_commit}^{{commit}}"])
+    if commit_probe.returncode != 0:
+        return {"status": "fail", "errors": ["missing_itl_authority_commit"], "payloads": {}}
+    payloads: dict[str, Any] = {}
+    input_artifacts: list[dict[str, Any]] = []
+    for pin in _source_pin_records(route_guard):
+        name = str(pin.get("name") or "")
+        path = str(pin.get("path") or "")
+        expected_oid = str(pin.get("git_blob_oid") or "")
+        expected_sha = str(pin.get("git_blob_payload_sha256") or "")
+        oid_probe = _git_repo(ITL_ROOT, ["rev-parse", f"{pinned_commit}:{path}"])
+        actual_oid = oid_probe.stdout.strip() if oid_probe.returncode == 0 else ""
+        if actual_oid != expected_oid:
+            errors.append(f"itl_object_oid_mismatch:{name}")
+            continue
+        blob_probe = _git_repo(ITL_ROOT, ["cat-file", "blob", expected_oid], text=False)
+        raw = blob_probe.stdout if blob_probe.returncode == 0 else b""
+        actual_sha = hashlib.sha256(raw).hexdigest()
+        if actual_sha != expected_sha:
+            errors.append(f"itl_object_payload_mismatch:{name}")
+            continue
+        if path.endswith(".json"):
+            try:
+                payloads[name] = json.loads(raw.decode("utf-8"))
+            except (UnicodeDecodeError, json.JSONDecodeError):
+                errors.append(f"itl_object_json_invalid:{name}")
+                continue
+        else:
+            payloads[name] = raw.decode("utf-8")
+        input_artifacts.append(
+            {
+                "name": name,
+                "repo": "intelligence-theory-lab",
+                "commit": pinned_commit,
+                "path": path,
+                "git_blob_oid": expected_oid,
+                "git_blob_payload_sha256": expected_sha,
+            }
+        )
+    return {
+        "status": "pass" if not errors else "fail",
+        "errors": errors,
+        "pinned_commit": pinned_commit,
+        "payloads": payloads,
+        "input_artifacts": input_artifacts,
+    }
+
+
+def _script_code_path_hash() -> str:
+    return hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+
+
+def validate_crosswalk_entries(
+    *,
+    route_state: dict[str, Any],
+    phase_b_review_receipt: dict[str, Any],
+    entries: list[dict[str, Any]],
+) -> list[str]:
+    expected: dict[tuple[str, str], tuple[str, str]] = {}
+    for source_name, payload, target_root in (
+        ("route_state", route_state, "/route_guard/transcribed_itl/route_state"),
+        (
+            "phase_b_review_receipt",
+            phase_b_review_receipt,
+            "/route_guard/transcribed_itl/phase_b_review_receipt",
+        ),
+    ):
+        for source_pointer, leaf_value in flatten_json_leaves(payload):
+            expected[(source_name, source_pointer)] = (
+                f"{target_root}{'' if source_pointer == '/' else source_pointer}",
+                hashlib.sha256(_canonical_json_bytes(leaf_value)).hexdigest(),
+            )
+    observed: dict[tuple[str, str], tuple[str, str]] = {}
+    errors: list[str] = []
+    for row in entries:
+        key = (str(row.get("source_name") or ""), str(row.get("source_pointer") or ""))
+        if key in observed:
+            errors.append("field_crosswalk_duplicate_leaf")
+        observed[key] = (str(row.get("target_pointer") or ""), str(row.get("value_sha256") or ""))
+        if row.get("transform") != "verbatim_json_value":
+            errors.append("field_crosswalk_nonverbatim_transform")
+    missing = set(expected) - set(observed)
+    extra = set(observed) - set(expected)
+    if missing:
+        errors.append("field_crosswalk_leaf_omitted")
+    if extra:
+        errors.append("field_crosswalk_extra_leaf")
+    if any(observed.get(key) != value for key, value in expected.items() if key in observed):
+        errors.append("field_crosswalk_value_or_target_mismatch")
+    return sorted(set(errors))
+
+
+def build_field_crosswalk_payload(
+    *,
+    route_state: dict[str, Any],
+    phase_b_review_receipt: dict[str, Any],
+    input_artifacts: list[dict[str, Any]],
+    run_id: str,
+) -> dict[str, Any]:
+    sources = {
+        "route_state": (route_state, "/route_guard/transcribed_itl/route_state"),
+        "phase_b_review_receipt": (
+            phase_b_review_receipt,
+            "/route_guard/transcribed_itl/phase_b_review_receipt",
+        ),
+    }
+    entries: list[dict[str, Any]] = []
+    source_counts: dict[str, int] = {}
+    for source_name, (payload, target_root) in sources.items():
+        leaves = flatten_json_leaves(payload)
+        source_counts[source_name] = len(leaves)
+        for source_pointer, leaf_value in leaves:
+            entries.append(
+                {
+                    "source_name": source_name,
+                    "source_pointer": source_pointer,
+                    "target_pointer": f"{target_root}{'' if source_pointer == '/' else source_pointer}",
+                    "transform": "verbatim_json_value",
+                    "value_sha256": hashlib.sha256(_canonical_json_bytes(leaf_value)).hexdigest(),
+                }
+            )
+    omitted = entries[0]
+    omission_errors = validate_crosswalk_entries(
+        route_state=route_state,
+        phase_b_review_receipt=phase_b_review_receipt,
+        entries=entries[1:],
+    )
+    return {
+        "schema_version": "ego.itl_authority_field_crosswalk.v1",
+        "task_id": CARD2_SYNC_TASK_ID,
+        "run_id": run_id,
+        "producer_function": "scripts.codex_session_guard.build_field_crosswalk_payload",
+        "producer_code_path_hash": _script_code_path_hash(),
+        "input_artifacts": input_artifacts,
+        "aggregation_rule": "flatten every dict/list leaf in sorted-key/index order; require one verbatim target leaf per source leaf",
+        "source_leaf_counts": source_counts,
+        "total_leaf_count": len(entries),
+        "entries": entries,
+        "omission_positive_control": {
+            "omitted_source_name": omitted["source_name"],
+            "omitted_source_pointer": omitted["source_pointer"],
+            "expected_count": len(entries),
+            "mutated_count": len(entries) - 1,
+            "rejected": "field_crosswalk_leaf_omitted" in omission_errors,
+            "rejection_code": "field_crosswalk_leaf_omitted",
+            "observed_error_codes": omission_errors,
+        },
+        "claim_ceiling": "field-by-field authority transcription evidence only",
+    }
+
+
+def validate_lineage_records(expected_records: list[dict[str, Any]], candidate_records: list[dict[str, Any]]) -> list[str]:
+    expected = {str(row.get("lineage_id") or ""): row for row in expected_records}
+    candidate = {str(row.get("lineage_id") or ""): row for row in candidate_records}
+    errors: list[str] = []
+    if len(candidate) != len(candidate_records):
+        errors.append("lineage_universe_duplicate_id")
+    if set(expected) - set(candidate):
+        errors.append("lineage_universe_omission")
+    if set(candidate) - set(expected):
+        errors.append("lineage_universe_extra_id")
+    if any(candidate.get(key) != value for key, value in expected.items() if key in candidate):
+        errors.append("lineage_universe_record_drift")
+    return sorted(set(errors))
+
+
+def discover_card2_lineage_universe(*, run_id: str) -> dict[str, Any]:
+    rules = [
+        ("old_route_8692", ["docs/codex/tasks/ego-canonical-mechanism-integration-001a/STAGE_CARD.md"]),
+        ("egodesktop_virtualcat_m1_m3", ["docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md"]),
+        ("pet_world_v0_p0", ["artifacts/egodesktop_pet_world_integration_001a/p0/audit_claude_full_hostile_001.json"]),
+        ("pilot_1_initial", ["artifacts/ego-pet-capability-conformance-001a/result.json"]),
+        ("pilot_1_repair", ["artifacts/ego-pet-capability-conformance-001a/repair_001/result.json"]),
+        ("pilot_3", ["artifacts/ego-pet-capability-conformance-001a/pe_forage_003/result.json"]),
+        ("learned_outcome_cards", ["docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_DESIGN_INVALID_AUDIT_RESULT.json"]),
+        ("outcome_utility_closure", ["docs/codex/tasks/ego-engineering-only-outcome-utility-route-replacement-001a/TASK-CARD-EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A.md"]),
+    ]
+    records: list[dict[str, Any]] = []
+    for lineage_id, paths in rules:
+        evidence = []
+        for relative in paths:
+            path = ROOT / relative
+            evidence.append(
+                {
+                    "repo": "Ego",
+                    "path": relative,
+                    "exists": path.is_file(),
+                    "payload_sha256": hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None,
+                }
+            )
+        records.append({"lineage_id": lineage_id, "discovery_evidence": evidence})
+    old_k0_path = "artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/closure.json"
+    old_k0_probe = _git_repo(ITL_ROOT, ["rev-parse", f"cb6cd57b8405bbac378f2857766ddaf63e08e194:{old_k0_path}"])
+    records.append(
+        {
+            "lineage_id": "old_k0_science_route",
+            "discovery_evidence": [
+                {
+                    "repo": "intelligence-theory-lab",
+                    "commit": "cb6cd57b8405bbac378f2857766ddaf63e08e194",
+                    "path": old_k0_path,
+                    "exists": old_k0_probe.returncode == 0,
+                    "git_blob_oid": old_k0_probe.stdout.strip() if old_k0_probe.returncode == 0 else None,
+                }
+            ],
+        }
+    )
+    records.sort(key=lambda item: str(item["lineage_id"]))
+    discovered_ids = [str(record["lineage_id"]) for record in records]
+    omitted_id = discovered_ids[0]
+    omission_errors = validate_lineage_records(records, records[1:])
+    return {
+        "schema_version": "ego.card2_lineage_universe.v1",
+        "task_id": CARD2_SYNC_TASK_ID,
+        "run_id": run_id,
+        "producer_function": "scripts.codex_session_guard.discover_card2_lineage_universe",
+        "producer_code_path_hash": _script_code_path_hash(),
+        "input_artifacts": [evidence for record in records for evidence in record["discovery_evidence"]],
+        "aggregation_rule": "fixed callable discovery rules over committed or current immutable lineage marker paths; sorted unique lineage_id universe",
+        "discovered_count": len(records),
+        "records": records,
+        "universe_sha256": hashlib.sha256(_canonical_json_bytes(discovered_ids)).hexdigest(),
+        "omission_positive_control": {
+            "omitted_lineage_id": omitted_id,
+            "expected_count": len(records),
+            "mutated_count": len(records) - 1,
+            "rejected": "lineage_universe_omission" in omission_errors,
+            "rejection_code": "lineage_universe_omission",
+            "observed_error_codes": omission_errors,
+        },
+        "claim_ceiling": "callable lineage-universe completeness control only",
+    }
+
+
+def _read_json_file(path: Path) -> tuple[dict[str, Any] | None, str | None]:
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        return None, str(exc)
+    return (payload, None) if isinstance(payload, dict) else (None, "JSON root must be an object")
+
+
+def validate_field_crosswalk(program_state: dict[str, Any]) -> dict[str, Any]:
+    route_guard = program_state.get("route_guard") or {}
+    source = read_itl_authority_objects(program_state)
+    errors = list(source.get("errors") or [])
+    payloads = source.get("payloads") or {}
+    route_state = payloads.get("route_state")
+    phase_b_receipt = payloads.get("phase_b_review_receipt")
+    transcribed = route_guard.get("transcribed_itl") or {}
+    if not isinstance(route_state, dict) or transcribed.get("route_state") != route_state:
+        errors.append("route_state_transcription_mismatch")
+    if not isinstance(phase_b_receipt, dict) or transcribed.get("phase_b_review_receipt") != phase_b_receipt:
+        errors.append("phase_b_review_receipt_transcription_mismatch")
+    crosswalk_ref = route_guard.get("field_crosswalk") or {}
+    relative = str(crosswalk_ref.get("path") or "")
+    artifact_path = ROOT / relative
+    artifact, artifact_error = _read_json_file(artifact_path)
+    if artifact_error or artifact is None:
+        errors.append("field_crosswalk_artifact_unavailable")
+        return {"status": "fail", "errors": errors, "source": source}
+    raw_sha = hashlib.sha256(artifact_path.read_bytes()).hexdigest()
+    if raw_sha != crosswalk_ref.get("artifact_payload_sha256"):
+        errors.append("field_crosswalk_artifact_sha256_mismatch")
+    if isinstance(route_state, dict) and isinstance(phase_b_receipt, dict):
+        expected = build_field_crosswalk_payload(
+            route_state=route_state,
+            phase_b_review_receipt=phase_b_receipt,
+            input_artifacts=list(source.get("input_artifacts") or []),
+            run_id=str(artifact.get("run_id") or ""),
+        )
+        if artifact != expected:
+            errors.append("field_crosswalk_callable_recompute_mismatch")
+        entry_errors = validate_crosswalk_entries(
+            route_state=route_state,
+            phase_b_review_receipt=phase_b_receipt,
+            entries=list(artifact.get("entries") or []),
+        )
+        errors.extend(entry_errors)
+        if expected.get("omission_positive_control", {}).get("rejected") is not True:
+            errors.append("field_crosswalk_omission_positive_control_did_not_fire")
+    return {
+        "status": "pass" if not errors else "fail",
+        "errors": errors,
+        "source": source,
+        "artifact_payload_sha256": raw_sha,
+        "total_leaf_count": artifact.get("total_leaf_count"),
+        "producer_function": artifact.get("producer_function"),
+        "run_id": artifact.get("run_id"),
+        "aggregation_rule": artifact.get("aggregation_rule"),
+        "producer_code_path_hash": artifact.get("producer_code_path_hash"),
+    }
+
+
+def validate_lineage_universe(program_state: dict[str, Any]) -> dict[str, Any]:
+    route_guard = program_state.get("route_guard") or {}
+    ref = route_guard.get("lineage_universe") or {}
+    relative = str(ref.get("path") or "")
+    artifact_path = ROOT / relative
+    artifact, artifact_error = _read_json_file(artifact_path)
+    errors: list[str] = []
+    if artifact_error or artifact is None:
+        return {"status": "fail", "errors": ["lineage_universe_artifact_unavailable"]}
+    raw_sha = hashlib.sha256(artifact_path.read_bytes()).hexdigest()
+    if raw_sha != ref.get("artifact_payload_sha256"):
+        errors.append("lineage_universe_artifact_sha256_mismatch")
+    expected = discover_card2_lineage_universe(run_id=str(artifact.get("run_id") or ""))
+    if artifact != expected:
+        errors.append("lineage_universe_callable_recompute_mismatch")
+    errors.extend(validate_lineage_records(expected["records"], list(artifact.get("records") or [])))
+    if any(not all(bool(evidence.get("exists")) for evidence in record.get("discovery_evidence") or []) for record in expected["records"]):
+        errors.append("lineage_universe_source_missing")
+    discovered_ids = [record["lineage_id"] for record in expected["records"]]
+    if expected.get("omission_positive_control", {}).get("rejected") is not True:
+        errors.append("lineage_omission_positive_control_did_not_fire")
+    if ref.get("discovered_count") != len(discovered_ids) or ref.get("universe_sha256") != expected.get("universe_sha256"):
+        errors.append("lineage_universe_program_ref_mismatch")
+    return {
+        "status": "pass" if not errors else "fail",
+        "errors": errors,
+        "artifact_payload_sha256": raw_sha,
+        "discovered_count": len(discovered_ids),
+        "universe_sha256": expected.get("universe_sha256"),
+        "omission_positive_control": expected.get("omission_positive_control"),
+        "producer_function": expected.get("producer_function"),
+        "run_id": expected.get("run_id"),
+        "aggregation_rule": expected.get("aggregation_rule"),
+        "producer_code_path_hash": expected.get("producer_code_path_hash"),
+    }
+
+
+def validate_card2_action_paths(
+    *,
+    route_state: dict[str, Any],
+    changed_paths: list[str],
+    scope_loaded: bool,
+    scope_allowed_paths: list[str],
+) -> dict[str, Any]:
+    policy = route_state.get("action_path_policy") or {}
+    errors: list[str] = []
+    if not scope_loaded:
+        errors.append("missing_mutation_scope_for_card2_action")
+    if policy.get("action_id") != CARD2_BANK_ACTION_ID:
+        errors.append("card2_action_path_policy_identity_mismatch")
+    allowed_exact = [str(item) for item in policy.get("allowed_exact_paths") or []]
+    allowed_prefixes = [str(item) for item in policy.get("allowed_path_prefixes") or []]
+    forbidden_prefixes = [str(item) for item in policy.get("forbidden_path_prefixes") or []]
+    if allowed_exact != [] or allowed_prefixes != [CARD2_TASK_PREFIX]:
+        errors.append("card2_action_path_policy_allowlist_mismatch")
+    required_forbidden = {"EgoOperator/", "EgoDesktop/", "packages/", "src/", "scripts/", "tests/", "artifacts/"}
+    if not required_forbidden.issubset(set(forbidden_prefixes)):
+        errors.append("card2_action_path_policy_forbidden_prefix_missing")
+    if policy.get("execution_inference") != "CHANGED_PATHS_NOT_DECLARED_BOOLEAN" or policy.get(
+        "missing_mutation_scope"
+    ) != "REJECT":
+        errors.append("card2_action_path_policy_fail_closed_mismatch")
+    inferred_execution_paths = [
+        path
+        for path in changed_paths
+        if any(path.startswith(prefix) for prefix in forbidden_prefixes)
+        or not (path in allowed_exact or any(path.startswith(prefix) for prefix in allowed_prefixes))
+    ]
+    if inferred_execution_paths:
+        errors.append("card2_execution_inferred_from_changed_paths")
+    invalid_scope_paths = [
+        path
+        for path in scope_allowed_paths
+        if not (path in allowed_exact or any(path.startswith(prefix) for prefix in allowed_prefixes))
+    ]
+    if invalid_scope_paths:
+        errors.append("card2_scope_expands_action_path_policy")
+    return {
+        "status": "pass" if not errors else "fail",
+        "errors": errors,
+        "inferred_execution_paths": inferred_execution_paths,
+        "producer_function": "scripts.codex_session_guard.validate_card2_action_paths",
+        "aggregation_rule": "reject missing scope and any actual or declared allowed path outside the committed ITL action-specific policy",
+        "producer_code_path_hash": _script_code_path_hash(),
+    }
+
+
+def validate_red_review_record(receipt_path: str, *, require_committed: bool) -> dict[str, Any]:
+    path = ROOT / receipt_path
+    errors: list[str] = []
+    commit: str | None = None
+    if require_committed:
+        log = _git_repo(ROOT, ["log", "--diff-filter=A", "--format=%H", "--", receipt_path])
+        commits = [line for line in log.stdout.splitlines() if line]
+        if not commits:
+            return {"status": "fail", "errors": ["red_review_record_not_committed"]}
+        commit = commits[-1]
+        receipt_probe = _git_repo(ROOT, ["show", f"{commit}:{receipt_path}"], text=False)
+        try:
+            receipt = json.loads(receipt_probe.stdout.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            return {"status": "fail", "errors": ["committed_red_review_record_invalid_json"]}
+    else:
+        receipt, receipt_error = _read_json_file(path)
+        if receipt_error or receipt is None:
+            return {"status": "fail", "errors": ["candidate_red_review_record_unavailable"]}
+    manifest = receipt.get("reviewed_semantic_manifest") or {}
+    manifest_sha = hashlib.sha256(_canonical_json_bytes(manifest)).hexdigest()
+    if manifest_sha != receipt.get("reviewed_semantic_manifest_sha256"):
+        errors.append("red_review_semantic_manifest_hash_mismatch")
+    reviewed_paths = [str(item) for item in receipt.get("sorted_reviewed_paths") or []]
+    if reviewed_paths != sorted(reviewed_paths) or reviewed_paths != manifest.get("sorted_reviewed_paths"):
+        errors.append("red_review_path_set_mismatch")
+    if receipt.get("verdict") != "NO_BLOCKING_FINDINGS" or receipt.get("blocking_findings") != []:
+        errors.append("red_review_blocking_or_invalid_verdict")
+    if receipt.get("reviewer") != "Claude" or not str(receipt.get("reviewer_session_id") or "").strip():
+        errors.append("red_review_reviewer_identity_missing")
+    if receipt.get("reviewer_session_id") == receipt.get("executor_session_id"):
+        errors.append("red_review_role_separation_missing")
+    base_commit = str(receipt.get("base_commit") or "")
+    target_ref = commit if require_committed else None
+    if require_committed and commit:
+        parent = _git_repo(ROOT, ["rev-parse", f"{commit}^"])
+        if parent.returncode != 0 or parent.stdout.strip() != base_commit:
+            errors.append("committed_red_review_base_parent_mismatch")
+        changed = _git_repo(ROOT, ["diff-tree", "--no-commit-id", "--name-only", "-r", commit])
+        expected_paths = set(reviewed_paths + [receipt_path])
+        if set(changed.stdout.splitlines()) != expected_paths:
+            errors.append("committed_red_review_exact_path_set_mismatch")
+        diff_probe = _git_repo(
+            ROOT,
+            ["diff", "--binary", "--no-ext-diff", "--full-index", base_commit, commit, "--", *reviewed_paths],
+            text=False,
+        )
+    else:
+        diff_probe = _git_repo(
+            ROOT,
+            ["diff", "--cached", "--binary", "--no-ext-diff", "--full-index", "--", *reviewed_paths],
+            text=False,
+        )
+    if diff_probe.returncode != 0 or hashlib.sha256(diff_probe.stdout).hexdigest() != receipt.get(
+        "reviewed_diff_sha256"
+    ):
+        errors.append("red_review_diff_sha256_mismatch")
+    for reviewed_path, row in (manifest.get("per_path_reviewed_blob_or_worktree_sha256") or {}).items():
+        ref = f"{commit}:{reviewed_path}" if require_committed and commit else f":{reviewed_path}"
+        oid = _git_repo(ROOT, ["rev-parse", ref])
+        if oid.returncode != 0 or oid.stdout.strip() != row.get("reviewed_blob"):
+            errors.append(f"red_review_blob_mismatch:{reviewed_path}")
+            continue
+        blob = _git_repo(ROOT, ["cat-file", "blob", oid.stdout.strip()], text=False)
+        expected_blob_sha = row.get("reviewed_blob_payload_sha256") or row.get("worktree_sha256")
+        if blob.returncode != 0 or hashlib.sha256(blob.stdout).hexdigest() != expected_blob_sha:
+            errors.append(f"red_review_blob_payload_mismatch:{reviewed_path}")
+    return {
+        "status": "pass" if not errors else "fail",
+        "errors": errors,
+        "commit": commit,
+        "base_commit": base_commit,
+        "reviewed_diff_sha256": receipt.get("reviewed_diff_sha256"),
+        "reviewed_semantic_manifest_sha256": receipt.get("reviewed_semantic_manifest_sha256"),
+        "review_id": receipt.get("review_id"),
+        "producer_function": "scripts.codex_session_guard.validate_red_review_record",
+        "aggregation_rule": "require NO_BLOCKING_FINDINGS plus exact base, committed path set, reviewed diff SHA-256, and per-path committed blob binding",
+        "producer_code_path_hash": _script_code_path_hash(),
+    }
+
+
+def compute_card2_sync_dependencies(program_state: dict[str, Any]) -> dict[str, Any]:
+    route_guard = program_state.get("route_guard") or {}
+    route_state = ((route_guard.get("transcribed_itl") or {}).get("route_state") or {})
+    crosswalk = validate_field_crosswalk(program_state)
+    lineage = validate_lineage_universe(program_state)
+    action_allowed = validate_card2_action_paths(
+        route_state=route_state,
+        changed_paths=[f"{CARD2_TASK_PREFIX}STAGE_CARD.md"],
+        scope_loaded=True,
+        scope_allowed_paths=[CARD2_TASK_PREFIX],
+    )
+    action_forbidden = validate_card2_action_paths(
+        route_state=route_state,
+        changed_paths=["EgoOperator/agent_base.py"],
+        scope_loaded=True,
+        scope_allowed_paths=[CARD2_TASK_PREFIX],
+    )
+    action_missing_scope = validate_card2_action_paths(
+        route_state=route_state,
+        changed_paths=[f"{CARD2_TASK_PREFIX}STAGE_CARD.md"],
+        scope_loaded=False,
+        scope_allowed_paths=[],
+    )
+    action_policy_pass = (
+        action_allowed.get("status") == "pass"
+        and "card2_execution_inferred_from_changed_paths" in (action_forbidden.get("errors") or [])
+        and "missing_mutation_scope_for_card2_action" in (action_missing_scope.get("errors") or [])
+    )
+    red_ref = ((route_guard.get("red_review") or {}).get("phase_b") or {}).get("path")
+    red_review = validate_red_review_record(str(red_ref or ""), require_committed=True)
+    statuses = {
+        "EGO_FIELD_BY_FIELD_AUTHORITY_SYNC_BANKED": crosswalk.get("status") == "pass",
+        "ACTION_SPECIFIC_PATH_POLICY_ENFORCED": action_policy_pass,
+        "LINEAGE_OMISSION_POSITIVE_CONTROL_ENFORCED": lineage.get("status") == "pass",
+        "COMMITTED_RED_REVIEW_RECORD_BOUND_TO_DIFF": red_review.get("status") == "pass",
+    }
+    return {
+        "producer_function": "scripts.codex_session_guard.compute_card2_sync_dependencies",
+        "run_id": "live_repo_recompute",
+        "input_artifacts": [
+            str((route_guard.get("field_crosswalk") or {}).get("path") or ""),
+            str((route_guard.get("lineage_universe") or {}).get("path") or ""),
+            str(red_ref or ""),
+        ],
+        "aggregation_rule": "all four committed ITL consumption dependencies must recompute true",
+        "producer_code_path_hash": _script_code_path_hash(),
+        "dependencies": statuses,
+        "all_satisfied": all(statuses.values()),
+        "crosswalk": crosswalk,
+        "action_path_policy": {
+            "status": "pass" if action_policy_pass else "fail",
+            "allowed_control": action_allowed,
+            "forbidden_path_positive_control": action_forbidden,
+            "missing_scope_positive_control": action_missing_scope,
+        },
+        "lineage_universe": lineage,
+        "committed_red_review": red_review,
+    }
+
+
 def _load_mutation_scope(path: Path | None) -> dict[str, Any]:
     if path is None:
         return {
@@ -151,6 +739,7 @@ def _load_mutation_scope(path: Path | None) -> dict[str, Any]:
         "claim_ceiling": payload.get("claim_ceiling"),
         "auto_remote_anchor": payload.get("auto_remote_anchor"),
         "migration_exception": payload.get("migration_exception") or {},
+        "authority_sync_exception": payload.get("authority_sync_exception") or {},
         "raw": payload,
     }
 
@@ -285,18 +874,18 @@ def science_authority_pin_status(program_state: dict[str, Any], runner: GuardRun
     route_guard = program_state.get("route_guard") or {}
     if not route_guard:
         return {"status": "unavailable", "expected_head": None, "actual_head": None, "failed_pins": ["route_guard"]}
-    science_axis = (route_guard.get("authority_axes") or {}).get("science_attribution") or {}
-    expected_head = str(science_axis.get("pinned_head") or "")
+    authority = route_guard.get("authority_source") or {}
+    expected_head = str(authority.get("pinned_commit") or "")
     head = runner.run(["git", "-C", str(ITL_ROOT), "rev-parse", "HEAD"])
     failures: list[str] = []
     if head.returncode != 0 or head.stdout.strip() != expected_head:
         failures.append("head")
-    for name, pin in (route_guard.get("science_source_pins") or {}).items():
+    for name, pin in (authority.get("objects") or {}).items():
         if not isinstance(pin, dict):
             failures.append(str(name))
             continue
         path = str(pin.get("path") or "")
-        oid = runner.run(["git", "-C", str(ITL_ROOT), "rev-parse", f"HEAD:{path}"])
+        oid = runner.run(["git", "-C", str(ITL_ROOT), "rev-parse", f"{expected_head}:{path}"])
         if oid.returncode != 0 or oid.stdout.strip() != str(pin.get("git_blob_oid") or ""):
             failures.append(str(name))
     return {
@@ -310,22 +899,27 @@ def science_authority_pin_status(program_state: dict[str, Any], runner: GuardRun
 def build_route_guard_readback(program_state: dict[str, Any], runner: GuardRunner) -> dict[str, Any]:
     program = program_state.get("program") or {}
     route_guard = program_state.get("route_guard") or {}
-    binding = route_guard.get("allowed_action_binding") or {}
-    authorizations = route_guard.get("authorizations") or {}
-    lineage = route_guard.get("lineage_inventory") or {}
+    route_state = ((route_guard.get("transcribed_itl") or {}).get("route_state") or {})
     red_review = route_guard.get("red_review") or {}
     computed = compute_route_fingerprint(program_state)
     stored = route_guard.get("route_fingerprint")
     pin_status = science_authority_pin_status(program_state, runner)
+    dependency_readback = compute_card2_sync_dependencies(program_state) if route_guard.get("schema_version") == "ego.route_guard.v2" else {}
     return {
         "route_revision_id": route_guard.get("route_revision_id"),
         "route_fingerprint": computed if stored == computed else f"MISMATCH:{computed}",
         "current_phase": program.get("current_phase"),
         "current_layer": program.get("current_layer"),
-        "allowed_next_action_ids": binding.get("allowed_next_action_ids") or [],
-        "forbidden_action_classes": binding.get("forbidden_action_classes") or [],
-        "authorized_implementation_targets": authorizations.get("authorized_implementation_targets") or [],
-        "undisposed_lineage_count": lineage.get("undisposed_count"),
+        "allowed_next_action_ids": route_state.get("allowed_next_actions") or [],
+        "forbidden_action_classes": route_state.get("forbidden_next_actions") or [],
+        "blocked_until": (((route_state.get("action_dependencies") or {}).get(CARD2_BANK_ACTION_ID) or {}).get("blocked_until") or []),
+        "authorized_implementation_targets": route_state.get("authorized_implementation_targets") or [],
+        "card2_execution_authorized": (((route_state.get("action_dependencies") or {}).get(CARD2_BANK_ACTION_ID) or {}).get("execution_authorized")),
+        "effective_card2_bank_action_admitted": bool(dependency_readback.get("all_satisfied")),
+        "dependency_status": dependency_readback.get("dependencies") or {},
+        "science_firewall": route_state.get("science_firewall") or {},
+        "claim_ceiling": route_state.get("claim_ceiling") or {},
+        "undisposed_lineage_count": None,
         "unresolved_review_blockers": red_review.get("unresolved_review_blockers") or [],
         "science_authority_pin_status": pin_status.get("status"),
     }
@@ -366,7 +960,7 @@ def validate_route_mutation_scope(
 ) -> list[dict[str, Any]]:
     blockers: list[dict[str, Any]] = []
     route_guard = program_state.get("route_guard") or {}
-    binding = route_guard.get("allowed_action_binding") or {}
+    route_state = ((route_guard.get("transcribed_itl") or {}).get("route_state") or {})
     required_scope_fields = (
         "task_id",
         "task_kind",
@@ -386,21 +980,26 @@ def validate_route_mutation_scope(
     requested_action = scope.get("requested_action_id")
     current_fingerprint = compute_route_fingerprint(program_state)
     current_revision = route_guard.get("route_revision_id")
-    exact_migration_id = "EGO-ROUTE-8692-SUPERSESSION-AND-EGODESKTOP-AUTHORITY-ARCHIVE-001A"
-    migration = scope.get("migration_exception") or {}
-    migration_completion = (
-        task_id == exact_migration_id
-        and requested_action == exact_migration_id
-        and scope.get("source_route_fingerprint") == "026535337949d5ea2857805e5d9e0d2b6bfae016154fbf58587eafcea6411aa3"
+    authority_sync = scope.get("authority_sync_exception") or {}
+    phase_b_receipt_path = str(((route_guard.get("red_review") or {}).get("phase_b") or {}).get("path") or "")
+    committed_phase_b = validate_red_review_record(phase_b_receipt_path, require_committed=True)
+    authority_sync_completion = (
+        task_id == CARD2_SYNC_TASK_ID
+        and requested_action == CARD2_SYNC_ACTION_ID
+        and current_revision == CARD2_SYNC_ROUTE_REVISION
+        and scope.get("source_route_revision_id") == "EGO_ROUTE_8692_SUPERSESSION_001A"
+        and scope.get("source_route_fingerprint") == "f605f59393dbba586d50c9e4ee7e085570de7b8d012b0b09bc7ccf75865d52b4"
         and scope.get("expected_target_route_revision_id") == current_revision
         and "docs/PROGRAM_STATE_UNIFIED.yaml" in changed_paths
-        and migration.get("exact_task_id") == exact_migration_id
-        and migration.get("enabled") is False
-        and migration.get("consumed") is True
-        and migration.get("wildcard_allowed") is False
-        and migration.get("operator_override_allowed") is False
+        and authority_sync.get("exact_task_id") == CARD2_SYNC_TASK_ID
+        and authority_sync.get("itl_route_state_blob") == "8b2db13a023873775b80bfe4e8eab7e53a7bba62"
+        and authority_sync.get("enabled") is False
+        and authority_sync.get("consumed") is True
+        and authority_sync.get("wildcard_allowed") is False
+        and authority_sync.get("operator_override_allowed") is False
+        and committed_phase_b.get("status") != "pass"
     )
-    if scope.get("source_route_fingerprint") != current_fingerprint and not migration_completion:
+    if scope.get("source_route_fingerprint") != current_fingerprint and not authority_sync_completion:
         blockers.append(
             {
                 "reason": "stale_route_fingerprint",
@@ -408,7 +1007,7 @@ def validate_route_mutation_scope(
                 "current": current_fingerprint,
             }
         )
-    expected_source_revision = "PRE_ROUTE_GUARD_MIGRATION" if migration_completion else current_revision
+    expected_source_revision = "EGO_ROUTE_8692_SUPERSESSION_001A" if authority_sync_completion else current_revision
     if scope.get("source_route_revision_id") != expected_source_revision:
         blockers.append(
             {
@@ -417,8 +1016,8 @@ def validate_route_mutation_scope(
                 "expected": expected_source_revision,
             }
         )
-    allowed_actions = binding.get("allowed_next_action_ids") or []
-    if requested_action not in allowed_actions and not migration_completion:
+    allowed_actions = route_state.get("allowed_next_actions") or []
+    if requested_action not in allowed_actions:
         blockers.append({"reason": "ROUTE_ACTION_NOT_BOUND", "requested_action_id": requested_action})
     if len(set(added_task_dirs)) > 1:
         blockers.append({"reason": "multiple_task_directories", "task_dirs": sorted(set(added_task_dirs))})
@@ -436,22 +1035,36 @@ def validate_route_mutation_scope(
         )
     if red_triggers and scope.get("independent_red_review_required") is not True:
         blockers.append({"reason": "independent_red_review_not_required_by_scope"})
-    if red_triggers and not str(scope.get("red_review_ref") or "").strip():
-        blockers.append({"reason": "authority_change_without_red_review_ref", "triggers": red_triggers})
+    if red_triggers:
+        red_review_ref = str(scope.get("red_review_ref") or "")
+        if not red_review_ref:
+            blockers.append({"reason": "authority_change_without_red_review_ref", "triggers": red_triggers})
+        else:
+            candidate_review = validate_red_review_record(red_review_ref, require_committed=False)
+            if candidate_review.get("status") != "pass":
+                blockers.append(
+                    {
+                        "reason": "red_review_not_bound_to_candidate_diff",
+                        "red_review_ref": red_review_ref,
+                        "errors": candidate_review.get("errors") or [],
+                    }
+                )
     task_kind = str(scope.get("task_kind") or "")
-    if current_revision == "EGO_ROUTE_8692_SUPERSESSION_001A" and "governance" in task_kind and not migration_completion:
-        blockers.append({"reason": "governance_only_successor_forbidden"})
-    if task_id == exact_migration_id and not migration_completion:
-        blockers.append({"reason": "migration_exception_reused_or_invalid"})
-    implementation_targets = binding.get("authorized_implementation_targets") or []
-    if implementation_targets:
+    if task_id == CARD2_SYNC_TASK_ID and not authority_sync_completion:
+        blockers.append({"reason": "authority_sync_exception_reused_or_invalid"})
+    if route_state.get("authorized_implementation_targets") != [] or route_state.get("implementation_authorized") is not False:
         blockers.append({"reason": "unauthorized_implementation_targets_nonempty"})
-    if execution_requested or bool((scope.get("raw") or {}).get("execution_requested")):
-        if binding.get("execution_authorized") is not True:
-            blockers.append({"reason": "card_execution_not_authorized"})
-    if requested_action == "bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A":
+    if requested_action == CARD2_BANK_ACTION_ID:
         if task_kind != "executable_candidate_independent_headroom":
             blockers.append({"reason": "card2_task_kind_mismatch"})
+        action_paths = validate_card2_action_paths(
+            route_state=route_state,
+            changed_paths=changed_paths,
+            scope_loaded=scope.get("status") == "loaded" or bool(scope.get("allowed_mutation_paths")),
+            scope_allowed_paths=allowed_paths,
+        )
+        for error in action_paths.get("errors") or []:
+            blockers.append({"reason": error, "paths": action_paths.get("inferred_execution_paths") or []})
     return blockers
 
 
@@ -833,6 +1446,18 @@ def build_closeout_check(
         )
     )
     route_scope_blockers: list[dict[str, Any]] = []
+    card2_governance_path_touched = any(
+        path.startswith(CARD2_TASK_PREFIX) or path.startswith(CARD2_SYNC_TASK_PREFIX)
+        for path in changed_paths
+    )
+    if changed_paths and (red_triggers or card2_governance_path_touched) and scope.get("status") != "loaded":
+        missing_scope = {
+            "reason": "missing_mutation_scope_fail_closed",
+            "red_trigger_count": len(red_triggers),
+            "card2_governance_path_touched": card2_governance_path_touched,
+        }
+        route_scope_blockers.append(missing_scope)
+        blockers.append(missing_scope)
     if route_scope_present:
         route_scope_blockers = validate_route_mutation_scope(
             scope=scope,

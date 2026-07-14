@@ -20,7 +20,7 @@
 | `active_default` | 1 |
 | `supporting_active` | 1 |
 | `parked` | 1 |
-| `closed_evidence` | 23 |
+| `closed_evidence` | 24 |
 | `reference_only` | 234 |
 
 ## Active Default
@@ -50,6 +50,7 @@
 | EGO Canonical Mechanism Integration 001A | `codex_task` | `canonical_mechanism_integration_route_001a` | `docs/codex/tasks/ego-canonical-mechanism-integration-001a/` | Additively superseded before M1; M1/M2/M3 were not started and are cancelled; no enabled path, mainline connection, successor dependency, runtime authority, or real trigger. Current workstream status: `superseded_before_m1__m1_m2_m3_not_started_cancelled__egodesktop_authority_archived`. |
 | EGO K0 Foundation 001A | `codex_task` | `k0_developmental_kernel_dual_track` | `docs/codex/tasks/ego-k0-foundation-001a/` | Bounded engineering evidence banked/accepted; authorization consumed; disabled; non-mainline; no runtime authority. Current workstream status: `foundation_engineering_accepted_bounded__old_science_route_operator_closed_without_science_adjudication__verifier_family_closed_invalid__independent_acceptance_unavailable__product_science_decoupled__all_authorizations_false__runtime_disabled__non_mainline`. |
 | Ego Mainline Demotion v1 | `codex_task` | `ego_operator_first_transition` | `docs/codex/tasks/ego-mainline-demotion-v1/` | Previous operator-first transition record; superseded by the EgoOperator rename/docs-safety task while preserving legacy demotion evidence. Current workstream status: `human_operator_trial_v2_human_review_template_ready`. |
+| EGO Pet World v1 Card 2 ITL Authority Sync 001A | `codex_task` | `program_state_governance` | `docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/` | Field-by-field governance sync from committed ITL objects; no Card 2 bank, execution, runtime, product, experiment, scoring, or science authorization. Current workstream status: `pass`. |
 | EGO Route 8692 Supersession and EgoDesktop Authority Archive 001A | `codex_task` | n/a | `docs/codex/tasks/ego-route-8692-supersession-and-egodesktop-authority-archive-001a/` | Completed product/capability governance correction; the only following permission is Card 2 drafting and banking, not execution. |
 | EgoDesktop PET World Integration 001A | `codex_task` | n/a | `docs/codex/tasks/egodesktop-pet-world-integration-001a/` | Frozen predecessor engineering evidence. P2 remains unexecuted; no historical go-for or successor text grants current authority. |
 | EgoOperator Rename + Docs Safety v1 | `codex_task` | `ego_operator_first_transition` | `docs/codex/tasks/ego-operator-rename-docs-safety-v1/` | Previous EgoOperator naming and reader-safety transition record; superseded by the human operator trial v2 task as the active observation owner. Current workstream status: `human_operator_trial_v2_human_review_template_ready`. |

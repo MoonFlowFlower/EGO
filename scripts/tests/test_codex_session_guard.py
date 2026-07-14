@@ -462,24 +462,27 @@ def test_authority_change_requires_red_review_ref() -> None:
     assert "authority_change_without_red_review_ref" in blocker_reasons(blockers)
 
 
-def test_route_scope_rejects_governance_only_successor_after_card1() -> None:
+def test_route_scope_rejects_wrong_card2_task_kind() -> None:
     state = live_route_state()
     scope = valid_card2_scope(state)
     scope["task_kind"] = "governance_only_validator_repair"
 
-    assert "governance_only_successor_forbidden" in blocker_reasons(validate_scope(state, scope))
+    assert "card2_task_kind_mismatch" in blocker_reasons(validate_scope(state, scope))
 
 
-def test_route_scope_rejects_consumed_migration_exception_reuse() -> None:
+def test_route_scope_rejects_consumed_authority_sync_exception_reuse() -> None:
     state = live_route_state()
     scope = valid_card2_scope(state)
     scope.update(
         {
-            "task_id": "EGO-ROUTE-8692-SUPERSESSION-AND-EGODESKTOP-AUTHORITY-ARCHIVE-001A",
-            "task_kind": "governance_authority_supersession_migration",
-            "requested_action_id": "EGO-ROUTE-8692-SUPERSESSION-AND-EGODESKTOP-AUTHORITY-ARCHIVE-001A",
-            "migration_exception": {
-                "exact_task_id": "EGO-ROUTE-8692-SUPERSESSION-AND-EGODESKTOP-AUTHORITY-ARCHIVE-001A",
+            "task_id": codex_session_guard.CARD2_SYNC_TASK_ID,
+            "task_kind": "engineering_evidence_governance_cross_repo_sync",
+            "requested_action_id": codex_session_guard.CARD2_SYNC_ACTION_ID,
+            "source_route_revision_id": "EGO_ROUTE_8692_SUPERSESSION_001A",
+            "source_route_fingerprint": "f605f59393dbba586d50c9e4ee7e085570de7b8d012b0b09bc7ccf75865d52b4",
+            "authority_sync_exception": {
+                "exact_task_id": codex_session_guard.CARD2_SYNC_TASK_ID,
+                "itl_route_state_blob": "8b2db13a023873775b80bfe4e8eab7e53a7bba62",
                 "enabled": False,
                 "consumed": True,
                 "wildcard_allowed": False,
@@ -488,7 +491,7 @@ def test_route_scope_rejects_consumed_migration_exception_reuse() -> None:
         }
     )
 
-    assert "migration_exception_reused_or_invalid" in blocker_reasons(validate_scope(state, scope))
+    assert "authority_sync_exception_reused_or_invalid" in blocker_reasons(validate_scope(state, scope))
 
 
 def test_untouched_historical_mechanism_text_does_not_trigger_red_review() -> None:
@@ -533,10 +536,42 @@ def test_valid_card2_scope_admits_banking_only() -> None:
     assert validate_scope(state, scope) == []
 
 
-def test_card2_execution_remains_rejected() -> None:
+def test_self_declared_false_cannot_hide_execution_in_actual_changed_paths() -> None:
     state = live_route_state()
     scope = valid_card2_scope(state)
+    scope["raw"]["execution_requested"] = False
 
-    assert "card_execution_not_authorized" in blocker_reasons(
-        validate_scope(state, scope, execution_requested=True)
+    assert "card2_execution_inferred_from_changed_paths" in blocker_reasons(
+        validate_scope(
+            state,
+            scope,
+            changed_paths=[
+                "docs/codex/tasks/ego-pet-world-v1-capability-headroom-001a/STAGE_CARD.md",
+                "EgoOperator/agent_base.py",
+            ],
+        )
     )
+
+
+def test_missing_scope_fails_closed_for_card2_bank_action() -> None:
+    state = live_route_state()
+    route_state = state["route_guard"]["transcribed_itl"]["route_state"]
+
+    result = codex_session_guard.validate_card2_action_paths(
+        route_state=route_state,
+        changed_paths=["docs/codex/tasks/ego-pet-world-v1-capability-headroom-001a/STAGE_CARD.md"],
+        scope_loaded=False,
+        scope_allowed_paths=[],
+    )
+
+    assert result["status"] == "fail"
+    assert "missing_mutation_scope_for_card2_action" in result["errors"]
+
+
+def test_nonempty_red_review_string_is_not_provenance() -> None:
+    result = codex_session_guard.validate_red_review_record(
+        "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/NOT_A_RECEIPT",
+        require_committed=False,
+    )
+
+    assert result == {"status": "fail", "errors": ["candidate_red_review_record_unavailable"]}

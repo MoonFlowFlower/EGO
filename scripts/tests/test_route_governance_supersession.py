@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import importlib.util
+import json
 import sys
 from pathlib import Path
 
@@ -17,6 +18,7 @@ verify = importlib.util.module_from_spec(spec)
 assert spec and spec.loader
 sys.modules[spec.name] = verify
 spec.loader.exec_module(verify)
+guard = verify.route_sync_guard
 
 
 def live_state() -> dict:
@@ -28,117 +30,135 @@ def error_text(state: dict) -> str:
     return "\n".join(errors)
 
 
-def lineage_record(state: dict, lineage_id: str) -> dict:
-    return next(
-        record
-        for record in state["route_guard"]["lineage_inventory"]["records"]
-        if record["lineage_id"] == lineage_id
-    )
+def route_state(state: dict) -> dict:
+    return state["route_guard"]["transcribed_itl"]["route_state"]
 
 
-def test_live_route_guard_and_callable_lineage_inventory_pass() -> None:
+def test_live_route_guard_crosswalk_and_callable_lineage_pass() -> None:
     state = live_state()
     errors, details = verify.validate_route_guard(state)
 
     assert errors == []
     assert details["route_fingerprint"] == state["route_guard"]["route_fingerprint"]
+    assert details["field_crosswalk"]["status"] == "pass"
+    assert details["lineage_inventory"]["status"] == "pass"
     assert details["lineage_inventory"]["discovered_count"] == 9
-    assert details["lineage_inventory"]["disposed_count"] == 9
     assert details["lineage_inventory"]["undisposed_count"] == 0
 
 
-def test_removing_supersession_is_rejected() -> None:
+def test_itl_route_blob_pin_mutation_is_rejected() -> None:
     state = copy.deepcopy(live_state())
-    state["route_guard"]["authority_state"]["old_route_8692"]["disposition"] = "ACTIVE"
+    state["route_guard"]["authority_source"]["objects"]["route_state"]["git_blob_oid"] = "0" * 40
 
-    assert "supersession disposition is absent" in error_text(state)
+    assert "itl_object_oid_mismatch:route_state" in error_text(state)
 
 
-def test_restoring_m1_authorization_is_rejected() -> None:
+def test_transcribed_route_field_mutation_is_rejected() -> None:
     state = copy.deepcopy(live_state())
-    state["route_guard"]["authority_state"]["old_route_8692"]["m1"] = "AUTHORIZED"
+    route_state(state)["implementation_authorized"] = True
 
-    assert "milestone m1 is not cancelled" in error_text(state)
-
-
-def test_egodesktop_successor_dependency_activation_is_rejected() -> None:
-    state = copy.deepcopy(live_state())
-    state["route_guard"]["authority_state"]["egodesktop"]["successor_dependency"] = True
-
-    assert "EgoDesktop archive authority state is not fail-closed" in error_text(state)
+    errors = error_text(state)
+    assert "route_state_transcription_mismatch" in errors
+    assert "implementation_authorized must remain false" in errors
 
 
-def test_science_successor_registration_is_rejected() -> None:
-    state = copy.deepcopy(live_state())
-    state["route_guard"]["authorizations"]["science_successor_registration"] = True
+def test_crosswalk_leaf_omission_positive_control_is_rejected(monkeypatch) -> None:
+    state = live_state()
+    path = ROOT / state["route_guard"]["field_crosswalk"]["path"]
+    mutated = json.loads(path.read_text(encoding="utf-8"))
+    mutated["entries"].pop()
+    original_reader = guard._read_json_file
 
-    assert "all route_guard authorizations must remain false" in error_text(state)
+    def read_mutated(candidate: Path):
+        if candidate == path:
+            return mutated, None
+        return original_reader(candidate)
 
+    monkeypatch.setattr(guard, "_read_json_file", read_mutated)
+    result = guard.validate_field_crosswalk(state)
 
-def test_undisposed_lineage_is_rejected() -> None:
-    state = copy.deepcopy(live_state())
-    record = lineage_record(state, "outcome_utility_closure")
-    record["disposition"] = "UNDISPOSED"
-    state["route_guard"]["lineage_inventory"]["disposed_count"] = 8
-    state["route_guard"]["lineage_inventory"]["undisposed_count"] = 1
-
-    assert "prior lineage inventory contains an undisposed lineage" in error_text(state)
-
-
-def test_null_audit_ref_cannot_enable_pilot1_successor_use() -> None:
-    state = copy.deepcopy(live_state())
-    record = lineage_record(state, "pilot_1_repair")
-    assert record["audit_ref"] is None
-    record["successor_use"]["positive_control"] = "ENABLED"
-
-    assert "cannot be enabled for successor use while audit_ref is null" in error_text(state)
+    assert result["status"] == "fail"
+    assert "field_crosswalk_callable_recompute_mismatch" in result["errors"]
 
 
-def test_unbound_allowed_action_is_rejected() -> None:
-    state = copy.deepcopy(live_state())
-    state["route_guard"]["allowed_action_binding"]["allowed_next_action_ids"].append("bank_UNBOUND_CARD")
+def test_lineage_omission_positive_control_is_rejected(monkeypatch) -> None:
+    state = live_state()
+    path = ROOT / state["route_guard"]["lineage_universe"]["path"]
+    mutated = json.loads(path.read_text(encoding="utf-8"))
+    mutated["records"].pop()
+    original_reader = guard._read_json_file
 
-    assert "must contain only the Card 2 banking action" in error_text(state)
+    def read_mutated(candidate: Path):
+        if candidate == path:
+            return mutated, None
+        return original_reader(candidate)
 
+    monkeypatch.setattr(guard, "_read_json_file", read_mutated)
+    result = guard.validate_lineage_universe(state)
 
-def test_itl_pin_mutation_is_rejected() -> None:
-    state = copy.deepcopy(live_state())
-    state["route_guard"]["science_source_pins"]["closure"]["git_blob_oid"] = "0" * 40
-
-    assert "science_source_pins.closure git blob OID mismatch" in error_text(state)
-
-
-def test_nonempty_authorized_implementation_target_is_rejected() -> None:
-    state = copy.deepcopy(live_state())
-    state["route_guard"]["authorizations"]["authorized_implementation_targets"] = ["EgoDesktop/"]
-
-    assert "route_guard authorized implementation targets must be empty" in error_text(state)
+    assert result["status"] == "fail"
+    assert "lineage_universe_callable_recompute_mismatch" in result["errors"]
 
 
-def test_renderer_source_cannot_promote_virtualcat_egodesktop_active_route() -> None:
-    state = copy.deepcopy(live_state())
-    surface = next(
-        row
-        for row in state["route_guard"]["route_views"]["current_surfaces"]
-        if row["surface"] == "superseded_8692_route"
+def test_card2_action_policy_rejects_product_runtime_path() -> None:
+    result = guard.validate_card2_action_paths(
+        route_state=route_state(live_state()),
+        changed_paths=["EgoOperator/agent_base.py"],
+        scope_loaded=True,
+        scope_allowed_paths=[guard.CARD2_TASK_PREFIX],
     )
-    surface["surface"] = "canonical_mechanism_successor"
-    surface["role"] = "Selected default-off successor route: K0, VirtualCat, EgoDesktop."
 
-    assert "still promotes VirtualCat/EgoDesktop as an active successor route" in error_text(state)
+    assert result["status"] == "fail"
+    assert result["inferred_execution_paths"] == ["EgoOperator/agent_base.py"]
+    assert "card2_execution_inferred_from_changed_paths" in result["errors"]
 
 
-def test_archived_program_state_cannot_render_supporting_active_sink() -> None:
+def test_card2_action_policy_rejects_missing_scope() -> None:
+    result = guard.validate_card2_action_paths(
+        route_state=route_state(live_state()),
+        changed_paths=[f"{guard.CARD2_TASK_PREFIX}STAGE_CARD.md"],
+        scope_loaded=False,
+        scope_allowed_paths=[],
+    )
+
+    assert result["status"] == "fail"
+    assert "missing_mutation_scope_for_card2_action" in result["errors"]
+
+
+def test_nonempty_implementation_targets_are_rejected() -> None:
     state = copy.deepcopy(live_state())
-    state["route_guard"]["route_views"]["task_routes"][
-        "ego-canonical-mechanism-integration-001a"
-    ]["lane"] = "supporting_active"
+    route_state(state)["authorized_implementation_targets"] = ["EgoDesktop/"]
 
-    assert "former 8692 task sink is not closed_evidence" in error_text(state)
+    assert "authorized implementation targets must remain empty" in error_text(state)
 
 
-def test_capability_verdict_cannot_be_upgraded_to_learning_or_mechanism_evidence() -> None:
+def test_nonzero_science_weight_and_old_s0x_are_rejected() -> None:
     state = copy.deepcopy(live_state())
-    lineage_record(state, "pilot_1_repair")["evidence_ceiling"] = "learning_mechanism_evidence"
+    route_state(state)["science_firewall"]["card2_science_weight"] = 1
+    route_state(state)["science_firewall"]["satisfies_old_s0x"] = True
 
-    assert "capability verdict was upgraded" in error_text(state)
+    assert "zero-science firewall drifted" in error_text(state)
+
+
+def test_card2_execution_and_science_authorization_are_rejected() -> None:
+    state = copy.deepcopy(live_state())
+    route_state(state)["action_dependencies"][guard.CARD2_BANK_ACTION_ID]["execution_authorized"] = True
+    route_state(state)["authorizations"]["science_successor"] = True
+
+    errors = error_text(state)
+    assert "Card 2 execution authorization must remain false" in errors
+    assert "ITL authorizations transcription or fail-closed values drifted" in errors
+
+
+def test_self_authored_second_control_plane_is_rejected() -> None:
+    state = copy.deepcopy(live_state())
+    state["route_guard"]["allowed_action_binding"] = {"allowed_next_action_ids": [guard.CARD2_BANK_ACTION_ID]}
+
+    assert "self-authored route authority or lineage control plane remains present" in error_text(state)
+
+
+def test_committed_itl_claim_ceiling_is_not_upgradeable() -> None:
+    state = copy.deepcopy(live_state())
+    route_state(state)["claim_ceiling"]["max"] = "mechanism validity"
+
+    assert "ITL claim ceiling transcription drifted" in error_text(state)

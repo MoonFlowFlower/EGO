@@ -1,0 +1,180 @@
+{
+  "aggregation_rule": "fixed callable discovery rules over committed or current immutable lineage marker paths; sorted unique lineage_id universe",
+  "claim_ceiling": "callable lineage-universe completeness control only",
+  "discovered_count": 9,
+  "input_artifacts": [
+    {
+      "exists": true,
+      "path": "docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md",
+      "payload_sha256": "2c13f4da507c271c2e9876fe2f9ab11abff76e0ce082abb80fec918328986d28",
+      "repo": "Ego"
+    },
+    {
+      "exists": true,
+      "path": "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_DESIGN_INVALID_AUDIT_RESULT.json",
+      "payload_sha256": "a2aed0bc994592b54f260d74923896eabc0982d3e47ea6c3b1a64879be7061ec",
+      "repo": "Ego"
+    },
+    {
+      "commit": "cb6cd57b8405bbac378f2857766ddaf63e08e194",
+      "exists": true,
+      "git_blob_oid": "e1a7d8d595004c07cea7c8fd70cb1738d42e3b5a",
+      "path": "artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/closure.json",
+      "repo": "intelligence-theory-lab"
+    },
+    {
+      "exists": true,
+      "path": "docs/codex/tasks/ego-canonical-mechanism-integration-001a/STAGE_CARD.md",
+      "payload_sha256": "4432d477d1065226d9f514e024961da1d3baec1a09acfdfe044b9888f4dc8d65",
+      "repo": "Ego"
+    },
+    {
+      "exists": true,
+      "path": "docs/codex/tasks/ego-engineering-only-outcome-utility-route-replacement-001a/TASK-CARD-EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A.md",
+      "payload_sha256": "ecf58a06fc2715d78baa2c62f78b2140cca3094b303e10a5ac61d7d50a975499",
+      "repo": "Ego"
+    },
+    {
+      "exists": true,
+      "path": "artifacts/egodesktop_pet_world_integration_001a/p0/audit_claude_full_hostile_001.json",
+      "payload_sha256": "137eea4e93dace1e327133edeba3ce16e6cdd7f03e4c5e5cf4fb8243d5dbd4b7",
+      "repo": "Ego"
+    },
+    {
+      "exists": true,
+      "path": "artifacts/ego-pet-capability-conformance-001a/result.json",
+      "payload_sha256": "4a33e40c4bcf23bd45ea58437682cb18f196b32f146f045d8269f944c920ebd1",
+      "repo": "Ego"
+    },
+    {
+      "exists": true,
+      "path": "artifacts/ego-pet-capability-conformance-001a/repair_001/result.json",
+      "payload_sha256": "a6537816447d1303415fa632cb2bcbde73902f0441b92e0a7f77b20ee5d7fac6",
+      "repo": "Ego"
+    },
+    {
+      "exists": true,
+      "path": "artifacts/ego-pet-capability-conformance-001a/pe_forage_003/result.json",
+      "payload_sha256": "902759861d7dac4ffad622e73675b478d3b24de5d280f56116a25bdffd5b7dc4",
+      "repo": "Ego"
+    }
+  ],
+  "omission_positive_control": {
+    "expected_count": 9,
+    "mutated_count": 8,
+    "observed_error_codes": [
+      "lineage_universe_omission"
+    ],
+    "omitted_lineage_id": "egodesktop_virtualcat_m1_m3",
+    "rejected": true,
+    "rejection_code": "lineage_universe_omission"
+  },
+  "producer_code_path_hash": "ee6377a2e045de94084c901714a8886e601b0504fd0720fad95a5744c7d54e59",
+  "producer_function": "scripts.codex_session_guard.discover_card2_lineage_universe",
+  "records": [
+    {
+      "discovery_evidence": [
+        {
+          "exists": true,
+          "path": "docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md",
+          "payload_sha256": "2c13f4da507c271c2e9876fe2f9ab11abff76e0ce082abb80fec918328986d28",
+          "repo": "Ego"
+        }
+      ],
+      "lineage_id": "egodesktop_virtualcat_m1_m3"
+    },
+    {
+      "discovery_evidence": [
+        {
+          "exists": true,
+          "path": "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_DESIGN_INVALID_AUDIT_RESULT.json",
+          "payload_sha256": "a2aed0bc994592b54f260d74923896eabc0982d3e47ea6c3b1a64879be7061ec",
+          "repo": "Ego"
+        }
+      ],
+      "lineage_id": "learned_outcome_cards"
+    },
+    {
+      "discovery_evidence": [
+        {
+          "commit": "cb6cd57b8405bbac378f2857766ddaf63e08e194",
+          "exists": true,
+          "git_blob_oid": "e1a7d8d595004c07cea7c8fd70cb1738d42e3b5a",
+          "path": "artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/closure.json",
+          "repo": "intelligence-theory-lab"
+        }
+      ],
+      "lineage_id": "old_k0_science_route"
+    },
+    {
+      "discovery_evidence": [
+        {
+          "exists": true,
+          "path": "docs/codex/tasks/ego-canonical-mechanism-integration-001a/STAGE_CARD.md",
+          "payload_sha256": "4432d477d1065226d9f514e024961da1d3baec1a09acfdfe044b9888f4dc8d65",
+          "repo": "Ego"
+        }
+      ],
+      "lineage_id": "old_route_8692"
+    },
+    {
+      "discovery_evidence": [
+        {
+          "exists": true,
+          "path": "docs/codex/tasks/ego-engineering-only-outcome-utility-route-replacement-001a/TASK-CARD-EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A.md",
+          "payload_sha256": "ecf58a06fc2715d78baa2c62f78b2140cca3094b303e10a5ac61d7d50a975499",
+          "repo": "Ego"
+        }
+      ],
+      "lineage_id": "outcome_utility_closure"
+    },
+    {
+      "discovery_evidence": [
+        {
+          "exists": true,
+          "path": "artifacts/egodesktop_pet_world_integration_001a/p0/audit_claude_full_hostile_001.json",
+          "payload_sha256": "137eea4e93dace1e327133edeba3ce16e6cdd7f03e4c5e5cf4fb8243d5dbd4b7",
+          "repo": "Ego"
+        }
+      ],
+      "lineage_id": "pet_world_v0_p0"
+    },
+    {
+      "discovery_evidence": [
+        {
+          "exists": true,
+          "path": "artifacts/ego-pet-capability-conformance-001a/result.json",
+          "payload_sha256": "4a33e40c4bcf23bd45ea58437682cb18f196b32f146f045d8269f944c920ebd1",
+          "repo": "Ego"
+        }
+      ],
+      "lineage_id": "pilot_1_initial"
+    },
+    {
+      "discovery_evidence": [
+        {
+          "exists": true,
+          "path": "artifacts/ego-pet-capability-conformance-001a/repair_001/result.json",
+          "payload_sha256": "a6537816447d1303415fa632cb2bcbde73902f0441b92e0a7f77b20ee5d7fac6",
+          "repo": "Ego"
+        }
+      ],
+      "lineage_id": "pilot_1_repair"
+    },
+    {
+      "discovery_evidence": [
+        {
+          "exists": true,
+          "path": "artifacts/ego-pet-capability-conformance-001a/pe_forage_003/result.json",
+          "payload_sha256": "902759861d7dac4ffad622e73675b478d3b24de5d280f56116a25bdffd5b7dc4",
+          "repo": "Ego"
+        }
+      ],
+      "lineage_id": "pilot_3"
+    }
+  ],
+  "run_id": "ego_card2_itl_sync_phase_b_20260714",
+  "schema_version": "ego.card2_lineage_universe.v1",
+  "task_id": "EGO-PET-WORLD-V1-CARD2-ITL-AUTHORITY-SYNC-001A",
+  "universe_sha256": "91d4ef79319ea9a4ddb35dc5c49408c4ca640331ebd61ef38fbab6b4842fbdcc"
+}

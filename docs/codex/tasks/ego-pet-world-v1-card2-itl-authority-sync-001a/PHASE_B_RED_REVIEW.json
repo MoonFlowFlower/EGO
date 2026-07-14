@@ -1,0 +1,111 @@
+{
+  "base_commit": "5d00df37d0743e11b1b1e82ce688e3cb64885d09",
+  "blocking_findings": [],
+  "claim_ceiling_acknowledged": true,
+  "executor_session_id": "019f5ef6-e2a6-7161-a573-63b8ba4d339b",
+  "phase": "B",
+  "receipt_binding": "NONRECURSIVE_REVIEWED_DIFF__RECEIPT_EXCLUDED__COMMIT_MUST_BE_DIRECT_CHILD_WITH_EXACT_PATH_SET",
+  "review_id": "CLAUDE-RED-EGO-CARD2-SYNC-PHASE-B-20260714-001",
+  "review_source": "Windows desktop Claude app; direct read-only Ego repository review in Card2 bank admission review project/session; 19 commands",
+  "reviewed_at_utc": "2026-07-14T06:32:49Z",
+  "reviewed_diff_canonicalization": "git diff --cached --binary --no-ext-diff --full-index -- <sorted_reviewed_paths>; raw bytes",
+  "reviewed_diff_sha256": "29f1dad02a8f2fe7ce2922c4d95a2656e557c32fef9e23ca7c21937fa2e0a0d5",
+  "reviewed_semantic_manifest": {
+    "base_commit": "5d00df37d0743e11b1b1e82ce688e3cb64885d09",
+    "per_path_base_blob_or_absent": {
+      "artifacts/reports/program_state_summary.md": "fb97b51412e6bbaf1af730519a9aaddf0d96e9cc",
+      "docs/PROGRAM_STATE_UNIFIED.yaml": "3b15cdebec71324e4d6421889610c0f4bb06c4c6",
+      "docs/STATUS.md": "74b456aad44111d15375dfac1ead3c3c2cb4d439",
+      "docs/codex/tasks/TASK_LANE_INDEX.md": "7ead5f11f3af483502f5056c9e2f8404110a788d",
+      "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/FIELD_CROSSWALK.json": "absent",
+      "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/LINEAGE_UNIVERSE.json": "absent",
+      "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/MUTATION_SCOPE.yaml": "642a4ede9eff9e3b5449da19c4a4a1b0abd55492",
+      "scripts/codex/verify_route_convergence.py": "58e84fe5fa27bebf15b0c9d374d331650e85ead2",
+      "scripts/codex_session_guard.py": "708c2e1a8dc871773be061df0173e5e1cce88bb9",
+      "scripts/tests/test_codex_session_guard.py": "870e0c9cc1d0d45784c1c4f60035dfd38754ccab",
+      "scripts/tests/test_route_governance_supersession.py": "2adeeb89c5a413fdc040dbe348ed20b79461a9b0"
+    },
+    "per_path_reviewed_blob_or_worktree_sha256": {
+      "artifacts/reports/program_state_summary.md": {
+        "reviewed_blob": "b828be4d9620821673d4c3be9147f0bc3abdf369",
+        "reviewed_blob_payload_sha256": "dd7591c89073d58051c44a58478bca5d5d42e35ff243f0330ce60e8f4078d126"
+      },
+      "docs/PROGRAM_STATE_UNIFIED.yaml": {
+        "reviewed_blob": "dc66e02a279e31fcd8acc2f181f951d863c73705",
+        "reviewed_blob_payload_sha256": "d27792771a0934660f98327a095f80bd7d8fea20807442e21369ff005dac2745"
+      },
+      "docs/STATUS.md": {
+        "reviewed_blob": "3f0c0bc3b054c858c802514b1ec35ac13417b05f",
+        "reviewed_blob_payload_sha256": "abd0af59ea2cf5ca3aa8521adcf092288bd22eb96b3bd3f5a3c5d47bf73d9b44"
+      },
+      "docs/codex/tasks/TASK_LANE_INDEX.md": {
+        "reviewed_blob": "d2a566c0590359b30d178f8fd0d2f4852d1e1f4c",
+        "reviewed_blob_payload_sha256": "6546e676e6c1f138f4662b40fe9620a53fb8fa9c1e4e17b216633ae52e39cf32"
+      },
+      "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/FIELD_CROSSWALK.json": {
+        "reviewed_blob": "f41d532bd2d9f4d8208c77fabfd9d17d3ba50fc3",
+        "reviewed_blob_payload_sha256": "00c72bea9c69e2afb33d7dbdbd83d4352500fc12c338a3b7778875d690649135"
+      },
+      "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/LINEAGE_UNIVERSE.json": {
+        "reviewed_blob": "78ae74bf21fb2279d13a0b66240a52ad6fd148c0",
+        "reviewed_blob_payload_sha256": "cc4f2b38c9bb63133a51bd4823a87709db71c71e826179b19f97863d0ba11f31"
+      },
+      "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/MUTATION_SCOPE.yaml": {
+        "reviewed_blob": "fd140d6ed1d07404f4cc47f4f7b17a62b8edc29c",
+        "reviewed_blob_payload_sha256": "cb5a61bcb2207c4a8216aa5cd5844dd4fe2103730d0cbbb4f98e6c463a31b564"
+      },
+      "scripts/codex/verify_route_convergence.py": {
+        "reviewed_blob": "9d81f90f1cafd0ddb8869abbe280bd325509976e",
+        "reviewed_blob_payload_sha256": "060477d69dc92599d75049f4a62ddb858070f3cf87994be9421d94dd44f2d50a"
+      },
+      "scripts/codex_session_guard.py": {
+        "reviewed_blob": "1e754112c8cb0a4c49f018d90b3aab0eecba8087",
+        "reviewed_blob_payload_sha256": "ee6377a2e045de94084c901714a8886e601b0504fd0720fad95a5744c7d54e59"
+      },
+      "scripts/tests/test_codex_session_guard.py": {
+        "reviewed_blob": "7e74ad1728d18ddd2f16a63ea487ba7d414a72a8",
+        "reviewed_blob_payload_sha256": "27589e598d407c0f875b2c446a664352f55a645e558ab4567d6374deeb638927"
+      },
+      "scripts/tests/test_route_governance_supersession.py": {
+        "reviewed_blob": "203491646675fd79e5e94b143c18cf2ea7a0bff1",
+        "reviewed_blob_payload_sha256": "6efbd30715ec7c28543e61e65c53aa7c7a832641aa73e0ac88d615423414370c"
+      }
+    },
+    "phase": "B",
+    "schema_version": "ego-red-reviewed-semantic-manifest-001a",
+    "sorted_reviewed_paths": [
+      "artifacts/reports/program_state_summary.md",
+      "docs/PROGRAM_STATE_UNIFIED.yaml",
+      "docs/STATUS.md",
+      "docs/codex/tasks/TASK_LANE_INDEX.md",
+      "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/FIELD_CROSSWALK.json",
+      "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/LINEAGE_UNIVERSE.json",
+      "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/MUTATION_SCOPE.yaml",
+      "scripts/codex/verify_route_convergence.py",
+      "scripts/codex_session_guard.py",
+      "scripts/tests/test_codex_session_guard.py",
+      "scripts/tests/test_route_governance_supersession.py"
+    ],
+    "task_id": "EGO-PET-WORLD-V1-CARD2-ITL-AUTHORITY-SYNC-001A"
+  },
+  "reviewed_semantic_manifest_canonicalization": "UTF-8 JSON object; Python json.dumps(sort_keys=true,separators=(',',':'),ensure_ascii=false,allow_nan=false); no BOM; no trailing newline; receipt excluded",
+  "reviewed_semantic_manifest_sha256": "b7566e74996ed871f511dea04639a2acc09d47838ea0a12377dae6145c886c07",
+  "reviewer": "Claude",
+  "reviewer_session_id": "desktop-claude:Ego/Card2 bank admission review:2026-07-14-direct-repo",
+  "sorted_reviewed_paths": [
+    "artifacts/reports/program_state_summary.md",
+    "docs/PROGRAM_STATE_UNIFIED.yaml",
+    "docs/STATUS.md",
+    "docs/codex/tasks/TASK_LANE_INDEX.md",
+    "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/FIELD_CROSSWALK.json",
+    "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/LINEAGE_UNIVERSE.json",
+    "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/MUTATION_SCOPE.yaml",
+    "scripts/codex/verify_route_convergence.py",
+    "scripts/codex_session_guard.py",
+    "scripts/tests/test_codex_session_guard.py",
+    "scripts/tests/test_route_governance_supersession.py"
+  ],
+  "task_id": "EGO-PET-WORLD-V1-CARD2-ITL-AUTHORITY-SYNC-001A",
+  "verdict": "NO_BLOCKING_FINDINGS",
+  "what_this_review_proves": "Independent Red pre-commit review found no blocking finding in the exact 11-path Phase-B staged diff bound by the recorded diff and semantic-manifest hashes; the receipt itself was excluded from the reviewed manifest."
+}

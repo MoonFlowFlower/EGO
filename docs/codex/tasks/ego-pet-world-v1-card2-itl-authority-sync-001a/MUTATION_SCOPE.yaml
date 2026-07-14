@@ -1,22 +1,36 @@
 schema_version: codex.mutation_scope.v1
 task: ego-pet-world-v1-card2-itl-authority-sync-001a
 task_id: EGO-PET-WORLD-V1-CARD2-ITL-AUTHORITY-SYNC-001A
-task_kind: red_cross_repo_authority_sync_transition_card_bank
+task_kind: engineering_evidence_governance_cross_repo_sync
+requested_action_id: sync_EGO_pet_world_v1_card2_bank_admission_under_separate_task
+source_route_revision_id: EGO_ROUTE_8692_SUPERSESSION_001A
+source_route_fingerprint: f605f59393dbba586d50c9e4ee7e085570de7b8d012b0b09bc7ccf75865d52b4
+expected_target_route_revision_id: EGO_PET_WORLD_V1_CARD2_ITL_AUTHORITY_SYNC_001A
 independent_red_review_required: true
-red_review_ref: pending_phase_a_exact_diff_review
+red_review_ref: docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/PHASE_B_RED_REVIEW.json
 executor_session_ref: 019f5ef6-e2a6-7161-a573-63b8ba4d339b
 auto_remote_anchor: forbidden
 
 expected_mutation_surface:
-  - phase A banks only the bounded transition card and its diff-bound review record
-  - phase B transcribes the committed ITL route and review receipt field-by-field
-  - phase B enforces action-specific paths, actual-path execution inference, fail-closed mutation scope, committed Red provenance, and independently discovered lineage
+  - transcribe the committed ITL route and Phase-B receipt field-by-field
+  - replace the old self-authored generic action with source-derived action and dependency guards
+  - enforce action-specific paths, actual-path execution inference, missing-scope rejection, committed Red provenance, and independent lineage discovery
+  - regenerate only the four existing route views
 
 allowed_mutation_paths:
-  - docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/STAGE_CARD.md
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - scripts/codex_session_guard.py
+  - scripts/codex/verify_route_convergence.py
+  - scripts/tests/test_codex_session_guard.py
+  - scripts/tests/test_route_governance_supersession.py
   - docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/MUTATION_SCOPE.yaml
-  - docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/COLLISION_RECORD.md
-  - docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/PHASE_A_RED_REVIEW.json
+  - docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/FIELD_CROSSWALK.json
+  - docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/LINEAGE_UNIVERSE.json
+  - docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/PHASE_B_RED_REVIEW.json
+  - docs/STATUS.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - docs/REPO_SURFACE_MAP.md
+  - artifacts/reports/program_state_summary.md
 
 forbidden_mutation_paths:
   - D:/Project/AIProject/MyProject/intelligence-theory-lab/
@@ -24,21 +38,26 @@ forbidden_mutation_paths:
   - EgoDesktop/
   - packages/
   - labs/
-  - scripts/
+  - src/
   - tests/
-  - artifacts/
-  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - artifacts/evidence_ledger/
   - Tasks/TASK_BOARD.yaml
   - docs/codex/tasks/ego-pet-world-v1-capability-headroom-001a/
 
-phase: phase_a_transition_card_bank
-phase_rule: >-
-  Stage literal Phase-A paths only. git add -A and git add . are forbidden.
-  Phase A requires an independent Claude review bound to the exact reviewed
-  diff before its single local commit. Phase B must update this scope under the
-  separately committed transition card.
+authority_sync_exception:
+  exact_task_id: EGO-PET-WORLD-V1-CARD2-ITL-AUTHORITY-SYNC-001A
+  itl_route_state_blob: 8b2db13a023873775b80bfe4e8eab7e53a7bba62
+  enabled: false
+  consumed: true
+  wildcard_allowed: false
+  operator_override_allowed: false
 
-claim_ceiling: field-by-field authority sync task-card banking only
-local_commit: authorized_phase_a_only
+phase: phase_b_field_sync_and_guard_enforcement
+phase_rule: >-
+  Stage literal Phase-B paths only. git add -A and git add . are forbidden.
+  The Phase-B review receipt is excluded from the reviewed diff and added only
+  after independent Claude NO_BLOCKING_FINDINGS on the exact staged diff.
+claim_ceiling: field-by-field authority sync and guard enforcement only
+local_commit: authorized_phase_b_only_after_diff_bound_claude_review
 push: forbidden
 tag: forbidden

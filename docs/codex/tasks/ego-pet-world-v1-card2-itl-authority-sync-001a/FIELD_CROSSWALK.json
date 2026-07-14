@@ -1,0 +1,1987 @@
+{
+  "aggregation_rule": "flatten every dict/list leaf in sorted-key/index order; require one verbatim target leaf per source leaf",
+  "claim_ceiling": "field-by-field authority transcription evidence only",
+  "entries": [
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_dependencies/bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/blocked_until/0",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_dependencies/bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/blocked_until/0",
+      "transform": "verbatim_json_value",
+      "value_sha256": "1946b7c92720c68f1a228d228d65476830d89e8859c94bbca5176d3683d058b5"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_dependencies/bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/blocked_until/1",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_dependencies/bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/blocked_until/1",
+      "transform": "verbatim_json_value",
+      "value_sha256": "75201552d56f8ccfa74e15f2893fdd501a375bb09b73e55cb4234aca73a25299"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_dependencies/bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/blocked_until/2",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_dependencies/bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/blocked_until/2",
+      "transform": "verbatim_json_value",
+      "value_sha256": "69942b5c3636d1f945409b2589883c3ebb32a776b04de4a074543588c62ee6f3"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_dependencies/bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/blocked_until/3",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_dependencies/bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/blocked_until/3",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d65ced012d85d54f6207881a01affcf3b581769bc710a04c23da44abfabf6228"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_dependencies/bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/dependency_evaluation",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_dependencies/bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/dependency_evaluation",
+      "transform": "verbatim_json_value",
+      "value_sha256": "b8834135e7fdf0d30942df902c0c6cf36ba709c43a9264f324082989306474cb"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_dependencies/bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/execution_authorized",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_dependencies/bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/execution_authorized",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_dependencies/bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/permission",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_dependencies/bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/permission",
+      "transform": "verbatim_json_value",
+      "value_sha256": "00b691097b8f3c6ee38452666098263de79cd3cbc7d0ea24d2bd09027d7088bb"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/action_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/action_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d7cff36fe559d907558458c4a32548d2c9e2c9430a9d7596703abe3b29288bfe"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/allowed_exact_paths",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/allowed_exact_paths",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/allowed_path_prefixes/0",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/allowed_path_prefixes/0",
+      "transform": "verbatim_json_value",
+      "value_sha256": "8522cee6971cc861bf5c76bdce01d1a51b104d68f2ae3977c377342fd1be382c"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/execution_inference",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/execution_inference",
+      "transform": "verbatim_json_value",
+      "value_sha256": "3cf6dceac4bf7066d9149b2596815b6a1d1b352146da7aa47fa5f8c39d14309c"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/forbidden_path_prefixes/0",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/forbidden_path_prefixes/0",
+      "transform": "verbatim_json_value",
+      "value_sha256": "a1ab128c48a967e80f691236f52c3f650f6a7229d3e1b88614874e16b1dd9b5a"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/forbidden_path_prefixes/1",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/forbidden_path_prefixes/1",
+      "transform": "verbatim_json_value",
+      "value_sha256": "460547fc80a3a1ae5048d7ac7e4f2093cf1ec160fc490cdf64e8fe326a36bfa0"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/forbidden_path_prefixes/2",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/forbidden_path_prefixes/2",
+      "transform": "verbatim_json_value",
+      "value_sha256": "0d0d94c38354fb8f818238c250e206063713e3157b37374024da9f4db1eda767"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/forbidden_path_prefixes/3",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/forbidden_path_prefixes/3",
+      "transform": "verbatim_json_value",
+      "value_sha256": "35f6f5f500ad9fba8712df8bf824c6abe31ef68ff4dc2b3f0581c1590e44d6ad"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/forbidden_path_prefixes/4",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/forbidden_path_prefixes/4",
+      "transform": "verbatim_json_value",
+      "value_sha256": "ce716212ced2c17ee2716dfd03d26faa6c78bf9e3e475eae58f710ed68194204"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/forbidden_path_prefixes/5",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/forbidden_path_prefixes/5",
+      "transform": "verbatim_json_value",
+      "value_sha256": "23772e2a5d620e2bab7de2e63af2def01ee493e8fc32f2c4c12ab86b2064561b"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/forbidden_path_prefixes/6",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/forbidden_path_prefixes/6",
+      "transform": "verbatim_json_value",
+      "value_sha256": "9cf8d1e8069ee62089c743718a930c72090d8506d43ffcb62a277c764859d851"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/missing_mutation_scope",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/missing_mutation_scope",
+      "transform": "verbatim_json_value",
+      "value_sha256": "11affde0bbe909a26c8f57c72e0dbc83f85df83bcf9fe4896ea8dd43e84669c1"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/self_declared_scope_expansion",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/self_declared_scope_expansion",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_resolution/banking_usable_now",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_resolution/banking_usable_now",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_resolution/effective_capability_card_bank_action_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_resolution/effective_capability_card_bank_action_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d7cff36fe559d907558458c4a32548d2c9e2c9430a9d7596703abe3b29288bfe"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_resolution/exact_action_identity_live",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_resolution/exact_action_identity_live",
+      "transform": "verbatim_json_value",
+      "value_sha256": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_resolution/old_generic_action_live",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_resolution/old_generic_action_live",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_resolution/state",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_resolution/state",
+      "transform": "verbatim_json_value",
+      "value_sha256": "701b4dc39e9e0eb34460771b84da3a7c20e1f1c436f519c89d4de7eb64b320b0"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/active_mechanism_frontier",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/active_mechanism_frontier",
+      "transform": "verbatim_json_value",
+      "value_sha256": "30a0924a3360be687d1df9fcbbfdff62c01bc0fd14036ab9076cf7f451568666"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/allowed_next_actions/0",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/allowed_next_actions/0",
+      "transform": "verbatim_json_value",
+      "value_sha256": "2c82a6214f9a1396cac739bfaf7f3a3b4d2c4937c01a718c41e659ffbe7f9ac1"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/allowed_next_actions/1",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/allowed_next_actions/1",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d7cff36fe559d907558458c4a32548d2c9e2c9430a9d7596703abe3b29288bfe"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/allowed_next_actions/2",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/allowed_next_actions/2",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d50e49a137656ce687b6b6c09c82014028c201e866add268cfe6e6db032acef2"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/authorizations/capability_card_bank",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/authorizations/capability_card_bank",
+      "transform": "verbatim_json_value",
+      "value_sha256": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/authorizations/capability_implementation",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/authorizations/capability_implementation",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/authorizations/experiment_execution",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/authorizations/experiment_execution",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/authorizations/mainline",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/authorizations/mainline",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/authorizations/mechanism_evidence",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/authorizations/mechanism_evidence",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/authorizations/remote_anchor",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/authorizations/remote_anchor",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/authorizations/runtime",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/authorizations/runtime",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/authorizations/science_successor",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/authorizations/science_successor",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/authorizations/scoring",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/authorizations/scoring",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/authorized_implementation_targets",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/authorized_implementation_targets",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/capability_route_registered",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/capability_route_registered",
+      "transform": "verbatim_json_value",
+      "value_sha256": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/0",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/0",
+      "transform": "verbatim_json_value",
+      "value_sha256": "09775da9ca6435fbb68e9960d5397712d894adebd27fa02003a7919311fbba32"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/1",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/1",
+      "transform": "verbatim_json_value",
+      "value_sha256": "8b0e0c0bff1cb0da672a96837c89150865824588e520d3b9b84776f635623a1c"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/2",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/2",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f79c78f3e2bae128a0ae7cc67953fc8fc2859038d52167030da017de27610fe9"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/3",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/3",
+      "transform": "verbatim_json_value",
+      "value_sha256": "5e99a64d2bfbb52a0bd9c0282a0ed243cb75dc4b22a7511445d381a61f9c2227"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/4",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/4",
+      "transform": "verbatim_json_value",
+      "value_sha256": "eb8a6459c2719a8aac4f50c35903474450077e4521f579762b0d22ad3ca547fe"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/5",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/5",
+      "transform": "verbatim_json_value",
+      "value_sha256": "48385104d55a3fa5fe749c4410b040a55281dab7de8f91d39fc4239ddc7211b8"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/6",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/6",
+      "transform": "verbatim_json_value",
+      "value_sha256": "8fc1e546495be129a6cc4b834a9406b2ef496095d331037894d62d86aa5ab2dc"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/7",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/7",
+      "transform": "verbatim_json_value",
+      "value_sha256": "58371a494ae6944cdd827df034b4fe52e25363b4581f2aae0a10af00cc834975"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/8",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/8",
+      "transform": "verbatim_json_value",
+      "value_sha256": "75de9dec489df8b6702cad240ec87ff7586d194e2dfd1a9e833e40331dcd50a8"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/9",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/9",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4d088718c2b383ac45c5b8651c7865020cf0de26a498f78fc038f10f8237a7c6"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/10",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/10",
+      "transform": "verbatim_json_value",
+      "value_sha256": "755adadc929ab8455baa310df7442245f6a9d1d5629724703297b1053249db25"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/11",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/11",
+      "transform": "verbatim_json_value",
+      "value_sha256": "7a6dcc3f28c36dbca8e099aa48386b0682adc8b2d25c5eab2b91ed79aefa2855"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/12",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/12",
+      "transform": "verbatim_json_value",
+      "value_sha256": "937470ded1cb229879893ca2b4c81a088dc2010f7cf55e1991005ee26af43160"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/13",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/13",
+      "transform": "verbatim_json_value",
+      "value_sha256": "86774421a0131b1e632e842a443fee68ea414f7cb372aa4aa95b805fce68f971"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/14",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/14",
+      "transform": "verbatim_json_value",
+      "value_sha256": "3fef9bf262206ddc3489a546424a2cc53e6f30a6e8a5ffb0ed2d33faed0de86b"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/max",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/max",
+      "transform": "verbatim_json_value",
+      "value_sha256": "52c93722cb2b6c2661b3037cc803315621de1501ec50875ab2583952d5574a25"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/created_by_task",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/created_by_task",
+      "transform": "verbatim_json_value",
+      "value_sha256": "e06a22b3b44c5183a7cf38ddda991c873f6f48b7354981361723734fb3c08d26"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/current_state",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/current_state",
+      "transform": "verbatim_json_value",
+      "value_sha256": "727232951b450a487cd12a5e9db780fe2881e8e0ebcd7718e11a98b5536e44ac"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/forbidden_next_actions/0",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/forbidden_next_actions/0",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d8f370071412500c1fa0ff6ee5f7709832f3f892e541b901a725de2a4433dd9b"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/forbidden_next_actions/1",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/forbidden_next_actions/1",
+      "transform": "verbatim_json_value",
+      "value_sha256": "205e5765d4c78c7ad0c4e7d1e7026b7e92ccb79e7f3e3c7f0f619669ecb1d636"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/forbidden_next_actions/2",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/forbidden_next_actions/2",
+      "transform": "verbatim_json_value",
+      "value_sha256": "3753f6232eb24176ef58c8a88ef01764e0512be57b2bdf084e430dbe9b0c34ab"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/forbidden_next_actions/3",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/forbidden_next_actions/3",
+      "transform": "verbatim_json_value",
+      "value_sha256": "5ebc4d17fa72507ea45481d3efb345d00f382581e5720426f97fcc15eed4e165"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/forbidden_next_actions/4",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/forbidden_next_actions/4",
+      "transform": "verbatim_json_value",
+      "value_sha256": "354596ac06f79de51152d4540f9ed93f2695745f1aaa0b117821e43db784f1b2"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/forbidden_next_actions/5",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/forbidden_next_actions/5",
+      "transform": "verbatim_json_value",
+      "value_sha256": "eb1fbf23a3a62e49a37cbb3baba3b3833f8d87c05db648257a43bda93af238fa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/forbidden_next_actions/6",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/forbidden_next_actions/6",
+      "transform": "verbatim_json_value",
+      "value_sha256": "7a4abf3713da66ba9f325fb48491b86eba30fdfe13a238cca1b45d2b9055a28a"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/forbidden_next_actions/7",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/forbidden_next_actions/7",
+      "transform": "verbatim_json_value",
+      "value_sha256": "9a7665ec29e858505313b52317a9bb8fbb19ed8df772b28442a1432832aa15a4"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/forbidden_next_actions/8",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/forbidden_next_actions/8",
+      "transform": "verbatim_json_value",
+      "value_sha256": "117273a03b66360aa162aff8c01bf8bf0503ab61f61183c86e8e554712e1538f"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/implementation_authorized",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/implementation_authorized",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/mainline_authorized",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/mainline_authorized",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/mechanism_evidence_authorized",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/mechanism_evidence_authorized",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/phase",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/phase",
+      "transform": "verbatim_json_value",
+      "value_sha256": "e587b5ff637d832243f0e4a45180bf35ff6cec259fde0f67692800653f8ad9b5"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/pilot_1_reuse/positive_control",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/pilot_1_reuse/positive_control",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/pilot_1_reuse/regression_baseline",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/pilot_1_reuse/regression_baseline",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/pilot_1_reuse/unblock_requires_verified_audit_ref",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/pilot_1_reuse/unblock_requires_verified_audit_ref",
+      "transform": "verbatim_json_value",
+      "value_sha256": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/0/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/0/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "453bd30a3aa93a4caca4a619e768da2d2d46cf9bad6e185a167bed33d148a1a9"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/0/lineage_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/0/lineage_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "8fef2eaceb22ce7b9d5638211c3450e875cc9a3efaa84d73e8100b43680edef1"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/1/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/1/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d967d70ddab4622c1b972e6c507f1ea0f643c23f9a719bade4f3d4cd7349a049"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/1/lineage_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/1/lineage_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "03c036259df8d9d8f5605fbfed2620a94b78111a0315bf18550f610f11fdf987"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/2/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/2/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "5dea7998d621750bc43ee37fd16460853e1067a6ccaa893b09976b71c72b76f7"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/2/lineage_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/2/lineage_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "42f91f7e29cfdbcdba180bb016dd19d231902bf4ee66fafe9da3a626e644d388"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/3/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/3/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "c28d90a25e9d1c7ea500972cd24f6425c1a5afb7fbc4af2dda66b80fffb876e2"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/3/lineage_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/3/lineage_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f3f806a0f151126c9c1b66515b9b235496d048dc60912a2d8328c764debb39d8"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/4/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/4/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "34bf06142b4f8f6220605a5dc67b8e6847852e645f5c773325d15357f1c10ceb"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/4/lineage_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/4/lineage_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4b8852d8e5794bcfaeda53fe7bb86e722195879658c3af4c13ed8ac57b669d0f"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/5/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/5/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d4f58158d793c83d03ccabe7b7fa49d7759a18b1ef392ba314f24e2de9123cd0"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/5/lineage_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/5/lineage_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "0e7c0f64758d59cf81ebcfba8645d7e94ae347bc3cb25b24fda6237f506853eb"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/6/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/6/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "ef69aaf0ec91479d157b3d8e21a5edb1816fb44197ede5fe38f5c312daacc95f"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/6/lineage_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/6/lineage_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "715ed2e839ce610a3e4616aea149cc6a65bfa9ed478a170d08b4dfb95a6fad20"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/7/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/7/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "87a95d6b40e54fe7918b471661a0f05d50f13cb3f61cea3db0460594a37955b7"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/7/lineage_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/7/lineage_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "c17ea4e20f46945173a4093d503899a3875ed7b7818af5663a90f7d1ca9e7fff"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/8/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/8/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f3fd1fbc1c5854f59169aa498f29a03e37339b34d4474b08ec38678ffedf0c02"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/8/lineage_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/8/lineage_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "a6d5edfcc5db71455e2645bc2c812a1e33224cda41a9e4057886e44be176cfee"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/9/audit_ref",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/9/audit_ref",
+      "transform": "verbatim_json_value",
+      "value_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/9/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/9/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "c18b80ec06b9525049ef292d51955cf7974857ec126df13defd1ca98a456e75c"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/9/lineage_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/9/lineage_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "3b742d6143d1fb5f646687deec303bcba3dd0c61511932c3fcd22563e88e9240"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/9/positive_control_reuse",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/9/positive_control_reuse",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/9/regression_reuse",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/9/regression_reuse",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/10/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/10/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "bef9bd359be962abb02b8597b7e11a548a4d11498e7f92b21a099b635428bd0e"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/10/lineage_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/10/lineage_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "7f2c6f053bef46944f7e4b7ecaa4840e19a0bf5034e46e52a0df5d5ac0ba738e"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/route_family",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/route_family",
+      "transform": "verbatim_json_value",
+      "value_sha256": "e58ccfeffea55aa171ba12a1d16843604bb4a96607482c2d11997cb79f00c193"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/route_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/route_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "55be9e204dd9d3f17d38ef9825dedd153baa417e18f0aba9bdeb375baaeb98d5"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/route_kind",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/route_kind",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4c12b6f44f315f723f872c0e312af5292c9b0a90031c2e782ad29d1fac8f6710"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/runtime_authorized",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/runtime_authorized",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/science_firewall/card2_science_weight",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/science_firewall/card2_science_weight",
+      "transform": "verbatim_json_value",
+      "value_sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/science_firewall/inherits_h0_h1_freeze_formal",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/science_firewall/inherits_h0_h1_freeze_formal",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/science_firewall/inherits_old_k0r",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/science_firewall/inherits_old_k0r",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/science_firewall/may_reopen_old_k0",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/science_firewall/may_reopen_old_k0",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/science_firewall/may_satisfy_science_successor_boundary",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/science_firewall/may_satisfy_science_successor_boundary",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/science_firewall/may_supply_mechanism_attribution",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/science_firewall/may_supply_mechanism_attribution",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/science_firewall/satisfies_old_s0x",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/science_firewall/satisfies_old_s0x",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/science_successor_authorized",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/science_successor_authorized",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_boundaries/old_generic_action/action_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_boundaries/old_generic_action/action_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4bb3e3449896c9e205339b4f9210dd9d65c26f1dea5aa3937b84c849fc7860a3"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_boundaries/old_generic_action/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_boundaries/old_generic_action/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "8f434304aa5a56c05c701b169f0d875e2ed1a3d220aeea3f98842362bd2f9cab"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_boundaries/old_generic_action/live",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_boundaries/old_generic_action/live",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_boundaries/old_k0_terminal_packet/inherited_authority",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_boundaries/old_k0_terminal_packet/inherited_authority",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_boundaries/old_k0_terminal_packet/relation",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_boundaries/old_k0_terminal_packet/relation",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d5b226d6c8b7f8b695e9191618a160b9b16394acd46826eb0ceda79d6d441779"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_boundaries/old_learned_outcome_lineage/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_boundaries/old_learned_outcome_lineage/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "731bf90c50bc41dbaf81a76bd75330afa89e7c6486e6eeb989f13348d969c83c"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_boundaries/old_learned_outcome_lineage/live",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_boundaries/old_learned_outcome_lineage/live",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/commit",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/commit",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d5a114593467f116b95f6b587c3b33ca1009961451b77c8054c9bff937cdc20d"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/0/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/0/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "1465ea1bf82b2103a4b6404af5647669a7d6bfda11c0a5a2f1f3beeb4858b31a"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/0/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/0/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "cc9e5ea5bd8fbedba204e19addc5055f00e2a681f54dc8333bab3003658f185c"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/0/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/0/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "de9929e627b37503f10cd3a3257e532fb09acdda27ef69c4cb36fd411dd1240b"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/1/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/1/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "419333a7b0b3dac30aeca749ed9628cccdf0842661063712c1c7d08ff41a92f9"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/1/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/1/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "a74cc5e0d5f005ede74e28975e081f9c93d2584cb9204058a42514afc4788b4c"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/1/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/1/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "7b78ec06bac06fb1dde4d3f2ce8b92329616127829fbd154a35e3c3a7a225ebb"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/2/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/2/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d1892c27dd7d4825fe395eb26d0291b58857bfa125ba82720b6f3821ffd8fc53"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/2/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/2/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4f82d3c5301bf7151c3282d3a81ed73e39b2b630b47e91443740f97dae2c8876"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/2/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/2/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "565353b5018816fc3108c72ef44ba24f54ab9f95e9d381a10a365a6f6128b653"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/3/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/3/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "45ca661433d904df9e0c0405e8b60ce3df7ddda82da91878a946d958237c9b80"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/3/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/3/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "3d5f389931a14cba1933ea659edf887dd08c6a07074f02ca70dc84cd7d39ac60"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/3/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/3/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "b5baceb736285c545a11df66428c7100298e09ce5844635af42d4ae8d0f9f37a"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/4/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/4/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f61557877818ce25553c081f641aebe08b6b1e3a884ff9d42795f4d82357d0f1"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/4/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/4/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "2ae7c5503d51ad9ce5fffd4d932484809c3f971f6ff617fc93c937fe197077a4"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/4/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/4/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "24d7c1289715c9b1f8c5999ef7f75323ac0d126426fc59c71acfbcffe9b1af12"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/5/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/5/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "5f0e3cff1b67d8f9039ada98c10486480ca8d43adeddbffd0821626c835c08f0"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/5/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/5/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "6ed073ce5caafa92559ba26d27f57dc2b73794ca3c6e6168e3259db1f3b69d0a"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/5/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/5/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "2bc4c975b52ff88740a24ea49e7e8c36a7e0ffb40d710986381bda3e26d3752f"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/relation",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/relation",
+      "transform": "verbatim_json_value",
+      "value_sha256": "797cc9ae179bdc0e5744f7c48c06cb04dda97a3c3803a57ed4abd3a00895ec2d"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/0/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/0/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "6c64463fd01ecd09b28ffb9aff44e72fe217c8b836c6ecc199ecd6b99c3e601a"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/0/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/0/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "148803f58230724bff4b200ece4f760e08b626d3782b3ce7d4689d4d41b58b22"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/0/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/0/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "61e2e57383f179e763b3cba289edb1dca330d47a8f23c415240674176d2871ee"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/1/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/1/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f234d94fd7aa7c091b2819e7a3af86542f6b588a682d96534bfb5a3ce21d95b6"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/1/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/1/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "c7c9a7911a2421b5402120af89ef0a479c6514aac6ac9d0fc7a04628145c7776"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/1/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/1/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "187759d655fd10fe4fdeb8197dd8c2eab17a4c086e71354bac9a22dcd42fc94d"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/2/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/2/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "25b5db6475eb8f959eac20a86403427600b35b8d0301dd30f0bebd402a6d60c5"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/2/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/2/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "0dad239df7f49ed84699f1084045637e871da9342a1f741e91141283c26e60ea"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/2/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/2/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "9da212d38eca734b73ac8a23300e1650dc05872f899c57bb6d0eee82fd854dd9"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/3/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/3/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "7d638cd8597808266b4af4f81b7a0baf9a03060acff17aa576fc85b094e3425e"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/3/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/3/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "6e55440e76182cbec4f1ab0bd684fc778986c28bae366ff34bd440905e73dc69"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/3/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/3/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "cb67f65a026b6f9f75e5742b4a8b9d9312055b43c09375b587caa4da31527806"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/4/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/4/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "385a0a18981e5c1f8ece8a24abd828911447cb951177573212e6ed0565b19a62"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/4/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/4/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f0f565ab3547f05ba873709d6e5301dcb5b661bf987b4e5117a4d2368bf2ed79"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/4/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/4/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "0b035627f8158664b93b8bffba6522203ac810a917fc9067394480e96b79dc81"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/5/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/5/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d97e1df49dd82b8ed803c7659ed623d54caabed1b44a09ec45e84f69f0094bd7"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/5/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/5/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "23422dc4451a2b97d756b46099171b97b34f43918e5bc7533f5f8c4b8e8b6d33"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/5/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/5/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "ec037439bf1579e38c4e1fd4bee8263f14a58f46324c88b2e64e24deca912a1f"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/6/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/6/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d40c3adcab40f83b6eed278132629d263d8d1fe5eacb80dc7481851ce678bcc5"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/6/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/6/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "593466736b6956c313b7196f989e248455096eb0489931cf88a14957865bd2d7"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/6/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/6/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "18fa06fa0883a66f56bf88658389a651d040a2c74777f9e4ef25a7ffb2fefca4"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/relation",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/relation",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d5b226d6c8b7f8b695e9191618a160b9b16394acd46826eb0ceda79d6d441779"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/phase_a/card_blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/phase_a/card_blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f50084439fa9e3a7aa896dd14f3e12b2660d3daa56432a6a99c928397d6631d2"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/phase_a/card_path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/phase_a/card_path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "38ec1f3def4172a7fc4110630cf9b20fe25024523e6bb7dd6765ec38397391d7"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/phase_a/card_sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/phase_a/card_sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fd0a5a5c396d3f9f5965bf3d864d585fd31c0d277223e5db3ee5e5d57e72e7b2"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/phase_a/commit",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/phase_a/commit",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4ab0a75cbe4180f5564411ea577eb4e1b9771a3df7b2be11d103f62818aeb384"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/phase_a/parent",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/phase_a/parent",
+      "transform": "verbatim_json_value",
+      "value_sha256": "36647fea8e9d4222fd7f288b06ea469cc847922fa772c4d0a3a5dd24a77d29d0"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/phase_a/review_manifest_sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/phase_a/review_manifest_sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4105039541be7ae2e9ae2d0fb45cd2ec8b69c27b1adcb37cc49225303814d684"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/phase_a/review_receipt_blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/phase_a/review_receipt_blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "cf786628d5467e05867aa924bcefc86aeac69cbb62532573939c1f156615c908"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/phase_a/review_receipt_path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/phase_a/review_receipt_path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "8e09bef060db582f8d36af79498510a1b34834f3279acb5a8ed1afeff46675ce"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/phase_a/review_receipt_sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/phase_a/review_receipt_sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d19ffcc83d2fcd2bd8950766976cd2bfad09c705c584aac86bda46c603ce5712"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/shared_contracts/0/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/shared_contracts/0/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "bb4025c53fbeb11b599d1f730b7961a23d6f8c4561813f167c8a33faec9e201a"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/shared_contracts/0/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/shared_contracts/0/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "0e70a02e40bf96d469a39617fb08f63ffdfc8d2754010366696b7f6b778a1366"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/shared_contracts/0/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/shared_contracts/0/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "1d3ad45fd172e2df564e70a5fc434a74b8ac78316eff97ee06d8a05617dc8307"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/shared_contracts/1/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/shared_contracts/1/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "de0c36bbe4825469fdc89064d1f9694e6b9e3bc771b45b38c7e5916337cb0b83"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/shared_contracts/1/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/shared_contracts/1/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f02852975d3ef2df062b4d88828f5d4cf4bd4ba7e7552b49022ef2c290d80e9a"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/shared_contracts/1/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/shared_contracts/1/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "534ad44844214a793741ea6b42b8e8a77ba0263f815625fbe5715ce475a24ce1"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/shared_contracts/2/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/shared_contracts/2/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fa7054f98ebbb098483aed84654f07cae7040962078c3b606c0b0862593924b0"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/shared_contracts/2/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/shared_contracts/2/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "73b0d25a60477087ded42d986605cc7f203e2a2adbf0f0f056813361da0aa404"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/shared_contracts/2/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/shared_contracts/2/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "40a9f27eab27439c1fff117b7579b5a4c30ebb837b82ed8c64f889a3d60b7148"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/shared_contracts/3/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/shared_contracts/3/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "06b5e9e1de91715924edfb7d2e9f4e22acdac30b77b64715db42e2d5c5ebab20"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/shared_contracts/3/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/shared_contracts/3/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "6eccb94599815b4b743a8be27ff1216a813e04356a6e33ce9b1b0894418677c1"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/shared_contracts/3/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/shared_contracts/3/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "725df397a7877939a11da50018644ed0e2f5333cb14f023d5f99f2a51d435509"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/theory_pressure_authorized",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/theory_pressure_authorized",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/updated_at_utc",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/updated_at_utc",
+      "transform": "verbatim_json_value",
+      "value_sha256": "9b9c6cddc63a50937a83b2ed851b826fd4553e138a64e7e58b574bb1402cf0c0"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/base_commit",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/base_commit",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4ab0a75cbe4180f5564411ea577eb4e1b9771a3df7b2be11d103f62818aeb384"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/blocking_findings",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/blocking_findings",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/claim_ceiling_acknowledged",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/claim_ceiling_acknowledged",
+      "transform": "verbatim_json_value",
+      "value_sha256": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/executor_session_id",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/executor_session_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "c362aa255fd43de1cc17baee9366d8773430e095530dfa2aec18261b1cb5a0f8"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/native_executor_session_id_available",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/native_executor_session_id_available",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/nonblocking_findings/0/finding_id",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/nonblocking_findings/0/finding_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "0b474092d65ed944d8f85d5e1bdec0fb310b2b678ebc44e7295a79a2e77b2cc4"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/nonblocking_findings/0/text",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/nonblocking_findings/0/text",
+      "transform": "verbatim_json_value",
+      "value_sha256": "b46d5a8b7768c5b5b6840402a50cd774a46d2db581e0bb9e442655376e2b2d72"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/nonblocking_findings/1/finding_id",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/nonblocking_findings/1/finding_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f64d24faedb67b1a2de20a1ee29cbac00078675d34db5ff5fcddd0c9793fdbaf"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/nonblocking_findings/1/text",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/nonblocking_findings/1/text",
+      "transform": "verbatim_json_value",
+      "value_sha256": "7e6ff889d906b882dd079e25a0c44b852525881e012e46bc753b820e5c977b97"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/nonblocking_findings/2/finding_id",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/nonblocking_findings/2/finding_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "863ec6f3469d489a998a14dd61261c9976a2e891e25c19d8d9adeb9209038f93"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/nonblocking_findings/2/text",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/nonblocking_findings/2/text",
+      "transform": "verbatim_json_value",
+      "value_sha256": "2b1c69c98b796bbded9370a64a9479d8a000a1f07306f2bdda5a663d5eb18526"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/nonblocking_findings/3/finding_id",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/nonblocking_findings/3/finding_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "a79ceaf6ffdf96da734e6f99028c0a6897880165c4ff78983ebed61eb59a612c"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/nonblocking_findings/3/text",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/nonblocking_findings/3/text",
+      "transform": "verbatim_json_value",
+      "value_sha256": "96ef1ada18230b9fabdb523253a32f215a344ad48bdd4c17b45d89e9b4bbfca3"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/nonblocking_findings/4/finding_id",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/nonblocking_findings/4/finding_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "eecf7a50d3bbcfb039a9dad5eca7bcb2b33d91ac43b8d314de781a2cc11b9936"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/nonblocking_findings/4/text",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/nonblocking_findings/4/text",
+      "transform": "verbatim_json_value",
+      "value_sha256": "db923da7b7f30a54e337640f5518b666c7a89bd2059730aa85cb7d56b99183c1"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/per_path_base_blob_or_absent/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1admission_validation_report.json",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/per_path_base_blob_or_absent/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1admission_validation_report.json",
+      "transform": "verbatim_json_value",
+      "value_sha256": "15dbb2c4361b809a46b847b3b6c071f3c27c096057d31c45351902b79fe39efd"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/per_path_base_blob_or_absent/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1events.jsonl",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/per_path_base_blob_or_absent/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1events.jsonl",
+      "transform": "verbatim_json_value",
+      "value_sha256": "15dbb2c4361b809a46b847b3b6c071f3c27c096057d31c45351902b79fe39efd"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/per_path_base_blob_or_absent/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1state.json",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/per_path_base_blob_or_absent/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1state.json",
+      "transform": "verbatim_json_value",
+      "value_sha256": "15dbb2c4361b809a46b847b3b6c071f3c27c096057d31c45351902b79fe39efd"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/per_path_base_blob_or_absent/src~1route_state_machine_001a~1state_machine.py",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/per_path_base_blob_or_absent/src~1route_state_machine_001a~1state_machine.py",
+      "transform": "verbatim_json_value",
+      "value_sha256": "0b4e71df99c71f2c51bea4076b81b87a312b1930192c9418a22676d45fb94626"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/per_path_base_blob_or_absent/src~1route_state_machine_001a~1validator.py",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/per_path_base_blob_or_absent/src~1route_state_machine_001a~1validator.py",
+      "transform": "verbatim_json_value",
+      "value_sha256": "b156bbbfa839275ed49b1fb1db2a0c0619fe23d07045ae484c9026a6aa4e505c"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/per_path_base_blob_or_absent/tests~1route_state_machine_001a~1test_validator.py",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/per_path_base_blob_or_absent/tests~1route_state_machine_001a~1test_validator.py",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f727c58cfddfd25470c0894fa68396f2df998c666a1be9296dc66eebf51b46cc"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/per_path_reviewed_blob_or_worktree_sha256/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1admission_validation_report.json/reviewed_blob",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/per_path_reviewed_blob_or_worktree_sha256/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1admission_validation_report.json/reviewed_blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "87c9820835342dc2ea4b419519653354a1c20ce09f9dd0cce9c5ebbe1180b318"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/per_path_reviewed_blob_or_worktree_sha256/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1admission_validation_report.json/worktree_sha256",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/per_path_reviewed_blob_or_worktree_sha256/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1admission_validation_report.json/worktree_sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "8c2dc6d764cfd7ae2b771aed399842e6e9dbeb8da7ec90c76c4e9a96910e8042"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/per_path_reviewed_blob_or_worktree_sha256/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1events.jsonl/reviewed_blob",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/per_path_reviewed_blob_or_worktree_sha256/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1events.jsonl/reviewed_blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "e2075e5e908e83890cf12651d77c4c8e2bbec4f17a653964091a2073e0d09535"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/per_path_reviewed_blob_or_worktree_sha256/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1events.jsonl/worktree_sha256",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/per_path_reviewed_blob_or_worktree_sha256/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1events.jsonl/worktree_sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "2ac14f9baee80bb0f0bfe4c838e58cfe03002eb81aa42d03a93fb39afe75e7ab"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/per_path_reviewed_blob_or_worktree_sha256/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1state.json/reviewed_blob",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/per_path_reviewed_blob_or_worktree_sha256/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1state.json/reviewed_blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "7d24a07ddf1b26d66dbc0e1adf2b99c340551b90dc1734b7030a607c2177a414"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/per_path_reviewed_blob_or_worktree_sha256/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1state.json/worktree_sha256",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/per_path_reviewed_blob_or_worktree_sha256/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1state.json/worktree_sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f44b875f8d9a8f5c1befbfa75a2337e5125a144874886cb7dfbc87f59e7d4850"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/per_path_reviewed_blob_or_worktree_sha256/src~1route_state_machine_001a~1state_machine.py/reviewed_blob",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/per_path_reviewed_blob_or_worktree_sha256/src~1route_state_machine_001a~1state_machine.py/reviewed_blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "5ef023e2928284dd906fef8589455eefede59ab460dd8067f9afa3f179895dc7"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/per_path_reviewed_blob_or_worktree_sha256/src~1route_state_machine_001a~1state_machine.py/worktree_sha256",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/per_path_reviewed_blob_or_worktree_sha256/src~1route_state_machine_001a~1state_machine.py/worktree_sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "3c498459a4e636f75fc1fceef5a6f18b4c48e36f78e83e2b220975e3cb48333a"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/per_path_reviewed_blob_or_worktree_sha256/src~1route_state_machine_001a~1validator.py/reviewed_blob",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/per_path_reviewed_blob_or_worktree_sha256/src~1route_state_machine_001a~1validator.py/reviewed_blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "5f41c48b4d9781f931568c16997c76bf60bffb7f92598429115303098944827b"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/per_path_reviewed_blob_or_worktree_sha256/src~1route_state_machine_001a~1validator.py/worktree_sha256",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/per_path_reviewed_blob_or_worktree_sha256/src~1route_state_machine_001a~1validator.py/worktree_sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "0f3db0d8ce926c374c17c4564c63366e5ae5e437a3da5677c2f826263f127305"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/per_path_reviewed_blob_or_worktree_sha256/tests~1route_state_machine_001a~1test_validator.py/reviewed_blob",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/per_path_reviewed_blob_or_worktree_sha256/tests~1route_state_machine_001a~1test_validator.py/reviewed_blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "32ff0d9c149c6554b465b139cc67957485d82831280bf67d6a00b50d902deee0"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/per_path_reviewed_blob_or_worktree_sha256/tests~1route_state_machine_001a~1test_validator.py/worktree_sha256",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/per_path_reviewed_blob_or_worktree_sha256/tests~1route_state_machine_001a~1test_validator.py/worktree_sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "305c06d5d4810a721b833b1c5e99b6a2700af507a11e38323a98db1c53585280"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/phase",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/phase",
+      "transform": "verbatim_json_value",
+      "value_sha256": "955cca1ceba45052d85984d3a2565f4ce25b7488602c60a165598bf80b26e472"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/receipt_recorded_at_utc",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/receipt_recorded_at_utc",
+      "transform": "verbatim_json_value",
+      "value_sha256": "396879f807890b22fde83a285e59da1729a0696ea3449fe4d2203a4dffba25f2"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/review_findings/all_false_execution_authorities",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/review_findings/all_false_execution_authorities",
+      "transform": "verbatim_json_value",
+      "value_sha256": "831e5ecfc77ec5bf391f01ee09b3851bd337a2129bc2995cb2c75636b4cace47"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/review_findings/exact_selected_but_blocked_action",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/review_findings/exact_selected_but_blocked_action",
+      "transform": "verbatim_json_value",
+      "value_sha256": "831e5ecfc77ec5bf391f01ee09b3851bd337a2129bc2995cb2c75636b4cace47"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/review_findings/fifteen_mutation_families",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/review_findings/fifteen_mutation_families",
+      "transform": "verbatim_json_value",
+      "value_sha256": "611373f0c5d976bf78547cfc05d67080497de99090803799c61463819c584165"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/review_findings/frozen_k0_firewall",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/review_findings/frozen_k0_firewall",
+      "transform": "verbatim_json_value",
+      "value_sha256": "831e5ecfc77ec5bf391f01ee09b3851bd337a2129bc2995cb2c75636b4cace47"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/review_findings/nonrecursive_report_receipt_design",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/review_findings/nonrecursive_report_receipt_design",
+      "transform": "verbatim_json_value",
+      "value_sha256": "e1591ea473a3a83f25248a23f174cd939c983d3e72e6f4b8ce1d231136f57521"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/review_findings/phase_b_exact_scope",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/review_findings/phase_b_exact_scope",
+      "transform": "verbatim_json_value",
+      "value_sha256": "831e5ecfc77ec5bf391f01ee09b3851bd337a2129bc2995cb2c75636b4cace47"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/review_findings/zero_science_firewall",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/review_findings/zero_science_firewall",
+      "transform": "verbatim_json_value",
+      "value_sha256": "831e5ecfc77ec5bf391f01ee09b3851bd337a2129bc2995cb2c75636b4cace47"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/review_id",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/review_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "1083b56fc168d17c43e9b0a483053b946f966b480229f01a0172251a936dd433"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/review_source",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/review_source",
+      "transform": "verbatim_json_value",
+      "value_sha256": "6ec15660adf3a0338dbd07241d89fdd4bde2c9bb08e5aa4723d3364e77a943e8"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_at_provenance",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_at_provenance",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4cc8715037842b227798061d0ec66fd9e4a2c54e4172c0644a0c425767c63a55"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_at_utc",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_at_utc",
+      "transform": "verbatim_json_value",
+      "value_sha256": "396879f807890b22fde83a285e59da1729a0696ea3449fe4d2203a4dffba25f2"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_packet/byte_length",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_packet/byte_length",
+      "transform": "verbatim_json_value",
+      "value_sha256": "c11e967ea8668de002737dfed0e2aeca3c441ee9aad3dd35fef7679812aedf6b"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_packet/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_packet/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "5a8287553d0279a62ae8fa9c6b679ae4299dc1744027199246e98e527a23baef"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_packet/verified_by_reviewer",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_packet/verified_by_reviewer",
+      "transform": "verbatim_json_value",
+      "value_sha256": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_packet_sha256",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_packet_sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "5a8287553d0279a62ae8fa9c6b679ae4299dc1744027199246e98e527a23baef"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/base_commit",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/base_commit",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4ab0a75cbe4180f5564411ea577eb4e1b9771a3df7b2be11d103f62818aeb384"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/per_path_base_blob_or_absent/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1admission_validation_report.json",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/per_path_base_blob_or_absent/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1admission_validation_report.json",
+      "transform": "verbatim_json_value",
+      "value_sha256": "15dbb2c4361b809a46b847b3b6c071f3c27c096057d31c45351902b79fe39efd"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/per_path_base_blob_or_absent/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1events.jsonl",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/per_path_base_blob_or_absent/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1events.jsonl",
+      "transform": "verbatim_json_value",
+      "value_sha256": "15dbb2c4361b809a46b847b3b6c071f3c27c096057d31c45351902b79fe39efd"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/per_path_base_blob_or_absent/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1state.json",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/per_path_base_blob_or_absent/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1state.json",
+      "transform": "verbatim_json_value",
+      "value_sha256": "15dbb2c4361b809a46b847b3b6c071f3c27c096057d31c45351902b79fe39efd"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/per_path_base_blob_or_absent/src~1route_state_machine_001a~1state_machine.py",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/per_path_base_blob_or_absent/src~1route_state_machine_001a~1state_machine.py",
+      "transform": "verbatim_json_value",
+      "value_sha256": "0b4e71df99c71f2c51bea4076b81b87a312b1930192c9418a22676d45fb94626"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/per_path_base_blob_or_absent/src~1route_state_machine_001a~1validator.py",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/per_path_base_blob_or_absent/src~1route_state_machine_001a~1validator.py",
+      "transform": "verbatim_json_value",
+      "value_sha256": "b156bbbfa839275ed49b1fb1db2a0c0619fe23d07045ae484c9026a6aa4e505c"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/per_path_base_blob_or_absent/tests~1route_state_machine_001a~1test_validator.py",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/per_path_base_blob_or_absent/tests~1route_state_machine_001a~1test_validator.py",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f727c58cfddfd25470c0894fa68396f2df998c666a1be9296dc66eebf51b46cc"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/per_path_reviewed_blob_or_worktree_sha256/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1admission_validation_report.json/reviewed_blob",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/per_path_reviewed_blob_or_worktree_sha256/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1admission_validation_report.json/reviewed_blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "87c9820835342dc2ea4b419519653354a1c20ce09f9dd0cce9c5ebbe1180b318"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/per_path_reviewed_blob_or_worktree_sha256/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1admission_validation_report.json/worktree_sha256",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/per_path_reviewed_blob_or_worktree_sha256/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1admission_validation_report.json/worktree_sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "8c2dc6d764cfd7ae2b771aed399842e6e9dbeb8da7ec90c76c4e9a96910e8042"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/per_path_reviewed_blob_or_worktree_sha256/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1events.jsonl/reviewed_blob",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/per_path_reviewed_blob_or_worktree_sha256/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1events.jsonl/reviewed_blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "e2075e5e908e83890cf12651d77c4c8e2bbec4f17a653964091a2073e0d09535"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/per_path_reviewed_blob_or_worktree_sha256/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1events.jsonl/worktree_sha256",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/per_path_reviewed_blob_or_worktree_sha256/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1events.jsonl/worktree_sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "2ac14f9baee80bb0f0bfe4c838e58cfe03002eb81aa42d03a93fb39afe75e7ab"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/per_path_reviewed_blob_or_worktree_sha256/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1state.json/reviewed_blob",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/per_path_reviewed_blob_or_worktree_sha256/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1state.json/reviewed_blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "7d24a07ddf1b26d66dbc0e1adf2b99c340551b90dc1734b7030a607c2177a414"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/per_path_reviewed_blob_or_worktree_sha256/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1state.json/worktree_sha256",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/per_path_reviewed_blob_or_worktree_sha256/artifacts~1ROUTE-STATE-MACHINE-001A~1routes~1EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A~1state.json/worktree_sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f44b875f8d9a8f5c1befbfa75a2337e5125a144874886cb7dfbc87f59e7d4850"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/per_path_reviewed_blob_or_worktree_sha256/src~1route_state_machine_001a~1state_machine.py/reviewed_blob",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/per_path_reviewed_blob_or_worktree_sha256/src~1route_state_machine_001a~1state_machine.py/reviewed_blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "5ef023e2928284dd906fef8589455eefede59ab460dd8067f9afa3f179895dc7"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/per_path_reviewed_blob_or_worktree_sha256/src~1route_state_machine_001a~1state_machine.py/worktree_sha256",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/per_path_reviewed_blob_or_worktree_sha256/src~1route_state_machine_001a~1state_machine.py/worktree_sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "3c498459a4e636f75fc1fceef5a6f18b4c48e36f78e83e2b220975e3cb48333a"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/per_path_reviewed_blob_or_worktree_sha256/src~1route_state_machine_001a~1validator.py/reviewed_blob",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/per_path_reviewed_blob_or_worktree_sha256/src~1route_state_machine_001a~1validator.py/reviewed_blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "5f41c48b4d9781f931568c16997c76bf60bffb7f92598429115303098944827b"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/per_path_reviewed_blob_or_worktree_sha256/src~1route_state_machine_001a~1validator.py/worktree_sha256",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/per_path_reviewed_blob_or_worktree_sha256/src~1route_state_machine_001a~1validator.py/worktree_sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "0f3db0d8ce926c374c17c4564c63366e5ae5e437a3da5677c2f826263f127305"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/per_path_reviewed_blob_or_worktree_sha256/tests~1route_state_machine_001a~1test_validator.py/reviewed_blob",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/per_path_reviewed_blob_or_worktree_sha256/tests~1route_state_machine_001a~1test_validator.py/reviewed_blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "32ff0d9c149c6554b465b139cc67957485d82831280bf67d6a00b50d902deee0"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/per_path_reviewed_blob_or_worktree_sha256/tests~1route_state_machine_001a~1test_validator.py/worktree_sha256",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/per_path_reviewed_blob_or_worktree_sha256/tests~1route_state_machine_001a~1test_validator.py/worktree_sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "305c06d5d4810a721b833b1c5e99b6a2700af507a11e38323a98db1c53585280"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/phase",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/phase",
+      "transform": "verbatim_json_value",
+      "value_sha256": "955cca1ceba45052d85984d3a2565f4ce25b7488602c60a165598bf80b26e472"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/schema_version",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/schema_version",
+      "transform": "verbatim_json_value",
+      "value_sha256": "ba2f8dfc6d9d1410b2f145dfc5f85b15c98646e834ba5068b1f52f46033e3ec6"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/sorted_reviewed_paths/0",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/sorted_reviewed_paths/0",
+      "transform": "verbatim_json_value",
+      "value_sha256": "e8b13bf60eb50e372e9956eea840689f8edf7d490624caded811d8f3f006ac9d"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/sorted_reviewed_paths/1",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/sorted_reviewed_paths/1",
+      "transform": "verbatim_json_value",
+      "value_sha256": "6a66c9263f35f907923930d3eda1c359fbbb265b397ec03684a83700c489dfc3"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/sorted_reviewed_paths/2",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/sorted_reviewed_paths/2",
+      "transform": "verbatim_json_value",
+      "value_sha256": "3ba63cd7e238f9c5d60c81c1d9ae9532e354475aba25bf84ab27fe5f8f4708c7"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/sorted_reviewed_paths/3",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/sorted_reviewed_paths/3",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d784ebcdf866e0bf917d1c2e26f589159fb6565a9ecdc65fdb131e49cedba529"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/sorted_reviewed_paths/4",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/sorted_reviewed_paths/4",
+      "transform": "verbatim_json_value",
+      "value_sha256": "628c224727639aee109b7afd8e4642638afaa277330ffdf02ea3c070c9960eed"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/sorted_reviewed_paths/5",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/sorted_reviewed_paths/5",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4d54ba3bb2feaa1b951bd50938076981def3bedb01c3e5062d01d392a8bdcbba"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest/task_id",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest/task_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "e06a22b3b44c5183a7cf38ddda991c873f6f48b7354981361723734fb3c08d26"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest_canonicalization",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest_canonicalization",
+      "transform": "verbatim_json_value",
+      "value_sha256": "55874bcf56dc615f0b135b866bc9c76593dccefb43cd2d23a0294ea101fee019"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewed_semantic_manifest_sha256",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewed_semantic_manifest_sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4e364b8a36329f1dfbcf98e6223962bf21c6b8c924290eda03a3b77f0e912a4b"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewer",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewer",
+      "transform": "verbatim_json_value",
+      "value_sha256": "af059c4e11f52d10cc7d914e115fa4d448f5102ae454b88d6e10ca25cb3b239e"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/reviewer_session_id",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/reviewer_session_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "3d1a73dcb5ef153b3c30f18490fe064337c68d115944961cd161d1edd1c08d74"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/session_id_provenance",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/session_id_provenance",
+      "transform": "verbatim_json_value",
+      "value_sha256": "de47f9355221087c7cee679c07361834af67b80a2d05ba9bfe57046a98a61496"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/sorted_reviewed_paths/0",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/sorted_reviewed_paths/0",
+      "transform": "verbatim_json_value",
+      "value_sha256": "e8b13bf60eb50e372e9956eea840689f8edf7d490624caded811d8f3f006ac9d"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/sorted_reviewed_paths/1",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/sorted_reviewed_paths/1",
+      "transform": "verbatim_json_value",
+      "value_sha256": "6a66c9263f35f907923930d3eda1c359fbbb265b397ec03684a83700c489dfc3"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/sorted_reviewed_paths/2",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/sorted_reviewed_paths/2",
+      "transform": "verbatim_json_value",
+      "value_sha256": "3ba63cd7e238f9c5d60c81c1d9ae9532e354475aba25bf84ab27fe5f8f4708c7"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/sorted_reviewed_paths/3",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/sorted_reviewed_paths/3",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d784ebcdf866e0bf917d1c2e26f589159fb6565a9ecdc65fdb131e49cedba529"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/sorted_reviewed_paths/4",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/sorted_reviewed_paths/4",
+      "transform": "verbatim_json_value",
+      "value_sha256": "628c224727639aee109b7afd8e4642638afaa277330ffdf02ea3c070c9960eed"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/sorted_reviewed_paths/5",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/sorted_reviewed_paths/5",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4d54ba3bb2feaa1b951bd50938076981def3bedb01c3e5062d01d392a8bdcbba"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/task_id",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/task_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "e06a22b3b44c5183a7cf38ddda991c873f6f48b7354981361723734fb3c08d26"
+    },
+    {
+      "source_name": "phase_b_review_receipt",
+      "source_pointer": "/verdict",
+      "target_pointer": "/route_guard/transcribed_itl/phase_b_review_receipt/verdict",
+      "transform": "verbatim_json_value",
+      "value_sha256": "a18c60d613f0a622840aa0ad2044b87fbf4433452e94f457f2fc1bd6ce2e23a4"
+    }
+  ],
+  "input_artifacts": [
+    {
+      "commit": "cb6cd57b8405bbac378f2857766ddaf63e08e194",
+      "git_blob_oid": "f5c58e4d4cfb8b734e5e339845ddb4d0a3e3c5b5",
+      "git_blob_payload_sha256": "447772dcf4a1e34aa3f1229bcad421a7d42b35eada0fc4f480dea2116dd92dd8",
+      "name": "admission_report",
+      "path": "artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/admission_validation_report.json",
+      "repo": "intelligence-theory-lab"
+    },
+    {
+      "commit": "cb6cd57b8405bbac378f2857766ddaf63e08e194",
+      "git_blob_oid": "29e28c15bc3dd6d04b7dd5b892cb70f205540e2a",
+      "git_blob_payload_sha256": "5a30ed41854dc75c92cb5c04a2d2086007f565411949fadf9491c4c6718e1f44",
+      "name": "events",
+      "path": "artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/events.jsonl",
+      "repo": "intelligence-theory-lab"
+    },
+    {
+      "commit": "cb6cd57b8405bbac378f2857766ddaf63e08e194",
+      "git_blob_oid": "9859765cd20044568f093c6c9579c37014f8ee21",
+      "git_blob_payload_sha256": "1f5a834724e1aa967a8d89ea5e70006057b0161cb2ff79c9b8a6aa5fc95ac9d9",
+      "name": "phase_a_task_card",
+      "path": "docs/codex/tasks/ITL-EGO-PET-WORLD-V1-CARD2-BANK-ADMISSION-TRANSITION-001A.md",
+      "repo": "intelligence-theory-lab"
+    },
+    {
+      "commit": "cb6cd57b8405bbac378f2857766ddaf63e08e194",
+      "git_blob_oid": "08b9d3ccef6418a7d4722bd62ad7130317f3b845",
+      "git_blob_payload_sha256": "9b1498ade590e09efc1733f88cbe95949c0d23f4948b41942a022be9fcbe4061",
+      "name": "phase_b_review_receipt",
+      "path": "artifacts/ITL-EGO-PET-WORLD-V1-CARD2-BANK-ADMISSION-TRANSITION-001A/phase_b_red_precheck.json",
+      "repo": "intelligence-theory-lab"
+    },
+    {
+      "commit": "cb6cd57b8405bbac378f2857766ddaf63e08e194",
+      "git_blob_oid": "8b2db13a023873775b80bfe4e8eab7e53a7bba62",
+      "git_blob_payload_sha256": "9a56cd903e9b864db282c31736f04afd1007e6c5e430df294e80eafb41c839b2",
+      "name": "route_state",
+      "path": "artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/state.json",
+      "repo": "intelligence-theory-lab"
+    }
+  ],
+  "omission_positive_control": {
+    "expected_count": 274,
+    "mutated_count": 273,
+    "observed_error_codes": [
+      "field_crosswalk_leaf_omitted"
+    ],
+    "omitted_source_name": "route_state",
+    "omitted_source_pointer": "/action_dependencies/bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/blocked_until/0",
+    "rejected": true,
+    "rejection_code": "field_crosswalk_leaf_omitted"
+  },
+  "producer_code_path_hash": "ee6377a2e045de94084c901714a8886e601b0504fd0720fad95a5744c7d54e59",
+  "producer_function": "scripts.codex_session_guard.build_field_crosswalk_payload",
+  "run_id": "ego_card2_itl_sync_phase_b_20260714",
+  "schema_version": "ego.itl_authority_field_crosswalk.v1",
+  "source_leaf_counts": {
+    "phase_b_review_receipt": 91,
+    "route_state": 183
+  },
+  "task_id": "EGO-PET-WORLD-V1-CARD2-ITL-AUTHORITY-SYNC-001A",
+  "total_leaf_count": 274
+}

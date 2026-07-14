@@ -1,8 +1,8 @@
 program:
   version: 1
   north_star: "Keep EgoOperator as the sole active default runtime while preserving K0 Foundation bounded engineering evidence, archiving EgoDesktop as a historical LLM/UI reference, and admitting no product successor execution or science successor registration without a separately banked and authorized task."
-  current_phase: "ego_route_8692_superseded__egodesktop_authority_archived__card2_draft_only_bound"
-  current_layer: "engineering / product-capability governance"
+  current_phase: "ego_pet_world_v1_card2_itl_authority_sync_banked__card2_bank_separate_task_only"
+  current_layer: "engineering evidence-governance / cross-repo synchronization"
   highest_evidence_level: "E3"
   verification_level: "V3"
   mainline_connected: true
@@ -20,7 +20,7 @@ program:
     - "The 8692 K0 Foundation -> VirtualCat-derived adapter -> EgoDesktop route is additively superseded before M1. M1, M2, and M3 were not started and are cancelled by supersession; historical route prose is not current authority."
     - "EgoDesktop is archived as a legacy LLM/UI reference only. It is not an active route, successor dependency, runtime target, or runtime authority; this authority archive does not move, delete, or rewrite EgoDesktop source."
     - "K0 Foundation bounded engineering evidence remains `BANKED_ACCEPTED_BOUNDED`, disabled, non-mainline, and without runtime authority. No science verdict or mechanism attribution is created or upgraded in Ego."
-    - "The only bound next action is to draft and bank `EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A`; execution remains unauthorized, Card 2 must use a new world/task ID and an independent synthetic positive control, and no Card 2 file is created by this transition."
+    - "The committed ITL Card 2 bank-admission route is the sole route authority for this boundary. Ego transcribes it field-by-field and computes the four consumption dependencies locally; the only next task may bank `EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A`, while execution, implementation, runtime, scoring, and science authority remain false."
     - "Treat `EgoOperator` as the active default operator-first implementation lane and current execution owner."
     - "Keep archived legacy `EgoCore / OpenEmotion / ego_desktop_lab` reachable only through `legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md`, `docs/archive/LEGACY_ALGORITHM_INVENTORY.md`, `artifacts/archive/legacy_pre_operator_mainline_manifest.json`, and git tag `legacy-pre-operator-mainline-before-purge`; no archived legacy code has runtime authority, default path, or task-routing authority."
     - "Preserve `EgoOperator`'s core path: `user text -> LLM understanding -> proposal/plan -> runtime gate -> trace`, and do not reintroduce keyword-first semantic routing or template fallback as the default entry."
@@ -137,7 +137,7 @@ program:
     - "Which legacy algorithms should be reimplemented as EgoOperator primitives, and which should remain reference-only."
     - "Whether future command/network transaction approvals should be added after file-write transaction approval has proved ergonomic."
     - "What evidence threshold should trigger any future deletion of legacy code rather than reference preservation."
-  next_minimal_action: "Draft and bank Card 2 only: EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A. Do not execute Card 2, C1, any science successor, runtime integration, formal scoring, or experiment; execution authorization remains false."
+  next_minimal_action: "In a separate task only, bank EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A under the committed ITL action-specific path policy. Do not execute Card 2, implement product/runtime/kernel/UI, score, experiment, or satisfy any science successor; execution authorization remains false."
   last_verified_commit: "af561e0d"
   last_verified_at: "2026-05-18T03:48:22Z"
   status_owner: "EgoOperator"
@@ -149,272 +149,452 @@ program:
     institutionalized_claim_requires: "E6"
 
 route_guard:
-  schema_version: "ego.route_guard.v1"
-  route_revision_id: "EGO_ROUTE_8692_SUPERSESSION_001A"
-  route_fingerprint: "f605f59393dbba586d50c9e4ee7e085570de7b8d012b0b09bc7ccf75865d52b4"
-
-  authority_axes:
-    product_capability:
-      repo: "Ego"
-      source: "docs/PROGRAM_STATE_UNIFIED.yaml"
-    science_attribution:
-      repo: "intelligence-theory-lab"
-      source: "artifacts/ROUTE-STATE-MACHINE-001A"
-      pinned_head: "b67c94fe1244ef6006ed3af8e924d4c670fe64bb"
-      authority_scope: "pinned_blocked_referenced_only"
-
+  schema_version: ego.route_guard.v2
+  route_revision_id: EGO_PET_WORLD_V1_CARD2_ITL_AUTHORITY_SYNC_001A
+  route_fingerprint: 39775f663c17adf8dc0efb777d3ad49ee75181c43fea4546808e3dd48a697881
+  authority_source:
+    authority_rule: ITL machine-readable route state is sole authority; Ego transcription and computed guards are consumers only
+    repo: intelligence-theory-lab
+    pinned_commit: cb6cd57b8405bbac378f2857766ddaf63e08e194
+    objects:
+      admission_report:
+        path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/admission_validation_report.json
+        git_blob_oid: f5c58e4d4cfb8b734e5e339845ddb4d0a3e3c5b5
+        git_blob_payload_sha256: 447772dcf4a1e34aa3f1229bcad421a7d42b35eada0fc4f480dea2116dd92dd8
+      events:
+        path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/events.jsonl
+        git_blob_oid: 29e28c15bc3dd6d04b7dd5b892cb70f205540e2a
+        git_blob_payload_sha256: 5a30ed41854dc75c92cb5c04a2d2086007f565411949fadf9491c4c6718e1f44
+      phase_a_task_card:
+        path: docs/codex/tasks/ITL-EGO-PET-WORLD-V1-CARD2-BANK-ADMISSION-TRANSITION-001A.md
+        git_blob_oid: 9859765cd20044568f093c6c9579c37014f8ee21
+        git_blob_payload_sha256: 1f5a834724e1aa967a8d89ea5e70006057b0161cb2ff79c9b8a6aa5fc95ac9d9
+        containing_commit: f77187970786b27e85d93200a37ff427c2e3c243
+      phase_b_review_receipt:
+        path: artifacts/ITL-EGO-PET-WORLD-V1-CARD2-BANK-ADMISSION-TRANSITION-001A/phase_b_red_precheck.json
+        git_blob_oid: 08b9d3ccef6418a7d4722bd62ad7130317f3b845
+        git_blob_payload_sha256: 9b1498ade590e09efc1733f88cbe95949c0d23f4948b41942a022be9fcbe4061
+        containing_commit: cb6cd57b8405bbac378f2857766ddaf63e08e194
+      route_state:
+        path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/state.json
+        git_blob_oid: 8b2db13a023873775b80bfe4e8eab7e53a7bba62
+        git_blob_payload_sha256: 9a56cd903e9b864db282c31736f04afd1007e6c5e430df294e80eafb41c839b2
+  transcribed_itl:
+    route_state:
+      action_dependencies:
+        bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A:
+          blocked_until:
+          - EGO_FIELD_BY_FIELD_AUTHORITY_SYNC_BANKED
+          - ACTION_SPECIFIC_PATH_POLICY_ENFORCED
+          - LINEAGE_OMISSION_POSITIVE_CONTROL_ENFORCED
+          - COMMITTED_RED_REVIEW_RECORD_BOUND_TO_DIFF
+          dependency_evaluation: ALL_REQUIRED_AT_CONSUMPTION
+          execution_authorized: false
+          permission: DRAFT_AND_BANK_CARD_ONLY
+      action_path_policy:
+        action_id: bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A
+        allowed_exact_paths: []
+        allowed_path_prefixes:
+        - docs/codex/tasks/ego-pet-world-v1-capability-headroom-001a/
+        execution_inference: CHANGED_PATHS_NOT_DECLARED_BOOLEAN
+        forbidden_path_prefixes:
+        - EgoOperator/
+        - EgoDesktop/
+        - packages/
+        - src/
+        - scripts/
+        - tests/
+        - artifacts/
+        missing_mutation_scope: REJECT
+        self_declared_scope_expansion: false
+      action_resolution:
+        banking_usable_now: false
+        effective_capability_card_bank_action_id: bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A
+        exact_action_identity_live: true
+        old_generic_action_live: false
+        state: BLOCKED_PENDING_EGO_SYNC_AND_GUARD_REPAIR
+      active_mechanism_frontier: none
+      allowed_next_actions:
+      - sync_EGO_pet_world_v1_card2_bank_admission_under_separate_task
+      - bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A
+      - run_route_state_machine_validation
+      authorizations:
+        capability_card_bank: true
+        capability_implementation: false
+        experiment_execution: false
+        mainline: false
+        mechanism_evidence: false
+        remote_anchor: false
+        runtime: false
+        science_successor: false
+        scoring: false
+      authorized_implementation_targets: []
+      capability_route_registered: true
+      claim_ceiling:
+        forbidden_claims:
+        - card2_banked
+        - card2_executed
+        - headroom
+        - learning
+        - mechanism_validity
+        - science_successor_admission
+        - runtime_effect
+        - mainline_effect
+        - agency
+        - autonomy
+        - subjectivity
+        - consciousness
+        - electronic_life
+        - ego_readiness
+        - product_benefit
+        max: additive cross-repo capability-card bank-admission governance only
+      created_by_task: ITL-EGO-PET-WORLD-V1-CARD2-BANK-ADMISSION-TRANSITION-001A
+      current_state: REGISTERED
+      forbidden_next_actions:
+      - execute_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A
+      - start_capability_implementation
+      - start_experiment_execution
+      - start_scoring
+      - enable_runtime_or_mainline
+      - register_or_satisfy_science_successor
+      - reopen_or_modify_old_k0
+      - reuse_pilot_1_as_positive_control_or_regression_baseline
+      - push_tag_or_remote_anchor
+      implementation_authorized: false
+      mainline_authorized: false
+      mechanism_evidence_authorized: false
+      phase: PET_WORLD_V1_CARD2_DRAFT_AND_BANK_ONLY
+      pilot_1_reuse:
+        positive_control: false
+        regression_baseline: false
+        unblock_requires_verified_audit_ref: true
+      prior_negative_evidence_manifest:
+      - disposition: INSTRUMENT_INVALID_REFERENCE_ONLY
+        lineage_id: FSP-L005-PUM-ENV-V0
+      - disposition: MANDATORY_CARD2_CONTROLS
+        lineage_id: FSP-L015-L016-CACHE-DRIFT-CHALLENGERS
+      - disposition: BASELINE_EQUIVALENCE_REFERENCE_ONLY
+        lineage_id: FSP-L018-N2
+      - disposition: IMPLEMENTATION_DEFECT_SCIENCE_NOT_TESTED
+        lineage_id: FSP-L026-H0-PRECONDITION
+      - disposition: BANKED_ACCEPTED_BOUNDED_ENGINEERING_ONLY
+        lineage_id: FSP-L027-FOUNDATION
+      - disposition: CLOSED_WITHOUT_SCIENCE_ADJUDICATION
+        lineage_id: FSP-L028-K0-CLOSURE
+      - disposition: TERMINAL_NO_FURTHER_REPAIR
+        lineage_id: FSP-L029-VERIFIER-DOWNGRADE
+      - disposition: HIGH_SCORE_NO_ATTRIBUTION
+        lineage_id: EGO-PET-WORLD-P0
+      - disposition: INSTRUMENT_INVALID_PRESERVED
+        lineage_id: EGO-PILOT-1-INITIAL
+      - audit_ref: null
+        disposition: COMPLETED_REFERENCE_ONLY_REPAIR_LINEAGE_UNAUDITED
+        lineage_id: EGO-PILOT-1-REPAIR
+        positive_control_reuse: false
+        regression_reuse: false
+      - disposition: HISTORICAL_CLOSED_INVALID_REFERENCE_ONLY
+        lineage_id: EGO-LEARNED-OUTCOME
+      route_family: EGO-CAPABILITY-CARD-BANK-ADMISSION
+      route_id: EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A
+      route_kind: CROSS_REPO_CAPABILITY_CARD_BANK_ADMISSION
+      runtime_authorized: false
+      science_firewall:
+        card2_science_weight: 0
+        inherits_h0_h1_freeze_formal: false
+        inherits_old_k0r: false
+        may_reopen_old_k0: false
+        may_satisfy_science_successor_boundary: false
+        may_supply_mechanism_attribution: false
+        satisfies_old_s0x: false
+      science_successor_authorized: false
+      source_boundaries:
+        old_generic_action:
+          action_id: bank_EGO_learned_outcome_kernel_capability_card_under_separate_task_after_EGO_sync
+          disposition: SUPERSEDED_FOR_LIVE_BANKING_BY_EXACT_CARD2_ACTION
+          live: false
+        old_k0_terminal_packet:
+          inherited_authority: false
+          relation: FROZEN_FIREWALL_REFERENCE_ONLY
+        old_learned_outcome_lineage:
+          disposition: HISTORICAL_CLOSED_INVALID_REFERENCE_ONLY__NOT_AUTHORIZED
+          live: false
+      source_readback:
+        ego_source:
+          commit: 21e09c1ede7c051a4aa969dc3fcc2d0267084570
+          objects:
+          - blob: 3b15cdebec71324e4d6421889610c0f4bb06c4c6
+            path: docs/PROGRAM_STATE_UNIFIED.yaml
+            sha256: 9f1cc8dbe8451f2a10a844a97ba80e0dd531b0a3f33f5b2fc415780d21516fe5
+          - blob: b57967d87b4771709a4f48c91d59b8a52139426d
+            path: docs/codex/tasks/ego-route-8692-supersession-and-egodesktop-authority-archive-001a/STAGE_CARD.md
+            sha256: 52ab26db92ac01b779bd236d3c57e66a140245034c59cb7a846b655aefd88791
+          - blob: cfc7b7afcd092c42ef548ff4e14d7850be3c752c
+            path: artifacts/egodesktop_pet_world_integration_001a/p0/audit_claude_full_hostile_001.json
+            sha256: 137eea4e93dace1e327133edeba3ce16e6cdd7f03e4c5e5cf4fb8243d5dbd4b7
+          - blob: 68f79822da5fbe760d3c789249c93acb6756ec3d
+            path: artifacts/ego-pet-capability-conformance-001a/result.json
+            sha256: d3a042d134543826a0e70467a12c048f0aee549f1acfadcb5050bb2dbc18501b
+          - blob: 7d3e5fec0479eaf9754244009d97d121fbbe5311
+            path: artifacts/ego-pet-capability-conformance-001a/repair_001/result.json
+            sha256: 53da6ead436c19e2a8d415b4dbc2a1881ce7b48c65c42d71e205cddd281d731d
+          - blob: b8fa7cf552efb41323a34d723653ff81cfa8c4db
+            path: docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_DESIGN_INVALID_AUDIT_RESULT.json
+            sha256: a2aed0bc994592b54f260d74923896eabc0982d3e47ea6c3b1a64879be7061ec
+          relation: READ_ONLY_PINNED_SOURCE__LATER_HEAD_ADVANCE_ALLOWED
+        old_k0_terminal_packet:
+          objects:
+          - blob: 261b9ce78fd88a70c5f78646ce9209eb8bacee08
+            path: artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/state.json
+            sha256: c31158f8713a9ba6df4255c8bed938ae0dd8b84fb2088d71741d536442b5ab5f
+          - blob: e1a7d8d595004c07cea7c8fd70cb1738d42e3b5a
+            path: artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/closure.json
+            sha256: bfe1d92cbb1938f6bfe206f84693fef90f64c1458ec576eb384bd5869de3ff93
+          - blob: 5ec92897a15fea67f47fbec444a665511c6e4fef
+            path: artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/events.jsonl
+            sha256: fb363cf87d54aa1b33c4c66975f5e02dc4dcaef234b28f0d67790f643eb3e468
+          - blob: 377d09780e0a3949a172d89c3bc12de40245f8e8
+            path: artifacts/ROUTE-STATE-MACHINE-001A/program_state.json
+            sha256: 79915a56fa7c6735d7cbc3941972f4c709144b2bb75a79911a65ee08ddb90807
+          - blob: a617d17b855433e14832cf4f1149396548545d67
+            path: artifacts/ROUTE-STATE-MACHINE-001A/STATUS.md
+            sha256: 3883d6b73471ba63f740859733864af34e4baf01a17b9b9bada04a2861ec5f6b
+          - blob: a48032af0cccdce55074cd648ca53ed97cc9971b
+            path: artifacts/ROUTE-STATE-MACHINE-001A/validation_report.json
+            sha256: 8ce64494cedb970bd43299cb6b53177e1cde38e95d678ee3fa8fcda014f31fe9
+          - blob: 1ab8de60021d8492c42f2a0984d4564b2d550509
+            path: docs/research/FSP-STAGE-LEDGER.md
+            sha256: 2e71d576581a2917c6c6a1f7779035f03f7bc2aaf225b92ec5b70b7988564ff7
+          relation: FROZEN_FIREWALL_REFERENCE_ONLY
+        phase_a:
+          card_blob: 9859765cd20044568f093c6c9579c37014f8ee21
+          card_path: docs/codex/tasks/ITL-EGO-PET-WORLD-V1-CARD2-BANK-ADMISSION-TRANSITION-001A.md
+          card_sha256: 1f5a834724e1aa967a8d89ea5e70006057b0161cb2ff79c9b8a6aa5fc95ac9d9
+          commit: f77187970786b27e85d93200a37ff427c2e3c243
+          parent: b67c94fe1244ef6006ed3af8e924d4c670fe64bb
+          review_manifest_sha256: 5dcb6e72951cd142820572da17852179f32ff467294d1d6415f90c934d78bb78
+          review_receipt_blob: 650e332bb12a2e0011de2666cf931eeb86d96cce
+          review_receipt_path: artifacts/ITL-EGO-PET-WORLD-V1-CARD2-BANK-ADMISSION-TRANSITION-001A/phase_a_red_precheck.json
+          review_receipt_sha256: ffaa46f2ed0f0a250897fb8808abc8c7c40bda695317507addf4089bc4dcc05f
+        shared_contracts:
+        - blob: adfeaab2be3d44c2d7ac75b848217e8cff71af93
+          path: docs/codex/contracts/BASELINE-IMMUNITY-ADMISSION-STANDARD-001A.md
+          sha256: 7bd41a049a28aded4fb2eb23ced5bc8a71f80a5bb7fb5abd6d32931c37e80a03
+        - blob: 1abce34fb7683820460e917da9dbfe89e6fe45c7
+          path: docs/codex/contracts/BASELINE-IMMUNITY-ADMISSION-STANDARD-001A.registry.json
+          sha256: 4a3170de614d697a7ffd99d4e524ad7a2a61585f49f3f095f00b1fd6e899b43f
+        - blob: eb7e0e990d7795dcaa265122de7044dd681fb1b7
+          path: docs/codex/contracts/LEARNING-SUCCESS-CRITERION-STANDARD-001A.md
+          sha256: 1865da675e57a9e84fb9fd2409aedac9209f8f33fdee159bd559be6dfdf5f7db
+        - blob: f96bb93f2bf6072c9fdd0c3d4bd81d41a2414e6f
+          path: docs/codex/contracts/MECHANISM-SIGNATURE-VERDICT-STANDARD-001A.md
+          sha256: 79b83e9b0291d5e45ecc4b8c1c6d94f78864c8d50698970376a380e8b6862031
+      theory_pressure_authorized: false
+      updated_at_utc: '2026-07-14T03:22:13Z'
+    phase_b_review_receipt:
+      base_commit: f77187970786b27e85d93200a37ff427c2e3c243
+      blocking_findings: []
+      claim_ceiling_acknowledged: true
+      executor_session_id: codex_itl_card2_phase_b_executor_20260714
+      native_executor_session_id_available: false
+      nonblocking_findings:
+      - finding_id: NB-1
+        text: The persisted admission report intentionally remains a PRE_REVIEW_NONAUTHORITATIVE_SNAPSHOT with admission_effective=false; final acceptance must come from receipt-inclusive read-only recomputation.
+      - finding_id: NB-2
+        text: executor_session_id is required in addition to the reviewer-provided receipt-ready fields and must differ from reviewer_session_id.
+      - finding_id: NB-3
+        text: The Phase-B changed-path callable audits the direct child of Phase A; later commits require their own governance.
+      - finding_id: NB-4
+        text: The file receipt has content binding but no cryptographic signer identity; reviewer identity remains a bounded process-control assertion.
+      - finding_id: NB-5
+        text: The review packet could not independently recompute code_path_hash; final local callable recomputation must bind it.
+      per_path_base_blob_or_absent:
+        ? artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/admission_validation_report.json
+        : absent
+        artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/events.jsonl: absent
+        artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/state.json: absent
+        src/route_state_machine_001a/state_machine.py: 9e56c86e3473f27a64098dfe742962e2e7c4bda6
+        src/route_state_machine_001a/validator.py: 56bc73ffa7d1cf30d52d1500377e62a2d063551a
+        tests/route_state_machine_001a/test_validator.py: 83e40742fb4a646489b860fd200ed665e52e965b
+      per_path_reviewed_blob_or_worktree_sha256:
+        ? artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/admission_validation_report.json
+        : reviewed_blob: f5c58e4d4cfb8b734e5e339845ddb4d0a3e3c5b5
+          worktree_sha256: 5b6ba4b775905ff1fa8c5ede9d72b74827663726f86d1401dfd46c3975f24262
+        artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/events.jsonl:
+          reviewed_blob: 29e28c15bc3dd6d04b7dd5b892cb70f205540e2a
+          worktree_sha256: 5a30ed41854dc75c92cb5c04a2d2086007f565411949fadf9491c4c6718e1f44
+        artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/state.json:
+          reviewed_blob: 8b2db13a023873775b80bfe4e8eab7e53a7bba62
+          worktree_sha256: 9a56cd903e9b864db282c31736f04afd1007e6c5e430df294e80eafb41c839b2
+        src/route_state_machine_001a/state_machine.py:
+          reviewed_blob: 05995c9b71311fee868b3c7a9a0ff74dcff2e7b9
+          worktree_sha256: b08784054dda70137a0dff7c5fef41ef8058b3e60832c1f8fcc3524864bbc2e1
+        src/route_state_machine_001a/validator.py:
+          reviewed_blob: c3c2ed7dcc1f615f1df3b252ebaecfdba361a886
+          worktree_sha256: 945182fa3d338e28f12b66f996ba63eee2f8ebd79aad29e32ee151d1133bba5f
+        tests/route_state_machine_001a/test_validator.py:
+          reviewed_blob: d1f8365225e5e5f94361a3da61549029890cd74d
+          worktree_sha256: 80f3e66ffd0bde18dcfb634b7a957d60cf29e1587be3007e6fc6d19dcef22297
+      phase: B
+      receipt_recorded_at_utc: '2026-07-14T04:35:00Z'
+      review_findings:
+        all_false_execution_authorities: NO_BLOCKING_FINDINGS__FAIL_CLOSED
+        exact_selected_but_blocked_action: NO_BLOCKING_FINDINGS__FAIL_CLOSED
+        fifteen_mutation_families: NO_BLOCKING_FINDINGS__CALLABLE_AND_FAIL_CLOSED
+        frozen_k0_firewall: NO_BLOCKING_FINDINGS__FAIL_CLOSED
+        nonrecursive_report_receipt_design: NO_BLOCKING_FINDINGS__SOUND
+        phase_b_exact_scope: NO_BLOCKING_FINDINGS__FAIL_CLOSED
+        zero_science_firewall: NO_BLOCKING_FINDINGS__FAIL_CLOSED
+      review_id: CLAUDE-RED-CARD2-PHASE-B-20260714-001
+      review_source: independent Claude web review in the intelligence-theory-lab project using the attached exact six-path packet
+      reviewed_at_provenance: Claude response receipt-ready block and computed packet/manifest readback
+      reviewed_at_utc: '2026-07-14T04:35:00Z'
+      reviewed_packet:
+        byte_length: 122991
+        sha256: a2b4bfba2f94bb7fe3ed4f7cecfe8dfe0569463eb4976948921a243db5643730
+        verified_by_reviewer: true
+      reviewed_packet_sha256: a2b4bfba2f94bb7fe3ed4f7cecfe8dfe0569463eb4976948921a243db5643730
+      reviewed_semantic_manifest:
+        base_commit: f77187970786b27e85d93200a37ff427c2e3c243
+        per_path_base_blob_or_absent:
+          ? artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/admission_validation_report.json
+          : absent
+          artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/events.jsonl: absent
+          artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/state.json: absent
+          src/route_state_machine_001a/state_machine.py: 9e56c86e3473f27a64098dfe742962e2e7c4bda6
+          src/route_state_machine_001a/validator.py: 56bc73ffa7d1cf30d52d1500377e62a2d063551a
+          tests/route_state_machine_001a/test_validator.py: 83e40742fb4a646489b860fd200ed665e52e965b
+        per_path_reviewed_blob_or_worktree_sha256:
+          ? artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/admission_validation_report.json
+          : reviewed_blob: f5c58e4d4cfb8b734e5e339845ddb4d0a3e3c5b5
+            worktree_sha256: 5b6ba4b775905ff1fa8c5ede9d72b74827663726f86d1401dfd46c3975f24262
+          artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/events.jsonl:
+            reviewed_blob: 29e28c15bc3dd6d04b7dd5b892cb70f205540e2a
+            worktree_sha256: 5a30ed41854dc75c92cb5c04a2d2086007f565411949fadf9491c4c6718e1f44
+          artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/state.json:
+            reviewed_blob: 8b2db13a023873775b80bfe4e8eab7e53a7bba62
+            worktree_sha256: 9a56cd903e9b864db282c31736f04afd1007e6c5e430df294e80eafb41c839b2
+          src/route_state_machine_001a/state_machine.py:
+            reviewed_blob: 05995c9b71311fee868b3c7a9a0ff74dcff2e7b9
+            worktree_sha256: b08784054dda70137a0dff7c5fef41ef8058b3e60832c1f8fcc3524864bbc2e1
+          src/route_state_machine_001a/validator.py:
+            reviewed_blob: c3c2ed7dcc1f615f1df3b252ebaecfdba361a886
+            worktree_sha256: 945182fa3d338e28f12b66f996ba63eee2f8ebd79aad29e32ee151d1133bba5f
+          tests/route_state_machine_001a/test_validator.py:
+            reviewed_blob: d1f8365225e5e5f94361a3da61549029890cd74d
+            worktree_sha256: 80f3e66ffd0bde18dcfb634b7a957d60cf29e1587be3007e6fc6d19dcef22297
+        phase: B
+        schema_version: itl-red-reviewed-semantic-manifest-001a
+        sorted_reviewed_paths:
+        - artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/admission_validation_report.json
+        - artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/events.jsonl
+        - artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/state.json
+        - src/route_state_machine_001a/state_machine.py
+        - src/route_state_machine_001a/validator.py
+        - tests/route_state_machine_001a/test_validator.py
+        task_id: ITL-EGO-PET-WORLD-V1-CARD2-BANK-ADMISSION-TRANSITION-001A
+      reviewed_semantic_manifest_canonicalization: UTF-8 JSON object; Python json.dumps(sort_keys=true,separators=(',',':'),ensure_ascii=false,allow_nan=false); no BOM; no trailing newline; receipt excluded
+      reviewed_semantic_manifest_sha256: e3135d4165765caf085064bff397a7e190f3f0150af760e25041008a5caa2ac3
+      reviewer: Claude
+      reviewer_session_id: claude_red_reviewer_card2_phase_b_20260714_a7f3
+      session_id_provenance: reviewer-provided self-declared distinct label; executor uses a separate self-declared role label
+      sorted_reviewed_paths:
+      - artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/admission_validation_report.json
+      - artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/events.jsonl
+      - artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/state.json
+      - src/route_state_machine_001a/state_machine.py
+      - src/route_state_machine_001a/validator.py
+      - tests/route_state_machine_001a/test_validator.py
+      task_id: ITL-EGO-PET-WORLD-V1-CARD2-BANK-ADMISSION-TRANSITION-001A
+      verdict: NO_BLOCKING_FINDINGS
+  field_crosswalk:
+    path: docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/FIELD_CROSSWALK.json
+    artifact_payload_sha256: d1908b6cb0d414af9f46e8644095d6173ab8155b98b5e040429c73fdab89b438
+  lineage_universe:
+    path: docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/LINEAGE_UNIVERSE.json
+    artifact_payload_sha256: d31c7ffc2c3b35735e7a89c84cdf9d6b3684503a1dec3524ace83f81cad34f5b
+    discovered_count: 9
+    universe_sha256: 91d4ef79319ea9a4ddb35dc5c49408c4ca640331ebd61ef38fbab6b4842fbdcc
+  sync_contract:
+    source_action_id: bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A
+    required_dependency_ids:
+    - EGO_FIELD_BY_FIELD_AUTHORITY_SYNC_BANKED
+    - ACTION_SPECIFIC_PATH_POLICY_ENFORCED
+    - LINEAGE_OMISSION_POSITIVE_CONTROL_ENFORCED
+    - COMMITTED_RED_REVIEW_RECORD_BOUND_TO_DIFF
+    dependency_producer_function: scripts.codex_session_guard.compute_card2_sync_dependencies
+    effective_action_rule: source action is consumable only when all four callable committed dependencies recompute true; execution remains source-false
+    mainline_target: none / forbidden
+    enabled_state: governance consumer only; Card 2 execution and all implementation/runtime/scoring/science authorizations false
   authority_state:
     old_route_8692:
-      disposition: "SUPERSEDED_BEFORE_M1"
-      m1: "NOT_STARTED_CANCELLED_BY_SUPERSESSION"
-      m2: "NOT_STARTED_CANCELLED_BY_SUPERSESSION"
-      m3: "NOT_STARTED_CANCELLED_BY_SUPERSESSION"
+      disposition: SUPERSEDED_BEFORE_M1
+      m1: NOT_STARTED_CANCELLED_BY_SUPERSESSION
+      m2: NOT_STARTED_CANCELLED_BY_SUPERSESSION
+      m3: NOT_STARTED_CANCELLED_BY_SUPERSESSION
     egodesktop:
-      archive_state: "ARCHIVED_LEGACY_LLM_UI_ROUTE"
+      archive_state: ARCHIVED_LEGACY_LLM_UI_ROUTE
       active_route_dependency: false
       successor_dependency: false
-      runtime_authority: "none"
+      runtime_authority: none
     k0_successor:
       enabled: false
       mainline_connected: false
-      runtime_authority: "none"
-      real_trigger_evidence: "absent"
+      runtime_authority: none
+      real_trigger_evidence: absent
     foundation:
-      evidence_state: "BANKED_ACCEPTED_BOUNDED"
+      evidence_state: BANKED_ACCEPTED_BOUNDED
       runtime_enabled: false
     ego_operator:
       active_default: true
-
-  authorizations:
-    pet_world_v1_execution: false
-    c1_kernel_implementation: false
-    c2_memory: false
-    c3_initiative: false
-    c4_self_boundary: false
-    science_successor_registration: false
-    formal_run: false
-    authorized_implementation_targets: []
-
-  allowed_action_binding:
-    allowed_next_action_ids:
-      - "bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A"
-    only_next_task: "EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A"
-    permission: "DRAFT_AND_BANK_CARD_ONLY"
-    execution_authorized: false
-    forbidden_action_classes:
-      - "runtime_integration"
-      - "egodesktop_reactivation"
-      - "virtualcat_m1_m2_m3"
-      - "c1_implementation"
-      - "science_successor_registration"
-      - "formal_scoring"
-    authorized_implementation_targets: []
-    next_task_contract:
-      task_id: "EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A"
-      task_kind: "executable_candidate_independent_headroom"
-      bank_action_id: "bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A"
-      execution_authorized: false
-      required_output_class: "callable_candidate_independent_headroom"
-      must_produce_callable_and_temporary_result: true
-      v0_frozen: true
-      v1_requires_new_world_id: true
-      v1_requires_new_task_id: true
-      pilot_1_positive_control_allowed: false
-      pilot_1_regression_baseline_allowed: false
-      positive_control_requirement: "independent_synthetic_positive_control"
-      failure_family_registry:
-        source_repo: "intelligence-theory-lab"
-        source_path: "docs/codex/contracts/BASELINE-IMMUNITY-ADMISSION-STANDARD-001A.registry.json"
-        source_field: "failure_families"
-        required_count: 19
-        count_must_be_computed: true
-        semantic_drift_policy: "fail_closed"
-      frozen_contract_pins:
-        baseline_immunity_markdown:
-          path: "docs/codex/contracts/BASELINE-IMMUNITY-ADMISSION-STANDARD-001A.md"
-          git_blob_oid: "adfeaab2be3d44c2d7ac75b848217e8cff71af93"
-          git_blob_payload_sha256: "7bd41a049a28aded4fb2eb23ced5bc8a71f80a5bb7fb5abd6d32931c37e80a03"
-        baseline_immunity_registry:
-          path: "docs/codex/contracts/BASELINE-IMMUNITY-ADMISSION-STANDARD-001A.registry.json"
-          git_blob_oid: "1abce34fb7683820460e917da9dbfe89e6fe45c7"
-          git_blob_payload_sha256: "4a3170de614d697a7ffd99d4e524ad7a2a61585f49f3f095f00b1fd6e899b43f"
-        learning_success:
-          path: "docs/codex/contracts/LEARNING-SUCCESS-CRITERION-STANDARD-001A.md"
-          git_blob_oid: "eb7e0e990d7795dcaa265122de7044dd681fb1b7"
-          git_blob_payload_sha256: "1865da675e57a9e84fb9fd2409aedac9209f8f33fdee159bd559be6dfdf5f7db"
-        mechanism_signature:
-          path: "docs/codex/contracts/MECHANISM-SIGNATURE-VERDICT-STANDARD-001A.md"
-          git_blob_oid: "f96bb93f2bf6072c9fdd0c3d4bd81d41a2414e6f"
-          git_blob_payload_sha256: "79b83e9b0291d5e45ecc4b8c1c6d94f78864c8d50698970376a380e8b6862031"
-
-  science_source_pins:
-    state:
-      path: "artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/state.json"
-      git_blob_oid: "261b9ce78fd88a70c5f78646ce9209eb8bacee08"
-      git_blob_payload_sha256: "c31158f8713a9ba6df4255c8bed938ae0dd8b84fb2088d71741d536442b5ab5f"
-    closure:
-      path: "artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/closure.json"
-      git_blob_oid: "e1a7d8d595004c07cea7c8fd70cb1738d42e3b5a"
-      git_blob_payload_sha256: "bfe1d92cbb1938f6bfe206f84693fef90f64c1458ec576eb384bd5869de3ff93"
-    validation_report:
-      path: "artifacts/ROUTE-STATE-MACHINE-001A/validation_report.json"
-      git_blob_oid: "a48032af0cccdce55074cd648ca53ed97cc9971b"
-      git_blob_payload_sha256: "8ce64494cedb970bd43299cb6b53177e1cde38e95d678ee3fa8fcda014f31fe9"
-      checkout_raw_sha256: "840b9812bf0c6abcc3a63efd7c7762fbe9ced5d8707da73f801f8de3b865e5ec"
-      expected_materialization:
-        git_blob: "LF"
-        windows_checkout: "CRLF"
-      required_filtered_blob_oid: "a48032af0cccdce55074cd648ca53ed97cc9971b"
-      pin_status: "PASS__COMMITTED_OBJECT_MATCH__EOL_MATERIALIZATION_DISCLOSED"
-
-  lineage_inventory:
-    producer: "scripts.codex.verify_route_convergence.compute_prior_lineage_inventory"
-    discovered_count: 9
-    disposed_count: 9
-    undisposed_count: 0
-    records:
-      - lineage_id: "old_route_8692"
-        disposition: "SUPERSEDED_BEFORE_M1"
-        evidence_ceiling: "product_capability_governance_only"
-        source_refs:
-          - type: "repo_path"
-            value: "docs/codex/tasks/ego-canonical-mechanism-integration-001a/STAGE_CARD.md"
-          - type: "repo_path"
-            value: "docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md"
-      - lineage_id: "egodesktop_virtualcat_m1_m3"
-        disposition: "M1_M2_M3_NOT_STARTED_CANCELLED_BY_SUPERSESSION"
-        evidence_ceiling: "historical_route_reference_only"
-        source_refs:
-          - type: "repo_path"
-            value: "docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md"
-      - lineage_id: "pet_world_v0_p0"
-        disposition: "FROZEN_HIGH_SCORE_NO_ATTRIBUTION"
-        evidence_ceiling: "capability_score_without_attribution"
-        source_refs:
-          - type: "repo_json_value"
-            value: "artifacts/egodesktop_pet_world_integration_001a/p0/audit_claude_full_hostile_001.json"
-            field: "audit_verdict"
-            expected: "HIGH_SCORE_NO_ATTRIBUTION"
-      - lineage_id: "pilot_1_initial"
-        disposition: "FROZEN_INSTRUMENT_INVALID"
-        evidence_ceiling: "negative_instrument_evidence"
-        source_refs:
-          - type: "repo_json_value"
-            value: "artifacts/ego-pet-capability-conformance-001a/result.json"
-            field: "verdict"
-            expected: "INSTRUMENT_INVALID"
-          - type: "git_commit"
-            value: "914566a60136f83760fc5a7a3a0bede1c937d039"
-      - lineage_id: "pilot_1_repair"
-        disposition: "COMPLETED_REFERENCE_ONLY"
-        evidence_ceiling: "capability_present_channel_disclosed_only"
-        initial_invalid_commit: "914566a60136f83760fc5a7a3a0bede1c937d039"
-        repair_prereg_commit: "54584cf24c18b39cb977c2149ae51167419eefc3"
-        repair_implementation_commit: "715b3b2dbadd4dbde47393184aa5a98d361e494a"
-        repair_scored_commit: "f79ac265d8ce33bec333dfd051b38f0ba11a1ceb"
-        audit_state: "REPAIR_LINEAGE_EX_ANTE_ORDER_VERIFIED__INDEPENDENT_AUDIT_NOT_LOCATED"
-        audit_ref: null
-        successor_use:
-          historical_reference: "ALLOWED_AT_RECORDED_CEILING"
-          positive_control: "BLOCKED_PENDING_RETRO_YELLOW"
-          regression_baseline: "BLOCKED_PENDING_RETRO_YELLOW"
-        source_refs:
-          - type: "repo_json_value"
-            value: "artifacts/ego-pet-capability-conformance-001a/repair_001/result.json"
-            field: "verdict"
-            expected: "CAPABILITY_PRESENT_CHANNEL_DISCLOSED"
-          - type: "git_ancestry_chain"
-            values:
-              - "914566a60136f83760fc5a7a3a0bede1c937d039"
-              - "54584cf24c18b39cb977c2149ae51167419eefc3"
-              - "715b3b2dbadd4dbde47393184aa5a98d361e494a"
-              - "f79ac265d8ce33bec333dfd051b38f0ba11a1ceb"
-      - lineage_id: "pilot_3"
-        disposition: "COMPLETED_REFERENCE_ONLY"
-        evidence_ceiling: "pe_reflex_and_write_present_disclosed_only"
-        source_refs:
-          - type: "repo_json_value"
-            value: "artifacts/ego-pet-capability-conformance-001a/pe_forage_003/result.json"
-            field: "verdict"
-            expected: "PE_REFLEX_AND_WRITE_PRESENT_DISCLOSED"
-      - lineage_id: "learned_outcome_cards"
-        disposition: "CURRENT_INSTRUMENT_FAMILY_CLOSED_INVALID_NO_P1R1_NO_P2"
-        evidence_ceiling: "bounded_negative_instrument_evidence"
-        source_refs:
-          - type: "repo_path"
-            value: "docs/codex/tasks/ego-learned-outcome-kernel-capability-001a/P1R0_DESIGN_INVALID_AUDIT_RESULT.json"
-      - lineage_id: "outcome_utility_closure"
-        disposition: "CLOSED_ENGINEERING_REFERENCE_ONLY"
-        evidence_ceiling: "engineering_only_no_runtime_admission"
-        source_refs:
-          - type: "repo_path"
-            value: "docs/codex/tasks/ego-engineering-only-outcome-utility-route-replacement-001a/TASK-CARD-EGO-OUTCOME-UTILITY-ADAPTER-CLOSURE-001A.md"
-      - lineage_id: "old_k0_science_route"
-        disposition: "CLOSED_WITHOUT_SCIENCE_ADJUDICATION"
-        evidence_ceiling: "pinned_science_route_closure_reference_only"
-        source_refs:
-          - type: "itl_git_object"
-            path: "artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/closure.json"
-            git_blob_oid: "e1a7d8d595004c07cea7c8fd70cb1738d42e3b5a"
-
+    relation: historical_local_surface_status_not_route_authority
   route_views:
     task_routes:
       ego-operator-human-operator-trial-v2:
-        lane: "active_default"
-        label: "EgoOperator Human Operator Trial v2"
-        why: "Current EgoOperator human-observation gate; records whether the operator-first runtime is actually usable in continuous Chinese operator work."
-        workstream_id: "ego_operator_first_transition"
+        lane: active_default
+        label: EgoOperator Human Operator Trial v2
+        why: Current EgoOperator human-observation gate; records whether the operator-first runtime is actually usable in continuous Chinese operator work.
+        workstream_id: ego_operator_first_transition
       ego-canonical-mechanism-integration-001a:
-        lane: "closed_evidence"
-        label: "EGO Canonical Mechanism Integration 001A"
-        why: "Additively superseded before M1; M1/M2/M3 were not started and are cancelled; no enabled path, mainline connection, successor dependency, runtime authority, or real trigger."
-        workstream_id: "canonical_mechanism_integration_route_001a"
+        lane: closed_evidence
+        label: EGO Canonical Mechanism Integration 001A
+        why: Additively superseded before M1; M1/M2/M3 were not started and are cancelled; no enabled path, mainline connection, successor dependency, runtime authority, or real trigger.
+        workstream_id: canonical_mechanism_integration_route_001a
       ego-route-8692-supersession-and-egodesktop-authority-archive-001a:
-        lane: "closed_evidence"
-        label: "EGO Route 8692 Supersession and EgoDesktop Authority Archive 001A"
-        why: "Completed product/capability governance correction; the only following permission is Card 2 drafting and banking, not execution."
+        lane: closed_evidence
+        label: EGO Route 8692 Supersession and EgoDesktop Authority Archive 001A
+        why: Completed product/capability governance correction; the only following permission is Card 2 drafting and banking, not execution.
+      ego-pet-world-v1-card2-itl-authority-sync-001a:
+        lane: closed_evidence
+        label: EGO Pet World v1 Card 2 ITL Authority Sync 001A
+        why: Field-by-field governance sync from committed ITL objects; no Card 2 bank, execution, runtime, product, experiment, scoring, or science authorization.
+        workstream_id: program_state_governance
     current_surfaces:
-      - surface: "operator_runtime"
-        paths:
-          - "EgoOperator/"
-        role: "Sole active default operator-first runtime candidate."
-        authority: "active_default=true; runtime behavior remains outside this governance mutation."
-      - surface: "superseded_8692_route"
-        paths:
-          - "packages/ego_k0_kernel/"
-          - "labs/virtual_cat_pspc_v0/"
-          - "docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md"
-        role: "Historical K0 Foundation -> VirtualCat-derived adapter lineage, superseded before M1."
-        authority: "closed evidence/reference only; disabled, non-mainline, no runtime authority or real trigger."
-      - surface: "egodesktop_legacy_reference"
-        paths:
-          - "EgoDesktop/"
-        role: "Historical LLM/UI reference retained in place."
-        authority: "archived legacy reference only; not an active route, successor dependency, or runtime target."
-
-  anti_zeno:
-    governance_only_successor_allowed: false
-    next_required_output_class: "callable_candidate_independent_headroom"
-    new_route_discussion_required: false
-    disallowed_substitutes:
-      - "route_prose"
-      - "schema_only_card"
-      - "validator_only_repair"
-      - "dashboard_or_status_update"
-      - "old_h0_rewrite"
-      - "retro_yellow_pilot_audit"
-
+    - surface: operator_runtime
+      paths:
+      - EgoOperator/
+      role: Sole active default operator-first runtime candidate.
+      authority: active_default=true; runtime behavior remains outside this governance mutation.
+    - surface: superseded_8692_route
+      paths:
+      - packages/ego_k0_kernel/
+      - labs/virtual_cat_pspc_v0/
+      - docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md
+      role: Historical K0 Foundation -> VirtualCat-derived adapter lineage, superseded before M1.
+      authority: closed evidence/reference only; disabled, non-mainline, no runtime authority or real trigger.
+    - surface: egodesktop_legacy_reference
+      paths:
+      - EgoDesktop/
+      role: Historical LLM/UI reference retained in place.
+      authority: archived legacy reference only; not an active route, successor dependency, or runtime target.
   red_review:
     authority_change_requires_independent_review: true
-    required_record_fields:
-      - "base_commit"
-      - "diff_sha256"
-      - "reviewer_identity_or_session_ref"
-      - "verdict"
-      - "reviewed_path_list"
+    phase_a:
+      path: docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/PHASE_A_RED_REVIEW.json
+    phase_b:
+      path: docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/PHASE_B_RED_REVIEW.json
     review_invalidated_by_diff_change: true
     unresolved_review_blockers: []
-
+  claim_ceiling: field-by-field authority sync and guard enforcement only
 workstreams:
   - id: "ego_operator_first_transition"
     owner: "EgoOperator"

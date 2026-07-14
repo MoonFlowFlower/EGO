@@ -8,8 +8,8 @@
 
 | field | value |
 |---|---|
-| current_phase | `ego_route_8692_superseded__egodesktop_authority_archived__card2_draft_only_bound` |
-| current_layer | `engineering / product-capability governance` |
+| current_phase | `ego_pet_world_v1_card2_itl_authority_sync_banked__card2_bank_separate_task_only` |
+| current_layer | `engineering evidence-governance / cross-repo synchronization` |
 | highest_evidence_level | `E3` |
 | verification_level | `V3` |
 | mainline_connected | `True` |
@@ -26,7 +26,7 @@ Keep EgoOperator as the sole active default runtime while preserving K0 Foundati
 - The 8692 K0 Foundation -> VirtualCat-derived adapter -> EgoDesktop route is additively superseded before M1. M1, M2, and M3 were not started and are cancelled by supersession; historical route prose is not current authority.
 - EgoDesktop is archived as a legacy LLM/UI reference only. It is not an active route, successor dependency, runtime target, or runtime authority; this authority archive does not move, delete, or rewrite EgoDesktop source.
 - K0 Foundation bounded engineering evidence remains `BANKED_ACCEPTED_BOUNDED`, disabled, non-mainline, and without runtime authority. No science verdict or mechanism attribution is created or upgraded in Ego.
-- The only bound next action is to draft and bank `EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A`; execution remains unauthorized, Card 2 must use a new world/task ID and an independent synthetic positive control, and no Card 2 file is created by this transition.
+- The committed ITL Card 2 bank-admission route is the sole route authority for this boundary. Ego transcribes it field-by-field and computes the four consumption dependencies locally; the only next task may bank `EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A`, while execution, implementation, runtime, scoring, and science authority remain false.
 - Treat `EgoOperator` as the active default operator-first implementation lane and current execution owner.
 - Keep archived legacy `EgoCore / OpenEmotion / ego_desktop_lab` reachable only through `legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md`, `docs/archive/LEGACY_ALGORITHM_INVENTORY.md`, `artifacts/archive/legacy_pre_operator_mainline_manifest.json`, and git tag `legacy-pre-operator-mainline-before-purge`; no archived legacy code has runtime authority, default path, or task-routing authority.
 - Preserve `EgoOperator`'s core path: `user text -> LLM understanding -> proposal/plan -> runtime gate -> trace`, and do not reintroduce keyword-first semantic routing or template fallback as the default entry.
@@ -152,7 +152,7 @@ Keep EgoOperator as the sole active default runtime while preserving K0 Foundati
 
 ## Next Minimal Action
 
-Draft and bank Card 2 only: EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A. Do not execute Card 2, C1, any science successor, runtime integration, formal scoring, or experiment; execution authorization remains false.
+In a separate task only, bank EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A under the committed ITL action-specific path policy. Do not execute Card 2, implement product/runtime/kernel/UI, score, experiment, or satisfy any science successor; execution authorization remains false.
 
 ## Real Trigger Evidence
 
