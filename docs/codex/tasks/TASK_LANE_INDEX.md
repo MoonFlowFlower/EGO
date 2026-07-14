@@ -19,7 +19,7 @@
 |---|---:|
 | `active_default` | 1 |
 | `supporting_active` | 1 |
-| `parked` | 1 |
+| `parked` | 2 |
 | `closed_evidence` | 24 |
 | `reference_only` | 234 |
 
@@ -39,6 +39,7 @@
 
 | entry | kind | workstream | paths | why |
 |---|---|---|---|---|
+| EGO Visible Life Proxy v0 Route Replacement 001A | `codex_task` | n/a | `docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/` | Operator-authorized product-clock playground implementation is exact-path bounded and not yet started; explicit local process only, disabled by default, non-mainline, no runtime authority, and zero science weight. |
 | WP17 / MVP22 Authority Refs | `authority_refs` | `wp17_bounded_continuity_lane` | `Tasks/MVP22_task_plan.md`<br>`Tasks/active/mvp22_long_horizon_self_continuity/STATUS.md` | Authority-frozen bounded continuity lane; preserved but parked behind the active default track. |
 
 ## Closed Evidence

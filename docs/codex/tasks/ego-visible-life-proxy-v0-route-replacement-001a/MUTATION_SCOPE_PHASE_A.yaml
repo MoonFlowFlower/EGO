@@ -1,0 +1,27 @@
+task_id: EGO-VISIBLE-LIFE-PROXY-V0-ROUTE-REPLACEMENT-001A
+task_kind: operator_authorized_red_route_replacement
+requested_action_id: replace_defective_card2_admission_with_visible_life_proxy_v0
+source_route_revision_id: EGO_PET_WORLD_V1_CARD2_ITL_AUTHORITY_SYNC_001A
+source_route_fingerprint: 39775f663c17adf8dc0efb777d3ad49ee75181c43fea4546808e3dd48a697881
+expected_target_route_revision_id: EGO_VISIBLE_LIFE_PROXY_V0_ROUTE_REPLACEMENT_001A
+independent_red_review_required: true
+red_review_ref: docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/PHASE_A_RED_REVIEW.json
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - docs/STATUS.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - docs/REPO_HYGIENE_POLICY.md
+  - docs/REPO_SURFACE_MAP.md
+  - artifacts/reports/program_state_summary.md
+  - scripts/codex_session_guard.py
+  - scripts/codex/verify_route_convergence.py
+  - scripts/tests/test_codex_session_guard.py
+  - scripts/tests/test_route_governance_supersession.py
+execution_requested: false
+mainline_connected: false
+runtime_authority: none
+science_weight: 0
+auto_remote_anchor: forbidden
+push: forbidden
+tag: forbidden

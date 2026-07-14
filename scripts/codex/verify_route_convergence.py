@@ -487,7 +487,7 @@ def _require_false_authorizations(route_state: dict[str, Any], errors: list[str]
             errors.append(f"{key} must remain false")
 
 
-def validate_route_guard(program_state: dict[str, Any]) -> tuple[list[str], dict[str, Any]]:
+def _validate_card2_route_guard_v2(program_state: dict[str, Any]) -> tuple[list[str], dict[str, Any]]:
     errors: list[str] = []
     route_guard = program_state.get("route_guard")
     if not isinstance(route_guard, dict):
@@ -649,6 +649,153 @@ def validate_route_guard(program_state: dict[str, Any]) -> tuple[list[str], dict
         "red_review_phase_b": phase_b_candidate,
         "card2_sync_dependencies": dependencies,
     }
+
+
+def _validate_visible_life_route_guard_v3(program_state: dict[str, Any]) -> tuple[list[str], dict[str, Any]]:
+    errors: list[str] = []
+    route_guard = program_state.get("route_guard") or {}
+    if route_guard.get("schema_version") != "ego.route_guard.v3":
+        errors.append("visible-life route_guard schema_version must be ego.route_guard.v3")
+    if route_guard.get("route_revision_id") != route_sync_guard.VISIBLE_LIFE_ROUTE_REVISION:
+        errors.append("visible-life route revision mismatch")
+    computed_fingerprint = compute_route_fingerprint(program_state)
+    if route_guard.get("route_fingerprint") != computed_fingerprint:
+        errors.append("route_guard fingerprint does not match the canonical semantic subset")
+
+    authority = route_guard.get("authority_source") or {}
+    if authority.get("repo") != "intelligence-theory-lab":
+        errors.append("ITL must remain the closure/science-axis authority")
+    if authority.get("pinned_commit") != route_sync_guard.VISIBLE_LIFE_ITL_COMMIT:
+        errors.append("visible-life ITL closure commit pin mismatch")
+    itl_head = _git_in_repo(
+        REPO_HYGIENE_POLICY_PATH.parents[1].parent / "intelligence-theory-lab",
+        ["rev-parse", "HEAD"],
+    )
+    if itl_head.returncode != 0 or itl_head.stdout.strip() != authority.get("pinned_commit"):
+        errors.append("live ITL HEAD does not match the pinned closure authority")
+    source = route_sync_guard.read_itl_authority_objects(program_state)
+    if source.get("status") != "pass":
+        errors.extend(f"ITL closure object: {item}" for item in source.get("errors") or [])
+
+    transcribed = route_guard.get("transcribed_itl") or {}
+    route_state = transcribed.get("route_state") or {}
+    closure = transcribed.get("closure") or {}
+    if route_state.get("route_id") != route_sync_guard.VISIBLE_LIFE_ITL_ROUTE_ID:
+        errors.append("transcribed closed Card2 route identity mismatch")
+    if route_state.get("current_state") != "ADJUDICATED":
+        errors.append("closed Card2 route must remain ADJUDICATED")
+    if route_state.get("phase") != "CARD2_BANK_ADMISSION_CLOSED_ADMISSION_INVALID_PATH_POLICY":
+        errors.append("closed Card2 route phase mismatch")
+    if route_state.get("closure_type") != "GOVERNANCE_STOP":
+        errors.append("closed Card2 closure type mismatch")
+    if route_state.get("failure_class") != "ADMISSION_INVALID_PATH_POLICY":
+        errors.append("closed Card2 failure class mismatch")
+    if route_state.get("allowed_next_actions") != ["run_route_state_machine_validation"]:
+        errors.append("closed Card2 route exposes a non-validation action")
+    required_closed_forbidden = {
+        route_sync_guard.CARD2_BANK_ACTION_ID,
+        "execute_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A",
+        "repair_reopen_or_rerun_card2_bank_admission",
+        "start_capability_implementation_under_closed_card2_action",
+        "start_experiment_execution",
+        "start_scoring",
+        "enable_runtime_or_mainline",
+        "register_or_satisfy_science_successor",
+        "reopen_or_modify_old_k0",
+        "push_tag_or_remote_anchor",
+    }
+    if set(route_state.get("forbidden_next_actions") or []) != required_closed_forbidden:
+        errors.append("closed Card2 forbidden action set mismatch")
+    expected_closed_authorizations = {
+        "capability_card_bank": False,
+        "capability_implementation": False,
+        "experiment_execution": False,
+        "mainline": False,
+        "mechanism_evidence": False,
+        "remote_anchor": False,
+        "runtime": False,
+        "science_successor": False,
+        "scoring": False,
+    }
+    if route_state.get("authorizations") != expected_closed_authorizations:
+        errors.append("closed Card2 authorizations must all remain false")
+    for key in (
+        "implementation_authorized",
+        "mainline_authorized",
+        "mechanism_evidence_authorized",
+        "runtime_authorized",
+        "science_successor_authorized",
+        "theory_pressure_authorized",
+    ):
+        if route_state.get(key) is not False:
+            errors.append(f"{key} must remain false")
+    if route_state.get("authorized_implementation_targets") != []:
+        errors.append("closed ITL route must retain no implementation targets")
+    expected_firewall = {
+        "card2_science_weight": 0,
+        "inherits_h0_h1_freeze_formal": False,
+        "inherits_old_k0r": False,
+        "may_reopen_old_k0": False,
+        "may_satisfy_science_successor_boundary": False,
+        "may_supply_mechanism_attribution": False,
+        "satisfies_old_s0x": False,
+    }
+    if route_state.get("science_firewall") != expected_firewall:
+        errors.append("closed Card2 zero-science firewall mismatch")
+    if closure.get("failure_class") != "ADMISSION_INVALID_PATH_POLICY" or closure.get("closure_type") != "GOVERNANCE_STOP":
+        errors.append("transcribed Card2 closure packet mismatch")
+    if closure.get("authorized_implementation_targets") != [] or any((closure.get("authorizations") or {}).values()):
+        errors.append("transcribed Card2 closure packet grants authority")
+    if closure.get("science_firewall") != expected_firewall:
+        errors.append("transcribed Card2 closure science firewall mismatch")
+
+    crosswalk = route_sync_guard.validate_visible_life_closure_crosswalk(program_state)
+    if crosswalk.get("status") != "pass":
+        errors.extend(f"closure crosswalk: {item}" for item in crosswalk.get("errors") or [])
+    product = route_sync_guard.validate_visible_life_product_authority(program_state)
+    if product.get("status") != "pass":
+        errors.extend(f"product authority: {item}" for item in product.get("errors") or [])
+
+    red_path = str(((route_guard.get("red_review") or {}).get("phase_a") or {}).get("path") or "")
+    red_committed = route_sync_guard.validate_red_review_record(red_path, require_committed=True)
+    red_candidate = (
+        red_committed
+        if red_committed.get("status") == "pass"
+        else route_sync_guard.validate_red_review_record(red_path, require_committed=False)
+    )
+    if red_candidate.get("status") != "pass":
+        errors.extend(f"Phase-A Red review: {item}" for item in red_candidate.get("errors") or [])
+
+    authority_state = route_guard.get("authority_state") or {}
+    if (authority_state.get("ego_operator") or {}).get("active_default") is not True:
+        errors.append("EgoOperator must remain the sole active default")
+    egodesktop = authority_state.get("egodesktop") or {}
+    if egodesktop.get("runtime_authority") != "none" or egodesktop.get("active_route_dependency") is not False:
+        errors.append("EgoDesktop archive boundary is not fail-closed")
+    task_routes = ((route_guard.get("route_views") or {}).get("task_routes") or {})
+    visible_task = task_routes.get("ego-visible-life-proxy-v0-route-replacement-001a") or {}
+    if visible_task.get("lane") != "parked":
+        errors.append("visible-life task must remain parked and non-default")
+
+    dependencies = route_sync_guard.compute_visible_life_phase_b_dependencies(
+        program_state,
+        require_committed_review=red_committed.get("status") == "pass",
+    )
+    return errors, {
+        "route_fingerprint": computed_fingerprint,
+        "science_authority_pin_status": "pass" if source.get("status") == "pass" else "fail",
+        "closure_crosswalk": crosswalk,
+        "product_authority": product,
+        "red_review_phase_a": red_candidate,
+        "phase_b_dependencies": dependencies,
+    }
+
+
+def validate_route_guard(program_state: dict[str, Any]) -> tuple[list[str], dict[str, Any]]:
+    route_guard = program_state.get("route_guard") or {}
+    if route_guard.get("schema_version") == "ego.route_guard.v3":
+        return _validate_visible_life_route_guard_v3(program_state)
+    return _validate_card2_route_guard_v2(program_state)
 
 def _mapping_contains_key(node: Any, key: str) -> bool:
     if isinstance(node, dict):
@@ -956,7 +1103,20 @@ def validate_route_convergence(
     future_product_route = (governance_sync or {}).get("future_product_route") or {}
     preflight = future_product_route.get("candidate_independent_preflight") or {}
     source_actions = (((route_guard.get("transcribed_itl") or {}).get("route_state") or {}).get("allowed_next_actions") or [])
-    if route_sync_guard.CARD2_BANK_ACTION_ID not in source_actions or route_sync_guard.CARD2_TASK_ID not in str(
+    if route_guard.get("schema_version") == "ego.route_guard.v3":
+        product_actions = (route_guard.get("product_authority") or {}).get("allowed_next_actions") or []
+        if source_actions != ["run_route_state_machine_validation"]:
+            errors.append("closed ITL route must expose validation only")
+        if route_sync_guard.VISIBLE_LIFE_IMPLEMENT_ACTION_ID not in product_actions or "ego_life_playground_v0" not in str(
+            program_state.get("program", {}).get("next_minimal_action") or ""
+        ):
+            errors.append("program.next_minimal_action does not reflect the Ego-owned visible-life Phase-B action")
+        visible_entries = [
+            entry for entry in entries if entry.key == "ego-visible-life-proxy-v0-route-replacement-001a"
+        ]
+        if len(visible_entries) != 1 or visible_entries[0].lane != "parked":
+            errors.append("visible-life product task must appear exactly once in the parked lane")
+    elif route_sync_guard.CARD2_BANK_ACTION_ID not in source_actions or route_sync_guard.CARD2_TASK_ID not in str(
         program_state.get("program", {}).get("next_minimal_action") or ""
     ):
         errors.append("program.next_minimal_action does not reflect the committed ITL Card 2 bank action")
@@ -1161,7 +1321,9 @@ def main() -> int:
                     (route_guard.get("authority_state") or {}).get("egodesktop") or {}
                 ).get("archive_state"),
                 "allowed_next_action_ids": (
-                    ((route_guard.get("transcribed_itl") or {}).get("route_state") or {}).get("allowed_next_actions") or []
+                    (route_guard.get("product_authority") or {}).get("allowed_next_actions") or []
+                    if route_guard.get("schema_version") == "ego.route_guard.v3"
+                    else ((route_guard.get("transcribed_itl") or {}).get("route_state") or {}).get("allowed_next_actions") or []
                 ),
                 "lineage_counts": {
                     "discovered": lineage.get("discovered_count"),

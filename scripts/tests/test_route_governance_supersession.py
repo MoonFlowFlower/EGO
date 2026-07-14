@@ -34,37 +34,52 @@ def route_state(state: dict) -> dict:
     return state["route_guard"]["transcribed_itl"]["route_state"]
 
 
-def test_live_route_guard_crosswalk_and_callable_lineage_pass() -> None:
+def closure(state: dict) -> dict:
+    return state["route_guard"]["transcribed_itl"]["closure"]
+
+
+def product(state: dict) -> dict:
+    return state["route_guard"]["product_authority"]
+
+
+def test_live_v3_route_has_only_the_expected_pre_receipt_blocker() -> None:
     state = live_state()
     errors, details = verify.validate_route_guard(state)
 
-    assert errors == []
+    assert errors in ([], ["Phase-A Red review: candidate_red_review_record_unavailable"])
     assert details["route_fingerprint"] == state["route_guard"]["route_fingerprint"]
-    assert details["field_crosswalk"]["status"] == "pass"
-    assert details["lineage_inventory"]["status"] == "pass"
-    assert details["lineage_inventory"]["discovered_count"] == 9
-    assert details["lineage_inventory"]["undisposed_count"] == 0
+    assert details["closure_crosswalk"]["status"] == "pass"
+    assert details["product_authority"]["status"] == "pass"
 
 
-def test_itl_route_blob_pin_mutation_is_rejected() -> None:
+def test_itl_closure_blob_pin_mutation_is_rejected() -> None:
     state = copy.deepcopy(live_state())
-    state["route_guard"]["authority_source"]["objects"]["route_state"]["git_blob_oid"] = "0" * 40
+    state["route_guard"]["authority_source"]["objects"]["closure"]["git_blob_oid"] = "0" * 40
 
-    assert "itl_object_oid_mismatch:route_state" in error_text(state)
+    assert "itl_object_oid_mismatch:closure" in error_text(state)
 
 
-def test_transcribed_route_field_mutation_is_rejected() -> None:
+def test_transcribed_closed_route_mutation_is_rejected() -> None:
     state = copy.deepcopy(live_state())
     route_state(state)["implementation_authorized"] = True
 
     errors = error_text(state)
-    assert "route_state_transcription_mismatch" in errors
+    assert "visible_life_route_state_transcription_mismatch" in errors
     assert "implementation_authorized must remain false" in errors
 
 
-def test_crosswalk_leaf_omission_positive_control_is_rejected(monkeypatch) -> None:
+def test_transcribed_closure_authority_mutation_is_rejected() -> None:
+    state = copy.deepcopy(live_state())
+    closure(state)["authorizations"]["runtime"] = True
+
+    errors = error_text(state)
+    assert "visible_life_closure_transcription_mismatch" in errors
+    assert "transcribed Card2 closure packet grants authority" in errors
+
+
+def test_crosswalk_leaf_omission_is_rejected(monkeypatch) -> None:
     state = live_state()
-    path = ROOT / state["route_guard"]["field_crosswalk"]["path"]
+    path = ROOT / state["route_guard"]["closure_crosswalk"]["path"]
     mutated = json.loads(path.read_text(encoding="utf-8"))
     mutated["entries"].pop()
     original_reader = guard._read_json_file
@@ -75,90 +90,73 @@ def test_crosswalk_leaf_omission_positive_control_is_rejected(monkeypatch) -> No
         return original_reader(candidate)
 
     monkeypatch.setattr(guard, "_read_json_file", read_mutated)
-    result = guard.validate_field_crosswalk(state)
+    result = guard.validate_visible_life_closure_crosswalk(state)
 
     assert result["status"] == "fail"
-    assert "field_crosswalk_callable_recompute_mismatch" in result["errors"]
+    assert "visible_life_crosswalk_callable_recompute_mismatch" in result["errors"]
+    assert "visible_life_crosswalk_leaf_omitted" in result["errors"]
 
 
-def test_lineage_omission_positive_control_is_rejected(monkeypatch) -> None:
-    state = live_state()
-    path = ROOT / state["route_guard"]["lineage_universe"]["path"]
-    mutated = json.loads(path.read_text(encoding="utf-8"))
-    mutated["records"].pop()
-    original_reader = guard._read_json_file
-
-    def read_mutated(candidate: Path):
-        if candidate == path:
-            return mutated, None
-        return original_reader(candidate)
-
-    monkeypatch.setattr(guard, "_read_json_file", read_mutated)
-    result = guard.validate_lineage_universe(state)
-
-    assert result["status"] == "fail"
-    assert "lineage_universe_callable_recompute_mismatch" in result["errors"]
-
-
-def test_card2_action_policy_rejects_product_runtime_path() -> None:
-    result = guard.validate_card2_action_paths(
-        route_state=route_state(live_state()),
-        changed_paths=["EgoOperator/agent_base.py"],
-        scope_loaded=True,
-        scope_allowed_paths=[guard.CARD2_TASK_PREFIX],
-    )
-
-    assert result["status"] == "fail"
-    assert result["inferred_execution_paths"] == ["EgoOperator/agent_base.py"]
-    assert "card2_execution_inferred_from_changed_paths" in result["errors"]
-
-
-def test_card2_action_policy_rejects_missing_scope() -> None:
-    result = guard.validate_card2_action_paths(
-        route_state=route_state(live_state()),
-        changed_paths=[f"{guard.CARD2_TASK_PREFIX}STAGE_CARD.md"],
-        scope_loaded=False,
-        scope_allowed_paths=[],
-    )
-
-    assert result["status"] == "fail"
-    assert "missing_mutation_scope_for_card2_action" in result["errors"]
-
-
-def test_nonempty_implementation_targets_are_rejected() -> None:
+def test_closed_card2_action_cannot_be_resurrected() -> None:
     state = copy.deepcopy(live_state())
-    route_state(state)["authorized_implementation_targets"] = ["EgoDesktop/"]
+    route_state(state)["allowed_next_actions"].append(guard.CARD2_BANK_ACTION_ID)
 
-    assert "authorized implementation targets must remain empty" in error_text(state)
+    assert "closed Card2 route exposes a non-validation action" in error_text(state)
 
 
-def test_nonzero_science_weight_and_old_s0x_are_rejected() -> None:
+def test_product_target_expansion_is_rejected() -> None:
     state = copy.deepcopy(live_state())
-    route_state(state)["science_firewall"]["card2_science_weight"] = 1
-    route_state(state)["science_firewall"]["satisfies_old_s0x"] = True
+    product(state)["authorized_implementation_targets"].append("EgoDesktop/forbidden.py")
 
-    assert "zero-science firewall drifted" in error_text(state)
+    assert "visible_life_product_targets_mismatch" in error_text(state)
 
 
-def test_card2_execution_and_science_authorization_are_rejected() -> None:
+def test_nonzero_product_science_weight_is_rejected() -> None:
     state = copy.deepcopy(live_state())
-    route_state(state)["action_dependencies"][guard.CARD2_BANK_ACTION_ID]["execution_authorized"] = True
-    route_state(state)["authorizations"]["science_successor"] = True
+    product(state)["science_weight"] = 1
+    product(state)["science_firewall"]["science_weight"] = 1
 
     errors = error_text(state)
-    assert "Card 2 execution authorization must remain false" in errors
-    assert "ITL authorizations transcription or fail-closed values drifted" in errors
+    assert "visible_life_product_science_weight_mismatch" in errors
+    assert "visible_life_product_science_firewall_mismatch" in errors
 
 
-def test_self_authored_second_control_plane_is_rejected() -> None:
+def test_product_runtime_or_mainline_authority_is_rejected() -> None:
     state = copy.deepcopy(live_state())
-    state["route_guard"]["allowed_action_binding"] = {"allowed_next_action_ids": [guard.CARD2_BANK_ACTION_ID]}
+    product(state)["authorizations"]["runtime"] = True
+    product(state)["mainline_connected"] = True
 
-    assert "self-authored route authority or lineage control plane remains present" in error_text(state)
+    errors = error_text(state)
+    assert "visible_life_product_authorizations_mismatch" in errors
+    assert "visible_life_product_mainline_connected_mismatch" in errors
 
 
-def test_committed_itl_claim_ceiling_is_not_upgradeable() -> None:
+def test_visible_life_exact_path_policy_rejects_egodesktop_and_extra_file() -> None:
+    result = guard.validate_visible_life_action_paths(
+        changed_paths=[*guard.VISIBLE_LIFE_TARGETS, "EgoDesktop/forbidden.py"],
+        scope_allowed_paths=guard.VISIBLE_LIFE_TARGETS,
+        require_complete_set=True,
+    )
+
+    assert result["status"] == "fail"
+    assert "visible_life_changed_path_outside_exact_six" in result["errors"]
+    assert "visible_life_forbidden_surface_path" in result["errors"]
+
+
+def test_visible_life_exact_path_policy_rejects_incomplete_set() -> None:
+    result = guard.validate_visible_life_action_paths(
+        changed_paths=guard.VISIBLE_LIFE_TARGETS[:-1],
+        scope_allowed_paths=guard.VISIBLE_LIFE_TARGETS,
+        require_complete_set=True,
+    )
+
+    assert "visible_life_changed_path_set_incomplete" in result["errors"]
+
+
+def test_visible_life_task_must_remain_parked() -> None:
     state = copy.deepcopy(live_state())
-    route_state(state)["claim_ceiling"]["max"] = "mechanism validity"
+    state["route_guard"]["route_views"]["task_routes"][
+        "ego-visible-life-proxy-v0-route-replacement-001a"
+    ]["lane"] = "active_default"
 
-    assert "ITL claim ceiling transcription drifted" in error_text(state)
+    assert "visible-life task must remain parked and non-default" in error_text(state)

@@ -380,21 +380,46 @@ def live_route_state() -> dict:
     )
 
 
-def valid_card2_scope(state: dict) -> dict:
+def valid_visible_life_phase_b_scope(state: dict) -> dict:
     fingerprint = codex_session_guard.compute_route_fingerprint(state)
     revision = state["route_guard"]["route_revision_id"]
     return {
-        "task_id": "EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A",
-        "task_kind": "executable_candidate_independent_headroom",
-        "requested_action_id": "bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A",
+        "task_id": codex_session_guard.VISIBLE_LIFE_TASK_ID,
+        "task_kind": "local_product_clock_visible_playground",
+        "requested_action_id": codex_session_guard.VISIBLE_LIFE_IMPLEMENT_ACTION_ID,
         "source_route_revision_id": revision,
         "source_route_fingerprint": fingerprint,
         "expected_target_route_revision_id": revision,
-        "independent_red_review_required": True,
-        "red_review_ref": "CLAUDE-RED-CARD2-BANK-TEST",
-        "allowed_mutation_paths": ["docs/codex/tasks/ego-pet-world-v1-capability-headroom-001a/"],
+        "independent_red_review_required": False,
+        "red_review_ref": None,
+        "allowed_mutation_paths": list(codex_session_guard.VISIBLE_LIFE_TARGETS),
         "migration_exception": {},
-        "raw": {},
+        "raw": {"execution_requested": True},
+    }
+
+
+def valid_visible_life_transition_scope() -> dict:
+    return {
+        "task_id": codex_session_guard.VISIBLE_LIFE_TASK_ID,
+        "task_kind": "operator_authorized_red_route_replacement",
+        "requested_action_id": codex_session_guard.VISIBLE_LIFE_TRANSITION_ACTION_ID,
+        "source_route_revision_id": codex_session_guard.CARD2_SYNC_ROUTE_REVISION,
+        "source_route_fingerprint": "39775f663c17adf8dc0efb777d3ad49ee75181c43fea4546808e3dd48a697881",
+        "expected_target_route_revision_id": codex_session_guard.VISIBLE_LIFE_ROUTE_REVISION,
+        "independent_red_review_required": True,
+        "red_review_ref": codex_session_guard.VISIBLE_LIFE_RED_REVIEW_PATH,
+        "allowed_mutation_paths": [
+            codex_session_guard.VISIBLE_LIFE_TASK_PREFIX,
+            "docs/PROGRAM_STATE_UNIFIED.yaml",
+            "docs/STATUS.md",
+            "docs/codex/tasks/TASK_LANE_INDEX.md",
+            "artifacts/reports/program_state_summary.md",
+            "scripts/codex_session_guard.py",
+            "scripts/codex/verify_route_convergence.py",
+            "scripts/tests/test_codex_session_guard.py",
+            "scripts/tests/test_route_governance_supersession.py",
+        ],
+        "raw": {"execution_requested": False},
     }
 
 
@@ -406,10 +431,10 @@ def validate_scope(state: dict, scope: dict, **overrides) -> list[dict]:
     params = {
         "scope": scope,
         "program_state": state,
-        "changed_paths": ["docs/codex/tasks/ego-pet-world-v1-capability-headroom-001a/STAGE_CARD.md"],
-        "added_task_dirs": ["docs/codex/tasks/ego-pet-world-v1-capability-headroom-001a"],
+        "changed_paths": list(codex_session_guard.VISIBLE_LIFE_TARGETS),
+        "added_task_dirs": [],
         "red_triggers": [],
-        "execution_requested": False,
+        "execution_requested": True,
     }
     params.update(overrides)
     return codex_session_guard.validate_route_mutation_scope(**params)
@@ -417,7 +442,7 @@ def validate_scope(state: dict, scope: dict, **overrides) -> list[dict]:
 
 def test_route_scope_rejects_stale_fingerprint() -> None:
     state = live_route_state()
-    scope = valid_card2_scope(state)
+    scope = valid_visible_life_phase_b_scope(state)
     scope["source_route_fingerprint"] = "0" * 64
 
     assert "stale_route_fingerprint" in blocker_reasons(validate_scope(state, scope))
@@ -425,7 +450,7 @@ def test_route_scope_rejects_stale_fingerprint() -> None:
 
 def test_route_scope_rejects_wrong_requested_action() -> None:
     state = live_route_state()
-    scope = valid_card2_scope(state)
+    scope = valid_visible_life_phase_b_scope(state)
     scope["requested_action_id"] = "bank_UNBOUND_ROUTE_CARD"
 
     assert "ROUTE_ACTION_NOT_BOUND" in blocker_reasons(validate_scope(state, scope))
@@ -433,14 +458,14 @@ def test_route_scope_rejects_wrong_requested_action() -> None:
 
 def test_route_scope_rejects_second_task_directory() -> None:
     state = live_route_state()
-    scope = valid_card2_scope(state)
+    scope = valid_visible_life_phase_b_scope(state)
 
     blockers = validate_scope(
         state,
         scope,
         added_task_dirs=[
-            "docs/codex/tasks/ego-pet-world-v1-capability-headroom-001a",
-            "docs/codex/tasks/ego-c1-kernel-implementation-001a",
+            "docs/codex/tasks/one",
+            "docs/codex/tasks/two",
         ],
     )
     assert "multiple_task_directories" in blocker_reasons(blockers)
@@ -448,50 +473,81 @@ def test_route_scope_rejects_second_task_directory() -> None:
 
 def test_authority_change_requires_red_review_ref() -> None:
     state = live_route_state()
-    scope = valid_card2_scope(state)
+    scope = valid_visible_life_transition_scope()
     scope["red_review_ref"] = None
-    scope["allowed_mutation_paths"].append("docs/PROGRAM_STATE_UNIFIED.yaml")
 
     blockers = validate_scope(
         state,
         scope,
-        changed_paths=["docs/PROGRAM_STATE_UNIFIED.yaml"],
-        added_task_dirs=[],
+        changed_paths=[
+            "docs/PROGRAM_STATE_UNIFIED.yaml",
+            f"{codex_session_guard.VISIBLE_LIFE_TASK_PREFIX}STAGE_CARD.md",
+        ],
+        added_task_dirs=[codex_session_guard.VISIBLE_LIFE_TASK_PREFIX.rstrip("/")],
         red_triggers=[{"type": "authority_path", "path": "docs/PROGRAM_STATE_UNIFIED.yaml"}],
     )
     assert "authority_change_without_red_review_ref" in blocker_reasons(blockers)
 
 
-def test_route_scope_rejects_wrong_card2_task_kind() -> None:
+def test_route_scope_rejects_wrong_visible_life_task_kind() -> None:
     state = live_route_state()
-    scope = valid_card2_scope(state)
+    scope = valid_visible_life_phase_b_scope(state)
     scope["task_kind"] = "governance_only_validator_repair"
 
-    assert "card2_task_kind_mismatch" in blocker_reasons(validate_scope(state, scope))
+    assert "visible_life_phase_b_task_kind_mismatch" in blocker_reasons(validate_scope(state, scope))
 
 
-def test_route_scope_rejects_consumed_authority_sync_exception_reuse() -> None:
+def test_visible_life_transition_is_exactly_bound_to_old_revision_and_fingerprint() -> None:
     state = live_route_state()
-    scope = valid_card2_scope(state)
-    scope.update(
-        {
-            "task_id": codex_session_guard.CARD2_SYNC_TASK_ID,
-            "task_kind": "engineering_evidence_governance_cross_repo_sync",
-            "requested_action_id": codex_session_guard.CARD2_SYNC_ACTION_ID,
-            "source_route_revision_id": "EGO_ROUTE_8692_SUPERSESSION_001A",
-            "source_route_fingerprint": "f605f59393dbba586d50c9e4ee7e085570de7b8d012b0b09bc7ccf75865d52b4",
-            "authority_sync_exception": {
-                "exact_task_id": codex_session_guard.CARD2_SYNC_TASK_ID,
-                "itl_route_state_blob": "8b2db13a023873775b80bfe4e8eab7e53a7bba62",
-                "enabled": False,
-                "consumed": True,
-                "wildcard_allowed": False,
-                "operator_override_allowed": False,
-            },
-        }
+    scope = valid_visible_life_transition_scope()
+    changed = [
+        "docs/PROGRAM_STATE_UNIFIED.yaml",
+        f"{codex_session_guard.VISIBLE_LIFE_TASK_PREFIX}STAGE_CARD.md",
+    ]
+    blockers = validate_scope(
+        state,
+        scope,
+        changed_paths=changed,
+        added_task_dirs=[codex_session_guard.VISIBLE_LIFE_TASK_PREFIX.rstrip("/")],
+        execution_requested=False,
+    )
+    reasons = blocker_reasons(blockers)
+    assert "stale_route_fingerprint" not in reasons
+    assert "source_route_revision_mismatch" not in reasons
+    assert "ROUTE_ACTION_NOT_BOUND" not in reasons
+
+    scope["source_route_fingerprint"] = "0" * 64
+    assert "stale_route_fingerprint" in blocker_reasons(
+        validate_scope(
+            state,
+            scope,
+            changed_paths=changed,
+            added_task_dirs=[codex_session_guard.VISIBLE_LIFE_TASK_PREFIX.rstrip("/")],
+            execution_requested=False,
+        )
     )
 
-    assert "authority_sync_exception_reused_or_invalid" in blocker_reasons(validate_scope(state, scope))
+
+def test_visible_life_transition_cannot_be_reused_after_task_directory_exists() -> None:
+    state = live_route_state()
+    scope = valid_visible_life_transition_scope()
+    changed = [
+        "docs/PROGRAM_STATE_UNIFIED.yaml",
+        f"{codex_session_guard.VISIBLE_LIFE_TASK_PREFIX}STAGE_CARD.md",
+    ]
+
+    reasons = blocker_reasons(
+        validate_scope(
+            state,
+            scope,
+            changed_paths=changed,
+            added_task_dirs=[],
+            execution_requested=False,
+        )
+    )
+
+    assert "visible_life_transition_reused_or_invalid" in reasons
+    assert "stale_route_fingerprint" in reasons
 
 
 def test_untouched_historical_mechanism_text_does_not_trigger_red_review() -> None:
@@ -529,48 +585,48 @@ def test_byte_equal_generated_view_only_does_not_trigger_red_review() -> None:
     assert triggers == []
 
 
-def test_valid_card2_scope_admits_banking_only() -> None:
+def test_valid_visible_life_phase_b_scope_admits_exact_six(monkeypatch) -> None:
     state = live_route_state()
-    scope = valid_card2_scope(state)
+    scope = valid_visible_life_phase_b_scope(state)
+    monkeypatch.setattr(
+        codex_session_guard,
+        "compute_visible_life_phase_b_dependencies",
+        lambda *_args, **_kwargs: {"all_satisfied": True, "dependencies": {"test": True}},
+    )
 
     assert validate_scope(state, scope) == []
 
 
 def test_self_declared_false_cannot_hide_execution_in_actual_changed_paths() -> None:
     state = live_route_state()
-    scope = valid_card2_scope(state)
+    scope = valid_visible_life_phase_b_scope(state)
     scope["raw"]["execution_requested"] = False
 
-    assert "card2_execution_inferred_from_changed_paths" in blocker_reasons(
+    reasons = blocker_reasons(
         validate_scope(
             state,
             scope,
-            changed_paths=[
-                "docs/codex/tasks/ego-pet-world-v1-capability-headroom-001a/STAGE_CARD.md",
-                "EgoOperator/agent_base.py",
-            ],
+            changed_paths=[*codex_session_guard.VISIBLE_LIFE_TARGETS, "EgoOperator/agent_base.py"],
         )
     )
+    assert "visible_life_phase_b_execution_flag_mismatch" in reasons
+    assert "visible_life_changed_path_outside_exact_six" in reasons
 
 
-def test_missing_scope_fails_closed_for_card2_bank_action() -> None:
-    state = live_route_state()
-    route_state = state["route_guard"]["transcribed_itl"]["route_state"]
-
-    result = codex_session_guard.validate_card2_action_paths(
-        route_state=route_state,
-        changed_paths=["docs/codex/tasks/ego-pet-world-v1-capability-headroom-001a/STAGE_CARD.md"],
-        scope_loaded=False,
-        scope_allowed_paths=[],
+def test_visible_life_scope_cannot_replace_exact_files_with_directory_prefix() -> None:
+    result = codex_session_guard.validate_visible_life_action_paths(
+        changed_paths=codex_session_guard.VISIBLE_LIFE_TARGETS,
+        scope_allowed_paths=["labs/ego_life_playground_v0/"],
+        require_complete_set=True,
     )
 
     assert result["status"] == "fail"
-    assert "missing_mutation_scope_for_card2_action" in result["errors"]
+    assert "visible_life_scope_exact_six_mismatch" in result["errors"]
 
 
 def test_nonempty_red_review_string_is_not_provenance() -> None:
     result = codex_session_guard.validate_red_review_record(
-        "docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/NOT_A_RECEIPT",
+        f"{codex_session_guard.VISIBLE_LIFE_TASK_PREFIX}NOT_A_RECEIPT",
         require_committed=False,
     )
 

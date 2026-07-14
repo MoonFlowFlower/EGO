@@ -1,0 +1,136 @@
+{
+  "base_commit": "0c1a0efbfd155a10552f84d83bdb7a2589e94383",
+  "blocking_findings": [],
+  "claim_ceiling_acknowledged": true,
+  "executor_session_id": "codex_desktop_vlp_phase_a_executor_20260714_001",
+  "phase": "A",
+  "receipt_binding": "NONRECURSIVE_REVIEWED_DIFF__RECEIPT_EXCLUDED__COMMIT_MUST_BE_DIRECT_CHILD_WITH_EXACT_PATH_SET",
+  "review_id": "CLAUDE-RED-EGO-VISIBLE-LIFE-PROXY-V0-PHASE-A-20260714-001",
+  "review_source": "Windows desktop Claude app, Ego/Card2 bank admission review; final staged-git-object retry after disclosed desktop mount materialization false positive",
+  "reviewed_at_utc": "2026-07-14T16:14:03Z",
+  "reviewed_diff_canonicalization": "git diff --cached --binary --no-ext-diff --full-index -- <sorted_reviewed_paths>; raw bytes",
+  "reviewed_diff_sha256": "1919080ad60429559121b3b46bafca00127bd472d10f61b1f51173781df81772",
+  "reviewed_semantic_manifest": {
+    "schema_version": "ego-red-reviewed-semantic-manifest-001a",
+    "task_id": "EGO-VISIBLE-LIFE-PROXY-V0-ROUTE-REPLACEMENT-001A",
+    "phase": "A",
+    "base_commit": "0c1a0efbfd155a10552f84d83bdb7a2589e94383",
+    "sorted_reviewed_paths": [
+      "artifacts/reports/program_state_summary.md",
+      "docs/PROGRAM_STATE_UNIFIED.yaml",
+      "docs/STATUS.md",
+      "docs/codex/tasks/TASK_LANE_INDEX.md",
+      "docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/COLLISION_RECORD.md",
+      "docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/ITL_CLOSURE_CROSSWALK.json",
+      "docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/MUTATION_SCOPE_PHASE_A.yaml",
+      "docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/MUTATION_SCOPE_PHASE_B.yaml",
+      "docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/STAGE_CARD.md",
+      "scripts/codex/verify_route_convergence.py",
+      "scripts/codex_session_guard.py",
+      "scripts/tests/test_codex_session_guard.py",
+      "scripts/tests/test_route_governance_supersession.py"
+    ],
+    "per_path_base_blob_or_absent": {
+      "artifacts/reports/program_state_summary.md": "b828be4d9620821673d4c3be9147f0bc3abdf369",
+      "docs/PROGRAM_STATE_UNIFIED.yaml": "dc66e02a279e31fcd8acc2f181f951d863c73705",
+      "docs/STATUS.md": "3f0c0bc3b054c858c802514b1ec35ac13417b05f",
+      "docs/codex/tasks/TASK_LANE_INDEX.md": "d2a566c0590359b30d178f8fd0d2f4852d1e1f4c",
+      "docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/COLLISION_RECORD.md": "absent",
+      "docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/ITL_CLOSURE_CROSSWALK.json": "absent",
+      "docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/MUTATION_SCOPE_PHASE_A.yaml": "absent",
+      "docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/MUTATION_SCOPE_PHASE_B.yaml": "absent",
+      "docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/STAGE_CARD.md": "absent",
+      "scripts/codex/verify_route_convergence.py": "9d81f90f1cafd0ddb8869abbe280bd325509976e",
+      "scripts/codex_session_guard.py": "1e754112c8cb0a4c49f018d90b3aab0eecba8087",
+      "scripts/tests/test_codex_session_guard.py": "7e74ad1728d18ddd2f16a63ea487ba7d414a72a8",
+      "scripts/tests/test_route_governance_supersession.py": "203491646675fd79e5e94b143c18cf2ea7a0bff1"
+    },
+    "per_path_reviewed_blob_or_worktree_sha256": {
+      "artifacts/reports/program_state_summary.md": {
+        "reviewed_blob": "41bfcab60e964056628b1896bbd88ed96e377344",
+        "reviewed_blob_payload_sha256": "3d2b985ed9cefdf76ac737d14433c3fb2f01cb2687aacc7006eba412b027a903"
+      },
+      "docs/PROGRAM_STATE_UNIFIED.yaml": {
+        "reviewed_blob": "9d977ccf8ecb4c479c2f9ef1e58cc6e10021cfa3",
+        "reviewed_blob_payload_sha256": "1ffa0cc8126bfb3ff9c5b6bb72bea8bf602ee3a5c2295b1e5f0d1e22dd5a1d01"
+      },
+      "docs/STATUS.md": {
+        "reviewed_blob": "462c13dae252f18bd01b00e91d3f8032a0bf3140",
+        "reviewed_blob_payload_sha256": "7ca5c663982005c8b61a6c6abdee30a9c7166958a2ed79af3440c875ad9f7413"
+      },
+      "docs/codex/tasks/TASK_LANE_INDEX.md": {
+        "reviewed_blob": "b7916ee4773b75d2f305e9ccb913309656529b10",
+        "reviewed_blob_payload_sha256": "10c33fded7c29114611c14e109568c126cda9649c4a08f7a4bd0f1c78264f74c"
+      },
+      "docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/COLLISION_RECORD.md": {
+        "reviewed_blob": "2ea757ae63064a4c0de908a55b5c2506c316fce3",
+        "reviewed_blob_payload_sha256": "8b2ae4e351405de43629c91cc8caae697dbe31e5e8d539079466f1ecc37ec687"
+      },
+      "docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/ITL_CLOSURE_CROSSWALK.json": {
+        "reviewed_blob": "b0ed45349086a658b9688950e9139e86d056986a",
+        "reviewed_blob_payload_sha256": "1367d9f8abb3492f781b6e71f69e9d9fba07abf52e60f823a2fca1d574b4597c"
+      },
+      "docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/MUTATION_SCOPE_PHASE_A.yaml": {
+        "reviewed_blob": "ba223e67740be1191b153fe56ea41e5a6181bab9",
+        "reviewed_blob_payload_sha256": "9e325506bf41ee54a047d2dcd4cfa7df8f977074ffa524623371a5f764cedd0e"
+      },
+      "docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/MUTATION_SCOPE_PHASE_B.yaml": {
+        "reviewed_blob": "09a11b1be53c3ce4884d0dd124701bac88e9ced7",
+        "reviewed_blob_payload_sha256": "4eccf2dc1e59edf7ceb488b241d09a608e7b611a75b06ae1e7dfa51549aa91fb"
+      },
+      "docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/STAGE_CARD.md": {
+        "reviewed_blob": "cfcd6e3ff43ca6c0a7d1fd08363900381c667909",
+        "reviewed_blob_payload_sha256": "5a195e77308d47af5b1e087a584a31d1cf774777af50c3f744ecca2abe81495b"
+      },
+      "scripts/codex/verify_route_convergence.py": {
+        "reviewed_blob": "20634e56d18c111d5c4fcd9147e47bcd63228878",
+        "reviewed_blob_payload_sha256": "3f9b6a23f292beeb39a367f2c68e4c542c5ff904c02f3f0a90ba562652d9dca3"
+      },
+      "scripts/codex_session_guard.py": {
+        "reviewed_blob": "8f3aad23a988574002d7681e76a2c87c1d9b4d39",
+        "reviewed_blob_payload_sha256": "35150699a116035d45ed61575ff55fd12577ca249b96a9dfc3e1fcc9885c3e48"
+      },
+      "scripts/tests/test_codex_session_guard.py": {
+        "reviewed_blob": "ded5b241be8ba8928f906990186faf1b10e668d4",
+        "reviewed_blob_payload_sha256": "3ff21dd2eadf72a8e3c7470eb1f1ce12bc27ee6c2ba56419d53e9fc8001967c7"
+      },
+      "scripts/tests/test_route_governance_supersession.py": {
+        "reviewed_blob": "a50c9b36716ead6a82fba29a425ed97c92f61791",
+        "reviewed_blob_payload_sha256": "54fd4bb4fcde290383a3e15dc6ff8ffc8a12b5a052c30b3eb139dd092dcfa4e7"
+      }
+    }
+  },
+  "reviewed_semantic_manifest_canonicalization": "UTF-8 JSON object; Python json.dumps(sort_keys=true,separators=(',',':'),ensure_ascii=false,allow_nan=false); no BOM; no trailing newline; receipt excluded",
+  "reviewed_semantic_manifest_sha256": "18d09ed23c3511950711940f99f6f8162080548d269fa12fb6d53dd6de125df4",
+  "reviewer": "Claude",
+  "reviewer_session_id": "desktop-claude:Ego/Card2 bank admission review:2026-07-14-staged-object-retry",
+  "sorted_reviewed_paths": [
+    "artifacts/reports/program_state_summary.md",
+    "docs/PROGRAM_STATE_UNIFIED.yaml",
+    "docs/STATUS.md",
+    "docs/codex/tasks/TASK_LANE_INDEX.md",
+    "docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/COLLISION_RECORD.md",
+    "docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/ITL_CLOSURE_CROSSWALK.json",
+    "docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/MUTATION_SCOPE_PHASE_A.yaml",
+    "docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/MUTATION_SCOPE_PHASE_B.yaml",
+    "docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/STAGE_CARD.md",
+    "scripts/codex/verify_route_convergence.py",
+    "scripts/codex_session_guard.py",
+    "scripts/tests/test_codex_session_guard.py",
+    "scripts/tests/test_route_governance_supersession.py"
+  ],
+  "task_id": "EGO-VISIBLE-LIFE-PROXY-V0-ROUTE-REPLACEMENT-001A",
+  "verdict": "NO_BLOCKING_FINDINGS",
+  "review_history": [
+    {
+      "verdict": "BLOCKING_FINDINGS",
+      "disposition": "DESKTOP_MOUNT_MATERIALIZATION_FALSE_POSITIVE",
+      "host_readback": "git diff and git -c core.autocrlf=true diff empty; all 13 paths normalize to staged blobs; host py_compile/YAML/focused tests pass"
+    },
+    {
+      "verdict": "NO_BLOCKING_FINDINGS",
+      "review_basis": "exact staged git objects plus host-authoritative clean-worktree readback"
+    }
+  ],
+  "what_this_review_proves": "Phase-A governance transition staged-object adequacy and fail-closed product/science/path boundaries only"
+}

@@ -1,0 +1,22 @@
+task_id: EGO-VISIBLE-LIFE-PROXY-V0-ROUTE-REPLACEMENT-001A
+task_kind: local_product_clock_visible_playground
+requested_action_id: implement_EGO-VISIBLE-LIFE-PROXY-V0-001A
+source_route_revision_id: EGO_VISIBLE_LIFE_PROXY_V0_ROUTE_REPLACEMENT_001A
+source_route_fingerprint: 63a54cb04c634042e27b1af9500cbb1dd87d5d9941959a5abfeac28954f1f4de
+expected_target_route_revision_id: EGO_VISIBLE_LIFE_PROXY_V0_ROUTE_REPLACEMENT_001A
+independent_red_review_required: false
+red_review_ref: null
+allowed_mutation_paths:
+- labs/ego_life_playground_v0/__init__.py
+- labs/ego_life_playground_v0/engine.py
+- labs/ego_life_playground_v0/store.py
+- labs/ego_life_playground_v0/app.py
+- scripts/run_ego_life_playground_v0.py
+- tests/test_ego_life_playground_v0.py
+execution_requested: true
+mainline_connected: false
+runtime_authority: none
+science_weight: 0
+auto_remote_anchor: forbidden
+push: forbidden
+tag: forbidden

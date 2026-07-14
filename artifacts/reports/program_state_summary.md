@@ -2,12 +2,12 @@
 
 > AUTO-GENERATED FILE. Do not edit by hand.
 
-- phase: `ego_pet_world_v1_card2_itl_authority_sync_banked__card2_bank_separate_task_only`
-- layer: `engineering evidence-governance / cross-repo synchronization`
+- phase: `visible_life_proxy_v0_phase_a_banked__phase_b_authorized_not_started`
+- layer: `engineering evidence-governance + bounded product-clock implementation authorization`
 - highest evidence: `E3`
 - verification: `V3`
 - mainline_connected: `True`
 - enabled: `True`
-- next_minimal_action: In a separate task only, bank EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A under the committed ITL action-specific path policy. Do not execute Card 2, implement product/runtime/kernel/UI, score, experiment, or satisfy any science successor; execution authorization remains false.
+- next_minimal_action: After the committed Phase-A Red receipt and clean validator readback, implement exactly labs/ego_life_playground_v0/{__init__,engine,store,app}.py, scripts/run_ego_life_playground_v0.py, and tests/test_ego_life_playground_v0.py. Do not touch EgoDesktop, EgoOperator, LLM/network, runtime/mainline authority, or science routes.
 - highest ledger entry: `mvp16_controlled_completion_current` / `E5`
 

@@ -1,0 +1,2030 @@
+{
+  "schema_version": "ego.visible_life_proxy.itl_closure_crosswalk.v1",
+  "task_id": "EGO-VISIBLE-LIFE-PROXY-V0-ROUTE-REPLACEMENT-001A",
+  "run_id": "ego-visible-life-proxy-v0-phase-a-20260714",
+  "producer_function": "scripts.codex_session_guard.build_visible_life_closure_crosswalk_payload",
+  "producer_code_path_hash": "35150699a116035d45ed61575ff55fd12577ca249b96a9dfc3e1fcc9885c3e48",
+  "input_artifacts": [
+    {
+      "name": "closure",
+      "repo": "intelligence-theory-lab",
+      "commit": "55706c734a2bf25ba1d9d2aa273283ed4dc39802",
+      "path": "artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/closure.json",
+      "git_blob_oid": "cbe62daa7da79308c63361d01d1429418c5537d3",
+      "git_blob_payload_sha256": "490ee2cf6f52952e3300069d42fb95abe6e8a589cc7cc3498221e1fbb39401e6"
+    },
+    {
+      "name": "closure_validation_report",
+      "repo": "intelligence-theory-lab",
+      "commit": "55706c734a2bf25ba1d9d2aa273283ed4dc39802",
+      "path": "artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/closure_validation_report.json",
+      "git_blob_oid": "24c6bdb1177999df85c194810ba04893338f60b5",
+      "git_blob_payload_sha256": "2274cef44df64e94ba15c4741aadfe79431538da2499b1e9a32ab3efdcd5a36d"
+    },
+    {
+      "name": "events",
+      "repo": "intelligence-theory-lab",
+      "commit": "55706c734a2bf25ba1d9d2aa273283ed4dc39802",
+      "path": "artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/events.jsonl",
+      "git_blob_oid": "85da9f0756c97a1dfed1d8f1a909f5c02f131b0a",
+      "git_blob_payload_sha256": "136192a04ef05f7b3880a174e03b4a8cd921a56cdcc5a662f78e8beb576c4d91"
+    },
+    {
+      "name": "itl_red_review",
+      "repo": "intelligence-theory-lab",
+      "commit": "55706c734a2bf25ba1d9d2aa273283ed4dc39802",
+      "path": "artifacts/EGO-VISIBLE-LIFE-PROXY-V0-ROUTE-REPLACEMENT-001A/PHASE_A_RED_REVIEW.json",
+      "git_blob_oid": "3500550829c55297f1fc70151db5f0f193b82330",
+      "git_blob_payload_sha256": "3a4fa320c322b71f30a12ee0d51958d753b8d9a16bf8f960f8f4746933acfe4a"
+    },
+    {
+      "name": "route_state",
+      "repo": "intelligence-theory-lab",
+      "commit": "55706c734a2bf25ba1d9d2aa273283ed4dc39802",
+      "path": "artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/state.json",
+      "git_blob_oid": "75a83aaf8cdea464696daf8d940dd784c5c86302",
+      "git_blob_payload_sha256": "6dc4111604f37ecde5c0d79a35da3fbe278e021bb780ace82139bf559d7fe8e2"
+    },
+    {
+      "name": "task_card",
+      "repo": "intelligence-theory-lab",
+      "commit": "55706c734a2bf25ba1d9d2aa273283ed4dc39802",
+      "path": "docs/codex/tasks/EGO-VISIBLE-LIFE-PROXY-V0-ROUTE-REPLACEMENT-001A.md",
+      "git_blob_oid": "6c4f61255c25fa4ce26b6064b718e7e43b627db2",
+      "git_blob_payload_sha256": "59b7f775f72fc556eb0192970df3e5cd581f0c11198b1a7ce2d3d07e2aa5c439"
+    }
+  ],
+  "aggregation_rule": "flatten every committed ITL state/closure leaf in sorted-key/index order and require one verbatim target leaf",
+  "source_leaf_counts": {
+    "route_state": 222,
+    "closure": 57
+  },
+  "total_leaf_count": 279,
+  "entries": [
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_dependencies/bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/blocked_until/0",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_dependencies/bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/blocked_until/0",
+      "transform": "verbatim_json_value",
+      "value_sha256": "b11e366fd9bc1b0270a1a10d63c9856aa0676d1a33233153084f86b82144f9bb"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_dependencies/bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/dependency_evaluation",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_dependencies/bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/dependency_evaluation",
+      "transform": "verbatim_json_value",
+      "value_sha256": "668a5d76794b17d684d55ebe61bb177a48a710587f468acdd0e1bd7ffc6b2e11"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_dependencies/bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/execution_authorized",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_dependencies/bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/execution_authorized",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_dependencies/bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/permission",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_dependencies/bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/permission",
+      "transform": "verbatim_json_value",
+      "value_sha256": "e337e446685fcc9f273a9ede151afe88b90a12cac6f7426b9bdcca8f33502a70"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/action_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/action_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d7cff36fe559d907558458c4a32548d2c9e2c9430a9d7596703abe3b29288bfe"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/allowed_exact_paths",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/allowed_exact_paths",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/allowed_path_prefixes/0",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/allowed_path_prefixes/0",
+      "transform": "verbatim_json_value",
+      "value_sha256": "8522cee6971cc861bf5c76bdce01d1a51b104d68f2ae3977c377342fd1be382c"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/execution_inference",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/execution_inference",
+      "transform": "verbatim_json_value",
+      "value_sha256": "3cf6dceac4bf7066d9149b2596815b6a1d1b352146da7aa47fa5f8c39d14309c"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/forbidden_path_prefixes/0",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/forbidden_path_prefixes/0",
+      "transform": "verbatim_json_value",
+      "value_sha256": "a1ab128c48a967e80f691236f52c3f650f6a7229d3e1b88614874e16b1dd9b5a"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/forbidden_path_prefixes/1",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/forbidden_path_prefixes/1",
+      "transform": "verbatim_json_value",
+      "value_sha256": "460547fc80a3a1ae5048d7ac7e4f2093cf1ec160fc490cdf64e8fe326a36bfa0"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/forbidden_path_prefixes/2",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/forbidden_path_prefixes/2",
+      "transform": "verbatim_json_value",
+      "value_sha256": "0d0d94c38354fb8f818238c250e206063713e3157b37374024da9f4db1eda767"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/forbidden_path_prefixes/3",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/forbidden_path_prefixes/3",
+      "transform": "verbatim_json_value",
+      "value_sha256": "35f6f5f500ad9fba8712df8bf824c6abe31ef68ff4dc2b3f0581c1590e44d6ad"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/forbidden_path_prefixes/4",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/forbidden_path_prefixes/4",
+      "transform": "verbatim_json_value",
+      "value_sha256": "ce716212ced2c17ee2716dfd03d26faa6c78bf9e3e475eae58f710ed68194204"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/forbidden_path_prefixes/5",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/forbidden_path_prefixes/5",
+      "transform": "verbatim_json_value",
+      "value_sha256": "23772e2a5d620e2bab7de2e63af2def01ee493e8fc32f2c4c12ab86b2064561b"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/forbidden_path_prefixes/6",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/forbidden_path_prefixes/6",
+      "transform": "verbatim_json_value",
+      "value_sha256": "9cf8d1e8069ee62089c743718a930c72090d8506d43ffcb62a277c764859d851"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/missing_mutation_scope",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/missing_mutation_scope",
+      "transform": "verbatim_json_value",
+      "value_sha256": "11affde0bbe909a26c8f57c72e0dbc83f85df83bcf9fe4896ea8dd43e84669c1"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_path_policy/self_declared_scope_expansion",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_path_policy/self_declared_scope_expansion",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_resolution/banking_usable_now",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_resolution/banking_usable_now",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_resolution/effective_capability_card_bank_action_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_resolution/effective_capability_card_bank_action_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_resolution/exact_action_identity_live",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_resolution/exact_action_identity_live",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_resolution/old_generic_action_live",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_resolution/old_generic_action_live",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/action_resolution/state",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/action_resolution/state",
+      "transform": "verbatim_json_value",
+      "value_sha256": "329726d7e5dcbe201eefe7ff38e1c87f41c86fb32355e5558478a373dc56381d"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/active_mechanism_frontier",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/active_mechanism_frontier",
+      "transform": "verbatim_json_value",
+      "value_sha256": "30a0924a3360be687d1df9fcbbfdff62c01bc0fd14036ab9076cf7f451568666"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/allowed_next_actions/0",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/allowed_next_actions/0",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d50e49a137656ce687b6b6c09c82014028c201e866add268cfe6e6db032acef2"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/authorizations/capability_card_bank",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/authorizations/capability_card_bank",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/authorizations/capability_implementation",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/authorizations/capability_implementation",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/authorizations/experiment_execution",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/authorizations/experiment_execution",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/authorizations/mainline",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/authorizations/mainline",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/authorizations/mechanism_evidence",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/authorizations/mechanism_evidence",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/authorizations/remote_anchor",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/authorizations/remote_anchor",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/authorizations/runtime",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/authorizations/runtime",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/authorizations/science_successor",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/authorizations/science_successor",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/authorizations/scoring",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/authorizations/scoring",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/authorized_implementation_targets",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/authorized_implementation_targets",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/capability_route_registered",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/capability_route_registered",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/0",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/0",
+      "transform": "verbatim_json_value",
+      "value_sha256": "09775da9ca6435fbb68e9960d5397712d894adebd27fa02003a7919311fbba32"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/1",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/1",
+      "transform": "verbatim_json_value",
+      "value_sha256": "8b0e0c0bff1cb0da672a96837c89150865824588e520d3b9b84776f635623a1c"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/2",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/2",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f79c78f3e2bae128a0ae7cc67953fc8fc2859038d52167030da017de27610fe9"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/3",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/3",
+      "transform": "verbatim_json_value",
+      "value_sha256": "5e99a64d2bfbb52a0bd9c0282a0ed243cb75dc4b22a7511445d381a61f9c2227"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/4",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/4",
+      "transform": "verbatim_json_value",
+      "value_sha256": "eb8a6459c2719a8aac4f50c35903474450077e4521f579762b0d22ad3ca547fe"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/5",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/5",
+      "transform": "verbatim_json_value",
+      "value_sha256": "48385104d55a3fa5fe749c4410b040a55281dab7de8f91d39fc4239ddc7211b8"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/6",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/6",
+      "transform": "verbatim_json_value",
+      "value_sha256": "8fc1e546495be129a6cc4b834a9406b2ef496095d331037894d62d86aa5ab2dc"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/7",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/7",
+      "transform": "verbatim_json_value",
+      "value_sha256": "58371a494ae6944cdd827df034b4fe52e25363b4581f2aae0a10af00cc834975"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/8",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/8",
+      "transform": "verbatim_json_value",
+      "value_sha256": "75de9dec489df8b6702cad240ec87ff7586d194e2dfd1a9e833e40331dcd50a8"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/9",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/9",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4d088718c2b383ac45c5b8651c7865020cf0de26a498f78fc038f10f8237a7c6"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/10",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/10",
+      "transform": "verbatim_json_value",
+      "value_sha256": "755adadc929ab8455baa310df7442245f6a9d1d5629724703297b1053249db25"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/11",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/11",
+      "transform": "verbatim_json_value",
+      "value_sha256": "7a6dcc3f28c36dbca8e099aa48386b0682adc8b2d25c5eab2b91ed79aefa2855"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/12",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/12",
+      "transform": "verbatim_json_value",
+      "value_sha256": "937470ded1cb229879893ca2b4c81a088dc2010f7cf55e1991005ee26af43160"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/13",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/13",
+      "transform": "verbatim_json_value",
+      "value_sha256": "86774421a0131b1e632e842a443fee68ea414f7cb372aa4aa95b805fce68f971"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/forbidden_claims/14",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/forbidden_claims/14",
+      "transform": "verbatim_json_value",
+      "value_sha256": "3fef9bf262206ddc3489a546424a2cc53e6f30a6e8a5ffb0ed2d33faed0de86b"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/claim_ceiling/max",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/claim_ceiling/max",
+      "transform": "verbatim_json_value",
+      "value_sha256": "c3f0e32a31b82c2d0ad45970dfe2d77c28748ceaf359dc54c170a03966d21715"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/closed_by_task",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/closed_by_task",
+      "transform": "verbatim_json_value",
+      "value_sha256": "76010043a4ffcae194a997f3ddf0f52f2e15f727c8c1bc36ba3c7e870fc81794"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/closure_type",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/closure_type",
+      "transform": "verbatim_json_value",
+      "value_sha256": "72e0e0a0da829865e96ad366e711a63f9a2d563370fa490aebb413a2f6eb5a52"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/created_by_task",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/created_by_task",
+      "transform": "verbatim_json_value",
+      "value_sha256": "e06a22b3b44c5183a7cf38ddda991c873f6f48b7354981361723734fb3c08d26"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/current_state",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/current_state",
+      "transform": "verbatim_json_value",
+      "value_sha256": "97e6b68bd7d412de66e2f8b67587e79345cf634c2f21c24c79996ef0ab5c7e5f"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/failure_class",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/failure_class",
+      "transform": "verbatim_json_value",
+      "value_sha256": "b11e366fd9bc1b0270a1a10d63c9856aa0676d1a33233153084f86b82144f9bb"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/forbidden_next_actions/0",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/forbidden_next_actions/0",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d7cff36fe559d907558458c4a32548d2c9e2c9430a9d7596703abe3b29288bfe"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/forbidden_next_actions/1",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/forbidden_next_actions/1",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d8f370071412500c1fa0ff6ee5f7709832f3f892e541b901a725de2a4433dd9b"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/forbidden_next_actions/2",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/forbidden_next_actions/2",
+      "transform": "verbatim_json_value",
+      "value_sha256": "5bbbbec522f2fd651fae8946ad59acf99871d917b7bf443d4323a37d256e1712"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/forbidden_next_actions/3",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/forbidden_next_actions/3",
+      "transform": "verbatim_json_value",
+      "value_sha256": "3bdf7e6d3970d0372ba45a7a179bc1c8c72fb1e2e97ea37e3e4fb9155d74b652"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/forbidden_next_actions/4",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/forbidden_next_actions/4",
+      "transform": "verbatim_json_value",
+      "value_sha256": "3753f6232eb24176ef58c8a88ef01764e0512be57b2bdf084e430dbe9b0c34ab"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/forbidden_next_actions/5",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/forbidden_next_actions/5",
+      "transform": "verbatim_json_value",
+      "value_sha256": "5ebc4d17fa72507ea45481d3efb345d00f382581e5720426f97fcc15eed4e165"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/forbidden_next_actions/6",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/forbidden_next_actions/6",
+      "transform": "verbatim_json_value",
+      "value_sha256": "354596ac06f79de51152d4540f9ed93f2695745f1aaa0b117821e43db784f1b2"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/forbidden_next_actions/7",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/forbidden_next_actions/7",
+      "transform": "verbatim_json_value",
+      "value_sha256": "eb1fbf23a3a62e49a37cbb3baba3b3833f8d87c05db648257a43bda93af238fa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/forbidden_next_actions/8",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/forbidden_next_actions/8",
+      "transform": "verbatim_json_value",
+      "value_sha256": "7a4abf3713da66ba9f325fb48491b86eba30fdfe13a238cca1b45d2b9055a28a"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/forbidden_next_actions/9",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/forbidden_next_actions/9",
+      "transform": "verbatim_json_value",
+      "value_sha256": "117273a03b66360aa162aff8c01bf8bf0503ab61f61183c86e8e554712e1538f"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/implementation_authorized",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/implementation_authorized",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/mainline_authorized",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/mainline_authorized",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/mechanism_evidence_authorized",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/mechanism_evidence_authorized",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/path_policy_contradiction/candidate_task_path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/path_policy_contradiction/candidate_task_path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "ef7bc844bca8df9191fa59498aa6fe58d9119d27fe7eb2da2c0299136e7a5bcb"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/path_policy_contradiction/ego_commit",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/path_policy_contradiction/ego_commit",
+      "transform": "verbatim_json_value",
+      "value_sha256": "2ff4906b0e1643892ef03a2ff1741bdad06addb7f2f6a36cd1b8933076cb4e80"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/path_policy_contradiction/generated_index_path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/path_policy_contradiction/generated_index_path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "deddfa2e36504fdba6214135a187903f6665f6360ba91b41c6e4d98201aa3123"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/path_policy_contradiction/generator_source_path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/path_policy_contradiction/generator_source_path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "a82b0667bfd72ea9e983558ba31b91325c479482048e6112330a2cc0a9765836"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/path_policy_contradiction/guard_source_path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/path_policy_contradiction/guard_source_path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "097331383245d157856b237c0ee258371070fe3e2d4fbb10d224759424d9d3df"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/path_policy_contradiction/task_prefix",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/path_policy_contradiction/task_prefix",
+      "transform": "verbatim_json_value",
+      "value_sha256": "8522cee6971cc861bf5c76bdce01d1a51b104d68f2ae3977c377342fd1be382c"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/phase",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/phase",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d74481de10a488aae9186c134f069f319e04f555aa0bfb6722eeae1d26f5692f"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/pilot_1_reuse/positive_control",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/pilot_1_reuse/positive_control",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/pilot_1_reuse/regression_baseline",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/pilot_1_reuse/regression_baseline",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/pilot_1_reuse/unblock_requires_verified_audit_ref",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/pilot_1_reuse/unblock_requires_verified_audit_ref",
+      "transform": "verbatim_json_value",
+      "value_sha256": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/0/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/0/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "453bd30a3aa93a4caca4a619e768da2d2d46cf9bad6e185a167bed33d148a1a9"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/0/lineage_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/0/lineage_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "8fef2eaceb22ce7b9d5638211c3450e875cc9a3efaa84d73e8100b43680edef1"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/1/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/1/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d967d70ddab4622c1b972e6c507f1ea0f643c23f9a719bade4f3d4cd7349a049"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/1/lineage_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/1/lineage_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "03c036259df8d9d8f5605fbfed2620a94b78111a0315bf18550f610f11fdf987"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/2/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/2/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "5dea7998d621750bc43ee37fd16460853e1067a6ccaa893b09976b71c72b76f7"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/2/lineage_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/2/lineage_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "42f91f7e29cfdbcdba180bb016dd19d231902bf4ee66fafe9da3a626e644d388"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/3/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/3/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "c28d90a25e9d1c7ea500972cd24f6425c1a5afb7fbc4af2dda66b80fffb876e2"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/3/lineage_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/3/lineage_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f3f806a0f151126c9c1b66515b9b235496d048dc60912a2d8328c764debb39d8"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/4/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/4/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "34bf06142b4f8f6220605a5dc67b8e6847852e645f5c773325d15357f1c10ceb"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/4/lineage_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/4/lineage_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4b8852d8e5794bcfaeda53fe7bb86e722195879658c3af4c13ed8ac57b669d0f"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/5/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/5/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d4f58158d793c83d03ccabe7b7fa49d7759a18b1ef392ba314f24e2de9123cd0"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/5/lineage_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/5/lineage_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "0e7c0f64758d59cf81ebcfba8645d7e94ae347bc3cb25b24fda6237f506853eb"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/6/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/6/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "ef69aaf0ec91479d157b3d8e21a5edb1816fb44197ede5fe38f5c312daacc95f"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/6/lineage_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/6/lineage_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "715ed2e839ce610a3e4616aea149cc6a65bfa9ed478a170d08b4dfb95a6fad20"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/7/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/7/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "87a95d6b40e54fe7918b471661a0f05d50f13cb3f61cea3db0460594a37955b7"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/7/lineage_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/7/lineage_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "c17ea4e20f46945173a4093d503899a3875ed7b7818af5663a90f7d1ca9e7fff"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/8/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/8/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f3fd1fbc1c5854f59169aa498f29a03e37339b34d4474b08ec38678ffedf0c02"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/8/lineage_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/8/lineage_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "a6d5edfcc5db71455e2645bc2c812a1e33224cda41a9e4057886e44be176cfee"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/9/audit_ref",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/9/audit_ref",
+      "transform": "verbatim_json_value",
+      "value_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/9/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/9/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "c18b80ec06b9525049ef292d51955cf7974857ec126df13defd1ca98a456e75c"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/9/lineage_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/9/lineage_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "3b742d6143d1fb5f646687deec303bcba3dd0c61511932c3fcd22563e88e9240"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/9/positive_control_reuse",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/9/positive_control_reuse",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/9/regression_reuse",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/9/regression_reuse",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/10/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/10/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "bef9bd359be962abb02b8597b7e11a548a4d11498e7f92b21a099b635428bd0e"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/prior_negative_evidence_manifest/10/lineage_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/prior_negative_evidence_manifest/10/lineage_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "7f2c6f053bef46944f7e4b7ecaa4840e19a0bf5034e46e52a0df5d5ac0ba738e"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/route_family",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/route_family",
+      "transform": "verbatim_json_value",
+      "value_sha256": "e58ccfeffea55aa171ba12a1d16843604bb4a96607482c2d11997cb79f00c193"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/route_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/route_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "55be9e204dd9d3f17d38ef9825dedd153baa417e18f0aba9bdeb375baaeb98d5"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/route_kind",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/route_kind",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4c12b6f44f315f723f872c0e312af5292c9b0a90031c2e782ad29d1fac8f6710"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/runtime_authorized",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/runtime_authorized",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/science_firewall/card2_science_weight",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/science_firewall/card2_science_weight",
+      "transform": "verbatim_json_value",
+      "value_sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/science_firewall/inherits_h0_h1_freeze_formal",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/science_firewall/inherits_h0_h1_freeze_formal",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/science_firewall/inherits_old_k0r",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/science_firewall/inherits_old_k0r",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/science_firewall/may_reopen_old_k0",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/science_firewall/may_reopen_old_k0",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/science_firewall/may_satisfy_science_successor_boundary",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/science_firewall/may_satisfy_science_successor_boundary",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/science_firewall/may_supply_mechanism_attribution",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/science_firewall/may_supply_mechanism_attribution",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/science_firewall/satisfies_old_s0x",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/science_firewall/satisfies_old_s0x",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/science_successor_authorized",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/science_successor_authorized",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_boundaries/closed_card2_action/action_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_boundaries/closed_card2_action/action_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d7cff36fe559d907558458c4a32548d2c9e2c9430a9d7596703abe3b29288bfe"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_boundaries/closed_card2_action/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_boundaries/closed_card2_action/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "329726d7e5dcbe201eefe7ff38e1c87f41c86fb32355e5558478a373dc56381d"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_boundaries/closed_card2_action/live",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_boundaries/closed_card2_action/live",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_boundaries/old_generic_action/action_id",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_boundaries/old_generic_action/action_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4bb3e3449896c9e205339b4f9210dd9d65c26f1dea5aa3937b84c849fc7860a3"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_boundaries/old_generic_action/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_boundaries/old_generic_action/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "8f434304aa5a56c05c701b169f0d875e2ed1a3d220aeea3f98842362bd2f9cab"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_boundaries/old_generic_action/live",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_boundaries/old_generic_action/live",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_boundaries/old_k0_terminal_packet/inherited_authority",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_boundaries/old_k0_terminal_packet/inherited_authority",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_boundaries/old_k0_terminal_packet/relation",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_boundaries/old_k0_terminal_packet/relation",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d5b226d6c8b7f8b695e9191618a160b9b16394acd46826eb0ceda79d6d441779"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_boundaries/old_learned_outcome_lineage/disposition",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_boundaries/old_learned_outcome_lineage/disposition",
+      "transform": "verbatim_json_value",
+      "value_sha256": "731bf90c50bc41dbaf81a76bd75330afa89e7c6486e6eeb989f13348d969c83c"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_boundaries/old_learned_outcome_lineage/live",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_boundaries/old_learned_outcome_lineage/live",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_path_policy_contradiction/commit",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_path_policy_contradiction/commit",
+      "transform": "verbatim_json_value",
+      "value_sha256": "2ff4906b0e1643892ef03a2ff1741bdad06addb7f2f6a36cd1b8933076cb4e80"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_path_policy_contradiction/objects/0/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_path_policy_contradiction/objects/0/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d09c20bd41b1e039b8e36d387997857cae4bc5f540f0fc8f8d46447d7e122d8e"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_path_policy_contradiction/objects/0/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_path_policy_contradiction/objects/0/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "cc9e5ea5bd8fbedba204e19addc5055f00e2a681f54dc8333bab3003658f185c"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_path_policy_contradiction/objects/0/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_path_policy_contradiction/objects/0/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "6a86661faef9843275f218e8d62e4620859da4dc0689ce630b92c1db7671df79"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_path_policy_contradiction/objects/1/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_path_policy_contradiction/objects/1/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f0c07b4f684056d6a77af48ce366fb9655baf6d910353bd5182c40495c66dca6"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_path_policy_contradiction/objects/1/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_path_policy_contradiction/objects/1/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "deddfa2e36504fdba6214135a187903f6665f6360ba91b41c6e4d98201aa3123"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_path_policy_contradiction/objects/1/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_path_policy_contradiction/objects/1/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "0aef95907cb5acfe4f37d4b7bb8840cb027d6cfe2d5ecf371f6e8d0fec647f86"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_path_policy_contradiction/objects/2/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_path_policy_contradiction/objects/2/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "788226a0cf677e81f7c774c66c848adb440cad8af5525cbe5c37eb1984e00659"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_path_policy_contradiction/objects/2/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_path_policy_contradiction/objects/2/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "097331383245d157856b237c0ee258371070fe3e2d4fbb10d224759424d9d3df"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_path_policy_contradiction/objects/2/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_path_policy_contradiction/objects/2/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "ade1e00821b2d04c5717ab8079556ea74d0435137344ec286299ed6815b5dc88"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_path_policy_contradiction/objects/3/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_path_policy_contradiction/objects/3/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "38c892a1193fd1a5f2f4bded67bca49ed103af70231c077ae9c188e3e0a629e0"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_path_policy_contradiction/objects/3/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_path_policy_contradiction/objects/3/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "a82b0667bfd72ea9e983558ba31b91325c479482048e6112330a2cc0a9765836"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_path_policy_contradiction/objects/3/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_path_policy_contradiction/objects/3/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "941d53a472e15377d18f30549b7fa3a6a71cc29c4100b29ffb820ca84810377a"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_path_policy_contradiction/objects/4/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_path_policy_contradiction/objects/4/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f17517cff4b2210e0f5a0ab195ef6debcf9200d50f1bfc5c12da082156aa3a8b"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_path_policy_contradiction/objects/4/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_path_policy_contradiction/objects/4/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "c9c8fba727e9f8363970613c856d3f716b8f072d1f2d1861c954b1e359b83b5f"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_path_policy_contradiction/objects/4/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_path_policy_contradiction/objects/4/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "ef8dfcb9bf547c319c9e3bb6397d9200598f178b315a13b218b99969bd841ade"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_path_policy_contradiction/objects/5/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_path_policy_contradiction/objects/5/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "9859894e49548a2a5c8a1dca46452136abd8733875f60834a39c59cb38bbea4c"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_path_policy_contradiction/objects/5/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_path_policy_contradiction/objects/5/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "9916c9b4f7c27a2da7f49d46cd1783926cc31c867d5e901ec628de5692645a2a"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_path_policy_contradiction/objects/5/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_path_policy_contradiction/objects/5/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "eab5bf26702bf0d3d01595b551a058bddf0b62bed76e8f34d0c7ef0b612054ab"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_path_policy_contradiction/relation",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_path_policy_contradiction/relation",
+      "transform": "verbatim_json_value",
+      "value_sha256": "962f89dfd0a42b40fc9e5cc458e11dc73497429f3d64040755882078febd8078"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/commit",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/commit",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d5a114593467f116b95f6b587c3b33ca1009961451b77c8054c9bff937cdc20d"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/0/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/0/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "1465ea1bf82b2103a4b6404af5647669a7d6bfda11c0a5a2f1f3beeb4858b31a"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/0/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/0/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "cc9e5ea5bd8fbedba204e19addc5055f00e2a681f54dc8333bab3003658f185c"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/0/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/0/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "de9929e627b37503f10cd3a3257e532fb09acdda27ef69c4cb36fd411dd1240b"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/1/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/1/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "419333a7b0b3dac30aeca749ed9628cccdf0842661063712c1c7d08ff41a92f9"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/1/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/1/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "a74cc5e0d5f005ede74e28975e081f9c93d2584cb9204058a42514afc4788b4c"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/1/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/1/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "7b78ec06bac06fb1dde4d3f2ce8b92329616127829fbd154a35e3c3a7a225ebb"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/2/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/2/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d1892c27dd7d4825fe395eb26d0291b58857bfa125ba82720b6f3821ffd8fc53"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/2/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/2/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4f82d3c5301bf7151c3282d3a81ed73e39b2b630b47e91443740f97dae2c8876"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/2/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/2/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "565353b5018816fc3108c72ef44ba24f54ab9f95e9d381a10a365a6f6128b653"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/3/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/3/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "45ca661433d904df9e0c0405e8b60ce3df7ddda82da91878a946d958237c9b80"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/3/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/3/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "3d5f389931a14cba1933ea659edf887dd08c6a07074f02ca70dc84cd7d39ac60"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/3/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/3/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "b5baceb736285c545a11df66428c7100298e09ce5844635af42d4ae8d0f9f37a"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/4/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/4/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f61557877818ce25553c081f641aebe08b6b1e3a884ff9d42795f4d82357d0f1"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/4/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/4/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "2ae7c5503d51ad9ce5fffd4d932484809c3f971f6ff617fc93c937fe197077a4"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/4/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/4/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "24d7c1289715c9b1f8c5999ef7f75323ac0d126426fc59c71acfbcffe9b1af12"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/5/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/5/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "5f0e3cff1b67d8f9039ada98c10486480ca8d43adeddbffd0821626c835c08f0"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/5/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/5/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "6ed073ce5caafa92559ba26d27f57dc2b73794ca3c6e6168e3259db1f3b69d0a"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/objects/5/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/objects/5/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "2bc4c975b52ff88740a24ea49e7e8c36a7e0ffb40d710986381bda3e26d3752f"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/ego_source/relation",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/ego_source/relation",
+      "transform": "verbatim_json_value",
+      "value_sha256": "797cc9ae179bdc0e5744f7c48c06cb04dda97a3c3803a57ed4abd3a00895ec2d"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/historical_registration/commit",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/historical_registration/commit",
+      "transform": "verbatim_json_value",
+      "value_sha256": "cb7efa7a915335526c96e0730fa70f3afd682c5d40acf4599e400b5f2e60d726"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/historical_registration/objects/0/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/historical_registration/objects/0/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "7d24a07ddf1b26d66dbc0e1adf2b99c340551b90dc1734b7030a607c2177a414"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/historical_registration/objects/0/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/historical_registration/objects/0/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "3ba63cd7e238f9c5d60c81c1d9ae9532e354475aba25bf84ab27fe5f8f4708c7"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/historical_registration/objects/0/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/historical_registration/objects/0/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f44b875f8d9a8f5c1befbfa75a2337e5125a144874886cb7dfbc87f59e7d4850"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/historical_registration/objects/1/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/historical_registration/objects/1/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "e2075e5e908e83890cf12651d77c4c8e2bbec4f17a653964091a2073e0d09535"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/historical_registration/objects/1/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/historical_registration/objects/1/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "6a66c9263f35f907923930d3eda1c359fbbb265b397ec03684a83700c489dfc3"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/historical_registration/objects/1/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/historical_registration/objects/1/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "2ac14f9baee80bb0f0bfe4c838e58cfe03002eb81aa42d03a93fb39afe75e7ab"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/historical_registration/objects/2/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/historical_registration/objects/2/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "87c9820835342dc2ea4b419519653354a1c20ce09f9dd0cce9c5ebbe1180b318"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/historical_registration/objects/2/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/historical_registration/objects/2/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "e8b13bf60eb50e372e9956eea840689f8edf7d490624caded811d8f3f006ac9d"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/historical_registration/objects/2/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/historical_registration/objects/2/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "062afee5ac933d74e245c03b7b2bb529acbc71a271bd71dda3b801ad8c10cf69"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/historical_registration/relation",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/historical_registration/relation",
+      "transform": "verbatim_json_value",
+      "value_sha256": "322f55d6d58e8062f36a6fe8ba6cc880609eb780e81ee2d3feff0c3aa2d4d8a5"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/0/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/0/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "6c64463fd01ecd09b28ffb9aff44e72fe217c8b836c6ecc199ecd6b99c3e601a"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/0/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/0/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "148803f58230724bff4b200ece4f760e08b626d3782b3ce7d4689d4d41b58b22"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/0/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/0/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "61e2e57383f179e763b3cba289edb1dca330d47a8f23c415240674176d2871ee"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/1/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/1/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f234d94fd7aa7c091b2819e7a3af86542f6b588a682d96534bfb5a3ce21d95b6"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/1/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/1/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "c7c9a7911a2421b5402120af89ef0a479c6514aac6ac9d0fc7a04628145c7776"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/1/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/1/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "187759d655fd10fe4fdeb8197dd8c2eab17a4c086e71354bac9a22dcd42fc94d"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/2/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/2/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "25b5db6475eb8f959eac20a86403427600b35b8d0301dd30f0bebd402a6d60c5"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/2/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/2/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "0dad239df7f49ed84699f1084045637e871da9342a1f741e91141283c26e60ea"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/2/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/2/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "9da212d38eca734b73ac8a23300e1650dc05872f899c57bb6d0eee82fd854dd9"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/3/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/3/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "7d638cd8597808266b4af4f81b7a0baf9a03060acff17aa576fc85b094e3425e"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/3/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/3/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "6e55440e76182cbec4f1ab0bd684fc778986c28bae366ff34bd440905e73dc69"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/3/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/3/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "cb67f65a026b6f9f75e5742b4a8b9d9312055b43c09375b587caa4da31527806"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/4/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/4/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "385a0a18981e5c1f8ece8a24abd828911447cb951177573212e6ed0565b19a62"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/4/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/4/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f0f565ab3547f05ba873709d6e5301dcb5b661bf987b4e5117a4d2368bf2ed79"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/4/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/4/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "0b035627f8158664b93b8bffba6522203ac810a917fc9067394480e96b79dc81"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/5/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/5/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d97e1df49dd82b8ed803c7659ed623d54caabed1b44a09ec45e84f69f0094bd7"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/5/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/5/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "23422dc4451a2b97d756b46099171b97b34f43918e5bc7533f5f8c4b8e8b6d33"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/5/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/5/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "ec037439bf1579e38c4e1fd4bee8263f14a58f46324c88b2e64e24deca912a1f"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/6/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/6/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d40c3adcab40f83b6eed278132629d263d8d1fe5eacb80dc7481851ce678bcc5"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/6/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/6/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "593466736b6956c313b7196f989e248455096eb0489931cf88a14957865bd2d7"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/objects/6/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/objects/6/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "18fa06fa0883a66f56bf88658389a651d040a2c74777f9e4ef25a7ffb2fefca4"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/old_k0_terminal_packet/relation",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/old_k0_terminal_packet/relation",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d5b226d6c8b7f8b695e9191618a160b9b16394acd46826eb0ceda79d6d441779"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/phase_a/card_blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/phase_a/card_blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f50084439fa9e3a7aa896dd14f3e12b2660d3daa56432a6a99c928397d6631d2"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/phase_a/card_path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/phase_a/card_path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "38ec1f3def4172a7fc4110630cf9b20fe25024523e6bb7dd6765ec38397391d7"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/phase_a/card_sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/phase_a/card_sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fd0a5a5c396d3f9f5965bf3d864d585fd31c0d277223e5db3ee5e5d57e72e7b2"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/phase_a/commit",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/phase_a/commit",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4ab0a75cbe4180f5564411ea577eb4e1b9771a3df7b2be11d103f62818aeb384"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/phase_a/parent",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/phase_a/parent",
+      "transform": "verbatim_json_value",
+      "value_sha256": "36647fea8e9d4222fd7f288b06ea469cc847922fa772c4d0a3a5dd24a77d29d0"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/phase_a/review_manifest_sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/phase_a/review_manifest_sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4105039541be7ae2e9ae2d0fb45cd2ec8b69c27b1adcb37cc49225303814d684"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/phase_a/review_receipt_blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/phase_a/review_receipt_blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "cf786628d5467e05867aa924bcefc86aeac69cbb62532573939c1f156615c908"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/phase_a/review_receipt_path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/phase_a/review_receipt_path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "8e09bef060db582f8d36af79498510a1b34834f3279acb5a8ed1afeff46675ce"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/phase_a/review_receipt_sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/phase_a/review_receipt_sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d19ffcc83d2fcd2bd8950766976cd2bfad09c705c584aac86bda46c603ce5712"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/shared_contracts/0/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/shared_contracts/0/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "bb4025c53fbeb11b599d1f730b7961a23d6f8c4561813f167c8a33faec9e201a"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/shared_contracts/0/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/shared_contracts/0/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "0e70a02e40bf96d469a39617fb08f63ffdfc8d2754010366696b7f6b778a1366"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/shared_contracts/0/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/shared_contracts/0/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "1d3ad45fd172e2df564e70a5fc434a74b8ac78316eff97ee06d8a05617dc8307"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/shared_contracts/1/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/shared_contracts/1/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "de0c36bbe4825469fdc89064d1f9694e6b9e3bc771b45b38c7e5916337cb0b83"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/shared_contracts/1/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/shared_contracts/1/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f02852975d3ef2df062b4d88828f5d4cf4bd4ba7e7552b49022ef2c290d80e9a"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/shared_contracts/1/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/shared_contracts/1/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "534ad44844214a793741ea6b42b8e8a77ba0263f815625fbe5715ce475a24ce1"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/shared_contracts/2/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/shared_contracts/2/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fa7054f98ebbb098483aed84654f07cae7040962078c3b606c0b0862593924b0"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/shared_contracts/2/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/shared_contracts/2/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "73b0d25a60477087ded42d986605cc7f203e2a2adbf0f0f056813361da0aa404"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/shared_contracts/2/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/shared_contracts/2/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "40a9f27eab27439c1fff117b7579b5a4c30ebb837b82ed8c64f889a3d60b7148"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/shared_contracts/3/blob",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/shared_contracts/3/blob",
+      "transform": "verbatim_json_value",
+      "value_sha256": "06b5e9e1de91715924edfb7d2e9f4e22acdac30b77b64715db42e2d5c5ebab20"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/shared_contracts/3/path",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/shared_contracts/3/path",
+      "transform": "verbatim_json_value",
+      "value_sha256": "6eccb94599815b4b743a8be27ff1216a813e04356a6e33ce9b1b0894418677c1"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/source_readback/shared_contracts/3/sha256",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/source_readback/shared_contracts/3/sha256",
+      "transform": "verbatim_json_value",
+      "value_sha256": "725df397a7877939a11da50018644ed0e2f5333cb14f023d5f99f2a51d435509"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/theory_pressure_authorized",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/theory_pressure_authorized",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "route_state",
+      "source_pointer": "/updated_at_utc",
+      "target_pointer": "/route_guard/transcribed_itl/route_state/updated_at_utc",
+      "transform": "verbatim_json_value",
+      "value_sha256": "046db6bca97f70da07a4acd4f9fa9d856fea25a7f765fe37e1342234e1f21c9c"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/allowed_next_actions/0",
+      "target_pointer": "/route_guard/transcribed_itl/closure/allowed_next_actions/0",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d50e49a137656ce687b6b6c09c82014028c201e866add268cfe6e6db032acef2"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/authorizations/capability_card_bank",
+      "target_pointer": "/route_guard/transcribed_itl/closure/authorizations/capability_card_bank",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/authorizations/capability_implementation",
+      "target_pointer": "/route_guard/transcribed_itl/closure/authorizations/capability_implementation",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/authorizations/experiment_execution",
+      "target_pointer": "/route_guard/transcribed_itl/closure/authorizations/experiment_execution",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/authorizations/mainline",
+      "target_pointer": "/route_guard/transcribed_itl/closure/authorizations/mainline",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/authorizations/mechanism_evidence",
+      "target_pointer": "/route_guard/transcribed_itl/closure/authorizations/mechanism_evidence",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/authorizations/remote_anchor",
+      "target_pointer": "/route_guard/transcribed_itl/closure/authorizations/remote_anchor",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/authorizations/runtime",
+      "target_pointer": "/route_guard/transcribed_itl/closure/authorizations/runtime",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/authorizations/science_successor",
+      "target_pointer": "/route_guard/transcribed_itl/closure/authorizations/science_successor",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/authorizations/scoring",
+      "target_pointer": "/route_guard/transcribed_itl/closure/authorizations/scoring",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/authorized_implementation_targets",
+      "target_pointer": "/route_guard/transcribed_itl/closure/authorized_implementation_targets",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/claim_ceiling/forbidden_claims/0",
+      "target_pointer": "/route_guard/transcribed_itl/closure/claim_ceiling/forbidden_claims/0",
+      "transform": "verbatim_json_value",
+      "value_sha256": "09775da9ca6435fbb68e9960d5397712d894adebd27fa02003a7919311fbba32"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/claim_ceiling/forbidden_claims/1",
+      "target_pointer": "/route_guard/transcribed_itl/closure/claim_ceiling/forbidden_claims/1",
+      "transform": "verbatim_json_value",
+      "value_sha256": "8b0e0c0bff1cb0da672a96837c89150865824588e520d3b9b84776f635623a1c"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/claim_ceiling/forbidden_claims/2",
+      "target_pointer": "/route_guard/transcribed_itl/closure/claim_ceiling/forbidden_claims/2",
+      "transform": "verbatim_json_value",
+      "value_sha256": "f79c78f3e2bae128a0ae7cc67953fc8fc2859038d52167030da017de27610fe9"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/claim_ceiling/forbidden_claims/3",
+      "target_pointer": "/route_guard/transcribed_itl/closure/claim_ceiling/forbidden_claims/3",
+      "transform": "verbatim_json_value",
+      "value_sha256": "5e99a64d2bfbb52a0bd9c0282a0ed243cb75dc4b22a7511445d381a61f9c2227"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/claim_ceiling/forbidden_claims/4",
+      "target_pointer": "/route_guard/transcribed_itl/closure/claim_ceiling/forbidden_claims/4",
+      "transform": "verbatim_json_value",
+      "value_sha256": "eb8a6459c2719a8aac4f50c35903474450077e4521f579762b0d22ad3ca547fe"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/claim_ceiling/forbidden_claims/5",
+      "target_pointer": "/route_guard/transcribed_itl/closure/claim_ceiling/forbidden_claims/5",
+      "transform": "verbatim_json_value",
+      "value_sha256": "48385104d55a3fa5fe749c4410b040a55281dab7de8f91d39fc4239ddc7211b8"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/claim_ceiling/forbidden_claims/6",
+      "target_pointer": "/route_guard/transcribed_itl/closure/claim_ceiling/forbidden_claims/6",
+      "transform": "verbatim_json_value",
+      "value_sha256": "8fc1e546495be129a6cc4b834a9406b2ef496095d331037894d62d86aa5ab2dc"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/claim_ceiling/forbidden_claims/7",
+      "target_pointer": "/route_guard/transcribed_itl/closure/claim_ceiling/forbidden_claims/7",
+      "transform": "verbatim_json_value",
+      "value_sha256": "58371a494ae6944cdd827df034b4fe52e25363b4581f2aae0a10af00cc834975"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/claim_ceiling/forbidden_claims/8",
+      "target_pointer": "/route_guard/transcribed_itl/closure/claim_ceiling/forbidden_claims/8",
+      "transform": "verbatim_json_value",
+      "value_sha256": "75de9dec489df8b6702cad240ec87ff7586d194e2dfd1a9e833e40331dcd50a8"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/claim_ceiling/forbidden_claims/9",
+      "target_pointer": "/route_guard/transcribed_itl/closure/claim_ceiling/forbidden_claims/9",
+      "transform": "verbatim_json_value",
+      "value_sha256": "4d088718c2b383ac45c5b8651c7865020cf0de26a498f78fc038f10f8237a7c6"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/claim_ceiling/forbidden_claims/10",
+      "target_pointer": "/route_guard/transcribed_itl/closure/claim_ceiling/forbidden_claims/10",
+      "transform": "verbatim_json_value",
+      "value_sha256": "755adadc929ab8455baa310df7442245f6a9d1d5629724703297b1053249db25"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/claim_ceiling/forbidden_claims/11",
+      "target_pointer": "/route_guard/transcribed_itl/closure/claim_ceiling/forbidden_claims/11",
+      "transform": "verbatim_json_value",
+      "value_sha256": "7a6dcc3f28c36dbca8e099aa48386b0682adc8b2d25c5eab2b91ed79aefa2855"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/claim_ceiling/forbidden_claims/12",
+      "target_pointer": "/route_guard/transcribed_itl/closure/claim_ceiling/forbidden_claims/12",
+      "transform": "verbatim_json_value",
+      "value_sha256": "937470ded1cb229879893ca2b4c81a088dc2010f7cf55e1991005ee26af43160"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/claim_ceiling/forbidden_claims/13",
+      "target_pointer": "/route_guard/transcribed_itl/closure/claim_ceiling/forbidden_claims/13",
+      "transform": "verbatim_json_value",
+      "value_sha256": "86774421a0131b1e632e842a443fee68ea414f7cb372aa4aa95b805fce68f971"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/claim_ceiling/forbidden_claims/14",
+      "target_pointer": "/route_guard/transcribed_itl/closure/claim_ceiling/forbidden_claims/14",
+      "transform": "verbatim_json_value",
+      "value_sha256": "3fef9bf262206ddc3489a546424a2cc53e6f30a6e8a5ffb0ed2d33faed0de86b"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/claim_ceiling/max",
+      "target_pointer": "/route_guard/transcribed_itl/closure/claim_ceiling/max",
+      "transform": "verbatim_json_value",
+      "value_sha256": "c3f0e32a31b82c2d0ad45970dfe2d77c28748ceaf359dc54c170a03966d21715"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/closure_type",
+      "target_pointer": "/route_guard/transcribed_itl/closure/closure_type",
+      "transform": "verbatim_json_value",
+      "value_sha256": "72e0e0a0da829865e96ad366e711a63f9a2d563370fa490aebb413a2f6eb5a52"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/evidence_status/instrument_validity",
+      "target_pointer": "/route_guard/transcribed_itl/closure/evidence_status/instrument_validity",
+      "transform": "verbatim_json_value",
+      "value_sha256": "e9b78403136dd63160f81522e77551b5775c1a662f5355f0267c633a4548941b"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/evidence_status/mechanism_evidence",
+      "target_pointer": "/route_guard/transcribed_itl/closure/evidence_status/mechanism_evidence",
+      "transform": "verbatim_json_value",
+      "value_sha256": "920d1b2149534d2c15d68bbe59afc4a8ae4260c786e7fa6443030d56a19d6404"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/evidence_status/path_policy_contradiction",
+      "target_pointer": "/route_guard/transcribed_itl/closure/evidence_status/path_policy_contradiction",
+      "transform": "verbatim_json_value",
+      "value_sha256": "31b9355be14c30886202795e4d2476c74f4684bd418db99fe6daab9878318a93"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/failure_class",
+      "target_pointer": "/route_guard/transcribed_itl/closure/failure_class",
+      "transform": "verbatim_json_value",
+      "value_sha256": "b11e366fd9bc1b0270a1a10d63c9856aa0676d1a33233153084f86b82144f9bb"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/forbidden_next_actions/0",
+      "target_pointer": "/route_guard/transcribed_itl/closure/forbidden_next_actions/0",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d7cff36fe559d907558458c4a32548d2c9e2c9430a9d7596703abe3b29288bfe"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/forbidden_next_actions/1",
+      "target_pointer": "/route_guard/transcribed_itl/closure/forbidden_next_actions/1",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d8f370071412500c1fa0ff6ee5f7709832f3f892e541b901a725de2a4433dd9b"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/forbidden_next_actions/2",
+      "target_pointer": "/route_guard/transcribed_itl/closure/forbidden_next_actions/2",
+      "transform": "verbatim_json_value",
+      "value_sha256": "5bbbbec522f2fd651fae8946ad59acf99871d917b7bf443d4323a37d256e1712"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/forbidden_next_actions/3",
+      "target_pointer": "/route_guard/transcribed_itl/closure/forbidden_next_actions/3",
+      "transform": "verbatim_json_value",
+      "value_sha256": "3bdf7e6d3970d0372ba45a7a179bc1c8c72fb1e2e97ea37e3e4fb9155d74b652"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/forbidden_next_actions/4",
+      "target_pointer": "/route_guard/transcribed_itl/closure/forbidden_next_actions/4",
+      "transform": "verbatim_json_value",
+      "value_sha256": "3753f6232eb24176ef58c8a88ef01764e0512be57b2bdf084e430dbe9b0c34ab"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/forbidden_next_actions/5",
+      "target_pointer": "/route_guard/transcribed_itl/closure/forbidden_next_actions/5",
+      "transform": "verbatim_json_value",
+      "value_sha256": "5ebc4d17fa72507ea45481d3efb345d00f382581e5720426f97fcc15eed4e165"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/forbidden_next_actions/6",
+      "target_pointer": "/route_guard/transcribed_itl/closure/forbidden_next_actions/6",
+      "transform": "verbatim_json_value",
+      "value_sha256": "354596ac06f79de51152d4540f9ed93f2695745f1aaa0b117821e43db784f1b2"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/forbidden_next_actions/7",
+      "target_pointer": "/route_guard/transcribed_itl/closure/forbidden_next_actions/7",
+      "transform": "verbatim_json_value",
+      "value_sha256": "eb1fbf23a3a62e49a37cbb3baba3b3833f8d87c05db648257a43bda93af238fa"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/forbidden_next_actions/8",
+      "target_pointer": "/route_guard/transcribed_itl/closure/forbidden_next_actions/8",
+      "transform": "verbatim_json_value",
+      "value_sha256": "7a4abf3713da66ba9f325fb48491b86eba30fdfe13a238cca1b45d2b9055a28a"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/forbidden_next_actions/9",
+      "target_pointer": "/route_guard/transcribed_itl/closure/forbidden_next_actions/9",
+      "transform": "verbatim_json_value",
+      "value_sha256": "117273a03b66360aa162aff8c01bf8bf0503ab61f61183c86e8e554712e1538f"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/historical_registration_ref",
+      "target_pointer": "/route_guard/transcribed_itl/closure/historical_registration_ref",
+      "transform": "verbatim_json_value",
+      "value_sha256": "a3ff57aa33fa1c92c14c2ce205b5004fa5e562be61e8ca775ca659eb580206cb"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/mainline_authorized",
+      "target_pointer": "/route_guard/transcribed_itl/closure/mainline_authorized",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/mechanism_evidence_authorized",
+      "target_pointer": "/route_guard/transcribed_itl/closure/mechanism_evidence_authorized",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/phase",
+      "target_pointer": "/route_guard/transcribed_itl/closure/phase",
+      "transform": "verbatim_json_value",
+      "value_sha256": "d74481de10a488aae9186c134f069f319e04f555aa0bfb6722eeae1d26f5692f"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/route_id",
+      "target_pointer": "/route_guard/transcribed_itl/closure/route_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "55be9e204dd9d3f17d38ef9825dedd153baa417e18f0aba9bdeb375baaeb98d5"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/runtime_authorized",
+      "target_pointer": "/route_guard/transcribed_itl/closure/runtime_authorized",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/science_firewall/card2_science_weight",
+      "target_pointer": "/route_guard/transcribed_itl/closure/science_firewall/card2_science_weight",
+      "transform": "verbatim_json_value",
+      "value_sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/science_firewall/inherits_h0_h1_freeze_formal",
+      "target_pointer": "/route_guard/transcribed_itl/closure/science_firewall/inherits_h0_h1_freeze_formal",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/science_firewall/inherits_old_k0r",
+      "target_pointer": "/route_guard/transcribed_itl/closure/science_firewall/inherits_old_k0r",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/science_firewall/may_reopen_old_k0",
+      "target_pointer": "/route_guard/transcribed_itl/closure/science_firewall/may_reopen_old_k0",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/science_firewall/may_satisfy_science_successor_boundary",
+      "target_pointer": "/route_guard/transcribed_itl/closure/science_firewall/may_satisfy_science_successor_boundary",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/science_firewall/may_supply_mechanism_attribution",
+      "target_pointer": "/route_guard/transcribed_itl/closure/science_firewall/may_supply_mechanism_attribution",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/science_firewall/satisfies_old_s0x",
+      "target_pointer": "/route_guard/transcribed_itl/closure/science_firewall/satisfies_old_s0x",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/task_id",
+      "target_pointer": "/route_guard/transcribed_itl/closure/task_id",
+      "transform": "verbatim_json_value",
+      "value_sha256": "76010043a4ffcae194a997f3ddf0f52f2e15f727c8c1bc36ba3c7e870fc81794"
+    },
+    {
+      "source_name": "closure",
+      "source_pointer": "/theory_pressure_authorized",
+      "target_pointer": "/route_guard/transcribed_itl/closure/theory_pressure_authorized",
+      "transform": "verbatim_json_value",
+      "value_sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa"
+    }
+  ],
+  "omission_positive_control": {
+    "omitted_source_name": "route_state",
+    "omitted_source_pointer": "/action_dependencies/bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A/blocked_until/0",
+    "expected_count": 279,
+    "mutated_count": 278,
+    "rejected": true,
+    "rejection_code": "visible_life_crosswalk_leaf_omitted",
+    "observed_error_codes": [
+      "visible_life_crosswalk_leaf_omitted"
+    ]
+  },
+  "claim_ceiling": "committed ITL closure transcription evidence only"
+}
