@@ -20,7 +20,7 @@
 | `active_default` | 1 |
 | `supporting_active` | 2 |
 | `parked` | 1 |
-| `closed_evidence` | 25 |
+| `closed_evidence` | 26 |
 | `reference_only` | 234 |
 
 ## Active Default
@@ -33,7 +33,7 @@
 
 | entry | kind | workstream | paths | why |
 |---|---|---|---|---|
-| EGO Visible Life Proxy v0 Product-Core Authority Sync 001A | `codex_task` | n/a | `docs/codex/tasks/ego-visible-life-proxy-v0-core-adoption-001a/` | Exhaustive local transcription of the committed ITL product-axis selection plus the pinned V0 engineering boundary and local replayable trigger; explicit local launcher only, default-off, runtime-disconnected, no runtime authority, zero science weight, and V1 task-card drafting only. |
+| EGO Life Kernel V1 Continuity Playground READY Transition 001A | `codex_task` | n/a | `docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/` | Exact Ego transcription of committed ITL V1 conditional implementation authorization and ordered 20-path allowlist; implementation is authorized while V1 remains default-off, runtime-disconnected, untriggered, and science_weight=0. |
 | Repo Mainline Clarity v1 | `codex_task` | n/a | `docs/codex/tasks/repo-mainline-clarity-v1/` | Supporting repo-view slice for mainline onboarding, surface-map clarity, and staged operational-exhaust hygiene; must not replace the active default track. |
 
 ## Parked
@@ -53,6 +53,7 @@
 | Ego Mainline Demotion v1 | `codex_task` | `ego_operator_first_transition` | `docs/codex/tasks/ego-mainline-demotion-v1/` | Previous operator-first transition record; superseded by the EgoOperator rename/docs-safety task while preserving legacy demotion evidence. Current workstream status: `human_operator_trial_v2_human_review_template_ready`. |
 | EGO Pet World v1 Card 2 ITL Authority Sync 001A | `codex_task` | `program_state_governance` | `docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/` | Field-by-field governance sync from committed ITL objects; no Card 2 bank, execution, runtime, product, experiment, scoring, or science authorization. Current workstream status: `pass`. |
 | EGO Route 8692 Supersession and EgoDesktop Authority Archive 001A | `codex_task` | n/a | `docs/codex/tasks/ego-route-8692-supersession-and-egodesktop-authority-archive-001a/` | Completed product/capability governance correction; the only following permission is Card 2 drafting and banking, not execution. |
+| EGO Visible Life Proxy v0 Product-Core Authority Sync 001A | `codex_task` | n/a | `docs/codex/tasks/ego-visible-life-proxy-v0-core-adoption-001a/` | Historical predecessor authority-sync boundary, consumed by the V1 READY transition; the immutable V0 Git-object baseline and local replayable trigger remain preserved without live action authority. |
 | EGO Visible Life Proxy v0 Route Replacement 001A | `codex_task` | n/a | `docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/` | The exact-six playground implementation action is consumed and preserved as the immutable V0 baseline; it grants no continuing implementation, runtime, or science authority. |
 | EgoDesktop PET World Integration 001A | `codex_task` | n/a | `docs/codex/tasks/egodesktop-pet-world-integration-001a/` | Frozen predecessor engineering evidence. P2 remains unexecuted; no historical go-for or successor text grants current authority. |
 | EgoOperator Rename + Docs Safety v1 | `codex_task` | `ego_operator_first_transition` | `docs/codex/tasks/ego-operator-rename-docs-safety-v1/` | Previous EgoOperator naming and reader-safety transition record; superseded by the human operator trial v2 task as the active observation owner. Current workstream status: `human_operator_trial_v2_human_review_template_ready`. |

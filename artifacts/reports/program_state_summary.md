@@ -2,12 +2,12 @@
 
 > AUTO-GENERATED FILE. Do not edit by hand.
 
-- phase: `visible_life_proxy_v0_product_core_authority_synced__v1_card_draft_only`
-- layer: `engineering evidence-governance + product-development lineage selection`
+- phase: `v1_continuity_playground_ready_authority_synced__implementation_authorized_default_off`
+- layer: `engineering implementation authorization + product-development control-plane`
 - highest evidence: `E3`
 - verification: `V3`
 - mainline_connected: `True`
 - enabled: `True`
-- next_minimal_action: After committed Ego sync validation, execute only draft_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A_only_after_EGO_sync_validation from the pinned V0 core boundary; V1 implementation still requires a separate operator-authorized card and Red review.
+- next_minimal_action: After the Phase-C commit and post-commit dual-authority validation, execute `implement_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A` through subagents and TDD within the exact ordered 20-path allowlist only; keep V1 default-off and runtime/science/remote authority closed.
 - highest ledger entry: `mvp16_controlled_completion_current` / `E5`
 

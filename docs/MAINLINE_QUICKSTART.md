@@ -1,5 +1,11 @@
 # Mainline Quickstart
 
+> `CURRENT_MACHINE_ROUTE_AUTHORITY: EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A__IMPLEMENTATION_AUTHORIZED_DEFAULT_OFF`
+>
+> `HISTORICAL_8692_EGODESKTOP_ROUTE: SUPERSEDED_ARCHIVE_POINTER_ONLY`
+>
+> EgoOperator remains the active runtime default. The only live product-development action is the exact default-off V1 continuity-playground implementation; older successor text is historical.
+
 ## Current Mainline
 
 The current active default lane is `ego_operator_first_transition`.

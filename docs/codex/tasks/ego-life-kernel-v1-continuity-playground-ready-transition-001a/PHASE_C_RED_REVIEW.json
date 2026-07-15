@@ -1,0 +1,245 @@
+{
+  "schema_version": "ego.v1_ready.phase_c.red_receipt.v1",
+  "task_id": "EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-READY-TRANSITION-001A",
+  "phase": "EGO_PHASE_C_AUTHORITY_TRANSCRIPTION",
+  "base_commit": "90f723cf53c8ff3b7f3ad6eba29a4f5ec6e9238a",
+  "sorted_reviewed_paths": [
+    "AGENTS.md",
+    "README.md",
+    "artifacts/reports/program_state_summary.md",
+    "docs/ACTIVE_CONTEXT_PACK.md",
+    "docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md",
+    "docs/MAINLINE_QUICKSTART.md",
+    "docs/PROGRAM_STATE_UNIFIED.yaml",
+    "docs/REPO_SURFACE_MAP.md",
+    "docs/STATUS.md",
+    "docs/codex/tasks/TASK_LANE_INDEX.md",
+    "docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md",
+    "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/COLLISION_RECORD.md",
+    "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/ITL_AUTHORITY_CROSSWALK.json",
+    "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/MUTATION_SCOPE_PHASE_C.yaml",
+    "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/STAGE_CARD.md",
+    "scripts/codex/verify_route_convergence.py",
+    "scripts/codex_session_guard.py",
+    "scripts/tests/test_codex_session_guard.py",
+    "scripts/tests/test_route_governance_supersession.py"
+  ],
+  "reviewed_semantic_manifest": {
+    "base_commit": "90f723cf53c8ff3b7f3ad6eba29a4f5ec6e9238a",
+    "sorted_reviewed_paths": [
+      "AGENTS.md",
+      "README.md",
+      "artifacts/reports/program_state_summary.md",
+      "docs/ACTIVE_CONTEXT_PACK.md",
+      "docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md",
+      "docs/MAINLINE_QUICKSTART.md",
+      "docs/PROGRAM_STATE_UNIFIED.yaml",
+      "docs/REPO_SURFACE_MAP.md",
+      "docs/STATUS.md",
+      "docs/codex/tasks/TASK_LANE_INDEX.md",
+      "docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md",
+      "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/COLLISION_RECORD.md",
+      "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/ITL_AUTHORITY_CROSSWALK.json",
+      "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/MUTATION_SCOPE_PHASE_C.yaml",
+      "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/STAGE_CARD.md",
+      "scripts/codex/verify_route_convergence.py",
+      "scripts/codex_session_guard.py",
+      "scripts/tests/test_codex_session_guard.py",
+      "scripts/tests/test_route_governance_supersession.py"
+    ],
+    "per_path_base_blob_or_absent": {
+      "AGENTS.md": "40b22657fb7f9eeacaa75aab0cdd0a2f97247e66",
+      "README.md": "c93fec010360e41090ed214098c06ce0fddbc518",
+      "artifacts/reports/program_state_summary.md": "18efa46992d93da9a478c003522587d4b75b843f",
+      "docs/ACTIVE_CONTEXT_PACK.md": "94b545185c543d5bea925fd566cc9484e540a829",
+      "docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md": "cbd81d58a536c4559d0b08f7d893eb31a021886f",
+      "docs/MAINLINE_QUICKSTART.md": "509412e56a7a8897a5c63b170fe25bca1edadc2c",
+      "docs/PROGRAM_STATE_UNIFIED.yaml": "2214e555a1d661e5f62e198256f0ede33a207c25",
+      "docs/REPO_SURFACE_MAP.md": "ade83ebf7af3b2e1ca3194618116e25ed7302d07",
+      "docs/STATUS.md": "8d54bf3511b9a42a2714bc08b35d0332e81ac035",
+      "docs/codex/tasks/TASK_LANE_INDEX.md": "112207b220b03e19ce576ff2b72a1caf7ac3a392",
+      "docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md": "fa1c26ef5f230d6f109d697a318a4efc804fc42b",
+      "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/COLLISION_RECORD.md": "absent",
+      "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/ITL_AUTHORITY_CROSSWALK.json": "absent",
+      "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/MUTATION_SCOPE_PHASE_C.yaml": "absent",
+      "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/STAGE_CARD.md": "absent",
+      "scripts/codex/verify_route_convergence.py": "6ee899c9acaf1a3b9bb58358b7fca20a16f5132b",
+      "scripts/codex_session_guard.py": "e28bb9469e91d213b444e45271ebee0b08247046",
+      "scripts/tests/test_codex_session_guard.py": "01082debfb72c512b33058194b474b36cfe63496",
+      "scripts/tests/test_route_governance_supersession.py": "1fdd4c49f24ffbb482bb9e5e19a007b611329833"
+    },
+    "per_path_reviewed_blob_or_worktree_sha256": {
+      "AGENTS.md": {
+        "reviewed_blob": "c50d09f7ba36359f8935c216f12a03bf0085b46b",
+        "reviewed_blob_payload_sha256": "c9eb0c61418aa2aa63c69e7eb415a8bd05f06cce56e66a8f97e3179fc2b72105",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      },
+      "README.md": {
+        "reviewed_blob": "a9d41d3c4617755ebd0e056142c1cd2d21c906de",
+        "reviewed_blob_payload_sha256": "fed1c1b2e2cc3d574d3815d1555d45bb8165cd3d81f80b894c1fce71175596e3",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      },
+      "artifacts/reports/program_state_summary.md": {
+        "reviewed_blob": "1606536d1a1fe284ddf1ec96040a9e365e3afcbc",
+        "reviewed_blob_payload_sha256": "1c2d6cc8a43c93699a59f1b14f3f2acf3cf5c340d7b0591ae2e1be3f84912ea5",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      },
+      "docs/ACTIVE_CONTEXT_PACK.md": {
+        "reviewed_blob": "0c439aa58cb5f20b14bf82aae5cb2ed4ee0f7174",
+        "reviewed_blob_payload_sha256": "fca562cefe2cfab2df2cf1443de62deac4a96050cc41b2f1c60f79d7fbec0789",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      },
+      "docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md": {
+        "reviewed_blob": "0a849ef8e7f755a979e2e33f75d5a6e5d3ca6c7d",
+        "reviewed_blob_payload_sha256": "87d4847a1c1876ea409404880eed63a92d9889304e1b61a1332dbe6cd65b02c2",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      },
+      "docs/MAINLINE_QUICKSTART.md": {
+        "reviewed_blob": "e2af871713292e085cf513d0048d45cee8da0780",
+        "reviewed_blob_payload_sha256": "97e37a8f1c126332b8871b5f051bf39eacbb8669027d13f3a32dc2356c0e8c30",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      },
+      "docs/PROGRAM_STATE_UNIFIED.yaml": {
+        "reviewed_blob": "8c438ac9bc68642faf42a05623462f31ef8894dd",
+        "reviewed_blob_payload_sha256": "ff2e8c54d1b42536bf25645edc499106e6a0e38d8e93c37b6d20a01fc730951a",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      },
+      "docs/REPO_SURFACE_MAP.md": {
+        "reviewed_blob": "41247e4e5d7d8c77423658d706fc2000b736fb1c",
+        "reviewed_blob_payload_sha256": "284b9731ab854ba422c73cdb0e798c61d77e19e00bb85156d4a0445e499ba552",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      },
+      "docs/STATUS.md": {
+        "reviewed_blob": "017265c02b720ca3cb82255fbbbe9e37b0b79c18",
+        "reviewed_blob_payload_sha256": "5937be76d236268f9feb94209c90e8ac396c7870c68fe6b6a054df85ade901c2",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      },
+      "docs/codex/tasks/TASK_LANE_INDEX.md": {
+        "reviewed_blob": "2f0e9db2224ad0972c357902dc3bf35cebcadc9a",
+        "reviewed_blob_payload_sha256": "e99e0f70a927b6349963edaaec5cc8a1a15815fe6ee2b55d82c49d0c885d72f2",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      },
+      "docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md": {
+        "reviewed_blob": "4441811dfe53a1b39699850bd70503135b8ab6a5",
+        "reviewed_blob_payload_sha256": "b8721a53915b71cb33684bfadd8de5793b4843de8c8fce8b000f14a4fdcd903d",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      },
+      "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/COLLISION_RECORD.md": {
+        "reviewed_blob": "1fb81c9f7514582316ecc252638e2699b92b6948",
+        "reviewed_blob_payload_sha256": "e6b8017e0e6932d8525f685d1d564ffda692e0a302d86f63702b8b2f2eea87bd",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      },
+      "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/ITL_AUTHORITY_CROSSWALK.json": {
+        "reviewed_blob": "bb727631f89cc115011853d96970d58bcedf6475",
+        "reviewed_blob_payload_sha256": "73574c73e0137b9d4982b3443a5fe70ca17713279baca9c8a3ba7a1f8aa762a6",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      },
+      "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/MUTATION_SCOPE_PHASE_C.yaml": {
+        "reviewed_blob": "7e76fed3bea000477f63cbf34b6737ec64aac5bf",
+        "reviewed_blob_payload_sha256": "2ae4a3bb39e9ca9ad5bf511bd3164b913f9b9162055da5cd03f5a43d4dedff9a",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      },
+      "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/STAGE_CARD.md": {
+        "reviewed_blob": "fa8c256684355a7de192d00a049d0e19884e7c64",
+        "reviewed_blob_payload_sha256": "30ff38d2f41cbfa63423325b63820ad09a60763ac7e1af50ab585e0138a4baac",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      },
+      "scripts/codex/verify_route_convergence.py": {
+        "reviewed_blob": "695864eb68bb5e38ada0bac3998d1a36c718a237",
+        "reviewed_blob_payload_sha256": "d623d45158d57465d75769ac0fe5f7deb18fe30f75b56cbc3fcde01e05851c75",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      },
+      "scripts/codex_session_guard.py": {
+        "reviewed_blob": "d11f1b88895243fa7e8392e33e1beec9af224c41",
+        "reviewed_blob_payload_sha256": "99c7671aaf2ee2f827a8c980f11a28d7daf9d7467b6b46d7daa1ce5f1c91fac3",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      },
+      "scripts/tests/test_codex_session_guard.py": {
+        "reviewed_blob": "de054f354ca1f2fc29454a5e7f8030b81ae35f04",
+        "reviewed_blob_payload_sha256": "fe279819d2be926d9257710f815dd17591c3409cae181c61cbc69bd1ce2daaa9",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      },
+      "scripts/tests/test_route_governance_supersession.py": {
+        "reviewed_blob": "94901b538cc8abe92cc9c22a4da0bc50c6650a63",
+        "reviewed_blob_payload_sha256": "3ff59de360a324c8540a285e9a43efe99287cfac6219a4cfd15dbfa5b89aa7bf",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      }
+    }
+  },
+  "reviewed_semantic_manifest_sha256": "9069e5ad611fd8d2de01d65012517d257b97adb99a7c35e432ddb2ee9911b68d",
+  "reviewed_diff_sha256": "3846bce5ce0dca393dea742820c09fc01c1b4efd68f8e8a9415266780250921f",
+  "review_bundle_sha256": "0578c0830b5eb7a0d7e74da4d25e111f63da493e661c54d2975a559d670ddcb2",
+  "review_transport_sha256": "c4c3d993794cacfc15f28e025c570729c1dbc9139ebfad79420b76eaee58e212",
+  "review_transport_semantics": "manifest plus exact raw staged full-index diff; canonical full bundle hash separately bound and callable-recomputed",
+  "review_response_sha256": "0cac806917f22508dba05a2eaf128212f07f3715e76318364ce2aff25914297a",
+  "reviewer": "Claude",
+  "review_source": "Claude Web",
+  "model": "claude-fable-5",
+  "review_url": "https://claude.ai/chat/4197f004-25de-4d71-8646-b58bb723f386",
+  "review_id": "ego-v1-ready-phase-c-red-review-20260715-claude-web-001",
+  "reviewer_session_id": "claude-web:fable5:2026-07-15:9f3a1c-independent-red",
+  "executor_session_id": "codex-root-019f640a-16e9-79c2-a2ef-9f46dae5e61f",
+  "reviewed_at_utc": "2026-07-15T18:42:00Z",
+  "verdict": "NO_BLOCKING_FINDINGS",
+  "blocking_findings": [],
+  "non_blocking_findings": [
+    "历史V0校验从『ITL HEAD必须等于pinned commit』放宽为『pinned commit是HEAD祖先』；鉴于ITL已前进到V1提交这是必要的，且v5校验器对当前权威保留了HEAD精确等值检查，但该放宽是对冻结V0边界的永久性弱化，应在后续任务中保持v5式精确pin作为唯一活动权威检查。",
+    "validate_visible_life_core_authority_crosswalk现在对冻结V0 crosswalk的producer_code_path_hash按artifact原值接受而不再重算；由artifact_payload_sha256整体字节pin缓解，叶级语义仍被重算，但该字段本身不再具有独立证明力。",
+    "执行方声明完整route convergence运行因耗时被中止、结果未知；验收门第9项要求其通过，implement动作执行前必须完成commit后双权威校验并保留完整convergence输出，否则不得进入V1实现。",
+    "readback语义变更：v5下blocked_until固定为[]，Card2阻塞移入新字段closed_card2_blocked_until；任何仍读取旧字段判断Card2状态的下游消费方会看到空阻塞，需确认无此类消费方。",
+    "本评审基于传输的manifest、原始staged diff与声明的规范哈希做内部一致性与fail-closed控制审查：19条非receipt路径与diff头blob逐一相符，receipt正确排除，crosswalk的producer_code_path_hash(99c7671a…)与manifest中staged codex_session_guard.py的payload sha256一致，213=50+163叶计数、遗漏阳性对照、三触发字段分离、20路径精确集、runtime/science/remote全关、EgoOperator默认不变、stale指针标记与阳性对照均内部自洽；但评审方无法独立访问ITL提交对象重算七个源pin或213叶枚举，此类等值最终由可调用校验器在commit后强制，属已知评审边界而非缺陷。"
+  ],
+  "claim_ceiling_acknowledged": true,
+  "review_summary": "独立Red评审通过：Phase C仅为对ITL提交81f19613…的V1 READY权威的本地default-off转录与实现授权控制面同步。19条staged非receipt路径与manifest/diff逐路径一致；未触及任何V1产品实现目标、EgoOperator/EgoDesktop源码或运行时/科学/远程开关；sync动作被消费且动作面仅暴露implement与route validation；20路径精确allowlist、213叶穷举crosswalk（含遗漏阳性对照）、三触发字段分离、旧8692/EgoDesktop指针归档标记及stale声明扫描（含阳性对照）、receipt的staged blob+raw diff绑定与角色分离校验均fail-closed且内部自洽。无阻塞发现。声明上限确认为：仅本地default-off V1实现授权转录，不构成实现、触发、运行时/主线效应、学习、机制、能动性、自主性、主观性、意识或电子生命的任何证据。commit后须完成双权威校验（含完整route convergence）方可开始受限的V1实现。",
+  "pre_review_negative_evidence": [
+    {
+      "finding": "V5_READBACK_MIXED_LIVE_V1_ACTIONS_WITH_UNNAMED_CLOSED_CARD2_BLOCKER_AND_NULL_CORE_LINEAGE",
+      "disposition": "FIXED_BEFORE_CLAUDE_REVIEW",
+      "evidence": "v5 blocked_until empty; closed_card2_blocked_until separately named; core/lineage restored; focused regression pass"
+    },
+    {
+      "finding": "FULL_ROUTE_TEST_FILE_LONG_RUN_STOPPED_WITHOUT_VERDICT",
+      "disposition": "UNKNOWN_NOT_RECAST_AS_PASS",
+      "evidence": "focused guard and route subsets pass; complete route convergence must pass after receipt"
+    }
+  ],
+  "claim_ceiling": "local Ego transcription of committed ITL V1 implementation authorization for one exact default-off product-development descendant; no V1 trigger, runtime/mainline effect, science authority, product acceptance, learning, mechanism, agency, autonomy, subjectivity, consciousness, or electronic-life evidence"
+}

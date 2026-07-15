@@ -1,5 +1,11 @@
 # Active Context Pack
 
+> `CURRENT_MACHINE_ROUTE_AUTHORITY: EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A__IMPLEMENTATION_AUTHORIZED_DEFAULT_OFF`
+>
+> `HISTORICAL_8692_EGODESKTOP_ROUTE: SUPERSEDED_ARCHIVE_POINTER_ONLY`
+>
+> Current product-development action is the exact default-off V1 continuity-playground implementation. The older mechanism-successor sections below are archive pointers only.
+
 Source of truth: `docs/PROGRAM_STATE_UNIFIED.yaml`.
 
 This file is a derived reader pack for humans and AI agents. It is not a second program-state authority. If this file conflicts with `docs/PROGRAM_STATE_UNIFIED.yaml`, the unified program state wins.

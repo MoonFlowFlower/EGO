@@ -383,6 +383,20 @@ def live_route_state() -> dict:
     )
 
 
+def historical_v4_route_state() -> dict:
+    state = copy.deepcopy(live_route_state())
+    route_guard = state["route_guard"]
+    route_guard["schema_version"] = "ego.route_guard.v4"
+    route_guard["route_revision_id"] = codex_session_guard.VISIBLE_LIFE_CORE_ROUTE_REVISION
+    route_guard["authority_source"] = copy.deepcopy(route_guard["predecessor_authority_source"])
+    route_guard.pop("predecessor_authority_source")
+    transcribed = route_guard["transcribed_itl_product"]
+    transcribed["product_axis_state"] = copy.deepcopy(transcribed["predecessor_product_axis_state"])
+    route_guard["product_authority"] = copy.deepcopy(route_guard["predecessor_product_authority"])
+    route_guard.pop("predecessor_product_authority")
+    return state
+
+
 def valid_visible_life_phase_b_scope(state: dict) -> dict:
     fingerprint = codex_session_guard.compute_route_fingerprint(state)
     revision = state["route_guard"]["route_revision_id"]
@@ -443,6 +457,26 @@ def valid_visible_life_core_sync_scope() -> dict:
             "itl_product_axis_commit": codex_session_guard.VISIBLE_LIFE_CORE_ITL_COMMIT,
             "itl_product_axis_route_id": codex_session_guard.VISIBLE_LIFE_CORE_ITL_ROUTE_ID,
         },
+    }
+
+
+def valid_v1_ready_sync_scope() -> dict:
+    raw = codex_session_guard._load_yaml(  # noqa: SLF001
+        ROOT / codex_session_guard.V1_READY_SCOPE_PATH,
+        code="missing_v1_ready_scope",
+    )
+    return {
+        "task_id": codex_session_guard.V1_READY_TASK_ID,
+        "task_kind": "cross_repo_v1_ready_authority_sync",
+        "requested_action_id": codex_session_guard.V1_READY_SYNC_ACTION_ID,
+        "source_route_revision_id": codex_session_guard.VISIBLE_LIFE_CORE_ROUTE_REVISION,
+        "source_route_fingerprint": "2446c65920f96a9a49d9ae654a0f106e8fb0bcaf41e023d4405c46c083a0f005",
+        "expected_target_route_revision_id": codex_session_guard.V1_READY_ROUTE_REVISION,
+        "independent_red_review_required": True,
+        "red_review_ref": codex_session_guard.V1_READY_RED_REVIEW_PATH,
+        "allowed_mutation_paths": list(codex_session_guard.V1_READY_SYNC_PATHS),
+        "migration_exception": {},
+        "raw": raw,
     }
 
 
@@ -513,7 +547,7 @@ def test_authority_change_requires_red_review_ref() -> None:
 
 
 def test_route_scope_rejects_wrong_visible_life_core_sync_task_kind(monkeypatch) -> None:
-    state = live_route_state()
+    state = historical_v4_route_state()
     scope = valid_visible_life_core_sync_scope()
     scope["task_kind"] = "governance_only_validator_repair"
     monkeypatch.setattr(
@@ -536,7 +570,7 @@ def test_route_scope_rejects_wrong_visible_life_core_sync_task_kind(monkeypatch)
 
 
 def test_visible_life_core_sync_is_exactly_bound_to_v0_revision_and_fingerprint(monkeypatch) -> None:
-    state = live_route_state()
+    state = historical_v4_route_state()
     scope = valid_visible_life_core_sync_scope()
     changed = [
         "docs/PROGRAM_STATE_UNIFIED.yaml",
@@ -634,7 +668,7 @@ def test_consumed_visible_life_phase_b_action_is_not_reusable() -> None:
 
 
 def test_core_sync_execution_flag_cannot_be_self_declared_false(monkeypatch) -> None:
-    state = live_route_state()
+    state = historical_v4_route_state()
     scope = valid_visible_life_core_sync_scope()
     scope["raw"]["execution_requested"] = False
     monkeypatch.setattr(
@@ -658,7 +692,7 @@ def test_core_sync_execution_flag_cannot_be_self_declared_false(monkeypatch) -> 
 
 
 def test_stale_local_core_adopt_action_is_not_a_sync_authority(monkeypatch) -> None:
-    state = live_route_state()
+    state = historical_v4_route_state()
     scope = valid_visible_life_core_sync_scope()
     scope["requested_action_id"] = codex_session_guard.VISIBLE_LIFE_CORE_STALE_ADOPT_ACTION_ID
     monkeypatch.setattr(
@@ -808,3 +842,198 @@ def test_core_evidence_gate_rejects_corrupted_banked_content(
 
     assert result["status"] == "fail"
     assert expected_error in result["errors"]
+
+
+def test_v1_ready_sync_scope_is_exactly_bound(monkeypatch) -> None:
+    state = live_route_state()
+    scope = valid_v1_ready_sync_scope()
+    changed = [
+        "docs/PROGRAM_STATE_UNIFIED.yaml",
+        f"{codex_session_guard.V1_READY_TASK_PREFIX}STAGE_CARD.md",
+    ]
+    monkeypatch.setattr(
+        codex_session_guard,
+        "validate_v1_ready_product_authority",
+        lambda *_args, **_kwargs: {"status": "pass", "errors": []},
+    )
+    blockers = validate_scope(
+        state,
+        scope,
+        changed_paths=changed,
+        added_task_dirs=[codex_session_guard.V1_READY_TASK_PREFIX.rstrip("/")],
+    )
+    reasons = blocker_reasons(blockers)
+
+    assert "stale_route_fingerprint" not in reasons
+    assert "source_route_revision_mismatch" not in reasons
+    assert "ROUTE_ACTION_NOT_BOUND" not in reasons
+    assert "v1_ready_sync_allowlist_mismatch" not in reasons
+
+
+def test_v1_ready_sync_scope_rejects_target_path_substitution(monkeypatch) -> None:
+    state = live_route_state()
+    scope = valid_v1_ready_sync_scope()
+    scope["allowed_mutation_paths"][-1] = "EgoOperator/agent_base.py"
+    monkeypatch.setattr(
+        codex_session_guard,
+        "validate_v1_ready_product_authority",
+        lambda *_args, **_kwargs: {"status": "pass", "errors": []},
+    )
+
+    reasons = blocker_reasons(
+        validate_scope(
+            state,
+            scope,
+            changed_paths=[
+                "docs/PROGRAM_STATE_UNIFIED.yaml",
+                f"{codex_session_guard.V1_READY_TASK_PREFIX}STAGE_CARD.md",
+            ],
+            added_task_dirs=[codex_session_guard.V1_READY_TASK_PREFIX.rstrip("/")],
+        )
+    )
+
+    assert "v1_ready_sync_allowlist_mismatch" in reasons
+
+
+def test_v1_ready_receipt_payload_controls_fail_closed() -> None:
+    reviewed_paths = sorted(codex_session_guard.V1_READY_REVIEWED_PATHS)
+    reviewed_rows = {
+        path: {
+            "reviewed_blob": "a" * 40,
+            "reviewed_blob_payload_sha256": "b" * 64,
+            "sha_semantics": {"reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"},
+        }
+        for path in reviewed_paths
+    }
+    receipt = {
+        "schema_version": "ego.v1_ready.phase_c.red_receipt.v1",
+        "task_id": codex_session_guard.V1_READY_TASK_ID,
+        "phase": "EGO_PHASE_C_AUTHORITY_TRANSCRIPTION",
+        "base_commit": codex_session_guard.V1_READY_EGO_BASE_COMMIT,
+        "sorted_reviewed_paths": reviewed_paths,
+        "reviewer": "Claude",
+        "review_source": "Claude Web",
+        "reviewer_session_id": "claude-web:distinct",
+        "executor_session_id": "codex:executor",
+        "reviewed_at_utc": "2026-07-15T08:00:00Z",
+        "verdict": "NO_BLOCKING_FINDINGS",
+        "blocking_findings": [],
+        "claim_ceiling_acknowledged": True,
+        "reviewed_semantic_manifest_sha256": "c" * 64,
+        "reviewed_diff_sha256": "d" * 64,
+        "review_bundle_sha256": "e" * 64,
+        "review_response_sha256": "f" * 64,
+        "reviewed_semantic_manifest": {
+            "base_commit": codex_session_guard.V1_READY_EGO_BASE_COMMIT,
+            "sorted_reviewed_paths": reviewed_paths,
+            "per_path_base_blob_or_absent": {path: "absent" for path in reviewed_paths},
+            "per_path_reviewed_blob_or_worktree_sha256": reviewed_rows,
+        },
+    }
+    receipt["reviewed_semantic_manifest_sha256"] = hashlib.sha256(
+        json.dumps(
+            receipt["reviewed_semantic_manifest"],
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+    assert codex_session_guard.validate_v1_ready_receipt_payload(receipt) == []
+
+    receipt["claim_ceiling_acknowledged"] = False
+    receipt["reviewer_session_id"] = receipt["executor_session_id"]
+    receipt["sorted_reviewed_paths"] = receipt["sorted_reviewed_paths"][:-1]
+    errors = codex_session_guard.validate_v1_ready_receipt_payload(receipt)
+
+    assert "v1_ready_red_receipt_claim_ceiling_missing" in errors
+    assert "v1_ready_red_receipt_role_separation_missing" in errors
+    assert "v1_ready_red_receipt_reviewed_paths_mismatch" in errors
+
+
+def test_v1_ready_receipt_payload_rejects_incomplete_blob_manifest() -> None:
+    reviewed_paths = sorted(codex_session_guard.V1_READY_REVIEWED_PATHS)
+    receipt = {
+        "schema_version": "ego.v1_ready.phase_c.red_receipt.v1",
+        "task_id": codex_session_guard.V1_READY_TASK_ID,
+        "phase": "EGO_PHASE_C_AUTHORITY_TRANSCRIPTION",
+        "base_commit": codex_session_guard.V1_READY_EGO_BASE_COMMIT,
+        "sorted_reviewed_paths": reviewed_paths,
+        "reviewer": "Claude",
+        "review_source": "Claude Web",
+        "reviewer_session_id": "claude-web:distinct",
+        "executor_session_id": "codex:executor",
+        "reviewed_at_utc": "2026-07-15T08:00:00Z",
+        "verdict": "NO_BLOCKING_FINDINGS",
+        "blocking_findings": [],
+        "claim_ceiling_acknowledged": True,
+        "reviewed_semantic_manifest_sha256": "c" * 64,
+        "reviewed_diff_sha256": "d" * 64,
+        "review_bundle_sha256": "e" * 64,
+        "review_response_sha256": "f" * 64,
+        "reviewed_semantic_manifest": {
+            "base_commit": codex_session_guard.V1_READY_EGO_BASE_COMMIT,
+            "sorted_reviewed_paths": reviewed_paths,
+            "per_path_base_blob_or_absent": {path: "absent" for path in reviewed_paths},
+            "per_path_reviewed_blob_or_worktree_sha256": {},
+        },
+    }
+
+    errors = codex_session_guard.validate_v1_ready_receipt_payload(receipt)
+
+    assert "v1_ready_red_receipt_manifest_reviewed_blob_paths_mismatch" in errors
+
+
+def test_v1_ready_review_path_contract_excludes_receipt_and_is_exact() -> None:
+    assert len(codex_session_guard.V1_READY_REVIEWED_PATHS) == 19
+    assert len(codex_session_guard.V1_READY_SYNC_PATHS) == 20
+    assert codex_session_guard.V1_READY_RED_REVIEW_PATH not in codex_session_guard.V1_READY_REVIEWED_PATHS
+    assert set(codex_session_guard.V1_READY_SYNC_PATHS) == {
+        *codex_session_guard.V1_READY_REVIEWED_PATHS,
+        codex_session_guard.V1_READY_RED_REVIEW_PATH,
+    }
+
+
+def test_v1_ready_machine_scope_payload_is_exact_and_fail_closed() -> None:
+    payload = codex_session_guard._load_yaml(  # noqa: SLF001
+        ROOT / codex_session_guard.V1_READY_SCOPE_PATH,
+        code="missing_v1_ready_scope",
+    )
+
+    assert codex_session_guard.validate_v1_ready_mutation_scope_payload(payload) == []
+
+    payload["reviewed_nonreceipt_paths"] = payload["reviewed_nonreceipt_paths"][:-1]
+    payload["forbidden_paths"] = payload["forbidden_paths"][:-1]
+    errors = codex_session_guard.validate_v1_ready_mutation_scope_payload(payload)
+    assert "v1_ready_scope_reviewed_nonreceipt_paths_mismatch" in errors
+    assert "v1_ready_scope_forbidden_paths_mismatch" in errors
+
+
+def test_v1_ready_readback_separates_live_product_authority_from_closed_card2(monkeypatch) -> None:
+    state = live_route_state()
+    v1 = state["route_guard"]["v1_ready_authority"]
+    monkeypatch.setattr(
+        codex_session_guard,
+        "science_authority_pin_status",
+        lambda *_args, **_kwargs: {"status": "pass"},
+    )
+    monkeypatch.setattr(
+        codex_session_guard,
+        "validate_v1_ready_product_authority",
+        lambda *_args, **_kwargs: {"status": "pass", "errors": []},
+    )
+
+    readback = codex_session_guard.build_route_guard_readback(
+        state,
+        FakeRunner(),
+    )
+
+    assert readback["allowed_next_action_ids"] == [
+        codex_session_guard.V1_READY_IMPLEMENT_ACTION_ID,
+        "run_route_state_machine_validation",
+    ]
+    assert readback["blocked_until"] == []
+    assert readback["closed_card2_blocked_until"] == ["ADMISSION_INVALID_PATH_POLICY"]
+    assert readback["product_development_core"] == v1["core_id"]
+    assert readback["product_development_core_lineage"] == v1[
+        "lineage_root_authority_route_id"
+    ]

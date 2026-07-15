@@ -183,6 +183,157 @@ VISIBLE_LIFE_CORE_FORBIDDEN_ACTIONS = [
 ]
 _VISIBLE_LIFE_CORE_EVIDENCE_CACHE: dict[tuple[Any, ...], dict[str, Any]] = {}
 
+V1_READY_TASK_ID = "EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-READY-TRANSITION-001A"
+V1_READY_ROUTE_REVISION = "EGO_LIFE_KERNEL_V1_CONTINUITY_PLAYGROUND_READY_TRANSITION_001A"
+V1_READY_SYNC_ACTION_ID = (
+    "sync_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A_ready_authority_under_separate_task"
+)
+V1_READY_IMPLEMENT_ACTION_ID = "implement_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A"
+V1_READY_TASK_PREFIX = "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/"
+V1_READY_SCOPE_PATH = f"{V1_READY_TASK_PREFIX}MUTATION_SCOPE_PHASE_C.yaml"
+V1_READY_CROSSWALK_PATH = f"{V1_READY_TASK_PREFIX}ITL_AUTHORITY_CROSSWALK.json"
+V1_READY_RED_REVIEW_PATH = f"{V1_READY_TASK_PREFIX}PHASE_C_RED_REVIEW.json"
+V1_READY_EGO_BASE_COMMIT = "90f723cf53c8ff3b7f3ad6eba29a4f5ec6e9238a"
+V1_READY_ITL_COMMIT = "81f19613fbd02bb845c08258cc8156283240aa2e"
+V1_READY_ITL_ROUTE_ID = "EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A"
+V1_READY_ITL_OBJECTS = {
+    "product_axis_state": {
+        "path": "artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json",
+        "git_blob_oid": "6bc24fbfd842f9a11df28b2abf6269a810c1d3f4",
+        "git_blob_payload_sha256": "7c8ce4ebd7a97e514fd0253f2bba2c0c78d3c96ad814256ed8c627c265ca353d",
+        "bytes": 3479,
+    },
+    "v1_state": {
+        "path": (
+            "artifacts/ROUTE-STATE-MACHINE-001A/routes/"
+            "EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/state.json"
+        ),
+        "git_blob_oid": "4e22afb9e6ecd4daaee8970ef25f169c5a7becb4",
+        "git_blob_payload_sha256": "2b4e1f0cd24b89eef7e1608002c30d3a1e61b0251213892819e5f2ac160820cc",
+        "bytes": 10469,
+    },
+    "v1_events": {
+        "path": (
+            "artifacts/ROUTE-STATE-MACHINE-001A/routes/"
+            "EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/events.jsonl"
+        ),
+        "git_blob_oid": "3eb00d15d84638c7fc51f9827c719230450c5c90",
+        "git_blob_payload_sha256": "b6e732718cef553407db4ab5aef4e3b64f6d6d0dc5b500a5c44630de6be9363a",
+        "bytes": 2525,
+    },
+    "v1_ready_validation_report": {
+        "path": (
+            "artifacts/ROUTE-STATE-MACHINE-001A/routes/"
+            "EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/ready_transition_validation_report.json"
+        ),
+        "git_blob_oid": "6c5f217ac1a4160e15c51b8c8a936fadf569a0b2",
+        "git_blob_payload_sha256": "6dec14dff208e7d64c26928b6eb56f9eba7599a622abee3aa7c02e2da5af3c56",
+        "bytes": 16668,
+    },
+    "v1_ready_transition_card": {
+        "path": "docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-READY-TRANSITION-001A.md",
+        "git_blob_oid": "2cc5fb7f947a839aec3994a6cd8200c50abc33f1",
+        "git_blob_payload_sha256": "0eef8be47f6c3a0dd64c6fc87ced9cf23923acefd337e62de501f918e9d03fc5",
+        "bytes": 17086,
+    },
+    "v1_ready_mutation_scope": {
+        "path": (
+            "docs/codex/tasks/"
+            "EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-READY-TRANSITION-001A-MUTATION_SCOPE_ITL.yaml"
+        ),
+        "git_blob_oid": "2df99fea3cd4b30b59dd12d3ba948b3f13872121",
+        "git_blob_payload_sha256": "3e3c060a020f447d6e81ab4352f553e01524ff0aeb25f8349955fc13b4512950",
+        "bytes": 2768,
+    },
+    "v1_ready_red_receipt": {
+        "path": "artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-READY-TRANSITION-001A/red_precheck.json",
+        "git_blob_oid": "9d60a47bda9c6f538a3d47c9d089c82d009f11ee",
+        "git_blob_payload_sha256": "7a3a49f15207d2e71676da6be7dfff7f6d27006ee46324fd7654e74189117b79",
+        "bytes": 10758,
+    },
+}
+V1_READY_IMPLEMENTATION_TARGETS = [
+    "docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A-MUTATION_SCOPE.yaml",
+    "labs/ego_life_playground_v0/__init__.py",
+    "labs/ego_life_playground_v0/engine.py",
+    "labs/ego_life_playground_v0/store.py",
+    "labs/ego_life_playground_v0/app.py",
+    "scripts/run_ego_life_playground_v0.py",
+    "tests/test_ego_life_playground_v0.py",
+    "scripts/codex/verify_ego_life_kernel_v1_continuity.py",
+    "scripts/tests/test_verify_ego_life_kernel_v1_continuity.py",
+    "scripts/tests/test_verify_ego_life_core_v0_baseline.py",
+    "artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/continuity.sqlite3",
+    "artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/trace.jsonl",
+    "artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/product_trigger_receipt.json",
+    "artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/baseline_comparison.json",
+    "artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/ablation_report.json",
+    "artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/replay_report.json",
+    "artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/leakage_report.json",
+    "artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/failure_manifest.json",
+    "artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/claim_ceiling.txt",
+    "artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/result.json",
+]
+V1_READY_REVIEWED_PATHS = [
+    f"{V1_READY_TASK_PREFIX}STAGE_CARD.md",
+    f"{V1_READY_TASK_PREFIX}COLLISION_RECORD.md",
+    V1_READY_SCOPE_PATH,
+    V1_READY_CROSSWALK_PATH,
+    "docs/PROGRAM_STATE_UNIFIED.yaml",
+    "docs/STATUS.md",
+    "artifacts/reports/program_state_summary.md",
+    "docs/codex/tasks/TASK_LANE_INDEX.md",
+    "docs/REPO_SURFACE_MAP.md",
+    "AGENTS.md",
+    "README.md",
+    "docs/ACTIVE_CONTEXT_PACK.md",
+    "docs/MAINLINE_QUICKSTART.md",
+    "docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md",
+    "docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md",
+    "scripts/codex_session_guard.py",
+    "scripts/codex/verify_route_convergence.py",
+    "scripts/tests/test_codex_session_guard.py",
+    "scripts/tests/test_route_governance_supersession.py",
+]
+V1_READY_SYNC_PATHS = [*V1_READY_REVIEWED_PATHS, V1_READY_RED_REVIEW_PATH]
+V1_READY_STALE_POINTER_PATHS = [
+    "AGENTS.md",
+    "README.md",
+    "docs/ACTIVE_CONTEXT_PACK.md",
+    "docs/MAINLINE_QUICKSTART.md",
+    "docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md",
+    "docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md",
+]
+V1_READY_LOCAL_FORBIDDEN_ACTIONS = [
+    "modify_reopen_or_rerun_EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A",
+    "modify_reopen_or_rerun_K0-DUAL-TRACK-SUPERSESSION-001A",
+    "use_closed_card2_action_or_old_k0_action_as_authority",
+    "modify_pinned_V0_source_commit_or_rewrite_history",
+    "enable_runtime_mainline_or_grant_runtime_authority",
+    "change_EgoOperator_active_default",
+    "start_science_successor_experiment_scoring_or_formal_run",
+    "treat_product_trace_or_visible_behavior_as_mechanism_evidence",
+    "push_tag_or_remote_anchor",
+    "modify_reopen_or_rerun_EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A",
+    "modify_product_axis_science_snapshot_program_state",
+    "modify_unlisted_V1_implementation_target",
+    "create_parallel_visible_life_product_core_or_launcher",
+    "modify_EgoDesktop_or_EgoOperator",
+    "add_LLM_network_service_or_subprocess",
+]
+V1_READY_SYNC_FORBIDDEN_PATHS = [
+    "EgoOperator/",
+    "EgoDesktop/",
+    "labs/ego_life_playground_v0/",
+    "scripts/run_ego_life_playground_v0.py",
+    "scripts/codex/verify_ego_life_kernel_v1_continuity.py",
+    "scripts/tests/test_verify_ego_life_kernel_v1_continuity.py",
+    "scripts/tests/test_verify_ego_life_core_v0_baseline.py",
+    "tests/test_ego_life_playground_v0.py",
+    "artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/",
+    "../intelligence-theory-lab/",
+]
+
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
@@ -316,8 +467,7 @@ def flatten_json_leaves(value: Any, pointer: str = "") -> list[tuple[str, Any]]:
     return [(pointer or "/", value)]
 
 
-def _source_pin_records(route_guard: dict[str, Any]) -> list[dict[str, Any]]:
-    authority = route_guard.get("authority_source") or {}
+def _source_pin_records(authority: dict[str, Any]) -> list[dict[str, Any]]:
     records: list[dict[str, Any]] = []
     for name, pin in sorted((authority.get("objects") or {}).items()):
         if isinstance(pin, dict):
@@ -325,9 +475,7 @@ def _source_pin_records(route_guard: dict[str, Any]) -> list[dict[str, Any]]:
     return records
 
 
-def read_itl_authority_objects(program_state: dict[str, Any]) -> dict[str, Any]:
-    route_guard = program_state.get("route_guard") or {}
-    authority = route_guard.get("authority_source") or {}
+def _read_itl_authority_source(authority: dict[str, Any]) -> dict[str, Any]:
     pinned_commit = str(authority.get("pinned_commit") or "")
     errors: list[str] = []
     if not pinned_commit:
@@ -337,7 +485,7 @@ def read_itl_authority_objects(program_state: dict[str, Any]) -> dict[str, Any]:
         return {"status": "fail", "errors": ["missing_itl_authority_commit"], "payloads": {}}
     payloads: dict[str, Any] = {}
     input_artifacts: list[dict[str, Any]] = []
-    for pin in _source_pin_records(route_guard):
+    for pin in _source_pin_records(authority):
         name = str(pin.get("name") or "")
         path = str(pin.get("path") or "")
         expected_oid = str(pin.get("git_blob_oid") or "")
@@ -353,6 +501,10 @@ def read_itl_authority_objects(program_state: dict[str, Any]) -> dict[str, Any]:
         if actual_sha != expected_sha:
             errors.append(f"itl_object_payload_mismatch:{name}")
             continue
+        expected_bytes = pin.get("bytes")
+        if expected_bytes is not None and len(raw) != expected_bytes:
+            errors.append(f"itl_object_byte_count_mismatch:{name}")
+            continue
         if path.endswith(".json"):
             try:
                 payloads[name] = json.loads(raw.decode("utf-8"))
@@ -361,16 +513,17 @@ def read_itl_authority_objects(program_state: dict[str, Any]) -> dict[str, Any]:
                 continue
         else:
             payloads[name] = raw.decode("utf-8")
-        input_artifacts.append(
-            {
-                "name": name,
-                "repo": "intelligence-theory-lab",
-                "commit": pinned_commit,
-                "path": path,
-                "git_blob_oid": expected_oid,
-                "git_blob_payload_sha256": expected_sha,
-            }
-        )
+        artifact_row = {
+            "name": name,
+            "repo": "intelligence-theory-lab",
+            "commit": pinned_commit,
+            "path": path,
+            "git_blob_oid": expected_oid,
+            "git_blob_payload_sha256": expected_sha,
+        }
+        if expected_bytes is not None:
+            artifact_row["bytes"] = len(raw)
+        input_artifacts.append(artifact_row)
     return {
         "status": "pass" if not errors else "fail",
         "errors": errors,
@@ -378,6 +531,17 @@ def read_itl_authority_objects(program_state: dict[str, Any]) -> dict[str, Any]:
         "payloads": payloads,
         "input_artifacts": input_artifacts,
     }
+
+
+def read_itl_authority_objects(program_state: dict[str, Any]) -> dict[str, Any]:
+    route_guard = program_state.get("route_guard") or {}
+    authority = route_guard.get("predecessor_authority_source") or route_guard.get("authority_source") or {}
+    return _read_itl_authority_source(authority)
+
+
+def read_v1_ready_itl_authority_objects(program_state: dict[str, Any]) -> dict[str, Any]:
+    route_guard = program_state.get("route_guard") or {}
+    return _read_itl_authority_source(route_guard.get("authority_source") or {})
 
 
 def _script_code_path_hash() -> str:
@@ -754,12 +918,14 @@ def validate_visible_life_core_authority_crosswalk(program_state: dict[str, Any]
     state = payloads.get("product_core_state")
     closure = payloads.get("product_core_closure")
     transcribed = route_guard.get("transcribed_itl_product") or {}
+    historical_axis = transcribed.get("predecessor_product_axis_state", transcribed.get("product_axis_state"))
     for name, payload in (
         ("product_axis_state", axis),
         ("product_core_state", state),
         ("product_core_closure", closure),
     ):
-        if not isinstance(payload, dict) or transcribed.get(name) != payload:
+        transcribed_payload = historical_axis if name == "product_axis_state" else transcribed.get(name)
+        if not isinstance(payload, dict) or transcribed_payload != payload:
             errors.append(f"visible_life_core_{name}_transcription_mismatch")
     ref = route_guard.get("product_authority_crosswalk") or {}
     relative = str(ref.get("path") or "")
@@ -779,7 +945,11 @@ def validate_visible_life_core_authority_crosswalk(program_state: dict[str, Any]
             input_artifacts=list(source.get("input_artifacts") or []),
             run_id=str(artifact.get("run_id") or ""),
         )
-        if artifact != expected:
+        # The V0 crosswalk is an immutable historical artifact. Recompute its
+        # leaf semantics with the current callable path while preserving the
+        # producer hash recorded at the frozen V0 boundary.
+        semantic_expected = {**expected, "producer_code_path_hash": artifact.get("producer_code_path_hash")}
+        if artifact != semantic_expected:
             errors.append("visible_life_core_crosswalk_callable_recompute_mismatch")
         errors.extend(
             validate_visible_life_core_crosswalk_entries(
@@ -1218,7 +1388,8 @@ def validate_visible_life_core_evidence(
 
     cache_allowed = runner is None
     runner = runner or GuardRunner()
-    product = ((program_state.get("route_guard") or {}).get("product_authority") or {})
+    route_guard = program_state.get("route_guard") or {}
+    product = route_guard.get("predecessor_product_authority") or route_guard.get("product_authority") or {}
     baseline = product.get("historical_baseline") or {}
     errors: list[str] = []
     paths = {
@@ -1353,9 +1524,9 @@ def validate_visible_life_core_evidence(
 
 def validate_visible_life_core_product_authority(program_state: dict[str, Any]) -> dict[str, Any]:
     route_guard = program_state.get("route_guard") or {}
-    product = route_guard.get("product_authority") or {}
+    product = route_guard.get("predecessor_product_authority") or route_guard.get("product_authority") or {}
     errors: list[str] = []
-    authority = route_guard.get("authority_source") or {}
+    authority = route_guard.get("predecessor_authority_source") or route_guard.get("authority_source") or {}
     if authority.get("pinned_commit") != VISIBLE_LIFE_CORE_ITL_COMMIT:
         errors.append("visible_life_core_itl_commit_mismatch")
     authority_objects = authority.get("objects") or {}
@@ -1582,6 +1753,584 @@ def validate_visible_life_core_product_authority(program_state: dict[str, Any]) 
     }
 
 
+def extract_v1_ready_implementation_targets(
+    product_axis_state: dict[str, Any],
+    v1_state: dict[str, Any],
+) -> dict[str, Any]:
+    axis_targets = ((product_axis_state.get("product_development_axis") or {}).get(
+        "authorized_implementation_targets"
+    ))
+    state_targets = v1_state.get("authorized_implementation_targets")
+    errors: list[str] = []
+    if not isinstance(axis_targets, list) or not axis_targets:
+        errors.append("v1_ready_axis_targets_empty_or_invalid")
+        axis_targets = []
+    if not isinstance(state_targets, list) or not state_targets:
+        errors.append("v1_ready_state_targets_empty_or_invalid")
+        state_targets = []
+    if axis_targets != state_targets:
+        errors.append("v1_ready_source_target_lists_mismatch")
+    if any(not isinstance(path, str) or not path for path in state_targets):
+        errors.append("v1_ready_source_target_path_invalid")
+    if len(set(state_targets)) != len(state_targets):
+        errors.append("v1_ready_source_target_duplicate")
+    return {
+        "status": "pass" if not errors else "fail",
+        "errors": errors,
+        "targets": list(state_targets),
+        "axis_targets": list(axis_targets),
+        "state_targets": list(state_targets),
+        "producer_function": "scripts.codex_session_guard.extract_v1_ready_implementation_targets",
+        "aggregation_rule": (
+            "read both ordered nonempty target lists from committed ITL axis/state and require exact equality, "
+            "valid paths, and no duplicates"
+        ),
+        "producer_code_path_hash": _script_code_path_hash(),
+    }
+
+
+def validate_v1_ready_crosswalk_entries(
+    *,
+    product_axis_state: dict[str, Any],
+    v1_state: dict[str, Any],
+    entries: list[dict[str, Any]],
+) -> list[str]:
+    sources = {
+        "product_axis_state": (
+            product_axis_state,
+            "/route_guard/transcribed_itl_product/product_axis_state",
+        ),
+        "v1_ready_state": (
+            v1_state,
+            "/route_guard/transcribed_itl_product/v1_ready_state",
+        ),
+    }
+    expected: dict[tuple[str, str], tuple[str, str]] = {}
+    for source_name, (payload, target_root) in sources.items():
+        for source_pointer, leaf_value in flatten_json_leaves(payload):
+            expected[(source_name, source_pointer)] = (
+                f"{target_root}{'' if source_pointer == '/' else source_pointer}",
+                hashlib.sha256(_canonical_json_bytes(leaf_value)).hexdigest(),
+            )
+    observed: dict[tuple[str, str], tuple[str, str]] = {}
+    errors: list[str] = []
+    for row in entries:
+        key = (str(row.get("source_name") or ""), str(row.get("source_pointer") or ""))
+        if key in observed:
+            errors.append("v1_ready_crosswalk_duplicate_leaf")
+        observed[key] = (str(row.get("target_pointer") or ""), str(row.get("value_sha256") or ""))
+        if row.get("transform") != "verbatim_json_value":
+            errors.append("v1_ready_crosswalk_nonverbatim_transform")
+    if set(expected) - set(observed):
+        errors.append("v1_ready_crosswalk_leaf_omitted")
+    if set(observed) - set(expected):
+        errors.append("v1_ready_crosswalk_extra_leaf")
+    if any(observed.get(key) != value for key, value in expected.items() if key in observed):
+        errors.append("v1_ready_crosswalk_value_or_target_mismatch")
+    return sorted(set(errors))
+
+
+def build_v1_ready_authority_crosswalk_payload(
+    *,
+    product_axis_state: dict[str, Any],
+    v1_state: dict[str, Any],
+    input_artifacts: list[dict[str, Any]],
+    run_id: str,
+) -> dict[str, Any]:
+    sources = {
+        "product_axis_state": (
+            product_axis_state,
+            "/route_guard/transcribed_itl_product/product_axis_state",
+        ),
+        "v1_ready_state": (
+            v1_state,
+            "/route_guard/transcribed_itl_product/v1_ready_state",
+        ),
+    }
+    entries: list[dict[str, Any]] = []
+    source_counts: dict[str, int] = {}
+    for source_name, (payload, target_root) in sources.items():
+        leaves = flatten_json_leaves(payload)
+        source_counts[source_name] = len(leaves)
+        for source_pointer, leaf_value in leaves:
+            entries.append(
+                {
+                    "source_name": source_name,
+                    "source_pointer": source_pointer,
+                    "target_pointer": f"{target_root}{'' if source_pointer == '/' else source_pointer}",
+                    "transform": "verbatim_json_value",
+                    "value_sha256": hashlib.sha256(_canonical_json_bytes(leaf_value)).hexdigest(),
+                }
+            )
+    omission_errors = validate_v1_ready_crosswalk_entries(
+        product_axis_state=product_axis_state,
+        v1_state=v1_state,
+        entries=entries[1:],
+    )
+    return {
+        "schema_version": "ego.v1_ready.itl_authority_crosswalk.v1",
+        "task_id": V1_READY_TASK_ID,
+        "requested_action_id": V1_READY_SYNC_ACTION_ID,
+        "source_commit": V1_READY_ITL_COMMIT,
+        "source_route_id": V1_READY_ITL_ROUTE_ID,
+        "run_id": run_id,
+        "producer_function": "scripts.codex_session_guard.build_v1_ready_authority_crosswalk_payload",
+        "producer_code_path_hash": _script_code_path_hash(),
+        "input_artifacts": input_artifacts,
+        "aggregation_rule": (
+            "flatten every committed ITL product-axis and V1-state leaf in sorted-key/index order and require "
+            "one verbatim Ego target leaf"
+        ),
+        "source_leaf_counts": source_counts,
+        "total_leaf_count": len(entries),
+        "entries": entries,
+        "omission_positive_control": {
+            "omitted_source_name": entries[0]["source_name"],
+            "omitted_source_pointer": entries[0]["source_pointer"],
+            "expected_count": len(entries),
+            "mutated_count": len(entries) - 1,
+            "rejected": "v1_ready_crosswalk_leaf_omitted" in omission_errors,
+            "rejection_code": "v1_ready_crosswalk_leaf_omitted",
+            "observed_error_codes": omission_errors,
+        },
+        "claim_ceiling": "committed ITL V1 READY authority transcription evidence only",
+    }
+
+
+def validate_v1_ready_authority_crosswalk(program_state: dict[str, Any]) -> dict[str, Any]:
+    route_guard = program_state.get("route_guard") or {}
+    source = read_v1_ready_itl_authority_objects(program_state)
+    errors = list(source.get("errors") or [])
+    payloads = source.get("payloads") or {}
+    axis = payloads.get("product_axis_state")
+    state = payloads.get("v1_state")
+    transcribed = route_guard.get("transcribed_itl_product") or {}
+    if not isinstance(axis, dict) or transcribed.get("product_axis_state") != axis:
+        errors.append("v1_ready_product_axis_transcription_mismatch")
+    if not isinstance(state, dict) or transcribed.get("v1_ready_state") != state:
+        errors.append("v1_ready_state_transcription_mismatch")
+    ref = route_guard.get("v1_ready_authority_crosswalk") or {}
+    artifact_path = ROOT / str(ref.get("path") or "")
+    artifact, artifact_error = _read_json_file(artifact_path)
+    if artifact_error or artifact is None:
+        errors.append("v1_ready_crosswalk_artifact_unavailable")
+        return {"status": "fail", "errors": sorted(set(errors)), "source": source}
+    raw_sha = hashlib.sha256(artifact_path.read_bytes()).hexdigest()
+    if raw_sha != ref.get("artifact_payload_sha256"):
+        errors.append("v1_ready_crosswalk_artifact_sha256_mismatch")
+    if isinstance(axis, dict) and isinstance(state, dict):
+        expected = build_v1_ready_authority_crosswalk_payload(
+            product_axis_state=axis,
+            v1_state=state,
+            input_artifacts=list(source.get("input_artifacts") or []),
+            run_id=str(artifact.get("run_id") or ""),
+        )
+        if artifact != expected:
+            errors.append("v1_ready_crosswalk_callable_recompute_mismatch")
+        errors.extend(
+            validate_v1_ready_crosswalk_entries(
+                product_axis_state=axis,
+                v1_state=state,
+                entries=list(artifact.get("entries") or []),
+            )
+        )
+        if expected.get("source_leaf_counts") != {"product_axis_state": 50, "v1_ready_state": 163}:
+            errors.append("v1_ready_crosswalk_source_leaf_count_mismatch")
+        if expected.get("total_leaf_count") != 213:
+            errors.append("v1_ready_crosswalk_total_leaf_count_mismatch")
+        if expected.get("omission_positive_control", {}).get("rejected") is not True:
+            errors.append("v1_ready_crosswalk_omission_positive_control_did_not_fire")
+    return {
+        "status": "pass" if not errors else "fail",
+        "errors": sorted(set(errors)),
+        "source": source,
+        "artifact_payload_sha256": raw_sha,
+        "source_leaf_counts": artifact.get("source_leaf_counts"),
+        "total_leaf_count": artifact.get("total_leaf_count"),
+        "producer_function": artifact.get("producer_function"),
+        "run_id": artifact.get("run_id"),
+        "aggregation_rule": artifact.get("aggregation_rule"),
+        "producer_code_path_hash": artifact.get("producer_code_path_hash"),
+    }
+
+
+def build_v1_ready_consumption_view(
+    product_axis_state: dict[str, Any],
+    v1_state: dict[str, Any],
+) -> dict[str, Any]:
+    axis = product_axis_state.get("product_development_axis") or {}
+    targets = extract_v1_ready_implementation_targets(product_axis_state, v1_state)
+    source_forbidden = list(v1_state.get("forbidden_next_actions") or [])
+    consumed_forbidden = {
+        "start_V1_implementation_without_separate_operator_authorized_card",
+        "execute_V1_before_exact_Ego_phase_C_transcription_validation",
+    }
+    return {
+        "schema_version": "ego.v1_ready.consumption.v1",
+        "task_id": V1_READY_TASK_ID,
+        "route_id": v1_state.get("route_id"),
+        "source_commit": V1_READY_ITL_COMMIT,
+        "source_state": v1_state.get("current_state"),
+        "source_phase": v1_state.get("phase"),
+        "source_axis_state": axis.get("state"),
+        "axis_authority": axis.get("authority"),
+        "lineage_root_authority_route_id": axis.get("lineage_root_authority_route_id"),
+        "core_id": axis.get("core_id"),
+        "descendant_id": axis.get("descendant_id"),
+        "source_allowed_next_actions": list(v1_state.get("allowed_next_actions") or []),
+        "source_currently_executable_actions": list(v1_state.get("currently_executable_actions") or []),
+        "source_conditional_authorized_actions": list(axis.get("conditional_authorized_actions") or []),
+        "source_conditional_action": (v1_state.get("conditional_actions") or {}).get(
+            V1_READY_IMPLEMENT_ACTION_ID
+        ),
+        "sync_action": {
+            "action_id": V1_READY_SYNC_ACTION_ID,
+            "disposition": "CONSUMED_BY_EXACT_EGO_PHASE_C_TRANSCRIPTION",
+            "source_commit": V1_READY_ITL_COMMIT,
+            "source_route_id": V1_READY_ITL_ROUTE_ID,
+        },
+        "allowed_next_actions": [V1_READY_IMPLEMENT_ACTION_ID, "run_route_state_machine_validation"],
+        "implementation_authorized": v1_state.get("implementation_authorized"),
+        "authorized_implementation_targets": list(targets.get("targets") or []),
+        "authorizations": v1_state.get("authorizations"),
+        "enabled": v1_state.get("enabled"),
+        "default_enabled": v1_state.get("default_enabled"),
+        "mainline_connected": v1_state.get("mainline_connected"),
+        "runtime_mainline_connected": v1_state.get("runtime_mainline_connected"),
+        "runtime_authority": v1_state.get("runtime_authority"),
+        "runtime_boundary": v1_state.get("runtime_boundary"),
+        "science_weight": v1_state.get("science_weight"),
+        "science_firewall": v1_state.get("science_firewall"),
+        "remote_anchor": v1_state.get("remote_anchor"),
+        "auto_remote_anchor": v1_state.get("auto_remote_anchor"),
+        "claim_ceiling": v1_state.get("claim_ceiling"),
+        "source_forbidden_next_actions": source_forbidden,
+        "consumed_phase_c_preconditions": sorted(consumed_forbidden),
+        "forbidden_next_actions": [item for item in source_forbidden if item not in consumed_forbidden],
+    }
+
+
+def validate_v1_ready_mutation_scope_payload(payload: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    expected_scalars = {
+        "schema_version": "codex.task_mutation_scope.v1",
+        "task_id": V1_READY_TASK_ID,
+        "phase": "EGO_PHASE_C_AUTHORITY_TRANSCRIPTION",
+        "base_commit": V1_READY_EGO_BASE_COMMIT,
+        "task_kind": "cross_repo_v1_ready_authority_sync",
+        "requested_action_id": V1_READY_SYNC_ACTION_ID,
+        "source_route_revision_id": VISIBLE_LIFE_CORE_ROUTE_REVISION,
+        "source_route_fingerprint": "2446c65920f96a9a49d9ae654a0f106e8fb0bcaf41e023d4405c46c083a0f005",
+        "expected_target_route_revision_id": V1_READY_ROUTE_REVISION,
+        "itl_v1_ready_commit": V1_READY_ITL_COMMIT,
+        "itl_v1_ready_route_id": V1_READY_ITL_ROUTE_ID,
+        "independent_red_review_required": True,
+        "red_review_ref": V1_READY_RED_REVIEW_PATH,
+        "review_binding": "staged_git_blob_payloads",
+        "reviewed_nonreceipt_path_count": 19,
+        "receipt_path": V1_READY_RED_REVIEW_PATH,
+        "execution_requested": True,
+        "implementation_authorized": True,
+        "enabled": False,
+        "default_enabled": False,
+        "mainline_connected": False,
+        "runtime_mainline_connected": False,
+        "runtime_authority": "none",
+        "science_weight": 0,
+        "remote_anchor": False,
+        "auto_remote_anchor": "forbidden",
+        "push": "forbidden",
+        "tag": "forbidden",
+    }
+    for key, expected in expected_scalars.items():
+        if payload.get(key) != expected:
+            errors.append(f"v1_ready_scope_{key}_mismatch")
+    if payload.get("reviewed_nonreceipt_paths") != V1_READY_REVIEWED_PATHS:
+        errors.append("v1_ready_scope_reviewed_nonreceipt_paths_mismatch")
+    allowed = [str(path) for path in payload.get("allowed_mutation_paths") or []]
+    exact_commit = [str(path) for path in payload.get("exact_commit_paths") or []]
+    if len(allowed) != 20 or set(allowed) != set(V1_READY_SYNC_PATHS):
+        errors.append("v1_ready_scope_allowed_mutation_paths_mismatch")
+    if len(exact_commit) != 20 or set(exact_commit) != set(V1_READY_SYNC_PATHS):
+        errors.append("v1_ready_scope_exact_commit_paths_mismatch")
+    if payload.get("forbidden_paths") != V1_READY_SYNC_FORBIDDEN_PATHS:
+        errors.append("v1_ready_scope_forbidden_paths_mismatch")
+    return sorted(set(errors))
+
+
+def validate_v1_ready_receipt_payload(receipt: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    if receipt.get("schema_version") != "ego.v1_ready.phase_c.red_receipt.v1":
+        errors.append("v1_ready_red_receipt_schema_mismatch")
+    if receipt.get("task_id") != V1_READY_TASK_ID:
+        errors.append("v1_ready_red_receipt_task_id_mismatch")
+    if receipt.get("phase") != "EGO_PHASE_C_AUTHORITY_TRANSCRIPTION":
+        errors.append("v1_ready_red_receipt_phase_mismatch")
+    if receipt.get("base_commit") != V1_READY_EGO_BASE_COMMIT:
+        errors.append("v1_ready_red_receipt_base_commit_mismatch")
+    reviewed_paths = [str(path) for path in receipt.get("sorted_reviewed_paths") or []]
+    if reviewed_paths != sorted(V1_READY_REVIEWED_PATHS):
+        errors.append("v1_ready_red_receipt_reviewed_paths_mismatch")
+    manifest = receipt.get("reviewed_semantic_manifest") or {}
+    if manifest.get("base_commit") != V1_READY_EGO_BASE_COMMIT:
+        errors.append("v1_ready_red_receipt_manifest_base_mismatch")
+    if manifest.get("sorted_reviewed_paths") != sorted(V1_READY_REVIEWED_PATHS):
+        errors.append("v1_ready_red_receipt_manifest_paths_mismatch")
+    base_paths = manifest.get("per_path_base_blob_or_absent") or {}
+    reviewed_blobs = manifest.get("per_path_reviewed_blob_or_worktree_sha256") or {}
+    if set(base_paths) != set(V1_READY_REVIEWED_PATHS):
+        errors.append("v1_ready_red_receipt_manifest_base_blob_paths_mismatch")
+    if set(reviewed_blobs) != set(V1_READY_REVIEWED_PATHS):
+        errors.append("v1_ready_red_receipt_manifest_reviewed_blob_paths_mismatch")
+    for path, value in base_paths.items():
+        if value != "absent" and not re.fullmatch(r"[0-9a-f]{40}", str(value)):
+            errors.append(f"v1_ready_red_receipt_manifest_base_blob_invalid:{path}")
+    for path, row in reviewed_blobs.items():
+        if not isinstance(row, dict):
+            errors.append(f"v1_ready_red_receipt_manifest_reviewed_blob_invalid:{path}")
+            continue
+        if not re.fullmatch(r"[0-9a-f]{40}", str(row.get("reviewed_blob") or "")):
+            errors.append(f"v1_ready_red_receipt_manifest_reviewed_blob_oid_invalid:{path}")
+        if not re.fullmatch(r"[0-9a-f]{64}", str(row.get("reviewed_blob_payload_sha256") or "")):
+            errors.append(f"v1_ready_red_receipt_manifest_reviewed_blob_sha256_invalid:{path}")
+        if row.get("sha_semantics") != {
+            "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }:
+            errors.append(f"v1_ready_red_receipt_manifest_sha_semantics_invalid:{path}")
+    manifest_sha = hashlib.sha256(_canonical_json_bytes(manifest)).hexdigest()
+    if receipt.get("reviewed_semantic_manifest_sha256") != manifest_sha:
+        errors.append("v1_ready_red_receipt_manifest_sha256_mismatch")
+    review_source = str(receipt.get("review_source") or "")
+    if receipt.get("reviewer") != "Claude" or not review_source.startswith("Claude Web"):
+        errors.append("v1_ready_red_receipt_reviewer_mismatch")
+    if not str(receipt.get("reviewer_session_id") or "").strip():
+        errors.append("v1_ready_red_receipt_reviewer_session_missing")
+    if receipt.get("reviewer_session_id") == receipt.get("executor_session_id"):
+        errors.append("v1_ready_red_receipt_role_separation_missing")
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z", str(receipt.get("reviewed_at_utc") or "")):
+        errors.append("v1_ready_red_receipt_review_time_invalid")
+    if receipt.get("verdict") != "NO_BLOCKING_FINDINGS" or receipt.get("blocking_findings") != []:
+        errors.append("v1_ready_red_receipt_blocking_or_invalid_verdict")
+    if receipt.get("claim_ceiling_acknowledged") is not True:
+        errors.append("v1_ready_red_receipt_claim_ceiling_missing")
+    for key in (
+        "reviewed_semantic_manifest_sha256",
+        "reviewed_diff_sha256",
+        "review_bundle_sha256",
+        "review_response_sha256",
+    ):
+        value = receipt.get(key)
+        if not re.fullmatch(r"[0-9a-f]{64}", str(value or "")):
+            errors.append(f"v1_ready_red_receipt_{key}_invalid")
+    return sorted(set(errors))
+
+
+def _read_v1_ready_receipt_payload(*, require_committed: bool) -> tuple[dict[str, Any] | None, list[str]]:
+    if require_committed:
+        log = _git_repo(ROOT, ["log", "--diff-filter=A", "--format=%H", "--", V1_READY_RED_REVIEW_PATH])
+        commits = [line for line in log.stdout.splitlines() if line]
+        if not commits:
+            return None, ["v1_ready_red_receipt_not_committed"]
+        probe = _git_repo(ROOT, ["show", f"{commits[-1]}:{V1_READY_RED_REVIEW_PATH}"], text=False)
+        raw = probe.stdout if probe.returncode == 0 else b""
+        try:
+            return json.loads(raw.decode("utf-8")), []
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            return None, ["v1_ready_committed_red_receipt_invalid_json"]
+    payload, error = _read_json_file(ROOT / V1_READY_RED_REVIEW_PATH)
+    if error or payload is None:
+        return None, ["v1_ready_candidate_red_receipt_unavailable"]
+    return payload, []
+
+
+def validate_v1_ready_red_receipt(*, require_committed: bool) -> dict[str, Any]:
+    receipt, errors = _read_v1_ready_receipt_payload(require_committed=require_committed)
+    if receipt is None:
+        return {"status": "fail", "errors": errors}
+    errors.extend(validate_v1_ready_receipt_payload(receipt))
+    generic = validate_red_review_record(V1_READY_RED_REVIEW_PATH, require_committed=require_committed)
+    if generic.get("status") != "pass":
+        errors.extend(f"v1_ready_red_receipt_binding:{item}" for item in generic.get("errors") or [])
+    target_ref = str(generic.get("commit") or "") if require_committed else None
+    try:
+        recomputed_manifest = build_v1_ready_review_manifest(target_ref=target_ref or None)
+        if recomputed_manifest != (receipt.get("reviewed_semantic_manifest") or {}):
+            errors.append("v1_ready_red_receipt_manifest_callable_recompute_mismatch")
+        if compute_v1_ready_reviewed_diff_sha256(target_ref=target_ref or None) != receipt.get(
+            "reviewed_diff_sha256"
+        ):
+            errors.append("v1_ready_red_receipt_diff_callable_recompute_mismatch")
+        bundle_sha = hashlib.sha256(
+            build_v1_ready_review_bundle_bytes(target_ref=target_ref or None)
+        ).hexdigest()
+        if bundle_sha != receipt.get("review_bundle_sha256"):
+            errors.append("v1_ready_red_receipt_bundle_callable_recompute_mismatch")
+    except GuardError as exc:
+        errors.append(f"v1_ready_red_receipt_callable_recompute_unavailable:{exc.code}")
+    return {
+        "status": "pass" if not errors else "fail",
+        "errors": sorted(set(errors)),
+        "review_id": receipt.get("review_id"),
+        "reviewed_semantic_manifest_sha256": receipt.get("reviewed_semantic_manifest_sha256"),
+        "reviewed_diff_sha256": receipt.get("reviewed_diff_sha256"),
+        "producer_function": "scripts.codex_session_guard.validate_v1_ready_red_receipt",
+        "aggregation_rule": (
+            "require exact Phase-C schema/base/19 paths, independent Claude Web NO_BLOCKING_FINDINGS, claim ceiling, "
+            "and generic staged-or-committed Git blob plus raw diff binding"
+        ),
+        "producer_code_path_hash": _script_code_path_hash(),
+    }
+
+
+def validate_v1_ready_product_authority(
+    program_state: dict[str, Any],
+    *,
+    require_review: bool,
+) -> dict[str, Any]:
+    route_guard = program_state.get("route_guard") or {}
+    errors: list[str] = []
+    authority = route_guard.get("authority_source") or {}
+    if authority.get("pinned_commit") != V1_READY_ITL_COMMIT:
+        errors.append("v1_ready_itl_commit_mismatch")
+    if authority.get("objects") != V1_READY_ITL_OBJECTS:
+        for name, expected in V1_READY_ITL_OBJECTS.items():
+            if (authority.get("objects") or {}).get(name) != expected:
+                errors.append(f"v1_ready_itl_pin_mismatch:{name}")
+        for name in set((authority.get("objects") or {})) - set(V1_READY_ITL_OBJECTS):
+            errors.append(f"v1_ready_itl_unexpected_pin:{name}")
+    source = read_v1_ready_itl_authority_objects(program_state)
+    if source.get("status") != "pass":
+        errors.extend(f"v1_ready_source:{item}" for item in source.get("errors") or [])
+    payloads = source.get("payloads") or {}
+    axis = payloads.get("product_axis_state") or {}
+    state = payloads.get("v1_state") or {}
+    event_text = payloads.get("v1_events") or ""
+    report = payloads.get("v1_ready_validation_report") or {}
+    source_receipt = payloads.get("v1_ready_red_receipt") or {}
+    targets = extract_v1_ready_implementation_targets(axis, state)
+    if targets.get("status") != "pass":
+        errors.extend(targets.get("errors") or [])
+    source_targets = list(targets.get("targets") or [])
+    if source_targets != V1_READY_IMPLEMENTATION_TARGETS:
+        errors.append("v1_ready_source_targets_contract_mismatch")
+    event_rows: list[dict[str, Any]] = []
+    if isinstance(event_text, str):
+        try:
+            event_rows = [json.loads(line) for line in event_text.splitlines() if line.strip()]
+        except json.JSONDecodeError:
+            errors.append("v1_ready_event_jsonl_invalid")
+    if len(event_rows) != 1:
+        errors.append("v1_ready_event_count_mismatch")
+    else:
+        event = event_rows[0]
+        if (
+            event.get("route_id") != V1_READY_ITL_ROUTE_ID
+            or event.get("current_state") != "READY_TO_IMPLEMENT"
+            or event.get("implementation_authorized") is not True
+            or event.get("authorized_implementation_targets") != source_targets
+            or event.get("currently_executable_actions")
+            != [V1_READY_SYNC_ACTION_ID, "run_route_state_machine_validation"]
+            or event.get("enabled") is not False
+            or event.get("default_enabled") is not False
+            or event.get("mainline_connected") is not False
+            or event.get("runtime_mainline_connected") is not False
+            or event.get("runtime_authority") != "none"
+            or event.get("science_weight") != 0
+            or event.get("remote_anchor") is not False
+        ):
+            errors.append("v1_ready_event_semantics_mismatch")
+    if (
+        report.get("verdict") != "semantic_precheck_pass"
+        or report.get("validation_errors") != []
+        or report.get("real_trigger_evidence") != "UNVERIFIED_IN_THIS_ITL_TRANSITION"
+        or report.get("card_extracted_implementation_targets") != source_targets
+        or report.get("card_target_count") != len(source_targets)
+    ):
+        errors.append("v1_ready_source_report_semantics_mismatch")
+    if (
+        source_receipt.get("verdict") != "NO_BLOCKING_FINDINGS"
+        or source_receipt.get("blocking_findings") != []
+        or source_receipt.get("claim_ceiling_acknowledged") is not True
+    ):
+        errors.append("v1_ready_source_red_receipt_semantics_mismatch")
+    transcribed = route_guard.get("transcribed_itl_product") or {}
+    if transcribed.get("product_axis_state") != axis:
+        errors.append("v1_ready_product_axis_transcription_mismatch")
+    if transcribed.get("v1_ready_state") != state:
+        errors.append("v1_ready_state_transcription_mismatch")
+    crosswalk = validate_v1_ready_authority_crosswalk(program_state)
+    if crosswalk.get("status") != "pass":
+        errors.extend(f"v1_ready_crosswalk:{item}" for item in crosswalk.get("errors") or [])
+    expected_view = build_v1_ready_consumption_view(axis, state)
+    if expected_view.get("forbidden_next_actions") != V1_READY_LOCAL_FORBIDDEN_ACTIONS:
+        errors.append("v1_ready_source_derived_forbidden_actions_contract_mismatch")
+    view = route_guard.get("v1_ready_authority") or {}
+    if view != expected_view:
+        for key, expected in expected_view.items():
+            if view.get(key) != expected:
+                errors.append(f"v1_ready_{key}_mismatch")
+        for key in set(view) - set(expected_view):
+            errors.append(f"v1_ready_unexpected_field:{key}")
+    triggers = route_guard.get("product_trigger_evidence") or {}
+    if triggers != {
+        "itl_ready_transition": "UNVERIFIED_IN_THIS_ITL_TRANSITION",
+        "ego_v0_local_product": "BANKED_RECOMPUTING_PRODUCT_TRIGGER",
+        "v1_local_product": "UNVERIFIED_IN_THIS_EGO_PHASE_C_TRANSITION",
+    }:
+        errors.append("v1_ready_trigger_evidence_mismatch")
+    predecessor = route_guard.get("product_authority") or {}
+    if predecessor != {
+        "state": "HISTORICAL_PREDECESSOR_CONSUMED_BY_V1_READY_TRANSITION",
+        "live_authority": False,
+        "snapshot_ref": "/route_guard/predecessor_product_authority",
+        "consumed_action": VISIBLE_LIFE_CORE_DRAFT_V1_ACTION_ID,
+        "allowed_next_actions": [],
+    }:
+        errors.append("v1_ready_predecessor_product_authority_disposition_mismatch")
+    authority_state = route_guard.get("authority_state") or {}
+    if (authority_state.get("ego_operator") or {}).get("active_default") is not True:
+        errors.append("v1_ready_ego_operator_default_mismatch")
+    egodesktop = authority_state.get("egodesktop") or {}
+    if (
+        egodesktop.get("archive_state") != "ARCHIVED_LEGACY_LLM_UI_ROUTE"
+        or egodesktop.get("active_route_dependency") is not False
+        or egodesktop.get("successor_dependency") is not False
+        or egodesktop.get("runtime_authority") != "none"
+        or egodesktop.get("current_reader_disposition") != "ARCHIVE_POINTER_ONLY"
+    ):
+        errors.append("v1_ready_egodesktop_archive_pointer_mismatch")
+    old_route = authority_state.get("old_route_8692") or {}
+    if old_route.get("current_reader_disposition") != "SUPERSEDED_ARCHIVE_POINTER_ONLY":
+        errors.append("v1_ready_old_route_8692_pointer_mismatch")
+    pointer_scan = validate_v1_ready_pointer_files()
+    if pointer_scan.get("status") != "pass":
+        errors.extend(f"v1_ready_pointer_scan:{item}" for item in pointer_scan.get("errors") or [])
+    receipt = None
+    if require_review:
+        committed = validate_v1_ready_red_receipt(require_committed=True)
+        receipt = committed if committed.get("status") == "pass" else validate_v1_ready_red_receipt(
+            require_committed=False
+        )
+        if receipt.get("status") != "pass":
+            errors.extend(f"v1_ready_red_review:{item}" for item in receipt.get("errors") or [])
+    return {
+        "status": "pass" if not errors else "fail",
+        "errors": sorted(set(errors)),
+        "producer_function": "scripts.codex_session_guard.validate_v1_ready_product_authority",
+        "aggregation_rule": (
+            "bind the sole current ITL source commit and seven objects; derive ordered targets from committed axis/state; "
+            "require exact 213-leaf transcription, consumed sync, default-off/runtime/science/remote firewalls, separate "
+            "triggers, predecessor disposition, stale-pointer closure, and optional exact Red receipt"
+        ),
+        "producer_code_path_hash": _script_code_path_hash(),
+        "source": source,
+        "target_extraction": targets,
+        "crosswalk": crosswalk,
+        "pointer_scan": pointer_scan,
+        "red_review": receipt,
+    }
+
+
 def validate_red_review_record(receipt_path: str, *, require_committed: bool) -> dict[str, Any]:
     path = ROOT / receipt_path
     errors: list[str] = []
@@ -1659,6 +2408,172 @@ def validate_red_review_record(receipt_path: str, *, require_committed: bool) ->
         "review_id": receipt.get("review_id"),
         "producer_function": "scripts.codex_session_guard.validate_red_review_record",
         "aggregation_rule": "require NO_BLOCKING_FINDINGS plus exact base, committed path set, reviewed diff SHA-256, and per-path committed blob binding",
+        "producer_code_path_hash": _script_code_path_hash(),
+    }
+
+
+def build_v1_ready_review_manifest(*, target_ref: str | None = None) -> dict[str, Any]:
+    reviewed_paths = sorted(V1_READY_REVIEWED_PATHS)
+    base_blobs: dict[str, str] = {}
+    reviewed: dict[str, dict[str, Any]] = {}
+    for path in reviewed_paths:
+        base = _git_repo(ROOT, ["rev-parse", f"{V1_READY_EGO_BASE_COMMIT}:{path}"])
+        base_blobs[path] = base.stdout.strip() if base.returncode == 0 else "absent"
+        reviewed_ref = f"{target_ref}:{path}" if target_ref else f":{path}"
+        oid = _git_repo(ROOT, ["rev-parse", reviewed_ref])
+        if oid.returncode != 0:
+            state = "committed" if target_ref else "staged"
+            raise GuardError(
+                "v1_ready_review_path_unavailable",
+                f"review path is not available in the {state} candidate: {path}",
+                path=path,
+            )
+        blob_oid = oid.stdout.strip()
+        blob = _git_repo(ROOT, ["cat-file", "blob", blob_oid], text=False)
+        if blob.returncode != 0:
+            raise GuardError("v1_ready_review_blob_unavailable", f"staged blob unavailable: {path}", path=path)
+        reviewed[path] = {
+            "reviewed_blob": blob_oid,
+            "reviewed_blob_payload_sha256": hashlib.sha256(blob.stdout).hexdigest(),
+            "sha_semantics": {"reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"},
+        }
+    return {
+        "base_commit": V1_READY_EGO_BASE_COMMIT,
+        "sorted_reviewed_paths": reviewed_paths,
+        "per_path_base_blob_or_absent": base_blobs,
+        "per_path_reviewed_blob_or_worktree_sha256": reviewed,
+    }
+
+
+def compute_v1_ready_reviewed_diff_sha256(*, target_ref: str | None = None) -> str:
+    diff_range = [V1_READY_EGO_BASE_COMMIT, target_ref] if target_ref else ["--cached"]
+    diff = _git_repo(
+        ROOT,
+        [
+            "diff",
+            "--binary",
+            "--no-ext-diff",
+            "--full-index",
+            *diff_range,
+            "--",
+            *sorted(V1_READY_REVIEWED_PATHS),
+        ],
+        text=False,
+    )
+    if diff.returncode != 0:
+        raise GuardError("v1_ready_review_diff_unavailable", "unable to read staged Phase-C diff")
+    return hashlib.sha256(diff.stdout).hexdigest()
+
+
+def build_v1_ready_review_bundle_bytes(*, target_ref: str | None = None) -> bytes:
+    manifest = build_v1_ready_review_manifest(target_ref=target_ref)
+    diff_range = [V1_READY_EGO_BASE_COMMIT, target_ref] if target_ref else ["--cached"]
+    diff = _git_repo(
+        ROOT,
+        [
+            "diff",
+            "--binary",
+            "--no-ext-diff",
+            "--full-index",
+            *diff_range,
+            "--",
+            *manifest["sorted_reviewed_paths"],
+        ],
+        text=False,
+    )
+    if diff.returncode != 0:
+        raise GuardError("v1_ready_review_diff_unavailable", "unable to read staged Phase-C diff")
+    chunks = [
+        b"EGO_V1_READY_PHASE_C_REVIEW_BUNDLE_V1\n",
+        _canonical_json_bytes(manifest),
+        b"\n---STAGED_DIFF---\n",
+        diff.stdout,
+    ]
+    for path in manifest["sorted_reviewed_paths"]:
+        oid = manifest["per_path_reviewed_blob_or_worktree_sha256"][path]["reviewed_blob"]
+        blob = _git_repo(ROOT, ["cat-file", "blob", oid], text=False)
+        path_bytes = path.encode("utf-8")
+        chunks.extend(
+            [
+                b"\n---STAGED_BLOB---\n",
+                str(len(path_bytes)).encode("ascii"),
+                b":" + path_bytes + b"\n",
+                str(len(blob.stdout)).encode("ascii"),
+                b"\n",
+                blob.stdout,
+            ]
+        )
+    return b"".join(chunks)
+
+
+V1_READY_POINTER_AUTHORITY_MARKER = (
+    "CURRENT_MACHINE_ROUTE_AUTHORITY: "
+    "EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A__IMPLEMENTATION_AUTHORIZED_DEFAULT_OFF"
+)
+V1_READY_POINTER_ARCHIVE_MARKER = (
+    "HISTORICAL_8692_EGODESKTOP_ROUTE: SUPERSEDED_ARCHIVE_POINTER_ONLY"
+)
+
+
+def validate_v1_ready_pointer_texts(contents: dict[str, str]) -> list[str]:
+    errors: list[str] = []
+    if set(contents) != set(V1_READY_STALE_POINTER_PATHS):
+        errors.append("v1_ready_pointer_file_set_mismatch")
+    stale_preamble = re.compile(
+        r"(?:sole|only|current)\s+(?:selected\s+)?successor.*(?:EgoDesktop|VirtualCat|K0)",
+        re.IGNORECASE,
+    )
+    for path in V1_READY_STALE_POINTER_PATHS:
+        text_value = contents.get(path, "")
+        lines = text_value.splitlines()
+        try:
+            authority_index = next(i for i, line in enumerate(lines) if V1_READY_POINTER_AUTHORITY_MARKER in line)
+        except StopIteration:
+            errors.append(f"v1_ready_pointer_authority_marker_missing:{path}")
+            continue
+        if authority_index > 12:
+            errors.append(f"v1_ready_pointer_authority_marker_too_late:{path}")
+        if V1_READY_POINTER_ARCHIVE_MARKER not in "\n".join(lines[:20]):
+            errors.append(f"v1_ready_pointer_archive_marker_missing:{path}")
+        if any(stale_preamble.search(line) for line in lines[:authority_index]):
+            errors.append(f"v1_ready_pointer_stale_current_claim_before_authority:{path}")
+    return sorted(set(errors))
+
+
+def validate_v1_ready_pointer_files() -> dict[str, Any]:
+    contents: dict[str, str] = {}
+    errors: list[str] = []
+    for path in V1_READY_STALE_POINTER_PATHS:
+        absolute = ROOT / path
+        if not absolute.is_file():
+            errors.append(f"v1_ready_pointer_file_unavailable:{path}")
+            continue
+        contents[path] = absolute.read_text(encoding="utf-8")
+    errors.extend(validate_v1_ready_pointer_texts(contents))
+    positive = dict(contents)
+    if V1_READY_STALE_POINTER_PATHS:
+        path = V1_READY_STALE_POINTER_PATHS[0]
+        positive[path] = "Current selected successor is K0 -> VirtualCat -> EgoDesktop.\n" + positive.get(path, "")
+        positive_errors = validate_v1_ready_pointer_texts(positive)
+    else:
+        positive_errors = []
+    positive_fired = any("v1_ready_pointer_stale_current_claim_before_authority" in item for item in positive_errors)
+    if not positive_fired:
+        errors.append("v1_ready_pointer_stale_positive_control_did_not_fire")
+    return {
+        "status": "pass" if not errors else "fail",
+        "errors": sorted(set(errors)),
+        "positive_control": {
+            "rejected": positive_fired,
+            "observed_error_codes": positive_errors,
+        },
+        "producer_function": "scripts.codex_session_guard.validate_v1_ready_pointer_files",
+        "input_artifacts": list(V1_READY_STALE_POINTER_PATHS),
+        "run_id": "v1-ready-pointer-scan-live-files",
+        "aggregation_rule": (
+            "require the current machine-authority and historical-archive markers in the first 20 lines of all six "
+            "reader files and reject a stale K0/VirtualCat/EgoDesktop current-successor claim before the marker"
+        ),
         "producer_code_path_hash": _script_code_path_hash(),
     }
 
@@ -1981,25 +2896,41 @@ def build_route_guard_readback(program_state: dict[str, Any], runner: GuardRunne
         if schema_version == "ego.route_guard.v3"
         else validate_visible_life_core_product_authority(program_state)
         if schema_version == "ego.route_guard.v4"
+        else validate_v1_ready_product_authority(program_state, require_review=True)
+        if schema_version == "ego.route_guard.v5"
         else {}
     )
     product = route_guard.get("product_authority") or {}
-    is_visible_life = schema_version in {"ego.route_guard.v3", "ego.route_guard.v4"}
+    v1_ready = route_guard.get("v1_ready_authority") or {}
+    is_visible_life = schema_version in {"ego.route_guard.v3", "ego.route_guard.v4", "ego.route_guard.v5"}
     is_visible_life_core = schema_version == "ego.route_guard.v4"
+    is_v1_ready = schema_version == "ego.route_guard.v5"
+    active_product = v1_ready if schema_version == "ego.route_guard.v5" else product
+    closed_card2_blocked_until = (
+        ((route_state.get("action_dependencies") or {}).get(CARD2_BANK_ACTION_ID) or {}).get(
+            "blocked_until"
+        )
+        or []
+    )
     return {
         "route_revision_id": route_guard.get("route_revision_id"),
         "route_fingerprint": computed if stored == computed else f"MISMATCH:{computed}",
         "current_phase": program.get("current_phase"),
         "current_layer": program.get("current_layer"),
         "allowed_next_action_ids": (
-            product.get("allowed_next_actions") or [] if is_visible_life else route_state.get("allowed_next_actions") or []
+            active_product.get("allowed_next_actions") or []
+            if is_visible_life
+            else route_state.get("allowed_next_actions") or []
         ),
         "forbidden_action_classes": (
-            product.get("forbidden_next_actions") or [] if is_visible_life else route_state.get("forbidden_next_actions") or []
+            active_product.get("forbidden_next_actions") or []
+            if is_visible_life
+            else route_state.get("forbidden_next_actions") or []
         ),
-        "blocked_until": (((route_state.get("action_dependencies") or {}).get(CARD2_BANK_ACTION_ID) or {}).get("blocked_until") or []),
+        "blocked_until": [] if is_v1_ready else closed_card2_blocked_until,
+        "closed_card2_blocked_until": closed_card2_blocked_until,
         "authorized_implementation_targets": (
-            product.get("authorized_implementation_targets") or []
+            active_product.get("authorized_implementation_targets") or []
             if is_visible_life
             else route_state.get("authorized_implementation_targets") or []
         ),
@@ -2008,13 +2939,31 @@ def build_route_guard_readback(program_state: dict[str, Any], runner: GuardRunne
         "visible_life_phase_b_admitted": (
             bool(dependency_readback.get("all_satisfied")) if schema_version == "ego.route_guard.v3" else False
         ),
-        "product_development_core_lineage": product.get("product_development_core_lineage") if is_visible_life_core else None,
-        "product_development_core": product.get("product_development_core") if is_visible_life_core else None,
+        "product_development_core_lineage": (
+            v1_ready.get("lineage_root_authority_route_id")
+            if is_v1_ready
+            else product.get("product_development_core_lineage")
+            if is_visible_life_core
+            else None
+        ),
+        "product_development_core": (
+            v1_ready.get("core_id")
+            if is_v1_ready
+            else product.get("product_development_core")
+            if is_visible_life_core
+            else None
+        ),
         "dependency_status": dependency_readback.get("dependencies") or {},
         "science_firewall": (
-            product.get("science_firewall") or {} if is_visible_life else route_state.get("science_firewall") or {}
+            active_product.get("science_firewall") or {}
+            if is_visible_life
+            else route_state.get("science_firewall") or {}
         ),
-        "claim_ceiling": product.get("claim_ceiling") or {} if is_visible_life else route_state.get("claim_ceiling") or {},
+        "claim_ceiling": (
+            active_product.get("claim_ceiling") or {}
+            if is_visible_life
+            else route_state.get("claim_ceiling") or {}
+        ),
         "undisposed_lineage_count": None,
         "unresolved_review_blockers": red_review.get("unresolved_review_blockers") or [],
         "science_authority_pin_status": pin_status.get("status"),
@@ -2077,6 +3026,7 @@ def validate_route_mutation_scope(
     current_fingerprint = compute_route_fingerprint(program_state)
     current_revision = route_guard.get("route_revision_id")
     product_authority = route_guard.get("product_authority") or {}
+    v1_ready_authority = route_guard.get("v1_ready_authority") or {}
     authority_sync = scope.get("authority_sync_exception") or {}
     phase_b_receipt_path = str(((route_guard.get("red_review") or {}).get("phase_b") or {}).get("path") or "")
     committed_phase_b = validate_red_review_record(phase_b_receipt_path, require_committed=True)
@@ -2142,11 +3092,34 @@ def validate_route_mutation_scope(
     )
     if visible_life_core_sync_requested and visible_life_core_task_dir not in added_task_dirs:
         blockers.append({"reason": "visible_life_core_sync_reused_or_invalid"})
+    v1_ready_sync_requested = (
+        task_id == V1_READY_TASK_ID
+        and requested_action == V1_READY_SYNC_ACTION_ID
+    )
+    v1_ready_task_dir = V1_READY_TASK_PREFIX.rstrip("/")
+    v1_ready_sync = (
+        v1_ready_sync_requested
+        and v1_ready_task_dir in added_task_dirs
+        and current_revision == V1_READY_ROUTE_REVISION
+        and scope.get("source_route_revision_id") == VISIBLE_LIFE_CORE_ROUTE_REVISION
+        and scope.get("source_route_fingerprint")
+        == "2446c65920f96a9a49d9ae654a0f106e8fb0bcaf41e023d4405c46c083a0f005"
+        and scope.get("expected_target_route_revision_id") == V1_READY_ROUTE_REVISION
+        and "docs/PROGRAM_STATE_UNIFIED.yaml" in changed_paths
+        and f"{V1_READY_TASK_PREFIX}STAGE_CARD.md" in changed_paths
+        and route_guard.get("schema_version") == "ego.route_guard.v5"
+        and (route_guard.get("authority_source") or {}).get("pinned_commit") == V1_READY_ITL_COMMIT
+        and v1_ready_authority.get("implementation_authorized") is True
+        and v1_ready_authority.get("authorized_implementation_targets") == V1_READY_IMPLEMENTATION_TARGETS
+    )
+    if v1_ready_sync_requested and v1_ready_task_dir not in added_task_dirs:
+        blockers.append({"reason": "v1_ready_sync_reused_or_invalid"})
     if (
         scope.get("source_route_fingerprint") != current_fingerprint
         and not authority_sync_completion
         and not visible_life_transition
         and not visible_life_core_sync
+        and not v1_ready_sync
     ):
         blockers.append(
             {
@@ -2162,6 +3135,8 @@ def validate_route_mutation_scope(
         if visible_life_transition
         else VISIBLE_LIFE_ROUTE_REVISION
         if visible_life_core_sync
+        else VISIBLE_LIFE_CORE_ROUTE_REVISION
+        if v1_ready_sync
         else current_revision
     )
     if scope.get("source_route_revision_id") != expected_source_revision:
@@ -2173,11 +3148,18 @@ def validate_route_mutation_scope(
             }
         )
     allowed_actions = (
-        product_authority.get("allowed_next_actions") or []
+        v1_ready_authority.get("allowed_next_actions") or []
+        if route_guard.get("schema_version") == "ego.route_guard.v5"
+        else product_authority.get("allowed_next_actions") or []
         if route_guard.get("schema_version") in {"ego.route_guard.v3", "ego.route_guard.v4"}
         else route_state.get("allowed_next_actions") or []
     )
-    if requested_action not in allowed_actions and not visible_life_transition and not visible_life_core_sync:
+    if (
+        requested_action not in allowed_actions
+        and not visible_life_transition
+        and not visible_life_core_sync
+        and not v1_ready_sync
+    ):
         blockers.append({"reason": "ROUTE_ACTION_NOT_BOUND", "requested_action_id": requested_action})
     if len(set(added_task_dirs)) > 1:
         blockers.append({"reason": "multiple_task_directories", "task_dirs": sorted(set(added_task_dirs))})
@@ -2200,7 +3182,11 @@ def validate_route_mutation_scope(
         if not red_review_ref:
             blockers.append({"reason": "authority_change_without_red_review_ref", "triggers": red_triggers})
         else:
-            candidate_review = validate_red_review_record(red_review_ref, require_committed=False)
+            candidate_review = (
+                validate_v1_ready_red_receipt(require_committed=False)
+                if task_id == V1_READY_TASK_ID and red_review_ref == V1_READY_RED_REVIEW_PATH
+                else validate_red_review_record(red_review_ref, require_committed=False)
+            )
             if candidate_review.get("status") != "pass":
                 blockers.append(
                     {
@@ -2268,6 +3254,33 @@ def validate_route_mutation_scope(
                 {
                     "reason": "visible_life_core_product_authority_invalid",
                     "errors": core.get("errors") or [],
+                }
+            )
+    if v1_ready_sync:
+        scope_contract_errors = validate_v1_ready_mutation_scope_payload(scope.get("raw") or {})
+        if scope_contract_errors:
+            blockers.append(
+                {
+                    "reason": "v1_ready_sync_scope_contract_invalid",
+                    "errors": scope_contract_errors,
+                }
+            )
+        if task_kind != "cross_repo_v1_ready_authority_sync":
+            blockers.append({"reason": "v1_ready_sync_task_kind_mismatch"})
+        if (scope.get("raw") or {}).get("execution_requested") is not True:
+            blockers.append({"reason": "v1_ready_sync_execution_flag_mismatch"})
+        if sorted(set(allowed_paths)) != sorted(V1_READY_SYNC_PATHS):
+            blockers.append({"reason": "v1_ready_sync_allowlist_mismatch"})
+        if (scope.get("raw") or {}).get("itl_v1_ready_commit") != V1_READY_ITL_COMMIT:
+            blockers.append({"reason": "v1_ready_sync_itl_commit_mismatch"})
+        if (scope.get("raw") or {}).get("itl_v1_ready_route_id") != V1_READY_ITL_ROUTE_ID:
+            blockers.append({"reason": "v1_ready_sync_itl_route_mismatch"})
+        authority_result = validate_v1_ready_product_authority(program_state, require_review=False)
+        if authority_result.get("status") != "pass":
+            blockers.append(
+                {
+                    "reason": "v1_ready_product_authority_invalid",
+                    "errors": authority_result.get("errors") or [],
                 }
             )
     if requested_action == CARD2_BANK_ACTION_ID:

@@ -1,5 +1,11 @@
 # Status — EGO-CANONICAL-MECHANISM-INTEGRATION-001A
 
+> `CURRENT_MACHINE_ROUTE_AUTHORITY: EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A__IMPLEMENTATION_AUTHORIZED_DEFAULT_OFF`
+>
+> `HISTORICAL_8692_EGODESKTOP_ROUTE: SUPERSEDED_ARCHIVE_POINTER_ONLY`
+>
+> This status body is retained as a historical M0/M1 record only. It cannot authorize M1 or EgoDesktop work; use the current machine route authority.
+
 Current milestone: `M0_COMPLETE__M1_READY_NOT_STARTED`
 
 ## Mandatory fresh-session read order

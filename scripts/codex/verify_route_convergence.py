@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
 import os
@@ -807,12 +808,14 @@ def _validate_visible_life_core_route_guard_v4(program_state: dict[str, Any]) ->
         errors.append("ITL must remain the closure/science-axis authority")
     if authority.get("pinned_commit") != route_sync_guard.VISIBLE_LIFE_CORE_ITL_COMMIT:
         errors.append("visible-life ITL product-axis commit pin mismatch")
-    itl_head = _git_in_repo(
-        REPO_HYGIENE_POLICY_PATH.parents[1].parent / "intelligence-theory-lab",
-        ["rev-parse", "HEAD"],
+    itl_repo = REPO_HYGIENE_POLICY_PATH.parents[1].parent / "intelligence-theory-lab"
+    itl_head = _git_in_repo(itl_repo, ["rev-parse", "HEAD"])
+    pinned_is_ancestor = _git_in_repo(
+        itl_repo,
+        ["merge-base", "--is-ancestor", str(authority.get("pinned_commit") or ""), "HEAD"],
     )
-    if itl_head.returncode != 0 or itl_head.stdout.strip() != authority.get("pinned_commit"):
-        errors.append("live ITL HEAD does not match the pinned product-axis authority")
+    if itl_head.returncode != 0 or pinned_is_ancestor.returncode != 0:
+        errors.append("live ITL HEAD does not descend from the pinned historical product-axis authority")
     source = route_sync_guard.read_itl_authority_objects(program_state)
     if source.get("status") != "pass":
         errors.extend(f"ITL closure object: {item}" for item in source.get("errors") or [])
@@ -930,8 +933,87 @@ def _validate_visible_life_core_route_guard_v4(program_state: dict[str, Any]) ->
     }
 
 
+def _historical_visible_life_core_snapshot(program_state: dict[str, Any]) -> dict[str, Any]:
+    snapshot = copy.deepcopy(program_state)
+    route_guard = snapshot.get("route_guard") or {}
+    route_guard["schema_version"] = "ego.route_guard.v4"
+    route_guard["route_revision_id"] = route_sync_guard.VISIBLE_LIFE_CORE_ROUTE_REVISION
+    route_guard["authority_source"] = copy.deepcopy(route_guard.get("predecessor_authority_source") or {})
+    route_guard.pop("predecessor_authority_source", None)
+    transcribed_product = route_guard.get("transcribed_itl_product") or {}
+    transcribed_product["product_axis_state"] = copy.deepcopy(
+        transcribed_product.get("predecessor_product_axis_state") or {}
+    )
+    route_guard["product_authority"] = copy.deepcopy(route_guard.get("predecessor_product_authority") or {})
+    route_guard.pop("predecessor_product_authority", None)
+    core_state = ((route_guard.get("authority_state") or {}).get("visible_life_product_core") or {})
+    core_state.pop("current_descendant", None)
+    core_state.pop("implementation_authorized", None)
+    task_routes = ((route_guard.get("route_views") or {}).get("task_routes") or {})
+    core_task = task_routes.get("ego-visible-life-proxy-v0-core-adoption-001a") or {}
+    core_task["lane"] = "supporting_active"
+    task_routes.pop("ego-life-kernel-v1-continuity-playground-ready-transition-001a", None)
+    route_guard["route_fingerprint"] = compute_route_fingerprint(snapshot)
+    return snapshot
+
+
+def _validate_v1_ready_route_guard_v5(program_state: dict[str, Any]) -> tuple[list[str], dict[str, Any]]:
+    errors: list[str] = []
+    route_guard = program_state.get("route_guard") or {}
+    if route_guard.get("schema_version") != "ego.route_guard.v5":
+        errors.append("V1 READY route_guard schema_version must be ego.route_guard.v5")
+    if route_guard.get("route_revision_id") != route_sync_guard.V1_READY_ROUTE_REVISION:
+        errors.append("V1 READY route revision mismatch")
+    computed_fingerprint = compute_route_fingerprint(program_state)
+    if route_guard.get("route_fingerprint") != computed_fingerprint:
+        errors.append("route_guard fingerprint does not match the canonical semantic subset")
+
+    authority = route_guard.get("authority_source") or {}
+    if authority.get("repo") != "intelligence-theory-lab":
+        errors.append("ITL must remain the sole machine-readable route authority")
+    if authority.get("pinned_commit") != route_sync_guard.V1_READY_ITL_COMMIT:
+        errors.append("V1 READY ITL authority commit pin mismatch")
+    itl_repo = REPO_HYGIENE_POLICY_PATH.parents[1].parent / "intelligence-theory-lab"
+    itl_head = _git_in_repo(itl_repo, ["rev-parse", "HEAD"])
+    if itl_head.returncode != 0 or itl_head.stdout.strip() != authority.get("pinned_commit"):
+        errors.append("live ITL HEAD does not match the pinned V1 READY authority")
+
+    historical_state = _historical_visible_life_core_snapshot(program_state)
+    historical_errors, historical_details = _validate_visible_life_core_route_guard_v4(historical_state)
+    errors.extend(f"historical V0 core authority: {item}" for item in historical_errors)
+
+    v1_authority = route_sync_guard.validate_v1_ready_product_authority(
+        program_state,
+        require_review=True,
+    )
+    if v1_authority.get("status") != "pass":
+        errors.extend(f"V1 READY product authority: {item}" for item in v1_authority.get("errors") or [])
+
+    task_routes = ((route_guard.get("route_views") or {}).get("task_routes") or {})
+    v1_task = task_routes.get("ego-life-kernel-v1-continuity-playground-ready-transition-001a") or {}
+    if v1_task.get("lane") != "supporting_active":
+        errors.append("V1 READY authority-sync task must own the supporting-active product lane")
+    v0_task = task_routes.get("ego-visible-life-proxy-v0-core-adoption-001a") or {}
+    if v0_task.get("lane") != "closed_evidence":
+        errors.append("V0 core authority-sync predecessor must remain closed evidence")
+
+    return errors, {
+        "route_fingerprint": computed_fingerprint,
+        "science_authority_pin_status": (
+            "pass" if (v1_authority.get("source") or {}).get("status") == "pass" else "fail"
+        ),
+        "historical_v0_core_authority": historical_details,
+        "v1_ready_product_authority": v1_authority,
+        "authorized_implementation_targets": (
+            (route_guard.get("v1_ready_authority") or {}).get("authorized_implementation_targets") or []
+        ),
+    }
+
+
 def validate_route_guard(program_state: dict[str, Any]) -> tuple[list[str], dict[str, Any]]:
     route_guard = program_state.get("route_guard") or {}
+    if route_guard.get("schema_version") == "ego.route_guard.v5":
+        return _validate_v1_ready_route_guard_v5(program_state)
     if route_guard.get("schema_version") == "ego.route_guard.v4":
         return _validate_visible_life_core_route_guard_v4(program_state)
     if route_guard.get("schema_version") == "ego.route_guard.v3":
@@ -940,6 +1022,8 @@ def validate_route_guard(program_state: dict[str, Any]) -> tuple[list[str], dict
 
 
 def route_allowed_next_action_ids(route_guard: dict[str, Any]) -> list[str]:
+    if route_guard.get("schema_version") == "ego.route_guard.v5":
+        return list((route_guard.get("v1_ready_authority") or {}).get("allowed_next_actions") or [])
     if route_guard.get("schema_version") in {"ego.route_guard.v3", "ego.route_guard.v4"}:
         return list((route_guard.get("product_authority") or {}).get("allowed_next_actions") or [])
     return list(((route_guard.get("transcribed_itl") or {}).get("route_state") or {}).get("allowed_next_actions") or [])
@@ -1250,7 +1334,25 @@ def validate_route_convergence(
     future_product_route = (governance_sync or {}).get("future_product_route") or {}
     preflight = future_product_route.get("candidate_independent_preflight") or {}
     source_actions = (((route_guard.get("transcribed_itl") or {}).get("route_state") or {}).get("allowed_next_actions") or [])
-    if route_guard.get("schema_version") == "ego.route_guard.v3":
+    if route_guard.get("schema_version") == "ego.route_guard.v5":
+        product_actions = (route_guard.get("v1_ready_authority") or {}).get("allowed_next_actions") or []
+        if source_actions != ["run_route_state_machine_validation"]:
+            errors.append("closed ITL Card2 route must expose validation only")
+        if (
+            route_sync_guard.V1_READY_IMPLEMENT_ACTION_ID not in product_actions
+            or "implement_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A" not in str(
+                program_state.get("program", {}).get("next_minimal_action") or ""
+            )
+        ):
+            errors.append("program.next_minimal_action does not reflect the authorized V1 implementation action")
+        visible_entries = [
+            entry
+            for entry in entries
+            if entry.key == "ego-life-kernel-v1-continuity-playground-ready-transition-001a"
+        ]
+        if len(visible_entries) != 1 or visible_entries[0].lane != "supporting_active":
+            errors.append("V1 READY authority-sync task must appear exactly once in the supporting-active lane")
+    elif route_guard.get("schema_version") == "ego.route_guard.v3":
         product_actions = (route_guard.get("product_authority") or {}).get("allowed_next_actions") or []
         if source_actions != ["run_route_state_machine_validation"]:
             errors.append("closed ITL route must expose validation only")

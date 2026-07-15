@@ -1,0 +1,101 @@
+schema_version: codex.task_mutation_scope.v1
+task_id: EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-READY-TRANSITION-001A
+phase: EGO_PHASE_C_AUTHORITY_TRANSCRIPTION
+base_commit: 90f723cf53c8ff3b7f3ad6eba29a4f5ec6e9238a
+task_kind: cross_repo_v1_ready_authority_sync
+requested_action_id: sync_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A_ready_authority_under_separate_task
+source_route_revision_id: EGO_VISIBLE_LIFE_PROXY_V0_CORE_ADOPTION_001A
+source_route_fingerprint: 2446c65920f96a9a49d9ae654a0f106e8fb0bcaf41e023d4405c46c083a0f005
+expected_target_route_revision_id: EGO_LIFE_KERNEL_V1_CONTINUITY_PLAYGROUND_READY_TRANSITION_001A
+itl_v1_ready_commit: 81f19613fbd02bb845c08258cc8156283240aa2e
+itl_v1_ready_route_id: EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A
+independent_red_review_required: true
+red_review_ref: docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/PHASE_C_RED_REVIEW.json
+review_binding: staged_git_blob_payloads
+reviewed_nonreceipt_path_count: 19
+reviewed_nonreceipt_paths:
+  - docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/STAGE_CARD.md
+  - docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/COLLISION_RECORD.md
+  - docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/MUTATION_SCOPE_PHASE_C.yaml
+  - docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/ITL_AUTHORITY_CROSSWALK.json
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - docs/STATUS.md
+  - artifacts/reports/program_state_summary.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - docs/REPO_SURFACE_MAP.md
+  - AGENTS.md
+  - README.md
+  - docs/ACTIVE_CONTEXT_PACK.md
+  - docs/MAINLINE_QUICKSTART.md
+  - docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md
+  - docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md
+  - scripts/codex_session_guard.py
+  - scripts/codex/verify_route_convergence.py
+  - scripts/tests/test_codex_session_guard.py
+  - scripts/tests/test_route_governance_supersession.py
+receipt_path: docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/PHASE_C_RED_REVIEW.json
+allowed_mutation_paths:
+  - docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/STAGE_CARD.md
+  - docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/COLLISION_RECORD.md
+  - docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/MUTATION_SCOPE_PHASE_C.yaml
+  - docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/ITL_AUTHORITY_CROSSWALK.json
+  - docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/PHASE_C_RED_REVIEW.json
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - docs/STATUS.md
+  - artifacts/reports/program_state_summary.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - docs/REPO_SURFACE_MAP.md
+  - AGENTS.md
+  - README.md
+  - docs/ACTIVE_CONTEXT_PACK.md
+  - docs/MAINLINE_QUICKSTART.md
+  - docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md
+  - docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md
+  - scripts/codex_session_guard.py
+  - scripts/codex/verify_route_convergence.py
+  - scripts/tests/test_codex_session_guard.py
+  - scripts/tests/test_route_governance_supersession.py
+exact_commit_paths:
+  - docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/STAGE_CARD.md
+  - docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/COLLISION_RECORD.md
+  - docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/MUTATION_SCOPE_PHASE_C.yaml
+  - docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/ITL_AUTHORITY_CROSSWALK.json
+  - docs/codex/tasks/ego-life-kernel-v1-continuity-playground-ready-transition-001a/PHASE_C_RED_REVIEW.json
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - docs/STATUS.md
+  - artifacts/reports/program_state_summary.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - docs/REPO_SURFACE_MAP.md
+  - AGENTS.md
+  - README.md
+  - docs/ACTIVE_CONTEXT_PACK.md
+  - docs/MAINLINE_QUICKSTART.md
+  - docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md
+  - docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md
+  - scripts/codex_session_guard.py
+  - scripts/codex/verify_route_convergence.py
+  - scripts/tests/test_codex_session_guard.py
+  - scripts/tests/test_route_governance_supersession.py
+execution_requested: true
+implementation_authorized: true
+enabled: false
+default_enabled: false
+mainline_connected: false
+runtime_mainline_connected: false
+runtime_authority: none
+science_weight: 0
+remote_anchor: false
+auto_remote_anchor: forbidden
+push: forbidden
+tag: forbidden
+forbidden_paths:
+  - EgoOperator/
+  - EgoDesktop/
+  - labs/ego_life_playground_v0/
+  - scripts/run_ego_life_playground_v0.py
+  - scripts/codex/verify_ego_life_kernel_v1_continuity.py
+  - scripts/tests/test_verify_ego_life_kernel_v1_continuity.py
+  - scripts/tests/test_verify_ego_life_core_v0_baseline.py
+  - tests/test_ego_life_playground_v0.py
+  - artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/
+  - ../intelligence-theory-lab/

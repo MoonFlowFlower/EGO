@@ -1,5 +1,11 @@
 # EGO Repo AGENTS
 
+> `CURRENT_MACHINE_ROUTE_AUTHORITY: EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A__IMPLEMENTATION_AUTHORIZED_DEFAULT_OFF`
+>
+> `HISTORICAL_8692_EGODESKTOP_ROUTE: SUPERSEDED_ARCHIVE_POINTER_ONLY`
+>
+> Current product-development work is the exact default-off V1 continuity-playground allowlist. Any later text naming K0 -> VirtualCat -> EgoDesktop as the selected successor is historical and has no live action authority.
+
 适用范围：`/mnt/d/Project/AIProject/MyProject/Ego`
 
 ## Repo overview / must-read files

@@ -1,5 +1,11 @@
 # EGO Canonical Mechanism Integration Route 001A
 
+> `CURRENT_MACHINE_ROUTE_AUTHORITY: EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A__IMPLEMENTATION_AUTHORIZED_DEFAULT_OFF`
+>
+> `HISTORICAL_8692_EGODESKTOP_ROUTE: SUPERSEDED_ARCHIVE_POINTER_ONLY`
+>
+> This document's route body is a frozen historical record. It is not a current-reader action source; consult `docs/PROGRAM_STATE_UNIFIED.yaml` and the machine-readable ITL product axis.
+
 Status: `SELECTED_SUCCESSOR_ROUTE_FROZEN__IMPLEMENTATION_NOT_STARTED`
 
 Authority source: `docs/PROGRAM_STATE_UNIFIED.yaml`.

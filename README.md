@@ -1,5 +1,11 @@
 # EGO - AI Agent Monorepo
 
+> `CURRENT_MACHINE_ROUTE_AUTHORITY: EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A__IMPLEMENTATION_AUTHORIZED_DEFAULT_OFF`
+>
+> `HISTORICAL_8692_EGODESKTOP_ROUTE: SUPERSEDED_ARCHIVE_POINTER_ONLY`
+>
+> Current product-development action: implement the V1 continuity playground only inside its exact ordered 20-path allowlist. Older successor prose below is retained as historical context, not current authority.
+
 EGO 是 AI Agent 项目的总仓。当前默认 human/operator 体验主线已经切到 `EgoOperator`（formerly `Ego_handmade`）；旧 `EgoCore`、`OpenEmotion`、`ego_desktop_lab` 已归档为 legacy reference / algorithm source，当前工作树不再保留其 bulky runtime code。
 
 ## 新代理 / 开发者最快入口
