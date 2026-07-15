@@ -1,13 +1,18 @@
 from __future__ import annotations
 
 import copy
+from contextlib import contextmanager
 import hashlib
+import importlib
 import importlib.util
 import json
 import os
 import subprocess
 import sys
 from pathlib import Path
+from types import ModuleType
+from typing import Iterator
+import uuid
 
 import pytest
 
@@ -62,6 +67,11 @@ EXPECTED_FILES = {
     },
 }
 
+PINNED_RUNTIME_PATHS = (
+    "labs/ego_life_playground_v0/engine.py",
+    "labs/ego_life_playground_v0/store.py",
+)
+
 
 def load_validator():
     assert SCRIPT.is_file(), f"validator is missing: {SCRIPT}"
@@ -99,34 +109,103 @@ def validate_mutation(mutator, *, head_ref: str = "HEAD") -> dict:
     )
 
 
-def build_exported_evidence(tmp_path: Path) -> tuple[bytes, Path]:
-    from labs.ego_life_playground_v0.app import PlaygroundController
-    from labs.ego_life_playground_v0.engine import DEFAULT_TOGGLES
-    from labs.ego_life_playground_v0.store import SQLiteEventStore
+def _read_pinned_runtime_payload(path: str) -> bytes:
+    payload_result = subprocess.run(
+        ["git", "show", f"{BASELINE_COMMIT}:{path}"],
+        cwd=ROOT,
+        capture_output=True,
+        check=False,
+    )
+    assert payload_result.returncode == 0, payload_result.stderr.decode(
+        "utf-8", errors="replace"
+    )
+    payload = payload_result.stdout
+    expected = EXPECTED_FILES[path]
+    assert len(payload) == expected["byte_count"]
+    assert hashlib.sha256(payload).hexdigest() == expected["sha256"]
 
+    blob_result = subprocess.run(
+        ["git", "rev-parse", f"{BASELINE_COMMIT}:{path}"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert blob_result.returncode == 0, blob_result.stderr
+    assert blob_result.stdout.strip() == expected["blob_oid"]
+    return payload
+
+
+@contextmanager
+def _load_pinned_v0_runtime(
+    tmp_path: Path,
+) -> Iterator[tuple[ModuleType, ModuleType]]:
+    import_root = tmp_path / "pinned-runtime-imports"
+    package_name = f"_ego_life_core_v0_pinned_{uuid.uuid4().hex}"
+    package_dir = import_root / package_name
+    package_dir.mkdir(parents=True)
+    (package_dir / "__init__.py").write_text("", encoding="utf-8")
+    for path in PINNED_RUNTIME_PATHS:
+        (package_dir / Path(path).name).write_bytes(_read_pinned_runtime_payload(path))
+
+    import_root_text = str(import_root)
+    sys.path.insert(0, import_root_text)
+    importlib.invalidate_caches()
+    try:
+        engine = importlib.import_module(f"{package_name}.engine")
+        store = importlib.import_module(f"{package_name}.store")
+        assert Path(engine.__file__).resolve() == (package_dir / "engine.py").resolve()
+        assert Path(store.__file__).resolve() == (package_dir / "store.py").resolve()
+        yield engine, store
+    finally:
+        for module_name in list(sys.modules):
+            if module_name == package_name or module_name.startswith(package_name + "."):
+                sys.modules.pop(module_name, None)
+        while import_root_text in sys.path:
+            sys.path.remove(import_root_text)
+        importlib.invalidate_caches()
+
+
+def build_exported_evidence(tmp_path: Path) -> tuple[bytes, Path]:
     database = tmp_path / "core-trigger.sqlite3"
     run_id = "core-v0-baseline-test"
-    store = SQLiteEventStore(database)
-    try:
-        controller = PlaygroundController(
-            store,
-            run_id=run_id,
-            seed=73,
-            episode_id="core-v0-baseline-episode",
+    episode_id = "core-v0-baseline-episode"
+    with _load_pinned_v0_runtime(tmp_path) as (engine, store_module):
+        state = engine.initial_state()
+        run_meta = engine.make_run_metadata(run_id, 73, episode_id)
+        command = engine.make_command(
+            sequence=1,
+            cue="resource",
+            toggles=engine.DEFAULT_TOGGLES,
+            prev_command_hash=None,
         )
-        result = controller.dispatch("resource", DEFAULT_TOGGLES)
-        assert result.receipt.committed is True
-    finally:
-        store.close()
+        result = engine.compute_step(state, command, run_meta)
 
-    restarted_store = SQLiteEventStore(database)
-    try:
-        restarted = PlaygroundController(restarted_store, run_id=run_id, seed=999)
-        assert restarted.recovery_status == "recomputed 1 command(s)"
-        output = restarted.export(tmp_path / "core-trigger.jsonl")
-        return output.read_bytes(), database
-    finally:
-        restarted_store.close()
+        store = store_module.SQLiteEventStore(database)
+        try:
+            store.create_run(run_meta, state)
+            receipt = store.append_step(command, result.trace)
+            assert receipt.committed is True, receipt.error
+        finally:
+            store.close()
+
+        restarted_store = store_module.SQLiteEventStore(database)
+        try:
+            recovered = restarted_store.recover_run(run_id)
+            assert recovered.recovered is True
+            assert recovered.command_count == 1
+            assert engine.canonical_json(recovered.state) == engine.canonical_json(
+                result.next_state
+            )
+            assert engine.canonical_json(recovered.traces) == engine.canonical_json(
+                [result.trace]
+            )
+            output = restarted_store.export_run(
+                run_id, tmp_path / "core-trigger.jsonl"
+            )
+            return output.read_bytes(), database
+        finally:
+            restarted_store.close()
 
 
 def test_committed_git_objects_recompute_to_a_passing_report() -> None:
@@ -145,7 +224,19 @@ def test_committed_git_objects_recompute_to_a_passing_report() -> None:
     assert report["baseline_tree"] == BASELINE_TREE
     assert report["exact_change_set_verified"] is True
     assert report["head_descends_from_baseline"] is True
-    assert report["head_path_parity"] is True
+    # Keep the informational parity assertion valid on both sides of the V1
+    # commit boundary.  Derive the expected value independently from the
+    # immutable blob pins instead of weakening the check to a type assertion.
+    expected_head_path_parity = all(
+        subprocess.check_output(
+            ["git", "rev-parse", f"HEAD:{path}"],
+            cwd=ROOT,
+            text=True,
+        ).strip()
+        == expected["blob_oid"]
+        for path, expected in EXPECTED_FILES.items()
+    )
+    assert report["head_path_parity"] is expected_head_path_parity
     assert report["errors"] == []
     assert report["provenance"]["producer_function"].endswith("validate_baseline")
     assert report["provenance"]["producer_code_path_hash"]
@@ -531,13 +622,12 @@ def test_tampered_database_fails_sqlite_recovery(tmp_path: Path) -> None:
 
 
 def test_unrelated_database_and_provenance_path_substitution_fail(tmp_path: Path) -> None:
-    from labs.ego_life_playground_v0.store import SQLiteEventStore
-
     validator = load_validator()
     trace_bytes, database = build_exported_evidence(tmp_path)
     unrelated = tmp_path / "unrelated.sqlite3"
-    store = SQLiteEventStore(unrelated)
-    store.close()
+    with _load_pinned_v0_runtime(tmp_path / "unrelated-runtime") as (_, store_module):
+        store = store_module.SQLiteEventStore(unrelated)
+        store.close()
     raw_manifest = MANIFEST.read_bytes()
 
     unrelated_report = validator.validate_baseline(

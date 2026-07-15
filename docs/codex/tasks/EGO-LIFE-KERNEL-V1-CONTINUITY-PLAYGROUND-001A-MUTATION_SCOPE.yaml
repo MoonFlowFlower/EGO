@@ -1,0 +1,82 @@
+schema_version: codex.task_mutation_scope.v1
+task_id: EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A
+phase: V1_CONTINUITY_PRODUCT_IMPLEMENTATION
+base_commit: 82133d61a43a42fdb6eafd4cb55169ae27d09e0f
+task_kind: default_off_v0_descendant_product_implementation
+requested_action_id: implement_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A
+implementation_authorized: true
+dual_authority_precondition:
+  producer_function: validate_v1_dual_authority_execution_precondition
+  itl_commit: 81f19613fbd02bb845c08258cc8156283240aa2e
+  ego_authority_commit: 82133d61a43a42fdb6eafd4cb55169ae27d09e0f
+  precondition_state: SATISFIED
+  action_executable: true
+task_card: docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A.md
+expected_changed_paths:
+  - docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A-MUTATION_SCOPE.yaml
+  - labs/ego_life_playground_v0/__init__.py
+  - labs/ego_life_playground_v0/engine.py
+  - labs/ego_life_playground_v0/store.py
+  - labs/ego_life_playground_v0/app.py
+  - scripts/run_ego_life_playground_v0.py
+  - tests/test_ego_life_playground_v0.py
+  - scripts/codex/verify_ego_life_kernel_v1_continuity.py
+  - scripts/tests/test_verify_ego_life_kernel_v1_continuity.py
+  - scripts/tests/test_verify_ego_life_core_v0_baseline.py
+  - artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/continuity.sqlite3
+  - artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/trace.jsonl
+  - artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/product_trigger_receipt.json
+  - artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/baseline_comparison.json
+  - artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/ablation_report.json
+  - artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/replay_report.json
+  - artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/leakage_report.json
+  - artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/failure_manifest.json
+  - artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/claim_ceiling.txt
+  - artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/result.json
+allowed_mutation_paths:
+  - docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A-MUTATION_SCOPE.yaml
+  - labs/ego_life_playground_v0/__init__.py
+  - labs/ego_life_playground_v0/engine.py
+  - labs/ego_life_playground_v0/store.py
+  - labs/ego_life_playground_v0/app.py
+  - scripts/run_ego_life_playground_v0.py
+  - tests/test_ego_life_playground_v0.py
+  - scripts/codex/verify_ego_life_kernel_v1_continuity.py
+  - scripts/tests/test_verify_ego_life_kernel_v1_continuity.py
+  - scripts/tests/test_verify_ego_life_core_v0_baseline.py
+  - artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/continuity.sqlite3
+  - artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/trace.jsonl
+  - artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/product_trigger_receipt.json
+  - artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/baseline_comparison.json
+  - artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/ablation_report.json
+  - artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/replay_report.json
+  - artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/leakage_report.json
+  - artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/failure_manifest.json
+  - artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/claim_ceiling.txt
+  - artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/result.json
+forbidden_paths:
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - docs/STATUS.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - artifacts/ROUTE-STATE-MACHINE-001A/
+  - EgoOperator/
+  - EgoDesktop/
+  - packages/
+  - ../intelligence-theory-lab/
+enabled: false
+default_enabled: false
+mainline_connected: false
+runtime_mainline_connected: false
+runtime_authority: none
+science_weight: 0
+auto_remote_anchor: forbidden
+push: forbidden
+tag: forbidden
+stop_on_path_expansion: true
+stop_on_route_or_runtime_mutation: true
+stop_on_failed_focused_test: true
+claim_ceiling: >-
+  Local default-off V0-descendant continuity-playground engineering evidence:
+  continuous logical episodes, persistent causal state, explicit current goal,
+  memory-conditioned candidate scoring, visible prediction/error/update, and
+  fresh-process recomputed timeline only.

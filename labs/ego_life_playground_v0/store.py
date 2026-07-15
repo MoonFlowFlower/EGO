@@ -33,22 +33,43 @@ class CommitReceipt:
 
 
 @dataclass(frozen=True)
+class RecoveryFrame:
+    """One independently recomputed point on the durable command timeline."""
+
+    sequence: int
+    state: dict[str, Any]
+    trace: dict[str, Any] | None
+
+
+@dataclass(frozen=True)
 class RecoveryResult:
+    """Recovery output whose state and traces have one frame-derived truth."""
+
     run_id: str
     run_meta: dict[str, Any]
-    state: dict[str, Any]
-    traces: list[dict[str, Any]]
+    frames: tuple[RecoveryFrame, ...]
     recovered: bool
-    command_count: int
+
+    @property
+    def state(self) -> dict[str, Any]:
+        return self.frames[-1].state
+
+    @property
+    def traces(self) -> list[dict[str, Any]]:
+        return [frame.trace for frame in self.frames if frame.trace is not None]
+
+    @property
+    def command_count(self) -> int:
+        return len(self.frames) - 1
 
 
 def default_db_path() -> Path:
     base = os.environ.get("LOCALAPPDATA")
     if base:
-        root = Path(base) / "EgoLifePlaygroundV0"
+        root = Path(base) / "EgoLifePlaygroundV1"
     else:
-        root = Path.home() / ".ego_life_playground_v0"
-    return root / "playground.sqlite3"
+        root = Path.home() / ".ego_life_playground_v1"
+    return root / "continuity.sqlite3"
 
 
 class SQLiteEventStore:
@@ -194,7 +215,7 @@ class SQLiteEventStore:
             raise RecoveryError("command/trace row parity mismatch")
 
         state = initial
-        traces: list[dict[str, Any]] = []
+        frames = [RecoveryFrame(sequence=0, state=initial, trace=None)]
         for expected_sequence, command_row in enumerate(command_rows, start=1):
             if int(command_row["sequence"]) != expected_sequence:
                 raise RecoveryError("persisted command sequence is not contiguous")
@@ -207,6 +228,15 @@ class SQLiteEventStore:
                 recomputed = compute_step(state, command, run_meta)
             except (EngineInvariantError, KeyError, TypeError, ValueError) as exc:
                 raise RecoveryError(f"command recomputation failed: {exc}") from exc
+
+            # Build the candidate frame from recomputation before consulting
+            # the stored trace.  A stored action is comparison-only and can
+            # never become a replay input or timeline authority.
+            recomputed_frame = RecoveryFrame(
+                sequence=expected_sequence,
+                state=recomputed.next_state,
+                trace=recomputed.trace,
+            )
 
             trace_row = self._connection.execute(
                 "SELECT trace_json, trace_hash FROM traces WHERE run_id = ? AND sequence = ?",
@@ -222,15 +252,13 @@ class SQLiteEventStore:
             if canonical_json(stored_trace) != canonical_json(recomputed.trace):
                 raise RecoveryError("stored trace differs from independent recomputation")
             state = recomputed.next_state
-            traces.append(recomputed.trace)
+            frames.append(recomputed_frame)
 
         return RecoveryResult(
             run_id=run_id,
             run_meta=run_meta,
-            state=state,
-            traces=traces,
+            frames=tuple(frames),
             recovered=True,
-            command_count=len(command_rows),
         )
 
     def export_run(self, run_id: str, output_path: str | os.PathLike[str]) -> Path:
@@ -246,7 +274,7 @@ class SQLiteEventStore:
             "input_artifacts": [str(self.path)],
             "run_id": run_id,
             "seed": recovered.run_meta["seed"],
-            "episode_id": recovered.run_meta["episode_id"],
+            "episode_id": recovered.state["clock"]["episode_id"],
             "aggregation_rule": "ordered_recomputed_trace_export",
             "code_path_hash": recovered.run_meta["code_path_hash"],
             "command_count": recovered.command_count,

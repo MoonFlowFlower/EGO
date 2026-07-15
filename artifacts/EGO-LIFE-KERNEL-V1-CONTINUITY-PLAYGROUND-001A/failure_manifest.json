@@ -1,0 +1,66 @@
+{
+  "schema_version": "ego.life_playground.failure_manifest.v1",
+  "evidence_inputs": {},
+  "producer_function": "__main__._run_verification_in",
+  "input_artifacts": [
+    {
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\continuity.sqlite3",
+      "json_pointer": null,
+      "content_mode": "raw_file",
+      "sha256": "8346740cbbe5518eaf7c67cacbc9ca0ad9c2e58c681f62bddd09d5fa2b768020",
+      "byte_count": 311296
+    },
+    {
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\trace.jsonl",
+      "json_pointer": null,
+      "content_mode": "raw_file",
+      "sha256": "cfde89ff092f4a69fadb99b93ea175d894f2b4db1f7af2bc04e09d8315ed6bea",
+      "byte_count": 248763
+    }
+  ],
+  "run_id": "ego-v1-continuity-frozen-seed17",
+  "seed": 17,
+  "episode_ids": [
+    "episode-000000-860a081025554c9d",
+    "episode-000001-cd2aa42a8860bf9e",
+    "episode-000002-b4bf083a7cedb7df"
+  ],
+  "context_ids": [
+    "0635062ea4c202390be9b2069fdc54249160e2abae534ce2c3bf47e7c9cdfaa3",
+    "0b137d74b63dd629348207e573ba71bb008e2ab583d2aef5193a645eb197c9a3",
+    "0b8048e769e8980395e00f0406cc1ef89e9a8c96bfbcd35144ec5cd126079df0",
+    "22d90cbbafa5b64ed89dfceb8b9be7641d6c0e3713b585781f8e2a1a3ac9ebf4",
+    "365631ba1e913b3b8aed73066156316599ad2ec5be89754fdda03d18836681b3",
+    "48fe623af4d4b4da1af87098c3419379251bba798d8e1ca82ecca398a2210d47",
+    "4edfdf458d74bd8bf3348486a318775ea9efe452e87ff9b0dcc7d203244e6512",
+    "4efeafcc34c9fe479791a4b3e0508529345e43f0fc68b743b4440d442091e5d0",
+    "5c3cf41f6f83ae4ee0b0f836b98e35e647751cd2bea818c9c1e90d932d2f906b",
+    "5d8ec2ba6e5482750b787b55bb191a090d863b2189c3f2779c8a4e3ce2c6fbc5",
+    "70d46a18ede87159e8ac951aeb3c994b45dd7054b7e06ec3745afc5dafd4f237",
+    "87a30d5be18268f7210104d16b1da8fe2fe7dd5cdf86b718d37da7a538f501fb",
+    "88be1a824cbd0fb20c32431c07f9730a467461c1ba97e536ef777c04dcd2b575",
+    "8add87064da4aa06e544488ceb18928355f90359f68be9bdf9ae694b790ae36f",
+    "a0f34de9336a6f03d59de4d696aff7767c4d5556277ec2f64281ca83b8d5c00d",
+    "a8e29b147318e32f1bf6af93f5658b2c1982508cae6a2be9ecc35c3a0fad0c17",
+    "ac8a738f62ad27169d37199bfd746c6d6a19409b9899de30082e05f2df109cc7",
+    "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+    "b2056e2d5859f0e595032976af014305dbaadf99cfae28dbd49ff8daaeb5a5da",
+    "b454043e28237f92d24cb97423e72ccddde33441325cb007444fc4cd23ce8ff4",
+    "b495142991bdf7891168423c163eeae378692707cd00c85184b1a20cac62b89d",
+    "b72dfd05caa9db28dad91dc7a579f6eca5d29f7a1166d57975dc19a578fee11c",
+    "cb35afff0b03df7b353abf55c81a46fb045242a1e4f900f6e48fce3058bac585",
+    "d3ae8a59261a579cdaf3d35d249bb0c2756d85ecd2a2572aedd6d70c3ebf4123",
+    "f11dd55d23f9595dffdee2313494145496004dae6eab425121d3dfec504716e8"
+  ],
+  "checkpoint_ids": [
+    "3752fc8255a73773a08e212aa132e3b680ffd677f2077353136aec72d1bd2ccc"
+  ],
+  "aggregation_rule": "ordered_union_of_false_hard_requirements_and_computed_subreport_blockers",
+  "code_path_hash": "1c3ea90b43669f866f8d5dd34170a6f88b11008022e82c5a549e2543eba22e32",
+  "product_code_manifest_hash": "891b65ffc304a40682ab59feefe141a408baa9f97b6fc9e5327f6ba3f4fb164d",
+  "checkpoint_id": "3752fc8255a73773a08e212aa132e3b680ffd677f2077353136aec72d1bd2ccc",
+  "blocking_failures": [
+    "hard_requirement_failed:paired_interventions_computed_without_blocker",
+    "natural_checkpoint_memory_bias_zero"
+  ]
+}

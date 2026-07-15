@@ -1,0 +1,917 @@
+{
+  "schema_version": "ego.life_playground.replay_report.v1",
+  "producer_function": "__main__.run_replay_checks",
+  "input_artifacts": [
+    {
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\continuity.sqlite3",
+      "json_pointer": null,
+      "content_mode": "raw_file",
+      "sha256": "8346740cbbe5518eaf7c67cacbc9ca0ad9c2e58c681f62bddd09d5fa2b768020",
+      "byte_count": 311296
+    }
+  ],
+  "run_id": "ego-v1-continuity-frozen-seed17",
+  "seed": 17,
+  "episode_ids": [
+    "episode-000000-860a081025554c9d",
+    "episode-000001-cd2aa42a8860bf9e",
+    "episode-000002-b4bf083a7cedb7df"
+  ],
+  "context_ids": [
+    "0635062ea4c202390be9b2069fdc54249160e2abae534ce2c3bf47e7c9cdfaa3",
+    "0b137d74b63dd629348207e573ba71bb008e2ab583d2aef5193a645eb197c9a3",
+    "0b8048e769e8980395e00f0406cc1ef89e9a8c96bfbcd35144ec5cd126079df0",
+    "22d90cbbafa5b64ed89dfceb8b9be7641d6c0e3713b585781f8e2a1a3ac9ebf4",
+    "365631ba1e913b3b8aed73066156316599ad2ec5be89754fdda03d18836681b3",
+    "48fe623af4d4b4da1af87098c3419379251bba798d8e1ca82ecca398a2210d47",
+    "4edfdf458d74bd8bf3348486a318775ea9efe452e87ff9b0dcc7d203244e6512",
+    "4efeafcc34c9fe479791a4b3e0508529345e43f0fc68b743b4440d442091e5d0",
+    "5c3cf41f6f83ae4ee0b0f836b98e35e647751cd2bea818c9c1e90d932d2f906b",
+    "5d8ec2ba6e5482750b787b55bb191a090d863b2189c3f2779c8a4e3ce2c6fbc5",
+    "70d46a18ede87159e8ac951aeb3c994b45dd7054b7e06ec3745afc5dafd4f237",
+    "87a30d5be18268f7210104d16b1da8fe2fe7dd5cdf86b718d37da7a538f501fb",
+    "88be1a824cbd0fb20c32431c07f9730a467461c1ba97e536ef777c04dcd2b575",
+    "8add87064da4aa06e544488ceb18928355f90359f68be9bdf9ae694b790ae36f",
+    "a0f34de9336a6f03d59de4d696aff7767c4d5556277ec2f64281ca83b8d5c00d",
+    "a8e29b147318e32f1bf6af93f5658b2c1982508cae6a2be9ecc35c3a0fad0c17",
+    "ac8a738f62ad27169d37199bfd746c6d6a19409b9899de30082e05f2df109cc7",
+    "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+    "b2056e2d5859f0e595032976af014305dbaadf99cfae28dbd49ff8daaeb5a5da",
+    "b454043e28237f92d24cb97423e72ccddde33441325cb007444fc4cd23ce8ff4",
+    "b495142991bdf7891168423c163eeae378692707cd00c85184b1a20cac62b89d",
+    "b72dfd05caa9db28dad91dc7a579f6eca5d29f7a1166d57975dc19a578fee11c",
+    "cb35afff0b03df7b353abf55c81a46fb045242a1e4f900f6e48fce3058bac585",
+    "d3ae8a59261a579cdaf3d35d249bb0c2756d85ecd2a2572aedd6d70c3ebf4123"
+  ],
+  "checkpoint_ids": [],
+  "aggregation_rule": "prepare_external_fresh_process_probe_and_run_disposable_tamper_controls",
+  "code_path_hash": "719148384b642922c1095f05435cb26b2cb0efe486607bbb99fd98095e0530db",
+  "product_code_manifest_hash": "891b65ffc304a40682ab59feefe141a408baa9f97b6fc9e5327f6ba3f4fb164d",
+  "engine_code_path_hash": "4c913bc970be1b6265b439953806fee4816fa08d67cfa053a5badecd43f5de33",
+  "fresh_recovery": {
+    "status": "external_probe_validated",
+    "producer_function": "__main__.finalize_verification",
+    "input_artifacts": [
+      {
+        "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\continuity.sqlite3",
+        "json_pointer": null,
+        "content_mode": "raw_file",
+        "sha256": "8346740cbbe5518eaf7c67cacbc9ca0ad9c2e58c681f62bddd09d5fa2b768020",
+        "byte_count": 311296
+      },
+      {
+        "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\replay_report.json",
+        "json_pointer": "/evidence_inputs/finalize_fresh_process_probe_request_f257ab615bec94ea",
+        "content_mode": "canonical_json_pointer",
+        "input_id": "finalize_fresh_process_probe_request_f257ab615bec94ea",
+        "sha256": "f257ab615bec94ea30d142e5d06add52cd4e96c0eb1480ad744553cccdefe430",
+        "byte_count": 4002
+      },
+      {
+        "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\replay_report.json",
+        "json_pointer": "/evidence_inputs/finalize_fresh_process_probe_receipt_9bc5da3fea2abbf8",
+        "content_mode": "canonical_json_pointer",
+        "input_id": "finalize_fresh_process_probe_receipt_9bc5da3fea2abbf8",
+        "sha256": "9bc5da3fea2abbf890cf68b6badfff925e9b079bbe94c6953a9a6330f031401b",
+        "byte_count": 1930
+      },
+      {
+        "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\replay_report.json",
+        "json_pointer": "/evidence_inputs/finalize_live_named_pipe_os_attestation_efc8da33ecf8764b",
+        "content_mode": "canonical_json_pointer",
+        "input_id": "finalize_live_named_pipe_os_attestation_efc8da33ecf8764b",
+        "sha256": "efc8da33ecf8764bb66a8919b6f26290de673a51af8b154dd39c59d1d84f121c",
+        "byte_count": 2986
+      }
+    ],
+    "run_id": "ego-v1-continuity-frozen-seed17",
+    "seed": 17,
+    "episode_ids": [
+      "episode-000000-860a081025554c9d",
+      "episode-000001-cd2aa42a8860bf9e",
+      "episode-000002-b4bf083a7cedb7df"
+    ],
+    "context_ids": [
+      "89f73cf97245a40f22e4aaca89f1ec8c3a3f9695605397f998df17f2c7150506"
+    ],
+    "checkpoint_ids": [],
+    "aggregation_rule": "external_probe_receipt_hashes_and_post_ack_exit_zero_validated",
+    "code_path_hash": "7aa05e7664b48ee4b04ff77bfd5dc6de5e44cb576f531f73d2a8b34bfd9f7718",
+    "product_code_manifest_hash": "891b65ffc304a40682ab59feefe141a408baa9f97b6fc9e5327f6ba3f4fb164d",
+    "recovered": true,
+    "command_count": 24,
+    "prepare_pid": 43364,
+    "probe_pid_claimed": 48452,
+    "probe_pid_observed": 48452,
+    "finalizer_pid": 43800,
+    "probe_exit_observed": true,
+    "probe_exit_code": 0,
+    "no_orphan": true,
+    "process_boundary": true,
+    "final_hashes_match_parent": true,
+    "final_state_hash": "6a7c2803bf281f69303edadb408ca238916cc07bd2bb3a0d618d3ba1e3bedc1d",
+    "final_model_hash": "d9b4c81dc4a9b25543b35631691ddfb308f589fa7d76925da8850a3c450ebeca",
+    "final_memory_hash": "6bd3a22d061ec42d54e943a6498f5cbce1bdbadd8648c143288485c0aa416131",
+    "current_goal_hash": "b04b98fc33befd405699ee454716e7ef7b5f02302bc282091a766fb85291b84d",
+    "clock_hash": "955be9d5881f2884f0fa04b80b8a1274c51c6d23b06a91e81891067d4c6f39ef",
+    "trace_chain_tip": "9c72f75ed17bc1535da1aff01ce5759e8ae53960a2b144bc7644990d4b900fc3"
+  },
+  "fresh_process_protocol": {
+    "request": {
+      "schema_version": "ego.life_playground.fresh_process_probe_request.v1",
+      "producer_function": "__main__._prepare_fresh_process_probe_request",
+      "input_artifacts": [
+        {
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\continuity.sqlite3",
+          "json_pointer": null,
+          "content_mode": "raw_file",
+          "sha256": "8346740cbbe5518eaf7c67cacbc9ca0ad9c2e58c681f62bddd09d5fa2b768020",
+          "byte_count": 311296
+        }
+      ],
+      "run_id": "ego-v1-continuity-frozen-seed17",
+      "seed": 17,
+      "episode_ids": [
+        "episode-000000-860a081025554c9d",
+        "episode-000001-cd2aa42a8860bf9e",
+        "episode-000002-b4bf083a7cedb7df"
+      ],
+      "context_ids": [
+        "0635062ea4c202390be9b2069fdc54249160e2abae534ce2c3bf47e7c9cdfaa3",
+        "0b137d74b63dd629348207e573ba71bb008e2ab583d2aef5193a645eb197c9a3",
+        "0b8048e769e8980395e00f0406cc1ef89e9a8c96bfbcd35144ec5cd126079df0",
+        "22d90cbbafa5b64ed89dfceb8b9be7641d6c0e3713b585781f8e2a1a3ac9ebf4",
+        "365631ba1e913b3b8aed73066156316599ad2ec5be89754fdda03d18836681b3",
+        "48fe623af4d4b4da1af87098c3419379251bba798d8e1ca82ecca398a2210d47",
+        "4edfdf458d74bd8bf3348486a318775ea9efe452e87ff9b0dcc7d203244e6512",
+        "4efeafcc34c9fe479791a4b3e0508529345e43f0fc68b743b4440d442091e5d0",
+        "5c3cf41f6f83ae4ee0b0f836b98e35e647751cd2bea818c9c1e90d932d2f906b",
+        "5d8ec2ba6e5482750b787b55bb191a090d863b2189c3f2779c8a4e3ce2c6fbc5",
+        "70d46a18ede87159e8ac951aeb3c994b45dd7054b7e06ec3745afc5dafd4f237",
+        "87a30d5be18268f7210104d16b1da8fe2fe7dd5cdf86b718d37da7a538f501fb",
+        "88be1a824cbd0fb20c32431c07f9730a467461c1ba97e536ef777c04dcd2b575",
+        "8add87064da4aa06e544488ceb18928355f90359f68be9bdf9ae694b790ae36f",
+        "a0f34de9336a6f03d59de4d696aff7767c4d5556277ec2f64281ca83b8d5c00d",
+        "a8e29b147318e32f1bf6af93f5658b2c1982508cae6a2be9ecc35c3a0fad0c17",
+        "ac8a738f62ad27169d37199bfd746c6d6a19409b9899de30082e05f2df109cc7",
+        "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+        "b2056e2d5859f0e595032976af014305dbaadf99cfae28dbd49ff8daaeb5a5da",
+        "b454043e28237f92d24cb97423e72ccddde33441325cb007444fc4cd23ce8ff4",
+        "b495142991bdf7891168423c163eeae378692707cd00c85184b1a20cac62b89d",
+        "b72dfd05caa9db28dad91dc7a579f6eca5d29f7a1166d57975dc19a578fee11c",
+        "cb35afff0b03df7b353abf55c81a46fb045242a1e4f900f6e48fce3058bac585",
+        "d3ae8a59261a579cdaf3d35d249bb0c2756d85ecd2a2572aedd6d70c3ebf4123"
+      ],
+      "checkpoint_ids": [],
+      "aggregation_rule": "freeze_database_challenge_prepare_pid_and_expected_recovery_hashes",
+      "code_path_hash": "5d7190b8f854d19f53e92f3f119b6d16b467718a0bb76a3a7f6f3e692a91610d",
+      "product_code_manifest_hash": "891b65ffc304a40682ab59feefe141a408baa9f97b6fc9e5327f6ba3f4fb164d",
+      "challenge": "89f73cf97245a40f22e4aaca89f1ec8c3a3f9695605397f998df17f2c7150506",
+      "pipe_name": "\\\\.\\pipe\\EgoV1Continuity-89f73cf97245a40f22e4aaca89f1ec8c3a3f9695605397f998df17f2c7150506",
+      "pipe_security": {
+        "operator_sid": "S-1-5-21-695949533-3235646390-3225564089-1001",
+        "sddl": "D:P(A;;GA;;;S-1-5-21-695949533-3235646390-3225564089-1001)",
+        "sddl_sha256": "ef69bcefd09a7d2e55bb25826f155b4ad0607f0768abca9a60c87cec8e171fac",
+        "first_pipe_instance": true,
+        "remote_clients_rejected": true
+      },
+      "prepare_pid": 43364,
+      "database_path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\continuity.sqlite3",
+      "database_sha256": "8346740cbbe5518eaf7c67cacbc9ca0ad9c2e58c681f62bddd09d5fa2b768020",
+      "expected_command_count": 24,
+      "expected_hashes": {
+        "final_state_hash": "6a7c2803bf281f69303edadb408ca238916cc07bd2bb3a0d618d3ba1e3bedc1d",
+        "final_model_hash": "d9b4c81dc4a9b25543b35631691ddfb308f589fa7d76925da8850a3c450ebeca",
+        "final_memory_hash": "6bd3a22d061ec42d54e943a6498f5cbce1bdbadd8648c143288485c0aa416131",
+        "current_goal_hash": "b04b98fc33befd405699ee454716e7ef7b5f02302bc282091a766fb85291b84d",
+        "clock_hash": "955be9d5881f2884f0fa04b80b8a1274c51c6d23b06a91e81891067d4c6f39ef",
+        "trace_chain_tip": "9c72f75ed17bc1535da1aff01ce5759e8ae53960a2b144bc7644990d4b900fc3"
+      },
+      "hash_fields": [
+        "final_state_hash",
+        "final_model_hash",
+        "final_memory_hash",
+        "current_goal_hash",
+        "clock_hash",
+        "trace_chain_tip"
+      ],
+      "engine_code_path_hash": "4c913bc970be1b6265b439953806fee4816fa08d67cfa053a5badecd43f5de33"
+    },
+    "receipt": {
+      "schema_version": "ego.life_playground.fresh_process_probe_receipt.v1",
+      "challenge": "89f73cf97245a40f22e4aaca89f1ec8c3a3f9695605397f998df17f2c7150506",
+      "prepare_pid": 43364,
+      "probe_pid": 48452,
+      "probe_pid_claimed": 48452,
+      "pipe_name": "\\\\.\\pipe\\EgoV1Continuity-89f73cf97245a40f22e4aaca89f1ec8c3a3f9695605397f998df17f2c7150506",
+      "pipe_security": {
+        "operator_sid": "S-1-5-21-695949533-3235646390-3225564089-1001",
+        "sddl": "D:P(A;;GA;;;S-1-5-21-695949533-3235646390-3225564089-1001)",
+        "sddl_sha256": "ef69bcefd09a7d2e55bb25826f155b4ad0607f0768abca9a60c87cec8e171fac",
+        "first_pipe_instance": true,
+        "remote_clients_rejected": true
+      },
+      "output_path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A",
+      "receipt_path": "C:\\Users\\LEO\\AppData\\Local\\Temp\\ego-v1-external-receipt-e0627843aa73414cae09bfc4d60b78cf.json",
+      "database_path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\continuity.sqlite3",
+      "database_sha256": "8346740cbbe5518eaf7c67cacbc9ca0ad9c2e58c681f62bddd09d5fa2b768020",
+      "run_id": "ego-v1-continuity-frozen-seed17",
+      "command_count": 24,
+      "recovered": true,
+      "hashes": {
+        "final_state_hash": "6a7c2803bf281f69303edadb408ca238916cc07bd2bb3a0d618d3ba1e3bedc1d",
+        "final_model_hash": "d9b4c81dc4a9b25543b35631691ddfb308f589fa7d76925da8850a3c450ebeca",
+        "final_memory_hash": "6bd3a22d061ec42d54e943a6498f5cbce1bdbadd8648c143288485c0aa416131",
+        "current_goal_hash": "b04b98fc33befd405699ee454716e7ef7b5f02302bc282091a766fb85291b84d",
+        "clock_hash": "955be9d5881f2884f0fa04b80b8a1274c51c6d23b06a91e81891067d4c6f39ef",
+        "trace_chain_tip": "9c72f75ed17bc1535da1aff01ce5759e8ae53960a2b144bc7644990d4b900fc3"
+      },
+      "engine_code_path_hash": "4c913bc970be1b6265b439953806fee4816fa08d67cfa053a5badecd43f5de33",
+      "product_code_manifest_hash": "891b65ffc304a40682ab59feefe141a408baa9f97b6fc9e5327f6ba3f4fb164d",
+      "binding_hash": "2ead46ce33f72fd8fdc037999b9bce7054fc67bded81e9c9abafa540be8ce1b2"
+    },
+    "validation": {
+      "schema_version": "ego.life_playground.fresh_process_probe_validation.v1",
+      "producer_function": "__main__.finalize_verification",
+      "input_artifacts": [
+        {
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\continuity.sqlite3",
+          "json_pointer": null,
+          "content_mode": "raw_file",
+          "sha256": "8346740cbbe5518eaf7c67cacbc9ca0ad9c2e58c681f62bddd09d5fa2b768020",
+          "byte_count": 311296
+        },
+        {
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\replay_report.json",
+          "json_pointer": "/evidence_inputs/finalize_fresh_process_probe_request_f257ab615bec94ea",
+          "content_mode": "canonical_json_pointer",
+          "input_id": "finalize_fresh_process_probe_request_f257ab615bec94ea",
+          "sha256": "f257ab615bec94ea30d142e5d06add52cd4e96c0eb1480ad744553cccdefe430",
+          "byte_count": 4002
+        },
+        {
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\replay_report.json",
+          "json_pointer": "/evidence_inputs/finalize_fresh_process_probe_receipt_9bc5da3fea2abbf8",
+          "content_mode": "canonical_json_pointer",
+          "input_id": "finalize_fresh_process_probe_receipt_9bc5da3fea2abbf8",
+          "sha256": "9bc5da3fea2abbf890cf68b6badfff925e9b079bbe94c6953a9a6330f031401b",
+          "byte_count": 1930
+        },
+        {
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\replay_report.json",
+          "json_pointer": "/evidence_inputs/finalize_live_named_pipe_os_attestation_efc8da33ecf8764b",
+          "content_mode": "canonical_json_pointer",
+          "input_id": "finalize_live_named_pipe_os_attestation_efc8da33ecf8764b",
+          "sha256": "efc8da33ecf8764bb66a8919b6f26290de673a51af8b154dd39c59d1d84f121c",
+          "byte_count": 2986
+        }
+      ],
+      "run_id": "ego-v1-continuity-frozen-seed17",
+      "seed": 17,
+      "episode_ids": [
+        "episode-000000-860a081025554c9d",
+        "episode-000001-cd2aa42a8860bf9e",
+        "episode-000002-b4bf083a7cedb7df"
+      ],
+      "context_ids": [
+        "89f73cf97245a40f22e4aaca89f1ec8c3a3f9695605397f998df17f2c7150506"
+      ],
+      "checkpoint_ids": [],
+      "aggregation_rule": "challenge_db_run_pid_recovery_hashes_and_post_ack_exit_zero_must_match",
+      "code_path_hash": "7aa05e7664b48ee4b04ff77bfd5dc6de5e44cb576f531f73d2a8b34bfd9f7718",
+      "product_code_manifest_hash": "891b65ffc304a40682ab59feefe141a408baa9f97b6fc9e5327f6ba3f4fb164d",
+      "os_attestation": {
+        "valid": true,
+        "blocking_failures": [],
+        "prepare_pid": 43364,
+        "probe_pid_claimed": 48452,
+        "server_pid": 48452,
+        "finalizer_pid": 43800,
+        "server_executable": "C:\\Python313\\python.exe",
+        "server_commandline": "\"C:\\Python313\\python.exe\" \"D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_life_kernel_v1_continuity.py\" --probe --output \"D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\" --probe-receipt \"C:\\Users\\LEO\\AppData\\Local\\Temp\\ego-v1-external-receipt-e0627843aa73414cae09bfc4d60b78cf.json\"",
+        "server_argv": [
+          "c:\\python313\\python.exe",
+          "d:\\project\\aiproject\\myproject\\ego\\scripts\\codex\\verify_ego_life_kernel_v1_continuity.py",
+          "--probe",
+          "--output",
+          "d:\\project\\aiproject\\myproject\\ego\\artifacts\\ego-life-kernel-v1-continuity-playground-001a",
+          "--probe-receipt",
+          "c:\\users\\leo\\appdata\\local\\temp\\ego-v1-external-receipt-e0627843aa73414cae09bfc4d60b78cf.json"
+        ],
+        "expected_argv": [
+          "c:\\python313\\python.exe",
+          "d:\\project\\aiproject\\myproject\\ego\\scripts\\codex\\verify_ego_life_kernel_v1_continuity.py",
+          "--probe",
+          "--output",
+          "d:\\project\\aiproject\\myproject\\ego\\artifacts\\ego-life-kernel-v1-continuity-playground-001a",
+          "--probe-receipt",
+          "c:\\users\\leo\\appdata\\local\\temp\\ego-v1-external-receipt-e0627843aa73414cae09bfc4d60b78cf.json"
+        ],
+        "challenge_response_valid": true,
+        "ack_sent": true,
+        "probe_exit_observed": true,
+        "probe_exit_code": 0,
+        "no_orphan": true,
+        "probe_exit_wait_result": 0,
+        "probe_exit_timeout_ms": 5000,
+        "pre_handshake_snapshot": {
+          "database_sha256": "8346740cbbe5518eaf7c67cacbc9ca0ad9c2e58c681f62bddd09d5fa2b768020",
+          "command_count": 24,
+          "hashes": {
+            "final_state_hash": "6a7c2803bf281f69303edadb408ca238916cc07bd2bb3a0d618d3ba1e3bedc1d",
+            "final_model_hash": "d9b4c81dc4a9b25543b35631691ddfb308f589fa7d76925da8850a3c450ebeca",
+            "final_memory_hash": "6bd3a22d061ec42d54e943a6498f5cbce1bdbadd8648c143288485c0aa416131",
+            "current_goal_hash": "b04b98fc33befd405699ee454716e7ef7b5f02302bc282091a766fb85291b84d",
+            "clock_hash": "955be9d5881f2884f0fa04b80b8a1274c51c6d23b06a91e81891067d4c6f39ef",
+            "trace_chain_tip": "9c72f75ed17bc1535da1aff01ce5759e8ae53960a2b144bc7644990d4b900fc3"
+          },
+          "engine_code_path_hash": "4c913bc970be1b6265b439953806fee4816fa08d67cfa053a5badecd43f5de33"
+        },
+        "post_handshake_snapshot": {
+          "database_sha256": "8346740cbbe5518eaf7c67cacbc9ca0ad9c2e58c681f62bddd09d5fa2b768020",
+          "command_count": 24,
+          "hashes": {
+            "final_state_hash": "6a7c2803bf281f69303edadb408ca238916cc07bd2bb3a0d618d3ba1e3bedc1d",
+            "final_model_hash": "d9b4c81dc4a9b25543b35631691ddfb308f589fa7d76925da8850a3c450ebeca",
+            "final_memory_hash": "6bd3a22d061ec42d54e943a6498f5cbce1bdbadd8648c143288485c0aa416131",
+            "current_goal_hash": "b04b98fc33befd405699ee454716e7ef7b5f02302bc282091a766fb85291b84d",
+            "clock_hash": "955be9d5881f2884f0fa04b80b8a1274c51c6d23b06a91e81891067d4c6f39ef",
+            "trace_chain_tip": "9c72f75ed17bc1535da1aff01ce5759e8ae53960a2b144bc7644990d4b900fc3"
+          },
+          "engine_code_path_hash": "4c913bc970be1b6265b439953806fee4816fa08d67cfa053a5badecd43f5de33"
+        }
+      },
+      "valid": true,
+      "blocking_failures": [],
+      "attestation_blocking_failures": [],
+      "prepare_pid": 43364,
+      "probe_pid_claimed": 48452,
+      "probe_pid_observed": 48452,
+      "finalizer_pid": 43800,
+      "process_boundary": true
+    }
+  },
+  "tamper_controls": {
+    "stored_action_rehashed": {
+      "producer_function": "__main__._tamper_copy",
+      "input_artifacts": [
+        {
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\continuity.sqlite3",
+          "json_pointer": null,
+          "content_mode": "raw_file",
+          "sha256": "8346740cbbe5518eaf7c67cacbc9ca0ad9c2e58c681f62bddd09d5fa2b768020",
+          "byte_count": 311296
+        },
+        {
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\replay_report.json",
+          "json_pointer": "/evidence_inputs/replay_tamper_stored_action_618a3125b74915b9",
+          "content_mode": "canonical_json_pointer",
+          "input_id": "replay_tamper_stored_action_618a3125b74915b9",
+          "sha256": "618a3125b74915b9802f0cd96264be059917bfd1a4a93fc06055a1a2af55c85c",
+          "byte_count": 155
+        }
+      ],
+      "run_id": "ego-v1-continuity-frozen-seed17",
+      "seed": 17,
+      "episode_ids": [
+        "episode-000000-860a081025554c9d",
+        "episode-000001-cd2aa42a8860bf9e",
+        "episode-000002-b4bf083a7cedb7df"
+      ],
+      "context_ids": [
+        "0635062ea4c202390be9b2069fdc54249160e2abae534ce2c3bf47e7c9cdfaa3",
+        "0b137d74b63dd629348207e573ba71bb008e2ab583d2aef5193a645eb197c9a3",
+        "0b8048e769e8980395e00f0406cc1ef89e9a8c96bfbcd35144ec5cd126079df0",
+        "22d90cbbafa5b64ed89dfceb8b9be7641d6c0e3713b585781f8e2a1a3ac9ebf4",
+        "365631ba1e913b3b8aed73066156316599ad2ec5be89754fdda03d18836681b3",
+        "48fe623af4d4b4da1af87098c3419379251bba798d8e1ca82ecca398a2210d47",
+        "4edfdf458d74bd8bf3348486a318775ea9efe452e87ff9b0dcc7d203244e6512",
+        "4efeafcc34c9fe479791a4b3e0508529345e43f0fc68b743b4440d442091e5d0",
+        "5c3cf41f6f83ae4ee0b0f836b98e35e647751cd2bea818c9c1e90d932d2f906b",
+        "5d8ec2ba6e5482750b787b55bb191a090d863b2189c3f2779c8a4e3ce2c6fbc5",
+        "70d46a18ede87159e8ac951aeb3c994b45dd7054b7e06ec3745afc5dafd4f237",
+        "87a30d5be18268f7210104d16b1da8fe2fe7dd5cdf86b718d37da7a538f501fb",
+        "88be1a824cbd0fb20c32431c07f9730a467461c1ba97e536ef777c04dcd2b575",
+        "8add87064da4aa06e544488ceb18928355f90359f68be9bdf9ae694b790ae36f",
+        "a0f34de9336a6f03d59de4d696aff7767c4d5556277ec2f64281ca83b8d5c00d",
+        "a8e29b147318e32f1bf6af93f5658b2c1982508cae6a2be9ecc35c3a0fad0c17",
+        "ac8a738f62ad27169d37199bfd746c6d6a19409b9899de30082e05f2df109cc7",
+        "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+        "b2056e2d5859f0e595032976af014305dbaadf99cfae28dbd49ff8daaeb5a5da",
+        "b454043e28237f92d24cb97423e72ccddde33441325cb007444fc4cd23ce8ff4",
+        "b495142991bdf7891168423c163eeae378692707cd00c85184b1a20cac62b89d",
+        "b72dfd05caa9db28dad91dc7a579f6eca5d29f7a1166d57975dc19a578fee11c",
+        "cb35afff0b03df7b353abf55c81a46fb045242a1e4f900f6e48fce3058bac585",
+        "d3ae8a59261a579cdaf3d35d249bb0c2756d85ecd2a2572aedd6d70c3ebf4123"
+      ],
+      "checkpoint_ids": [],
+      "aggregation_rule": "actual_disposable_database_tamper_must_raise_expected_recovery_error:stored-action",
+      "code_path_hash": "0d03f024fcf6bb0e58b491a95910496116345c407c406e36aa927d96f69d7f0f",
+      "product_code_manifest_hash": "891b65ffc304a40682ab59feefe141a408baa9f97b6fc9e5327f6ba3f4fb164d",
+      "mutation": {
+        "kind": "stored_selected_action_and_hash_rewritten",
+        "sequence": 1,
+        "original": "explore",
+        "replacement": "approach",
+        "attacker_rehashed_payload_and_column": true
+      },
+      "failed_closed": true,
+      "expected_failure_class": "RecoveryError",
+      "expected_reason_substring": "stored trace differs from independent recomputation",
+      "observed_failure_class": "RecoveryError",
+      "observed_failure_message": "stored trace differs from independent recomputation",
+      "expected_reason_matched": true,
+      "tampered_database_sha256": "f32b373613f4293d3ec53569b85e53956de501230f0268034154d105bf2357f0"
+    },
+    "command_payload": {
+      "producer_function": "__main__._tamper_copy",
+      "input_artifacts": [
+        {
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\continuity.sqlite3",
+          "json_pointer": null,
+          "content_mode": "raw_file",
+          "sha256": "8346740cbbe5518eaf7c67cacbc9ca0ad9c2e58c681f62bddd09d5fa2b768020",
+          "byte_count": 311296
+        },
+        {
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\replay_report.json",
+          "json_pointer": "/evidence_inputs/replay_tamper_command_payload_073444ef415955a9",
+          "content_mode": "canonical_json_pointer",
+          "input_id": "replay_tamper_command_payload_073444ef415955a9",
+          "sha256": "073444ef415955a935558556608e12cf2fca7d74ca5a2be357f8aef2949c714f",
+          "byte_count": 162
+        }
+      ],
+      "run_id": "ego-v1-continuity-frozen-seed17",
+      "seed": 17,
+      "episode_ids": [
+        "episode-000000-860a081025554c9d",
+        "episode-000001-cd2aa42a8860bf9e",
+        "episode-000002-b4bf083a7cedb7df"
+      ],
+      "context_ids": [
+        "0635062ea4c202390be9b2069fdc54249160e2abae534ce2c3bf47e7c9cdfaa3",
+        "0b137d74b63dd629348207e573ba71bb008e2ab583d2aef5193a645eb197c9a3",
+        "0b8048e769e8980395e00f0406cc1ef89e9a8c96bfbcd35144ec5cd126079df0",
+        "22d90cbbafa5b64ed89dfceb8b9be7641d6c0e3713b585781f8e2a1a3ac9ebf4",
+        "365631ba1e913b3b8aed73066156316599ad2ec5be89754fdda03d18836681b3",
+        "48fe623af4d4b4da1af87098c3419379251bba798d8e1ca82ecca398a2210d47",
+        "4edfdf458d74bd8bf3348486a318775ea9efe452e87ff9b0dcc7d203244e6512",
+        "4efeafcc34c9fe479791a4b3e0508529345e43f0fc68b743b4440d442091e5d0",
+        "5c3cf41f6f83ae4ee0b0f836b98e35e647751cd2bea818c9c1e90d932d2f906b",
+        "5d8ec2ba6e5482750b787b55bb191a090d863b2189c3f2779c8a4e3ce2c6fbc5",
+        "70d46a18ede87159e8ac951aeb3c994b45dd7054b7e06ec3745afc5dafd4f237",
+        "87a30d5be18268f7210104d16b1da8fe2fe7dd5cdf86b718d37da7a538f501fb",
+        "88be1a824cbd0fb20c32431c07f9730a467461c1ba97e536ef777c04dcd2b575",
+        "8add87064da4aa06e544488ceb18928355f90359f68be9bdf9ae694b790ae36f",
+        "a0f34de9336a6f03d59de4d696aff7767c4d5556277ec2f64281ca83b8d5c00d",
+        "a8e29b147318e32f1bf6af93f5658b2c1982508cae6a2be9ecc35c3a0fad0c17",
+        "ac8a738f62ad27169d37199bfd746c6d6a19409b9899de30082e05f2df109cc7",
+        "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+        "b2056e2d5859f0e595032976af014305dbaadf99cfae28dbd49ff8daaeb5a5da",
+        "b454043e28237f92d24cb97423e72ccddde33441325cb007444fc4cd23ce8ff4",
+        "b495142991bdf7891168423c163eeae378692707cd00c85184b1a20cac62b89d",
+        "b72dfd05caa9db28dad91dc7a579f6eca5d29f7a1166d57975dc19a578fee11c",
+        "cb35afff0b03df7b353abf55c81a46fb045242a1e4f900f6e48fce3058bac585",
+        "d3ae8a59261a579cdaf3d35d249bb0c2756d85ecd2a2572aedd6d70c3ebf4123"
+      ],
+      "checkpoint_ids": [],
+      "aggregation_rule": "actual_disposable_database_tamper_must_raise_expected_recovery_error:command-payload",
+      "code_path_hash": "0d03f024fcf6bb0e58b491a95910496116345c407c406e36aa927d96f69d7f0f",
+      "product_code_manifest_hash": "891b65ffc304a40682ab59feefe141a408baa9f97b6fc9e5327f6ba3f4fb164d",
+      "mutation": {
+        "kind": "typed_command_payload_and_hash_rewritten",
+        "sequence": 1,
+        "original_cue": "novelty",
+        "replacement_cue": "resource",
+        "attacker_rehashed_payload_and_column": true
+      },
+      "failed_closed": true,
+      "expected_failure_class": "RecoveryError",
+      "expected_reason_substring": "stored trace differs from independent recomputation",
+      "observed_failure_class": "RecoveryError",
+      "observed_failure_message": "stored trace differs from independent recomputation",
+      "expected_reason_matched": true,
+      "tampered_database_sha256": "8b8e0effe35bee501dda5bb644343fd2b344fa62ed0eeec7455c1446cc416e0d"
+    },
+    "initial_state": {
+      "producer_function": "__main__._tamper_copy",
+      "input_artifacts": [
+        {
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\continuity.sqlite3",
+          "json_pointer": null,
+          "content_mode": "raw_file",
+          "sha256": "8346740cbbe5518eaf7c67cacbc9ca0ad9c2e58c681f62bddd09d5fa2b768020",
+          "byte_count": 311296
+        },
+        {
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\replay_report.json",
+          "json_pointer": "/evidence_inputs/replay_tamper_initial_state_f015026ad1f1db8c",
+          "content_mode": "canonical_json_pointer",
+          "input_id": "replay_tamper_initial_state_f015026ad1f1db8c",
+          "sha256": "f015026ad1f1db8cb1207d7751f8164c20be23e501f032832f154b766fd27cc6",
+          "byte_count": 145
+        }
+      ],
+      "run_id": "ego-v1-continuity-frozen-seed17",
+      "seed": 17,
+      "episode_ids": [
+        "episode-000000-860a081025554c9d",
+        "episode-000001-cd2aa42a8860bf9e",
+        "episode-000002-b4bf083a7cedb7df"
+      ],
+      "context_ids": [
+        "0635062ea4c202390be9b2069fdc54249160e2abae534ce2c3bf47e7c9cdfaa3",
+        "0b137d74b63dd629348207e573ba71bb008e2ab583d2aef5193a645eb197c9a3",
+        "0b8048e769e8980395e00f0406cc1ef89e9a8c96bfbcd35144ec5cd126079df0",
+        "22d90cbbafa5b64ed89dfceb8b9be7641d6c0e3713b585781f8e2a1a3ac9ebf4",
+        "365631ba1e913b3b8aed73066156316599ad2ec5be89754fdda03d18836681b3",
+        "48fe623af4d4b4da1af87098c3419379251bba798d8e1ca82ecca398a2210d47",
+        "4edfdf458d74bd8bf3348486a318775ea9efe452e87ff9b0dcc7d203244e6512",
+        "4efeafcc34c9fe479791a4b3e0508529345e43f0fc68b743b4440d442091e5d0",
+        "5c3cf41f6f83ae4ee0b0f836b98e35e647751cd2bea818c9c1e90d932d2f906b",
+        "5d8ec2ba6e5482750b787b55bb191a090d863b2189c3f2779c8a4e3ce2c6fbc5",
+        "70d46a18ede87159e8ac951aeb3c994b45dd7054b7e06ec3745afc5dafd4f237",
+        "87a30d5be18268f7210104d16b1da8fe2fe7dd5cdf86b718d37da7a538f501fb",
+        "88be1a824cbd0fb20c32431c07f9730a467461c1ba97e536ef777c04dcd2b575",
+        "8add87064da4aa06e544488ceb18928355f90359f68be9bdf9ae694b790ae36f",
+        "a0f34de9336a6f03d59de4d696aff7767c4d5556277ec2f64281ca83b8d5c00d",
+        "a8e29b147318e32f1bf6af93f5658b2c1982508cae6a2be9ecc35c3a0fad0c17",
+        "ac8a738f62ad27169d37199bfd746c6d6a19409b9899de30082e05f2df109cc7",
+        "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+        "b2056e2d5859f0e595032976af014305dbaadf99cfae28dbd49ff8daaeb5a5da",
+        "b454043e28237f92d24cb97423e72ccddde33441325cb007444fc4cd23ce8ff4",
+        "b495142991bdf7891168423c163eeae378692707cd00c85184b1a20cac62b89d",
+        "b72dfd05caa9db28dad91dc7a579f6eca5d29f7a1166d57975dc19a578fee11c",
+        "cb35afff0b03df7b353abf55c81a46fb045242a1e4f900f6e48fce3058bac585",
+        "d3ae8a59261a579cdaf3d35d249bb0c2756d85ecd2a2572aedd6d70c3ebf4123"
+      ],
+      "checkpoint_ids": [],
+      "aggregation_rule": "actual_disposable_database_tamper_must_raise_expected_recovery_error:initial-state",
+      "code_path_hash": "0d03f024fcf6bb0e58b491a95910496116345c407c406e36aa927d96f69d7f0f",
+      "product_code_manifest_hash": "891b65ffc304a40682ab59feefe141a408baa9f97b6fc9e5327f6ba3f4fb164d",
+      "mutation": {
+        "kind": "initial_state_payload_and_hash_rewritten",
+        "original_energy": 0.45,
+        "replacement_energy": 0.481,
+        "attacker_rehashed_payload_and_column": true
+      },
+      "failed_closed": true,
+      "expected_failure_class": "RecoveryError",
+      "expected_reason_substring": "stored trace differs from independent recomputation",
+      "observed_failure_class": "RecoveryError",
+      "observed_failure_message": "stored trace differs from independent recomputation",
+      "expected_reason_matched": true,
+      "tampered_database_sha256": "736c3780273e574626263f0444a99d58bb63d59aa5515d3469c0018d1d9a3a36"
+    },
+    "code_path_hash": {
+      "producer_function": "__main__._tamper_copy",
+      "input_artifacts": [
+        {
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\continuity.sqlite3",
+          "json_pointer": null,
+          "content_mode": "raw_file",
+          "sha256": "8346740cbbe5518eaf7c67cacbc9ca0ad9c2e58c681f62bddd09d5fa2b768020",
+          "byte_count": 311296
+        },
+        {
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\replay_report.json",
+          "json_pointer": "/evidence_inputs/replay_tamper_code_path_7461c280901aacde",
+          "content_mode": "canonical_json_pointer",
+          "input_id": "replay_tamper_code_path_7461c280901aacde",
+          "sha256": "7461c280901aacde75286d21a661276d55acf09452819bcd3bc8e4adf9da2176",
+          "byte_count": 126
+        }
+      ],
+      "run_id": "ego-v1-continuity-frozen-seed17",
+      "seed": 17,
+      "episode_ids": [
+        "episode-000000-860a081025554c9d",
+        "episode-000001-cd2aa42a8860bf9e",
+        "episode-000002-b4bf083a7cedb7df"
+      ],
+      "context_ids": [
+        "0635062ea4c202390be9b2069fdc54249160e2abae534ce2c3bf47e7c9cdfaa3",
+        "0b137d74b63dd629348207e573ba71bb008e2ab583d2aef5193a645eb197c9a3",
+        "0b8048e769e8980395e00f0406cc1ef89e9a8c96bfbcd35144ec5cd126079df0",
+        "22d90cbbafa5b64ed89dfceb8b9be7641d6c0e3713b585781f8e2a1a3ac9ebf4",
+        "365631ba1e913b3b8aed73066156316599ad2ec5be89754fdda03d18836681b3",
+        "48fe623af4d4b4da1af87098c3419379251bba798d8e1ca82ecca398a2210d47",
+        "4edfdf458d74bd8bf3348486a318775ea9efe452e87ff9b0dcc7d203244e6512",
+        "4efeafcc34c9fe479791a4b3e0508529345e43f0fc68b743b4440d442091e5d0",
+        "5c3cf41f6f83ae4ee0b0f836b98e35e647751cd2bea818c9c1e90d932d2f906b",
+        "5d8ec2ba6e5482750b787b55bb191a090d863b2189c3f2779c8a4e3ce2c6fbc5",
+        "70d46a18ede87159e8ac951aeb3c994b45dd7054b7e06ec3745afc5dafd4f237",
+        "87a30d5be18268f7210104d16b1da8fe2fe7dd5cdf86b718d37da7a538f501fb",
+        "88be1a824cbd0fb20c32431c07f9730a467461c1ba97e536ef777c04dcd2b575",
+        "8add87064da4aa06e544488ceb18928355f90359f68be9bdf9ae694b790ae36f",
+        "a0f34de9336a6f03d59de4d696aff7767c4d5556277ec2f64281ca83b8d5c00d",
+        "a8e29b147318e32f1bf6af93f5658b2c1982508cae6a2be9ecc35c3a0fad0c17",
+        "ac8a738f62ad27169d37199bfd746c6d6a19409b9899de30082e05f2df109cc7",
+        "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+        "b2056e2d5859f0e595032976af014305dbaadf99cfae28dbd49ff8daaeb5a5da",
+        "b454043e28237f92d24cb97423e72ccddde33441325cb007444fc4cd23ce8ff4",
+        "b495142991bdf7891168423c163eeae378692707cd00c85184b1a20cac62b89d",
+        "b72dfd05caa9db28dad91dc7a579f6eca5d29f7a1166d57975dc19a578fee11c",
+        "cb35afff0b03df7b353abf55c81a46fb045242a1e4f900f6e48fce3058bac585",
+        "d3ae8a59261a579cdaf3d35d249bb0c2756d85ecd2a2572aedd6d70c3ebf4123"
+      ],
+      "checkpoint_ids": [],
+      "aggregation_rule": "actual_disposable_database_tamper_must_raise_expected_recovery_error:code-path",
+      "code_path_hash": "0d03f024fcf6bb0e58b491a95910496116345c407c406e36aa927d96f69d7f0f",
+      "product_code_manifest_hash": "891b65ffc304a40682ab59feefe141a408baa9f97b6fc9e5327f6ba3f4fb164d",
+      "mutation": {
+        "kind": "persisted_code_path_hash_rewritten",
+        "replacement": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "failed_closed": true,
+      "expected_failure_class": "RecoveryError",
+      "expected_reason_substring": "engine code-path drift detected",
+      "observed_failure_class": "RecoveryError",
+      "observed_failure_message": "engine code-path drift detected",
+      "expected_reason_matched": true,
+      "tampered_database_sha256": "77665d2701c94eb3fd12c872f9afd65cbc7e1ad317bf9fee9d54309add7a0f91"
+    }
+  },
+  "blocking_failures": [],
+  "evidence_inputs": {
+    "fresh_process_probe_request_f257ab615bec94ea": {
+      "schema_version": "ego.life_playground.fresh_process_probe_request.v1",
+      "producer_function": "__main__._prepare_fresh_process_probe_request",
+      "input_artifacts": [
+        {
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\continuity.sqlite3",
+          "json_pointer": null,
+          "content_mode": "raw_file",
+          "sha256": "8346740cbbe5518eaf7c67cacbc9ca0ad9c2e58c681f62bddd09d5fa2b768020",
+          "byte_count": 311296
+        }
+      ],
+      "run_id": "ego-v1-continuity-frozen-seed17",
+      "seed": 17,
+      "episode_ids": [
+        "episode-000000-860a081025554c9d",
+        "episode-000001-cd2aa42a8860bf9e",
+        "episode-000002-b4bf083a7cedb7df"
+      ],
+      "context_ids": [
+        "0635062ea4c202390be9b2069fdc54249160e2abae534ce2c3bf47e7c9cdfaa3",
+        "0b137d74b63dd629348207e573ba71bb008e2ab583d2aef5193a645eb197c9a3",
+        "0b8048e769e8980395e00f0406cc1ef89e9a8c96bfbcd35144ec5cd126079df0",
+        "22d90cbbafa5b64ed89dfceb8b9be7641d6c0e3713b585781f8e2a1a3ac9ebf4",
+        "365631ba1e913b3b8aed73066156316599ad2ec5be89754fdda03d18836681b3",
+        "48fe623af4d4b4da1af87098c3419379251bba798d8e1ca82ecca398a2210d47",
+        "4edfdf458d74bd8bf3348486a318775ea9efe452e87ff9b0dcc7d203244e6512",
+        "4efeafcc34c9fe479791a4b3e0508529345e43f0fc68b743b4440d442091e5d0",
+        "5c3cf41f6f83ae4ee0b0f836b98e35e647751cd2bea818c9c1e90d932d2f906b",
+        "5d8ec2ba6e5482750b787b55bb191a090d863b2189c3f2779c8a4e3ce2c6fbc5",
+        "70d46a18ede87159e8ac951aeb3c994b45dd7054b7e06ec3745afc5dafd4f237",
+        "87a30d5be18268f7210104d16b1da8fe2fe7dd5cdf86b718d37da7a538f501fb",
+        "88be1a824cbd0fb20c32431c07f9730a467461c1ba97e536ef777c04dcd2b575",
+        "8add87064da4aa06e544488ceb18928355f90359f68be9bdf9ae694b790ae36f",
+        "a0f34de9336a6f03d59de4d696aff7767c4d5556277ec2f64281ca83b8d5c00d",
+        "a8e29b147318e32f1bf6af93f5658b2c1982508cae6a2be9ecc35c3a0fad0c17",
+        "ac8a738f62ad27169d37199bfd746c6d6a19409b9899de30082e05f2df109cc7",
+        "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+        "b2056e2d5859f0e595032976af014305dbaadf99cfae28dbd49ff8daaeb5a5da",
+        "b454043e28237f92d24cb97423e72ccddde33441325cb007444fc4cd23ce8ff4",
+        "b495142991bdf7891168423c163eeae378692707cd00c85184b1a20cac62b89d",
+        "b72dfd05caa9db28dad91dc7a579f6eca5d29f7a1166d57975dc19a578fee11c",
+        "cb35afff0b03df7b353abf55c81a46fb045242a1e4f900f6e48fce3058bac585",
+        "d3ae8a59261a579cdaf3d35d249bb0c2756d85ecd2a2572aedd6d70c3ebf4123"
+      ],
+      "checkpoint_ids": [],
+      "aggregation_rule": "freeze_database_challenge_prepare_pid_and_expected_recovery_hashes",
+      "code_path_hash": "5d7190b8f854d19f53e92f3f119b6d16b467718a0bb76a3a7f6f3e692a91610d",
+      "product_code_manifest_hash": "891b65ffc304a40682ab59feefe141a408baa9f97b6fc9e5327f6ba3f4fb164d",
+      "challenge": "89f73cf97245a40f22e4aaca89f1ec8c3a3f9695605397f998df17f2c7150506",
+      "pipe_name": "\\\\.\\pipe\\EgoV1Continuity-89f73cf97245a40f22e4aaca89f1ec8c3a3f9695605397f998df17f2c7150506",
+      "pipe_security": {
+        "operator_sid": "S-1-5-21-695949533-3235646390-3225564089-1001",
+        "sddl": "D:P(A;;GA;;;S-1-5-21-695949533-3235646390-3225564089-1001)",
+        "sddl_sha256": "ef69bcefd09a7d2e55bb25826f155b4ad0607f0768abca9a60c87cec8e171fac",
+        "first_pipe_instance": true,
+        "remote_clients_rejected": true
+      },
+      "prepare_pid": 43364,
+      "database_path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\continuity.sqlite3",
+      "database_sha256": "8346740cbbe5518eaf7c67cacbc9ca0ad9c2e58c681f62bddd09d5fa2b768020",
+      "expected_command_count": 24,
+      "expected_hashes": {
+        "final_state_hash": "6a7c2803bf281f69303edadb408ca238916cc07bd2bb3a0d618d3ba1e3bedc1d",
+        "final_model_hash": "d9b4c81dc4a9b25543b35631691ddfb308f589fa7d76925da8850a3c450ebeca",
+        "final_memory_hash": "6bd3a22d061ec42d54e943a6498f5cbce1bdbadd8648c143288485c0aa416131",
+        "current_goal_hash": "b04b98fc33befd405699ee454716e7ef7b5f02302bc282091a766fb85291b84d",
+        "clock_hash": "955be9d5881f2884f0fa04b80b8a1274c51c6d23b06a91e81891067d4c6f39ef",
+        "trace_chain_tip": "9c72f75ed17bc1535da1aff01ce5759e8ae53960a2b144bc7644990d4b900fc3"
+      },
+      "hash_fields": [
+        "final_state_hash",
+        "final_model_hash",
+        "final_memory_hash",
+        "current_goal_hash",
+        "clock_hash",
+        "trace_chain_tip"
+      ],
+      "engine_code_path_hash": "4c913bc970be1b6265b439953806fee4816fa08d67cfa053a5badecd43f5de33"
+    },
+    "replay_tamper_stored_action_618a3125b74915b9": {
+      "kind": "stored_selected_action_and_hash_rewritten",
+      "sequence": 1,
+      "original": "explore",
+      "replacement": "approach",
+      "attacker_rehashed_payload_and_column": true
+    },
+    "replay_tamper_command_payload_073444ef415955a9": {
+      "kind": "typed_command_payload_and_hash_rewritten",
+      "sequence": 1,
+      "original_cue": "novelty",
+      "replacement_cue": "resource",
+      "attacker_rehashed_payload_and_column": true
+    },
+    "replay_tamper_initial_state_f015026ad1f1db8c": {
+      "kind": "initial_state_payload_and_hash_rewritten",
+      "original_energy": 0.45,
+      "replacement_energy": 0.481,
+      "attacker_rehashed_payload_and_column": true
+    },
+    "replay_tamper_code_path_7461c280901aacde": {
+      "kind": "persisted_code_path_hash_rewritten",
+      "replacement": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "finalize_fresh_process_probe_request_f257ab615bec94ea": {
+      "schema_version": "ego.life_playground.fresh_process_probe_request.v1",
+      "producer_function": "__main__._prepare_fresh_process_probe_request",
+      "input_artifacts": [
+        {
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\continuity.sqlite3",
+          "json_pointer": null,
+          "content_mode": "raw_file",
+          "sha256": "8346740cbbe5518eaf7c67cacbc9ca0ad9c2e58c681f62bddd09d5fa2b768020",
+          "byte_count": 311296
+        }
+      ],
+      "run_id": "ego-v1-continuity-frozen-seed17",
+      "seed": 17,
+      "episode_ids": [
+        "episode-000000-860a081025554c9d",
+        "episode-000001-cd2aa42a8860bf9e",
+        "episode-000002-b4bf083a7cedb7df"
+      ],
+      "context_ids": [
+        "0635062ea4c202390be9b2069fdc54249160e2abae534ce2c3bf47e7c9cdfaa3",
+        "0b137d74b63dd629348207e573ba71bb008e2ab583d2aef5193a645eb197c9a3",
+        "0b8048e769e8980395e00f0406cc1ef89e9a8c96bfbcd35144ec5cd126079df0",
+        "22d90cbbafa5b64ed89dfceb8b9be7641d6c0e3713b585781f8e2a1a3ac9ebf4",
+        "365631ba1e913b3b8aed73066156316599ad2ec5be89754fdda03d18836681b3",
+        "48fe623af4d4b4da1af87098c3419379251bba798d8e1ca82ecca398a2210d47",
+        "4edfdf458d74bd8bf3348486a318775ea9efe452e87ff9b0dcc7d203244e6512",
+        "4efeafcc34c9fe479791a4b3e0508529345e43f0fc68b743b4440d442091e5d0",
+        "5c3cf41f6f83ae4ee0b0f836b98e35e647751cd2bea818c9c1e90d932d2f906b",
+        "5d8ec2ba6e5482750b787b55bb191a090d863b2189c3f2779c8a4e3ce2c6fbc5",
+        "70d46a18ede87159e8ac951aeb3c994b45dd7054b7e06ec3745afc5dafd4f237",
+        "87a30d5be18268f7210104d16b1da8fe2fe7dd5cdf86b718d37da7a538f501fb",
+        "88be1a824cbd0fb20c32431c07f9730a467461c1ba97e536ef777c04dcd2b575",
+        "8add87064da4aa06e544488ceb18928355f90359f68be9bdf9ae694b790ae36f",
+        "a0f34de9336a6f03d59de4d696aff7767c4d5556277ec2f64281ca83b8d5c00d",
+        "a8e29b147318e32f1bf6af93f5658b2c1982508cae6a2be9ecc35c3a0fad0c17",
+        "ac8a738f62ad27169d37199bfd746c6d6a19409b9899de30082e05f2df109cc7",
+        "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+        "b2056e2d5859f0e595032976af014305dbaadf99cfae28dbd49ff8daaeb5a5da",
+        "b454043e28237f92d24cb97423e72ccddde33441325cb007444fc4cd23ce8ff4",
+        "b495142991bdf7891168423c163eeae378692707cd00c85184b1a20cac62b89d",
+        "b72dfd05caa9db28dad91dc7a579f6eca5d29f7a1166d57975dc19a578fee11c",
+        "cb35afff0b03df7b353abf55c81a46fb045242a1e4f900f6e48fce3058bac585",
+        "d3ae8a59261a579cdaf3d35d249bb0c2756d85ecd2a2572aedd6d70c3ebf4123"
+      ],
+      "checkpoint_ids": [],
+      "aggregation_rule": "freeze_database_challenge_prepare_pid_and_expected_recovery_hashes",
+      "code_path_hash": "5d7190b8f854d19f53e92f3f119b6d16b467718a0bb76a3a7f6f3e692a91610d",
+      "product_code_manifest_hash": "891b65ffc304a40682ab59feefe141a408baa9f97b6fc9e5327f6ba3f4fb164d",
+      "challenge": "89f73cf97245a40f22e4aaca89f1ec8c3a3f9695605397f998df17f2c7150506",
+      "pipe_name": "\\\\.\\pipe\\EgoV1Continuity-89f73cf97245a40f22e4aaca89f1ec8c3a3f9695605397f998df17f2c7150506",
+      "pipe_security": {
+        "operator_sid": "S-1-5-21-695949533-3235646390-3225564089-1001",
+        "sddl": "D:P(A;;GA;;;S-1-5-21-695949533-3235646390-3225564089-1001)",
+        "sddl_sha256": "ef69bcefd09a7d2e55bb25826f155b4ad0607f0768abca9a60c87cec8e171fac",
+        "first_pipe_instance": true,
+        "remote_clients_rejected": true
+      },
+      "prepare_pid": 43364,
+      "database_path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\continuity.sqlite3",
+      "database_sha256": "8346740cbbe5518eaf7c67cacbc9ca0ad9c2e58c681f62bddd09d5fa2b768020",
+      "expected_command_count": 24,
+      "expected_hashes": {
+        "final_state_hash": "6a7c2803bf281f69303edadb408ca238916cc07bd2bb3a0d618d3ba1e3bedc1d",
+        "final_model_hash": "d9b4c81dc4a9b25543b35631691ddfb308f589fa7d76925da8850a3c450ebeca",
+        "final_memory_hash": "6bd3a22d061ec42d54e943a6498f5cbce1bdbadd8648c143288485c0aa416131",
+        "current_goal_hash": "b04b98fc33befd405699ee454716e7ef7b5f02302bc282091a766fb85291b84d",
+        "clock_hash": "955be9d5881f2884f0fa04b80b8a1274c51c6d23b06a91e81891067d4c6f39ef",
+        "trace_chain_tip": "9c72f75ed17bc1535da1aff01ce5759e8ae53960a2b144bc7644990d4b900fc3"
+      },
+      "hash_fields": [
+        "final_state_hash",
+        "final_model_hash",
+        "final_memory_hash",
+        "current_goal_hash",
+        "clock_hash",
+        "trace_chain_tip"
+      ],
+      "engine_code_path_hash": "4c913bc970be1b6265b439953806fee4816fa08d67cfa053a5badecd43f5de33"
+    },
+    "finalize_fresh_process_probe_receipt_9bc5da3fea2abbf8": {
+      "schema_version": "ego.life_playground.fresh_process_probe_receipt.v1",
+      "challenge": "89f73cf97245a40f22e4aaca89f1ec8c3a3f9695605397f998df17f2c7150506",
+      "prepare_pid": 43364,
+      "probe_pid": 48452,
+      "probe_pid_claimed": 48452,
+      "pipe_name": "\\\\.\\pipe\\EgoV1Continuity-89f73cf97245a40f22e4aaca89f1ec8c3a3f9695605397f998df17f2c7150506",
+      "pipe_security": {
+        "operator_sid": "S-1-5-21-695949533-3235646390-3225564089-1001",
+        "sddl": "D:P(A;;GA;;;S-1-5-21-695949533-3235646390-3225564089-1001)",
+        "sddl_sha256": "ef69bcefd09a7d2e55bb25826f155b4ad0607f0768abca9a60c87cec8e171fac",
+        "first_pipe_instance": true,
+        "remote_clients_rejected": true
+      },
+      "output_path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A",
+      "receipt_path": "C:\\Users\\LEO\\AppData\\Local\\Temp\\ego-v1-external-receipt-e0627843aa73414cae09bfc4d60b78cf.json",
+      "database_path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\continuity.sqlite3",
+      "database_sha256": "8346740cbbe5518eaf7c67cacbc9ca0ad9c2e58c681f62bddd09d5fa2b768020",
+      "run_id": "ego-v1-continuity-frozen-seed17",
+      "command_count": 24,
+      "recovered": true,
+      "hashes": {
+        "final_state_hash": "6a7c2803bf281f69303edadb408ca238916cc07bd2bb3a0d618d3ba1e3bedc1d",
+        "final_model_hash": "d9b4c81dc4a9b25543b35631691ddfb308f589fa7d76925da8850a3c450ebeca",
+        "final_memory_hash": "6bd3a22d061ec42d54e943a6498f5cbce1bdbadd8648c143288485c0aa416131",
+        "current_goal_hash": "b04b98fc33befd405699ee454716e7ef7b5f02302bc282091a766fb85291b84d",
+        "clock_hash": "955be9d5881f2884f0fa04b80b8a1274c51c6d23b06a91e81891067d4c6f39ef",
+        "trace_chain_tip": "9c72f75ed17bc1535da1aff01ce5759e8ae53960a2b144bc7644990d4b900fc3"
+      },
+      "engine_code_path_hash": "4c913bc970be1b6265b439953806fee4816fa08d67cfa053a5badecd43f5de33",
+      "product_code_manifest_hash": "891b65ffc304a40682ab59feefe141a408baa9f97b6fc9e5327f6ba3f4fb164d",
+      "binding_hash": "2ead46ce33f72fd8fdc037999b9bce7054fc67bded81e9c9abafa540be8ce1b2"
+    },
+    "finalize_live_named_pipe_os_attestation_efc8da33ecf8764b": {
+      "valid": true,
+      "blocking_failures": [],
+      "prepare_pid": 43364,
+      "probe_pid_claimed": 48452,
+      "server_pid": 48452,
+      "finalizer_pid": 43800,
+      "server_executable": "C:\\Python313\\python.exe",
+      "server_commandline": "\"C:\\Python313\\python.exe\" \"D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_life_kernel_v1_continuity.py\" --probe --output \"D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\" --probe-receipt \"C:\\Users\\LEO\\AppData\\Local\\Temp\\ego-v1-external-receipt-e0627843aa73414cae09bfc4d60b78cf.json\"",
+      "server_argv": [
+        "c:\\python313\\python.exe",
+        "d:\\project\\aiproject\\myproject\\ego\\scripts\\codex\\verify_ego_life_kernel_v1_continuity.py",
+        "--probe",
+        "--output",
+        "d:\\project\\aiproject\\myproject\\ego\\artifacts\\ego-life-kernel-v1-continuity-playground-001a",
+        "--probe-receipt",
+        "c:\\users\\leo\\appdata\\local\\temp\\ego-v1-external-receipt-e0627843aa73414cae09bfc4d60b78cf.json"
+      ],
+      "expected_argv": [
+        "c:\\python313\\python.exe",
+        "d:\\project\\aiproject\\myproject\\ego\\scripts\\codex\\verify_ego_life_kernel_v1_continuity.py",
+        "--probe",
+        "--output",
+        "d:\\project\\aiproject\\myproject\\ego\\artifacts\\ego-life-kernel-v1-continuity-playground-001a",
+        "--probe-receipt",
+        "c:\\users\\leo\\appdata\\local\\temp\\ego-v1-external-receipt-e0627843aa73414cae09bfc4d60b78cf.json"
+      ],
+      "challenge_response_valid": true,
+      "ack_sent": true,
+      "probe_exit_observed": true,
+      "probe_exit_code": 0,
+      "no_orphan": true,
+      "probe_exit_wait_result": 0,
+      "probe_exit_timeout_ms": 5000,
+      "pre_handshake_snapshot": {
+        "database_sha256": "8346740cbbe5518eaf7c67cacbc9ca0ad9c2e58c681f62bddd09d5fa2b768020",
+        "command_count": 24,
+        "hashes": {
+          "final_state_hash": "6a7c2803bf281f69303edadb408ca238916cc07bd2bb3a0d618d3ba1e3bedc1d",
+          "final_model_hash": "d9b4c81dc4a9b25543b35631691ddfb308f589fa7d76925da8850a3c450ebeca",
+          "final_memory_hash": "6bd3a22d061ec42d54e943a6498f5cbce1bdbadd8648c143288485c0aa416131",
+          "current_goal_hash": "b04b98fc33befd405699ee454716e7ef7b5f02302bc282091a766fb85291b84d",
+          "clock_hash": "955be9d5881f2884f0fa04b80b8a1274c51c6d23b06a91e81891067d4c6f39ef",
+          "trace_chain_tip": "9c72f75ed17bc1535da1aff01ce5759e8ae53960a2b144bc7644990d4b900fc3"
+        },
+        "engine_code_path_hash": "4c913bc970be1b6265b439953806fee4816fa08d67cfa053a5badecd43f5de33"
+      },
+      "post_handshake_snapshot": {
+        "database_sha256": "8346740cbbe5518eaf7c67cacbc9ca0ad9c2e58c681f62bddd09d5fa2b768020",
+        "command_count": 24,
+        "hashes": {
+          "final_state_hash": "6a7c2803bf281f69303edadb408ca238916cc07bd2bb3a0d618d3ba1e3bedc1d",
+          "final_model_hash": "d9b4c81dc4a9b25543b35631691ddfb308f589fa7d76925da8850a3c450ebeca",
+          "final_memory_hash": "6bd3a22d061ec42d54e943a6498f5cbce1bdbadd8648c143288485c0aa416131",
+          "current_goal_hash": "b04b98fc33befd405699ee454716e7ef7b5f02302bc282091a766fb85291b84d",
+          "clock_hash": "955be9d5881f2884f0fa04b80b8a1274c51c6d23b06a91e81891067d4c6f39ef",
+          "trace_chain_tip": "9c72f75ed17bc1535da1aff01ce5759e8ae53960a2b144bc7644990d4b900fc3"
+        },
+        "engine_code_path_hash": "4c913bc970be1b6265b439953806fee4816fa08d67cfa053a5badecd43f5de33"
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-"""Controller and Tk renderer for the explicit local playground process."""
+"""Controller and Tk renderer for the explicit local continuity playground."""
 
 from __future__ import annotations
 
@@ -12,15 +12,23 @@ from typing import Any, Callable, Mapping
 import uuid
 
 from .engine import (
+    ACTIONS,
     CUES,
-    DEFAULT_TOGGLES,
+    DEFAULT_INTERVENTIONS,
+    EngineInvariantError,
     StepResult,
     compute_step,
     initial_state,
     make_command,
     make_run_metadata,
 )
-from .store import CommitReceipt, RecoveryResult, SQLiteEventStore, default_db_path
+from .store import (
+    CommitReceipt,
+    RecoveryFrame,
+    RecoveryResult,
+    SQLiteEventStore,
+    default_db_path,
+)
 
 
 DISCLOSURE = (
@@ -44,52 +52,73 @@ class PlaygroundController:
         *,
         run_id: str | None = None,
         seed: int = 17,
-        episode_id: str = "manual-local",
         on_committed: Callable[[dict[str, Any], dict[str, Any]], None] | None = None,
+        on_recovered: Callable[[RecoveryResult], None] | None = None,
     ) -> None:
         self.store = store
         self.on_committed = on_committed
+        self.on_recovered = on_recovered
         selected_run_id = run_id or store.latest_run_id()
-        self.recovery_status = "new run"
-        if selected_run_id is not None and store.run_exists(selected_run_id):
-            recovered = store.recover_run(selected_run_id)
-            self.run_id = selected_run_id
-            self.run_meta = recovered.run_meta
-            self.state = recovered.state
-            self.last_trace = recovered.traces[-1] if recovered.traces else None
-            self.recovery_status = f"recomputed {recovered.command_count} command(s)"
-        else:
-            self.run_id = selected_run_id or f"local-{uuid.uuid4().hex[:16]}"
-            self.run_meta = make_run_metadata(self.run_id, seed, episode_id)
-            self.state = initial_state()
-            self.last_trace: dict[str, Any] | None = None
-            store.create_run(self.run_meta, self.state)
 
-    def dispatch(self, cue: str, toggles: Mapping[str, bool]) -> DispatchResult:
+        if selected_run_id is not None and store.run_exists(selected_run_id):
+            self.run_id = selected_run_id
+            recovered = store.recover_run(selected_run_id)
+            self._adopt_recovery(recovered)
+            self.recovery_status = f"recomputed {recovered.command_count} command(s)"
+            if self.on_recovered is not None:
+                self.on_recovered(recovered)
+            return
+
+        self.run_id = selected_run_id or f"local-{uuid.uuid4().hex[:16]}"
+        self.run_meta = make_run_metadata(self.run_id, seed)
+        state = initial_state(run_id=self.run_id)
+        store.create_run(self.run_meta, state)
+        recovered = store.recover_run(self.run_id)
+        self._adopt_recovery(recovered)
+        self.recovery_status = "new run"
+
+    def _adopt_recovery(self, recovered: RecoveryResult) -> None:
+        self.recovery = recovered
+        self.run_meta = recovered.run_meta
+        self.state = recovered.state
+        self.last_trace = recovered.traces[-1] if recovered.traces else None
+
+    def dispatch(
+        self,
+        cue: str,
+        interventions: Mapping[str, str],
+        *,
+        trigger_source: str = "ui_step_button",
+    ) -> DispatchResult:
         command = make_command(
-            sequence=int(self.state["step"]) + 1,
+            sequence=int(self.state["clock"]["global_tick"]) + 1,
             cue=cue,
-            toggles=toggles,
+            trigger_source=trigger_source,
+            interventions=interventions,
             prev_command_hash=self.state.get("last_command_hash"),
         )
         computed = compute_step(self.state, command, self.run_meta)
         receipt = self.store.append_step(command, computed.trace)
         if not receipt.committed:
-            # Neither controller state nor renderer callback is changed on a
-            # failed transaction.
+            # Neither controller state, its derived recovery timeline, nor a
+            # renderer callback changes after an atomic transaction failure.
             return DispatchResult(receipt=receipt, step=None)
-        self.state = computed.next_state
-        self.last_trace = computed.trace
-        self.recovery_status = f"committed step {receipt.sequence}"
+
+        # Timeline truth is always rebuilt from serialized initial state plus
+        # ordered commands.  Stored traces remain comparison-only inputs.
+        recovered = self.store.recover_run(self.run_id)
+        self._adopt_recovery(recovered)
+        self.recovery_status = f"committed tick {receipt.sequence}"
         if self.on_committed is not None:
             self.on_committed(deepcopy(self.state), deepcopy(self.last_trace))
         return DispatchResult(receipt=receipt, step=computed)
 
     def recover(self) -> RecoveryResult:
         recovered = self.store.recover_run(self.run_id)
-        self.state = recovered.state
-        self.last_trace = recovered.traces[-1] if recovered.traces else None
+        self._adopt_recovery(recovered)
         self.recovery_status = f"recomputed {recovered.command_count} command(s)"
+        if self.on_recovered is not None:
+            self.on_recovered(recovered)
         return recovered
 
     def export(self, output_path: str | Path) -> Path:
@@ -99,18 +128,34 @@ class PlaygroundController:
 
 
 class PlaygroundWindow:
-    def __init__(self, root: tk.Tk, controller: PlaygroundController) -> None:
+    """Paused-by-default Tk product clock and frame-derived timeline."""
+
+    def __init__(
+        self,
+        root: tk.Tk,
+        controller: PlaygroundController,
+        *,
+        display_interval_ms: int = 500,
+    ) -> None:
+        if type(display_interval_ms) is not int or display_interval_ms <= 0:
+            raise ValueError("display_interval_ms must be a positive integer")
         self.root = root
         self.controller = controller
-        root.title("EGO Visible Life Proxy v0 — Local Playground")
-        root.geometry("1320x840")
-        root.minsize(1050, 700)
+        self.display_interval_ms = display_interval_ms
+        self.running = False
+        self._after_id: str | None = None
+        self._closed = False
+        self._timeline_refreshing = False
+        self._display_sequence = controller.recovery.frames[-1].sequence
+
+        root.title("EGO Life Kernel V1 - Local Continuity Playground")
+        root.geometry("1420x900")
+        root.minsize(1100, 720)
 
         style = ttk.Style(root)
         if "clam" in style.theme_names():
             style.theme_use("clam")
         style.configure("Disclosure.TLabel", foreground="#8b1a1a", font=("Segoe UI", 10, "bold"))
-        style.configure("Heading.TLabel", font=("Segoe UI", 10, "bold"))
 
         shell = ttk.Frame(root, padding=10)
         shell.pack(fill=tk.BOTH, expand=True)
@@ -118,23 +163,59 @@ class PlaygroundWindow:
 
         toolbar = ttk.Frame(shell)
         toolbar.pack(fill=tk.X, pady=(0, 8))
-        self.toggle_vars = {
-            "memory_on": tk.BooleanVar(value=True),
-            "learning_on": tk.BooleanVar(value=True),
-            "consolidation_on": tk.BooleanVar(value=True),
-        }
-        for key, label in (
-            ("memory_on", "Memory"),
-            ("learning_on", "Learning"),
-            ("consolidation_on", "Consolidation replay"),
-        ):
-            ttk.Checkbutton(toolbar, text=label, variable=self.toggle_vars[key]).pack(side=tk.LEFT, padx=(0, 12))
-        ttk.Separator(toolbar, orient=tk.VERTICAL).pack(side=tk.LEFT, fill=tk.Y, padx=4)
-        for cue in CUES:
-            ttk.Button(toolbar, text=cue.title(), command=lambda value=cue: self._dispatch(value)).pack(
-                side=tk.LEFT, padx=3
-            )
-        ttk.Button(toolbar, text="Restart / recompute", command=self._recover).pack(side=tk.RIGHT, padx=3)
+        ttk.Label(toolbar, text="Cue").pack(side=tk.LEFT)
+        self.cue_var = tk.StringVar(value="resource")
+        self.cue_box = ttk.Combobox(
+            toolbar,
+            textvariable=self.cue_var,
+            values=CUES,
+            state="readonly",
+            width=11,
+        )
+        self.cue_box.pack(side=tk.LEFT, padx=(4, 10))
+
+        self.memory_mode_var = tk.StringVar(value="canonical")
+        ttk.Label(toolbar, text="Memory").pack(side=tk.LEFT)
+        self.memory_mode_box = ttk.Combobox(
+            toolbar,
+            textvariable=self.memory_mode_var,
+            values=("canonical", "off"),
+            state="readonly",
+            width=10,
+        )
+        self.memory_mode_box.pack(side=tk.LEFT, padx=(4, 10))
+        self.memory_mode_box.bind("<<ComboboxSelected>>", self._on_memory_mode_selected)
+
+        self.freeze_updates_var = tk.BooleanVar(value=False)
+        ttk.Checkbutton(
+            toolbar,
+            text="Freeze model + memory updates",
+            variable=self.freeze_updates_var,
+        ).pack(side=tk.LEFT, padx=(0, 10))
+
+        self.provenance_mode_var = tk.StringVar(value="canonical")
+        ttk.Label(toolbar, text="Provenance").pack(side=tk.LEFT)
+        self.provenance_mode_box = ttk.Combobox(
+            toolbar,
+            textvariable=self.provenance_mode_var,
+            values=("canonical", "shuffle_projection"),
+            state="readonly",
+            width=18,
+        )
+        self.provenance_mode_box.pack(side=tk.LEFT, padx=(4, 10))
+        self.provenance_mode_box.bind(
+            "<<ComboboxSelected>>", self._on_provenance_mode_selected
+        )
+
+        self.step_button = ttk.Button(toolbar, text="Step", command=self._step_once)
+        self.step_button.pack(side=tk.LEFT, padx=3)
+        self.run_button = ttk.Button(toolbar, text="Run", command=self._start_run)
+        self.run_button.pack(side=tk.LEFT, padx=3)
+        self.pause_button = ttk.Button(toolbar, text="Pause", command=self._pause)
+        self.pause_button.pack(side=tk.LEFT, padx=3)
+        ttk.Button(toolbar, text="Restart / recompute", command=self._recover).pack(
+            side=tk.RIGHT, padx=3
+        )
         ttk.Button(toolbar, text="Export trace", command=self._export).pack(side=tk.RIGHT, padx=3)
 
         body = ttk.Panedwindow(shell, orient=tk.HORIZONTAL)
@@ -156,65 +237,195 @@ class PlaygroundWindow:
             self.state_widgets[key] = (bar, value)
         state_box.columnconfigure(1, weight=1)
 
-        goals_box = ttk.LabelFrame(left, text="Endogenous goal proposals (deficits)", padding=6)
+        goals_box = ttk.LabelFrame(left, text="Current goal + deficit proposals", padding=6)
         goals_box.pack(fill=tk.BOTH, expand=True, pady=(0, 8))
-        self.goals_text = _read_only_text(goals_box, height=8)
+        self.goals_text = _read_only_text(goals_box, height=10)
 
         memory_box = ttk.LabelFrame(left, text="Structured memory + provenance", padding=6)
         memory_box.pack(fill=tk.BOTH, expand=True)
-        self.memory_text = _read_only_text(memory_box, height=16)
+        self.memory_text = _read_only_text(memory_box, height=14)
 
-        candidate_box = ttk.LabelFrame(right, text="One-step action candidates / score components", padding=6)
+        timeline_box = ttk.LabelFrame(right, text="Recomputed continuity timeline", padding=6)
+        timeline_box.pack(fill=tk.X, pady=(0, 8))
+        timeline_columns = ("sequence", "global_tick", "episode", "episode_tick", "cue", "action")
+        self.timeline_tree = ttk.Treeview(
+            timeline_box,
+            columns=timeline_columns,
+            show="headings",
+            height=5,
+            selectmode="browse",
+        )
+        for column, heading, width in (
+            ("sequence", "Seq", 55),
+            ("global_tick", "Global", 65),
+            ("episode", "Episode", 70),
+            ("episode_tick", "Ep tick", 65),
+            ("cue", "Cue", 90),
+            ("action", "Selected action", 115),
+        ):
+            self.timeline_tree.heading(column, text=heading)
+            self.timeline_tree.column(column, width=width, anchor=tk.CENTER)
+        self.timeline_tree.pack(fill=tk.X)
+        self.timeline_tree.bind("<<TreeviewSelect>>", self._on_timeline_select)
+
+        candidate_box = ttk.LabelFrame(
+            right, text="One-step action candidates / score components", padding=6
+        )
         candidate_box.pack(fill=tk.BOTH, expand=True, pady=(0, 8))
-        columns = ("action", "deficit", "memory", "novelty", "cost", "tie", "total")
-        self.candidate_tree = ttk.Treeview(candidate_box, columns=columns, show="headings", height=8)
+        columns = ("action", "goal", "total", "memory", "novelty", "cost", "tie", "score")
+        self.candidate_tree = ttk.Treeview(candidate_box, columns=columns, show="headings", height=7)
         headings = {
             "action": "Action",
-            "deficit": "Deficit Δ",
-            "memory": "Memory bias",
+            "goal": "Goal gain",
+            "total": "Total gain",
+            "memory": "Memory",
             "novelty": "Untried",
             "cost": "Cost",
-            "tie": "Seed tie",
-            "total": "Total",
+            "tie": "Tie",
+            "score": "Score",
         }
         for column in columns:
             self.candidate_tree.heading(column, text=headings[column])
-            self.candidate_tree.column(column, width=100, anchor=tk.CENTER)
+            self.candidate_tree.column(column, width=92, anchor=tk.CENTER)
         self.candidate_tree.pack(fill=tk.BOTH, expand=True)
 
         lower = ttk.Panedwindow(right, orient=tk.HORIZONTAL)
         lower.pack(fill=tk.BOTH, expand=True)
         model_box = ttk.LabelFrame(lower, text="Tabular outcome model (count / EMA)", padding=6)
-        trace_box = ttk.LabelFrame(lower, text="Selection / prediction / trace", padding=6)
+        trace_box = ttk.LabelFrame(lower, text="Prediction / error / update / trace", padding=6)
         lower.add(model_box, weight=1)
         lower.add(trace_box, weight=1)
-        self.model_text = _read_only_text(model_box, height=19)
-        self.trace_text = _read_only_text(trace_box, height=19)
+        self.model_text = _read_only_text(model_box, height=17)
+        self.trace_text = _read_only_text(trace_box, height=17)
 
         self.status_var = tk.StringVar()
         ttk.Label(shell, textvariable=self.status_var, relief=tk.SUNKEN, anchor=tk.W).pack(
             fill=tk.X, pady=(8, 0)
         )
+        # The renderer owns the one commit-success callback used by the live
+        # widget path.  Controller-only callers may supply their own callback,
+        # but attaching a window makes commit -> callback -> redraw canonical.
+        self.controller.on_committed = self._on_committed
         self.redraw()
 
-    def _toggle_snapshot(self) -> dict[str, bool]:
-        return {key: bool(var.get()) for key, var in self.toggle_vars.items()}
+    def _intervention_snapshot(self) -> dict[str, str]:
+        snapshot = {
+            "memory_mode": self.memory_mode_var.get(),
+            "update_mode": "frozen" if self.freeze_updates_var.get() else "enabled",
+            "provenance_mode": self.provenance_mode_var.get(),
+        }
+        if (
+            snapshot["memory_mode"] == "off"
+            and snapshot["provenance_mode"] == "shuffle_projection"
+        ):
+            raise EngineInvariantError(
+                "invalid intervention combination: Memory OFF and Shuffle Provenance are mutually exclusive"
+            )
+        return snapshot
 
-    def _dispatch(self, cue: str) -> None:
-        result = self.controller.dispatch(cue, self._toggle_snapshot())
-        if not result.receipt.committed:
-            messagebox.showerror("Atomic commit rejected", result.receipt.error or "unknown error")
-            self.status_var.set("No state redraw: SQLite command+trace transaction rolled back")
+    def _on_memory_mode_selected(self, _event: tk.Event[tk.Misc]) -> None:
+        if self.memory_mode_var.get() == "off":
+            self.provenance_mode_var.set("canonical")
+
+    def _on_provenance_mode_selected(self, _event: tk.Event[tk.Misc]) -> None:
+        if self.provenance_mode_var.get() == "shuffle_projection":
+            self.memory_mode_var.set("canonical")
+
+    def _latest_sequence(self) -> int:
+        return self.controller.recovery.frames[-1].sequence
+
+    def _is_historical(self) -> bool:
+        return self._display_sequence != self._latest_sequence()
+
+    def _step_once(self) -> None:
+        if self.running or self._is_historical():
             return
+        self._dispatch("ui_step_button")
+
+    def _start_run(self) -> None:
+        if self._closed or self.running or self._is_historical():
+            return
+        self.running = True
+        self._update_progress_controls()
+        # The widget handler never changes causal state directly.  Even the
+        # first tick is deferred through Tk's scheduler.
+        self._after_id = self.root.after(0, self._run_tick)
+
+    def _run_tick(self) -> None:
+        self._after_id = None
+        if self._closed or not self.running:
+            return
+        committed = self._dispatch("ui_run_button")
+        if self.running and committed:
+            # Arm the display interval only after Tk has drained redraw work
+            # from this committed frame.  A single ``root.update()`` therefore
+            # observes one tick rather than recursively consuming timers whose
+            # delay elapsed while widgets were being laid out.
+            self._after_id = self.root.after_idle(self._arm_run_timer)
+
+    def _arm_run_timer(self) -> None:
+        self._after_id = None
+        if not self._closed and self.running:
+            # Very small Tk timers can expire while ``update()`` is still
+            # draining geometry work and collapse several logical ticks into
+            # one widget-event observation.  Keep a small UI-only floor; it is
+            # deliberately absent from causal state, commands, and hashes.
+            interval = max(self.display_interval_ms, 50)
+            self._after_id = self.root.after(interval, self._run_tick)
+
+    def _pause(self) -> None:
+        self.running = False
+        if self._after_id is not None:
+            try:
+                self.root.after_cancel(self._after_id)
+            except tk.TclError:
+                pass
+            self._after_id = None
+        if not self._closed:
+            self._update_progress_controls()
+
+    def _on_committed(
+        self,
+        _state: dict[str, Any],
+        _trace: dict[str, Any],
+    ) -> None:
+        """Advance visible truth only from the post-commit controller callback."""
+
+        if self._closed:
+            return
+        self._display_sequence = self._latest_sequence()
         self.redraw()
+
+    def _dispatch(self, trigger_source: str) -> bool:
+        if self._closed or self._is_historical():
+            return False
+        try:
+            result = self.controller.dispatch(
+                self.cue_var.get(),
+                self._intervention_snapshot(),
+                trigger_source=trigger_source,
+            )
+        except EngineInvariantError as exc:
+            self._pause()
+            messagebox.showerror("Command rejected", str(exc))
+            self.status_var.set(f"Paused without commit: {exc}")
+            return False
+        if not result.receipt.committed:
+            self._pause()
+            messagebox.showerror("Atomic commit rejected", result.receipt.error or "unknown error")
+            self.status_var.set("No redraw: SQLite command+trace transaction rolled back")
+            return False
+        return True
 
     def _recover(self) -> None:
+        self._pause()
         try:
             self.controller.recover()
         except Exception as exc:
             messagebox.showerror("Recovery failed closed", str(exc))
             self.status_var.set(f"Recovery failed closed: {exc}")
             return
+        self._display_sequence = self._latest_sequence()
         self.redraw()
 
     def _export(self) -> None:
@@ -236,45 +447,128 @@ class PlaygroundWindow:
             return
         self.status_var.set(f"Verified export: {output}")
 
-    def redraw(self) -> None:
-        state = self.controller.state
+    def _frame_for_sequence(self, sequence: int) -> RecoveryFrame:
+        for frame in self.controller.recovery.frames:
+            if frame.sequence == sequence:
+                return frame
+        raise RuntimeError(f"unknown recomputed frame sequence: {sequence}")
+
+    def _on_timeline_select(self, _event: tk.Event[tk.Misc]) -> None:
+        if self._timeline_refreshing:
+            return
+        selection = self.timeline_tree.selection()
+        if not selection:
+            return
+        sequence = int(self.timeline_tree.item(selection[0], "values")[0])
+        if sequence == self._display_sequence:
+            # Programmatic selection_set calls during timeline rebuild can
+            # queue this virtual event until after the guard is released.
+            # They must not create a second redraw outside the commit callback.
+            return
+        self._display_sequence = sequence
+        if self._is_historical():
+            self._pause()
+        self.redraw(self._frame_for_sequence(sequence), rebuild_timeline=False)
+
+    def _rebuild_timeline(self) -> None:
+        self._timeline_refreshing = True
+        try:
+            for item in self.timeline_tree.get_children():
+                self.timeline_tree.delete(item)
+            selected_iid = ""
+            for frame in self.controller.recovery.frames:
+                clock = frame.state["clock"]
+                trace = frame.trace
+                iid = self.timeline_tree.insert(
+                    "",
+                    tk.END,
+                    values=(
+                        frame.sequence,
+                        clock["global_tick"],
+                        clock["episode_index"],
+                        clock["episode_tick"],
+                        "initial" if trace is None else trace["cue"],
+                        "-" if trace is None else trace["selected_action"],
+                    ),
+                )
+                if frame.sequence == self._display_sequence:
+                    selected_iid = iid
+            if selected_iid:
+                self.timeline_tree.selection_set(selected_iid)
+                self.timeline_tree.see(selected_iid)
+        finally:
+            self._timeline_refreshing = False
+
+    def _update_progress_controls(self) -> None:
+        blocked = self._is_historical()
+        if blocked or self.running:
+            self.step_button.state(["disabled"])
+        else:
+            self.step_button.state(["!disabled"])
+        if blocked or self.running:
+            self.run_button.state(["disabled"])
+        else:
+            self.run_button.state(["!disabled"])
+        if self.running:
+            self.pause_button.state(["!disabled"])
+        else:
+            self.pause_button.state(["disabled"])
+
+    def redraw(
+        self,
+        frame: RecoveryFrame | None = None,
+        *,
+        rebuild_timeline: bool = True,
+    ) -> None:
+        if frame is None:
+            frame = self._frame_for_sequence(self._display_sequence)
+        if rebuild_timeline:
+            self._rebuild_timeline()
+
+        state = frame.state
+        trace = frame.trace
         for key, (bar, label) in self.state_widgets.items():
             value = float(state["organism"][key])
             bar["value"] = value * 100
             label["text"] = f"{value:.3f}"
 
-        trace = self.controller.last_trace
-        if trace is None:
-            goals = _goals_from_state(state)
-            candidates: list[dict[str, Any]] = []
-        else:
-            goals = trace["goals"]
-            candidates = trace["candidates"]
-        _set_text(
-            self.goals_text,
-            "\n".join(
-                f"{goal['priority']}. {goal['state_variable']}: "
-                f"{goal['current']:.3f} → {goal['target']:.2f}  deficit={goal['deficit']:.3f}"
-                for goal in goals
-            ),
+        from .engine import propose_goals
+
+        goals = propose_goals(state["organism"]) if trace is None else trace["goals"]
+        current_goal = state["current_goal"]
+        goal_age_ticks = int(state["clock"]["global_tick"]) - int(
+            current_goal["selected_global_tick"]
         )
+        goal_lines = [
+            "current_goal=" + json.dumps(current_goal, sort_keys=True, ensure_ascii=False),
+            f"goal_age_ticks={goal_age_ticks}",
+            "",
+        ]
+        goal_lines.extend(
+            f"{goal['priority']}. {goal['state_variable']}: "
+            f"{goal['current']:.3f} -> {goal['target']:.2f} deficit={goal['deficit']:.3f}"
+            for goal in goals
+        )
+        _set_text(self.goals_text, "\n".join(goal_lines))
         _set_text(self.memory_text, json.dumps(state["memory"], indent=2, ensure_ascii=False))
         _set_text(self.model_text, json.dumps(state["model"], indent=2, ensure_ascii=False))
 
         for item in self.candidate_tree.get_children():
             self.candidate_tree.delete(item)
-        selected_action = trace["selected_action"] if trace else None
+        candidates: list[dict[str, Any]] = [] if trace is None else trace["candidates"]
+        selected_action = None if trace is None else trace["selected_action"]
         for candidate in sorted(candidates, key=lambda item: item["total_score"], reverse=True):
             iid = self.candidate_tree.insert(
                 "",
                 tk.END,
                 values=(
                     candidate["action"],
-                    f"{candidate['deficit_reduction']:.4f}",
+                    f"{candidate['current_goal_deficit_reduction']:.4f}",
+                    f"{candidate['total_deficit_reduction']:.4f}",
                     f"{candidate['memory_bias']:.4f}",
                     f"{candidate['untried_bonus']:.4f}",
                     f"{candidate['action_cost']:.4f}",
-                    f"{candidate['tie_break']:.8f}",
+                    f"{candidate['deterministic_tie']:.8f}",
                     f"{candidate['total_score']:.5f}",
                 ),
             )
@@ -282,29 +576,55 @@ class PlaygroundWindow:
                 self.candidate_tree.selection_set(iid)
 
         if trace is None:
-            trace_view = {
+            trace_view: dict[str, Any] = {
+                "clock": state["clock"],
+                "current_goal": current_goal,
                 "selected_action": None,
-                "prediction": None,
-                "actual_delta": None,
-                "prediction_error": None,
-                "latest_trace_hash": None,
+                "trace_hash": None,
             }
         else:
             trace_view = {
+                "clock": state["clock"],
+                "current_goal": current_goal,
+                "trigger_source": trace["trigger_source"],
+                "interventions": trace["interventions"],
+                "command": trace["command"],
                 "selected_action": trace["selected_action"],
                 "prediction": trace["prediction"],
                 "actual_delta": trace["actual_delta"],
                 "prediction_error": trace["prediction_error"],
                 "model_update": trace["model_update"],
                 "memory_update": trace["memory_update"],
-                "latest_trace_hash": trace["trace_hash"],
+                "provenance_projection": trace["provenance_projection"],
+                "memory_refs": trace["memory_refs"],
+                "trace_hash": trace["trace_hash"],
                 "code_path_hash": trace["code_path_hash"],
             }
         _set_text(self.trace_text, json.dumps(trace_view, indent=2, ensure_ascii=False))
+
+        self._update_progress_controls()
+        clock = state["clock"]
+        if self._is_historical():
+            mode = "read-only historical frame; return to latest frame to continue"
+        else:
+            mode = "running" if self.running else "paused"
         self.status_var.set(
-            f"run={self.controller.run_id} | step={state['step']} | "
+            f"run={self.controller.run_id} | global_tick={clock['global_tick']} | "
+            f"episode={clock['episode_index']}:{clock['episode_tick']} | {mode} | "
             f"{self.controller.recovery_status} | db={self.controller.store.path}"
         )
+
+    def close(self) -> None:
+        if self._closed:
+            return
+        self._closed = True
+        self._pause()
+        try:
+            if self.root.winfo_exists():
+                self.root.destroy()
+        except tk.TclError:
+            # An external window-manager teardown may have destroyed Tcl first.
+            pass
 
 
 def run_app(db_path: str | Path | None = None, *, seed: int = 17) -> None:
@@ -313,9 +633,8 @@ def run_app(db_path: str | Path | None = None, *, seed: int = 17) -> None:
         controller = PlaygroundController(store, seed=seed)
         root = tk.Tk()
         window = PlaygroundWindow(root, controller)
-        root.protocol("WM_DELETE_WINDOW", root.destroy)
+        root.protocol("WM_DELETE_WINDOW", window.close)
         root.mainloop()
-        del window
     finally:
         store.close()
 
@@ -332,9 +651,3 @@ def _set_text(widget: tk.Text, value: str) -> None:
     widget.delete("1.0", tk.END)
     widget.insert("1.0", value)
     widget.configure(state=tk.DISABLED)
-
-
-def _goals_from_state(state: Mapping[str, Any]) -> list[dict[str, Any]]:
-    from .engine import propose_goals
-
-    return propose_goals(state["organism"])

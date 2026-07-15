@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Explicit launcher for the local, default-off visible playground."""
+"""Explicit launcher for the local, default-off continuity playground."""
 
 from __future__ import annotations
 
@@ -14,13 +14,14 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from labs.ego_life_playground_v0.app import PlaygroundController, run_app
+from labs.ego_life_playground_v0.engine import DEFAULT_INTERVENTIONS
 from labs.ego_life_playground_v0.store import SQLiteEventStore, default_db_path
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
-            "Run the deterministic local product-clock state/memory/tabular-EMA playground. "
+            "Run the deterministic V1 local continuity state/memory/action playground. "
             "Science weight is zero."
         )
     )
@@ -41,11 +42,8 @@ def main(argv: list[str] | None = None) -> int:
             controller = PlaygroundController(store, seed=args.seed)
             dispatched = controller.dispatch(
                 "resource",
-                {
-                    "memory_on": True,
-                    "learning_on": True,
-                    "consolidation_on": True,
-                },
+                DEFAULT_INTERVENTIONS,
+                trigger_source="headless_acceptance",
             )
             if not dispatched.receipt.committed:
                 raise RuntimeError(dispatched.receipt.error)
@@ -54,10 +52,14 @@ def main(argv: list[str] | None = None) -> int:
                 json.dumps(
                     {
                         "run_id": controller.run_id,
-                        "step": recovered.state["step"],
+                        "clock": recovered.state["clock"],
+                        "current_goal": recovered.state["current_goal"],
                         "selected_action": recovered.traces[-1]["selected_action"],
                         "trace_hash": recovered.traces[-1]["trace_hash"],
                         "recovered": recovered.recovered,
+                        "frame_count": len(recovered.frames),
+                        "trigger_source": recovered.traces[-1]["trigger_source"],
+                        "interventions": recovered.traces[-1]["interventions"],
                         "science_weight": 0,
                     },
                     sort_keys=True,

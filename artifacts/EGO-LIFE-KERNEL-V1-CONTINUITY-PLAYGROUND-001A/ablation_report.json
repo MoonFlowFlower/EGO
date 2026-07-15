@@ -1,0 +1,4151 @@
+{
+  "schema_version": "ego.life_playground.paired_interventions.v1",
+  "producer_function": "__main__.run_paired_interventions",
+  "input_artifacts": [
+    {
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\ablation_report.json",
+      "json_pointer": "/evidence_inputs/serialized_checkpoint_15a81c959de6965c",
+      "content_mode": "canonical_json_pointer",
+      "input_id": "serialized_checkpoint_15a81c959de6965c",
+      "sha256": "15a81c959de6965c23e459cf2411b7f5cae1edce2f39ececd0134255bed067a7",
+      "byte_count": 8042
+    },
+    {
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\ablation_report.json",
+      "json_pointer": "/evidence_inputs/typed_observation_f11dd55d23f9595d",
+      "content_mode": "canonical_json_pointer",
+      "input_id": "typed_observation_f11dd55d23f9595d",
+      "sha256": "f11dd55d23f9595dffdee2313494145496004dae6eab425121d3dfec504716e8",
+      "byte_count": 70
+    }
+  ],
+  "run_id": "ego-v1-continuity-frozen-seed17",
+  "seed": 17,
+  "episode_ids": [
+    "episode-000001-cd2aa42a8860bf9e"
+  ],
+  "context_ids": [
+    "f11dd55d23f9595dffdee2313494145496004dae6eab425121d3dfec504716e8"
+  ],
+  "checkpoint_ids": [
+    "3752fc8255a73773a08e212aa132e3b680ffd677f2077353136aec72d1bd2ccc"
+  ],
+  "aggregation_rule": "four_real_reducer_reruns_from_identical_checkpoint_and_observation",
+  "code_path_hash": "b319a3c6919fc9aaa55127a8203e051ac301e61f7422648959f6e4e8bd45b965",
+  "product_code_manifest_hash": "891b65ffc304a40682ab59feefe141a408baa9f97b6fc9e5327f6ba3f4fb164d",
+  "checkpoint_id": "3752fc8255a73773a08e212aa132e3b680ffd677f2077353136aec72d1bd2ccc",
+  "observation_id": "f11dd55d23f9595dffdee2313494145496004dae6eab425121d3dfec504716e8",
+  "engine_code_path_hash": "4c913bc970be1b6265b439953806fee4816fa08d67cfa053a5badecd43f5de33",
+  "cases": {
+    "canonical": {
+      "producer_function": "__main__.run_paired_interventions",
+      "input_artifacts": [
+        {
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\ablation_report.json",
+          "json_pointer": "/evidence_inputs/paired_checkpoint_state_15a81c959de6965c",
+          "content_mode": "canonical_json_pointer",
+          "input_id": "paired_checkpoint_state_15a81c959de6965c",
+          "sha256": "15a81c959de6965c23e459cf2411b7f5cae1edce2f39ececd0134255bed067a7",
+          "byte_count": 8042
+        },
+        {
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\ablation_report.json",
+          "json_pointer": "/evidence_inputs/paired_command_canonical_816bd03190abd6f0",
+          "content_mode": "canonical_json_pointer",
+          "input_id": "paired_command_canonical_816bd03190abd6f0",
+          "sha256": "816bd03190abd6f097ceee58028bcdc33ab18a9fa2cff44dc1632f428a28c60c",
+          "byte_count": 387
+        }
+      ],
+      "run_id": "ego-v1-continuity-frozen-seed17",
+      "seed": 17,
+      "episode_ids": [
+        "episode-000001-cd2aa42a8860bf9e"
+      ],
+      "context_ids": [
+        "1bdd08a816f0c12245259a98627e4f46a265460bbf15f33adf8dae874a99fc27",
+        "f11dd55d23f9595dffdee2313494145496004dae6eab425121d3dfec504716e8"
+      ],
+      "checkpoint_ids": [
+        "3752fc8255a73773a08e212aa132e3b680ffd677f2077353136aec72d1bd2ccc"
+      ],
+      "aggregation_rule": "one_real_canonical_reducer_rerun:canonical",
+      "code_path_hash": "b319a3c6919fc9aaa55127a8203e051ac301e61f7422648959f6e4e8bd45b965",
+      "product_code_manifest_hash": "891b65ffc304a40682ab59feefe141a408baa9f97b6fc9e5327f6ba3f4fb164d",
+      "checkpoint_id": "3752fc8255a73773a08e212aa132e3b680ffd677f2077353136aec72d1bd2ccc",
+      "observation_id": "f11dd55d23f9595dffdee2313494145496004dae6eab425121d3dfec504716e8",
+      "command": {
+        "schema_version": "ego.life_playground.command.v1",
+        "sequence": 17,
+        "cue": "novelty",
+        "trigger_source": "paired_intervention",
+        "interventions": {
+          "memory_mode": "canonical",
+          "provenance_mode": "canonical",
+          "update_mode": "enabled"
+        },
+        "prev_command_hash": "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+        "command_hash": "1bdd08a816f0c12245259a98627e4f46a265460bbf15f33adf8dae874a99fc27"
+      },
+      "command_hash": "1bdd08a816f0c12245259a98627e4f46a265460bbf15f33adf8dae874a99fc27",
+      "selected_action": "explore",
+      "candidates": [
+        {
+          "action": "approach",
+          "predicted_delta": {
+            "energy": -0.02,
+            "safety": -0.02,
+            "connection": 0.11,
+            "stimulation": 0.03
+          },
+          "current_goal_deficit_reduction": 0.0,
+          "total_deficit_reduction": 0.0,
+          "memory_bias": 0.0,
+          "untried_bonus": 0.0,
+          "action_cost": 0.018,
+          "deterministic_tie": 1.8308e-07,
+          "total_score": -0.017999817,
+          "model_ref": {
+            "source": "tabular_ema",
+            "context_key": "novelty|homeostasis",
+            "action": "approach",
+            "count": 1
+          },
+          "memory_refs": [
+            "0b8048e769e8980395e00f0406cc1ef89e9a8c96bfbcd35144ec5cd126079df0"
+          ]
+        },
+        {
+          "action": "explore",
+          "predicted_delta": {
+            "energy": -0.05,
+            "safety": -0.03,
+            "connection": 0.0,
+            "stimulation": 0.18
+          },
+          "current_goal_deficit_reduction": 0.0,
+          "total_deficit_reduction": 0.0,
+          "memory_bias": 0.0,
+          "untried_bonus": 0.025,
+          "action_cost": 0.025,
+          "deterministic_tie": 6.45419e-07,
+          "total_score": 6.45e-07,
+          "model_ref": {
+            "source": "hardcoded_prior",
+            "context_key": "novelty|homeostasis",
+            "action": "explore",
+            "count": 0
+          },
+          "memory_refs": []
+        },
+        {
+          "action": "forage",
+          "predicted_delta": {
+            "energy": 0.12,
+            "safety": -0.03,
+            "connection": 0.0,
+            "stimulation": 0.02
+          },
+          "current_goal_deficit_reduction": 0.0,
+          "total_deficit_reduction": 0.0,
+          "memory_bias": 0.0,
+          "untried_bonus": 0.0,
+          "action_cost": 0.02,
+          "deterministic_tie": 1.00136e-07,
+          "total_score": -0.0199999,
+          "model_ref": {
+            "source": "tabular_ema",
+            "context_key": "novelty|homeostasis",
+            "action": "forage",
+            "count": 1
+          },
+          "memory_refs": [
+            "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2"
+          ]
+        },
+        {
+          "action": "rest",
+          "predicted_delta": {
+            "energy": 0.09,
+            "safety": 0.04,
+            "connection": 0.0,
+            "stimulation": -0.04
+          },
+          "current_goal_deficit_reduction": 0.0,
+          "total_deficit_reduction": 0.0,
+          "memory_bias": 0.0,
+          "untried_bonus": 0.0,
+          "action_cost": 0.01,
+          "deterministic_tie": 6.61002e-07,
+          "total_score": -0.009999339,
+          "model_ref": {
+            "source": "tabular_ema",
+            "context_key": "novelty|homeostasis",
+            "action": "rest",
+            "count": 1
+          },
+          "memory_refs": [
+            "b2056e2d5859f0e595032976af014305dbaadf99cfae28dbd49ff8daaeb5a5da"
+          ]
+        },
+        {
+          "action": "withdraw",
+          "predicted_delta": {
+            "energy": -0.01,
+            "safety": 0.1,
+            "connection": -0.04,
+            "stimulation": -0.03
+          },
+          "current_goal_deficit_reduction": 0.0,
+          "total_deficit_reduction": 0.0,
+          "memory_bias": 0.0,
+          "untried_bonus": 0.0,
+          "action_cost": 0.015,
+          "deterministic_tie": 5.16129e-07,
+          "total_score": -0.014999484,
+          "model_ref": {
+            "source": "tabular_ema",
+            "context_key": "novelty|homeostasis",
+            "action": "withdraw",
+            "count": 1
+          },
+          "memory_refs": [
+            "b454043e28237f92d24cb97423e72ccddde33441325cb007444fc4cd23ce8ff4"
+          ]
+        }
+      ],
+      "memory_read_refs": [
+        "0b8048e769e8980395e00f0406cc1ef89e9a8c96bfbcd35144ec5cd126079df0",
+        "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+        "b2056e2d5859f0e595032976af014305dbaadf99cfae28dbd49ff8daaeb5a5da",
+        "b454043e28237f92d24cb97423e72ccddde33441325cb007444fc4cd23ce8ff4"
+      ],
+      "memory_read_count": 4,
+      "model_update": {
+        "applied": true,
+        "alpha": 0.35,
+        "context_key": "novelty|homeostasis",
+        "action": "explore",
+        "previous_count": 0,
+        "new_count": 1,
+        "ema_delta": {
+          "energy": -0.05,
+          "safety": -0.03,
+          "connection": 0.0,
+          "stimulation": 0.26
+        }
+      },
+      "memory_update": {
+        "applied": true,
+        "episodic_write": "mem-cdec6576011453524fd1",
+        "consolidation_applied": false,
+        "consolidation_refs": [],
+        "reason": "threshold_not_met"
+      },
+      "provenance_projection": {
+        "mode": "canonical",
+        "status": "canonical",
+        "source_memory_hash": "d9f77e0c8ebb6f4d9e7e1d68f9338bb7b1509bb21a13cbe38e027b46bed0907d",
+        "projected_view_hash": "d9f77e0c8ebb6f4d9e7e1d68f9338bb7b1509bb21a13cbe38e027b46bed0907d",
+        "permutation_hash": null,
+        "eligibility_count": 16,
+        "cross_slot_moves": 0,
+        "marginal_preservation": {
+          "slot_counts_preserved": true,
+          "bundle_multiset_preserved": true,
+          "eligible_records_before": 16,
+          "eligible_records_after": 16,
+          "slot_counts_before": [
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "energy",
+                "action": "approach"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "energy",
+                "action": "forage"
+              },
+              "count": 2
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "energy",
+                "action": "rest"
+              },
+              "count": 2
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "homeostasis",
+                "action": "approach"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "homeostasis",
+                "action": "forage"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "homeostasis",
+                "action": "rest"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "homeostasis",
+                "action": "withdraw"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "safety",
+                "action": "approach"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "safety",
+                "action": "rest"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "safety",
+                "action": "withdraw"
+              },
+              "count": 2
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "stimulation",
+                "action": "approach"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "stimulation",
+                "action": "explore"
+              },
+              "count": 2
+            }
+          ],
+          "slot_counts_after": [
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "energy",
+                "action": "approach"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "energy",
+                "action": "forage"
+              },
+              "count": 2
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "energy",
+                "action": "rest"
+              },
+              "count": 2
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "homeostasis",
+                "action": "approach"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "homeostasis",
+                "action": "forage"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "homeostasis",
+                "action": "rest"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "homeostasis",
+                "action": "withdraw"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "safety",
+                "action": "approach"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "safety",
+                "action": "rest"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "safety",
+                "action": "withdraw"
+              },
+              "count": 2
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "stimulation",
+                "action": "approach"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "stimulation",
+                "action": "explore"
+              },
+              "count": 2
+            }
+          ],
+          "bundle_hash_counts_before": [
+            {
+              "bundle_hash": "0e0fec10f9836f3df60165db034dc54254aa8cf5d75e9b917295ca2cca0fd4f9",
+              "count": 1
+            },
+            {
+              "bundle_hash": "197b306ae3870180626b37b175552e45fd75d1f0c17915052f36ceeb4e50b6a6",
+              "count": 1
+            },
+            {
+              "bundle_hash": "1b6df72af2951aeaae56eef2c1e9005da9dfda7d7921e0a221b8082dead4c635",
+              "count": 1
+            },
+            {
+              "bundle_hash": "1ee4f3635add8124d68356d708573e709bc055f5547ce4051ff1ab38b08897e1",
+              "count": 1
+            },
+            {
+              "bundle_hash": "22b51459338dce788bd2f1cefbf49025914fef9e240470a3aa8ff0fb4e66b6c8",
+              "count": 1
+            },
+            {
+              "bundle_hash": "31e93b9a9e7b1408b0e3815aeab3abd741828e370f62f8c6cfb600e037ef6969",
+              "count": 1
+            },
+            {
+              "bundle_hash": "4d7fcecc8b6df294163a9a691c3901269aaa44d8b488c13c79e9328e64961130",
+              "count": 1
+            },
+            {
+              "bundle_hash": "7dc343a0ecf2a3b0b3dcf4191c51ba886789b4eee601ff36b8049cacf6691bdb",
+              "count": 1
+            },
+            {
+              "bundle_hash": "8e7245fed77f6171f8fa66022acc84858d4580d47f2be5fb84104940e6b1ef13",
+              "count": 1
+            },
+            {
+              "bundle_hash": "ae317924e21ca03183b674485bfb34e80f509c191b0ee0d74d666b22e561d6d3",
+              "count": 1
+            },
+            {
+              "bundle_hash": "b614f2957f0be60af9c453ebc93b178663e6daab61ab4fe0bfdcb255c03538f0",
+              "count": 1
+            },
+            {
+              "bundle_hash": "c4fc16ad7d4e98eed0c3bd62c12cb3560a2fb52d2b2a631e49e1be4a04374c23",
+              "count": 1
+            },
+            {
+              "bundle_hash": "cfb505d2ac2f3149161257a1d86611957f13f474f82a89adbfa371e5878e6c14",
+              "count": 1
+            },
+            {
+              "bundle_hash": "d43b42e8b3d537ff8f0ea7157ca0826bf96b97e4987ce8989da352988d9138b9",
+              "count": 1
+            },
+            {
+              "bundle_hash": "dbc15a4451a5fcdc77af005b3a123f687a6d41e8dd3bb475e55a4592481c6299",
+              "count": 1
+            },
+            {
+              "bundle_hash": "f72a7ced4b578bf6b6a8f3dc406d007326b3ea8e4fa059f342d86d28b7d59cc2",
+              "count": 1
+            }
+          ],
+          "bundle_hash_counts_after": [
+            {
+              "bundle_hash": "0e0fec10f9836f3df60165db034dc54254aa8cf5d75e9b917295ca2cca0fd4f9",
+              "count": 1
+            },
+            {
+              "bundle_hash": "197b306ae3870180626b37b175552e45fd75d1f0c17915052f36ceeb4e50b6a6",
+              "count": 1
+            },
+            {
+              "bundle_hash": "1b6df72af2951aeaae56eef2c1e9005da9dfda7d7921e0a221b8082dead4c635",
+              "count": 1
+            },
+            {
+              "bundle_hash": "1ee4f3635add8124d68356d708573e709bc055f5547ce4051ff1ab38b08897e1",
+              "count": 1
+            },
+            {
+              "bundle_hash": "22b51459338dce788bd2f1cefbf49025914fef9e240470a3aa8ff0fb4e66b6c8",
+              "count": 1
+            },
+            {
+              "bundle_hash": "31e93b9a9e7b1408b0e3815aeab3abd741828e370f62f8c6cfb600e037ef6969",
+              "count": 1
+            },
+            {
+              "bundle_hash": "4d7fcecc8b6df294163a9a691c3901269aaa44d8b488c13c79e9328e64961130",
+              "count": 1
+            },
+            {
+              "bundle_hash": "7dc343a0ecf2a3b0b3dcf4191c51ba886789b4eee601ff36b8049cacf6691bdb",
+              "count": 1
+            },
+            {
+              "bundle_hash": "8e7245fed77f6171f8fa66022acc84858d4580d47f2be5fb84104940e6b1ef13",
+              "count": 1
+            },
+            {
+              "bundle_hash": "ae317924e21ca03183b674485bfb34e80f509c191b0ee0d74d666b22e561d6d3",
+              "count": 1
+            },
+            {
+              "bundle_hash": "b614f2957f0be60af9c453ebc93b178663e6daab61ab4fe0bfdcb255c03538f0",
+              "count": 1
+            },
+            {
+              "bundle_hash": "c4fc16ad7d4e98eed0c3bd62c12cb3560a2fb52d2b2a631e49e1be4a04374c23",
+              "count": 1
+            },
+            {
+              "bundle_hash": "cfb505d2ac2f3149161257a1d86611957f13f474f82a89adbfa371e5878e6c14",
+              "count": 1
+            },
+            {
+              "bundle_hash": "d43b42e8b3d537ff8f0ea7157ca0826bf96b97e4987ce8989da352988d9138b9",
+              "count": 1
+            },
+            {
+              "bundle_hash": "dbc15a4451a5fcdc77af005b3a123f687a6d41e8dd3bb475e55a4592481c6299",
+              "count": 1
+            },
+            {
+              "bundle_hash": "f72a7ced4b578bf6b6a8f3dc406d007326b3ea8e4fa059f342d86d28b7d59cc2",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "model_bytes_unchanged": false,
+      "memory_bytes_unchanged": false,
+      "state_after_hash": "ca34188bcf32153a787a33aab96e3faccad488a6b6dab1ccc1414bbc02183d7c",
+      "trace_hash": "1deceecb415f9907859a2ef6a027f53af7eeec51fd968745517be2a2a99a26f7",
+      "engine_code_path_hash": "4c913bc970be1b6265b439953806fee4816fa08d67cfa053a5badecd43f5de33"
+    },
+    "memory_off": {
+      "producer_function": "__main__.run_paired_interventions",
+      "input_artifacts": [
+        {
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\ablation_report.json",
+          "json_pointer": "/evidence_inputs/paired_checkpoint_state_15a81c959de6965c",
+          "content_mode": "canonical_json_pointer",
+          "input_id": "paired_checkpoint_state_15a81c959de6965c",
+          "sha256": "15a81c959de6965c23e459cf2411b7f5cae1edce2f39ececd0134255bed067a7",
+          "byte_count": 8042
+        },
+        {
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\ablation_report.json",
+          "json_pointer": "/evidence_inputs/paired_command_memory_off_c68a31621b8c4435",
+          "content_mode": "canonical_json_pointer",
+          "input_id": "paired_command_memory_off_c68a31621b8c4435",
+          "sha256": "c68a31621b8c4435144b4d4a6715139e5df348716283e60b769c855e9994cd2e",
+          "byte_count": 381
+        }
+      ],
+      "run_id": "ego-v1-continuity-frozen-seed17",
+      "seed": 17,
+      "episode_ids": [
+        "episode-000001-cd2aa42a8860bf9e"
+      ],
+      "context_ids": [
+        "e103e7d4d461f0178eccc70ba3914a4922defe9185ee30b6f6c346c0182d3379",
+        "f11dd55d23f9595dffdee2313494145496004dae6eab425121d3dfec504716e8"
+      ],
+      "checkpoint_ids": [
+        "3752fc8255a73773a08e212aa132e3b680ffd677f2077353136aec72d1bd2ccc"
+      ],
+      "aggregation_rule": "one_real_canonical_reducer_rerun:memory_off",
+      "code_path_hash": "b319a3c6919fc9aaa55127a8203e051ac301e61f7422648959f6e4e8bd45b965",
+      "product_code_manifest_hash": "891b65ffc304a40682ab59feefe141a408baa9f97b6fc9e5327f6ba3f4fb164d",
+      "checkpoint_id": "3752fc8255a73773a08e212aa132e3b680ffd677f2077353136aec72d1bd2ccc",
+      "observation_id": "f11dd55d23f9595dffdee2313494145496004dae6eab425121d3dfec504716e8",
+      "command": {
+        "schema_version": "ego.life_playground.command.v1",
+        "sequence": 17,
+        "cue": "novelty",
+        "trigger_source": "paired_intervention",
+        "interventions": {
+          "memory_mode": "off",
+          "provenance_mode": "canonical",
+          "update_mode": "enabled"
+        },
+        "prev_command_hash": "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+        "command_hash": "e103e7d4d461f0178eccc70ba3914a4922defe9185ee30b6f6c346c0182d3379"
+      },
+      "command_hash": "e103e7d4d461f0178eccc70ba3914a4922defe9185ee30b6f6c346c0182d3379",
+      "selected_action": "explore",
+      "candidates": [
+        {
+          "action": "approach",
+          "predicted_delta": {
+            "energy": -0.02,
+            "safety": -0.02,
+            "connection": 0.11,
+            "stimulation": 0.03
+          },
+          "current_goal_deficit_reduction": 0.0,
+          "total_deficit_reduction": 0.0,
+          "memory_bias": 0.0,
+          "untried_bonus": 0.0,
+          "action_cost": 0.018,
+          "deterministic_tie": 1.8308e-07,
+          "total_score": -0.017999817,
+          "model_ref": {
+            "source": "tabular_ema",
+            "context_key": "novelty|homeostasis",
+            "action": "approach",
+            "count": 1
+          },
+          "memory_refs": []
+        },
+        {
+          "action": "explore",
+          "predicted_delta": {
+            "energy": -0.05,
+            "safety": -0.03,
+            "connection": 0.0,
+            "stimulation": 0.18
+          },
+          "current_goal_deficit_reduction": 0.0,
+          "total_deficit_reduction": 0.0,
+          "memory_bias": 0.0,
+          "untried_bonus": 0.025,
+          "action_cost": 0.025,
+          "deterministic_tie": 6.45419e-07,
+          "total_score": 6.45e-07,
+          "model_ref": {
+            "source": "hardcoded_prior",
+            "context_key": "novelty|homeostasis",
+            "action": "explore",
+            "count": 0
+          },
+          "memory_refs": []
+        },
+        {
+          "action": "forage",
+          "predicted_delta": {
+            "energy": 0.12,
+            "safety": -0.03,
+            "connection": 0.0,
+            "stimulation": 0.02
+          },
+          "current_goal_deficit_reduction": 0.0,
+          "total_deficit_reduction": 0.0,
+          "memory_bias": 0.0,
+          "untried_bonus": 0.0,
+          "action_cost": 0.02,
+          "deterministic_tie": 1.00136e-07,
+          "total_score": -0.0199999,
+          "model_ref": {
+            "source": "tabular_ema",
+            "context_key": "novelty|homeostasis",
+            "action": "forage",
+            "count": 1
+          },
+          "memory_refs": []
+        },
+        {
+          "action": "rest",
+          "predicted_delta": {
+            "energy": 0.09,
+            "safety": 0.04,
+            "connection": 0.0,
+            "stimulation": -0.04
+          },
+          "current_goal_deficit_reduction": 0.0,
+          "total_deficit_reduction": 0.0,
+          "memory_bias": 0.0,
+          "untried_bonus": 0.0,
+          "action_cost": 0.01,
+          "deterministic_tie": 6.61002e-07,
+          "total_score": -0.009999339,
+          "model_ref": {
+            "source": "tabular_ema",
+            "context_key": "novelty|homeostasis",
+            "action": "rest",
+            "count": 1
+          },
+          "memory_refs": []
+        },
+        {
+          "action": "withdraw",
+          "predicted_delta": {
+            "energy": -0.01,
+            "safety": 0.1,
+            "connection": -0.04,
+            "stimulation": -0.03
+          },
+          "current_goal_deficit_reduction": 0.0,
+          "total_deficit_reduction": 0.0,
+          "memory_bias": 0.0,
+          "untried_bonus": 0.0,
+          "action_cost": 0.015,
+          "deterministic_tie": 5.16129e-07,
+          "total_score": -0.014999484,
+          "model_ref": {
+            "source": "tabular_ema",
+            "context_key": "novelty|homeostasis",
+            "action": "withdraw",
+            "count": 1
+          },
+          "memory_refs": []
+        }
+      ],
+      "memory_read_refs": [],
+      "memory_read_count": 0,
+      "model_update": {
+        "applied": true,
+        "alpha": 0.35,
+        "context_key": "novelty|homeostasis",
+        "action": "explore",
+        "previous_count": 0,
+        "new_count": 1,
+        "ema_delta": {
+          "energy": -0.05,
+          "safety": -0.03,
+          "connection": 0.0,
+          "stimulation": 0.26
+        }
+      },
+      "memory_update": {
+        "applied": false,
+        "episodic_write": null,
+        "consolidation_applied": false,
+        "consolidation_refs": [],
+        "reason": "memory_disabled"
+      },
+      "provenance_projection": {
+        "mode": "canonical",
+        "status": "memory_disabled",
+        "source_memory_hash": "d9f77e0c8ebb6f4d9e7e1d68f9338bb7b1509bb21a13cbe38e027b46bed0907d",
+        "projected_view_hash": "256bfbd5d6ad7c2a18dc9091b48164ebeb6358b128da3fdcf2842fc68df38a12",
+        "permutation_hash": null,
+        "eligibility_count": 0,
+        "cross_slot_moves": 0,
+        "marginal_preservation": {
+          "slot_counts_preserved": true,
+          "bundle_multiset_preserved": true,
+          "eligible_records_before": 0,
+          "eligible_records_after": 0,
+          "slot_counts_before": [],
+          "slot_counts_after": [],
+          "bundle_hash_counts_before": [],
+          "bundle_hash_counts_after": []
+        }
+      },
+      "model_bytes_unchanged": false,
+      "memory_bytes_unchanged": true,
+      "state_after_hash": "4cd715e80af3609b8cdb81185d9dad5110083dbe1cd0c8e41605752127cc30aa",
+      "trace_hash": "351871bded980764ebeb64123d6239390f0c22d55474d3ca15a91155cb2efd10",
+      "engine_code_path_hash": "4c913bc970be1b6265b439953806fee4816fa08d67cfa053a5badecd43f5de33"
+    },
+    "freeze_updates": {
+      "producer_function": "__main__.run_paired_interventions",
+      "input_artifacts": [
+        {
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\ablation_report.json",
+          "json_pointer": "/evidence_inputs/paired_checkpoint_state_15a81c959de6965c",
+          "content_mode": "canonical_json_pointer",
+          "input_id": "paired_checkpoint_state_15a81c959de6965c",
+          "sha256": "15a81c959de6965c23e459cf2411b7f5cae1edce2f39ececd0134255bed067a7",
+          "byte_count": 8042
+        },
+        {
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\ablation_report.json",
+          "json_pointer": "/evidence_inputs/paired_command_freeze_updates_a9004cc3533b795d",
+          "content_mode": "canonical_json_pointer",
+          "input_id": "paired_command_freeze_updates_a9004cc3533b795d",
+          "sha256": "a9004cc3533b795d35bed6447a5c4cb89551b1416a389578430aed5b86db98b8",
+          "byte_count": 386
+        }
+      ],
+      "run_id": "ego-v1-continuity-frozen-seed17",
+      "seed": 17,
+      "episode_ids": [
+        "episode-000001-cd2aa42a8860bf9e"
+      ],
+      "context_ids": [
+        "23e8a96dfcb35b6968f806f46e805f9720acdf12cfef278f83393360d0ffa426",
+        "f11dd55d23f9595dffdee2313494145496004dae6eab425121d3dfec504716e8"
+      ],
+      "checkpoint_ids": [
+        "3752fc8255a73773a08e212aa132e3b680ffd677f2077353136aec72d1bd2ccc"
+      ],
+      "aggregation_rule": "one_real_canonical_reducer_rerun:freeze_updates",
+      "code_path_hash": "b319a3c6919fc9aaa55127a8203e051ac301e61f7422648959f6e4e8bd45b965",
+      "product_code_manifest_hash": "891b65ffc304a40682ab59feefe141a408baa9f97b6fc9e5327f6ba3f4fb164d",
+      "checkpoint_id": "3752fc8255a73773a08e212aa132e3b680ffd677f2077353136aec72d1bd2ccc",
+      "observation_id": "f11dd55d23f9595dffdee2313494145496004dae6eab425121d3dfec504716e8",
+      "command": {
+        "schema_version": "ego.life_playground.command.v1",
+        "sequence": 17,
+        "cue": "novelty",
+        "trigger_source": "paired_intervention",
+        "interventions": {
+          "memory_mode": "canonical",
+          "provenance_mode": "canonical",
+          "update_mode": "frozen"
+        },
+        "prev_command_hash": "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+        "command_hash": "23e8a96dfcb35b6968f806f46e805f9720acdf12cfef278f83393360d0ffa426"
+      },
+      "command_hash": "23e8a96dfcb35b6968f806f46e805f9720acdf12cfef278f83393360d0ffa426",
+      "selected_action": "explore",
+      "candidates": [
+        {
+          "action": "approach",
+          "predicted_delta": {
+            "energy": -0.02,
+            "safety": -0.02,
+            "connection": 0.11,
+            "stimulation": 0.03
+          },
+          "current_goal_deficit_reduction": 0.0,
+          "total_deficit_reduction": 0.0,
+          "memory_bias": 0.0,
+          "untried_bonus": 0.0,
+          "action_cost": 0.018,
+          "deterministic_tie": 1.8308e-07,
+          "total_score": -0.017999817,
+          "model_ref": {
+            "source": "tabular_ema",
+            "context_key": "novelty|homeostasis",
+            "action": "approach",
+            "count": 1
+          },
+          "memory_refs": [
+            "0b8048e769e8980395e00f0406cc1ef89e9a8c96bfbcd35144ec5cd126079df0"
+          ]
+        },
+        {
+          "action": "explore",
+          "predicted_delta": {
+            "energy": -0.05,
+            "safety": -0.03,
+            "connection": 0.0,
+            "stimulation": 0.18
+          },
+          "current_goal_deficit_reduction": 0.0,
+          "total_deficit_reduction": 0.0,
+          "memory_bias": 0.0,
+          "untried_bonus": 0.025,
+          "action_cost": 0.025,
+          "deterministic_tie": 6.45419e-07,
+          "total_score": 6.45e-07,
+          "model_ref": {
+            "source": "hardcoded_prior",
+            "context_key": "novelty|homeostasis",
+            "action": "explore",
+            "count": 0
+          },
+          "memory_refs": []
+        },
+        {
+          "action": "forage",
+          "predicted_delta": {
+            "energy": 0.12,
+            "safety": -0.03,
+            "connection": 0.0,
+            "stimulation": 0.02
+          },
+          "current_goal_deficit_reduction": 0.0,
+          "total_deficit_reduction": 0.0,
+          "memory_bias": 0.0,
+          "untried_bonus": 0.0,
+          "action_cost": 0.02,
+          "deterministic_tie": 1.00136e-07,
+          "total_score": -0.0199999,
+          "model_ref": {
+            "source": "tabular_ema",
+            "context_key": "novelty|homeostasis",
+            "action": "forage",
+            "count": 1
+          },
+          "memory_refs": [
+            "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2"
+          ]
+        },
+        {
+          "action": "rest",
+          "predicted_delta": {
+            "energy": 0.09,
+            "safety": 0.04,
+            "connection": 0.0,
+            "stimulation": -0.04
+          },
+          "current_goal_deficit_reduction": 0.0,
+          "total_deficit_reduction": 0.0,
+          "memory_bias": 0.0,
+          "untried_bonus": 0.0,
+          "action_cost": 0.01,
+          "deterministic_tie": 6.61002e-07,
+          "total_score": -0.009999339,
+          "model_ref": {
+            "source": "tabular_ema",
+            "context_key": "novelty|homeostasis",
+            "action": "rest",
+            "count": 1
+          },
+          "memory_refs": [
+            "b2056e2d5859f0e595032976af014305dbaadf99cfae28dbd49ff8daaeb5a5da"
+          ]
+        },
+        {
+          "action": "withdraw",
+          "predicted_delta": {
+            "energy": -0.01,
+            "safety": 0.1,
+            "connection": -0.04,
+            "stimulation": -0.03
+          },
+          "current_goal_deficit_reduction": 0.0,
+          "total_deficit_reduction": 0.0,
+          "memory_bias": 0.0,
+          "untried_bonus": 0.0,
+          "action_cost": 0.015,
+          "deterministic_tie": 5.16129e-07,
+          "total_score": -0.014999484,
+          "model_ref": {
+            "source": "tabular_ema",
+            "context_key": "novelty|homeostasis",
+            "action": "withdraw",
+            "count": 1
+          },
+          "memory_refs": [
+            "b454043e28237f92d24cb97423e72ccddde33441325cb007444fc4cd23ce8ff4"
+          ]
+        }
+      ],
+      "memory_read_refs": [
+        "0b8048e769e8980395e00f0406cc1ef89e9a8c96bfbcd35144ec5cd126079df0",
+        "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+        "b2056e2d5859f0e595032976af014305dbaadf99cfae28dbd49ff8daaeb5a5da",
+        "b454043e28237f92d24cb97423e72ccddde33441325cb007444fc4cd23ce8ff4"
+      ],
+      "memory_read_count": 4,
+      "model_update": {
+        "applied": false,
+        "reason": "adaptive_updates_frozen",
+        "context_key": "novelty|homeostasis",
+        "action": "explore"
+      },
+      "memory_update": {
+        "applied": false,
+        "episodic_write": null,
+        "consolidation_applied": false,
+        "consolidation_refs": [],
+        "reason": "adaptive_updates_frozen"
+      },
+      "provenance_projection": {
+        "mode": "canonical",
+        "status": "canonical",
+        "source_memory_hash": "d9f77e0c8ebb6f4d9e7e1d68f9338bb7b1509bb21a13cbe38e027b46bed0907d",
+        "projected_view_hash": "d9f77e0c8ebb6f4d9e7e1d68f9338bb7b1509bb21a13cbe38e027b46bed0907d",
+        "permutation_hash": null,
+        "eligibility_count": 16,
+        "cross_slot_moves": 0,
+        "marginal_preservation": {
+          "slot_counts_preserved": true,
+          "bundle_multiset_preserved": true,
+          "eligible_records_before": 16,
+          "eligible_records_after": 16,
+          "slot_counts_before": [
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "energy",
+                "action": "approach"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "energy",
+                "action": "forage"
+              },
+              "count": 2
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "energy",
+                "action": "rest"
+              },
+              "count": 2
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "homeostasis",
+                "action": "approach"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "homeostasis",
+                "action": "forage"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "homeostasis",
+                "action": "rest"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "homeostasis",
+                "action": "withdraw"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "safety",
+                "action": "approach"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "safety",
+                "action": "rest"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "safety",
+                "action": "withdraw"
+              },
+              "count": 2
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "stimulation",
+                "action": "approach"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "stimulation",
+                "action": "explore"
+              },
+              "count": 2
+            }
+          ],
+          "slot_counts_after": [
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "energy",
+                "action": "approach"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "energy",
+                "action": "forage"
+              },
+              "count": 2
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "energy",
+                "action": "rest"
+              },
+              "count": 2
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "homeostasis",
+                "action": "approach"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "homeostasis",
+                "action": "forage"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "homeostasis",
+                "action": "rest"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "homeostasis",
+                "action": "withdraw"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "safety",
+                "action": "approach"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "safety",
+                "action": "rest"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "safety",
+                "action": "withdraw"
+              },
+              "count": 2
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "stimulation",
+                "action": "approach"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "stimulation",
+                "action": "explore"
+              },
+              "count": 2
+            }
+          ],
+          "bundle_hash_counts_before": [
+            {
+              "bundle_hash": "0e0fec10f9836f3df60165db034dc54254aa8cf5d75e9b917295ca2cca0fd4f9",
+              "count": 1
+            },
+            {
+              "bundle_hash": "197b306ae3870180626b37b175552e45fd75d1f0c17915052f36ceeb4e50b6a6",
+              "count": 1
+            },
+            {
+              "bundle_hash": "1b6df72af2951aeaae56eef2c1e9005da9dfda7d7921e0a221b8082dead4c635",
+              "count": 1
+            },
+            {
+              "bundle_hash": "1ee4f3635add8124d68356d708573e709bc055f5547ce4051ff1ab38b08897e1",
+              "count": 1
+            },
+            {
+              "bundle_hash": "22b51459338dce788bd2f1cefbf49025914fef9e240470a3aa8ff0fb4e66b6c8",
+              "count": 1
+            },
+            {
+              "bundle_hash": "31e93b9a9e7b1408b0e3815aeab3abd741828e370f62f8c6cfb600e037ef6969",
+              "count": 1
+            },
+            {
+              "bundle_hash": "4d7fcecc8b6df294163a9a691c3901269aaa44d8b488c13c79e9328e64961130",
+              "count": 1
+            },
+            {
+              "bundle_hash": "7dc343a0ecf2a3b0b3dcf4191c51ba886789b4eee601ff36b8049cacf6691bdb",
+              "count": 1
+            },
+            {
+              "bundle_hash": "8e7245fed77f6171f8fa66022acc84858d4580d47f2be5fb84104940e6b1ef13",
+              "count": 1
+            },
+            {
+              "bundle_hash": "ae317924e21ca03183b674485bfb34e80f509c191b0ee0d74d666b22e561d6d3",
+              "count": 1
+            },
+            {
+              "bundle_hash": "b614f2957f0be60af9c453ebc93b178663e6daab61ab4fe0bfdcb255c03538f0",
+              "count": 1
+            },
+            {
+              "bundle_hash": "c4fc16ad7d4e98eed0c3bd62c12cb3560a2fb52d2b2a631e49e1be4a04374c23",
+              "count": 1
+            },
+            {
+              "bundle_hash": "cfb505d2ac2f3149161257a1d86611957f13f474f82a89adbfa371e5878e6c14",
+              "count": 1
+            },
+            {
+              "bundle_hash": "d43b42e8b3d537ff8f0ea7157ca0826bf96b97e4987ce8989da352988d9138b9",
+              "count": 1
+            },
+            {
+              "bundle_hash": "dbc15a4451a5fcdc77af005b3a123f687a6d41e8dd3bb475e55a4592481c6299",
+              "count": 1
+            },
+            {
+              "bundle_hash": "f72a7ced4b578bf6b6a8f3dc406d007326b3ea8e4fa059f342d86d28b7d59cc2",
+              "count": 1
+            }
+          ],
+          "bundle_hash_counts_after": [
+            {
+              "bundle_hash": "0e0fec10f9836f3df60165db034dc54254aa8cf5d75e9b917295ca2cca0fd4f9",
+              "count": 1
+            },
+            {
+              "bundle_hash": "197b306ae3870180626b37b175552e45fd75d1f0c17915052f36ceeb4e50b6a6",
+              "count": 1
+            },
+            {
+              "bundle_hash": "1b6df72af2951aeaae56eef2c1e9005da9dfda7d7921e0a221b8082dead4c635",
+              "count": 1
+            },
+            {
+              "bundle_hash": "1ee4f3635add8124d68356d708573e709bc055f5547ce4051ff1ab38b08897e1",
+              "count": 1
+            },
+            {
+              "bundle_hash": "22b51459338dce788bd2f1cefbf49025914fef9e240470a3aa8ff0fb4e66b6c8",
+              "count": 1
+            },
+            {
+              "bundle_hash": "31e93b9a9e7b1408b0e3815aeab3abd741828e370f62f8c6cfb600e037ef6969",
+              "count": 1
+            },
+            {
+              "bundle_hash": "4d7fcecc8b6df294163a9a691c3901269aaa44d8b488c13c79e9328e64961130",
+              "count": 1
+            },
+            {
+              "bundle_hash": "7dc343a0ecf2a3b0b3dcf4191c51ba886789b4eee601ff36b8049cacf6691bdb",
+              "count": 1
+            },
+            {
+              "bundle_hash": "8e7245fed77f6171f8fa66022acc84858d4580d47f2be5fb84104940e6b1ef13",
+              "count": 1
+            },
+            {
+              "bundle_hash": "ae317924e21ca03183b674485bfb34e80f509c191b0ee0d74d666b22e561d6d3",
+              "count": 1
+            },
+            {
+              "bundle_hash": "b614f2957f0be60af9c453ebc93b178663e6daab61ab4fe0bfdcb255c03538f0",
+              "count": 1
+            },
+            {
+              "bundle_hash": "c4fc16ad7d4e98eed0c3bd62c12cb3560a2fb52d2b2a631e49e1be4a04374c23",
+              "count": 1
+            },
+            {
+              "bundle_hash": "cfb505d2ac2f3149161257a1d86611957f13f474f82a89adbfa371e5878e6c14",
+              "count": 1
+            },
+            {
+              "bundle_hash": "d43b42e8b3d537ff8f0ea7157ca0826bf96b97e4987ce8989da352988d9138b9",
+              "count": 1
+            },
+            {
+              "bundle_hash": "dbc15a4451a5fcdc77af005b3a123f687a6d41e8dd3bb475e55a4592481c6299",
+              "count": 1
+            },
+            {
+              "bundle_hash": "f72a7ced4b578bf6b6a8f3dc406d007326b3ea8e4fa059f342d86d28b7d59cc2",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "model_bytes_unchanged": true,
+      "memory_bytes_unchanged": true,
+      "state_after_hash": "81343674e6cce159dd1a2c46607ff7c64c5bac0b5477f65372a95e9a34e5659d",
+      "trace_hash": "75fe1c2a06461cd1a1ea16a35cf4f2ecaa80a4e8c2e8285b7730bc4e6f45a4e0",
+      "engine_code_path_hash": "4c913bc970be1b6265b439953806fee4816fa08d67cfa053a5badecd43f5de33"
+    },
+    "shuffle_provenance": {
+      "producer_function": "__main__.run_paired_interventions",
+      "input_artifacts": [
+        {
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\ablation_report.json",
+          "json_pointer": "/evidence_inputs/paired_checkpoint_state_15a81c959de6965c",
+          "content_mode": "canonical_json_pointer",
+          "input_id": "paired_checkpoint_state_15a81c959de6965c",
+          "sha256": "15a81c959de6965c23e459cf2411b7f5cae1edce2f39ececd0134255bed067a7",
+          "byte_count": 8042
+        },
+        {
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\ablation_report.json",
+          "json_pointer": "/evidence_inputs/paired_command_shuffle_provenance_a74e2d1876e73f5e",
+          "content_mode": "canonical_json_pointer",
+          "input_id": "paired_command_shuffle_provenance_a74e2d1876e73f5e",
+          "sha256": "a74e2d1876e73f5e6a2c743f4885b7e3d00011c759a02c89fece3161c9113ef8",
+          "byte_count": 396
+        }
+      ],
+      "run_id": "ego-v1-continuity-frozen-seed17",
+      "seed": 17,
+      "episode_ids": [
+        "episode-000001-cd2aa42a8860bf9e"
+      ],
+      "context_ids": [
+        "e84076fb557c45a160a3e62b2f3560be972bbc0948ccffa558b64e8cfe97bd70",
+        "f11dd55d23f9595dffdee2313494145496004dae6eab425121d3dfec504716e8"
+      ],
+      "checkpoint_ids": [
+        "3752fc8255a73773a08e212aa132e3b680ffd677f2077353136aec72d1bd2ccc"
+      ],
+      "aggregation_rule": "one_real_canonical_reducer_rerun:shuffle_provenance",
+      "code_path_hash": "b319a3c6919fc9aaa55127a8203e051ac301e61f7422648959f6e4e8bd45b965",
+      "product_code_manifest_hash": "891b65ffc304a40682ab59feefe141a408baa9f97b6fc9e5327f6ba3f4fb164d",
+      "checkpoint_id": "3752fc8255a73773a08e212aa132e3b680ffd677f2077353136aec72d1bd2ccc",
+      "observation_id": "f11dd55d23f9595dffdee2313494145496004dae6eab425121d3dfec504716e8",
+      "command": {
+        "schema_version": "ego.life_playground.command.v1",
+        "sequence": 17,
+        "cue": "novelty",
+        "trigger_source": "paired_intervention",
+        "interventions": {
+          "memory_mode": "canonical",
+          "provenance_mode": "shuffle_projection",
+          "update_mode": "enabled"
+        },
+        "prev_command_hash": "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+        "command_hash": "e84076fb557c45a160a3e62b2f3560be972bbc0948ccffa558b64e8cfe97bd70"
+      },
+      "command_hash": "e84076fb557c45a160a3e62b2f3560be972bbc0948ccffa558b64e8cfe97bd70",
+      "selected_action": "rest",
+      "candidates": [
+        {
+          "action": "approach",
+          "predicted_delta": {
+            "energy": -0.02,
+            "safety": -0.02,
+            "connection": 0.11,
+            "stimulation": 0.03
+          },
+          "current_goal_deficit_reduction": 0.0,
+          "total_deficit_reduction": 0.0,
+          "memory_bias": 0.014,
+          "untried_bonus": 0.0,
+          "action_cost": 0.018,
+          "deterministic_tie": 1.8308e-07,
+          "total_score": -0.003999817,
+          "model_ref": {
+            "source": "tabular_ema",
+            "context_key": "novelty|homeostasis",
+            "action": "approach",
+            "count": 1
+          },
+          "memory_refs": [
+            "cb35afff0b03df7b353abf55c81a46fb045242a1e4f900f6e48fce3058bac585"
+          ]
+        },
+        {
+          "action": "explore",
+          "predicted_delta": {
+            "energy": -0.05,
+            "safety": -0.03,
+            "connection": 0.0,
+            "stimulation": 0.18
+          },
+          "current_goal_deficit_reduction": 0.0,
+          "total_deficit_reduction": 0.0,
+          "memory_bias": 0.0,
+          "untried_bonus": 0.025,
+          "action_cost": 0.025,
+          "deterministic_tie": 6.45419e-07,
+          "total_score": 6.45e-07,
+          "model_ref": {
+            "source": "hardcoded_prior",
+            "context_key": "novelty|homeostasis",
+            "action": "explore",
+            "count": 0
+          },
+          "memory_refs": []
+        },
+        {
+          "action": "forage",
+          "predicted_delta": {
+            "energy": 0.12,
+            "safety": -0.03,
+            "connection": 0.0,
+            "stimulation": 0.02
+          },
+          "current_goal_deficit_reduction": 0.0,
+          "total_deficit_reduction": 0.0,
+          "memory_bias": 0.0,
+          "untried_bonus": 0.0,
+          "action_cost": 0.02,
+          "deterministic_tie": 1.00136e-07,
+          "total_score": -0.0199999,
+          "model_ref": {
+            "source": "tabular_ema",
+            "context_key": "novelty|homeostasis",
+            "action": "forage",
+            "count": 1
+          },
+          "memory_refs": [
+            "0b8048e769e8980395e00f0406cc1ef89e9a8c96bfbcd35144ec5cd126079df0"
+          ]
+        },
+        {
+          "action": "rest",
+          "predicted_delta": {
+            "energy": 0.09,
+            "safety": 0.04,
+            "connection": 0.0,
+            "stimulation": -0.04
+          },
+          "current_goal_deficit_reduction": 0.0,
+          "total_deficit_reduction": 0.0,
+          "memory_bias": 0.01,
+          "untried_bonus": 0.0,
+          "action_cost": 0.01,
+          "deterministic_tie": 6.61002e-07,
+          "total_score": 6.61e-07,
+          "model_ref": {
+            "source": "tabular_ema",
+            "context_key": "novelty|homeostasis",
+            "action": "rest",
+            "count": 1
+          },
+          "memory_refs": [
+            "4efeafcc34c9fe479791a4b3e0508529345e43f0fc68b743b4440d442091e5d0"
+          ]
+        },
+        {
+          "action": "withdraw",
+          "predicted_delta": {
+            "energy": -0.01,
+            "safety": 0.1,
+            "connection": -0.04,
+            "stimulation": -0.03
+          },
+          "current_goal_deficit_reduction": 0.0,
+          "total_deficit_reduction": 0.0,
+          "memory_bias": 0.0,
+          "untried_bonus": 0.0,
+          "action_cost": 0.015,
+          "deterministic_tie": 5.16129e-07,
+          "total_score": -0.014999484,
+          "model_ref": {
+            "source": "tabular_ema",
+            "context_key": "novelty|homeostasis",
+            "action": "withdraw",
+            "count": 1
+          },
+          "memory_refs": [
+            "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2"
+          ]
+        }
+      ],
+      "memory_read_refs": [
+        "0b8048e769e8980395e00f0406cc1ef89e9a8c96bfbcd35144ec5cd126079df0",
+        "4efeafcc34c9fe479791a4b3e0508529345e43f0fc68b743b4440d442091e5d0",
+        "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+        "cb35afff0b03df7b353abf55c81a46fb045242a1e4f900f6e48fce3058bac585"
+      ],
+      "memory_read_count": 4,
+      "model_update": {
+        "applied": true,
+        "alpha": 0.35,
+        "context_key": "novelty|homeostasis",
+        "action": "rest",
+        "previous_count": 1,
+        "new_count": 2,
+        "ema_delta": {
+          "energy": 0.09,
+          "safety": 0.04,
+          "connection": 0.0,
+          "stimulation": -0.04
+        }
+      },
+      "memory_update": {
+        "applied": true,
+        "episodic_write": "mem-c177ef613674349a3f8e",
+        "consolidation_applied": false,
+        "consolidation_refs": [],
+        "reason": "threshold_not_met"
+      },
+      "provenance_projection": {
+        "mode": "shuffle_projection",
+        "source_memory_hash": "d9f77e0c8ebb6f4d9e7e1d68f9338bb7b1509bb21a13cbe38e027b46bed0907d",
+        "eligibility_count": 16,
+        "marginal_preservation": {
+          "slot_counts_preserved": true,
+          "bundle_multiset_preserved": true,
+          "eligible_records_before": 16,
+          "eligible_records_after": 16,
+          "slot_counts_before": [
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "energy",
+                "action": "approach"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "energy",
+                "action": "forage"
+              },
+              "count": 2
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "energy",
+                "action": "rest"
+              },
+              "count": 2
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "homeostasis",
+                "action": "approach"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "homeostasis",
+                "action": "forage"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "homeostasis",
+                "action": "rest"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "homeostasis",
+                "action": "withdraw"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "safety",
+                "action": "approach"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "safety",
+                "action": "rest"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "safety",
+                "action": "withdraw"
+              },
+              "count": 2
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "stimulation",
+                "action": "approach"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "stimulation",
+                "action": "explore"
+              },
+              "count": 2
+            }
+          ],
+          "slot_counts_after": [
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "energy",
+                "action": "approach"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "energy",
+                "action": "forage"
+              },
+              "count": 2
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "energy",
+                "action": "rest"
+              },
+              "count": 2
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "homeostasis",
+                "action": "approach"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "homeostasis",
+                "action": "forage"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "homeostasis",
+                "action": "rest"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "homeostasis",
+                "action": "withdraw"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "safety",
+                "action": "approach"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "safety",
+                "action": "rest"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "safety",
+                "action": "withdraw"
+              },
+              "count": 2
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "stimulation",
+                "action": "approach"
+              },
+              "count": 1
+            },
+            {
+              "slot": {
+                "cue": "novelty",
+                "current_goal": "stimulation",
+                "action": "explore"
+              },
+              "count": 2
+            }
+          ],
+          "bundle_hash_counts_before": [
+            {
+              "bundle_hash": "0e0fec10f9836f3df60165db034dc54254aa8cf5d75e9b917295ca2cca0fd4f9",
+              "count": 1
+            },
+            {
+              "bundle_hash": "197b306ae3870180626b37b175552e45fd75d1f0c17915052f36ceeb4e50b6a6",
+              "count": 1
+            },
+            {
+              "bundle_hash": "1b6df72af2951aeaae56eef2c1e9005da9dfda7d7921e0a221b8082dead4c635",
+              "count": 1
+            },
+            {
+              "bundle_hash": "1ee4f3635add8124d68356d708573e709bc055f5547ce4051ff1ab38b08897e1",
+              "count": 1
+            },
+            {
+              "bundle_hash": "22b51459338dce788bd2f1cefbf49025914fef9e240470a3aa8ff0fb4e66b6c8",
+              "count": 1
+            },
+            {
+              "bundle_hash": "31e93b9a9e7b1408b0e3815aeab3abd741828e370f62f8c6cfb600e037ef6969",
+              "count": 1
+            },
+            {
+              "bundle_hash": "4d7fcecc8b6df294163a9a691c3901269aaa44d8b488c13c79e9328e64961130",
+              "count": 1
+            },
+            {
+              "bundle_hash": "7dc343a0ecf2a3b0b3dcf4191c51ba886789b4eee601ff36b8049cacf6691bdb",
+              "count": 1
+            },
+            {
+              "bundle_hash": "8e7245fed77f6171f8fa66022acc84858d4580d47f2be5fb84104940e6b1ef13",
+              "count": 1
+            },
+            {
+              "bundle_hash": "ae317924e21ca03183b674485bfb34e80f509c191b0ee0d74d666b22e561d6d3",
+              "count": 1
+            },
+            {
+              "bundle_hash": "b614f2957f0be60af9c453ebc93b178663e6daab61ab4fe0bfdcb255c03538f0",
+              "count": 1
+            },
+            {
+              "bundle_hash": "c4fc16ad7d4e98eed0c3bd62c12cb3560a2fb52d2b2a631e49e1be4a04374c23",
+              "count": 1
+            },
+            {
+              "bundle_hash": "cfb505d2ac2f3149161257a1d86611957f13f474f82a89adbfa371e5878e6c14",
+              "count": 1
+            },
+            {
+              "bundle_hash": "d43b42e8b3d537ff8f0ea7157ca0826bf96b97e4987ce8989da352988d9138b9",
+              "count": 1
+            },
+            {
+              "bundle_hash": "dbc15a4451a5fcdc77af005b3a123f687a6d41e8dd3bb475e55a4592481c6299",
+              "count": 1
+            },
+            {
+              "bundle_hash": "f72a7ced4b578bf6b6a8f3dc406d007326b3ea8e4fa059f342d86d28b7d59cc2",
+              "count": 1
+            }
+          ],
+          "bundle_hash_counts_after": [
+            {
+              "bundle_hash": "0e0fec10f9836f3df60165db034dc54254aa8cf5d75e9b917295ca2cca0fd4f9",
+              "count": 1
+            },
+            {
+              "bundle_hash": "197b306ae3870180626b37b175552e45fd75d1f0c17915052f36ceeb4e50b6a6",
+              "count": 1
+            },
+            {
+              "bundle_hash": "1b6df72af2951aeaae56eef2c1e9005da9dfda7d7921e0a221b8082dead4c635",
+              "count": 1
+            },
+            {
+              "bundle_hash": "1ee4f3635add8124d68356d708573e709bc055f5547ce4051ff1ab38b08897e1",
+              "count": 1
+            },
+            {
+              "bundle_hash": "22b51459338dce788bd2f1cefbf49025914fef9e240470a3aa8ff0fb4e66b6c8",
+              "count": 1
+            },
+            {
+              "bundle_hash": "31e93b9a9e7b1408b0e3815aeab3abd741828e370f62f8c6cfb600e037ef6969",
+              "count": 1
+            },
+            {
+              "bundle_hash": "4d7fcecc8b6df294163a9a691c3901269aaa44d8b488c13c79e9328e64961130",
+              "count": 1
+            },
+            {
+              "bundle_hash": "7dc343a0ecf2a3b0b3dcf4191c51ba886789b4eee601ff36b8049cacf6691bdb",
+              "count": 1
+            },
+            {
+              "bundle_hash": "8e7245fed77f6171f8fa66022acc84858d4580d47f2be5fb84104940e6b1ef13",
+              "count": 1
+            },
+            {
+              "bundle_hash": "ae317924e21ca03183b674485bfb34e80f509c191b0ee0d74d666b22e561d6d3",
+              "count": 1
+            },
+            {
+              "bundle_hash": "b614f2957f0be60af9c453ebc93b178663e6daab61ab4fe0bfdcb255c03538f0",
+              "count": 1
+            },
+            {
+              "bundle_hash": "c4fc16ad7d4e98eed0c3bd62c12cb3560a2fb52d2b2a631e49e1be4a04374c23",
+              "count": 1
+            },
+            {
+              "bundle_hash": "cfb505d2ac2f3149161257a1d86611957f13f474f82a89adbfa371e5878e6c14",
+              "count": 1
+            },
+            {
+              "bundle_hash": "d43b42e8b3d537ff8f0ea7157ca0826bf96b97e4987ce8989da352988d9138b9",
+              "count": 1
+            },
+            {
+              "bundle_hash": "dbc15a4451a5fcdc77af005b3a123f687a6d41e8dd3bb475e55a4592481c6299",
+              "count": 1
+            },
+            {
+              "bundle_hash": "f72a7ced4b578bf6b6a8f3dc406d007326b3ea8e4fa059f342d86d28b7d59cc2",
+              "count": 1
+            }
+          ]
+        },
+        "status": "applied",
+        "projected_view_hash": "0d439359fe434c4995fe02eede911c203a3f15ee6721ca8dd51eabd1fada8c37",
+        "permutation_hash": "8586477eb7db764a4b3cac8a07cbba9d463aa9331bda96012794b2c60d67e898",
+        "cross_slot_moves": 16
+      },
+      "model_bytes_unchanged": false,
+      "memory_bytes_unchanged": false,
+      "state_after_hash": "345064b40f8e05e9480b1018273f469b19c8a2bbdcf46a30d97643f0be18281d",
+      "trace_hash": "8226ae838730fed056ef22718e2a2f08dead912786e5733b905ceb954cedeba5",
+      "engine_code_path_hash": "4c913bc970be1b6265b439953806fee4816fa08d67cfa053a5badecd43f5de33"
+    }
+  },
+  "opaque_memory_id_rename_positive_control": {
+    "producer_function": "__main__.run_paired_interventions",
+    "input_artifacts": [
+      {
+        "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\ablation_report.json",
+        "json_pointer": "/evidence_inputs/opaque_id_control_source_checkpoint_15a81c959de6965c",
+        "content_mode": "canonical_json_pointer",
+        "input_id": "opaque_id_control_source_checkpoint_15a81c959de6965c",
+        "sha256": "15a81c959de6965c23e459cf2411b7f5cae1edce2f39ececd0134255bed067a7",
+        "byte_count": 8042
+      },
+      {
+        "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\ablation_report.json",
+        "json_pointer": "/evidence_inputs/opaque_id_control_renamed_checkpoint_5c076070cf06577e",
+        "content_mode": "canonical_json_pointer",
+        "input_id": "opaque_id_control_renamed_checkpoint_5c076070cf06577e",
+        "sha256": "5c076070cf06577eccc384897d7a55f4a3d2415616e6321942ce420b74238a2e",
+        "byte_count": 8138
+      },
+      {
+        "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\\ablation_report.json",
+        "json_pointer": "/evidence_inputs/opaque_id_control_command_816bd03190abd6f0",
+        "content_mode": "canonical_json_pointer",
+        "input_id": "opaque_id_control_command_816bd03190abd6f0",
+        "sha256": "816bd03190abd6f097ceee58028bcdc33ab18a9fa2cff44dc1632f428a28c60c",
+        "byte_count": 387
+      }
+    ],
+    "run_id": "ego-v1-continuity-frozen-seed17",
+    "seed": 17,
+    "episode_ids": [
+      "episode-000001-cd2aa42a8860bf9e"
+    ],
+    "context_ids": [
+      "f11dd55d23f9595dffdee2313494145496004dae6eab425121d3dfec504716e8"
+    ],
+    "checkpoint_ids": [
+      "3752fc8255a73773a08e212aa132e3b680ffd677f2077353136aec72d1bd2ccc"
+    ],
+    "aggregation_rule": "rename_only_opaque_memory_ids_then_compare_candidate_behavior_canonical_json",
+    "code_path_hash": "b319a3c6919fc9aaa55127a8203e051ac301e61f7422648959f6e4e8bd45b965",
+    "product_code_manifest_hash": "891b65ffc304a40682ab59feefe141a408baa9f97b6fc9e5327f6ba3f4fb164d",
+    "renamed_record_count": 16,
+    "source_semantic_memory_hash": "d9f77e0c8ebb6f4d9e7e1d68f9338bb7b1509bb21a13cbe38e027b46bed0907d",
+    "renamed_semantic_memory_hash": "d9f77e0c8ebb6f4d9e7e1d68f9338bb7b1509bb21a13cbe38e027b46bed0907d",
+    "semantic_memory_hash_unchanged": true,
+    "source_candidate_behavior_hash": "b65cd3eebe4fb9033ce48ebf1c68ac09155fa9bc1c11fc21778f9b8b15dba725",
+    "renamed_candidate_behavior_hash": "b65cd3eebe4fb9033ce48ebf1c68ac09155fa9bc1c11fc21778f9b8b15dba725",
+    "candidate_behavior_bit_identical": true,
+    "selected_action_bit_identical": true
+  },
+  "canonical_minus_memory_off_score_delta": {
+    "approach": 0.0,
+    "explore": 0.0,
+    "forage": 0.0,
+    "rest": 0.0,
+    "withdraw": 0.0
+  },
+  "selection_level_shaping_observed": false,
+  "blocking_failures": [
+    "natural_checkpoint_memory_bias_zero"
+  ],
+  "evidence_inputs": {
+    "recomputed_checkpoint_state_15a81c959de6965c": {
+      "clock": {
+        "global_tick": 16,
+        "episode_index": 1,
+        "episode_id": "episode-000001-cd2aa42a8860bf9e",
+        "episode_tick": 8
+      },
+      "current_goal": {
+        "state_variable": null,
+        "target": 0.72,
+        "selected_global_tick": 12,
+        "entry_deficit": 0.0,
+        "status": "homeostasis",
+        "selection_reason": "no_active_deficit"
+      },
+      "last_action": "forage",
+      "last_command_hash": "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+      "last_trace_hash": "57198172b04f039eb24e299147c092f66e8e39cc164a63724adc84ef53ed93eb",
+      "memory": {
+        "consolidated": [],
+        "episodic": [
+          {
+            "memory_id": "mem-ddef8888a2c65bc0bcc6",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "stimulation",
+            "action": "explore",
+            "utility": 0.18,
+            "actual_delta": {
+              "energy": -0.05,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.26
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "b72dfd05caa9db28dad91dc7a579f6eca5d29f7a1166d57975dc19a578fee11c",
+            "source_sequence": 1
+          },
+          {
+            "memory_id": "mem-364f9a3ed493658a3f9c",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "stimulation",
+            "action": "approach",
+            "utility": 0.1,
+            "actual_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "5c3cf41f6f83ae4ee0b0f836b98e35e647751cd2bea818c9c1e90d932d2f906b",
+            "source_sequence": 2
+          },
+          {
+            "memory_id": "mem-4ab5d77174dfb31a6c13",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "forage",
+            "utility": 0.09,
+            "actual_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "48fe623af4d4b4da1af87098c3419379251bba798d8e1ca82ecca398a2210d47",
+            "source_sequence": 3
+          },
+          {
+            "memory_id": "mem-95867f99a2db12cde277",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "rest",
+            "utility": 0.11,
+            "actual_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "88be1a824cbd0fb20c32431c07f9730a467461c1ba97e536ef777c04dcd2b575",
+            "source_sequence": 4
+          },
+          {
+            "memory_id": "mem-d531ea70b4b891c572d0",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "forage",
+            "utility": 0.11,
+            "actual_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "ac8a738f62ad27169d37199bfd746c6d6a19409b9899de30082e05f2df109cc7",
+            "source_sequence": 5
+          },
+          {
+            "memory_id": "mem-6f81a9fb9cee0cc6a53a",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "approach",
+            "utility": 0.07,
+            "actual_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "cb35afff0b03df7b353abf55c81a46fb045242a1e4f900f6e48fce3058bac585",
+            "source_sequence": 6
+          },
+          {
+            "memory_id": "mem-ceb99d6306de00f3bb7b",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "rest",
+            "utility": 0.06,
+            "actual_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "8add87064da4aa06e544488ceb18928355f90359f68be9bdf9ae694b790ae36f",
+            "source_sequence": 7
+          },
+          {
+            "memory_id": "mem-40fba2d61bee216ba8c4",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "safety",
+            "action": "withdraw",
+            "utility": 0.03,
+            "actual_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "4edfdf458d74bd8bf3348486a318775ea9efe452e87ff9b0dcc7d203244e6512",
+            "source_sequence": 8
+          },
+          {
+            "memory_id": "mem-31ca62ae921c87fd4186",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "safety",
+            "action": "rest",
+            "utility": -0.0,
+            "actual_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "b495142991bdf7891168423c163eeae378692707cd00c85184b1a20cac62b89d",
+            "source_sequence": 9
+          },
+          {
+            "memory_id": "mem-57dd9b8f46a5671dadf8",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "safety",
+            "action": "approach",
+            "utility": 0.05,
+            "actual_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "4efeafcc34c9fe479791a4b3e0508529345e43f0fc68b743b4440d442091e5d0",
+            "source_sequence": 10
+          },
+          {
+            "memory_id": "mem-73387cfe0d8661b264af",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "safety",
+            "action": "withdraw",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "0b137d74b63dd629348207e573ba71bb008e2ab583d2aef5193a645eb197c9a3",
+            "source_sequence": 11
+          },
+          {
+            "memory_id": "mem-6d1d47e216d12da1b30d",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "stimulation",
+            "action": "explore",
+            "utility": 0.08,
+            "actual_delta": {
+              "energy": -0.05,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.26
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "d3ae8a59261a579cdaf3d35d249bb0c2756d85ecd2a2572aedd6d70c3ebf4123",
+            "source_sequence": 12
+          },
+          {
+            "memory_id": "mem-a7d4082b92349c06549c",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "homeostasis",
+            "action": "rest",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "b2056e2d5859f0e595032976af014305dbaadf99cfae28dbd49ff8daaeb5a5da",
+            "source_sequence": 13
+          },
+          {
+            "memory_id": "mem-ea4133ef5e5989042269",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "homeostasis",
+            "action": "approach",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "0b8048e769e8980395e00f0406cc1ef89e9a8c96bfbcd35144ec5cd126079df0",
+            "source_sequence": 14
+          },
+          {
+            "memory_id": "mem-a22c06f590977fbc83d2",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "homeostasis",
+            "action": "withdraw",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "b454043e28237f92d24cb97423e72ccddde33441325cb007444fc4cd23ce8ff4",
+            "source_sequence": 15
+          },
+          {
+            "memory_id": "mem-f1fc5e9274120becd01f",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "homeostasis",
+            "action": "forage",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+            "source_sequence": 16
+          }
+        ]
+      },
+      "model": {
+        "novelty|stimulation": {
+          "explore": {
+            "count": 2,
+            "ema_delta": {
+              "energy": -0.05,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.26
+            }
+          },
+          "approach": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            }
+          }
+        },
+        "novelty|energy": {
+          "forage": {
+            "count": 2,
+            "ema_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            }
+          },
+          "rest": {
+            "count": 2,
+            "ema_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            }
+          },
+          "approach": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            }
+          }
+        },
+        "novelty|safety": {
+          "withdraw": {
+            "count": 2,
+            "ema_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            }
+          },
+          "rest": {
+            "count": 1,
+            "ema_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            }
+          },
+          "approach": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            }
+          }
+        },
+        "novelty|homeostasis": {
+          "rest": {
+            "count": 1,
+            "ema_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            }
+          },
+          "approach": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            }
+          },
+          "withdraw": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            }
+          },
+          "forage": {
+            "count": 1,
+            "ema_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            }
+          }
+        }
+      },
+      "organism": {
+        "energy": 0.96,
+        "safety": 0.85,
+        "connection": 0.82,
+        "stimulation": 0.88
+      },
+      "schema_version": "ego.life_playground.state.v1"
+    },
+    "paired_checkpoint_state_15a81c959de6965c": {
+      "clock": {
+        "global_tick": 16,
+        "episode_index": 1,
+        "episode_id": "episode-000001-cd2aa42a8860bf9e",
+        "episode_tick": 8
+      },
+      "current_goal": {
+        "state_variable": null,
+        "target": 0.72,
+        "selected_global_tick": 12,
+        "entry_deficit": 0.0,
+        "status": "homeostasis",
+        "selection_reason": "no_active_deficit"
+      },
+      "last_action": "forage",
+      "last_command_hash": "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+      "last_trace_hash": "57198172b04f039eb24e299147c092f66e8e39cc164a63724adc84ef53ed93eb",
+      "memory": {
+        "consolidated": [],
+        "episodic": [
+          {
+            "memory_id": "mem-ddef8888a2c65bc0bcc6",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "stimulation",
+            "action": "explore",
+            "utility": 0.18,
+            "actual_delta": {
+              "energy": -0.05,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.26
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "b72dfd05caa9db28dad91dc7a579f6eca5d29f7a1166d57975dc19a578fee11c",
+            "source_sequence": 1
+          },
+          {
+            "memory_id": "mem-364f9a3ed493658a3f9c",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "stimulation",
+            "action": "approach",
+            "utility": 0.1,
+            "actual_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "5c3cf41f6f83ae4ee0b0f836b98e35e647751cd2bea818c9c1e90d932d2f906b",
+            "source_sequence": 2
+          },
+          {
+            "memory_id": "mem-4ab5d77174dfb31a6c13",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "forage",
+            "utility": 0.09,
+            "actual_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "48fe623af4d4b4da1af87098c3419379251bba798d8e1ca82ecca398a2210d47",
+            "source_sequence": 3
+          },
+          {
+            "memory_id": "mem-95867f99a2db12cde277",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "rest",
+            "utility": 0.11,
+            "actual_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "88be1a824cbd0fb20c32431c07f9730a467461c1ba97e536ef777c04dcd2b575",
+            "source_sequence": 4
+          },
+          {
+            "memory_id": "mem-d531ea70b4b891c572d0",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "forage",
+            "utility": 0.11,
+            "actual_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "ac8a738f62ad27169d37199bfd746c6d6a19409b9899de30082e05f2df109cc7",
+            "source_sequence": 5
+          },
+          {
+            "memory_id": "mem-6f81a9fb9cee0cc6a53a",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "approach",
+            "utility": 0.07,
+            "actual_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "cb35afff0b03df7b353abf55c81a46fb045242a1e4f900f6e48fce3058bac585",
+            "source_sequence": 6
+          },
+          {
+            "memory_id": "mem-ceb99d6306de00f3bb7b",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "rest",
+            "utility": 0.06,
+            "actual_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "8add87064da4aa06e544488ceb18928355f90359f68be9bdf9ae694b790ae36f",
+            "source_sequence": 7
+          },
+          {
+            "memory_id": "mem-40fba2d61bee216ba8c4",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "safety",
+            "action": "withdraw",
+            "utility": 0.03,
+            "actual_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "4edfdf458d74bd8bf3348486a318775ea9efe452e87ff9b0dcc7d203244e6512",
+            "source_sequence": 8
+          },
+          {
+            "memory_id": "mem-31ca62ae921c87fd4186",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "safety",
+            "action": "rest",
+            "utility": -0.0,
+            "actual_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "b495142991bdf7891168423c163eeae378692707cd00c85184b1a20cac62b89d",
+            "source_sequence": 9
+          },
+          {
+            "memory_id": "mem-57dd9b8f46a5671dadf8",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "safety",
+            "action": "approach",
+            "utility": 0.05,
+            "actual_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "4efeafcc34c9fe479791a4b3e0508529345e43f0fc68b743b4440d442091e5d0",
+            "source_sequence": 10
+          },
+          {
+            "memory_id": "mem-73387cfe0d8661b264af",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "safety",
+            "action": "withdraw",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "0b137d74b63dd629348207e573ba71bb008e2ab583d2aef5193a645eb197c9a3",
+            "source_sequence": 11
+          },
+          {
+            "memory_id": "mem-6d1d47e216d12da1b30d",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "stimulation",
+            "action": "explore",
+            "utility": 0.08,
+            "actual_delta": {
+              "energy": -0.05,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.26
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "d3ae8a59261a579cdaf3d35d249bb0c2756d85ecd2a2572aedd6d70c3ebf4123",
+            "source_sequence": 12
+          },
+          {
+            "memory_id": "mem-a7d4082b92349c06549c",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "homeostasis",
+            "action": "rest",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "b2056e2d5859f0e595032976af014305dbaadf99cfae28dbd49ff8daaeb5a5da",
+            "source_sequence": 13
+          },
+          {
+            "memory_id": "mem-ea4133ef5e5989042269",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "homeostasis",
+            "action": "approach",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "0b8048e769e8980395e00f0406cc1ef89e9a8c96bfbcd35144ec5cd126079df0",
+            "source_sequence": 14
+          },
+          {
+            "memory_id": "mem-a22c06f590977fbc83d2",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "homeostasis",
+            "action": "withdraw",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "b454043e28237f92d24cb97423e72ccddde33441325cb007444fc4cd23ce8ff4",
+            "source_sequence": 15
+          },
+          {
+            "memory_id": "mem-f1fc5e9274120becd01f",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "homeostasis",
+            "action": "forage",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+            "source_sequence": 16
+          }
+        ]
+      },
+      "model": {
+        "novelty|stimulation": {
+          "explore": {
+            "count": 2,
+            "ema_delta": {
+              "energy": -0.05,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.26
+            }
+          },
+          "approach": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            }
+          }
+        },
+        "novelty|energy": {
+          "forage": {
+            "count": 2,
+            "ema_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            }
+          },
+          "rest": {
+            "count": 2,
+            "ema_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            }
+          },
+          "approach": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            }
+          }
+        },
+        "novelty|safety": {
+          "withdraw": {
+            "count": 2,
+            "ema_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            }
+          },
+          "rest": {
+            "count": 1,
+            "ema_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            }
+          },
+          "approach": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            }
+          }
+        },
+        "novelty|homeostasis": {
+          "rest": {
+            "count": 1,
+            "ema_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            }
+          },
+          "approach": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            }
+          },
+          "withdraw": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            }
+          },
+          "forage": {
+            "count": 1,
+            "ema_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            }
+          }
+        }
+      },
+      "organism": {
+        "energy": 0.96,
+        "safety": 0.85,
+        "connection": 0.82,
+        "stimulation": 0.88
+      },
+      "schema_version": "ego.life_playground.state.v1"
+    },
+    "paired_command_canonical_816bd03190abd6f0": {
+      "schema_version": "ego.life_playground.command.v1",
+      "sequence": 17,
+      "cue": "novelty",
+      "trigger_source": "paired_intervention",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "update_mode": "enabled"
+      },
+      "prev_command_hash": "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+      "command_hash": "1bdd08a816f0c12245259a98627e4f46a265460bbf15f33adf8dae874a99fc27"
+    },
+    "paired_command_memory_off_c68a31621b8c4435": {
+      "schema_version": "ego.life_playground.command.v1",
+      "sequence": 17,
+      "cue": "novelty",
+      "trigger_source": "paired_intervention",
+      "interventions": {
+        "memory_mode": "off",
+        "provenance_mode": "canonical",
+        "update_mode": "enabled"
+      },
+      "prev_command_hash": "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+      "command_hash": "e103e7d4d461f0178eccc70ba3914a4922defe9185ee30b6f6c346c0182d3379"
+    },
+    "paired_command_freeze_updates_a9004cc3533b795d": {
+      "schema_version": "ego.life_playground.command.v1",
+      "sequence": 17,
+      "cue": "novelty",
+      "trigger_source": "paired_intervention",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "update_mode": "frozen"
+      },
+      "prev_command_hash": "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+      "command_hash": "23e8a96dfcb35b6968f806f46e805f9720acdf12cfef278f83393360d0ffa426"
+    },
+    "paired_command_shuffle_provenance_a74e2d1876e73f5e": {
+      "schema_version": "ego.life_playground.command.v1",
+      "sequence": 17,
+      "cue": "novelty",
+      "trigger_source": "paired_intervention",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "shuffle_projection",
+        "update_mode": "enabled"
+      },
+      "prev_command_hash": "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+      "command_hash": "e84076fb557c45a160a3e62b2f3560be972bbc0948ccffa558b64e8cfe97bd70"
+    },
+    "opaque_id_control_source_checkpoint_15a81c959de6965c": {
+      "clock": {
+        "global_tick": 16,
+        "episode_index": 1,
+        "episode_id": "episode-000001-cd2aa42a8860bf9e",
+        "episode_tick": 8
+      },
+      "current_goal": {
+        "state_variable": null,
+        "target": 0.72,
+        "selected_global_tick": 12,
+        "entry_deficit": 0.0,
+        "status": "homeostasis",
+        "selection_reason": "no_active_deficit"
+      },
+      "last_action": "forage",
+      "last_command_hash": "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+      "last_trace_hash": "57198172b04f039eb24e299147c092f66e8e39cc164a63724adc84ef53ed93eb",
+      "memory": {
+        "consolidated": [],
+        "episodic": [
+          {
+            "memory_id": "mem-ddef8888a2c65bc0bcc6",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "stimulation",
+            "action": "explore",
+            "utility": 0.18,
+            "actual_delta": {
+              "energy": -0.05,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.26
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "b72dfd05caa9db28dad91dc7a579f6eca5d29f7a1166d57975dc19a578fee11c",
+            "source_sequence": 1
+          },
+          {
+            "memory_id": "mem-364f9a3ed493658a3f9c",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "stimulation",
+            "action": "approach",
+            "utility": 0.1,
+            "actual_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "5c3cf41f6f83ae4ee0b0f836b98e35e647751cd2bea818c9c1e90d932d2f906b",
+            "source_sequence": 2
+          },
+          {
+            "memory_id": "mem-4ab5d77174dfb31a6c13",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "forage",
+            "utility": 0.09,
+            "actual_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "48fe623af4d4b4da1af87098c3419379251bba798d8e1ca82ecca398a2210d47",
+            "source_sequence": 3
+          },
+          {
+            "memory_id": "mem-95867f99a2db12cde277",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "rest",
+            "utility": 0.11,
+            "actual_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "88be1a824cbd0fb20c32431c07f9730a467461c1ba97e536ef777c04dcd2b575",
+            "source_sequence": 4
+          },
+          {
+            "memory_id": "mem-d531ea70b4b891c572d0",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "forage",
+            "utility": 0.11,
+            "actual_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "ac8a738f62ad27169d37199bfd746c6d6a19409b9899de30082e05f2df109cc7",
+            "source_sequence": 5
+          },
+          {
+            "memory_id": "mem-6f81a9fb9cee0cc6a53a",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "approach",
+            "utility": 0.07,
+            "actual_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "cb35afff0b03df7b353abf55c81a46fb045242a1e4f900f6e48fce3058bac585",
+            "source_sequence": 6
+          },
+          {
+            "memory_id": "mem-ceb99d6306de00f3bb7b",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "rest",
+            "utility": 0.06,
+            "actual_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "8add87064da4aa06e544488ceb18928355f90359f68be9bdf9ae694b790ae36f",
+            "source_sequence": 7
+          },
+          {
+            "memory_id": "mem-40fba2d61bee216ba8c4",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "safety",
+            "action": "withdraw",
+            "utility": 0.03,
+            "actual_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "4edfdf458d74bd8bf3348486a318775ea9efe452e87ff9b0dcc7d203244e6512",
+            "source_sequence": 8
+          },
+          {
+            "memory_id": "mem-31ca62ae921c87fd4186",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "safety",
+            "action": "rest",
+            "utility": -0.0,
+            "actual_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "b495142991bdf7891168423c163eeae378692707cd00c85184b1a20cac62b89d",
+            "source_sequence": 9
+          },
+          {
+            "memory_id": "mem-57dd9b8f46a5671dadf8",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "safety",
+            "action": "approach",
+            "utility": 0.05,
+            "actual_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "4efeafcc34c9fe479791a4b3e0508529345e43f0fc68b743b4440d442091e5d0",
+            "source_sequence": 10
+          },
+          {
+            "memory_id": "mem-73387cfe0d8661b264af",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "safety",
+            "action": "withdraw",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "0b137d74b63dd629348207e573ba71bb008e2ab583d2aef5193a645eb197c9a3",
+            "source_sequence": 11
+          },
+          {
+            "memory_id": "mem-6d1d47e216d12da1b30d",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "stimulation",
+            "action": "explore",
+            "utility": 0.08,
+            "actual_delta": {
+              "energy": -0.05,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.26
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "d3ae8a59261a579cdaf3d35d249bb0c2756d85ecd2a2572aedd6d70c3ebf4123",
+            "source_sequence": 12
+          },
+          {
+            "memory_id": "mem-a7d4082b92349c06549c",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "homeostasis",
+            "action": "rest",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "b2056e2d5859f0e595032976af014305dbaadf99cfae28dbd49ff8daaeb5a5da",
+            "source_sequence": 13
+          },
+          {
+            "memory_id": "mem-ea4133ef5e5989042269",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "homeostasis",
+            "action": "approach",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "0b8048e769e8980395e00f0406cc1ef89e9a8c96bfbcd35144ec5cd126079df0",
+            "source_sequence": 14
+          },
+          {
+            "memory_id": "mem-a22c06f590977fbc83d2",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "homeostasis",
+            "action": "withdraw",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "b454043e28237f92d24cb97423e72ccddde33441325cb007444fc4cd23ce8ff4",
+            "source_sequence": 15
+          },
+          {
+            "memory_id": "mem-f1fc5e9274120becd01f",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "homeostasis",
+            "action": "forage",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+            "source_sequence": 16
+          }
+        ]
+      },
+      "model": {
+        "novelty|stimulation": {
+          "explore": {
+            "count": 2,
+            "ema_delta": {
+              "energy": -0.05,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.26
+            }
+          },
+          "approach": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            }
+          }
+        },
+        "novelty|energy": {
+          "forage": {
+            "count": 2,
+            "ema_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            }
+          },
+          "rest": {
+            "count": 2,
+            "ema_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            }
+          },
+          "approach": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            }
+          }
+        },
+        "novelty|safety": {
+          "withdraw": {
+            "count": 2,
+            "ema_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            }
+          },
+          "rest": {
+            "count": 1,
+            "ema_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            }
+          },
+          "approach": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            }
+          }
+        },
+        "novelty|homeostasis": {
+          "rest": {
+            "count": 1,
+            "ema_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            }
+          },
+          "approach": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            }
+          },
+          "withdraw": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            }
+          },
+          "forage": {
+            "count": 1,
+            "ema_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            }
+          }
+        }
+      },
+      "organism": {
+        "energy": 0.96,
+        "safety": 0.85,
+        "connection": 0.82,
+        "stimulation": 0.88
+      },
+      "schema_version": "ego.life_playground.state.v1"
+    },
+    "opaque_id_control_renamed_checkpoint_5c076070cf06577e": {
+      "clock": {
+        "global_tick": 16,
+        "episode_index": 1,
+        "episode_id": "episode-000001-cd2aa42a8860bf9e",
+        "episode_tick": 8
+      },
+      "current_goal": {
+        "state_variable": null,
+        "target": 0.72,
+        "selected_global_tick": 12,
+        "entry_deficit": 0.0,
+        "status": "homeostasis",
+        "selection_reason": "no_active_deficit"
+      },
+      "last_action": "forage",
+      "last_command_hash": "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+      "last_trace_hash": "57198172b04f039eb24e299147c092f66e8e39cc164a63724adc84ef53ed93eb",
+      "memory": {
+        "consolidated": [],
+        "episodic": [
+          {
+            "memory_id": "opaque-renamed-episodic-000000",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "stimulation",
+            "action": "explore",
+            "utility": 0.18,
+            "actual_delta": {
+              "energy": -0.05,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.26
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "b72dfd05caa9db28dad91dc7a579f6eca5d29f7a1166d57975dc19a578fee11c",
+            "source_sequence": 1
+          },
+          {
+            "memory_id": "opaque-renamed-episodic-000001",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "stimulation",
+            "action": "approach",
+            "utility": 0.1,
+            "actual_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "5c3cf41f6f83ae4ee0b0f836b98e35e647751cd2bea818c9c1e90d932d2f906b",
+            "source_sequence": 2
+          },
+          {
+            "memory_id": "opaque-renamed-episodic-000002",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "forage",
+            "utility": 0.09,
+            "actual_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "48fe623af4d4b4da1af87098c3419379251bba798d8e1ca82ecca398a2210d47",
+            "source_sequence": 3
+          },
+          {
+            "memory_id": "opaque-renamed-episodic-000003",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "rest",
+            "utility": 0.11,
+            "actual_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "88be1a824cbd0fb20c32431c07f9730a467461c1ba97e536ef777c04dcd2b575",
+            "source_sequence": 4
+          },
+          {
+            "memory_id": "opaque-renamed-episodic-000004",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "forage",
+            "utility": 0.11,
+            "actual_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "ac8a738f62ad27169d37199bfd746c6d6a19409b9899de30082e05f2df109cc7",
+            "source_sequence": 5
+          },
+          {
+            "memory_id": "opaque-renamed-episodic-000005",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "approach",
+            "utility": 0.07,
+            "actual_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "cb35afff0b03df7b353abf55c81a46fb045242a1e4f900f6e48fce3058bac585",
+            "source_sequence": 6
+          },
+          {
+            "memory_id": "opaque-renamed-episodic-000006",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "rest",
+            "utility": 0.06,
+            "actual_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "8add87064da4aa06e544488ceb18928355f90359f68be9bdf9ae694b790ae36f",
+            "source_sequence": 7
+          },
+          {
+            "memory_id": "opaque-renamed-episodic-000007",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "safety",
+            "action": "withdraw",
+            "utility": 0.03,
+            "actual_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "4edfdf458d74bd8bf3348486a318775ea9efe452e87ff9b0dcc7d203244e6512",
+            "source_sequence": 8
+          },
+          {
+            "memory_id": "opaque-renamed-episodic-000008",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "safety",
+            "action": "rest",
+            "utility": -0.0,
+            "actual_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "b495142991bdf7891168423c163eeae378692707cd00c85184b1a20cac62b89d",
+            "source_sequence": 9
+          },
+          {
+            "memory_id": "opaque-renamed-episodic-000009",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "safety",
+            "action": "approach",
+            "utility": 0.05,
+            "actual_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "4efeafcc34c9fe479791a4b3e0508529345e43f0fc68b743b4440d442091e5d0",
+            "source_sequence": 10
+          },
+          {
+            "memory_id": "opaque-renamed-episodic-000010",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "safety",
+            "action": "withdraw",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "0b137d74b63dd629348207e573ba71bb008e2ab583d2aef5193a645eb197c9a3",
+            "source_sequence": 11
+          },
+          {
+            "memory_id": "opaque-renamed-episodic-000011",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "stimulation",
+            "action": "explore",
+            "utility": 0.08,
+            "actual_delta": {
+              "energy": -0.05,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.26
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "d3ae8a59261a579cdaf3d35d249bb0c2756d85ecd2a2572aedd6d70c3ebf4123",
+            "source_sequence": 12
+          },
+          {
+            "memory_id": "opaque-renamed-episodic-000012",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "homeostasis",
+            "action": "rest",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "b2056e2d5859f0e595032976af014305dbaadf99cfae28dbd49ff8daaeb5a5da",
+            "source_sequence": 13
+          },
+          {
+            "memory_id": "opaque-renamed-episodic-000013",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "homeostasis",
+            "action": "approach",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "0b8048e769e8980395e00f0406cc1ef89e9a8c96bfbcd35144ec5cd126079df0",
+            "source_sequence": 14
+          },
+          {
+            "memory_id": "opaque-renamed-episodic-000014",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "homeostasis",
+            "action": "withdraw",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "b454043e28237f92d24cb97423e72ccddde33441325cb007444fc4cd23ce8ff4",
+            "source_sequence": 15
+          },
+          {
+            "memory_id": "opaque-renamed-episodic-000015",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "homeostasis",
+            "action": "forage",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+            "source_sequence": 16
+          }
+        ]
+      },
+      "model": {
+        "novelty|stimulation": {
+          "explore": {
+            "count": 2,
+            "ema_delta": {
+              "energy": -0.05,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.26
+            }
+          },
+          "approach": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            }
+          }
+        },
+        "novelty|energy": {
+          "forage": {
+            "count": 2,
+            "ema_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            }
+          },
+          "rest": {
+            "count": 2,
+            "ema_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            }
+          },
+          "approach": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            }
+          }
+        },
+        "novelty|safety": {
+          "withdraw": {
+            "count": 2,
+            "ema_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            }
+          },
+          "rest": {
+            "count": 1,
+            "ema_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            }
+          },
+          "approach": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            }
+          }
+        },
+        "novelty|homeostasis": {
+          "rest": {
+            "count": 1,
+            "ema_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            }
+          },
+          "approach": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            }
+          },
+          "withdraw": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            }
+          },
+          "forage": {
+            "count": 1,
+            "ema_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            }
+          }
+        }
+      },
+      "organism": {
+        "energy": 0.96,
+        "safety": 0.85,
+        "connection": 0.82,
+        "stimulation": 0.88
+      },
+      "schema_version": "ego.life_playground.state.v1"
+    },
+    "opaque_id_control_command_816bd03190abd6f0": {
+      "schema_version": "ego.life_playground.command.v1",
+      "sequence": 17,
+      "cue": "novelty",
+      "trigger_source": "paired_intervention",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "update_mode": "enabled"
+      },
+      "prev_command_hash": "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+      "command_hash": "1bdd08a816f0c12245259a98627e4f46a265460bbf15f33adf8dae874a99fc27"
+    },
+    "serialized_checkpoint_15a81c959de6965c": {
+      "clock": {
+        "global_tick": 16,
+        "episode_index": 1,
+        "episode_id": "episode-000001-cd2aa42a8860bf9e",
+        "episode_tick": 8
+      },
+      "current_goal": {
+        "state_variable": null,
+        "target": 0.72,
+        "selected_global_tick": 12,
+        "entry_deficit": 0.0,
+        "status": "homeostasis",
+        "selection_reason": "no_active_deficit"
+      },
+      "last_action": "forage",
+      "last_command_hash": "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+      "last_trace_hash": "57198172b04f039eb24e299147c092f66e8e39cc164a63724adc84ef53ed93eb",
+      "memory": {
+        "consolidated": [],
+        "episodic": [
+          {
+            "memory_id": "mem-ddef8888a2c65bc0bcc6",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "stimulation",
+            "action": "explore",
+            "utility": 0.18,
+            "actual_delta": {
+              "energy": -0.05,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.26
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "b72dfd05caa9db28dad91dc7a579f6eca5d29f7a1166d57975dc19a578fee11c",
+            "source_sequence": 1
+          },
+          {
+            "memory_id": "mem-364f9a3ed493658a3f9c",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "stimulation",
+            "action": "approach",
+            "utility": 0.1,
+            "actual_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "5c3cf41f6f83ae4ee0b0f836b98e35e647751cd2bea818c9c1e90d932d2f906b",
+            "source_sequence": 2
+          },
+          {
+            "memory_id": "mem-4ab5d77174dfb31a6c13",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "forage",
+            "utility": 0.09,
+            "actual_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "48fe623af4d4b4da1af87098c3419379251bba798d8e1ca82ecca398a2210d47",
+            "source_sequence": 3
+          },
+          {
+            "memory_id": "mem-95867f99a2db12cde277",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "rest",
+            "utility": 0.11,
+            "actual_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "88be1a824cbd0fb20c32431c07f9730a467461c1ba97e536ef777c04dcd2b575",
+            "source_sequence": 4
+          },
+          {
+            "memory_id": "mem-d531ea70b4b891c572d0",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "forage",
+            "utility": 0.11,
+            "actual_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "ac8a738f62ad27169d37199bfd746c6d6a19409b9899de30082e05f2df109cc7",
+            "source_sequence": 5
+          },
+          {
+            "memory_id": "mem-6f81a9fb9cee0cc6a53a",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "approach",
+            "utility": 0.07,
+            "actual_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "cb35afff0b03df7b353abf55c81a46fb045242a1e4f900f6e48fce3058bac585",
+            "source_sequence": 6
+          },
+          {
+            "memory_id": "mem-ceb99d6306de00f3bb7b",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "energy",
+            "action": "rest",
+            "utility": 0.06,
+            "actual_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "8add87064da4aa06e544488ceb18928355f90359f68be9bdf9ae694b790ae36f",
+            "source_sequence": 7
+          },
+          {
+            "memory_id": "mem-40fba2d61bee216ba8c4",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "safety",
+            "action": "withdraw",
+            "utility": 0.03,
+            "actual_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            },
+            "source_episode_id": "episode-000000-860a081025554c9d",
+            "source_command_hash": "4edfdf458d74bd8bf3348486a318775ea9efe452e87ff9b0dcc7d203244e6512",
+            "source_sequence": 8
+          },
+          {
+            "memory_id": "mem-31ca62ae921c87fd4186",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "safety",
+            "action": "rest",
+            "utility": -0.0,
+            "actual_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "b495142991bdf7891168423c163eeae378692707cd00c85184b1a20cac62b89d",
+            "source_sequence": 9
+          },
+          {
+            "memory_id": "mem-57dd9b8f46a5671dadf8",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "safety",
+            "action": "approach",
+            "utility": 0.05,
+            "actual_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "4efeafcc34c9fe479791a4b3e0508529345e43f0fc68b743b4440d442091e5d0",
+            "source_sequence": 10
+          },
+          {
+            "memory_id": "mem-73387cfe0d8661b264af",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "safety",
+            "action": "withdraw",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "0b137d74b63dd629348207e573ba71bb008e2ab583d2aef5193a645eb197c9a3",
+            "source_sequence": 11
+          },
+          {
+            "memory_id": "mem-6d1d47e216d12da1b30d",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "stimulation",
+            "action": "explore",
+            "utility": 0.08,
+            "actual_delta": {
+              "energy": -0.05,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.26
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "d3ae8a59261a579cdaf3d35d249bb0c2756d85ecd2a2572aedd6d70c3ebf4123",
+            "source_sequence": 12
+          },
+          {
+            "memory_id": "mem-a7d4082b92349c06549c",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "homeostasis",
+            "action": "rest",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "b2056e2d5859f0e595032976af014305dbaadf99cfae28dbd49ff8daaeb5a5da",
+            "source_sequence": 13
+          },
+          {
+            "memory_id": "mem-ea4133ef5e5989042269",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "homeostasis",
+            "action": "approach",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "0b8048e769e8980395e00f0406cc1ef89e9a8c96bfbcd35144ec5cd126079df0",
+            "source_sequence": 14
+          },
+          {
+            "memory_id": "mem-a22c06f590977fbc83d2",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "homeostasis",
+            "action": "withdraw",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "b454043e28237f92d24cb97423e72ccddde33441325cb007444fc4cd23ce8ff4",
+            "source_sequence": 15
+          },
+          {
+            "memory_id": "mem-f1fc5e9274120becd01f",
+            "kind": "episodic",
+            "cue": "novelty",
+            "current_goal": "homeostasis",
+            "action": "forage",
+            "utility": 0.0,
+            "actual_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            },
+            "source_episode_id": "episode-000001-cd2aa42a8860bf9e",
+            "source_command_hash": "adeb9d0d6aa0698deab1cbb76d1c7e8ccb59fc072a472f3c9116d8e125492cb2",
+            "source_sequence": 16
+          }
+        ]
+      },
+      "model": {
+        "novelty|stimulation": {
+          "explore": {
+            "count": 2,
+            "ema_delta": {
+              "energy": -0.05,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.26
+            }
+          },
+          "approach": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            }
+          }
+        },
+        "novelty|energy": {
+          "forage": {
+            "count": 2,
+            "ema_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            }
+          },
+          "rest": {
+            "count": 2,
+            "ema_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            }
+          },
+          "approach": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            }
+          }
+        },
+        "novelty|safety": {
+          "withdraw": {
+            "count": 2,
+            "ema_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            }
+          },
+          "rest": {
+            "count": 1,
+            "ema_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            }
+          },
+          "approach": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            }
+          }
+        },
+        "novelty|homeostasis": {
+          "rest": {
+            "count": 1,
+            "ema_delta": {
+              "energy": 0.09,
+              "safety": 0.04,
+              "connection": 0.0,
+              "stimulation": -0.04
+            }
+          },
+          "approach": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.02,
+              "safety": -0.02,
+              "connection": 0.11,
+              "stimulation": 0.03
+            }
+          },
+          "withdraw": {
+            "count": 1,
+            "ema_delta": {
+              "energy": -0.01,
+              "safety": 0.1,
+              "connection": -0.04,
+              "stimulation": -0.03
+            }
+          },
+          "forage": {
+            "count": 1,
+            "ema_delta": {
+              "energy": 0.12,
+              "safety": -0.03,
+              "connection": 0.0,
+              "stimulation": 0.02
+            }
+          }
+        }
+      },
+      "organism": {
+        "energy": 0.96,
+        "safety": 0.85,
+        "connection": 0.82,
+        "stimulation": 0.88
+      },
+      "schema_version": "ego.life_playground.state.v1"
+    },
+    "typed_observation_f11dd55d23f9595d": {
+      "cue": "novelty",
+      "sequence": 17,
+      "trigger_source": "paired_intervention"
+    }
+  }
+}
