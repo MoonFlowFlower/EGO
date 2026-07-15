@@ -1,0 +1,69 @@
+{
+  "base_commit": "b852cedb1c1a31531a2f71e330e110539150c518",
+  "blocking_findings": [],
+  "claim_ceiling": "Phase A preregistration contract bank only; no READY, implementation, enablement, default, mainline, runtime, science, or remote-anchor authority",
+  "claim_ceiling_acknowledged": true,
+  "executor_session_id": "codex:019f640a-16e9-79c2-a2ef-9f46dae5e61f",
+  "non_blocking_findings": [
+    "Hash attestation scope: this reviewer attests to the exact bundle text as presented and echoes the supplied bundle/manifest/diff SHA-256 values; the raw bytes were not independently rehashed in this session. Local pre-commit validation must still recompute staged blob OIDs, blob-payload SHA-256, and the raw cached-diff SHA-256 against these values.",
+    "Authority chain note: the prereg card's verbatim ITL allowed-action list (Section 0.3) covers drafting and route validation only; the Phase-A commit itself rests on the out-of-band operator authorization quoted in the transition card, not on a committed ITL route action. This is consistent with the declared design (Phase B adds the ITL machine-readable route), but until Phase B lands, the commit authorization exists only as transcribed operator prose plus this receipt.",
+    "Target-count verification: Section 18 enumerates exactly 20 future implementation paths (1 mutation-scope + 6 lineage + 3 verifier/test + 10 evidence artifacts), matching the transition card's stated count. Note Section 18.1 references a different, implementation-phase mutation-scope filename (EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A-MUTATION_SCOPE.yaml) from the Phase-A scope file; this appears intentional but the operator's later per-path confirmation should treat it as a new file, not the Phase-A YAML.",
+    "Internal consistency confirmed on hostile check: noncyclic command/state/trace hash order (7.2.1); single pre-action rollover rule with episode_index=floor((t-1)/8) yielding boundaries at ticks 9/17 and indices [0,1,2] for the frozen 24-tick run, consistent across 7.1/7.2.2/14; exact typed-command schema with fail-closed unknown-key/enum and forbidden memory_off+shuffle combination; Shuffle Provenance eligibility/order/seed derived solely from stable lineage keys with an opaque-ID rename bit-identical positive control; V0 verifier test repair pinned to Git-object payloads rather than live V1 imports.",
+    "Governance invariants confirmed: prereg card retains DRAFT_ONLY__IMPLEMENTATION_UNAUTHORIZED with empty authorized_implementation_targets; mutation scope keeps implementation_authorized=false, enabled/default/mainline/runtime/science all off, push/tag/anchor forbidden; receipt excluded from its own manifest; direct-child-of-base and exact four-path commit constraints present; V0 adoption closure and Card2 closure are not reopened; sorted reviewed-path order in the manifest matches byte-lexicographic order."
+  ],
+  "phase": "A_PREREG_CARD_BANK",
+  "review_bundle_sha256": "61804f62b97a88ee20745b1fa7e4267d92a357c4691d3a56573c774e0693a423",
+  "review_id": "claude-web-ego-v1-phase-a-20260715-001",
+  "review_response_sha256": "c7a325473b5641503b4248be85f153f3540cb70579c2522a0b69c0bedd253683",
+  "review_scope": "exact three-path staged Phase-A preregistration candidate; receipt excluded",
+  "review_source": "Claude Web, Fable 5 High, https://claude.ai/chat/56dff7b0-4529-40d6-b67f-c570f1dbb943, inline exact bundle transport",
+  "reviewed_at_utc": "2026-07-15T05:58:07Z",
+  "reviewed_diff_sha256": "c56fd41a745674d6294a956e6756df2479743a7798033561ed56952d8d56c3a0",
+  "reviewed_semantic_manifest": {
+    "base_commit": "b852cedb1c1a31531a2f71e330e110539150c518",
+    "per_path_base_blob_or_absent": {
+      "docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A.md": "absent",
+      "docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-READY-TRANSITION-001A-MUTATION_SCOPE_PHASE_A.yaml": "absent",
+      "docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-READY-TRANSITION-001A.md": "absent"
+    },
+    "per_path_reviewed_blob_or_worktree_sha256": {
+      "docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A.md": {
+        "reviewed_blob": "c7f52c015c7e9c23650e37d7a5da898a784685f0",
+        "reviewed_blob_payload_sha256": "fd2353db03abc5949479a2f7d74800f148457d5c29a178ca02289ee330032c71",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      },
+      "docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-READY-TRANSITION-001A-MUTATION_SCOPE_PHASE_A.yaml": {
+        "reviewed_blob": "e83897f149cca6e8b481e590121d17cef23bb78c",
+        "reviewed_blob_payload_sha256": "902ccb566ec706093b6c5d5c6b011a024ad3f5ed5d50707ee42e029d8ca30f7a",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      },
+      "docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-READY-TRANSITION-001A.md": {
+        "reviewed_blob": "c4b0e10865c86340dfa5799dc43a29232ec0b2a2",
+        "reviewed_blob_payload_sha256": "2e630358bd3d2317c310d0cc9bf595d1b30042dcf127d4115bfbd6b332155415",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      }
+    },
+    "sorted_reviewed_paths": [
+      "docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A.md",
+      "docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-READY-TRANSITION-001A-MUTATION_SCOPE_PHASE_A.yaml",
+      "docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-READY-TRANSITION-001A.md"
+    ]
+  },
+  "reviewed_semantic_manifest_sha256": "682b179be8517bd315d5dfaa10f8af16bafc069f47c7451fd31be33edea2eb00",
+  "reviewer": "Claude",
+  "reviewer_session_id": "claude-web-red-6d5fba4d-9e4c-4352-ba42-c73e259cf492",
+  "schema_version": "ego.red_review_receipt.v1",
+  "sorted_reviewed_paths": [
+    "docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A.md",
+    "docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-READY-TRANSITION-001A-MUTATION_SCOPE_PHASE_A.yaml",
+    "docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-READY-TRANSITION-001A.md"
+  ],
+  "task_id": "EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-READY-TRANSITION-001A",
+  "verdict": "NO_BLOCKING_FINDINGS"
+}

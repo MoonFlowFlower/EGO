@@ -1,0 +1,31 @@
+schema_version: ego.task_mutation_scope.v1
+task_id: EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-READY-TRANSITION-001A
+phase: A_PREREG_CARD_BANK
+base_commit: b852cedb1c1a31531a2f71e330e110539150c518
+expected_branch: main
+operator_authorized: true
+implementation_authorized: false
+mainline_target: none
+enabled: false
+default_enabled: false
+runtime_mainline_connected: false
+runtime_authority: none
+science_weight: 0
+auto_remote_anchor: forbidden
+push: forbidden
+tag: forbidden
+independent_red_review_required: true
+red_review_ref: docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-READY-TRANSITION-001A-PHASE_A_RED_REVIEW.json
+allowed_mutation_paths:
+  - docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A.md
+  - docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-READY-TRANSITION-001A.md
+  - docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-READY-TRANSITION-001A-MUTATION_SCOPE_PHASE_A.yaml
+  - docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-READY-TRANSITION-001A-PHASE_A_RED_REVIEW.json
+reviewed_nonreceipt_paths:
+  - docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A.md
+  - docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-READY-TRANSITION-001A.md
+  - docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-READY-TRANSITION-001A-MUTATION_SCOPE_PHASE_A.yaml
+receipt_excluded_from_own_manifest: true
+commit_must_be_direct_child_of_base: true
+exact_commit_path_count: 4
+claim_ceiling: local reviewed V1 preregistration card bank only; no READY, implementation, runtime, mechanism, or science evidence
