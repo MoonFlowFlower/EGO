@@ -1,0 +1,92 @@
+schema_version: ego.task_mutation_scope.v1
+task_id: EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-POST-RESULT-ROUTING-001A
+phase: EGO_PHASE_A_POST_RESULT_AND_V2_PREREG_BANK
+base_commit: 7ca4ad3b00a41723c04dde388212ad617479ad81
+expected_branch: main
+required_worktree_status_at_start: clean
+approved_operator_packet_path: C:/Users/LEO/.codex/visualizations/2026/07/15/019f640a-16e9-79c2-a2ef-9f46dae5e61f/EGO_V1_POST_RESULT_TO_V2_AUTHORIZATION_PACKET_REV1_DRAFT.yaml
+approved_operator_packet_sha256: 306fe9fe743f221a41a0b7aea5f4ce786619bc5bc33cffc3ecbdaddd213f4126
+itl_reference_branch: codex/meta-theory-scaffold
+itl_reference_commit: 81f19613fbd02bb845c08258cc8156283240aa2e
+predecessor_route_id: EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A
+predecessor_route_revision_id: EGO_LIFE_KERNEL_V1_CONTINUITY_PLAYGROUND_READY_TRANSITION_001A
+predecessor_route_fingerprint: 7cf2e1aae66bc654abc509d83f1ba71d57ebd44b53a9b8e92ccdd27777e01956
+operator_packet_authorized: true
+phase_a_docs_bank_authorized: true
+route_state_mutation_authorized_in_phase_a: false
+program_state_mutation_authorized_in_phase_a: false
+effective_v2_implementation_authorized_in_phase_a: false
+future_v2_machine_authorization_target: true
+mainline_target: none
+enabled: false
+default_enabled: false
+mainline_connected: false
+runtime_mainline_connected: false
+runtime_authority: none
+science_weight: 0
+remote_anchor: false
+auto_remote_anchor: forbidden
+proactive_action_enabled: false
+initiative_executor_authorized: false
+background_dispatch: false
+external_side_effects: false
+llm: forbidden
+network: forbidden
+push: forbidden
+tag: forbidden
+independent_red_review_required: true
+review_binding: staged_git_blob_payloads
+reviewed_nonreceipt_path_count: 3
+reviewed_nonreceipt_paths:
+  - docs/codex/tasks/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A.md
+  - docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-POST-RESULT-ROUTING-001A.md
+  - docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-POST-RESULT-ROUTING-001A-MUTATION_SCOPE_PHASE_A.yaml
+receipt_path: docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-POST-RESULT-ROUTING-001A-PHASE_A_RED_REVIEW.json
+receipt_excluded_from_own_manifest: true
+allowed_mutation_paths:
+  - docs/codex/tasks/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A.md
+  - docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-POST-RESULT-ROUTING-001A.md
+  - docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-POST-RESULT-ROUTING-001A-MUTATION_SCOPE_PHASE_A.yaml
+  - docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-POST-RESULT-ROUTING-001A-PHASE_A_RED_REVIEW.json
+exact_commit_paths:
+  - docs/codex/tasks/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A.md
+  - docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-POST-RESULT-ROUTING-001A.md
+  - docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-POST-RESULT-ROUTING-001A-MUTATION_SCOPE_PHASE_A.yaml
+  - docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-POST-RESULT-ROUTING-001A-PHASE_A_RED_REVIEW.json
+commit_must_be_direct_child_of_base: true
+exact_commit_path_count: 4
+p1_task_id: EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A
+p1_exact_implementation_target_count: 25
+phase_b_exact_commit_path_count: 16
+phase_b_lineage_aware_ready_test: tests/route_state_machine_001a/test_ego_life_kernel_v1_ready_transition.py
+historical_v1_ready_transition_report_immutable: true
+p1_execution_condition: >-
+  P1 remains blocked until the exact Ego Phase-A, ITL Phase-B and Ego Phase-C
+  Red commits are independently reviewed and committed, dual-repo validation
+  passes, both worktrees are clean, and Ego effective actions expose exactly
+  implement_EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A plus route
+  validation.
+forbidden_paths:
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - docs/STATUS.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - artifacts/reports/program_state_summary.md
+  - scripts/codex_session_guard.py
+  - scripts/codex/verify_route_convergence.py
+  - scripts/tests/test_codex_session_guard.py
+  - scripts/tests/test_route_governance_supersession.py
+  - labs/ego_life_playground_v0/
+  - scripts/run_ego_life_playground_v0.py
+  - tests/test_ego_life_playground_v0.py
+  - artifacts/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/
+  - EgoOperator/
+  - EgoDesktop/
+  - legacy/
+  - ../intelligence-theory-lab/
+claim_ceiling: >-
+  Exact operator-hash-approved Phase-A preregistration and transition-card
+  candidate only; no route transition, V2 machine authority, implementation,
+  enablement, runtime/mainline effect, science evidence, learning result,
+  mechanism evidence, agency, autonomy, subjectivity, consciousness, emotion
+  understanding, electronic life, EGO readiness, or user-benefit claim.

@@ -1,0 +1,87 @@
+{
+  "base_commit": "7ca4ad3b00a41723c04dde388212ad617479ad81",
+  "blocking_findings": [],
+  "claim_ceiling": "Phase-A REV1 preregistration/card bank only; no route transition, V2 machine authority, implementation, enablement, runtime/mainline effect, science evidence, learning result, mechanism evidence, agency, autonomy, subjectivity, consciousness, emotion understanding, or electronic-life claim.",
+  "claim_ceiling_acknowledged": true,
+  "executor_session_id": "codex:019f640a-16e9-79c2-a2ef-9f46dae5e61f",
+  "local_recomputation": {
+    "bundle_sha256_match": true,
+    "semantic_manifest_sha256_match": true,
+    "staged_blob_oids_and_payloads_match": true,
+    "staged_diff_sha256_match": true,
+    "worktree_index_bytes_equal": true
+  },
+  "non_blocking_findings": [
+    "PRIOR_BLOCKER_RESOLVED_AS_SPECIFIED:?????(f0c1b111 bundle:Phase-B allowlist ??????)???????????:packet p0_phase_b_itl ? 7 ??? tests/route_state_machine_001a/test_ego_life_kernel_v1_ready_transition.py(15 nonreceipt + receipt = 16,exact_commit_path_count: 16);? ?13.2 ? commit_order('exact sixteen-path')??;mutation scope ?? phase_b_exact_commit_path_count: 16?phase_b_lineage_aware_ready_test ? historical_v1_ready_transition_report_immutable: true?? ?4 ??? ready_transition_validation_report.json ???????? lineage-aware ?????/??/??/??? READY ????????????????????,????????????????????",
+    "RESIDUAL_PHASE_B_IMPLEMENTATION_RISK(????,?????):???? 448-481 ?? HEAD ?? blob ????? READY ??? input_object_ids/input_hashes/code_path_hash,? Phase B ????????????????????lineage-aware ??????????'?? HEAD blob'??'ITL ?? pin(? 81f19613 ?????? pin ??)?? Git ??',? Ego V3 head_path_parity ????;? 395-404 ?? product_axis ???????????? lineage ??(V1=ADJUDICATED ???????? V2 ? V1 implement ???);? 140-171 ?? V1_READY_STATE ???????????????????? Phase-B ????,?? Phase-B Red ????????;?????????? READY ???????????,?? Phase-B ???",
+    "UNVERIFIED_SIBLING_COLLISIONS(???):??????????????????;ITL ?????????????? V1 READY/product_axis ?????,????????Phase-B ??????????? ITL ???'?? Phase-B ?'??(? Ego V3 ?????????),?????????? allowlist ????????",
+    "OPERATOR_APPROVAL_TRANSCRIPTION_BOUNDARY:packet ??? status ? DRAFT_PENDING_EXACT_OPERATOR_HASH_APPROVAL(????,???????,?????????),? bundle ?? mutation scope ?? operator ?? SHA-256 306fe9fe? ?? REV1;quoted_intent ???????????????????????;acceptance gate ??? packet ??????,?????? Phase-A receipt ?????????? operator ? REV1 ?????????,??'??????? packet 6b59d0e5? ?????? REV1'??????",
+    "TRANSCRIPTION_CONSISTENCY_CHECKS_PASSED:??? blob(???? REV0 blob ???,???? 4418?4793/20783?21732/22385?23111 ? diff ??????);packet???mutation scope ? pins(Ego 7ca4ad3b?ITL 81f19613?predecessor fingerprint 7cf2e1aa)??? V1 ??????(???? V1/V2/V3 ?????????)?closed switches ???Phase-A ???? false?V2 successor ? implementation_authorized: true ?????? Phase-B ???? AUTHORIZED_BUT_BLOCKED_UNTIL_EXACT_EGO_PHASE_C ???25 ?? P1 ???????????Phase A/B/C/P1 ?? 4/16/20/25 ???receipt ????direct-child ??????????????????????????",
+    "???????(bundle/manifest/diff/packet/blob SHA),???????;?????? 14 ?????????????? receipt?? bundle f0c1b111? ??,?????????"
+  ],
+  "operator_authorization_observed_in_current_session": true,
+  "operator_authorization_packet_path": "C:\\Users\\LEO\\.codex\\visualizations\\2026\\07\\15\\019f640a-16e9-79c2-a2ef-9f46dae5e61f\\EGO_V1_POST_RESULT_TO_V2_AUTHORIZATION_PACKET_REV1_DRAFT.yaml",
+  "operator_authorization_packet_sha256": "306fe9fe743f221a41a0b7aea5f4ce786619bc5bc33cffc3ecbdaddd213f4126",
+  "operator_authorization_text_sha256": "55d6649a76edbe426ee86879f9d1ceeaab05faf7048fcff14961eeec1ce83312",
+  "phase": "EGO_PHASE_A_POST_RESULT_AND_V2_PREREG_BANK",
+  "receipt_excluded_from_own_manifest": true,
+  "review_bundle_sha256": "4c3e8d5c270b679a3a72f87a80cc4dc84badebdf066b9e7d11495e470044be8c",
+  "review_id": "claude-web-ego-v2-rev1-phase-a-20260715-001",
+  "review_response_external_path": "C:\\Users\\LEO\\AppData\\Local\\Temp\\EGO_V2_POST_RESULT_REV1_PHASE_A_4c3e8d5c270b679a_CLAUDE_RESPONSE.json",
+  "review_response_sha256": "da34cbca7faad7a38cea82a4ea385b2aa135a13018d6cc9cb8b1f8c6a8b8eece",
+  "review_response_sha_semantics": "UTF8_JSON_PLUS_LF",
+  "review_scope": "exact three-path staged Phase-A REV1 preregistration candidate; receipt excluded",
+  "review_source": "Claude Web, Fable 5 High, https://claude.ai/chat/f7bfa913-9710-405b-aa34-b16f0a97c165, inline exact bundle transport",
+  "reviewed_at_utc": "2026-07-15T00:00:00Z",
+  "reviewed_diff_sha256": "949eba752b81e5521bc23fc029ec8241418732c10d8760764d5f58d515f5afb2",
+  "reviewed_semantic_manifest": {
+    "base_commit": "7ca4ad3b00a41723c04dde388212ad617479ad81",
+    "per_path_base_blob_or_absent": {
+      "docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-POST-RESULT-ROUTING-001A-MUTATION_SCOPE_PHASE_A.yaml": "absent",
+      "docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-POST-RESULT-ROUTING-001A.md": "absent",
+      "docs/codex/tasks/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A.md": "absent"
+    },
+    "per_path_reviewed_blob_or_worktree_sha256": {
+      "docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-POST-RESULT-ROUTING-001A-MUTATION_SCOPE_PHASE_A.yaml": {
+        "reviewed_blob": "ac9fe5d19ac8ce7d9bf57372e90e88ba05aba8db",
+        "reviewed_blob_payload_byte_count": 4793,
+        "reviewed_blob_payload_sha256": "a4dfd5942ddc34bc0ead8e0886d4b86ae074a5d33e892a19ac6c13bbcc1b804d",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      },
+      "docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-POST-RESULT-ROUTING-001A.md": {
+        "reviewed_blob": "84dab220c9b91c5811b6843f71467e89601a66ab",
+        "reviewed_blob_payload_byte_count": 21732,
+        "reviewed_blob_payload_sha256": "2169e30caedf873ca721a04189e133ac22a3f74bdeac41967c64fc67a27d195c",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      },
+      "docs/codex/tasks/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A.md": {
+        "reviewed_blob": "df346184821a5c467cf2010cb8442e2b73297ea6",
+        "reviewed_blob_payload_byte_count": 23111,
+        "reviewed_blob_payload_sha256": "adf496b4b0bea3fd91a84db5b9ac186a4cc302cc156a4ac4485c79855adf1d75",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"
+        }
+      }
+    },
+    "sorted_reviewed_paths": [
+      "docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-POST-RESULT-ROUTING-001A-MUTATION_SCOPE_PHASE_A.yaml",
+      "docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-POST-RESULT-ROUTING-001A.md",
+      "docs/codex/tasks/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A.md"
+    ]
+  },
+  "reviewed_semantic_manifest_sha256": "d35b638f17125104b8f6b091ebb54a6b6f7efac858e51e2a965d00f8dab4a44d",
+  "reviewer": "Claude",
+  "reviewer_session_id": "claude-web-red-egoA-rev1-20260715-9b3e",
+  "schema_version": "ego.red_review_receipt.v1",
+  "sorted_reviewed_paths": [
+    "docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-POST-RESULT-ROUTING-001A-MUTATION_SCOPE_PHASE_A.yaml",
+    "docs/codex/tasks/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-POST-RESULT-ROUTING-001A.md",
+    "docs/codex/tasks/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A.md"
+  ],
+  "task_id": "EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-POST-RESULT-ROUTING-001A",
+  "verdict": "NO_BLOCKING_FINDINGS"
+}
