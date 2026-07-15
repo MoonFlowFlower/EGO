@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import importlib.util
 import io
 import json
 import sys
 from pathlib import Path
+
+import pytest
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -423,6 +426,26 @@ def valid_visible_life_transition_scope() -> dict:
     }
 
 
+def valid_visible_life_core_sync_scope() -> dict:
+    return {
+        "task_id": codex_session_guard.VISIBLE_LIFE_CORE_TASK_ID,
+        "task_kind": "cross_repo_product_core_authority_sync",
+        "requested_action_id": codex_session_guard.VISIBLE_LIFE_CORE_SYNC_ACTION_ID,
+        "source_route_revision_id": codex_session_guard.VISIBLE_LIFE_ROUTE_REVISION,
+        "source_route_fingerprint": "63a54cb04c634042e27b1af9500cbb1dd87d5d9941959a5abfeac28954f1f4de",
+        "expected_target_route_revision_id": codex_session_guard.VISIBLE_LIFE_CORE_ROUTE_REVISION,
+        "independent_red_review_required": True,
+        "red_review_ref": codex_session_guard.VISIBLE_LIFE_CORE_RED_REVIEW_PATH,
+        "allowed_mutation_paths": list(codex_session_guard.VISIBLE_LIFE_CORE_SYNC_PATHS),
+        "migration_exception": {},
+        "raw": {
+            "execution_requested": True,
+            "itl_product_axis_commit": codex_session_guard.VISIBLE_LIFE_CORE_ITL_COMMIT,
+            "itl_product_axis_route_id": codex_session_guard.VISIBLE_LIFE_CORE_ITL_ROUTE_ID,
+        },
+    }
+
+
 def blocker_reasons(blockers: list[dict]) -> set[str]:
     return {str(blocker.get("reason")) for blocker in blockers}
 
@@ -489,27 +512,46 @@ def test_authority_change_requires_red_review_ref() -> None:
     assert "authority_change_without_red_review_ref" in blocker_reasons(blockers)
 
 
-def test_route_scope_rejects_wrong_visible_life_task_kind() -> None:
+def test_route_scope_rejects_wrong_visible_life_core_sync_task_kind(monkeypatch) -> None:
     state = live_route_state()
-    scope = valid_visible_life_phase_b_scope(state)
+    scope = valid_visible_life_core_sync_scope()
     scope["task_kind"] = "governance_only_validator_repair"
+    monkeypatch.setattr(
+        codex_session_guard,
+        "validate_visible_life_core_product_authority",
+        lambda *_args, **_kwargs: {"status": "pass", "errors": []},
+    )
 
-    assert "visible_life_phase_b_task_kind_mismatch" in blocker_reasons(validate_scope(state, scope))
+    assert "visible_life_core_sync_task_kind_mismatch" in blocker_reasons(
+        validate_scope(
+            state,
+            scope,
+            changed_paths=[
+                "docs/PROGRAM_STATE_UNIFIED.yaml",
+                f"{codex_session_guard.VISIBLE_LIFE_CORE_TASK_PREFIX}STAGE_CARD.md",
+            ],
+            added_task_dirs=[codex_session_guard.VISIBLE_LIFE_CORE_TASK_PREFIX.rstrip("/")],
+        )
+    )
 
 
-def test_visible_life_transition_is_exactly_bound_to_old_revision_and_fingerprint() -> None:
+def test_visible_life_core_sync_is_exactly_bound_to_v0_revision_and_fingerprint(monkeypatch) -> None:
     state = live_route_state()
-    scope = valid_visible_life_transition_scope()
+    scope = valid_visible_life_core_sync_scope()
     changed = [
         "docs/PROGRAM_STATE_UNIFIED.yaml",
-        f"{codex_session_guard.VISIBLE_LIFE_TASK_PREFIX}STAGE_CARD.md",
+        f"{codex_session_guard.VISIBLE_LIFE_CORE_TASK_PREFIX}STAGE_CARD.md",
     ]
+    monkeypatch.setattr(
+        codex_session_guard,
+        "validate_visible_life_core_product_authority",
+        lambda *_args, **_kwargs: {"status": "pass", "errors": []},
+    )
     blockers = validate_scope(
         state,
         scope,
         changed_paths=changed,
-        added_task_dirs=[codex_session_guard.VISIBLE_LIFE_TASK_PREFIX.rstrip("/")],
-        execution_requested=False,
+        added_task_dirs=[codex_session_guard.VISIBLE_LIFE_CORE_TASK_PREFIX.rstrip("/")],
     )
     reasons = blocker_reasons(blockers)
     assert "stale_route_fingerprint" not in reasons
@@ -522,8 +564,7 @@ def test_visible_life_transition_is_exactly_bound_to_old_revision_and_fingerprin
             state,
             scope,
             changed_paths=changed,
-            added_task_dirs=[codex_session_guard.VISIBLE_LIFE_TASK_PREFIX.rstrip("/")],
-            execution_requested=False,
+            added_task_dirs=[codex_session_guard.VISIBLE_LIFE_CORE_TASK_PREFIX.rstrip("/")],
         )
     )
 
@@ -585,32 +626,59 @@ def test_byte_equal_generated_view_only_does_not_trigger_red_review() -> None:
     assert triggers == []
 
 
-def test_valid_visible_life_phase_b_scope_admits_exact_six(monkeypatch) -> None:
+def test_consumed_visible_life_phase_b_action_is_not_reusable() -> None:
     state = live_route_state()
     scope = valid_visible_life_phase_b_scope(state)
+
+    assert "ROUTE_ACTION_NOT_BOUND" in blocker_reasons(validate_scope(state, scope))
+
+
+def test_core_sync_execution_flag_cannot_be_self_declared_false(monkeypatch) -> None:
+    state = live_route_state()
+    scope = valid_visible_life_core_sync_scope()
+    scope["raw"]["execution_requested"] = False
     monkeypatch.setattr(
         codex_session_guard,
-        "compute_visible_life_phase_b_dependencies",
-        lambda *_args, **_kwargs: {"all_satisfied": True, "dependencies": {"test": True}},
+        "validate_visible_life_core_product_authority",
+        lambda *_args, **_kwargs: {"status": "pass", "errors": []},
     )
-
-    assert validate_scope(state, scope) == []
-
-
-def test_self_declared_false_cannot_hide_execution_in_actual_changed_paths() -> None:
-    state = live_route_state()
-    scope = valid_visible_life_phase_b_scope(state)
-    scope["raw"]["execution_requested"] = False
 
     reasons = blocker_reasons(
         validate_scope(
             state,
             scope,
-            changed_paths=[*codex_session_guard.VISIBLE_LIFE_TARGETS, "EgoOperator/agent_base.py"],
+            changed_paths=[
+                "docs/PROGRAM_STATE_UNIFIED.yaml",
+                f"{codex_session_guard.VISIBLE_LIFE_CORE_TASK_PREFIX}STAGE_CARD.md",
+            ],
+            added_task_dirs=[codex_session_guard.VISIBLE_LIFE_CORE_TASK_PREFIX.rstrip("/")],
         )
     )
-    assert "visible_life_phase_b_execution_flag_mismatch" in reasons
-    assert "visible_life_changed_path_outside_exact_six" in reasons
+    assert "visible_life_core_sync_execution_flag_mismatch" in reasons
+
+
+def test_stale_local_core_adopt_action_is_not_a_sync_authority(monkeypatch) -> None:
+    state = live_route_state()
+    scope = valid_visible_life_core_sync_scope()
+    scope["requested_action_id"] = codex_session_guard.VISIBLE_LIFE_CORE_STALE_ADOPT_ACTION_ID
+    monkeypatch.setattr(
+        codex_session_guard,
+        "validate_visible_life_core_product_authority",
+        lambda *_args, **_kwargs: {"status": "pass", "errors": []},
+    )
+
+    reasons = blocker_reasons(
+        validate_scope(
+            state,
+            scope,
+            changed_paths=[
+                "docs/PROGRAM_STATE_UNIFIED.yaml",
+                f"{codex_session_guard.VISIBLE_LIFE_CORE_TASK_PREFIX}STAGE_CARD.md",
+            ],
+            added_task_dirs=[codex_session_guard.VISIBLE_LIFE_CORE_TASK_PREFIX.rstrip("/")],
+        )
+    )
+    assert "ROUTE_ACTION_NOT_BOUND" in reasons
 
 
 def test_visible_life_scope_cannot_replace_exact_files_with_directory_prefix() -> None:
@@ -631,3 +699,112 @@ def test_nonempty_red_review_string_is_not_provenance() -> None:
     )
 
     assert result == {"status": "fail", "errors": ["candidate_red_review_record_unavailable"]}
+
+
+def core_evidence_fixture(tmp_path: Path, monkeypatch):
+    paths = {
+        "manifest_path": tmp_path / "manifest.json",
+        "trace_path": tmp_path / "trace.jsonl",
+        "database_path": tmp_path / "trace.sqlite3",
+        "validation_report_path": tmp_path / "report.json",
+        "validator_path": tmp_path / "validator.py",
+    }
+    payloads = {
+        "manifest_path": b'{"manifest":"computed"}\n',
+        "trace_path": b'{"trace":"computed"}\n',
+        "database_path": b"SQLite format 3\x00computed",
+        "validator_path": b"# computed validator\n",
+    }
+    for key, payload in payloads.items():
+        paths[key].write_bytes(payload)
+    hashes = {key: hashlib.sha256(path.read_bytes()).hexdigest() for key, path in paths.items() if key != "validation_report_path"}
+    report = {
+        "schema_version": "ego.life_core_v0_baseline_validation.v1",
+        "task_id": codex_session_guard.VISIBLE_LIFE_CORE_TASK_ID,
+        "baseline_id": "EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A",
+        "computed_verdict": "PASS",
+        "baseline_commit": codex_session_guard.VISIBLE_LIFE_CORE_BASELINE_COMMIT,
+        "baseline_parent": codex_session_guard.VISIBLE_LIFE_CORE_BASELINE_PARENT,
+        "baseline_tree": codex_session_guard.VISIBLE_LIFE_CORE_BASELINE_TREE,
+        "exact_change_set_verified": True,
+        "head_descends_from_baseline": True,
+        "trace_payload_sha256": hashes["trace_path"],
+        "trace_validation_status": "PASS",
+        "trace_replay_status": "PASS",
+        "trace_replay_input": "serialized_initial_state_and_typed_commands_from_sqlite_artifact",
+        "database_path": str(paths["database_path"]),
+        "database_payload_sha256": hashes["database_path"],
+        "database_provenance_status": "PASS",
+        "sqlite_recovery_status": "PASS",
+        "sqlite_export_status": "PASS",
+        "serialized_initial_state_status": "PASS",
+        "direct_engine_replay_status": "PASS",
+        "provenance": {
+            "manifest_sha256": hashes["manifest_path"],
+            "producer_code_path_hash": hashes["validator_path"],
+        },
+        "errors": [],
+        "claim_ceiling": "bounded product engineering lineage only",
+    }
+    paths["validation_report_path"].write_text(json.dumps(report), encoding="utf-8")
+    refs = {key: str(path) for key, path in paths.items()}
+    monkeypatch.setattr(codex_session_guard, "VISIBLE_LIFE_CORE_BASELINE_REFS", refs)
+    state = {"route_guard": {"product_authority": {"historical_baseline": dict(refs)}}}
+
+    class EvidenceRunner:
+        def __init__(self):
+            self.report = dict(report)
+
+        def run(self, args: list[str]):
+            output = Path(args[args.index("--output") + 1])
+            output.write_text(json.dumps(self.report), encoding="utf-8")
+            return codex_session_guard.CommandResult(args=args, returncode=0, stdout="", stderr="")
+
+    return state, paths, EvidenceRunner()
+
+
+def test_core_evidence_gate_requires_callable_computed_pass(tmp_path: Path, monkeypatch) -> None:
+    state, _paths, runner = core_evidence_fixture(tmp_path, monkeypatch)
+
+    result = codex_session_guard.validate_visible_life_core_evidence(state, runner=runner)
+
+    assert result["status"] == "pass"
+    assert result["computed_critical"]["sqlite_recovery_status"] == "PASS"
+    assert result["computed_critical"]["trace_replay_input"] == (
+        "serialized_initial_state_and_typed_commands_from_sqlite_artifact"
+    )
+
+
+def test_core_evidence_gate_rejects_computed_sqlite_recovery_failure(tmp_path: Path, monkeypatch) -> None:
+    state, _paths, runner = core_evidence_fixture(tmp_path, monkeypatch)
+    runner.report["sqlite_recovery_status"] = "FAIL"
+
+    result = codex_session_guard.validate_visible_life_core_evidence(state, runner=runner)
+
+    assert result["status"] == "fail"
+    assert "core_evidence_computed_sqlite_recovery_status_mismatch" in result["errors"]
+
+
+@pytest.mark.parametrize(
+    ("corrupt_key", "expected_error"),
+    [
+        ("manifest_path", "core_evidence_stored_manifest_sha256_mismatch"),
+        ("validation_report_path", "core_evidence_stored_report_invalid"),
+        ("trace_path", "core_evidence_stored_trace_sha256_mismatch"),
+        ("database_path", "core_evidence_stored_database_sha256_mismatch"),
+        ("validator_path", "core_evidence_stored_validator_sha256_mismatch"),
+    ],
+)
+def test_core_evidence_gate_rejects_corrupted_banked_content(
+    tmp_path: Path,
+    monkeypatch,
+    corrupt_key: str,
+    expected_error: str,
+) -> None:
+    state, paths, runner = core_evidence_fixture(tmp_path, monkeypatch)
+    paths[corrupt_key].write_bytes(paths[corrupt_key].read_bytes() + b"CORRUPTED")
+
+    result = codex_session_guard.validate_visible_life_core_evidence(state, runner=runner)
+
+    assert result["status"] == "fail"
+    assert expected_error in result["errors"]

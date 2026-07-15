@@ -1,0 +1,98 @@
+{
+  "baseline_id": "EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A",
+  "claim_ceiling": "Immutable local Git-object boundary and replayable Ego-local product trigger for the V0 visible-life engineering candidate only; product-lineage authority comes only from separate route synchronization; no runtime-mainline or mechanism claim.",
+  "development_boundary": {
+    "default_enabled": false,
+    "fair_baseline_disclosure": "deterministic_deficit_controller_plus_cue_action_fsm_lookup",
+    "product_development_core": "ego_life_playground_v0",
+    "runtime_authority": "none",
+    "runtime_mainline_connected": false,
+    "science_weight": 0
+  },
+  "producer": {
+    "aggregation_rule": "exact_commit_parent_tree_change_set_and_per_blob_payload_pins",
+    "input_artifacts": [
+      "git:commit:546e3639299d7b11b599df3d00645666a6953bac"
+    ],
+    "producer_function": "verify_ego_life_core_v0_baseline.build_manifest_from_git_objects"
+  },
+  "schema_version": "ego.life_core_v0_baseline_manifest.v1",
+  "source": {
+    "changes": [
+      {
+        "path": "labs/ego_life_playground_v0/__init__.py",
+        "status": "A"
+      },
+      {
+        "path": "labs/ego_life_playground_v0/app.py",
+        "status": "A"
+      },
+      {
+        "path": "labs/ego_life_playground_v0/engine.py",
+        "status": "A"
+      },
+      {
+        "path": "labs/ego_life_playground_v0/store.py",
+        "status": "A"
+      },
+      {
+        "path": "scripts/run_ego_life_playground_v0.py",
+        "status": "A"
+      },
+      {
+        "path": "tests/test_ego_life_playground_v0.py",
+        "status": "A"
+      }
+    ],
+    "commit_oid": "546e3639299d7b11b599df3d00645666a6953bac",
+    "expected_change_count": 6,
+    "files": [
+      {
+        "blob_oid": "aba2ad3ee2ef6963b74bd538bf985f03e5420110",
+        "byte_count": 550,
+        "mode": "100644",
+        "path": "labs/ego_life_playground_v0/__init__.py",
+        "sha256": "117dedb39ab10afda706a32760fee55f4d5010db20dfa9b40b037584af344a82"
+      },
+      {
+        "blob_oid": "856b55636df36d5754db5b9ebbc9f263075f3218",
+        "byte_count": 13997,
+        "mode": "100644",
+        "path": "labs/ego_life_playground_v0/app.py",
+        "sha256": "60ad14bac892fd5fdf694fef8a4674fcbf4cc6fe9e8fcc7ebae791c9cb578fcf"
+      },
+      {
+        "blob_oid": "2b5aa6ac5a38caa0bcb4905826e1e891eeb65915",
+        "byte_count": 19165,
+        "mode": "100644",
+        "path": "labs/ego_life_playground_v0/engine.py",
+        "sha256": "c4d05790fb67752787aa0555f9dc99df71b6401c1c85e699e75c8fa85721cc35"
+      },
+      {
+        "blob_oid": "c49a564ea772512e2cb0dc6352ef63ffa95c2a80",
+        "byte_count": 11693,
+        "mode": "100644",
+        "path": "labs/ego_life_playground_v0/store.py",
+        "sha256": "7966075e8804da28ded96c0a690b673a4880219d97775cfa7b0043beae08dd2c"
+      },
+      {
+        "blob_oid": "dd83f1919d6860d26eb1ce4791c008a6e073b0ac",
+        "byte_count": 2431,
+        "mode": "100644",
+        "path": "scripts/run_ego_life_playground_v0.py",
+        "sha256": "e12e7d2bf69df89c5138ee63ed36ef01698273debe567f7f3cf0ae9cb357590a"
+      },
+      {
+        "blob_oid": "e3bc77a3fefda06dfdb7b14236e9c2da42501be6",
+        "byte_count": 19079,
+        "mode": "100644",
+        "path": "tests/test_ego_life_playground_v0.py",
+        "sha256": "94be0adcfdb6df3c49109d2cb11cf36c40c25aa77299f35bee0db318156f3b44"
+      }
+    ],
+    "parent_oid": "d5d98ac0783a7e67b6d003b460470bdf4350d4bd",
+    "required_change_status": "A",
+    "tree_oid": "fe79061dca2991c822cf2b0b5547a08d9b4682f9"
+  },
+  "task_id": "EGO-VISIBLE-LIFE-PROXY-V0-CORE-ADOPTION-001A"
+}

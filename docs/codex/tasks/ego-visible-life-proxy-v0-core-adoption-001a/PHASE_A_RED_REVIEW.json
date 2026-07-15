@@ -1,0 +1,228 @@
+{
+  "base_commit": "546e3639299d7b11b599df3d00645666a6953bac",
+  "blocking_findings": [],
+  "claim_ceiling": "local cross-repo authority sync, immutable V0 engineering boundary, and replayable Ego-local product trigger only",
+  "claim_ceiling_acknowledged": true,
+  "executor_session_id": "codex:019f5ce9-41b4-7430-b5d5-befde5cc256c",
+  "non_blocking_findings": [
+    "Ego-local trigger evidence embeds absolute Windows checkout paths and is fail-closed outside that checkout; future portability work should use repository-relative paths.",
+    "The historical V0 closure crosswalk keeps its original producer hash and 55706c provenance while identical Git objects are revalidated at 619bff5; this is a disclosed frozen-artifact boundary.",
+    "Some legacy expected-transient test strings are dead entries under subset checking; they do not cause false pass.",
+    "Strict ITL HEAD and sibling-repo discovery are fail-closed but operationally brittle."
+  ],
+  "phase": "A",
+  "review_bundle_sha256": "b353644fb0d222c3cf7fd4ea66cfc6f4deee0df815e153cf8e071b616982e5a3",
+  "review_id": "claude-web-ego-core-authority-sync-20260714-001",
+  "review_response_sha256": "c727fa7284df8af921de0ff95361d6eca4d8ffef38cd89ca5eec4fc7fac56ce4",
+  "review_scope": "exact 19-path staged product-core authority sync candidate; receipt excluded",
+  "review_source": "Claude Web, Fable 5 High, https://claude.ai/chat/6b800509-df0f-4df2-bc11-aaa583957e73",
+  "reviewed_at_utc": "2026-07-15T03:10:55.107488Z",
+  "reviewed_diff_sha256": "735f4c0baa490e1a0be1d0ae33c4ed2b71cbe6a2527e3caf44e4549092ed3c19",
+  "reviewed_semantic_manifest": {
+    "base_commit": "546e3639299d7b11b599df3d00645666a6953bac",
+    "per_path_base_blob_or_absent": {
+      "artifacts/EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A/core_baseline_manifest.json": "absent",
+      "artifacts/EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A/core_baseline_validation_report.json": "absent",
+      "artifacts/EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A/core_trigger.sqlite3": "absent",
+      "artifacts/EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A/core_trigger_trace.jsonl": "absent",
+      "artifacts/reports/program_state_summary.md": "41bfcab60e964056628b1896bbd88ed96e377344",
+      "docs/PROGRAM_STATE_UNIFIED.yaml": "9d977ccf8ecb4c479c2f9ef1e58cc6e10021cfa3",
+      "docs/REPO_SURFACE_MAP.md": "f5b049e0df3d3d784f40d1cb62e45cd56fdfa105",
+      "docs/STATUS.md": "462c13dae252f18bd01b00e91d3f8032a0bf3140",
+      "docs/codex/tasks/TASK_LANE_INDEX.md": "b7916ee4773b75d2f305e9ccb913309656529b10",
+      "docs/codex/tasks/ego-visible-life-proxy-v0-core-adoption-001a/COLLISION_RECORD.md": "absent",
+      "docs/codex/tasks/ego-visible-life-proxy-v0-core-adoption-001a/ITL_AUTHORITY_CROSSWALK.json": "absent",
+      "docs/codex/tasks/ego-visible-life-proxy-v0-core-adoption-001a/MUTATION_SCOPE.yaml": "absent",
+      "docs/codex/tasks/ego-visible-life-proxy-v0-core-adoption-001a/STAGE_CARD.md": "absent",
+      "scripts/codex/verify_ego_life_core_v0_baseline.py": "absent",
+      "scripts/codex/verify_route_convergence.py": "20634e56d18c111d5c4fcd9147e47bcd63228878",
+      "scripts/codex_session_guard.py": "8f3aad23a988574002d7681e76a2c87c1d9b4d39",
+      "scripts/tests/test_codex_session_guard.py": "ded5b241be8ba8928f906990186faf1b10e668d4",
+      "scripts/tests/test_route_governance_supersession.py": "a50c9b36716ead6a82fba29a425ed97c92f61791",
+      "scripts/tests/test_verify_ego_life_core_v0_baseline.py": "absent"
+    },
+    "per_path_reviewed_blob_or_worktree_sha256": {
+      "artifacts/EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A/core_baseline_manifest.json": {
+        "reviewed_blob": "24403cc961f68b4bdbb1cf6c502878498ae8942a",
+        "reviewed_blob_payload_sha256": "8698256d90a389cf608ad874f47b24e4ff3b1c9bcb07073f3afb0d57b33811ad",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "GIT_CLEAN_FILTERED_BLOB_PAYLOAD"
+        }
+      },
+      "artifacts/EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A/core_baseline_validation_report.json": {
+        "reviewed_blob": "9e975edd43e10eed0ab90b94c679abf787ea401c",
+        "reviewed_blob_payload_sha256": "0b34d9c8a3b3dc65115325594c49a435f26dd1b03ff09f26b05c8dc604ebf2c6",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "GIT_CLEAN_FILTERED_BLOB_PAYLOAD"
+        }
+      },
+      "artifacts/EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A/core_trigger.sqlite3": {
+        "reviewed_blob": "69ba639fc08c40636678d899abd6828c1818fab9",
+        "reviewed_blob_payload_sha256": "d70d3482b0e1d20d63e726823ea4e6b6b358639705eeb1650bf0bbd81f6f1e10",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "GIT_CLEAN_FILTERED_BLOB_PAYLOAD"
+        }
+      },
+      "artifacts/EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A/core_trigger_trace.jsonl": {
+        "reviewed_blob": "ee58dfa146832d59a6b75aec7211b0aa44bea9db",
+        "reviewed_blob_payload_sha256": "892413bf63acfc6e551f0ebcd7570bba08cacd6a35a7d79192d6290468024fb1",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "GIT_CLEAN_FILTERED_BLOB_PAYLOAD"
+        }
+      },
+      "artifacts/reports/program_state_summary.md": {
+        "reviewed_blob": "18efa46992d93da9a478c003522587d4b75b843f",
+        "reviewed_blob_payload_sha256": "6af9ae9a59caa00f18ba5c423c71568860d69d55e4e0f6769309d752b790740f",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "GIT_CLEAN_FILTERED_BLOB_PAYLOAD"
+        }
+      },
+      "docs/PROGRAM_STATE_UNIFIED.yaml": {
+        "reviewed_blob": "2214e555a1d661e5f62e198256f0ede33a207c25",
+        "reviewed_blob_payload_sha256": "e291604e968539d89d5dfd3465f1eaa738931ce78abfe3904da088424edc66c7",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "GIT_CLEAN_FILTERED_BLOB_PAYLOAD"
+        }
+      },
+      "docs/REPO_SURFACE_MAP.md": {
+        "reviewed_blob": "ade83ebf7af3b2e1ca3194618116e25ed7302d07",
+        "reviewed_blob_payload_sha256": "e6128e478982e4e2972dd0d11271829bd74b4ba86bdf0701d5b0e0f6b299e25d",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "GIT_CLEAN_FILTERED_BLOB_PAYLOAD"
+        }
+      },
+      "docs/STATUS.md": {
+        "reviewed_blob": "8d54bf3511b9a42a2714bc08b35d0332e81ac035",
+        "reviewed_blob_payload_sha256": "96cf05c5b58b139fe37937f5b3fd6c8cdcfb46d6c7d21b2f83a74f108d6b275b",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "GIT_CLEAN_FILTERED_BLOB_PAYLOAD"
+        }
+      },
+      "docs/codex/tasks/TASK_LANE_INDEX.md": {
+        "reviewed_blob": "112207b220b03e19ce576ff2b72a1caf7ac3a392",
+        "reviewed_blob_payload_sha256": "359dd6dc9f584aa88865235f53fe6c71424b0631f3e08b537b85fa947ece1606",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "GIT_CLEAN_FILTERED_BLOB_PAYLOAD"
+        }
+      },
+      "docs/codex/tasks/ego-visible-life-proxy-v0-core-adoption-001a/COLLISION_RECORD.md": {
+        "reviewed_blob": "70a49385917ee808faf4fef363c01c0820f9b5a9",
+        "reviewed_blob_payload_sha256": "6e8f91e046c72425303eb3ca4dbb96b0c6ad4a5a67e1809c60f46ab1b461e3bb",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "GIT_CLEAN_FILTERED_BLOB_PAYLOAD"
+        }
+      },
+      "docs/codex/tasks/ego-visible-life-proxy-v0-core-adoption-001a/ITL_AUTHORITY_CROSSWALK.json": {
+        "reviewed_blob": "9a1bdbb994077aa15f69938ce106a2bfa59fcc2e",
+        "reviewed_blob_payload_sha256": "577f28a8398b546f437a9f7f2e3431337e68ef6ed1e324918afa02246e44e600",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "GIT_CLEAN_FILTERED_BLOB_PAYLOAD"
+        }
+      },
+      "docs/codex/tasks/ego-visible-life-proxy-v0-core-adoption-001a/MUTATION_SCOPE.yaml": {
+        "reviewed_blob": "51fa60987013fe449aa3d8bd52459305eb6c600a",
+        "reviewed_blob_payload_sha256": "faa98f98e8dc9a546a20c091c637b43beb72d5c3fbaeb6e625313def351270a7",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "GIT_CLEAN_FILTERED_BLOB_PAYLOAD"
+        }
+      },
+      "docs/codex/tasks/ego-visible-life-proxy-v0-core-adoption-001a/STAGE_CARD.md": {
+        "reviewed_blob": "9a7b09d8eee80d50f2623c59ad661b0d4883ef47",
+        "reviewed_blob_payload_sha256": "47cf5a2738be1e6a988336506644bf45e7a55a972c8d24784760ad6a79665be3",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "GIT_CLEAN_FILTERED_BLOB_PAYLOAD"
+        }
+      },
+      "scripts/codex/verify_ego_life_core_v0_baseline.py": {
+        "reviewed_blob": "044c0a03dc7aa666650db1619676d3bd42f35aa7",
+        "reviewed_blob_payload_sha256": "ed3cffaccffb0a039f5efc11ef072b18ecbdb3269a6e81b12141e0ff4e57cf20",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "GIT_CLEAN_FILTERED_BLOB_PAYLOAD"
+        }
+      },
+      "scripts/codex/verify_route_convergence.py": {
+        "reviewed_blob": "6ee899c9acaf1a3b9bb58358b7fca20a16f5132b",
+        "reviewed_blob_payload_sha256": "220dc5042f7f032df13d4155625c304a766d451f23225f6dfe6019089291c43d",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "GIT_CLEAN_FILTERED_BLOB_PAYLOAD"
+        }
+      },
+      "scripts/codex_session_guard.py": {
+        "reviewed_blob": "e28bb9469e91d213b444e45271ebee0b08247046",
+        "reviewed_blob_payload_sha256": "610dbfd455041973075e3a7c30613bf600ebde320abb69b1928aadd55945b5c5",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "GIT_CLEAN_FILTERED_BLOB_PAYLOAD"
+        }
+      },
+      "scripts/tests/test_codex_session_guard.py": {
+        "reviewed_blob": "01082debfb72c512b33058194b474b36cfe63496",
+        "reviewed_blob_payload_sha256": "8f30326201bff0b956fbd3b91eaafc8a3640335f05675b4cdf510cda68830bec",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "GIT_CLEAN_FILTERED_BLOB_PAYLOAD"
+        }
+      },
+      "scripts/tests/test_route_governance_supersession.py": {
+        "reviewed_blob": "1fdd4c49f24ffbb482bb9e5e19a007b611329833",
+        "reviewed_blob_payload_sha256": "1e0ed6f057f3f44826d0c2089c9c7adad1764ec771f44c7ea41ad5a1bb9c0f06",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "GIT_CLEAN_FILTERED_BLOB_PAYLOAD"
+        }
+      },
+      "scripts/tests/test_verify_ego_life_core_v0_baseline.py": {
+        "reviewed_blob": "0702d7d17f820503c07b6477783f0fde04d9a39e",
+        "reviewed_blob_payload_sha256": "8921d307581316c34ec29117b66c13890fe7c03db102a88144f4a0d1f10ed760",
+        "sha_semantics": {
+          "reviewed_blob_payload_sha256": "GIT_CLEAN_FILTERED_BLOB_PAYLOAD"
+        }
+      }
+    },
+    "sorted_reviewed_paths": [
+      "artifacts/EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A/core_baseline_manifest.json",
+      "artifacts/EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A/core_baseline_validation_report.json",
+      "artifacts/EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A/core_trigger.sqlite3",
+      "artifacts/EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A/core_trigger_trace.jsonl",
+      "artifacts/reports/program_state_summary.md",
+      "docs/PROGRAM_STATE_UNIFIED.yaml",
+      "docs/REPO_SURFACE_MAP.md",
+      "docs/STATUS.md",
+      "docs/codex/tasks/TASK_LANE_INDEX.md",
+      "docs/codex/tasks/ego-visible-life-proxy-v0-core-adoption-001a/COLLISION_RECORD.md",
+      "docs/codex/tasks/ego-visible-life-proxy-v0-core-adoption-001a/ITL_AUTHORITY_CROSSWALK.json",
+      "docs/codex/tasks/ego-visible-life-proxy-v0-core-adoption-001a/MUTATION_SCOPE.yaml",
+      "docs/codex/tasks/ego-visible-life-proxy-v0-core-adoption-001a/STAGE_CARD.md",
+      "scripts/codex/verify_ego_life_core_v0_baseline.py",
+      "scripts/codex/verify_route_convergence.py",
+      "scripts/codex_session_guard.py",
+      "scripts/tests/test_codex_session_guard.py",
+      "scripts/tests/test_route_governance_supersession.py",
+      "scripts/tests/test_verify_ego_life_core_v0_baseline.py"
+    ]
+  },
+  "reviewed_semantic_manifest_sha256": "502d6cba4729210c7958e4535ed8d4a06b730bac108b535e8835409d9e8f18a5",
+  "reviewer": "Claude",
+  "reviewer_session_id": "claude-web:6b800509-df0f-4df2-bc11-aaa583957e73",
+  "schema_version": "ego.red_review_receipt.v1",
+  "sorted_reviewed_paths": [
+    "artifacts/EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A/core_baseline_manifest.json",
+    "artifacts/EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A/core_baseline_validation_report.json",
+    "artifacts/EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A/core_trigger.sqlite3",
+    "artifacts/EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A/core_trigger_trace.jsonl",
+    "artifacts/reports/program_state_summary.md",
+    "docs/PROGRAM_STATE_UNIFIED.yaml",
+    "docs/REPO_SURFACE_MAP.md",
+    "docs/STATUS.md",
+    "docs/codex/tasks/TASK_LANE_INDEX.md",
+    "docs/codex/tasks/ego-visible-life-proxy-v0-core-adoption-001a/COLLISION_RECORD.md",
+    "docs/codex/tasks/ego-visible-life-proxy-v0-core-adoption-001a/ITL_AUTHORITY_CROSSWALK.json",
+    "docs/codex/tasks/ego-visible-life-proxy-v0-core-adoption-001a/MUTATION_SCOPE.yaml",
+    "docs/codex/tasks/ego-visible-life-proxy-v0-core-adoption-001a/STAGE_CARD.md",
+    "scripts/codex/verify_ego_life_core_v0_baseline.py",
+    "scripts/codex/verify_route_convergence.py",
+    "scripts/codex_session_guard.py",
+    "scripts/tests/test_codex_session_guard.py",
+    "scripts/tests/test_route_governance_supersession.py",
+    "scripts/tests/test_verify_ego_life_core_v0_baseline.py"
+  ],
+  "task_id": "EGO-VISIBLE-LIFE-PROXY-V0-CORE-ADOPTION-001A",
+  "verdict": "NO_BLOCKING_FINDINGS"
+}

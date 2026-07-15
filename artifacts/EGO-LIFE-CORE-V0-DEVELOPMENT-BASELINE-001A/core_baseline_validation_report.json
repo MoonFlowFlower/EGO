@@ -1,0 +1,492 @@
+{
+  "baseline_commit": "546e3639299d7b11b599df3d00645666a6953bac",
+  "baseline_id": "EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A",
+  "baseline_parent": "d5d98ac0783a7e67b6d003b460470bdf4350d4bd",
+  "baseline_tree": "fe79061dca2991c822cf2b0b5547a08d9b4682f9",
+  "claim_ceiling": "Immutable local Git-object boundary and replayable Ego-local product trigger for the V0 visible-life engineering candidate only; product-lineage authority comes only from separate route synchronization; no runtime-mainline or mechanism claim.",
+  "computed_verdict": "PASS",
+  "database_path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A\\core_trigger.sqlite3",
+  "database_payload_sha256": "d70d3482b0e1d20d63e726823ea4e6b6b358639705eeb1650bf0bbd81f6f1e10",
+  "database_provenance_status": "PASS",
+  "direct_engine_replay_status": "PASS",
+  "errors": [],
+  "exact_change_set_verified": true,
+  "git_command_log": [
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "--verify",
+        "546e3639299d7b11b599df3d00645666a6953bac^{commit}"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "546e3639299d7b11b599df3d00645666a6953bac^"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "546e3639299d7b11b599df3d00645666a6953bac^{tree}"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.quotePath=false",
+        "diff-tree",
+        "--root",
+        "--no-commit-id",
+        "--name-status",
+        "--no-renames",
+        "-r",
+        "546e3639299d7b11b599df3d00645666a6953bac"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.quotePath=false",
+        "ls-tree",
+        "--full-tree",
+        "546e3639299d7b11b599df3d00645666a6953bac",
+        "--",
+        "labs/ego_life_playground_v0/__init__.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "546e3639299d7b11b599df3d00645666a6953bac:labs/ego_life_playground_v0/__init__.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "blob",
+        "546e3639299d7b11b599df3d00645666a6953bac:labs/ego_life_playground_v0/__init__.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-s",
+        "546e3639299d7b11b599df3d00645666a6953bac:labs/ego_life_playground_v0/__init__.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.quotePath=false",
+        "ls-tree",
+        "--full-tree",
+        "546e3639299d7b11b599df3d00645666a6953bac",
+        "--",
+        "labs/ego_life_playground_v0/app.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "546e3639299d7b11b599df3d00645666a6953bac:labs/ego_life_playground_v0/app.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "blob",
+        "546e3639299d7b11b599df3d00645666a6953bac:labs/ego_life_playground_v0/app.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-s",
+        "546e3639299d7b11b599df3d00645666a6953bac:labs/ego_life_playground_v0/app.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.quotePath=false",
+        "ls-tree",
+        "--full-tree",
+        "546e3639299d7b11b599df3d00645666a6953bac",
+        "--",
+        "labs/ego_life_playground_v0/engine.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "546e3639299d7b11b599df3d00645666a6953bac:labs/ego_life_playground_v0/engine.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "blob",
+        "546e3639299d7b11b599df3d00645666a6953bac:labs/ego_life_playground_v0/engine.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-s",
+        "546e3639299d7b11b599df3d00645666a6953bac:labs/ego_life_playground_v0/engine.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.quotePath=false",
+        "ls-tree",
+        "--full-tree",
+        "546e3639299d7b11b599df3d00645666a6953bac",
+        "--",
+        "labs/ego_life_playground_v0/store.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "546e3639299d7b11b599df3d00645666a6953bac:labs/ego_life_playground_v0/store.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "blob",
+        "546e3639299d7b11b599df3d00645666a6953bac:labs/ego_life_playground_v0/store.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-s",
+        "546e3639299d7b11b599df3d00645666a6953bac:labs/ego_life_playground_v0/store.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.quotePath=false",
+        "ls-tree",
+        "--full-tree",
+        "546e3639299d7b11b599df3d00645666a6953bac",
+        "--",
+        "scripts/run_ego_life_playground_v0.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "546e3639299d7b11b599df3d00645666a6953bac:scripts/run_ego_life_playground_v0.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "blob",
+        "546e3639299d7b11b599df3d00645666a6953bac:scripts/run_ego_life_playground_v0.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-s",
+        "546e3639299d7b11b599df3d00645666a6953bac:scripts/run_ego_life_playground_v0.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "-c",
+        "core.quotePath=false",
+        "ls-tree",
+        "--full-tree",
+        "546e3639299d7b11b599df3d00645666a6953bac",
+        "--",
+        "tests/test_ego_life_playground_v0.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "546e3639299d7b11b599df3d00645666a6953bac:tests/test_ego_life_playground_v0.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "blob",
+        "546e3639299d7b11b599df3d00645666a6953bac:tests/test_ego_life_playground_v0.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-s",
+        "546e3639299d7b11b599df3d00645666a6953bac:tests/test_ego_life_playground_v0.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "blob",
+        "546e3639299d7b11b599df3d00645666a6953bac:labs/ego_life_playground_v0/__init__.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "blob",
+        "546e3639299d7b11b599df3d00645666a6953bac:labs/ego_life_playground_v0/app.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "blob",
+        "546e3639299d7b11b599df3d00645666a6953bac:labs/ego_life_playground_v0/engine.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "blob",
+        "546e3639299d7b11b599df3d00645666a6953bac:labs/ego_life_playground_v0/store.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "blob",
+        "546e3639299d7b11b599df3d00645666a6953bac:scripts/run_ego_life_playground_v0.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "blob",
+        "546e3639299d7b11b599df3d00645666a6953bac:tests/test_ego_life_playground_v0.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "--verify",
+        "HEAD^{commit}"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "546e3639299d7b11b599df3d00645666a6953bac",
+        "546e3639299d7b11b599df3d00645666a6953bac"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "546e3639299d7b11b599df3d00645666a6953bac:labs/ego_life_playground_v0/__init__.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "546e3639299d7b11b599df3d00645666a6953bac:labs/ego_life_playground_v0/app.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "546e3639299d7b11b599df3d00645666a6953bac:labs/ego_life_playground_v0/engine.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "546e3639299d7b11b599df3d00645666a6953bac:labs/ego_life_playground_v0/store.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "546e3639299d7b11b599df3d00645666a6953bac:scripts/run_ego_life_playground_v0.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "546e3639299d7b11b599df3d00645666a6953bac:tests/test_ego_life_playground_v0.py"
+      ],
+      "returncode": 0
+    }
+  ],
+  "head_descends_from_baseline": true,
+  "head_oid": "546e3639299d7b11b599df3d00645666a6953bac",
+  "head_path_parity": true,
+  "head_path_parity_required_for_verdict": false,
+  "head_path_parity_scope": "informational_current_live_path_comparison",
+  "head_ref": "HEAD",
+  "provenance": {
+    "aggregation_rule": "PASS iff every required Git-object, ancestry, firewall, trace-hash, serialized-SQLite recovery, committed export byte comparison, and supplemental committed-engine replay check passes; head_path_parity is informational",
+    "context_ids": [
+      "EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A"
+    ],
+    "episode_ids": [
+      "core-adoption-smoke-v0"
+    ],
+    "git_command_families": [
+      "cat-file",
+      "diff-tree",
+      "ls-tree",
+      "merge-base",
+      "rev-parse"
+    ],
+    "input_artifacts": [
+      {
+        "kind": "git_commit",
+        "oid": "546e3639299d7b11b599df3d00645666a6953bac"
+      },
+      {
+        "kind": "manifest",
+        "sha256": "8698256d90a389cf608ad874f47b24e4ff3b1c9bcb07073f3afb0d57b33811ad"
+      },
+      {
+        "kind": "trace_jsonl",
+        "path": "artifacts\\EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A\\core_trigger_trace.jsonl",
+        "sha256": "892413bf63acfc6e551f0ebcd7570bba08cacd6a35a7d79192d6290468024fb1"
+      },
+      {
+        "kind": "sqlite_database",
+        "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A\\core_trigger.sqlite3",
+        "sha256": "d70d3482b0e1d20d63e726823ea4e6b6b358639705eeb1650bf0bbd81f6f1e10"
+      }
+    ],
+    "manifest_sha256": "8698256d90a389cf608ad874f47b24e4ff3b1c9bcb07073f3afb0d57b33811ad",
+    "producer_code_path": "scripts/codex/verify_ego_life_core_v0_baseline.py",
+    "producer_code_path_hash": "ed3cffaccffb0a039f5efc11ef072b18ecbdb3269a6e81b12141e0ff4e57cf20",
+    "producer_function": "verify_ego_life_core_v0_baseline.validate_baseline",
+    "run_id": "ego-life-core-v0-baseline-38e5837cef365ff12e1d",
+    "seed": 17
+  },
+  "schema_version": "ego.life_core_v0_baseline_validation.v1",
+  "serialized_initial_state_status": "PASS",
+  "sqlite_export_status": "PASS",
+  "sqlite_recovery_status": "PASS",
+  "task_id": "EGO-VISIBLE-LIFE-PROXY-V0-CORE-ADOPTION-001A",
+  "trace_header": {
+    "aggregation_rule": "ordered_recomputed_trace_export",
+    "code_path_hash": "def5c723f5771577ce0afb981c7d37ebcf4b528430da8690cf1a9558ee308da0",
+    "command_count": 5,
+    "episode_id": "core-adoption-smoke-v0",
+    "input_artifacts": [
+      "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A\\core_trigger.sqlite3"
+    ],
+    "producer_function": "ego_life_playground_v0.store.SQLiteEventStore.export_run",
+    "record_type": "run",
+    "run_id": "core-adoption-v0-trigger",
+    "seed": 17
+  },
+  "trace_path": "artifacts\\EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A\\core_trigger_trace.jsonl",
+  "trace_payload_sha256": "892413bf63acfc6e551f0ebcd7570bba08cacd6a35a7d79192d6290468024fb1",
+  "trace_record_count": 5,
+  "trace_replay_input": "serialized_initial_state_and_typed_commands_from_sqlite_artifact",
+  "trace_replay_status": "PASS",
+  "trace_validation_status": "PASS",
+  "what_this_does_not_prove": [
+    "product-lineage authority",
+    "learning generalization",
+    "mechanism validity",
+    "runtime-mainline integration",
+    "default enablement",
+    "initiative or agency",
+    "subjectivity or consciousness"
+  ]
+}

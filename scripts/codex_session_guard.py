@@ -11,6 +11,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, TextIO
@@ -41,6 +42,7 @@ VISIBLE_LIFE_PHASE_A_SCOPE_PATH = f"{VISIBLE_LIFE_TASK_PREFIX}MUTATION_SCOPE_PHA
 VISIBLE_LIFE_PHASE_B_SCOPE_PATH = f"{VISIBLE_LIFE_TASK_PREFIX}MUTATION_SCOPE_PHASE_B.yaml"
 VISIBLE_LIFE_CROSSWALK_PATH = f"{VISIBLE_LIFE_TASK_PREFIX}ITL_CLOSURE_CROSSWALK.json"
 VISIBLE_LIFE_RED_REVIEW_PATH = f"{VISIBLE_LIFE_TASK_PREFIX}PHASE_A_RED_REVIEW.json"
+VISIBLE_LIFE_CROSSWALK_PRODUCER_CODE_PATH_HASH = "35150699a116035d45ed61575ff55fd12577ca249b96a9dfc3e1fcc9885c3e48"
 VISIBLE_LIFE_ITL_COMMIT = "55706c734a2bf25ba1d9d2aa273283ed4dc39802"
 VISIBLE_LIFE_ITL_ROUTE_ID = "EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A"
 VISIBLE_LIFE_TARGETS = [
@@ -68,6 +70,118 @@ VISIBLE_LIFE_FORBIDDEN_ACTIONS = [
     "repair_reopen_or_rerun_closed_card2_action",
     "push_tag_or_remote_anchor",
 ]
+VISIBLE_LIFE_CORE_TASK_ID = "EGO-VISIBLE-LIFE-PROXY-V0-CORE-ADOPTION-001A"
+VISIBLE_LIFE_CORE_ROUTE_REVISION = "EGO_VISIBLE_LIFE_PROXY_V0_CORE_ADOPTION_001A"
+VISIBLE_LIFE_CORE_STALE_ADOPT_ACTION_ID = "adopt_EGO-VISIBLE-LIFE-PROXY-V0_as_product_development_core"
+VISIBLE_LIFE_CORE_SYNC_ACTION_ID = "sync_EGO_visible_life_proxy_v0_product_core_authority_under_separate_task"
+VISIBLE_LIFE_CORE_DRAFT_V1_ACTION_ID = (
+    "draft_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A_only_after_EGO_sync_validation"
+)
+VISIBLE_LIFE_CORE_TASK_PREFIX = "docs/codex/tasks/ego-visible-life-proxy-v0-core-adoption-001a/"
+VISIBLE_LIFE_CORE_SCOPE_PATH = f"{VISIBLE_LIFE_CORE_TASK_PREFIX}MUTATION_SCOPE.yaml"
+VISIBLE_LIFE_CORE_RED_REVIEW_PATH = f"{VISIBLE_LIFE_CORE_TASK_PREFIX}PHASE_A_RED_REVIEW.json"
+VISIBLE_LIFE_CORE_CROSSWALK_PATH = f"{VISIBLE_LIFE_CORE_TASK_PREFIX}ITL_AUTHORITY_CROSSWALK.json"
+VISIBLE_LIFE_CORE_ITL_COMMIT = "619bff5fd9400bba00002af26f65ce73894a9dce"
+VISIBLE_LIFE_CORE_ITL_ROUTE_ID = "EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A"
+VISIBLE_LIFE_CORE_ITL_OBJECTS = {
+    "product_axis_state": {
+        "path": "artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json",
+        "git_blob_oid": "fe416f3f2a81b8bc3c7931700c2b100970c73cb6",
+        "git_blob_payload_sha256": "4055052a8f4022b01d0f419cb2956f5d3e5acbe336bcaab0999f947b0b16065a",
+    },
+    "product_core_state": {
+        "path": (
+            "artifacts/ROUTE-STATE-MACHINE-001A/routes/"
+            "EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A/state.json"
+        ),
+        "git_blob_oid": "6c285f5361583ea397e54a4951b886ee06c09df7",
+        "git_blob_payload_sha256": "6b7e8fe55679ce6530e3fd9556cc55eb05bec1876d38d198c2e912fdd0eff36e",
+    },
+    "product_core_closure": {
+        "path": (
+            "artifacts/ROUTE-STATE-MACHINE-001A/routes/"
+            "EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A/closure.json"
+        ),
+        "git_blob_oid": "5c48e69919dd374c3e7939eaeb1c29faf6bfb679",
+        "git_blob_payload_sha256": "fc528cebae00b61cabc11056775e928eca8df407439833839addef00c0d4672c",
+    },
+    "product_core_events": {
+        "path": (
+            "artifacts/ROUTE-STATE-MACHINE-001A/routes/"
+            "EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A/events.jsonl"
+        ),
+        "git_blob_oid": "2cec0ff395adacf95e8964b4adb55bd2f6be563f",
+        "git_blob_payload_sha256": "7b050e777d63967d33a2aef01136d7259f929dd439f93f1507d7394430eab571",
+    },
+    "product_core_validation_report": {
+        "path": (
+            "artifacts/ROUTE-STATE-MACHINE-001A/routes/"
+            "EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A/adoption_validation_report.json"
+        ),
+        "git_blob_oid": "b70d20265749f4051af0e8624e50e1620f2e68cd",
+        "git_blob_payload_sha256": "2178d0a6af9ffe919eac599e7cf04168b17235002ef456a3383704f7e2b9d1a7",
+    },
+    "product_core_transition_card": {
+        "path": "docs/codex/tasks/ITL-EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-TRANSITION-001A.md",
+        "git_blob_oid": "54d877947e089bf88479c97a2f3f3b07a5ad6f6a",
+        "git_blob_payload_sha256": "27abba96094f31c0b0c14471cee08a77029aafed7cfe90f6ebd61e799f75f997",
+    },
+    "product_core_red_receipt": {
+        "path": (
+            "artifacts/ITL-EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-TRANSITION-001A/"
+            "red_precheck.json"
+        ),
+        "git_blob_oid": "b5eb5b5cb506939b5e10f95636330534407bea60",
+        "git_blob_payload_sha256": "7d613f32f52277a7d4c97a1a86b186f0532409784bfda7859cf60225ce5cec32",
+    },
+}
+VISIBLE_LIFE_CORE_BASELINE_COMMIT = "546e3639299d7b11b599df3d00645666a6953bac"
+VISIBLE_LIFE_CORE_BASELINE_PARENT = "d5d98ac0783a7e67b6d003b460470bdf4350d4bd"
+VISIBLE_LIFE_CORE_BASELINE_TREE = "fe79061dca2991c822cf2b0b5547a08d9b4682f9"
+VISIBLE_LIFE_CORE_BASELINE_DIR = "artifacts/EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A"
+VISIBLE_LIFE_CORE_BASELINE_REFS = {
+    "manifest_path": f"{VISIBLE_LIFE_CORE_BASELINE_DIR}/core_baseline_manifest.json",
+    "trace_path": f"{VISIBLE_LIFE_CORE_BASELINE_DIR}/core_trigger_trace.jsonl",
+    "database_path": f"{VISIBLE_LIFE_CORE_BASELINE_DIR}/core_trigger.sqlite3",
+    "validation_report_path": f"{VISIBLE_LIFE_CORE_BASELINE_DIR}/core_baseline_validation_report.json",
+    "validator_path": "scripts/codex/verify_ego_life_core_v0_baseline.py",
+}
+VISIBLE_LIFE_CORE_SYNC_PATHS = [
+    f"{VISIBLE_LIFE_CORE_TASK_PREFIX}STAGE_CARD.md",
+    f"{VISIBLE_LIFE_CORE_TASK_PREFIX}COLLISION_RECORD.md",
+    f"{VISIBLE_LIFE_CORE_TASK_PREFIX}MUTATION_SCOPE.yaml",
+    VISIBLE_LIFE_CORE_CROSSWALK_PATH,
+    VISIBLE_LIFE_CORE_RED_REVIEW_PATH,
+    f"{VISIBLE_LIFE_CORE_BASELINE_DIR}/core_baseline_manifest.json",
+    f"{VISIBLE_LIFE_CORE_BASELINE_DIR}/core_trigger.sqlite3",
+    f"{VISIBLE_LIFE_CORE_BASELINE_DIR}/core_trigger_trace.jsonl",
+    f"{VISIBLE_LIFE_CORE_BASELINE_DIR}/core_baseline_validation_report.json",
+    "docs/PROGRAM_STATE_UNIFIED.yaml",
+    "artifacts/reports/program_state_summary.md",
+    "docs/STATUS.md",
+    "docs/codex/tasks/TASK_LANE_INDEX.md",
+    "docs/REPO_SURFACE_MAP.md",
+    "scripts/codex_session_guard.py",
+    "scripts/codex/verify_route_convergence.py",
+    "scripts/codex/verify_ego_life_core_v0_baseline.py",
+    "scripts/tests/test_codex_session_guard.py",
+    "scripts/tests/test_route_governance_supersession.py",
+    "scripts/tests/test_verify_ego_life_core_v0_baseline.py",
+]
+VISIBLE_LIFE_CORE_FORBIDDEN_ACTIONS = [
+    "reuse_implement_EGO-VISIBLE-LIFE-PROXY-V0-001A",
+    "create_parallel_visible_life_product_core",
+    "implement_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A",
+    "modify_EgoDesktop_or_EgoOperator",
+    "add_LLM_or_network_integration",
+    "enable_runtime_or_runtime_mainline",
+    "grant_runtime_authority",
+    "register_or_satisfy_science_successor",
+    "claim_mechanism_learning_agency_or_electronic_life",
+    "repair_reopen_or_rerun_closed_card2_action",
+    "push_tag_or_remote_anchor",
+]
+_VISIBLE_LIFE_CORE_EVIDENCE_CACHE: dict[tuple[Any, ...], dict[str, Any]] = {}
 
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
@@ -439,7 +553,7 @@ def build_visible_life_closure_crosswalk_payload(
         "task_id": VISIBLE_LIFE_TASK_ID,
         "run_id": run_id,
         "producer_function": "scripts.codex_session_guard.build_visible_life_closure_crosswalk_payload",
-        "producer_code_path_hash": _script_code_path_hash(),
+        "producer_code_path_hash": VISIBLE_LIFE_CROSSWALK_PRODUCER_CODE_PATH_HASH,
         "input_artifacts": input_artifacts,
         "aggregation_rule": "flatten every committed ITL state/closure leaf in sorted-key/index order and require one verbatim target leaf",
         "source_leaf_counts": source_counts,
@@ -484,7 +598,20 @@ def validate_visible_life_closure_crosswalk(program_state: dict[str, Any]) -> di
         expected = build_visible_life_closure_crosswalk_payload(
             route_state=route_state,
             closure=closure,
-            input_artifacts=list(source.get("input_artifacts") or []),
+            input_artifacts=[
+                {
+                    **row,
+                    # The closure crosswalk is a frozen V0 artifact produced
+                    # against the earlier ITL object boundary.  The same Git
+                    # objects remain present at the later product-axis commit,
+                    # but their provenance commit must not be rewritten during
+                    # the additive authority sync.
+                    "commit": VISIBLE_LIFE_ITL_COMMIT,
+                }
+                for row in list(source.get("input_artifacts") or [])
+                if row.get("name")
+                in {"route_state", "events", "closure", "closure_validation_report", "task_card", "itl_red_review"}
+            ],
             run_id=str(artifact.get("run_id") or ""),
         )
         if artifact != expected:
@@ -498,6 +625,172 @@ def validate_visible_life_closure_crosswalk(program_state: dict[str, Any]) -> di
         )
         if expected.get("omission_positive_control", {}).get("rejected") is not True:
             errors.append("visible_life_crosswalk_omission_positive_control_did_not_fire")
+    return {
+        "status": "pass" if not errors else "fail",
+        "errors": sorted(set(errors)),
+        "source": source,
+        "artifact_payload_sha256": raw_sha,
+        "total_leaf_count": artifact.get("total_leaf_count"),
+        "producer_function": artifact.get("producer_function"),
+        "run_id": artifact.get("run_id"),
+        "aggregation_rule": artifact.get("aggregation_rule"),
+        "producer_code_path_hash": artifact.get("producer_code_path_hash"),
+    }
+
+
+def validate_visible_life_core_crosswalk_entries(
+    *,
+    product_axis_state: dict[str, Any],
+    product_core_state: dict[str, Any],
+    product_core_closure: dict[str, Any],
+    entries: list[dict[str, Any]],
+) -> list[str]:
+    sources = {
+        "product_axis_state": (product_axis_state, "/route_guard/transcribed_itl_product/product_axis_state"),
+        "product_core_state": (product_core_state, "/route_guard/transcribed_itl_product/product_core_state"),
+        "product_core_closure": (
+            product_core_closure,
+            "/route_guard/transcribed_itl_product/product_core_closure",
+        ),
+    }
+    expected: dict[tuple[str, str], tuple[str, str]] = {}
+    for source_name, (payload, target_root) in sources.items():
+        for source_pointer, leaf_value in flatten_json_leaves(payload):
+            expected[(source_name, source_pointer)] = (
+                f"{target_root}{'' if source_pointer == '/' else source_pointer}",
+                hashlib.sha256(_canonical_json_bytes(leaf_value)).hexdigest(),
+            )
+    observed: dict[tuple[str, str], tuple[str, str]] = {}
+    errors: list[str] = []
+    for row in entries:
+        key = (str(row.get("source_name") or ""), str(row.get("source_pointer") or ""))
+        if key in observed:
+            errors.append("visible_life_core_crosswalk_duplicate_leaf")
+        observed[key] = (str(row.get("target_pointer") or ""), str(row.get("value_sha256") or ""))
+        if row.get("transform") != "verbatim_json_value":
+            errors.append("visible_life_core_crosswalk_nonverbatim_transform")
+    if set(expected) - set(observed):
+        errors.append("visible_life_core_crosswalk_leaf_omitted")
+    if set(observed) - set(expected):
+        errors.append("visible_life_core_crosswalk_extra_leaf")
+    if any(observed.get(key) != value for key, value in expected.items() if key in observed):
+        errors.append("visible_life_core_crosswalk_value_or_target_mismatch")
+    return sorted(set(errors))
+
+
+def build_visible_life_core_authority_crosswalk_payload(
+    *,
+    product_axis_state: dict[str, Any],
+    product_core_state: dict[str, Any],
+    product_core_closure: dict[str, Any],
+    input_artifacts: list[dict[str, Any]],
+    run_id: str,
+) -> dict[str, Any]:
+    sources = {
+        "product_axis_state": (product_axis_state, "/route_guard/transcribed_itl_product/product_axis_state"),
+        "product_core_state": (product_core_state, "/route_guard/transcribed_itl_product/product_core_state"),
+        "product_core_closure": (
+            product_core_closure,
+            "/route_guard/transcribed_itl_product/product_core_closure",
+        ),
+    }
+    entries: list[dict[str, Any]] = []
+    source_counts: dict[str, int] = {}
+    for source_name, (payload, target_root) in sources.items():
+        leaves = flatten_json_leaves(payload)
+        source_counts[source_name] = len(leaves)
+        for source_pointer, leaf_value in leaves:
+            entries.append(
+                {
+                    "source_name": source_name,
+                    "source_pointer": source_pointer,
+                    "target_pointer": f"{target_root}{'' if source_pointer == '/' else source_pointer}",
+                    "transform": "verbatim_json_value",
+                    "value_sha256": hashlib.sha256(_canonical_json_bytes(leaf_value)).hexdigest(),
+                }
+            )
+    omission_errors = validate_visible_life_core_crosswalk_entries(
+        product_axis_state=product_axis_state,
+        product_core_state=product_core_state,
+        product_core_closure=product_core_closure,
+        entries=entries[1:],
+    )
+    return {
+        "schema_version": "ego.visible_life_proxy.itl_product_core_authority_crosswalk.v1",
+        "task_id": VISIBLE_LIFE_CORE_TASK_ID,
+        "requested_action_id": VISIBLE_LIFE_CORE_SYNC_ACTION_ID,
+        "source_commit": VISIBLE_LIFE_CORE_ITL_COMMIT,
+        "source_route_id": VISIBLE_LIFE_CORE_ITL_ROUTE_ID,
+        "run_id": run_id,
+        "producer_function": "scripts.codex_session_guard.build_visible_life_core_authority_crosswalk_payload",
+        "producer_code_path_hash": _script_code_path_hash(),
+        "input_artifacts": input_artifacts,
+        "aggregation_rule": (
+            "flatten every committed ITL product-axis/state/closure leaf in sorted-key/index order and require "
+            "one verbatim Ego target leaf"
+        ),
+        "source_leaf_counts": source_counts,
+        "total_leaf_count": len(entries),
+        "entries": entries,
+        "omission_positive_control": {
+            "omitted_source_name": entries[0]["source_name"],
+            "omitted_source_pointer": entries[0]["source_pointer"],
+            "expected_count": len(entries),
+            "mutated_count": len(entries) - 1,
+            "rejected": "visible_life_core_crosswalk_leaf_omitted" in omission_errors,
+            "rejection_code": "visible_life_core_crosswalk_leaf_omitted",
+            "observed_error_codes": omission_errors,
+        },
+        "claim_ceiling": "committed ITL product-axis authority transcription evidence only",
+    }
+
+
+def validate_visible_life_core_authority_crosswalk(program_state: dict[str, Any]) -> dict[str, Any]:
+    route_guard = program_state.get("route_guard") or {}
+    source = read_itl_authority_objects(program_state)
+    errors = list(source.get("errors") or [])
+    payloads = source.get("payloads") or {}
+    axis = payloads.get("product_axis_state")
+    state = payloads.get("product_core_state")
+    closure = payloads.get("product_core_closure")
+    transcribed = route_guard.get("transcribed_itl_product") or {}
+    for name, payload in (
+        ("product_axis_state", axis),
+        ("product_core_state", state),
+        ("product_core_closure", closure),
+    ):
+        if not isinstance(payload, dict) or transcribed.get(name) != payload:
+            errors.append(f"visible_life_core_{name}_transcription_mismatch")
+    ref = route_guard.get("product_authority_crosswalk") or {}
+    relative = str(ref.get("path") or "")
+    artifact_path = ROOT / relative
+    artifact, artifact_error = _read_json_file(artifact_path)
+    if artifact_error or artifact is None:
+        errors.append("visible_life_core_crosswalk_artifact_unavailable")
+        return {"status": "fail", "errors": sorted(set(errors)), "source": source}
+    raw_sha = hashlib.sha256(artifact_path.read_bytes()).hexdigest()
+    if raw_sha != ref.get("artifact_payload_sha256"):
+        errors.append("visible_life_core_crosswalk_artifact_sha256_mismatch")
+    if isinstance(axis, dict) and isinstance(state, dict) and isinstance(closure, dict):
+        expected = build_visible_life_core_authority_crosswalk_payload(
+            product_axis_state=axis,
+            product_core_state=state,
+            product_core_closure=closure,
+            input_artifacts=list(source.get("input_artifacts") or []),
+            run_id=str(artifact.get("run_id") or ""),
+        )
+        if artifact != expected:
+            errors.append("visible_life_core_crosswalk_callable_recompute_mismatch")
+        errors.extend(
+            validate_visible_life_core_crosswalk_entries(
+                product_axis_state=axis,
+                product_core_state=state,
+                product_core_closure=closure,
+                entries=list(artifact.get("entries") or []),
+            )
+        )
+        if expected.get("omission_positive_control", {}).get("rejected") is not True:
+            errors.append("visible_life_core_crosswalk_omission_positive_control_did_not_fire")
     return {
         "status": "pass" if not errors else "fail",
         "errors": sorted(set(errors)),
@@ -883,6 +1176,409 @@ def validate_visible_life_product_authority(program_state: dict[str, Any]) -> di
         "producer_function": "scripts.codex_session_guard.validate_visible_life_product_authority",
         "aggregation_rule": "require one Ego-owned product-only action with exact six targets and all runtime/mainline/science authorities false",
         "producer_code_path_hash": _script_code_path_hash(),
+    }
+
+
+def _visible_life_core_report_critical_fields(report: dict[str, Any]) -> dict[str, Any]:
+    provenance = report.get("provenance") or {}
+    return {
+        "schema_version": report.get("schema_version"),
+        "task_id": report.get("task_id"),
+        "baseline_id": report.get("baseline_id"),
+        "computed_verdict": report.get("computed_verdict"),
+        "baseline_commit": report.get("baseline_commit"),
+        "baseline_parent": report.get("baseline_parent"),
+        "baseline_tree": report.get("baseline_tree"),
+        "exact_change_set_verified": report.get("exact_change_set_verified"),
+        "head_descends_from_baseline": report.get("head_descends_from_baseline"),
+        "manifest_sha256": provenance.get("manifest_sha256"),
+        "producer_code_path_hash": provenance.get("producer_code_path_hash"),
+        "trace_payload_sha256": report.get("trace_payload_sha256"),
+        "trace_validation_status": report.get("trace_validation_status"),
+        "trace_replay_status": report.get("trace_replay_status"),
+        "trace_replay_input": report.get("trace_replay_input"),
+        "database_path": report.get("database_path"),
+        "database_payload_sha256": report.get("database_payload_sha256"),
+        "database_provenance_status": report.get("database_provenance_status"),
+        "sqlite_recovery_status": report.get("sqlite_recovery_status"),
+        "sqlite_export_status": report.get("sqlite_export_status"),
+        "serialized_initial_state_status": report.get("serialized_initial_state_status"),
+        "direct_engine_replay_status": report.get("direct_engine_replay_status"),
+        "errors": report.get("errors"),
+        "claim_ceiling": report.get("claim_ceiling"),
+    }
+
+
+def validate_visible_life_core_evidence(
+    program_state: dict[str, Any],
+    *,
+    runner: GuardRunner | None = None,
+) -> dict[str, Any]:
+    """Recompute the frozen V0 evidence through the standalone validator."""
+
+    cache_allowed = runner is None
+    runner = runner or GuardRunner()
+    product = ((program_state.get("route_guard") or {}).get("product_authority") or {})
+    baseline = product.get("historical_baseline") or {}
+    errors: list[str] = []
+    paths = {
+        key: ROOT / str(baseline.get(key) or "")
+        for key in VISIBLE_LIFE_CORE_BASELINE_REFS
+    }
+    for name, expected_relative in VISIBLE_LIFE_CORE_BASELINE_REFS.items():
+        if baseline.get(name) != expected_relative:
+            errors.append(f"core_evidence_{name}_ref_mismatch")
+        if not paths[name].is_file():
+            errors.append(f"core_evidence_{name}_unavailable")
+    if errors:
+        return {
+            "status": "fail",
+            "errors": sorted(set(errors)),
+            "producer_function": "scripts.codex_session_guard.validate_visible_life_core_evidence",
+            "run_id": "live_repo_recompute",
+            "aggregation_rule": "fail closed before execution if any frozen evidence or validator path is absent or misbound",
+            "producer_code_path_hash": _script_code_path_hash(),
+        }
+
+    file_hashes = {
+        name: hashlib.sha256(path.read_bytes()).hexdigest()
+        for name, path in paths.items()
+    }
+    cache_key: tuple[Any, ...] | None = None
+    if cache_allowed:
+        head_probe = _git_repo(ROOT, ["rev-parse", "HEAD"])
+        head_oid = head_probe.stdout.strip() if head_probe.returncode == 0 else "HEAD_UNAVAILABLE"
+        cache_key = (
+            head_oid,
+            *(item for key in sorted(paths) for item in (key, str(baseline.get(key) or ""), file_hashes[key])),
+        )
+        cached = _VISIBLE_LIFE_CORE_EVIDENCE_CACHE.get(cache_key)
+        if cached is not None:
+            return json.loads(json.dumps(cached))
+    stored_report, stored_error = _read_json_file(paths["validation_report_path"])
+    if stored_error or not isinstance(stored_report, dict):
+        errors.append("core_evidence_stored_report_invalid")
+        stored_report = {}
+    if stored_report:
+        stored_critical = _visible_life_core_report_critical_fields(stored_report)
+        if stored_critical.get("manifest_sha256") != file_hashes["manifest_path"]:
+            errors.append("core_evidence_stored_manifest_sha256_mismatch")
+        if stored_critical.get("trace_payload_sha256") != file_hashes["trace_path"]:
+            errors.append("core_evidence_stored_trace_sha256_mismatch")
+        if stored_critical.get("database_payload_sha256") != file_hashes["database_path"]:
+            errors.append("core_evidence_stored_database_sha256_mismatch")
+        if stored_critical.get("producer_code_path_hash") != file_hashes["validator_path"]:
+            errors.append("core_evidence_stored_validator_sha256_mismatch")
+
+    computed_report: dict[str, Any] = {}
+    with tempfile.TemporaryDirectory(prefix="ego_life_core_route_gate_") as directory:
+        output_path = Path(directory) / "computed_report.json"
+        result = runner.run(
+            [
+                sys.executable,
+                str(paths["validator_path"]),
+                "--repo-root",
+                str(ROOT),
+                "--manifest",
+                str(paths["manifest_path"]),
+                "--trace",
+                str(paths["trace_path"]),
+                "--database",
+                str(paths["database_path"]),
+                "--output",
+                str(output_path),
+            ]
+        )
+        if result.returncode != 0:
+            errors.append("core_evidence_validator_nonzero_exit")
+        computed_report_candidate, computed_error = _read_json_file(output_path)
+        if computed_error or not isinstance(computed_report_candidate, dict):
+            errors.append("core_evidence_computed_report_invalid")
+        else:
+            computed_report = computed_report_candidate
+
+    computed_critical = _visible_life_core_report_critical_fields(computed_report)
+    expected_statuses = {
+        "schema_version": "ego.life_core_v0_baseline_validation.v1",
+        "task_id": VISIBLE_LIFE_CORE_TASK_ID,
+        "baseline_id": "EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A",
+        "computed_verdict": "PASS",
+        "baseline_commit": VISIBLE_LIFE_CORE_BASELINE_COMMIT,
+        "baseline_parent": VISIBLE_LIFE_CORE_BASELINE_PARENT,
+        "baseline_tree": VISIBLE_LIFE_CORE_BASELINE_TREE,
+        "exact_change_set_verified": True,
+        "head_descends_from_baseline": True,
+        "trace_validation_status": "PASS",
+        "trace_replay_status": "PASS",
+        "trace_replay_input": "serialized_initial_state_and_typed_commands_from_sqlite_artifact",
+        "database_path": str(paths["database_path"].resolve()),
+        "database_provenance_status": "PASS",
+        "sqlite_recovery_status": "PASS",
+        "sqlite_export_status": "PASS",
+        "serialized_initial_state_status": "PASS",
+        "direct_engine_replay_status": "PASS",
+        "errors": [],
+    }
+    for key, expected in expected_statuses.items():
+        if computed_critical.get(key) != expected:
+            errors.append(f"core_evidence_computed_{key}_mismatch")
+    if computed_critical.get("manifest_sha256") != file_hashes["manifest_path"]:
+        errors.append("core_evidence_computed_manifest_sha256_mismatch")
+    if computed_critical.get("trace_payload_sha256") != file_hashes["trace_path"]:
+        errors.append("core_evidence_computed_trace_sha256_mismatch")
+    if computed_critical.get("database_payload_sha256") != file_hashes["database_path"]:
+        errors.append("core_evidence_computed_database_sha256_mismatch")
+    if computed_critical.get("producer_code_path_hash") != file_hashes["validator_path"]:
+        errors.append("core_evidence_computed_validator_sha256_mismatch")
+    if stored_report and _visible_life_core_report_critical_fields(stored_report) != computed_critical:
+        errors.append("core_evidence_stored_computed_critical_mismatch")
+    response = {
+        "status": "pass" if not errors else "fail",
+        "errors": sorted(set(errors)),
+        "producer_function": "scripts.codex_session_guard.validate_visible_life_core_evidence",
+        "run_id": "live_repo_recompute",
+        "input_artifacts": [str(baseline.get(key) or "") for key in sorted(paths)],
+        "aggregation_rule": (
+            "PASS iff the fresh standalone validator exits zero; stored and computed critical reports match; Git pins, "
+            "manifest/trace/database/validator hashes match; and trace, serialized-state, SQLite recovery/export, and replay statuses pass"
+        ),
+        "producer_code_path_hash": _script_code_path_hash(),
+        "artifact_hashes": file_hashes,
+        "computed_critical": computed_critical,
+    }
+    if cache_allowed and cache_key is not None:
+        _VISIBLE_LIFE_CORE_EVIDENCE_CACHE[cache_key] = json.loads(json.dumps(response))
+    return response
+
+
+def validate_visible_life_core_product_authority(program_state: dict[str, Any]) -> dict[str, Any]:
+    route_guard = program_state.get("route_guard") or {}
+    product = route_guard.get("product_authority") or {}
+    errors: list[str] = []
+    authority = route_guard.get("authority_source") or {}
+    if authority.get("pinned_commit") != VISIBLE_LIFE_CORE_ITL_COMMIT:
+        errors.append("visible_life_core_itl_commit_mismatch")
+    authority_objects = authority.get("objects") or {}
+    for name, expected_pin in VISIBLE_LIFE_CORE_ITL_OBJECTS.items():
+        if authority_objects.get(name) != expected_pin:
+            errors.append(f"visible_life_core_itl_pin_mismatch:{name}")
+
+    source = read_itl_authority_objects(program_state)
+    if source.get("status") != "pass":
+        errors.extend(f"visible_life_core_source:{item}" for item in source.get("errors") or [])
+    payloads = source.get("payloads") or {}
+    axis = payloads.get("product_axis_state") or {}
+    source_state = payloads.get("product_core_state") or {}
+    source_closure = payloads.get("product_core_closure") or {}
+    source_report = payloads.get("product_core_validation_report") or {}
+    source_receipt = payloads.get("product_core_red_receipt") or {}
+    source_event_text = payloads.get("product_core_events") or ""
+    source_event_rows: list[dict[str, Any]] = []
+    if isinstance(source_event_text, str):
+        try:
+            source_event_rows = [json.loads(line) for line in source_event_text.splitlines() if line.strip()]
+        except json.JSONDecodeError:
+            errors.append("visible_life_core_event_jsonl_invalid")
+    if len(source_event_rows) != 1:
+        errors.append("visible_life_core_event_count_mismatch")
+    else:
+        source_event = source_event_rows[0]
+        expected_event = {
+            "axis": "PRODUCT_DEVELOPMENT",
+            "closure_type": "ARTIFACT_ONLY",
+            "current_state": "ADJUDICATED",
+            "default_enabled": False,
+            "event": "visible_life_proxy_v0_product_core_adoption_recorded",
+            "event_id": f"{VISIBLE_LIFE_CORE_ITL_ROUTE_ID}:ADJUDICATED:001",
+            "phase": "V0_PRODUCT_CORE_AUTHORITY_RECORDED_EGO_SYNC_PENDING",
+            "product_development_core_lineage": "SOLE",
+            "route_id": VISIBLE_LIFE_CORE_ITL_ROUTE_ID,
+            "runtime_authority": "none",
+            "runtime_mainline_connected": False,
+            "science_weight": 0,
+            "source_commit": VISIBLE_LIFE_CORE_BASELINE_COMMIT,
+            "task_id": "ITL-EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-TRANSITION-001A",
+        }
+        if any(source_event.get(key) != value for key, value in expected_event.items()):
+            errors.append("visible_life_core_event_semantics_mismatch")
+    if (
+        source_report.get("verdict") != "semantic_precheck_pass"
+        or source_report.get("validation_errors") != []
+        or source_report.get("real_trigger_evidence") != "UNVERIFIED_IN_THIS_ITL_TRANSITION"
+    ):
+        errors.append("visible_life_core_source_report_semantics_mismatch")
+    if source_receipt.get("verdict") != "NO_BLOCKING_FINDINGS" or source_receipt.get("blocking_findings") != []:
+        errors.append("visible_life_core_source_red_receipt_semantics_mismatch")
+    if source_receipt.get("claim_ceiling_acknowledged") is not True:
+        errors.append("visible_life_core_source_red_receipt_claim_ceiling_missing")
+    axis_data = axis.get("product_development_axis") or {}
+    if (
+        axis.get("authority_semantics") != "SOLE_MACHINE_READABLE_PRODUCT_DEVELOPMENT_AXIS_AUTHORITY"
+        or axis_data.get("authority") != "SOLE"
+        or axis_data.get("authority_route_id") != VISIBLE_LIFE_CORE_ITL_ROUTE_ID
+        or axis_data.get("core_id") != "ego_life_playground_v0"
+        or axis_data.get("source_commit") != VISIBLE_LIFE_CORE_BASELINE_COMMIT
+        or axis_data.get("state") != "AUTHORITY_RECORDED_EGO_SYNC_PENDING"
+        or axis_data.get("currently_executable_actions")
+        != [VISIBLE_LIFE_CORE_SYNC_ACTION_ID, "run_route_state_machine_validation"]
+    ):
+        errors.append("visible_life_core_product_axis_semantics_mismatch")
+    if (
+        source_state.get("route_id") != VISIBLE_LIFE_CORE_ITL_ROUTE_ID
+        or source_state.get("current_state") != "ADJUDICATED"
+        or source_state.get("phase") != "V0_PRODUCT_CORE_AUTHORITY_RECORDED_EGO_SYNC_PENDING"
+        or (source_state.get("authorizations") or {}).get("v1_card_draft") is not False
+        or (source_state.get("authorizations") or {}).get("v1_implementation") is not False
+        or source_state.get("currently_executable_actions")
+        != [VISIBLE_LIFE_CORE_SYNC_ACTION_ID, "run_route_state_machine_validation"]
+        or ((source_state.get("conditional_actions") or {}).get(VISIBLE_LIFE_CORE_DRAFT_V1_ACTION_ID) or {}).get(
+            "state"
+        )
+        != "BLOCKED_UNTIL_EGO_SYNC_VALIDATED"
+    ):
+        errors.append("visible_life_core_source_state_semantics_mismatch")
+    source_evidence = source_closure.get("evidence_status") or {}
+    source_runtime = source_closure.get("runtime_boundary") or {}
+    source_science = source_closure.get("science_firewall") or {}
+    if (
+        source_closure.get("route_id") != VISIBLE_LIFE_CORE_ITL_ROUTE_ID
+        or source_evidence.get("real_trigger_evidence") != "UNVERIFIED_IN_THIS_ITL_TRANSITION"
+        or source_runtime
+        != {
+            "default_enabled": False,
+            "ego_operator_active_default_unchanged": True,
+            "runtime_authority": "none",
+            "runtime_mainline_connected": False,
+        }
+        or source_science
+        != {
+            "inherits_old_k0": False,
+            "may_satisfy_science_successor": False,
+            "mechanism_attribution": False,
+            "product_trace_is_science_evidence": False,
+            "reopens_card2": False,
+            "science_weight": 0,
+        }
+    ):
+        errors.append("visible_life_core_source_closure_semantics_mismatch")
+
+    crosswalk = validate_visible_life_core_authority_crosswalk(program_state)
+    if crosswalk.get("status") != "pass":
+        errors.extend(f"visible_life_core_crosswalk:{item}" for item in crosswalk.get("errors") or [])
+    expected_authorizations = {
+        "task_card_drafting": True,
+        "local_manual_validation": True,
+        "implementation": False,
+        "experiment_execution": False,
+        "mainline_runtime": False,
+        "mechanism_evidence": False,
+        "remote_anchor": False,
+        "runtime": False,
+        "science_successor": False,
+        "scoring": False,
+    }
+    if product.get("authority_axis") != "EGO_PRODUCT_CAPABILITY_ONLY":
+        errors.append("visible_life_core_authority_axis_mismatch")
+    if product.get("task_id") != VISIBLE_LIFE_CORE_TASK_ID:
+        errors.append("visible_life_core_task_id_mismatch")
+    if product.get("predecessor_task_id") != VISIBLE_LIFE_TASK_ID:
+        errors.append("visible_life_core_predecessor_task_mismatch")
+    predecessor = product.get("predecessor_action") or {}
+    if predecessor != {
+        "action_id": VISIBLE_LIFE_IMPLEMENT_ACTION_ID,
+        "state": "CONSUMED_IMPLEMENTED",
+        "implementation_commit": VISIBLE_LIFE_CORE_BASELINE_COMMIT,
+    }:
+        errors.append("visible_life_core_predecessor_action_not_consumed")
+    for key, expected in {
+        "state": "ITL_PRODUCT_CORE_AUTHORITY_SYNCED",
+        "product_development_core_lineage": "SOLE_VISIBLE_LIFE_PRODUCT_DEVELOPMENT_LINEAGE",
+        "product_development_core": "ego_life_playground_v0",
+        "sole_visible_life_product_core": True,
+        "enabled": False,
+        "default_enabled": False,
+        "runtime_mainline_connected": False,
+        "mainline_connected": False,
+        "runtime_authority": "none",
+        "science_weight": 0,
+        "real_trigger_evidence": "UNVERIFIED_IN_THIS_ITL_TRANSITION",
+        "ego_local_product_trigger_evidence": "BANKED_RECOMPUTING_PRODUCT_TRIGGER",
+    }.items():
+        if product.get(key) != expected:
+            errors.append(f"visible_life_core_{key}_mismatch")
+    if product.get("core_registry") != {"visible_life": "ego_life_playground_v0"}:
+        errors.append("visible_life_core_registry_mismatch")
+    if "product_development_mainline" in product:
+        errors.append("visible_life_core_ambiguous_mainline_field_forbidden")
+    if product.get("allowed_next_actions") != [
+        VISIBLE_LIFE_CORE_DRAFT_V1_ACTION_ID,
+        "run_route_state_machine_validation",
+    ]:
+        errors.append("visible_life_core_allowed_actions_mismatch")
+    if product.get("forbidden_next_actions") != VISIBLE_LIFE_CORE_FORBIDDEN_ACTIONS:
+        errors.append("visible_life_core_forbidden_actions_mismatch")
+    if product.get("authorizations") != expected_authorizations:
+        errors.append("visible_life_core_authorizations_mismatch")
+    if product.get("authorized_implementation_targets") != []:
+        errors.append("visible_life_core_targets_must_be_empty")
+    if product.get("source_currently_executable_actions") != [
+        VISIBLE_LIFE_CORE_SYNC_ACTION_ID,
+        "run_route_state_machine_validation",
+    ]:
+        errors.append("visible_life_core_source_executable_actions_mismatch")
+    if product.get("sync_action") != {
+        "action_id": VISIBLE_LIFE_CORE_SYNC_ACTION_ID,
+        "disposition": "CONSUMED_BY_EGO_AUTHORITY_SYNC",
+        "source_route_id": VISIBLE_LIFE_CORE_ITL_ROUTE_ID,
+        "source_commit": VISIBLE_LIFE_CORE_ITL_COMMIT,
+    }:
+        errors.append("visible_life_core_sync_action_mismatch")
+    baseline = product.get("historical_baseline") or {}
+    expected_baseline = {
+        "source_commit": VISIBLE_LIFE_CORE_BASELINE_COMMIT,
+        "source_parent": VISIBLE_LIFE_CORE_BASELINE_PARENT,
+        "source_tree": VISIBLE_LIFE_CORE_BASELINE_TREE,
+        "source_paths": VISIBLE_LIFE_TARGETS,
+        "lineage_mode": "IMMUTABLE_HISTORICAL_BOUNDARY_WITH_DECLARED_DESCENDANT_EDITS",
+        **VISIBLE_LIFE_CORE_BASELINE_REFS,
+    }
+    if baseline != expected_baseline:
+        errors.append("visible_life_core_historical_baseline_mismatch")
+    evidence = validate_visible_life_core_evidence(program_state)
+    if evidence.get("status") != "pass":
+        errors.extend(f"visible_life_core_evidence:{item}" for item in evidence.get("errors") or [])
+    successor = product.get("successor_contract") or {}
+    if successor != {
+        "required_ancestor_commit": VISIBLE_LIFE_CORE_BASELINE_COMMIT,
+        "allowed_draft_action": VISIBLE_LIFE_CORE_DRAFT_V1_ACTION_ID,
+        "source_condition": "BLOCKED_UNTIL_EGO_SYNC_VALIDATED",
+        "condition_resolution": "RESOLVED_BY_THIS_CALLABLE_EGO_SYNC_AFTER_COMMIT",
+        "implementation_authorized": False,
+        "second_core_requires_explicit_supersession": True,
+    }:
+        errors.append("visible_life_core_successor_contract_mismatch")
+    firewall = product.get("science_firewall") or {}
+    if firewall != {
+        "science_weight": 0,
+        "may_supply_mechanism_attribution": False,
+        "may_satisfy_science_successor_boundary": False,
+        "inherits_old_k0": False,
+        "may_reopen_old_k0": False,
+    }:
+        errors.append("visible_life_core_science_firewall_mismatch")
+    return {
+        "status": "pass" if not errors else "fail",
+        "errors": errors,
+        "producer_function": "scripts.codex_session_guard.validate_visible_life_core_product_authority",
+        "aggregation_rule": (
+            "require exact committed ITL product-axis authority, exhaustive transcription, a consumed sync action, "
+            "separate ITL/Ego trigger statuses, an immutable V0 boundary, draft-only conditional successor authority, "
+            "and runtime/science permissions closed"
+        ),
+        "producer_code_path_hash": _script_code_path_hash(),
+        "computed_evidence": evidence,
+        "source": source,
+        "crosswalk": crosswalk,
     }
 
 
@@ -1283,10 +1979,13 @@ def build_route_guard_readback(program_state: dict[str, Any], runner: GuardRunne
         if schema_version == "ego.route_guard.v2"
         else compute_visible_life_phase_b_dependencies(program_state, require_committed_review=True)
         if schema_version == "ego.route_guard.v3"
+        else validate_visible_life_core_product_authority(program_state)
+        if schema_version == "ego.route_guard.v4"
         else {}
     )
     product = route_guard.get("product_authority") or {}
-    is_visible_life = schema_version == "ego.route_guard.v3"
+    is_visible_life = schema_version in {"ego.route_guard.v3", "ego.route_guard.v4"}
+    is_visible_life_core = schema_version == "ego.route_guard.v4"
     return {
         "route_revision_id": route_guard.get("route_revision_id"),
         "route_fingerprint": computed if stored == computed else f"MISMATCH:{computed}",
@@ -1306,7 +2005,11 @@ def build_route_guard_readback(program_state: dict[str, Any], runner: GuardRunne
         ),
         "card2_execution_authorized": (((route_state.get("action_dependencies") or {}).get(CARD2_BANK_ACTION_ID) or {}).get("execution_authorized")),
         "effective_card2_bank_action_admitted": False if is_visible_life else bool(dependency_readback.get("all_satisfied")),
-        "visible_life_phase_b_admitted": bool(dependency_readback.get("all_satisfied")) if is_visible_life else False,
+        "visible_life_phase_b_admitted": (
+            bool(dependency_readback.get("all_satisfied")) if schema_version == "ego.route_guard.v3" else False
+        ),
+        "product_development_core_lineage": product.get("product_development_core_lineage") if is_visible_life_core else None,
+        "product_development_core": product.get("product_development_core") if is_visible_life_core else None,
         "dependency_status": dependency_readback.get("dependencies") or {},
         "science_firewall": (
             product.get("science_firewall") or {} if is_visible_life else route_state.get("science_firewall") or {}
@@ -1418,10 +2121,32 @@ def validate_route_mutation_scope(
         and requested_action == VISIBLE_LIFE_IMPLEMENT_ACTION_ID
         and current_revision == VISIBLE_LIFE_ROUTE_REVISION
     )
+    visible_life_core_sync_requested = (
+        task_id == VISIBLE_LIFE_CORE_TASK_ID
+        and requested_action == VISIBLE_LIFE_CORE_SYNC_ACTION_ID
+    )
+    visible_life_core_task_dir = VISIBLE_LIFE_CORE_TASK_PREFIX.rstrip("/")
+    visible_life_core_sync = (
+        visible_life_core_sync_requested
+        and visible_life_core_task_dir in added_task_dirs
+        and current_revision == VISIBLE_LIFE_CORE_ROUTE_REVISION
+        and scope.get("source_route_revision_id") == VISIBLE_LIFE_ROUTE_REVISION
+        and scope.get("source_route_fingerprint") == "63a54cb04c634042e27b1af9500cbb1dd87d5d9941959a5abfeac28954f1f4de"
+        and scope.get("expected_target_route_revision_id") == VISIBLE_LIFE_CORE_ROUTE_REVISION
+        and "docs/PROGRAM_STATE_UNIFIED.yaml" in changed_paths
+        and f"{VISIBLE_LIFE_CORE_TASK_PREFIX}STAGE_CARD.md" in changed_paths
+        and route_guard.get("schema_version") == "ego.route_guard.v4"
+        and (route_guard.get("authority_source") or {}).get("pinned_commit") == VISIBLE_LIFE_CORE_ITL_COMMIT
+        and product_authority.get("state") == "ITL_PRODUCT_CORE_AUTHORITY_SYNCED"
+        and product_authority.get("product_development_core") == "ego_life_playground_v0"
+    )
+    if visible_life_core_sync_requested and visible_life_core_task_dir not in added_task_dirs:
+        blockers.append({"reason": "visible_life_core_sync_reused_or_invalid"})
     if (
         scope.get("source_route_fingerprint") != current_fingerprint
         and not authority_sync_completion
         and not visible_life_transition
+        and not visible_life_core_sync
     ):
         blockers.append(
             {
@@ -1435,6 +2160,8 @@ def validate_route_mutation_scope(
         if authority_sync_completion
         else CARD2_SYNC_ROUTE_REVISION
         if visible_life_transition
+        else VISIBLE_LIFE_ROUTE_REVISION
+        if visible_life_core_sync
         else current_revision
     )
     if scope.get("source_route_revision_id") != expected_source_revision:
@@ -1447,10 +2174,10 @@ def validate_route_mutation_scope(
         )
     allowed_actions = (
         product_authority.get("allowed_next_actions") or []
-        if route_guard.get("schema_version") == "ego.route_guard.v3"
+        if route_guard.get("schema_version") in {"ego.route_guard.v3", "ego.route_guard.v4"}
         else route_state.get("allowed_next_actions") or []
     )
-    if requested_action not in allowed_actions and not visible_life_transition:
+    if requested_action not in allowed_actions and not visible_life_transition and not visible_life_core_sync:
         blockers.append({"reason": "ROUTE_ACTION_NOT_BOUND", "requested_action_id": requested_action})
     if len(set(added_task_dirs)) > 1:
         blockers.append({"reason": "multiple_task_directories", "task_dirs": sorted(set(added_task_dirs))})
@@ -1522,6 +2249,25 @@ def validate_route_mutation_scope(
                 {
                     "reason": "visible_life_phase_b_dependencies_unsatisfied",
                     "dependencies": dependencies.get("dependencies") or {},
+                }
+            )
+    if visible_life_core_sync:
+        if task_kind != "cross_repo_product_core_authority_sync":
+            blockers.append({"reason": "visible_life_core_sync_task_kind_mismatch"})
+        if (scope.get("raw") or {}).get("execution_requested") is not True:
+            blockers.append({"reason": "visible_life_core_sync_execution_flag_mismatch"})
+        if sorted(set(allowed_paths)) != sorted(VISIBLE_LIFE_CORE_SYNC_PATHS):
+            blockers.append({"reason": "visible_life_core_sync_allowlist_mismatch"})
+        if (scope.get("raw") or {}).get("itl_product_axis_commit") != VISIBLE_LIFE_CORE_ITL_COMMIT:
+            blockers.append({"reason": "visible_life_core_sync_itl_commit_mismatch"})
+        if (scope.get("raw") or {}).get("itl_product_axis_route_id") != VISIBLE_LIFE_CORE_ITL_ROUTE_ID:
+            blockers.append({"reason": "visible_life_core_sync_itl_route_mismatch"})
+        core = validate_visible_life_core_product_authority(program_state)
+        if core.get("status") != "pass":
+            blockers.append(
+                {
+                    "reason": "visible_life_core_product_authority_invalid",
+                    "errors": core.get("errors") or [],
                 }
             )
     if requested_action == CARD2_BANK_ACTION_ID:
@@ -1920,6 +2666,7 @@ def build_closeout_check(
         path.startswith(CARD2_TASK_PREFIX)
         or path.startswith(CARD2_SYNC_TASK_PREFIX)
         or path.startswith(VISIBLE_LIFE_TASK_PREFIX)
+        or path.startswith(VISIBLE_LIFE_CORE_TASK_PREFIX)
         for path in changed_paths
     )
     if changed_paths and (red_triggers or card2_governance_path_touched) and scope.get("status") != "loaded":

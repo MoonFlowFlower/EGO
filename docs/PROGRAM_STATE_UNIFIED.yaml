@@ -1,8 +1,8 @@
 program:
   version: 1
-  north_star: "Keep EgoOperator as the sole active default runtime while building an explicitly launched, disabled-by-default product-clock playground under an exact six-file authority boundary; preserve all closed K0/Card2 science records and assign the playground zero science weight."
-  current_phase: "visible_life_proxy_v0_phase_a_banked__phase_b_authorized_not_started"
-  current_layer: "engineering evidence-governance + bounded product-clock implementation authorization"
+  north_star: "Use the ITL-selected ego_life_playground_v0 Git-object boundary as the sole visible-life product-development lineage while keeping EgoOperator as the sole active runtime default and preserving closed K0/Card2 science records."
+  current_phase: "visible_life_proxy_v0_product_core_authority_synced__v1_card_draft_only"
+  current_layer: "engineering evidence-governance + product-development lineage selection"
   highest_evidence_level: "E3"
   verification_level: "V3"
   mainline_connected: true
@@ -17,10 +17,12 @@ program:
     - evidence_id: "ego_operator_human_operator_trial_v2_real_provider_scripted_run"
       note: "A fresh scripted v2 human-operator trial ran with a real OpenRouter provider and recorded 18/18 observations at `EgoOperator/artifacts/human_operator_trial/v2_latest/`; this is provider-scripted review evidence only, not a human-observation pass."
   current_focus:
+    - "ITL committed product-axis authority at `619bff5fd9400bba00002af26f65ce73894a9dce` selects the V0 playground boundary `546e3639299d7b11b599df3d00645666a6953bac` as the sole product-development core lineage. Ego transcribes that authority; it does not create a second route authority."
+    - "Product-development lineage and runtime mainline are separate: `ego_life_playground_v0` owns only the former, while EgoOperator remains the sole active runtime default. V0 remains default-off, runtime-disconnected, without runtime authority, and science_weight=0."
     - "The 8692 K0 Foundation -> VirtualCat-derived adapter -> EgoDesktop route is additively superseded before M1. M1, M2, and M3 were not started and are cancelled by supersession; historical route prose is not current authority."
     - "EgoDesktop is archived as a legacy LLM/UI reference only. It is not an active route, successor dependency, runtime target, or runtime authority; this authority archive does not move, delete, or rewrite EgoDesktop source."
     - "K0 Foundation bounded engineering evidence remains `BANKED_ACCEPTED_BOUNDED`, disabled, non-mainline, and without runtime authority. No science verdict or mechanism attribution is created or upgraded in Ego."
-    - "The committed ITL Card 2 route is terminally closed as `ADMISSION_INVALID_PATH_POLICY`; its state and closure are transcribed field-by-field and retain all implementation/runtime/science authorizations false. A separate Ego-owned action authorizes only the exact six-file visible-life product playground; it inherits no Card2/K0 science authority and has science_weight=0."
+    - "The committed ITL Card 2 route remains terminally closed as `ADMISSION_INVALID_PATH_POLICY`. The later ITL product axis is separately transcribed field-by-field; neither packet grants runtime/science authority, and product evidence has science_weight=0."
     - "Treat `EgoOperator` as the active default operator-first implementation lane and current execution owner."
     - "Keep archived legacy `EgoCore / OpenEmotion / ego_desktop_lab` reachable only through `legacy/ego-pre-handmade-mainline/ARCHIVED_POINTER.md`, `docs/archive/LEGACY_ALGORITHM_INVENTORY.md`, `artifacts/archive/legacy_pre_operator_mainline_manifest.json`, and git tag `legacy-pre-operator-mainline-before-purge`; no archived legacy code has runtime authority, default path, or task-routing authority."
     - "Preserve `EgoOperator`'s core path: `user text -> LLM understanding -> proposal/plan -> runtime gate -> trace`, and do not reintroduce keyword-first semantic routing or template fallback as the default entry."
@@ -30,6 +32,7 @@ program:
     - "R-track mechanism rewrite state machine remains closed: R0/R1/R3 stay at engineering-only/default-off ceilings and R2 stays negative; do not reopen or reinterpret those rows from K0."
     - "K0 dual-track remains a separate disabled non-mainline workstream. Ego preserves the pinned ITL operator decision to close the old K0 science-attribution route without science adjudication. The verifier family is terminally closed invalid with no further repair, and independent validator acceptance is UNAVAILABLE. Foundation remains BANKED_ACCEPTED_BOUNDED at the existing E3/V3 engineering-governance ceiling with enabled=false, mainline_connected=false, runtime_authority=none, and runtime trigger evidence absent. H0 is NOT_TESTED; the old Reference Kernel/K0-R, H1, Freeze, and Formal are BLOCKED_NOT_TESTED; all root, route, and child authorizations are false with authorized implementation targets empty. The stored P1R0 FEASIBLE verdict is preserved as historical output, while the pinned callable audit independently computed INVALID with 23 blocking findings. The current FACTORED-STOCHASTIC-OUTCOME-SURFACE-v1 P0/P1/P1R0 instrument-design lineage is CLOSED_INVALID_NO_P1R1_NO_P2; P1R0 repair, P1R1, P1R2, P2, and same-surface reuse are forbidden. Independent validator acceptance remains UNAVAILABLE, the local callable is not an independent validator, and surface mathematical status remains NOT_ADJUDICATED. Any possible successor requires an operator-selected new surface, new task ID, fresh preregistration, and fresh operator decision."
   completed_since_last:
+    - "EGO Visible Life Proxy V0 Core Adoption 001A consumes the completed exact-six implementation action, pins its commit/tree/blob/payload boundary and recomputing product trigger, and selects `ego_life_playground_v0` as the sole visible-life product-development core lineage. Only a V1 continuity task-card draft is allowed next; V1 implementation, runtime wiring, and science claims remain unauthorized."
     - "EGO Visible Life Proxy v0 Route Replacement 001A preserves the committed ITL terminal Card2 closure, records the path-policy defect without repairing or reopening the old action, and authorizes one separate Ego-owned exact-six-file product-clock playground implementation. The playground remains disabled by default, non-mainline, without runtime authority or trigger evidence before Phase B, and has zero science weight."
     - "EGO Route 8692 Supersession and EgoDesktop Authority Archive 001A additively supersedes the unstarted K0 Foundation -> VirtualCat-derived adapter -> EgoDesktop product route before M1, archives EgoDesktop as a historical LLM/UI reference only, preserves K0 Foundation bounded engineering evidence, keeps EgoOperator as the sole active default, registers no science successor, and binds only Card 2 drafting/banking. This is product/capability governance only; no runtime, mechanism, learning, headroom, experiment, or mainline-successor work is implemented or authorized."
     - "EGO Canonical Mechanism Integration 001A freezes one successor route and reader contract: K0 Foundation is the sole canonical substrate, VirtualCatPSPC is a source-only model candidate, and EgoDesktop is the observer/input target. Existing PET P2, PSPC shadow ladders, the old K0 science route, and outcome-utility runtime admission remain frozen at their recorded ceilings. This is docs/governance route selection only; no bridge is implemented, enabled, mainline-connected, or triggered."
@@ -132,13 +135,13 @@ program:
     - "The current lane now also has a bounded local `thought_probe conversational anchor` pass: shared substantive-topic extraction now prevents prompt-like `solicited_view` turns from becoming proactive anchors, structured recent user-turn records carry `conversation_act` and timestamp into `recent_dialogue_reflection`, `thought_probe` candidates now expose `topic_anchor_source / topic_anchor_kind / topic_conversation_grade`, and EgoCore delivery now performs one constrained conversational rewrite or else holds when the candidate still sounds like prompt echo or meta reflection. This remains local proof only; no fresh live Telegram conversational thought-probe sample is admitted yet."
   blocked_by: []
   key_unknowns:
-    - "Whether the exact-six-file visible-life playground can launch through its real Tk entrypoint, persist/recompute through SQLite, and expose non-cosmetic intervention toggles; Phase B is authorized but not started."
+    - "Whether a separately authorized V1 continuity successor can add internal time, persistent goals, wait, switching cost, bounded H=2 planning, and controlled initiative without degenerating into an FSM/timer baseline; this transition authorizes drafting only."
     - "Whether `EgoOperator` remains more natural after longer real LLM sessions, not just deterministic NoLLM tests."
     - "Whether local memory stays useful without prompt pollution across multi-day operator use."
     - "Which legacy algorithms should be reimplemented as EgoOperator primitives, and which should remain reference-only."
     - "Whether future command/network transaction approvals should be added after file-write transaction approval has proved ergonomic."
     - "What evidence threshold should trigger any future deletion of legacy code rather than reference preservation."
-  next_minimal_action: "After the committed Phase-A Red receipt and clean validator readback, implement exactly labs/ego_life_playground_v0/{__init__,engine,store,app}.py, scripts/run_ego_life_playground_v0.py, and tests/test_ego_life_playground_v0.py. Do not touch EgoDesktop, EgoOperator, LLM/network, runtime/mainline authority, or science routes."
+  next_minimal_action: "After committed Ego sync validation, execute only draft_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A_only_after_EGO_sync_validation from the pinned V0 core boundary; V1 implementation still requires a separate operator-authorized card and Red review."
   last_verified_commit: "af561e0d"
   last_verified_at: "2026-05-18T03:48:22Z"
   status_owner: "EgoOperator"
@@ -150,14 +153,14 @@ program:
     institutionalized_claim_requires: "E6"
 
 route_guard:
-  schema_version: ego.route_guard.v3
-  route_revision_id: EGO_VISIBLE_LIFE_PROXY_V0_ROUTE_REPLACEMENT_001A
-  route_fingerprint: 63a54cb04c634042e27b1af9500cbb1dd87d5d9941959a5abfeac28954f1f4de
+  schema_version: ego.route_guard.v4
+  route_revision_id: EGO_VISIBLE_LIFE_PROXY_V0_CORE_ADOPTION_001A
+  route_fingerprint: 2446c65920f96a9a49d9ae654a0f106e8fb0bcaf41e023d4405c46c083a0f005
   authority_source:
-    authority_rule: ITL committed objects are sole authority for the terminal Card2 closure and science firewall; Ego PROGRAM_STATE_UNIFIED is
-      sole authority for the separate product-only playground action
+    authority_rule: ITL committed objects are the sole authority for the terminal Card2 closure, science firewall, and visible-life product-development
+      axis; Ego PROGRAM_STATE_UNIFIED is a validated local transcription and product-evidence owner, not a second route authority
     repo: intelligence-theory-lab
-    pinned_commit: 55706c734a2bf25ba1d9d2aa273283ed4dc39802
+    pinned_commit: 619bff5fd9400bba00002af26f65ce73894a9dce
     objects:
       route_state:
         path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/state.json
@@ -183,6 +186,321 @@ route_guard:
         path: artifacts/EGO-VISIBLE-LIFE-PROXY-V0-ROUTE-REPLACEMENT-001A/PHASE_A_RED_REVIEW.json
         git_blob_oid: 3500550829c55297f1fc70151db5f0f193b82330
         git_blob_payload_sha256: 3a4fa320c322b71f30a12ee0d51958d753b8d9a16bf8f960f8f4746933acfe4a
+      product_axis_state:
+        path: artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json
+        git_blob_oid: fe416f3f2a81b8bc3c7931700c2b100970c73cb6
+        git_blob_payload_sha256: 4055052a8f4022b01d0f419cb2956f5d3e5acbe336bcaab0999f947b0b16065a
+      product_core_state:
+        path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A/state.json
+        git_blob_oid: 6c285f5361583ea397e54a4951b886ee06c09df7
+        git_blob_payload_sha256: 6b7e8fe55679ce6530e3fd9556cc55eb05bec1876d38d198c2e912fdd0eff36e
+      product_core_closure:
+        path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A/closure.json
+        git_blob_oid: 5c48e69919dd374c3e7939eaeb1c29faf6bfb679
+        git_blob_payload_sha256: fc528cebae00b61cabc11056775e928eca8df407439833839addef00c0d4672c
+      product_core_events:
+        path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A/events.jsonl
+        git_blob_oid: 2cec0ff395adacf95e8964b4adb55bd2f6be563f
+        git_blob_payload_sha256: 7b050e777d63967d33a2aef01136d7259f929dd439f93f1507d7394430eab571
+      product_core_validation_report:
+        path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A/adoption_validation_report.json
+        git_blob_oid: b70d20265749f4051af0e8624e50e1620f2e68cd
+        git_blob_payload_sha256: 2178d0a6af9ffe919eac599e7cf04168b17235002ef456a3383704f7e2b9d1a7
+      product_core_transition_card:
+        path: docs/codex/tasks/ITL-EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-TRANSITION-001A.md
+        git_blob_oid: 54d877947e089bf88479c97a2f3f3b07a5ad6f6a
+        git_blob_payload_sha256: 27abba96094f31c0b0c14471cee08a77029aafed7cfe90f6ebd61e799f75f997
+      product_core_red_receipt:
+        path: artifacts/ITL-EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-TRANSITION-001A/red_precheck.json
+        git_blob_oid: b5eb5b5cb506939b5e10f95636330534407bea60
+        git_blob_payload_sha256: 7d613f32f52277a7d4c97a1a86b186f0532409784bfda7859cf60225ce5cec32
+  transcribed_itl_product:
+    product_axis_state:
+      authority_semantics: SOLE_MACHINE_READABLE_PRODUCT_DEVELOPMENT_AXIS_AUTHORITY
+      legacy_program_state_disposition: SCIENCE_AXIS_SNAPSHOT_NOT_PRODUCT_AXIS_AUTHORITY
+      product_development_axis:
+        authority: SOLE
+        authority_route_id: EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A
+        authority_state_path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A/state.json
+        core_id: ego_life_playground_v0
+        currently_executable_actions:
+        - sync_EGO_visible_life_proxy_v0_product_core_authority_under_separate_task
+        - run_route_state_machine_validation
+        effective_live_product_actions:
+        - sync_EGO_visible_life_proxy_v0_product_core_authority_under_separate_task
+        - run_route_state_machine_validation
+        source_commit: 546e3639299d7b11b599df3d00645666a6953bac
+        state: AUTHORITY_RECORDED_EGO_SYNC_PENDING
+        suppressed_legacy_product_actions:
+        - bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A
+        - bank_EGO_learned_outcome_kernel_capability_card_under_separate_task_after_EGO_sync
+      schema_version: itl.route_axis_state.v1
+      updated_at_utc: '2026-07-14T23:14:06.809660Z'
+    product_core_state:
+      allowed_next_actions:
+      - sync_EGO_visible_life_proxy_v0_product_core_authority_under_separate_task
+      - draft_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A_only_after_EGO_sync_validation
+      - run_route_state_machine_validation
+      authorizations:
+        default_enablement: false
+        ego_governance_sync: true
+        experiment_execution: false
+        mechanism_evidence: false
+        product_development_core_adoption: true
+        remote_anchor: false
+        runtime_authority: false
+        runtime_mainline: false
+        science_successor: false
+        scoring: false
+        v1_card_draft: false
+        v1_implementation: false
+      authorized_implementation_targets: []
+      axis: PRODUCT_DEVELOPMENT
+      claim_ceiling:
+        forbidden_claims:
+        - runtime_or_runtime_mainline_effect
+        - learned_model
+        - online_learning
+        - memory_or_replay_causal_contribution
+        - generalization_or_transfer
+        - thought_or_emotional_understanding
+        - initiative_or_agency
+        - autonomy
+        - subjectivity_or_consciousness
+        - electronic_life
+        - science_successor_admission
+        - mechanism_validity
+        - ego_readiness
+        - stable_user_benefit
+        max: local ITL product-axis authority selection of Ego V0 as an immutable Git-object product-development baseline and sole descendant lineage,
+          pending Ego governance sync and with no runtime-mainline, science, learning, or mechanism authority
+      closure_type: ARTIFACT_ONLY
+      conditional_actions:
+        draft_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A_only_after_EGO_sync_validation:
+          implementation_authority: false
+          state: BLOCKED_UNTIL_EGO_SYNC_VALIDATED
+      current_state: ADJUDICATED
+      currently_executable_actions:
+      - sync_EGO_visible_life_proxy_v0_product_core_authority_under_separate_task
+      - run_route_state_machine_validation
+      forbidden_next_actions:
+      - modify_reopen_or_rerun_EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A
+      - modify_reopen_or_rerun_K0-DUAL-TRACK-SUPERSESSION-001A
+      - use_closed_card2_action_or_old_k0_action_as_authority
+      - modify_pinned_V0_source_commit_or_rewrite_history
+      - enable_runtime_mainline_or_grant_runtime_authority
+      - change_EgoOperator_active_default
+      - start_V1_implementation_without_separate_operator_authorized_card
+      - start_science_successor_experiment_scoring_or_formal_run
+      - treat_product_trace_or_visible_behavior_as_mechanism_evidence
+      - push_tag_or_remote_anchor
+      operator_decision: ADOPT_V0_AS_SOLE_PRODUCT_DEVELOPMENT_CORE_LINEAGE
+      phase: V0_PRODUCT_CORE_AUTHORITY_RECORDED_EGO_SYNC_PENDING
+      predecessor_action_dispositions:
+        bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A: CLOSED_ADMISSION_INVALID_PATH_POLICY
+        bank_EGO_learned_outcome_kernel_capability_card_under_separate_task_after_EGO_sync: HISTORICAL_SUPERSEDED_NO_LIVE_AUTHORITY
+      product_development_core_lineage:
+        authority: SOLE
+        core_id: ego_life_playground_v0
+        descendant_changes_require_new_bounded_cards: true
+        freeze_semantics: IMMUTABLE_GIT_OBJECT_BASELINE_NOT_PATH_LOCK
+        source_commit: 546e3639299d7b11b599df3d00645666a6953bac
+      red_review_requirement:
+        receipt_path: artifacts/ITL-EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-TRANSITION-001A/red_precheck.json
+        state: REQUIRED_COMMIT_BOUND_NO_BLOCKING_FINDINGS
+      route_family: EGO-PRODUCT-DEVELOPMENT-CORE
+      route_id: EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A
+      route_kind: CROSS_REPO_PRODUCT_CORE_ADOPTION
+      runtime_boundary:
+        default_enabled: false
+        ego_operator_active_default_unchanged: true
+        runtime_authority: none
+        runtime_mainline_connected: false
+      schema_version: itl.product_core_adoption.route.v1
+      science_firewall:
+        inherits_old_k0: false
+        may_satisfy_science_successor: false
+        mechanism_attribution: false
+        product_trace_is_science_evidence: false
+        reopens_card2: false
+        science_weight: 0
+      source_readback:
+        authority_semantics: COMMITTED_GIT_OBJECTS_WITH_SEPARATE_EOL_DISCLOSURE
+        ego_commit: 546e3639299d7b11b599df3d00645666a6953bac
+        ego_objects:
+        - blob: aba2ad3ee2ef6963b74bd538bf985f03e5420110
+          bytes: 550
+          path: labs/ego_life_playground_v0/__init__.py
+          raw_sha256: 117dedb39ab10afda706a32760fee55f4d5010db20dfa9b40b037584af344a82
+        - blob: 856b55636df36d5754db5b9ebbc9f263075f3218
+          bytes: 13997
+          path: labs/ego_life_playground_v0/app.py
+          raw_sha256: 60ad14bac892fd5fdf694fef8a4674fcbf4cc6fe9e8fcc7ebae791c9cb578fcf
+        - blob: 2b5aa6ac5a38caa0bcb4905826e1e891eeb65915
+          bytes: 19165
+          path: labs/ego_life_playground_v0/engine.py
+          raw_sha256: c4d05790fb67752787aa0555f9dc99df71b6401c1c85e699e75c8fa85721cc35
+        - blob: c49a564ea772512e2cb0dc6352ef63ffa95c2a80
+          bytes: 11693
+          path: labs/ego_life_playground_v0/store.py
+          raw_sha256: 7966075e8804da28ded96c0a690b673a4880219d97775cfa7b0043beae08dd2c
+        - blob: dd83f1919d6860d26eb1ce4791c008a6e073b0ac
+          bytes: 2431
+          path: scripts/run_ego_life_playground_v0.py
+          raw_sha256: e12e7d2bf69df89c5138ee63ed36ef01698273debe567f7f3cf0ae9cb357590a
+        - blob: e3bc77a3fefda06dfdb7b14236e9c2da42501be6
+          bytes: 19079
+          path: tests/test_ego_life_playground_v0.py
+          raw_sha256: 94be0adcfdb6df3c49109d2cb11cf36c40c25aa77299f35bee0db318156f3b44
+        - blob: 9d977ccf8ecb4c479c2f9ef1e58cc6e10021cfa3
+          bytes: 170448
+          path: docs/PROGRAM_STATE_UNIFIED.yaml
+          raw_sha256: 1ffa0cc8126bfb3ff9c5b6bb72bea8bf602ee3a5c2295b1e5f0d1e22dd5a1d01
+        ego_parent: d5d98ac0783a7e67b6d003b460470bdf4350d4bd
+        ego_pre_adoption_route_fingerprint: 63a54cb04c634042e27b1af9500cbb1dd87d5d9941959a5abfeac28954f1f4de
+        ego_route_fingerprint_producer:
+          blob: 8f3aad23a988574002d7681e76a2c87c1d9b4d39
+          path: scripts/codex_session_guard.py
+          raw_sha256: 35150699a116035d45ed61575ff55fd12577ca249b96a9dfc3e1fcc9885c3e48
+        ego_tree: fe79061dca2991c822cf2b0b5547a08d9b4682f9
+        itl_base_commit: 55706c734a2bf25ba1d9d2aa273283ed4dc39802
+        itl_objects:
+        - blob: 261b9ce78fd88a70c5f78646ce9209eb8bacee08
+          path: artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/state.json
+          raw_sha256: c31158f8713a9ba6df4255c8bed938ae0dd8b84fb2088d71741d536442b5ab5f
+        - blob: e1a7d8d595004c07cea7c8fd70cb1738d42e3b5a
+          path: artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/closure.json
+          raw_sha256: bfe1d92cbb1938f6bfe206f84693fef90f64c1458ec576eb384bd5869de3ff93
+        - blob: 5ec92897a15fea67f47fbec444a665511c6e4fef
+          path: artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/events.jsonl
+          raw_sha256: fb363cf87d54aa1b33c4c66975f5e02dc4dcaef234b28f0d67790f643eb3e468
+        - blob: 377d09780e0a3949a172d89c3bc12de40245f8e8
+          path: artifacts/ROUTE-STATE-MACHINE-001A/program_state.json
+          raw_sha256: 79915a56fa7c6735d7cbc3941972f4c709144b2bb75a79911a65ee08ddb90807
+        - blob: 75a83aaf8cdea464696daf8d940dd784c5c86302
+          checkout_crlf_sha256: 6e4c021f0392cb5ebf39662b32ead1770ad9025fa243186ad102f0f53efe7f26
+          path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/state.json
+          raw_sha256: 6dc4111604f37ecde5c0d79a35da3fbe278e021bb780ace82139bf559d7fe8e2
+        - blob: cbe62daa7da79308c63361d01d1429418c5537d3
+          checkout_crlf_sha256: dec0ccfa72f997395b8043b1de5044d4ea3ca4fb1e9b334b57fee2e0f5d41756
+          path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/closure.json
+          raw_sha256: 490ee2cf6f52952e3300069d42fb95abe6e8a589cc7cc3498221e1fbb39401e6
+        - blob: 85da9f0756c97a1dfed1d8f1a909f5c02f131b0a
+          path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/events.jsonl
+          raw_sha256: 136192a04ef05f7b3880a174e03b4a8cd921a56cdcc5a662f78e8beb576c4d91
+        - blob: 24c6bdb1177999df85c194810ba04893338f60b5
+          checkout_crlf_sha256: b22a4ca80a776cfe25369c41739c6c2fd9b75b34c965ae092bc7bac1a80ec034
+          path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/closure_validation_report.json
+          raw_sha256: 2274cef44df64e94ba15c4741aadfe79431538da2499b1e9a32ab3efdcd5a36d
+        - blob: 6c4f61255c25fa4ce26b6064b718e7e43b627db2
+          path: docs/codex/tasks/EGO-VISIBLE-LIFE-PROXY-V0-ROUTE-REPLACEMENT-001A.md
+          raw_sha256: 59b7f775f72fc556eb0192970df3e5cd581f0c11198b1a7ce2d3d07e2aa5c439
+        - blob: a617d17b855433e14832cf4f1149396548545d67
+          path: artifacts/ROUTE-STATE-MACHINE-001A/STATUS.md
+          raw_sha256: 3883d6b73471ba63f740859733864af34e4baf01a17b9b9bada04a2861ec5f6b
+        - blob: a48032af0cccdce55074cd648ca53ed97cc9971b
+          path: artifacts/ROUTE-STATE-MACHINE-001A/validation_report.json
+          raw_sha256: 8ce64494cedb970bd43299cb6b53177e1cde38e95d678ee3fa8fcda014f31fe9
+        - blob: 1ab8de60021d8492c42f2a0984d4564b2d550509
+          path: docs/research/FSP-STAGE-LEDGER.md
+          raw_sha256: 2e71d576581a2917c6c6a1f7779035f03f7bc2aaf225b92ec5b70b7988564ff7
+        - blob: f5c58e4d4cfb8b734e5e339845ddb4d0a3e3c5b5
+          path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/admission_validation_report.json
+          raw_sha256: 447772dcf4a1e34aa3f1229bcad421a7d42b35eada0fc4f480dea2116dd92dd8
+        transition_card: docs/codex/tasks/ITL-EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-TRANSITION-001A.md
+        transition_card_binding: RED_RECEIPT_REVIEWED_BLOB_MUST_EQUAL_COMMITTED_BLOB
+        worktree_is_evidence: false
+      updated_at_utc: '2026-07-14T23:14:06.809660Z'
+    product_core_closure:
+      allowed_next_actions:
+      - sync_EGO_visible_life_proxy_v0_product_core_authority_under_separate_task
+      - draft_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A_only_after_EGO_sync_validation
+      - run_route_state_machine_validation
+      authorizations:
+        default_enablement: false
+        ego_governance_sync: true
+        experiment_execution: false
+        mechanism_evidence: false
+        product_development_core_adoption: true
+        remote_anchor: false
+        runtime_authority: false
+        runtime_mainline: false
+        science_successor: false
+        scoring: false
+        v1_card_draft: false
+        v1_implementation: false
+      authorized_implementation_targets: []
+      claim_ceiling:
+        forbidden_claims:
+        - runtime_or_runtime_mainline_effect
+        - learned_model
+        - online_learning
+        - memory_or_replay_causal_contribution
+        - generalization_or_transfer
+        - thought_or_emotional_understanding
+        - initiative_or_agency
+        - autonomy
+        - subjectivity_or_consciousness
+        - electronic_life
+        - science_successor_admission
+        - mechanism_validity
+        - ego_readiness
+        - stable_user_benefit
+        max: local ITL product-axis authority selection of Ego V0 as an immutable Git-object product-development baseline and sole descendant lineage,
+          pending Ego governance sync and with no runtime-mainline, science, learning, or mechanism authority
+      closure_scope: PRODUCT_DEVELOPMENT_BASELINE_ADOPTION_ONLY
+      closure_type: ARTIFACT_ONLY
+      conditional_actions:
+        draft_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A_only_after_EGO_sync_validation:
+          implementation_authority: false
+          state: BLOCKED_UNTIL_EGO_SYNC_VALIDATED
+      currently_executable_actions:
+      - sync_EGO_visible_life_proxy_v0_product_core_authority_under_separate_task
+      - run_route_state_machine_validation
+      evidence_status:
+        git_object_baseline: PRESENT
+        mechanism_evidence: NOT_TESTED
+        operator_adoption_decision: PRESENT
+        real_trigger_evidence: UNVERIFIED_IN_THIS_ITL_TRANSITION
+        science_evidence: NOT_APPLICABLE
+      forbidden_next_actions:
+      - modify_reopen_or_rerun_EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A
+      - modify_reopen_or_rerun_K0-DUAL-TRACK-SUPERSESSION-001A
+      - use_closed_card2_action_or_old_k0_action_as_authority
+      - modify_pinned_V0_source_commit_or_rewrite_history
+      - enable_runtime_mainline_or_grant_runtime_authority
+      - change_EgoOperator_active_default
+      - start_V1_implementation_without_separate_operator_authorized_card
+      - start_science_successor_experiment_scoring_or_formal_run
+      - treat_product_trace_or_visible_behavior_as_mechanism_evidence
+      - push_tag_or_remote_anchor
+      mechanism_evidence_authorized: false
+      phase: V0_PRODUCT_CORE_AUTHORITY_RECORDED_EGO_SYNC_PENDING
+      predecessor_action_dispositions:
+        bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A: CLOSED_ADMISSION_INVALID_PATH_POLICY
+        bank_EGO_learned_outcome_kernel_capability_card_under_separate_task_after_EGO_sync: HISTORICAL_SUPERSEDED_NO_LIVE_AUTHORITY
+      product_development_core_lineage:
+        authority: SOLE
+        core_id: ego_life_playground_v0
+        descendant_changes_require_new_bounded_cards: true
+        freeze_semantics: IMMUTABLE_GIT_OBJECT_BASELINE_NOT_PATH_LOCK
+        source_commit: 546e3639299d7b11b599df3d00645666a6953bac
+      route_id: EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A
+      runtime_boundary:
+        default_enabled: false
+        ego_operator_active_default_unchanged: true
+        runtime_authority: none
+        runtime_mainline_connected: false
+      schema_version: itl.product_core_adoption.closure.v1
+      science_firewall:
+        inherits_old_k0: false
+        may_satisfy_science_successor: false
+        mechanism_attribution: false
+        product_trace_is_science_evidence: false
+        reopens_card2: false
+        science_weight: 0
+      task_id: ITL-EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-TRANSITION-001A
+      theory_pressure_authorized: false
   transcribed_itl:
     route_state:
       action_dependencies:
@@ -507,89 +825,100 @@ route_guard:
   closure_crosswalk:
     path: docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/ITL_CLOSURE_CROSSWALK.json
     artifact_payload_sha256: 1367d9f8abb3492f781b6e71f69e9d9fba07abf52e60f823a2fca1d574b4597c
+  product_authority_crosswalk:
+    path: docs/codex/tasks/ego-visible-life-proxy-v0-core-adoption-001a/ITL_AUTHORITY_CROSSWALK.json
+    artifact_payload_sha256: 34ccafc9a596e42491abaa46825a4715147f234d4037e08a6c7c5932fdf382ba
   product_authority:
     authority_axis: EGO_PRODUCT_CAPABILITY_ONLY
-    task_id: EGO-VISIBLE-LIFE-PROXY-V0-ROUTE-REPLACEMENT-001A
-    action_id: implement_EGO-VISIBLE-LIFE-PROXY-V0-001A
-    state: AUTHORIZED_NOT_STARTED
+    task_id: EGO-VISIBLE-LIFE-PROXY-V0-CORE-ADOPTION-001A
+    predecessor_task_id: EGO-VISIBLE-LIFE-PROXY-V0-ROUTE-REPLACEMENT-001A
+    predecessor_action:
+      action_id: implement_EGO-VISIBLE-LIFE-PROXY-V0-001A
+      state: CONSUMED_IMPLEMENTED
+      implementation_commit: 546e3639299d7b11b599df3d00645666a6953bac
+    state: ITL_PRODUCT_CORE_AUTHORITY_SYNCED
+    product_development_core_lineage: SOLE_VISIBLE_LIFE_PRODUCT_DEVELOPMENT_LINEAGE
+    product_development_core: ego_life_playground_v0
+    sole_visible_life_product_core: true
+    core_registry:
+      visible_life: ego_life_playground_v0
     allowed_next_actions:
-    - implement_EGO-VISIBLE-LIFE-PROXY-V0-001A
+    - draft_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A_only_after_EGO_sync_validation
     - run_route_state_machine_validation
+    source_currently_executable_actions:
+    - sync_EGO_visible_life_proxy_v0_product_core_authority_under_separate_task
+    - run_route_state_machine_validation
+    sync_action:
+      action_id: sync_EGO_visible_life_proxy_v0_product_core_authority_under_separate_task
+      disposition: CONSUMED_BY_EGO_AUTHORITY_SYNC
+      source_route_id: EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A
+      source_commit: 619bff5fd9400bba00002af26f65ce73894a9dce
     forbidden_next_actions:
+    - reuse_implement_EGO-VISIBLE-LIFE-PROXY-V0-001A
+    - create_parallel_visible_life_product_core
+    - implement_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A
     - modify_EgoDesktop_or_EgoOperator
     - add_LLM_or_network_integration
-    - enable_runtime_or_mainline
+    - enable_runtime_or_runtime_mainline
     - grant_runtime_authority
     - register_or_satisfy_science_successor
     - claim_mechanism_learning_agency_or_electronic_life
     - repair_reopen_or_rerun_closed_card2_action
     - push_tag_or_remote_anchor
     authorizations:
-      implementation: true
+      task_card_drafting: true
       local_manual_validation: true
+      implementation: false
       experiment_execution: false
-      mainline: false
+      mainline_runtime: false
       mechanism_evidence: false
       remote_anchor: false
       runtime: false
       science_successor: false
       scoring: false
-    authorized_implementation_targets:
-    - labs/ego_life_playground_v0/__init__.py
-    - labs/ego_life_playground_v0/engine.py
-    - labs/ego_life_playground_v0/store.py
-    - labs/ego_life_playground_v0/app.py
-    - scripts/run_ego_life_playground_v0.py
-    - tests/test_ego_life_playground_v0.py
+    authorized_implementation_targets: []
     enabled: false
     default_enabled: false
+    runtime_mainline_connected: false
     mainline_connected: false
     runtime_authority: none
     science_weight: 0
-    real_trigger_evidence: absent_pre_phase_b
-    action_path_policy:
-      allowed_exact_paths:
+    real_trigger_evidence: UNVERIFIED_IN_THIS_ITL_TRANSITION
+    ego_local_product_trigger_evidence: BANKED_RECOMPUTING_PRODUCT_TRIGGER
+    historical_baseline:
+      source_commit: 546e3639299d7b11b599df3d00645666a6953bac
+      source_parent: d5d98ac0783a7e67b6d003b460470bdf4350d4bd
+      source_tree: fe79061dca2991c822cf2b0b5547a08d9b4682f9
+      source_paths:
       - labs/ego_life_playground_v0/__init__.py
       - labs/ego_life_playground_v0/engine.py
       - labs/ego_life_playground_v0/store.py
       - labs/ego_life_playground_v0/app.py
       - scripts/run_ego_life_playground_v0.py
       - tests/test_ego_life_playground_v0.py
-      allowed_path_prefixes: []
-      forbidden_path_prefixes:
-      - EgoDesktop/
-      - EgoOperator/
-      - packages/
-      - providers/
-      - deployment/
-      - network/
-      - LLM/
-      missing_mutation_scope: REJECT
-      self_declared_scope_expansion: false
+      lineage_mode: IMMUTABLE_HISTORICAL_BOUNDARY_WITH_DECLARED_DESCENDANT_EDITS
+      manifest_path: artifacts/EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A/core_baseline_manifest.json
+      trace_path: artifacts/EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A/core_trigger_trace.jsonl
+      database_path: artifacts/EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A/core_trigger.sqlite3
+      validation_report_path: artifacts/EGO-LIFE-CORE-V0-DEVELOPMENT-BASELINE-001A/core_baseline_validation_report.json
+      validator_path: scripts/codex/verify_ego_life_core_v0_baseline.py
+    successor_contract:
+      required_ancestor_commit: 546e3639299d7b11b599df3d00645666a6953bac
+      allowed_draft_action: draft_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A_only_after_EGO_sync_validation
+      source_condition: BLOCKED_UNTIL_EGO_SYNC_VALIDATED
+      condition_resolution: RESOLVED_BY_THIS_CALLABLE_EGO_SYNC_AFTER_COMMIT
+      implementation_authorized: false
+      second_core_requires_explicit_supersession: true
     science_firewall:
       science_weight: 0
       may_supply_mechanism_attribution: false
       may_satisfy_science_successor_boundary: false
       inherits_old_k0: false
       may_reopen_old_k0: false
-    phase_b_contract:
-      mutation_scope_path: docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/MUTATION_SCOPE_PHASE_B.yaml
-      exact_changed_paths:
-      - labs/ego_life_playground_v0/__init__.py
-      - labs/ego_life_playground_v0/engine.py
-      - labs/ego_life_playground_v0/store.py
-      - labs/ego_life_playground_v0/app.py
-      - scripts/run_ego_life_playground_v0.py
-      - tests/test_ego_life_playground_v0.py
-      blocked_until:
-      - COMMITTED_ITL_CLOSURE_PIN_VALID
-      - EXHAUSTIVE_ITL_CLOSURE_CROSSWALK_VALID
-      - EGO_PRODUCT_AUTHORITY_EXACT
-      - EGO_PHASE_A_RED_REVIEW_BOUND
-      - EXACT_SIX_PATH_POLICY_ENFORCED
     claim_ceiling:
-      max: local product-clock playground implementation authority only
+      max: local Ego synchronization to committed ITL product-axis authority plus immutable V0 engineering boundary and replayable local product trigger only
       forbidden_claims:
+      - runtime_mainline_effect
       - headroom
       - mechanism_validity
       - general_learning
@@ -602,9 +931,8 @@ route_guard:
       - consciousness
       - electronic_life_demonstrated
       - ego_readiness
-      - mainline_effect
       - stable_user_benefit
-    source_closure_relation: REPLACEMENT_PRODUCT_ACTION_DOES_NOT_INHERIT_CLOSED_CARD2_OR_OLD_K0_SCIENCE_AUTHORITY
+    source_closure_relation: PRODUCT_CORE_DOES_NOT_INHERIT_CLOSED_CARD2_OR_OLD_K0_SCIENCE_AUTHORITY
   authority_state:
     old_route_8692:
       disposition: SUPERSEDED_BEFORE_M1
@@ -626,6 +954,13 @@ route_guard:
       runtime_enabled: false
     ego_operator:
       active_default: true
+    visible_life_product_core:
+      product_development_core_lineage: SOLE_VISIBLE_LIFE_PRODUCT_DEVELOPMENT_LINEAGE
+      product_development_core: ego_life_playground_v0
+      runtime_mainline_connected: false
+      runtime_authority: none
+      default_enabled: false
+      science_weight: 0
     relation: historical_local_surface_status_not_route_authority
   route_views:
     task_routes:
@@ -652,16 +987,27 @@ route_guard:
           authorization.
         workstream_id: program_state_governance
       ego-visible-life-proxy-v0-route-replacement-001a:
-        lane: parked
+        lane: closed_evidence
         label: EGO Visible Life Proxy v0 Route Replacement 001A
-        why: Operator-authorized product-clock playground implementation is exact-path bounded and not yet started; explicit local process only,
-          disabled by default, non-mainline, no runtime authority, and zero science weight.
+        why: The exact-six playground implementation action is consumed and preserved as the immutable V0 baseline; it grants no continuing implementation,
+          runtime, or science authority.
+      ego-visible-life-proxy-v0-core-adoption-001a:
+        lane: supporting_active
+        label: EGO Visible Life Proxy v0 Product-Core Authority Sync 001A
+        why: Exhaustive local transcription of the committed ITL product-axis selection plus the pinned V0 engineering boundary and local replayable trigger;
+          explicit local launcher only, default-off, runtime-disconnected, no runtime authority, zero science weight, and V1 task-card drafting only.
     current_surfaces:
     - surface: operator_runtime
       paths:
       - EgoOperator/
       role: Sole active default operator-first runtime candidate.
       authority: active_default=true; runtime behavior remains outside this governance mutation.
+    - surface: visible_life_product_development_core
+      paths:
+      - labs/ego_life_playground_v0/
+      - scripts/run_ego_life_playground_v0.py
+      role: Sole product-development core lineage and immutable V0 baseline for future visible-life successors.
+      authority: product_development_core_lineage=SOLE_VISIBLE_LIFE_PRODUCT_DEVELOPMENT_LINEAGE; default_enabled=false; runtime_mainline_connected=false; runtime_authority=none; science_weight=0.
     - surface: superseded_8692_route
       paths:
       - packages/ego_k0_kernel/
@@ -677,12 +1023,20 @@ route_guard:
   red_review:
     authority_change_requires_independent_review: true
     phase_a:
-      path: docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/PHASE_A_RED_REVIEW.json
+      path: docs/codex/tasks/ego-visible-life-proxy-v0-core-adoption-001a/PHASE_A_RED_REVIEW.json
       receipt_commit_relation: SAME_DIRECT_CHILD_COMMIT__RECEIPT_EXCLUDED_FROM_REVIEWED_MANIFEST
     review_invalidated_by_diff_change: true
     unresolved_review_blockers: []
-  claim_ceiling: product-clock implementation authorization and terminal Card2 closure transcription only
+  claim_ceiling: committed ITL product-axis authority sync plus immutable V0 engineering boundary and replayable local product trigger; no runtime-mainline or mechanism claim
 workstreams:
+  - id: "ego_life_playground_v0_product_development_core"
+    owner: "Operator + Codex"
+    status: "itl_product_core_authority_synced__v0_boundary_banked__v1_card_draft_only"
+    evidence_level: "E3"
+    verification_level: "V3"
+    mainline_connected: false
+    enabled: false
+    summary: "Committed ITL product-axis authority selects the exact-six V0 playground at `546e3639299d7b11b599df3d00645666a6953bac` as the sole product-development lineage; Ego holds the exhaustive local transcription and a separate recomputing SQLite product-trigger trace. ITL trigger status remains UNVERIFIED_IN_THIS_ITL_TRANSITION. V0 stays explicitly launched, default-off, runtime-disconnected, without runtime authority, and science_weight=0. Only the V1 continuity task card may be drafted next; this does not establish general learning, thinking, emotional understanding, initiative, agency, subjectivity, consciousness, electronic life, EGO readiness, or runtime-mainline effect."
   - id: "ego_operator_first_transition"
     owner: "EgoOperator"
     status: "human_operator_trial_v2_human_review_template_ready"
