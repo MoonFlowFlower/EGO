@@ -1,24 +1,27 @@
 # EGO - AI Agent Monorepo
 
-> `CURRENT_MACHINE_ROUTE_AUTHORITY: EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A__IMPLEMENTATION_AUTHORIZED_DEFAULT_OFF`
+> `CURRENT_MACHINE_ROUTE_AUTHORITY: EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A__EXACT_25_PATH_PRODUCT_AUTHORITY_DEFAULT_OFF`
 >
 > `HISTORICAL_8692_EGODESKTOP_ROUTE: SUPERSEDED_ARCHIVE_POINTER_ONLY`
 >
-> Current product-development action: implement the V1 continuity playground only inside its exact ordered 20-path allowlist. Older successor prose below is retained as historical context, not current authority.
+> Current product-development action after the valid Phase-C commit: implement the V2 microworld only inside its exact ordered 25-path allowlist on `codex/ego-v2-product-first-001a`. The dirty main worktree is a non-live negative checkpoint. Older successor prose below is historical only.
 
 EGO 是 AI Agent 项目的总仓。当前默认 human/operator 体验主线已经切到 `EgoOperator`（formerly `Ego_handmade`）；旧 `EgoCore`、`OpenEmotion`、`ego_desktop_lab` 已归档为 legacy reference / algorithm source，当前工作树不再保留其 bulky runtime code。
 
 ## 新代理 / 开发者最快入口
 
-机制 successor 工作在开始前必须先读：
+当前 V2 产品工作开始前必须先读 `docs/PROGRAM_STATE_UNIFIED.yaml` 和
+`docs/codex/tasks/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A.md`。
+以下旧机制 successor 文档只作历史解释：
 
 - `docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md`
 - `docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md`
 
-当前唯一选定 successor 是
+历史冻结 successor 曾是
 `K0 Foundation -> VirtualCatPSPC-derived adapter -> EgoDesktop observer`。它目前仍是默认关闭、非主线、未实现 M1 bridge；
 `EgoOperator` 暂时仍是当前 runtime owner。旧 PET P2、PSPC shadow/adapter
-阶梯、旧 K0 science route 与 outcome-utility runtime 路线均不是下一步。
+阶梯、旧 K0 science route 与 outcome-utility runtime 路线均不是下一步。当前
+产品动作是 exact-25 V2 microworld；它不修改或启用 EgoOperator。
 
 - 先读 [docs/MAINLINE_QUICKSTART.md](docs/MAINLINE_QUICKSTART.md)，用它在 5 分钟内确认当前主线、owner 边界和禁止重开的历史线。
 - 权威状态只以 [docs/PROGRAM_STATE_UNIFIED.yaml](docs/PROGRAM_STATE_UNIFIED.yaml) 为准。

@@ -1,0 +1,107 @@
+{
+  "schema_version": "ego.phase_c.v2_authority.v1",
+  "base_commit": "089ab5ef27431eb5ace4ff4795f57f08fd052779",
+  "itl_authority": {
+    "repo": "intelligence-theory-lab",
+    "commit": "4a4746435f9bdb0eba02e6c036c2e34a089ece26",
+    "state_path": "artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/state.json"
+  },
+  "v2": {
+    "route_id": "EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A",
+    "task_id": "EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A",
+    "implementation_action": "implement_EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A",
+    "implementation_task_kind": "bounded_v2_microworld_implementation",
+    "implementation_authorized": true,
+    "authorized_implementation_targets": [
+      "docs/codex/tasks/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A-MUTATION_SCOPE.yaml",
+      "labs/ego_life_playground_v0/__init__.py",
+      "labs/ego_life_playground_v0/engine.py",
+      "labs/ego_life_playground_v0/microworld.py",
+      "labs/ego_life_playground_v0/claims.py",
+      "labs/ego_life_playground_v0/app.py",
+      "labs/ego_life_playground_v0/store.py",
+      "scripts/run_ego_life_playground_v0.py",
+      "tests/test_ego_life_playground_v0.py",
+      "tests/test_ego_life_playground_v2_microworld.py",
+      "scripts/codex/verify_ego_life_kernel_v2_microworld.py",
+      "scripts/tests/test_verify_ego_life_kernel_v2_microworld.py",
+      "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/continuity.sqlite3",
+      "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/trace.jsonl",
+      "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/product_trigger_receipt.json",
+      "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/headroom_report.json",
+      "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/collision_record.json",
+      "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/baseline_comparison.json",
+      "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/ablation_report.json",
+      "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/learning_report.json",
+      "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/replay_report.json",
+      "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/leakage_report.json",
+      "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/failure_manifest.json",
+      "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/claim_ceiling.txt",
+      "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/result.json"
+    ],
+    "allowed_next_actions": [
+      "implement_EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A",
+      "run_route_state_machine_validation"
+    ]
+  },
+  "switches": {
+    "enabled": false,
+    "default_enabled": false,
+    "mainline_connected": false,
+    "runtime_mainline_connected": false,
+    "runtime_authority": "none",
+    "science_weight": 0,
+    "remote_anchor": false,
+    "auto_remote_anchor": "forbidden",
+    "proactive_action_enabled": false,
+    "initiative_executor_authorized": false,
+    "background_dispatch": false,
+    "external_side_effects": false,
+    "llm": "forbidden",
+    "network": "forbidden"
+  },
+  "worktree_authority": {
+    "negative_checkpoint": {
+      "path": "D:/Project/AIProject/MyProject/Ego",
+      "branch": "main",
+      "head": "089ab5ef27431eb5ace4ff4795f57f08fd052779",
+      "status": "NON_LIVE_NEGATIVE_ANTI_ZENO_CHECKPOINT",
+      "live_authority": false
+    },
+    "active_v2_development_authority": {
+      "worktree": "D:/Project/AIProject/MyProject/Ego-v2-product-first-001a",
+      "branch": "codex/ego-v2-product-first-001a",
+      "activation_condition": "THIS_DIRECT_CHILD_COMMIT_PASSES_PHASE_C_V2_GATE",
+      "sole": true
+    }
+  },
+  "claim_ceiling": {
+    "forbidden_claims": [
+      "runtime_or_runtime_mainline_effect",
+      "learned_model",
+      "online_learning",
+      "memory_or_replay_causal_contribution",
+      "generalization_or_transfer",
+      "thought_or_emotional_understanding",
+      "initiative_or_agency",
+      "autonomy",
+      "subjectivity_or_consciousness",
+      "electronic_life",
+      "science_successor_admission",
+      "mechanism_validity",
+      "ego_readiness",
+      "stable_user_benefit",
+      "v1_product_implementation_or_trigger",
+      "continuity_product_acceptance",
+      "associative_memory_or_controlled_initiative",
+      "memory_causality",
+      "bounded_online_learning_success",
+      "mechanism_non_equivalence",
+      "v2_implementation_or_trigger",
+      "general_learning",
+      "associative_memory",
+      "controlled_initiative"
+    ],
+    "max": "local ITL control-plane authorization of one exact default-off V2 microworld descendant, with execution blocked on exact Ego Phase-C transcription"
+  }
+}

@@ -8,7 +8,7 @@
 
 | field | value |
 |---|---|
-| current_phase | `v1_continuity_playground_ready_authority_synced__implementation_authorized_default_off` |
+| current_phase | `v2_product_first_authority__activation_bound_to_exact_phase_c_direct_child_commit` |
 | current_layer | `engineering implementation authorization + product-development control-plane` |
 | highest_evidence_level | `E3` |
 | verification_level | `V3` |
@@ -19,12 +19,12 @@
 
 ## North Star
 
-Implement the exact default-off V1 continuity-playground descendant on the ITL-selected ego_life_playground_v0 lineage while keeping EgoOperator as the sole active runtime default and preserving closed K0/Card2 science records.
+Build the exact default-off V2 microworld product descendant on the sole ego_life_playground_v0 lineage while keeping EgoOperator as the sole active runtime default and all runtime/science/remote/proactive/LLM/network switches closed.
 
 ## Current Focus
 
-- ITL committed V1 READY authority at `81f19613fbd02bb845c08258cc8156283240aa2e` conditionally authorizes one descendant of the V0 playground boundary `546e3639299d7b11b599df3d00645666a6953bac`; Ego transcribes that authority and exact ordered 20-path allowlist without creating a second route authority.
-- Product-development lineage and runtime mainline are separate: the V1 continuity playground is implementation-authorized only inside the sole `ego_life_playground_v0` lineage, while EgoOperator remains the sole active runtime default. V1 remains default-off, runtime-disconnected, without runtime authority, untriggered, and science_weight=0.
+- ITL commit `4a4746435f9bdb0eba02e6c036c2e34a089ece26` authorizes one exact ordered 25-path V2 microworld descendant. Ego consumes it through one strict canonical projection; this direct-child commit, after typed-receipt readback, is the sole active V2 product-development authority.
+- Product-development authority and runtime mainline remain separate: V2 is default-off, runtime-disconnected, without runtime authority or a V2 trigger, science_weight=0, remote/proactive/LLM/network closed, while EgoOperator remains the existing active runtime default.
 - The 8692 K0 Foundation -> VirtualCat-derived adapter -> EgoDesktop route is additively superseded before M1. M1, M2, and M3 were not started and are cancelled by supersession; historical route prose is not current authority.
 - EgoDesktop is archived as a legacy LLM/UI reference only. It is not an active route, successor dependency, runtime target, or runtime authority; this authority archive does not move, delete, or rewrite EgoDesktop source.
 - K0 Foundation bounded engineering evidence remains `BANKED_ACCEPTED_BOUNDED`, disabled, non-mainline, and without runtime authority. No science verdict or mechanism attribution is created or upgraded in Ego.
@@ -40,7 +40,8 @@ Implement the exact default-off V1 continuity-playground descendant on the ITL-s
 
 ## Completed Since Last Update
 
-- EGO Life Kernel V1 Continuity Playground READY Transition 001A transcribes the committed ITL product axis and V1 state across 213 leaves, consumes the Phase-C sync action, and exposes only the exact V1 implementation action plus route validation for an ordered 20-path allowlist. V1 remains disabled, default-off, non-mainline, without runtime authority or trigger evidence, science_weight=0, and remote-anchor forbidden. This is local control-plane authorization only, not product or mechanism evidence.
+- EGO Phase-C V2 Authorization Gate Simplification 001A replaces the stopped governance-repair lineage with four finite primitives: exact direct-child/exact-20 Git boundary, one strict JSON canonical-byte projection, one typed local-attestation receipt, and actual-Git-path mutation admission. Activation remains bound to the committed receipt and postcommit readback; no V2 product path, runtime, science, or trigger is created by this transition.
+- EGO Life Kernel V1 Continuity Playground READY Transition 001A is preserved as closed historical authority consumed by the bounded-negative V1 result and this V2 replacement. Its former implementation action is not live authority. V1 remains disabled, default-off, non-mainline, without runtime authority or trigger evidence, science_weight=0, and remote-anchor forbidden.
 - EGO Visible Life Proxy V0 Core Adoption 001A consumes the completed exact-six implementation action, pins its commit/tree/blob/payload boundary and recomputing product trigger, and selects `ego_life_playground_v0` as the sole visible-life product-development core lineage. Only a V1 continuity task-card draft is allowed next; V1 implementation, runtime wiring, and science claims remain unauthorized.
 - EGO Visible Life Proxy v0 Route Replacement 001A preserves the committed ITL terminal Card2 closure, records the path-policy defect without repairing or reopening the old action, and authorizes one separate Ego-owned exact-six-file product-clock playground implementation. The playground remains disabled by default, non-mainline, without runtime authority or trigger evidence before Phase B, and has zero science weight.
 - EGO Route 8692 Supersession and EgoDesktop Authority Archive 001A additively supersedes the unstarted K0 Foundation -> VirtualCat-derived adapter -> EgoDesktop product route before M1, archives EgoDesktop as a historical LLM/UI reference only, preserves K0 Foundation bounded engineering evidence, keeps EgoOperator as the sole active default, registers no science successor, and binds only Card 2 drafting/banking. This is product/capability governance only; no runtime, mechanism, learning, headroom, experiment, or mainline-successor work is implemented or authorized.
@@ -148,7 +149,7 @@ Implement the exact default-off V1 continuity-playground descendant on the ITL-s
 
 ## Key Unknowns
 
-- Whether a separately authorized V1 continuity successor can add internal time, persistent goals, wait, switching cost, bounded H=2 planning, and controlled initiative without degenerating into an FSM/timer baseline; this transition authorizes drafting only.
+- Whether the exact default-off V2 microworld produces bounded memory/update effects that survive Memory OFF, Freeze Updates, Shuffle Provenance, source deletion, replay recomputation, and equal-access shortcut baselines; no such effect is established by this authorization transition.
 - Whether `EgoOperator` remains more natural after longer real LLM sessions, not just deterministic NoLLM tests.
 - Whether local memory stays useful without prompt pollution across multi-day operator use.
 - Which legacy algorithms should be reimplemented as EgoOperator primitives, and which should remain reference-only.
@@ -157,7 +158,7 @@ Implement the exact default-off V1 continuity-playground descendant on the ITL-s
 
 ## Next Minimal Action
 
-After the Phase-C commit and post-commit dual-authority validation, execute `implement_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A` through subagents and TDD within the exact ordered 20-path allowlist only; keep V1 default-off and runtime/science/remote authority closed.
+After the exact Phase-C direct-child commit and one postcommit readback pass, start P0 with `implement_EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A` inside the exact ordered 25-path allowlist; keep V2 default-off and runtime/science/remote/proactive/LLM/network authority closed.
 
 ## Real Trigger Evidence
 
@@ -170,7 +171,7 @@ After the Phase-C commit and post-commit dual-authority validation, execute `imp
 
 | id | owner | status | evidence | verification | mainline_connected | enabled | summary |
 |---|---|---|---|---|---|---|---|
-| ego_life_playground_v0_product_development_core | Operator + Codex | `itl_product_core_authority_synced__v0_boundary_banked__v1_card_draft_only` | `E3` | `V3` | `False` | `False` | Committed ITL product-axis authority selects the exact-six V0 playground at `546e3639299d7b11b599df3d00645666a6953bac` as the sole product-development lineage; Ego holds the exhaustive local transcription and a separate recomputing SQLite product-trigger trace. ITL trigger status remains UNVERIFIED_IN_THIS_ITL_TRANSITION. V0 stays explicitly launched, default-off, runtime-disconnected, without runtime authority, and science_weight=0. Only the V1 continuity task card may be drafted next; this does not establish general learning, thinking, emotional understanding, initiative, agency, subjectivity, consciousness, electronic life, EGO readiness, or runtime-mainline effect. |
+| ego_life_playground_v0_product_development_core | Operator + Codex | `v2_product_first_authority__exact_phase_c_commit_gate__default_off` | `E3` | `V3` | `False` | `False` | The immutable V0 boundary remains the sole product lineage root. ITL commit `4a4746435f9bdb0eba02e6c036c2e34a089ece26` supplies the exact V2 authority projection; after one valid direct-child typed-receipt commit, `codex/ego-v2-product-first-001a` is the sole V2 development authority for the ordered 25-path allowlist. V2 stays default-off, runtime-disconnected, without runtime authority or V2 trigger, science_weight=0, remote/proactive/LLM/network closed. This does not establish learning, memory causality, initiative, agency, emotion understanding, subjectivity, consciousness, electronic life, readiness, or runtime-mainline effect. |
 | ego_operator_first_transition | EgoOperator | `human_operator_trial_v2_human_review_template_ready` | `E3` | `V3` | `True` | `True` | `EgoOperator` is now the default operator-first implementation lane, formerly tracked as `Ego_handmade`. The current active gate is human-operator trial v2: a fresh scripted real-provider run collected 18 Chinese operator-surface observations, and a human-review notes template is now generated for operator scoring/import before any pass, feature, or demotion decision. Current proof is local/repo-level plus scripted-provider review evidence plus review-template readiness only and does not establish a human-observation pass, stable real user benefit, live autonomy, runtime efficacy, durable memory efficacy, or consciousness. |
 | canonical_mechanism_integration_route_001a | Operator + Codex | `superseded_before_m1__m1_m2_m3_not_started_cancelled__egodesktop_authority_archived` | `E1` | `V1` | `False` | `False` | The former K0 Foundation -> VirtualCatPSPC-derived adapter -> EgoDesktop product/capability route is additively superseded before M1. M1, M2, and M3 are NOT_STARTED_CANCELLED_BY_SUPERSESSION. EgoDesktop is an archived legacy LLM/UI reference with no active-route dependency, successor dependency, runtime target, runtime authority, enabled path, mainline connection, or real trigger evidence. Historical documents and artifacts remain immutable references and do not override `route_guard`. |
 | repo_authority_cleanup | Codex | `closed_evidence__repo_authority_cleanup_preserved` | `E3` | `V3` | `False` | `False` | Repo/integration boundary cleanup remains preserved as closed governance evidence, but it no longer carries current runtime authority or an enabled legacy route. |

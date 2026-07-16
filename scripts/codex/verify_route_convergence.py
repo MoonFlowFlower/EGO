@@ -934,7 +934,11 @@ def _validate_visible_life_core_route_guard_v4(program_state: dict[str, Any]) ->
 
 
 def _historical_visible_life_core_snapshot(program_state: dict[str, Any]) -> dict[str, Any]:
-    snapshot = copy.deepcopy(program_state)
+    snapshot = (
+        _historical_v1_ready_snapshot(program_state)
+        if (program_state.get("route_guard") or {}).get("schema_version") == "ego.route_guard.v6"
+        else copy.deepcopy(program_state)
+    )
     route_guard = snapshot.get("route_guard") or {}
     route_guard["schema_version"] = "ego.route_guard.v4"
     route_guard["route_revision_id"] = route_sync_guard.VISIBLE_LIFE_CORE_ROUTE_REVISION
@@ -955,6 +959,153 @@ def _historical_visible_life_core_snapshot(program_state: dict[str, Any]) -> dic
     task_routes.pop("ego-life-kernel-v1-continuity-playground-ready-transition-001a", None)
     route_guard["route_fingerprint"] = compute_route_fingerprint(snapshot)
     return snapshot
+
+
+def _historical_v1_ready_snapshot(program_state: dict[str, Any]) -> dict[str, Any]:
+    """Compatibility-only V5 view; never used by the V2 admission verdict."""
+
+    snapshot = copy.deepcopy(program_state)
+    program = snapshot.get("program") or {}
+    program["current_phase"] = (
+        "v1_continuity_playground_ready_authority_synced__implementation_authorized_default_off"
+    )
+    program["next_minimal_action"] = (
+        "After the Phase-C commit and post-commit dual-authority validation, execute "
+        "`implement_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A` through subagents and TDD "
+        "within the exact ordered 20-path allowlist only; keep V1 default-off and "
+        "runtime/science/remote authority closed."
+    )
+    route_guard = snapshot.get("route_guard") or {}
+    route_guard["schema_version"] = "ego.route_guard.v5"
+    route_guard["route_revision_id"] = route_sync_guard.V1_READY_ROUTE_REVISION
+    route_guard["authority_source"] = copy.deepcopy(
+        route_guard.get("predecessor_v1_ready_authority_source") or {}
+    )
+    route_guard.pop("v2_authority", None)
+    authority_state = route_guard.get("authority_state") or {}
+    visible = authority_state.get("visible_life_product_core") or {}
+    visible["current_descendant"] = "EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A"
+    task_routes = ((route_guard.get("route_views") or {}).get("task_routes") or {})
+    v1_task = task_routes.get("ego-life-kernel-v1-continuity-playground-ready-transition-001a") or {}
+    v1_task["lane"] = "supporting_active"
+    v1_task["why"] = (
+        "Exact Ego transcription of committed ITL V1 conditional implementation authorization and "
+        "ordered 20-path allowlist; implementation is authorized while V1 remains default-off, "
+        "runtime-disconnected, untriggered, and science_weight=0."
+    )
+    task_routes.pop("ego-life-kernel-v1-continuity-playground-post-result-routing-001a", None)
+    route_guard["product_trigger_evidence"] = {
+        "itl_ready_transition": "UNVERIFIED_IN_THIS_ITL_TRANSITION",
+        "ego_v0_local_product": "BANKED_RECOMPUTING_PRODUCT_TRIGGER",
+        "v1_local_product": "UNVERIFIED_IN_THIS_EGO_PHASE_C_TRANSITION",
+    }
+    phase_c = ((route_guard.get("red_review") or {}).get("phase_c") or {})
+    phase_c.update(
+        {
+            "path": route_sync_guard.V1_READY_RED_REVIEW_PATH,
+            "reviewed_nonreceipt_path_count": 19,
+            "review_binding": "STAGED_GIT_BLOB_PAYLOADS_AND_RAW_STAGED_DIFF",
+            "receipt_commit_relation": (
+                "SAME_DIRECT_CHILD_COMMIT__RECEIPT_EXCLUDED_FROM_REVIEWED_MANIFEST"
+            ),
+        }
+    )
+    route_guard["route_fingerprint"] = compute_route_fingerprint(snapshot)
+    return snapshot
+
+
+def _phase_c_v2_program_projection(program_state: dict[str, Any]) -> dict[str, Any]:
+    route_guard = program_state.get("route_guard") or {}
+    authority = route_guard.get("authority_source") or {}
+    v2 = route_guard.get("v2_authority") or {}
+    return {
+        "schema_version": route_sync_guard.PHASE_C_V2_SCHEMA_VERSION,
+        "base_commit": route_sync_guard.PHASE_C_V2_EGO_BASE_COMMIT,
+        "itl_authority": {
+            "repo": authority.get("repo"),
+            "commit": authority.get("pinned_commit"),
+            "state_path": (((authority.get("objects") or {}).get("v2_state") or {}).get("path")),
+        },
+        "v2": {
+            "route_id": v2.get("route_id"),
+            "task_id": v2.get("task_id"),
+            "implementation_action": v2.get("implementation_action"),
+            "implementation_task_kind": v2.get("implementation_task_kind"),
+            "implementation_authorized": v2.get("implementation_authorized"),
+            "authorized_implementation_targets": v2.get("authorized_implementation_targets"),
+            "allowed_next_actions": v2.get("allowed_next_actions"),
+        },
+        "switches": {
+            key: v2.get(key) for key in route_sync_guard.PHASE_C_V2_CLOSED_SWITCHES
+        },
+        "worktree_authority": v2.get("worktree_authority"),
+        "claim_ceiling": v2.get("claim_ceiling"),
+    }
+
+
+def _validate_phase_c_v2_route_guard_v6(
+    program_state: dict[str, Any],
+) -> tuple[list[str], dict[str, Any]]:
+    errors: list[str] = []
+    route_guard = program_state.get("route_guard") or {}
+    if route_guard.get("schema_version") != "ego.route_guard.v6":
+        errors.append("Phase-C V2 route_guard schema_version must be ego.route_guard.v6")
+    if route_guard.get("route_revision_id") != route_sync_guard.PHASE_C_V2_ROUTE_REVISION:
+        errors.append("Phase-C V2 route revision mismatch")
+    computed_fingerprint = compute_route_fingerprint(program_state)
+    if route_guard.get("route_fingerprint") != computed_fingerprint:
+        errors.append("route_guard fingerprint does not match the canonical semantic subset")
+
+    authority_source = route_guard.get("authority_source") or {}
+    expected_source = {
+        "repo": "intelligence-theory-lab",
+        "pinned_commit": route_sync_guard.PHASE_C_V2_ITL_COMMIT,
+        "route_id": route_sync_guard.PHASE_C_V2_PRODUCT_TASK_ID,
+    }
+    for key, expected in expected_source.items():
+        if authority_source.get(key) != expected:
+            errors.append(f"Phase-C V2 authority source mismatch: {key}")
+    pin = ((authority_source.get("objects") or {}).get("v2_state") or {})
+    if pin != {
+        "path": route_sync_guard.PHASE_C_V2_ITL_STATE_PATH,
+        "git_blob_oid": "2f4231900663af2fe3a33e200ed7aa0cdeb1a182",
+        "git_blob_payload_sha256": "faca7fdcf357a04c25b03d73f83eb6bf6f0dda56c6ef5295817e4374a0c32aa7",
+        "bytes": 7765,
+    }:
+        errors.append("Phase-C V2 authority state object pin mismatch")
+
+    authority_path = REPO_HYGIENE_POLICY_PATH.parents[1] / route_sync_guard.PHASE_C_V2_AUTHORITY_PATH
+    authority_bytes = authority_path.read_bytes() if authority_path.is_file() else b""
+    authority = route_sync_guard.validate_phase_c_v2_authority_bytes(authority_bytes)
+    if authority.get("status") != "pass":
+        errors.extend(f"Phase-C V2 authority: {item}" for item in authority.get("errors") or [])
+    parsed = route_sync_guard.parse_phase_c_v2_json(authority_bytes)
+    if parsed.get("status") == "pass":
+        try:
+            target = route_sync_guard._canonical_json_bytes(parsed.get("payload"))  # noqa: SLF001
+            program_projection = route_sync_guard._canonical_json_bytes(  # noqa: SLF001
+                _phase_c_v2_program_projection(program_state)
+            )
+            if target != program_projection:
+                errors.append("Phase-C V2 program projection canonical bytes mismatch")
+        except (TypeError, ValueError, UnicodeEncodeError):
+            errors.append("Phase-C V2 program projection canonicalization failed")
+
+    task_routes = ((route_guard.get("route_views") or {}).get("task_routes") or {})
+    active = task_routes.get("ego-life-kernel-v1-continuity-playground-post-result-routing-001a") or {}
+    if active.get("lane") != "supporting_active":
+        errors.append("Phase-C V2 authority task must own the supporting-active product lane")
+    predecessor = task_routes.get("ego-life-kernel-v1-continuity-playground-ready-transition-001a") or {}
+    if predecessor.get("lane") != "closed_evidence":
+        errors.append("V1 READY predecessor must remain closed evidence")
+    return errors, {
+        "route_fingerprint": computed_fingerprint,
+        "science_authority_pin_status": "pass" if authority.get("status") == "pass" else "fail",
+        "phase_c_v2_authority": authority,
+        "authorized_implementation_targets": (
+            (route_guard.get("v2_authority") or {}).get("authorized_implementation_targets") or []
+        ),
+    }
 
 
 def _validate_v1_ready_route_guard_v5(program_state: dict[str, Any]) -> tuple[list[str], dict[str, Any]]:
@@ -1012,6 +1163,8 @@ def _validate_v1_ready_route_guard_v5(program_state: dict[str, Any]) -> tuple[li
 
 def validate_route_guard(program_state: dict[str, Any]) -> tuple[list[str], dict[str, Any]]:
     route_guard = program_state.get("route_guard") or {}
+    if route_guard.get("schema_version") == "ego.route_guard.v6":
+        return _validate_phase_c_v2_route_guard_v6(program_state)
     if route_guard.get("schema_version") == "ego.route_guard.v5":
         return _validate_v1_ready_route_guard_v5(program_state)
     if route_guard.get("schema_version") == "ego.route_guard.v4":
@@ -1022,6 +1175,8 @@ def validate_route_guard(program_state: dict[str, Any]) -> tuple[list[str], dict
 
 
 def route_allowed_next_action_ids(route_guard: dict[str, Any]) -> list[str]:
+    if route_guard.get("schema_version") == "ego.route_guard.v6":
+        return list((route_guard.get("v2_authority") or {}).get("allowed_next_actions") or [])
     if route_guard.get("schema_version") == "ego.route_guard.v5":
         return list((route_guard.get("v1_ready_authority") or {}).get("allowed_next_actions") or [])
     if route_guard.get("schema_version") in {"ego.route_guard.v3", "ego.route_guard.v4"}:
@@ -1334,7 +1489,28 @@ def validate_route_convergence(
     future_product_route = (governance_sync or {}).get("future_product_route") or {}
     preflight = future_product_route.get("candidate_independent_preflight") or {}
     source_actions = (((route_guard.get("transcribed_itl") or {}).get("route_state") or {}).get("allowed_next_actions") or [])
-    if route_guard.get("schema_version") == "ego.route_guard.v5":
+    if route_guard.get("schema_version") == "ego.route_guard.v6":
+        product_actions = (route_guard.get("v2_authority") or {}).get("allowed_next_actions") or []
+        if source_actions != ["run_route_state_machine_validation"]:
+            errors.append("closed ITL Card2 route must expose validation only")
+        if (
+            product_actions
+            != [
+                route_sync_guard.PHASE_C_V2_IMPLEMENT_ACTION_ID,
+                route_sync_guard.PHASE_C_V2_VALIDATION_ACTION_ID,
+            ]
+            or route_sync_guard.PHASE_C_V2_IMPLEMENT_ACTION_ID
+            not in str(program_state.get("program", {}).get("next_minimal_action") or "")
+        ):
+            errors.append("program.next_minimal_action does not reflect the exact V2 implementation action")
+        v2_entries = [
+            entry
+            for entry in entries
+            if entry.key == "ego-life-kernel-v1-continuity-playground-post-result-routing-001a"
+        ]
+        if len(v2_entries) != 1 or v2_entries[0].lane != "supporting_active":
+            errors.append("Phase-C V2 authority task must appear exactly once in the supporting-active lane")
+    elif route_guard.get("schema_version") == "ego.route_guard.v5":
         product_actions = (route_guard.get("v1_ready_authority") or {}).get("allowed_next_actions") or []
         if source_actions != ["run_route_state_machine_validation"]:
             errors.append("closed ITL Card2 route must expose validation only")

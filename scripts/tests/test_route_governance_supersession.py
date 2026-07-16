@@ -50,29 +50,40 @@ def v1_product(state: dict) -> dict:
     return state["route_guard"]["v1_ready_authority"]
 
 
-def test_historical_v4_route_remains_callable_and_closed() -> None:
+def test_historical_v4_snapshot_preserves_closed_structural_boundary() -> None:
     state = historical_v4_state()
+    route_guard = state["route_guard"]
+    card2 = route_state(state)
+    product_core = product(state)
+
+    assert route_guard["schema_version"] == "ego.route_guard.v4"
+    assert route_guard["route_revision_id"] == guard.VISIBLE_LIFE_CORE_ROUTE_REVISION
+    assert route_guard["route_fingerprint"] == verify.compute_route_fingerprint(state)
+    assert card2["allowed_next_actions"] == ["run_route_state_machine_validation"]
+    assert card2["authorizations"]
+    assert all(value is False for value in card2["authorizations"].values())
+    assert card2["authorized_implementation_targets"] == []
+    assert product_core["enabled"] is False
+    assert product_core["default_enabled"] is False
+    assert product_core["mainline_connected"] is False
+    assert product_core["runtime_mainline_connected"] is False
+    assert product_core["runtime_authority"] == "none"
+    assert product_core["science_weight"] == 0
+    assert product_core["authorized_implementation_targets"] == []
+    assert product_core["allowed_next_actions"] == [
+        guard.VISIBLE_LIFE_CORE_DRAFT_V1_ACTION_ID,
+        "run_route_state_machine_validation",
+    ]
+
+
+def test_live_v6_route_is_exact_phase_c_v2_default_off_authority() -> None:
+    state = live_state()
     errors, details = verify.validate_route_guard(state)
 
     assert errors == []
     assert details["route_fingerprint"] == state["route_guard"]["route_fingerprint"]
-    assert details["closure_crosswalk"]["status"] == "pass"
-    assert details["product_core_authority"]["status"] in {"pass", "fail"}
-
-
-def test_live_v5_route_has_only_phase_c_receipt_pending_before_review() -> None:
-    state = live_state()
-    errors, details = verify.validate_route_guard(state)
-
-    assert set(errors).issubset(
-        {
-            "V1 READY product authority: "
-            "v1_ready_red_review:v1_ready_candidate_red_receipt_unavailable"
-        }
-    )
-    assert details["route_fingerprint"] == state["route_guard"]["route_fingerprint"]
-    assert details["v1_ready_product_authority"]["source"]["status"] == "pass"
-    assert details["authorized_implementation_targets"] == guard.V1_READY_IMPLEMENTATION_TARGETS
+    assert details["phase_c_v2_authority"]["status"] == "pass"
+    assert details["authorized_implementation_targets"] == guard.PHASE_C_V2_IMPLEMENTATION_TARGETS
 
 
 def test_itl_closure_blob_pin_mutation_is_rejected() -> None:
@@ -290,137 +301,94 @@ def test_v4_main_readback_uses_product_authority_actions() -> None:
     assert verify.route_allowed_next_action_ids(route_guard) != route_state(state)["allowed_next_actions"]
 
 
-def test_v1_ready_live_authority_is_exact_and_default_off() -> None:
+def test_phase_c_v2_live_authority_is_exact_and_default_off() -> None:
     state = live_state()
-    result = guard.validate_v1_ready_product_authority(state, require_review=False)
+    authority = state["route_guard"]["v2_authority"]
 
-    assert result["status"] == "pass", result["errors"]
-    assert state["route_guard"]["route_revision_id"] == guard.V1_READY_ROUTE_REVISION
-    assert v1_product(state)["implementation_authorized"] is True
-    assert v1_product(state)["authorized_implementation_targets"] == guard.V1_READY_IMPLEMENTATION_TARGETS
-    assert v1_product(state)["allowed_next_actions"] == [
-        guard.V1_READY_IMPLEMENT_ACTION_ID,
-        "run_route_state_machine_validation",
+    assert state["route_guard"]["route_revision_id"] == guard.PHASE_C_V2_ROUTE_REVISION
+    assert authority["implementation_authorized"] is True
+    assert authority["authorized_implementation_targets"] == guard.PHASE_C_V2_IMPLEMENTATION_TARGETS
+    assert authority["allowed_next_actions"] == [
+        guard.PHASE_C_V2_IMPLEMENT_ACTION_ID,
+        guard.PHASE_C_V2_VALIDATION_ACTION_ID,
     ]
-    assert v1_product(state)["enabled"] is False
-    assert v1_product(state)["default_enabled"] is False
-    assert v1_product(state)["mainline_connected"] is False
-    assert v1_product(state)["runtime_mainline_connected"] is False
-    assert v1_product(state)["runtime_authority"] == "none"
-    assert v1_product(state)["science_weight"] == 0
-    assert v1_product(state)["remote_anchor"] is False
+    for key, expected in guard.PHASE_C_V2_CLOSED_SWITCHES.items():
+        assert authority[key] == expected
+    assert authority["worktree_authority"]["negative_checkpoint"] == {
+        "path": "D:/Project/AIProject/MyProject/Ego",
+        "branch": "main",
+        "head": guard.PHASE_C_V2_EGO_BASE_COMMIT,
+        "status": guard.PHASE_C_V2_NEGATIVE_CHECKPOINT,
+        "live_authority": False,
+    }
+    assert authority["worktree_authority"]["active_v2_development_authority"] == {
+        "worktree": "D:/Project/AIProject/MyProject/Ego-v2-product-first-001a",
+        "branch": guard.PHASE_C_V2_BRANCH,
+        "activation_condition": "THIS_DIRECT_CHILD_COMMIT_PASSES_PHASE_C_V2_GATE",
+        "sole": True,
+    }
 
 
-def test_v1_ready_source_pin_mutation_is_rejected() -> None:
+def test_phase_c_v2_source_pin_mutation_is_rejected() -> None:
     state = copy.deepcopy(live_state())
-    state["route_guard"]["authority_source"]["objects"]["v1_state"]["git_blob_oid"] = "0" * 40
+    state["route_guard"]["authority_source"]["objects"]["v2_state"]["git_blob_oid"] = "0" * 40
 
-    result = guard.validate_v1_ready_product_authority(state, require_review=False)
+    errors, _ = verify.validate_route_guard(state)
 
-    assert result["status"] == "fail"
-    assert "v1_ready_itl_pin_mismatch:v1_state" in result["errors"]
-    assert "v1_ready_source:itl_object_oid_mismatch:v1_state" in result["errors"]
+    assert "Phase-C V2 authority state object pin mismatch" in errors
 
 
-def test_v1_ready_crosswalk_leaf_omission_is_rejected(monkeypatch) -> None:
-    state = live_state()
-    path = ROOT / state["route_guard"]["v1_ready_authority_crosswalk"]["path"]
-    mutated = json.loads(path.read_text(encoding="utf-8"))
-    mutated["entries"].pop()
-    original_reader = guard._read_json_file
-
-    def read_mutated(candidate: Path):
-        if candidate == path:
-            return mutated, None
-        return original_reader(candidate)
-
-    monkeypatch.setattr(guard, "_read_json_file", read_mutated)
-    result = guard.validate_v1_ready_authority_crosswalk(state)
-
-    assert result["status"] == "fail"
-    assert "v1_ready_crosswalk_callable_recompute_mismatch" in result["errors"]
-    assert "v1_ready_crosswalk_leaf_omitted" in result["errors"]
-
-
-def test_v1_ready_exact_ordered_target_drift_is_rejected() -> None:
+def test_phase_c_v2_exact_ordered_target_drift_is_rejected() -> None:
     state = copy.deepcopy(live_state())
-    targets = v1_product(state)["authorized_implementation_targets"]
+    targets = state["route_guard"]["v2_authority"]["authorized_implementation_targets"]
     targets[0], targets[1] = targets[1], targets[0]
 
-    result = guard.validate_v1_ready_product_authority(state, require_review=False)
+    errors, _ = verify.validate_route_guard(state)
 
-    assert "v1_ready_authorized_implementation_targets_mismatch" in result["errors"]
+    assert "Phase-C V2 program projection canonical bytes mismatch" in errors
 
 
-def test_v1_ready_runtime_science_or_remote_drift_is_rejected() -> None:
+def test_phase_c_v2_closed_switch_drift_is_rejected() -> None:
     state = copy.deepcopy(live_state())
-    authority = v1_product(state)
+    authority = state["route_guard"]["v2_authority"]
     authority["enabled"] = True
     authority["runtime_authority"] = "candidate"
     authority["science_weight"] = 1
     authority["remote_anchor"] = True
 
-    errors = guard.validate_v1_ready_product_authority(state, require_review=False)["errors"]
+    errors, _ = verify.validate_route_guard(state)
 
-    assert "v1_ready_enabled_mismatch" in errors
-    assert "v1_ready_runtime_authority_mismatch" in errors
-    assert "v1_ready_science_weight_mismatch" in errors
-    assert "v1_ready_remote_anchor_mismatch" in errors
+    assert "Phase-C V2 program projection canonical bytes mismatch" in errors
 
 
-def test_v1_ready_three_trigger_fields_cannot_be_conflated() -> None:
+def test_phase_c_v2_dirty_main_cannot_be_promoted_to_live_authority() -> None:
     state = copy.deepcopy(live_state())
-    triggers = state["route_guard"]["product_trigger_evidence"]
-    triggers["v1_local_product"] = triggers["ego_v0_local_product"]
+    worktrees = state["route_guard"]["v2_authority"]["worktree_authority"]
+    worktrees["negative_checkpoint"]["live_authority"] = True
 
-    errors = guard.validate_v1_ready_product_authority(state, require_review=False)["errors"]
+    errors, _ = verify.validate_route_guard(state)
 
-    assert "v1_ready_trigger_evidence_mismatch" in errors
+    assert "Phase-C V2 program projection canonical bytes mismatch" in errors
 
 
-def test_v1_ready_pointer_stale_current_successor_is_rejected() -> None:
+def test_phase_c_v2_successor_branch_cannot_lose_sole_authority_binding() -> None:
     state = copy.deepcopy(live_state())
-    state["route_guard"]["authority_state"]["old_route_8692"]["current_reader_disposition"] = (
-        "CURRENT_SELECTED_SUCCESSOR"
-    )
+    successor = state["route_guard"]["v2_authority"]["worktree_authority"][
+        "active_v2_development_authority"
+    ]
+    successor["branch"] = "main"
+    successor["sole"] = False
 
-    errors = guard.validate_v1_ready_product_authority(state, require_review=False)["errors"]
+    errors, _ = verify.validate_route_guard(state)
 
-    assert "v1_ready_old_route_8692_pointer_mismatch" in errors
-
-
-def test_v1_ready_egodesktop_stays_archive_and_egooperator_stays_default() -> None:
-    state = copy.deepcopy(live_state())
-    state["route_guard"]["authority_state"]["egodesktop"]["archive_state"] = "ACTIVE_SUCCESSOR"
-    state["route_guard"]["authority_state"]["ego_operator"]["active_default"] = False
-
-    errors = guard.validate_v1_ready_product_authority(state, require_review=False)["errors"]
-
-    assert "v1_ready_egodesktop_archive_pointer_mismatch" in errors
-    assert "v1_ready_ego_operator_default_mismatch" in errors
+    assert "Phase-C V2 program projection canonical bytes mismatch" in errors
 
 
-def test_v1_ready_main_readback_uses_implementation_actions() -> None:
+def test_phase_c_v2_main_readback_uses_exact_implementation_actions() -> None:
     state = live_state()
     route_guard = state["route_guard"]
 
     assert verify.route_allowed_next_action_ids(route_guard) == [
-        guard.V1_READY_IMPLEMENT_ACTION_ID,
-        "run_route_state_machine_validation",
+        guard.PHASE_C_V2_IMPLEMENT_ACTION_ID,
+        guard.PHASE_C_V2_VALIDATION_ACTION_ID,
     ]
-
-
-def test_v1_ready_pointer_scanner_positive_control_rejects_stale_current_claim() -> None:
-    contents = {
-        path: (
-            f"{guard.V1_READY_POINTER_AUTHORITY_MARKER}\n"
-            f"{guard.V1_READY_POINTER_ARCHIVE_MARKER}\n"
-        )
-        for path in guard.V1_READY_STALE_POINTER_PATHS
-    }
-    target = guard.V1_READY_STALE_POINTER_PATHS[0]
-    contents[target] = "Current selected successor is K0 -> VirtualCat -> EgoDesktop.\n" + contents[target]
-
-    errors = guard.validate_v1_ready_pointer_texts(contents)
-
-    assert f"v1_ready_pointer_stale_current_claim_before_authority:{target}" in errors

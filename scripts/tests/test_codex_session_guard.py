@@ -5,6 +5,7 @@ import hashlib
 import importlib.util
 import io
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -844,196 +845,233 @@ def test_core_evidence_gate_rejects_corrupted_banked_content(
     assert expected_error in result["errors"]
 
 
-def test_v1_ready_sync_scope_is_exactly_bound(monkeypatch) -> None:
-    state = live_route_state()
-    scope = valid_v1_ready_sync_scope()
-    changed = [
-        "docs/PROGRAM_STATE_UNIFIED.yaml",
-        f"{codex_session_guard.V1_READY_TASK_PREFIX}STAGE_CARD.md",
-    ]
-    monkeypatch.setattr(
-        codex_session_guard,
-        "validate_v1_ready_product_authority",
-        lambda *_args, **_kwargs: {"status": "pass", "errors": []},
-    )
-    blockers = validate_scope(
-        state,
-        scope,
-        changed_paths=changed,
-        added_task_dirs=[codex_session_guard.V1_READY_TASK_PREFIX.rstrip("/")],
-    )
-    reasons = blocker_reasons(blockers)
-
-    assert "stale_route_fingerprint" not in reasons
-    assert "source_route_revision_mismatch" not in reasons
-    assert "ROUTE_ACTION_NOT_BOUND" not in reasons
-    assert "v1_ready_sync_allowlist_mismatch" not in reasons
-
-
-def test_v1_ready_sync_scope_rejects_target_path_substitution(monkeypatch) -> None:
-    state = live_route_state()
-    scope = valid_v1_ready_sync_scope()
-    scope["allowed_mutation_paths"][-1] = "EgoOperator/agent_base.py"
-    monkeypatch.setattr(
-        codex_session_guard,
-        "validate_v1_ready_product_authority",
-        lambda *_args, **_kwargs: {"status": "pass", "errors": []},
+def _git(repo: Path, *args: str) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        ["git", "-C", str(repo), *args],
+        capture_output=True,
+        text=True,
+        check=True,
     )
 
-    reasons = blocker_reasons(
-        validate_scope(
-            state,
-            scope,
-            changed_paths=[
-                "docs/PROGRAM_STATE_UNIFIED.yaml",
-                f"{codex_session_guard.V1_READY_TASK_PREFIX}STAGE_CARD.md",
-            ],
-            added_task_dirs=[codex_session_guard.V1_READY_TASK_PREFIX.rstrip("/")],
-        )
-    )
 
-    assert "v1_ready_sync_allowlist_mismatch" in reasons
-
-
-def test_v1_ready_receipt_payload_controls_fail_closed() -> None:
-    reviewed_paths = sorted(codex_session_guard.V1_READY_REVIEWED_PATHS)
-    reviewed_rows = {
-        path: {
-            "reviewed_blob": "a" * 40,
-            "reviewed_blob_payload_sha256": "b" * 64,
-            "sha_semantics": {"reviewed_blob_payload_sha256": "STAGED_GIT_BLOB_PAYLOAD"},
-        }
-        for path in reviewed_paths
-    }
-    receipt = {
-        "schema_version": "ego.v1_ready.phase_c.red_receipt.v1",
-        "task_id": codex_session_guard.V1_READY_TASK_ID,
-        "phase": "EGO_PHASE_C_AUTHORITY_TRANSCRIPTION",
-        "base_commit": codex_session_guard.V1_READY_EGO_BASE_COMMIT,
-        "sorted_reviewed_paths": reviewed_paths,
-        "reviewer": "Claude",
-        "review_source": "Claude Web",
-        "reviewer_session_id": "claude-web:distinct",
-        "executor_session_id": "codex:executor",
-        "reviewed_at_utc": "2026-07-15T08:00:00Z",
-        "verdict": "NO_BLOCKING_FINDINGS",
-        "blocking_findings": [],
-        "claim_ceiling_acknowledged": True,
-        "reviewed_semantic_manifest_sha256": "c" * 64,
-        "reviewed_diff_sha256": "d" * 64,
-        "review_bundle_sha256": "e" * 64,
-        "review_response_sha256": "f" * 64,
-        "reviewed_semantic_manifest": {
-            "base_commit": codex_session_guard.V1_READY_EGO_BASE_COMMIT,
-            "sorted_reviewed_paths": reviewed_paths,
-            "per_path_base_blob_or_absent": {path: "absent" for path in reviewed_paths},
-            "per_path_reviewed_blob_or_worktree_sha256": reviewed_rows,
+def _valid_phase_c_v2_receipt(manifest_sha: str, bundle_sha: str) -> dict:
+    return {
+        "schema_version": codex_session_guard.PHASE_C_V2_RECEIPT_SCHEMA_VERSION,
+        "task_id": codex_session_guard.PHASE_C_V2_TASK_ID,
+        "base_commit": codex_session_guard.PHASE_C_V2_EGO_BASE_COMMIT,
+        "authority_manifest_sha256": manifest_sha,
+        "review_bundle_sha256": bundle_sha,
+        "review": {
+            "spec_verdict": "SPEC_COMPLIANT",
+            "code_quality_verdict": "CODE_QUALITY_APPROVED",
+            "verdict": "NO_BLOCKING_FINDINGS",
+            "blocking_findings": [],
+        },
+        "reviewer": {
+            "reviewer": "Claude",
+            "review_source": "Claude Web",
+            "review_id": "review:phase-c-v2:001",
+            "reviewer_session_id": "claude-web:independent",
+            "executor_session_id": "codex:executor",
+            "identity_assurance": "CONTROLLER_ATTESTED_LOCAL_ONLY",
+            "cryptographic_identity_verified": False,
         },
     }
-    receipt["reviewed_semantic_manifest_sha256"] = hashlib.sha256(
+
+
+def _init_phase_c_v2_repo(repo: Path) -> None:
+    repo.mkdir(parents=True)
+    _git(repo, "init", "-q")
+    _git(repo, "config", "user.name", "Phase C Test")
+    _git(repo, "config", "user.email", "phase-c@example.invalid")
+    _git(repo, "fetch", "-q", str(ROOT), codex_session_guard.PHASE_C_V2_EGO_BASE_COMMIT)
+    _git(repo, "reset", "-q", "--mixed", "FETCH_HEAD")
+
+
+def _write_phase_c_v2_candidate(
+    repo: Path,
+    *,
+    omit: str | None = None,
+    extra: bool = False,
+    mutate_authority=None,
+) -> str:
+    for relative in codex_session_guard.PHASE_C_V2_REVIEWED_PATHS:
+        if relative == omit:
+            continue
+        target = repo / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if relative == codex_session_guard.PHASE_C_V2_AUTHORITY_PATH:
+            authority = json.loads((ROOT / relative).read_text(encoding="utf-8"))
+            if mutate_authority is not None:
+                mutate_authority(authority)
+            target.write_text(json.dumps(authority, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        else:
+            target.write_text(f"phase-c-v2 fixture: {relative}\n", encoding="utf-8")
+    if extra:
+        (repo / "UNAUTHORIZED_PHASE_C_PATH.txt").write_text("extra\n", encoding="utf-8")
+    _git(repo, "add", "--", *[p for p in codex_session_guard.PHASE_C_V2_REVIEWED_PATHS if p != omit])
+    if extra:
+        _git(repo, "add", "--", "UNAUTHORIZED_PHASE_C_PATH.txt")
+    manifest = codex_session_guard.build_phase_c_v2_authority_manifest(repo=repo)
+    authority_bytes = (repo / codex_session_guard.PHASE_C_V2_AUTHORITY_PATH).read_bytes()
+    authority = codex_session_guard.validate_phase_c_v2_authority_bytes(authority_bytes)
+    bundle = codex_session_guard.build_phase_c_v2_review_bundle(
+        authority_manifest_sha256=manifest["authority_manifest_sha256"],
+        authority_projection_sha256=authority.get("target_projection_sha256"),
+    )
+    receipt_path = repo / codex_session_guard.PHASE_C_V2_RECEIPT_PATH
+    receipt_path.parent.mkdir(parents=True, exist_ok=True)
+    receipt_path.write_text(
         json.dumps(
-            receipt["reviewed_semantic_manifest"],
-            ensure_ascii=False,
-            sort_keys=True,
-            separators=(",", ":"),
-        ).encode("utf-8")
-    ).hexdigest()
-    assert codex_session_guard.validate_v1_ready_receipt_payload(receipt) == []
-
-    receipt["claim_ceiling_acknowledged"] = False
-    receipt["reviewer_session_id"] = receipt["executor_session_id"]
-    receipt["sorted_reviewed_paths"] = receipt["sorted_reviewed_paths"][:-1]
-    errors = codex_session_guard.validate_v1_ready_receipt_payload(receipt)
-
-    assert "v1_ready_red_receipt_claim_ceiling_missing" in errors
-    assert "v1_ready_red_receipt_role_separation_missing" in errors
-    assert "v1_ready_red_receipt_reviewed_paths_mismatch" in errors
+            _valid_phase_c_v2_receipt(
+                manifest["authority_manifest_sha256"],
+                bundle["review_bundle_sha256"],
+            ),
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    _git(repo, "add", "--", codex_session_guard.PHASE_C_V2_RECEIPT_PATH)
+    _git(repo, "commit", "-q", "-m", "phase-c-v2 candidate")
+    return _git(repo, "rev-parse", "HEAD").stdout.strip()
 
 
-def test_v1_ready_receipt_payload_rejects_incomplete_blob_manifest() -> None:
-    reviewed_paths = sorted(codex_session_guard.V1_READY_REVIEWED_PATHS)
-    receipt = {
-        "schema_version": "ego.v1_ready.phase_c.red_receipt.v1",
-        "task_id": codex_session_guard.V1_READY_TASK_ID,
-        "phase": "EGO_PHASE_C_AUTHORITY_TRANSCRIPTION",
-        "base_commit": codex_session_guard.V1_READY_EGO_BASE_COMMIT,
-        "sorted_reviewed_paths": reviewed_paths,
-        "reviewer": "Claude",
-        "review_source": "Claude Web",
-        "reviewer_session_id": "claude-web:distinct",
-        "executor_session_id": "codex:executor",
-        "reviewed_at_utc": "2026-07-15T08:00:00Z",
-        "verdict": "NO_BLOCKING_FINDINGS",
-        "blocking_findings": [],
-        "claim_ceiling_acknowledged": True,
-        "reviewed_semantic_manifest_sha256": "c" * 64,
-        "reviewed_diff_sha256": "d" * 64,
-        "review_bundle_sha256": "e" * 64,
-        "review_response_sha256": "f" * 64,
-        "reviewed_semantic_manifest": {
-            "base_commit": codex_session_guard.V1_READY_EGO_BASE_COMMIT,
-            "sorted_reviewed_paths": reviewed_paths,
-            "per_path_base_blob_or_absent": {path: "absent" for path in reviewed_paths},
-            "per_path_reviewed_blob_or_worktree_sha256": {},
+def test_phase_c_simplified_gate_strict_projection_and_typed_receipt_controls() -> None:
+    authority = json.loads(
+        (ROOT / codex_session_guard.PHASE_C_V2_AUTHORITY_PATH).read_text(encoding="utf-8")
+    )
+    assert codex_session_guard.validate_phase_c_v2_authority_payload(authority)["status"] == "pass"
+
+    swapped = copy.deepcopy(authority)
+    targets = swapped["v2"]["authorized_implementation_targets"]
+    targets[0], targets[1] = targets[1], targets[0]
+    assert "authority_projection_canonical_bytes_mismatch" in codex_session_guard.validate_phase_c_v2_authority_payload(swapped)["errors"]
+    opened = copy.deepcopy(authority)
+    opened["switches"]["enabled"] = True
+    assert "authority_projection_canonical_bytes_mismatch" in codex_session_guard.validate_phase_c_v2_authority_payload(opened)["errors"]
+    positive_float_zero = copy.deepcopy(authority)
+    positive_float_zero["switches"]["science_weight"] = 0.0
+    positive_zero_result = codex_session_guard.validate_phase_c_v2_authority_payload(
+        positive_float_zero
+    )
+    assert "authority_projection_canonical_bytes_mismatch" in positive_zero_result["errors"]
+    signed_zero = copy.deepcopy(authority)
+    signed_zero["switches"]["science_weight"] = -0.0
+    signed_zero_result = codex_session_guard.validate_phase_c_v2_authority_payload(signed_zero)
+    assert "authority_projection_canonical_bytes_mismatch" in signed_zero_result["errors"]
+    assert positive_zero_result["target_projection_sha256"] != signed_zero_result[
+        "target_projection_sha256"
+    ]
+
+    assert codex_session_guard.parse_phase_c_v2_json(b'{"a":1,"a":2}')["errors"] == ["json_duplicate_key"]
+    assert codex_session_guard.validate_phase_c_v2_authority_payload([])["status"] == "fail"
+
+    receipt = _valid_phase_c_v2_receipt("a" * 64, "b" * 64)
+    assert codex_session_guard.validate_phase_c_v2_receipt_payload(receipt)["status"] == "pass"
+    contradictory = copy.deepcopy(receipt)
+    contradictory["review"]["verdict"] = "BLOCKING_FINDINGS"
+    assert "receipt_verdict_contradictory" in codex_session_guard.validate_phase_c_v2_receipt_payload(contradictory)["errors"]
+    typed = copy.deepcopy(receipt)
+    typed["reviewer"]["review_id"] = 7
+    typed["reviewer"]["reviewer_session_id"] = ""
+    typed["review"] = "NO_BLOCKING_FINDINGS"
+    assert codex_session_guard.validate_phase_c_v2_receipt_payload(typed)["status"] == "fail"
+
+
+def test_phase_c_simplified_gate_actual_git_union_and_validation_label(tmp_path: Path) -> None:
+    repo = tmp_path / "paths"
+    repo.mkdir()
+    _git(repo, "init", "-q")
+    _git(repo, "config", "user.name", "Path Test")
+    _git(repo, "config", "user.email", "paths@example.invalid")
+    tracked = repo / codex_session_guard.PHASE_C_V2_IMPLEMENTATION_TARGETS[1]
+    tracked.parent.mkdir(parents=True)
+    tracked.write_text("base\n", encoding="utf-8")
+    _git(repo, "add", "--", codex_session_guard.PHASE_C_V2_IMPLEMENTATION_TARGETS[1])
+    _git(repo, "commit", "-q", "-m", "base")
+
+    clean = codex_session_guard.validate_phase_c_v2_mutation_admission(
+        {"requested_action_id": codex_session_guard.PHASE_C_V2_VALIDATION_ACTION_ID},
+        repo=repo,
+    )
+    assert clean["status"] == "pass"
+
+    tracked.write_text("unstaged\n", encoding="utf-8")
+    staged = repo / codex_session_guard.PHASE_C_V2_IMPLEMENTATION_TARGETS[2]
+    staged.write_text("staged\n", encoding="utf-8")
+    _git(repo, "add", "--", codex_session_guard.PHASE_C_V2_IMPLEMENTATION_TARGETS[2])
+    untracked = repo / codex_session_guard.PHASE_C_V2_IMPLEMENTATION_TARGETS[3]
+    untracked.write_text("untracked\n", encoding="utf-8")
+
+    actual = codex_session_guard.phase_c_v2_actual_changed_paths(repo=repo)
+    assert actual["changed_paths"] == sorted(
+        codex_session_guard.PHASE_C_V2_IMPLEMENTATION_TARGETS[index] for index in (1, 2, 3)
+    )
+    validation = codex_session_guard.validate_phase_c_v2_mutation_admission(
+        {"requested_action_id": codex_session_guard.PHASE_C_V2_VALIDATION_ACTION_ID},
+        repo=repo,
+    )
+    assert "validation_action_product_mutation_forbidden" in validation["errors"]
+    implementation = codex_session_guard.validate_phase_c_v2_mutation_admission(
+        {
+            "task_id": codex_session_guard.PHASE_C_V2_PRODUCT_TASK_ID,
+            "task_kind": codex_session_guard.PHASE_C_V2_IMPLEMENT_TASK_KIND,
+            "requested_action_id": codex_session_guard.PHASE_C_V2_IMPLEMENT_ACTION_ID,
+            "authorized_implementation_targets": codex_session_guard.PHASE_C_V2_IMPLEMENTATION_TARGETS,
+            "authority_commit": None,
         },
-    }
-
-    errors = codex_session_guard.validate_v1_ready_receipt_payload(receipt)
-
-    assert "v1_ready_red_receipt_manifest_reviewed_blob_paths_mismatch" in errors
+        repo=repo,
+    )
+    assert "v2_committed_receipt_admission_required" in implementation["errors"]
 
 
-def test_v1_ready_review_path_contract_excludes_receipt_and_is_exact() -> None:
-    assert len(codex_session_guard.V1_READY_REVIEWED_PATHS) == 19
-    assert len(codex_session_guard.V1_READY_SYNC_PATHS) == 20
-    assert codex_session_guard.V1_READY_RED_REVIEW_PATH not in codex_session_guard.V1_READY_REVIEWED_PATHS
-    assert set(codex_session_guard.V1_READY_SYNC_PATHS) == {
-        *codex_session_guard.V1_READY_REVIEWED_PATHS,
-        codex_session_guard.V1_READY_RED_REVIEW_PATH,
-    }
+def test_phase_c_simplified_gate_exact_direct_child_commit_and_hostile_paths(tmp_path: Path) -> None:
+    repo = tmp_path / "phase-c"
+    _init_phase_c_v2_repo(repo)
+    valid_commit = _write_phase_c_v2_candidate(repo)
+    result = codex_session_guard.validate_phase_c_v2_commit(valid_commit, repo=repo)
+    assert result["status"] == "pass", result["errors"]
+    assert result["changed_paths"] == sorted(codex_session_guard.PHASE_C_V2_COMMIT_PATHS)
+
+    base_result = codex_session_guard.validate_phase_c_v2_commit(
+        codex_session_guard.PHASE_C_V2_EGO_BASE_COMMIT,
+        repo=repo,
+    )
+    assert "authority_commit_not_exact_direct_child" in base_result["errors"]
+
+    intermediate_repo = tmp_path / "intermediate"
+    _init_phase_c_v2_repo(intermediate_repo)
+    _git(intermediate_repo, "commit", "-q", "--allow-empty", "-m", "intermediate")
+    intermediate_candidate = _write_phase_c_v2_candidate(intermediate_repo)
+    intermediate_result = codex_session_guard.validate_phase_c_v2_commit(
+        intermediate_candidate,
+        repo=intermediate_repo,
+    )
+    assert intermediate_result["changed_paths"] == sorted(
+        codex_session_guard.PHASE_C_V2_COMMIT_PATHS
+    )
+    assert "authority_commit_not_exact_direct_child" in intermediate_result["errors"]
+
+    missing_repo = tmp_path / "missing"
+    _init_phase_c_v2_repo(missing_repo)
+    missing_commit = _write_phase_c_v2_candidate(
+        missing_repo,
+        omit=codex_session_guard.PHASE_C_V2_REVIEWED_PATHS[0],
+    )
+    assert "authority_commit_exact_20_paths_required" in codex_session_guard.validate_phase_c_v2_commit(missing_commit, repo=missing_repo)["errors"]
+
+    extra_repo = tmp_path / "extra"
+    _init_phase_c_v2_repo(extra_repo)
+    extra_commit = _write_phase_c_v2_candidate(extra_repo, extra=True)
+    assert "authority_commit_exact_20_paths_required" in codex_session_guard.validate_phase_c_v2_commit(extra_commit, repo=extra_repo)["errors"]
 
 
-def test_v1_ready_machine_scope_payload_is_exact_and_fail_closed() -> None:
+def test_phase_c_simplified_gate_scope_contract_is_exact() -> None:
     payload = codex_session_guard._load_yaml(  # noqa: SLF001
-        ROOT / codex_session_guard.V1_READY_SCOPE_PATH,
-        code="missing_v1_ready_scope",
+        ROOT / codex_session_guard.PHASE_C_V2_SCOPE_PATH,
+        code="missing_phase_c_v2_scope",
     )
-
-    assert codex_session_guard.validate_v1_ready_mutation_scope_payload(payload) == []
-
-    payload["reviewed_nonreceipt_paths"] = payload["reviewed_nonreceipt_paths"][:-1]
-    payload["forbidden_paths"] = payload["forbidden_paths"][:-1]
-    errors = codex_session_guard.validate_v1_ready_mutation_scope_payload(payload)
-    assert "v1_ready_scope_reviewed_nonreceipt_paths_mismatch" in errors
-    assert "v1_ready_scope_forbidden_paths_mismatch" in errors
-
-
-def test_v1_ready_readback_separates_live_product_authority_from_closed_card2(monkeypatch) -> None:
-    state = live_route_state()
-    v1 = state["route_guard"]["v1_ready_authority"]
-    monkeypatch.setattr(
-        codex_session_guard,
-        "science_authority_pin_status",
-        lambda *_args, **_kwargs: {"status": "pass"},
-    )
-    monkeypatch.setattr(
-        codex_session_guard,
-        "validate_v1_ready_product_authority",
-        lambda *_args, **_kwargs: {"status": "pass", "errors": []},
-    )
-
-    readback = codex_session_guard.build_route_guard_readback(
-        state,
-        FakeRunner(),
-    )
-
-    assert readback["allowed_next_action_ids"] == [
-        codex_session_guard.V1_READY_IMPLEMENT_ACTION_ID,
-        "run_route_state_machine_validation",
-    ]
-    assert readback["blocked_until"] == []
-    assert readback["closed_card2_blocked_until"] == ["ADMISSION_INVALID_PATH_POLICY"]
-    assert readback["product_development_core"] == v1["core_id"]
-    assert readback["product_development_core_lineage"] == v1[
-        "lineage_root_authority_route_id"
-    ]
+    assert codex_session_guard.validate_phase_c_v2_scope_payload(payload) == []
+    payload["implementation_allowlist"] = payload["implementation_allowlist"][::-1]
+    assert "phase_c_v2_scope_implementation_allowlist_mismatch" in codex_session_guard.validate_phase_c_v2_scope_payload(payload)

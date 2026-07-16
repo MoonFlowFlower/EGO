@@ -1,10 +1,10 @@
 # EGO Repo AGENTS
 
-> `CURRENT_MACHINE_ROUTE_AUTHORITY: EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A__IMPLEMENTATION_AUTHORIZED_DEFAULT_OFF`
+> `CURRENT_MACHINE_ROUTE_AUTHORITY: EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A__EXACT_25_PATH_PRODUCT_AUTHORITY_DEFAULT_OFF`
 >
 > `HISTORICAL_8692_EGODESKTOP_ROUTE: SUPERSEDED_ARCHIVE_POINTER_ONLY`
 >
-> Current product-development work is the exact default-off V1 continuity-playground allowlist. Any later text naming K0 -> VirtualCat -> EgoDesktop as the selected successor is historical and has no live action authority.
+> After the exact Phase-C direct-child commit passes its typed postcommit gate, `codex/ego-v2-product-first-001a` is the sole active V2 development authority. `main@089ab5ef...` with 19 dirty paths is `NON_LIVE_NEGATIVE_ANTI_ZENO_CHECKPOINT`. V2 remains default-off and runtime/science/remote/proactive/LLM/network closed.
 
 适用范围：`/mnt/d/Project/AIProject/MyProject/Ego`
 
@@ -48,10 +48,11 @@
 - Spend time on thinking; you do not need to use the commentary channel to report progress to me.
 - DO NOT send optional commentary.
 
-## Canonical mechanism successor freeze 001A
+## Historical canonical mechanism successor freeze 001A
 
-`EgoOperator` remains the current enabled runtime, but it is not the selected
-mechanism-integration target. The sole selected successor route is:
+The following route is a frozen historical record and has no live successor
+authority. `EgoOperator` remains the existing enabled runtime, while current
+product development is the separate default-off V2 microworld lineage:
 
 ```text
 packages/ego_k0_kernel

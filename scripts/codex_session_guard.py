@@ -334,6 +334,103 @@ V1_READY_SYNC_FORBIDDEN_PATHS = [
     "../intelligence-theory-lab/",
 ]
 
+# EGO-PHASE-C-V2-AUTHORIZATION-GATE-SIMPLIFICATION-001A
+#
+# This is the finite replacement boundary for Phase C.  The older V1 READY
+# helpers remain callable only for historical compatibility; they are not an
+# input to the V2 admission verdict below.
+PHASE_C_V2_TASK_ID = "EGO-PHASE-C-V2-AUTHORIZATION-GATE-SIMPLIFICATION-001A"
+PHASE_C_V2_ROUTE_REVISION = "EGO_PHASE_C_V2_AUTHORIZATION_GATE_SIMPLIFICATION_001A"
+PHASE_C_V2_SCHEMA_VERSION = "ego.phase_c.v2_authority.v1"
+PHASE_C_V2_RECEIPT_SCHEMA_VERSION = "ego.phase_c.v2_typed_receipt.v1"
+PHASE_C_V2_EGO_BASE_COMMIT = "089ab5ef27431eb5ace4ff4795f57f08fd052779"
+PHASE_C_V2_ITL_COMMIT = "4a4746435f9bdb0eba02e6c036c2e34a089ece26"
+PHASE_C_V2_ITL_STATE_PATH = (
+    "artifacts/ROUTE-STATE-MACHINE-001A/routes/"
+    "EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/state.json"
+)
+PHASE_C_V2_PRODUCT_TASK_ID = "EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A"
+PHASE_C_V2_IMPLEMENT_ACTION_ID = (
+    "implement_EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A"
+)
+PHASE_C_V2_IMPLEMENT_TASK_KIND = "bounded_v2_microworld_implementation"
+PHASE_C_V2_VALIDATION_ACTION_ID = "run_route_state_machine_validation"
+PHASE_C_V2_TRANSITION_ACTION_ID = "simplify_EGO_PHASE_C_V2_authorization_gate"
+PHASE_C_V2_TRANSITION_TASK_KIND = "operator_authorized_phase_c_v2_gate_simplification"
+PHASE_C_V2_BRANCH = "codex/ego-v2-product-first-001a"
+PHASE_C_V2_NEGATIVE_CHECKPOINT = "NON_LIVE_NEGATIVE_ANTI_ZENO_CHECKPOINT"
+PHASE_C_V2_TASK_PREFIX = (
+    "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/"
+)
+PHASE_C_V2_SCOPE_PATH = f"{PHASE_C_V2_TASK_PREFIX}MUTATION_SCOPE_PHASE_C.yaml"
+PHASE_C_V2_AUTHORITY_PATH = f"{PHASE_C_V2_TASK_PREFIX}ITL_AUTHORITY_CROSSWALK.json"
+PHASE_C_V2_RECEIPT_PATH = f"{PHASE_C_V2_TASK_PREFIX}PHASE_C_RED_REVIEW.json"
+PHASE_C_V2_IMPLEMENTATION_TARGETS = [
+    "docs/codex/tasks/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A-MUTATION_SCOPE.yaml",
+    "labs/ego_life_playground_v0/__init__.py",
+    "labs/ego_life_playground_v0/engine.py",
+    "labs/ego_life_playground_v0/microworld.py",
+    "labs/ego_life_playground_v0/claims.py",
+    "labs/ego_life_playground_v0/app.py",
+    "labs/ego_life_playground_v0/store.py",
+    "scripts/run_ego_life_playground_v0.py",
+    "tests/test_ego_life_playground_v0.py",
+    "tests/test_ego_life_playground_v2_microworld.py",
+    "scripts/codex/verify_ego_life_kernel_v2_microworld.py",
+    "scripts/tests/test_verify_ego_life_kernel_v2_microworld.py",
+    "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/continuity.sqlite3",
+    "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/trace.jsonl",
+    "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/product_trigger_receipt.json",
+    "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/headroom_report.json",
+    "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/collision_record.json",
+    "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/baseline_comparison.json",
+    "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/ablation_report.json",
+    "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/learning_report.json",
+    "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/replay_report.json",
+    "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/leakage_report.json",
+    "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/failure_manifest.json",
+    "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/claim_ceiling.txt",
+    "artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/result.json",
+]
+PHASE_C_V2_CLOSED_SWITCHES = {
+    "enabled": False,
+    "default_enabled": False,
+    "mainline_connected": False,
+    "runtime_mainline_connected": False,
+    "runtime_authority": "none",
+    "science_weight": 0,
+    "remote_anchor": False,
+    "auto_remote_anchor": "forbidden",
+    "proactive_action_enabled": False,
+    "initiative_executor_authorized": False,
+    "background_dispatch": False,
+    "external_side_effects": False,
+    "llm": "forbidden",
+    "network": "forbidden",
+}
+PHASE_C_V2_REVIEWED_PATHS = [
+    f"{PHASE_C_V2_TASK_PREFIX}STAGE_CARD.md",
+    f"{PHASE_C_V2_TASK_PREFIX}COLLISION_RECORD.md",
+    PHASE_C_V2_SCOPE_PATH,
+    PHASE_C_V2_AUTHORITY_PATH,
+    "docs/PROGRAM_STATE_UNIFIED.yaml",
+    "docs/STATUS.md",
+    "artifacts/reports/program_state_summary.md",
+    "docs/codex/tasks/TASK_LANE_INDEX.md",
+    "docs/REPO_SURFACE_MAP.md",
+    "AGENTS.md",
+    "README.md",
+    "docs/ACTIVE_CONTEXT_PACK.md",
+    "docs/MAINLINE_QUICKSTART.md",
+    "docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md",
+    "docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md",
+    "scripts/codex_session_guard.py",
+    "scripts/codex/verify_route_convergence.py",
+    "scripts/tests/test_codex_session_guard.py",
+    "scripts/tests/test_route_governance_supersession.py",
+]
+PHASE_C_V2_COMMIT_PATHS = [*PHASE_C_V2_REVIEWED_PATHS, PHASE_C_V2_RECEIPT_PATH]
+
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
@@ -447,6 +544,808 @@ def _canonical_json_bytes(value: Any) -> bytes:
         separators=(",", ":"),
         allow_nan=False,
     ).encode("utf-8")
+
+
+class _DuplicateJsonKey(ValueError):
+    pass
+
+
+def _phase_c_v2_pairs_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise _DuplicateJsonKey(key)
+        result[key] = value
+    return result
+
+
+def _phase_c_v2_has_lone_surrogate(value: Any) -> bool:
+    if isinstance(value, str):
+        return any(0xD800 <= ord(char) <= 0xDFFF for char in value)
+    if isinstance(value, dict):
+        return any(
+            _phase_c_v2_has_lone_surrogate(key) or _phase_c_v2_has_lone_surrogate(item)
+            for key, item in value.items()
+        )
+    if isinstance(value, list):
+        return any(_phase_c_v2_has_lone_surrogate(item) for item in value)
+    return False
+
+
+def parse_phase_c_v2_json(raw: Any) -> dict[str, Any]:
+    """Strict UTF-8 JSON object parser with structured failure and no coercion."""
+
+    errors: list[str] = []
+    if not isinstance(raw, (bytes, bytearray)):
+        return {"status": "fail", "errors": ["json_input_not_bytes"], "payload": None}
+    try:
+        text = bytes(raw).decode("utf-8", errors="strict")
+    except UnicodeDecodeError:
+        return {"status": "fail", "errors": ["json_utf8_invalid"], "payload": None}
+    try:
+        payload = json.loads(
+            text,
+            object_pairs_hook=_phase_c_v2_pairs_object,
+            parse_constant=lambda _value: (_ for _ in ()).throw(ValueError("nonfinite")),
+        )
+    except _DuplicateJsonKey:
+        return {"status": "fail", "errors": ["json_duplicate_key"], "payload": None}
+    except (json.JSONDecodeError, ValueError, TypeError):
+        return {"status": "fail", "errors": ["json_syntax_or_number_invalid"], "payload": None}
+    if not isinstance(payload, dict):
+        errors.append("json_root_object_required")
+    if _phase_c_v2_has_lone_surrogate(payload):
+        errors.append("json_lone_surrogate_forbidden")
+    if errors:
+        return {"status": "fail", "errors": errors, "payload": None}
+    try:
+        canonical = _canonical_json_bytes(payload)
+    except (TypeError, ValueError, UnicodeEncodeError):
+        return {"status": "fail", "errors": ["json_canonicalization_failed"], "payload": None}
+    return {
+        "status": "pass",
+        "errors": [],
+        "payload": payload,
+        "canonical_bytes": canonical,
+        "canonical_sha256": hashlib.sha256(canonical).hexdigest(),
+    }
+
+
+def _phase_c_v2_exact_keys(
+    payload: Any,
+    expected: set[str],
+    label: str,
+    errors: list[str],
+) -> dict[str, Any]:
+    if not isinstance(payload, dict):
+        errors.append(f"{label}_object_required")
+        return {}
+    actual = set(payload)
+    if actual != expected:
+        if expected - actual:
+            errors.append(f"{label}_keys_missing")
+        if actual - expected:
+            errors.append(f"{label}_keys_unknown")
+    return payload
+
+
+def _phase_c_v2_worktree_authority_projection() -> dict[str, Any]:
+    return {
+        "negative_checkpoint": {
+            "path": "D:/Project/AIProject/MyProject/Ego",
+            "branch": "main",
+            "head": PHASE_C_V2_EGO_BASE_COMMIT,
+            "status": PHASE_C_V2_NEGATIVE_CHECKPOINT,
+            "live_authority": False,
+        },
+        "active_v2_development_authority": {
+            "worktree": "D:/Project/AIProject/MyProject/Ego-v2-product-first-001a",
+            "branch": PHASE_C_V2_BRANCH,
+            "activation_condition": "THIS_DIRECT_CHILD_COMMIT_PASSES_PHASE_C_V2_GATE",
+            "sole": True,
+        },
+    }
+
+
+def build_phase_c_v2_source_projection(source_state: Any) -> dict[str, Any]:
+    """Select the one finite V2 authorization projection from the pinned ITL state."""
+
+    if not isinstance(source_state, dict):
+        return {}
+    lineage = source_state.get("product_development_core_lineage")
+    lineage = lineage if isinstance(lineage, dict) else {}
+    conditional = source_state.get("conditional_actions")
+    conditional = conditional if isinstance(conditional, dict) else {}
+    allowed = source_state.get("allowed_next_actions")
+    allowed = allowed if isinstance(allowed, list) else []
+    implementation_action: Any = (
+        PHASE_C_V2_IMPLEMENT_ACTION_ID
+        if PHASE_C_V2_IMPLEMENT_ACTION_ID in allowed
+        and PHASE_C_V2_IMPLEMENT_ACTION_ID in conditional
+        else None
+    )
+    validation_action: Any = (
+        PHASE_C_V2_VALIDATION_ACTION_ID
+        if PHASE_C_V2_VALIDATION_ACTION_ID in allowed
+        else None
+    )
+    return {
+        "schema_version": PHASE_C_V2_SCHEMA_VERSION,
+        "base_commit": lineage.get("v2_preregistration_commit"),
+        "itl_authority": {
+            "repo": "intelligence-theory-lab",
+            "commit": PHASE_C_V2_ITL_COMMIT,
+            "state_path": PHASE_C_V2_ITL_STATE_PATH,
+        },
+        "v2": {
+            "route_id": source_state.get("route_id"),
+            "task_id": source_state.get("task_id"),
+            "implementation_action": implementation_action,
+            "implementation_task_kind": PHASE_C_V2_IMPLEMENT_TASK_KIND,
+            "implementation_authorized": source_state.get("implementation_authorized"),
+            "authorized_implementation_targets": source_state.get("authorized_implementation_targets"),
+            "allowed_next_actions": [implementation_action, validation_action],
+        },
+        "switches": {
+            key: source_state.get(key)
+            for key in PHASE_C_V2_CLOSED_SWITCHES
+        },
+        "worktree_authority": _phase_c_v2_worktree_authority_projection(),
+        "claim_ceiling": source_state.get("claim_ceiling"),
+    }
+
+
+def _read_phase_c_v2_itl_state(itl_repo: Path = ITL_ROOT) -> dict[str, Any]:
+    errors: list[str] = []
+    commit = _git_repo(itl_repo, ["cat-file", "-e", f"{PHASE_C_V2_ITL_COMMIT}^{{commit}}"])
+    if commit.returncode != 0:
+        return {"status": "fail", "errors": ["itl_commit_unavailable"], "payload": None}
+    probe = _git_repo(
+        itl_repo,
+        ["cat-file", "blob", f"{PHASE_C_V2_ITL_COMMIT}:{PHASE_C_V2_ITL_STATE_PATH}"],
+        text=False,
+    )
+    if probe.returncode != 0:
+        return {"status": "fail", "errors": ["itl_state_blob_unavailable"], "payload": None}
+    parsed = parse_phase_c_v2_json(probe.stdout)
+    if parsed.get("status") != "pass":
+        errors.extend(f"itl_state:{item}" for item in parsed.get("errors") or [])
+    return {
+        "status": "pass" if not errors else "fail",
+        "errors": errors,
+        "payload": parsed.get("payload"),
+        "raw_sha256": hashlib.sha256(probe.stdout).hexdigest(),
+        "canonical_sha256": parsed.get("canonical_sha256"),
+    }
+
+
+def validate_phase_c_v2_authority_payload(
+    authority: Any,
+    *,
+    itl_repo: Path = ITL_ROOT,
+    source_state: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Validate one strict target projection against one pinned strict source projection."""
+
+    errors: list[str] = []
+    try:
+        root = _phase_c_v2_exact_keys(
+            authority,
+            {
+                "schema_version",
+                "base_commit",
+                "itl_authority",
+                "v2",
+                "switches",
+                "worktree_authority",
+                "claim_ceiling",
+            },
+            "authority",
+            errors,
+        )
+        _phase_c_v2_exact_keys(
+            root.get("itl_authority"),
+            {"repo", "commit", "state_path"},
+            "authority_itl",
+            errors,
+        )
+        v2 = _phase_c_v2_exact_keys(
+            root.get("v2"),
+            {
+                "route_id",
+                "task_id",
+                "implementation_action",
+                "implementation_task_kind",
+                "implementation_authorized",
+                "authorized_implementation_targets",
+                "allowed_next_actions",
+            },
+            "authority_v2",
+            errors,
+        )
+        _phase_c_v2_exact_keys(
+            root.get("switches"),
+            set(PHASE_C_V2_CLOSED_SWITCHES),
+            "authority_switches",
+            errors,
+        )
+        worktree = _phase_c_v2_exact_keys(
+            root.get("worktree_authority"),
+            {"negative_checkpoint", "active_v2_development_authority"},
+            "authority_worktree",
+            errors,
+        )
+        _phase_c_v2_exact_keys(
+            worktree.get("negative_checkpoint"),
+            {"path", "branch", "head", "status", "live_authority"},
+            "authority_negative_checkpoint",
+            errors,
+        )
+        _phase_c_v2_exact_keys(
+            worktree.get("active_v2_development_authority"),
+            {"worktree", "branch", "activation_condition", "sole"},
+            "authority_active_worktree",
+            errors,
+        )
+        claim = _phase_c_v2_exact_keys(
+            root.get("claim_ceiling"),
+            {"forbidden_claims", "max"},
+            "authority_claim_ceiling",
+            errors,
+        )
+        if not isinstance(claim.get("forbidden_claims"), list) or any(
+            type(item) is not str or not item for item in claim.get("forbidden_claims") or []
+        ):
+            errors.append("authority_claim_ceiling_forbidden_claims_invalid")
+        for key in (
+            "schema_version",
+            "base_commit",
+        ):
+            if type(root.get(key)) is not str or not root.get(key):
+                errors.append(f"authority_{key}_string_required")
+        if type(v2.get("implementation_authorized")) is not bool:
+            errors.append("authority_implementation_authorized_bool_required")
+        targets = v2.get("authorized_implementation_targets")
+        if not isinstance(targets, list) or any(type(path) is not str or not path for path in targets):
+            errors.append("authority_targets_string_list_required")
+        if len(targets or []) != len(set(targets or [])):
+            errors.append("authority_targets_duplicate")
+        source_result = (
+            {"status": "pass", "errors": [], "payload": source_state}
+            if source_state is not None
+            else _read_phase_c_v2_itl_state(itl_repo)
+        )
+        if source_result.get("status") != "pass":
+            errors.extend(source_result.get("errors") or [])
+        source_projection = build_phase_c_v2_source_projection(source_result.get("payload"))
+        try:
+            source_bytes = _canonical_json_bytes(source_projection)
+            target_bytes = _canonical_json_bytes(root)
+        except (TypeError, ValueError, UnicodeEncodeError):
+            errors.append("authority_canonicalization_failed")
+            source_bytes = b""
+            target_bytes = b""
+        if source_bytes != target_bytes:
+            errors.append("authority_projection_canonical_bytes_mismatch")
+        return {
+            "status": "pass" if not errors else "fail",
+            "errors": sorted(set(errors)),
+            "source_projection_sha256": hashlib.sha256(source_bytes).hexdigest() if source_bytes else None,
+            "target_projection_sha256": hashlib.sha256(target_bytes).hexdigest() if target_bytes else None,
+            "authorized_implementation_targets": root.get("v2", {}).get(
+                "authorized_implementation_targets"
+            )
+            if isinstance(root.get("v2"), dict)
+            else [],
+        }
+    except Exception:  # All malformed caller inputs fail structurally.
+        return {"status": "fail", "errors": ["authority_input_malformed"], "authorized_implementation_targets": []}
+
+
+def validate_phase_c_v2_authority_bytes(
+    raw: Any,
+    *,
+    itl_repo: Path = ITL_ROOT,
+) -> dict[str, Any]:
+    parsed = parse_phase_c_v2_json(raw)
+    if parsed.get("status") != "pass":
+        return {
+            "status": "fail",
+            "errors": parsed.get("errors") or [],
+            "source_projection_sha256": None,
+            "target_projection_sha256": None,
+        }
+    return validate_phase_c_v2_authority_payload(parsed.get("payload"), itl_repo=itl_repo)
+
+
+def validate_phase_c_v2_authority_file(
+    path: Path | None = None,
+    *,
+    itl_repo: Path = ITL_ROOT,
+) -> dict[str, Any]:
+    candidate = path or (ROOT / PHASE_C_V2_AUTHORITY_PATH)
+    try:
+        raw = candidate.read_bytes()
+    except OSError:
+        return {"status": "fail", "errors": ["authority_file_unavailable"]}
+    return validate_phase_c_v2_authority_bytes(raw, itl_repo=itl_repo)
+
+
+def phase_c_v2_actual_changed_paths(
+    *,
+    repo: Path = ROOT,
+    commit: str | None = None,
+) -> dict[str, Any]:
+    """Derive actual paths only from Git: union precommit, parent diff postcommit."""
+
+    errors: list[str] = []
+    raw_paths: list[str] = []
+    parent: str | None = None
+    try:
+        if commit is None:
+            commands = (
+                ["diff", "--no-renames", "--name-only", "--"],
+                ["diff", "--cached", "--no-renames", "--name-only", "--"],
+                ["ls-files", "--others", "--exclude-standard"],
+            )
+            for args in commands:
+                probe = _git_repo(repo, list(args))
+                if probe.returncode != 0:
+                    errors.append("precommit_git_path_query_failed")
+                    continue
+                raw_paths.extend(line.strip() for line in probe.stdout.splitlines() if line.strip())
+            mode = "precommit_union"
+        else:
+            if type(commit) is not str or not re.fullmatch(r"[0-9a-f]{40}", commit):
+                return {
+                    "status": "fail",
+                    "errors": ["commit_id_invalid"],
+                    "mode": "postcommit_parent_diff_tree",
+                    "changed_paths": [],
+                    "parent": None,
+                }
+            parents = _git_repo(repo, ["rev-list", "--parents", "-n", "1", commit])
+            fields = parents.stdout.strip().split() if parents.returncode == 0 else []
+            if len(fields) != 2 or fields[0] != commit:
+                errors.append("commit_must_have_exactly_one_parent")
+            else:
+                parent = fields[1]
+                diff = _git_repo(
+                    repo,
+                    [
+                        "diff-tree",
+                        "--no-commit-id",
+                        "--name-only",
+                        "-r",
+                        "--no-renames",
+                        parent,
+                        commit,
+                    ],
+                )
+                if diff.returncode != 0:
+                    errors.append("postcommit_diff_tree_failed")
+                else:
+                    raw_paths.extend(line.strip() for line in diff.stdout.splitlines() if line.strip())
+            mode = "postcommit_parent_diff_tree"
+        normalized = sorted(set(raw_paths))
+        if any("\\" in path or path.startswith("/") for path in normalized):
+            errors.append("git_path_format_invalid")
+        return {
+            "status": "pass" if not errors else "fail",
+            "errors": sorted(set(errors)),
+            "mode": mode,
+            "changed_paths": normalized,
+            "raw_path_count": len(raw_paths),
+            "parent": parent,
+        }
+    except Exception:
+        return {
+            "status": "fail",
+            "errors": ["git_path_query_malformed"],
+            "mode": "postcommit_parent_diff_tree" if commit is not None else "precommit_union",
+            "changed_paths": [],
+            "parent": parent,
+        }
+
+
+def build_phase_c_v2_authority_manifest(
+    *,
+    repo: Path = ROOT,
+    ref: str | None = None,
+) -> dict[str, Any]:
+    """Build the 19-blob manifest from the index or an immutable commit."""
+
+    errors: list[str] = []
+    rows: list[dict[str, Any]] = []
+    for path in sorted(PHASE_C_V2_REVIEWED_PATHS):
+        spec = f"{ref}:{path}" if ref is not None else f":{path}"
+        oid_probe = _git_repo(repo, ["rev-parse", "--verify", spec])
+        oid = oid_probe.stdout.strip() if oid_probe.returncode == 0 else ""
+        if not re.fullmatch(r"[0-9a-f]{40}", oid):
+            errors.append(f"manifest_blob_unavailable:{path}")
+            continue
+        blob_probe = _git_repo(repo, ["cat-file", "blob", oid], text=False)
+        if blob_probe.returncode != 0:
+            errors.append(f"manifest_blob_unavailable:{path}")
+            continue
+        raw = blob_probe.stdout
+        rows.append(
+            {
+                "path": path,
+                "git_blob_oid": oid,
+                "payload_sha256": hashlib.sha256(raw).hexdigest(),
+                "bytes": len(raw),
+            }
+        )
+    payload = {
+        "schema_version": "ego.phase_c.v2_authority_manifest.v1",
+        "base_commit": PHASE_C_V2_EGO_BASE_COMMIT,
+        "reviewed_paths": sorted(PHASE_C_V2_REVIEWED_PATHS),
+        "blobs": rows,
+    }
+    canonical = _canonical_json_bytes(payload)
+    return {
+        "status": "pass" if not errors and len(rows) == 19 else "fail",
+        "errors": errors,
+        "payload": payload,
+        "authority_manifest_sha256": hashlib.sha256(canonical).hexdigest(),
+    }
+
+
+def build_phase_c_v2_review_bundle(
+    *,
+    authority_manifest_sha256: Any,
+    authority_projection_sha256: Any,
+) -> dict[str, Any]:
+    payload = {
+        "schema_version": "ego.phase_c.v2_review_bundle.v1",
+        "task_id": PHASE_C_V2_TASK_ID,
+        "base_commit": PHASE_C_V2_EGO_BASE_COMMIT,
+        "committed_paths": sorted(PHASE_C_V2_COMMIT_PATHS),
+        "authority_manifest_sha256": authority_manifest_sha256,
+        "authority_projection_sha256": authority_projection_sha256,
+    }
+    try:
+        raw = _canonical_json_bytes(payload)
+    except (TypeError, ValueError, UnicodeEncodeError):
+        return {"status": "fail", "errors": ["review_bundle_input_invalid"], "payload": None}
+    return {
+        "status": "pass",
+        "errors": [],
+        "payload": payload,
+        "review_bundle_sha256": hashlib.sha256(raw).hexdigest(),
+    }
+
+
+def validate_phase_c_v2_receipt_payload(
+    receipt: Any,
+    *,
+    authority_manifest_sha256: str | None = None,
+    review_bundle_sha256: str | None = None,
+) -> dict[str, Any]:
+    errors: list[str] = []
+    try:
+        root = _phase_c_v2_exact_keys(
+            receipt,
+            {
+                "schema_version",
+                "task_id",
+                "base_commit",
+                "authority_manifest_sha256",
+                "review_bundle_sha256",
+                "review",
+                "reviewer",
+            },
+            "receipt",
+            errors,
+        )
+        review = _phase_c_v2_exact_keys(
+            root.get("review"),
+            {"spec_verdict", "code_quality_verdict", "verdict", "blocking_findings"},
+            "receipt_review",
+            errors,
+        )
+        reviewer = _phase_c_v2_exact_keys(
+            root.get("reviewer"),
+            {
+                "reviewer",
+                "review_source",
+                "review_id",
+                "reviewer_session_id",
+                "executor_session_id",
+                "identity_assurance",
+                "cryptographic_identity_verified",
+            },
+            "receipt_reviewer",
+            errors,
+        )
+        expected_literals = {
+            "schema_version": PHASE_C_V2_RECEIPT_SCHEMA_VERSION,
+            "task_id": PHASE_C_V2_TASK_ID,
+            "base_commit": PHASE_C_V2_EGO_BASE_COMMIT,
+        }
+        for key, expected in expected_literals.items():
+            if root.get(key) != expected or type(root.get(key)) is not str:
+                errors.append(f"receipt_{key}_mismatch")
+        for key in ("authority_manifest_sha256", "review_bundle_sha256"):
+            value = root.get(key)
+            if type(value) is not str or re.fullmatch(r"[0-9a-f]{64}", value) is None:
+                errors.append(f"receipt_{key}_invalid")
+        if authority_manifest_sha256 is not None and root.get("authority_manifest_sha256") != authority_manifest_sha256:
+            errors.append("receipt_authority_manifest_binding_mismatch")
+        if review_bundle_sha256 is not None and root.get("review_bundle_sha256") != review_bundle_sha256:
+            errors.append("receipt_review_bundle_binding_mismatch")
+        expected_verdicts = {
+            "spec_verdict": "SPEC_COMPLIANT",
+            "code_quality_verdict": "CODE_QUALITY_APPROVED",
+            "verdict": "NO_BLOCKING_FINDINGS",
+        }
+        for key, expected in expected_verdicts.items():
+            if type(review.get(key)) is not str or review.get(key) != expected:
+                errors.append(f"receipt_{key}_contradictory")
+        if type(review.get("blocking_findings")) is not list or review.get("blocking_findings") != []:
+            errors.append("receipt_blocking_findings_must_be_empty_array")
+        for key in (
+            "reviewer",
+            "review_source",
+            "review_id",
+            "reviewer_session_id",
+            "executor_session_id",
+            "identity_assurance",
+        ):
+            value = reviewer.get(key)
+            if type(value) is not str or not value.strip():
+                errors.append(f"receipt_{key}_nonempty_json_string_required")
+        if reviewer.get("reviewer") != "Claude":
+            errors.append("receipt_reviewer_must_be_claude")
+        if reviewer.get("review_source") != "Claude Web":
+            errors.append("receipt_review_source_mismatch")
+        if reviewer.get("identity_assurance") != "CONTROLLER_ATTESTED_LOCAL_ONLY":
+            errors.append("receipt_identity_assurance_mismatch")
+        if type(reviewer.get("cryptographic_identity_verified")) is not bool or reviewer.get(
+            "cryptographic_identity_verified"
+        ) is not False:
+            errors.append("receipt_cryptographic_identity_claim_forbidden")
+        if (
+            type(reviewer.get("reviewer_session_id")) is str
+            and type(reviewer.get("executor_session_id")) is str
+            and reviewer.get("reviewer_session_id") == reviewer.get("executor_session_id")
+        ):
+            errors.append("receipt_reviewer_executor_session_must_differ")
+        return {
+            "status": "pass" if not errors else "fail",
+            "errors": sorted(set(errors)),
+            "receipt_verdict": review.get("verdict") if isinstance(review, dict) else None,
+        }
+    except Exception:
+        return {"status": "fail", "errors": ["receipt_input_malformed"], "receipt_verdict": None}
+
+
+def _read_phase_c_v2_git_blob(repo: Path, spec: str) -> dict[str, Any]:
+    probe = _git_repo(repo, ["cat-file", "blob", spec], text=False)
+    if probe.returncode != 0:
+        return {"status": "fail", "errors": ["git_blob_unavailable"], "raw": None}
+    return {"status": "pass", "errors": [], "raw": probe.stdout}
+
+
+def validate_phase_c_v2_candidate(
+    *,
+    repo: Path = ROOT,
+    itl_repo: Path = ITL_ROOT,
+) -> dict[str, Any]:
+    """Operational precommit check over actual union paths and staged Git blobs."""
+
+    actual = phase_c_v2_actual_changed_paths(repo=repo)
+    errors = list(actual.get("errors") or [])
+    changed = actual.get("changed_paths") or []
+    if changed != sorted(PHASE_C_V2_COMMIT_PATHS) or len(changed) != 20:
+        errors.append("phase_c_precommit_exact_20_paths_required")
+    manifest = build_phase_c_v2_authority_manifest(repo=repo)
+    errors.extend(manifest.get("errors") or [])
+    authority_blob = _read_phase_c_v2_git_blob(repo, f":{PHASE_C_V2_AUTHORITY_PATH}")
+    if authority_blob.get("status") != "pass":
+        authority = {"status": "fail", "errors": ["authority_index_blob_unavailable"]}
+    else:
+        authority = validate_phase_c_v2_authority_bytes(authority_blob.get("raw"), itl_repo=itl_repo)
+    errors.extend(authority.get("errors") or [])
+    bundle = build_phase_c_v2_review_bundle(
+        authority_manifest_sha256=manifest.get("authority_manifest_sha256"),
+        authority_projection_sha256=authority.get("target_projection_sha256"),
+    )
+    errors.extend(bundle.get("errors") or [])
+    receipt_blob = _read_phase_c_v2_git_blob(repo, f":{PHASE_C_V2_RECEIPT_PATH}")
+    receipt: dict[str, Any]
+    if receipt_blob.get("status") != "pass":
+        receipt = {"status": "fail", "errors": ["typed_receipt_index_blob_unavailable"]}
+    else:
+        parsed_receipt = parse_phase_c_v2_json(receipt_blob.get("raw"))
+        if parsed_receipt.get("status") != "pass":
+            receipt = {"status": "fail", "errors": parsed_receipt.get("errors") or []}
+        else:
+            receipt = validate_phase_c_v2_receipt_payload(
+                parsed_receipt.get("payload"),
+                authority_manifest_sha256=manifest.get("authority_manifest_sha256"),
+                review_bundle_sha256=bundle.get("review_bundle_sha256"),
+            )
+    errors.extend(receipt.get("errors") or [])
+    return {
+        "status": "pass" if not errors else "fail",
+        "errors": sorted(set(errors)),
+        "base_commit": PHASE_C_V2_EGO_BASE_COMMIT,
+        "authority_commit": None,
+        "changed_paths": changed,
+        "authority_manifest_sha256": manifest.get("authority_manifest_sha256"),
+        "source_projection_sha256": authority.get("source_projection_sha256"),
+        "target_projection_sha256": authority.get("target_projection_sha256"),
+        "review_bundle_sha256": bundle.get("review_bundle_sha256"),
+        "receipt_verdict": receipt.get("receipt_verdict"),
+    }
+
+
+def validate_phase_c_v2_commit(
+    authority_commit: Any,
+    *,
+    repo: Path = ROOT,
+    itl_repo: Path = ITL_ROOT,
+) -> dict[str, Any]:
+    """Authoritative postcommit recomputation from immutable Git objects only."""
+
+    errors: list[str] = []
+    result: dict[str, Any] = {
+        "status": "fail",
+        "errors": errors,
+        "base_commit": PHASE_C_V2_EGO_BASE_COMMIT,
+        "authority_commit": authority_commit if isinstance(authority_commit, str) else None,
+        "changed_paths": [],
+        "authority_manifest_sha256": None,
+        "source_projection_sha256": None,
+        "target_projection_sha256": None,
+        "receipt_verdict": None,
+    }
+    try:
+        if type(authority_commit) is not str or re.fullmatch(r"[0-9a-f]{40}", authority_commit) is None:
+            errors.append("authority_commit_id_invalid")
+            return result
+        actual = phase_c_v2_actual_changed_paths(repo=repo, commit=authority_commit)
+        errors.extend(actual.get("errors") or [])
+        changed = actual.get("changed_paths") or []
+        result["changed_paths"] = changed
+        if actual.get("parent") != PHASE_C_V2_EGO_BASE_COMMIT:
+            errors.append("authority_commit_not_exact_direct_child")
+        if changed != sorted(PHASE_C_V2_COMMIT_PATHS) or len(changed) != 20:
+            errors.append("authority_commit_exact_20_paths_required")
+        manifest = build_phase_c_v2_authority_manifest(repo=repo, ref=authority_commit)
+        errors.extend(manifest.get("errors") or [])
+        result["authority_manifest_sha256"] = manifest.get("authority_manifest_sha256")
+        authority_blob = _read_phase_c_v2_git_blob(
+            repo,
+            f"{authority_commit}:{PHASE_C_V2_AUTHORITY_PATH}",
+        )
+        if authority_blob.get("status") != "pass":
+            authority = {"status": "fail", "errors": ["authority_commit_blob_unavailable"]}
+        else:
+            authority = validate_phase_c_v2_authority_bytes(authority_blob.get("raw"), itl_repo=itl_repo)
+        errors.extend(authority.get("errors") or [])
+        result["source_projection_sha256"] = authority.get("source_projection_sha256")
+        result["target_projection_sha256"] = authority.get("target_projection_sha256")
+        bundle = build_phase_c_v2_review_bundle(
+            authority_manifest_sha256=manifest.get("authority_manifest_sha256"),
+            authority_projection_sha256=authority.get("target_projection_sha256"),
+        )
+        errors.extend(bundle.get("errors") or [])
+        receipt_blob = _read_phase_c_v2_git_blob(
+            repo,
+            f"{authority_commit}:{PHASE_C_V2_RECEIPT_PATH}",
+        )
+        if receipt_blob.get("status") != "pass":
+            receipt = {"status": "fail", "errors": ["typed_receipt_commit_blob_unavailable"]}
+        else:
+            parsed_receipt = parse_phase_c_v2_json(receipt_blob.get("raw"))
+            if parsed_receipt.get("status") != "pass":
+                receipt = {"status": "fail", "errors": parsed_receipt.get("errors") or []}
+            else:
+                receipt = validate_phase_c_v2_receipt_payload(
+                    parsed_receipt.get("payload"),
+                    authority_manifest_sha256=manifest.get("authority_manifest_sha256"),
+                    review_bundle_sha256=bundle.get("review_bundle_sha256"),
+                )
+        errors.extend(receipt.get("errors") or [])
+        result["receipt_verdict"] = receipt.get("receipt_verdict")
+        result["errors"] = sorted(set(errors))
+        result["status"] = "pass" if not result["errors"] else "fail"
+        return result
+    except Exception:
+        result["errors"] = sorted(set([*errors, "authority_commit_input_malformed"]))
+        return result
+
+
+def validate_phase_c_v2_mutation_admission(
+    scope: Any,
+    *,
+    repo: Path = ROOT,
+    itl_repo: Path = ITL_ROOT,
+    mutation_commit: str | None = None,
+) -> dict[str, Any]:
+    """Classify actual Git paths before labels and admit only the exact V2 action."""
+
+    try:
+        actual = phase_c_v2_actual_changed_paths(repo=repo, commit=mutation_commit)
+        errors = list(actual.get("errors") or [])
+        changed = actual.get("changed_paths") or []
+        product_mutations = [path for path in changed if path in PHASE_C_V2_IMPLEMENTATION_TARGETS]
+        if not isinstance(scope, dict):
+            errors.append("mutation_scope_object_required")
+            scope = {}
+        action = scope.get("requested_action_id")
+        if action == PHASE_C_V2_VALIDATION_ACTION_ID:
+            if product_mutations:
+                errors.append("validation_action_product_mutation_forbidden")
+        elif product_mutations:
+            if scope.get("task_id") != PHASE_C_V2_PRODUCT_TASK_ID:
+                errors.append("v2_implementation_task_id_mismatch")
+            if action != PHASE_C_V2_IMPLEMENT_ACTION_ID:
+                errors.append("v2_implementation_action_mismatch")
+            if scope.get("task_kind") != PHASE_C_V2_IMPLEMENT_TASK_KIND:
+                errors.append("v2_implementation_task_kind_mismatch")
+            if scope.get("authorized_implementation_targets") != PHASE_C_V2_IMPLEMENTATION_TARGETS:
+                errors.append("v2_ordered_25_path_allowlist_mismatch")
+            outside = [path for path in changed if path not in PHASE_C_V2_IMPLEMENTATION_TARGETS]
+            if outside:
+                errors.append("v2_actual_paths_outside_allowlist")
+            authority_commit = scope.get("authority_commit")
+            authority = validate_phase_c_v2_commit(authority_commit, repo=repo, itl_repo=itl_repo)
+            if authority.get("status") != "pass":
+                errors.append("v2_committed_receipt_admission_required")
+                errors.extend(f"authority:{item}" for item in authority.get("errors") or [])
+        elif action == PHASE_C_V2_IMPLEMENT_ACTION_ID:
+            errors.append("v2_implementation_requires_actual_product_mutation")
+        return {
+            "status": "pass" if not errors else "fail",
+            "errors": sorted(set(errors)),
+            "actual_changed_paths": changed,
+            "product_mutations": product_mutations,
+            "path_source": actual.get("mode"),
+        }
+    except Exception:
+        return {
+            "status": "fail",
+            "errors": ["mutation_admission_input_malformed"],
+            "actual_changed_paths": [],
+            "product_mutations": [],
+            "path_source": "postcommit_parent_diff_tree" if mutation_commit else "precommit_union",
+        }
+
+
+def validate_phase_c_v2_scope_payload(payload: Any) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(payload, dict):
+        return ["phase_c_v2_scope_object_required"]
+    expected = {
+        "schema_version": "ego.phase_c.v2_simplified_scope.v1",
+        "task_id": PHASE_C_V2_TASK_ID,
+        "task_kind": PHASE_C_V2_TRANSITION_TASK_KIND,
+        "requested_action_id": PHASE_C_V2_TRANSITION_ACTION_ID,
+        "base_commit": PHASE_C_V2_EGO_BASE_COMMIT,
+        "itl_commit": PHASE_C_V2_ITL_COMMIT,
+        "itl_state_path": PHASE_C_V2_ITL_STATE_PATH,
+        "authority_path": PHASE_C_V2_AUTHORITY_PATH,
+        "receipt_path": PHASE_C_V2_RECEIPT_PATH,
+        "all_switches_closed": True,
+        "auto_remote_anchor": "forbidden",
+        "stop_condition": "CLOSED_ANTI_ZENO__PHASE_C_AUTHORIZATION_NOT_ESTABLISHED",
+    }
+    for key, expected_value in expected.items():
+        if payload.get(key) != expected_value or type(payload.get(key)) is not type(expected_value):
+            errors.append(f"phase_c_v2_scope_{key}_mismatch")
+    if payload.get("reviewed_nonreceipt_paths") != PHASE_C_V2_REVIEWED_PATHS:
+        errors.append("phase_c_v2_scope_reviewed_paths_mismatch")
+    if payload.get("allowed_mutation_paths") != PHASE_C_V2_COMMIT_PATHS:
+        errors.append("phase_c_v2_scope_allowed_paths_mismatch")
+    if payload.get("exact_commit_paths") != PHASE_C_V2_COMMIT_PATHS:
+        errors.append("phase_c_v2_scope_commit_paths_mismatch")
+    if payload.get("implementation_allowlist") != PHASE_C_V2_IMPLEMENTATION_TARGETS:
+        errors.append("phase_c_v2_scope_implementation_allowlist_mismatch")
+    return sorted(set(errors))
 
 
 def _json_pointer_escape(value: str) -> str:
@@ -2898,14 +3797,29 @@ def build_route_guard_readback(program_state: dict[str, Any], runner: GuardRunne
         if schema_version == "ego.route_guard.v4"
         else validate_v1_ready_product_authority(program_state, require_review=True)
         if schema_version == "ego.route_guard.v5"
+        else validate_phase_c_v2_authority_file()
+        if schema_version == "ego.route_guard.v6"
         else {}
     )
     product = route_guard.get("product_authority") or {}
     v1_ready = route_guard.get("v1_ready_authority") or {}
-    is_visible_life = schema_version in {"ego.route_guard.v3", "ego.route_guard.v4", "ego.route_guard.v5"}
+    v2_authority = route_guard.get("v2_authority") or {}
+    is_visible_life = schema_version in {
+        "ego.route_guard.v3",
+        "ego.route_guard.v4",
+        "ego.route_guard.v5",
+        "ego.route_guard.v6",
+    }
     is_visible_life_core = schema_version == "ego.route_guard.v4"
     is_v1_ready = schema_version == "ego.route_guard.v5"
-    active_product = v1_ready if schema_version == "ego.route_guard.v5" else product
+    is_v2 = schema_version == "ego.route_guard.v6"
+    active_product = (
+        v2_authority
+        if is_v2
+        else v1_ready
+        if schema_version == "ego.route_guard.v5"
+        else product
+    )
     closed_card2_blocked_until = (
         ((route_state.get("action_dependencies") or {}).get(CARD2_BANK_ACTION_ID) or {}).get(
             "blocked_until"
@@ -2927,7 +3841,7 @@ def build_route_guard_readback(program_state: dict[str, Any], runner: GuardRunne
             if is_visible_life
             else route_state.get("forbidden_next_actions") or []
         ),
-        "blocked_until": [] if is_v1_ready else closed_card2_blocked_until,
+        "blocked_until": [] if is_v1_ready or is_v2 else closed_card2_blocked_until,
         "closed_card2_blocked_until": closed_card2_blocked_until,
         "authorized_implementation_targets": (
             active_product.get("authorized_implementation_targets") or []
@@ -2940,6 +3854,9 @@ def build_route_guard_readback(program_state: dict[str, Any], runner: GuardRunne
             bool(dependency_readback.get("all_satisfied")) if schema_version == "ego.route_guard.v3" else False
         ),
         "product_development_core_lineage": (
+            v2_authority.get("lineage_root_authority_route_id")
+            if is_v2
+            else
             v1_ready.get("lineage_root_authority_route_id")
             if is_v1_ready
             else product.get("product_development_core_lineage")
@@ -2947,6 +3864,9 @@ def build_route_guard_readback(program_state: dict[str, Any], runner: GuardRunne
             else None
         ),
         "product_development_core": (
+            v2_authority.get("core_id")
+            if is_v2
+            else
             v1_ready.get("core_id")
             if is_v1_ready
             else product.get("product_development_core")
@@ -3004,6 +3924,35 @@ def validate_route_mutation_scope(
     execution_requested: bool = False,
 ) -> list[dict[str, Any]]:
     blockers: list[dict[str, Any]] = []
+    raw_scope = scope.get("raw") if isinstance(scope, dict) else None
+    raw_scope = raw_scope if isinstance(raw_scope, dict) and raw_scope else scope
+    if isinstance(raw_scope, dict) and raw_scope.get("task_id") == PHASE_C_V2_TASK_ID:
+        for error in validate_phase_c_v2_scope_payload(raw_scope):
+            blockers.append({"reason": error})
+        actual = phase_c_v2_actual_changed_paths(repo=ROOT)
+        if actual.get("status") != "pass":
+            blockers.append(
+                {
+                    "reason": "phase_c_v2_actual_git_paths_unavailable",
+                    "errors": actual.get("errors") or [],
+                }
+            )
+        elif actual.get("changed_paths") != sorted(PHASE_C_V2_COMMIT_PATHS):
+            blockers.append(
+                {
+                    "reason": "phase_c_v2_precommit_exact_20_paths_required",
+                    "paths": actual.get("changed_paths") or [],
+                }
+            )
+        candidate = validate_phase_c_v2_candidate(repo=ROOT, itl_repo=ITL_ROOT)
+        if candidate.get("status") != "pass":
+            blockers.append(
+                {
+                    "reason": "phase_c_v2_typed_candidate_admission_failed",
+                    "errors": candidate.get("errors") or [],
+                }
+            )
+        return blockers
     route_guard = program_state.get("route_guard") or {}
     route_state = ((route_guard.get("transcribed_itl") or {}).get("route_state") or {})
     required_scope_fields = (
@@ -3830,6 +4779,10 @@ def build_parser() -> argparse.ArgumentParser:
         sub = subparsers.add_parser(name)
         sub.add_argument("--format", choices=["json", "markdown"], default="json")
         sub.add_argument("--out")
+    phase_c_v2 = subparsers.add_parser("validate-phase-c-v2-commit")
+    phase_c_v2.add_argument("--authority-commit", required=True)
+    phase_c_v2.add_argument("--format", choices=["json"], default="json")
+    phase_c_v2.add_argument("--out")
     return parser
 
 
@@ -3844,6 +4797,10 @@ def main(
     out = stdout or sys.stdout
     runner = runner or GuardRunner()
     try:
+        if args.command == "validate-phase-c-v2-commit":
+            payload = validate_phase_c_v2_commit(args.authority_commit)
+            write_payload(payload, fmt=args.format, out_path=args.out, stream=out)
+            return 0 if payload.get("status") == "pass" else 1
         kwargs = {
             "contract_path": Path(args.contract),
             "program_state_path": Path(args.program_state),

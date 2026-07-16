@@ -1,10 +1,10 @@
 # Active Context Pack
 
-> `CURRENT_MACHINE_ROUTE_AUTHORITY: EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A__IMPLEMENTATION_AUTHORIZED_DEFAULT_OFF`
+> `CURRENT_MACHINE_ROUTE_AUTHORITY: EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A__EXACT_25_PATH_PRODUCT_AUTHORITY_DEFAULT_OFF`
 >
 > `HISTORICAL_8692_EGODESKTOP_ROUTE: SUPERSEDED_ARCHIVE_POINTER_ONLY`
 >
-> Current product-development action is the exact default-off V1 continuity-playground implementation. The older mechanism-successor sections below are archive pointers only.
+> After the typed Phase-C commit gate passes, `codex/ego-v2-product-first-001a` is the sole active V2 development authority for the exact ordered 25 paths. Dirty main is a non-live negative checkpoint. Older mechanism-successor sections below are archive pointers only.
 
 Source of truth: `docs/PROGRAM_STATE_UNIFIED.yaml`.
 
@@ -13,8 +13,8 @@ This file is a derived reader pack for humans and AI agents. It is not a second 
 ## Current Runtime Owner
 
 - Current default runtime owner: `EgoOperator/`
-- Current phase: `legacy_pre_operator_mainline_archived_from_current_tree`
-- Current layer: `transition / operator-first`
+- Current product phase: `v2_product_first_authority__activation_bound_to_exact_phase_c_direct_child_commit`
+- Current product layer: `engineering implementation authorization + product-development control-plane`
 - Highest evidence level: `E3`
 - Default runtime path to preserve:
 
@@ -28,13 +28,13 @@ The current runtime owner remains EgoOperator. Its human-review import remains a
 observation debt, but it no longer owns the mechanism-successor development
 route.
 
-## Canonical Mechanism Successor
+## Historical Canonical Mechanism Successor
 
 Mandatory route document:
 
 `docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md`
 
-Selected successor:
+Frozen historical successor (no live action authority):
 
 ```text
 K0 Foundation canonical substrate
@@ -50,11 +50,8 @@ Current successor status:
 - runtime authority: `none`
 - real trigger evidence: absent
 
-The next minimal action is M1 headless integration only. Before any EgoDesktop
-work, prove K0 serialized state and the single source/replay path can contain and
-recompute every load-bearing model/update variable. Stop on adapter-local hidden
-state, a second transition path, replay weakness, or equal-access baseline
-equivalence.
+The current next action is V2 P0 inside the exact ordered 25-path allowlist only,
+after the Phase-C postcommit readback. M1/EgoDesktop work remains forbidden.
 
 ## EgoOperator Observation Debt
 

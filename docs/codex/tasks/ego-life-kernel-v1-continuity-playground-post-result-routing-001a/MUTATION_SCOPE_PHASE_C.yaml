@@ -1,0 +1,80 @@
+schema_version: ego.phase_c.v2_simplified_scope.v1
+task_id: EGO-PHASE-C-V2-AUTHORIZATION-GATE-SIMPLIFICATION-001A
+task_kind: operator_authorized_phase_c_v2_gate_simplification
+requested_action_id: simplify_EGO_PHASE_C_V2_authorization_gate
+base_commit: 089ab5ef27431eb5ace4ff4795f57f08fd052779
+itl_commit: 4a4746435f9bdb0eba02e6c036c2e34a089ece26
+itl_state_path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/state.json
+authority_path: docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/ITL_AUTHORITY_CROSSWALK.json
+receipt_path: docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/PHASE_C_RED_REVIEW.json
+all_switches_closed: true
+auto_remote_anchor: forbidden
+stop_condition: CLOSED_ANTI_ZENO__PHASE_C_AUTHORIZATION_NOT_ESTABLISHED
+reviewed_nonreceipt_paths: &reviewed_nonreceipt_paths
+  - docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/STAGE_CARD.md
+  - docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/COLLISION_RECORD.md
+  - docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/MUTATION_SCOPE_PHASE_C.yaml
+  - docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/ITL_AUTHORITY_CROSSWALK.json
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - docs/STATUS.md
+  - artifacts/reports/program_state_summary.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - docs/REPO_SURFACE_MAP.md
+  - AGENTS.md
+  - README.md
+  - docs/ACTIVE_CONTEXT_PACK.md
+  - docs/MAINLINE_QUICKSTART.md
+  - docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md
+  - docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md
+  - scripts/codex_session_guard.py
+  - scripts/codex/verify_route_convergence.py
+  - scripts/tests/test_codex_session_guard.py
+  - scripts/tests/test_route_governance_supersession.py
+allowed_mutation_paths: &exact_commit_paths
+  - docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/STAGE_CARD.md
+  - docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/COLLISION_RECORD.md
+  - docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/MUTATION_SCOPE_PHASE_C.yaml
+  - docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/ITL_AUTHORITY_CROSSWALK.json
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - docs/STATUS.md
+  - artifacts/reports/program_state_summary.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - docs/REPO_SURFACE_MAP.md
+  - AGENTS.md
+  - README.md
+  - docs/ACTIVE_CONTEXT_PACK.md
+  - docs/MAINLINE_QUICKSTART.md
+  - docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md
+  - docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md
+  - scripts/codex_session_guard.py
+  - scripts/codex/verify_route_convergence.py
+  - scripts/tests/test_codex_session_guard.py
+  - scripts/tests/test_route_governance_supersession.py
+  - docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/PHASE_C_RED_REVIEW.json
+exact_commit_paths: *exact_commit_paths
+implementation_allowlist:
+  - docs/codex/tasks/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A-MUTATION_SCOPE.yaml
+  - labs/ego_life_playground_v0/__init__.py
+  - labs/ego_life_playground_v0/engine.py
+  - labs/ego_life_playground_v0/microworld.py
+  - labs/ego_life_playground_v0/claims.py
+  - labs/ego_life_playground_v0/app.py
+  - labs/ego_life_playground_v0/store.py
+  - scripts/run_ego_life_playground_v0.py
+  - tests/test_ego_life_playground_v0.py
+  - tests/test_ego_life_playground_v2_microworld.py
+  - scripts/codex/verify_ego_life_kernel_v2_microworld.py
+  - scripts/tests/test_verify_ego_life_kernel_v2_microworld.py
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/continuity.sqlite3
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/trace.jsonl
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/product_trigger_receipt.json
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/headroom_report.json
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/collision_record.json
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/baseline_comparison.json
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/ablation_report.json
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/learning_report.json
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/replay_report.json
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/leakage_report.json
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/failure_manifest.json
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/claim_ceiling.txt
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/result.json

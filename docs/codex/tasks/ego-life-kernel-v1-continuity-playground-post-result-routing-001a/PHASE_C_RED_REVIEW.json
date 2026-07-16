@@ -1,0 +1,22 @@
+{
+  "schema_version": "ego.phase_c.v2_typed_receipt.v1",
+  "task_id": "EGO-PHASE-C-V2-AUTHORIZATION-GATE-SIMPLIFICATION-001A",
+  "base_commit": "089ab5ef27431eb5ace4ff4795f57f08fd052779",
+  "authority_manifest_sha256": "b0d7f226ba625400fb9fe6db1a72194e5dc85cd5ee192775cd6a1be7da129bd1",
+  "review_bundle_sha256": "84e7b3b32a761da7ebaace29037699378245c37025ed340ef5b27a7331ca8428",
+  "review": {
+    "spec_verdict": "SPEC_COMPLIANT",
+    "code_quality_verdict": "CODE_QUALITY_APPROVED",
+    "verdict": "NO_BLOCKING_FINDINGS",
+    "blocking_findings": []
+  },
+  "reviewer": {
+    "reviewer": "Claude",
+    "review_source": "Claude Web",
+    "review_id": "CLAUDE-RED-EGO-PHASE-C-V2-20260716-001",
+    "reviewer_session_id": "claude_web_phasec_v2_20260716_001",
+    "executor_session_id": "codex_ego_v2_product_first_20260716_root",
+    "identity_assurance": "CONTROLLER_ATTESTED_LOCAL_ONLY",
+    "cryptographic_identity_verified": false
+  }
+}

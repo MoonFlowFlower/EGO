@@ -1,10 +1,10 @@
 # Mainline Quickstart
 
-> `CURRENT_MACHINE_ROUTE_AUTHORITY: EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A__IMPLEMENTATION_AUTHORIZED_DEFAULT_OFF`
+> `CURRENT_MACHINE_ROUTE_AUTHORITY: EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A__EXACT_25_PATH_PRODUCT_AUTHORITY_DEFAULT_OFF`
 >
 > `HISTORICAL_8692_EGODESKTOP_ROUTE: SUPERSEDED_ARCHIVE_POINTER_ONLY`
 >
-> EgoOperator remains the active runtime default. The only live product-development action is the exact default-off V1 continuity-playground implementation; older successor text is historical.
+> EgoOperator remains the active runtime default. After the valid typed Phase-C commit, the only live product-development action is the exact default-off V2 microworld implementation on `codex/ego-v2-product-first-001a`; dirty main and older successor text are non-live history.
 
 ## Current Mainline
 
@@ -16,11 +16,18 @@ Source of truth: `docs/PROGRAM_STATE_UNIFIED.yaml`.
 
 Derived route view: `docs/codex/tasks/TASK_LANE_INDEX.md`.
 
-## Selected Mechanism Successor
+## Current Product-Development Authority
+
+The V2 authority is `EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A`
+with the exact ordered 25-path allowlist in the machine authority envelope. It
+is default-off, runtime-disconnected, has no V2 trigger, and opens no
+runtime/science/remote/proactive/LLM/network switch.
+
+## Historical Selected Mechanism Successor
 
 The current runtime owner and the selected successor are intentionally distinct.
 `EgoOperator` remains the enabled runtime until replacement evidence exists. The
-sole selected default-off successor is:
+frozen historical successor was:
 
 ```text
 K0 Foundation canonical substrate
@@ -33,8 +40,8 @@ Binding route and milestone state:
 - `docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md`
 - `docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md`
 
-Current successor milestone is M1 headless bridge; no EgoDesktop integration,
-enablement, mainline effect, or real trigger exists yet.
+M1 is not a current action. No EgoDesktop integration, V2 runtime enablement,
+V2 mainline effect, or V2 trigger exists.
 
 ## Runtime Ownership
 
