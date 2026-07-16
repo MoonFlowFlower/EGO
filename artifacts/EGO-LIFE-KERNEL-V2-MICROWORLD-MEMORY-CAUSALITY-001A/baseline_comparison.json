@@ -1,0 +1,1553 @@
+{
+  "baseline_access": {
+    "a": {
+      "current_goal": "stimulation",
+      "legal_actions": [
+        "approach",
+        "explore",
+        "forage",
+        "rest",
+        "withdraw"
+      ],
+      "observation": {
+        "agent_position": "home",
+        "cue": "quiet",
+        "event": "quiet_interval",
+        "revealed_outcome": null,
+        "schema_version": "ego.life_playground.microworld.observation.v2",
+        "summary": "The home area is quiet.",
+        "visible_object_ids": [
+          "shelter"
+        ]
+      },
+      "organism": {
+        "connection": 0.5,
+        "energy": 0.45,
+        "safety": 0.62,
+        "stimulation": 0.43
+      },
+      "public_history": [
+        {
+          "action_taken": "forage",
+          "cue": "resource",
+          "next_cue": "quiet",
+          "observation_hash": "40743b36e4256207d9e342d6b25f8fc5b97d267082ead0fdea4c4100ac39d68a",
+          "revealed_outcome": 1.0,
+          "source_command_hash": "4733457294dc40dac4d75707b39b4b887a4a8c8f5040484d1a1821c454b9ce38",
+          "source_episode_id": "episode-000000-8e88cf16de40a533"
+        },
+        {
+          "action_taken": "approach",
+          "cue": "contact",
+          "next_cue": "quiet",
+          "observation_hash": "62eca22e1fac678a4cda0263ffcbfc6dbe34a43ddbc40ff1d3fd07dda4e39dd5",
+          "revealed_outcome": -1.0,
+          "source_command_hash": "fc8bf86400151f152bdc7872cad7b307ae04f007e3b9f0d1dd98c5645aba49db",
+          "source_episode_id": "episode-000000-8e88cf16de40a533"
+        }
+      ],
+      "query_history_prefix": [
+        {
+          "action_taken": "forage",
+          "cue": "resource",
+          "next_cue": "quiet",
+          "observation_hash": "40743b36e4256207d9e342d6b25f8fc5b97d267082ead0fdea4c4100ac39d68a",
+          "revealed_outcome": 1.0,
+          "source_command_hash": "4733457294dc40dac4d75707b39b4b887a4a8c8f5040484d1a1821c454b9ce38",
+          "source_episode_id": "episode-000000-8e88cf16de40a533"
+        }
+      ],
+      "reference_episodes": [
+        [
+          {
+            "action_taken": "forage",
+            "cue": "resource",
+            "next_cue": "quiet",
+            "observation_hash": "40743b36e4256207d9e342d6b25f8fc5b97d267082ead0fdea4c4100ac39d68a",
+            "revealed_outcome": 1.0,
+            "source_command_hash": "4733457294dc40dac4d75707b39b4b887a4a8c8f5040484d1a1821c454b9ce38",
+            "source_episode_id": "episode-000000-8e88cf16de40a533"
+          },
+          {
+            "action_taken": "approach",
+            "cue": "contact",
+            "next_cue": "quiet",
+            "observation_hash": "62eca22e1fac678a4cda0263ffcbfc6dbe34a43ddbc40ff1d3fd07dda4e39dd5",
+            "revealed_outcome": -1.0,
+            "source_command_hash": "fc8bf86400151f152bdc7872cad7b307ae04f007e3b9f0d1dd98c5645aba49db",
+            "source_episode_id": "episode-000000-8e88cf16de40a533"
+          }
+        ],
+        [
+          {
+            "action_taken": "forage",
+            "cue": "resource",
+            "next_cue": "quiet",
+            "observation_hash": "40743b36e4256207d9e342d6b25f8fc5b97d267082ead0fdea4c4100ac39d68a",
+            "revealed_outcome": -1.0,
+            "source_command_hash": "4733457294dc40dac4d75707b39b4b887a4a8c8f5040484d1a1821c454b9ce38",
+            "source_episode_id": "episode-000000-d188e2a5559d51b9"
+          },
+          {
+            "action_taken": "approach",
+            "cue": "contact",
+            "next_cue": "quiet",
+            "observation_hash": "62eca22e1fac678a4cda0263ffcbfc6dbe34a43ddbc40ff1d3fd07dda4e39dd5",
+            "revealed_outcome": 1.0,
+            "source_command_hash": "fc8bf86400151f152bdc7872cad7b307ae04f007e3b9f0d1dd98c5645aba49db",
+            "source_episode_id": "episode-000000-d188e2a5559d51b9"
+          }
+        ]
+      ],
+      "schema_version": "ego.v2.p1.baseline_access.v1"
+    },
+    "b": {
+      "current_goal": "stimulation",
+      "legal_actions": [
+        "approach",
+        "explore",
+        "forage",
+        "rest",
+        "withdraw"
+      ],
+      "observation": {
+        "agent_position": "home",
+        "cue": "quiet",
+        "event": "quiet_interval",
+        "revealed_outcome": null,
+        "schema_version": "ego.life_playground.microworld.observation.v2",
+        "summary": "The home area is quiet.",
+        "visible_object_ids": [
+          "shelter"
+        ]
+      },
+      "organism": {
+        "connection": 0.5,
+        "energy": 0.45,
+        "safety": 0.62,
+        "stimulation": 0.43
+      },
+      "public_history": [
+        {
+          "action_taken": "forage",
+          "cue": "resource",
+          "next_cue": "quiet",
+          "observation_hash": "40743b36e4256207d9e342d6b25f8fc5b97d267082ead0fdea4c4100ac39d68a",
+          "revealed_outcome": -1.0,
+          "source_command_hash": "4733457294dc40dac4d75707b39b4b887a4a8c8f5040484d1a1821c454b9ce38",
+          "source_episode_id": "episode-000000-d188e2a5559d51b9"
+        },
+        {
+          "action_taken": "approach",
+          "cue": "contact",
+          "next_cue": "quiet",
+          "observation_hash": "62eca22e1fac678a4cda0263ffcbfc6dbe34a43ddbc40ff1d3fd07dda4e39dd5",
+          "revealed_outcome": 1.0,
+          "source_command_hash": "fc8bf86400151f152bdc7872cad7b307ae04f007e3b9f0d1dd98c5645aba49db",
+          "source_episode_id": "episode-000000-d188e2a5559d51b9"
+        }
+      ],
+      "query_history_prefix": [
+        {
+          "action_taken": "forage",
+          "cue": "resource",
+          "next_cue": "quiet",
+          "observation_hash": "40743b36e4256207d9e342d6b25f8fc5b97d267082ead0fdea4c4100ac39d68a",
+          "revealed_outcome": -1.0,
+          "source_command_hash": "4733457294dc40dac4d75707b39b4b887a4a8c8f5040484d1a1821c454b9ce38",
+          "source_episode_id": "episode-000000-d188e2a5559d51b9"
+        }
+      ],
+      "reference_episodes": [
+        [
+          {
+            "action_taken": "forage",
+            "cue": "resource",
+            "next_cue": "quiet",
+            "observation_hash": "40743b36e4256207d9e342d6b25f8fc5b97d267082ead0fdea4c4100ac39d68a",
+            "revealed_outcome": 1.0,
+            "source_command_hash": "4733457294dc40dac4d75707b39b4b887a4a8c8f5040484d1a1821c454b9ce38",
+            "source_episode_id": "episode-000000-8e88cf16de40a533"
+          },
+          {
+            "action_taken": "approach",
+            "cue": "contact",
+            "next_cue": "quiet",
+            "observation_hash": "62eca22e1fac678a4cda0263ffcbfc6dbe34a43ddbc40ff1d3fd07dda4e39dd5",
+            "revealed_outcome": -1.0,
+            "source_command_hash": "fc8bf86400151f152bdc7872cad7b307ae04f007e3b9f0d1dd98c5645aba49db",
+            "source_episode_id": "episode-000000-8e88cf16de40a533"
+          }
+        ],
+        [
+          {
+            "action_taken": "forage",
+            "cue": "resource",
+            "next_cue": "quiet",
+            "observation_hash": "40743b36e4256207d9e342d6b25f8fc5b97d267082ead0fdea4c4100ac39d68a",
+            "revealed_outcome": -1.0,
+            "source_command_hash": "4733457294dc40dac4d75707b39b4b887a4a8c8f5040484d1a1821c454b9ce38",
+            "source_episode_id": "episode-000000-d188e2a5559d51b9"
+          },
+          {
+            "action_taken": "approach",
+            "cue": "contact",
+            "next_cue": "quiet",
+            "observation_hash": "62eca22e1fac678a4cda0263ffcbfc6dbe34a43ddbc40ff1d3fd07dda4e39dd5",
+            "revealed_outcome": 1.0,
+            "source_command_hash": "fc8bf86400151f152bdc7872cad7b307ae04f007e3b9f0d1dd98c5645aba49db",
+            "source_episode_id": "episode-000000-d188e2a5559d51b9"
+          }
+        ]
+      ],
+      "schema_version": "ego.v2.p1.baseline_access.v1"
+    }
+  },
+  "candidate_actions": [
+    "forage",
+    "approach"
+  ],
+  "comparisons": [
+    {
+      "actions": [
+        "approach",
+        "approach"
+      ],
+      "baseline_id": "observation_only",
+      "candidate_actions": [
+        "forage",
+        "approach"
+      ],
+      "evidence": {
+        "aggregation_rule": "exact_selected_action_match_over_two_frozen_paired_checkpoints",
+        "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+        "evidence_record_type": "computed_evidence",
+        "input_artifacts": [
+          {
+            "bytes": 700416,
+            "path": "generated://p1/continuity.sqlite3",
+            "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+          },
+          {
+            "bytes": 620842,
+            "path": "generated://p1/trace.jsonl",
+            "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+          },
+          {
+            "bytes": 9782,
+            "path": "authority://p1/mutation-scope",
+            "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+          }
+        ],
+        "producer_function": "verify_ego_life_kernel_v2_microworld.baseline_observation_only",
+        "run_id": "ego-v2-p1-verification-001",
+        "seed_context_episode_ids": {
+          "pair_id": "p1_memory_lineage_pair_001",
+          "seeds": [
+            18,
+            19
+          ]
+        },
+        "value": {
+          "actions": [
+            "approach",
+            "approach"
+          ],
+          "candidate_actions": [
+            "forage",
+            "approach"
+          ],
+          "match_rate": 0.5
+        }
+      },
+      "match_rate": 0.5
+    },
+    {
+      "actions": [
+        "explore",
+        "explore"
+      ],
+      "baseline_id": "q_only",
+      "candidate_actions": [
+        "forage",
+        "approach"
+      ],
+      "evidence": {
+        "aggregation_rule": "exact_selected_action_match_over_two_frozen_paired_checkpoints",
+        "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+        "evidence_record_type": "computed_evidence",
+        "input_artifacts": [
+          {
+            "bytes": 700416,
+            "path": "generated://p1/continuity.sqlite3",
+            "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+          },
+          {
+            "bytes": 620842,
+            "path": "generated://p1/trace.jsonl",
+            "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+          },
+          {
+            "bytes": 9782,
+            "path": "authority://p1/mutation-scope",
+            "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+          }
+        ],
+        "producer_function": "verify_ego_life_kernel_v2_microworld.baseline_q_only",
+        "run_id": "ego-v2-p1-verification-001",
+        "seed_context_episode_ids": {
+          "pair_id": "p1_memory_lineage_pair_001",
+          "seeds": [
+            18,
+            19
+          ]
+        },
+        "value": {
+          "actions": [
+            "explore",
+            "explore"
+          ],
+          "candidate_actions": [
+            "forage",
+            "approach"
+          ],
+          "match_rate": 0.0
+        }
+      },
+      "match_rate": 0.0
+    },
+    {
+      "actions": [
+        "approach",
+        "approach"
+      ],
+      "baseline_id": "cue_clock_fsm",
+      "candidate_actions": [
+        "forage",
+        "approach"
+      ],
+      "evidence": {
+        "aggregation_rule": "exact_selected_action_match_over_two_frozen_paired_checkpoints",
+        "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+        "evidence_record_type": "computed_evidence",
+        "input_artifacts": [
+          {
+            "bytes": 700416,
+            "path": "generated://p1/continuity.sqlite3",
+            "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+          },
+          {
+            "bytes": 620842,
+            "path": "generated://p1/trace.jsonl",
+            "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+          },
+          {
+            "bytes": 9782,
+            "path": "authority://p1/mutation-scope",
+            "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+          }
+        ],
+        "producer_function": "verify_ego_life_kernel_v2_microworld.baseline_cue_clock_fsm",
+        "run_id": "ego-v2-p1-verification-001",
+        "seed_context_episode_ids": {
+          "pair_id": "p1_memory_lineage_pair_001",
+          "seeds": [
+            18,
+            19
+          ]
+        },
+        "value": {
+          "actions": [
+            "approach",
+            "approach"
+          ],
+          "candidate_actions": [
+            "forage",
+            "approach"
+          ],
+          "match_rate": 0.5
+        }
+      },
+      "match_rate": 0.5
+    },
+    {
+      "actions": [
+        "forage",
+        "approach"
+      ],
+      "baseline_id": "last_success",
+      "candidate_actions": [
+        "forage",
+        "approach"
+      ],
+      "evidence": {
+        "aggregation_rule": "exact_selected_action_match_over_two_frozen_paired_checkpoints",
+        "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+        "evidence_record_type": "computed_evidence",
+        "input_artifacts": [
+          {
+            "bytes": 700416,
+            "path": "generated://p1/continuity.sqlite3",
+            "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+          },
+          {
+            "bytes": 620842,
+            "path": "generated://p1/trace.jsonl",
+            "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+          },
+          {
+            "bytes": 9782,
+            "path": "authority://p1/mutation-scope",
+            "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+          }
+        ],
+        "producer_function": "verify_ego_life_kernel_v2_microworld.baseline_last_success",
+        "run_id": "ego-v2-p1-verification-001",
+        "seed_context_episode_ids": {
+          "pair_id": "p1_memory_lineage_pair_001",
+          "seeds": [
+            18,
+            19
+          ]
+        },
+        "value": {
+          "actions": [
+            "forage",
+            "approach"
+          ],
+          "candidate_actions": [
+            "forage",
+            "approach"
+          ],
+          "match_rate": 1.0
+        }
+      },
+      "match_rate": 1.0
+    },
+    {
+      "actions": [
+        "approach",
+        "approach"
+      ],
+      "baseline_id": "recency_window_1",
+      "candidate_actions": [
+        "forage",
+        "approach"
+      ],
+      "evidence": {
+        "aggregation_rule": "exact_selected_action_match_over_two_frozen_paired_checkpoints",
+        "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+        "evidence_record_type": "computed_evidence",
+        "input_artifacts": [
+          {
+            "bytes": 700416,
+            "path": "generated://p1/continuity.sqlite3",
+            "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+          },
+          {
+            "bytes": 620842,
+            "path": "generated://p1/trace.jsonl",
+            "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+          },
+          {
+            "bytes": 9782,
+            "path": "authority://p1/mutation-scope",
+            "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+          }
+        ],
+        "producer_function": "verify_ego_life_kernel_v2_microworld.baseline_recency_window_1",
+        "run_id": "ego-v2-p1-verification-001",
+        "seed_context_episode_ids": {
+          "pair_id": "p1_memory_lineage_pair_001",
+          "seeds": [
+            18,
+            19
+          ]
+        },
+        "value": {
+          "actions": [
+            "approach",
+            "approach"
+          ],
+          "candidate_actions": [
+            "forage",
+            "approach"
+          ],
+          "match_rate": 0.5
+        }
+      },
+      "match_rate": 0.5
+    },
+    {
+      "actions": [
+        "forage",
+        "approach"
+      ],
+      "baseline_id": "recency_window_2",
+      "candidate_actions": [
+        "forage",
+        "approach"
+      ],
+      "evidence": {
+        "aggregation_rule": "exact_selected_action_match_over_two_frozen_paired_checkpoints",
+        "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+        "evidence_record_type": "computed_evidence",
+        "input_artifacts": [
+          {
+            "bytes": 700416,
+            "path": "generated://p1/continuity.sqlite3",
+            "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+          },
+          {
+            "bytes": 620842,
+            "path": "generated://p1/trace.jsonl",
+            "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+          },
+          {
+            "bytes": 9782,
+            "path": "authority://p1/mutation-scope",
+            "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+          }
+        ],
+        "producer_function": "verify_ego_life_kernel_v2_microworld.baseline_recency_window_2",
+        "run_id": "ego-v2-p1-verification-001",
+        "seed_context_episode_ids": {
+          "pair_id": "p1_memory_lineage_pair_001",
+          "seeds": [
+            18,
+            19
+          ]
+        },
+        "value": {
+          "actions": [
+            "forage",
+            "approach"
+          ],
+          "candidate_actions": [
+            "forage",
+            "approach"
+          ],
+          "match_rate": 1.0
+        }
+      },
+      "match_rate": 1.0
+    },
+    {
+      "actions": [
+        "forage",
+        "approach"
+      ],
+      "baseline_id": "recency_window_4",
+      "candidate_actions": [
+        "forage",
+        "approach"
+      ],
+      "evidence": {
+        "aggregation_rule": "exact_selected_action_match_over_two_frozen_paired_checkpoints",
+        "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+        "evidence_record_type": "computed_evidence",
+        "input_artifacts": [
+          {
+            "bytes": 700416,
+            "path": "generated://p1/continuity.sqlite3",
+            "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+          },
+          {
+            "bytes": 620842,
+            "path": "generated://p1/trace.jsonl",
+            "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+          },
+          {
+            "bytes": 9782,
+            "path": "authority://p1/mutation-scope",
+            "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+          }
+        ],
+        "producer_function": "verify_ego_life_kernel_v2_microworld.baseline_recency_window_4",
+        "run_id": "ego-v2-p1-verification-001",
+        "seed_context_episode_ids": {
+          "pair_id": "p1_memory_lineage_pair_001",
+          "seeds": [
+            18,
+            19
+          ]
+        },
+        "value": {
+          "actions": [
+            "forage",
+            "approach"
+          ],
+          "candidate_actions": [
+            "forage",
+            "approach"
+          ],
+          "match_rate": 1.0
+        }
+      },
+      "match_rate": 1.0
+    },
+    {
+      "actions": [
+        "approach",
+        "approach"
+      ],
+      "baseline_id": "exact_public_history_lookup",
+      "candidate_actions": [
+        "forage",
+        "approach"
+      ],
+      "evidence": {
+        "aggregation_rule": "exact_selected_action_match_over_two_frozen_paired_checkpoints",
+        "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+        "evidence_record_type": "computed_evidence",
+        "input_artifacts": [
+          {
+            "bytes": 700416,
+            "path": "generated://p1/continuity.sqlite3",
+            "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+          },
+          {
+            "bytes": 620842,
+            "path": "generated://p1/trace.jsonl",
+            "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+          },
+          {
+            "bytes": 9782,
+            "path": "authority://p1/mutation-scope",
+            "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+          }
+        ],
+        "producer_function": "verify_ego_life_kernel_v2_microworld.baseline_exact_public_history_lookup",
+        "run_id": "ego-v2-p1-verification-001",
+        "seed_context_episode_ids": {
+          "pair_id": "p1_memory_lineage_pair_001",
+          "seeds": [
+            18,
+            19
+          ]
+        },
+        "value": {
+          "actions": [
+            "approach",
+            "approach"
+          ],
+          "candidate_actions": [
+            "forage",
+            "approach"
+          ],
+          "match_rate": 0.5
+        }
+      },
+      "match_rate": 0.5
+    },
+    {
+      "actions": [
+        "forage",
+        "approach"
+      ],
+      "baseline_id": "nearest_history",
+      "candidate_actions": [
+        "forage",
+        "approach"
+      ],
+      "evidence": {
+        "aggregation_rule": "exact_selected_action_match_over_two_frozen_paired_checkpoints",
+        "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+        "evidence_record_type": "computed_evidence",
+        "input_artifacts": [
+          {
+            "bytes": 700416,
+            "path": "generated://p1/continuity.sqlite3",
+            "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+          },
+          {
+            "bytes": 620842,
+            "path": "generated://p1/trace.jsonl",
+            "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+          },
+          {
+            "bytes": 9782,
+            "path": "authority://p1/mutation-scope",
+            "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+          }
+        ],
+        "producer_function": "verify_ego_life_kernel_v2_microworld.baseline_nearest_history",
+        "run_id": "ego-v2-p1-verification-001",
+        "seed_context_episode_ids": {
+          "pair_id": "p1_memory_lineage_pair_001",
+          "seeds": [
+            18,
+            19
+          ]
+        },
+        "value": {
+          "actions": [
+            "forage",
+            "approach"
+          ],
+          "candidate_actions": [
+            "forage",
+            "approach"
+          ],
+          "match_rate": 1.0
+        }
+      },
+      "match_rate": 1.0
+    },
+    {
+      "actions": [
+        "forage",
+        "approach"
+      ],
+      "baseline_id": "graph_lookup",
+      "candidate_actions": [
+        "forage",
+        "approach"
+      ],
+      "evidence": {
+        "aggregation_rule": "exact_selected_action_match_over_two_frozen_paired_checkpoints",
+        "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+        "evidence_record_type": "computed_evidence",
+        "input_artifacts": [
+          {
+            "bytes": 700416,
+            "path": "generated://p1/continuity.sqlite3",
+            "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+          },
+          {
+            "bytes": 620842,
+            "path": "generated://p1/trace.jsonl",
+            "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+          },
+          {
+            "bytes": 9782,
+            "path": "authority://p1/mutation-scope",
+            "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+          }
+        ],
+        "producer_function": "verify_ego_life_kernel_v2_microworld.baseline_graph_lookup",
+        "run_id": "ego-v2-p1-verification-001",
+        "seed_context_episode_ids": {
+          "pair_id": "p1_memory_lineage_pair_001",
+          "seeds": [
+            18,
+            19
+          ]
+        },
+        "value": {
+          "actions": [
+            "forage",
+            "approach"
+          ],
+          "candidate_actions": [
+            "forage",
+            "approach"
+          ],
+          "match_rate": 1.0
+        }
+      },
+      "match_rate": 1.0
+    },
+    {
+      "actions": [
+        "approach",
+        "approach"
+      ],
+      "baseline_id": "successor_map",
+      "candidate_actions": [
+        "forage",
+        "approach"
+      ],
+      "evidence": {
+        "aggregation_rule": "exact_selected_action_match_over_two_frozen_paired_checkpoints",
+        "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+        "evidence_record_type": "computed_evidence",
+        "input_artifacts": [
+          {
+            "bytes": 700416,
+            "path": "generated://p1/continuity.sqlite3",
+            "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+          },
+          {
+            "bytes": 620842,
+            "path": "generated://p1/trace.jsonl",
+            "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+          },
+          {
+            "bytes": 9782,
+            "path": "authority://p1/mutation-scope",
+            "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+          }
+        ],
+        "producer_function": "verify_ego_life_kernel_v2_microworld.baseline_successor_map",
+        "run_id": "ego-v2-p1-verification-001",
+        "seed_context_episode_ids": {
+          "pair_id": "p1_memory_lineage_pair_001",
+          "seeds": [
+            18,
+            19
+          ]
+        },
+        "value": {
+          "actions": [
+            "approach",
+            "approach"
+          ],
+          "candidate_actions": [
+            "forage",
+            "approach"
+          ],
+          "match_rate": 0.5
+        }
+      },
+      "match_rate": 0.5
+    },
+    {
+      "actions": [
+        "forage",
+        "approach"
+      ],
+      "baseline_id": "fsm_planner",
+      "candidate_actions": [
+        "forage",
+        "approach"
+      ],
+      "evidence": {
+        "aggregation_rule": "exact_selected_action_match_over_two_frozen_paired_checkpoints",
+        "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+        "evidence_record_type": "computed_evidence",
+        "input_artifacts": [
+          {
+            "bytes": 700416,
+            "path": "generated://p1/continuity.sqlite3",
+            "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+          },
+          {
+            "bytes": 620842,
+            "path": "generated://p1/trace.jsonl",
+            "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+          },
+          {
+            "bytes": 9782,
+            "path": "authority://p1/mutation-scope",
+            "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+          }
+        ],
+        "producer_function": "verify_ego_life_kernel_v2_microworld.baseline_fsm_planner",
+        "run_id": "ego-v2-p1-verification-001",
+        "seed_context_episode_ids": {
+          "pair_id": "p1_memory_lineage_pair_001",
+          "seeds": [
+            18,
+            19
+          ]
+        },
+        "value": {
+          "actions": [
+            "forage",
+            "approach"
+          ],
+          "candidate_actions": [
+            "forage",
+            "approach"
+          ],
+          "match_rate": 1.0
+        }
+      },
+      "match_rate": 1.0
+    },
+    {
+      "actions": [
+        "forage",
+        "approach"
+      ],
+      "baseline_id": "episodic_traversal",
+      "candidate_actions": [
+        "forage",
+        "approach"
+      ],
+      "evidence": {
+        "aggregation_rule": "exact_selected_action_match_over_two_frozen_paired_checkpoints",
+        "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+        "evidence_record_type": "computed_evidence",
+        "input_artifacts": [
+          {
+            "bytes": 700416,
+            "path": "generated://p1/continuity.sqlite3",
+            "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+          },
+          {
+            "bytes": 620842,
+            "path": "generated://p1/trace.jsonl",
+            "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+          },
+          {
+            "bytes": 9782,
+            "path": "authority://p1/mutation-scope",
+            "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+          }
+        ],
+        "producer_function": "verify_ego_life_kernel_v2_microworld.baseline_episodic_traversal",
+        "run_id": "ego-v2-p1-verification-001",
+        "seed_context_episode_ids": {
+          "pair_id": "p1_memory_lineage_pair_001",
+          "seeds": [
+            18,
+            19
+          ]
+        },
+        "value": {
+          "actions": [
+            "forage",
+            "approach"
+          ],
+          "candidate_actions": [
+            "forage",
+            "approach"
+          ],
+          "match_rate": 1.0
+        }
+      },
+      "match_rate": 1.0
+    },
+    {
+      "access_contract": {
+        "algorithm": "fixed_untrained_prior_total_deficit_reduction_minus_cost",
+        "public_inputs": [
+          "organism",
+          "legal_actions"
+        ],
+        "updates": "none"
+      },
+      "actions": [
+        "forage",
+        "forage"
+      ],
+      "baseline_id": "no_update",
+      "candidate_actions": [
+        "forage",
+        "approach"
+      ],
+      "evidence": {
+        "aggregation_rule": "exact_selected_action_match_over_two_frozen_paired_checkpoints",
+        "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+        "evidence_record_type": "computed_evidence",
+        "input_artifacts": [
+          {
+            "bytes": 700416,
+            "path": "generated://p1/continuity.sqlite3",
+            "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+          },
+          {
+            "bytes": 620842,
+            "path": "generated://p1/trace.jsonl",
+            "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+          },
+          {
+            "bytes": 9782,
+            "path": "authority://p1/mutation-scope",
+            "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+          }
+        ],
+        "producer_function": "verify_ego_life_kernel_v2_microworld.baseline_no_update",
+        "run_id": "ego-v2-p1-verification-001",
+        "seed_context_episode_ids": {
+          "pair_id": "p1_memory_lineage_pair_001",
+          "seeds": [
+            18,
+            19
+          ]
+        },
+        "value": {
+          "actions": [
+            "forage",
+            "forage"
+          ],
+          "candidate_actions": [
+            "forage",
+            "approach"
+          ],
+          "match_rate": 0.5
+        }
+      },
+      "match_rate": 0.5
+    },
+    {
+      "actions": [
+        "rest",
+        "rest"
+      ],
+      "baseline_id": "from_scratch",
+      "candidate_actions": [
+        "forage",
+        "approach"
+      ],
+      "evidence": {
+        "aggregation_rule": "exact_selected_action_match_over_two_frozen_paired_checkpoints",
+        "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+        "evidence_record_type": "computed_evidence",
+        "input_artifacts": [
+          {
+            "bytes": 700416,
+            "path": "generated://p1/continuity.sqlite3",
+            "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+          },
+          {
+            "bytes": 620842,
+            "path": "generated://p1/trace.jsonl",
+            "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+          },
+          {
+            "bytes": 9782,
+            "path": "authority://p1/mutation-scope",
+            "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+          }
+        ],
+        "producer_function": "verify_ego_life_kernel_v2_microworld.baseline_from_scratch",
+        "run_id": "ego-v2-p1-verification-001",
+        "seed_context_episode_ids": {
+          "pair_id": "p1_memory_lineage_pair_001",
+          "seeds": [
+            18,
+            19
+          ]
+        },
+        "value": {
+          "actions": [
+            "rest",
+            "rest"
+          ],
+          "candidate_actions": [
+            "forage",
+            "approach"
+          ],
+          "match_rate": 0.0
+        }
+      },
+      "match_rate": 0.0
+    },
+    {
+      "actions": [
+        "forage",
+        "approach"
+      ],
+      "baseline_id": "count_table",
+      "candidate_actions": [
+        "forage",
+        "approach"
+      ],
+      "evidence": {
+        "aggregation_rule": "exact_selected_action_match_over_two_frozen_paired_checkpoints",
+        "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+        "evidence_record_type": "computed_evidence",
+        "input_artifacts": [
+          {
+            "bytes": 700416,
+            "path": "generated://p1/continuity.sqlite3",
+            "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+          },
+          {
+            "bytes": 620842,
+            "path": "generated://p1/trace.jsonl",
+            "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+          },
+          {
+            "bytes": 9782,
+            "path": "authority://p1/mutation-scope",
+            "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+          }
+        ],
+        "producer_function": "verify_ego_life_kernel_v2_microworld.baseline_count_table",
+        "run_id": "ego-v2-p1-verification-001",
+        "seed_context_episode_ids": {
+          "pair_id": "p1_memory_lineage_pair_001",
+          "seeds": [
+            18,
+            19
+          ]
+        },
+        "value": {
+          "actions": [
+            "forage",
+            "approach"
+          ],
+          "candidate_actions": [
+            "forage",
+            "approach"
+          ],
+          "match_rate": 1.0
+        }
+      },
+      "match_rate": 1.0
+    },
+    {
+      "actions": [
+        "forage",
+        "approach"
+      ],
+      "baseline_id": "transition_table",
+      "candidate_actions": [
+        "forage",
+        "approach"
+      ],
+      "evidence": {
+        "aggregation_rule": "exact_selected_action_match_over_two_frozen_paired_checkpoints",
+        "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+        "evidence_record_type": "computed_evidence",
+        "input_artifacts": [
+          {
+            "bytes": 700416,
+            "path": "generated://p1/continuity.sqlite3",
+            "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+          },
+          {
+            "bytes": 620842,
+            "path": "generated://p1/trace.jsonl",
+            "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+          },
+          {
+            "bytes": 9782,
+            "path": "authority://p1/mutation-scope",
+            "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+          }
+        ],
+        "producer_function": "verify_ego_life_kernel_v2_microworld.baseline_transition_table",
+        "run_id": "ego-v2-p1-verification-001",
+        "seed_context_episode_ids": {
+          "pair_id": "p1_memory_lineage_pair_001",
+          "seeds": [
+            18,
+            19
+          ]
+        },
+        "value": {
+          "actions": [
+            "forage",
+            "approach"
+          ],
+          "candidate_actions": [
+            "forage",
+            "approach"
+          ],
+          "match_rate": 1.0
+        }
+      },
+      "match_rate": 1.0
+    }
+  ],
+  "control_equivalent": true,
+  "evidence": {
+    "aggregation_rule": "maximum_exact_action_match_rate_across_all_predeclared_controls",
+    "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+    "evidence_record_type": "computed_evidence",
+    "input_artifacts": [
+      {
+        "bytes": 700416,
+        "path": "generated://p1/continuity.sqlite3",
+        "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+      },
+      {
+        "bytes": 620842,
+        "path": "generated://p1/trace.jsonl",
+        "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+      },
+      {
+        "bytes": 9782,
+        "path": "authority://p1/mutation-scope",
+        "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+      }
+    ],
+    "producer_function": "verify_ego_life_kernel_v2_microworld._baseline_report",
+    "run_id": "ego-v2-p1-verification-001",
+    "seed_context_episode_ids": {
+      "pair_id": "p1_memory_lineage_pair_001",
+      "seeds": [
+        18,
+        19
+      ]
+    },
+    "value": {
+      "match_rate": 1.0,
+      "strongest": "transition_table"
+    }
+  },
+  "invocation_ledger": [
+    {
+      "baseline_id": "observation_only",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_observation_only",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "observation_only",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_observation_only",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "q_only",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "explore",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_q_only",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "q_only",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "explore",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_q_only",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "cue_clock_fsm",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_cue_clock_fsm",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "cue_clock_fsm",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_cue_clock_fsm",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "last_success",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_last_success",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "last_success",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_last_success",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "recency_window_1",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_recency_window_1",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "recency_window_1",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_recency_window_1",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "recency_window_2",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_recency_window_2",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "recency_window_2",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_recency_window_2",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "recency_window_4",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_recency_window_4",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "recency_window_4",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_recency_window_4",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "exact_public_history_lookup",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_exact_public_history_lookup",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "exact_public_history_lookup",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_exact_public_history_lookup",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "nearest_history",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_nearest_history",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "nearest_history",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_nearest_history",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "graph_lookup",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_graph_lookup",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "graph_lookup",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_graph_lookup",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "successor_map",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_successor_map",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "successor_map",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_successor_map",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "fsm_planner",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_fsm_planner",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "fsm_planner",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_fsm_planner",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "episodic_traversal",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_episodic_traversal",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "episodic_traversal",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_episodic_traversal",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "no_update",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_no_update",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "no_update",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_no_update",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "from_scratch",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "rest",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_from_scratch",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "from_scratch",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "rest",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_from_scratch",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "count_table",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_count_table",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "count_table",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_count_table",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "transition_table",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_transition_table",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "transition_table",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_transition_table",
+      "seed": 19,
+      "side": "b"
+    }
+  ],
+  "schema_version": "ego.v2.p1.baseline_comparison.v1",
+  "strongest_match_rate": 1.0,
+  "strongest_matching_control": "transition_table"
+}

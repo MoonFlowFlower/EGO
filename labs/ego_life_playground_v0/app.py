@@ -17,6 +17,7 @@ from .engine import (
     DEFAULT_INTERVENTIONS,
     EngineInvariantError,
     StepResult,
+    canonical_hash,
     compute_step,
     initial_state,
     make_command,
@@ -28,6 +29,7 @@ from .microworld import (
     default_event_for_sequence,
     event_for_cue,
     make_public_frame,
+    public_world_projection,
 )
 from .store import (
     CommitReceipt,
@@ -42,6 +44,24 @@ DISCLOSURE = (
     "Deterministic visible microworld + deficit scorer + tabular EMA; "
     "local default-off product surface; science weight 0."
 )
+
+
+def public_state_projection(state: Mapping[str, Any]) -> dict[str, Any]:
+    """Return the exact normal-product state commitment, excluding private dynamics."""
+
+    return {
+        "schema_version": "ego.life_playground.public_state_projection.v1",
+        "clock": deepcopy(state["clock"]),
+        "organism": deepcopy(state["organism"]),
+        "current_goal": deepcopy(state["current_goal"]),
+        "world": public_world_projection(state["world"]),
+    }
+
+
+def public_state_hash(state: Mapping[str, Any]) -> str:
+    """Hash only renderer-visible state; never commit private world bytes."""
+
+    return canonical_hash(public_state_projection(state))
 
 
 @dataclass(frozen=True)
@@ -78,7 +98,7 @@ class PlaygroundController:
 
         self.run_id = selected_run_id or f"local-{uuid.uuid4().hex[:16]}"
         self.run_meta = make_run_metadata(self.run_id, seed)
-        state = initial_state(run_id=self.run_id)
+        state = initial_state(run_id=self.run_id, seed=seed)
         store.create_run(self.run_meta, state)
         recovered = store.recover_run(self.run_id)
         self._adopt_recovery(recovered)
@@ -160,7 +180,7 @@ class PlaygroundController:
             raise EngineInvariantError(f"run already exists: {selected}")
         seed = int(self.run_meta["seed"])
         run_meta = make_run_metadata(selected, seed)
-        state = initial_state(run_id=selected)
+        state = initial_state(run_id=selected, seed=seed)
         self.store.create_run(run_meta, state)
         recovered = self.store.recover_run(selected)
         self.run_id = selected
@@ -186,10 +206,58 @@ def _timeline_from_recovery(recovery: RecoveryResult) -> list[dict[str, Any]]:
                 "observation": "quiet" if trace is None else trace["cue"],
                 "observation_hash": None if trace is None else trace["observation_hash"],
                 "selected_action": None if trace is None else trace["selected_action"],
-                "trace_hash": None if trace is None else trace["trace_hash"],
+                "world_outcome": None if trace is None else deepcopy(trace.get("world_outcome")),
+                "claim_support_margin": None
+                if trace is None
+                else trace.get("claim_retrieval", {}).get("support_margin"),
+                "claim_provenance_event_ids": []
+                if trace is None
+                else deepcopy(
+                    trace.get("claim_retrieval", {}).get("provenance_event_ids", [])
+                ),
+                "public_state_hash": public_state_hash(frame.state),
             }
         )
     return timeline
+
+
+def build_tk_trace_payload(
+    state: Mapping[str, Any], trace: Mapping[str, Any] | None
+) -> dict[str, Any]:
+    """Build the normal Tk trace view without full state/world/trace commitments."""
+
+    current_goal = state["current_goal"]
+    if trace is None:
+        return {
+            "clock": deepcopy(state["clock"]),
+            "current_goal": deepcopy(current_goal),
+            "selected_action": None,
+            "public_state_hash": public_state_hash(state),
+        }
+    return {
+        "clock": deepcopy(state["clock"]),
+        "current_goal": deepcopy(current_goal),
+        "trigger_source": trace["trigger_source"],
+        "interventions": deepcopy(trace["interventions"]),
+        "command": deepcopy(trace["command"]),
+        "selected_action": trace["selected_action"],
+        "prediction": deepcopy(trace["prediction"]),
+        "actual_delta": deepcopy(trace["actual_delta"]),
+        "prediction_error": deepcopy(trace["prediction_error"]),
+        "model_update": deepcopy(trace["model_update"]),
+        "memory_update": deepcopy(trace["memory_update"]),
+        "claim_retrieval": deepcopy(trace.get("claim_retrieval")),
+        "claim_update": deepcopy(trace.get("claim_update")),
+        "world_outcome": deepcopy(trace.get("world_outcome")),
+        "provenance_projection": deepcopy(trace["provenance_projection"]),
+        "memory_refs": deepcopy(trace["memory_refs"]),
+        "policy_projection_hash": trace.get("policy_projection_hash"),
+        "policy_non_memory_projection_hash": trace.get(
+            "policy_non_memory_projection_hash"
+        ),
+        "public_state_hash": public_state_hash(state),
+        "code_path_hash": trace["code_path_hash"],
+    }
 
 
 def build_terminal_snapshot(controller: PlaygroundController) -> dict[str, Any]:
@@ -234,19 +302,29 @@ def build_terminal_snapshot(controller: PlaygroundController) -> dict[str, Any]:
             else {
                 "refs": deepcopy(trace["memory_refs"]),
                 "projection": deepcopy(trace["provenance_projection"]),
+                "claim_retrieval": deepcopy(trace.get("claim_retrieval")),
             },
             "write": None if trace is None else deepcopy(trace["memory_update"]),
+            "claim_write": None if trace is None else deepcopy(trace.get("claim_update")),
             "persistent_state": deepcopy(state["memory"]),
         },
+        "world_outcome": None if trace is None else deepcopy(trace.get("world_outcome")),
+        "policy_projection_hash": None
+        if trace is None
+        else trace.get("policy_projection_hash"),
+        "policy_non_memory_projection_hash": None
+        if trace is None
+        else trace.get("policy_non_memory_projection_hash"),
         "state_transition": {
-            "before_hash": None if trace is None else trace["state_before_hash"],
-            "decision_hash": None if trace is None else trace["decision_state_hash"],
-            "after_hash": None if trace is None else trace["state_after_hash"],
+            "public_before_hash": public_state_hash(previous_state),
+            "public_after_hash": public_state_hash(state),
             "organism_before": deepcopy(previous_state["organism"]),
             "organism_after": deepcopy(state["organism"]),
+            "world_before": make_public_frame(previous_state),
+            "world_after": deepcopy(world_frame),
         },
         "timeline": _timeline_from_recovery(recovery),
-        "trace_hash": None if trace is None else trace["trace_hash"],
+        "public_state_hash": public_state_hash(state),
         "recovered": recovery.recovered,
         "science_weight": 0,
     }
@@ -592,6 +670,9 @@ class PlaygroundWindow:
             "memory_mode": self.memory_mode_var.get(),
             "update_mode": "frozen" if self.freeze_updates_var.get() else "enabled",
             "provenance_mode": self.provenance_mode_var.get(),
+            "provenance_shuffle_seed": DEFAULT_INTERVENTIONS[
+                "provenance_shuffle_seed"
+            ],
         }
         if (
             snapshot["memory_mode"] == "off"
@@ -854,31 +935,7 @@ class PlaygroundWindow:
             if candidate["action"] == selected_action:
                 self.candidate_tree.selection_set(iid)
 
-        if trace is None:
-            trace_view: dict[str, Any] = {
-                "clock": state["clock"],
-                "current_goal": current_goal,
-                "selected_action": None,
-                "trace_hash": None,
-            }
-        else:
-            trace_view = {
-                "clock": state["clock"],
-                "current_goal": current_goal,
-                "trigger_source": trace["trigger_source"],
-                "interventions": trace["interventions"],
-                "command": trace["command"],
-                "selected_action": trace["selected_action"],
-                "prediction": trace["prediction"],
-                "actual_delta": trace["actual_delta"],
-                "prediction_error": trace["prediction_error"],
-                "model_update": trace["model_update"],
-                "memory_update": trace["memory_update"],
-                "provenance_projection": trace["provenance_projection"],
-                "memory_refs": trace["memory_refs"],
-                "trace_hash": trace["trace_hash"],
-                "code_path_hash": trace["code_path_hash"],
-            }
+        trace_view = build_tk_trace_payload(state, trace)
         _set_text(self.trace_text, json.dumps(trace_view, indent=2, ensure_ascii=False))
 
         self._update_progress_controls()

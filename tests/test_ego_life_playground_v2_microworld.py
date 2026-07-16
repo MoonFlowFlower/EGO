@@ -1,22 +1,30 @@
 from __future__ import annotations
 
+from copy import deepcopy
+import importlib
 import json
 from pathlib import Path
 import subprocess
 import sys
+from types import SimpleNamespace
 
 import pytest
 import yaml
 
 from labs.ego_life_playground_v0 import engine, microworld
+from labs.ego_life_playground_v0 import app as playground_app
 from labs.ego_life_playground_v0.app import PlaygroundController, TerminalPlayground
 from labs.ego_life_playground_v0.engine import compute_code_path_hash
 from labs.ego_life_playground_v0.microworld import (
     ALLOWED_WORLD_EVENTS,
     make_public_frame,
 )
-from labs.ego_life_playground_v0.store import SQLiteEventStore
-from labs.ego_life_playground_v0.store import RecoveryError
+from labs.ego_life_playground_v0.store import (
+    RecoveryError,
+    RecoveryFrame,
+    RecoveryResult,
+    SQLiteEventStore,
+)
 from scripts import codex_session_guard
 
 
@@ -46,7 +54,8 @@ def test_p0_public_microworld_frame_is_readable_and_contains_no_hidden_or_oracle
         assert snapshot["prediction"] == controller.last_trace["prediction"]
         assert snapshot["prediction_error"] == controller.last_trace["prediction_error"]
         assert snapshot["memory"]["write"] == controller.last_trace["memory_update"]
-        assert snapshot["state_transition"]["after_hash"] == controller.last_trace["state_after_hash"]
+        assert len(snapshot["state_transition"]["public_after_hash"]) == 64
+        assert snapshot["state_transition"]["organism_after"] == controller.state["organism"]
         encoded = json.dumps(world, sort_keys=True).lower()
         assert "hidden_regime" not in encoded
         assert "oracle" not in encoded
@@ -134,7 +143,7 @@ def test_p0_fresh_process_terminal_load_recomputes_same_durable_timeline(tmp_pat
     assert first_payload["snapshot"]["world"]["product_clock"]["global_tick"] == 10
     assert second_payload["status"] == "recomputed"
     assert second_payload["frame_count"] == 11
-    assert second_payload["timeline"][-1]["trace_hash"] == first_payload["snapshot"]["trace_hash"]
+    assert second_payload["timeline"] == first_payload["snapshot"]["timeline"]
 
 
 def test_p0_event_set_and_causal_code_hash_are_explicit():
@@ -339,16 +348,17 @@ def test_p0_save_oserror_is_structured_and_preserves_state_and_history(tmp_path)
 
 def test_p0_code_path_manifest_is_exact_and_each_causal_file_is_hash_sensitive(monkeypatch):
     manifest = engine.compute_code_path_manifest()
-    assert manifest["schema_version"] == "ego.life_playground.code_path.v2"
+    assert manifest["schema_version"] == "ego.life_playground.code_path.v3"
     assert [item["path"] for item in manifest["files"]] == [
         "engine.py",
         "microworld.py",
+        "claims.py",
         "store.py",
     ]
     assert all(len(item["sha256"]) == 64 for item in manifest["files"])
     baseline = compute_code_path_hash()
     original_read_bytes = Path.read_bytes
-    for target in ("engine.py", "microworld.py", "store.py"):
+    for target in ("engine.py", "microworld.py", "claims.py", "store.py"):
         with monkeypatch.context() as scoped:
             def read_with_drift(path: Path, *, _target: str = target) -> bytes:
                 payload = original_read_bytes(path)
@@ -356,3 +366,580 @@ def test_p0_code_path_manifest_is_exact_and_each_causal_file_is_hash_sensitive(m
 
             scoped.setattr(Path, "read_bytes", read_with_drift)
             assert compute_code_path_hash() != baseline
+
+
+def _p1_claims_module():
+    return importlib.import_module("labs.ego_life_playground_v0.claims")
+
+
+def _p1_record(
+    memory,
+    *,
+    action: str,
+    outcome: float,
+    event_id: str,
+    episode_id: str,
+    tick: int,
+):
+    claims = _p1_claims_module()
+    return claims.record_outcome_evidence(
+        memory,
+        subject="microworld:opaque_fork",
+        predicate="preferred_site_action",
+        value=action,
+        evidence_strength=outcome,
+        event_id=event_id,
+        source_episode_id=episode_id,
+        source_command_hash=(f"{tick:x}"[-1] * 64),
+        source_sequence=tick,
+        observed_public_features={
+            "agent_position": "fork",
+            "visible_object_kinds": ["shelter"],
+        },
+    )
+
+
+def test_p1_claims_module_is_a_bound_causal_producer():
+    claims_path = REPO_ROOT / "labs/ego_life_playground_v0/claims.py"
+    assert claims_path.is_file(), "P1 claims producer does not exist"
+    manifest = engine.compute_code_path_manifest()
+    assert manifest["schema_version"] == "ego.life_playground.code_path.v3"
+    assert [entry["path"] for entry in manifest["files"]] == [
+        "engine.py",
+        "microworld.py",
+        "claims.py",
+        "store.py",
+    ]
+
+
+def test_p1_competing_claims_coexist_with_support_and_exact_provenance():
+    claims = _p1_claims_module()
+    memory = claims.empty_claim_memory()
+    memory, first = _p1_record(
+        memory,
+        action="forage",
+        outcome=1.0,
+        event_id="event-forage-positive",
+        episode_id="episode-a",
+        tick=1,
+    )
+    memory, second = _p1_record(
+        memory,
+        action="approach",
+        outcome=-1.0,
+        event_id="event-approach-negative",
+        episode_id="episode-b",
+        tick=9,
+    )
+
+    claims.verify_claim_memory(memory)
+    assert first["applied"] is True
+    assert second["applied"] is True
+    assert len(memory["claim_events"]) == 2
+    competing = memory["competing_claims"]
+    assert {item["value"] for item in competing} == {"forage", "approach"}
+    assert len({item["conflict_set_id"] for item in competing}) == 1
+    required = {
+        "claim_id",
+        "conflict_set_id",
+        "subject",
+        "predicate",
+        "value",
+        "support",
+        "provenance_event_ids",
+        "source_episode_ids",
+        "first_seen_tick",
+        "last_supported_tick",
+    }
+    assert all(set(item) == required for item in competing)
+    by_value = {item["value"]: item for item in competing}
+    assert by_value["forage"]["support"] == 1.0
+    assert by_value["forage"]["provenance_event_ids"] == ["event-forage-positive"]
+    assert by_value["approach"]["support"] == -1.0
+    assert by_value["approach"]["source_episode_ids"] == ["episode-b"]
+
+    retrieval = claims.retrieve_competing_claims(
+        memory,
+        observation={
+            "agent_position": "fork",
+            "visible_object_ids": ["shelter"],
+            "cue": "quiet",
+        },
+        current_goal="stimulation",
+    )
+    assert retrieval["status"] == "retrieved"
+    assert {item["value"] for item in retrieval["claims"]} == {
+        "forage",
+        "approach",
+    }
+    assert retrieval["support_margin"] == 2.0
+    assert retrieval["provenance_event_ids"] == [
+        "event-approach-negative",
+        "event-forage-positive",
+    ]
+
+
+def test_p1_shuffle_provenance_moves_only_lineage_and_recomputes_support():
+    claims = _p1_claims_module()
+    memory = claims.empty_claim_memory()
+    memory, _ = _p1_record(
+        memory,
+        action="forage",
+        outcome=1.0,
+        event_id="event-forage-positive",
+        episode_id="episode-a",
+        tick=1,
+    )
+    memory, _ = _p1_record(
+        memory,
+        action="approach",
+        outcome=-1.0,
+        event_id="event-approach-negative",
+        episode_id="episode-b",
+        tick=9,
+    )
+    projected, report = claims.shuffle_provenance(memory, seed=17)
+
+    claims.verify_claim_memory(projected)
+    assert report["status"] == "applied"
+    assert projected["claim_events"] == memory["claim_events"]
+    assert report["event_value_multiset_preserved"] is True
+    assert report["non_provenance_claim_fields_preserved"] is True
+    assert report["unaffected_fields_hash_before"] == report["unaffected_fields_hash_after"]
+    assert report["unaffected_field_count"] > 0
+    assert report["changed_json_pointers"]
+    assert all(
+        any(
+            field in pointer
+            for field in (
+                "/provenance_event_ids",
+                "/source_episode_ids",
+                "/support",
+                "/first_seen_tick",
+                "/last_supported_tick",
+            )
+        )
+        for pointer in report["changed_json_pointers"]
+    )
+    before_support = {item["value"]: item["support"] for item in memory["competing_claims"]}
+    after_support = {item["value"]: item["support"] for item in projected["competing_claims"]}
+    assert after_support != before_support
+
+
+def test_p1_relevant_source_deletion_recomputes_claims_but_irrelevant_deletion_is_inert():
+    claims = _p1_claims_module()
+    memory = claims.empty_claim_memory()
+    memory, _ = _p1_record(
+        memory,
+        action="forage",
+        outcome=1.0,
+        event_id="event-relevant",
+        episode_id="episode-relevant",
+        tick=1,
+    )
+    memory, _ = _p1_record(
+        memory,
+        action="approach",
+        outcome=-1.0,
+        event_id="event-other",
+        episode_id="episode-other",
+        tick=9,
+    )
+
+    deleted, relevant_report = claims.delete_sources(
+        memory, event_ids=["event-relevant"]
+    )
+    irrelevant, irrelevant_report = claims.delete_sources(
+        memory, source_episode_ids=["episode-not-present"]
+    )
+    claims.verify_claim_memory(deleted)
+    assert relevant_report["deleted_event_ids"] == ["event-relevant"]
+    assert {item["value"] for item in deleted["competing_claims"]} == {"approach"}
+    assert irrelevant == memory
+    assert irrelevant_report["deleted_event_ids"] == []
+
+
+def _p1_step_state(
+    state,
+    *,
+    run_id: str,
+    seed: int,
+    event: str,
+    interventions=None,
+):
+    meta = engine.make_run_metadata(run_id, seed)
+    cue = microworld.cue_for_event(event)
+    command = engine.make_command(
+        sequence=int(state["clock"]["global_tick"]) + 1,
+        cue=cue,
+        world_event=event,
+        trigger_source="paired_intervention",
+        interventions=interventions or engine.DEFAULT_INTERVENTIONS,
+        prev_command_hash=state["last_command_hash"],
+    )
+    return engine.compute_step(state, command, meta)
+
+
+def _p1_history(*, run_id: str, seed: int):
+    state = engine.initial_state(run_id=run_id, seed=seed)
+    traces = []
+    for event in ("resource_appears", "social_signal"):
+        step = _p1_step_state(
+            state,
+            run_id=run_id,
+            seed=seed,
+            event=event,
+        )
+        state = step.next_state
+        traces.append(step.trace)
+    return state, traces
+
+
+def _p1_paired_checkpoint_states():
+    history_a, traces_a = _p1_history(run_id="history-a", seed=18)
+    history_b, traces_b = _p1_history(run_id="history-b", seed=19)
+    base_a = engine.initial_state(run_id="paired-a", seed=18)
+    base_b = engine.initial_state(run_id="paired-b", seed=19)
+    base_a["memory"] = deepcopy(history_a["memory"])
+    base_b["memory"] = deepcopy(history_b["memory"])
+    return base_a, base_b, traces_a, traces_b
+
+
+def test_p1_hidden_regime_is_persisted_but_excluded_from_policy_and_renderer():
+    state = engine.initial_state(run_id="p1-hidden", seed=18)
+    oracle = microworld.oracle_evidence_record(state["world"])
+    assert state["world"]["private_dynamics"]["hidden_regime"] in {
+        "site_a_high",
+        "site_b_high",
+    }
+    assert type(state["world"]["private_dynamics"]["rng_state"]) is int
+    assert state["world"]["private_dynamics"]["outcome_history"] == []
+    assert oracle["namespace"] == "evidence_oracle_only"
+    assert oracle["correct_action"] in {"forage", "approach"}
+
+    step = _p1_step_state(
+        state,
+        run_id="p1-hidden",
+        seed=18,
+        event="resource_appears",
+    )
+    encoded_policy = engine.canonical_json(step.trace["policy_projection"]).lower()
+    encoded_non_memory = engine.canonical_json(
+        step.trace["policy_non_memory_projection"]
+    ).lower()
+    encoded_frame = json.dumps(
+        make_public_frame(step.next_state, step.trace), sort_keys=True
+    ).lower()
+    for forbidden in (
+        "hidden_regime",
+        "rng_state",
+        "correct_action",
+        "future_outcome",
+        "reward_label",
+        "oracle",
+    ):
+        assert forbidden not in encoded_policy
+        assert forbidden not in encoded_non_memory
+        assert forbidden not in encoded_frame
+    assert step.trace["world_outcome"]["revealed_after_selection"] is True
+    assert step.trace["world_outcome"]["value"] in {-1.0, 1.0}
+    assert step.trace["claim_update"]["applied"] is True
+
+
+def test_p1_public_renderer_bytes_are_invariant_to_private_world_only_changes():
+    state_a = engine.initial_state(run_id="p1-public-frame-private-a", seed=18)
+    state_b = deepcopy(state_a)
+    private = state_b["world"]["private_dynamics"]
+    private["hidden_regime"] = "site_b_high"
+    private["rng_state"] = int(private["rng_state"]) + 991
+    private["visit_count"] = 1
+    private["outcome_history"] = [
+        {
+            "selected_action": "approach",
+            "visited_site": "site_b",
+            "outcome": 1.0,
+            "source_sequence": 1,
+            "source_episode_id": state_b["clock"]["episode_id"],
+            "source_command_hash": "a" * 64,
+        }
+    ]
+    microworld.verify_world_state(state_b["world"])
+    assert microworld.world_hash(state_a["world"]) != microworld.world_hash(
+        state_b["world"]
+    )
+    assert engine.canonical_json(make_public_frame(state_a)) == engine.canonical_json(
+        make_public_frame(state_b)
+    )
+
+
+def test_p1_normal_terminal_and_tk_payloads_are_invariant_to_private_only_changes():
+    before_a = engine.initial_state(run_id="p1-public-payload", seed=18)
+    result = _p1_step_state(
+        before_a,
+        run_id="p1-public-payload",
+        seed=18,
+        event="quiet_interval",
+    )
+    after_a = result.next_state
+    trace_a = result.trace
+    before_b = deepcopy(before_a)
+    after_b = deepcopy(after_a)
+
+    def replace_private_history(state, *, salt: int) -> None:
+        private = state["world"]["private_dynamics"]
+        private["hidden_regime"] = (
+            "site_b_high"
+            if private["hidden_regime"] == "site_a_high"
+            else "site_a_high"
+        )
+        private["rng_state"] = int(private["rng_state"]) + salt
+        private["visit_count"] = 1
+        private["outcome_history"] = [
+            {
+                "selected_action": "forage",
+                "visited_site": "site_a",
+                "outcome": -1.0,
+                "source_sequence": 1,
+                "source_episode_id": state["clock"]["episode_id"],
+                "source_command_hash": f"{salt:064x}",
+            }
+        ]
+        microworld.verify_world_state(state["world"])
+
+    replace_private_history(before_b, salt=991)
+    replace_private_history(after_b, salt=992)
+    trace_b = deepcopy(trace_a)
+    for field, marker in (
+        ("state_before_hash", "1"),
+        ("decision_state_hash", "2"),
+        ("state_after_hash", "3"),
+        ("world_before_hash", "4"),
+        ("world_decision_hash", "5"),
+        ("world_after_hash", "6"),
+        ("trace_hash", "7"),
+    ):
+        trace_b[field] = marker * 64
+
+    def controller(before, after, trace):
+        recovery = RecoveryResult(
+            run_id="p1-public-payload",
+            run_meta={},
+            frames=(
+                RecoveryFrame(sequence=0, state=before, trace=None),
+                RecoveryFrame(sequence=1, state=after, trace=trace),
+            ),
+            recovered=True,
+        )
+        return SimpleNamespace(run_id="p1-public-payload", recovery=recovery)
+
+    terminal_a = playground_app.build_terminal_snapshot(
+        controller(before_a, after_a, trace_a)
+    )
+    terminal_b = playground_app.build_terminal_snapshot(
+        controller(before_b, after_b, trace_b)
+    )
+    tk_a = playground_app.build_tk_trace_payload(after_a, trace_a)
+    tk_b = playground_app.build_tk_trace_payload(after_b, trace_b)
+
+    assert engine.canonical_json(terminal_a) == engine.canonical_json(terminal_b)
+    assert engine.canonical_json(tk_a) == engine.canonical_json(tk_b)
+    forbidden_commitments = {
+        "trace_hash",
+        "state_before_hash",
+        "decision_state_hash",
+        "state_after_hash",
+        "world_before_hash",
+        "world_decision_hash",
+        "world_after_hash",
+    }
+
+    def keys(value):
+        if isinstance(value, dict):
+            return set(value) | {
+                nested
+                for item in value.values()
+                for nested in keys(item)
+            }
+        if isinstance(value, list):
+            return {nested for item in value for nested in keys(item)}
+        return set()
+
+    assert forbidden_commitments.isdisjoint(keys(terminal_a))
+    assert forbidden_commitments.isdisjoint(keys(tk_a))
+
+
+def test_p1_paired_observation_real_histories_change_scores_and_actions_only_through_memory():
+    state_a, state_b, traces_a, traces_b = _p1_paired_checkpoint_states()
+    assert [trace["selected_action"] for trace in traces_a] == ["forage", "approach"]
+    assert [trace["selected_action"] for trace in traces_b] == ["forage", "approach"]
+    assert {trace["world_outcome"]["value"] for trace in traces_a} == {-1.0, 1.0}
+    assert {trace["world_outcome"]["value"] for trace in traces_b} == {-1.0, 1.0}
+    assert engine.canonical_json(state_a["memory"]) != engine.canonical_json(state_b["memory"])
+    assert (
+        microworld.oracle_evidence_record(state_a["world"])["correct_action"]
+        != microworld.oracle_evidence_record(state_b["world"])["correct_action"]
+    )
+
+    result_a = _p1_step_state(
+        state_a,
+        run_id="paired-a",
+        seed=101,
+        event="quiet_interval",
+    )
+    result_b = _p1_step_state(
+        state_b,
+        run_id="paired-b",
+        seed=101,
+        event="quiet_interval",
+    )
+    assert result_a.trace["observation_hash"] == result_b.trace["observation_hash"]
+    assert (
+        result_a.trace["policy_non_memory_projection_hash"]
+        == result_b.trace["policy_non_memory_projection_hash"]
+    )
+    assert result_a.trace["policy_projection_hash"] != result_b.trace["policy_projection_hash"]
+    scores_a = {item["action"]: item["total_score"] for item in result_a.trace["candidates"]}
+    scores_b = {item["action"]: item["total_score"] for item in result_b.trace["candidates"]}
+    assert scores_a != scores_b
+    assert result_a.trace["selected_action"] == "forage"
+    assert result_b.trace["selected_action"] == "approach"
+    assert result_a.trace["claim_retrieval"]["provenance_event_ids"]
+    assert result_b.trace["claim_retrieval"]["provenance_event_ids"]
+
+
+def test_p1_memory_off_removes_paired_history_score_and_action_difference():
+    state_a, state_b, _, _ = _p1_paired_checkpoint_states()
+    off = dict(engine.DEFAULT_INTERVENTIONS, memory_mode="off")
+    result_a = _p1_step_state(
+        state_a,
+        run_id="paired-a",
+        seed=101,
+        event="quiet_interval",
+        interventions=off,
+    )
+    result_b = _p1_step_state(
+        state_b,
+        run_id="paired-b",
+        seed=101,
+        event="quiet_interval",
+        interventions=off,
+    )
+    assert result_a.trace["policy_projection_hash"] == result_b.trace["policy_projection_hash"]
+    assert result_a.trace["candidates"] == result_b.trace["candidates"]
+    assert result_a.trace["selected_action"] == result_b.trace["selected_action"]
+    assert all(item["memory_bias"] == 0.0 for item in result_a.trace["candidates"])
+    assert result_a.trace["claim_retrieval"]["status"] == "memory_disabled"
+
+
+def test_p1_freeze_updates_preserves_model_claim_and_event_bytes_while_world_transitions():
+    state, _, _, _ = _p1_paired_checkpoint_states()
+    before_model = engine.canonical_json(state["model"])
+    before_memory = engine.canonical_json(state["memory"])
+    before_world = engine.canonical_json(state["world"])
+    frozen = dict(engine.DEFAULT_INTERVENTIONS, update_mode="frozen")
+    result = _p1_step_state(
+        state,
+        run_id="paired-a",
+        seed=101,
+        event="quiet_interval",
+        interventions=frozen,
+    )
+    assert engine.canonical_json(result.next_state["model"]) == before_model
+    assert engine.canonical_json(result.next_state["memory"]) == before_memory
+    assert engine.canonical_json(result.next_state["world"]) != before_world
+    assert result.trace["model_bytes"]["before_hash"] == result.trace["model_bytes"]["after_hash"]
+    assert result.trace["memory_bytes"]["before_hash"] == result.trace["memory_bytes"]["after_hash"]
+    assert result.trace["claim_update"]["reason"] == "adaptive_updates_frozen"
+    assert result.trace["world_transition"]["selected_action"] == result.trace["selected_action"]
+
+
+def test_p1_shuffle_provenance_and_source_deletion_rerun_the_same_checkpoint():
+    claims = _p1_claims_module()
+    state, _, _, _ = _p1_paired_checkpoint_states()
+    canonical = _p1_step_state(
+        state,
+        run_id="paired-a",
+        seed=101,
+        event="quiet_interval",
+    )
+    shuffled = _p1_step_state(
+        state,
+        run_id="paired-a",
+        seed=101,
+        event="quiet_interval",
+        interventions=dict(
+            engine.DEFAULT_INTERVENTIONS, provenance_mode="shuffle_projection"
+        ),
+    )
+    assert shuffled.trace["provenance_projection"]["status"] == "applied"
+    assert shuffled.trace["interventions"]["provenance_shuffle_seed"] == "17"
+    assert shuffled.trace["provenance_projection"]["seed"] == 17
+    assert shuffled.trace["provenance_projection"]["event_value_multiset_preserved"] is True
+    assert (
+        shuffled.trace["provenance_projection"]["unaffected_fields_hash_before"]
+        == shuffled.trace["provenance_projection"]["unaffected_fields_hash_after"]
+    )
+    assert shuffled.trace["provenance_projection"]["unaffected_field_count"] > 0
+    current_event_id = shuffled.trace["claim_update"]["event_id"]
+    without_current_event, deletion_after_step = claims.delete_sources(
+        shuffled.next_state["memory"], event_ids=[current_event_id]
+    )
+    assert deletion_after_step["deleted_event_ids"] == [current_event_id]
+    assert engine.canonical_json(
+        {
+            "claim_events": without_current_event["claim_events"],
+            "competing_claims": without_current_event["competing_claims"],
+        }
+    ) == engine.canonical_json(
+        {
+            "claim_events": state["memory"]["claim_events"],
+            "competing_claims": state["memory"]["competing_claims"],
+        }
+    )
+    assert shuffled.trace["claim_retrieval"]["support_by_action"] != canonical.trace[
+        "claim_retrieval"
+    ]["support_by_action"]
+
+    relevant = next(
+        event
+        for event in state["memory"]["claim_events"]
+        if event["value"] == canonical.trace["selected_action"]
+        and event["evidence_strength"] > 0
+    )
+    deleted_memory, deletion = claims.delete_sources(
+        state["memory"], event_ids=[relevant["event_id"]]
+    )
+    deleted_state = deepcopy(state)
+    deleted_state["memory"] = deleted_memory
+    deleted = _p1_step_state(
+        deleted_state,
+        run_id="paired-a",
+        seed=101,
+        event="quiet_interval",
+    )
+    assert deletion["deleted_event_ids"] == [relevant["event_id"]]
+    assert deleted.trace["policy_non_memory_projection_hash"] == canonical.trace[
+        "policy_non_memory_projection_hash"
+    ]
+    assert deleted.trace["selected_action"] != canonical.trace["selected_action"]
+
+
+def test_p1_private_world_and_claim_tamper_fail_recomputing_replay(tmp_path):
+    with SQLiteEventStore(tmp_path / "p1-tamper.sqlite3") as store:
+        controller = PlaygroundController(store, run_id="p1-tamper", seed=18)
+        TerminalPlayground(controller).execute("inject resource_appears")
+        row = store.connection.execute(
+            "SELECT initial_state_json FROM runs WHERE run_id = ?", (controller.run_id,)
+        ).fetchone()
+        initial = json.loads(row["initial_state_json"])
+        initial["world"]["private_dynamics"]["hidden_regime"] = "site_b_high"
+        store.connection.execute(
+            "UPDATE runs SET initial_state_json = ?, initial_state_hash = ? WHERE run_id = ?",
+            (
+                engine.canonical_json(initial),
+                engine.canonical_hash(initial),
+                controller.run_id,
+            ),
+        )
+        with pytest.raises(RecoveryError, match="stored trace differs|command recomputation failed"):
+            store.recover_run(controller.run_id)

@@ -1,0 +1,2268 @@
+{
+  "blocking_failures": [],
+  "claim_blockers": [
+    "control_baseline_equivalent",
+    "freeze_downstream_contrast_inert_side_a"
+  ],
+  "claim_ceiling": "Default-off local microworld product implementation with persistent canonical state, atomic recomputing trace/replay, and a bounded typed counterfactual memory-lineage transplant action-score contrast whose actual source histories are persisted and replayable. Equal-access history controls match; no general memory-causality, learning, mechanism-non-equivalence, agency, emotion, subjectivity, consciousness, or electronic-life claim is supported.",
+  "claim_status": "bounded_negative_for_mechanism_non_equivalence",
+  "computed_effects": {
+    "freeze_preservation": true,
+    "headroom_equal_non_memory_policy": true,
+    "headroom_equal_observation": true,
+    "headroom_oracle_divergence": true,
+    "leakage_valid": true,
+    "memory_effect_observed": true,
+    "memory_off_removed": true,
+    "replay_valid": true,
+    "shuffle_effect": true,
+    "shuffle_invariance": true,
+    "source_deletion_effect": true,
+    "typed_transplant_valid": true
+  },
+  "evidence": {
+    "aggregation_rule": "validate_actual_step_outputs_bind_every_frozen_config_then_require_headroom_interventions_replay_leakage_and_apply_exact_control_equivalence_rule",
+    "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+    "evidence_record_type": "computed_evidence",
+    "input_artifacts": [
+      "callable_subreports_and_actual_step_results"
+    ],
+    "producer_function": "verify_ego_life_kernel_v2_microworld.aggregate_p1_result",
+    "run_id": "ego-v2-p1-verification-001",
+    "seed_context_episode_ids": {
+      "pair_ids": [
+        "p1_memory_lineage_pair_001"
+      ],
+      "seeds": [
+        18,
+        19
+      ]
+    },
+    "value": {
+      "blocking_failures": [],
+      "claim_blockers": [
+        "control_baseline_equivalent",
+        "freeze_downstream_contrast_inert_side_a"
+      ],
+      "verdict": "memory_conditioned_effect_observed_but_control_equivalent"
+    }
+  },
+  "frozen_config": {
+    "claim_bias_clip": 0.5,
+    "claim_bias_coefficient": 0.45,
+    "config_id": "ego_v2_p1_memory_pair_v1",
+    "ema_alpha": 0.35,
+    "equivalence_rule": "exact_selected_action_match_on_both_paired_checkpoints",
+    "history_event_schedule": [
+      "resource_appears",
+      "social_signal"
+    ],
+    "history_seeds": [
+      18,
+      19
+    ],
+    "irrelevant_deletion_target": "absent_episode_control",
+    "pair_policy_seed": 101,
+    "paired_checkpoint_event": "quiet_interval",
+    "paired_checkpoint_id": "p1_memory_lineage_pair_001",
+    "post_result_retuning": "forbidden",
+    "provenance_shuffle_seed": 17,
+    "recency_windows": [
+      1,
+      2,
+      4
+    ],
+    "source_deletion_target": "first_supporting_event_for_selected_site"
+  },
+  "frozen_config_usage": {
+    "claim_bias_clip": {
+      "observed": 0.5,
+      "observed_hash": "d2cbad71ff333de67d07ec676e352ab7f38248eb69c942950157220607c55e84",
+      "used": true
+    },
+    "claim_bias_coefficient": {
+      "observed": 0.45,
+      "observed_hash": "bffb16d6fe1445f051b3cff3025340011b817b391ffc04dcd77d1452efa10c25",
+      "used": true
+    },
+    "config_id": {
+      "observed": "ego-v2-p1-verification-001",
+      "observed_hash": "ac836ac43a86de978c50ccd73ec8162d002cf76d8c90d737e6c6706d788de11b",
+      "used": true
+    },
+    "ema_alpha": {
+      "observed": [
+        0.35,
+        0.35,
+        0.35,
+        0.35,
+        0.35,
+        0.35,
+        0.35,
+        0.35,
+        0.35,
+        0.35,
+        0.35,
+        0.35,
+        0.35,
+        0.35
+      ],
+      "observed_hash": "8265551806c9aac2fa027326bafe8a0ef1a2ebdb8d4077e277da97e0a3a4b1ea",
+      "used": true
+    },
+    "equivalence_rule": {
+      "observed": {
+        "candidate_actions": [
+          "forage",
+          "approach"
+        ],
+        "strongest_match_rate": 1.0
+      },
+      "observed_hash": "f5865cd29ffa3fcab8a5c33b317b115500c8485300448d67f581eba73906beaf",
+      "used": true
+    },
+    "history_event_schedule": {
+      "observed": [
+        "resource_appears",
+        "social_signal"
+      ],
+      "observed_hash": "497f466b9e337bb7f81da2f4fcfc39b844f6f5a0634dc9b2a5a1912742b07eec",
+      "used": true
+    },
+    "history_seeds": {
+      "observed": [
+        18,
+        19
+      ],
+      "observed_hash": "b5d949c101870e7f1cba45239e8c5e03e73133270edb703dfd4b20f76e6928da",
+      "used": true
+    },
+    "irrelevant_deletion_target": {
+      "observed": {
+        "after_memory_hash": "14322454dea1fc1d09755ec45207c8bbcd8aaa71a504a40045fdef3100c616f9",
+        "before_memory_hash": "14322454dea1fc1d09755ec45207c8bbcd8aaa71a504a40045fdef3100c616f9",
+        "deleted_event_ids": [],
+        "producer_function": "ego_life_playground_v0.claims.delete_sources",
+        "requested_event_ids": [],
+        "requested_source_episode_ids": [
+          "episode-not-present"
+        ],
+        "status": "not_applied_no_matching_source"
+      },
+      "observed_hash": "efba7389dd7815e790c2cc656f7875afed493addfc57bb40e00991d8c24df194",
+      "used": true
+    },
+    "pair_policy_seed": {
+      "observed": [
+        101
+      ],
+      "observed_hash": "d45d39f3996478609d46956d9f1c197532d82e79bab71d743148427b01e13cee",
+      "used": true
+    },
+    "paired_checkpoint_event": {
+      "observed": [
+        "6919f3f481843783eeef75fd68731be0d9daae097e382803711fdb96b41fefd2",
+        "6919f3f481843783eeef75fd68731be0d9daae097e382803711fdb96b41fefd2"
+      ],
+      "observed_hash": "d294df4c74be96f8d5ac8b633c777a0dc16b6fa4665023f34b05c1b1a4970e24",
+      "used": true
+    },
+    "paired_checkpoint_id": {
+      "observed": "p1_memory_lineage_pair_001",
+      "observed_hash": "b2aa7d736065934463b4df5ad12251ad443457f474efffb0d2cbff875aaf48f2",
+      "used": true
+    },
+    "post_result_retuning": {
+      "observed": {
+        "retuning_performed": false
+      },
+      "observed_hash": "3be174b0f1fa6489b2290bee1570500790a639dfd936edf9de472368505e423a",
+      "used": true
+    },
+    "provenance_shuffle_seed": {
+      "observed": [
+        17,
+        17
+      ],
+      "observed_hash": "356a917e30110f761eb3ba4711291625f1a305fa0af066b2ab8c087d59e88892",
+      "used": true
+    },
+    "recency_windows": {
+      "observed": [
+        "recency_window_1",
+        "recency_window_2",
+        "recency_window_4"
+      ],
+      "observed_hash": "192552ec8906d05bf2d572133a5135f15bceaa607a12a39a98621c58420f1411",
+      "used": true
+    },
+    "source_deletion_target": {
+      "observed": [
+        "claim-event-83dcbbc7294da9f848f2"
+      ],
+      "observed_hash": "cfadb5f19515e3b30a51961c28bfa6b73860875bbff6a7bc0cf37436f4a50347",
+      "used": true
+    }
+  },
+  "input_artifacts": [
+    {
+      "bytes": 700416,
+      "path": "generated://p1/continuity.sqlite3",
+      "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+    },
+    {
+      "bytes": 620842,
+      "path": "generated://p1/trace.jsonl",
+      "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+    },
+    {
+      "bytes": 9782,
+      "path": "authority://p1/mutation-scope",
+      "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+    }
+  ],
+  "intervention_output_registry": {
+    "Freeze_Updates_enabled:a:1": {
+      "candidate_hash": "decae6db91692b7aa845221ddfbb7a71306fe06ca0954d0b49563ce70cae98d5",
+      "command_hash": "6919f3f481843783eeef75fd68731be0d9daae097e382803711fdb96b41fefd2",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "prediction_hash": "5036c82a3729340d158c37b27919e7870fc35dc24832dd4d3e56fa366b568e54",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "69a2499811fe3dc7cea37f0237d0bc527e124a6591326be3c1f520bbe8e0369d",
+      "state_before_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "trace_hash": "47b4e3a7ce77c9e4306dcbe42066e723ccabc3de6e852b941e8b90bbccdb886d",
+      "world_event": "quiet_interval"
+    },
+    "Freeze_Updates_enabled:a:2": {
+      "candidate_hash": "026c174bcd366ad215b55c6a808973b9575e1705e0ce0e13c6c4ab3846316c6c",
+      "command_hash": "4c679f211c9a02ad44263e0ba0b9977e42c5d3f386e76a195de5ccacb5736f8a",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "prediction_hash": "9b2a1e1e06ebc72444588eb8b33b330aba8eb9cbe8eaed6e917c3554ba270f62",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "907d68da0694cb4b513aa62b3b9cbe267e43afa72206ae51351ca593afecbf7c",
+      "state_before_hash": "69a2499811fe3dc7cea37f0237d0bc527e124a6591326be3c1f520bbe8e0369d",
+      "trace_hash": "fd8968dae84e8b536f11d0d5a221af96d365cb5c84bcbac13b48573a3615ee08",
+      "world_event": "resource_appears"
+    },
+    "Freeze_Updates_enabled:a:3": {
+      "candidate_hash": "e7dad78f52622b1fd803879779a8d9313fa77f66fed9983982711f4a4ccba7a6",
+      "command_hash": "f3f3bf792ac041344cb9baeece393a74100bfb56012dd400c637501c35dfa015",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "prediction_hash": "5036c82a3729340d158c37b27919e7870fc35dc24832dd4d3e56fa366b568e54",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "c888e313ca2b426332a45d21a2422790b62d89f6f4ee6406864ac5e2d42bc8ed",
+      "state_before_hash": "907d68da0694cb4b513aa62b3b9cbe267e43afa72206ae51351ca593afecbf7c",
+      "trace_hash": "4aa1bf071633dd423c9bcedf5a3d53dfed8017b5c413e64be328c28f76196bec",
+      "world_event": "social_signal"
+    },
+    "Freeze_Updates_enabled:b:1": {
+      "candidate_hash": "4ff104ce096fbcceae0f6707c14e0928ce44a4d74be4f7cb750be86e2e9331a1",
+      "command_hash": "6919f3f481843783eeef75fd68731be0d9daae097e382803711fdb96b41fefd2",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "1dad6aa58f8f051634797dc125140e6e8de84500a3430ea4e76422cf855a9f25",
+      "state_before_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "trace_hash": "7a4b855d3bd4d8ff4772f0955de38ed7aa1ee59c53984bc28a248c2efb8a547e",
+      "world_event": "quiet_interval"
+    },
+    "Freeze_Updates_enabled:b:2": {
+      "candidate_hash": "fe7d832946b94acb70153b602818dc20440feb3917626eaf74f3db8dd9c522bb",
+      "command_hash": "4c679f211c9a02ad44263e0ba0b9977e42c5d3f386e76a195de5ccacb5736f8a",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "05b9eda27885edf1cb6037b07aca39435079fa5a76119ffede0e424382cc8f83",
+      "state_before_hash": "1dad6aa58f8f051634797dc125140e6e8de84500a3430ea4e76422cf855a9f25",
+      "trace_hash": "8b5d78d63a7f6ace40846fb8b9954b2deeb17918d71085e799c0259a1fcca69e",
+      "world_event": "resource_appears"
+    },
+    "Freeze_Updates_enabled:b:3": {
+      "candidate_hash": "10ca89de2b8e01aaf537a6b3b4f73b86e0734aad0605f2af74bcc44559df891d",
+      "command_hash": "f3f3bf792ac041344cb9baeece393a74100bfb56012dd400c637501c35dfa015",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "prediction_hash": "15ad270ff79a83f06348939ae2f8052ad44411263aa0686315cb3c358f4cd8c2",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "4a23a9ae1c3527e758b35063fbf4d7ea5595410c67c2f223542269d40ac5ad3e",
+      "state_before_hash": "05b9eda27885edf1cb6037b07aca39435079fa5a76119ffede0e424382cc8f83",
+      "trace_hash": "047b34fbee9b722072056252b70e495a934aa11838bcc5110ff20945812c6bea",
+      "world_event": "social_signal"
+    },
+    "Freeze_Updates_frozen:a:1": {
+      "candidate_hash": "decae6db91692b7aa845221ddfbb7a71306fe06ca0954d0b49563ce70cae98d5",
+      "command_hash": "931ccee971f647c57f3418927edb1ee0c1172713158a19916826f916820fbb86",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "prediction_hash": "5036c82a3729340d158c37b27919e7870fc35dc24832dd4d3e56fa366b568e54",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "e8223f7e6a9679f201be63deb754e20615474250306c2563e60bd53bc13a37e1",
+      "state_before_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "trace_hash": "858ada1def0b3ac8ebe0160659bcbec7ba19fd46c16e71759e9bcc5de42a8721",
+      "world_event": "quiet_interval"
+    },
+    "Freeze_Updates_frozen:a:2": {
+      "candidate_hash": "7f983800fe6a7a6314bf9850da66626f28fc20cc7970564dccf9ec391cda78a0",
+      "command_hash": "ff86a1925c9281390db0545fb977c15b4c2bedc82539731ee765d514a989b19f",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "prediction_hash": "9b2a1e1e06ebc72444588eb8b33b330aba8eb9cbe8eaed6e917c3554ba270f62",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "6db637984ff063305f0c05faeafae2460f4f4f35e587b293f0511cdb6bb2ddca",
+      "state_before_hash": "e8223f7e6a9679f201be63deb754e20615474250306c2563e60bd53bc13a37e1",
+      "trace_hash": "4d285fd70c3efe8ae9c6b71b90842064032eb7be37e8772d323a9f6fb0828831",
+      "world_event": "resource_appears"
+    },
+    "Freeze_Updates_frozen:a:3": {
+      "candidate_hash": "09b215c418e98c91a8bdc1c3420d86ce7bf92062ec603cf46d8af01d12eff07f",
+      "command_hash": "56da5149b59de8626d3a0fee51517ea0755bb62d93e91fb5680f1ae27ce279e1",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "prediction_hash": "5036c82a3729340d158c37b27919e7870fc35dc24832dd4d3e56fa366b568e54",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "1fcceee560148ca3c30aed1788cce055cbbefce4275e504c0597c966eeded1da",
+      "state_before_hash": "6db637984ff063305f0c05faeafae2460f4f4f35e587b293f0511cdb6bb2ddca",
+      "trace_hash": "d7045428dcdf3ed3b61bf460380db04cf83b5a091a0007f82c16580271974ea3",
+      "world_event": "social_signal"
+    },
+    "Freeze_Updates_frozen:b:1": {
+      "candidate_hash": "4ff104ce096fbcceae0f6707c14e0928ce44a4d74be4f7cb750be86e2e9331a1",
+      "command_hash": "931ccee971f647c57f3418927edb1ee0c1172713158a19916826f916820fbb86",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "3af9f0b729bd2db5abf1dc319783347984be46a517a05ae214d2fae4ef1eac66",
+      "state_before_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "trace_hash": "9609908ed12e0f022a032836d5a7cc099ac64dc13335f4455fed1936c98562a4",
+      "world_event": "quiet_interval"
+    },
+    "Freeze_Updates_frozen:b:2": {
+      "candidate_hash": "5bcc000c202007e922db76cd940b3647599cbd8b6a7b4bc14a3bea598a0bfb4b",
+      "command_hash": "ff86a1925c9281390db0545fb977c15b4c2bedc82539731ee765d514a989b19f",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "2ccc271554935aad4bb41be549b38e697e8f4f0be72544feb08d2cb5331ba836",
+      "state_before_hash": "3af9f0b729bd2db5abf1dc319783347984be46a517a05ae214d2fae4ef1eac66",
+      "trace_hash": "6e0dfe3471dffc7439a3810207d733060f1386249328f919c033873775587695",
+      "world_event": "resource_appears"
+    },
+    "Freeze_Updates_frozen:b:3": {
+      "candidate_hash": "589785df2ec44c9f9e2a870b8074bda58f6d3052d0dccb988ab548e7ed87b2db",
+      "command_hash": "56da5149b59de8626d3a0fee51517ea0755bb62d93e91fb5680f1ae27ce279e1",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "prediction_hash": "15ad270ff79a83f06348939ae2f8052ad44411263aa0686315cb3c358f4cd8c2",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "1b12778c93330b687274d2dd652f954dbab336bd5475a8df2d12830f4751be80",
+      "state_before_hash": "2ccc271554935aad4bb41be549b38e697e8f4f0be72544feb08d2cb5331ba836",
+      "trace_hash": "38c579c306313f09ad4a1afca6ffe83fab224a6fb5de93f37e3417cbd3d6083d",
+      "world_event": "social_signal"
+    },
+    "Memory_OFF:a": {
+      "candidate_hash": "3acd1049557081aa658f5346a58de5b7b3ba33e428a53b635374d5c58935223e",
+      "command_hash": "e6b311525b283adc5f126b3e6cd09def44b4f935cfa21f754d5f6ccae83ea6a6",
+      "interventions": {
+        "memory_mode": "off",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "bd041207b0009a9af2d3067f6dbbb39e3449c6fa0811f5ce819af7c9550d2ca6",
+      "state_before_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "trace_hash": "b1e5591da36bc6c49a89299c9a8eea7ad815684cfcece51bf0346b73e4a164a9",
+      "world_event": "quiet_interval"
+    },
+    "Memory_OFF:b": {
+      "candidate_hash": "3acd1049557081aa658f5346a58de5b7b3ba33e428a53b635374d5c58935223e",
+      "command_hash": "e6b311525b283adc5f126b3e6cd09def44b4f935cfa21f754d5f6ccae83ea6a6",
+      "interventions": {
+        "memory_mode": "off",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "989a64846b2f6f09c132b8f365ac0bdc8810515024514cd77b89f7d848f9be42",
+      "state_before_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "trace_hash": "48c4f0efc525d1d6e4b57f69e36bd365a8bdcdd0653a5dfeb402b0326f9d2a7d",
+      "world_event": "quiet_interval"
+    },
+    "Q_only:a": {
+      "candidate_hash": "3acd1049557081aa658f5346a58de5b7b3ba33e428a53b635374d5c58935223e",
+      "command_hash": "c59373efcd3e1e870b610f216697c7f99a6dfe6325403c786fda59766107494b",
+      "interventions": {
+        "memory_mode": "off",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "8ee0c9c3ab07aa972efa18e71518adef27fcb0fab70b4ffd13198ed32ce85883",
+      "state_before_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "trace_hash": "3a115772f7940662156dbf8fe838b2c451290c48a1a79b45cad74d8932f498ae",
+      "world_event": "quiet_interval"
+    },
+    "Q_only:b": {
+      "candidate_hash": "3acd1049557081aa658f5346a58de5b7b3ba33e428a53b635374d5c58935223e",
+      "command_hash": "c59373efcd3e1e870b610f216697c7f99a6dfe6325403c786fda59766107494b",
+      "interventions": {
+        "memory_mode": "off",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "bb5f62a29ff303dca2a6d3439c1bd899bae2a45680153e04320cba042d0bbac2",
+      "state_before_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "trace_hash": "7c8cbde2b079fcf19d0c5fa6ff447e773e0a9b0a8d4ef2b51f4a9ba13382854d",
+      "world_event": "quiet_interval"
+    },
+    "Shuffle_Provenance:a": {
+      "candidate_hash": "f2a3c0e5a9dada4638a28b67fedb5c5546e9dee5964d2dbb810585aeb9414d8a",
+      "command_hash": "623f42cbdab4c7baaecf1fe4f8928370567e2abf525880b1e4f1eba99fb8c495",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "shuffle_projection",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "121fa2a28ef0558ddf8bea985a7d1191321b647f23291a801047d6e8e681ba8f",
+      "state_before_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "trace_hash": "ff7f87c3b4d63e0b550d7890c7a32d7227a1fd73df9af81d36946b6b4b5b99a9",
+      "world_event": "quiet_interval"
+    },
+    "Shuffle_Provenance:b": {
+      "candidate_hash": "a815912a6bc994c5677e3c1757306e11bc9d7973cf11a839dcf166db58d5e8b3",
+      "command_hash": "623f42cbdab4c7baaecf1fe4f8928370567e2abf525880b1e4f1eba99fb8c495",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "shuffle_projection",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "prediction_hash": "5036c82a3729340d158c37b27919e7870fc35dc24832dd4d3e56fa366b568e54",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "7cc55b159fd2dce7b225c4d48a7af30e60055714a0c03dfbcc4bb0ea53354236",
+      "state_before_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "trace_hash": "d8dd7861a81eb508bba4c8e02e3e92846c68f9a23a279321126b8954a6c193d7",
+      "world_event": "quiet_interval"
+    },
+    "Shuffle_Provenance_Frozen:a": {
+      "candidate_hash": "f2a3c0e5a9dada4638a28b67fedb5c5546e9dee5964d2dbb810585aeb9414d8a",
+      "command_hash": "349d3ae10d599876bfac257d40080a2b3b05083267f85780dc5e29354617df97",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "shuffle_projection",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "dabc99d9526f64c92d2f67b37f7dc108144dd27af5335a90e62a9202aa88454c",
+      "state_before_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "trace_hash": "cc1a6ae05857131574d1ea2299d46d13f46d2eab3f5d00b96571f8ce341896aa",
+      "world_event": "quiet_interval"
+    },
+    "Shuffle_Provenance_Frozen:b": {
+      "candidate_hash": "a815912a6bc994c5677e3c1757306e11bc9d7973cf11a839dcf166db58d5e8b3",
+      "command_hash": "349d3ae10d599876bfac257d40080a2b3b05083267f85780dc5e29354617df97",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "shuffle_projection",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "prediction_hash": "5036c82a3729340d158c37b27919e7870fc35dc24832dd4d3e56fa366b568e54",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "5ac1772b89826b456d05760391a021bf263eab0567301e9e2e171295f087e3e1",
+      "state_before_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "trace_hash": "0d19f2d78e8ae84557b36f3680bd0146234ce658a09ec4e4ad21bb889cdc3041",
+      "world_event": "quiet_interval"
+    },
+    "canonical:a": {
+      "candidate_hash": "decae6db91692b7aa845221ddfbb7a71306fe06ca0954d0b49563ce70cae98d5",
+      "command_hash": "6919f3f481843783eeef75fd68731be0d9daae097e382803711fdb96b41fefd2",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "prediction_hash": "5036c82a3729340d158c37b27919e7870fc35dc24832dd4d3e56fa366b568e54",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "69a2499811fe3dc7cea37f0237d0bc527e124a6591326be3c1f520bbe8e0369d",
+      "state_before_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "trace_hash": "47b4e3a7ce77c9e4306dcbe42066e723ccabc3de6e852b941e8b90bbccdb886d",
+      "world_event": "quiet_interval"
+    },
+    "canonical:b": {
+      "candidate_hash": "4ff104ce096fbcceae0f6707c14e0928ce44a4d74be4f7cb750be86e2e9331a1",
+      "command_hash": "6919f3f481843783eeef75fd68731be0d9daae097e382803711fdb96b41fefd2",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "1dad6aa58f8f051634797dc125140e6e8de84500a3430ea4e76422cf855a9f25",
+      "state_before_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "trace_hash": "7a4b855d3bd4d8ff4772f0955de38ed7aa1ee59c53984bc28a248c2efb8a547e",
+      "world_event": "quiet_interval"
+    },
+    "from_scratch:a": {
+      "candidate_hash": "3acd1049557081aa658f5346a58de5b7b3ba33e428a53b635374d5c58935223e",
+      "command_hash": "931ccee971f647c57f3418927edb1ee0c1172713158a19916826f916820fbb86",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "06a6d45425ccb58e09f08b4953ee9f48b020f67ca1c22760a9bedc3f4114498c",
+      "state_before_hash": "d9c33dacab3ce306aa3b573de7da04543d0460081154bf7864eb1ac98e4e211f",
+      "trace_hash": "6c2c2b5d708af5ef2140e1c3e12fadb77d34939280aa541d28043ad2fa528f0e",
+      "world_event": "quiet_interval"
+    },
+    "from_scratch:b": {
+      "candidate_hash": "3acd1049557081aa658f5346a58de5b7b3ba33e428a53b635374d5c58935223e",
+      "command_hash": "931ccee971f647c57f3418927edb1ee0c1172713158a19916826f916820fbb86",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "1291e379c6d96f77a8459074a65105c6aace33e5a279eb6520fb3efbcbf2cf8c",
+      "state_before_hash": "f3a21b9729279215f65891486c0afb8cf4d9f5c0b8301ebd64a1b38ecdfcb8c5",
+      "trace_hash": "db5096c564abf653e7911d34caa7d846aae8c6c0ff3b20ba0460573105456883",
+      "world_event": "quiet_interval"
+    },
+    "history:a:resource_appears": {
+      "candidate_hash": "62e5347aebfc4d99401d1f61fa5fc0e367b5a1410178b2e3e178e6d9529a7936",
+      "command_hash": "4733457294dc40dac4d75707b39b4b887a4a8c8f5040484d1a1821c454b9ce38",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "prediction_hash": "9b2a1e1e06ebc72444588eb8b33b330aba8eb9cbe8eaed6e917c3554ba270f62",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 18,
+      "state_after_hash": "d62b9cfc40d3e346ebf1bc8d7123bd8a164f8c8b91c999d1b35cd6cd741b6975",
+      "state_before_hash": "ff009430f72fc313dc70e213e6c44357bfc16f52dfa7791ae60f04ce5426fedc",
+      "trace_hash": "4e74239b7bddf35c5e621e4d226b4148ecbb78695254dcb7a9c46467f6f5196f",
+      "world_event": "resource_appears"
+    },
+    "history:a:social_signal": {
+      "candidate_hash": "1a9ba0c364ed4126014ea26e9a451b00ed9a6f94a98da8fdf102856dfb8b80fd",
+      "command_hash": "fc8bf86400151f152bdc7872cad7b307ae04f007e3b9f0d1dd98c5645aba49db",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "prediction_hash": "15ad270ff79a83f06348939ae2f8052ad44411263aa0686315cb3c358f4cd8c2",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 18,
+      "state_after_hash": "3319528a4dc93c1b367db2b54213214b1f08d01e84ac55e2494578b62db29bc7",
+      "state_before_hash": "d62b9cfc40d3e346ebf1bc8d7123bd8a164f8c8b91c999d1b35cd6cd741b6975",
+      "trace_hash": "d82259e333aa160a54725b0b1fd4d8c0a71efeaf36e965e29e5bbafb03ef5181",
+      "world_event": "social_signal"
+    },
+    "history:b:resource_appears": {
+      "candidate_hash": "6959bcd83538609426e66b6b39244141771dc3d23b4abd2133c28f08bca18b95",
+      "command_hash": "4733457294dc40dac4d75707b39b4b887a4a8c8f5040484d1a1821c454b9ce38",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "prediction_hash": "9b2a1e1e06ebc72444588eb8b33b330aba8eb9cbe8eaed6e917c3554ba270f62",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 19,
+      "state_after_hash": "258daeb8957e35d52feae6162323c3c12e179dd84f24f0b579e0eb84308c44e6",
+      "state_before_hash": "6224c3ee5997e8f9656a691e7f755dd699600c78f8d847b8b9937d2329ba86c5",
+      "trace_hash": "632ad327a4f03dd303743340068edcd0aeba69c9b820ee1a404fe852b4edb53b",
+      "world_event": "resource_appears"
+    },
+    "history:b:social_signal": {
+      "candidate_hash": "85db57d72518ad28c55000a1fae3c10d3bcdd089985548ef40bfb9b43529b4e4",
+      "command_hash": "fc8bf86400151f152bdc7872cad7b307ae04f007e3b9f0d1dd98c5645aba49db",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "prediction_hash": "15ad270ff79a83f06348939ae2f8052ad44411263aa0686315cb3c358f4cd8c2",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 19,
+      "state_after_hash": "9cdde2287455fe8f2307f37b5fb71799eed622b85b0a2e0afc99f5cd7e81f91f",
+      "state_before_hash": "258daeb8957e35d52feae6162323c3c12e179dd84f24f0b579e0eb84308c44e6",
+      "trace_hash": "9e8abc8c634220f5cb56e629b7989b656e9f3bf82f97f0819ed223cbb7075c07",
+      "world_event": "social_signal"
+    },
+    "source_deletion_irrelevant:a": {
+      "candidate_hash": "decae6db91692b7aa845221ddfbb7a71306fe06ca0954d0b49563ce70cae98d5",
+      "command_hash": "6919f3f481843783eeef75fd68731be0d9daae097e382803711fdb96b41fefd2",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "prediction_hash": "5036c82a3729340d158c37b27919e7870fc35dc24832dd4d3e56fa366b568e54",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "69a2499811fe3dc7cea37f0237d0bc527e124a6591326be3c1f520bbe8e0369d",
+      "state_before_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "trace_hash": "47b4e3a7ce77c9e4306dcbe42066e723ccabc3de6e852b941e8b90bbccdb886d",
+      "world_event": "quiet_interval"
+    },
+    "source_deletion_relevant:a": {
+      "candidate_hash": "17e85fbf31c4d375814f8a45b0ada99a2af20d7f38e489eebf7ba87076cb7fb9",
+      "command_hash": "6919f3f481843783eeef75fd68731be0d9daae097e382803711fdb96b41fefd2",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "29b0416d7d6221ba2cffec6ffe215a3a23bb5f60459abe8a2445876f9e8763cb",
+      "state_before_hash": "2549e7b18c0367c3d838d42a732df527275089dba507188be16e8f10cb110408",
+      "trace_hash": "c1a4b03118c8efc094a47c357ad837a7cab65e6dee5a58450cbe12318e34f005",
+      "world_event": "quiet_interval"
+    }
+  },
+  "invocation_ledger": [
+    {
+      "candidate_hash": "decae6db91692b7aa845221ddfbb7a71306fe06ca0954d0b49563ce70cae98d5",
+      "command_hash": "6919f3f481843783eeef75fd68731be0d9daae097e382803711fdb96b41fefd2",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_id": "Freeze_Updates_enabled:a:1",
+      "prediction_hash": "5036c82a3729340d158c37b27919e7870fc35dc24832dd4d3e56fa366b568e54",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "69a2499811fe3dc7cea37f0237d0bc527e124a6591326be3c1f520bbe8e0369d",
+      "state_before_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "trace_hash": "47b4e3a7ce77c9e4306dcbe42066e723ccabc3de6e852b941e8b90bbccdb886d",
+      "world_event": "quiet_interval"
+    },
+    {
+      "candidate_hash": "026c174bcd366ad215b55c6a808973b9575e1705e0ce0e13c6c4ab3846316c6c",
+      "command_hash": "4c679f211c9a02ad44263e0ba0b9977e42c5d3f386e76a195de5ccacb5736f8a",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_id": "Freeze_Updates_enabled:a:2",
+      "prediction_hash": "9b2a1e1e06ebc72444588eb8b33b330aba8eb9cbe8eaed6e917c3554ba270f62",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "907d68da0694cb4b513aa62b3b9cbe267e43afa72206ae51351ca593afecbf7c",
+      "state_before_hash": "69a2499811fe3dc7cea37f0237d0bc527e124a6591326be3c1f520bbe8e0369d",
+      "trace_hash": "fd8968dae84e8b536f11d0d5a221af96d365cb5c84bcbac13b48573a3615ee08",
+      "world_event": "resource_appears"
+    },
+    {
+      "candidate_hash": "e7dad78f52622b1fd803879779a8d9313fa77f66fed9983982711f4a4ccba7a6",
+      "command_hash": "f3f3bf792ac041344cb9baeece393a74100bfb56012dd400c637501c35dfa015",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_id": "Freeze_Updates_enabled:a:3",
+      "prediction_hash": "5036c82a3729340d158c37b27919e7870fc35dc24832dd4d3e56fa366b568e54",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "c888e313ca2b426332a45d21a2422790b62d89f6f4ee6406864ac5e2d42bc8ed",
+      "state_before_hash": "907d68da0694cb4b513aa62b3b9cbe267e43afa72206ae51351ca593afecbf7c",
+      "trace_hash": "4aa1bf071633dd423c9bcedf5a3d53dfed8017b5c413e64be328c28f76196bec",
+      "world_event": "social_signal"
+    },
+    {
+      "candidate_hash": "4ff104ce096fbcceae0f6707c14e0928ce44a4d74be4f7cb750be86e2e9331a1",
+      "command_hash": "6919f3f481843783eeef75fd68731be0d9daae097e382803711fdb96b41fefd2",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_id": "Freeze_Updates_enabled:b:1",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "1dad6aa58f8f051634797dc125140e6e8de84500a3430ea4e76422cf855a9f25",
+      "state_before_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "trace_hash": "7a4b855d3bd4d8ff4772f0955de38ed7aa1ee59c53984bc28a248c2efb8a547e",
+      "world_event": "quiet_interval"
+    },
+    {
+      "candidate_hash": "fe7d832946b94acb70153b602818dc20440feb3917626eaf74f3db8dd9c522bb",
+      "command_hash": "4c679f211c9a02ad44263e0ba0b9977e42c5d3f386e76a195de5ccacb5736f8a",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_id": "Freeze_Updates_enabled:b:2",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "05b9eda27885edf1cb6037b07aca39435079fa5a76119ffede0e424382cc8f83",
+      "state_before_hash": "1dad6aa58f8f051634797dc125140e6e8de84500a3430ea4e76422cf855a9f25",
+      "trace_hash": "8b5d78d63a7f6ace40846fb8b9954b2deeb17918d71085e799c0259a1fcca69e",
+      "world_event": "resource_appears"
+    },
+    {
+      "candidate_hash": "10ca89de2b8e01aaf537a6b3b4f73b86e0734aad0605f2af74bcc44559df891d",
+      "command_hash": "f3f3bf792ac041344cb9baeece393a74100bfb56012dd400c637501c35dfa015",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_id": "Freeze_Updates_enabled:b:3",
+      "prediction_hash": "15ad270ff79a83f06348939ae2f8052ad44411263aa0686315cb3c358f4cd8c2",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "4a23a9ae1c3527e758b35063fbf4d7ea5595410c67c2f223542269d40ac5ad3e",
+      "state_before_hash": "05b9eda27885edf1cb6037b07aca39435079fa5a76119ffede0e424382cc8f83",
+      "trace_hash": "047b34fbee9b722072056252b70e495a934aa11838bcc5110ff20945812c6bea",
+      "world_event": "social_signal"
+    },
+    {
+      "candidate_hash": "decae6db91692b7aa845221ddfbb7a71306fe06ca0954d0b49563ce70cae98d5",
+      "command_hash": "931ccee971f647c57f3418927edb1ee0c1172713158a19916826f916820fbb86",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "invoked": true,
+      "output_id": "Freeze_Updates_frozen:a:1",
+      "prediction_hash": "5036c82a3729340d158c37b27919e7870fc35dc24832dd4d3e56fa366b568e54",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "e8223f7e6a9679f201be63deb754e20615474250306c2563e60bd53bc13a37e1",
+      "state_before_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "trace_hash": "858ada1def0b3ac8ebe0160659bcbec7ba19fd46c16e71759e9bcc5de42a8721",
+      "world_event": "quiet_interval"
+    },
+    {
+      "candidate_hash": "7f983800fe6a7a6314bf9850da66626f28fc20cc7970564dccf9ec391cda78a0",
+      "command_hash": "ff86a1925c9281390db0545fb977c15b4c2bedc82539731ee765d514a989b19f",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "invoked": true,
+      "output_id": "Freeze_Updates_frozen:a:2",
+      "prediction_hash": "9b2a1e1e06ebc72444588eb8b33b330aba8eb9cbe8eaed6e917c3554ba270f62",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "6db637984ff063305f0c05faeafae2460f4f4f35e587b293f0511cdb6bb2ddca",
+      "state_before_hash": "e8223f7e6a9679f201be63deb754e20615474250306c2563e60bd53bc13a37e1",
+      "trace_hash": "4d285fd70c3efe8ae9c6b71b90842064032eb7be37e8772d323a9f6fb0828831",
+      "world_event": "resource_appears"
+    },
+    {
+      "candidate_hash": "09b215c418e98c91a8bdc1c3420d86ce7bf92062ec603cf46d8af01d12eff07f",
+      "command_hash": "56da5149b59de8626d3a0fee51517ea0755bb62d93e91fb5680f1ae27ce279e1",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "invoked": true,
+      "output_id": "Freeze_Updates_frozen:a:3",
+      "prediction_hash": "5036c82a3729340d158c37b27919e7870fc35dc24832dd4d3e56fa366b568e54",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "1fcceee560148ca3c30aed1788cce055cbbefce4275e504c0597c966eeded1da",
+      "state_before_hash": "6db637984ff063305f0c05faeafae2460f4f4f35e587b293f0511cdb6bb2ddca",
+      "trace_hash": "d7045428dcdf3ed3b61bf460380db04cf83b5a091a0007f82c16580271974ea3",
+      "world_event": "social_signal"
+    },
+    {
+      "candidate_hash": "4ff104ce096fbcceae0f6707c14e0928ce44a4d74be4f7cb750be86e2e9331a1",
+      "command_hash": "931ccee971f647c57f3418927edb1ee0c1172713158a19916826f916820fbb86",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "invoked": true,
+      "output_id": "Freeze_Updates_frozen:b:1",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "3af9f0b729bd2db5abf1dc319783347984be46a517a05ae214d2fae4ef1eac66",
+      "state_before_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "trace_hash": "9609908ed12e0f022a032836d5a7cc099ac64dc13335f4455fed1936c98562a4",
+      "world_event": "quiet_interval"
+    },
+    {
+      "candidate_hash": "5bcc000c202007e922db76cd940b3647599cbd8b6a7b4bc14a3bea598a0bfb4b",
+      "command_hash": "ff86a1925c9281390db0545fb977c15b4c2bedc82539731ee765d514a989b19f",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "invoked": true,
+      "output_id": "Freeze_Updates_frozen:b:2",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "2ccc271554935aad4bb41be549b38e697e8f4f0be72544feb08d2cb5331ba836",
+      "state_before_hash": "3af9f0b729bd2db5abf1dc319783347984be46a517a05ae214d2fae4ef1eac66",
+      "trace_hash": "6e0dfe3471dffc7439a3810207d733060f1386249328f919c033873775587695",
+      "world_event": "resource_appears"
+    },
+    {
+      "candidate_hash": "589785df2ec44c9f9e2a870b8074bda58f6d3052d0dccb988ab548e7ed87b2db",
+      "command_hash": "56da5149b59de8626d3a0fee51517ea0755bb62d93e91fb5680f1ae27ce279e1",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "invoked": true,
+      "output_id": "Freeze_Updates_frozen:b:3",
+      "prediction_hash": "15ad270ff79a83f06348939ae2f8052ad44411263aa0686315cb3c358f4cd8c2",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "1b12778c93330b687274d2dd652f954dbab336bd5475a8df2d12830f4751be80",
+      "state_before_hash": "2ccc271554935aad4bb41be549b38e697e8f4f0be72544feb08d2cb5331ba836",
+      "trace_hash": "38c579c306313f09ad4a1afca6ffe83fab224a6fb5de93f37e3417cbd3d6083d",
+      "world_event": "social_signal"
+    },
+    {
+      "candidate_hash": "3acd1049557081aa658f5346a58de5b7b3ba33e428a53b635374d5c58935223e",
+      "command_hash": "e6b311525b283adc5f126b3e6cd09def44b4f935cfa21f754d5f6ccae83ea6a6",
+      "interventions": {
+        "memory_mode": "off",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_id": "Memory_OFF:a",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "bd041207b0009a9af2d3067f6dbbb39e3449c6fa0811f5ce819af7c9550d2ca6",
+      "state_before_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "trace_hash": "b1e5591da36bc6c49a89299c9a8eea7ad815684cfcece51bf0346b73e4a164a9",
+      "world_event": "quiet_interval"
+    },
+    {
+      "candidate_hash": "3acd1049557081aa658f5346a58de5b7b3ba33e428a53b635374d5c58935223e",
+      "command_hash": "e6b311525b283adc5f126b3e6cd09def44b4f935cfa21f754d5f6ccae83ea6a6",
+      "interventions": {
+        "memory_mode": "off",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_id": "Memory_OFF:b",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "989a64846b2f6f09c132b8f365ac0bdc8810515024514cd77b89f7d848f9be42",
+      "state_before_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "trace_hash": "48c4f0efc525d1d6e4b57f69e36bd365a8bdcdd0653a5dfeb402b0326f9d2a7d",
+      "world_event": "quiet_interval"
+    },
+    {
+      "candidate_hash": "3acd1049557081aa658f5346a58de5b7b3ba33e428a53b635374d5c58935223e",
+      "command_hash": "c59373efcd3e1e870b610f216697c7f99a6dfe6325403c786fda59766107494b",
+      "interventions": {
+        "memory_mode": "off",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "invoked": true,
+      "output_id": "Q_only:a",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "8ee0c9c3ab07aa972efa18e71518adef27fcb0fab70b4ffd13198ed32ce85883",
+      "state_before_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "trace_hash": "3a115772f7940662156dbf8fe838b2c451290c48a1a79b45cad74d8932f498ae",
+      "world_event": "quiet_interval"
+    },
+    {
+      "candidate_hash": "3acd1049557081aa658f5346a58de5b7b3ba33e428a53b635374d5c58935223e",
+      "command_hash": "c59373efcd3e1e870b610f216697c7f99a6dfe6325403c786fda59766107494b",
+      "interventions": {
+        "memory_mode": "off",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "invoked": true,
+      "output_id": "Q_only:b",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "bb5f62a29ff303dca2a6d3439c1bd899bae2a45680153e04320cba042d0bbac2",
+      "state_before_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "trace_hash": "7c8cbde2b079fcf19d0c5fa6ff447e773e0a9b0a8d4ef2b51f4a9ba13382854d",
+      "world_event": "quiet_interval"
+    },
+    {
+      "candidate_hash": "f2a3c0e5a9dada4638a28b67fedb5c5546e9dee5964d2dbb810585aeb9414d8a",
+      "command_hash": "623f42cbdab4c7baaecf1fe4f8928370567e2abf525880b1e4f1eba99fb8c495",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "shuffle_projection",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_id": "Shuffle_Provenance:a",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "121fa2a28ef0558ddf8bea985a7d1191321b647f23291a801047d6e8e681ba8f",
+      "state_before_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "trace_hash": "ff7f87c3b4d63e0b550d7890c7a32d7227a1fd73df9af81d36946b6b4b5b99a9",
+      "world_event": "quiet_interval"
+    },
+    {
+      "candidate_hash": "a815912a6bc994c5677e3c1757306e11bc9d7973cf11a839dcf166db58d5e8b3",
+      "command_hash": "623f42cbdab4c7baaecf1fe4f8928370567e2abf525880b1e4f1eba99fb8c495",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "shuffle_projection",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_id": "Shuffle_Provenance:b",
+      "prediction_hash": "5036c82a3729340d158c37b27919e7870fc35dc24832dd4d3e56fa366b568e54",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "7cc55b159fd2dce7b225c4d48a7af30e60055714a0c03dfbcc4bb0ea53354236",
+      "state_before_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "trace_hash": "d8dd7861a81eb508bba4c8e02e3e92846c68f9a23a279321126b8954a6c193d7",
+      "world_event": "quiet_interval"
+    },
+    {
+      "candidate_hash": "f2a3c0e5a9dada4638a28b67fedb5c5546e9dee5964d2dbb810585aeb9414d8a",
+      "command_hash": "349d3ae10d599876bfac257d40080a2b3b05083267f85780dc5e29354617df97",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "shuffle_projection",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "invoked": true,
+      "output_id": "Shuffle_Provenance_Frozen:a",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "dabc99d9526f64c92d2f67b37f7dc108144dd27af5335a90e62a9202aa88454c",
+      "state_before_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "trace_hash": "cc1a6ae05857131574d1ea2299d46d13f46d2eab3f5d00b96571f8ce341896aa",
+      "world_event": "quiet_interval"
+    },
+    {
+      "candidate_hash": "a815912a6bc994c5677e3c1757306e11bc9d7973cf11a839dcf166db58d5e8b3",
+      "command_hash": "349d3ae10d599876bfac257d40080a2b3b05083267f85780dc5e29354617df97",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "shuffle_projection",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "invoked": true,
+      "output_id": "Shuffle_Provenance_Frozen:b",
+      "prediction_hash": "5036c82a3729340d158c37b27919e7870fc35dc24832dd4d3e56fa366b568e54",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "5ac1772b89826b456d05760391a021bf263eab0567301e9e2e171295f087e3e1",
+      "state_before_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "trace_hash": "0d19f2d78e8ae84557b36f3680bd0146234ce658a09ec4e4ad21bb889cdc3041",
+      "world_event": "quiet_interval"
+    },
+    {
+      "candidate_hash": "decae6db91692b7aa845221ddfbb7a71306fe06ca0954d0b49563ce70cae98d5",
+      "command_hash": "6919f3f481843783eeef75fd68731be0d9daae097e382803711fdb96b41fefd2",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_id": "canonical:a",
+      "prediction_hash": "5036c82a3729340d158c37b27919e7870fc35dc24832dd4d3e56fa366b568e54",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "69a2499811fe3dc7cea37f0237d0bc527e124a6591326be3c1f520bbe8e0369d",
+      "state_before_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "trace_hash": "47b4e3a7ce77c9e4306dcbe42066e723ccabc3de6e852b941e8b90bbccdb886d",
+      "world_event": "quiet_interval"
+    },
+    {
+      "candidate_hash": "4ff104ce096fbcceae0f6707c14e0928ce44a4d74be4f7cb750be86e2e9331a1",
+      "command_hash": "6919f3f481843783eeef75fd68731be0d9daae097e382803711fdb96b41fefd2",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_id": "canonical:b",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "1dad6aa58f8f051634797dc125140e6e8de84500a3430ea4e76422cf855a9f25",
+      "state_before_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "trace_hash": "7a4b855d3bd4d8ff4772f0955de38ed7aa1ee59c53984bc28a248c2efb8a547e",
+      "world_event": "quiet_interval"
+    },
+    {
+      "candidate_hash": "3acd1049557081aa658f5346a58de5b7b3ba33e428a53b635374d5c58935223e",
+      "command_hash": "931ccee971f647c57f3418927edb1ee0c1172713158a19916826f916820fbb86",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "invoked": true,
+      "output_id": "from_scratch:a",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "06a6d45425ccb58e09f08b4953ee9f48b020f67ca1c22760a9bedc3f4114498c",
+      "state_before_hash": "d9c33dacab3ce306aa3b573de7da04543d0460081154bf7864eb1ac98e4e211f",
+      "trace_hash": "6c2c2b5d708af5ef2140e1c3e12fadb77d34939280aa541d28043ad2fa528f0e",
+      "world_event": "quiet_interval"
+    },
+    {
+      "candidate_hash": "3acd1049557081aa658f5346a58de5b7b3ba33e428a53b635374d5c58935223e",
+      "command_hash": "931ccee971f647c57f3418927edb1ee0c1172713158a19916826f916820fbb86",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "invoked": true,
+      "output_id": "from_scratch:b",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "1291e379c6d96f77a8459074a65105c6aace33e5a279eb6520fb3efbcbf2cf8c",
+      "state_before_hash": "f3a21b9729279215f65891486c0afb8cf4d9f5c0b8301ebd64a1b38ecdfcb8c5",
+      "trace_hash": "db5096c564abf653e7911d34caa7d846aae8c6c0ff3b20ba0460573105456883",
+      "world_event": "quiet_interval"
+    },
+    {
+      "candidate_hash": "62e5347aebfc4d99401d1f61fa5fc0e367b5a1410178b2e3e178e6d9529a7936",
+      "command_hash": "4733457294dc40dac4d75707b39b4b887a4a8c8f5040484d1a1821c454b9ce38",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_id": "history:a:resource_appears",
+      "prediction_hash": "9b2a1e1e06ebc72444588eb8b33b330aba8eb9cbe8eaed6e917c3554ba270f62",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 18,
+      "state_after_hash": "d62b9cfc40d3e346ebf1bc8d7123bd8a164f8c8b91c999d1b35cd6cd741b6975",
+      "state_before_hash": "ff009430f72fc313dc70e213e6c44357bfc16f52dfa7791ae60f04ce5426fedc",
+      "trace_hash": "4e74239b7bddf35c5e621e4d226b4148ecbb78695254dcb7a9c46467f6f5196f",
+      "world_event": "resource_appears"
+    },
+    {
+      "candidate_hash": "1a9ba0c364ed4126014ea26e9a451b00ed9a6f94a98da8fdf102856dfb8b80fd",
+      "command_hash": "fc8bf86400151f152bdc7872cad7b307ae04f007e3b9f0d1dd98c5645aba49db",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_id": "history:a:social_signal",
+      "prediction_hash": "15ad270ff79a83f06348939ae2f8052ad44411263aa0686315cb3c358f4cd8c2",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 18,
+      "state_after_hash": "3319528a4dc93c1b367db2b54213214b1f08d01e84ac55e2494578b62db29bc7",
+      "state_before_hash": "d62b9cfc40d3e346ebf1bc8d7123bd8a164f8c8b91c999d1b35cd6cd741b6975",
+      "trace_hash": "d82259e333aa160a54725b0b1fd4d8c0a71efeaf36e965e29e5bbafb03ef5181",
+      "world_event": "social_signal"
+    },
+    {
+      "candidate_hash": "6959bcd83538609426e66b6b39244141771dc3d23b4abd2133c28f08bca18b95",
+      "command_hash": "4733457294dc40dac4d75707b39b4b887a4a8c8f5040484d1a1821c454b9ce38",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_id": "history:b:resource_appears",
+      "prediction_hash": "9b2a1e1e06ebc72444588eb8b33b330aba8eb9cbe8eaed6e917c3554ba270f62",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 19,
+      "state_after_hash": "258daeb8957e35d52feae6162323c3c12e179dd84f24f0b579e0eb84308c44e6",
+      "state_before_hash": "6224c3ee5997e8f9656a691e7f755dd699600c78f8d847b8b9937d2329ba86c5",
+      "trace_hash": "632ad327a4f03dd303743340068edcd0aeba69c9b820ee1a404fe852b4edb53b",
+      "world_event": "resource_appears"
+    },
+    {
+      "candidate_hash": "85db57d72518ad28c55000a1fae3c10d3bcdd089985548ef40bfb9b43529b4e4",
+      "command_hash": "fc8bf86400151f152bdc7872cad7b307ae04f007e3b9f0d1dd98c5645aba49db",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_id": "history:b:social_signal",
+      "prediction_hash": "15ad270ff79a83f06348939ae2f8052ad44411263aa0686315cb3c358f4cd8c2",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 19,
+      "state_after_hash": "9cdde2287455fe8f2307f37b5fb71799eed622b85b0a2e0afc99f5cd7e81f91f",
+      "state_before_hash": "258daeb8957e35d52feae6162323c3c12e179dd84f24f0b579e0eb84308c44e6",
+      "trace_hash": "9e8abc8c634220f5cb56e629b7989b656e9f3bf82f97f0819ed223cbb7075c07",
+      "world_event": "social_signal"
+    },
+    {
+      "candidate_hash": "decae6db91692b7aa845221ddfbb7a71306fe06ca0954d0b49563ce70cae98d5",
+      "command_hash": "6919f3f481843783eeef75fd68731be0d9daae097e382803711fdb96b41fefd2",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_id": "source_deletion_irrelevant:a",
+      "prediction_hash": "5036c82a3729340d158c37b27919e7870fc35dc24832dd4d3e56fa366b568e54",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "69a2499811fe3dc7cea37f0237d0bc527e124a6591326be3c1f520bbe8e0369d",
+      "state_before_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "trace_hash": "47b4e3a7ce77c9e4306dcbe42066e723ccabc3de6e852b941e8b90bbccdb886d",
+      "world_event": "quiet_interval"
+    },
+    {
+      "candidate_hash": "17e85fbf31c4d375814f8a45b0ada99a2af20d7f38e489eebf7ba87076cb7fb9",
+      "command_hash": "6919f3f481843783eeef75fd68731be0d9daae097e382803711fdb96b41fefd2",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_id": "source_deletion_relevant:a",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "state_after_hash": "29b0416d7d6221ba2cffec6ffe215a3a23bb5f60459abe8a2445876f9e8763cb",
+      "state_before_hash": "2549e7b18c0367c3d838d42a732df527275089dba507188be16e8f10cb110408",
+      "trace_hash": "c1a4b03118c8efc094a47c357ad837a7cab65e6dee5a58450cbe12318e34f005",
+      "world_event": "quiet_interval"
+    },
+    {
+      "baseline_id": "observation_only",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_observation_only",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "observation_only",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_observation_only",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "q_only",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "explore",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_q_only",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "q_only",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "explore",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_q_only",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "cue_clock_fsm",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_cue_clock_fsm",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "cue_clock_fsm",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_cue_clock_fsm",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "last_success",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_last_success",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "last_success",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_last_success",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "recency_window_1",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_recency_window_1",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "recency_window_1",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_recency_window_1",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "recency_window_2",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_recency_window_2",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "recency_window_2",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_recency_window_2",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "recency_window_4",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_recency_window_4",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "recency_window_4",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_recency_window_4",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "exact_public_history_lookup",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_exact_public_history_lookup",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "exact_public_history_lookup",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_exact_public_history_lookup",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "nearest_history",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_nearest_history",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "nearest_history",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_nearest_history",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "graph_lookup",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_graph_lookup",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "graph_lookup",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_graph_lookup",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "successor_map",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_successor_map",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "successor_map",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_successor_map",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "fsm_planner",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_fsm_planner",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "fsm_planner",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_fsm_planner",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "episodic_traversal",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_episodic_traversal",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "episodic_traversal",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_episodic_traversal",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "no_update",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_no_update",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "no_update",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_no_update",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "from_scratch",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "rest",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_from_scratch",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "from_scratch",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "rest",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_from_scratch",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "count_table",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_count_table",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "count_table",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_count_table",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "baseline_id": "transition_table",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "7524affd768a577d0daa94f28ddc69ea0a21633b4b59d93b31cabe10125afa5d",
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_transition_table",
+      "seed": 18,
+      "side": "a"
+    },
+    {
+      "baseline_id": "transition_table",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "input_access_hash": "a526530aee47ea26737cd6697a9d57794250438e3587563e94602965f177d6c6",
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "producer_function": "baseline_transition_table",
+      "seed": 19,
+      "side": "b"
+    },
+    {
+      "candidate_hash": "3acd1049557081aa658f5346a58de5b7b3ba33e428a53b635374d5c58935223e",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "command_hash": "e6b311525b283adc5f126b3e6cd09def44b4f935cfa21f754d5f6ccae83ea6a6",
+      "input_state_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "intervention_id": "Memory_OFF",
+      "interventions": {
+        "memory_mode": "off",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "side": "a",
+      "state_after_hash": "bd041207b0009a9af2d3067f6dbbb39e3449c6fa0811f5ce819af7c9550d2ca6",
+      "state_before_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "trace_hash": "b1e5591da36bc6c49a89299c9a8eea7ad815684cfcece51bf0346b73e4a164a9"
+    },
+    {
+      "candidate_hash": "3acd1049557081aa658f5346a58de5b7b3ba33e428a53b635374d5c58935223e",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "command_hash": "e6b311525b283adc5f126b3e6cd09def44b4f935cfa21f754d5f6ccae83ea6a6",
+      "input_state_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "intervention_id": "Memory_OFF",
+      "interventions": {
+        "memory_mode": "off",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "side": "b",
+      "state_after_hash": "989a64846b2f6f09c132b8f365ac0bdc8810515024514cd77b89f7d848f9be42",
+      "state_before_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "trace_hash": "48c4f0efc525d1d6e4b57f69e36bd365a8bdcdd0653a5dfeb402b0326f9d2a7d"
+    },
+    {
+      "candidate_hash": "3acd1049557081aa658f5346a58de5b7b3ba33e428a53b635374d5c58935223e",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "command_hash": "c59373efcd3e1e870b610f216697c7f99a6dfe6325403c786fda59766107494b",
+      "input_state_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "intervention_id": "Q_only",
+      "interventions": {
+        "memory_mode": "off",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "side": "a",
+      "state_after_hash": "8ee0c9c3ab07aa972efa18e71518adef27fcb0fab70b4ffd13198ed32ce85883",
+      "state_before_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "trace_hash": "3a115772f7940662156dbf8fe838b2c451290c48a1a79b45cad74d8932f498ae"
+    },
+    {
+      "candidate_hash": "3acd1049557081aa658f5346a58de5b7b3ba33e428a53b635374d5c58935223e",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "command_hash": "c59373efcd3e1e870b610f216697c7f99a6dfe6325403c786fda59766107494b",
+      "input_state_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "intervention_id": "Q_only",
+      "interventions": {
+        "memory_mode": "off",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "side": "b",
+      "state_after_hash": "bb5f62a29ff303dca2a6d3439c1bd899bae2a45680153e04320cba042d0bbac2",
+      "state_before_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "trace_hash": "7c8cbde2b079fcf19d0c5fa6ff447e773e0a9b0a8d4ef2b51f4a9ba13382854d"
+    },
+    {
+      "candidate_hash": "3acd1049557081aa658f5346a58de5b7b3ba33e428a53b635374d5c58935223e",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "command_hash": "931ccee971f647c57f3418927edb1ee0c1172713158a19916826f916820fbb86",
+      "input_state_hash": "d9c33dacab3ce306aa3b573de7da04543d0460081154bf7864eb1ac98e4e211f",
+      "intervention_id": "from_scratch",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "side": "a",
+      "state_after_hash": "06a6d45425ccb58e09f08b4953ee9f48b020f67ca1c22760a9bedc3f4114498c",
+      "state_before_hash": "d9c33dacab3ce306aa3b573de7da04543d0460081154bf7864eb1ac98e4e211f",
+      "trace_hash": "6c2c2b5d708af5ef2140e1c3e12fadb77d34939280aa541d28043ad2fa528f0e"
+    },
+    {
+      "candidate_hash": "3acd1049557081aa658f5346a58de5b7b3ba33e428a53b635374d5c58935223e",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "command_hash": "931ccee971f647c57f3418927edb1ee0c1172713158a19916826f916820fbb86",
+      "input_state_hash": "f3a21b9729279215f65891486c0afb8cf4d9f5c0b8301ebd64a1b38ecdfcb8c5",
+      "intervention_id": "from_scratch",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "side": "b",
+      "state_after_hash": "1291e379c6d96f77a8459074a65105c6aace33e5a279eb6520fb3efbcbf2cf8c",
+      "state_before_hash": "f3a21b9729279215f65891486c0afb8cf4d9f5c0b8301ebd64a1b38ecdfcb8c5",
+      "trace_hash": "db5096c564abf653e7911d34caa7d846aae8c6c0ff3b20ba0460573105456883"
+    },
+    {
+      "candidate_hash": "decae6db91692b7aa845221ddfbb7a71306fe06ca0954d0b49563ce70cae98d5",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "command_hash": "6919f3f481843783eeef75fd68731be0d9daae097e382803711fdb96b41fefd2",
+      "input_state_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "intervention_id": "Freeze_Updates_enabled",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "prediction_hash": "5036c82a3729340d158c37b27919e7870fc35dc24832dd4d3e56fa366b568e54",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "side": "a",
+      "state_after_hash": "69a2499811fe3dc7cea37f0237d0bc527e124a6591326be3c1f520bbe8e0369d",
+      "state_before_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "stream_step": 1,
+      "trace_hash": "47b4e3a7ce77c9e4306dcbe42066e723ccabc3de6e852b941e8b90bbccdb886d"
+    },
+    {
+      "candidate_hash": "026c174bcd366ad215b55c6a808973b9575e1705e0ce0e13c6c4ab3846316c6c",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "command_hash": "4c679f211c9a02ad44263e0ba0b9977e42c5d3f386e76a195de5ccacb5736f8a",
+      "input_state_hash": "69a2499811fe3dc7cea37f0237d0bc527e124a6591326be3c1f520bbe8e0369d",
+      "intervention_id": "Freeze_Updates_enabled",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "prediction_hash": "9b2a1e1e06ebc72444588eb8b33b330aba8eb9cbe8eaed6e917c3554ba270f62",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "side": "a",
+      "state_after_hash": "907d68da0694cb4b513aa62b3b9cbe267e43afa72206ae51351ca593afecbf7c",
+      "state_before_hash": "69a2499811fe3dc7cea37f0237d0bc527e124a6591326be3c1f520bbe8e0369d",
+      "stream_step": 2,
+      "trace_hash": "fd8968dae84e8b536f11d0d5a221af96d365cb5c84bcbac13b48573a3615ee08"
+    },
+    {
+      "candidate_hash": "e7dad78f52622b1fd803879779a8d9313fa77f66fed9983982711f4a4ccba7a6",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "command_hash": "f3f3bf792ac041344cb9baeece393a74100bfb56012dd400c637501c35dfa015",
+      "input_state_hash": "907d68da0694cb4b513aa62b3b9cbe267e43afa72206ae51351ca593afecbf7c",
+      "intervention_id": "Freeze_Updates_enabled",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "prediction_hash": "5036c82a3729340d158c37b27919e7870fc35dc24832dd4d3e56fa366b568e54",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "side": "a",
+      "state_after_hash": "c888e313ca2b426332a45d21a2422790b62d89f6f4ee6406864ac5e2d42bc8ed",
+      "state_before_hash": "907d68da0694cb4b513aa62b3b9cbe267e43afa72206ae51351ca593afecbf7c",
+      "stream_step": 3,
+      "trace_hash": "4aa1bf071633dd423c9bcedf5a3d53dfed8017b5c413e64be328c28f76196bec"
+    },
+    {
+      "candidate_hash": "decae6db91692b7aa845221ddfbb7a71306fe06ca0954d0b49563ce70cae98d5",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "command_hash": "931ccee971f647c57f3418927edb1ee0c1172713158a19916826f916820fbb86",
+      "input_state_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "intervention_id": "Freeze_Updates_frozen",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "prediction_hash": "5036c82a3729340d158c37b27919e7870fc35dc24832dd4d3e56fa366b568e54",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "side": "a",
+      "state_after_hash": "e8223f7e6a9679f201be63deb754e20615474250306c2563e60bd53bc13a37e1",
+      "state_before_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "stream_step": 1,
+      "trace_hash": "858ada1def0b3ac8ebe0160659bcbec7ba19fd46c16e71759e9bcc5de42a8721"
+    },
+    {
+      "candidate_hash": "7f983800fe6a7a6314bf9850da66626f28fc20cc7970564dccf9ec391cda78a0",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "command_hash": "ff86a1925c9281390db0545fb977c15b4c2bedc82539731ee765d514a989b19f",
+      "input_state_hash": "e8223f7e6a9679f201be63deb754e20615474250306c2563e60bd53bc13a37e1",
+      "intervention_id": "Freeze_Updates_frozen",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "prediction_hash": "9b2a1e1e06ebc72444588eb8b33b330aba8eb9cbe8eaed6e917c3554ba270f62",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "side": "a",
+      "state_after_hash": "6db637984ff063305f0c05faeafae2460f4f4f35e587b293f0511cdb6bb2ddca",
+      "state_before_hash": "e8223f7e6a9679f201be63deb754e20615474250306c2563e60bd53bc13a37e1",
+      "stream_step": 2,
+      "trace_hash": "4d285fd70c3efe8ae9c6b71b90842064032eb7be37e8772d323a9f6fb0828831"
+    },
+    {
+      "candidate_hash": "09b215c418e98c91a8bdc1c3420d86ce7bf92062ec603cf46d8af01d12eff07f",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "command_hash": "56da5149b59de8626d3a0fee51517ea0755bb62d93e91fb5680f1ae27ce279e1",
+      "input_state_hash": "6db637984ff063305f0c05faeafae2460f4f4f35e587b293f0511cdb6bb2ddca",
+      "intervention_id": "Freeze_Updates_frozen",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "prediction_hash": "5036c82a3729340d158c37b27919e7870fc35dc24832dd4d3e56fa366b568e54",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "side": "a",
+      "state_after_hash": "1fcceee560148ca3c30aed1788cce055cbbefce4275e504c0597c966eeded1da",
+      "state_before_hash": "6db637984ff063305f0c05faeafae2460f4f4f35e587b293f0511cdb6bb2ddca",
+      "stream_step": 3,
+      "trace_hash": "d7045428dcdf3ed3b61bf460380db04cf83b5a091a0007f82c16580271974ea3"
+    },
+    {
+      "candidate_hash": "4ff104ce096fbcceae0f6707c14e0928ce44a4d74be4f7cb750be86e2e9331a1",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "command_hash": "6919f3f481843783eeef75fd68731be0d9daae097e382803711fdb96b41fefd2",
+      "input_state_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "intervention_id": "Freeze_Updates_enabled",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "side": "b",
+      "state_after_hash": "1dad6aa58f8f051634797dc125140e6e8de84500a3430ea4e76422cf855a9f25",
+      "state_before_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "stream_step": 1,
+      "trace_hash": "7a4b855d3bd4d8ff4772f0955de38ed7aa1ee59c53984bc28a248c2efb8a547e"
+    },
+    {
+      "candidate_hash": "fe7d832946b94acb70153b602818dc20440feb3917626eaf74f3db8dd9c522bb",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "command_hash": "4c679f211c9a02ad44263e0ba0b9977e42c5d3f386e76a195de5ccacb5736f8a",
+      "input_state_hash": "1dad6aa58f8f051634797dc125140e6e8de84500a3430ea4e76422cf855a9f25",
+      "intervention_id": "Freeze_Updates_enabled",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "side": "b",
+      "state_after_hash": "05b9eda27885edf1cb6037b07aca39435079fa5a76119ffede0e424382cc8f83",
+      "state_before_hash": "1dad6aa58f8f051634797dc125140e6e8de84500a3430ea4e76422cf855a9f25",
+      "stream_step": 2,
+      "trace_hash": "8b5d78d63a7f6ace40846fb8b9954b2deeb17918d71085e799c0259a1fcca69e"
+    },
+    {
+      "candidate_hash": "10ca89de2b8e01aaf537a6b3b4f73b86e0734aad0605f2af74bcc44559df891d",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "command_hash": "f3f3bf792ac041344cb9baeece393a74100bfb56012dd400c637501c35dfa015",
+      "input_state_hash": "05b9eda27885edf1cb6037b07aca39435079fa5a76119ffede0e424382cc8f83",
+      "intervention_id": "Freeze_Updates_enabled",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "prediction_hash": "15ad270ff79a83f06348939ae2f8052ad44411263aa0686315cb3c358f4cd8c2",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "side": "b",
+      "state_after_hash": "4a23a9ae1c3527e758b35063fbf4d7ea5595410c67c2f223542269d40ac5ad3e",
+      "state_before_hash": "05b9eda27885edf1cb6037b07aca39435079fa5a76119ffede0e424382cc8f83",
+      "stream_step": 3,
+      "trace_hash": "047b34fbee9b722072056252b70e495a934aa11838bcc5110ff20945812c6bea"
+    },
+    {
+      "candidate_hash": "4ff104ce096fbcceae0f6707c14e0928ce44a4d74be4f7cb750be86e2e9331a1",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "command_hash": "931ccee971f647c57f3418927edb1ee0c1172713158a19916826f916820fbb86",
+      "input_state_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "intervention_id": "Freeze_Updates_frozen",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "side": "b",
+      "state_after_hash": "3af9f0b729bd2db5abf1dc319783347984be46a517a05ae214d2fae4ef1eac66",
+      "state_before_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "stream_step": 1,
+      "trace_hash": "9609908ed12e0f022a032836d5a7cc099ac64dc13335f4455fed1936c98562a4"
+    },
+    {
+      "candidate_hash": "5bcc000c202007e922db76cd940b3647599cbd8b6a7b4bc14a3bea598a0bfb4b",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "command_hash": "ff86a1925c9281390db0545fb977c15b4c2bedc82539731ee765d514a989b19f",
+      "input_state_hash": "3af9f0b729bd2db5abf1dc319783347984be46a517a05ae214d2fae4ef1eac66",
+      "intervention_id": "Freeze_Updates_frozen",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "side": "b",
+      "state_after_hash": "2ccc271554935aad4bb41be549b38e697e8f4f0be72544feb08d2cb5331ba836",
+      "state_before_hash": "3af9f0b729bd2db5abf1dc319783347984be46a517a05ae214d2fae4ef1eac66",
+      "stream_step": 2,
+      "trace_hash": "6e0dfe3471dffc7439a3810207d733060f1386249328f919c033873775587695"
+    },
+    {
+      "candidate_hash": "589785df2ec44c9f9e2a870b8074bda58f6d3052d0dccb988ab548e7ed87b2db",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "command_hash": "56da5149b59de8626d3a0fee51517ea0755bb62d93e91fb5680f1ae27ce279e1",
+      "input_state_hash": "2ccc271554935aad4bb41be549b38e697e8f4f0be72544feb08d2cb5331ba836",
+      "intervention_id": "Freeze_Updates_frozen",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "prediction_hash": "15ad270ff79a83f06348939ae2f8052ad44411263aa0686315cb3c358f4cd8c2",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "side": "b",
+      "state_after_hash": "1b12778c93330b687274d2dd652f954dbab336bd5475a8df2d12830f4751be80",
+      "state_before_hash": "2ccc271554935aad4bb41be549b38e697e8f4f0be72544feb08d2cb5331ba836",
+      "stream_step": 3,
+      "trace_hash": "38c579c306313f09ad4a1afca6ffe83fab224a6fb5de93f37e3417cbd3d6083d"
+    },
+    {
+      "candidate_hash": "f2a3c0e5a9dada4638a28b67fedb5c5546e9dee5964d2dbb810585aeb9414d8a",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "command_hash": "623f42cbdab4c7baaecf1fe4f8928370567e2abf525880b1e4f1eba99fb8c495",
+      "input_state_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "intervention_id": "Shuffle_Provenance",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "shuffle_projection",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "side": "a",
+      "state_after_hash": "121fa2a28ef0558ddf8bea985a7d1191321b647f23291a801047d6e8e681ba8f",
+      "state_before_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "trace_hash": "ff7f87c3b4d63e0b550d7890c7a32d7227a1fd73df9af81d36946b6b4b5b99a9"
+    },
+    {
+      "candidate_hash": "a815912a6bc994c5677e3c1757306e11bc9d7973cf11a839dcf166db58d5e8b3",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "command_hash": "623f42cbdab4c7baaecf1fe4f8928370567e2abf525880b1e4f1eba99fb8c495",
+      "input_state_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "intervention_id": "Shuffle_Provenance",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "shuffle_projection",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "prediction_hash": "5036c82a3729340d158c37b27919e7870fc35dc24832dd4d3e56fa366b568e54",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "side": "b",
+      "state_after_hash": "7cc55b159fd2dce7b225c4d48a7af30e60055714a0c03dfbcc4bb0ea53354236",
+      "state_before_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "trace_hash": "d8dd7861a81eb508bba4c8e02e3e92846c68f9a23a279321126b8954a6c193d7"
+    },
+    {
+      "candidate_hash": "f2a3c0e5a9dada4638a28b67fedb5c5546e9dee5964d2dbb810585aeb9414d8a",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "command_hash": "349d3ae10d599876bfac257d40080a2b3b05083267f85780dc5e29354617df97",
+      "input_state_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "intervention_id": "Shuffle_Provenance_Frozen",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "shuffle_projection",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "side": "a",
+      "state_after_hash": "dabc99d9526f64c92d2f67b37f7dc108144dd27af5335a90e62a9202aa88454c",
+      "state_before_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "trace_hash": "cc1a6ae05857131574d1ea2299d46d13f46d2eab3f5d00b96571f8ce341896aa"
+    },
+    {
+      "candidate_hash": "a815912a6bc994c5677e3c1757306e11bc9d7973cf11a839dcf166db58d5e8b3",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "command_hash": "349d3ae10d599876bfac257d40080a2b3b05083267f85780dc5e29354617df97",
+      "input_state_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "intervention_id": "Shuffle_Provenance_Frozen",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "shuffle_projection",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "frozen"
+      },
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "prediction_hash": "5036c82a3729340d158c37b27919e7870fc35dc24832dd4d3e56fa366b568e54",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "side": "b",
+      "state_after_hash": "5ac1772b89826b456d05760391a021bf263eab0567301e9e2e171295f087e3e1",
+      "state_before_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
+      "trace_hash": "0d19f2d78e8ae84557b36f3680bd0146234ce658a09ec4e4ad21bb889cdc3041"
+    },
+    {
+      "candidate_hash": "17e85fbf31c4d375814f8a45b0ada99a2af20d7f38e489eebf7ba87076cb7fb9",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "command_hash": "6919f3f481843783eeef75fd68731be0d9daae097e382803711fdb96b41fefd2",
+      "input_state_hash": "2549e7b18c0367c3d838d42a732df527275089dba507188be16e8f10cb110408",
+      "intervention_id": "source_deletion_relevant",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_action": "approach",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "prediction_hash": "8a37bf3a290eb64ff9216e686d3bf5b93714317f7be34ee85153bd7c313c7998",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "side": "a",
+      "state_after_hash": "29b0416d7d6221ba2cffec6ffe215a3a23bb5f60459abe8a2445876f9e8763cb",
+      "state_before_hash": "2549e7b18c0367c3d838d42a732df527275089dba507188be16e8f10cb110408",
+      "trace_hash": "c1a4b03118c8efc094a47c357ad837a7cab65e6dee5a58450cbe12318e34f005"
+    },
+    {
+      "candidate_hash": "decae6db91692b7aa845221ddfbb7a71306fe06ca0954d0b49563ce70cae98d5",
+      "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+      "command_hash": "6919f3f481843783eeef75fd68731be0d9daae097e382803711fdb96b41fefd2",
+      "input_state_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "intervention_id": "source_deletion_irrelevant",
+      "interventions": {
+        "memory_mode": "canonical",
+        "provenance_mode": "canonical",
+        "provenance_shuffle_seed": "17",
+        "update_mode": "enabled"
+      },
+      "invoked": true,
+      "output_action": "forage",
+      "pair_id": "p1_memory_lineage_pair_001",
+      "prediction_hash": "5036c82a3729340d158c37b27919e7870fc35dc24832dd4d3e56fa366b568e54",
+      "producer_function": "ego_life_playground_v0.engine.compute_step",
+      "seed": 101,
+      "side": "a",
+      "state_after_hash": "69a2499811fe3dc7cea37f0237d0bc527e124a6591326be3c1f520bbe8e0369d",
+      "state_before_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
+      "trace_hash": "47b4e3a7ce77c9e4306dcbe42066e723ccabc3de6e852b941e8b90bbccdb886d"
+    }
+  ],
+  "narrower_result": {
+    "freeze_downstream_contrast_by_side": {
+      "a": false,
+      "b": true
+    },
+    "interpretation": "matched downstream final-score/prediction contrast is side-specific"
+  },
+  "schema_version": "ego.v2.p1.result.v2",
+  "strongest_control_match_rate": 1.0,
+  "switches": {
+    "background_dispatch": false,
+    "default_enabled": false,
+    "enabled": false,
+    "llm": "forbidden",
+    "mainline_connected": false,
+    "network": "forbidden",
+    "proactive_action_enabled": false,
+    "remote_anchor": false,
+    "runtime_authority": "none",
+    "science_weight": 0
+  },
+  "verdict": "memory_conditioned_effect_observed_but_control_equivalent"
+}

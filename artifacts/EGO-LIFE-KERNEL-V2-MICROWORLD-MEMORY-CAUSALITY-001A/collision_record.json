@@ -1,0 +1,42 @@
+{
+  "candidate_effect_observed": true,
+  "disposition": "retain_product_loop_and_downgrade_mechanism_claim_to_control_equivalence",
+  "evidence": {
+    "aggregation_rule": "candidate_effect_collided_with_maximum_equal_public_history_control_match",
+    "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+    "evidence_record_type": "computed_evidence",
+    "input_artifacts": [
+      {
+        "bytes": 700416,
+        "path": "generated://p1/continuity.sqlite3",
+        "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+      },
+      {
+        "bytes": 620842,
+        "path": "generated://p1/trace.jsonl",
+        "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+      },
+      {
+        "bytes": 9782,
+        "path": "authority://p1/mutation-scope",
+        "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+      }
+    ],
+    "producer_function": "verify_ego_life_kernel_v2_microworld.run_p1_verification.collision",
+    "run_id": "ego-v2-p1-verification-001",
+    "seed_context_episode_ids": {
+      "pair_id": "p1_memory_lineage_pair_001",
+      "seeds": [
+        18,
+        19
+      ]
+    },
+    "value": {
+      "candidate_effect": true,
+      "strongest_match_rate": 1.0
+    }
+  },
+  "schema_version": "ego.v2.p1.collision_record.v1",
+  "strongest_cheap_match": "transition_table",
+  "strongest_match_rate": 1.0
+}

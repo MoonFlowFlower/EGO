@@ -1,0 +1,178 @@
+{
+  "evidence": {
+    "aggregation_rule": "recursive_live_policy_scan_zero_offenders_and_all_alias_positive_controls_fire",
+    "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+    "evidence_record_type": "computed_evidence",
+    "input_artifacts": [
+      {
+        "bytes": 700416,
+        "path": "generated://p1/continuity.sqlite3",
+        "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+      },
+      {
+        "bytes": 620842,
+        "path": "generated://p1/trace.jsonl",
+        "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+      },
+      {
+        "bytes": 9782,
+        "path": "authority://p1/mutation-scope",
+        "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+      }
+    ],
+    "producer_function": "verify_ego_life_kernel_v2_microworld._leakage_report",
+    "run_id": "ego-v2-p1-verification-001",
+    "seed_context_episode_ids": {
+      "pair_id": "p1_memory_lineage_pair_001",
+      "seeds": [
+        18,
+        19
+      ]
+    },
+    "value": {
+      "live_offender_count": 0,
+      "positive_control_count": 6,
+      "positive_controls_fired": true
+    }
+  },
+  "live_offender_count": 0,
+  "live_scans": {
+    "a": {
+      "offenders": [],
+      "payload_hash": "4c4518c85086dadbddd5c42f6940a0d135cc67b55ebe24a432ed03dbaa512ecf",
+      "positive_control_detected": false,
+      "producer_function": "verify_ego_life_kernel_v2_microworld.scan_policy_projection"
+    },
+    "b": {
+      "offenders": [],
+      "payload_hash": "c997a074f024299fde281a9d32305b75d0b33f9b977181db489df65c050e2ab6",
+      "positive_control_detected": false,
+      "producer_function": "verify_ego_life_kernel_v2_microworld.scan_policy_projection"
+    }
+  },
+  "positive_control_count": 6,
+  "positive_controls": {
+    "future_outcome": {
+      "expected_alias_detected": true,
+      "expected_category": "future_outcome",
+      "expected_path_suffix": "/next_outcome",
+      "offenders": [
+        {
+          "category": "future_outcome",
+          "path": "/non_memory/observation/positive_control/next_outcome",
+          "reason": "forbidden_key_or_alias"
+        },
+        {
+          "category": "schema",
+          "path": "/non_memory/observation",
+          "reason": "observation_schema_mismatch"
+        }
+      ],
+      "payload_hash": "cb0e4fe2b4bc17d783fb0c3f2c446a23bd7de45f3101f03797212efd0c2220ab",
+      "positive_control_detected": true,
+      "producer_function": "verify_ego_life_kernel_v2_microworld.scan_policy_projection"
+    },
+    "hidden_regime": {
+      "expected_alias_detected": true,
+      "expected_category": "hidden_regime",
+      "expected_path_suffix": "/hidden_regime",
+      "offenders": [
+        {
+          "category": "hidden_regime",
+          "path": "/non_memory/observation/positive_control/hidden_regime",
+          "reason": "forbidden_key_or_alias"
+        },
+        {
+          "category": "schema",
+          "path": "/non_memory/observation",
+          "reason": "observation_schema_mismatch"
+        }
+      ],
+      "payload_hash": "f286af5cae997e28df48832f8ec3639934ac2849a7b9de53ac47d6167958760e",
+      "positive_control_detected": true,
+      "producer_function": "verify_ego_life_kernel_v2_microworld.scan_policy_projection"
+    },
+    "nested_correct_action": {
+      "expected_alias_detected": true,
+      "expected_category": "correct_action",
+      "expected_path_suffix": "/nested/target_action",
+      "offenders": [
+        {
+          "category": "correct_action",
+          "path": "/non_memory/observation/positive_control/nested/target_action",
+          "reason": "forbidden_key_or_alias"
+        },
+        {
+          "category": "schema",
+          "path": "/non_memory/observation",
+          "reason": "observation_schema_mismatch"
+        }
+      ],
+      "payload_hash": "0fe9dd393d1d8a75bee0ddb05df65dd1efdffa64422ade2278249f60445515d3",
+      "positive_control_detected": true,
+      "producer_function": "verify_ego_life_kernel_v2_microworld.scan_policy_projection"
+    },
+    "oracle": {
+      "expected_alias_detected": true,
+      "expected_category": "oracle",
+      "expected_path_suffix": "/answer_key",
+      "offenders": [
+        {
+          "category": "oracle",
+          "path": "/non_memory/observation/positive_control/answer_key",
+          "reason": "forbidden_key_or_alias"
+        },
+        {
+          "category": "schema",
+          "path": "/non_memory/observation",
+          "reason": "observation_schema_mismatch"
+        }
+      ],
+      "payload_hash": "a0da84f8f02dcd90d2f499631af23969e40a422ef9ea0bf3c6aa365c3e83d654",
+      "positive_control_detected": true,
+      "producer_function": "verify_ego_life_kernel_v2_microworld.scan_policy_projection"
+    },
+    "renamed_hidden_regime": {
+      "expected_alias_detected": true,
+      "expected_category": "hidden_regime",
+      "expected_path_suffix": "/latent_mode",
+      "offenders": [
+        {
+          "category": "hidden_regime",
+          "path": "/non_memory/observation/positive_control/latent_mode",
+          "reason": "forbidden_key_or_alias"
+        },
+        {
+          "category": "schema",
+          "path": "/non_memory/observation",
+          "reason": "observation_schema_mismatch"
+        }
+      ],
+      "payload_hash": "502f9b06e8b2d9365d9ef45d47d6b9c759c56544f5d7914e03937d06129a8be2",
+      "positive_control_detected": true,
+      "producer_function": "verify_ego_life_kernel_v2_microworld.scan_policy_projection"
+    },
+    "reward_label": {
+      "expected_alias_detected": true,
+      "expected_category": "reward_label",
+      "expected_path_suffix": "/labels/utility_label",
+      "offenders": [
+        {
+          "category": "reward_label",
+          "path": "/non_memory/observation/positive_control/labels/utility_label",
+          "reason": "forbidden_key_or_alias"
+        },
+        {
+          "category": "schema",
+          "path": "/non_memory/observation",
+          "reason": "observation_schema_mismatch"
+        }
+      ],
+      "payload_hash": "fb02483580e39bcaa5debe911cff4acd6c4c756ec10ec22b278b141a0ee5a0a4",
+      "positive_control_detected": true,
+      "producer_function": "verify_ego_life_kernel_v2_microworld.scan_policy_projection"
+    }
+  },
+  "positive_controls_fired": true,
+  "schema_version": "ego.v2.p1.leakage_report.v1"
+}

@@ -163,7 +163,7 @@ def test_v1_engine_state_run_and_command_schemas_are_canonical():
         "prev_command_hash",
         "command_hash",
     }
-    assert command["schema_version"] == "ego.life_playground.command.v2"
+    assert command["schema_version"] == "ego.life_playground.command.v3"
     assert command["world_event"] == "resource_appears"
     assert command["command_hash"] == engine.canonical_hash(
         {key: value for key, value in command.items() if key != "command_hash"}
@@ -281,6 +281,7 @@ def test_v1_command_constructor_rejects_non_integer_or_nonpositive_sequence(sequ
         ("memory_mode", True),
         ("update_mode", False),
         ("provenance_mode", 1),
+        ("provenance_shuffle_seed", 17),
     ],
 )
 def test_v1_command_constructor_rejects_non_string_intervention_enums(field, value):
@@ -706,7 +707,7 @@ def test_v1_recovery_frames_drive_derived_state_traces_and_fresh_recovery_callba
             "prev_command_hash",
             "command_hash",
         }
-        assert command["schema_version"] == "ego.life_playground.command.v2"
+        assert command["schema_version"] == "ego.life_playground.command.v3"
         assert command["sequence"] == 2
         assert command["cue"] == "novelty"
         assert command["trigger_source"] == "ui_run_button"
@@ -714,6 +715,7 @@ def test_v1_recovery_frames_drive_derived_state_traces_and_fresh_recovery_callba
             "memory_mode": "canonical",
             "update_mode": "frozen",
             "provenance_mode": "canonical",
+            "provenance_shuffle_seed": "17",
         }
     finally:
         reopened_store.close()
@@ -1039,7 +1041,7 @@ def test_v1_launcher_headless_smoke_reports_continuity_shape(tmp_path, capsys):
         "clock",
         "current_goal",
         "selected_action",
-        "trace_hash",
+        "public_state_hash",
         "recovered",
         "frame_count",
         "trigger_source",
@@ -1057,7 +1059,8 @@ def test_v1_launcher_headless_smoke_reports_continuity_shape(tmp_path, capsys):
     assert payload["interventions"] == engine.DEFAULT_INTERVENTIONS
     assert payload["recovered"] is True
     assert payload["science_weight"] == 0
-    assert len(payload["trace_hash"]) == 64
+    assert len(payload["public_state_hash"]) == 64
+    assert "trace_hash" not in payload
 
 
 def _controller(tmp_path, *, run_id="run-a", seed=17, callback=None):
@@ -1541,7 +1544,8 @@ def test_launcher_headless_smoke_uses_real_controller_store_and_recovery(tmp_pat
     assert payload["interventions"] == DEFAULT_INTERVENTIONS
     assert payload["frame_count"] == 2
     assert payload["science_weight"] == 0
-    assert len(payload["trace_hash"]) == 64
+    assert len(payload["public_state_hash"]) == 64
+    assert "trace_hash" not in payload
 
 
 def test_all_cues_are_callable_through_one_compute_path():

@@ -1,9 +1,10 @@
-"""One deterministic V0/V1-descendant reducer for the V2 P0 microworld.
+"""One deterministic V0/V1-descendant reducer for the V2 P0/P1 microworld.
 
 The implementation deliberately exposes its cheap explanation: a hard-coded
 toy outcome table, deficit scoring, a tabular EMA, and keyed memory bias. The
-persisted P0 world is visible and has no hidden regime. This is local product
-engineering evidence, not mechanism or subjectivity evidence.
+P1 adds private world dynamics and competing-claim reads while preserving this
+single live/replay reducer. This is bounded local product engineering, not a
+general learning, agency, or subjectivity claim.
 """
 
 from __future__ import annotations
@@ -16,6 +17,7 @@ import math
 from pathlib import Path
 from typing import Any, Mapping
 
+from . import claims as claim_memory
 from .microworld import (
     cue_for_event,
     event_for_cue,
@@ -34,13 +36,14 @@ ACTIONS = ("approach", "explore", "forage", "rest", "withdraw")
 CUES = ("resource", "contact", "novelty", "threat", "quiet")
 TARGET_LEVEL = 0.72
 EMA_ALPHA = 0.35
+DEFAULT_PROVENANCE_SHUFFLE_SEED = 17
 CONSOLIDATION_THRESHOLD = 3
 EPISODE_SPAN_TICKS = 8
 
 STATE_SCHEMA_VERSION = "ego.life_playground.state.v2"
 RUN_SCHEMA_VERSION = "ego.life_playground.run.v2"
-COMMAND_SCHEMA_VERSION = "ego.life_playground.command.v2"
-TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v2"
+COMMAND_SCHEMA_VERSION = "ego.life_playground.command.v3"
+TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v3"
 
 TRIGGER_SOURCES = (
     "ui_step_button",
@@ -79,6 +82,7 @@ DEFAULT_INTERVENTIONS = {
     "memory_mode": "canonical",
     "update_mode": "enabled",
     "provenance_mode": "canonical",
+    "provenance_shuffle_seed": str(DEFAULT_PROVENANCE_SHUFFLE_SEED),
 }
 
 # Kept as a source-compatibility constant only.  It is never accepted in a V1
@@ -145,10 +149,11 @@ def compute_code_path_manifest() -> dict[str, Any]:
     source_paths = (
         Path(__file__),
         Path(__file__).with_name("microworld.py"),
+        Path(__file__).with_name("claims.py"),
         Path(__file__).with_name("store.py"),
     )
     return {
-        "schema_version": "ego.life_playground.code_path.v2",
+        "schema_version": "ego.life_playground.code_path.v3",
         "files": [
             {"path": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
             for path in source_paths
@@ -197,7 +202,10 @@ def make_run_metadata(
 
 
 def initial_state(
-    organism: Mapping[str, float] | None = None, *, run_id: str = "manual-local"
+    organism: Mapping[str, float] | None = None,
+    *,
+    run_id: str = "manual-local",
+    seed: int = 17,
 ) -> dict[str, Any]:
     values = {
         "energy": 0.45,
@@ -219,10 +227,14 @@ def initial_state(
             "episode_tick": 0,
         },
         "organism": normalized,
-        "world": initial_world_state(),
+        "world": initial_world_state(seed=seed),
         "current_goal": _select_goal(normalized, global_tick=0, reason="initial_max_deficit"),
         "model": {},
-        "memory": {"episodic": [], "consolidated": []},
+        "memory": {
+            "episodic": [],
+            "consolidated": [],
+            **claim_memory.empty_claim_memory(),
+        },
         "last_action": None,
         "last_command_hash": None,
         "last_trace_hash": None,
@@ -359,13 +371,33 @@ def compute_step(
         decision_state["memory"],
         memory_mode=interventions["memory_mode"],
         provenance_mode=interventions["provenance_mode"],
-        run_seed=int(run_meta["seed"]),
-        global_tick=sequence,
+        provenance_shuffle_seed=int(interventions["provenance_shuffle_seed"]),
     )
+    claim_retrieval = claim_memory.retrieve_competing_claims(
+        memory_view,
+        observation=world_observation,
+        current_goal=current_goal,
+    )
+    if interventions["memory_mode"] == "off":
+        claim_retrieval["status"] = "memory_disabled"
+    policy_non_memory_projection = {
+        "schema_version": "ego.life_playground.policy_non_memory_projection.v1",
+        "observation": deepcopy(world_observation),
+        "organism": deepcopy(decision_state["organism"]),
+        "current_goal": deepcopy(goal_before),
+        "legal_actions": list(action_gate["legal_actions"]),
+        "model": deepcopy(decision_state["model"]),
+    }
+    policy_projection = {
+        "schema_version": "ego.life_playground.policy_projection.v1",
+        "non_memory": deepcopy(policy_non_memory_projection),
+        "claim_retrieval": deepcopy(claim_retrieval),
+    }
     candidates = [
         _score_candidate(
             state=decision_state,
             memory_view=memory_view,
+            claim_retrieval=claim_retrieval,
             cue=cue,
             context_key=context_key,
             current_goal=goal_before,
@@ -387,18 +419,23 @@ def compute_step(
     )
     selected_action = str(selected["action"])
     predicted_delta = deepcopy(selected["predicted_delta"])
-    actual_delta = _actual_delta(cue, selected_action)
-    prediction_error = {
-        key: _round(actual_delta[key] - predicted_delta[key]) for key in STATE_KEYS
-    }
 
     next_state = deepcopy(decision_state)
     try:
         next_state["world"], world_transition = transition_world(
-            decision_state["world"], selected_action
+            decision_state["world"],
+            selected_action,
+            source_sequence=sequence,
+            source_episode_id=str(decision_state["clock"]["episode_id"]),
+            source_command_hash=str(command["command_hash"]),
         )
     except ValueError as exc:
         raise EngineInvariantError(str(exc)) from exc
+    world_outcome_value = world_transition.get("outcome")
+    actual_delta = _actual_delta(cue, selected_action, world_outcome=world_outcome_value)
+    prediction_error = {
+        key: _round(actual_delta[key] - predicted_delta[key]) for key in STATE_KEYS
+    }
     next_state["organism"] = _apply_delta(decision_state["organism"], actual_delta)
     next_state["last_action"] = selected_action
     next_state["last_command_hash"] = command["command_hash"]
@@ -410,6 +447,8 @@ def compute_step(
     )
 
     updates_enabled = interventions["update_mode"] == "enabled"
+    model_before_hash = canonical_hash(decision_state["model"])
+    memory_before_hash = canonical_hash(decision_state["memory"])
     model_update = _update_model(
         next_state,
         context_key=context_key,
@@ -431,6 +470,19 @@ def compute_step(
         memory_enabled=interventions["memory_mode"] == "canonical",
         updates_enabled=updates_enabled,
     )
+    claim_update = _update_claim_memory(
+        next_state,
+        observation=world_observation,
+        action=selected_action,
+        outcome=world_outcome_value,
+        sequence=sequence,
+        command_hash=str(command["command_hash"]),
+        source_episode_id=str(decision_state["clock"]["episode_id"]),
+        memory_enabled=interventions["memory_mode"] == "canonical",
+        updates_enabled=updates_enabled,
+    )
+    model_after_hash = canonical_hash(next_state["model"])
+    memory_after_hash = canonical_hash(next_state["memory"])
 
     after_hash = state_hash(next_state)
     trace: dict[str, Any] = {
@@ -464,10 +516,20 @@ def compute_step(
         "world_observation": world_observation,
         "observation": deepcopy(world_observation),
         "observation_hash": observation_hash(world_observation),
+        "policy_non_memory_projection": policy_non_memory_projection,
+        "policy_non_memory_projection_hash": canonical_hash(policy_non_memory_projection),
+        "policy_projection": policy_projection,
+        "policy_projection_hash": canonical_hash(policy_projection),
         "action_gate": action_gate,
         "legal_actions": legal_actions,
         "gated_actions": gated_actions,
         "world_transition": world_transition,
+        "world_outcome": {
+            "producer_function": "ego_life_playground_v0.microworld.transition_world",
+            "revealed_after_selection": bool(world_transition.get("revealed_after_selection")),
+            "visited_site": world_transition.get("visited_site"),
+            "value": world_outcome_value,
+        },
         "episode_before": deepcopy(before["clock"]),
         "episode_transition": episode_transition,
         "action_episode": deepcopy(decision_state["clock"]),
@@ -482,10 +544,22 @@ def compute_step(
         "prediction": predicted_delta,
         "model_ref": selected["model_ref"],
         "memory_refs": selected["memory_refs"],
+        "claim_retrieval": claim_retrieval,
         "actual_delta": actual_delta,
         "prediction_error": prediction_error,
         "model_update": model_update,
         "memory_update": memory_update,
+        "claim_update": claim_update,
+        "model_bytes": {
+            "before_hash": model_before_hash,
+            "after_hash": model_after_hash,
+            "changed": model_before_hash != model_after_hash,
+        },
+        "memory_bytes": {
+            "before_hash": memory_before_hash,
+            "after_hash": memory_after_hash,
+            "changed": memory_before_hash != memory_after_hash,
+        },
         "consolidation_refs": memory_update["consolidation_refs"],
         "provenance_projection": provenance_projection,
         "code_path_hash": current_code_hash,
@@ -658,7 +732,12 @@ def _verify_model(model: Any) -> None:
 
 
 def _verify_memory(memory: Any) -> None:
-    if not isinstance(memory, Mapping) or set(memory) != {"episodic", "consolidated"}:
+    if not isinstance(memory, Mapping) or set(memory) != {
+        "episodic",
+        "consolidated",
+        "claim_events",
+        "competing_claims",
+    }:
         raise EngineInvariantError("memory schema mismatch")
     episodic = memory["episodic"]
     consolidated = memory["consolidated"]
@@ -679,6 +758,10 @@ def _verify_memory(memory: Any) -> None:
         if memory_id in memory_ids:
             raise EngineInvariantError("memory_id must be unique")
         memory_ids.add(memory_id)
+    try:
+        claim_memory.verify_claim_memory(memory)
+    except ValueError as exc:
+        raise EngineInvariantError(str(exc)) from exc
 
 
 def _verify_episodic_memory_entry(entry: Any) -> None:
@@ -937,6 +1020,7 @@ def _score_candidate(
     *,
     state: Mapping[str, Any],
     memory_view: Mapping[str, Any],
+    claim_retrieval: Mapping[str, Any],
     cue: str,
     context_key: str,
     current_goal: Mapping[str, Any],
@@ -968,12 +1052,23 @@ def _score_candidate(
     total_reduction = _round(
         _total_deficit(state["organism"]) - _total_deficit(predicted_after)
     )
-    memory_bias, memory_refs = _memory_bias(
+    legacy_memory_bias, legacy_memory_refs = _memory_bias(
         memory_view,
         cue=cue,
         current_goal=current_goal["state_variable"] or "homeostasis",
         action=action,
     )
+    claim_memory_bias = claim_memory.memory_bias_for_action(claim_retrieval, action)
+    claim_refs = sorted(
+        {
+            str(event_id)
+            for item in claim_retrieval.get("claims", [])
+            if item.get("value") == action
+            for event_id in item.get("provenance_event_ids", [])
+        }
+    )
+    memory_bias = max(-0.5, min(0.5, legacy_memory_bias + claim_memory_bias))
+    memory_refs = sorted(set(legacy_memory_refs) | set(claim_refs))
     untried_bonus = 0.025 if model_ref["count"] == 0 else 0.0
     deterministic_tie = _deterministic_tie(seed, sequence, context_key, action)
     total_score = _round(
@@ -991,12 +1086,18 @@ def _score_candidate(
         "current_goal_deficit_reduction": goal_reduction,
         "total_deficit_reduction": total_reduction,
         "memory_bias": _round(memory_bias),
+        "legacy_memory_bias": _round(legacy_memory_bias),
+        "claim_memory_bias": _round(claim_memory_bias),
+        "claim_support": _round(
+            float(claim_retrieval.get("support_by_action", {}).get(action, 0.0))
+        ),
         "untried_bonus": untried_bonus,
         "action_cost": ACTION_COSTS[action],
         "deterministic_tie": deterministic_tie,
         "total_score": total_score,
         "model_ref": model_ref,
         "memory_refs": memory_refs,
+        "claim_refs": claim_refs,
     }
 
 
@@ -1007,10 +1108,19 @@ def _prior_prediction(cue: str, action: str) -> dict[str, float]:
     return {key: _round(prior[key]) for key in STATE_KEYS}
 
 
-def _actual_delta(cue: str, action: str) -> dict[str, float]:
+def _actual_delta(
+    cue: str, action: str, *, world_outcome: float | None = None
+) -> dict[str, float]:
     delta = dict(ACTION_PRIORS[action])
     for key, bonus in CUE_BONUSES.get(cue, {}).get(action, {}).items():
         delta[key] += bonus
+    if world_outcome is not None:
+        if type(world_outcome) is not float or world_outcome not in {-1.0, 1.0}:
+            raise EngineInvariantError("world outcome is outside the canonical site range")
+        # Delayed site outcome is applied only after selection. It therefore
+        # affects the prediction error/update, never the current policy input.
+        delta["energy"] += 0.05 * world_outcome
+        delta["safety"] += 0.03 * world_outcome
     return {key: _round(delta[key]) for key in STATE_KEYS}
 
 
@@ -1161,17 +1271,76 @@ def _update_memory(
     }
 
 
+def _update_claim_memory(
+    state: dict[str, Any],
+    *,
+    observation: Mapping[str, Any],
+    action: str,
+    outcome: Any,
+    sequence: int,
+    command_hash: str,
+    source_episode_id: str,
+    memory_enabled: bool,
+    updates_enabled: bool,
+) -> dict[str, Any]:
+    if not memory_enabled:
+        return {
+            "applied": False,
+            "event_id": None,
+            "claim_id": None,
+            "reason": "memory_disabled",
+        }
+    if not updates_enabled:
+        return {
+            "applied": False,
+            "event_id": None,
+            "claim_id": None,
+            "reason": "adaptive_updates_frozen",
+        }
+    if outcome is None:
+        return {
+            "applied": False,
+            "event_id": None,
+            "claim_id": None,
+            "reason": "no_site_outcome",
+        }
+    event_id = f"claim-event-{canonical_hash({'command_hash': command_hash, 'action': action})[:20]}"
+    updated, report = claim_memory.record_outcome_evidence(
+        state["memory"],
+        subject="microworld:opaque_fork",
+        predicate="preferred_site_action",
+        value=action,
+        evidence_strength=float(outcome),
+        event_id=event_id,
+        source_episode_id=source_episode_id,
+        source_command_hash=command_hash,
+        source_sequence=sequence,
+        observed_public_features={
+            "agent_position": observation.get("agent_position"),
+            "visible_object_ids": deepcopy(observation.get("visible_object_ids", [])),
+            "cue": observation.get("cue"),
+        },
+    )
+    state["memory"] = updated
+    result = deepcopy(report)
+    result["reason"] = "site_outcome_recorded"
+    return result
+
+
 def _memory_read_view(
     memory: Mapping[str, Any],
     *,
     memory_mode: str,
     provenance_mode: str,
-    run_seed: int,
-    global_tick: int,
+    provenance_shuffle_seed: int,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     source_hash = _semantic_memory_hash(memory)
     if memory_mode == "off":
-        empty = {"episodic": [], "consolidated": []}
+        empty = {
+            "episodic": [],
+            "consolidated": [],
+            **claim_memory.empty_claim_memory(),
+        }
         return empty, {
             "mode": provenance_mode,
             "status": "memory_disabled",
@@ -1194,11 +1363,34 @@ def _memory_read_view(
             "cross_slot_moves": 0,
             "marginal_preservation": _compute_projection_marginals(canonical, canonical),
         }
-    return _shuffle_provenance_projection(canonical, run_seed=run_seed, global_tick=global_tick)
+    if len(canonical.get("competing_claims", [])) >= 2:
+        projected, report = claim_memory.shuffle_provenance(
+            canonical, seed=int(provenance_shuffle_seed)
+        )
+        enriched = deepcopy(report)
+        enriched.update(
+            {
+                "mode": "shuffle_projection",
+                "source_memory_hash": source_hash,
+                "projected_view_hash": _semantic_memory_hash(projected),
+                "permutation_hash": canonical_hash(
+                    {
+                        "seed": int(provenance_shuffle_seed),
+                        "changed_json_pointers": report.get("changed_json_pointers", []),
+                    }
+                ),
+                "cross_slot_moves": len(report.get("changed_json_pointers", [])),
+                "marginal_preservation": _compute_projection_marginals(
+                    canonical, projected
+                ),
+            }
+        )
+        return projected, enriched
+    return _shuffle_provenance_projection(canonical, seed=provenance_shuffle_seed)
 
 
 def _shuffle_provenance_projection(
-    memory: Mapping[str, Any], *, run_seed: int, global_tick: int
+    memory: Mapping[str, Any], *, seed: int
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     projected = deepcopy(dict(memory))
     eligible = _eligible_projection_records(projected)
@@ -1208,6 +1400,7 @@ def _shuffle_provenance_projection(
     source_hash = _semantic_memory_hash(memory)
     base_report = {
         "mode": "shuffle_projection",
+        "seed": int(seed),
         "source_memory_hash": source_hash,
         "eligibility_count": len(eligible),
         "marginal_preservation": _compute_projection_marginals(memory, projected),
@@ -1225,9 +1418,7 @@ def _shuffle_provenance_projection(
         return projected, report
 
     stable_keys = [item["stable_key"] for item in eligible]
-    seed_hash = canonical_hash(
-        {"run_seed": int(run_seed), "global_tick": int(global_tick), "stable_lineage_keys": stable_keys}
-    )
+    seed_hash = canonical_hash({"seed": int(seed), "stable_lineage_keys": stable_keys})
     start_rotation = 1 + (int(seed_hash[:16], 16) % (len(eligible) - 1))
     rotations = [
         ((start_rotation - 1 + offset) % (len(eligible) - 1)) + 1
@@ -1397,6 +1588,12 @@ def _normalize_interventions(interventions: Mapping[str, str]) -> dict[str, str]
         or normalized["provenance_mode"] not in PROVENANCE_MODES
     ):
         raise EngineInvariantError("intervention enum mismatch")
+    try:
+        shuffle_seed = int(normalized["provenance_shuffle_seed"])
+    except ValueError as exc:
+        raise EngineInvariantError("provenance shuffle seed must be a canonical integer string") from exc
+    if str(shuffle_seed) != normalized["provenance_shuffle_seed"] or shuffle_seed < 0:
+        raise EngineInvariantError("provenance shuffle seed must be a canonical non-negative integer string")
     if (
         normalized["memory_mode"] == "off"
         and normalized["provenance_mode"] == "shuffle_projection"

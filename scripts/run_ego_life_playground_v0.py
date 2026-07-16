@@ -13,7 +13,12 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from labs.ego_life_playground_v0.app import PlaygroundController, TerminalPlayground, run_app
+from labs.ego_life_playground_v0.app import (
+    PlaygroundController,
+    TerminalPlayground,
+    public_state_hash,
+    run_app,
+)
 from labs.ego_life_playground_v0.engine import DEFAULT_INTERVENTIONS
 from labs.ego_life_playground_v0.store import SQLiteEventStore, default_db_path
 
@@ -73,7 +78,7 @@ def main(argv: list[str] | None = None) -> int:
                         "clock": recovered.state["clock"],
                         "current_goal": recovered.state["current_goal"],
                         "selected_action": recovered.traces[-1]["selected_action"],
-                        "trace_hash": recovered.traces[-1]["trace_hash"],
+                        "public_state_hash": public_state_hash(recovered.state),
                         "recovered": recovered.recovered,
                         "frame_count": len(recovered.frames),
                         "trigger_source": recovered.traces[-1]["trigger_source"],

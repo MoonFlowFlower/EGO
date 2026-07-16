@@ -1,0 +1,47 @@
+{
+  "claim_blockers": [
+    "control_baseline_equivalent",
+    "freeze_downstream_contrast_inert_side_a"
+  ],
+  "evidence": {
+    "aggregation_rule": "union_of_computed_false_requirements_plus_control_equivalence_claim_blockers",
+    "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+    "evidence_record_type": "computed_evidence",
+    "input_artifacts": [
+      {
+        "bytes": 700416,
+        "path": "generated://p1/continuity.sqlite3",
+        "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+      },
+      {
+        "bytes": 620842,
+        "path": "generated://p1/trace.jsonl",
+        "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+      },
+      {
+        "bytes": 9782,
+        "path": "authority://p1/mutation-scope",
+        "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+      }
+    ],
+    "producer_function": "verify_ego_life_kernel_v2_microworld.run_p1_verification.failure_manifest",
+    "run_id": "ego-v2-p1-verification-001",
+    "seed_context_episode_ids": {
+      "pair_id": "p1_memory_lineage_pair_001",
+      "seeds": [
+        18,
+        19
+      ]
+    },
+    "value": {
+      "claim_blockers": [
+        "control_baseline_equivalent",
+        "freeze_downstream_contrast_inert_side_a"
+      ],
+      "implementation_failures": []
+    }
+  },
+  "implementation_failures": [],
+  "schema_version": "ego.v2.p1.failure_manifest.v2",
+  "status": "implementation_controls_passed_with_bounded_claim_blocker"
+}

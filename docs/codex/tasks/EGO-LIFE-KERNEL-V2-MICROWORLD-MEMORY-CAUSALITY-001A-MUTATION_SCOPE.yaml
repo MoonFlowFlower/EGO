@@ -137,6 +137,22 @@ collision_before_collapse:
       smallest_falsifier: byte_identical_pair_and_equal_access_baseline_panel
       expected_failure: baseline_match_or_inert_ablation
       disposition: selected_without_positive_result_guarantee
+frozen_p1_evaluation_config:
+  config_id: ego_v2_p1_memory_pair_v1
+  history_seeds: [18, 19]
+  history_event_schedule: [resource_appears, social_signal]
+  paired_checkpoint_event: quiet_interval
+  paired_checkpoint_id: p1_memory_lineage_pair_001
+  source_deletion_target: first_supporting_event_for_selected_site
+  irrelevant_deletion_target: absent_episode_control
+  provenance_shuffle_seed: 17
+  pair_policy_seed: 101
+  ema_alpha: 0.35
+  claim_bias_coefficient: 0.45
+  claim_bias_clip: 0.5
+  recency_windows: [1, 2, 4]
+  equivalence_rule: exact_selected_action_match_on_both_paired_checkpoints
+  post_result_retuning: forbidden
 expected_changed_paths: &exact_v2_paths
   - docs/codex/tasks/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A-MUTATION_SCOPE.yaml
   - labs/ego_life_playground_v0/__init__.py
