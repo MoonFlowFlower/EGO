@@ -153,6 +153,43 @@ frozen_p1_evaluation_config:
   recency_windows: [1, 2, 4]
   equivalence_rule: exact_selected_action_match_on_both_paired_checkpoints
   post_result_retuning: forbidden
+frozen_p2_evaluation_config:
+  config_id: ego_v2_p2_bounded_adaptation_v1
+  policy_tie_seed: 701
+  update_alpha: 0.35
+  episode_span_ticks: 8
+  consolidation_threshold: 3
+  train_world_seeds: [30, 31]
+  train_layout_id: p0_cross_v1
+  train_episode_schedules:
+    - [resource_appears, quiet_interval, social_signal, quiet_interval, resource_appears, quiet_interval, social_signal, quiet_interval]
+    - [social_signal, quiet_interval, resource_appears, novel_object, social_signal, quiet_interval, resource_appears, threat_nearby]
+    - [resource_appears, novel_object, quiet_interval, social_signal, threat_nearby, quiet_interval, resource_appears, social_signal]
+    - [quiet_interval, social_signal, novel_object, resource_appears, quiet_interval, threat_nearby, social_signal, resource_appears]
+  learning_checkpoints: [8, 16, 24, 32]
+  heldout_layout_ids: [p2_vertical_v1, p2_offset_v1]
+  heldout_event_schedules:
+    alpha: [novel_object, quiet_interval, social_signal, threat_nearby, resource_appears, quiet_interval, social_signal, resource_appears]
+    beta: [threat_nearby, resource_appears, novel_object, quiet_interval, resource_appears, social_signal, quiet_interval, novel_object]
+  heldout_contexts:
+    - {context_id: heldout_42_vertical_alpha, world_seed: 42, layout_id: p2_vertical_v1, event_schedule_id: alpha}
+    - {context_id: heldout_43_vertical_beta, world_seed: 43, layout_id: p2_vertical_v1, event_schedule_id: beta}
+    - {context_id: heldout_44_offset_beta, world_seed: 44, layout_id: p2_offset_v1, event_schedule_id: beta}
+    - {context_id: heldout_45_offset_alpha, world_seed: 45, layout_id: p2_offset_v1, event_schedule_id: alpha}
+  transfer_matrix: full_cross_product__each_train_replication_x_each_heldout_context
+  heldout_update_mode: frozen
+  minimum_matched_context_action_slots: 2
+  minimum_site_visits_per_context_for_directional_claim: 2
+  source_deletion_episode_index: 0
+  irrelevant_source_episode_id: p2-absent-episode-control
+  counterfactuals: [Memory_OFF, Freeze_Updates, source_memory_deletion, consolidation_OFF, model_ONLY, memory_ONLY, cross_replication_memory_swap]
+  independent_controls: [no_update_prior, exact_public_history_lookup, count_table, transition_table, graph_lookup, episodic_traversal]
+  candidate_ablation: from_scratch_empty_model_and_memory
+  learning_curve_metric: matched_slot_macro_mean_absolute_prediction_error_over_four_state_coordinates
+  task_outcome_metric: sum_revealed_site_outcome_with_non_site_zero
+  site_outcome_metric: mean_revealed_outcome_conditioned_on_site_visit
+  equivalence_rule: exact_action_sequence_match_or_exact_aggregate_task_outcome_match_blocks_non_equivalence
+  post_result_retuning: forbidden
 expected_changed_paths: &exact_v2_paths
   - docs/codex/tasks/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A-MUTATION_SCOPE.yaml
   - labs/ego_life_playground_v0/__init__.py

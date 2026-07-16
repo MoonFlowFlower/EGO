@@ -1,41 +1,68 @@
 {
-  "command_rows": 24,
-  "evidence": {
-    "aggregation_rule": "terminal_commands_atomically_committed_then_fresh_store_recomputed",
-    "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+  "command_count": 12,
+  "explicit_local_launch_only": true,
+  "fresh_process_recomputed": true,
+  "layout_id": "p2_vertical_v1",
+  "metric": {
+    "aggregation_rule": "explicit_terminal_commands_committed_then_fresh_sqlite_recomputed",
+    "code_path_hash": "9810968d63a3e5e25cd179a77b84aa40caf92a5d820fba7ab558010007198e48",
     "evidence_record_type": "computed_evidence",
     "input_artifacts": [
       {
-        "bytes": 700416,
-        "path": "generated://p1/continuity.sqlite3",
-        "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+        "bytes": 35131392,
+        "path": "generated://p2/continuity.sqlite3",
+        "sha256": "2b10403729b29660495ce27f484da31a5be7c89c96983baa4075f72de017611a"
       },
       {
-        "bytes": 620842,
-        "path": "generated://p1/trace.jsonl",
-        "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+        "bytes": 32851048,
+        "path": "generated://p2/trace.jsonl",
+        "sha256": "c983f1e3695c757c4972c37bced23af1b8f52607a67984507cddd86398ad06b0"
+      },
+      {
+        "bytes": 12479,
+        "path": "authority://p2/mutation-scope",
+        "sha256": "cb91c459282ab82319b583032560a26beaa9c8c915cf8e4ada997213a6dabfaf"
       }
     ],
-    "producer_function": "verify_ego_life_kernel_v2_microworld._create_product_db",
-    "run_id": "p1-product-trigger",
+    "producer_function": "verify_ego_life_kernel_v2_microworld.p2_product_trigger_receipt",
+    "run_id": "ego-v2-p2-verification-001",
     "seed_context_episode_ids": {
-      "episode_id": "episode-000002-5ffea901c6f70544",
-      "seed": 18
+      "layout_id": "p2_vertical_v1",
+      "policy_seed": 701,
+      "run_id": "p2-product-trigger",
+      "world_seed": 30
     },
     "value": {
-      "command_rows": 24,
-      "state_match": true,
-      "trace_rows": 24
+      "command_count": 12,
+      "fresh_recomputed": true,
+      "recorded_controller_inputs_hash": "50f767ec2c7794b57c938ec5b985bb4d69e8a2d90f1e24f9568d6dbd4b733a62",
+      "seed_provenance_valid": true
     }
   },
-  "expected_state_hash": "3eb545bb54b4d75031f5ac79503f6a1cf24bbd35d36ace394e745866ad529d00",
-  "explicit_local_launch_only": true,
-  "fresh_state_hash": "3eb545bb54b4d75031f5ac79503f6a1cf24bbd35d36ace394e745866ad529d00",
-  "fresh_store_recomputed": true,
-  "producer_function": "verify_ego_life_kernel_v2_microworld._create_product_db",
-  "redraw_after_commit": true,
-  "rendered_snapshot_hash": "fd1f55ba52fd356f391269b7a6521f360c53fe68bafdeb79f8b1c22c7b326ecf",
-  "schema_version": "ego.v2.p1.product_trigger_receipt.v1",
+  "policy_seed": 701,
+  "recorded_controller_inputs_hash": "50f767ec2c7794b57c938ec5b985bb4d69e8a2d90f1e24f9568d6dbd4b733a62",
+  "rendered_snapshot_hash": "bd19016d07bd1d34e62846243fdb8b354f09aceca5ad63f3db978c47892ee5b6",
+  "run_id": "p2-product-trigger",
+  "schema_version": "ego.v2.p2.product_trigger_receipt.v1",
+  "seed_provenance": {
+    "expected_layout_id": "p2_vertical_v1",
+    "expected_policy_seed": 701,
+    "expected_world_seed": 30,
+    "failures": [],
+    "producer_function": "verify_ego_life_kernel_v2_microworld._p2_product_trigger_seed_provenance",
+    "recomputed_initial_state_hash": "6ccc0062d57f34bff5661eb7e9d2d5bf8c334053e8c294887c9063d4fe7585e7",
+    "recorded_controller_inputs_hash": "50f767ec2c7794b57c938ec5b985bb4d69e8a2d90f1e24f9568d6dbd4b733a62",
+    "recorded_layout_id": "p2_vertical_v1",
+    "recorded_policy_seed": 701,
+    "recorded_run_id": "p2-product-trigger",
+    "recorded_world_seed": 30,
+    "recovered_initial_state_hash": "6ccc0062d57f34bff5661eb7e9d2d5bf8c334053e8c294887c9063d4fe7585e7",
+    "recovered_layout_id": "p2_vertical_v1",
+    "recovered_policy_seed": 701,
+    "recovered_run_id": "p2-product-trigger",
+    "valid": true,
+    "world_seed_recomputed_initial_state_match": true
+  },
   "statuses": [
     "committed",
     "committed",
@@ -46,15 +73,17 @@
     "background_dispatch": false,
     "default_enabled": false,
     "enabled": false,
+    "external_side_effects": false,
+    "initiative_executor_authorized": false,
     "llm": "forbidden",
     "mainline_connected": false,
     "network": "forbidden",
     "proactive_action_enabled": false,
     "remote_anchor": false,
     "runtime_authority": "none",
+    "runtime_mainline_connected": false,
     "science_weight": 0
   },
-  "trace_hash": "de99002671a300f6a88169c13bef132d293530bbe39070bbfe18ed0cd14ec24d",
-  "trace_rows": 24,
-  "trigger_source": "terminal_event_then_terminal_run"
+  "trigger_source": "terminal_event_then_terminal_run",
+  "world_seed": 30
 }

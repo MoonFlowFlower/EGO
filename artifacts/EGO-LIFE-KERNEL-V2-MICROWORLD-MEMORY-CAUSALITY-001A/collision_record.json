@@ -1,42 +1,45 @@
 {
-  "candidate_effect_observed": true,
-  "disposition": "retain_product_loop_and_downgrade_mechanism_claim_to_control_equivalence",
-  "evidence": {
-    "aggregation_rule": "candidate_effect_collided_with_maximum_equal_public_history_control_match",
-    "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+  "control_equivalence_observed": true,
+  "disposition": "retain_product_engineering_and_bound_adaptation_claim_to_negative_or_equivalent_comparison",
+  "metric": {
+    "aggregation_rule": "exact_action_sequence_match_or_exact_aggregate_task_outcome_match_blocks_non_equivalence",
+    "code_path_hash": "9810968d63a3e5e25cd179a77b84aa40caf92a5d820fba7ab558010007198e48",
     "evidence_record_type": "computed_evidence",
     "input_artifacts": [
       {
-        "bytes": 700416,
-        "path": "generated://p1/continuity.sqlite3",
-        "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+        "bytes": 35131392,
+        "path": "generated://p2/continuity.sqlite3",
+        "sha256": "2b10403729b29660495ce27f484da31a5be7c89c96983baa4075f72de017611a"
       },
       {
-        "bytes": 620842,
-        "path": "generated://p1/trace.jsonl",
-        "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+        "bytes": 32851048,
+        "path": "generated://p2/trace.jsonl",
+        "sha256": "c983f1e3695c757c4972c37bced23af1b8f52607a67984507cddd86398ad06b0"
       },
       {
-        "bytes": 9782,
-        "path": "authority://p1/mutation-scope",
-        "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+        "bytes": 12479,
+        "path": "authority://p2/mutation-scope",
+        "sha256": "cb91c459282ab82319b583032560a26beaa9c8c915cf8e4ada997213a6dabfaf"
       }
     ],
-    "producer_function": "verify_ego_life_kernel_v2_microworld.run_p1_verification.collision",
-    "run_id": "ego-v2-p1-verification-001",
+    "producer_function": "verify_ego_life_kernel_v2_microworld.p2_collision_record",
+    "run_id": "ego-v2-p2-verification-001",
     "seed_context_episode_ids": {
-      "pair_id": "p1_memory_lineage_pair_001",
-      "seeds": [
-        18,
-        19
-      ]
+      "controls": [
+        "no_update_prior",
+        "exact_public_history_lookup",
+        "count_table",
+        "transition_table",
+        "graph_lookup",
+        "episodic_traversal"
+      ],
+      "heldout_arm_count": 8
     },
     "value": {
-      "candidate_effect": true,
-      "strongest_match_rate": 1.0
+      "control_equivalence": true,
+      "equivalent_row_count": 17
     }
   },
-  "schema_version": "ego.v2.p1.collision_record.v1",
-  "strongest_cheap_match": "transition_table",
-  "strongest_match_rate": 1.0
+  "schema_version": "ego.v2.p2.collision_record.v1",
+  "strongest_baseline_family": "equal_access_public_history_lookup_count_transition_graph_or_episodic_control"
 }

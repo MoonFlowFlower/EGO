@@ -32,6 +32,467 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 RUNNER = REPO_ROOT / "scripts" / "run_ego_life_playground_v0.py"
 
 
+def test_p2_layout_registry_changes_real_topology_and_public_observation():
+    default = microworld.initial_world_state(seed=30, layout_id="p0_cross_v1")
+    vertical = microworld.initial_world_state(seed=30, layout_id="p2_vertical_v1")
+    offset = microworld.initial_world_state(seed=30, layout_id="p2_offset_v1")
+    assert [world["layout"]["layout_id"] for world in (default, vertical, offset)] == [
+        "p0_cross_v1", "p2_vertical_v1", "p2_offset_v1"
+    ]
+    assert len({tuple(world["layout"]["base_rows"]) for world in (default, vertical, offset)}) == 3
+    assert len({engine.canonical_json(world["layout"]["positions"]) for world in (default, vertical, offset)}) == 3
+    assert vertical["public_observation"]["layout_id"] == "p2_vertical_v1"
+    microworld.verify_world_state(vertical)
+
+    topologies = [
+        microworld.validate_layout_topology(world["layout"])
+        for world in (default, vertical, offset)
+    ]
+    assert [item["walkable_cell_count"] for item in topologies] == [21, 25, 28]
+    assert all(item["uses_cell_labels"] is False for item in topologies)
+    public_path = microworld.canonical_public_action_path(
+        vertical["layout"], vertical["public_observation"]["agent_position"], "forage"
+    )
+    assert public_path == microworld.canonical_action_path(vertical, "forage")
+    relabeled = deepcopy(vertical["layout"])
+    relabeled["base_rows"] = [
+        "".join("#" if character == "#" else "." for character in row)
+        for row in relabeled["base_rows"]
+    ]
+    assert (
+        microworld.canonical_public_action_path(relabeled, "home", "forage")
+        == public_path
+    )
+
+
+def _same_schedule_topology_surface(layout_id: str) -> list[dict]:
+    run_id = f"p2-topology-hostile-{layout_id}"
+    state = engine.initial_state(run_id=run_id, seed=30, layout_id=layout_id)
+    meta = engine.make_run_metadata(run_id, 30)
+    surface = []
+    events = tuple(ALLOWED_WORLD_EVENTS)
+    for sequence in range(1, 25):
+        event = events[(sequence - 1) % len(events)]
+        command = engine.make_command(
+            sequence=sequence,
+            cue=microworld.cue_for_event(event),
+            world_event=event,
+            trigger_source="paired_intervention",
+            interventions=engine.DEFAULT_INTERVENTIONS,
+            prev_command_hash=state["last_command_hash"],
+        )
+        step = engine.compute_step(state, command, meta)
+        surface.append(
+            {
+                "selected_action": step.trace["selected_action"],
+                "candidate_scores": [
+                    {
+                        "action": candidate["action"],
+                        "total_score": candidate["total_score"],
+                        "topology_cost": candidate["topology_cost"],
+                        "shortest_path_steps": candidate["path"]["shortest_path_steps"],
+                        "walkable_cell_count": candidate["path"]["walkable_cell_count"],
+                    }
+                    for candidate in step.trace["candidates"]
+                ],
+                "actual_delta": step.trace["actual_delta"],
+                "outcome": step.trace["world_outcome"]["value"],
+            }
+        )
+        state = step.next_state
+    return surface
+
+
+def test_p2_same_seed_schedule_has_layout_causal_path_and_score_differences():
+    surfaces = {
+        layout_id: _same_schedule_topology_surface(layout_id)
+        for layout_id in ("p0_cross_v1", "p2_vertical_v1", "p2_offset_v1")
+    }
+    score_bytes = {
+        engine.canonical_json(
+            [frame["candidate_scores"] for frame in surface]
+        )
+        for surface in surfaces.values()
+    }
+    assert len(score_bytes) == 3
+
+
+def test_p2_unreachable_grid_targets_are_gated_and_transition_fails_closed(monkeypatch):
+    disconnected = {
+        "layout_id": "p2_disconnected_hostile_v1",
+        "width": 7,
+        "height": 5,
+        "base_rows": ["#######", "#H.F#A#", "#...#.#", "#...#B#", "#######"],
+        "positions": {
+            "site_a": [5, 1],
+            "fork": [3, 1],
+            "site_b": [5, 3],
+            "home": [1, 1],
+        },
+    }
+    monkeypatch.setitem(
+        microworld.LAYOUTS, disconnected["layout_id"], disconnected
+    )
+    world = microworld.initial_world_state(
+        seed=30, layout_id=disconnected["layout_id"]
+    )
+    gate = microworld.legal_action_gate(world, engine.ACTIONS)
+
+    assert gate["rule"] == "label_free_grid_topology_reachability_v1"
+    assert gate["gated_actions"] == ["approach", "forage"]
+    assert gate["legal_actions"] == ["explore", "rest", "withdraw"]
+    assert gate["action_paths"]["approach"]["reachable"] is False
+    assert gate["action_paths"]["approach"]["shortest_path_steps"] is None
+    assert gate["action_paths"]["explore"]["reachable"] is True
+    with pytest.raises(ValueError, match="unreachable"):
+        microworld.transition_world(
+            world,
+            "forage",
+            source_sequence=1,
+            source_episode_id="episode-hostile",
+            source_command_hash="a" * 64,
+        )
+
+    run_id = "p2-disconnected-hostile"
+    state = engine.initial_state(
+        run_id=run_id, seed=30, layout_id=disconnected["layout_id"]
+    )
+    command = engine.make_command(
+        sequence=1,
+        cue="resource",
+        world_event="resource_appears",
+        trigger_source="paired_intervention",
+        interventions=engine.DEFAULT_INTERVENTIONS,
+        prev_command_hash=None,
+    )
+    step = engine.compute_step(state, command, engine.make_run_metadata(run_id, 30))
+    assert step.trace["selected_action"] in gate["legal_actions"]
+    assert step.trace["gated_actions"] == gate["gated_actions"]
+    by_action = {item["action"]: item for item in step.trace["candidates"]}
+    assert by_action["forage"]["legal"] is False
+    assert by_action["forage"]["gate_reasons"] == ["unreachable_target"]
+
+
+def test_p2_layout_topology_validation_rejects_non_rectangular_or_blocked_positions():
+    malformed = deepcopy(microworld.LAYOUTS["p0_cross_v1"])
+    malformed["base_rows"][1] = malformed["base_rows"][1][:-1]
+    with pytest.raises(ValueError, match="rectangular"):
+        microworld.validate_layout_topology(malformed)
+
+    blocked = deepcopy(microworld.LAYOUTS["p0_cross_v1"])
+    blocked["positions"]["site_a"] = [0, 0]
+    with pytest.raises(ValueError, match="walkable"):
+        microworld.validate_layout_topology(blocked)
+
+
+def test_p2_first_prediction_error_update_is_bounded_from_decision_prediction():
+    state = engine.initial_state(run_id="p2-update", seed=30)
+    command = engine.make_command(
+        sequence=1,
+        cue="resource",
+        world_event="resource_appears",
+        trigger_source="paired_intervention",
+        interventions=engine.DEFAULT_INTERVENTIONS,
+        prev_command_hash=None,
+    )
+    step = engine.compute_step(state, command, engine.make_run_metadata("p2-update", 30))
+    receipt = step.trace["model_update"]
+    assert receipt["prediction_before"] == step.trace["prediction"]
+    assert receipt["prediction_error"] == step.trace["prediction_error"]
+    assert receipt["model_before_hash"] == step.trace["model_bytes"]["before_hash"]
+    assert receipt["model_after_hash"] == step.trace["model_bytes"]["after_hash"]
+    for key in engine.STATE_KEYS:
+        assert receipt["applied_delta"][key] == pytest.approx(
+            engine.EMA_ALPHA * step.trace["prediction_error"][key], abs=1e-6
+        )
+        assert receipt["prediction_after"][key] == pytest.approx(
+            receipt["prediction_before"][key] + receipt["applied_delta"][key], abs=1e-6
+        )
+
+
+def test_p2_consolidation_rebuild_is_deterministic_idempotent_and_source_linked():
+    episodic = [
+        {
+            "memory_id": f"m-{index}", "kind": "episodic", "cue": "resource",
+            "current_goal": "energy", "action": "forage", "utility": float(index) / 10,
+            "actual_delta": {key: 0.1 for key in engine.STATE_KEYS},
+            "source_episode_id": f"episode-{index}", "source_command_hash": f"{index + 1:064x}",
+            "source_sequence": index + 1,
+        }
+        for index in range(3)
+    ]
+    first = engine.rebuild_consolidated_memory(episodic)
+    second = engine.rebuild_consolidated_memory(deepcopy(episodic))
+    assert first == second
+    assert first[0]["source_episode_ids"] == ["episode-0", "episode-1", "episode-2"]
+    assert first[0]["source_command_hashes"] == [f"{index + 1:064x}" for index in range(3)]
+    state = engine.initial_state(run_id="p2-lineage-tamper", seed=30)
+    state["memory"]["episodic"] = episodic
+    state["memory"]["consolidated"] = deepcopy(first)
+    state["memory"]["consolidated"][0]["source_command_hashes"][0] = "f" * 64
+    command = engine.make_command(
+        sequence=1, cue="quiet", world_event="quiet_interval",
+        trigger_source="paired_intervention", interventions=engine.DEFAULT_INTERVENTIONS,
+        prev_command_hash=None,
+    )
+    with pytest.raises(engine.EngineInvariantError, match="canonical rebuild"):
+        engine.compute_step(
+            state, command, engine.make_run_metadata("p2-lineage-tamper", 30)
+        )
+
+
+def test_p2_freeze_preserves_adaptive_bytes_but_world_and_clock_advance():
+    run_id = "p2-freeze"
+    meta = engine.make_run_metadata(run_id, 701)
+    state = engine.initial_state(run_id=run_id, seed=30, layout_id="p2_offset_v1")
+    first_command = engine.make_command(
+        sequence=1, cue="resource", world_event="resource_appears",
+        trigger_source="paired_intervention", interventions=engine.DEFAULT_INTERVENTIONS,
+        prev_command_hash=None,
+    )
+    first = engine.compute_step(state, first_command, meta)
+    frozen = dict(engine.DEFAULT_INTERVENTIONS, update_mode="frozen")
+    second_command = engine.make_command(
+        sequence=2, cue="contact", world_event="social_signal",
+        trigger_source="paired_intervention", interventions=frozen,
+        prev_command_hash=first.next_state["last_command_hash"],
+    )
+    second = engine.compute_step(first.next_state, second_command, meta)
+    assert second.trace["model_bytes"]["changed"] is False
+    assert second.trace["memory_bytes"]["changed"] is False
+    assert second.next_state["clock"]["global_tick"] == 2
+    assert second.next_state["world"]["public_observation"] != first.next_state["world"]["public_observation"]
+    assert second.trace["world_event"] == "social_signal"
+
+
+def test_p2_consolidation_off_is_a_typed_read_projection_not_invalid_persisted_state():
+    run_id = "p2-consolidation-off"
+    state = engine.initial_state(run_id=run_id, seed=30)
+    state["memory"]["episodic"] = [
+        {
+            "memory_id": f"p2-con-{index}", "kind": "episodic", "cue": "resource",
+            "current_goal": "stimulation", "action": "approach", "utility": 0.5,
+            "actual_delta": {key: 0.0 for key in engine.STATE_KEYS},
+            "source_episode_id": f"episode-{index}", "source_command_hash": f"{index + 11:064x}",
+            "source_sequence": index + 1,
+        }
+        for index in range(3)
+    ]
+    state["memory"]["consolidated"] = engine.rebuild_consolidated_memory(
+        state["memory"]["episodic"]
+    )
+    meta = engine.make_run_metadata(run_id, 701)
+    canonical_command = engine.make_command(
+        sequence=1, cue="resource", world_event="resource_appears",
+        trigger_source="paired_intervention",
+        interventions=dict(engine.DEFAULT_INTERVENTIONS, update_mode="frozen"),
+        prev_command_hash=None,
+    )
+    off_command = engine.make_command(
+        sequence=1, cue="resource", world_event="resource_appears",
+        trigger_source="paired_intervention",
+        interventions=dict(
+            engine.DEFAULT_INTERVENTIONS,
+            update_mode="frozen",
+            consolidation_mode="off_projection",
+        ),
+        prev_command_hash=None,
+    )
+    canonical = engine.compute_step(state, canonical_command, meta)
+    off = engine.compute_step(state, off_command, meta)
+    canonical_approach = next(item for item in canonical.trace["candidates"] if item["action"] == "approach")
+    off_approach = next(item for item in off.trace["candidates"] if item["action"] == "approach")
+    assert canonical_approach["legacy_memory_bias"] > off_approach["legacy_memory_bias"]
+    assert off.trace["provenance_projection"]["status"] == "consolidation_off_projection"
+    assert off.trace["memory_bytes"]["changed"] is False
+    assert off.next_state["memory"] == state["memory"]
+
+
+def test_p2_terminal_layout_selection_is_persisted_and_explicit_mismatch_fails(tmp_path):
+    database = tmp_path / "layout.sqlite3"
+    with SQLiteEventStore(database) as store:
+        controller = PlaygroundController(
+            store, run_id="p2-layout-run", seed=42, layout_id="p2_vertical_v1"
+        )
+        assert controller.state["world"]["layout"]["layout_id"] == "p2_vertical_v1"
+        committed = TerminalPlayground(controller).execute("step novel_object")
+        assert committed["status"] == "committed"
+        timeline = committed["snapshot"]["timeline"][-1]
+        assert timeline["layout_id"] == "p2_vertical_v1"
+        assert set(timeline) >= {
+            "prediction_error_l1", "model_count_before", "model_count_after",
+            "bounded_update_applied", "consolidation_applied",
+            "consolidation_lineage_count", "consolidation_lineage_hashes",
+        }
+    with SQLiteEventStore(database) as reopened:
+        with pytest.raises(engine.EngineInvariantError, match="does not match requested"):
+            PlaygroundController(
+                reopened, run_id="p2-layout-run", seed=42, layout_id="p2_offset_v1"
+            )
+
+
+def test_p2_cli_stored_layout_mismatch_is_structured_and_fail_closed(tmp_path):
+    database = tmp_path / "layout-cli.sqlite3"
+    with SQLiteEventStore(database) as store:
+        PlaygroundController(
+            store,
+            run_id="p2-layout-cli-run",
+            seed=42,
+            layout_id="p2_vertical_v1",
+        )
+
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(RUNNER),
+            "--terminal",
+            "--db",
+            str(database),
+            "--run-id",
+            "p2-layout-cli-run",
+            "--layout",
+            "p2_offset_v1",
+        ],
+        cwd=REPO_ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    payload = json.loads(completed.stdout.strip())
+    assert completed.returncode == 2
+    assert completed.stderr == ""
+    assert payload == {
+        "error": (
+            "stored run layout 'p2_vertical_v1' does not match requested "
+            "'p2_offset_v1'"
+        ),
+        "error_code": "controller_construction_failed",
+        "layout_id": "p2_offset_v1",
+        "run_id": "p2-layout-cli-run",
+        "status": "error",
+    }
+
+
+def test_product_policy_tie_seed_is_decoupled_from_private_world_seed(tmp_path):
+    run_id = "policy-world-seed-decoupling"
+    with SQLiteEventStore(tmp_path / "policy-a.sqlite3") as first_store:
+        first = PlaygroundController(first_store, run_id=run_id, seed=101)
+        first_private = deepcopy(first.state["world"]["private_dynamics"])
+        assert first.run_meta["seed"] == 101
+    with SQLiteEventStore(tmp_path / "policy-b.sqlite3") as second_store:
+        second = PlaygroundController(second_store, run_id=run_id, seed=202)
+        second_private = deepcopy(second.state["world"]["private_dynamics"])
+        assert second.run_meta["seed"] == 202
+
+    assert first_private == second_private
+    expected = engine.initial_state(
+        run_id=run_id, seed=engine.DEFAULT_PRIVATE_WORLD_SEED
+    )
+    assert first_private == expected["world"]["private_dynamics"]
+    with SQLiteEventStore(tmp_path / "world-explicit.sqlite3") as third_store:
+        third = PlaygroundController(
+            third_store, run_id=run_id, seed=101, world_seed=303
+        )
+        assert third.run_meta["seed"] == 101
+        assert third.state["world"]["private_dynamics"] != first_private
+
+
+def test_policy_projection_commits_all_dynamic_scorer_inputs_and_excludes_private_world():
+    run_id = "complete-policy-projection"
+    state_a = engine.initial_state(run_id=run_id, seed=18)
+    state_b = deepcopy(state_a)
+    private_b = state_b["world"]["private_dynamics"]
+    private_b["hidden_regime"] = "site_b_high"
+    private_b["rng_state"] = int(private_b["rng_state"]) + 991
+    microworld.verify_world_state(state_b["world"])
+    command = engine.make_command(
+        sequence=1,
+        cue="quiet",
+        world_event="quiet_interval",
+        trigger_source="paired_intervention",
+        interventions=dict(engine.DEFAULT_INTERVENTIONS, update_mode="frozen"),
+        prev_command_hash=None,
+    )
+    meta = engine.make_run_metadata(run_id, 701)
+    result_a = engine.compute_step(state_a, command, meta)
+    result_b = engine.compute_step(state_b, command, meta)
+
+    projection = result_a.trace["policy_projection"]
+    non_memory = projection["non_memory"]
+    assert projection["resolved_memory_view"] == state_a["memory"]
+    assert non_memory["sequence"] == 1
+    assert non_memory["policy_tie_seed"] == 701
+    assert non_memory["context_key"] == result_a.trace["context_key"]
+    assert non_memory["action_paths"] == result_a.trace["action_gate"]["action_paths"]
+    assert result_a.trace["policy_projection_hash"] == result_b.trace["policy_projection_hash"]
+    assert engine.canonical_json(
+        [result_a.trace["candidates"], result_a.trace["selected_action"]]
+    ) == engine.canonical_json(
+        [result_b.trace["candidates"], result_b.trace["selected_action"]]
+    )
+    assert microworld.world_hash(state_a["world"]) != microworld.world_hash(
+        state_b["world"]
+    )
+
+
+def test_policy_projection_changes_for_resolved_memory_or_policy_tie_seed():
+    run_id = "policy-projection-hostile"
+    baseline = engine.initial_state(run_id=run_id, seed=18)
+    with_memory = deepcopy(baseline)
+    with_memory["memory"]["episodic"] = [
+        {
+            "memory_id": f"policy-memory-{index}",
+            "kind": "episodic",
+            "cue": "quiet",
+            "current_goal": "stimulation",
+            "action": "approach",
+            "utility": 0.5,
+            "actual_delta": {key: 0.0 for key in engine.STATE_KEYS},
+            "source_episode_id": f"policy-episode-{index}",
+            "source_command_hash": f"{index + 1:064x}",
+            "source_sequence": index + 1,
+        }
+        for index in range(3)
+    ]
+    with_memory["memory"]["consolidated"] = engine.rebuild_consolidated_memory(
+        with_memory["memory"]["episodic"]
+    )
+    command = engine.make_command(
+        sequence=1,
+        cue="quiet",
+        world_event="quiet_interval",
+        trigger_source="paired_intervention",
+        interventions=dict(engine.DEFAULT_INTERVENTIONS, update_mode="frozen"),
+        prev_command_hash=None,
+    )
+    baseline_result = engine.compute_step(
+        baseline, command, engine.make_run_metadata(run_id, 701)
+    )
+    memory_result = engine.compute_step(
+        with_memory, command, engine.make_run_metadata(run_id, 701)
+    )
+    other_seed_result = engine.compute_step(
+        baseline, command, engine.make_run_metadata(run_id, 702)
+    )
+
+    assert (
+        baseline_result.trace["policy_projection_hash"]
+        != memory_result.trace["policy_projection_hash"]
+    )
+    assert (
+        baseline_result.trace["policy_projection_hash"]
+        != other_seed_result.trace["policy_projection_hash"]
+    )
+    assert (
+        baseline_result.trace["policy_non_memory_projection_hash"]
+        == memory_result.trace["policy_non_memory_projection_hash"]
+    )
+    assert (
+        baseline_result.trace["policy_non_memory_projection_hash"]
+        != other_seed_result.trace["policy_non_memory_projection_hash"]
+    )
+
+
 def test_p0_public_microworld_frame_is_readable_and_contains_no_hidden_or_oracle_fields(tmp_path):
     with SQLiteEventStore(tmp_path / "p0.sqlite3") as store:
         controller = PlaygroundController(store, run_id="p0-public", seed=17)
@@ -581,7 +1042,19 @@ def _p1_step_state(
 
 
 def _p1_history(*, run_id: str, seed: int):
-    state = engine.initial_state(run_id=run_id, seed=seed)
+    state = engine.initial_state(
+        {
+            "energy": 0.4,
+            "safety": 0.2,
+            "connection": 0.0,
+            "stimulation": 0.0,
+        },
+        run_id=run_id,
+        seed=seed,
+    )
+    state["world"]["agent"]["position"] = "site_a"
+    state["world"]["public_observation"]["agent_position"] = "site_a"
+    microworld.verify_world_state(state["world"])
     traces = []
     for event in ("resource_appears", "social_signal"):
         step = _p1_step_state(
@@ -606,7 +1079,16 @@ def _p1_paired_checkpoint_states():
 
 
 def test_p1_hidden_regime_is_persisted_but_excluded_from_policy_and_renderer():
-    state = engine.initial_state(run_id="p1-hidden", seed=18)
+    state = engine.initial_state(
+        {
+            "energy": 0.0,
+            "safety": 0.9,
+            "connection": 0.9,
+            "stimulation": 0.9,
+        },
+        run_id="p1-hidden",
+        seed=18,
+    )
     oracle = microworld.oracle_evidence_record(state["world"])
     assert state["world"]["private_dynamics"]["hidden_regime"] in {
         "site_a_high",
@@ -932,7 +1414,12 @@ def test_p1_private_world_and_claim_tamper_fail_recomputing_replay(tmp_path):
             "SELECT initial_state_json FROM runs WHERE run_id = ?", (controller.run_id,)
         ).fetchone()
         initial = json.loads(row["initial_state_json"])
-        initial["world"]["private_dynamics"]["hidden_regime"] = "site_b_high"
+        private = initial["world"]["private_dynamics"]
+        private["hidden_regime"] = (
+            "site_b_high"
+            if private["hidden_regime"] == "site_a_high"
+            else "site_a_high"
+        )
         store.connection.execute(
             "UPDATE runs SET initial_state_json = ?, initial_state_hash = ? WHERE run_id = ?",
             (

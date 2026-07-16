@@ -1,4 +1,4 @@
-"""One deterministic V0/V1-descendant reducer for the V2 P0/P1 microworld.
+"""One deterministic V0/V1-descendant reducer for the V2 P0/P1/P2 microworld.
 
 The implementation deliberately exposes its cheap explanation: a hard-coded
 toy outcome table, deficit scoring, a tabular EMA, and keyed memory bias. The
@@ -37,13 +37,14 @@ CUES = ("resource", "contact", "novelty", "threat", "quiet")
 TARGET_LEVEL = 0.72
 EMA_ALPHA = 0.35
 DEFAULT_PROVENANCE_SHUFFLE_SEED = 17
+DEFAULT_PRIVATE_WORLD_SEED = 1701
 CONSOLIDATION_THRESHOLD = 3
 EPISODE_SPAN_TICKS = 8
 
 STATE_SCHEMA_VERSION = "ego.life_playground.state.v2"
 RUN_SCHEMA_VERSION = "ego.life_playground.run.v2"
-COMMAND_SCHEMA_VERSION = "ego.life_playground.command.v3"
-TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v3"
+COMMAND_SCHEMA_VERSION = "ego.life_playground.command.v4"
+TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v4"
 
 TRIGGER_SOURCES = (
     "ui_step_button",
@@ -57,6 +58,7 @@ TRIGGER_SOURCES = (
 MEMORY_MODES = ("canonical", "off")
 UPDATE_MODES = ("enabled", "frozen")
 PROVENANCE_MODES = ("canonical", "shuffle_projection")
+CONSOLIDATION_MODES = ("canonical", "off_projection")
 RUN_PRODUCER_FUNCTION = "ego_life_playground_v0.engine.compute_step"
 RUN_AGGREGATION_RULE = "single_step_deterministic_one_step_argmax"
 GOAL_SELECTION_REASONS = (
@@ -83,6 +85,7 @@ DEFAULT_INTERVENTIONS = {
     "update_mode": "enabled",
     "provenance_mode": "canonical",
     "provenance_shuffle_seed": str(DEFAULT_PROVENANCE_SHUFFLE_SEED),
+    "consolidation_mode": "canonical",
 }
 
 # Kept as a source-compatibility constant only.  It is never accepted in a V1
@@ -206,6 +209,7 @@ def initial_state(
     *,
     run_id: str = "manual-local",
     seed: int = 17,
+    layout_id: str = "p0_cross_v1",
 ) -> dict[str, Any]:
     values = {
         "energy": 0.45,
@@ -227,7 +231,7 @@ def initial_state(
             "episode_tick": 0,
         },
         "organism": normalized,
-        "world": initial_world_state(seed=seed),
+        "world": initial_world_state(seed=seed, layout_id=layout_id),
         "current_goal": _select_goal(normalized, global_tick=0, reason="initial_max_deficit"),
         "model": {},
         "memory": {
@@ -372,6 +376,7 @@ def compute_step(
         memory_mode=interventions["memory_mode"],
         provenance_mode=interventions["provenance_mode"],
         provenance_shuffle_seed=int(interventions["provenance_shuffle_seed"]),
+        consolidation_mode=interventions["consolidation_mode"],
     )
     claim_retrieval = claim_memory.retrieve_competing_claims(
         memory_view,
@@ -381,16 +386,21 @@ def compute_step(
     if interventions["memory_mode"] == "off":
         claim_retrieval["status"] = "memory_disabled"
     policy_non_memory_projection = {
-        "schema_version": "ego.life_playground.policy_non_memory_projection.v1",
+        "schema_version": "ego.life_playground.policy_non_memory_projection.v2",
         "observation": deepcopy(world_observation),
         "organism": deepcopy(decision_state["organism"]),
         "current_goal": deepcopy(goal_before),
         "legal_actions": list(action_gate["legal_actions"]),
+        "action_paths": deepcopy(action_gate["action_paths"]),
         "model": deepcopy(decision_state["model"]),
+        "sequence": sequence,
+        "policy_tie_seed": int(run_meta["seed"]),
+        "context_key": context_key,
     }
     policy_projection = {
-        "schema_version": "ego.life_playground.policy_projection.v1",
+        "schema_version": "ego.life_playground.policy_projection.v2",
         "non_memory": deepcopy(policy_non_memory_projection),
+        "resolved_memory_view": deepcopy(memory_view),
         "claim_retrieval": deepcopy(claim_retrieval),
     }
     candidates = [
@@ -402,6 +412,7 @@ def compute_step(
             context_key=context_key,
             current_goal=goal_before,
             action=action,
+            path=action_gate["action_paths"][action],
             sequence=sequence,
             seed=int(run_meta["seed"]),
         )
@@ -411,7 +422,9 @@ def compute_step(
     gated_actions = deepcopy(action_gate["gated_actions"])
     for candidate in candidates:
         candidate["legal"] = candidate["action"] in legal_actions
-        candidate["gate_reasons"] = []
+        candidate["gate_reasons"] = (
+            [] if candidate["legal"] else ["unreachable_target"]
+        )
     candidates.sort(key=lambda item: item["action"])
     selected = max(
         (item for item in candidates if item["legal"]),
@@ -431,6 +444,8 @@ def compute_step(
         )
     except ValueError as exc:
         raise EngineInvariantError(str(exc)) from exc
+    if world_transition.get("path") != selected["path"]:
+        raise EngineInvariantError("world transition path differs from scored canonical path")
     world_outcome_value = world_transition.get("outcome")
     actual_delta = _actual_delta(cue, selected_action, world_outcome=world_outcome_value)
     prediction_error = {
@@ -453,6 +468,7 @@ def compute_step(
         next_state,
         context_key=context_key,
         action=selected_action,
+        prediction_before=predicted_delta,
         actual_delta=actual_delta,
         apply_update=updates_enabled,
     )
@@ -758,6 +774,11 @@ def _verify_memory(memory: Any) -> None:
         if memory_id in memory_ids:
             raise EngineInvariantError("memory_id must be unique")
         memory_ids.add(memory_id)
+    rebuilt = rebuild_consolidated_memory(list(episodic))
+    if canonical_json(list(consolidated)) != canonical_json(rebuilt):
+        raise EngineInvariantError(
+            "consolidated memory is not the canonical rebuild of episodic lineage"
+        )
     try:
         claim_memory.verify_claim_memory(memory)
     except ValueError as exc:
@@ -1025,6 +1046,7 @@ def _score_candidate(
     context_key: str,
     current_goal: Mapping[str, Any],
     action: str,
+    path: Mapping[str, Any],
     sequence: int,
     seed: int,
 ) -> dict[str, Any]:
@@ -1071,15 +1093,38 @@ def _score_candidate(
     memory_refs = sorted(set(legacy_memory_refs) | set(claim_refs))
     untried_bonus = 0.025 if model_ref["count"] == 0 else 0.0
     deterministic_tie = _deterministic_tie(seed, sequence, context_key, action)
-    total_score = _round(
-        goal_reduction
-        + total_reduction
-        + memory_bias
-        + untried_bonus
-        - ACTION_COSTS[action]
-        + deterministic_tie,
-        digits=9,
-    )
+    reachable = path.get("reachable") is True
+    topology_cost = path.get("normalized_topology_cost")
+    if reachable:
+        if type(topology_cost) is not float or not 0.0 <= topology_cost <= 1.0:
+            raise EngineInvariantError("reachable action path has invalid topology cost")
+        shortest_path_steps = path.get("shortest_path_steps")
+        walkable_cell_count = path.get("walkable_cell_count")
+        if (
+            type(shortest_path_steps) is not int
+            or shortest_path_steps < 0
+            or type(walkable_cell_count) is not int
+            or walkable_cell_count <= 0
+            or topology_cost
+            != round(shortest_path_steps / walkable_cell_count, 9)
+        ):
+            raise EngineInvariantError("action path topology cost is not canonical")
+        topology_cost_contribution: float | None = topology_cost
+        total_score: float | None = _round(
+            goal_reduction
+            + total_reduction
+            + memory_bias
+            + untried_bonus
+            - ACTION_COSTS[action]
+            - topology_cost_contribution
+            + deterministic_tie,
+            digits=9,
+        )
+    else:
+        if topology_cost is not None or path.get("shortest_path_steps") is not None:
+            raise EngineInvariantError("unreachable action path carries a topology cost")
+        topology_cost_contribution = None
+        total_score = None
     return {
         "action": action,
         "predicted_delta": {key: _round(predicted[key]) for key in STATE_KEYS},
@@ -1093,6 +1138,9 @@ def _score_candidate(
         ),
         "untried_bonus": untried_bonus,
         "action_cost": ACTION_COSTS[action],
+        "topology_cost": topology_cost,
+        "topology_cost_contribution": topology_cost_contribution,
+        "path": deepcopy(dict(path)),
         "deterministic_tie": deterministic_tie,
         "total_score": total_score,
         "model_ref": model_ref,
@@ -1129,31 +1177,42 @@ def _update_model(
     *,
     context_key: str,
     action: str,
+    prediction_before: Mapping[str, float],
     actual_delta: Mapping[str, float],
     apply_update: bool,
 ) -> dict[str, Any]:
+    before_hash = canonical_hash(state["model"])
+    context_before = state["model"].get(context_key, {})
+    previous = context_before.get(action)
+    previous_count = 0 if previous is None else int(previous["count"])
+    signed_error = {
+        key: _round(float(actual_delta[key]) - float(prediction_before[key]))
+        for key in STATE_KEYS
+    }
     if not apply_update:
         return {
             "applied": False,
             "reason": "adaptive_updates_frozen",
             "context_key": context_key,
             "action": action,
+            "alpha": EMA_ALPHA,
+            "previous_count": previous_count,
+            "new_count": previous_count,
+            "prediction_before": {key: _round(float(prediction_before[key])) for key in STATE_KEYS},
+            "prediction_error": signed_error,
+            "applied_delta": {key: 0.0 for key in STATE_KEYS},
+            "prediction_after": {key: _round(float(prediction_before[key])) for key in STATE_KEYS},
+            "model_before_hash": before_hash,
+            "model_after_hash": before_hash,
         }
     context = state["model"].setdefault(context_key, {})
-    previous = context.get(action)
-    if previous is None:
-        new_delta = {key: _round(float(actual_delta[key])) for key in STATE_KEYS}
-        previous_count = 0
-    else:
-        previous_count = int(previous["count"])
-        new_delta = {
-            key: _round(
-                (1.0 - EMA_ALPHA) * float(previous["ema_delta"][key])
-                + EMA_ALPHA * float(actual_delta[key])
-            )
-            for key in STATE_KEYS
-        }
+    applied_delta = {key: _round(EMA_ALPHA * signed_error[key]) for key in STATE_KEYS}
+    new_delta = {
+        key: _round(float(prediction_before[key]) + applied_delta[key])
+        for key in STATE_KEYS
+    }
     context[action] = {"count": previous_count + 1, "ema_delta": new_delta}
+    after_hash = canonical_hash(state["model"])
     return {
         "applied": True,
         "alpha": EMA_ALPHA,
@@ -1162,7 +1221,68 @@ def _update_model(
         "previous_count": previous_count,
         "new_count": previous_count + 1,
         "ema_delta": new_delta,
+        "prediction_before": {key: _round(float(prediction_before[key])) for key in STATE_KEYS},
+        "prediction_error": signed_error,
+        "applied_delta": applied_delta,
+        "prediction_after": new_delta,
+        "model_before_hash": before_hash,
+        "model_after_hash": after_hash,
     }
+
+
+def rebuild_consolidated_memory(
+    episodic: list[Mapping[str, Any]],
+) -> list[dict[str, Any]]:
+    """Deterministically rebuild derived consolidation from ordered source records.
+
+    Episodic records remain the authority.  Consolidation never overwrites or
+    removes them (or the separate competing-claim store); it is a pure indexed
+    view with exact command/episode/sequence lineage.
+    """
+
+    if not isinstance(episodic, list):
+        raise EngineInvariantError("episodic source must be a list")
+    grouped: dict[tuple[str, str, str], list[Mapping[str, Any]]] = {}
+    for entry in episodic:
+        _verify_episodic_memory_entry(entry)
+        slot = (str(entry["cue"]), str(entry["current_goal"]), str(entry["action"]))
+        grouped.setdefault(slot, []).append(entry)
+    rebuilt: list[dict[str, Any]] = []
+    for (cue, current_goal, action), matching in sorted(grouped.items()):
+        distinct_episodes = {str(entry["source_episode_id"]) for entry in matching}
+        if len(distinct_episodes) < CONSOLIDATION_THRESHOLD:
+            continue
+        ordered = sorted(
+            matching,
+            key=lambda entry: (
+                str(entry["source_episode_id"]),
+                str(entry["source_command_hash"]),
+                int(entry["source_sequence"]),
+            ),
+        )
+        source_hashes = [str(entry["source_command_hash"]) for entry in ordered]
+        source_episode_ids = [str(entry["source_episode_id"]) for entry in ordered]
+        source_sequences = [int(entry["source_sequence"]) for entry in ordered]
+        key = f"{cue}|{current_goal}|{action}"
+        consolidated_id = f"con-{canonical_hash({'key': key, 'source_command_hashes': source_hashes})[:20]}"
+        rebuilt.append(
+            {
+                "memory_id": consolidated_id,
+                "kind": "consolidated",
+                "key": key,
+                "cue": cue,
+                "current_goal": current_goal,
+                "action": action,
+                "strength": _round(
+                    sum(float(entry["utility"]) for entry in ordered) / len(ordered)
+                ),
+                "source_command_hashes": source_hashes,
+                "source_episode_ids": source_episode_ids,
+                "source_sequences": source_sequences,
+                "episode_count": len(distinct_episodes),
+            }
+        )
+    return rebuilt
 
 
 def _update_memory(
@@ -1213,61 +1333,37 @@ def _update_memory(
     }
     state["memory"]["episodic"].append(episode)
 
-    matching = [
-        entry
-        for entry in state["memory"]["episodic"]
-        if entry["cue"] == cue
-        and entry["current_goal"] == current_goal
-        and entry["action"] == action
-    ]
-    distinct_episodes = {entry["source_episode_id"] for entry in matching}
-    if len(distinct_episodes) < CONSOLIDATION_THRESHOLD:
+    key = f"{cue}|{current_goal}|{action}"
+    before_consolidated = canonical_hash(state["memory"]["consolidated"])
+    state["memory"]["consolidated"] = rebuild_consolidated_memory(
+        state["memory"]["episodic"]
+    )
+    selected_consolidated = next(
+        (item for item in state["memory"]["consolidated"] if item["key"] == key),
+        None,
+    )
+    if selected_consolidated is None:
         return {
             "applied": True,
             "episodic_write": memory_id,
             "consolidation_applied": False,
             "consolidation_refs": [],
             "reason": "threshold_not_met",
+            "rebuild_producer": "ego_life_playground_v0.engine.rebuild_consolidated_memory",
+            "consolidated_before_hash": before_consolidated,
+            "consolidated_after_hash": canonical_hash(state["memory"]["consolidated"]),
         }
-
-    ordered = sorted(
-        matching,
-        key=lambda entry: (
-            entry["source_episode_id"],
-            entry["source_command_hash"],
-            int(entry["source_sequence"]),
-        ),
-    )
-    source_hashes = [entry["source_command_hash"] for entry in ordered]
-    source_episode_ids = [entry["source_episode_id"] for entry in ordered]
-    source_sequences = [int(entry["source_sequence"]) for entry in ordered]
-    strength = _round(sum(float(entry["utility"]) for entry in ordered) / len(ordered))
-    key = f"{cue}|{current_goal}|{action}"
-    consolidated_id = f"con-{canonical_hash({'key': key, 'source_command_hashes': source_hashes})[:20]}"
-    consolidated = {
-        "memory_id": consolidated_id,
-        "kind": "consolidated",
-        "key": key,
-        "cue": cue,
-        "current_goal": current_goal,
-        "action": action,
-        "strength": strength,
-        "source_command_hashes": source_hashes,
-        "source_episode_ids": source_episode_ids,
-        "source_sequences": source_sequences,
-        "episode_count": len(distinct_episodes),
-    }
-    existing = state["memory"]["consolidated"]
-    state["memory"]["consolidated"] = [item for item in existing if item["key"] != key]
-    state["memory"]["consolidated"].append(consolidated)
-    state["memory"]["consolidated"].sort(key=lambda item: item["key"])
+    source_hashes = list(selected_consolidated["source_command_hashes"])
     return {
         "applied": True,
         "episodic_write": memory_id,
         "consolidation_applied": True,
         "consolidation_refs": source_hashes,
-        "consolidated_write": consolidated_id,
+        "consolidated_write": selected_consolidated["memory_id"],
         "reason": "threshold_met",
+        "rebuild_producer": "ego_life_playground_v0.engine.rebuild_consolidated_memory",
+        "consolidated_before_hash": before_consolidated,
+        "consolidated_after_hash": canonical_hash(state["memory"]["consolidated"]),
     }
 
 
@@ -1333,6 +1429,7 @@ def _memory_read_view(
     memory_mode: str,
     provenance_mode: str,
     provenance_shuffle_seed: int,
+    consolidation_mode: str,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     source_hash = _semantic_memory_hash(memory)
     if memory_mode == "off":
@@ -1343,6 +1440,7 @@ def _memory_read_view(
         }
         return empty, {
             "mode": provenance_mode,
+            "consolidation_mode": consolidation_mode,
             "status": "memory_disabled",
             "source_memory_hash": source_hash,
             "projected_view_hash": _semantic_memory_hash(empty),
@@ -1352,12 +1450,18 @@ def _memory_read_view(
             "marginal_preservation": _compute_projection_marginals(empty, empty),
         }
     canonical = deepcopy(dict(memory))
+    if consolidation_mode == "off_projection":
+        canonical["consolidated"] = []
+    projected_hash = _semantic_memory_hash(canonical)
     if provenance_mode == "canonical":
         return canonical, {
             "mode": "canonical",
-            "status": "canonical",
+            "consolidation_mode": consolidation_mode,
+            "status": "canonical"
+            if consolidation_mode == "canonical"
+            else "consolidation_off_projection",
             "source_memory_hash": source_hash,
-            "projected_view_hash": source_hash,
+            "projected_view_hash": projected_hash,
             "permutation_hash": None,
             "eligibility_count": len(canonical.get("episodic", [])),
             "cross_slot_moves": 0,
@@ -1371,6 +1475,7 @@ def _memory_read_view(
         enriched.update(
             {
                 "mode": "shuffle_projection",
+                "consolidation_mode": consolidation_mode,
                 "source_memory_hash": source_hash,
                 "projected_view_hash": _semantic_memory_hash(projected),
                 "permutation_hash": canonical_hash(
@@ -1386,7 +1491,11 @@ def _memory_read_view(
             }
         )
         return projected, enriched
-    return _shuffle_provenance_projection(canonical, seed=provenance_shuffle_seed)
+    projected, report = _shuffle_provenance_projection(
+        canonical, seed=provenance_shuffle_seed
+    )
+    report["consolidation_mode"] = consolidation_mode
+    return projected, report
 
 
 def _shuffle_provenance_projection(
@@ -1586,6 +1695,7 @@ def _normalize_interventions(interventions: Mapping[str, str]) -> dict[str, str]
         normalized["memory_mode"] not in MEMORY_MODES
         or normalized["update_mode"] not in UPDATE_MODES
         or normalized["provenance_mode"] not in PROVENANCE_MODES
+        or normalized["consolidation_mode"] not in CONSOLIDATION_MODES
     ):
         raise EngineInvariantError("intervention enum mismatch")
     try:
@@ -1599,6 +1709,13 @@ def _normalize_interventions(interventions: Mapping[str, str]) -> dict[str, str]
         and normalized["provenance_mode"] == "shuffle_projection"
     ):
         raise EngineInvariantError("invalid intervention combination: memory off with shuffle projection")
+    if (
+        normalized["memory_mode"] == "off"
+        and normalized["consolidation_mode"] == "off_projection"
+    ):
+        raise EngineInvariantError(
+            "invalid intervention combination: memory off with consolidation projection"
+        )
     return normalized
 
 

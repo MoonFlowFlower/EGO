@@ -9,15 +9,16 @@ the public observation/frame functions intentionally omit them.
 
 from __future__ import annotations
 
+from collections import deque
 from copy import deepcopy
 import hashlib
 import json
 from typing import Any, Mapping, Sequence
 
 
-WORLD_STATE_SCHEMA_VERSION = "ego.life_playground.microworld.state.v2"
-PUBLIC_OBSERVATION_SCHEMA_VERSION = "ego.life_playground.microworld.observation.v2"
-PUBLIC_FRAME_SCHEMA_VERSION = "ego.life_playground.microworld.public_frame.v3"
+WORLD_STATE_SCHEMA_VERSION = "ego.life_playground.microworld.state.v3"
+PUBLIC_OBSERVATION_SCHEMA_VERSION = "ego.life_playground.microworld.observation.v3"
+PUBLIC_FRAME_SCHEMA_VERSION = "ego.life_playground.microworld.public_frame.v4"
 ALLOWED_WORLD_EVENTS = (
     "resource_appears",
     "social_signal",
@@ -48,13 +49,29 @@ _EVENT_OBJECT = {
     "threat_nearby": {"object_id": "hazard", "kind": "threat", "glyph": "!", "position": "fork", "visible": True},
     "quiet_interval": {"object_id": "shelter", "kind": "shelter", "glyph": "~", "position": "home", "visible": True},
 }
-_POSITIONS = {
-    "site_a": [1, 1],
-    "fork": [4, 1],
-    "site_b": [7, 1],
-    "home": [4, 2],
+LAYOUTS: dict[str, dict[str, Any]] = {
+    "p0_cross_v1": {
+        "layout_id": "p0_cross_v1",
+        "width": 9,
+        "height": 5,
+        "base_rows": ["#########", "#A..F..B#", "#...H...#", "#.......#", "#########"],
+        "positions": {"site_a": [1, 1], "fork": [4, 1], "site_b": [7, 1], "home": [4, 2]},
+    },
+    "p2_vertical_v1": {
+        "layout_id": "p2_vertical_v1",
+        "width": 7,
+        "height": 7,
+        "base_rows": ["#######", "#..A..#", "#.....#", "#..F..#", "#.....#", "#B.H..#", "#######"],
+        "positions": {"site_a": [3, 1], "fork": [3, 3], "site_b": [1, 5], "home": [3, 5]},
+    },
+    "p2_offset_v1": {
+        "layout_id": "p2_offset_v1",
+        "width": 9,
+        "height": 6,
+        "base_rows": ["#########", "#A......#", "#..F....#", "#....B..#", "#..H....#", "#########"],
+        "positions": {"site_a": [1, 1], "fork": [3, 2], "site_b": [5, 3], "home": [3, 4]},
+    },
 }
-_BASE_ROWS = ["#########", "#A..F..B#", "#...H...#", "#.......#", "#########"]
 _ACTION_POSITION = {
     "approach": "site_b",
     "explore": "fork",
@@ -63,6 +80,8 @@ _ACTION_POSITION = {
     "withdraw": "home",
 }
 _SITE_ACTION = {"forage": "site_a", "approach": "site_b"}
+_POSITION_NAMES = frozenset(_ACTION_POSITION.values())
+_GRID_NEIGHBOR_ORDER = ((0, -1), (-1, 0), (1, 0), (0, 1))
 _HIDDEN_REGIMES = ("site_a_high", "site_b_high")
 _PRIVATE_HISTORY_KEYS = {
     "selected_action",
@@ -104,8 +123,162 @@ def default_event_for_sequence(sequence: int) -> str:
     return ALLOWED_WORLD_EVENTS[(sequence - 1) % len(ALLOWED_WORLD_EVENTS)]
 
 
+def validate_layout_topology(layout: Any) -> dict[str, Any]:
+    """Validate and describe the public, label-free grid topology.
+
+    Only ``#`` is treated as blocked.  Every other character is walkable; the
+    letters drawn in ``base_rows`` are renderer labels and are never inspected
+    by reachability or path selection.
+    """
+
+    required = {"layout_id", "width", "height", "base_rows", "positions"}
+    if not isinstance(layout, Mapping) or set(layout) != required:
+        raise ValueError("microworld layout topology schema mismatch")
+    layout_id = layout["layout_id"]
+    width = layout["width"]
+    height = layout["height"]
+    rows = layout["base_rows"]
+    positions = layout["positions"]
+    if type(layout_id) is not str or not layout_id:
+        raise ValueError("microworld layout_id must be a non-empty string")
+    if type(width) is not int or type(height) is not int or width <= 0 or height <= 0:
+        raise ValueError("microworld layout dimensions must be positive integers")
+    if (
+        not isinstance(rows, list)
+        or len(rows) != height
+        or any(type(row) is not str or len(row) != width for row in rows)
+    ):
+        raise ValueError("microworld base_rows must be rectangular and match dimensions")
+    if not isinstance(positions, Mapping) or set(positions) != _POSITION_NAMES:
+        raise ValueError("microworld semantic positions are not canonical")
+
+    normalized_positions: dict[str, list[int]] = {}
+    occupied: set[tuple[int, int]] = set()
+    for name in sorted(_POSITION_NAMES):
+        coordinate = positions[name]
+        if (
+            not isinstance(coordinate, list)
+            or len(coordinate) != 2
+            or any(type(value) is not int for value in coordinate)
+        ):
+            raise ValueError("microworld position coordinates must be [x,y] integers")
+        x, y = coordinate
+        if not (0 <= x < width and 0 <= y < height):
+            raise ValueError("microworld position coordinate is outside the grid")
+        if rows[y][x] == "#":
+            raise ValueError("microworld positions must occupy walkable cells")
+        if (x, y) in occupied:
+            raise ValueError("microworld positions must occupy distinct cells")
+        occupied.add((x, y))
+        normalized_positions[name] = [x, y]
+
+    walkable_cell_count = sum(character != "#" for row in rows for character in row)
+    if walkable_cell_count < len(normalized_positions):
+        raise ValueError("microworld layout has too few walkable cells")
+    return {
+        "schema_version": "ego.life_playground.microworld.grid_topology.v1",
+        "producer_function": "ego_life_playground_v0.microworld.validate_layout_topology",
+        "layout_id": layout_id,
+        "width": width,
+        "height": height,
+        "blocked_cell_marker": "#",
+        "uses_cell_labels": False,
+        "neighbor_order": [list(delta) for delta in _GRID_NEIGHBOR_ORDER],
+        "walkable_cell_count": walkable_cell_count,
+        "positions": normalized_positions,
+    }
+
+
+def _shortest_path_coordinates(
+    layout: Mapping[str, Any], start: tuple[int, int], target: tuple[int, int]
+) -> list[list[int]] | None:
+    rows = layout["base_rows"]
+    width = int(layout["width"])
+    height = int(layout["height"])
+    parents: dict[tuple[int, int], tuple[int, int] | None] = {start: None}
+    pending: deque[tuple[int, int]] = deque([start])
+    while pending:
+        current = pending.popleft()
+        if current == target:
+            break
+        for dx, dy in _GRID_NEIGHBOR_ORDER:
+            neighbor = (current[0] + dx, current[1] + dy)
+            x, y = neighbor
+            if (
+                neighbor in parents
+                or not (0 <= x < width and 0 <= y < height)
+                or rows[y][x] == "#"
+            ):
+                continue
+            parents[neighbor] = current
+            pending.append(neighbor)
+    if target not in parents:
+        return None
+    reversed_path: list[tuple[int, int]] = []
+    cursor: tuple[int, int] | None = target
+    while cursor is not None:
+        reversed_path.append(cursor)
+        cursor = parents[cursor]
+    return [[x, y] for x, y in reversed(reversed_path)]
+
+
+def canonical_public_action_path(
+    layout: Mapping[str, Any], agent_position: str, action: str
+) -> dict[str, Any]:
+    """Return a path from public layout/position bytes, with no private world read."""
+
+    if type(action) is not str or action not in _ACTION_POSITION:
+        raise ValueError(f"unknown microworld action: {action!r}")
+    topology = validate_layout_topology(layout)
+    if type(agent_position) is not str or agent_position not in topology["positions"]:
+        raise ValueError("microworld agent_position is not a public semantic position")
+    from_position = agent_position
+    target_position = _ACTION_POSITION[action]
+    from_coordinate = tuple(topology["positions"][from_position])
+    target_coordinate = tuple(topology["positions"][target_position])
+    coordinates = _shortest_path_coordinates(
+        layout, from_coordinate, target_coordinate
+    )
+    reachable = coordinates is not None
+    shortest_path_steps = None if coordinates is None else len(coordinates) - 1
+    normalized_cost = (
+        None
+        if shortest_path_steps is None
+        else round(shortest_path_steps / topology["walkable_cell_count"], 9)
+    )
+    return {
+        "schema_version": "ego.life_playground.microworld.action_path.v1",
+        "producer_function": "ego_life_playground_v0.microworld.canonical_public_action_path",
+        "layout_id": topology["layout_id"],
+        "action": action,
+        "from_position": from_position,
+        "target_position": target_position,
+        "from_coordinate": list(from_coordinate),
+        "target_coordinate": list(target_coordinate),
+        "neighbor_order": deepcopy(topology["neighbor_order"]),
+        "reachable": reachable,
+        "shortest_path_coordinates": [] if coordinates is None else coordinates,
+        "shortest_path_steps": shortest_path_steps,
+        "walkable_cell_count": topology["walkable_cell_count"],
+        "normalized_topology_cost": normalized_cost,
+    }
+
+
+def canonical_action_path(world: Mapping[str, Any], action: str) -> dict[str, Any]:
+    """Validate canonical world bytes, then delegate to the public-only helper."""
+
+    verify_world_state(world)
+    return canonical_public_action_path(
+        world["layout"], str(world["agent"]["position"]), action
+    )
+
+
 def _public_observation(
-    event: str, agent_position: str, *, revealed_outcome: float | None = None
+    event: str,
+    agent_position: str,
+    *,
+    layout_id: str,
+    revealed_outcome: float | None = None,
 ) -> dict[str, Any]:
     event_object = _EVENT_OBJECT[event]
     return {
@@ -113,29 +286,27 @@ def _public_observation(
         "event": event,
         "cue": cue_for_event(event),
         "summary": _EVENT_SUMMARY[event],
+        "layout_id": layout_id,
         "agent_position": agent_position,
         "visible_object_ids": [event_object["object_id"]],
         "revealed_outcome": revealed_outcome,
     }
 
 
-def initial_world_state(*, seed: int = 17) -> dict[str, Any]:
+def initial_world_state(*, seed: int = 17, layout_id: str = "p0_cross_v1") -> dict[str, Any]:
     if type(seed) is not int:
         raise ValueError("microworld seed must be an integer")
+    if type(layout_id) is not str or layout_id not in LAYOUTS:
+        raise ValueError(f"unknown microworld layout: {layout_id!r}")
+    validate_layout_topology(LAYOUTS[layout_id])
     event = "quiet_interval"
     rng_state = int(hashlib.sha256(f"microworld|{seed}".encode("utf-8")).hexdigest()[:15], 16)
     return {
         "schema_version": WORLD_STATE_SCHEMA_VERSION,
-        "layout": {
-            "layout_id": "p0_cross_v1",
-            "width": 9,
-            "height": 5,
-            "base_rows": list(_BASE_ROWS),
-            "positions": deepcopy(_POSITIONS),
-        },
+        "layout": deepcopy(LAYOUTS[layout_id]),
         "agent": {"agent_id": "ego-local", "position": "home"},
         "objects": [deepcopy(_EVENT_OBJECT[event])],
-        "public_observation": _public_observation(event, "home"),
+        "public_observation": _public_observation(event, "home", layout_id=layout_id),
         "private_dynamics": {
             "hidden_regime": "site_a_high" if seed % 2 == 0 else "site_b_high",
             "rng_state": rng_state,
@@ -158,19 +329,15 @@ def verify_world_state(world: Any) -> None:
     if world["schema_version"] != WORLD_STATE_SCHEMA_VERSION:
         raise ValueError("microworld state schema_version is not canonical")
     layout = world["layout"]
-    expected_layout = {
-        "layout_id": "p0_cross_v1",
-        "width": 9,
-        "height": 5,
-        "base_rows": list(_BASE_ROWS),
-        "positions": _POSITIONS,
-    }
-    if layout != expected_layout:
+    layout_id = layout.get("layout_id") if isinstance(layout, Mapping) else None
+    expected_layout = LAYOUTS.get(layout_id)
+    if expected_layout is None or dict(layout) != expected_layout:
         raise ValueError("microworld layout is not canonical")
+    validate_layout_topology(layout)
     agent = world["agent"]
     if not isinstance(agent, Mapping) or set(agent) != {"agent_id", "position"}:
         raise ValueError("microworld agent schema mismatch")
-    if agent["agent_id"] != "ego-local" or agent["position"] not in _POSITIONS:
+    if agent["agent_id"] != "ego-local" or agent["position"] not in layout["positions"]:
         raise ValueError("microworld agent is not canonical")
     objects = world["objects"]
     if not isinstance(objects, list) or len(objects) != 1 or not isinstance(objects[0], Mapping):
@@ -181,6 +348,7 @@ def verify_world_state(world: Any) -> None:
         "event",
         "cue",
         "summary",
+        "layout_id",
         "agent_position",
         "visible_object_ids",
         "revealed_outcome",
@@ -193,7 +361,10 @@ def verify_world_state(world: Any) -> None:
     if revealed is not None and (type(revealed) is not float or revealed not in {-1.0, 1.0}):
         raise ValueError("microworld revealed outcome is not canonical")
     expected_observation = _public_observation(
-        str(event), str(agent["position"]), revealed_outcome=revealed
+        str(event),
+        str(agent["position"]),
+        layout_id=str(layout_id),
+        revealed_outcome=revealed,
     )
     if dict(observation) != expected_observation:
         raise ValueError("microworld public observation is inconsistent with state")
@@ -272,7 +443,10 @@ def observe_world_event(world: Mapping[str, Any], event: str) -> dict[str, Any]:
     observed = deepcopy(dict(world))
     observed["objects"] = [deepcopy(_EVENT_OBJECT[event])]
     observed["public_observation"] = _public_observation(
-        event, str(observed["agent"]["position"]), revealed_outcome=None
+        event,
+        str(observed["agent"]["position"]),
+        layout_id=str(observed["layout"]["layout_id"]),
+        revealed_outcome=None,
     )
     verify_world_state(observed)
     return observed
@@ -281,11 +455,7 @@ def observe_world_event(world: Mapping[str, Any], event: str) -> dict[str, Any]:
 def legal_action_gate(
     world: Mapping[str, Any], actions: Sequence[str]
 ) -> dict[str, Any]:
-    """Return the explicit P0 hard-gate surface.
-
-    P0 has no blocked action: all five canonical local actions remain legal.
-    The explicit empty gated set prevents a renderer from inventing legality.
-    """
+    """Gate actions whose public-grid target has no canonical BFS path."""
 
     verify_world_state(world)
     canonical = list(actions)
@@ -293,10 +463,14 @@ def legal_action_gate(
         raise ValueError("microworld action set is not canonical")
     if len(canonical) != len(set(canonical)):
         raise ValueError("microworld action set contains duplicates")
+    action_paths = {action: canonical_action_path(world, action) for action in canonical}
+    legal_actions = [action for action in canonical if action_paths[action]["reachable"]]
+    gated_actions = [action for action in canonical if not action_paths[action]["reachable"]]
     return {
-        "rule": "p0_all_canonical_actions_legal",
-        "legal_actions": canonical,
-        "gated_actions": [],
+        "rule": "label_free_grid_topology_reachability_v1",
+        "legal_actions": legal_actions,
+        "gated_actions": gated_actions,
+        "action_paths": action_paths,
     }
 
 
@@ -313,10 +487,13 @@ def transition_world(
     verify_world_state(world)
     if selected_action not in _ACTION_POSITION:
         raise ValueError(f"unknown microworld action: {selected_action!r}")
+    path = canonical_action_path(world, selected_action)
+    if not path["reachable"]:
+        raise ValueError(f"microworld action target is unreachable: {selected_action!r}")
     transitioned = deepcopy(dict(world))
     from_position = str(transitioned["agent"]["position"])
     visited_site = _SITE_ACTION.get(selected_action)
-    to_position = "fork" if visited_site is not None else _ACTION_POSITION[selected_action]
+    to_position = str(path["target_position"])
     transitioned["agent"]["position"] = to_position
     observation = deepcopy(transitioned["public_observation"])
     observation["agent_position"] = to_position
@@ -362,6 +539,7 @@ def transition_world(
         "from_position": from_position,
         "to_position": to_position,
         "moved": from_position != to_position,
+        "path": path,
         "visited_site": visited_site,
         "outcome": outcome,
         "revealed_after_selection": outcome is not None,
@@ -440,9 +618,12 @@ def make_public_frame(
 
 __all__ = [
     "ALLOWED_WORLD_EVENTS",
+    "LAYOUTS",
     "PUBLIC_FRAME_SCHEMA_VERSION",
     "PUBLIC_OBSERVATION_SCHEMA_VERSION",
     "WORLD_STATE_SCHEMA_VERSION",
+    "canonical_action_path",
+    "canonical_public_action_path",
     "cue_for_event",
     "default_event_for_sequence",
     "event_for_cue",
@@ -455,6 +636,7 @@ __all__ = [
     "oracle_evidence_record",
     "observe_world_event",
     "transition_world",
+    "validate_layout_topology",
     "verify_world_state",
     "world_hash",
 ]

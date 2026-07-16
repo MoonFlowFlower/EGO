@@ -1,65 +1,72 @@
 {
-  "evidence": {
-    "aggregation_rule": "recursive_live_policy_scan_zero_offenders_and_all_alias_positive_controls_fire",
-    "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+  "direct_forbidden_key_or_alias_scan_clean": true,
+  "live_offender_count": 0,
+  "live_scan_count": 640,
+  "live_scan_count_by_family": {
+    "candidate": 64,
+    "counterfactual": 448,
+    "from_scratch": 64,
+    "train": 64
+  },
+  "metric": {
+    "aggregation_rule": "all_live_policy_projections_clean_and_all_four_alias_positive_controls_fire",
+    "code_path_hash": "9810968d63a3e5e25cd179a77b84aa40caf92a5d820fba7ab558010007198e48",
     "evidence_record_type": "computed_evidence",
     "input_artifacts": [
       {
-        "bytes": 700416,
-        "path": "generated://p1/continuity.sqlite3",
-        "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+        "bytes": 35131392,
+        "path": "generated://p2/continuity.sqlite3",
+        "sha256": "2b10403729b29660495ce27f484da31a5be7c89c96983baa4075f72de017611a"
       },
       {
-        "bytes": 620842,
-        "path": "generated://p1/trace.jsonl",
-        "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+        "bytes": 32851048,
+        "path": "generated://p2/trace.jsonl",
+        "sha256": "c983f1e3695c757c4972c37bced23af1b8f52607a67984507cddd86398ad06b0"
       },
       {
-        "bytes": 9782,
-        "path": "authority://p1/mutation-scope",
-        "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+        "bytes": 12479,
+        "path": "authority://p2/mutation-scope",
+        "sha256": "cb91c459282ab82319b583032560a26beaa9c8c915cf8e4ada997213a6dabfaf"
       }
     ],
-    "producer_function": "verify_ego_life_kernel_v2_microworld._leakage_report",
-    "run_id": "ego-v2-p1-verification-001",
+    "producer_function": "verify_ego_life_kernel_v2_microworld.p2_leakage_report",
+    "run_id": "ego-v2-p2-verification-001",
     "seed_context_episode_ids": {
-      "pair_id": "p1_memory_lineage_pair_001",
-      "seeds": [
-        18,
-        19
+      "heldout_context_ids": [
+        "heldout_42_vertical_alpha",
+        "heldout_43_vertical_beta",
+        "heldout_44_offset_beta",
+        "heldout_45_offset_alpha"
+      ],
+      "train_world_seeds": [
+        30,
+        31
       ]
     },
     "value": {
+      "direct_forbidden_key_or_alias_scan_clean": true,
       "live_offender_count": 0,
-      "positive_control_count": 6,
-      "positive_controls_fired": true
+      "positive_control_count": 4,
+      "positive_controls_fired": true,
+      "scan_scope": "direct_forbidden_key_or_alias_scan_only__not_distributional_leakage_resistance"
     }
   },
-  "live_offender_count": 0,
-  "live_scans": {
-    "a": {
-      "offenders": [],
-      "payload_hash": "4c4518c85086dadbddd5c42f6940a0d135cc67b55ebe24a432ed03dbaa512ecf",
-      "positive_control_detected": false,
-      "producer_function": "verify_ego_life_kernel_v2_microworld.scan_policy_projection"
-    },
-    "b": {
-      "offenders": [],
-      "payload_hash": "c997a074f024299fde281a9d32305b75d0b33f9b977181db489df65c050e2ab6",
-      "positive_control_detected": false,
-      "producer_function": "verify_ego_life_kernel_v2_microworld.scan_policy_projection"
-    }
+  "physical_output_root_scan": {
+    "normalization": "casefold_backslash_to_slash_and_repeated_slash_collapse",
+    "offender_count": 0,
+    "offenders": [],
+    "physical_output_root_absent": true,
+    "producer_function": "verify_ego_life_kernel_v2_microworld.scan_physical_output_root",
+    "scan_scope": "recursive_parsed_mapping_keys_values_and_sequence_strings"
   },
-  "positive_control_count": 6,
+  "positive_control_count": 4,
   "positive_controls": {
     "future_outcome": {
-      "expected_alias_detected": true,
-      "expected_category": "future_outcome",
-      "expected_path_suffix": "/next_outcome",
+      "fired": true,
       "offenders": [
         {
           "category": "future_outcome",
-          "path": "/non_memory/observation/positive_control/next_outcome",
+          "path": "/non_memory/observation/p2_positive_control/future_outcome",
           "reason": "forbidden_key_or_alias"
         },
         {
@@ -67,19 +74,14 @@
           "path": "/non_memory/observation",
           "reason": "observation_schema_mismatch"
         }
-      ],
-      "payload_hash": "cb0e4fe2b4bc17d783fb0c3f2c446a23bd7de45f3101f03797212efd0c2220ab",
-      "positive_control_detected": true,
-      "producer_function": "verify_ego_life_kernel_v2_microworld.scan_policy_projection"
+      ]
     },
-    "hidden_regime": {
-      "expected_alias_detected": true,
-      "expected_category": "hidden_regime",
-      "expected_path_suffix": "/hidden_regime",
+    "layout_seed_alias": {
+      "fired": true,
       "offenders": [
         {
-          "category": "hidden_regime",
-          "path": "/non_memory/observation/positive_control/hidden_regime",
+          "category": "generator_seed",
+          "path": "/non_memory/observation/p2_positive_control/world_seed",
           "reason": "forbidden_key_or_alias"
         },
         {
@@ -87,19 +89,14 @@
           "path": "/non_memory/observation",
           "reason": "observation_schema_mismatch"
         }
-      ],
-      "payload_hash": "f286af5cae997e28df48832f8ec3639934ac2849a7b9de53ac47d6167958760e",
-      "positive_control_detected": true,
-      "producer_function": "verify_ego_life_kernel_v2_microworld.scan_policy_projection"
+      ]
     },
-    "nested_correct_action": {
-      "expected_alias_detected": true,
-      "expected_category": "correct_action",
-      "expected_path_suffix": "/nested/target_action",
+    "oracle_action": {
+      "fired": true,
       "offenders": [
         {
           "category": "correct_action",
-          "path": "/non_memory/observation/positive_control/nested/target_action",
+          "path": "/non_memory/observation/p2_positive_control/correct_action",
           "reason": "forbidden_key_or_alias"
         },
         {
@@ -107,39 +104,14 @@
           "path": "/non_memory/observation",
           "reason": "observation_schema_mismatch"
         }
-      ],
-      "payload_hash": "0fe9dd393d1d8a75bee0ddb05df65dd1efdffa64422ade2278249f60445515d3",
-      "positive_control_detected": true,
-      "producer_function": "verify_ego_life_kernel_v2_microworld.scan_policy_projection"
+      ]
     },
-    "oracle": {
-      "expected_alias_detected": true,
-      "expected_category": "oracle",
-      "expected_path_suffix": "/answer_key",
-      "offenders": [
-        {
-          "category": "oracle",
-          "path": "/non_memory/observation/positive_control/answer_key",
-          "reason": "forbidden_key_or_alias"
-        },
-        {
-          "category": "schema",
-          "path": "/non_memory/observation",
-          "reason": "observation_schema_mismatch"
-        }
-      ],
-      "payload_hash": "a0da84f8f02dcd90d2f499631af23969e40a422ef9ea0bf3c6aa365c3e83d654",
-      "positive_control_detected": true,
-      "producer_function": "verify_ego_life_kernel_v2_microworld.scan_policy_projection"
-    },
-    "renamed_hidden_regime": {
-      "expected_alias_detected": true,
-      "expected_category": "hidden_regime",
-      "expected_path_suffix": "/latent_mode",
+    "private_regime": {
+      "fired": true,
       "offenders": [
         {
           "category": "hidden_regime",
-          "path": "/non_memory/observation/positive_control/latent_mode",
+          "path": "/non_memory/observation/p2_positive_control/hidden_regime",
           "reason": "forbidden_key_or_alias"
         },
         {
@@ -147,32 +119,10 @@
           "path": "/non_memory/observation",
           "reason": "observation_schema_mismatch"
         }
-      ],
-      "payload_hash": "502f9b06e8b2d9365d9ef45d47d6b9c759c56544f5d7914e03937d06129a8be2",
-      "positive_control_detected": true,
-      "producer_function": "verify_ego_life_kernel_v2_microworld.scan_policy_projection"
-    },
-    "reward_label": {
-      "expected_alias_detected": true,
-      "expected_category": "reward_label",
-      "expected_path_suffix": "/labels/utility_label",
-      "offenders": [
-        {
-          "category": "reward_label",
-          "path": "/non_memory/observation/positive_control/labels/utility_label",
-          "reason": "forbidden_key_or_alias"
-        },
-        {
-          "category": "schema",
-          "path": "/non_memory/observation",
-          "reason": "observation_schema_mismatch"
-        }
-      ],
-      "payload_hash": "fb02483580e39bcaa5debe911cff4acd6c4c756ec10ec22b278b141a0ee5a0a4",
-      "positive_control_detected": true,
-      "producer_function": "verify_ego_life_kernel_v2_microworld.scan_policy_projection"
+      ]
     }
   },
   "positive_controls_fired": true,
-  "schema_version": "ego.v2.p1.leakage_report.v1"
+  "scan_scope": "direct_forbidden_key_or_alias_scan_only__not_distributional_leakage_resistance",
+  "schema_version": "ego.v2.p2.leakage_report.v1"
 }

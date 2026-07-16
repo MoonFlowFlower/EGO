@@ -1,47 +1,47 @@
 {
   "claim_blockers": [
-    "control_baseline_equivalent",
-    "freeze_downstream_contrast_inert_side_a"
+    "bounded_error_curve_not_directional_for_both_frozen_train_seeds",
+    "heldout_site_coverage_below_frozen_minimum",
+    "equal_access_control_equivalence",
+    "fully_inert_counterfactuals:Freeze_Updates,consolidation_OFF,memory_ONLY"
   ],
-  "evidence": {
-    "aggregation_rule": "union_of_computed_false_requirements_plus_control_equivalence_claim_blockers",
-    "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+  "implementation_failures": [],
+  "metric": {
+    "aggregation_rule": "union_computed_implementation_failures_separate_from_nonblocking_claim_limits",
+    "code_path_hash": "9810968d63a3e5e25cd179a77b84aa40caf92a5d820fba7ab558010007198e48",
     "evidence_record_type": "computed_evidence",
     "input_artifacts": [
       {
-        "bytes": 700416,
-        "path": "generated://p1/continuity.sqlite3",
-        "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+        "bytes": 35131392,
+        "path": "generated://p2/continuity.sqlite3",
+        "sha256": "2b10403729b29660495ce27f484da31a5be7c89c96983baa4075f72de017611a"
       },
       {
-        "bytes": 620842,
-        "path": "generated://p1/trace.jsonl",
-        "sha256": "1d2f09e3bbfb295519fe4a91097612c792ce5b4de7340ea8d9456488ca4c6ae8"
+        "bytes": 32851048,
+        "path": "generated://p2/trace.jsonl",
+        "sha256": "c983f1e3695c757c4972c37bced23af1b8f52607a67984507cddd86398ad06b0"
       },
       {
-        "bytes": 9782,
-        "path": "authority://p1/mutation-scope",
-        "sha256": "4c8ff12962bd6bab52ca9cb27983cb44a612240c37c25b238e13ad3e9b1fa54c"
+        "bytes": 12479,
+        "path": "authority://p2/mutation-scope",
+        "sha256": "cb91c459282ab82319b583032560a26beaa9c8c915cf8e4ada997213a6dabfaf"
       }
     ],
-    "producer_function": "verify_ego_life_kernel_v2_microworld.run_p1_verification.failure_manifest",
-    "run_id": "ego-v2-p1-verification-001",
+    "producer_function": "verify_ego_life_kernel_v2_microworld.p2_failure_manifest",
+    "run_id": "ego-v2-p2-verification-001",
     "seed_context_episode_ids": {
-      "pair_id": "p1_memory_lineage_pair_001",
-      "seeds": [
-        18,
-        19
-      ]
+      "run_id": "ego-v2-p2-verification-001"
     },
     "value": {
       "claim_blockers": [
-        "control_baseline_equivalent",
-        "freeze_downstream_contrast_inert_side_a"
+        "bounded_error_curve_not_directional_for_both_frozen_train_seeds",
+        "heldout_site_coverage_below_frozen_minimum",
+        "equal_access_control_equivalence",
+        "fully_inert_counterfactuals:Freeze_Updates,consolidation_OFF,memory_ONLY"
       ],
       "implementation_failures": []
     }
   },
-  "implementation_failures": [],
-  "schema_version": "ego.v2.p1.failure_manifest.v2",
-  "status": "implementation_controls_passed_with_bounded_claim_blocker"
+  "schema_version": "ego.v2.p2.failure_manifest.v1",
+  "status": "implementation_controls_passed_with_bounded_claim_blockers"
 }

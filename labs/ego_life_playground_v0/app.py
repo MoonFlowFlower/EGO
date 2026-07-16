@@ -15,6 +15,7 @@ from .engine import (
     ACTIONS,
     CUES,
     DEFAULT_INTERVENTIONS,
+    DEFAULT_PRIVATE_WORLD_SEED,
     EngineInvariantError,
     StepResult,
     canonical_hash,
@@ -25,6 +26,7 @@ from .engine import (
 )
 from .microworld import (
     ALLOWED_WORLD_EVENTS,
+    LAYOUTS,
     cue_for_event,
     default_event_for_sequence,
     event_for_cue,
@@ -79,26 +81,44 @@ class PlaygroundController:
         *,
         run_id: str | None = None,
         seed: int = 17,
+        world_seed: int = DEFAULT_PRIVATE_WORLD_SEED,
+        layout_id: str | None = None,
         on_committed: Callable[[dict[str, Any], dict[str, Any]], None] | None = None,
         on_recovered: Callable[[RecoveryResult], None] | None = None,
     ) -> None:
         self.store = store
+        if type(world_seed) is not int:
+            raise EngineInvariantError("world_seed must be an integer")
+        self.world_seed = world_seed
         self.on_committed = on_committed
         self.on_recovered = on_recovered
         selected_run_id = run_id if run_id is not None else store.latest_compatible_run_id()
 
         if selected_run_id is not None and store.run_exists(selected_run_id):
-            self.run_id = selected_run_id
             recovered = store.recover_run(selected_run_id)
-            self._adopt_recovery(recovered)
-            self.recovery_status = f"recomputed {recovered.command_count} command(s)"
-            if self.on_recovered is not None:
-                self.on_recovered(recovered)
-            return
+            recovered_layout = recovered.state["world"]["layout"]["layout_id"]
+            if layout_id is not None and recovered_layout != layout_id:
+                if run_id is not None:
+                    raise EngineInvariantError(
+                        f"stored run layout {recovered_layout!r} does not match requested {layout_id!r}"
+                    )
+                selected_run_id = None
+            else:
+                self.run_id = selected_run_id
+                self._adopt_recovery(recovered)
+                self.recovery_status = f"recomputed {recovered.command_count} command(s)"
+                if self.on_recovered is not None:
+                    self.on_recovered(recovered)
+                return
 
         self.run_id = selected_run_id or f"local-{uuid.uuid4().hex[:16]}"
         self.run_meta = make_run_metadata(self.run_id, seed)
-        state = initial_state(run_id=self.run_id, seed=seed)
+        selected_layout = layout_id or "p0_cross_v1"
+        if selected_layout not in LAYOUTS:
+            raise EngineInvariantError(f"unknown microworld layout: {selected_layout!r}")
+        state = initial_state(
+            run_id=self.run_id, seed=self.world_seed, layout_id=selected_layout
+        )
         store.create_run(self.run_meta, state)
         recovered = store.recover_run(self.run_id)
         self._adopt_recovery(recovered)
@@ -179,8 +199,11 @@ class PlaygroundController:
         if self.store.run_exists(selected):
             raise EngineInvariantError(f"run already exists: {selected}")
         seed = int(self.run_meta["seed"])
+        layout_id = str(self.state["world"]["layout"]["layout_id"])
         run_meta = make_run_metadata(selected, seed)
-        state = initial_state(run_id=selected, seed=seed)
+        state = initial_state(
+            run_id=selected, seed=self.world_seed, layout_id=layout_id
+        )
         self.store.create_run(run_meta, state)
         recovered = self.store.recover_run(selected)
         self.run_id = selected
@@ -196,17 +219,36 @@ def _timeline_from_recovery(recovery: RecoveryResult) -> list[dict[str, Any]]:
     for frame in recovery.frames:
         trace = frame.trace
         clock = frame.state["clock"]
+        model_update = {} if trace is None else trace.get("model_update", {})
+        memory_update = {} if trace is None else trace.get("memory_update", {})
+        prediction_error = {} if trace is None else trace.get("prediction_error", {})
         timeline.append(
             {
                 "sequence": frame.sequence,
                 "global_tick": clock["global_tick"],
                 "episode_index": clock["episode_index"],
                 "episode_tick": clock["episode_tick"],
+                "layout_id": frame.state["world"]["layout"]["layout_id"],
                 "event": "quiet_interval" if trace is None else event_for_cue(trace["cue"]),
                 "observation": "quiet" if trace is None else trace["cue"],
                 "observation_hash": None if trace is None else trace["observation_hash"],
                 "selected_action": None if trace is None else trace["selected_action"],
                 "world_outcome": None if trace is None else deepcopy(trace.get("world_outcome")),
+                "prediction_error_l1": None
+                if trace is None
+                else round(sum(abs(float(value)) for value in prediction_error.values()), 6),
+                "model_count_before": None if trace is None else model_update.get("previous_count"),
+                "model_count_after": None if trace is None else model_update.get("new_count"),
+                "bounded_update_applied": False if trace is None else bool(model_update.get("applied")),
+                "consolidation_applied": False
+                if trace is None
+                else bool(memory_update.get("consolidation_applied")),
+                "consolidation_lineage_count": 0
+                if trace is None
+                else len(memory_update.get("consolidation_refs", [])),
+                "consolidation_lineage_hashes": []
+                if trace is None
+                else deepcopy(memory_update.get("consolidation_refs", [])),
                 "claim_support_margin": None
                 if trace is None
                 else trace.get("claim_retrieval", {}).get("support_margin"),
@@ -629,7 +671,18 @@ class PlaygroundWindow:
             right, text="One-step action candidates / score components", padding=6
         )
         candidate_box.pack(fill=tk.BOTH, expand=True, pady=(0, 8))
-        columns = ("action", "goal", "total", "memory", "novelty", "cost", "tie", "score")
+        columns = (
+            "action",
+            "goal",
+            "total",
+            "memory",
+            "novelty",
+            "cost",
+            "topology",
+            "steps",
+            "tie",
+            "score",
+        )
         self.candidate_tree = ttk.Treeview(candidate_box, columns=columns, show="headings", height=7)
         headings = {
             "action": "Action",
@@ -638,6 +691,8 @@ class PlaygroundWindow:
             "memory": "Memory",
             "novelty": "Untried",
             "cost": "Cost",
+            "topology": "Topology",
+            "steps": "Path steps",
             "tie": "Tie",
             "score": "Score",
         }
@@ -673,6 +728,7 @@ class PlaygroundWindow:
             "provenance_shuffle_seed": DEFAULT_INTERVENTIONS[
                 "provenance_shuffle_seed"
             ],
+            "consolidation_mode": "canonical",
         }
         if (
             snapshot["memory_mode"] == "off"
@@ -917,7 +973,15 @@ class PlaygroundWindow:
             self.candidate_tree.delete(item)
         candidates: list[dict[str, Any]] = [] if trace is None else trace["candidates"]
         selected_action = None if trace is None else trace["selected_action"]
-        for candidate in sorted(candidates, key=lambda item: item["total_score"], reverse=True):
+        for candidate in sorted(
+            candidates,
+            key=lambda item: (
+                float("-inf") if item["total_score"] is None else item["total_score"]
+            ),
+            reverse=True,
+        ):
+            topology_cost = candidate["topology_cost"]
+            shortest_path_steps = candidate["path"]["shortest_path_steps"]
             iid = self.candidate_tree.insert(
                 "",
                 tk.END,
@@ -928,8 +992,10 @@ class PlaygroundWindow:
                     f"{candidate['memory_bias']:.4f}",
                     f"{candidate['untried_bonus']:.4f}",
                     f"{candidate['action_cost']:.4f}",
+                    "-" if topology_cost is None else f"{topology_cost:.4f}",
+                    "-" if shortest_path_steps is None else str(shortest_path_steps),
                     f"{candidate['deterministic_tie']:.8f}",
-                    f"{candidate['total_score']:.5f}",
+                    "-" if candidate["total_score"] is None else f"{candidate['total_score']:.5f}",
                 ),
             )
             if candidate["action"] == selected_action:
@@ -963,10 +1029,23 @@ class PlaygroundWindow:
             pass
 
 
-def run_app(db_path: str | Path | None = None, *, seed: int = 17) -> None:
+def run_app(
+    db_path: str | Path | None = None,
+    *,
+    seed: int = 17,
+    world_seed: int = DEFAULT_PRIVATE_WORLD_SEED,
+    layout_id: str | None = None,
+    run_id: str | None = None,
+) -> None:
     store = SQLiteEventStore(db_path or default_db_path())
     try:
-        controller = PlaygroundController(store, seed=seed)
+        controller = PlaygroundController(
+            store,
+            run_id=run_id,
+            seed=seed,
+            world_seed=world_seed,
+            layout_id=layout_id,
+        )
         root = tk.Tk()
         window = PlaygroundWindow(root, controller)
         root.protocol("WM_DELETE_WINDOW", window.close)

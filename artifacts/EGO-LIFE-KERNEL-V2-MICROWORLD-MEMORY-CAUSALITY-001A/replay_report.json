@@ -1,125 +1,147 @@
 {
-  "evidence": {
-    "aggregation_rule": "fresh_store_recompute_and_all_four_independent_tamper_controls_fail_closed",
-    "code_path_hash": "ad2c73de987a15485ce519d78ed476484a4c98ba528e58e95644e7da2f5593e3",
+  "all_terminal_states_match": true,
+  "metric": {
+    "aggregation_rule": "fresh_sqlite_recompute_from_initial_state_plus_commands_and_all_tamper_controls_fail_closed",
+    "code_path_hash": "9810968d63a3e5e25cd179a77b84aa40caf92a5d820fba7ab558010007198e48",
     "evidence_record_type": "computed_evidence",
     "input_artifacts": [
       {
-        "bytes": 700416,
-        "path": "generated://p1/continuity.sqlite3",
-        "sha256": "bbae287d6030f79bcac24e41a858278435d339b5d2c954fe473f7a101fc3b4b9"
+        "bytes": 35131392,
+        "path": "generated://p2/continuity.sqlite3",
+        "sha256": "2b10403729b29660495ce27f484da31a5be7c89c96983baa4075f72de017611a"
+      },
+      {
+        "bytes": 32851048,
+        "path": "generated://p2/trace.jsonl",
+        "sha256": "c983f1e3695c757c4972c37bced23af1b8f52607a67984507cddd86398ad06b0"
+      },
+      {
+        "bytes": 12479,
+        "path": "authority://p2/mutation-scope",
+        "sha256": "cb91c459282ab82319b583032560a26beaa9c8c915cf8e4ada997213a6dabfaf"
       }
     ],
-    "producer_function": "verify_ego_life_kernel_v2_microworld._replay_report",
-    "run_id": "ego-v2-p1-verification-001",
+    "producer_function": "verify_ego_life_kernel_v2_microworld.p2_replay_report",
+    "run_id": "ego-v2-p2-verification-001",
     "seed_context_episode_ids": {
-      "pair_id": "p1_memory_lineage_pair_001",
-      "seeds": [
-        18,
-        19
+      "run_ids": [
+        "p2-cf-consolidation-off-30-heldout_42_vertical_alpha",
+        "p2-cf-consolidation-off-30-heldout_43_vertical_beta",
+        "p2-cf-consolidation-off-30-heldout_44_offset_beta",
+        "p2-cf-consolidation-off-30-heldout_45_offset_alpha",
+        "p2-cf-consolidation-off-31-heldout_42_vertical_alpha",
+        "p2-cf-consolidation-off-31-heldout_43_vertical_beta",
+        "p2-cf-consolidation-off-31-heldout_44_offset_beta",
+        "p2-cf-consolidation-off-31-heldout_45_offset_alpha",
+        "p2-cf-cross-replication-memory-swap-30-heldout_42_vertical_alpha",
+        "p2-cf-cross-replication-memory-swap-30-heldout_43_vertical_beta",
+        "p2-cf-cross-replication-memory-swap-30-heldout_44_offset_beta",
+        "p2-cf-cross-replication-memory-swap-30-heldout_45_offset_alpha",
+        "p2-cf-cross-replication-memory-swap-31-heldout_42_vertical_alpha",
+        "p2-cf-cross-replication-memory-swap-31-heldout_43_vertical_beta",
+        "p2-cf-cross-replication-memory-swap-31-heldout_44_offset_beta",
+        "p2-cf-cross-replication-memory-swap-31-heldout_45_offset_alpha",
+        "p2-cf-freeze-updates-30-heldout_42_vertical_alpha",
+        "p2-cf-freeze-updates-30-heldout_43_vertical_beta",
+        "p2-cf-freeze-updates-30-heldout_44_offset_beta",
+        "p2-cf-freeze-updates-30-heldout_45_offset_alpha",
+        "p2-cf-freeze-updates-31-heldout_42_vertical_alpha",
+        "p2-cf-freeze-updates-31-heldout_43_vertical_beta",
+        "p2-cf-freeze-updates-31-heldout_44_offset_beta",
+        "p2-cf-freeze-updates-31-heldout_45_offset_alpha",
+        "p2-cf-memory-off-30-heldout_42_vertical_alpha",
+        "p2-cf-memory-off-30-heldout_43_vertical_beta",
+        "p2-cf-memory-off-30-heldout_44_offset_beta",
+        "p2-cf-memory-off-30-heldout_45_offset_alpha",
+        "p2-cf-memory-off-31-heldout_42_vertical_alpha",
+        "p2-cf-memory-off-31-heldout_43_vertical_beta",
+        "p2-cf-memory-off-31-heldout_44_offset_beta",
+        "p2-cf-memory-off-31-heldout_45_offset_alpha",
+        "p2-cf-memory-only-30-heldout_42_vertical_alpha",
+        "p2-cf-memory-only-30-heldout_43_vertical_beta",
+        "p2-cf-memory-only-30-heldout_44_offset_beta",
+        "p2-cf-memory-only-30-heldout_45_offset_alpha",
+        "p2-cf-memory-only-31-heldout_42_vertical_alpha",
+        "p2-cf-memory-only-31-heldout_43_vertical_beta",
+        "p2-cf-memory-only-31-heldout_44_offset_beta",
+        "p2-cf-memory-only-31-heldout_45_offset_alpha",
+        "p2-cf-model-only-30-heldout_42_vertical_alpha",
+        "p2-cf-model-only-30-heldout_43_vertical_beta",
+        "p2-cf-model-only-30-heldout_44_offset_beta",
+        "p2-cf-model-only-30-heldout_45_offset_alpha",
+        "p2-cf-model-only-31-heldout_42_vertical_alpha",
+        "p2-cf-model-only-31-heldout_43_vertical_beta",
+        "p2-cf-model-only-31-heldout_44_offset_beta",
+        "p2-cf-model-only-31-heldout_45_offset_alpha",
+        "p2-cf-source-memory-deletion-30-heldout_42_vertical_alpha",
+        "p2-cf-source-memory-deletion-30-heldout_43_vertical_beta",
+        "p2-cf-source-memory-deletion-30-heldout_44_offset_beta",
+        "p2-cf-source-memory-deletion-30-heldout_45_offset_alpha",
+        "p2-cf-source-memory-deletion-31-heldout_42_vertical_alpha",
+        "p2-cf-source-memory-deletion-31-heldout_43_vertical_beta",
+        "p2-cf-source-memory-deletion-31-heldout_44_offset_beta",
+        "p2-cf-source-memory-deletion-31-heldout_45_offset_alpha",
+        "p2-heldout-30-heldout_42_vertical_alpha",
+        "p2-heldout-30-heldout_43_vertical_beta",
+        "p2-heldout-30-heldout_44_offset_beta",
+        "p2-heldout-30-heldout_45_offset_alpha",
+        "p2-heldout-31-heldout_42_vertical_alpha",
+        "p2-heldout-31-heldout_43_vertical_beta",
+        "p2-heldout-31-heldout_44_offset_beta",
+        "p2-heldout-31-heldout_45_offset_alpha",
+        "p2-product-trigger",
+        "p2-scratch-30-heldout_42_vertical_alpha",
+        "p2-scratch-30-heldout_43_vertical_beta",
+        "p2-scratch-30-heldout_44_offset_beta",
+        "p2-scratch-30-heldout_45_offset_alpha",
+        "p2-scratch-31-heldout_42_vertical_alpha",
+        "p2-scratch-31-heldout_43_vertical_beta",
+        "p2-scratch-31-heldout_44_offset_beta",
+        "p2-scratch-31-heldout_45_offset_alpha",
+        "p2-train-30",
+        "p2-train-31"
       ]
     },
     "value": {
-      "recomputed_from_serialized_state_and_commands": true,
+      "all_terminal_states_match": true,
+      "recomputed_from_serialized_state_and_ordered_commands": true,
+      "run_count": 75,
       "stored_action_used_as_input": false,
       "tamper_controls_passed": true
     }
   },
-  "fresh_store_readback": {
-    "command_count": 24,
-    "recomputed": true,
-    "recovered_runs": {
-      "p1-history-a": {
-        "command_count": 2,
-        "initial_state_hash": "ff009430f72fc313dc70e213e6c44357bfc16f52dfa7791ae60f04ce5426fedc",
-        "terminal_state_hash": "3319528a4dc93c1b367db2b54213214b1f08d01e84ac55e2494578b62db29bc7",
-        "trace_hashes": [
-          "4e74239b7bddf35c5e621e4d226b4148ecbb78695254dcb7a9c46467f6f5196f",
-          "d82259e333aa160a54725b0b1fd4d8c0a71efeaf36e965e29e5bbafb03ef5181"
-        ]
-      },
-      "p1-history-b": {
-        "command_count": 2,
-        "initial_state_hash": "6224c3ee5997e8f9656a691e7f755dd699600c78f8d847b8b9937d2329ba86c5",
-        "terminal_state_hash": "9cdde2287455fe8f2307f37b5fb71799eed622b85b0a2e0afc99f5cd7e81f91f",
-        "trace_hashes": [
-          "632ad327a4f03dd303743340068edcd0aeba69c9b820ee1a404fe852b4edb53b",
-          "9e8abc8c634220f5cb56e629b7989b656e9f3bf82f97f0819ed223cbb7075c07"
-        ]
-      },
-      "p1-pair-a": {
-        "command_count": 1,
-        "initial_state_hash": "e8eb4da1c990242682f0b36178aa328dc698f0fa35d8178a0e94d007408ff8b7",
-        "terminal_state_hash": "69a2499811fe3dc7cea37f0237d0bc527e124a6591326be3c1f520bbe8e0369d",
-        "trace_hashes": [
-          "47b4e3a7ce77c9e4306dcbe42066e723ccabc3de6e852b941e8b90bbccdb886d"
-        ]
-      },
-      "p1-pair-b": {
-        "command_count": 1,
-        "initial_state_hash": "18f76c149927fbb007d209edb550cfc696811e55e6ee08b84d1cbc91f3bf8d3c",
-        "terminal_state_hash": "1dad6aa58f8f051634797dc125140e6e8de84500a3430ea4e76422cf855a9f25",
-        "trace_hashes": [
-          "7a4b855d3bd4d8ff4772f0955de38ed7aa1ee59c53984bc28a248c2efb8a547e"
-        ]
-      },
-      "p1-product-trigger": {
-        "command_count": 24,
-        "initial_state_hash": "2632c9831664da513dc9ee61a56287dee0c433949d8272e0794bc8c480304188",
-        "terminal_state_hash": "3eb545bb54b4d75031f5ac79503f6a1cf24bbd35d36ace394e745866ad529d00",
-        "trace_hashes": [
-          "02ac960cc07caafcb7783a49c7a29d53446d30fcb6bd26b142b4fa83a0e96bad",
-          "db63a6beaf3a452a6c1abd95330595174226ba7382f80f990e40331431b202d8",
-          "9e4b5b6008c6314d310e739c5d54b738337e452edbc19dd647ddb25066860dc8",
-          "ce5b17dcae4c52d4b334050317d57b1b1a7f326f50f9394d37c8d3538216a4be",
-          "352011dd655df5b75fce8e92f871ee082fd1079729c7c697e7fda4b666c284bd",
-          "80217a1a0cd84ad718038bcd783713e4905451237988f664ae40460850c6f5ef",
-          "d961883d4fcfef52669fa41e58c29aa8e369d425d3de0a55afe90db826555929",
-          "71703ce6c32ceeb5a803670c666b8bee436a56fe931176ff2f205460710ed339",
-          "0bd16db3c274ac9a7b444609957eb5060bf045470a5ebdc70c7cff79d3cfa536",
-          "f62ce8caf5548abe695f3f28e0cfcfdaa97f4c7b946400e9bb83bc9de278f1da",
-          "56602873ce6b8776873fbd82d2db324f47ade6c544829c127609e2bd6e7ecd02",
-          "53eaca54e9a54fe36317b9f8e4deff0436edb40fa99bad4a690f210e18fd6d52",
-          "a6becfd9ca272725ae5b47a8350da1748b08917347253108fa84b1e8341f97bc",
-          "53deeb70dcd2821bcf34d23ae03af01c62708b008269b67748a90c6f14b3b500",
-          "6f45ba4157b110adfd7cc13160af9eab0cfb7d982a7ffa6e0b56912cb9aaf396",
-          "d4db2394b9b24b23a19520bf2b752fc398229a1a8c30330cdf6d779aed79d14b",
-          "65f8a2dc2c8d347c8003835d31179f7b3f82101f40fd7448413e0ccd1284a4aa",
-          "861fe617ae59c64306cadbd150709de48c0bff401cf6c800268a3dd6edd3d40c",
-          "3d8e3b1cd552fdb2ff593c2834e79af8955c592e9cda2db0a810fa65b40c5cd5",
-          "850daa199986a5a05b168aeaf8bfb7bf641bc765645659b0b600fb6826b19367",
-          "11854a56bb9703071f561e06d42a7f44d98dafc2d2453d3fe64293bffcb5e527",
-          "57f5ef320771218c615ea915e9fce01734ee2d4a18562e83f77a4f8d49d6ba7c",
-          "e941031826c1662f78ec8495446a98abb6a07df02e309f631c7762b1e3f0c4f7",
-          "de99002671a300f6a88169c13bef132d293530bbe39070bbfe18ed0cd14ec24d"
-        ]
-      }
-    },
-    "state_hash": "3eb545bb54b4d75031f5ac79503f6a1cf24bbd35d36ace394e745866ad529d00",
-    "trace_hash": "de99002671a300f6a88169c13bef132d293530bbe39070bbfe18ed0cd14ec24d"
+  "recomputed_from_serialized_state_and_ordered_commands": true,
+  "run_count": 75,
+  "schema_version": "ego.v2.p2.replay_report.v1",
+  "stored_action_input_control": {
+    "all_fresh_recoveries_recomputed": true,
+    "command_action_input_offender_count": 0,
+    "command_action_input_offender_hashes": [],
+    "command_read_error_type": null,
+    "computed": true,
+    "control_id": "stored_action_rehash",
+    "fresh_recovery_count": 75,
+    "persisted_command_count": 652,
+    "persisted_command_set_hash": "4383dcaad6a222e030eebfafa9e9cc5d456633d4df5fb5fa1c7f415efac75354",
+    "producer_function": "verify_ego_life_kernel_v2_microworld._p2_stored_action_input_control",
+    "stored_action_used_as_input": false,
+    "tamper_failed_closed": true
   },
-  "recomputed_from_serialized_state_and_commands": true,
-  "schema_version": "ego.v2.p1.replay_report.v1",
   "stored_action_used_as_input": false,
   "tamper_controls": [
     {
-      "control_id": "initial_private_world",
-      "error": "stored trace differs from independent recomputation",
+      "control_available": true,
+      "control_id": "stored_action_rehash",
       "failed_closed": true
     },
     {
-      "control_id": "ordered_command",
-      "error": "stored trace differs from independent recomputation",
+      "control_available": true,
+      "control_id": "heldout_layout_rehash",
       "failed_closed": true
     },
     {
-      "control_id": "rehash_stored_action",
-      "error": "stored trace differs from independent recomputation",
-      "failed_closed": true
-    },
-    {
-      "control_id": "claim_provenance",
-      "error": "command recomputation failed: competing claim support is not recomputed from provenance",
+      "control_available": true,
+      "control_id": "consolidation_lineage_rehash",
       "failed_closed": true
     }
   ],

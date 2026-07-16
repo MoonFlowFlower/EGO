@@ -19,7 +19,12 @@ from labs.ego_life_playground_v0.app import (
     public_state_hash,
     run_app,
 )
-from labs.ego_life_playground_v0.engine import DEFAULT_INTERVENTIONS
+from labs.ego_life_playground_v0.engine import (
+    DEFAULT_INTERVENTIONS,
+    DEFAULT_PRIVATE_WORLD_SEED,
+    EngineInvariantError,
+)
+from labs.ego_life_playground_v0.microworld import LAYOUTS
 from labs.ego_life_playground_v0.store import SQLiteEventStore, default_db_path
 
 
@@ -32,6 +37,18 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--db", type=Path, default=default_db_path(), help="SQLite path (outside repo by default)")
     parser.add_argument("--seed", type=int, default=17, help="deterministic tie-break seed")
+    parser.add_argument(
+        "--world-seed",
+        type=int,
+        default=DEFAULT_PRIVATE_WORLD_SEED,
+        help="independent private-world seed used only when creating a new run",
+    )
+    parser.add_argument(
+        "--layout",
+        choices=tuple(LAYOUTS),
+        default=None,
+        help="layout for a new local run; an existing run's layout is immutable",
+    )
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument(
         "--headless-smoke",
@@ -56,13 +73,42 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def _print_controller_construction_error(
+    args: argparse.Namespace, exc: EngineInvariantError
+) -> None:
+    print(
+        json.dumps(
+            {
+                "status": "error",
+                "error_code": "controller_construction_failed",
+                "error": str(exc),
+                "run_id": args.run_id,
+                "layout_id": args.layout,
+            },
+            sort_keys=True,
+            ensure_ascii=False,
+            separators=(",", ":"),
+        )
+    )
+
+
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     if args.command and not args.terminal:
         raise SystemExit("--command requires --terminal")
     if args.headless_smoke:
         with SQLiteEventStore(args.db) as store:
-            controller = PlaygroundController(store, seed=args.seed)
+            try:
+                controller = PlaygroundController(
+                    store,
+                    run_id=args.run_id,
+                    seed=args.seed,
+                    world_seed=args.world_seed,
+                    layout_id=args.layout,
+                )
+            except EngineInvariantError as exc:
+                _print_controller_construction_error(args, exc)
+                return 2
             dispatched = controller.dispatch(
                 "resource",
                 DEFAULT_INTERVENTIONS,
@@ -91,7 +137,17 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if args.terminal:
         with SQLiteEventStore(args.db) as store:
-            controller = PlaygroundController(store, run_id=args.run_id, seed=args.seed)
+            try:
+                controller = PlaygroundController(
+                    store,
+                    run_id=args.run_id,
+                    seed=args.seed,
+                    world_seed=args.world_seed,
+                    layout_id=args.layout,
+                )
+            except EngineInvariantError as exc:
+                _print_controller_construction_error(args, exc)
+                return 2
             terminal = TerminalPlayground(controller)
             if args.command:
                 exit_code = 0
@@ -118,7 +174,17 @@ def main(argv: list[str] | None = None) -> int:
                 if result["status"] == "quit":
                     break
         return 0
-    run_app(args.db, seed=args.seed)
+    try:
+        run_app(
+            args.db,
+            seed=args.seed,
+            world_seed=args.world_seed,
+            layout_id=args.layout,
+            run_id=args.run_id,
+        )
+    except EngineInvariantError as exc:
+        _print_controller_construction_error(args, exc)
+        return 2
     return 0
 
 

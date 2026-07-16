@@ -121,6 +121,29 @@ def _v1_state_before_third_episode(run_id: str) -> dict[str, Any]:
     return state
 
 
+def _install_derived_consolidated(
+    state: dict[str, Any], source_hashes: list[str]
+) -> None:
+    episode_ids = ["episode-a", "episode-b", "episode-c"]
+    sequences = [1, 9, 17]
+    state["memory"]["episodic"] = [
+        _v1_episode_memory(
+            memory_id=f"derived-{index}",
+            action="approach",
+            utility=0.5,
+            source_command_hash=source_hash,
+            source_sequence=sequence,
+            source_episode_id=episode_id,
+        )
+        for index, (source_hash, sequence, episode_id) in enumerate(
+            zip(source_hashes, sequences, episode_ids)
+        )
+    ]
+    state["memory"]["consolidated"] = engine.rebuild_consolidated_memory(
+        state["memory"]["episodic"]
+    )
+
+
 def test_v1_engine_state_run_and_command_schemas_are_canonical():
     state = engine.initial_state(run_id="schema-v1")
     meta = engine.make_run_metadata("schema-v1", 17)
@@ -163,7 +186,7 @@ def test_v1_engine_state_run_and_command_schemas_are_canonical():
         "prev_command_hash",
         "command_hash",
     }
-    assert command["schema_version"] == "ego.life_playground.command.v3"
+    assert command["schema_version"] == "ego.life_playground.command.v4"
     assert command["world_event"] == "resource_appears"
     assert command["command_hash"] == engine.canonical_hash(
         {key: value for key, value in command.items() if key != "command_hash"}
@@ -282,6 +305,7 @@ def test_v1_command_constructor_rejects_non_integer_or_nonpositive_sequence(sequ
         ("update_mode", False),
         ("provenance_mode", 1),
         ("provenance_shuffle_seed", 17),
+        ("consolidation_mode", False),
     ],
 )
 def test_v1_command_constructor_rejects_non_string_intervention_enums(field, value):
@@ -453,6 +477,9 @@ def test_v1_engine_candidate_score_has_frozen_goal_total_memory_cost_components(
         "memory_bias",
         "untried_bonus",
         "action_cost",
+        "topology_cost",
+        "topology_cost_contribution",
+        "path",
         "deterministic_tie",
         "total_score",
     }
@@ -464,9 +491,18 @@ def test_v1_engine_candidate_score_has_frozen_goal_total_memory_cost_components(
             + candidate["memory_bias"]
             + candidate["untried_bonus"]
             - candidate["action_cost"]
+            - candidate["topology_cost_contribution"]
             + candidate["deterministic_tie"]
         )
         assert candidate["total_score"] == pytest.approx(expected, abs=1e-9)
+        assert candidate["topology_cost"] == pytest.approx(
+            candidate["path"]["shortest_path_steps"]
+            / candidate["path"]["walkable_cell_count"],
+            abs=1e-9,
+        )
+        assert candidate["topology_cost_contribution"] == pytest.approx(
+            candidate["topology_cost"], abs=1e-9
+        )
     assert result.trace["context_key"] == "resource|stimulation"
 
 
@@ -522,36 +558,23 @@ def test_v1_engine_freeze_updates_preserves_model_and_memory_but_not_clock_or_or
     assert engine.canonical_json(second.next_state["memory"]) == before_memory
     assert second.next_state["clock"]["global_tick"] == 2
     assert second.next_state["organism"] != first.next_state["organism"]
-    assert second.trace["model_update"] == {
-        "applied": False,
-        "reason": "adaptive_updates_frozen",
-        "context_key": second.trace["context_key"],
-        "action": second.trace["selected_action"],
-    }
+    update = second.trace["model_update"]
+    assert update["applied"] is False
+    assert update["reason"] == "adaptive_updates_frozen"
+    assert update["context_key"] == second.trace["context_key"]
+    assert update["action"] == second.trace["selected_action"]
+    assert update["model_before_hash"] == update["model_after_hash"]
+    assert all(value == 0.0 for value in update["applied_delta"].values())
     assert second.trace["memory_update"]["reason"] == "adaptive_updates_frozen"
 
 
 def test_v1_engine_structured_memory_changes_real_score_path_and_selection():
     state = engine.initial_state(run_id="memory-shape")
     without, _, _ = _v1_step(state, run_id="memory-shape")
-    state["memory"]["consolidated"].append(
-        {
-            "memory_id": "opaque-consolidated",
-            "kind": "consolidated",
-            "key": "resource|stimulation|approach",
-            "cue": "resource",
-            "current_goal": "stimulation",
-            "action": "approach",
-            "strength": 0.5,
-            "source_command_hashes": ["b" * 64, "c" * 64, "d" * 64],
-            "source_episode_ids": ["episode-a", "episode-b", "episode-c"],
-            "source_sequences": [1, 9, 17],
-            "episode_count": 3,
-        }
-    )
+    _install_derived_consolidated(state, ["b" * 64, "c" * 64, "d" * 64])
     with_memory, _, _ = _v1_step(state, run_id="memory-shape")
     approach = next(item for item in with_memory.trace["candidates"] if item["action"] == "approach")
-    assert without.trace["selected_action"] == "forage"
+    assert without.trace["selected_action"] == "explore"
     assert approach["memory_bias"] > 0
     assert approach["memory_refs"] == ["b" * 64, "c" * 64, "d" * 64]
     assert with_memory.trace["selected_action"] == "approach"
@@ -707,7 +730,7 @@ def test_v1_recovery_frames_drive_derived_state_traces_and_fresh_recovery_callba
             "prev_command_hash",
             "command_hash",
         }
-        assert command["schema_version"] == "ego.life_playground.command.v3"
+        assert command["schema_version"] == "ego.life_playground.command.v4"
         assert command["sequence"] == 2
         assert command["cue"] == "novelty"
         assert command["trigger_source"] == "ui_run_button"
@@ -716,6 +739,7 @@ def test_v1_recovery_frames_drive_derived_state_traces_and_fresh_recovery_callba
             "update_mode": "frozen",
             "provenance_mode": "canonical",
             "provenance_shuffle_seed": "17",
+            "consolidation_mode": "canonical",
         }
     finally:
         reopened_store.close()
@@ -1133,7 +1157,7 @@ def test_command_contains_only_replay_inputs_and_hash():
 
 
 def test_prediction_error_updates_tabular_ema():
-    result, _, _ = _v1_step(cue="resource")
+    result, _, _ = _v1_step(cue="novelty")
     update = result.trace["model_update"]
     assert update["applied"] is True
     assert update["alpha"] == EMA_ALPHA
@@ -1141,7 +1165,13 @@ def test_prediction_error_updates_tabular_ema():
     assert any(abs(value) > 0 for value in result.trace["prediction_error"].values())
     entry = result.next_state["model"][result.trace["context_key"]][result.trace["selected_action"]]
     assert entry["count"] == 1
-    assert entry["ema_delta"] == result.trace["actual_delta"]
+    assert entry["ema_delta"] == update["prediction_after"]
+    assert update["prediction_before"] == result.trace["prediction"]
+    assert update["prediction_error"] == result.trace["prediction_error"]
+    for key in engine.STATE_KEYS:
+        assert update["applied_delta"][key] == pytest.approx(
+            EMA_ALPHA * update["prediction_error"][key], abs=1e-6
+        )
 
 
 def test_learning_off_reads_but_does_not_change_model_bytes():
@@ -1165,21 +1195,7 @@ def test_learning_off_reads_but_does_not_change_model_bytes():
 
 def test_memory_off_zeroes_bias_refs_and_preserves_memory_bytes():
     state = initial_state(run_id="memory-disabled-v1")
-    state["memory"]["consolidated"].append(
-        {
-            "memory_id": "con-force",
-            "kind": "consolidated",
-            "key": "resource|stimulation|approach",
-            "cue": "resource",
-            "current_goal": "stimulation",
-            "action": "approach",
-            "strength": 0.5,
-            "source_command_hashes": ["a" * 64, "b" * 64, "c" * 64],
-            "source_episode_ids": ["ep-a", "ep-b", "ep-c"],
-            "source_sequences": [1, 9, 17],
-            "episode_count": 3,
-        }
-    )
+    _install_derived_consolidated(state, ["a" * 64, "b" * 64, "c" * 64])
     before = canonical_json(state["memory"])
     interventions = dict(DEFAULT_INTERVENTIONS, memory_mode="off")
     result, _, _ = _v1_step(
@@ -1196,24 +1212,10 @@ def test_memory_off_zeroes_bias_refs_and_preserves_memory_bytes():
 def test_structured_memory_directly_changes_action_score_and_selection():
     state = initial_state(run_id="memory-causal-v1")
     without, _, _ = _v1_step(state, run_id="memory-causal-v1")
-    state["memory"]["consolidated"].append(
-        {
-            "memory_id": "con-force",
-            "kind": "consolidated",
-            "key": "resource|stimulation|approach",
-            "cue": "resource",
-            "current_goal": "stimulation",
-            "action": "approach",
-            "strength": 0.5,
-            "source_command_hashes": ["a" * 64, "b" * 64, "c" * 64],
-            "source_episode_ids": ["ep-a", "ep-b", "ep-c"],
-            "source_sequences": [1, 9, 17],
-            "episode_count": 3,
-        }
-    )
+    _install_derived_consolidated(state, ["a" * 64, "b" * 64, "c" * 64])
     with_memory, _, _ = _v1_step(state, run_id="memory-causal-v1")
     approach = next(item for item in with_memory.trace["candidates"] if item["action"] == "approach")
-    assert without.trace["selected_action"] == "forage"
+    assert without.trace["selected_action"] == "explore"
     assert approach["memory_bias"] > 0
     assert approach["memory_refs"] == ["a" * 64, "b" * 64, "c" * 64]
     assert with_memory.trace["selected_action"] == "approach"
@@ -1546,6 +1548,50 @@ def test_launcher_headless_smoke_uses_real_controller_store_and_recovery(tmp_pat
     assert payload["science_weight"] == 0
     assert len(payload["public_state_hash"]) == 64
     assert "trace_hash" not in payload
+
+
+def test_launcher_tk_forwards_explicit_run_id_layout_and_seed(tmp_path, monkeypatch):
+    launcher = REPO_ROOT / "scripts/run_ego_life_playground_v0.py"
+    spec = importlib.util.spec_from_file_location("run_ego_life_playground_v0_tk_test", launcher)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    captured = {}
+
+    def fake_run_app(db_path, *, seed, world_seed, layout_id, run_id):
+        captured.update(
+            db_path=db_path,
+            seed=seed,
+            world_seed=world_seed,
+            layout_id=layout_id,
+            run_id=run_id,
+        )
+
+    monkeypatch.setattr(module, "run_app", fake_run_app)
+    db_path = tmp_path / "tk-explicit.sqlite3"
+    result = module.main(
+        [
+            "--db",
+            str(db_path),
+            "--seed",
+            "43",
+            "--world-seed",
+            "303",
+            "--layout",
+            "p2_offset_v1",
+            "--run-id",
+            "explicit-gui-run",
+        ]
+    )
+
+    assert result == 0
+    assert captured == {
+        "db_path": db_path,
+        "seed": 43,
+        "world_seed": 303,
+        "layout_id": "p2_offset_v1",
+        "run_id": "explicit-gui-run",
+    }
 
 
 def test_all_cues_are_callable_through_one_compute_path():

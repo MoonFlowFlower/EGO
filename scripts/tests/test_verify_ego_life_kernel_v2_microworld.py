@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from copy import deepcopy
 import inspect
 import json
 from pathlib import Path
@@ -8,6 +9,7 @@ import sqlite3
 import pytest
 
 from labs.ego_life_playground_v0 import engine
+from labs.ego_life_playground_v0.store import RecoveryFrame, RecoveryResult
 
 
 def _verifier():
@@ -35,6 +37,582 @@ def _baseline_access(history):
         "current_goal": "stimulation",
         "public_history": history,
     }
+
+
+def _p2_control_arm(
+    verifier,
+    *,
+    arm_id,
+    control_id,
+    layout_id,
+    context_id,
+    train_world_seed=30,
+):
+    config = verifier._load_frozen_p2_config()
+    context = next(
+        item for item in config["heldout_contexts"] if item["context_id"] == context_id
+    )
+    return {
+        "arm_id": arm_id,
+        "control_id": control_id,
+        "train_world_seed": train_world_seed,
+        "context_id": context_id,
+        "world_seed": context["world_seed"],
+        "layout_id": layout_id,
+        "schedule": config["heldout_event_schedules"][context["event_schedule_id"]],
+        "train_public_history": [],
+        "reference_episodes": [],
+    }
+
+
+def _hostile_leaf_value(value):
+    if isinstance(value, bool):
+        return not value
+    if isinstance(value, int):
+        return value + 100
+    if isinstance(value, float):
+        return value + 0.125
+    if isinstance(value, str):
+        return value + "__hostile"
+    if isinstance(value, list):
+        return list(reversed(value)) + [{"hostile": True}]
+    if isinstance(value, dict):
+        return {**deepcopy(value), "hostile": ["unused"]}
+    raise AssertionError(type(value))
+
+
+@pytest.fixture(scope="module")
+def _p2_actual_usage_fixture(tmp_path_factory):
+    verifier = _verifier()
+    output = tmp_path_factory.mktemp("p2-actual-usage")
+    verifier.run_p2_verification(output)
+    learning = json.loads((output / "learning_report.json").read_text(encoding="utf-8"))
+    return verifier, verifier._load_frozen_p2_config(), learning[
+        "frozen_config_binding"
+    ]["actual_usage_ledger"]
+
+
+def test_p2_exact_history_uses_one_public_projection_with_match_and_fallback_provenance():
+    verifier = _verifier()
+    reference = [
+        {
+            "sequence": 91,
+            "episode_index": 4,
+            "observation_hash": "private-noise-a",
+            "context_key": "private-noise-b",
+            "layout_id": "p2_vertical_v1",
+            "event": "resource_appears",
+            "cue": "resource",
+            "next_cue": "quiet",
+            "action_taken": "forage",
+            "revealed_outcome": 1.0,
+        },
+        {
+            "sequence": 92,
+            "episode_index": 4,
+            "layout_id": "p2_vertical_v1",
+            "event": "quiet_interval",
+            "cue": "quiet",
+            "next_cue": None,
+            "action_taken": "rest",
+            "revealed_outcome": None,
+        },
+    ]
+    query = [
+        {
+            "layout_id": "p2_offset_v1",
+            "event": "threat_nearby",
+            "cue": "threat",
+            "next_cue": "resource",
+            "action_taken": "withdraw",
+            "revealed_outcome": -1.0,
+        },
+        {
+            "unrelated_query_noise": {"ignored": True},
+            "layout_id": "p2_offset_v1",
+            "event": "resource_appears",
+            "cue": "resource",
+            "next_cue": "quiet",
+            "action_taken": "forage",
+            "revealed_outcome": 1.0,
+        }
+    ]
+    access = _baseline_access([])
+    access.update(
+        {
+            "query_history_prefix": query,
+            "reference_episodes": [reference],
+        }
+    )
+    matched = verifier.baseline_exact_public_history_lookup_with_provenance(access)
+    assert matched["action"] == "rest"
+    assert matched["match_status"] == "exact_public_prefix_match"
+    assert matched["reference_episode_index"] == 0
+    assert matched["matched_prefix_length"] == 1
+    assert matched["query_suffix_start_index"] == 1
+    assert matched["reference_action_index"] == 1
+    assert matched["layout_invariant"] is True
+    assert matched["projection_schema_fields"] == [
+        "event",
+        "cue",
+        "action_taken",
+        "revealed_outcome",
+    ]
+    assert matched["reference_prefix_projection_hash"] == matched["query_projection_hash"]
+
+    noisy = deepcopy(access)
+    noisy["query_history_prefix"][0]["second_ignored_field"] = [1, 2, 3]
+    noisy["reference_episodes"][0][0]["third_ignored_field"] = "noise"
+    assert verifier.baseline_exact_public_history_lookup_with_provenance(noisy) == matched
+
+    mismatched = deepcopy(access)
+    mismatched["query_history_prefix"][1]["event"] = "threat_nearby"
+    fallback = verifier.baseline_exact_public_history_lookup_with_provenance(mismatched)
+    assert fallback["action"] == "approach"
+    assert fallback["match_status"] == "no_exact_public_prefix_match"
+    assert fallback["fallback_reason"] == "no_projected_reference_prefix_match"
+
+
+def test_p2_product_trigger_seed_provenance_binds_recovered_state_and_rejects_mismatch():
+    verifier = _verifier()
+    config = verifier._load_frozen_p2_config()
+    controller_inputs = {
+        "run_id": "p2-product-trigger-hostile-control",
+        "policy_seed": config["policy_tie_seed"],
+        "world_seed": config["train_world_seeds"][0],
+        "layout_id": config["heldout_layout_ids"][0],
+    }
+    initial = engine.initial_state(
+        run_id=controller_inputs["run_id"],
+        seed=controller_inputs["world_seed"],
+        layout_id=controller_inputs["layout_id"],
+    )
+    recovery = RecoveryResult(
+        run_id=controller_inputs["run_id"],
+        run_meta=engine.make_run_metadata(
+            controller_inputs["run_id"], controller_inputs["policy_seed"]
+        ),
+        frames=(RecoveryFrame(sequence=0, state=initial, trace=None),),
+        recovered=True,
+    )
+
+    provenance = verifier._p2_product_trigger_seed_provenance(
+        recovery=recovery,
+        controller_inputs=controller_inputs,
+        config=config,
+    )
+    assert provenance["valid"] is True
+    assert provenance["recovered_policy_seed"] == config["policy_tie_seed"]
+    assert provenance["recorded_world_seed"] == config["train_world_seeds"][0]
+    assert provenance["world_seed_recomputed_initial_state_match"] is True
+
+    hostile_inputs = deepcopy(controller_inputs)
+    hostile_inputs["world_seed"] += 1
+    mismatch = verifier._p2_product_trigger_seed_provenance(
+        recovery=recovery,
+        controller_inputs=hostile_inputs,
+        config=config,
+    )
+    assert mismatch["valid"] is False
+    assert mismatch["world_seed_recomputed_initial_state_match"] is False
+    assert "recorded_world_seed_not_frozen_train_seed" in mismatch["failures"]
+    assert "recorded_world_seed_does_not_recompute_recovered_initial_state" in mismatch[
+        "failures"
+    ]
+
+
+@pytest.mark.parametrize(
+    "encoded",
+    (
+        r"C:\t\p2-root-hostile\nested\file.json",
+        "C:/t/p2-root-hostile/nested/file.json",
+        r"C:\\t\\p2-root-hostile\\nested\\file.json",
+    ),
+)
+def test_p2_physical_root_scan_recurses_over_native_slash_and_json_escaped_strings(encoded):
+    verifier = _verifier()
+    scan = verifier.scan_physical_output_root(
+        {"outer": [{"inner": encoded}]}, Path(r"C:\t\p2-root-hostile")
+    )
+    assert scan["offender_count"] == 1
+    assert scan["physical_output_root_absent"] is False
+    assert scan["offenders"][0]["value_sha256"]
+    assert "p2-root-hostile" not in json.dumps(scan)
+
+
+def test_p2_frozen_config_and_actual_usage_ledger_bind_every_executed_input(
+    _p2_actual_usage_fixture,
+):
+    verifier, config, ledger = _p2_actual_usage_fixture
+    assert set(ledger["leaf_evidence"]) == set(config)
+    assert all(item["evidence_count"] > 0 for item in ledger["leaf_evidence"].values())
+    assert verifier.bind_p2_frozen_config(config, ledger)["all_frozen_inputs_used"] is True
+
+
+def test_p2_binding_fails_closed_for_hostile_checkpoint_and_equivalence_mutations(
+    _p2_actual_usage_fixture,
+):
+    verifier, config, ledger = _p2_actual_usage_fixture
+
+    hostile_checkpoints = deepcopy(config)
+    hostile_checkpoints["learning_checkpoints"] = [101, 102, 103, 104]
+    checkpoint_bound = verifier.bind_p2_frozen_config(hostile_checkpoints, ledger)
+    assert checkpoint_bound["all_frozen_inputs_used"] is False
+    assert "unused_or_mismatched_frozen_leaf:learning_checkpoints" in checkpoint_bound["blocking_failures"]
+
+    hostile_rule = deepcopy(config)
+    hostile_rule["equivalence_rule"] = "fabricated_rule"
+    rule_bound = verifier.bind_p2_frozen_config(hostile_rule, ledger)
+    assert rule_bound["all_frozen_inputs_used"] is False
+    assert "unused_or_mismatched_frozen_leaf:equivalence_rule" in rule_bound["blocking_failures"]
+
+
+def test_p2_binding_fails_closed_for_every_hostile_frozen_top_level_leaf(
+    _p2_actual_usage_fixture,
+):
+    verifier, config, ledger = _p2_actual_usage_fixture
+    for key in config:
+        hostile = deepcopy(config)
+        hostile[key] = _hostile_leaf_value(hostile[key])
+        bound = verifier.bind_p2_frozen_config(hostile, ledger)
+        assert bound["all_frozen_inputs_used"] is False, key
+        assert f"unused_or_mismatched_frozen_leaf:{key}" in bound["blocking_failures"], key
+
+
+def test_p2_independent_controls_survive_candidate_reducer_and_scorer_failure(monkeypatch):
+    verifier = _verifier()
+    monkeypatch.setattr(
+        engine,
+        "compute_step",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(AssertionError("candidate reducer called")),
+    )
+    monkeypatch.setattr(
+        engine,
+        "_score_candidate",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(AssertionError("candidate scorer called")),
+    )
+    config = verifier._load_frozen_p2_config()
+    context = config["heldout_contexts"][0]
+    outputs = {
+        control_id: verifier.run_p2_independent_control(
+            control_id=control_id,
+            world_seed=context["world_seed"],
+            layout_id=context["layout_id"],
+            schedule=config["heldout_event_schedules"][context["event_schedule_id"]],
+            train_public_history=[],
+            reference_episodes=[],
+        )
+        for control_id in config["independent_controls"]
+    }
+    assert set(outputs) == set(config["independent_controls"])
+    assert all("candidate_reducer_called" not in item for item in outputs.values())
+    assert all("candidate_scorer_called" not in item for item in outputs.values())
+    assert all(len(item["action_sequence"]) == 8 for item in outputs.values())
+
+
+def test_p2_stored_action_input_claim_is_computed_from_persisted_commands_recovery_and_tamper(
+    tmp_path,
+):
+    verifier = _verifier()
+    db_path = tmp_path / "commands.sqlite3"
+    with sqlite3.connect(db_path) as connection:
+        connection.execute(
+            "CREATE TABLE commands (run_id TEXT NOT NULL, sequence INTEGER NOT NULL, command_json TEXT NOT NULL)"
+        )
+        connection.execute(
+            "INSERT INTO commands(run_id, sequence, command_json) VALUES (?,?,?)",
+            (
+                "test-run",
+                1,
+                json.dumps({"sequence": 1, "cue": "quiet", "interventions": {}}),
+            ),
+        )
+    passed = verifier._p2_stored_action_input_control(
+        {
+            "control_id": "stored_action_rehash",
+            "control_available": True,
+            "failed_closed": True,
+        },
+        db_path=db_path,
+        recovery_recomputed=[True],
+    )
+    assert passed["computed"] is True
+    assert passed["stored_action_used_as_input"] is False
+    assert passed["persisted_command_count"] == 1
+    assert passed["command_action_input_offender_count"] == 0
+    assert passed["all_fresh_recoveries_recomputed"] is True
+
+    unavailable = verifier._p2_stored_action_input_control(
+        {
+            "control_id": "stored_action_rehash",
+            "control_available": False,
+            "failed_closed": False,
+        },
+        db_path=db_path,
+        recovery_recomputed=[True],
+    )
+    assert unavailable["computed"] is False
+    assert unavailable["stored_action_used_as_input"] is None
+
+
+def test_p2_baseline_independence_control_actually_disables_candidate_paths():
+    verifier = _verifier()
+    config = verifier._load_frozen_p2_config()
+    context = config["heldout_contexts"][0]
+    arms = [
+        _p2_control_arm(
+            verifier,
+            arm_id=f"30:{context['context_id']}:{control_id}",
+            control_id=control_id,
+            layout_id=context["layout_id"],
+            context_id=context["context_id"],
+        )
+        for control_id in config["independent_controls"]
+    ]
+    control = verifier._p2_baseline_independence_control(
+        arms=arms,
+    )
+    assert control["computed"] is True
+    assert control["candidate_reducer_disabled_compatible"] is True
+    assert control["candidate_reducer_trap_calls"] == 0
+    assert control["candidate_scorer_trap_calls"] == 0
+    assert control["arm_count"] == len(config["independent_controls"])
+    assert set(control["control_invocations"]) == {
+        arm["arm_id"] for arm in arms
+    }
+    assert all(
+        invocation["candidate_reducer_called"] is False
+        and invocation["candidate_scorer_called"] is False
+        for invocation in control["control_invocations"].values()
+    )
+
+
+def test_p2_baseline_independence_trap_detects_offset_layout_only_dependency(
+    monkeypatch,
+):
+    verifier = _verifier()
+    original = verifier._P2_CONTROL_PRODUCERS["graph_lookup"]
+
+    def offset_only_candidate_dependency(access):
+        if access["observation"]["layout_id"] == "p2_offset_v1":
+            engine.compute_step(None, None, None)
+        return original(access)
+
+    monkeypatch.setitem(
+        verifier._P2_CONTROL_PRODUCERS,
+        "graph_lookup",
+        offset_only_candidate_dependency,
+    )
+    arms = [
+        _p2_control_arm(
+            verifier,
+            arm_id="30:heldout_42_vertical_alpha:graph_lookup",
+            control_id="graph_lookup",
+            layout_id="p2_vertical_v1",
+            context_id="heldout_42_vertical_alpha",
+        ),
+        _p2_control_arm(
+            verifier,
+            arm_id="30:heldout_44_offset_beta:graph_lookup",
+            control_id="graph_lookup",
+            layout_id="p2_offset_v1",
+            context_id="heldout_44_offset_beta",
+        ),
+    ]
+
+    control = verifier._p2_baseline_independence_control(arms=arms)
+
+    assert control["candidate_reducer_disabled_compatible"] is False
+    vertical = control["control_invocations"][arms[0]["arm_id"]]
+    offset = control["control_invocations"][arms[1]["arm_id"]]
+    assert vertical["completed"] is True
+    assert vertical["candidate_reducer_called"] is False
+    assert offset["completed"] is False
+    assert offset["candidate_reducer_called"] is True
+    assert offset["candidate_reducer_trap_calls"] == 1
+
+
+def test_p2_same_seed_schedule_topology_contrast_executes_three_layout_score_surfaces():
+    verifier = _verifier()
+    config = verifier._load_frozen_p2_config()
+    contrast = verifier._p2_same_schedule_topology_contrast(config)
+    assert contrast["layout_ids"] == [
+        config["train_layout_id"],
+        *config["heldout_layout_ids"],
+    ]
+    assert set(contrast["layout_runs"]) == set(contrast["layout_ids"])
+    assert all(
+        len(run["ticks"]) == len(config["heldout_event_schedules"]["alpha"])
+        for run in contrast["layout_runs"].values()
+    )
+    assert contrast["score_surfaces_all_identical"] is False
+    assert contrast["path_metric_surfaces_all_identical"] is False
+    assert type(contrast["selected_action_sequences_all_equal"]) is bool
+    assert type(contrast["outcome_sequences_all_equal"]) is bool
+    assert all(
+        tick["selected_action_path"]["producer_function"]
+        == "ego_life_playground_v0.microworld.canonical_public_action_path"
+        for run in contrast["layout_runs"].values()
+        for tick in run["ticks"]
+    )
+
+
+def test_p2_root_leak_is_blocker_first_and_all_computed_failure_views_are_coherent(
+    tmp_path, monkeypatch
+):
+    verifier = _verifier()
+    output = tmp_path / "windows-root-leak"
+    original = verifier._p2_input_artifacts
+
+    def leaking_inputs(root):
+        items = original(root)
+        items[0]["hostile_native_root"] = str(Path(root).resolve())
+        return items
+
+    monkeypatch.setattr(verifier, "_p2_input_artifacts", leaking_inputs)
+    result = verifier.run_p2_verification(output)
+    stored_result = json.loads((output / "result.json").read_text(encoding="utf-8"))
+    learning = json.loads((output / "learning_report.json").read_text(encoding="utf-8"))
+    failure = json.loads((output / "failure_manifest.json").read_text(encoding="utf-8"))
+
+    assert result == stored_result
+    assert result["verdict"] == "implementation_control_failure"
+    assert result["implementation_controls_passed"] is False
+    assert result["summary_metric"]["value"]["implementation_controls_passed"] is False
+    assert "physical_output_root_leaked_into_artifact" in result["blocking_failures"]
+    assert (
+        "physical_output_root_leaked_into_artifact"
+        in learning["metric"]["value"]["blocking_failures"]
+    )
+    assert (
+        "physical_output_root_leaked_into_artifact"
+        in failure["metric"]["value"]["implementation_failures"]
+    )
+    assert failure["implementation_failures"] == result["blocking_failures"]
+    normalized_root = str(output.resolve()).replace("\\", "/").casefold()
+    for path in output.glob("*.json"):
+        normalized_text = path.read_text(encoding="utf-8").replace("\\\\", "/").replace(
+            "\\", "/"
+        ).casefold()
+        assert normalized_root not in normalized_text
+
+
+def test_p2_callable_verifier_is_deterministic_and_preserves_negative_result(tmp_path):
+    verifier = _verifier()
+    first = tmp_path / "p2-a"
+    second = tmp_path / "p2-b"
+    result_a = verifier.run_p2_verification(first)
+    result_b = verifier.run_p2_verification(second)
+    assert result_a == result_b
+    assert result_a["implementation_controls_passed"] is True
+    assert result_a["blocking_failures"] == []
+    assert "equal_access_control_equivalence" in result_a["claim_blockers"]
+    expected = {
+        "continuity.sqlite3", "trace.jsonl", "product_trigger_receipt.json",
+        "headroom_report.json", "collision_record.json", "baseline_comparison.json",
+        "ablation_report.json", "learning_report.json", "replay_report.json",
+        "leakage_report.json", "failure_manifest.json", "claim_ceiling.txt", "result.json",
+    }
+    assert {path.name for path in first.iterdir()} == expected
+    assert {path.name: path.read_bytes() for path in first.iterdir()} == {
+        path.name: path.read_bytes() for path in second.iterdir()
+    }
+    learning = json.loads((first / "learning_report.json").read_text(encoding="utf-8"))
+    assert learning["frozen_config_binding"]["all_frozen_inputs_used"] is True
+    assert len(learning["heldout_full_cross_product"]) == 8
+    assert len(learning["counterfactuals"]) == 56
+    assert learning["bounded_update_controls"] == {
+        "update_equations_valid": True,
+        "freeze_adaptive_bytes_preserved": True,
+        "consolidation_rebuilt_from_lineage": True,
+        "consolidation_idempotent": True,
+    }
+    replay = json.loads((first / "replay_report.json").read_text(encoding="utf-8"))
+    assert replay["stored_action_used_as_input"] is False
+    assert replay["stored_action_input_control"]["computed"] is True
+    assert (
+        replay["stored_action_used_as_input"]
+        is replay["stored_action_input_control"]["stored_action_used_as_input"]
+    )
+    assert replay["all_terminal_states_match"] is True
+    assert replay["tamper_controls_passed"] is True
+    leakage = json.loads((first / "leakage_report.json").read_text(encoding="utf-8"))
+    assert leakage["live_offender_count"] == 0
+    assert leakage["positive_controls_fired"] is True
+    assert leakage["direct_forbidden_key_or_alias_scan_clean"] is True
+    assert leakage["scan_scope"] == (
+        "direct_forbidden_key_or_alias_scan_only__not_distributional_leakage_resistance"
+    )
+    assert set(leakage["live_scan_count_by_family"]) == {
+        "train",
+        "candidate",
+        "from_scratch",
+        "counterfactual",
+    }
+    assert all(leakage["live_scan_count_by_family"].values())
+    assert "policy_excludes_private_oracle_future_reward_and_world_seed" not in leakage
+    baseline = json.loads((first / "baseline_comparison.json").read_text(encoding="utf-8"))
+    assert baseline["candidate_reducer_disabled_compatible"] is True
+    assert baseline["independence_control"]["computed"] is True
+    assert baseline["independence_control"]["candidate_reducer_disabled_compatible"] is True
+    assert baseline["independence_control"]["arm_count"] == 48
+    assert baseline["independence_control"]["expected_arm_count"] == 48
+    assert len(baseline["independence_control"]["control_invocations"]) == 48
+    assert all(
+        invocation["candidate_reducer_called"] is False
+        and invocation["candidate_scorer_called"] is False
+        for invocation in baseline["independence_control"]["control_invocations"].values()
+    )
+    assert all(
+        row["candidate_reducer_called"] is False
+        and row["candidate_scorer_called"] is False
+        for row in baseline["rows"]
+    )
+    exact_rows = [
+        row for row in baseline["rows"] if row["control_id"] == "exact_public_history_lookup"
+    ]
+    assert exact_rows
+    assert all(len(row["lookup_provenance"]) == 8 for row in exact_rows)
+    assert {
+        item["match_status"]
+        for row in exact_rows
+        for item in row["lookup_provenance"]
+    } <= {"exact_public_prefix_match", "no_exact_public_prefix_match"}
+    assert baseline["exact_public_history_nonempty_match_count"] > 0
+    assert any(
+        item["matched_prefix_length"] > 0
+        for row in exact_rows
+        for item in row["lookup_provenance"]
+    )
+    receipt = json.loads(
+        (first / "product_trigger_receipt.json").read_text(encoding="utf-8")
+    )
+    assert receipt["seed_provenance"]["valid"] is True
+    assert receipt["policy_seed"] == 701
+    assert receipt["world_seed"] == 30
+    assert receipt["metric"]["seed_context_episode_ids"] == {
+        "layout_id": receipt["layout_id"],
+        "policy_seed": receipt["policy_seed"],
+        "run_id": receipt["run_id"],
+        "world_seed": receipt["world_seed"],
+    }
+    evidence_records = []
+    for path in first.glob("*.json"):
+        evidence_records.extend(verifier.collect_evidence_records(json.loads(path.read_text(encoding="utf-8"))))
+    assert len(evidence_records) >= 150
+    assert all(
+        verifier.REQUIRED_PROVENANCE_FIELDS <= set(record)
+        and record["producer_function"]
+        and record["input_artifacts"]
+        and record["run_id"]
+        and record["seed_context_episode_ids"]
+        and record["aggregation_rule"]
+        and record["code_path_hash"]
+        for record in evidence_records
+    )
+    blob = b"\n".join(path.read_bytes() for path in first.iterdir() if path.suffix != ".sqlite3")
+    assert str(first).encode() not in blob
+    assert str(second).encode() not in blob
 
 
 def test_p1_independent_baselines_run_when_candidate_reducer_is_unavailable(monkeypatch):
@@ -84,11 +662,14 @@ def test_p1_independent_baselines_run_when_candidate_reducer_is_unavailable(monk
 def test_p1_leakage_scanner_rejects_live_alias_and_nested_positive_controls():
     verifier = _verifier()
     clean = {
-        "schema_version": "ego.life_playground.policy_projection.v1",
+        "schema_version": "ego.life_playground.policy_projection.v2",
         "non_memory": {
-            "schema_version": "ego.life_playground.policy_non_memory_projection.v1",
-            "observation": {
-                "schema_version": "ego.life_playground.microworld.observation.v2",
+            "schema_version": "ego.life_playground.policy_non_memory_projection.v2",
+            "sequence": 1,
+            "policy_tie_seed": 701,
+            "context_key": "quiet|energy",
+                "observation": {
+                    "schema_version": "ego.life_playground.microworld.observation.v2",
                 "event": "quiet_interval",
                 "cue": "quiet",
                 "summary": "quiet",
@@ -99,9 +680,19 @@ def test_p1_leakage_scanner_rejects_live_alias_and_nested_positive_controls():
             "organism": {"energy": 0.5},
             "current_goal": {"state_variable": "energy"},
             "legal_actions": ["forage", "approach"],
+            "action_paths": {
+                "forage": {"reachable": True},
+                "approach": {"reachable": True},
+            },
             "model": {},
         },
         "claim_retrieval": {"claims": [], "support_by_action": {}},
+        "resolved_memory_view": {
+            "episodic": [],
+            "consolidated": [],
+            "claim_events": [],
+            "competing_claims": [],
+        },
     }
     assert verifier.scan_policy_projection(clean)["offenders"] == []
     controls = {
@@ -157,11 +748,15 @@ def test_p1_callable_verifier_generates_recomputed_reports_without_learning_repo
     assert not (output / "learning_report.json").exists()
     stored_result = json.loads((output / "result.json").read_text(encoding="utf-8"))
     assert stored_result == result
-    assert stored_result["verdict"] == "memory_conditioned_effect_observed_but_control_equivalent"
-    assert stored_result["claim_status"] == "bounded_negative_for_mechanism_non_equivalence"
+    assert stored_result["verdict"] == "memory_conditioned_effect_not_observed_in_frozen_pair"
+    assert stored_result["claim_status"] == "bounded_negative_for_memory_conditioned_effect"
     assert stored_result["blocking_failures"] == []
     assert "control_baseline_equivalent" in stored_result["claim_blockers"]
     assert "freeze_downstream_contrast_inert_side_a" in stored_result["claim_blockers"]
+    assert "freeze_downstream_contrast_inert_side_b" in stored_result["claim_blockers"]
+    assert "memory_conditioned_effect_not_observed" in stored_result["claim_blockers"]
+    assert "source_deletion_target_unavailable" in stored_result["claim_blockers"]
+    assert "shuffle_provenance_effect_not_observed" in stored_result["claim_blockers"]
     assert stored_result["frozen_config"]["provenance_shuffle_seed"] == 17
     assert stored_result["frozen_config"]["pair_policy_seed"] == 101
     assert set(stored_result["frozen_config_usage"]) == set(
@@ -179,11 +774,14 @@ def test_p1_callable_verifier_generates_recomputed_reports_without_learning_repo
         "enabled": False,
         "default_enabled": False,
         "mainline_connected": False,
+        "runtime_mainline_connected": False,
         "runtime_authority": "none",
         "science_weight": 0,
         "remote_anchor": False,
         "proactive_action_enabled": False,
+        "initiative_executor_authorized": False,
         "background_dispatch": False,
+        "external_side_effects": False,
         "llm": "forbidden",
         "network": "forbidden",
     }
@@ -194,6 +792,7 @@ def test_p1_callable_verifier_generates_recomputed_reports_without_learning_repo
         "count_table",
         "transition_table",
         "exact_public_history_lookup",
+        "from_scratch",
     }
     assert baseline["strongest_match_rate"] == 1.0
     assert all(record["invoked"] is True for record in baseline["invocation_ledger"])
@@ -225,7 +824,7 @@ def test_p1_callable_verifier_generates_recomputed_reports_without_learning_repo
     assert all(ablation["freeze_updates"]["step2_observation_equal_by_side"].values())
     assert ablation["freeze_updates"]["later_total_score_contrast_by_side"] == {
         "a": False,
-        "b": True,
+        "b": False,
     }
     assert ablation["freeze_updates"]["later_prediction_contrast_by_side"] == {
         "a": False,
@@ -237,7 +836,7 @@ def test_p1_callable_verifier_generates_recomputed_reports_without_learning_repo
     }
     assert ablation["freeze_updates"]["later_prediction_or_total_score_contrast_by_side"] == {
         "a": False,
-        "b": True,
+        "b": False,
     }
     for side in ("a", "b"):
         downstream = ablation["freeze_updates"]["later_downstream_by_side"][side]
@@ -252,7 +851,7 @@ def test_p1_callable_verifier_generates_recomputed_reports_without_learning_repo
             "frozen_selected_action",
             "selected_action_contrast",
         }
-        assert downstream["total_score_contrast"] is (side == "b")
+        assert downstream["total_score_contrast"] is False
         assert downstream["prediction_contrast"] is False
         assert downstream["selected_action_contrast"] is False
     assert set(ablation["freeze_updates"]["streams"]) == {"a", "b"}
@@ -277,8 +876,13 @@ def test_p1_callable_verifier_generates_recomputed_reports_without_learning_repo
         ablation["shuffle_provenance"]["unaffected_fields_hash_before"]
         == ablation["shuffle_provenance"]["unaffected_fields_hash_after"]
     )
-    assert ablation["shuffle_provenance"]["support_effect_changed"] is True
-    assert ablation["source_deletion"]["relevant_changed_action"] is True
+    assert ablation["shuffle_provenance"]["support_effect_changed"] is False
+    assert ablation["source_deletion"]["intervention_executed"] is True
+    assert ablation["source_deletion"]["target_available"] is False
+    assert ablation["source_deletion"]["target_selection"]["status"] == (
+        "unavailable_no_supporting_event"
+    )
+    assert ablation["source_deletion"]["relevant_changed_action"] is False
     assert ablation["source_deletion"]["irrelevant_inert"] is True
 
     replay = json.loads((output / "replay_report.json").read_text(encoding="utf-8"))
@@ -322,6 +926,30 @@ def test_p1_callable_verifier_generates_recomputed_reports_without_learning_repo
         and record.get("run_id") == "p1-history-a"
         for record in trace_records
     )
+
+
+def test_p1_missing_supporting_source_is_a_structured_negative_result(tmp_path):
+    verifier = _verifier()
+    output = tmp_path / "p1-no-supporting-source"
+
+    result = verifier.run_p1_verification(output)
+    ablation = json.loads(
+        (output / "ablation_report.json").read_text(encoding="utf-8")
+    )
+
+    assert result["blocking_failures"] == []
+    assert result["verdict"] == "memory_conditioned_effect_not_observed_in_frozen_pair"
+    assert result["claim_status"] == "bounded_negative_for_memory_conditioned_effect"
+    assert "memory_conditioned_effect_not_observed" in result["claim_blockers"]
+    assert "source_deletion_target_unavailable" in result["claim_blockers"]
+    assert "shuffle_provenance_effect_not_observed" in result["claim_blockers"]
+    assert result["frozen_config_usage"]["source_deletion_target"]["used"] is True
+    source = ablation["source_deletion"]
+    assert source["intervention_executed"] is True
+    assert source["target_available"] is False
+    assert source["relevant_changed_action"] is False
+    assert source["target_selection"]["status"] == "unavailable_no_supporting_event"
+    assert source["deleted_event_ids"] == []
 
 
 def test_p1_result_aggregation_blocks_unused_frozen_inputs():
@@ -501,13 +1129,10 @@ def test_p1_verifier_artifacts_are_byte_deterministic_across_output_roots(tmp_pa
     assert canonical.is_dir()
     first_files = {path.name: path.read_bytes() for path in first.iterdir()}
     second_files = {path.name: path.read_bytes() for path in second.iterdir()}
-    canonical_files = {
-        path.name: path.read_bytes()
-        for path in canonical.iterdir()
-        if path.name in first_files
-    }
     assert first_files == second_files
-    assert first_files == canonical_files
+    # The repository artifact root advances from P1 to P2. P1 compatibility is
+    # therefore proved by two fresh roots, not by requiring the historical P1
+    # bytes to remain the repository's current milestone artifact set.
 
     logical_ids = {
         "generated://p1/continuity.sqlite3",
@@ -540,11 +1165,12 @@ def test_p1_verifier_artifacts_are_byte_deterministic_across_output_roots(tmp_pa
                 json.dumps(str(root))[1:-1],
             ):
                 assert forbidden_root not in text
-            if path.suffix == ".json":
-                collect_artifact_labels(json.loads(text))
-            else:
-                for line in text.splitlines():
-                    collect_artifact_labels(json.loads(line))
+            if root != canonical:
+                if path.suffix == ".json":
+                    collect_artifact_labels(json.loads(text))
+                else:
+                    for line in text.splitlines():
+                        collect_artifact_labels(json.loads(line))
     assert observed_logical_ids == logical_ids
 
 
