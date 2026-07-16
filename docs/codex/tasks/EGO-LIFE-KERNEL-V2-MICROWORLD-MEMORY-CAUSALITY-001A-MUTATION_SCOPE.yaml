@@ -1,0 +1,195 @@
+schema_version: codex.task_mutation_scope.v1
+task_id: EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A
+phase: P0_PLAYABLE_MICROWORLD__P1_MEMORY_CAUSALITY__P2_BOUNDED_ADAPTATION
+task_kind: bounded_v2_microworld_implementation
+requested_action_id: implement_EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A
+base_commit: a34ff6630a6456b9e333199b10ee866d30e1c0cd
+authority_commit: a34ff6630a6456b9e333199b10ee866d30e1c0cd
+implementation_authorized: true
+authority:
+  itl_repo: intelligence-theory-lab
+  itl_commit: 4a4746435f9bdb0eba02e6c036c2e34a089ece26
+  itl_state_path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/state.json
+  ego_phase_c_commit: a34ff6630a6456b9e333199b10ee866d30e1c0cd
+  precondition_state: SATISFIED_BY_POSTCOMMIT_READBACK
+  action_executable: true
+problem_definition: >-
+  Extend the sole ego_life_playground_v0 lineage into one understandable,
+  deterministic local microworld whose continuous state-memory-action-update
+  loop can be operated, persisted, inspected and recomputed. Then measure,
+  without tuning around negative results, whether real history and bounded
+  updates affect behavior beyond equal-access shortcut baselines.
+current_layer:
+  p0: layer_2_engineering_implementation
+  p1: layer_2_engineering_plus_bounded_mechanism_wiring
+  p2: layer_4_bounded_learning_adaptation_measurement
+lane: product_capability
+mainline_target: none__runtime_mainline_forbidden
+enabled_state_requirement:
+  enabled: false
+  default_enabled: false
+  mainline_connected: false
+  runtime_mainline_connected: false
+  runtime_authority: none
+  explicit_local_launch_only: true
+real_trigger_evidence_requirement: >-
+  An explicit terminal or Tk Step/Run command must invoke the one canonical
+  reducer, atomically commit command and trace to SQLite, recover by fresh
+  recomputation, and render only the committed recovered frame. No timer,
+  background dispatcher or external action is authorized.
+hypothesis: >-
+  In a partially observed persistent microworld, legitimate past evidence and
+  bounded prediction-error updates may produce measurable candidate-score or
+  action differences at byte-identical current observations. Equal-access
+  lookup, clock, recency, count, transition, graph or episodic baselines may
+  instead fully explain the behavior; such a match is a bounded negative result.
+strongest_baseline:
+  - observation_only_q_prior
+  - cue_clock_episode_fsm
+  - last_success_and_recency_window
+  - exact_full_history_lookup
+  - count_and_transition_tables
+  - graph_lookup_and_episodic_traversal
+  - no_update
+  - from_scratch
+  - same_access_empirical_lookup
+ablations:
+  - Memory_OFF
+  - Freeze_Updates
+  - Shuffle_Provenance
+  - relevant_source_deletion
+  - Q_only
+  - from_scratch
+trace_replay_requirement: >-
+  Replay must recompute observation, goal, retrieval, candidates, selected
+  action, world outcome, prediction error, bounded updates and next state from
+  serialized state plus the ordered command. Stored action and trace fields are
+  comparison-only, never replay inputs.
+computed_evidence_provenance_gate:
+  required_score_fields:
+    - producer_function
+    - input_artifacts
+    - run_id
+    - seed_context_episode_ids
+    - aggregation_rule
+    - code_path_hash
+  callable_baselines: true
+  intervention_reruns: true
+  leakage_scanner_positive_control: true
+  unused_frozen_input_blocks_claim: true
+acceptance_gate:
+  p0:
+    - visible_product_clock_map_objects_agent_position
+    - visible_observation_internal_state_goal_candidates_selection_prediction_error_memory_and_transition
+    - terminal_commands_step_run_pause_inspect_inject_save_load_reset_replay
+    - multiple_episodes_and_sqlite_persistence
+    - fresh_process_load_and_deterministic_recomputing_replay
+  p1:
+    - real_history_can_change_candidate_scores_at_identical_current_observation
+    - memory_off_removes_any_memory_conditioned_difference
+    - freeze_updates_preserves_update_bytes_and_blocks_new_adaptation
+    - shuffle_provenance_operates_on_source_lineage_not_utility_labels
+    - competing_claims_support_and_provenance_coexist_without_overwrite
+  p2:
+    - frozen_heldout_layouts_events_and_invocation_ledger
+    - learning_curve_and_forward_transfer_are_computed
+    - no_update_from_scratch_and_lookup_baselines_are_computed
+    - source_deletion_counterfactual_and_consolidation_are_recomputed
+    - matched_baseline_is_reported_as_equivalence_not_tuned_away
+claim_ceiling: >-
+  Default-off local microworld product implementation; persistent canonical
+  state and atomic trace/replay engineering; and, only where callable computed
+  comparisons support it, bounded adaptation evidence inside the frozen
+  microworld distribution.
+stop_conditions:
+  - mutation_outside_exact_allowlist
+  - runtime_mainline_or_closed_switch_opened
+  - second_reducer_or_replay_truth_path
+  - hidden_or_future_label_leakage
+  - replay_uses_stored_action_as_input
+  - post_result_retuning_to_force_positive_evidence
+  - unused_frozen_seed_layout_event_pair_or_checkpoint
+rollback_plan: >-
+  Stop before staging or committing the affected milestone, preserve the
+  failing focused evidence and exact dirty path set, and remove only the
+  milestone changes from this isolated successor worktree under separate
+  operator direction. Never mutate or clean the non-live dirty main worktree.
+collision_before_collapse:
+  candidates:
+    - id: minimal_fixed_world
+      evidence: visible persistence_and_replay
+      strongest_cheap_match: clock_fsm_or_last_outcome
+      leakage_risk: high
+      smallest_falsifier: observation_clock_controller_saturates
+      expected_failure: product_appearance_only
+      disposition: reject_as_sole_mechanism_surface
+    - id: shortcut_history_controller
+      evidence: history_conditioned_choices_without_candidate_mechanism
+      strongest_cheap_match: same_access_lookup_itself
+      leakage_risk: medium
+      smallest_falsifier: heldout_world_or_source_deletion_has_no_effect
+      expected_failure: simpler_comparator_matches
+      disposition: retain_as_independent_callable_baseline
+    - id: generated_world_competing_claims_bounded_updates
+      evidence: source_linked_reads_prediction_error_and_bounded_updates
+      strongest_cheap_match: exact_history_count_transition_graph_lookup
+      leakage_risk: hidden_regime_oracle_future_outcome_or_clock_leakage
+      smallest_falsifier: byte_identical_pair_and_equal_access_baseline_panel
+      expected_failure: baseline_match_or_inert_ablation
+      disposition: selected_without_positive_result_guarantee
+expected_changed_paths: &exact_v2_paths
+  - docs/codex/tasks/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A-MUTATION_SCOPE.yaml
+  - labs/ego_life_playground_v0/__init__.py
+  - labs/ego_life_playground_v0/engine.py
+  - labs/ego_life_playground_v0/microworld.py
+  - labs/ego_life_playground_v0/claims.py
+  - labs/ego_life_playground_v0/app.py
+  - labs/ego_life_playground_v0/store.py
+  - scripts/run_ego_life_playground_v0.py
+  - tests/test_ego_life_playground_v0.py
+  - tests/test_ego_life_playground_v2_microworld.py
+  - scripts/codex/verify_ego_life_kernel_v2_microworld.py
+  - scripts/tests/test_verify_ego_life_kernel_v2_microworld.py
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/continuity.sqlite3
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/trace.jsonl
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/product_trigger_receipt.json
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/headroom_report.json
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/collision_record.json
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/baseline_comparison.json
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/ablation_report.json
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/learning_report.json
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/replay_report.json
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/leakage_report.json
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/failure_manifest.json
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/claim_ceiling.txt
+  - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/result.json
+allowed_mutation_paths: *exact_v2_paths
+authorized_implementation_targets: *exact_v2_paths
+forbidden_changes:
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - docs/STATUS.md
+  - artifacts/ROUTE-STATE-MACHINE-001A/
+  - EgoOperator/
+  - EgoDesktop/
+  - packages/
+  - ../intelligence-theory-lab/
+  - LLM_or_network_integration
+  - proactive_or_background_dispatch
+  - runtime_or_mainline_enablement
+all_switches_closed:
+  enabled: false
+  default_enabled: false
+  mainline_connected: false
+  runtime_mainline_connected: false
+  runtime_authority: none
+  science_weight: 0
+  remote_anchor: false
+  proactive_action_enabled: false
+  initiative_executor_authorized: false
+  background_dispatch: false
+  external_side_effects: false
+  llm: forbidden
+  network: forbidden
+auto_remote_anchor: forbidden
+push: forbidden
+tag: forbidden

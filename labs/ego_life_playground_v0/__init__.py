@@ -1,4 +1,4 @@
-"""Visible local life-proxy playground (product-clock only)."""
+"""Default-off local continuity and P0 microworld playground."""
 
 from .engine import (
     ACTIONS,
@@ -10,11 +10,23 @@ from .engine import (
     StepResult,
     canonical_hash,
     compute_code_path_hash,
+    compute_code_path_manifest,
     compute_step,
     episode_id_for,
     initial_state,
     make_command,
     make_run_metadata,
+)
+from .microworld import (
+    ALLOWED_WORLD_EVENTS,
+    cue_for_event,
+    default_event_for_sequence,
+    initial_world_state,
+    legal_action_gate,
+    make_public_frame,
+    observe_world_event,
+    transition_world,
+    world_hash,
 )
 
 __all__ = [
@@ -27,9 +39,19 @@ __all__ = [
     "StepResult",
     "canonical_hash",
     "compute_code_path_hash",
+    "compute_code_path_manifest",
     "compute_step",
     "episode_id_for",
     "initial_state",
     "make_command",
     "make_run_metadata",
+    "ALLOWED_WORLD_EVENTS",
+    "cue_for_event",
+    "default_event_for_sequence",
+    "initial_world_state",
+    "legal_action_gate",
+    "make_public_frame",
+    "observe_world_event",
+    "transition_world",
+    "world_hash",
 ]

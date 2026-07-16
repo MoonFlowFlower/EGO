@@ -132,11 +132,12 @@ def test_v1_engine_state_run_and_command_schemas_are_canonical():
         prev_command_hash=None,
     )
 
-    assert state["schema_version"] == "ego.life_playground.state.v1"
+    assert state["schema_version"] == "ego.life_playground.state.v2"
     assert set(state) == {
         "schema_version",
         "clock",
         "organism",
+        "world",
         "current_goal",
         "model",
         "memory",
@@ -150,18 +151,20 @@ def test_v1_engine_state_run_and_command_schemas_are_canonical():
         "episode_id": engine.episode_id_for("schema-v1", 0),
         "episode_tick": 0,
     }
-    assert meta["schema_version"] == "ego.life_playground.run.v1"
+    assert meta["schema_version"] == "ego.life_playground.run.v2"
     assert meta["episode_span_ticks"] == 8
     assert set(command) == {
         "schema_version",
         "sequence",
         "cue",
+        "world_event",
         "trigger_source",
         "interventions",
         "prev_command_hash",
         "command_hash",
     }
-    assert command["schema_version"] == "ego.life_playground.command.v1"
+    assert command["schema_version"] == "ego.life_playground.command.v2"
+    assert command["world_event"] == "resource_appears"
     assert command["command_hash"] == engine.canonical_hash(
         {key: value for key, value in command.items() if key != "command_hash"}
     )
@@ -697,12 +700,13 @@ def test_v1_recovery_frames_drive_derived_state_traces_and_fresh_recovery_callba
             "schema_version",
             "sequence",
             "cue",
+            "world_event",
             "trigger_source",
             "interventions",
             "prev_command_hash",
             "command_hash",
         }
-        assert command["schema_version"] == "ego.life_playground.command.v1"
+        assert command["schema_version"] == "ego.life_playground.command.v2"
         assert command["sequence"] == 2
         assert command["cue"] == "novelty"
         assert command["trigger_source"] == "ui_run_button"
@@ -758,7 +762,7 @@ def test_v1_second_insert_failure_changes_no_state_callback_or_recovery_timeline
 
     monkeypatch.setenv("LOCALAPPDATA", str(tmp_path / "local-app-data"))
     assert default_db_path() == (
-        tmp_path / "local-app-data" / "EgoLifePlaygroundV1" / "continuity.sqlite3"
+        tmp_path / "local-app-data" / "EgoLifePlaygroundV2" / "continuity.sqlite3"
     )
 
 
@@ -1115,6 +1119,7 @@ def test_command_contains_only_replay_inputs_and_hash():
         "schema_version",
         "sequence",
         "cue",
+        "world_event",
         "trigger_source",
         "interventions",
         "prev_command_hash",
@@ -1480,7 +1485,8 @@ def test_app_import_is_safe_and_discloses_baseline():
     assert tk._default_root is None
     assert app.PlaygroundController is PlaygroundController
     assert DISCLOSURE == (
-        "Deterministic deficit scorer + tabular EMA; local product-clock surface; science weight 0."
+        "Deterministic visible microworld + deficit scorer + tabular EMA; "
+        "local default-off product surface; science weight 0."
     )
 
 

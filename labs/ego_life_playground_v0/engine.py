@@ -1,8 +1,9 @@
-"""One deterministic V0-descendant reducer for the V1 continuity playground.
+"""One deterministic V0/V1-descendant reducer for the V2 P0 microworld.
 
 The implementation deliberately exposes its cheap explanation: a hard-coded
-toy outcome table, deficit scoring, a tabular EMA, and keyed memory bias.  It is
-local product engineering evidence, not mechanism or subjectivity evidence.
+toy outcome table, deficit scoring, a tabular EMA, and keyed memory bias. The
+persisted P0 world is visible and has no hidden regime. This is local product
+engineering evidence, not mechanism or subjectivity evidence.
 """
 
 from __future__ import annotations
@@ -15,6 +16,18 @@ import math
 from pathlib import Path
 from typing import Any, Mapping
 
+from .microworld import (
+    cue_for_event,
+    event_for_cue,
+    initial_world_state,
+    legal_action_gate,
+    observation_hash,
+    observe_world_event,
+    transition_world,
+    verify_world_state,
+    world_hash,
+)
+
 
 STATE_KEYS = ("energy", "safety", "connection", "stimulation")
 ACTIONS = ("approach", "explore", "forage", "rest", "withdraw")
@@ -24,16 +37,19 @@ EMA_ALPHA = 0.35
 CONSOLIDATION_THRESHOLD = 3
 EPISODE_SPAN_TICKS = 8
 
-STATE_SCHEMA_VERSION = "ego.life_playground.state.v1"
-RUN_SCHEMA_VERSION = "ego.life_playground.run.v1"
-COMMAND_SCHEMA_VERSION = "ego.life_playground.command.v1"
-TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v1"
+STATE_SCHEMA_VERSION = "ego.life_playground.state.v2"
+RUN_SCHEMA_VERSION = "ego.life_playground.run.v2"
+COMMAND_SCHEMA_VERSION = "ego.life_playground.command.v2"
+TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v2"
 
 TRIGGER_SOURCES = (
     "ui_step_button",
     "ui_run_button",
     "headless_acceptance",
     "paired_intervention",
+    "terminal_step",
+    "terminal_run",
+    "terminal_event",
 )
 MEMORY_MODES = ("canonical", "off")
 UPDATE_MODES = ("enabled", "frozen")
@@ -123,18 +139,27 @@ def canonical_hash(value: Any) -> str:
     return hashlib.sha256(canonical_json(value).encode("utf-8")).hexdigest()
 
 
-def compute_code_path_hash() -> str:
-    """Bind the canonical reducer and durable replay implementation."""
+def compute_code_path_manifest() -> dict[str, Any]:
+    """Return the exact current causal-producer file manifest."""
 
-    source_paths = (Path(__file__), Path(__file__).with_name("store.py"))
-    manifest = {
-        "schema_version": "ego.life_playground.code_path.v1",
+    source_paths = (
+        Path(__file__),
+        Path(__file__).with_name("microworld.py"),
+        Path(__file__).with_name("store.py"),
+    )
+    return {
+        "schema_version": "ego.life_playground.code_path.v2",
         "files": [
             {"path": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
             for path in source_paths
         ],
     }
-    return canonical_hash(manifest)
+
+
+def compute_code_path_hash() -> str:
+    """Bind the canonical reducer, microworld, and durable replay bytes."""
+
+    return canonical_hash(compute_code_path_manifest())
 
 
 def episode_id_for(run_id: str, episode_index: int) -> str:
@@ -194,6 +219,7 @@ def initial_state(
             "episode_tick": 0,
         },
         "organism": normalized,
+        "world": initial_world_state(),
         "current_goal": _select_goal(normalized, global_tick=0, reason="initial_max_deficit"),
         "model": {},
         "memory": {"episodic": [], "consolidated": []},
@@ -210,11 +236,19 @@ def make_command(
     trigger_source: str,
     interventions: Mapping[str, str],
     prev_command_hash: str | None,
+    world_event: str | None = None,
 ) -> dict[str, Any]:
     if type(sequence) is not int or sequence <= 0:
         raise EngineInvariantError("command sequence must be a positive integer")
     if type(cue) is not str or cue not in CUES:
         raise EngineInvariantError(f"unknown cue: {cue}")
+    selected_event = event_for_cue(cue) if world_event is None else world_event
+    try:
+        event_cue = cue_for_event(selected_event)
+    except ValueError as exc:
+        raise EngineInvariantError(str(exc)) from exc
+    if event_cue != cue:
+        raise EngineInvariantError("world_event and cue are inconsistent")
     if type(trigger_source) is not str or trigger_source not in TRIGGER_SOURCES:
         raise EngineInvariantError(f"unknown trigger_source: {trigger_source}")
     if sequence == 1 and prev_command_hash is not None:
@@ -226,6 +260,7 @@ def make_command(
         "schema_version": COMMAND_SCHEMA_VERSION,
         "sequence": sequence,
         "cue": cue,
+        "world_event": selected_event,
         "trigger_source": trigger_source,
         "interventions": normalized,
         "prev_command_hash": prev_command_hash,
@@ -239,6 +274,7 @@ def verify_command(command: Mapping[str, Any], state: Mapping[str, Any]) -> None
         "schema_version",
         "sequence",
         "cue",
+        "world_event",
         "trigger_source",
         "interventions",
         "prev_command_hash",
@@ -261,6 +297,12 @@ def verify_command(command: Mapping[str, Any], state: Mapping[str, Any]) -> None
         raise EngineInvariantError("command chain mismatch")
     if command["cue"] not in CUES:
         raise EngineInvariantError("command cue is not canonical")
+    try:
+        event_cue = cue_for_event(command["world_event"])
+    except ValueError as exc:
+        raise EngineInvariantError(str(exc)) from exc
+    if event_cue != command["cue"]:
+        raise EngineInvariantError("command world_event and cue are inconsistent")
     if command["trigger_source"] not in TRIGGER_SOURCES:
         raise EngineInvariantError("command trigger_source is not canonical")
     _normalize_interventions(command["interventions"])
@@ -294,12 +336,20 @@ def compute_step(
     before = deepcopy(dict(state))
     before_hash = state_hash(before)
     sequence = int(command["sequence"])
-    cue = str(command["cue"])
+    world_event = str(command["world_event"])
     interventions = _normalize_interventions(command["interventions"])
 
     decision_state, episode_transition = _decision_state_for_tick(
         before, run_id=str(run_meta["run_id"]), sequence=sequence
     )
+    world_before = deepcopy(decision_state["world"])
+    try:
+        decision_state["world"] = observe_world_event(world_before, world_event)
+        action_gate = legal_action_gate(decision_state["world"], ACTIONS)
+    except ValueError as exc:
+        raise EngineInvariantError(str(exc)) from exc
+    world_observation = deepcopy(decision_state["world"]["public_observation"])
+    cue = str(world_observation["cue"])
     decision_hash = state_hash(decision_state)
     goal_before = deepcopy(decision_state["current_goal"])
     current_goal = goal_before["state_variable"] or "homeostasis"
@@ -325,9 +375,15 @@ def compute_step(
         )
         for action in ACTIONS
     ]
+    legal_actions = list(action_gate["legal_actions"])
+    gated_actions = deepcopy(action_gate["gated_actions"])
+    for candidate in candidates:
+        candidate["legal"] = candidate["action"] in legal_actions
+        candidate["gate_reasons"] = []
     candidates.sort(key=lambda item: item["action"])
     selected = max(
-        candidates, key=lambda item: (item["total_score"], item["deterministic_tie"])
+        (item for item in candidates if item["legal"]),
+        key=lambda item: (item["total_score"], item["deterministic_tie"]),
     )
     selected_action = str(selected["action"])
     predicted_delta = deepcopy(selected["predicted_delta"])
@@ -337,6 +393,12 @@ def compute_step(
     }
 
     next_state = deepcopy(decision_state)
+    try:
+        next_state["world"], world_transition = transition_world(
+            decision_state["world"], selected_action
+        )
+    except ValueError as exc:
+        raise EngineInvariantError(str(exc)) from exc
     next_state["organism"] = _apply_delta(decision_state["organism"], actual_delta)
     next_state["last_action"] = selected_action
     next_state["last_command_hash"] = command["command_hash"]
@@ -387,6 +449,7 @@ def compute_step(
         "aggregation_rule": run_meta["aggregation_rule"],
         "sequence": sequence,
         "trigger_source": command["trigger_source"],
+        "world_event": world_event,
         "cue": cue,
         "interventions": interventions,
         "command": deepcopy(dict(command)),
@@ -395,6 +458,16 @@ def compute_step(
         "state_before_hash": before_hash,
         "decision_state_hash": decision_hash,
         "state_after_hash": after_hash,
+        "world_before_hash": world_hash(world_before),
+        "world_decision_hash": world_hash(decision_state["world"]),
+        "world_after_hash": world_hash(next_state["world"]),
+        "world_observation": world_observation,
+        "observation": deepcopy(world_observation),
+        "observation_hash": observation_hash(world_observation),
+        "action_gate": action_gate,
+        "legal_actions": legal_actions,
+        "gated_actions": gated_actions,
+        "world_transition": world_transition,
         "episode_before": deepcopy(before["clock"]),
         "episode_transition": episode_transition,
         "action_episode": deepcopy(decision_state["clock"]),
@@ -481,6 +554,7 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
         "schema_version",
         "clock",
         "organism",
+        "world",
         "current_goal",
         "model",
         "memory",
@@ -527,6 +601,11 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
             raise EngineInvariantError(f"organism {key} must be finite")
         if not 0.0 <= value <= 1.0:
             raise EngineInvariantError(f"organism {key} is outside the canonical range")
+
+    try:
+        verify_world_state(state["world"])
+    except ValueError as exc:
+        raise EngineInvariantError(str(exc)) from exc
 
     _verify_goal(state["current_goal"], global_tick=tick)
     _verify_model(state["model"])

@@ -66,9 +66,9 @@ class RecoveryResult:
 def default_db_path() -> Path:
     base = os.environ.get("LOCALAPPDATA")
     if base:
-        root = Path(base) / "EgoLifePlaygroundV1"
+        root = Path(base) / "EgoLifePlaygroundV2"
     else:
-        root = Path.home() / ".ego_life_playground_v1"
+        root = Path.home() / ".ego_life_playground_v2"
     return root / "continuity.sqlite3"
 
 
@@ -157,6 +157,27 @@ class SQLiteEventStore:
             "SELECT run_id FROM runs ORDER BY rowid DESC LIMIT 1"
         ).fetchone()
         return None if row is None else str(row["run_id"])
+
+    def latest_compatible_run_id(self) -> str | None:
+        """Return the newest run whose stored producer hash is current.
+
+        This is used only for implicit default selection. An explicitly named
+        run still enters ``recover_run`` and fails closed on any drift.
+        """
+
+        current = compute_code_path_hash()
+        rows = self._connection.execute(
+            "SELECT run_id, run_meta_json FROM runs WHERE code_path_hash = ? ORDER BY rowid DESC",
+            (current,),
+        ).fetchall()
+        for row in rows:
+            try:
+                run_meta = _decode_json(row["run_meta_json"], "run metadata")
+            except RecoveryError:
+                continue
+            if run_meta.get("code_path_hash") == current:
+                return str(row["run_id"])
+        return None
 
     def append_step(self, command: dict[str, Any], trace: dict[str, Any]) -> CommitReceipt:
         run_id = str(trace.get("run_id", ""))

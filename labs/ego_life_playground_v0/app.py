@@ -1,4 +1,4 @@
-"""Controller and Tk renderer for the explicit local continuity playground."""
+"""Controller plus terminal/Tk views for the explicit local microworld."""
 
 from __future__ import annotations
 
@@ -22,6 +22,13 @@ from .engine import (
     make_command,
     make_run_metadata,
 )
+from .microworld import (
+    ALLOWED_WORLD_EVENTS,
+    cue_for_event,
+    default_event_for_sequence,
+    event_for_cue,
+    make_public_frame,
+)
 from .store import (
     CommitReceipt,
     RecoveryFrame,
@@ -32,8 +39,8 @@ from .store import (
 
 
 DISCLOSURE = (
-    "Deterministic deficit scorer + tabular EMA; local product-clock surface; "
-    "science weight 0."
+    "Deterministic visible microworld + deficit scorer + tabular EMA; "
+    "local default-off product surface; science weight 0."
 )
 
 
@@ -58,7 +65,7 @@ class PlaygroundController:
         self.store = store
         self.on_committed = on_committed
         self.on_recovered = on_recovered
-        selected_run_id = run_id or store.latest_run_id()
+        selected_run_id = run_id if run_id is not None else store.latest_compatible_run_id()
 
         if selected_run_id is not None and store.run_exists(selected_run_id):
             self.run_id = selected_run_id
@@ -89,6 +96,7 @@ class PlaygroundController:
         interventions: Mapping[str, str],
         *,
         trigger_source: str = "ui_step_button",
+        world_event: str | None = None,
     ) -> DispatchResult:
         command = make_command(
             sequence=int(self.state["clock"]["global_tick"]) + 1,
@@ -96,6 +104,7 @@ class PlaygroundController:
             trigger_source=trigger_source,
             interventions=interventions,
             prev_command_hash=self.state.get("last_command_hash"),
+            world_event=world_event,
         )
         computed = compute_step(self.state, command, self.run_meta)
         receipt = self.store.append_step(command, computed.trace)
@@ -125,6 +134,276 @@ class PlaygroundController:
         output = self.store.export_run(self.run_id, output_path)
         self.recovery_status = f"recomputed + exported {output.name}"
         return output
+
+    def load_run(self, run_id: str) -> RecoveryResult:
+        """Adopt an existing durable run after complete recomputation."""
+
+        if type(run_id) is not str or not run_id:
+            raise EngineInvariantError("run_id must be a non-empty string")
+        if not self.store.run_exists(run_id):
+            raise EngineInvariantError(f"unknown run: {run_id}")
+        recovered = self.store.recover_run(run_id)
+        self.run_id = run_id
+        self._adopt_recovery(recovered)
+        self.recovery_status = f"loaded + recomputed {recovered.command_count} command(s)"
+        if self.on_recovered is not None:
+            self.on_recovered(recovered)
+        return recovered
+
+    def reset_run(self, run_id: str | None = None) -> RecoveryResult:
+        """Start a new run without deleting any prior episode history."""
+
+        selected = run_id or f"local-{uuid.uuid4().hex[:16]}"
+        if type(selected) is not str or not selected:
+            raise EngineInvariantError("run_id must be a non-empty string")
+        if self.store.run_exists(selected):
+            raise EngineInvariantError(f"run already exists: {selected}")
+        seed = int(self.run_meta["seed"])
+        run_meta = make_run_metadata(selected, seed)
+        state = initial_state(run_id=selected)
+        self.store.create_run(run_meta, state)
+        recovered = self.store.recover_run(selected)
+        self.run_id = selected
+        self._adopt_recovery(recovered)
+        self.recovery_status = "new run after reset"
+        if self.on_recovered is not None:
+            self.on_recovered(recovered)
+        return recovered
+
+
+def _timeline_from_recovery(recovery: RecoveryResult) -> list[dict[str, Any]]:
+    timeline: list[dict[str, Any]] = []
+    for frame in recovery.frames:
+        trace = frame.trace
+        clock = frame.state["clock"]
+        timeline.append(
+            {
+                "sequence": frame.sequence,
+                "global_tick": clock["global_tick"],
+                "episode_index": clock["episode_index"],
+                "episode_tick": clock["episode_tick"],
+                "event": "quiet_interval" if trace is None else event_for_cue(trace["cue"]),
+                "observation": "quiet" if trace is None else trace["cue"],
+                "observation_hash": None if trace is None else trace["observation_hash"],
+                "selected_action": None if trace is None else trace["selected_action"],
+                "trace_hash": None if trace is None else trace["trace_hash"],
+            }
+        )
+    return timeline
+
+
+def build_terminal_snapshot(controller: PlaygroundController) -> dict[str, Any]:
+    """Expose one understandable view derived only from recovered truth."""
+
+    recovery = controller.recovery
+    frame = recovery.frames[-1]
+    state = frame.state
+    trace = frame.trace
+    previous_state = recovery.frames[-2].state if len(recovery.frames) > 1 else state
+    selected_candidate = None
+    if trace is not None:
+        selected_candidate = next(
+            item for item in trace["candidates"] if item["action"] == trace["selected_action"]
+        )
+    world_frame = make_public_frame(state, trace)
+    return {
+        "run_id": controller.run_id,
+        "world": world_frame,
+        "observation": deepcopy(world_frame["observation"]),
+        "observation_hash": world_frame["observation_hash"],
+        "decision_observation": deepcopy(world_frame["observation"])
+        if trace is None
+        else deepcopy(trace["observation"]),
+        "decision_observation_hash": world_frame["observation_hash"]
+        if trace is None
+        else trace["observation_hash"],
+        "internal_state": deepcopy(state["organism"]),
+        "current_goal": deepcopy(state["current_goal"]),
+        "candidates": [] if trace is None else deepcopy(trace["candidates"]),
+        "legal_actions": [] if trace is None else deepcopy(trace["legal_actions"]),
+        "gated_actions": [] if trace is None else deepcopy(trace["gated_actions"]),
+        "selected_action": None if trace is None else trace["selected_action"],
+        "selected_score": None if selected_candidate is None else selected_candidate["total_score"],
+        "prediction": None if trace is None else deepcopy(trace["prediction"]),
+        "actual_delta": None if trace is None else deepcopy(trace["actual_delta"]),
+        "prediction_error": None if trace is None else deepcopy(trace["prediction_error"]),
+        "model_update": None if trace is None else deepcopy(trace["model_update"]),
+        "memory": {
+            "read": None
+            if trace is None
+            else {
+                "refs": deepcopy(trace["memory_refs"]),
+                "projection": deepcopy(trace["provenance_projection"]),
+            },
+            "write": None if trace is None else deepcopy(trace["memory_update"]),
+            "persistent_state": deepcopy(state["memory"]),
+        },
+        "state_transition": {
+            "before_hash": None if trace is None else trace["state_before_hash"],
+            "decision_hash": None if trace is None else trace["decision_state_hash"],
+            "after_hash": None if trace is None else trace["state_after_hash"],
+            "organism_before": deepcopy(previous_state["organism"]),
+            "organism_after": deepcopy(state["organism"]),
+        },
+        "timeline": _timeline_from_recovery(recovery),
+        "trace_hash": None if trace is None else trace["trace_hash"],
+        "recovered": recovery.recovered,
+        "science_weight": 0,
+    }
+
+
+class TerminalPlayground:
+    """Synchronous, paused-by-default P0 operator surface.
+
+    Every state-changing command calls ``PlaygroundController.dispatch``;
+    inspect, pause, save/load and replay do not implement a second reducer.
+    """
+
+    HELP = (
+        "step [event] | run N | pause | inspect | inject EVENT | "
+        "save PATH | load RUN_ID | reset [RUN_ID] | replay | help | quit"
+    )
+
+    def __init__(self, controller: PlaygroundController) -> None:
+        self.controller = controller
+        self.paused = True
+
+    def _dispatch_event(self, event: str, trigger_source: str) -> DispatchResult:
+        return self.controller.dispatch(
+            cue_for_event(event),
+            DEFAULT_INTERVENTIONS,
+            trigger_source=trigger_source,
+            world_event=event,
+        )
+
+    def execute(self, command_line: str) -> dict[str, Any]:
+        raw = command_line.strip()
+        if not raw:
+            return {"command": "", "status": "error", "error": "empty command"}
+        parts = raw.split()
+        operation = parts[0].lower()
+        try:
+            if operation in {"help", "?"}:
+                return {
+                    "command": "help",
+                    "status": "ok",
+                    "usage": self.HELP,
+                    "allowed_world_events": list(ALLOWED_WORLD_EVENTS),
+                }
+            if operation in {"quit", "exit"}:
+                self.paused = True
+                return {"command": operation, "status": "quit"}
+            if operation == "pause":
+                self.paused = True
+                return {
+                    "command": "pause",
+                    "status": "paused",
+                    "global_tick": self.controller.state["clock"]["global_tick"],
+                }
+            if operation == "inspect":
+                if len(parts) != 1:
+                    raise ValueError("usage: inspect")
+                return {"command": "inspect", "status": "ok", "snapshot": build_terminal_snapshot(self.controller)}
+            if operation == "step":
+                if len(parts) > 2:
+                    raise ValueError("usage: step [event]")
+                sequence = int(self.controller.state["clock"]["global_tick"]) + 1
+                event = parts[1] if len(parts) == 2 else default_event_for_sequence(sequence)
+                result = self._dispatch_event(event, "terminal_step")
+                if not result.receipt.committed:
+                    raise RuntimeError(result.receipt.error or "atomic commit rejected")
+                self.paused = True
+                return {
+                    "command": "step",
+                    "event": event,
+                    "status": "committed",
+                    "snapshot": build_terminal_snapshot(self.controller),
+                }
+            if operation == "inject":
+                if len(parts) != 2:
+                    raise ValueError("usage: inject EVENT")
+                event = parts[1]
+                result = self._dispatch_event(event, "terminal_event")
+                if not result.receipt.committed:
+                    raise RuntimeError(result.receipt.error or "atomic commit rejected")
+                self.paused = True
+                return {
+                    "command": "inject",
+                    "event": event,
+                    "status": "committed",
+                    "snapshot": build_terminal_snapshot(self.controller),
+                }
+            if operation == "run":
+                if len(parts) != 2:
+                    raise ValueError("usage: run N")
+                ticks = int(parts[1])
+                if ticks <= 0 or ticks > 10000:
+                    raise ValueError("run tick count must be between 1 and 10000")
+                self.paused = False
+                for _ in range(ticks):
+                    sequence = int(self.controller.state["clock"]["global_tick"]) + 1
+                    event = default_event_for_sequence(sequence)
+                    result = self._dispatch_event(event, "terminal_run")
+                    if not result.receipt.committed:
+                        self.paused = True
+                        raise RuntimeError(result.receipt.error or "atomic commit rejected")
+                self.paused = True
+                return {
+                    "command": "run",
+                    "status": "committed",
+                    "ticks_committed": ticks,
+                    "snapshot": build_terminal_snapshot(self.controller),
+                }
+            if operation == "save":
+                path_text = raw[len(parts[0]) :].strip()
+                if not path_text:
+                    raise ValueError("usage: save PATH")
+                output = self.controller.export(path_text)
+                return {"command": "save", "status": "saved", "path": str(output)}
+            if operation == "load":
+                if len(parts) != 2:
+                    raise ValueError("usage: load RUN_ID")
+                recovery = self.controller.load_run(parts[1])
+                self.paused = True
+                return {
+                    "command": "load",
+                    "status": "loaded",
+                    "run_id": self.controller.run_id,
+                    "frame_count": len(recovery.frames),
+                    "snapshot": build_terminal_snapshot(self.controller),
+                }
+            if operation == "reset":
+                if len(parts) > 2:
+                    raise ValueError("usage: reset [RUN_ID]")
+                recovery = self.controller.reset_run(parts[1] if len(parts) == 2 else None)
+                self.paused = True
+                return {
+                    "command": "reset",
+                    "status": "reset",
+                    "run_id": self.controller.run_id,
+                    "frame_count": len(recovery.frames),
+                    "snapshot": build_terminal_snapshot(self.controller),
+                }
+            if operation == "replay":
+                if len(parts) != 1:
+                    raise ValueError("usage: replay")
+                recovery = self.controller.recover()
+                self.paused = True
+                return {
+                    "command": "replay",
+                    "status": "recomputed",
+                    "run_id": self.controller.run_id,
+                    "frame_count": len(recovery.frames),
+                    "timeline": _timeline_from_recovery(recovery),
+                }
+            raise ValueError(f"unknown command {operation!r}; {self.HELP}")
+        except (EngineInvariantError, OSError, RuntimeError, ValueError) as exc:
+            self.paused = True
+            return {
+                "command": operation,
+                "status": "error",
+                "error": f"{type(exc).__name__}: {exc}",
+            }
 
 
 class PlaygroundWindow:
