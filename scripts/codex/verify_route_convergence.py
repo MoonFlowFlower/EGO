@@ -1121,7 +1121,7 @@ def _r1_visual_program_projection(program_state: dict[str, Any]) -> dict[str, An
             "commit": authority_source.get("pinned_commit"),
             "objects": authority_source.get("objects"),
         },
-        "visual_console": {
+        "action_repair": {
             "route_id": v2.get("route_id"),
             "transition_task_id": v2.get("transition_task_id"),
             "implementation_task_id": v2.get("implementation_task_id"),
@@ -1168,7 +1168,7 @@ def _validate_r1_visual_route_guard_v7(
     source = route_guard.get("authority_source") or {}
     expected_source = {
         "authority_rule": (
-            "FOUR_PINNED_COMMITTED_ITL_OBJECTS_ARE_SOLE_VISUAL_CONSOLE_ROUTE_SOURCE__"
+            "FOUR_PINNED_COMMITTED_ITL_OBJECTS_ARE_SOLE_ACTION_REPAIR_ROUTE_SOURCE__"
             "FIELD_BY_FIELD_TRANSCRIPTION_ONLY"
         ),
         "repo": "intelligence-theory-lab",

@@ -1,0 +1,54 @@
+{
+  "schema_version": "ego.r1.action_perseveration_repair_red_review.v1",
+  "task_id": "EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A-R1",
+  "card_sha256": "00ba5d35b26110e0208aa9357e4ec903156478da20d07e849199e0595a1482db",
+  "base_commit": "78e8517db22229eafb914fe97313b92923aa7485",
+  "itl_commit": "980d5af51dc201b8fd7c46374d542f9938099048",
+  "source_objects": {
+    "product_axis": {
+      "path": "artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json",
+      "git_blob_oid": "28860339bd751f5fa504efbf0e73b0c7e6b114ea",
+      "payload_sha256": "16b0eedb6d66c8e8619162664f5c898103f05fa1606f3919cceb19576e79ba04",
+      "bytes": 3855
+    },
+    "v2_state": {
+      "path": "artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/state.json",
+      "git_blob_oid": "232864a6c83454dc212708f46a16fb79e935ebcf",
+      "payload_sha256": "4d2283b7d262dfd5dfa87742871f9207bfa1e639c31ac98e44c2db656c3c9c4e",
+      "bytes": 8060
+    },
+    "v2_events": {
+      "path": "artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/events.jsonl",
+      "git_blob_oid": "96125a6500495726f6503917dd058402bb6e16ca",
+      "payload_sha256": "3030c5e63d7eac1cddb7c9f44ed05cc47081562ace1b899a97b8e71cbbcba381",
+      "bytes": 7988
+    },
+    "v2_report": {
+      "path": "artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/ready_transition_validation_report.json",
+      "git_blob_oid": "0ad10f349789bab5452e0f1b6502dfb43b76c8a3",
+      "payload_sha256": "bf689ab9b16b91bb9e2615c0c455fe863d9dcae7563a1ba58ac791b4ef905c2d",
+      "bytes": 14646
+    }
+  },
+  "authority_manifest_sha256": "309a185ce02dda3edb6cf4d004add2675e2f3aac43004aff1b039fadf5da8e73",
+  "authority_projection_sha256": "ac541c08118d8e130d48bb5f2141936fcb0591bbd06f56d80bb7ec432b921fd8",
+  "staged_diff_sha256": "4537026de5fe70d2146a4ff9ebbdeb61cd62fdede30f6f83267938dd1851b92f",
+  "review_bundle_sha256": "747b3ce5b434648214290236908ce4f1e089d7a79014845941edb31030fe522a",
+  "exclusion_rule": "PHASE_C_RED_REVIEW_EXCLUDED_ONLY_TO_AVOID_SELF_REFERENCE",
+  "commit_requirement": "EXACT_DIRECT_CHILD_OF_PINNED_V2_BASE",
+  "review": {
+    "verdict": "NO_BLOCKING_FINDINGS",
+    "blocking_findings": []
+  },
+  "reviewer": {
+    "reviewer": "Claude",
+    "review_source": "Claude Web",
+    "review_id": "EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A-R1-PHASE-II-STAGED-REVIEW",
+    "reviewer_session_id": "f57c2f8e-8c26-43fd-bb1c-5d26fc197bd1",
+    "executor_session_id": "019f6c9f-f487-7722-8d29-b3b2044bd8a2",
+    "raw_output_path": "D:\\Project\\AIProject\\MyProject\\external-plans\\EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A\\PHASE-II-STAGED-REVIEW\\CLAUDE_RESPONSE.md",
+    "raw_output_sha256": "e139d6d0995f9550d8bafc843ef5dc0d981c4166eed284bd0b499560a178eb58",
+    "identity_assurance": "CONTROLLER_ATTESTED_LOCAL_ONLY",
+    "cryptographic_identity_verified": false
+  }
+}

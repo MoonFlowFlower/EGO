@@ -1,195 +1,116 @@
-# EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A
+# EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A-R1
 
-Status: `AUTHORIZED_DEFAULT_OFF_IMPLEMENTATION_PENDING`
+Status: `AUTHORIZED_AFTER_EXACT_PHASE_C_TRANSCRIPTION`
+
+Auto-Remote-Anchor: `forbidden`
 
 ## Problem definition
 
-The existing local microworld has canonical controller, SQLite persistence,
-recovery frames, trace, and recomputing replay, but no validated live visual
-console. Implement one Chinese Tk console that renders the canonical path and
-does not create a second action-selection, scoring, transition, memory,
-prediction, or replay path.
+The canonical default-off V2 product path reproduced a real action-perseveration
+failure: 63/71 committed actions were `forage`, including a 62-action suffix
+across five public event types. Repair the sole canonical selector so
+context-ineligible and duplicated positive memory cannot override an available
+positive-progress action for the active goal.
 
-## Current layer and lane
+## Layer and mainline target
 
-- Layer: 2, engineering implementation and integration evidence.
-- Lane: local product/capability implementation.
-- Mainline target: the existing `ego_life_playground_v0` local entrypoint only;
-  Ego runtime/mainline is forbidden.
-- Enabled-state requirement: default-off; starting the explicit Tk entrypoint is
-  the only enablement.
-- Real-trigger requirement: a real UI Step/Run action must invoke the canonical
-  controller and produce a committed SQLite transition recovered into the same
-  `RecoveryFrame` used by every panel.
+- Layer: engineering implementation plus bounded mechanism diagnosis.
+- Mainline target: existing local default-off `ego_life_playground_v0` product
+  path only; Ego runtime/mainline is forbidden.
+- Enabled-state: `enabled=false`, `default_enabled=false`.
+- Real trigger: immutable `life-visual-001` trace plus callable same-state
+  `memory_mode=off` contrast.
+- Claim ceiling: prevention of the reproduced local perseveration failure under
+  the frozen and named fresh distributions only.
 
-## Real objective and lockstep contract
+## Hypothesis and strongest baseline
 
-The required loop is:
+Hypothesis: context-free claim support, zero-step duplicate site evidence, and
+positive memory overriding active-goal progress jointly produce the suffix.
 
-```text
-Tk Step/Run
-  -> canonical controller.dispatch
-  -> SQLite committed transition
-  -> canonical recover
-  -> one RecoveryFrame
-  -> recovered shortest_path_coordinates waypoint animation
-  -> Chinese trace-supported causal display
-  -> animation completion
-  -> next dispatch (Run only)
-```
+Strongest baseline: disabling memory, random choice, round-robin, or a cooldown
+can create action variety without repairing the causal defect. Those shortcuts
+are forbidden and retained as ablations/hostile controls.
 
-No next dispatch is allowed while the current committed path is animating.
-Pause and Close must cancel future timers and may not create an extra dispatch.
+## Collision selection
 
-## Hypothesis
+1. Relabel/force variety: rejected; stored trace remains unchanged or default
+   becomes a hard-coded rotation.
+2. Clip/disable memory: rejected as repair; retained as a callable ablation.
+3. Context eligibility + novel-arrival evidence + generic progress gate:
+   selected because each rule is traceable and falsifiable without an
+   action/event/seed/sequence exception.
 
-The existing controller/recovery API is sufficient to supply a single-source
-visual console without modifying engine, microworld, store, claims, launcher,
-or SQLite schema.
+## TDD and ablation requirements
 
-## Strongest baseline / shortcut explanation
+Before production edits, canonical-code tests must fail because:
 
-A frozen-trace player or a UI-local simulation can look convincing while never
-calling `controller.dispatch`, committing SQLite, or following the recovered
-path. It is not admissible. Tests must distinguish the real lockstep path from
-this shortcut.
+1. mismatched cue/goal events contribute to support;
+2. a second zero-distance same-site action emits a new outcome/claim;
+3. the frozen 71-command distribution reproduces the 62-action suffix;
+4. the post-71 default selects zero-progress `forage`, while real memory-off
+   selects positive-progress `approach`.
 
-## Collision decision
+Freeze RED output and source hash. Tests may not be weakened after production
+edits. Rerun real memory-off and update-frozen ablations; default must still
+apply at least one eligible same-context nonzero memory contribution.
 
-Use the existing controller and recovery result directly. Do not duplicate
-state machines, candidate scoring, translations of private/oracle data, or
-replay computation. See the R1 collision record for rejected alternatives.
+## Required production invariants
 
-## UI contract
+1. Claim support is recomputed only from provenance events matching recorded
+   public cue and current goal.
+2. Site evidence is created only on actual arrival; a zero-step repeat writes no
+   new independent site-outcome claim.
+3. When a legal positive-progress candidate exists, positive memory from a
+   zero/nonprogress candidate cannot defeat it. Negative evidence remains
+   eligible; if none can progress, eligible memory may rank candidates.
+4. Trace records raw/applied memory, context eligibility, progress gate,
+   provenance references, and exact score recomputation.
+5. `compute_step` remains the sole selector; no second scoring/world/replay path.
+6. No action/event/seed/sequence/frozen-expected-action exception.
 
-Ordinary UI text is Chinese. Technical identifiers and hashes belong only in
-`高级详情`.
+## Trace/replay and computed-evidence gate
 
-Each committed step shows only fields supported by the same recovery frame:
-
-1. `步骤发生前`: 当前目标、正在执行的动作、当前预期、决策依据、关键内部状态、读取的记忆及来源。
-2. `外部事件`: 发生了什么、事件中文标签、可观察线索、是否来自用户 Inject。
-3. `候选与选择`: 排名、分数拆解、selected action，以及 trace 字段支持的胜出依据。
-4. `结果与变化`: prediction、actual outcome、prediction error、update/consolidation、内部状态和 memory/provenance 前后值。
-5. `动作连续性`: 继续、完成或被中断；中断原因；是否重新选择；新动作和目标。
-
-Missing trace evidence must display `未记录／未知`. The UI must not describe
-the data as real thought, feeling, intention, subjectivity, or agency.
-
-## Animation contract
-
-- The animator schedules the exact ordered coordinates from
-  `RecoveryFrame.trace.world_transition.path.shortest_path_coordinates`.
-- A test fixture must contain a multi-segment path and compare actual scheduled
-  waypoints element by element.
-- A hostile straight-line decoy must fail.
-- Idle agent rendering is static: no pulse, breathing, floating, or decorative
-  life-like animation.
-- Pause may stop only at a committed boundary or the recorded prefix semantics;
-  Close cancels all timers and future dispatch.
-
-## Canonical controls
-
-- Step: one real `controller.dispatch` followed by commit, recover, render, and animation.
-- Run: repeated real dispatches under the lockstep latch; never frozen replay.
-- Pause: cancels future Run dispatch and obeys the animation prefix contract.
-- Inject: delegates to the canonical event API.
-- Save/Export: raw bytes must equal direct `controller.export` output.
-- Load/Reset/Replay: delegate to existing controller APIs.
-
-## Baseline requirement
-
-Callable evidence must compare the live path with a frozen-player/no-dispatch
-baseline and show that only the live path increments the committed sequence and
-fresh recovery. This baseline is UX/integration evidence only.
-
-## Ablation requirement
-
-Rerun real episodes with at least:
-
-- dispatch replaced by a no-op;
-- recovered path replaced by a straight-line decoy;
-- animation-complete latch held closed;
-- translation layer removed or replaced with ID-only output;
-- private/oracle positive-control token injected into a repo-external fixture.
-
-Each intervention must produce the predeclared failure, not a handwritten
-verdict.
-
-## Trace/replay requirement
-
-- All panels in one step must retain one `RecoveryFrame` identity/sequence.
-- Replay must recompute candidate behavior from serialized state plus
-  observation, not only compare stored hashes.
-- The visual verifier records producer function, input artifacts, run ID,
-  seed/world-seed/context IDs, aggregation rule, and code-path hashes.
-- Chinese mapping must not change causal bytes.
-
-## Computed-evidence provenance gate
-
-Required callable checks:
-
-1. UI Step calls canonical `dispatch`.
-2. SQLite records a committed transition.
-3. fresh-process recover returns the committed sequence.
-4. every panel uses the same RecoveryFrame.
-5. actual scheduled waypoints equal the recovered path element by element.
-6. Run obeys commit/recover/animate lockstep.
-7. Pause/Close produce zero extra dispatch.
-8. export bytes equal direct controller export bytes.
-9. replay recomputes from serialized state plus observation.
-10. Chinese mapping leaves causal bytes unchanged.
-11. private/oracle scan has a firing positive control.
-12. static scan and callable tests find no second engine path.
-13. fresh-process smoke and target-interpreter Tk test are non-skipped.
-14. screenshot or short recording is produced as UX evidence only.
+- Preserve the old `life-visual-001` database as immutable negative evidence.
+- Recompute the old 71 old-code hashes.
+- Recompute repaired behavior from serialized initial state plus the same ordered
+  public events/triggers, not from stored selected-action hashes.
+- Record producer function, input artifacts, run/seed/world/layout/context IDs,
+  aggregation rule, and code-path hash.
+- Run a real leakage scanner with private/oracle positive control.
+- Run the existing visual-console lockstep verifier against a new run ID.
 
 ## Acceptance gate
 
-Acceptance requires all 14 checks, a real explicit Tk entrypoint, a default-off
-launch path, a recorded real Step and multi-step Run, committed SQLite state,
-fresh recovery, recovered waypoint animation, Chinese causal display, and no
-second logic path. Test green without a real trigger is insufficient.
+Close only if focused V0/V2/repair tests pass, the reproduced suffix is absent
+because the named invariants fire, context/zero-distance positive controls fire,
+memory-off and update-frozen reruns are reported, eligible nonzero memory still
+applies, replay recomputes, leakage controls pass, fresh Tk Step/Run passes, and
+no unlisted path or protected Ego-main byte changes.
 
-## Stop conditions
+## Exact Phase-A mutation boundary
 
-Stop without widening scope if implementation requires any of:
+The paired mutation scope is authoritative and contains exactly 17 paths:
+three canonical mechanism files, two existing tests, one verifier plus its
+test, and ten evidence artifacts. `app.py`, `store.py`, the launcher, SQLite
+schema, route files, protected Ego main, LLM/network/background behavior, and
+all unlisted paths are forbidden.
 
-- engine, microworld, store, claims, launcher, or SQLite schema changes;
-- a second candidate/scoring/transition/memory/prediction/replay path;
-- LLM, network, subprocess service, background/proactive dispatch, EgoOperator,
-  EgoDesktop, runtime authority, or mainline enablement;
-- an unlisted path;
-- invented Chinese explanations not present in trace;
-- skipped Tk trigger evidence relabeled as pass.
+## Stop condition and rollback
 
-## Rollback plan
-
-Keep the work in the exact 12-path boundary. On failure leave task-owned changes
-unstaged and preserve `failure_manifest.json`; do not reset, clean, stash,
-rebase, amend, or modify protected Ego main work.
-
-## Expected changed files
-
-Exactly the 12 paths in the paired mutation scope. The task card and mutation
-scope are read-only dependencies during implementation.
-
-## Forbidden changes
-
-All paths outside the exact mutation scope, especially engine, microworld,
-store, claims, launcher, SQLite schema, route/state/validator files,
-EgoOperator, EgoDesktop, LLM/network/service code, and protected Ego main.
-
-## Auto-Remote-Anchor
-
-`forbidden`
+Stop on pin drift, missing RED, hidden memory-off/forced-diversity equivalence,
+second selection path, leakage, migration need, unlisted path, protected-main
+drift, or push/tag/network/LLM/background/reset/clean/stash/rebase/amend need.
+Rollback is omission of the uncommitted exact-scoped Phase-A diff; old runtime
+and evidence bytes are never rewritten.
 
 ## Claim ceiling
 
-At most: a local default-off visual console is connected to the canonical
-controller, SQLite, recovery, and replay paths and displays a Chinese causal
-chain supported by recorded trace fields.
+Allowed: the local default-off canonical product path no longer exhibits the
+specifically reproduced context-leakage, duplicate-evidence, and
+goal-incompatible action-perseveration failure under frozen and named fresh
+distributions.
 
-This does not prove real thought, emotion, learning success, memory causality,
-initiative, agency, subjectivity, consciousness, electronic life, product
-readiness, or user value.
+Not proved: general learning, memory causality, optimality, initiative, agency,
+emotion, subjectivity, consciousness, electronic life, product readiness, user
+value, or Ego runtime/mainline integration.

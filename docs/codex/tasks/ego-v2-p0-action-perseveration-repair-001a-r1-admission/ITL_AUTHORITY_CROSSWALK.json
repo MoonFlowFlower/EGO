@@ -1,0 +1,370 @@
+{
+  "schema_version": "ego.r1.action_perseveration_repair_authority.v1",
+  "base_commit": "78e8517db22229eafb914fe97313b92923aa7485",
+  "itl_authority": {
+    "repo": "intelligence-theory-lab",
+    "commit": "980d5af51dc201b8fd7c46374d542f9938099048",
+    "objects": {
+      "product_axis": {
+        "path": "artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json",
+        "git_blob_oid": "28860339bd751f5fa504efbf0e73b0c7e6b114ea",
+        "payload_sha256": "16b0eedb6d66c8e8619162664f5c898103f05fa1606f3919cceb19576e79ba04",
+        "bytes": 3855
+      },
+      "v2_state": {
+        "path": "artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/state.json",
+        "git_blob_oid": "232864a6c83454dc212708f46a16fb79e935ebcf",
+        "payload_sha256": "4d2283b7d262dfd5dfa87742871f9207bfa1e639c31ac98e44c2db656c3c9c4e",
+        "bytes": 8060
+      },
+      "v2_events": {
+        "path": "artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/events.jsonl",
+        "git_blob_oid": "96125a6500495726f6503917dd058402bb6e16ca",
+        "payload_sha256": "3030c5e63d7eac1cddb7c9f44ed05cc47081562ace1b899a97b8e71cbbcba381",
+        "bytes": 7988
+      },
+      "v2_report": {
+        "path": "artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/ready_transition_validation_report.json",
+        "git_blob_oid": "0ad10f349789bab5452e0f1b6502dfb43b76c8a3",
+        "payload_sha256": "bf689ab9b16b91bb9e2615c0c455fe863d9dcae7563a1ba58ac791b4ef905c2d",
+        "bytes": 14646
+      }
+    }
+  },
+  "action_repair": {
+    "route_id": "EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A",
+    "transition_task_id": "EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A-R1",
+    "implementation_task_id": "EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A",
+    "phase": "V2_ACTION_PERSEVERATION_REPAIR_READY_TO_IMPLEMENT",
+    "operator_decision": "AUTHORIZE_EXACT_DEFAULT_OFF_ACTION_PERSEVERATION_REPAIR_AFTER_LIVE_TRACE_DIAGNOSIS",
+    "execution_state": "AUTHORIZED_FOR_EXACT_ACTIVE_V2_IMPLEMENTATION_SCOPE",
+    "conditional_action": {
+      "authorization": "GRANTED_EXACT_TARGETS",
+      "execution_precondition": "EXACT_COMMITTED_ACTIVE_V2_WORKTREE_TRANSCRIPTION_AND_DUAL_REPO_VALIDATION",
+      "state": "AUTHORIZED_BUT_BLOCKED_UNTIL_EXACT_V2_WORKTREE_TRANSCRIPTION"
+    },
+    "implementation_action": "repair_EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A",
+    "implementation_task_kind": "bounded_action_perseveration_repair",
+    "validation_action": "run_route_state_machine_validation",
+    "effective_allowed_next_actions": [
+      "repair_EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A",
+      "run_route_state_machine_validation"
+    ],
+    "implementation_authorized": true,
+    "authorized_implementation_targets": [
+      "labs/ego_life_playground_v0/engine.py",
+      "labs/ego_life_playground_v0/claims.py",
+      "labs/ego_life_playground_v0/microworld.py",
+      "tests/test_ego_life_playground_v2_microworld.py",
+      "tests/test_ego_life_playground_v0.py",
+      "scripts/codex/verify_ego_v2_action_perseveration_repair_001a.py",
+      "scripts/tests/test_verify_ego_v2_action_perseveration_repair_001a.py",
+      "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/result.json",
+      "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/trace.jsonl",
+      "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/baseline_comparison.json",
+      "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/ablation_report.json",
+      "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/replay_report.json",
+      "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/leakage_report.json",
+      "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/failure_manifest.json",
+      "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/diagnostic_readback.json",
+      "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/live_repair_receipt.json",
+      "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/claim_ceiling.txt"
+    ],
+    "consumed_sync_action": "sync_EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A_authority_under_separate_task",
+    "consumed_implementation": {
+      "action": "implement_EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A",
+      "bounded_result_commit": "68de924e0f3af392e659ad8f8b39a734b08038f3",
+      "bounded_result_verdict": "bounded_update_and_heldout_comparison_measured_with_control_equivalence",
+      "claim_disposition": "PRESERVE_MEMORY_CAUSALITY_AND_LEARNING_LIMITS__NO_RESULT_UPGRADE",
+      "visual_console_commit": "78e8517db22229eafb914fe97313b92923aa7485",
+      "visual_console_result_verdict": "pass"
+    },
+    "product_development_core_lineage": {
+      "authority": "DESCENDANT_OF_SOLE_LINEAGE",
+      "core_id": "ego_life_playground_v0",
+      "descendant_id": "EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A",
+      "lineage_root_authority_route_id": "EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A",
+      "parallel_core_created": false,
+      "predecessor_descendant_id": "EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A",
+      "v0_source_commit": "546e3639299d7b11b599df3d00645666a6953bac",
+      "v1_implementation_commit": "7ca4ad3b00a41723c04dde388212ad617479ad81",
+      "v2_bounded_result_commit": "68de924e0f3af392e659ad8f8b39a734b08038f3",
+      "v2_preregistration_commit": "089ab5ef27431eb5ace4ff4795f57f08fd052779",
+      "visual_console_commit": "78e8517db22229eafb914fe97313b92923aa7485"
+    },
+    "source_v2_commit": "78e8517db22229eafb914fe97313b92923aa7485",
+    "switches": {
+      "enabled": false,
+      "default_enabled": false,
+      "mainline_connected": false,
+      "runtime_mainline_connected": false,
+      "runtime_authority": "none",
+      "science_weight": 0,
+      "remote_anchor": false,
+      "auto_remote_anchor": "forbidden",
+      "proactive_action_enabled": false,
+      "initiative_executor_authorized": false,
+      "background_dispatch": false,
+      "external_side_effects": false,
+      "llm": "forbidden",
+      "network": "forbidden"
+    },
+    "real_trigger_evidence": "PINNED_LIFE_VISUAL_001_ACTION_PERSEVERATION_TRACE_AND_CALLABLE_MEMORY_OFF_CONTRAST",
+    "forbidden_next_actions": [
+      "modify_reopen_or_rerun_EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A",
+      "modify_reopen_or_rerun_K0-DUAL-TRACK-SUPERSESSION-001A",
+      "use_closed_card2_action_or_old_k0_action_as_authority",
+      "modify_pinned_V0_source_commit_or_rewrite_history",
+      "enable_runtime_mainline_or_grant_runtime_authority",
+      "change_EgoOperator_active_default",
+      "start_V1_implementation_without_separate_operator_authorized_card",
+      "start_science_successor_experiment_scoring_or_formal_run",
+      "treat_product_trace_or_visible_behavior_as_mechanism_evidence",
+      "push_tag_or_remote_anchor",
+      "modify_reopen_or_rerun_EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A",
+      "modify_product_axis_science_snapshot_program_state",
+      "execute_V1_before_exact_Ego_phase_C_transcription_validation",
+      "modify_unlisted_V1_implementation_target",
+      "create_parallel_visible_life_product_core_or_launcher",
+      "modify_EgoDesktop_or_EgoOperator",
+      "add_LLM_network_service_or_subprocess",
+      "implement_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A",
+      "sync_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A_ready_authority_under_separate_task",
+      "retune_repair_or_rerun_V1_to_force_memory_conditioning",
+      "rewrite_V1_ready_report_or_first_event",
+      "start_V2_before_exact_Ego_phase_C_transcription",
+      "execute_action_perseveration_repair_before_exact_V2_worktree_transcription_validation",
+      "reactivate_consumed_visual_console_implementation_action",
+      "modify_unlisted_action_perseveration_repair_target",
+      "modify_app_store_launcher_or_sqlite_schema",
+      "enable_proactive_initiative_or_background_dispatch"
+    ],
+    "claim_ceiling": {
+      "forbidden_claims": [
+        "runtime_or_runtime_mainline_effect",
+        "learned_model",
+        "online_learning",
+        "memory_or_replay_causal_contribution",
+        "generalization_or_transfer",
+        "thought_or_emotional_understanding",
+        "initiative_or_agency",
+        "autonomy",
+        "subjectivity_or_consciousness",
+        "electronic_life",
+        "science_successor_admission",
+        "mechanism_validity",
+        "ego_readiness",
+        "stable_user_benefit",
+        "v1_product_implementation_or_trigger",
+        "continuity_product_acceptance",
+        "associative_memory_or_controlled_initiative",
+        "memory_causality",
+        "bounded_online_learning_success",
+        "mechanism_non_equivalence",
+        "v2_implementation_or_trigger",
+        "general_learning",
+        "associative_memory",
+        "controlled_initiative"
+      ],
+      "max": "machine-readable product control-plane admission of one exact default-off local action-perseveration repair action and exact 17-path boundary, blocked on exact active-V2 transcription"
+    },
+    "worktree_authority": {
+      "negative_checkpoint": {
+        "path": "D:/Project/AIProject/MyProject/Ego",
+        "branch": "main",
+        "head": "089ab5ef27431eb5ace4ff4795f57f08fd052779",
+        "status": "NON_LIVE_NEGATIVE_ANTI_ZENO_CHECKPOINT",
+        "live_authority": false
+      },
+      "active_v2_development_authority": {
+        "worktree": "D:/Project/AIProject/MyProject/Ego-v2-product-first-001a",
+        "branch": "codex/ego-v2-product-first-001a",
+        "activation_condition": "THIS_DIRECT_CHILD_COMMIT_PASSES_PHASE_C_V2_GATE",
+        "sole": true
+      }
+    }
+  },
+  "transcription_contract": {
+    "rule": "FIELD_BY_FIELD_FROM_PINNED_GIT_OBJECTS__SYNC_CONSUMED__NO_UNION_OR_FALLBACK",
+    "source_report_verdict": "pass",
+    "source_admission_event_id": "EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A:READY_TO_IMPLEMENT:003",
+    "source_object_count": 4,
+    "crosswalk_complete": true
+  },
+  "field_crosswalk": [
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/route_id",
+      "target_pointer": "/action_repair/route_id",
+      "rule": "copy_exact"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/task_id",
+      "target_pointer": "/action_repair/transition_task_id",
+      "rule": "copy_exact"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/phase",
+      "target_pointer": "/action_repair/phase",
+      "rule": "copy_exact"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/operator_decision",
+      "target_pointer": "/action_repair/operator_decision",
+      "rule": "copy_exact"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/execution_state",
+      "target_pointer": "/action_repair/execution_state",
+      "rule": "copy_exact"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/conditional_actions/repair_EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A",
+      "target_pointer": "/action_repair/conditional_action",
+      "rule": "copy_exact"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/authorized_implementation_targets",
+      "target_pointer": "/action_repair/authorized_implementation_targets",
+      "rule": "copy_exact_ordered"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/consumed_implementation",
+      "target_pointer": "/action_repair/consumed_implementation",
+      "rule": "copy_exact"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/product_development_core_lineage",
+      "target_pointer": "/action_repair/product_development_core_lineage",
+      "rule": "copy_exact"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/real_trigger_evidence",
+      "target_pointer": "/action_repair/real_trigger_evidence",
+      "rule": "copy_exact"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/forbidden_next_actions",
+      "target_pointer": "/action_repair/forbidden_next_actions",
+      "rule": "copy_exact_ordered"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/claim_ceiling",
+      "target_pointer": "/action_repair/claim_ceiling",
+      "rule": "copy_exact"
+    },
+    {
+      "source_object": "product_axis",
+      "source_pointer": "/product_development_axis/source_commit",
+      "target_pointer": "/action_repair/source_v2_commit",
+      "rule": "copy_exact"
+    },
+    {
+      "source_object": "v2_report",
+      "source_pointer": "/verdict",
+      "target_pointer": "/transcription_contract/source_report_verdict",
+      "rule": "require_exact_pass"
+    },
+    {
+      "source_object": "v2_events",
+      "source_pointer": "/2/event_id",
+      "target_pointer": "/transcription_contract/source_admission_event_id",
+      "rule": "copy_exact"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/enabled",
+      "target_pointer": "/action_repair/switches/enabled",
+      "rule": "copy_exact_typed"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/default_enabled",
+      "target_pointer": "/action_repair/switches/default_enabled",
+      "rule": "copy_exact_typed"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/mainline_connected",
+      "target_pointer": "/action_repair/switches/mainline_connected",
+      "rule": "copy_exact_typed"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/runtime_mainline_connected",
+      "target_pointer": "/action_repair/switches/runtime_mainline_connected",
+      "rule": "copy_exact_typed"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/runtime_authority",
+      "target_pointer": "/action_repair/switches/runtime_authority",
+      "rule": "copy_exact_typed"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/science_weight",
+      "target_pointer": "/action_repair/switches/science_weight",
+      "rule": "copy_exact_typed"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/remote_anchor",
+      "target_pointer": "/action_repair/switches/remote_anchor",
+      "rule": "copy_exact_typed"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/auto_remote_anchor",
+      "target_pointer": "/action_repair/switches/auto_remote_anchor",
+      "rule": "copy_exact_typed"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/proactive_action_enabled",
+      "target_pointer": "/action_repair/switches/proactive_action_enabled",
+      "rule": "copy_exact_typed"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/initiative_executor_authorized",
+      "target_pointer": "/action_repair/switches/initiative_executor_authorized",
+      "rule": "copy_exact_typed"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/background_dispatch",
+      "target_pointer": "/action_repair/switches/background_dispatch",
+      "rule": "copy_exact_typed"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/external_side_effects",
+      "target_pointer": "/action_repair/switches/external_side_effects",
+      "rule": "copy_exact_typed"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/llm",
+      "target_pointer": "/action_repair/switches/llm",
+      "rule": "copy_exact_typed"
+    },
+    {
+      "source_object": "v2_state",
+      "source_pointer": "/network",
+      "target_pointer": "/action_repair/switches/network",
+      "rule": "copy_exact_typed"
+    }
+  ]
+}

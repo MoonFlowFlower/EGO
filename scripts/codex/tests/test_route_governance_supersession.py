@@ -24,7 +24,7 @@ def live_state() -> dict:
     return verify.load_program_state()
 
 
-def test_live_v7_route_exposes_only_visual_action_and_exact_targets() -> None:
+def test_live_v7_route_exposes_only_action_repair_and_exact_targets() -> None:
     state = live_state()
     errors, details = verify.validate_route_guard(state)
 
@@ -67,7 +67,7 @@ def test_live_v7_phase_a_scope_positive_controls_are_fail_closed() -> None:
     assert guard.validate_r1_visual_phase_a_scope_payload(scope) == []
 
     for forbidden in (
-        "labs/ego_life_playground_v0/engine.py",
+        "labs/ego_life_playground_v0/app.py",
         "labs/ego_life_playground_v0/store.py",
         "scripts/run_ego_life_playground_v0.py",
         "docs/PROGRAM_STATE_UNIFIED.yaml",

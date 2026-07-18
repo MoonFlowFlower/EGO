@@ -1,23 +1,45 @@
-schema_version: ego.visual_console.phase_a_mutation_scope.v1
-task_id: EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A
-task_kind: default_off_visual_console_implementation
-requested_action_id: implement_EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A
+schema_version: ego.action_perseveration_repair.phase_a_mutation_scope.v1
+task_id: EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A
+task_kind: bounded_action_perseveration_repair
+requested_action_id: repair_EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A
 authority_commit: HEAD_AT_MUTATION_START
-source_route_revision_id: EGO_V2_P0_VISUAL_CONSOLE_LIVE_R1_ADMISSION_001A
-authorized_implementation_targets: &targets
-  - labs/ego_life_playground_v0/app.py
-  - tests/test_ego_life_playground_v0.py
-  - scripts/codex/verify_ego_v2_p0_visual_console_live_001a.py
-  - scripts/tests/test_verify_ego_v2_p0_visual_console_live_001a.py
-  - artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/result.json
-  - artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/trace.jsonl
-  - artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/baseline_comparison.json
-  - artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/ablation_report.json
-  - artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/replay_report.json
-  - artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/failure_manifest.json
-  - artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/live_ui_receipt.json
-  - artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/claim_ceiling.txt
-allowed_mutation_paths: *targets
+source_route_revision_id: EGO_V2_P0_ACTION_PERSEVERATION_REPAIR_001A_R1_ADMISSION
+authorized_implementation_targets:
+- labs/ego_life_playground_v0/engine.py
+- labs/ego_life_playground_v0/claims.py
+- labs/ego_life_playground_v0/microworld.py
+- tests/test_ego_life_playground_v2_microworld.py
+- tests/test_ego_life_playground_v0.py
+- scripts/codex/verify_ego_v2_action_perseveration_repair_001a.py
+- scripts/tests/test_verify_ego_v2_action_perseveration_repair_001a.py
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/result.json
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/trace.jsonl
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/baseline_comparison.json
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/ablation_report.json
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/replay_report.json
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/leakage_report.json
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/failure_manifest.json
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/diagnostic_readback.json
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/live_repair_receipt.json
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/claim_ceiling.txt
+allowed_mutation_paths:
+- labs/ego_life_playground_v0/engine.py
+- labs/ego_life_playground_v0/claims.py
+- labs/ego_life_playground_v0/microworld.py
+- tests/test_ego_life_playground_v2_microworld.py
+- tests/test_ego_life_playground_v0.py
+- scripts/codex/verify_ego_v2_action_perseveration_repair_001a.py
+- scripts/tests/test_verify_ego_v2_action_perseveration_repair_001a.py
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/result.json
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/trace.jsonl
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/baseline_comparison.json
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/ablation_report.json
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/replay_report.json
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/leakage_report.json
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/failure_manifest.json
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/diagnostic_readback.json
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/live_repair_receipt.json
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/claim_ceiling.txt
 default_enabled: false
 runtime_authority: none
 mainline_connected: false

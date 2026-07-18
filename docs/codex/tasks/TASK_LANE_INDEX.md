@@ -21,7 +21,7 @@
 | `supporting_active` | 2 |
 | `parked` | 1 |
 | `closed_evidence` | 27 |
-| `reference_only` | 235 |
+| `reference_only` | 236 |
 
 ## Active Default
 
@@ -33,7 +33,7 @@
 
 | entry | kind | workstream | paths | why |
 |---|---|---|---|---|
-| EGO V2 Visual Console Exact Admission 001A | `codex_task` | n/a | `docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/` | Sole active default-off visual-console implementation authority; exact 12-path allowlist, runtime-disconnected, no visual trigger before Phase A, science_weight=0, remote/proactive/LLM/network closed. |
+| EGO V2 Action Perseveration Repair Exact Admission 001A | `codex_task` | n/a | `docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/` | Sole active default-off action-perseveration repair authority; exact 17-path allowlist, runtime-disconnected, science_weight=0, remote/proactive/LLM/network closed. |
 | Repo Mainline Clarity v1 | `codex_task` | n/a | `docs/codex/tasks/repo-mainline-clarity-v1/` | Supporting repo-view slice for mainline onboarding, surface-map clarity, and staged operational-exhaust hygiene; must not replace the active default track. |
 
 ## Parked
@@ -202,6 +202,7 @@
 | Ego R3 Adoption Slice 001A | `codex_task` | n/a | `docs/codex/tasks/ego-r3-adoption-slice-001a/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Subject State Mutation Gate Audit Trace | `codex_task` | n/a | `docs/codex/tasks/ego-subject-state-mutation-gate-audit-trace/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Subjectstate V0 Candidate Context | `codex_task` | n/a | `docs/codex/tasks/ego-subjectstate-v0-candidate-context/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
+| Ego V2 P0 Action Perseveration Repair 001A R1 Admission | `codex_task` | n/a | `docs/codex/tasks/ego-v2-p0-action-perseveration-repair-001a-r1-admission/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego V2 P0 Visual Console Live 001A R1 Admission | `codex_task` | n/a | `docs/codex/tasks/ego-v2-p0-visual-console-live-001a-r1-admission/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Ego Viabilitystate V0 Signal Extraction | `codex_task` | n/a | `docs/codex/tasks/ego-viabilitystate-v0-signal-extraction/` | No current authority promotes this task as an active or parked route; keep it as reference-only by default. |
 | Egocore Pytest Suite Stabilization | `codex_task` | n/a | `docs/codex/tasks/egocore-pytest-suite-stabilization/` | Historical stabilization, sampling, or exploratory task; retained as reference/supporting history only. |

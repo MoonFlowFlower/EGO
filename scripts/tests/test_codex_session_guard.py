@@ -1083,8 +1083,8 @@ def _r1_visual_source_fixture() -> dict:
     state = {
         "route_id": codex_session_guard.R1_VISUAL_ROUTE_ID,
         "task_id": codex_session_guard.R1_VISUAL_TRANSITION_TASK_ID,
-        "phase": "V2_BOUNDED_RESULT_VISUAL_CONSOLE_READY_TO_IMPLEMENT",
-        "operator_decision": "AUTHORIZE_EXACT_DEFAULT_OFF_VISUAL_CONSOLE_AFTER_COMMITTED_V2_RESULT",
+        "phase": "V2_ACTION_PERSEVERATION_REPAIR_READY_TO_IMPLEMENT",
+        "operator_decision": "AUTHORIZE_EXACT_DEFAULT_OFF_ACTION_PERSEVERATION_REPAIR_AFTER_LIVE_TRACE_DIAGNOSIS",
         "execution_state": "AUTHORIZED_BUT_BLOCKED_UNTIL_EXACT_V2_WORKTREE_TRANSCRIPTION",
         "conditional_actions": {
             codex_session_guard.R1_VISUAL_IMPLEMENT_ACTION_ID: {
@@ -1106,7 +1106,7 @@ def _r1_visual_source_fixture() -> dict:
         "authorized_implementation_targets": list(codex_session_guard.R1_VISUAL_IMPLEMENTATION_TARGETS),
         "consumed_implementation": copy.deepcopy(codex_session_guard.R1_VISUAL_CONSUMED_IMPLEMENTATION),
         "product_development_core_lineage": copy.deepcopy(codex_session_guard.R1_VISUAL_LINEAGE),
-        "real_trigger_evidence": "PINNED_V2_LOCAL_PRODUCT_TRIGGER_ONLY__NO_VISUAL_CONSOLE_TRIGGER",
+        "real_trigger_evidence": "PINNED_LIFE_VISUAL_001_ACTION_PERSEVERATION_TRACE_AND_CALLABLE_MEMORY_OFF_CONTRAST",
         "forbidden_next_actions": list(codex_session_guard.R1_VISUAL_FORBIDDEN_NEXT_ACTIONS),
         "claim_ceiling": copy.deepcopy(codex_session_guard.R1_VISUAL_CLAIM_CEILING),
         **copy.deepcopy(codex_session_guard.R1_VISUAL_CLOSED_SWITCHES),
@@ -1127,7 +1127,7 @@ def _r1_visual_source_fixture() -> dict:
                 codex_session_guard.R1_VISUAL_VALIDATION_ACTION_ID,
             ],
             "source_commit": codex_session_guard.R1_VISUAL_V2_BASE_COMMIT,
-            "state": "V2_VISUAL_CONSOLE_AUTHORIZED_ACTIVE_V2_TRANSCRIPTION_REQUIRED",
+            "state": "V2_ACTION_PERSEVERATION_REPAIR_AUTHORIZED_ACTIVE_V2_TRANSCRIPTION_REQUIRED",
             "enabled": False,
             "default_enabled": False,
             "mainline_connected": False,
@@ -1138,7 +1138,7 @@ def _r1_visual_source_fixture() -> dict:
         },
     }
     report = {"verdict": "pass", "route_id": codex_session_guard.R1_VISUAL_ROUTE_ID}
-    return {"product_axis": product_axis, "v2_state": state, "v2_events": [{"event_id": "001"}, {"event_id": "002"}], "v2_report": report}
+    return {"product_axis": product_axis, "v2_state": state, "v2_events": [{"event_id": "001"}, {"event_id": "002"}, {"event_id": "003"}], "v2_report": report}
 
 
 def test_r1_visual_authority_projection_is_exact_and_fail_closed() -> None:
@@ -1146,22 +1146,22 @@ def test_r1_visual_authority_projection_is_exact_and_fail_closed() -> None:
     authority = codex_session_guard.build_r1_visual_source_projection(source)
     result = codex_session_guard.validate_r1_visual_authority_payload(authority, source_objects=source)
     assert result["status"] == "pass", result["errors"]
-    assert authority["visual_console"]["effective_allowed_next_actions"] == [
+    assert authority["action_repair"]["effective_allowed_next_actions"] == [
         codex_session_guard.R1_VISUAL_IMPLEMENT_ACTION_ID,
         codex_session_guard.R1_VISUAL_VALIDATION_ACTION_ID,
     ]
-    assert authority["visual_console"]["authorized_implementation_targets"] == codex_session_guard.R1_VISUAL_IMPLEMENTATION_TARGETS
+    assert authority["action_repair"]["authorized_implementation_targets"] == codex_session_guard.R1_VISUAL_IMPLEMENTATION_TARGETS
 
     reordered = copy.deepcopy(authority)
-    reordered["visual_console"]["authorized_implementation_targets"] = list(reversed(codex_session_guard.R1_VISUAL_IMPLEMENTATION_TARGETS))
+    reordered["action_repair"]["authorized_implementation_targets"] = list(reversed(codex_session_guard.R1_VISUAL_IMPLEMENTATION_TARGETS))
     assert "r1_visual_authority_projection_mismatch" in codex_session_guard.validate_r1_visual_authority_payload(reordered, source_objects=source)["errors"]
 
     opened = copy.deepcopy(authority)
-    opened["visual_console"]["switches"]["background_dispatch"] = True
+    opened["action_repair"]["switches"]["background_dispatch"] = True
     assert "r1_visual_authority_projection_mismatch" in codex_session_guard.validate_r1_visual_authority_payload(opened, source_objects=source)["errors"]
 
     old_action = copy.deepcopy(authority)
-    old_action["visual_console"]["effective_allowed_next_actions"].insert(0, codex_session_guard.PHASE_C_V2_LEGACY_IMPLEMENT_ACTION_ID)
+    old_action["action_repair"]["effective_allowed_next_actions"].insert(0, codex_session_guard.PHASE_C_V2_LEGACY_IMPLEMENT_ACTION_ID)
     assert "r1_visual_authority_projection_mismatch" in codex_session_guard.validate_r1_visual_authority_payload(old_action, source_objects=source)["errors"]
 
 
@@ -1173,5 +1173,5 @@ def test_r1_visual_source_object_pin_and_phase_a_scope_hostile_controls() -> Non
 
     scope = codex_session_guard.build_r1_visual_phase_a_scope(authority_commit="a" * 40)
     assert codex_session_guard.validate_r1_visual_phase_a_scope_payload(scope) == []
-    scope["authorized_implementation_targets"].append("labs/ego_life_playground_v0/engine.py")
+    scope["authorized_implementation_targets"].append("labs/ego_life_playground_v0/app.py")
     assert "r1_visual_phase_a_targets_mismatch" in codex_session_guard.validate_r1_visual_phase_a_scope_payload(scope)

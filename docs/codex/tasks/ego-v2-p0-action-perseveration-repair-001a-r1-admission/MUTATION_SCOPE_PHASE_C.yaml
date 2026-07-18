@@ -1,0 +1,102 @@
+schema_version: ego.r1.action_perseveration_repair_phase_c_scope.v1
+task_id: EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A-R1
+task_kind: operator_authorized_action_perseveration_repair_route_transcription
+requested_action_id: transcribe_EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A_authority
+base_commit: 78e8517db22229eafb914fe97313b92923aa7485
+itl_commit: 980d5af51dc201b8fd7c46374d542f9938099048
+authority_path: docs/codex/tasks/ego-v2-p0-action-perseveration-repair-001a-r1-admission/ITL_AUTHORITY_CROSSWALK.json
+receipt_path: docs/codex/tasks/ego-v2-p0-action-perseveration-repair-001a-r1-admission/PHASE_C_RED_REVIEW.json
+card_sha256: 00ba5d35b26110e0208aa9357e4ec903156478da20d07e849199e0595a1482db
+source_objects:
+  product_axis:
+    path: artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json
+    git_blob_oid: 28860339bd751f5fa504efbf0e73b0c7e6b114ea
+    payload_sha256: 16b0eedb6d66c8e8619162664f5c898103f05fa1606f3919cceb19576e79ba04
+    bytes: 3855
+  v2_state:
+    path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/state.json
+    git_blob_oid: 232864a6c83454dc212708f46a16fb79e935ebcf
+    payload_sha256: 4d2283b7d262dfd5dfa87742871f9207bfa1e639c31ac98e44c2db656c3c9c4e
+    bytes: 8060
+  v2_events:
+    path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/events.jsonl
+    git_blob_oid: 96125a6500495726f6503917dd058402bb6e16ca
+    payload_sha256: 3030c5e63d7eac1cddb7c9f44ed05cc47081562ace1b899a97b8e71cbbcba381
+    bytes: 7988
+  v2_report:
+    path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/ready_transition_validation_report.json
+    git_blob_oid: 0ad10f349789bab5452e0f1b6502dfb43b76c8a3
+    payload_sha256: bf689ab9b16b91bb9e2615c0c455fe863d9dcae7563a1ba58ac791b4ef905c2d
+    bytes: 14646
+reviewed_nonreceipt_paths:
+- docs/codex/tasks/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A.md
+- docs/codex/tasks/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A-MUTATION_SCOPE.yaml
+- docs/PROGRAM_STATE_UNIFIED.yaml
+- docs/STATUS.md
+- artifacts/reports/program_state_summary.md
+- docs/codex/tasks/TASK_LANE_INDEX.md
+- docs/REPO_SURFACE_MAP.md
+- docs/codex/tasks/ego-v2-p0-action-perseveration-repair-001a-r1-admission/COLLISION_RECORD.md
+- docs/codex/tasks/ego-v2-p0-action-perseveration-repair-001a-r1-admission/ITL_AUTHORITY_CROSSWALK.json
+- docs/codex/tasks/ego-v2-p0-action-perseveration-repair-001a-r1-admission/MUTATION_SCOPE_PHASE_C.yaml
+- docs/codex/tasks/ego-v2-p0-action-perseveration-repair-001a-r1-admission/STAGE_CARD.md
+- scripts/codex_session_guard.py
+- scripts/tests/test_codex_session_guard.py
+- scripts/codex/verify_route_convergence.py
+- scripts/codex/tests/test_route_governance_supersession.py
+allowed_mutation_paths:
+- docs/codex/tasks/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A.md
+- docs/codex/tasks/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A-MUTATION_SCOPE.yaml
+- docs/PROGRAM_STATE_UNIFIED.yaml
+- docs/STATUS.md
+- artifacts/reports/program_state_summary.md
+- docs/codex/tasks/TASK_LANE_INDEX.md
+- docs/REPO_SURFACE_MAP.md
+- docs/codex/tasks/ego-v2-p0-action-perseveration-repair-001a-r1-admission/COLLISION_RECORD.md
+- docs/codex/tasks/ego-v2-p0-action-perseveration-repair-001a-r1-admission/ITL_AUTHORITY_CROSSWALK.json
+- docs/codex/tasks/ego-v2-p0-action-perseveration-repair-001a-r1-admission/MUTATION_SCOPE_PHASE_C.yaml
+- docs/codex/tasks/ego-v2-p0-action-perseveration-repair-001a-r1-admission/PHASE_C_RED_REVIEW.json
+- docs/codex/tasks/ego-v2-p0-action-perseveration-repair-001a-r1-admission/STAGE_CARD.md
+- scripts/codex_session_guard.py
+- scripts/tests/test_codex_session_guard.py
+- scripts/codex/verify_route_convergence.py
+- scripts/codex/tests/test_route_governance_supersession.py
+exact_commit_paths:
+- docs/codex/tasks/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A.md
+- docs/codex/tasks/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A-MUTATION_SCOPE.yaml
+- docs/PROGRAM_STATE_UNIFIED.yaml
+- docs/STATUS.md
+- artifacts/reports/program_state_summary.md
+- docs/codex/tasks/TASK_LANE_INDEX.md
+- docs/REPO_SURFACE_MAP.md
+- docs/codex/tasks/ego-v2-p0-action-perseveration-repair-001a-r1-admission/COLLISION_RECORD.md
+- docs/codex/tasks/ego-v2-p0-action-perseveration-repair-001a-r1-admission/ITL_AUTHORITY_CROSSWALK.json
+- docs/codex/tasks/ego-v2-p0-action-perseveration-repair-001a-r1-admission/MUTATION_SCOPE_PHASE_C.yaml
+- docs/codex/tasks/ego-v2-p0-action-perseveration-repair-001a-r1-admission/PHASE_C_RED_REVIEW.json
+- docs/codex/tasks/ego-v2-p0-action-perseveration-repair-001a-r1-admission/STAGE_CARD.md
+- scripts/codex_session_guard.py
+- scripts/tests/test_codex_session_guard.py
+- scripts/codex/verify_route_convergence.py
+- scripts/codex/tests/test_route_governance_supersession.py
+implementation_allowlist:
+- labs/ego_life_playground_v0/engine.py
+- labs/ego_life_playground_v0/claims.py
+- labs/ego_life_playground_v0/microworld.py
+- tests/test_ego_life_playground_v2_microworld.py
+- tests/test_ego_life_playground_v0.py
+- scripts/codex/verify_ego_v2_action_perseveration_repair_001a.py
+- scripts/tests/test_verify_ego_v2_action_perseveration_repair_001a.py
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/result.json
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/trace.jsonl
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/baseline_comparison.json
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/ablation_report.json
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/replay_report.json
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/leakage_report.json
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/failure_manifest.json
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/diagnostic_readback.json
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/live_repair_receipt.json
+- artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/claim_ceiling.txt
+enabled: false
+runtime_authority: none
+mainline_connected: false
+auto_remote_anchor: forbidden
