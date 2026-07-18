@@ -1,0 +1,33 @@
+{
+  "aggregation_rule": "recompute twice from serialized initial_state plus every ordered command and require exact trace hashes",
+  "code_path_hash": "99959d24407c1feefe00b56889af690f568d29be601f3a71c8c191c06e908ab4",
+  "command_count": 71,
+  "final_state_hash": "8f02471af2900afa88e4c413985ad6faffd40afcd9a9c4f20c955e8afc045bc1",
+  "input_artifacts": [
+    {
+      "bytes": 202787,
+      "path": "artifacts\\EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A\\diagnostic_readback.json",
+      "sha256": "d00fe25fff97171898c2843723d7e7cf043330b5bc5a235f04102a80dee8a087"
+    },
+    {
+      "bytes": 29792,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\scripts\\codex\\verify_ego_v2_action_perseveration_repair_001a.py",
+      "sha256": "1b16e8f35240d8290fc5500b2ec3060b6b4e4327e904e22eec2bf7993e207335"
+    },
+    {
+      "bytes": 4403712,
+      "path": "artifacts\\EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A\\trace.jsonl",
+      "sha256": "7948b6dcbe081ba819aa164eba61fed759b2ce0c09972b212f73678d0e825e6e"
+    }
+  ],
+  "producer_function": "_replay_commands",
+  "run_id": "life-visual-001",
+  "schema_version": "ego.action_repair.replay_report.v1",
+  "second_recompute_trace_hashes_equal": true,
+  "seed_context_episode_ids": {
+    "command_count": 71,
+    "run_seed": 701
+  },
+  "stored_selected_action_used_as_input": false,
+  "unused_frozen_commands": []
+}

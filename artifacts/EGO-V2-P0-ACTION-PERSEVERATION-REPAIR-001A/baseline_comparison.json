@@ -1,0 +1,78 @@
+{
+  "aggregation_rule": "compare trailing identical action suffix and action counts on the exact frozen command stream",
+  "always_forage_baseline": {
+    "action_counts": {
+      "forage": 71
+    },
+    "action_sequence_hash": "d6265b9e96731b362f82c4b9dbd13f764fd87f679b097135a1c8cc40dcd6eea9",
+    "sequence_length": 71,
+    "trailing_forage_suffix": 71
+  },
+  "code_path_hash": "99959d24407c1feefe00b56889af690f568d29be601f3a71c8c191c06e908ab4",
+  "frozen_old_trace": {
+    "action_counts": {
+      "approach": 1,
+      "explore": 4,
+      "forage": 63,
+      "rest": 3
+    },
+    "action_sequence_hash": "5eedc1f5cf917b5534aa9b6bdf6e86f66d1a3b0762bc897e1be81f138bba5415",
+    "sequence_length": 71,
+    "trailing_forage_suffix": 62
+  },
+  "input_artifacts": [
+    {
+      "bytes": 202787,
+      "path": "artifacts\\EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A\\diagnostic_readback.json",
+      "sha256": "d00fe25fff97171898c2843723d7e7cf043330b5bc5a235f04102a80dee8a087"
+    },
+    {
+      "bytes": 29792,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\scripts\\codex\\verify_ego_v2_action_perseveration_repair_001a.py",
+      "sha256": "1b16e8f35240d8290fc5500b2ec3060b6b4e4327e904e22eec2bf7993e207335"
+    }
+  ],
+  "producer_function": "run_action_repair_verification.baseline_comparison",
+  "repaired_replay": {
+    "action_counts": {
+      "approach": 23,
+      "explore": 9,
+      "forage": 8,
+      "rest": 17,
+      "withdraw": 14
+    },
+    "action_sequence_hash": "67e56da868dc9b09485583fbb10754e3ebec010386a33548bf181ab8bf065b47",
+    "sequence_length": 71,
+    "trailing_forage_suffix": 0
+  },
+  "round_robin_baseline": {
+    "action_counts": {
+      "approach": 15,
+      "explore": 14,
+      "forage": 14,
+      "rest": 14,
+      "withdraw": 14
+    },
+    "action_sequence_hash": "96d4a0b5ccf7463f7b47d943ccf418afc63f792de4e65f4966308e112c807d9e",
+    "sequence_length": 71,
+    "trailing_forage_suffix": 0
+  },
+  "run_id": "life-visual-001",
+  "schema_version": "ego.action_repair.baseline_comparison.v1",
+  "seed_context_episode_ids": {
+    "command_count": 71,
+    "run_seed": 701
+  },
+  "seeded_hash_baseline": {
+    "action_counts": {
+      "approach": 18,
+      "explore": 13,
+      "forage": 14,
+      "rest": 14,
+      "withdraw": 12
+    },
+    "action_sequence_hash": "0edf1260d5d36ce8c69416f37539ab735be5cf265ca16d8eca20b6aafaa01679",
+    "sequence_length": 71,
+    "trailing_forage_suffix": 0
+  }
+}

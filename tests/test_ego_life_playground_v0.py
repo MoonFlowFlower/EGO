@@ -476,6 +476,8 @@ def test_v1_engine_candidate_score_has_frozen_goal_total_memory_cost_components(
         "current_goal_deficit_reduction",
         "total_deficit_reduction",
         "memory_bias",
+        "raw_memory_bias",
+        "context_memory_eligible",
         "untried_bonus",
         "action_cost",
         "topology_cost",
@@ -483,6 +485,9 @@ def test_v1_engine_candidate_score_has_frozen_goal_total_memory_cost_components(
         "path",
         "deterministic_tie",
         "total_score",
+        "progress_gate",
+        "selection_eligible",
+        "selection_exclusion_reasons",
     }
     for candidate in result.trace["candidates"]:
         assert required <= set(candidate)
@@ -504,6 +509,15 @@ def test_v1_engine_candidate_score_has_frozen_goal_total_memory_cost_components(
         assert candidate["topology_cost_contribution"] == pytest.approx(
             candidate["topology_cost"], abs=1e-9
         )
+        assert candidate["progress_gate"]["rule"] == (
+            "legal_positive_goal_progress_precedes_zero_or_negative_progress"
+        )
+    selected = next(
+        candidate
+        for candidate in result.trace["candidates"]
+        if candidate["action"] == result.trace["selected_action"]
+    )
+    assert selected["selection_eligible"] is True
     assert result.trace["context_key"] == "resource|stimulation"
 
 

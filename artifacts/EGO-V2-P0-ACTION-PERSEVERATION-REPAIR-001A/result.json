@@ -1,0 +1,304 @@
+{
+  "aggregation_rule": "pass iff every named computed repair and live-path check is true",
+  "checks": {
+    "frozen_old_trace_recompute_was_bound": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "99959d24407c1feefe00b56889af690f568d29be601f3a71c8c191c06e908ab4",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        {
+          "bytes": 202787,
+          "path": "artifacts\\EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A\\diagnostic_readback.json",
+          "sha256": "d00fe25fff97171898c2843723d7e7cf043330b5bc5a235f04102a80dee8a087"
+        },
+        {
+          "bytes": 29792,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\scripts\\codex\\verify_ego_v2_action_perseveration_repair_001a.py",
+          "sha256": "1b16e8f35240d8290fc5500b2ec3060b6b4e4327e904e22eec2bf7993e207335"
+        }
+      ],
+      "producer_function": "freeze_old_final_state.main",
+      "run_id": "life-visual-001",
+      "seed_context_episode_ids": {
+        "context_ids": [
+          "frozen_71_command_stream",
+          "post_71_social_signal"
+        ],
+        "run_seed": 701
+      },
+      "value": true
+    },
+    "frozen_suffix_removed_with_action_variation": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "99959d24407c1feefe00b56889af690f568d29be601f3a71c8c191c06e908ab4",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        {
+          "bytes": 202787,
+          "path": "artifacts\\EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A\\diagnostic_readback.json",
+          "sha256": "d00fe25fff97171898c2843723d7e7cf043330b5bc5a235f04102a80dee8a087"
+        },
+        {
+          "bytes": 29792,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\scripts\\codex\\verify_ego_v2_action_perseveration_repair_001a.py",
+          "sha256": "1b16e8f35240d8290fc5500b2ec3060b6b4e4327e904e22eec2bf7993e207335"
+        }
+      ],
+      "producer_function": "_replay_commands + _action_summary",
+      "run_id": "life-visual-001",
+      "seed_context_episode_ids": {
+        "context_ids": [
+          "frozen_71_command_stream",
+          "post_71_social_signal"
+        ],
+        "run_seed": 701
+      },
+      "value": true
+    },
+    "hostile_unfiltered_no_progress_baseline_reproduces_forage": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "99959d24407c1feefe00b56889af690f568d29be601f3a71c8c191c06e908ab4",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        {
+          "bytes": 202787,
+          "path": "artifacts\\EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A\\diagnostic_readback.json",
+          "sha256": "d00fe25fff97171898c2843723d7e7cf043330b5bc5a235f04102a80dee8a087"
+        },
+        {
+          "bytes": 29792,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\scripts\\codex\\verify_ego_v2_action_perseveration_repair_001a.py",
+          "sha256": "1b16e8f35240d8290fc5500b2ec3060b6b4e4327e904e22eec2bf7993e207335"
+        }
+      ],
+      "producer_function": "legacy_unfiltered_claim_retrieval + legacy_score_argmax",
+      "run_id": "life-visual-001",
+      "seed_context_episode_ids": {
+        "context_ids": [
+          "frozen_71_command_stream",
+          "post_71_social_signal"
+        ],
+        "run_seed": 701
+      },
+      "value": true
+    },
+    "leakage_scan_and_positive_control": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "99959d24407c1feefe00b56889af690f568d29be601f3a71c8c191c06e908ab4",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        {
+          "bytes": 202787,
+          "path": "artifacts\\EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A\\diagnostic_readback.json",
+          "sha256": "d00fe25fff97171898c2843723d7e7cf043330b5bc5a235f04102a80dee8a087"
+        },
+        {
+          "bytes": 29792,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\scripts\\codex\\verify_ego_v2_action_perseveration_repair_001a.py",
+          "sha256": "1b16e8f35240d8290fc5500b2ec3060b6b4e4327e904e22eec2bf7993e207335"
+        }
+      ],
+      "producer_function": "scan_forbidden_values",
+      "run_id": "life-visual-001",
+      "seed_context_episode_ids": {
+        "context_ids": [
+          "frozen_71_command_stream",
+          "post_71_social_signal"
+        ],
+        "run_seed": 701
+      },
+      "value": true
+    },
+    "matched_context_memory_reaches_candidate_score": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "99959d24407c1feefe00b56889af690f568d29be601f3a71c8c191c06e908ab4",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        {
+          "bytes": 202787,
+          "path": "artifacts\\EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A\\diagnostic_readback.json",
+          "sha256": "d00fe25fff97171898c2843723d7e7cf043330b5bc5a235f04102a80dee8a087"
+        },
+        {
+          "bytes": 29792,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\scripts\\codex\\verify_ego_v2_action_perseveration_repair_001a.py",
+          "sha256": "1b16e8f35240d8290fc5500b2ec3060b6b4e4327e904e22eec2bf7993e207335"
+        }
+      ],
+      "producer_function": "claims.record_outcome_evidence -> claims.retrieve_competing_claims -> engine.compute_step",
+      "run_id": "life-visual-001",
+      "seed_context_episode_ids": {
+        "context_ids": [
+          "frozen_71_command_stream",
+          "post_71_social_signal"
+        ],
+        "run_seed": 701
+      },
+      "value": true
+    },
+    "mismatched_claims_are_observable_but_inert": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "99959d24407c1feefe00b56889af690f568d29be601f3a71c8c191c06e908ab4",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        {
+          "bytes": 202787,
+          "path": "artifacts\\EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A\\diagnostic_readback.json",
+          "sha256": "d00fe25fff97171898c2843723d7e7cf043330b5bc5a235f04102a80dee8a087"
+        },
+        {
+          "bytes": 29792,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\scripts\\codex\\verify_ego_v2_action_perseveration_repair_001a.py",
+          "sha256": "1b16e8f35240d8290fc5500b2ec3060b6b4e4327e904e22eec2bf7993e207335"
+        }
+      ],
+      "producer_function": "claims.retrieve_competing_claims",
+      "run_id": "life-visual-001",
+      "seed_context_episode_ids": {
+        "context_ids": [
+          "frozen_71_command_stream",
+          "post_71_social_signal"
+        ],
+        "run_seed": 701
+      },
+      "value": true
+    },
+    "post_71_matches_memory_off": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "99959d24407c1feefe00b56889af690f568d29be601f3a71c8c191c06e908ab4",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        {
+          "bytes": 202787,
+          "path": "artifacts\\EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A\\diagnostic_readback.json",
+          "sha256": "d00fe25fff97171898c2843723d7e7cf043330b5bc5a235f04102a80dee8a087"
+        },
+        {
+          "bytes": 29792,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\scripts\\codex\\verify_ego_v2_action_perseveration_repair_001a.py",
+          "sha256": "1b16e8f35240d8290fc5500b2ec3060b6b4e4327e904e22eec2bf7993e207335"
+        }
+      ],
+      "producer_function": "engine.compute_step memory intervention pair",
+      "run_id": "life-visual-001",
+      "seed_context_episode_ids": {
+        "context_ids": [
+          "frozen_71_command_stream",
+          "post_71_social_signal"
+        ],
+        "run_seed": 701
+      },
+      "value": true
+    },
+    "real_visual_console_path_still_passes": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "99959d24407c1feefe00b56889af690f568d29be601f3a71c8c191c06e908ab4",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        {
+          "bytes": 202787,
+          "path": "artifacts\\EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A\\diagnostic_readback.json",
+          "sha256": "d00fe25fff97171898c2843723d7e7cf043330b5bc5a235f04102a80dee8a087"
+        },
+        {
+          "bytes": 29792,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\scripts\\codex\\verify_ego_v2_action_perseveration_repair_001a.py",
+          "sha256": "1b16e8f35240d8290fc5500b2ec3060b6b4e4327e904e22eec2bf7993e207335"
+        }
+      ],
+      "producer_function": "run_visual_verification",
+      "run_id": "life-visual-001",
+      "seed_context_episode_ids": {
+        "context_ids": [
+          "frozen_71_command_stream",
+          "post_71_social_signal"
+        ],
+        "run_seed": 701
+      },
+      "value": true
+    },
+    "replay_recomputes_every_frozen_command": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "99959d24407c1feefe00b56889af690f568d29be601f3a71c8c191c06e908ab4",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        {
+          "bytes": 202787,
+          "path": "artifacts\\EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A\\diagnostic_readback.json",
+          "sha256": "d00fe25fff97171898c2843723d7e7cf043330b5bc5a235f04102a80dee8a087"
+        },
+        {
+          "bytes": 29792,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\scripts\\codex\\verify_ego_v2_action_perseveration_repair_001a.py",
+          "sha256": "1b16e8f35240d8290fc5500b2ec3060b6b4e4327e904e22eec2bf7993e207335"
+        }
+      ],
+      "producer_function": "_replay_commands",
+      "run_id": "life-visual-001",
+      "seed_context_episode_ids": {
+        "context_ids": [
+          "frozen_71_command_stream",
+          "post_71_social_signal"
+        ],
+        "run_seed": 701
+      },
+      "value": true
+    },
+    "zero_distance_repeat_is_outcome_inert": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "99959d24407c1feefe00b56889af690f568d29be601f3a71c8c191c06e908ab4",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        {
+          "bytes": 202787,
+          "path": "artifacts\\EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A\\diagnostic_readback.json",
+          "sha256": "d00fe25fff97171898c2843723d7e7cf043330b5bc5a235f04102a80dee8a087"
+        },
+        {
+          "bytes": 29792,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\scripts\\codex\\verify_ego_v2_action_perseveration_repair_001a.py",
+          "sha256": "1b16e8f35240d8290fc5500b2ec3060b6b4e4327e904e22eec2bf7993e207335"
+        }
+      ],
+      "producer_function": "_zero_distance_repeat",
+      "run_id": "life-visual-001",
+      "seed_context_episode_ids": {
+        "context_ids": [
+          "frozen_71_command_stream",
+          "post_71_social_signal"
+        ],
+        "run_seed": 701
+      },
+      "value": true
+    }
+  },
+  "claim_ceiling": "Local default-off visual console engineering repair on the frozen command stream: claim retrieval is conditioned on recorded public cue and current goal, zero-distance site repeats do not create outcomes, and legal positive current-goal progress precedes zero-or-negative progress. Evidence is limited to canonical controller/SQLite/replay integration and this frozen distribution; it does not establish general learning, memory causality, initiative, agency, emotion, subjectivity, consciousness, electronic life, product readiness, or user value.",
+  "code_path_hash": "99959d24407c1feefe00b56889af690f568d29be601f3a71c8c191c06e908ab4",
+  "failed_checks": [],
+  "input_artifacts": [
+    {
+      "bytes": 202787,
+      "path": "artifacts\\EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A\\diagnostic_readback.json",
+      "sha256": "d00fe25fff97171898c2843723d7e7cf043330b5bc5a235f04102a80dee8a087"
+    },
+    {
+      "bytes": 29792,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\scripts\\codex\\verify_ego_v2_action_perseveration_repair_001a.py",
+      "sha256": "1b16e8f35240d8290fc5500b2ec3060b6b4e4327e904e22eec2bf7993e207335"
+    },
+    {
+      "bytes": 4403712,
+      "path": "artifacts\\EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A\\trace.jsonl",
+      "sha256": "7948b6dcbe081ba819aa164eba61fed759b2ce0c09972b212f73678d0e825e6e"
+    }
+  ],
+  "producer_function": "run_action_repair_verification",
+  "run_id": "life-visual-001",
+  "schema_version": "ego.action_repair.result.v1",
+  "seed_context_episode_ids": {
+    "command_count": 71,
+    "run_seed": 701
+  },
+  "task_id": "EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A-R1",
+  "verdict": "pass"
+}

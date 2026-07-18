@@ -492,8 +492,9 @@ def transition_world(
         raise ValueError(f"microworld action target is unreachable: {selected_action!r}")
     transitioned = deepcopy(dict(world))
     from_position = str(transitioned["agent"]["position"])
-    visited_site = _SITE_ACTION.get(selected_action)
     to_position = str(path["target_position"])
+    moved = from_position != to_position
+    visited_site = _SITE_ACTION.get(selected_action) if moved else None
     transitioned["agent"]["position"] = to_position
     observation = deepcopy(transitioned["public_observation"])
     observation["agent_position"] = to_position
@@ -538,7 +539,7 @@ def transition_world(
         "selected_action": selected_action,
         "from_position": from_position,
         "to_position": to_position,
-        "moved": from_position != to_position,
+        "moved": moved,
         "path": path,
         "visited_site": visited_site,
         "outcome": outcome,

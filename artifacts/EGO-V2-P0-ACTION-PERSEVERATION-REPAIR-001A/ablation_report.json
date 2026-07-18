@@ -1,0 +1,79 @@
+{
+  "aggregation_rule": "rerun the frozen post-71 state under named callable retrieval/memory/selection interventions",
+  "canonical_context_filter": {
+    "raw_support_by_action": {
+      "approach": -0.65,
+      "forage": 18.85
+    },
+    "selected_action": "approach",
+    "support_by_action": {},
+    "withheld_count": 64
+  },
+  "code_path_hash": "99959d24407c1feefe00b56889af690f568d29be601f3a71c8c191c06e908ab4",
+  "input_artifacts": [
+    {
+      "bytes": 202787,
+      "path": "artifacts\\EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A\\diagnostic_readback.json",
+      "sha256": "d00fe25fff97171898c2843723d7e7cf043330b5bc5a235f04102a80dee8a087"
+    },
+    {
+      "bytes": 29792,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\scripts\\codex\\verify_ego_v2_action_perseveration_repair_001a.py",
+      "sha256": "1b16e8f35240d8290fc5500b2ec3060b6b4e4327e904e22eec2bf7993e207335"
+    }
+  ],
+  "matched_context_scoring_probe": {
+    "approach_claim_memory_bias": 0.2925,
+    "approach_total_score": 0.572357411,
+    "canonical_selected_action": "approach",
+    "context_memory_eligible": true,
+    "memory_off_approach_total_score": 0.279857411,
+    "memory_off_selected_action": "approach",
+    "producer_function": "claims.record_outcome_evidence -> engine.compute_step",
+    "provenance_event_ids": [
+      "matched-context-approach",
+      "matched-context-forage"
+    ],
+    "query": {
+      "agent_position": "home",
+      "cue": "contact",
+      "current_goal": "connection",
+      "predicate": "preferred_site_action",
+      "subject": "microworld:opaque_fork"
+    },
+    "support_by_action": {
+      "approach": 0.65,
+      "forage": -0.65
+    }
+  },
+  "memory_off": {
+    "selected_action": "approach"
+  },
+  "producer_function": "run_action_repair_verification.ablation_report",
+  "run_id": "life-visual-001",
+  "schema_version": "ego.action_repair.ablation_report.v1",
+  "seed_context_episode_ids": {
+    "post_sequence": 72,
+    "run_seed": 701
+  },
+  "unfiltered_claims_with_progress_gate": {
+    "producer_function": "legacy_unfiltered_claim_retrieval -> engine.compute_step",
+    "selected_action": "approach"
+  },
+  "unfiltered_claims_without_progress_gate": {
+    "producer_function": "legacy_score_argmax",
+    "selected_action": "forage"
+  },
+  "zero_distance_repeat": {
+    "first_moved": true,
+    "producer_function": "_zero_distance_repeat",
+    "second_claim_update_applied": false,
+    "second_claim_update_reason": "no_site_outcome",
+    "second_moved": false,
+    "second_outcome": null,
+    "selected_actions": [
+      "forage",
+      "forage"
+    ]
+  }
+}

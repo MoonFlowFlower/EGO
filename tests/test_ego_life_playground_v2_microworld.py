@@ -619,7 +619,7 @@ def test_p0_event_set_and_causal_code_hash_are_explicit():
     assert len(compute_code_path_hash()) == 64
 
 
-def test_p0_scope_passes_real_committed_phase_c_mutation_admission():
+def test_p0_consumed_scope_remains_frozen_but_is_not_current_repair_authority():
     scope_path = (
         REPO_ROOT
         / "docs/codex/tasks/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A-MUTATION_SCOPE.yaml"
@@ -627,17 +627,21 @@ def test_p0_scope_passes_real_committed_phase_c_mutation_admission():
     scope = yaml.safe_load(scope_path.read_text(encoding="utf-8"))
     assert scope["task_kind"] == "bounded_v2_microworld_implementation"
     assert scope["authority_commit"] == "a34ff6630a6456b9e333199b10ee866d30e1c0cd"
+    assert scope["authorized_implementation_targets"] == scope["expected_changed_paths"]
     assert (
         scope["authorized_implementation_targets"]
+        != codex_session_guard.PHASE_C_V2_IMPLEMENTATION_TARGETS
+    ), "the consumed P0/P1/P2 scope must not masquerade as current repair authority"
+    active_scope = yaml.safe_load(
+        (
+            REPO_ROOT
+            / "docs/codex/tasks/ego-v2-p0-action-perseveration-repair-001a-r1-admission/MUTATION_SCOPE_PHASE_C.yaml"
+        ).read_text(encoding="utf-8")
+    )
+    assert (
+        active_scope["implementation_allowlist"]
         == codex_session_guard.PHASE_C_V2_IMPLEMENTATION_TARGETS
     )
-    admission = codex_session_guard.validate_phase_c_v2_mutation_admission(
-        scope,
-        repo=REPO_ROOT,
-        itl_repo=Path(r"D:\Project\AIProject\MyProject\intelligence-theory-lab"),
-    )
-    assert admission["status"] == "pass", admission
-    assert admission["errors"] == []
 
 
 def test_p0_world_event_observation_legality_and_transition_are_canonical_reducer_state(tmp_path):
@@ -841,6 +845,8 @@ def _p1_record(
     event_id: str,
     episode_id: str,
     tick: int,
+    cue: str = "quiet",
+    current_goal: str = "stimulation",
 ):
     claims = _p1_claims_module()
     return claims.record_outcome_evidence(
@@ -856,8 +862,187 @@ def _p1_record(
         observed_public_features={
             "agent_position": "fork",
             "visible_object_kinds": ["shelter"],
+            "cue": cue,
+            "current_goal": current_goal,
         },
     )
+
+
+def test_action_repair_claim_retrieval_filters_mismatched_cue_and_goal_events():
+    claims = _p1_claims_module()
+    memory = claims.empty_claim_memory()
+    memory, _ = _p1_record(
+        memory,
+        action="forage",
+        outcome=1.0,
+        event_id="mismatch-resource-energy",
+        episode_id="episode-mismatch",
+        tick=1,
+        cue="resource",
+        current_goal="energy",
+    )
+    memory, _ = _p1_record(
+        memory,
+        action="forage",
+        outcome=0.4,
+        event_id="eligible-social-connection-forage",
+        episode_id="episode-eligible",
+        tick=2,
+        cue="social",
+        current_goal="connection",
+    )
+    memory, _ = _p1_record(
+        memory,
+        action="approach",
+        outcome=0.2,
+        event_id="eligible-social-connection-approach",
+        episode_id="episode-eligible",
+        tick=3,
+        cue="social",
+        current_goal="connection",
+    )
+
+    retrieval = claims.retrieve_competing_claims(
+        memory,
+        observation={
+            "agent_position": "fork",
+            "visible_object_ids": ["shelter"],
+            "cue": "social",
+        },
+        current_goal="connection",
+    )
+
+    assert retrieval["support_by_action"] == {"approach": 0.2, "forage": 0.4}
+    assert retrieval["provenance_event_ids"] == [
+        "eligible-social-connection-approach",
+        "eligible-social-connection-forage",
+    ]
+    assert retrieval["withheld_provenance_event_ids"] == [
+        "mismatch-resource-energy"
+    ]
+
+
+def test_action_repair_zero_distance_repeat_writes_no_site_outcome_claim():
+    state = engine.initial_state(
+        {
+            "energy": 0.0,
+            "safety": 0.9,
+            "connection": 0.9,
+            "stimulation": 0.9,
+        },
+        run_id="action-repair-zero-distance",
+        seed=18,
+    )
+    meta = engine.make_run_metadata("action-repair-zero-distance", 18)
+    traces = []
+    for sequence in (1, 2):
+        event = "resource_appears"
+        command = engine.make_command(
+            sequence=sequence,
+            cue=microworld.cue_for_event(event),
+            world_event=event,
+            trigger_source="paired_intervention",
+            interventions=engine.DEFAULT_INTERVENTIONS,
+            prev_command_hash=state["last_command_hash"],
+        )
+        step = engine.compute_step(state, command, meta)
+        state = step.next_state
+        traces.append(step.trace)
+
+    assert [trace["selected_action"] for trace in traces] == ["forage", "forage"]
+    assert traces[0]["world_transition"]["moved"] is True
+    assert traces[0]["claim_update"]["applied"] is True
+    assert traces[1]["world_transition"]["moved"] is False
+    assert traces[1]["world_transition"]["outcome"] is None
+    assert traces[1]["claim_update"] == {
+        "applied": False,
+        "event_id": None,
+        "claim_id": None,
+        "reason": "no_site_outcome",
+    }
+
+
+def _action_repair_frozen_diagnostic():
+    path = (
+        REPO_ROOT
+        / "artifacts"
+        / "EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A"
+        / "diagnostic_readback.json"
+    )
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _action_repair_replay_frozen_commands():
+    diagnostic = _action_repair_frozen_diagnostic()
+    state = deepcopy(diagnostic["initial_state"])
+    meta = engine.make_run_metadata(diagnostic["run_id"], int(diagnostic["seed"]))
+    traces = []
+    for command in diagnostic["commands"]:
+        step = engine.compute_step(state, deepcopy(command), meta)
+        state = step.next_state
+        traces.append(step.trace)
+    return diagnostic, state, traces, meta
+
+
+def test_action_repair_frozen_71_commands_remove_the_62_action_suffix():
+    diagnostic, _, traces, _ = _action_repair_replay_frozen_commands()
+    actions = [trace["selected_action"] for trace in traces]
+    trailing_forage = 0
+    for action in reversed(actions):
+        if action != "forage":
+            break
+        trailing_forage += 1
+
+    assert diagnostic["old_trace_count"] == 71
+    assert diagnostic["old_trace_hash_recompute_match_count"] == 71
+    assert diagnostic["old_trailing_forage_suffix"] == 62
+    assert trailing_forage < diagnostic["old_trailing_forage_suffix"]
+
+
+def test_action_repair_post_71_default_selects_positive_goal_progress_like_memory_off():
+    diagnostic = _action_repair_frozen_diagnostic()
+    state = deepcopy(diagnostic["old_final_state"])
+    meta = engine.make_run_metadata(diagnostic["run_id"], int(diagnostic["seed"]))
+    event = "social_signal"
+    common = {
+        "sequence": len(diagnostic["commands"]) + 1,
+        "cue": microworld.cue_for_event(event),
+        "world_event": event,
+        "trigger_source": "ui_step_button",
+        "prev_command_hash": state["last_command_hash"],
+    }
+    default = engine.compute_step(
+        deepcopy(state),
+        engine.make_command(**common, interventions=engine.DEFAULT_INTERVENTIONS),
+        meta,
+    )
+    memory_off = engine.compute_step(
+        deepcopy(state),
+        engine.make_command(
+            **common,
+            interventions=dict(engine.DEFAULT_INTERVENTIONS, memory_mode="off"),
+        ),
+        meta,
+    )
+    default_selected = next(
+        item
+        for item in default.trace["candidates"]
+        if item["action"] == default.trace["selected_action"]
+    )
+
+    assert memory_off.trace["selected_action"] == "approach"
+    assert default.trace["selected_action"] == "approach"
+    assert default_selected["current_goal_deficit_reduction"] > 0.0
+    assert any(
+        item["raw_claim_memory_bias"] != 0.0
+        for item in default.trace["candidates"]
+    )
+    assert all(
+        item["claim_memory_bias"] == 0.0
+        for item in default.trace["candidates"]
+    )
+    assert default.trace["claim_retrieval"]["support_by_action"] == {}
+    assert default.trace["claim_retrieval"]["withheld_provenance_event_ids"]
 
 
 def test_p1_claims_module_is_a_bound_causal_producer():
@@ -1044,17 +1229,14 @@ def _p1_step_state(
 def _p1_history(*, run_id: str, seed: int):
     state = engine.initial_state(
         {
-            "energy": 0.4,
-            "safety": 0.2,
-            "connection": 0.0,
-            "stimulation": 0.0,
+            "energy": 0.5,
+            "safety": 0.7,
+            "connection": 0.5,
+            "stimulation": 0.6,
         },
         run_id=run_id,
         seed=seed,
     )
-    state["world"]["agent"]["position"] = "site_a"
-    state["world"]["public_observation"]["agent_position"] = "site_a"
-    microworld.verify_world_state(state["world"])
     traces = []
     for event in ("resource_appears", "social_signal"):
         step = _p1_step_state(
@@ -1250,7 +1432,7 @@ def test_p1_normal_terminal_and_tk_payloads_are_invariant_to_private_only_change
     assert forbidden_commitments.isdisjoint(keys(tk_a))
 
 
-def test_p1_paired_observation_real_histories_change_scores_and_actions_only_through_memory():
+def test_p1_paired_observation_mismatched_context_withholds_raw_claim_history():
     state_a, state_b, traces_a, traces_b = _p1_paired_checkpoint_states()
     assert [trace["selected_action"] for trace in traces_a] == ["forage", "approach"]
     assert [trace["selected_action"] for trace in traces_b] == ["forage", "approach"]
@@ -1282,11 +1464,16 @@ def test_p1_paired_observation_real_histories_change_scores_and_actions_only_thr
     assert result_a.trace["policy_projection_hash"] != result_b.trace["policy_projection_hash"]
     scores_a = {item["action"]: item["total_score"] for item in result_a.trace["candidates"]}
     scores_b = {item["action"]: item["total_score"] for item in result_b.trace["candidates"]}
-    assert scores_a != scores_b
-    assert result_a.trace["selected_action"] == "forage"
-    assert result_b.trace["selected_action"] == "approach"
-    assert result_a.trace["claim_retrieval"]["provenance_event_ids"]
-    assert result_b.trace["claim_retrieval"]["provenance_event_ids"]
+    assert scores_a == scores_b
+    assert result_a.trace["selected_action"] == result_b.trace["selected_action"]
+    assert result_a.trace["claim_retrieval"]["support_by_action"] == {}
+    assert result_b.trace["claim_retrieval"]["support_by_action"] == {}
+    assert (
+        result_a.trace["claim_retrieval"]["raw_support_by_action"]
+        != result_b.trace["claim_retrieval"]["raw_support_by_action"]
+    )
+    assert result_a.trace["claim_retrieval"]["withheld_provenance_event_ids"]
+    assert result_b.trace["claim_retrieval"]["withheld_provenance_event_ids"]
 
 
 def test_p1_memory_off_removes_paired_history_score_and_action_difference():
@@ -1362,31 +1549,19 @@ def test_p1_shuffle_provenance_and_source_deletion_rerun_the_same_checkpoint():
         == shuffled.trace["provenance_projection"]["unaffected_fields_hash_after"]
     )
     assert shuffled.trace["provenance_projection"]["unaffected_field_count"] > 0
-    current_event_id = shuffled.trace["claim_update"]["event_id"]
-    without_current_event, deletion_after_step = claims.delete_sources(
-        shuffled.next_state["memory"], event_ids=[current_event_id]
+    assert shuffled.trace["claim_update"]["reason"] == "no_site_outcome"
+    assert shuffled.trace["claim_retrieval"]["support_by_action"] == {}
+    assert canonical.trace["claim_retrieval"]["support_by_action"] == {}
+    assert (
+        shuffled.trace["claim_retrieval"]["raw_support_by_action"]
+        != canonical.trace["claim_retrieval"]["raw_support_by_action"]
     )
-    assert deletion_after_step["deleted_event_ids"] == [current_event_id]
-    assert engine.canonical_json(
-        {
-            "claim_events": without_current_event["claim_events"],
-            "competing_claims": without_current_event["competing_claims"],
-        }
-    ) == engine.canonical_json(
-        {
-            "claim_events": state["memory"]["claim_events"],
-            "competing_claims": state["memory"]["competing_claims"],
-        }
-    )
-    assert shuffled.trace["claim_retrieval"]["support_by_action"] != canonical.trace[
-        "claim_retrieval"
-    ]["support_by_action"]
+    assert shuffled.trace["selected_action"] == canonical.trace["selected_action"]
 
     relevant = next(
         event
         for event in state["memory"]["claim_events"]
-        if event["value"] == canonical.trace["selected_action"]
-        and event["evidence_strength"] > 0
+        if event["evidence_strength"] > 0
     )
     deleted_memory, deletion = claims.delete_sources(
         state["memory"], event_ids=[relevant["event_id"]]
@@ -1403,7 +1578,12 @@ def test_p1_shuffle_provenance_and_source_deletion_rerun_the_same_checkpoint():
     assert deleted.trace["policy_non_memory_projection_hash"] == canonical.trace[
         "policy_non_memory_projection_hash"
     ]
-    assert deleted.trace["selected_action"] != canonical.trace["selected_action"]
+    assert deleted.trace["claim_retrieval"]["support_by_action"] == {}
+    assert (
+        deleted.trace["claim_retrieval"]["raw_support_by_action"]
+        != canonical.trace["claim_retrieval"]["raw_support_by_action"]
+    )
+    assert deleted.trace["selected_action"] == canonical.trace["selected_action"]
 
 
 def test_p1_private_world_and_claim_tamper_fail_recomputing_replay(tmp_path):

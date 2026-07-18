@@ -425,9 +425,31 @@ def compute_step(
         candidate["gate_reasons"] = (
             [] if candidate["legal"] else ["unreachable_target"]
         )
+    positive_progress_actions = sorted(
+        str(candidate["action"])
+        for candidate in candidates
+        if candidate["legal"]
+        and float(candidate["current_goal_deficit_reduction"]) > 0.0
+    )
+    progress_gate_active = bool(positive_progress_actions)
+    for candidate in candidates:
+        positive_progress = candidate["action"] in positive_progress_actions
+        candidate["progress_gate"] = {
+            "rule": "legal_positive_goal_progress_precedes_zero_or_negative_progress",
+            "active": progress_gate_active,
+            "positive_progress_actions": list(positive_progress_actions),
+        }
+        candidate["selection_eligible"] = bool(
+            candidate["legal"] and (not progress_gate_active or positive_progress)
+        )
+        candidate["selection_exclusion_reasons"] = list(candidate["gate_reasons"])
+        if candidate["legal"] and progress_gate_active and not positive_progress:
+            candidate["selection_exclusion_reasons"].append(
+                "zero_or_negative_current_goal_progress"
+            )
     candidates.sort(key=lambda item: item["action"])
     selected = max(
-        (item for item in candidates if item["legal"]),
+        (item for item in candidates if item["selection_eligible"]),
         key=lambda item: (item["total_score"], item["deterministic_tie"]),
     )
     selected_action = str(selected["action"])
@@ -489,6 +511,7 @@ def compute_step(
     claim_update = _update_claim_memory(
         next_state,
         observation=world_observation,
+        current_goal=current_goal,
         action=selected_action,
         outcome=world_outcome_value,
         sequence=sequence,
@@ -1081,16 +1104,26 @@ def _score_candidate(
         action=action,
     )
     claim_memory_bias = claim_memory.memory_bias_for_action(claim_retrieval, action)
+    raw_claim_memory_bias = claim_memory.raw_memory_bias_for_action(
+        claim_retrieval, action
+    )
     claim_refs = sorted(
         {
             str(event_id)
             for item in claim_retrieval.get("claims", [])
             if item.get("value") == action
-            for event_id in item.get("provenance_event_ids", [])
+            for event_id in item.get("eligible_provenance_event_ids", [])
         }
     )
     memory_bias = max(-0.5, min(0.5, legacy_memory_bias + claim_memory_bias))
+    raw_memory_bias = max(
+        -0.5, min(0.5, legacy_memory_bias + raw_claim_memory_bias)
+    )
     memory_refs = sorted(set(legacy_memory_refs) | set(claim_refs))
+    context_memory_eligible = bool(
+        legacy_memory_refs
+        or action in claim_retrieval.get("support_by_action", {})
+    )
     untried_bonus = 0.025 if model_ref["count"] == 0 else 0.0
     deterministic_tie = _deterministic_tie(seed, sequence, context_key, action)
     reachable = path.get("reachable") is True
@@ -1131,10 +1164,16 @@ def _score_candidate(
         "current_goal_deficit_reduction": goal_reduction,
         "total_deficit_reduction": total_reduction,
         "memory_bias": _round(memory_bias),
+        "raw_memory_bias": _round(raw_memory_bias),
         "legacy_memory_bias": _round(legacy_memory_bias),
         "claim_memory_bias": _round(claim_memory_bias),
+        "raw_claim_memory_bias": _round(raw_claim_memory_bias),
+        "context_memory_eligible": context_memory_eligible,
         "claim_support": _round(
             float(claim_retrieval.get("support_by_action", {}).get(action, 0.0))
+        ),
+        "raw_claim_support": _round(
+            float(claim_retrieval.get("raw_support_by_action", {}).get(action, 0.0))
         ),
         "untried_bonus": untried_bonus,
         "action_cost": ACTION_COSTS[action],
@@ -1371,6 +1410,7 @@ def _update_claim_memory(
     state: dict[str, Any],
     *,
     observation: Mapping[str, Any],
+    current_goal: str,
     action: str,
     outcome: Any,
     sequence: int,
@@ -1415,6 +1455,7 @@ def _update_claim_memory(
             "agent_position": observation.get("agent_position"),
             "visible_object_ids": deepcopy(observation.get("visible_object_ids", [])),
             "cue": observation.get("cue"),
+            "current_goal": current_goal,
         },
     )
     state["memory"] = updated

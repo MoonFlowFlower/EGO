@@ -1,0 +1,35 @@
+{
+  "aggregation_rule": "policy-facing values must scan clean and the hostile private-field control must fire",
+  "code_path_hash": "99959d24407c1feefe00b56889af690f568d29be601f3a71c8c191c06e908ab4",
+  "input_artifacts": [
+    {
+      "bytes": 202787,
+      "path": "artifacts\\EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A\\diagnostic_readback.json",
+      "sha256": "d00fe25fff97171898c2843723d7e7cf043330b5bc5a235f04102a80dee8a087"
+    },
+    {
+      "bytes": 29792,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\scripts\\codex\\verify_ego_v2_action_perseveration_repair_001a.py",
+      "sha256": "1b16e8f35240d8290fc5500b2ec3060b6b4e4327e904e22eec2bf7993e207335"
+    }
+  ],
+  "policy_scan": {
+    "input_hash": "a702c255bc9d5c3954b7ae417223ba7211056064cd1b5206cb9d76147016e0f5",
+    "matches": [],
+    "producer_function": "scan_forbidden_values"
+  },
+  "positive_control_scan": {
+    "input_hash": "4c647ad3aa6c6f0484a602f08b6ab7240500d7a4a00aeabfaef40d3c408b4714",
+    "matches": [
+      "hidden_regime"
+    ],
+    "producer_function": "scan_forbidden_values"
+  },
+  "producer_function": "scan_forbidden_values",
+  "run_id": "life-visual-001",
+  "schema_version": "ego.action_repair.leakage_report.v1",
+  "seed_context_episode_ids": {
+    "run_seed": 701,
+    "trace_count": 71
+  }
+}

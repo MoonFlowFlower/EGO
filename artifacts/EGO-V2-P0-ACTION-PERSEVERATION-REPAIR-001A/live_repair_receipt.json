@@ -1,0 +1,59 @@
+{
+  "aggregation_rule": "real Tk Step/Run must traverse canonical dispatch, SQLite commit, recover, and trace waypoint animation",
+  "code_path_hash": "99959d24407c1feefe00b56889af690f568d29be601f3a71c8c191c06e908ab4",
+  "default_off": true,
+  "fresh_recover": true,
+  "input_artifacts": [
+    {
+      "bytes": 202787,
+      "path": "artifacts\\EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A\\diagnostic_readback.json",
+      "sha256": "d00fe25fff97171898c2843723d7e7cf043330b5bc5a235f04102a80dee8a087"
+    },
+    {
+      "bytes": 29792,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\scripts\\codex\\verify_ego_v2_action_perseveration_repair_001a.py",
+      "sha256": "1b16e8f35240d8290fc5500b2ec3060b6b4e4327e904e22eec2bf7993e207335"
+    }
+  ],
+  "pause_close_zero_extra_dispatch": true,
+  "producer_function": "run_visual_verification",
+  "real_tk_trigger": true,
+  "run_id": "ego-v2-visual-console-live-001",
+  "run_lockstep": true,
+  "runtime_authority": "none",
+  "schema_version": "ego.action_repair.live_repair_receipt.v1",
+  "screenshot": {
+    "bytes": 119654,
+    "path": "D:\\Project\\AIProject\\MyProject\\external-plans\\EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A\\PHASE-III-LIVE\\action-repair-visual-console.png",
+    "sha256": "5727e5230b9ae58f6dcafc1cabbffc5c54b3be632d133ecf2860693d2cbf1bd0"
+  },
+  "seed_context_episode_ids": {
+    "layout_id": "p2_offset_v1",
+    "run_seed": 701,
+    "world_seed": 42
+  },
+  "sqlite_commit": true,
+  "visual_check_values": {
+    "chinese_mapping_causal_bytes_unchanged": true,
+    "export_byte_identity": true,
+    "fresh_process_and_tk_non_skip": true,
+    "fresh_process_recover": true,
+    "no_second_engine_path": true,
+    "pause_close_zero_extra_dispatch": true,
+    "private_field_leakage_scan_positive_control": true,
+    "replay_recomputes_serialized_state_observation": true,
+    "run_commit_recover_animate_lockstep": true,
+    "same_recovery_frame_all_panels": true,
+    "scheduled_waypoints_equal_trace": true,
+    "sqlite_committed_transition": true,
+    "ui_step_calls_canonical_dispatch": true,
+    "ux_capture_produced": true
+  },
+  "visual_result_record": {
+    "bytes": 24091,
+    "path": "generated://visual-console-verifier/result.json",
+    "sha256": "6cf504750cc74cb2528b7e45a99581d8a4d50a11f1cb31177c4f98fa428c5a73"
+  },
+  "visual_verifier_verdict": "pass",
+  "waypoints_equal_recovered_trace": true
+}

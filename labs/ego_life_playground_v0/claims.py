@@ -290,19 +290,72 @@ def retrieve_competing_claims(
         raise ValueError("retrieval current_goal must be a non-empty string")
 
     position = str(observation.get("agent_position", "unknown"))
+    cue = observation.get("cue")
+    if type(cue) is not str or not cue:
+        raise ValueError("retrieval cue must be a non-empty public string")
     association = 1.0 if position == "fork" else 0.65
     retrieved: list[dict[str, Any]] = []
+    withheld: list[dict[str, Any]] = []
+    event_by_id = {
+        str(event["event_id"]): event for event in memory["claim_events"]
+    }
+    raw_support_by_action: dict[str, float] = {}
+    withheld_refs: set[str] = set()
     for claim in memory["competing_claims"]:
         if claim["subject"] != "microworld:opaque_fork":
             continue
+        raw_refs = [str(event_id) for event_id in claim["provenance_event_ids"]]
+        eligible_refs = [
+            event_id
+            for event_id in raw_refs
+            if (event_by_id[event_id].get("observed_public_features") or {}).get("cue")
+            == cue
+            and (event_by_id[event_id].get("observed_public_features") or {}).get(
+                "current_goal"
+            )
+            == current_goal
+        ]
+        ineligible_refs = sorted(set(raw_refs) - set(eligible_refs))
+        withheld_refs.update(ineligible_refs)
+        raw_support_by_action[str(claim["value"])] = _round(
+            float(claim["support"]) * association
+        )
+        if not eligible_refs:
+            withheld.append(
+                {
+                    "claim_id": claim["claim_id"],
+                    "value": claim["value"],
+                    "context_eligible": False,
+                    "eligible_provenance_event_ids": [],
+                    "withheld_provenance_event_ids": ineligible_refs,
+                    "reason": "cue_or_current_goal_mismatch",
+                }
+            )
+            continue
+        eligible_support = _round(
+            sum(
+                float(event_by_id[event_id]["evidence_strength"])
+                for event_id in eligible_refs
+            )
+        )
         item = deepcopy(claim)
         item["association_score"] = association
-        item["retrieval_score"] = _round(float(claim["support"]) * association)
+        item["raw_support"] = float(claim["support"])
+        item["eligible_support"] = eligible_support
+        item["context_eligible"] = True
+        item["eligible_provenance_event_ids"] = sorted(eligible_refs)
+        item["withheld_provenance_event_ids"] = ineligible_refs
+        item["retrieval_score"] = _round(eligible_support * association)
         retrieved.append(item)
     retrieved.sort(key=lambda item: (-float(item["retrieval_score"]), str(item["value"])))
+    withheld.sort(key=lambda item: (str(item["value"]), str(item["claim_id"])))
     supports = [float(item["retrieval_score"]) for item in retrieved]
     refs = sorted(
-        {event_id for item in retrieved for event_id in item["provenance_event_ids"]}
+        {
+            event_id
+            for item in retrieved
+            for event_id in item["eligible_provenance_event_ids"]
+        }
     )
     return {
         "schema_version": CLAIM_RETRIEVAL_SCHEMA_VERSION,
@@ -312,19 +365,26 @@ def retrieve_competing_claims(
             "subject": "microworld:opaque_fork",
             "predicate": "preferred_site_action",
             "agent_position": position,
+            "cue": cue,
             "current_goal": current_goal,
         },
         "claims": retrieved,
+        "withheld_claims": withheld,
         "support_by_action": {
             str(item["value"]): float(item["retrieval_score"]) for item in retrieved
         },
+        "raw_support_by_action": raw_support_by_action,
         "support_margin": _round(max(supports) - min(supports)) if len(supports) >= 2 else 0.0,
         "uncertainty": _round(1.0 / (1.0 + (max(supports) - min(supports))))
         if len(supports) >= 2
         else 1.0,
         "provenance_event_ids": refs,
+        "withheld_provenance_event_ids": sorted(withheld_refs),
         "source_episode_ids": sorted(
-            {episode_id for item in retrieved for episode_id in item["source_episode_ids"]}
+            {
+                str(event_by_id[event_id]["source_episode_id"])
+                for event_id in refs
+            }
         ),
     }
 
@@ -335,7 +395,19 @@ def memory_bias_for_action(retrieval: Mapping[str, Any], action: str) -> float:
     # the conflict set coexist.
     if len(retrieval.get("claims", [])) < 2:
         return 0.0
-    supports = retrieval.get("support_by_action", {})
+    return _memory_bias_from_supports(retrieval.get("support_by_action", {}), action)
+
+
+def raw_memory_bias_for_action(retrieval: Mapping[str, Any], action: str) -> float:
+    """Expose the all-context shortcut value for audit, never for selection."""
+
+    supports = retrieval.get("raw_support_by_action", {})
+    if not isinstance(supports, Mapping) or len(supports) < 2:
+        return 0.0
+    return _memory_bias_from_supports(supports, action)
+
+
+def _memory_bias_from_supports(supports: Mapping[str, Any], action: str) -> float:
     raw = float(supports.get(action, 0.0)) * CLAIM_BIAS_COEFFICIENT
     return _round(max(-CLAIM_BIAS_CLIP, min(CLAIM_BIAS_CLIP, raw)))
 
