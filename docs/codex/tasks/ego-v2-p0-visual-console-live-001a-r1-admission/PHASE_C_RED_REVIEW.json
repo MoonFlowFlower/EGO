@@ -1,0 +1,54 @@
+{
+  "schema_version": "ego.r1.visual_console_red_review.v1",
+  "task_id": "EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A-R1-ROUTE-ADMISSION-001A-R2",
+  "card_sha256": "519d10fec33b26459fe58faf9b4d10cec27aa1ed99bea4853059bd3c2e1e12b2",
+  "base_commit": "68de924e0f3af392e659ad8f8b39a734b08038f3",
+  "itl_commit": "431719b401d660eefbabd75097182575c985dbde",
+  "source_objects": {
+    "product_axis": {
+      "path": "artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json",
+      "git_blob_oid": "1d743eab85f143fb9b268f7b31bd902b39bbacbb",
+      "payload_sha256": "b322923b6e66a40eefa6f4ecff9bd9c711b73401c62c1ccc085746f08ce7a032",
+      "bytes": 3283
+    },
+    "v2_state": {
+      "path": "artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/state.json",
+      "git_blob_oid": "8907c6e9eac115bd892f2cf4a5a8445dd3aaa43a",
+      "payload_sha256": "521aa54231c09fc11e34e182e8730d699ca3d6b5cd18e81cbaffe8a49c80a4dd",
+      "bytes": 7594
+    },
+    "v2_events": {
+      "path": "artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/events.jsonl",
+      "git_blob_oid": "c478035ccc9c244feab1c0de083ac7d2a21e03a6",
+      "payload_sha256": "436d0f8a5f48ea833ac3fc4dd2c5c57f57e2181467d3e1781258053479b620a2",
+      "bytes": 5358
+    },
+    "v2_report": {
+      "path": "artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/ready_transition_validation_report.json",
+      "git_blob_oid": "899432f2fa3cc5a7e030908e0469878306078f8e",
+      "payload_sha256": "f8a326e88798ed9f27183a12ce91cde6b99d90b2d818cb2c48441a43df254340",
+      "bytes": 14300
+    }
+  },
+  "authority_manifest_sha256": "c87d34e1816785745100a10c634039998c1ab1eaa268acadbd76c15f8abecef1",
+  "authority_projection_sha256": "9a4e32b731ebeb7bb573c69787886b09a9233ba9bc72e8790fe0d340c7b29d78",
+  "staged_diff_sha256": "2cb1463947b97b73ee11a3716a354d52c916a26b8b8b0d2e5fcd7931d324c8b9",
+  "review_bundle_sha256": "565d948a187141ada8b5d34cbfb952bd6c1a2c0f5d89325ca1602dab06a85b87",
+  "exclusion_rule": "PHASE_C_RED_REVIEW_EXCLUDED_ONLY_TO_AVOID_SELF_REFERENCE",
+  "commit_requirement": "EXACT_DIRECT_CHILD_OF_PINNED_V2_BASE",
+  "review": {
+    "verdict": "NO_BLOCKING_FINDINGS",
+    "blocking_findings": []
+  },
+  "reviewer": {
+    "reviewer": "Claude",
+    "review_source": "Claude Web",
+    "review_id": "c857f268-3002-4ec9-bbcc-28f90f3149c6-message-12",
+    "reviewer_session_id": "c857f268-3002-4ec9-bbcc-28f90f3149c6",
+    "executor_session_id": "codex-r1-phase-ii-20260718",
+    "raw_output_path": "D:\\Project\\AIProject\\MyProject\\external-r1\\EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A-R1\\CLAUDE_R1_PHASE_II_STAGED_POSTCHECK_RAW.txt",
+    "raw_output_sha256": "29dc809b18de93d9a22c46c3d159e988656d84463a970b8c45963e1540f937bd",
+    "identity_assurance": "CONTROLLER_ATTESTED_LOCAL_ONLY",
+    "cryptographic_identity_verified": false
+  }
+}

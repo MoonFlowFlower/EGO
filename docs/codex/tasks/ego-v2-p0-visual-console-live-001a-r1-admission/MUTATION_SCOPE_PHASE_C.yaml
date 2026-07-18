@@ -1,0 +1,81 @@
+schema_version: ego.r1.visual_console_phase_c_scope.v1
+task_id: EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A-R1-ROUTE-ADMISSION-001A-R2
+task_kind: operator_authorized_visual_console_route_transcription
+requested_action_id: transcribe_EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A_authority
+base_commit: 68de924e0f3af392e659ad8f8b39a734b08038f3
+itl_commit: 431719b401d660eefbabd75097182575c985dbde
+card_sha256: 519d10fec33b26459fe58faf9b4d10cec27aa1ed99bea4853059bd3c2e1e12b2
+authority_path: docs/codex/tasks/ego-v2-p0-visual-console-live-001a-r1-admission/ITL_AUTHORITY_CROSSWALK.json
+receipt_path: docs/codex/tasks/ego-v2-p0-visual-console-live-001a-r1-admission/PHASE_C_RED_REVIEW.json
+source_objects:
+  product_axis:
+    path: artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json
+    git_blob_oid: 1d743eab85f143fb9b268f7b31bd902b39bbacbb
+    payload_sha256: b322923b6e66a40eefa6f4ecff9bd9c711b73401c62c1ccc085746f08ce7a032
+    bytes: 3283
+  v2_state:
+    path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/state.json
+    git_blob_oid: 8907c6e9eac115bd892f2cf4a5a8445dd3aaa43a
+    payload_sha256: 521aa54231c09fc11e34e182e8730d699ca3d6b5cd18e81cbaffe8a49c80a4dd
+    bytes: 7594
+  v2_events:
+    path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/events.jsonl
+    git_blob_oid: c478035ccc9c244feab1c0de083ac7d2a21e03a6
+    payload_sha256: 436d0f8a5f48ea833ac3fc4dd2c5c57f57e2181467d3e1781258053479b620a2
+    bytes: 5358
+  v2_report:
+    path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/ready_transition_validation_report.json
+    git_blob_oid: 899432f2fa3cc5a7e030908e0469878306078f8e
+    payload_sha256: f8a326e88798ed9f27183a12ce91cde6b99d90b2d818cb2c48441a43df254340
+    bytes: 14300
+reviewed_nonreceipt_paths: &reviewed
+  - docs/codex/tasks/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A.md
+  - docs/codex/tasks/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A-MUTATION_SCOPE.yaml
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - docs/STATUS.md
+  - artifacts/reports/program_state_summary.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - docs/REPO_SURFACE_MAP.md
+  - docs/codex/tasks/ego-v2-p0-visual-console-live-001a-r1-admission/COLLISION_RECORD.md
+  - docs/codex/tasks/ego-v2-p0-visual-console-live-001a-r1-admission/ITL_AUTHORITY_CROSSWALK.json
+  - docs/codex/tasks/ego-v2-p0-visual-console-live-001a-r1-admission/MUTATION_SCOPE_PHASE_C.yaml
+  - docs/codex/tasks/ego-v2-p0-visual-console-live-001a-r1-admission/STAGE_CARD.md
+  - scripts/codex_session_guard.py
+  - scripts/tests/test_codex_session_guard.py
+  - scripts/codex/verify_route_convergence.py
+  - scripts/codex/tests/test_route_governance_supersession.py
+allowed_mutation_paths: &all_paths
+  - docs/codex/tasks/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A.md
+  - docs/codex/tasks/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A-MUTATION_SCOPE.yaml
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - docs/STATUS.md
+  - artifacts/reports/program_state_summary.md
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - docs/REPO_SURFACE_MAP.md
+  - docs/codex/tasks/ego-v2-p0-visual-console-live-001a-r1-admission/COLLISION_RECORD.md
+  - docs/codex/tasks/ego-v2-p0-visual-console-live-001a-r1-admission/ITL_AUTHORITY_CROSSWALK.json
+  - docs/codex/tasks/ego-v2-p0-visual-console-live-001a-r1-admission/MUTATION_SCOPE_PHASE_C.yaml
+  - docs/codex/tasks/ego-v2-p0-visual-console-live-001a-r1-admission/PHASE_C_RED_REVIEW.json
+  - docs/codex/tasks/ego-v2-p0-visual-console-live-001a-r1-admission/STAGE_CARD.md
+  - scripts/codex_session_guard.py
+  - scripts/tests/test_codex_session_guard.py
+  - scripts/codex/verify_route_convergence.py
+  - scripts/codex/tests/test_route_governance_supersession.py
+exact_commit_paths: *all_paths
+implementation_allowlist:
+  - labs/ego_life_playground_v0/app.py
+  - tests/test_ego_life_playground_v0.py
+  - scripts/codex/verify_ego_v2_p0_visual_console_live_001a.py
+  - scripts/tests/test_verify_ego_v2_p0_visual_console_live_001a.py
+  - artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/result.json
+  - artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/trace.jsonl
+  - artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/baseline_comparison.json
+  - artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/ablation_report.json
+  - artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/replay_report.json
+  - artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/failure_manifest.json
+  - artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/live_ui_receipt.json
+  - artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/claim_ceiling.txt
+enabled: false
+runtime_authority: none
+mainline_connected: false
+auto_remote_anchor: forbidden

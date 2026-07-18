@@ -1,8 +1,8 @@
 program:
   version: 1
-  north_star: "Build the exact default-off V2 microworld product descendant on the sole ego_life_playground_v0 lineage while keeping EgoOperator as the sole active runtime default and all runtime/science/remote/proactive/LLM/network switches closed."
-  current_phase: "v2_product_first_authority__activation_bound_to_exact_phase_c_direct_child_commit"
-  current_layer: "engineering implementation authorization + product-development control-plane"
+  north_star: "Build the exact default-off V2 visual console on the sole ego_life_playground_v0 lineage while keeping EgoOperator as the sole active runtime default and all runtime/science/remote/proactive/LLM/network switches closed."
+  current_phase: "v2_visual_console_authority__exact_phase_a_action_admitted_default_off"
+  current_layer: "engineering visual-console implementation authorization + product-development control-plane"
   highest_evidence_level: "E3"
   verification_level: "V3"
   mainline_connected: true
@@ -17,8 +17,8 @@ program:
     - evidence_id: "ego_operator_human_operator_trial_v2_real_provider_scripted_run"
       note: "A fresh scripted v2 human-operator trial ran with a real OpenRouter provider and recorded 18/18 observations at `EgoOperator/artifacts/human_operator_trial/v2_latest/`; this is provider-scripted review evidence only, not a human-observation pass."
   current_focus:
-    - "ITL commit `4a4746435f9bdb0eba02e6c036c2e34a089ece26` authorizes one exact ordered 25-path V2 microworld descendant. Ego consumes it through one strict canonical projection; this direct-child commit, after typed-receipt readback, is the sole active V2 product-development authority."
-    - "Product-development authority and runtime mainline remain separate: V2 is default-off, runtime-disconnected, without runtime authority or a V2 trigger, science_weight=0, remote/proactive/LLM/network closed, while EgoOperator remains the existing active runtime default."
+    - "ITL commit `431719b401d660eefbabd75097182575c985dbde` admits one exact ordered 12-path visual-console action. V2 transcribes four committed Git objects through one strict canonical projection; this direct-child commit, after typed-receipt readback, is the sole active visual-console implementation authority."
+    - "Product-development authority and runtime mainline remain separate: the visual console is default-off, runtime-disconnected, without runtime authority or a visual trigger before Phase A, science_weight=0, remote/proactive/LLM/network closed, while EgoOperator remains the existing active runtime default."
     - "The 8692 K0 Foundation -> VirtualCat-derived adapter -> EgoDesktop route is additively superseded before M1. M1, M2, and M3 were not started and are cancelled by supersession; historical route prose is not current authority."
     - "EgoDesktop is archived as a legacy LLM/UI reference only. It is not an active route, successor dependency, runtime target, or runtime authority; this authority archive does not move, delete, or rewrite EgoDesktop source."
     - "K0 Foundation bounded engineering evidence remains `BANKED_ACCEPTED_BOUNDED`, disabled, non-mainline, and without runtime authority. No science verdict or mechanism attribution is created or upgraded in Ego."
@@ -143,7 +143,7 @@ program:
     - "Which legacy algorithms should be reimplemented as EgoOperator primitives, and which should remain reference-only."
     - "Whether future command/network transaction approvals should be added after file-write transaction approval has proved ergonomic."
     - "What evidence threshold should trigger any future deletion of legacy code rather than reference preservation."
-  next_minimal_action: "After the exact Phase-C direct-child commit and one postcommit readback pass, start P0 with `implement_EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A` inside the exact ordered 25-path allowlist; keep V2 default-off and runtime/science/remote/proactive/LLM/network authority closed."
+  next_minimal_action: "After the exact R1 direct-child commit and one postcommit readback pass, execute `implement_EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A` inside the exact ordered 12-path allowlist; keep the console default-off and runtime/science/remote/proactive/LLM/network authority closed."
   last_verified_commit: "af561e0d"
   last_verified_at: "2026-05-18T03:48:22Z"
   status_owner: "EgoOperator"
@@ -155,20 +155,35 @@ program:
     institutionalized_claim_requires: "E6"
 
 route_guard:
-  schema_version: ego.route_guard.v6
-  route_revision_id: EGO_PHASE_C_V2_AUTHORIZATION_GATE_SIMPLIFICATION_001A
-  route_fingerprint: af5dce47f64c21fe7ce3d91f517e6e9dc62659533e0eff9531007ce2acd1da86
+  schema_version: ego.route_guard.v7
+  route_revision_id: EGO_V2_P0_VISUAL_CONSOLE_LIVE_R1_ADMISSION_001A
+  route_fingerprint: 7a3ac5fc73074bdf8ad891ebeb337a2f4c99b8ab80383cb536c116d3ff49425d
   authority_source:
-    authority_rule: ITL committed V2 state is the sole machine-readable source; Ego admits only one strict canonical projection and does not reconstruct historical route semantics
+    authority_rule: FOUR_PINNED_COMMITTED_ITL_OBJECTS_ARE_SOLE_VISUAL_CONSOLE_ROUTE_SOURCE__FIELD_BY_FIELD_TRANSCRIPTION_ONLY
     repo: intelligence-theory-lab
-    pinned_commit: 4a4746435f9bdb0eba02e6c036c2e34a089ece26
+    pinned_commit: 431719b401d660eefbabd75097182575c985dbde
     route_id: EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A
     objects:
+      product_axis:
+        path: artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json
+        git_blob_oid: 1d743eab85f143fb9b268f7b31bd902b39bbacbb
+        payload_sha256: b322923b6e66a40eefa6f4ecff9bd9c711b73401c62c1ccc085746f08ce7a032
+        bytes: 3283
       v2_state:
         path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/state.json
-        git_blob_oid: 2f4231900663af2fe3a33e200ed7aa0cdeb1a182
-        git_blob_payload_sha256: faca7fdcf357a04c25b03d73f83eb6bf6f0dda56c6ef5295817e4374a0c32aa7
-        bytes: 7765
+        git_blob_oid: 8907c6e9eac115bd892f2cf4a5a8445dd3aaa43a
+        payload_sha256: 521aa54231c09fc11e34e182e8730d699ca3d6b5cd18e81cbaffe8a49c80a4dd
+        bytes: 7594
+      v2_events:
+        path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/events.jsonl
+        git_blob_oid: c478035ccc9c244feab1c0de083ac7d2a21e03a6
+        payload_sha256: 436d0f8a5f48ea833ac3fc4dd2c5c57f57e2181467d3e1781258053479b620a2
+        bytes: 5358
+      v2_report:
+        path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/ready_transition_validation_report.json
+        git_blob_oid: 899432f2fa3cc5a7e030908e0469878306078f8e
+        payload_sha256: f8a326e88798ed9f27183a12ce91cde6b99d90b2d818cb2c48441a43df254340
+        bytes: 14300
   predecessor_v1_ready_authority_source:
     authority_rule: ITL committed machine objects are the sole current product-development route authority; Ego transcribes and consumes them without synthesizing a second route
     repo: intelligence-theory-lab
@@ -211,8 +226,7 @@ route_guard:
         git_blob_payload_sha256: 7a3a49f15207d2e71676da6be7dfff7f6d27006ee46324fd7654e74189117b79
         bytes: 10758
   predecessor_authority_source:
-    authority_rule: ITL committed objects are the sole authority for the terminal Card2 closure, science firewall, and visible-life product-development
-      axis; Ego PROGRAM_STATE_UNIFIED is a validated local transcription and product-evidence owner, not a second route authority
+    authority_rule: ITL committed objects are the sole authority for the terminal Card2 closure, science firewall, and visible-life product-development axis; Ego PROGRAM_STATE_UNIFIED is a validated local transcription and product-evidence owner, not a second route authority
     repo: intelligence-theory-lab
     pinned_commit: 619bff5fd9400bba00002af26f65ce73894a9dce
     objects:
@@ -563,8 +577,7 @@ route_guard:
         - mechanism_validity
         - ego_readiness
         - stable_user_benefit
-        max: local ITL product-axis authority selection of Ego V0 as an immutable Git-object product-development baseline and sole descendant lineage,
-          pending Ego governance sync and with no runtime-mainline, science, learning, or mechanism authority
+        max: local ITL product-axis authority selection of Ego V0 as an immutable Git-object product-development baseline and sole descendant lineage, pending Ego governance sync and with no runtime-mainline, science, learning, or mechanism authority
       closure_type: ARTIFACT_ONLY
       conditional_actions:
         draft_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A_only_after_EGO_sync_validation:
@@ -737,8 +750,7 @@ route_guard:
         - mechanism_validity
         - ego_readiness
         - stable_user_benefit
-        max: local ITL product-axis authority selection of Ego V0 as an immutable Git-object product-development baseline and sole descendant lineage,
-          pending Ego governance sync and with no runtime-mainline, science, learning, or mechanism authority
+        max: local ITL product-axis authority selection of Ego V0 as an immutable Git-object product-development baseline and sole descendant lineage, pending Ego governance sync and with no runtime-mainline, science, learning, or mechanism authority
       closure_scope: PRODUCT_DEVELOPMENT_BASELINE_ADOPTION_ONLY
       closure_type: ARTIFACT_ONLY
       conditional_actions:
@@ -1385,47 +1397,65 @@ route_guard:
     - modify_EgoDesktop_or_EgoOperator
     - add_LLM_network_service_or_subprocess
   v2_authority:
-    schema_version: ego.phase_c.v2_authority.consumption.v1
-    task_id: EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A
+    schema_version: ego.r1.visual_console_authority.consumption.v1
+    task_id: EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A-R1-ROUTE-ADMISSION-001A-R2
+    transition_task_id: EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A-R1-ROUTE-ADMISSION-001A-R2
+    implementation_task_id: EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A
     route_id: EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A
-    source_commit: 4a4746435f9bdb0eba02e6c036c2e34a089ece26
-    authority_envelope_path: docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/ITL_AUTHORITY_CROSSWALK.json
-    phase_c_gate_task_id: EGO-PHASE-C-V2-AUTHORIZATION-GATE-SIMPLIFICATION-001A
-    lineage_root_authority_route_id: EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A
-    core_id: ego_life_playground_v0
-    predecessor_descendant_id: EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A
-    implementation_action: implement_EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A
-    implementation_task_kind: bounded_v2_microworld_implementation
+    source_commit: 431719b401d660eefbabd75097182575c985dbde
+    source_v2_commit: 68de924e0f3af392e659ad8f8b39a734b08038f3
+    authority_envelope_path: docs/codex/tasks/ego-v2-p0-visual-console-live-001a-r1-admission/ITL_AUTHORITY_CROSSWALK.json
+    phase_c_gate_task_id: EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A-R1-ROUTE-ADMISSION-001A-R2
+    phase: V2_BOUNDED_RESULT_VISUAL_CONSOLE_READY_TO_IMPLEMENT
+    operator_decision: AUTHORIZE_EXACT_DEFAULT_OFF_VISUAL_CONSOLE_AFTER_COMMITTED_V2_RESULT
+    execution_state: AUTHORIZED_FOR_EXACT_ACTIVE_V2_IMPLEMENTATION_SCOPE
+    conditional_action:
+      authorization: GRANTED_EXACT_TARGETS
+      execution_precondition: EXACT_COMMITTED_ACTIVE_V2_WORKTREE_TRANSCRIPTION_AND_DUAL_REPO_VALIDATION
+      state: AUTHORIZED_BUT_BLOCKED_UNTIL_EXACT_V2_WORKTREE_TRANSCRIPTION
+    implementation_action: implement_EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A
+    implementation_task_kind: default_off_visual_console_implementation
+    validation_action: run_route_state_machine_validation
     allowed_next_actions:
-    - implement_EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A
+    - implement_EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A
     - run_route_state_machine_validation
     implementation_authorized: true
     authorized_implementation_targets:
-    - docs/codex/tasks/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A-MUTATION_SCOPE.yaml
-    - labs/ego_life_playground_v0/__init__.py
-    - labs/ego_life_playground_v0/engine.py
-    - labs/ego_life_playground_v0/microworld.py
-    - labs/ego_life_playground_v0/claims.py
     - labs/ego_life_playground_v0/app.py
-    - labs/ego_life_playground_v0/store.py
-    - scripts/run_ego_life_playground_v0.py
     - tests/test_ego_life_playground_v0.py
-    - tests/test_ego_life_playground_v2_microworld.py
-    - scripts/codex/verify_ego_life_kernel_v2_microworld.py
-    - scripts/tests/test_verify_ego_life_kernel_v2_microworld.py
-    - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/continuity.sqlite3
-    - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/trace.jsonl
-    - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/product_trigger_receipt.json
-    - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/headroom_report.json
-    - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/collision_record.json
-    - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/baseline_comparison.json
-    - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/ablation_report.json
-    - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/learning_report.json
-    - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/replay_report.json
-    - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/leakage_report.json
-    - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/failure_manifest.json
-    - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/claim_ceiling.txt
-    - artifacts/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/result.json
+    - scripts/codex/verify_ego_v2_p0_visual_console_live_001a.py
+    - scripts/tests/test_verify_ego_v2_p0_visual_console_live_001a.py
+    - artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/result.json
+    - artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/trace.jsonl
+    - artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/baseline_comparison.json
+    - artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/ablation_report.json
+    - artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/replay_report.json
+    - artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/failure_manifest.json
+    - artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/live_ui_receipt.json
+    - artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/claim_ceiling.txt
+    consumed_sync_action: sync_EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A_authority_under_separate_task
+    consumed_implementation:
+      action: implement_EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A
+      authority_transcription_commit: a34ff6630a6456b9e333199b10ee866d30e1c0cd
+      claim_disposition: PRESERVE_MEMORY_CAUSALITY_AND_LEARNING_LIMITS__NO_RESULT_UPGRADE
+      p0_commit: bb9b0393be5ccc8a7840deaf9e70b9166ae974d5
+      p1_commit: c37e15c0479f7b5f315bae6437fa94dc974fae4a
+      p2_result_commit: 68de924e0f3af392e659ad8f8b39a734b08038f3
+      result_verdict: bounded_update_and_heldout_comparison_measured_with_control_equivalence
+    product_development_core_lineage:
+      authority: DESCENDANT_OF_SOLE_LINEAGE
+      core_id: ego_life_playground_v0
+      descendant_id: EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A
+      lineage_root_authority_route_id: EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A
+      parallel_core_created: false
+      predecessor_descendant_id: EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A
+      v0_source_commit: 546e3639299d7b11b599df3d00645666a6953bac
+      v1_implementation_commit: 7ca4ad3b00a41723c04dde388212ad617479ad81
+      v2_bounded_result_commit: 68de924e0f3af392e659ad8f8b39a734b08038f3
+      v2_preregistration_commit: 089ab5ef27431eb5ace4ff4795f57f08fd052779
+    lineage_root_authority_route_id: EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A
+    core_id: ego_life_playground_v0
+    predecessor_descendant_id: EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A
     enabled: false
     default_enabled: false
     mainline_connected: false
@@ -1452,16 +1482,35 @@ route_guard:
         branch: codex/ego-v2-product-first-001a
         activation_condition: THIS_DIRECT_CHILD_COMMIT_PASSES_PHASE_C_V2_GATE
         sole: true
-    real_trigger_evidence: PINNED_EGO_LOCAL_PRODUCT_TRIGGER_ONLY__NO_V2_TRIGGER
+    real_trigger_evidence: PINNED_V2_LOCAL_PRODUCT_TRIGGER_ONLY__NO_VISUAL_CONSOLE_TRIGGER
     forbidden_next_actions:
-    - modify_unlisted_V2_implementation_target
-    - relabel_V2_product_mutation_as_route_validation
-    - modify_EgoDesktop_or_EgoOperator
+    - modify_reopen_or_rerun_EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A
+    - modify_reopen_or_rerun_K0-DUAL-TRACK-SUPERSESSION-001A
+    - use_closed_card2_action_or_old_k0_action_as_authority
+    - modify_pinned_V0_source_commit_or_rewrite_history
     - enable_runtime_mainline_or_grant_runtime_authority
-    - enable_proactive_initiative_or_background_dispatch
-    - add_LLM_network_service_or_subprocess
+    - change_EgoOperator_active_default
+    - start_V1_implementation_without_separate_operator_authorized_card
     - start_science_successor_experiment_scoring_or_formal_run
+    - treat_product_trace_or_visible_behavior_as_mechanism_evidence
     - push_tag_or_remote_anchor
+    - modify_reopen_or_rerun_EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A
+    - modify_product_axis_science_snapshot_program_state
+    - execute_V1_before_exact_Ego_phase_C_transcription_validation
+    - modify_unlisted_V1_implementation_target
+    - create_parallel_visible_life_product_core_or_launcher
+    - modify_EgoDesktop_or_EgoOperator
+    - add_LLM_network_service_or_subprocess
+    - implement_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A
+    - sync_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A_ready_authority_under_separate_task
+    - retune_repair_or_rerun_V1_to_force_memory_conditioning
+    - rewrite_V1_ready_report_or_first_event
+    - start_V2_before_exact_Ego_phase_C_transcription
+    - execute_visual_console_before_exact_V2_worktree_transcription_validation
+    - reactivate_consumed_EGO_LIFE_KERNEL_V2_implementation_action
+    - modify_unlisted_visual_console_implementation_target
+    - modify_engine_microworld_store_claims_launcher_or_sqlite_schema
+    - enable_proactive_initiative_or_background_dispatch
     claim_ceiling:
       forbidden_claims:
       - runtime_or_runtime_mainline_effect
@@ -1488,7 +1537,7 @@ route_guard:
       - general_learning
       - associative_memory
       - controlled_initiative
-      max: local ITL control-plane authorization of one exact default-off V2 microworld descendant, with execution blocked on exact Ego Phase-C transcription
+      max: machine-readable product control-plane admission of one exact default-off local visual-console implementation action and exact 12-path boundary, blocked on exact active-V2 transcription
   authority_state:
     old_route_8692:
       disposition: SUPERSEDED_BEFORE_M1
@@ -1521,20 +1570,20 @@ route_guard:
       runtime_authority: none
       default_enabled: false
       science_weight: 0
+      current_action: implement_EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A
+      authorized_target_count: 12
     relation: historical_local_surface_status_not_route_authority
   route_views:
     task_routes:
       ego-operator-human-operator-trial-v2:
         lane: active_default
         label: EgoOperator Human Operator Trial v2
-        why: Current EgoOperator human-observation gate; records whether the operator-first runtime is actually usable in continuous Chinese operator
-          work.
+        why: Current EgoOperator human-observation gate; records whether the operator-first runtime is actually usable in continuous Chinese operator work.
         workstream_id: ego_operator_first_transition
       ego-canonical-mechanism-integration-001a:
         lane: closed_evidence
         label: EGO Canonical Mechanism Integration 001A
-        why: Additively superseded before M1; M1/M2/M3 were not started and are cancelled; no enabled path, mainline connection, successor dependency,
-          runtime authority, or real trigger.
+        why: Additively superseded before M1; M1/M2/M3 were not started and are cancelled; no enabled path, mainline connection, successor dependency, runtime authority, or real trigger.
         workstream_id: canonical_mechanism_integration_route_001a
       ego-route-8692-supersession-and-egodesktop-authority-archive-001a:
         lane: closed_evidence
@@ -1543,28 +1592,24 @@ route_guard:
       ego-pet-world-v1-card2-itl-authority-sync-001a:
         lane: closed_evidence
         label: EGO Pet World v1 Card 2 ITL Authority Sync 001A
-        why: Field-by-field governance sync from committed ITL objects; no Card 2 bank, execution, runtime, product, experiment, scoring, or science
-          authorization.
+        why: Field-by-field governance sync from committed ITL objects; no Card 2 bank, execution, runtime, product, experiment, scoring, or science authorization.
         workstream_id: program_state_governance
       ego-visible-life-proxy-v0-route-replacement-001a:
         lane: closed_evidence
         label: EGO Visible Life Proxy v0 Route Replacement 001A
-        why: The exact-six playground implementation action is consumed and preserved as the immutable V0 baseline; it grants no continuing implementation,
-          runtime, or science authority.
+        why: The exact-six playground implementation action is consumed and preserved as the immutable V0 baseline; it grants no continuing implementation, runtime, or science authority.
       ego-visible-life-proxy-v0-core-adoption-001a:
         lane: closed_evidence
         label: EGO Visible Life Proxy v0 Product-Core Authority Sync 001A
-        why: Historical predecessor authority-sync boundary, consumed by the V1 READY transition; the immutable V0 Git-object baseline and local replayable
-          trigger remain preserved without live action authority.
+        why: Historical predecessor authority-sync boundary, consumed by the V1 READY transition; the immutable V0 Git-object baseline and local replayable trigger remain preserved without live action authority.
       ego-life-kernel-v1-continuity-playground-ready-transition-001a:
         lane: closed_evidence
         label: EGO Life Kernel V1 Continuity Playground READY Transition 001A
         why: Historical V1 READY authority consumed by V1 execution and the bounded-negative post-result route; it has no live implementation action.
       ego-life-kernel-v1-continuity-playground-post-result-routing-001a:
         lane: supporting_active
-        label: EGO Phase-C V2 Simplified Product Authority 001A
-        why: Sole active V2 product-development authority after its exact direct-child commit passes the typed postcommit gate; exact 25-path allowlist,
-          default-off, runtime-disconnected, no V2 trigger, science_weight=0, remote/proactive/LLM/network closed.
+        label: EGO V2 Visual Console Exact Admission 001A
+        why: Sole active default-off visual-console implementation authority; exact 12-path allowlist, runtime-disconnected, no visual trigger before Phase A, science_weight=0, remote/proactive/LLM/network closed.
     current_surfaces:
     - surface: operator_runtime
       paths:
@@ -1575,8 +1620,8 @@ route_guard:
       paths:
       - labs/ego_life_playground_v0/
       - scripts/run_ego_life_playground_v0.py
-      role: Sole product-development lineage rooted at the immutable V0 baseline, with the V2 microworld as the only authorized descendant.
-      authority: descendant=EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A; branch=codex/ego-v2-product-first-001a after valid Phase-C commit; implementation_authorized=true for the exact ordered 25-path allowlist; default_enabled=false; runtime_mainline_connected=false; runtime_authority=none; science_weight=0.
+      role: Sole product-development lineage with one exact default-off visual-console action.
+      authority: action=implement_EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A; exact_targets=12; default_enabled=false; runtime_mainline_connected=false; runtime_authority=none; science_weight=0.
     - surface: superseded_8692_route
       paths:
       - packages/ego_k0_kernel/
@@ -1595,13 +1640,136 @@ route_guard:
       path: docs/codex/tasks/ego-visible-life-proxy-v0-core-adoption-001a/PHASE_A_RED_REVIEW.json
       receipt_commit_relation: SAME_DIRECT_CHILD_COMMIT__RECEIPT_EXCLUDED_FROM_REVIEWED_MANIFEST
     phase_c:
-      path: docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/PHASE_C_RED_REVIEW.json
-      reviewed_nonreceipt_path_count: 19
-      review_binding: FIXED_TYPED_JSON__19_GIT_BLOB_MANIFEST__CONTROLLER_ATTESTED_LOCAL_ONLY
+      path: docs/codex/tasks/ego-v2-p0-visual-console-live-001a-r1-admission/PHASE_C_RED_REVIEW.json
+      reviewed_nonreceipt_path_count: 15
+      review_binding: FIXED_TYPED_JSON__15_GIT_BLOB_MANIFEST__RAW_STAGED_DIFF__CONTROLLER_ATTESTED_LOCAL_ONLY
       receipt_commit_relation: SAME_DIRECT_CHILD_COMMIT__RECEIPT_EXCLUDED_FROM_REVIEWED_MANIFEST
     review_invalidated_by_diff_change: true
     unresolved_review_blockers: []
-  claim_ceiling: local exact-commit authorization of one default-off V2 product-development descendant; no V2 implementation, trigger, runtime-mainline effect, learning, memory causality, science authority, or product acceptance evidence
+  claim_ceiling: local exact-commit admission of one default-off visual-console implementation action; no GUI trigger, runtime-mainline effect, learning, memory causality, science authority, or product acceptance evidence
+  transcription_contract:
+    rule: FIELD_BY_FIELD_FROM_PINNED_GIT_OBJECTS__SYNC_CONSUMED__NO_UNION_OR_FALLBACK
+    source_report_verdict: pass
+    source_admission_event_id: EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A:READY_TO_IMPLEMENT:002
+    source_object_count: 4
+    crosswalk_complete: true
+  field_crosswalk:
+  - source_object: v2_state
+    source_pointer: /route_id
+    target_pointer: /visual_console/route_id
+    rule: copy_exact
+  - source_object: v2_state
+    source_pointer: /task_id
+    target_pointer: /visual_console/transition_task_id
+    rule: copy_exact
+  - source_object: v2_state
+    source_pointer: /phase
+    target_pointer: /visual_console/phase
+    rule: copy_exact
+  - source_object: v2_state
+    source_pointer: /operator_decision
+    target_pointer: /visual_console/operator_decision
+    rule: copy_exact
+  - source_object: v2_state
+    source_pointer: /execution_state
+    target_pointer: /visual_console/execution_state
+    rule: copy_exact
+  - source_object: v2_state
+    source_pointer: /conditional_actions/implement_EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A
+    target_pointer: /visual_console/conditional_action
+    rule: copy_exact
+  - source_object: v2_state
+    source_pointer: /authorized_implementation_targets
+    target_pointer: /visual_console/authorized_implementation_targets
+    rule: copy_exact_ordered
+  - source_object: v2_state
+    source_pointer: /consumed_implementation
+    target_pointer: /visual_console/consumed_implementation
+    rule: copy_exact
+  - source_object: v2_state
+    source_pointer: /product_development_core_lineage
+    target_pointer: /visual_console/product_development_core_lineage
+    rule: copy_exact
+  - source_object: v2_state
+    source_pointer: /real_trigger_evidence
+    target_pointer: /visual_console/real_trigger_evidence
+    rule: copy_exact
+  - source_object: v2_state
+    source_pointer: /forbidden_next_actions
+    target_pointer: /visual_console/forbidden_next_actions
+    rule: copy_exact_ordered
+  - source_object: v2_state
+    source_pointer: /claim_ceiling
+    target_pointer: /visual_console/claim_ceiling
+    rule: copy_exact
+  - source_object: product_axis
+    source_pointer: /product_development_axis/source_commit
+    target_pointer: /visual_console/source_v2_commit
+    rule: copy_exact
+  - source_object: v2_report
+    source_pointer: /verdict
+    target_pointer: /transcription_contract/source_report_verdict
+    rule: require_exact_pass
+  - source_object: v2_events
+    source_pointer: /1/event_id
+    target_pointer: /transcription_contract/source_admission_event_id
+    rule: copy_exact
+  - source_object: v2_state
+    source_pointer: /enabled
+    target_pointer: /visual_console/switches/enabled
+    rule: copy_exact_typed
+  - source_object: v2_state
+    source_pointer: /default_enabled
+    target_pointer: /visual_console/switches/default_enabled
+    rule: copy_exact_typed
+  - source_object: v2_state
+    source_pointer: /mainline_connected
+    target_pointer: /visual_console/switches/mainline_connected
+    rule: copy_exact_typed
+  - source_object: v2_state
+    source_pointer: /runtime_mainline_connected
+    target_pointer: /visual_console/switches/runtime_mainline_connected
+    rule: copy_exact_typed
+  - source_object: v2_state
+    source_pointer: /runtime_authority
+    target_pointer: /visual_console/switches/runtime_authority
+    rule: copy_exact_typed
+  - source_object: v2_state
+    source_pointer: /science_weight
+    target_pointer: /visual_console/switches/science_weight
+    rule: copy_exact_typed
+  - source_object: v2_state
+    source_pointer: /remote_anchor
+    target_pointer: /visual_console/switches/remote_anchor
+    rule: copy_exact_typed
+  - source_object: v2_state
+    source_pointer: /auto_remote_anchor
+    target_pointer: /visual_console/switches/auto_remote_anchor
+    rule: copy_exact_typed
+  - source_object: v2_state
+    source_pointer: /proactive_action_enabled
+    target_pointer: /visual_console/switches/proactive_action_enabled
+    rule: copy_exact_typed
+  - source_object: v2_state
+    source_pointer: /initiative_executor_authorized
+    target_pointer: /visual_console/switches/initiative_executor_authorized
+    rule: copy_exact_typed
+  - source_object: v2_state
+    source_pointer: /background_dispatch
+    target_pointer: /visual_console/switches/background_dispatch
+    rule: copy_exact_typed
+  - source_object: v2_state
+    source_pointer: /external_side_effects
+    target_pointer: /visual_console/switches/external_side_effects
+    rule: copy_exact_typed
+  - source_object: v2_state
+    source_pointer: /llm
+    target_pointer: /visual_console/switches/llm
+    rule: copy_exact_typed
+  - source_object: v2_state
+    source_pointer: /network
+    target_pointer: /visual_console/switches/network
+    rule: copy_exact_typed
 workstreams:
   - id: "ego_life_playground_v0_product_development_core"
     owner: "Operator + Codex"

@@ -8,8 +8,8 @@
 
 | field | value |
 |---|---|
-| current_phase | `v2_product_first_authority__activation_bound_to_exact_phase_c_direct_child_commit` |
-| current_layer | `engineering implementation authorization + product-development control-plane` |
+| current_phase | `v2_visual_console_authority__exact_phase_a_action_admitted_default_off` |
+| current_layer | `engineering visual-console implementation authorization + product-development control-plane` |
 | highest_evidence_level | `E3` |
 | verification_level | `V3` |
 | mainline_connected | `True` |
@@ -19,12 +19,12 @@
 
 ## North Star
 
-Build the exact default-off V2 microworld product descendant on the sole ego_life_playground_v0 lineage while keeping EgoOperator as the sole active runtime default and all runtime/science/remote/proactive/LLM/network switches closed.
+Build the exact default-off V2 visual console on the sole ego_life_playground_v0 lineage while keeping EgoOperator as the sole active runtime default and all runtime/science/remote/proactive/LLM/network switches closed.
 
 ## Current Focus
 
-- ITL commit `4a4746435f9bdb0eba02e6c036c2e34a089ece26` authorizes one exact ordered 25-path V2 microworld descendant. Ego consumes it through one strict canonical projection; this direct-child commit, after typed-receipt readback, is the sole active V2 product-development authority.
-- Product-development authority and runtime mainline remain separate: V2 is default-off, runtime-disconnected, without runtime authority or a V2 trigger, science_weight=0, remote/proactive/LLM/network closed, while EgoOperator remains the existing active runtime default.
+- ITL commit `431719b401d660eefbabd75097182575c985dbde` admits one exact ordered 12-path visual-console action. V2 transcribes four committed Git objects through one strict canonical projection; this direct-child commit, after typed-receipt readback, is the sole active visual-console implementation authority.
+- Product-development authority and runtime mainline remain separate: the visual console is default-off, runtime-disconnected, without runtime authority or a visual trigger before Phase A, science_weight=0, remote/proactive/LLM/network closed, while EgoOperator remains the existing active runtime default.
 - The 8692 K0 Foundation -> VirtualCat-derived adapter -> EgoDesktop route is additively superseded before M1. M1, M2, and M3 were not started and are cancelled by supersession; historical route prose is not current authority.
 - EgoDesktop is archived as a legacy LLM/UI reference only. It is not an active route, successor dependency, runtime target, or runtime authority; this authority archive does not move, delete, or rewrite EgoDesktop source.
 - K0 Foundation bounded engineering evidence remains `BANKED_ACCEPTED_BOUNDED`, disabled, non-mainline, and without runtime authority. No science verdict or mechanism attribution is created or upgraded in Ego.
@@ -158,7 +158,7 @@ Build the exact default-off V2 microworld product descendant on the sole ego_lif
 
 ## Next Minimal Action
 
-After the exact Phase-C direct-child commit and one postcommit readback pass, start P0 with `implement_EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A` inside the exact ordered 25-path allowlist; keep V2 default-off and runtime/science/remote/proactive/LLM/network authority closed.
+After the exact R1 direct-child commit and one postcommit readback pass, execute `implement_EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A` inside the exact ordered 12-path allowlist; keep the console default-off and runtime/science/remote/proactive/LLM/network authority closed.
 
 ## Real Trigger Evidence
 

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import fnmatch
 import hashlib
 import json
@@ -431,6 +432,226 @@ PHASE_C_V2_REVIEWED_PATHS = [
 ]
 PHASE_C_V2_COMMIT_PATHS = [*PHASE_C_V2_REVIEWED_PATHS, PHASE_C_V2_RECEIPT_PATH]
 
+# EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A-R1-ROUTE-ADMISSION-001A-R2
+#
+# This is the one-way successor to the v6 authority above.  The v6 helpers stay
+# callable for immutable historical commits; the active route guard is v7 and
+# is reconstructed only from the four pinned committed ITL objects below.
+PHASE_C_V2_LEGACY_IMPLEMENT_ACTION_ID = PHASE_C_V2_IMPLEMENT_ACTION_ID
+PHASE_C_V2_LEGACY_IMPLEMENTATION_TARGETS = list(PHASE_C_V2_IMPLEMENTATION_TARGETS)
+PHASE_C_V2_LEGACY_ROUTE_REVISION = PHASE_C_V2_ROUTE_REVISION
+
+R1_VISUAL_TRANSITION_TASK_ID = (
+    "EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A-R1-ROUTE-ADMISSION-001A-R2"
+)
+R1_VISUAL_PRODUCT_TASK_ID = "EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A"
+R1_VISUAL_ROUTE_ID = "EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A"
+R1_VISUAL_ROUTE_REVISION = "EGO_V2_P0_VISUAL_CONSOLE_LIVE_R1_ADMISSION_001A"
+R1_VISUAL_AUTHORITY_SCHEMA_VERSION = "ego.r1.visual_console_authority.v1"
+R1_VISUAL_RECEIPT_SCHEMA_VERSION = "ego.r1.visual_console_red_review.v1"
+R1_VISUAL_SCOPE_SCHEMA_VERSION = "ego.r1.visual_console_phase_c_scope.v1"
+R1_VISUAL_PHASE_A_SCOPE_SCHEMA_VERSION = "ego.visual_console.phase_a_mutation_scope.v1"
+R1_VISUAL_V2_BASE_COMMIT = "68de924e0f3af392e659ad8f8b39a734b08038f3"
+R1_VISUAL_ITL_COMMIT = "431719b401d660eefbabd75097182575c985dbde"
+R1_VISUAL_CARD_SHA256 = "519d10fec33b26459fe58faf9b4d10cec27aa1ed99bea4853059bd3c2e1e12b2"
+R1_VISUAL_IMPLEMENT_ACTION_ID = "implement_EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A"
+R1_VISUAL_SYNC_ACTION_ID = (
+    "sync_EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A_authority_under_separate_task"
+)
+R1_VISUAL_VALIDATION_ACTION_ID = "run_route_state_machine_validation"
+R1_VISUAL_IMPLEMENT_TASK_KIND = "default_off_visual_console_implementation"
+R1_VISUAL_TRANSITION_ACTION_ID = "transcribe_EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A_authority"
+R1_VISUAL_TRANSITION_TASK_KIND = "operator_authorized_visual_console_route_transcription"
+R1_VISUAL_TASK_PREFIX = (
+    "docs/codex/tasks/ego-v2-p0-visual-console-live-001a-r1-admission/"
+)
+R1_VISUAL_SCOPE_PATH = f"{R1_VISUAL_TASK_PREFIX}MUTATION_SCOPE_PHASE_C.yaml"
+R1_VISUAL_AUTHORITY_PATH = f"{R1_VISUAL_TASK_PREFIX}ITL_AUTHORITY_CROSSWALK.json"
+R1_VISUAL_RECEIPT_PATH = f"{R1_VISUAL_TASK_PREFIX}PHASE_C_RED_REVIEW.json"
+R1_VISUAL_STAGE_CARD_PATH = f"{R1_VISUAL_TASK_PREFIX}STAGE_CARD.md"
+R1_VISUAL_COLLISION_PATH = f"{R1_VISUAL_TASK_PREFIX}COLLISION_RECORD.md"
+R1_VISUAL_PHASE_A_CARD_PATH = "docs/codex/tasks/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A.md"
+R1_VISUAL_PHASE_A_SCOPE_PATH = (
+    "docs/codex/tasks/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A-MUTATION_SCOPE.yaml"
+)
+R1_VISUAL_SOURCE_OBJECTS = {
+    "product_axis": {
+        "path": "artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json",
+        "git_blob_oid": "1d743eab85f143fb9b268f7b31bd902b39bbacbb",
+        "payload_sha256": "b322923b6e66a40eefa6f4ecff9bd9c711b73401c62c1ccc085746f08ce7a032",
+        "bytes": 3283,
+    },
+    "v2_state": {
+        "path": (
+            "artifacts/ROUTE-STATE-MACHINE-001A/routes/"
+            "EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/state.json"
+        ),
+        "git_blob_oid": "8907c6e9eac115bd892f2cf4a5a8445dd3aaa43a",
+        "payload_sha256": "521aa54231c09fc11e34e182e8730d699ca3d6b5cd18e81cbaffe8a49c80a4dd",
+        "bytes": 7594,
+    },
+    "v2_events": {
+        "path": (
+            "artifacts/ROUTE-STATE-MACHINE-001A/routes/"
+            "EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/events.jsonl"
+        ),
+        "git_blob_oid": "c478035ccc9c244feab1c0de083ac7d2a21e03a6",
+        "payload_sha256": "436d0f8a5f48ea833ac3fc4dd2c5c57f57e2181467d3e1781258053479b620a2",
+        "bytes": 5358,
+    },
+    "v2_report": {
+        "path": (
+            "artifacts/ROUTE-STATE-MACHINE-001A/routes/"
+            "EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/"
+            "ready_transition_validation_report.json"
+        ),
+        "git_blob_oid": "899432f2fa3cc5a7e030908e0469878306078f8e",
+        "payload_sha256": "f8a326e88798ed9f27183a12ce91cde6b99d90b2d818cb2c48441a43df254340",
+        "bytes": 14300,
+    },
+}
+R1_VISUAL_IMPLEMENTATION_TARGETS = [
+    "labs/ego_life_playground_v0/app.py",
+    "tests/test_ego_life_playground_v0.py",
+    "scripts/codex/verify_ego_v2_p0_visual_console_live_001a.py",
+    "scripts/tests/test_verify_ego_v2_p0_visual_console_live_001a.py",
+    "artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/result.json",
+    "artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/trace.jsonl",
+    "artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/baseline_comparison.json",
+    "artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/ablation_report.json",
+    "artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/replay_report.json",
+    "artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/failure_manifest.json",
+    "artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/live_ui_receipt.json",
+    "artifacts/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A/claim_ceiling.txt",
+]
+R1_VISUAL_CLOSED_SWITCHES = {
+    "enabled": False,
+    "default_enabled": False,
+    "mainline_connected": False,
+    "runtime_mainline_connected": False,
+    "runtime_authority": "none",
+    "science_weight": 0,
+    "remote_anchor": False,
+    "auto_remote_anchor": "forbidden",
+    "proactive_action_enabled": False,
+    "initiative_executor_authorized": False,
+    "background_dispatch": False,
+    "external_side_effects": False,
+    "llm": "forbidden",
+    "network": "forbidden",
+}
+R1_VISUAL_CONSUMED_IMPLEMENTATION = {
+    "action": PHASE_C_V2_LEGACY_IMPLEMENT_ACTION_ID,
+    "authority_transcription_commit": "a34ff6630a6456b9e333199b10ee866d30e1c0cd",
+    "claim_disposition": "PRESERVE_MEMORY_CAUSALITY_AND_LEARNING_LIMITS__NO_RESULT_UPGRADE",
+    "p0_commit": "bb9b0393be5ccc8a7840deaf9e70b9166ae974d5",
+    "p1_commit": "c37e15c0479f7b5f315bae6437fa94dc974fae4a",
+    "p2_result_commit": R1_VISUAL_V2_BASE_COMMIT,
+    "result_verdict": "bounded_update_and_heldout_comparison_measured_with_control_equivalence",
+}
+R1_VISUAL_LINEAGE = {
+    "authority": "DESCENDANT_OF_SOLE_LINEAGE",
+    "core_id": "ego_life_playground_v0",
+    "descendant_id": R1_VISUAL_ROUTE_ID,
+    "lineage_root_authority_route_id": "EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A",
+    "parallel_core_created": False,
+    "predecessor_descendant_id": "EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A",
+    "v0_source_commit": "546e3639299d7b11b599df3d00645666a6953bac",
+    "v1_implementation_commit": "7ca4ad3b00a41723c04dde388212ad617479ad81",
+    "v2_bounded_result_commit": R1_VISUAL_V2_BASE_COMMIT,
+    "v2_preregistration_commit": PHASE_C_V2_EGO_BASE_COMMIT,
+}
+R1_VISUAL_FORBIDDEN_NEXT_ACTIONS = [
+    "modify_reopen_or_rerun_EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A",
+    "modify_reopen_or_rerun_K0-DUAL-TRACK-SUPERSESSION-001A",
+    "use_closed_card2_action_or_old_k0_action_as_authority",
+    "modify_pinned_V0_source_commit_or_rewrite_history",
+    "enable_runtime_mainline_or_grant_runtime_authority",
+    "change_EgoOperator_active_default",
+    "start_V1_implementation_without_separate_operator_authorized_card",
+    "start_science_successor_experiment_scoring_or_formal_run",
+    "treat_product_trace_or_visible_behavior_as_mechanism_evidence",
+    "push_tag_or_remote_anchor",
+    "modify_reopen_or_rerun_EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A",
+    "modify_product_axis_science_snapshot_program_state",
+    "execute_V1_before_exact_Ego_phase_C_transcription_validation",
+    "modify_unlisted_V1_implementation_target",
+    "create_parallel_visible_life_product_core_or_launcher",
+    "modify_EgoDesktop_or_EgoOperator",
+    "add_LLM_network_service_or_subprocess",
+    "implement_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A",
+    "sync_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A_ready_authority_under_separate_task",
+    "retune_repair_or_rerun_V1_to_force_memory_conditioning",
+    "rewrite_V1_ready_report_or_first_event",
+    "start_V2_before_exact_Ego_phase_C_transcription",
+    "execute_visual_console_before_exact_V2_worktree_transcription_validation",
+    "reactivate_consumed_EGO_LIFE_KERNEL_V2_implementation_action",
+    "modify_unlisted_visual_console_implementation_target",
+    "modify_engine_microworld_store_claims_launcher_or_sqlite_schema",
+    "enable_proactive_initiative_or_background_dispatch",
+]
+R1_VISUAL_CLAIM_CEILING = {
+    "forbidden_claims": [
+        "runtime_or_runtime_mainline_effect",
+        "learned_model",
+        "online_learning",
+        "memory_or_replay_causal_contribution",
+        "generalization_or_transfer",
+        "thought_or_emotional_understanding",
+        "initiative_or_agency",
+        "autonomy",
+        "subjectivity_or_consciousness",
+        "electronic_life",
+        "science_successor_admission",
+        "mechanism_validity",
+        "ego_readiness",
+        "stable_user_benefit",
+        "v1_product_implementation_or_trigger",
+        "continuity_product_acceptance",
+        "associative_memory_or_controlled_initiative",
+        "memory_causality",
+        "bounded_online_learning_success",
+        "mechanism_non_equivalence",
+        "v2_implementation_or_trigger",
+        "general_learning",
+        "associative_memory",
+        "controlled_initiative",
+    ],
+    "max": (
+        "machine-readable product control-plane admission of one exact default-off local "
+        "visual-console implementation action and exact 12-path boundary, blocked on exact "
+        "active-V2 transcription"
+    ),
+}
+R1_VISUAL_REVIEWED_PATHS = [
+    R1_VISUAL_PHASE_A_CARD_PATH,
+    R1_VISUAL_PHASE_A_SCOPE_PATH,
+    "docs/PROGRAM_STATE_UNIFIED.yaml",
+    "docs/STATUS.md",
+    "artifacts/reports/program_state_summary.md",
+    "docs/codex/tasks/TASK_LANE_INDEX.md",
+    "docs/REPO_SURFACE_MAP.md",
+    R1_VISUAL_COLLISION_PATH,
+    R1_VISUAL_AUTHORITY_PATH,
+    R1_VISUAL_SCOPE_PATH,
+    R1_VISUAL_STAGE_CARD_PATH,
+    "scripts/codex_session_guard.py",
+    "scripts/tests/test_codex_session_guard.py",
+    "scripts/codex/verify_route_convergence.py",
+    "scripts/codex/tests/test_route_governance_supersession.py",
+]
+R1_VISUAL_COMMIT_PATHS = [
+    *R1_VISUAL_REVIEWED_PATHS[:10],
+    R1_VISUAL_RECEIPT_PATH,
+    *R1_VISUAL_REVIEWED_PATHS[10:],
+]
+
+# Backward-compatible live aliases used by the pre-v7 test/readback surface.
+# Historical v6 validators use the explicit LEGACY constants above.
+PHASE_C_V2_ROUTE_REVISION = R1_VISUAL_ROUTE_REVISION
+PHASE_C_V2_IMPLEMENT_ACTION_ID = R1_VISUAL_IMPLEMENT_ACTION_ID
+PHASE_C_V2_IMPLEMENTATION_TARGETS = R1_VISUAL_IMPLEMENTATION_TARGETS
+
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
 
@@ -659,9 +880,9 @@ def build_phase_c_v2_source_projection(source_state: Any) -> dict[str, Any]:
     allowed = source_state.get("allowed_next_actions")
     allowed = allowed if isinstance(allowed, list) else []
     implementation_action: Any = (
-        PHASE_C_V2_IMPLEMENT_ACTION_ID
-        if PHASE_C_V2_IMPLEMENT_ACTION_ID in allowed
-        and PHASE_C_V2_IMPLEMENT_ACTION_ID in conditional
+        PHASE_C_V2_LEGACY_IMPLEMENT_ACTION_ID
+        if PHASE_C_V2_LEGACY_IMPLEMENT_ACTION_ID in allowed
+        and PHASE_C_V2_LEGACY_IMPLEMENT_ACTION_ID in conditional
         else None
     )
     validation_action: Any = (
@@ -1343,9 +1564,833 @@ def validate_phase_c_v2_scope_payload(payload: Any) -> list[str]:
         errors.append("phase_c_v2_scope_allowed_paths_mismatch")
     if payload.get("exact_commit_paths") != PHASE_C_V2_COMMIT_PATHS:
         errors.append("phase_c_v2_scope_commit_paths_mismatch")
-    if payload.get("implementation_allowlist") != PHASE_C_V2_IMPLEMENTATION_TARGETS:
+    if payload.get("implementation_allowlist") != PHASE_C_V2_LEGACY_IMPLEMENTATION_TARGETS:
         errors.append("phase_c_v2_scope_implementation_allowlist_mismatch")
     return sorted(set(errors))
+
+
+def _r1_visual_worktree_authority_projection() -> dict[str, Any]:
+    return {
+        "negative_checkpoint": {
+            "path": "D:/Project/AIProject/MyProject/Ego",
+            "branch": "main",
+            "head": PHASE_C_V2_EGO_BASE_COMMIT,
+            "status": PHASE_C_V2_NEGATIVE_CHECKPOINT,
+            "live_authority": False,
+        },
+        "active_v2_development_authority": {
+            "worktree": "D:/Project/AIProject/MyProject/Ego-v2-product-first-001a",
+            "branch": PHASE_C_V2_BRANCH,
+            "activation_condition": "THIS_DIRECT_CHILD_COMMIT_PASSES_PHASE_C_V2_GATE",
+            "sole": True,
+        },
+    }
+
+
+def _r1_visual_field_crosswalk() -> list[dict[str, str]]:
+    rows = [
+        ("v2_state", "/route_id", "/visual_console/route_id", "copy_exact"),
+        ("v2_state", "/task_id", "/visual_console/transition_task_id", "copy_exact"),
+        ("v2_state", "/phase", "/visual_console/phase", "copy_exact"),
+        ("v2_state", "/operator_decision", "/visual_console/operator_decision", "copy_exact"),
+        ("v2_state", "/execution_state", "/visual_console/execution_state", "copy_exact"),
+        (
+            "v2_state",
+            f"/conditional_actions/{_json_pointer_escape(R1_VISUAL_IMPLEMENT_ACTION_ID)}",
+            "/visual_console/conditional_action",
+            "copy_exact",
+        ),
+        (
+            "v2_state",
+            "/authorized_implementation_targets",
+            "/visual_console/authorized_implementation_targets",
+            "copy_exact_ordered",
+        ),
+        (
+            "v2_state",
+            "/consumed_implementation",
+            "/visual_console/consumed_implementation",
+            "copy_exact",
+        ),
+        (
+            "v2_state",
+            "/product_development_core_lineage",
+            "/visual_console/product_development_core_lineage",
+            "copy_exact",
+        ),
+        (
+            "v2_state",
+            "/real_trigger_evidence",
+            "/visual_console/real_trigger_evidence",
+            "copy_exact",
+        ),
+        (
+            "v2_state",
+            "/forbidden_next_actions",
+            "/visual_console/forbidden_next_actions",
+            "copy_exact_ordered",
+        ),
+        (
+            "v2_state",
+            "/claim_ceiling",
+            "/visual_console/claim_ceiling",
+            "copy_exact",
+        ),
+        (
+            "product_axis",
+            "/product_development_axis/source_commit",
+            "/visual_console/source_v2_commit",
+            "copy_exact",
+        ),
+        (
+            "v2_report",
+            "/verdict",
+            "/transcription_contract/source_report_verdict",
+            "require_exact_pass",
+        ),
+        (
+            "v2_events",
+            "/1/event_id",
+            "/transcription_contract/source_admission_event_id",
+            "copy_exact",
+        ),
+    ]
+    rows.extend(
+        (
+            "v2_state",
+            f"/{_json_pointer_escape(key)}",
+            f"/visual_console/switches/{_json_pointer_escape(key)}",
+            "copy_exact_typed",
+        )
+        for key in R1_VISUAL_CLOSED_SWITCHES
+    )
+    return [
+        {
+            "source_object": source,
+            "source_pointer": source_pointer,
+            "target_pointer": target_pointer,
+            "rule": rule,
+        }
+        for source, source_pointer, target_pointer, rule in rows
+    ]
+
+
+def validate_r1_visual_source_objects_payload(source_objects: Any) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(source_objects, dict):
+        return ["r1_visual_source_objects_required"]
+    expected_names = set(R1_VISUAL_SOURCE_OBJECTS)
+    if set(source_objects) != expected_names:
+        errors.append("r1_visual_source_object_set_mismatch")
+    product_axis = source_objects.get("product_axis")
+    state = source_objects.get("v2_state")
+    events = source_objects.get("v2_events")
+    report = source_objects.get("v2_report")
+    if not isinstance(product_axis, dict):
+        errors.append("r1_visual_product_axis_object_required")
+        product_axis = {}
+    if not isinstance(state, dict):
+        errors.append("r1_visual_v2_state_object_required")
+        state = {}
+    if not isinstance(events, list) or len(events) != 2 or any(not isinstance(row, dict) for row in events):
+        errors.append("r1_visual_v2_events_exact_two_objects_required")
+        events = []
+    if not isinstance(report, dict):
+        errors.append("r1_visual_v2_report_object_required")
+        report = {}
+    axis = product_axis.get("product_development_axis")
+    if not isinstance(axis, dict):
+        errors.append("r1_visual_product_axis_payload_required")
+        axis = {}
+    expected_axis = {
+        "authority": "SOLE",
+        "authority_route_id": R1_VISUAL_ROUTE_ID,
+        "authorized_implementation_targets": R1_VISUAL_IMPLEMENTATION_TARGETS,
+        "conditional_authorized_actions": [R1_VISUAL_IMPLEMENT_ACTION_ID],
+        "currently_executable_actions": [R1_VISUAL_SYNC_ACTION_ID, R1_VISUAL_VALIDATION_ACTION_ID],
+        "effective_live_product_actions": [R1_VISUAL_SYNC_ACTION_ID, R1_VISUAL_VALIDATION_ACTION_ID],
+        "source_commit": R1_VISUAL_V2_BASE_COMMIT,
+        "state": "V2_VISUAL_CONSOLE_AUTHORIZED_ACTIVE_V2_TRANSCRIPTION_REQUIRED",
+        "enabled": False,
+        "default_enabled": False,
+        "mainline_connected": False,
+        "runtime_mainline_connected": False,
+        "runtime_authority": "none",
+        "science_weight": 0,
+        "remote_anchor": False,
+    }
+    for key, expected in expected_axis.items():
+        if axis.get(key) != expected or type(axis.get(key)) is not type(expected):
+            errors.append(f"r1_visual_product_axis_{key}_mismatch")
+    expected_state = {
+        "route_id": R1_VISUAL_ROUTE_ID,
+        "task_id": R1_VISUAL_TRANSITION_TASK_ID,
+        "phase": "V2_BOUNDED_RESULT_VISUAL_CONSOLE_READY_TO_IMPLEMENT",
+        "operator_decision": "AUTHORIZE_EXACT_DEFAULT_OFF_VISUAL_CONSOLE_AFTER_COMMITTED_V2_RESULT",
+        "execution_state": "AUTHORIZED_BUT_BLOCKED_UNTIL_EXACT_V2_WORKTREE_TRANSCRIPTION",
+        "implementation_authorized": True,
+        "authorized_implementation_targets": R1_VISUAL_IMPLEMENTATION_TARGETS,
+        "consumed_implementation": R1_VISUAL_CONSUMED_IMPLEMENTATION,
+        "product_development_core_lineage": R1_VISUAL_LINEAGE,
+        "real_trigger_evidence": "PINNED_V2_LOCAL_PRODUCT_TRIGGER_ONLY__NO_VISUAL_CONSOLE_TRIGGER",
+        "forbidden_next_actions": R1_VISUAL_FORBIDDEN_NEXT_ACTIONS,
+        "claim_ceiling": R1_VISUAL_CLAIM_CEILING,
+    }
+    for key, expected in expected_state.items():
+        if state.get(key) != expected or type(state.get(key)) is not type(expected):
+            errors.append(f"r1_visual_v2_state_{key}_mismatch")
+    for key, expected in R1_VISUAL_CLOSED_SWITCHES.items():
+        if state.get(key) != expected or type(state.get(key)) is not type(expected):
+            errors.append(f"r1_visual_v2_state_switch_{key}_mismatch")
+    conditional = state.get("conditional_actions")
+    if not isinstance(conditional, dict) or list(conditional) != [R1_VISUAL_IMPLEMENT_ACTION_ID]:
+        errors.append("r1_visual_conditional_action_mismatch")
+    if state.get("allowed_next_actions") != [
+        R1_VISUAL_SYNC_ACTION_ID,
+        R1_VISUAL_IMPLEMENT_ACTION_ID,
+        R1_VISUAL_VALIDATION_ACTION_ID,
+    ]:
+        errors.append("r1_visual_source_allowed_actions_mismatch")
+    if state.get("currently_executable_actions") != [
+        R1_VISUAL_SYNC_ACTION_ID,
+        R1_VISUAL_VALIDATION_ACTION_ID,
+    ]:
+        errors.append("r1_visual_source_executable_actions_mismatch")
+    if events:
+        expected_event = f"{R1_VISUAL_ROUTE_ID}:READY_TO_IMPLEMENT:002"
+        if events[1].get("event_id") not in {expected_event, "002"}:
+            errors.append("r1_visual_admission_event_mismatch")
+    if report.get("verdict") != "pass":
+        errors.append("r1_visual_source_report_not_pass")
+    if report.get("route_id") != R1_VISUAL_ROUTE_ID:
+        errors.append("r1_visual_source_report_route_mismatch")
+    return sorted(set(errors))
+
+
+def read_r1_visual_itl_objects(itl_repo: Path = ITL_ROOT) -> dict[str, Any]:
+    errors: list[str] = []
+    payloads: dict[str, Any] = {}
+    commit_probe = _git_repo(itl_repo, ["cat-file", "-e", f"{R1_VISUAL_ITL_COMMIT}^{{commit}}"])
+    if commit_probe.returncode != 0:
+        return {"status": "fail", "errors": ["r1_visual_itl_commit_unavailable"], "payloads": {}}
+    for name, pin in R1_VISUAL_SOURCE_OBJECTS.items():
+        oid_probe = _git_repo(itl_repo, ["rev-parse", f"{R1_VISUAL_ITL_COMMIT}:{pin['path']}"])
+        if oid_probe.returncode != 0 or oid_probe.stdout.strip() != pin["git_blob_oid"]:
+            errors.append(f"r1_visual_source_oid_mismatch:{name}")
+            continue
+        blob_probe = _git_repo(
+            itl_repo,
+            ["cat-file", "blob", f"{R1_VISUAL_ITL_COMMIT}:{pin['path']}"],
+            text=False,
+        )
+        if blob_probe.returncode != 0:
+            errors.append(f"r1_visual_source_blob_unavailable:{name}")
+            continue
+        raw = blob_probe.stdout
+        if len(raw) != pin["bytes"]:
+            errors.append(f"r1_visual_source_bytes_mismatch:{name}")
+        if hashlib.sha256(raw).hexdigest() != pin["payload_sha256"]:
+            errors.append(f"r1_visual_source_sha256_mismatch:{name}")
+        try:
+            if name == "v2_events":
+                payloads[name] = [json.loads(line) for line in raw.decode("utf-8").splitlines() if line]
+            else:
+                parsed = parse_phase_c_v2_json(raw)
+                if parsed.get("status") != "pass":
+                    errors.extend(f"r1_visual_source_json:{name}:{item}" for item in parsed.get("errors") or [])
+                payloads[name] = parsed.get("payload")
+        except (UnicodeDecodeError, json.JSONDecodeError, TypeError):
+            errors.append(f"r1_visual_source_parse_failed:{name}")
+    errors.extend(validate_r1_visual_source_objects_payload(payloads))
+    return {
+        "status": "pass" if not errors else "fail",
+        "errors": sorted(set(errors)),
+        "payloads": payloads,
+    }
+
+
+def build_r1_visual_source_projection(source_objects: Any) -> dict[str, Any]:
+    if not isinstance(source_objects, dict):
+        return {}
+    state = source_objects.get("v2_state")
+    axis = source_objects.get("product_axis")
+    events = source_objects.get("v2_events")
+    report = source_objects.get("v2_report")
+    if not isinstance(state, dict) or not isinstance(axis, dict) or not isinstance(events, list) or not isinstance(report, dict):
+        return {}
+    product_axis = axis.get("product_development_axis") or {}
+    conditional = state.get("conditional_actions") or {}
+    conditional_action = conditional.get(R1_VISUAL_IMPLEMENT_ACTION_ID)
+    admission_event_id = events[1].get("event_id") if len(events) > 1 and isinstance(events[1], dict) else None
+    return {
+        "schema_version": R1_VISUAL_AUTHORITY_SCHEMA_VERSION,
+        "base_commit": R1_VISUAL_V2_BASE_COMMIT,
+        "itl_authority": {
+            "repo": "intelligence-theory-lab",
+            "commit": R1_VISUAL_ITL_COMMIT,
+            "objects": copy.deepcopy(R1_VISUAL_SOURCE_OBJECTS),
+        },
+        "visual_console": {
+            "route_id": state.get("route_id"),
+            "transition_task_id": state.get("task_id"),
+            "implementation_task_id": R1_VISUAL_PRODUCT_TASK_ID,
+            "phase": state.get("phase"),
+            "operator_decision": state.get("operator_decision"),
+            "execution_state": "AUTHORIZED_FOR_EXACT_ACTIVE_V2_IMPLEMENTATION_SCOPE",
+            "conditional_action": conditional_action,
+            "implementation_action": R1_VISUAL_IMPLEMENT_ACTION_ID,
+            "implementation_task_kind": R1_VISUAL_IMPLEMENT_TASK_KIND,
+            "validation_action": R1_VISUAL_VALIDATION_ACTION_ID,
+            "effective_allowed_next_actions": [
+                R1_VISUAL_IMPLEMENT_ACTION_ID,
+                R1_VISUAL_VALIDATION_ACTION_ID,
+            ],
+            "implementation_authorized": state.get("implementation_authorized"),
+            "authorized_implementation_targets": state.get("authorized_implementation_targets"),
+            "consumed_sync_action": R1_VISUAL_SYNC_ACTION_ID,
+            "consumed_implementation": state.get("consumed_implementation"),
+            "product_development_core_lineage": state.get("product_development_core_lineage"),
+            "source_v2_commit": product_axis.get("source_commit"),
+            "switches": {key: state.get(key) for key in R1_VISUAL_CLOSED_SWITCHES},
+            "real_trigger_evidence": state.get("real_trigger_evidence"),
+            "forbidden_next_actions": state.get("forbidden_next_actions"),
+            "claim_ceiling": state.get("claim_ceiling"),
+            "worktree_authority": _r1_visual_worktree_authority_projection(),
+        },
+        "transcription_contract": {
+            "rule": "FIELD_BY_FIELD_FROM_PINNED_GIT_OBJECTS__SYNC_CONSUMED__NO_UNION_OR_FALLBACK",
+            "source_report_verdict": report.get("verdict"),
+            "source_admission_event_id": admission_event_id,
+            "source_object_count": 4,
+            "crosswalk_complete": True,
+        },
+        "field_crosswalk": _r1_visual_field_crosswalk(),
+    }
+
+
+def validate_r1_visual_authority_payload(
+    authority: Any,
+    *,
+    itl_repo: Path = ITL_ROOT,
+    source_objects: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    errors: list[str] = []
+    source_result = (
+        {"status": "pass", "errors": [], "payloads": source_objects}
+        if source_objects is not None
+        else read_r1_visual_itl_objects(itl_repo)
+    )
+    errors.extend(validate_r1_visual_source_objects_payload(source_result.get("payloads")))
+    errors.extend(source_result.get("errors") or [])
+    expected = build_r1_visual_source_projection(source_result.get("payloads"))
+    try:
+        expected_bytes = _canonical_json_bytes(expected)
+        actual_bytes = _canonical_json_bytes(authority)
+    except (TypeError, ValueError, UnicodeEncodeError):
+        errors.append("r1_visual_authority_canonicalization_failed")
+        expected_bytes = b""
+        actual_bytes = b""
+    if expected_bytes != actual_bytes:
+        errors.append("r1_visual_authority_projection_mismatch")
+    return {
+        "status": "pass" if not errors else "fail",
+        "errors": sorted(set(errors)),
+        "source_projection_sha256": hashlib.sha256(expected_bytes).hexdigest() if expected_bytes else None,
+        "target_projection_sha256": hashlib.sha256(actual_bytes).hexdigest() if actual_bytes else None,
+        "authorized_implementation_targets": (
+            ((authority or {}).get("visual_console") or {}).get("authorized_implementation_targets") or []
+            if isinstance(authority, dict)
+            else []
+        ),
+    }
+
+
+def validate_r1_visual_authority_bytes(raw: Any, *, itl_repo: Path = ITL_ROOT) -> dict[str, Any]:
+    parsed = parse_phase_c_v2_json(raw)
+    if parsed.get("status") != "pass":
+        return {
+            "status": "fail",
+            "errors": parsed.get("errors") or [],
+            "source_projection_sha256": None,
+            "target_projection_sha256": None,
+            "authorized_implementation_targets": [],
+        }
+    return validate_r1_visual_authority_payload(parsed.get("payload"), itl_repo=itl_repo)
+
+
+def validate_r1_visual_authority_file(
+    path: Path | None = None,
+    *,
+    itl_repo: Path = ITL_ROOT,
+) -> dict[str, Any]:
+    candidate = path or (ROOT / R1_VISUAL_AUTHORITY_PATH)
+    try:
+        raw = candidate.read_bytes()
+    except OSError:
+        return {"status": "fail", "errors": ["r1_visual_authority_file_unavailable"]}
+    return validate_r1_visual_authority_bytes(raw, itl_repo=itl_repo)
+
+
+def build_r1_visual_phase_a_scope(
+    *, authority_commit: str = "HEAD_AT_MUTATION_START"
+) -> dict[str, Any]:
+    return {
+        "schema_version": R1_VISUAL_PHASE_A_SCOPE_SCHEMA_VERSION,
+        "task_id": R1_VISUAL_PRODUCT_TASK_ID,
+        "task_kind": R1_VISUAL_IMPLEMENT_TASK_KIND,
+        "requested_action_id": R1_VISUAL_IMPLEMENT_ACTION_ID,
+        "authority_commit": authority_commit,
+        "source_route_revision_id": R1_VISUAL_ROUTE_REVISION,
+        "authorized_implementation_targets": list(R1_VISUAL_IMPLEMENTATION_TARGETS),
+        "allowed_mutation_paths": list(R1_VISUAL_IMPLEMENTATION_TARGETS),
+        "default_enabled": False,
+        "runtime_authority": "none",
+        "mainline_connected": False,
+        "auto_remote_anchor": "forbidden",
+    }
+
+
+def validate_r1_visual_phase_a_scope_payload(payload: Any) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(payload, dict):
+        return ["r1_visual_phase_a_scope_object_required"]
+    expected_literals = {
+        "schema_version": R1_VISUAL_PHASE_A_SCOPE_SCHEMA_VERSION,
+        "task_id": R1_VISUAL_PRODUCT_TASK_ID,
+        "task_kind": R1_VISUAL_IMPLEMENT_TASK_KIND,
+        "requested_action_id": R1_VISUAL_IMPLEMENT_ACTION_ID,
+        "source_route_revision_id": R1_VISUAL_ROUTE_REVISION,
+        "default_enabled": False,
+        "runtime_authority": "none",
+        "mainline_connected": False,
+        "auto_remote_anchor": "forbidden",
+    }
+    for key, expected in expected_literals.items():
+        if payload.get(key) != expected or type(payload.get(key)) is not type(expected):
+            errors.append(f"r1_visual_phase_a_{key}_mismatch")
+    authority_commit = payload.get("authority_commit")
+    if authority_commit != "HEAD_AT_MUTATION_START" and (
+        not isinstance(authority_commit, str)
+        or re.fullmatch(r"[0-9a-f]{40}", authority_commit) is None
+    ):
+        errors.append("r1_visual_phase_a_authority_commit_invalid")
+    if payload.get("authorized_implementation_targets") != R1_VISUAL_IMPLEMENTATION_TARGETS:
+        errors.append("r1_visual_phase_a_targets_mismatch")
+    if payload.get("allowed_mutation_paths") != R1_VISUAL_IMPLEMENTATION_TARGETS:
+        errors.append("r1_visual_phase_a_allowed_paths_mismatch")
+    return sorted(set(errors))
+
+
+def validate_r1_visual_transition_scope_payload(payload: Any) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(payload, dict):
+        return ["r1_visual_transition_scope_object_required"]
+    expected_literals = {
+        "schema_version": R1_VISUAL_SCOPE_SCHEMA_VERSION,
+        "task_id": R1_VISUAL_TRANSITION_TASK_ID,
+        "task_kind": R1_VISUAL_TRANSITION_TASK_KIND,
+        "requested_action_id": R1_VISUAL_TRANSITION_ACTION_ID,
+        "base_commit": R1_VISUAL_V2_BASE_COMMIT,
+        "itl_commit": R1_VISUAL_ITL_COMMIT,
+        "authority_path": R1_VISUAL_AUTHORITY_PATH,
+        "receipt_path": R1_VISUAL_RECEIPT_PATH,
+        "card_sha256": R1_VISUAL_CARD_SHA256,
+        "enabled": False,
+        "runtime_authority": "none",
+        "mainline_connected": False,
+        "auto_remote_anchor": "forbidden",
+    }
+    for key, expected in expected_literals.items():
+        if payload.get(key) != expected or type(payload.get(key)) is not type(expected):
+            errors.append(f"r1_visual_transition_scope_{key}_mismatch")
+    if payload.get("source_objects") != R1_VISUAL_SOURCE_OBJECTS:
+        errors.append("r1_visual_transition_scope_source_objects_mismatch")
+    if payload.get("reviewed_nonreceipt_paths") != R1_VISUAL_REVIEWED_PATHS:
+        errors.append("r1_visual_transition_scope_reviewed_paths_mismatch")
+    if payload.get("allowed_mutation_paths") != R1_VISUAL_COMMIT_PATHS:
+        errors.append("r1_visual_transition_scope_allowed_paths_mismatch")
+    if payload.get("exact_commit_paths") != R1_VISUAL_COMMIT_PATHS:
+        errors.append("r1_visual_transition_scope_commit_paths_mismatch")
+    if payload.get("implementation_allowlist") != R1_VISUAL_IMPLEMENTATION_TARGETS:
+        errors.append("r1_visual_transition_scope_implementation_allowlist_mismatch")
+    return sorted(set(errors))
+
+
+def build_r1_visual_authority_manifest(
+    *,
+    repo: Path = ROOT,
+    ref: str | None = None,
+) -> dict[str, Any]:
+    errors: list[str] = []
+    rows: list[dict[str, Any]] = []
+    for path in sorted(R1_VISUAL_REVIEWED_PATHS):
+        spec = f"{ref}:{path}" if ref is not None else f":{path}"
+        oid_probe = _git_repo(repo, ["rev-parse", "--verify", spec])
+        oid = oid_probe.stdout.strip() if oid_probe.returncode == 0 else ""
+        if re.fullmatch(r"[0-9a-f]{40}", oid) is None:
+            errors.append(f"r1_visual_manifest_blob_unavailable:{path}")
+            continue
+        blob_probe = _git_repo(repo, ["cat-file", "blob", oid], text=False)
+        if blob_probe.returncode != 0:
+            errors.append(f"r1_visual_manifest_blob_unavailable:{path}")
+            continue
+        raw = blob_probe.stdout
+        rows.append(
+            {
+                "path": path,
+                "git_blob_oid": oid,
+                "payload_sha256": hashlib.sha256(raw).hexdigest(),
+                "bytes": len(raw),
+            }
+        )
+    payload = {
+        "schema_version": "ego.r1.visual_console_authority_manifest.v1",
+        "base_commit": R1_VISUAL_V2_BASE_COMMIT,
+        "reviewed_paths": sorted(R1_VISUAL_REVIEWED_PATHS),
+        "blobs": rows,
+    }
+    raw = _canonical_json_bytes(payload)
+    return {
+        "status": "pass" if not errors and len(rows) == 15 else "fail",
+        "errors": sorted(set(errors)),
+        "payload": payload,
+        "authority_manifest_sha256": hashlib.sha256(raw).hexdigest(),
+    }
+
+
+def compute_r1_visual_staged_diff_sha256(
+    *,
+    repo: Path = ROOT,
+    commit: str | None = None,
+) -> dict[str, Any]:
+    args = ["diff", "--binary", "--no-ext-diff", "--full-index"]
+    if commit is None:
+        args.extend(["--cached", R1_VISUAL_V2_BASE_COMMIT])
+    else:
+        args.extend([R1_VISUAL_V2_BASE_COMMIT, commit])
+    args.extend(["--", *sorted(R1_VISUAL_REVIEWED_PATHS)])
+    probe = _git_repo(repo, args, text=False)
+    if probe.returncode != 0:
+        return {"status": "fail", "errors": ["r1_visual_staged_diff_unavailable"], "sha256": None}
+    return {
+        "status": "pass",
+        "errors": [],
+        "sha256": hashlib.sha256(probe.stdout).hexdigest(),
+        "bytes": len(probe.stdout),
+    }
+
+
+def build_r1_visual_review_bundle(
+    *,
+    authority_manifest_sha256: Any,
+    authority_projection_sha256: Any,
+    staged_diff_sha256: Any,
+) -> dict[str, Any]:
+    payload = {
+        "schema_version": "ego.r1.visual_console_review_bundle.v1",
+        "task_id": R1_VISUAL_TRANSITION_TASK_ID,
+        "card_sha256": R1_VISUAL_CARD_SHA256,
+        "base_commit": R1_VISUAL_V2_BASE_COMMIT,
+        "itl_commit": R1_VISUAL_ITL_COMMIT,
+        "source_objects": copy.deepcopy(R1_VISUAL_SOURCE_OBJECTS),
+        "committed_paths": sorted(R1_VISUAL_COMMIT_PATHS),
+        "reviewed_nonreceipt_paths": sorted(R1_VISUAL_REVIEWED_PATHS),
+        "authority_manifest_sha256": authority_manifest_sha256,
+        "authority_projection_sha256": authority_projection_sha256,
+        "staged_diff_sha256": staged_diff_sha256,
+        "exclusion_rule": "PHASE_C_RED_REVIEW_EXCLUDED_ONLY_TO_AVOID_SELF_REFERENCE",
+        "commit_requirement": "EXACT_DIRECT_CHILD_OF_PINNED_V2_BASE",
+    }
+    try:
+        raw = _canonical_json_bytes(payload)
+    except (TypeError, ValueError, UnicodeEncodeError):
+        return {"status": "fail", "errors": ["r1_visual_review_bundle_input_invalid"]}
+    return {
+        "status": "pass",
+        "errors": [],
+        "payload": payload,
+        "review_bundle_sha256": hashlib.sha256(raw).hexdigest(),
+    }
+
+
+def validate_r1_visual_receipt_payload(
+    receipt: Any,
+    *,
+    authority_manifest_sha256: str | None = None,
+    authority_projection_sha256: str | None = None,
+    staged_diff_sha256: str | None = None,
+    review_bundle_sha256: str | None = None,
+) -> dict[str, Any]:
+    errors: list[str] = []
+    if not isinstance(receipt, dict):
+        return {"status": "fail", "errors": ["r1_visual_receipt_object_required"], "receipt_verdict": None}
+    expected_keys = {
+        "schema_version",
+        "task_id",
+        "card_sha256",
+        "base_commit",
+        "itl_commit",
+        "source_objects",
+        "authority_manifest_sha256",
+        "authority_projection_sha256",
+        "staged_diff_sha256",
+        "review_bundle_sha256",
+        "exclusion_rule",
+        "commit_requirement",
+        "review",
+        "reviewer",
+    }
+    if set(receipt) != expected_keys:
+        errors.append("r1_visual_receipt_keys_mismatch")
+    expected_literals = {
+        "schema_version": R1_VISUAL_RECEIPT_SCHEMA_VERSION,
+        "task_id": R1_VISUAL_TRANSITION_TASK_ID,
+        "card_sha256": R1_VISUAL_CARD_SHA256,
+        "base_commit": R1_VISUAL_V2_BASE_COMMIT,
+        "itl_commit": R1_VISUAL_ITL_COMMIT,
+        "exclusion_rule": "PHASE_C_RED_REVIEW_EXCLUDED_ONLY_TO_AVOID_SELF_REFERENCE",
+        "commit_requirement": "EXACT_DIRECT_CHILD_OF_PINNED_V2_BASE",
+    }
+    for key, expected in expected_literals.items():
+        if receipt.get(key) != expected or type(receipt.get(key)) is not str:
+            errors.append(f"r1_visual_receipt_{key}_mismatch")
+    if receipt.get("source_objects") != R1_VISUAL_SOURCE_OBJECTS:
+        errors.append("r1_visual_receipt_source_objects_mismatch")
+    bindings = {
+        "authority_manifest_sha256": authority_manifest_sha256,
+        "authority_projection_sha256": authority_projection_sha256,
+        "staged_diff_sha256": staged_diff_sha256,
+        "review_bundle_sha256": review_bundle_sha256,
+    }
+    for key, expected in bindings.items():
+        value = receipt.get(key)
+        if not isinstance(value, str) or re.fullmatch(r"[0-9a-f]{64}", value) is None:
+            errors.append(f"r1_visual_receipt_{key}_invalid")
+        if expected is not None and value != expected:
+            errors.append(f"r1_visual_receipt_{key}_binding_mismatch")
+    review = receipt.get("review")
+    if not isinstance(review, dict) or set(review) != {"verdict", "blocking_findings"}:
+        errors.append("r1_visual_receipt_review_shape_mismatch")
+        review = {}
+    if review.get("verdict") != "NO_BLOCKING_FINDINGS":
+        errors.append("r1_visual_receipt_verdict_contradictory")
+    if review.get("blocking_findings") != []:
+        errors.append("r1_visual_receipt_blocking_findings_must_be_empty")
+    reviewer = receipt.get("reviewer")
+    reviewer_keys = {
+        "reviewer",
+        "review_source",
+        "review_id",
+        "reviewer_session_id",
+        "executor_session_id",
+        "raw_output_path",
+        "raw_output_sha256",
+        "identity_assurance",
+        "cryptographic_identity_verified",
+    }
+    if not isinstance(reviewer, dict) or set(reviewer) != reviewer_keys:
+        errors.append("r1_visual_receipt_reviewer_shape_mismatch")
+        reviewer = {}
+    if reviewer.get("reviewer") != "Claude" or reviewer.get("review_source") != "Claude Web":
+        errors.append("r1_visual_receipt_reviewer_mismatch")
+    if reviewer.get("identity_assurance") != "CONTROLLER_ATTESTED_LOCAL_ONLY":
+        errors.append("r1_visual_receipt_identity_assurance_mismatch")
+    if reviewer.get("cryptographic_identity_verified") is not False:
+        errors.append("r1_visual_receipt_cryptographic_identity_claim_forbidden")
+    for key in (
+        "review_id",
+        "reviewer_session_id",
+        "executor_session_id",
+        "raw_output_path",
+    ):
+        if not isinstance(reviewer.get(key), str) or not reviewer.get(key):
+            errors.append(f"r1_visual_receipt_{key}_required")
+    if reviewer.get("reviewer_session_id") == reviewer.get("executor_session_id"):
+        errors.append("r1_visual_receipt_reviewer_executor_session_must_differ")
+    raw_output_sha = reviewer.get("raw_output_sha256")
+    if not isinstance(raw_output_sha, str) or re.fullmatch(r"[0-9a-f]{64}", raw_output_sha) is None:
+        errors.append("r1_visual_receipt_raw_output_sha256_invalid")
+    return {
+        "status": "pass" if not errors else "fail",
+        "errors": sorted(set(errors)),
+        "receipt_verdict": review.get("verdict") if isinstance(review, dict) else None,
+    }
+
+
+def validate_r1_visual_candidate(
+    *,
+    repo: Path = ROOT,
+    itl_repo: Path = ITL_ROOT,
+) -> dict[str, Any]:
+    actual = phase_c_v2_actual_changed_paths(repo=repo)
+    errors = list(actual.get("errors") or [])
+    changed = actual.get("changed_paths") or []
+    if changed != sorted(R1_VISUAL_COMMIT_PATHS) or len(changed) != 16:
+        errors.append("r1_visual_precommit_exact_16_paths_required")
+    manifest = build_r1_visual_authority_manifest(repo=repo)
+    errors.extend(manifest.get("errors") or [])
+    diff = compute_r1_visual_staged_diff_sha256(repo=repo)
+    errors.extend(diff.get("errors") or [])
+    authority_blob = _read_phase_c_v2_git_blob(repo, f":{R1_VISUAL_AUTHORITY_PATH}")
+    authority = (
+        validate_r1_visual_authority_bytes(authority_blob.get("raw"), itl_repo=itl_repo)
+        if authority_blob.get("status") == "pass"
+        else {"status": "fail", "errors": ["r1_visual_authority_index_blob_unavailable"]}
+    )
+    errors.extend(authority.get("errors") or [])
+    bundle = build_r1_visual_review_bundle(
+        authority_manifest_sha256=manifest.get("authority_manifest_sha256"),
+        authority_projection_sha256=authority.get("target_projection_sha256"),
+        staged_diff_sha256=diff.get("sha256"),
+    )
+    errors.extend(bundle.get("errors") or [])
+    receipt_blob = _read_phase_c_v2_git_blob(repo, f":{R1_VISUAL_RECEIPT_PATH}")
+    if receipt_blob.get("status") != "pass":
+        receipt = {"status": "fail", "errors": ["r1_visual_receipt_index_blob_unavailable"]}
+    else:
+        parsed = parse_phase_c_v2_json(receipt_blob.get("raw"))
+        receipt = (
+            validate_r1_visual_receipt_payload(
+                parsed.get("payload"),
+                authority_manifest_sha256=manifest.get("authority_manifest_sha256"),
+                authority_projection_sha256=authority.get("target_projection_sha256"),
+                staged_diff_sha256=diff.get("sha256"),
+                review_bundle_sha256=bundle.get("review_bundle_sha256"),
+            )
+            if parsed.get("status") == "pass"
+            else {"status": "fail", "errors": parsed.get("errors") or []}
+        )
+    errors.extend(receipt.get("errors") or [])
+    return {
+        "status": "pass" if not errors else "fail",
+        "errors": sorted(set(errors)),
+        "base_commit": R1_VISUAL_V2_BASE_COMMIT,
+        "changed_paths": changed,
+        "authority_manifest_sha256": manifest.get("authority_manifest_sha256"),
+        "authority_projection_sha256": authority.get("target_projection_sha256"),
+        "staged_diff_sha256": diff.get("sha256"),
+        "review_bundle_sha256": bundle.get("review_bundle_sha256"),
+        "receipt_verdict": receipt.get("receipt_verdict"),
+    }
+
+
+def validate_r1_visual_commit(
+    authority_commit: Any,
+    *,
+    repo: Path = ROOT,
+    itl_repo: Path = ITL_ROOT,
+) -> dict[str, Any]:
+    errors: list[str] = []
+    result: dict[str, Any] = {
+        "status": "fail",
+        "errors": errors,
+        "base_commit": R1_VISUAL_V2_BASE_COMMIT,
+        "authority_commit": authority_commit if isinstance(authority_commit, str) else None,
+        "changed_paths": [],
+    }
+    if not isinstance(authority_commit, str) or re.fullmatch(r"[0-9a-f]{40}", authority_commit) is None:
+        result["errors"] = ["r1_visual_authority_commit_id_invalid"]
+        return result
+    actual = phase_c_v2_actual_changed_paths(repo=repo, commit=authority_commit)
+    errors.extend(actual.get("errors") or [])
+    changed = actual.get("changed_paths") or []
+    result["changed_paths"] = changed
+    if actual.get("parent") != R1_VISUAL_V2_BASE_COMMIT:
+        errors.append("r1_visual_authority_commit_not_exact_direct_child")
+    if changed != sorted(R1_VISUAL_COMMIT_PATHS) or len(changed) != 16:
+        errors.append("r1_visual_authority_commit_exact_16_paths_required")
+    manifest = build_r1_visual_authority_manifest(repo=repo, ref=authority_commit)
+    errors.extend(manifest.get("errors") or [])
+    diff = compute_r1_visual_staged_diff_sha256(repo=repo, commit=authority_commit)
+    errors.extend(diff.get("errors") or [])
+    authority_blob = _read_phase_c_v2_git_blob(repo, f"{authority_commit}:{R1_VISUAL_AUTHORITY_PATH}")
+    authority = (
+        validate_r1_visual_authority_bytes(authority_blob.get("raw"), itl_repo=itl_repo)
+        if authority_blob.get("status") == "pass"
+        else {"status": "fail", "errors": ["r1_visual_authority_commit_blob_unavailable"]}
+    )
+    errors.extend(authority.get("errors") or [])
+    bundle = build_r1_visual_review_bundle(
+        authority_manifest_sha256=manifest.get("authority_manifest_sha256"),
+        authority_projection_sha256=authority.get("target_projection_sha256"),
+        staged_diff_sha256=diff.get("sha256"),
+    )
+    errors.extend(bundle.get("errors") or [])
+    receipt_blob = _read_phase_c_v2_git_blob(repo, f"{authority_commit}:{R1_VISUAL_RECEIPT_PATH}")
+    if receipt_blob.get("status") != "pass":
+        receipt = {"status": "fail", "errors": ["r1_visual_receipt_commit_blob_unavailable"]}
+    else:
+        parsed = parse_phase_c_v2_json(receipt_blob.get("raw"))
+        receipt = (
+            validate_r1_visual_receipt_payload(
+                parsed.get("payload"),
+                authority_manifest_sha256=manifest.get("authority_manifest_sha256"),
+                authority_projection_sha256=authority.get("target_projection_sha256"),
+                staged_diff_sha256=diff.get("sha256"),
+                review_bundle_sha256=bundle.get("review_bundle_sha256"),
+            )
+            if parsed.get("status") == "pass"
+            else {"status": "fail", "errors": parsed.get("errors") or []}
+        )
+    errors.extend(receipt.get("errors") or [])
+    result.update(
+        {
+            "errors": sorted(set(errors)),
+            "authority_manifest_sha256": manifest.get("authority_manifest_sha256"),
+            "authority_projection_sha256": authority.get("target_projection_sha256"),
+            "staged_diff_sha256": diff.get("sha256"),
+            "review_bundle_sha256": bundle.get("review_bundle_sha256"),
+            "receipt_verdict": receipt.get("receipt_verdict"),
+        }
+    )
+    result["status"] = "pass" if not result["errors"] else "fail"
+    return result
+
+
+def validate_r1_visual_mutation_admission(
+    scope: Any,
+    *,
+    repo: Path = ROOT,
+    itl_repo: Path = ITL_ROOT,
+    mutation_commit: str | None = None,
+) -> dict[str, Any]:
+    actual = phase_c_v2_actual_changed_paths(repo=repo, commit=mutation_commit)
+    errors = list(actual.get("errors") or [])
+    changed = actual.get("changed_paths") or []
+    if not isinstance(scope, dict):
+        errors.append("r1_visual_mutation_scope_object_required")
+        scope = {}
+    errors.extend(validate_r1_visual_phase_a_scope_payload(scope))
+    action = scope.get("requested_action_id")
+    if action == R1_VISUAL_VALIDATION_ACTION_ID:
+        if any(path in R1_VISUAL_IMPLEMENTATION_TARGETS for path in changed):
+            errors.append("r1_visual_validation_action_product_mutation_forbidden")
+    elif action == R1_VISUAL_IMPLEMENT_ACTION_ID:
+        if not changed:
+            errors.append("r1_visual_implementation_requires_actual_mutation")
+        outside = [path for path in changed if path not in R1_VISUAL_IMPLEMENTATION_TARGETS]
+        if outside:
+            errors.append("r1_visual_actual_paths_outside_allowlist")
+        authority_ref = scope.get("authority_commit")
+        if authority_ref == "HEAD_AT_MUTATION_START":
+            if mutation_commit is None:
+                head_probe = _git_repo(repo, ["rev-parse", "HEAD"])
+                authority_ref = head_probe.stdout.strip() if head_probe.returncode == 0 else None
+            else:
+                commit_probe = phase_c_v2_actual_changed_paths(repo=repo, commit=mutation_commit)
+                authority_ref = commit_probe.get("parent")
+        authority = validate_r1_visual_commit(authority_ref, repo=repo, itl_repo=itl_repo)
+        if authority.get("status") != "pass":
+            errors.append("r1_visual_committed_authority_required")
+            errors.extend(f"authority:{item}" for item in authority.get("errors") or [])
+    else:
+        errors.append("r1_visual_requested_action_mismatch")
+    return {
+        "status": "pass" if not errors else "fail",
+        "errors": sorted(set(errors)),
+        "actual_changed_paths": changed,
+        "path_source": actual.get("mode"),
+    }
 
 
 def _json_pointer_escape(value: str) -> str:
@@ -3799,6 +4844,8 @@ def build_route_guard_readback(program_state: dict[str, Any], runner: GuardRunne
         if schema_version == "ego.route_guard.v5"
         else validate_phase_c_v2_authority_file()
         if schema_version == "ego.route_guard.v6"
+        else validate_r1_visual_authority_file()
+        if schema_version == "ego.route_guard.v7"
         else {}
     )
     product = route_guard.get("product_authority") or {}
@@ -3809,10 +4856,11 @@ def build_route_guard_readback(program_state: dict[str, Any], runner: GuardRunne
         "ego.route_guard.v4",
         "ego.route_guard.v5",
         "ego.route_guard.v6",
+        "ego.route_guard.v7",
     }
     is_visible_life_core = schema_version == "ego.route_guard.v4"
     is_v1_ready = schema_version == "ego.route_guard.v5"
-    is_v2 = schema_version == "ego.route_guard.v6"
+    is_v2 = schema_version in {"ego.route_guard.v6", "ego.route_guard.v7"}
     active_product = (
         v2_authority
         if is_v2
@@ -3926,6 +4974,43 @@ def validate_route_mutation_scope(
     blockers: list[dict[str, Any]] = []
     raw_scope = scope.get("raw") if isinstance(scope, dict) else None
     raw_scope = raw_scope if isinstance(raw_scope, dict) and raw_scope else scope
+    if isinstance(raw_scope, dict) and raw_scope.get("task_id") == R1_VISUAL_TRANSITION_TASK_ID:
+        for error in validate_r1_visual_transition_scope_payload(raw_scope):
+            blockers.append({"reason": error})
+        actual = phase_c_v2_actual_changed_paths(repo=ROOT)
+        if actual.get("status") != "pass":
+            blockers.append(
+                {
+                    "reason": "r1_visual_actual_git_paths_unavailable",
+                    "errors": actual.get("errors") or [],
+                }
+            )
+        elif actual.get("changed_paths") != sorted(R1_VISUAL_COMMIT_PATHS):
+            blockers.append(
+                {
+                    "reason": "r1_visual_precommit_exact_16_paths_required",
+                    "paths": actual.get("changed_paths") or [],
+                }
+            )
+        candidate = validate_r1_visual_candidate(repo=ROOT, itl_repo=ITL_ROOT)
+        if candidate.get("status") != "pass":
+            blockers.append(
+                {
+                    "reason": "r1_visual_typed_candidate_admission_failed",
+                    "errors": candidate.get("errors") or [],
+                }
+            )
+        return blockers
+    if isinstance(raw_scope, dict) and raw_scope.get("task_id") == R1_VISUAL_PRODUCT_TASK_ID:
+        admission = validate_r1_visual_mutation_admission(raw_scope, repo=ROOT, itl_repo=ITL_ROOT)
+        if admission.get("status") != "pass":
+            blockers.append(
+                {
+                    "reason": "r1_visual_phase_a_mutation_admission_failed",
+                    "errors": admission.get("errors") or [],
+                }
+            )
+        return blockers
     if isinstance(raw_scope, dict) and raw_scope.get("task_id") == PHASE_C_V2_TASK_ID:
         for error in validate_phase_c_v2_scope_payload(raw_scope):
             blockers.append({"reason": error})
@@ -4783,6 +5868,10 @@ def build_parser() -> argparse.ArgumentParser:
     phase_c_v2.add_argument("--authority-commit", required=True)
     phase_c_v2.add_argument("--format", choices=["json"], default="json")
     phase_c_v2.add_argument("--out")
+    r1_visual = subparsers.add_parser("validate-r1-visual-commit")
+    r1_visual.add_argument("--authority-commit", required=True)
+    r1_visual.add_argument("--format", choices=["json"], default="json")
+    r1_visual.add_argument("--out")
     return parser
 
 
@@ -4799,6 +5888,10 @@ def main(
     try:
         if args.command == "validate-phase-c-v2-commit":
             payload = validate_phase_c_v2_commit(args.authority_commit)
+            write_payload(payload, fmt=args.format, out_path=args.out, stream=out)
+            return 0 if payload.get("status") == "pass" else 1
+        if args.command == "validate-r1-visual-commit":
+            payload = validate_r1_visual_commit(args.authority_commit)
             write_payload(payload, fmt=args.format, out_path=args.out, stream=out)
             return 0 if payload.get("status") == "pass" else 1
         kwargs = {
