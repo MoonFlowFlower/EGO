@@ -83,7 +83,7 @@ def test_live_v6_route_is_exact_phase_c_v2_default_off_authority() -> None:
     assert errors == []
     assert details["route_fingerprint"] == state["route_guard"]["route_fingerprint"]
     assert details["phase_c_v2_authority"]["status"] == "pass"
-    assert details["authorized_implementation_targets"] == guard.PHASE_C_V2_IMPLEMENTATION_TARGETS
+    assert details["authorized_implementation_targets"] == guard.R1_VISUAL_IMPLEMENTATION_TARGETS
 
 
 def test_itl_closure_blob_pin_mutation_is_rejected() -> None:
@@ -307,26 +307,12 @@ def test_phase_c_v2_live_authority_is_exact_and_default_off() -> None:
 
     assert state["route_guard"]["route_revision_id"] == guard.PHASE_C_V2_ROUTE_REVISION
     assert authority["implementation_authorized"] is True
-    assert authority["authorized_implementation_targets"] == guard.PHASE_C_V2_IMPLEMENTATION_TARGETS
-    assert authority["allowed_next_actions"] == [
-        guard.PHASE_C_V2_IMPLEMENT_ACTION_ID,
-        guard.PHASE_C_V2_VALIDATION_ACTION_ID,
-    ]
+    assert authority["authorized_implementation_targets"] == guard.R1_VISUAL_IMPLEMENTATION_TARGETS
+    assert authority["allowed_next_actions"] == [guard.PHASE_C_V2_VALIDATION_ACTION_ID]
     for key, expected in guard.PHASE_C_V2_CLOSED_SWITCHES.items():
         assert authority[key] == expected
-    assert authority["worktree_authority"]["negative_checkpoint"] == {
-        "path": "D:/Project/AIProject/MyProject/Ego",
-        "branch": "main",
-        "head": guard.PHASE_C_V2_EGO_BASE_COMMIT,
-        "status": guard.PHASE_C_V2_NEGATIVE_CHECKPOINT,
-        "live_authority": False,
-    }
-    assert authority["worktree_authority"]["active_v2_development_authority"] == {
-        "worktree": "D:/Project/AIProject/MyProject/Ego-v2-product-first-001a",
-        "branch": guard.PHASE_C_V2_BRANCH,
-        "activation_condition": "THIS_DIRECT_CHILD_COMMIT_PASSES_PHASE_C_V2_GATE",
-        "sole": True,
-    }
+    assert authority["worktree_authority"] == guard._r1_visual_worktree_authority_projection()  # noqa: SLF001
+    assert authority["worktree_authority"]["linked_v2_rollback_reference"]["frozen"] is True
 
 
 def test_phase_c_v2_source_pin_mutation_is_rejected() -> None:
@@ -388,7 +374,4 @@ def test_phase_c_v2_main_readback_uses_exact_implementation_actions() -> None:
     state = live_state()
     route_guard = state["route_guard"]
 
-    assert verify.route_allowed_next_action_ids(route_guard) == [
-        guard.PHASE_C_V2_IMPLEMENT_ACTION_ID,
-        guard.PHASE_C_V2_VALIDATION_ACTION_ID,
-    ]
+    assert verify.route_allowed_next_action_ids(route_guard) == [guard.PHASE_C_V2_VALIDATION_ACTION_ID]

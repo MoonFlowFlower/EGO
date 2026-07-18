@@ -1,10 +1,10 @@
 # Active Context Pack
 
-> `CURRENT_MACHINE_ROUTE_AUTHORITY: EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A__EXACT_25_PATH_PRODUCT_AUTHORITY_DEFAULT_OFF`
+> `CURRENT_MACHINE_ROUTE_AUTHORITY: EGO-V2-PRODUCT-MAIN-TAKEOVER-001A__EGO_MAIN_PRODUCT_DEVELOPMENT_DEFAULT_OFF`
 >
 > `HISTORICAL_8692_EGODESKTOP_ROUTE: SUPERSEDED_ARCHIVE_POINTER_ONLY`
 >
-> After the typed Phase-C commit gate passes, `codex/ego-v2-product-first-001a` is the sole active V2 development authority for the exact ordered 25 paths. Dirty main is a non-live negative checkpoint. Older mechanism-successor sections below are archive pointers only.
+> Ego `main` is the sole active V2 product-development worktree. The linked V2 worktree is frozen rollback-reference only; the 19-path non-live checkpoint is preserved on its dedicated branch and external recovery package. Older mechanism-successor sections below are archive pointers only.
 
 Source of truth: `docs/PROGRAM_STATE_UNIFIED.yaml`.
 
@@ -13,8 +13,8 @@ This file is a derived reader pack for humans and AI agents. It is not a second 
 ## Current Runtime Owner
 
 - Current default runtime owner: `EgoOperator/`
-- Current product phase: `v2_product_first_authority__activation_bound_to_exact_phase_c_direct_child_commit`
-- Current product layer: `engineering implementation authorization + product-development control-plane`
+- Current product phase: `v2_product_main_takeover_authority_transcribed_default_off`
+- Current product layer: `engineering repository integration + product-development control-plane`
 - Highest evidence level: `E3`
 - Default runtime path to preserve:
 

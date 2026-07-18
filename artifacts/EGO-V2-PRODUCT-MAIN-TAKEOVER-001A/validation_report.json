@@ -1,0 +1,583 @@
+{
+  "task_id": "EGO-V2-PRODUCT-MAIN-TAKEOVER-001A",
+  "run_id": "ego-v2-product-main-takeover-001a-20260718T213140Z",
+  "verdict": "pass",
+  "producer_function": "BUILD_TAKEOVER_ARTIFACTS.main",
+  "producer_code_path_hash": "537ee8924c473a9915fa110885bb9d3cf31f1994ddc7dd88f1ef3b86bf4e7fad",
+  "input_artifacts": {
+    "card_sha256": "f51e8a39d072d3495426de30d8869a03f44b7ac7baa4b070c8d6a4c713e1b8c2",
+    "checkpoint_external_receipt_sha256": "aced0f7aa46d5c72f8e1b0c3a85967e475b59af648fa39d175414757775f2618",
+    "fast_forward_precheck_sha256": "d2b6f6ed21f6fe5917b5af3adb2dca2c94f868032547b55264d05eed9f6e95ae",
+    "fast_forward_postcheck_sha256": "0a8e2bea9012c84180d638bd989c1eee26a46713d5db1983f2b9c123791a98d4",
+    "itl_commit": "d338bc522d4be6e1f6f4733466b0688c0a494acf",
+    "product_source_commit": "722a9cd11b5f6349242bcf8a7cf2e48f67122b3c",
+    "product_source_tree": "8da84639fa9c849f64a59506dbbccfb554d38cfd"
+  },
+  "aggregation_rule": "pass iff every named callable check is true and source-baseline negative failures remain classified, not relabelled",
+  "checks": {
+    "checkpoint_receipt_pass": true,
+    "fast_forward_precheck_pass": true,
+    "fast_forward_postcheck_pass": true,
+    "main_head_is_pinned_v2_source": true,
+    "main_tree_is_pinned_v2_tree": true,
+    "checkpoint_ref_preserved": true,
+    "itl_head_pinned": true,
+    "candidate_paths_within_exact_26": true,
+    "all_product_clean_filter_hashes_match_base": true,
+    "ego_route_convergence_pass": true,
+    "focused_governance_pass": true,
+    "full_route_governance_pass": true,
+    "product_acceptance_non_skip_pass": true,
+    "itl_global_callable_pass_route_count_8": true,
+    "source_baseline_negative_failures_reproduced": true,
+    "tk_probe_has_real_success": true
+  },
+  "commands": {
+    "ego_route_convergence": {
+      "command": [
+        "C:\\Python313\\python.exe",
+        "scripts/codex/verify_route_convergence.py",
+        "--json"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "exit_code": 0,
+      "stdout": [
+        "{",
+        "  \"status\": \"pass\",",
+        "  \"active_default\": \"ego-operator-human-operator-trial-v2\",",
+        "  \"supporting_active_count\": 2,",
+        "  \"route_revision_id\": \"EGO_V2_PRODUCT_MAIN_TAKEOVER_001A_AUTHORITY_ON_MAIN\",",
+        "  \"route_fingerprint\": \"324609c8afcb444c65e5995845318286e1dfc26882cc2b8e860d224add4aa501\",",
+        "  \"old_route_8692_disposition\": \"SUPERSEDED_BEFORE_M1\",",
+        "  \"egodesktop_archive_state\": \"ARCHIVED_LEGACY_LLM_UI_ROUTE\",",
+        "  \"allowed_next_action_ids\": [",
+        "    \"run_route_state_machine_validation\"",
+        "  ],",
+        "  \"lineage_counts\": {",
+        "    \"discovered\": null,",
+        "    \"disposed\": null,",
+        "    \"undisposed\": null",
+        "  },",
+        "  \"k0_workstream_status\": \"foundation_engineering_accepted_bounded__old_science_route_operator_closed_without_science_adjudication__verifier_family_closed_invalid__independent_acceptance_unavailable__product_science_decoupled__all_authorizations_false__runtime_disabled__non_mainline\",",
+        "  \"old_reference_kernel_lane\": \"reference_only\",",
+        "  \"verifier_family_disposition\": \"CLOSED_INVALID_NO_FURTHER_REPAIR\",",
+        "  \"independent_validator_acceptance\": \"UNAVAILABLE\",",
+        "  \"local_callable_is_independent_validator\": false,",
+        "  \"surface_mathematical_status\": \"NOT_ADJUDICATED\",",
+        "  \"surface_impossibility_not_claimed\": true,",
+        "  \"preflight_instrument_family_disposition\": \"CLOSED_INVALID_NO_P1R1_NO_P2\",",
+        "  \"future_product_route_status\": \"P1R0_DESIGN_FEASIBILITY_FALSE_POSITIVE_BANKED__CURRENT_PREFLIGHT_INSTRUMENT_FAMILY_CLOSED_INVALID__P1R1_P2_FORBIDDEN\",",
+        "  \"future_product_route_lane\": \"reference_only\",",
+        "  \"route_index\": \"docs\\\\codex\\\\tasks\\\\TASK_LANE_INDEX.md\",",
+        "  \"hygiene_policy\": \"docs\\\\REPO_HYGIENE_POLICY.md\"",
+        "}"
+      ],
+      "stderr": [],
+      "duration_seconds": 5.167923
+    },
+    "focused_governance": {
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "scripts/tests/test_codex_session_guard.py::test_r1_visual_authority_projection_is_exact_and_fail_closed",
+        "scripts/tests/test_codex_session_guard.py::test_r1_visual_source_object_pin_and_phase_a_scope_hostile_controls",
+        "scripts/codex/tests/test_route_governance_supersession.py"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "exit_code": 0,
+      "stdout": [
+        ".....                                                                    [100%]",
+        "5 passed in 2.76s"
+      ],
+      "stderr": [],
+      "duration_seconds": 3.147388
+    },
+    "full_route_governance": {
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "scripts/tests/test_route_governance_supersession.py"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "exit_code": 0,
+      "stdout": [
+        "...............................                                          [100%]",
+        "31 passed in 132.56s (0:02:12)"
+      ],
+      "stderr": [],
+      "duration_seconds": 132.921525
+    },
+    "product_acceptance": {
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_ego_life_playground_v0.py::test_v1_real_tk_run_button_uses_after_then_committed_callback_redraws_once",
+        "tests/test_ego_life_playground_v0.py::test_v1_window_close_cancels_scheduled_run_and_leaves_no_background_command",
+        "tests/test_ego_life_playground_v0.py::test_visual_console_chinese_view_is_trace_bound_and_does_not_change_causal_bytes",
+        "tests/test_ego_life_playground_v0.py::test_visual_console_waypoint_contract_rejects_straight_line_decoy",
+        "tests/test_ego_life_playground_v0.py::test_visual_console_real_step_run_commit_recover_animate_lockstep_and_pause_close",
+        "tests/test_ego_life_playground_v0.py::test_visual_console_inject_export_bytes_and_advanced_only_technical_fields",
+        "tests/test_ego_life_playground_v0.py::test_fresh_store_restart_recomputes_same_state_model_memory_and_trace",
+        "tests/test_ego_life_playground_v2_microworld.py::test_p0_fresh_process_terminal_load_recomputes_same_durable_timeline",
+        "scripts/tests/test_verify_ego_v2_p0_visual_console_live_001a.py::test_visual_verifier_runs_real_tk_step_run_and_writes_exact_evidence_set",
+        "scripts/tests/test_verify_ego_v2_p0_visual_console_live_001a.py::test_visual_verifier_scanner_fires_on_positive_control_and_clean_source",
+        "scripts/tests/test_verify_ego_v2_action_perseveration_repair_001a.py::test_action_repair_verifier_replays_frozen_stream_and_runs_real_visual_path",
+        "scripts/tests/test_verify_ego_v2_action_perseveration_repair_001a.py::test_action_repair_leakage_scanner_has_real_positive_control"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "exit_code": 0,
+      "stdout": [
+        ".s..........                                                             [100%]",
+        "11 passed, 1 skipped in 7.90s"
+      ],
+      "stderr": [],
+      "duration_seconds": 8.326645
+    },
+    "itl_global_callable": {
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-c",
+        "import json; from route_state_machine_001a.validator import build_validation_report; r=build_validation_report('.'); print(json.dumps(r,sort_keys=True)); raise SystemExit(0 if r.get('verdict')=='pass' and r.get('route_count')==8 else 1)"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\intelligence-theory-lab",
+      "exit_code": 0,
+      "stdout": [
+        "{\"aggregation_rule\": \"verdict is pass iff route/program/product-axis validation returns zero errors and the unconditionally invoked current-source terminal verifier reports ANCESTOR_FULL_HISTORY, ALL_EXACT persisted witnesses, exact replacement-card provenance, and pass from all six mandatory production callables; no official Foundation producer, H0 resolver, oracle, atomic-spec scorer, science scorer, or mechanism-semantic validator is invoked\", \"authorized_paths\": [\"artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A-ADMISSION/red_precheck.json\", \"artifacts/ITL-K0-H0-ADMISSION-CONTRACT-002A/effective_h0_contract.json\", \"artifacts/K0-DUAL-TRACK-RED-FIELD-ADDENDUM-001A/red_field_contract.json\", \"artifacts/K0-DUAL-TRACK-RED-FIELD-CORRECTION-001A/red_field_correction_contract.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/STATUS.md\", \"artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/program_state.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/post_result_routing_validation_report.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/events.jsonl\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/ready_transition_validation_report.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/state.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/closure.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/events.jsonl\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/state.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/N2-SBMC-ENV-REDESIGN-001A/events.jsonl\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/N2-SBMC-ENV-REDESIGN-001A/state.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/PUM-ENV-v0/closure.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/PUM-ENV-v0/events.jsonl\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/PUM-ENV-v0/state.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/schemas/closure_packet.schema.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/schemas/route_state.schema.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/validation_report.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/validation_report.json\", \"docs/codex/tasks/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A-MUTATION_SCOPE_ITL.yaml\", \"docs/codex/tasks/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A.md\", \"docs/codex/tasks/ITL-K0-H0-ADMISSION-CONTRACT-002A.md\", \"docs/codex/tasks/ITL-K0-H0-CODE-FIRST-PREBANK-001A.md\", \"docs/codex/tasks/ITL-K0-H0-CODE-FIRST-PREBANK-PRECONDITION-CLOSURE-001A.md\", \"docs/codex/tasks/K0-DUAL-TRACK-READY-TRANSITION-001A.md\", \"docs/codex/tasks/K0-DUAL-TRACK-RED-FIELD-ADDENDUM-001A.md\", \"docs/codex/tasks/K0-DUAL-TRACK-RED-FIELD-CORRECTION-001A.md\", \"docs/codex/tasks/K0-DUAL-TRACK-SUPERSESSION-001A.md\", \"docs/codex/tasks/K0-FOUNDATION-ACCEPTANCE-TRANSITION-001A.md\", \"docs/codex/tasks/ROUTE-STATE-MACHINE-001A.md\", \"docs/codex/tasks/ROUTE-STATE-MACHINE-001B-CURRENT-FRONTIER-GATE.md\", \"docs/research/FSP-STAGE-LEDGER.md\", \"docs/research/ROUTE-STATE-MACHINE-001A.md\", \"docs/research/ROUTE-STATE-MACHINE-001B-CURRENT-FRONTIER-GATE.md\", \"src/route_state_machine_001a/__init__.py\", \"src/route_state_machine_001a/routectl.py\", \"src/route_state_machine_001a/state_machine.py\", \"src/route_state_machine_001a/state_machine.py\", \"src/route_state_machine_001a/validator.py\", \"src/route_state_machine_001a/validator.py\", \"tests/route_state_machine_001a/test_ego_life_kernel_v1_post_result_routing.py\", \"tests/route_state_machine_001a/test_validator.py\", \"tests/route_state_machine_001a/test_validator.py\"], \"changed_files\": [], \"claim_ceiling\": \"local operator-approved terminal governance closure of the current K0 science-attribution route, explicitly without science adjudication, while preserving existing bounded Foundation engineering evidence\", \"code_first_prebank_task_pin_verdict\": \"pass\", \"code_path_hash\": \"26d495cf4417ed43f3ffaaf7ddbd26cc37d36b5834aa35870692b10ba5d5d180\", \"current_frontier_route_id\": \"K0-DUAL-TRACK-SUPERSESSION-001A\", \"effective_live_product_actions\": [\"preserve_Ego_main_NON_LIVE_NEGATIVE_ANTI_ZENO_CHECKPOINT_for_V2_takeover\", \"run_route_state_machine_validation\"], \"foundation_acceptance_provenance\": {\"aggregation_rule\": \"pass iff sibling Ego Git root is discovered, direct lineage, commit scopes, 14-entry raw-object manifest, result/test objects, 21 computed gates, and disabled/non-mainline official fields all match the frozen state pin\", \"code_path_hash\": \"26d495cf4417ed43f3ffaaf7ddbd26cc37d36b5834aa35870692b10ba5d5d180\", \"input_artifacts\": [\"Ego@7dd6619c0c643344984d49383c61190bbab04f21\", \"Ego@8318bb33212f79e1e0a9cea15cad7b9cd176a0f5:artifacts/ego_k0_foundation_001a\", \"Ego@a95aa3f2d94bc4cb36f83e29e34a2c69da28497a:tests/test_ego_k0_foundation.py\"], \"official_gate_count\": 21, \"producer_function\": \"validate_foundation_acceptance_repository\", \"run_id\": \"k0-foundation-acceptance-20260718T213449Z-1649087b\"}, \"foundation_acceptance_verdict\": \"pass\", \"foundation_artifact_manifest\": [{\"blob\": \"4e4f0b67446d1018a9617fa0eb4bd0c67bd12510\", \"mode\": \"100644\", \"path\": \"artifacts/ego_k0_foundation_001a/raw_validation/atomic_second_write_probe.sqlite3\", \"sha256\": \"f1c99dacbc5da9c2e654abf5e6af325ba1607ac5dbb0a18b161969a1d386e47a\"}, {\"blob\": \"2ce2f53bd77a3015299ab988ecaaafda333a95da\", \"mode\": \"100644\", \"path\": \"artifacts/ego_k0_foundation_001a/raw_validation/fail_closed_probe.sqlite3\", \"sha256\": \"9fcdaff3dae235ddc7115b25b7240b5f14467351b336530b24f36610a930714e\"}, {\"blob\": \"00380b446752269424ce78510473e49e29aaecb4\", \"mode\": \"100644\", \"path\": \"artifacts/ego_k0_foundation_001a/raw_validation/foundation.sqlite3\", \"sha256\": \"05b6ab12823f56be65eefa7f1fe346f27fd8505a7e9bc5d3119c4ee85df2e4eb\"}, {\"blob\": \"e4c7791ff00b2a73f931365d963d55e4e2fc9e55\", \"mode\": \"100644\", \"path\": \"artifacts/ego_k0_foundation_001a/raw_validation/fresh_replay_1/replay_report.json\", \"sha256\": \"0c26f4804761204029411f03c2d49ca25ec848973d58cec7f6c097e8fc23ae9a\"}, {\"blob\": \"17fa2209f39f52def72eb6f1bac3e453369fed09\", \"mode\": \"100644\", \"path\": \"artifacts/ego_k0_foundation_001a/raw_validation/fresh_replay_2/replay_report.json\", \"sha256\": \"eb3393f3643bc69b0a50eef0758205637e32102c64f9efa5e8b7676c122799ce\"}, {\"blob\": \"ab741064b0fb950116d9daae9035d4b118fb97a2\", \"mode\": \"100644\", \"path\": \"artifacts/ego_k0_foundation_001a/raw_validation/implementation_validation_report.json\", \"sha256\": \"2db62915b2f9f8d617c192b00b0740ba1d016edf80a64ce47a6ebe35d161f9de\"}, {\"blob\": \"3c4aec5a4e6d1e0bcee38bce00167172ded045ad\", \"mode\": \"100644\", \"path\": \"artifacts/ego_k0_foundation_001a/raw_validation/initial_checkpoint.json\", \"sha256\": \"6867c9c6d27fb1f1d38646c946d8e06c17188c5a74f54ac6d84cc27246d9fff8\"}, {\"blob\": \"82d4ace40545150d3368a419165cf0e625dac7db\", \"mode\": \"100644\", \"path\": \"artifacts/ego_k0_foundation_001a/raw_validation/metadata_checkpoint_tampered_clone.sqlite3\", \"sha256\": \"1136766f331a344d7dc2f3f9e1bda2afe2e8b5832c44fa8806cfbf133aa9b350\"}, {\"blob\": \"7b9386b2ae858cbbde9dd39627da76b560b838cd\", \"mode\": \"100644\", \"path\": \"artifacts/ego_k0_foundation_001a/raw_validation/metadata_event_tampered_clone.sqlite3\", \"sha256\": \"00df95370e9e86e3331033cc59173d118a02c028bf2f8c7161cb7097df6d7cc0\"}, {\"blob\": \"de2e7764122939f5d441dbbe69e164469d7d59d4\", \"mode\": \"100644\", \"path\": \"artifacts/ego_k0_foundation_001a/raw_validation/post_commit_delivery_probe.sqlite3\", \"sha256\": \"071fd961ea9a900deb20f88c7f6ec95390007279841358f63824e42f69edddab\"}, {\"blob\": \"baadcfd915be64d46383145e23b45bba439e3124\", \"mode\": \"100644\", \"path\": \"artifacts/ego_k0_foundation_001a/raw_validation/source_traces.json\", \"sha256\": \"ab1b7e5d246cf391cb1d76d9df7a53d9d3a5ed4376ffc9c001acfcc5fec9e271\"}, {\"blob\": \"bdacf44f0909daef0c327d90efd4f936a16b1735\", \"mode\": \"100644\", \"path\": \"artifacts/ego_k0_foundation_001a/raw_validation/tampered_clone.sqlite3\", \"sha256\": \"92f565c0f6ffbc61ba8eee79beb1fc50cb30c187e8127a41a8993eca82b85564\"}, {\"blob\": \"8d25f865cf619c3a36c019eeef08561c5f84bf5d\", \"mode\": \"100644\", \"path\": \"artifacts/ego_k0_foundation_001a/raw_validation/trace_feedback_probe.sqlite3\", \"sha256\": \"e548aa1e2df334564ddcf998de87f24b479271bdfc2889a024fab08ff92e7fe8\"}, {\"blob\": \"a8b3237afc40a1f56df3906870ff94c5db9c10ff\", \"mode\": \"100644\", \"path\": \"artifacts/ego_k0_foundation_001a/result.json\", \"sha256\": \"834b4764514062f8937488fd4b89684b5ae684e9522d67f440ed3c077f077067\"}], \"h0_admission_atomic_tuple_count\": 0, \"h0_admission_contract_verdict\": \"historical_only_not_semantically_revalidated\", \"h0_admission_truth_table_scenarios\": 0, \"historical_h0_object_pin_verdict\": \"pass\", \"input_artifacts\": [\"Ego@7dd6619c0c643344984d49383c61190bbab04f21\", \"Ego@8318bb33212f79e1e0a9cea15cad7b9cd176a0f5:artifacts/ego_k0_foundation_001a\", \"Ego@a95aa3f2d94bc4cb36f83e29e34a2c69da28497a:tests/test_ego_k0_foundation.py\", \"artifacts/ITL-K0-H0-ADMISSION-CONTRACT-002A/effective_h0_contract.json\", \"artifacts/ITL-K0-H0-CODE-FIRST-PREBANK-001A/baseline_ablation_contract.json\", \"artifacts/ITL-K0-H0-CODE-FIRST-PREBANK-001A/claim_ceiling.txt\", \"artifacts/ITL-K0-H0-CODE-FIRST-PREBANK-001A/freeze_manifest.json\", \"artifacts/ITL-K0-H0-CODE-FIRST-PREBANK-001A/normative_field_manifest.json\", \"artifacts/ITL-K0-H0-CODE-FIRST-PREBANK-001A/transformation_catalog.json\", \"artifacts/K0-DUAL-TRACK-RED-FIELD-ADDENDUM-001A/red_field_contract.json\", \"artifacts/K0-DUAL-TRACK-RED-FIELD-CORRECTION-001A/red_field_correction_contract.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/STATUS.md\", \"artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/program_state.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/closure.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/events.jsonl\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/post_result_routing_validation_report.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/ready_transition_validation_report.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A/state.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/events.jsonl\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/ready_transition_validation_report.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/state.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/admission_validation_report.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/closure.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/closure_validation_report.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/events.jsonl\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A/state.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A/adoption_validation_report.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A/closure.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A/events.jsonl\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A/state.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/closure.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/events.jsonl\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/state.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/N2-SBMC-ENV-REDESIGN-001A/closure.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/N2-SBMC-ENV-REDESIGN-001A/events.jsonl\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/N2-SBMC-ENV-REDESIGN-001A/state.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/PUM-ENV-v0/closure.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/PUM-ENV-v0/events.jsonl\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/PUM-ENV-v0/state.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/SAME-AGENT-MINIMAL-KERNEL-BRIDGE-001A/closure.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/SAME-AGENT-MINIMAL-KERNEL-BRIDGE-001A/events.jsonl\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/SAME-AGENT-MINIMAL-KERNEL-BRIDGE-001A/state.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/schemas/closure_packet.schema.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/schemas/route_state.schema.json\", \"docs/codex/tasks/ITL-K0-H0-ADMISSION-CONTRACT-002A.md\", \"docs/codex/tasks/ITL-K0-H0-CODE-FIRST-PREBANK-001A.md\", \"docs/codex/tasks/ITL-K0-H0-CODE-FIRST-PREBANK-PRECONDITION-CLOSURE-001A.md\", \"docs/codex/tasks/K0-DUAL-TRACK-RED-FIELD-ADDENDUM-001A.md\", \"docs/codex/tasks/K0-DUAL-TRACK-RED-FIELD-CORRECTION-001A.md\", \"docs/codex/tasks/K0-OPERATOR-CLOSE-WITHOUT-SCIENCE-ADJUDICATION-001A.md\", \"docs/codex/tasks/K0-TERMINAL-BOUNDARY-VERIFIER-REPLACEMENT-001A.md\", \"docs/research/FSP-STAGE-LEDGER.md\", \"src/itl_k0_h0_h1_instrument_001a/__init__.py\", \"src/itl_k0_h0_h1_instrument_001a/h0_cli.py\", \"src/itl_k0_h0_h1_instrument_001a/h0_freeze.py\", \"src/itl_k0_h0_h1_instrument_001a/h0_registry.py\", \"src/itl_k0_h0_h1_instrument_001a/h0_resolver.py\", \"src/itl_k0_h0_h1_instrument_001a/h0_schema.py\", \"src/itl_k0_h0_h1_instrument_001a/h0_validation.py\", \"tests/itl_k0_h0_h1_instrument_001a/test_h0_cli.py\", \"tests/itl_k0_h0_h1_instrument_001a/test_h0_registry.py\", \"tests/itl_k0_h0_h1_instrument_001a/test_h0_resolver.py\", \"tests/itl_k0_h0_h1_instrument_001a/test_h0_schema.py\", \"tests/itl_k0_h0_h1_instrument_001a/test_h0_validation.py\"], \"input_hashes\": {\"artifacts/ROUTE-STATE-MACHINE-001A/STATUS.md\": \"3883d6b73471ba63f740859733864af34e4baf01a17b9b9bada04a2861ec5f6b\", \"artifacts/ROUTE-STATE-MACHINE-001A/program_state.json\": \"79915a56fa7c6735d7cbc3941972f4c709144b2bb75a79911a65ee08ddb90807\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/closure.json\": \"bfe1d92cbb1938f6bfe206f84693fef90f64c1458ec576eb384bd5869de3ff93\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/events.jsonl\": \"fb363cf87d54aa1b33c4c66975f5e02dc4dcaef234b28f0d67790f643eb3e468\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/state.json\": \"c31158f8713a9ba6df4255c8bed938ae0dd8b84fb2088d71741d536442b5ab5f\", \"checkout:artifacts/ROUTE-STATE-MACHINE-001A/STATUS.md\": \"3883d6b73471ba63f740859733864af34e4baf01a17b9b9bada04a2861ec5f6b\", \"checkout:artifacts/ROUTE-STATE-MACHINE-001A/program_state.json\": \"79915a56fa7c6735d7cbc3941972f4c709144b2bb75a79911a65ee08ddb90807\", \"checkout:artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/closure.json\": \"bfe1d92cbb1938f6bfe206f84693fef90f64c1458ec576eb384bd5869de3ff93\", \"checkout:artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/events.jsonl\": \"fb363cf87d54aa1b33c4c66975f5e02dc4dcaef234b28f0d67790f643eb3e468\", \"checkout:artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/state.json\": \"c31158f8713a9ba6df4255c8bed938ae0dd8b84fb2088d71741d536442b5ab5f\", \"checkout:docs/codex/tasks/K0-OPERATOR-CLOSE-WITHOUT-SCIENCE-ADJUDICATION-001A.md\": \"ca8d826892e37ffd13ee37e7c5ab3a61c99ff0856a023e06625b380f984cc245\", \"checkout:docs/codex/tasks/K0-TERMINAL-BOUNDARY-VERIFIER-REPLACEMENT-001A.md\": \"440b678900d3743168e1c04c9f9d83a949b7dd96858d84749115e5f76c9cd1ce\", \"checkout:docs/research/FSP-STAGE-LEDGER.md\": \"2e71d576581a2917c6c6a1f7779035f03f7bc2aaf225b92ec5b70b7988564ff7\", \"docs/research/FSP-STAGE-LEDGER.md\": \"2e71d576581a2917c6c6a1f7779035f03f7bc2aaf225b92ec5b70b7988564ff7\", \"git:artifacts/ROUTE-STATE-MACHINE-001A/STATUS.md\": \"3883d6b73471ba63f740859733864af34e4baf01a17b9b9bada04a2861ec5f6b\", \"git:artifacts/ROUTE-STATE-MACHINE-001A/program_state.json\": \"79915a56fa7c6735d7cbc3941972f4c709144b2bb75a79911a65ee08ddb90807\", \"git:artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/closure.json\": \"bfe1d92cbb1938f6bfe206f84693fef90f64c1458ec576eb384bd5869de3ff93\", \"git:artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/events.jsonl\": \"7086eb7ed20e8618bb64b4bd7b5b662b6149bdddddc5441cda509f1bd6504902\", \"git:artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/state.json\": \"c31158f8713a9ba6df4255c8bed938ae0dd8b84fb2088d71741d536442b5ab5f\", \"git:docs/codex/tasks/K0-OPERATOR-CLOSE-WITHOUT-SCIENCE-ADJUDICATION-001A.md\": \"5a4635934948ca59e107f48c7197fde9143574a16a6b6f6a6e34972c67cc042b\", \"git:docs/codex/tasks/K0-TERMINAL-BOUNDARY-VERIFIER-REPLACEMENT-001A.md\": \"6264e3e6d19030519cb96e1ed0ee518f65b3945c0aa4472c66ca6ec516d8d4d9\", \"git:docs/research/FSP-STAGE-LEDGER.md\": \"7879da88a22d7bda05b629b02cc6d345883a38ab98bd8014e0a767b8592b9f69\"}, \"operator_closure_provenance\": {\"aggregation_rule\": \"pass iff callable card commit/blob/raw-SHA/ancestry and checkout-representation checks, frozen 59e Git-object reads, exact state/closure/program top-level authority surfaces and false authorization maps, byte-identical protected checkouts, exact STATUS mirror, exact Git-prefix-plus-L-029 ledger bytes, and the exact ten-event Git prefix plus one final repair-audit event all return zero errors\", \"canonical_git_objects\": {\"closure\": {\"actual_blob\": \"e1a7d8d595004c07cea7c8fd70cb1738d42e3b5a\", \"commit\": \"59e43016ae5831b049e3bd55ef438c035f02e05c\", \"expected_blob\": \"e1a7d8d595004c07cea7c8fd70cb1738d42e3b5a\", \"path\": \"artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/closure.json\", \"raw_byte_length\": 3962, \"raw_sha256\": \"bfe1d92cbb1938f6bfe206f84693fef90f64c1458ec576eb384bd5869de3ff93\"}, \"events\": {\"actual_blob\": \"c03d8e0c6bd8de568f3c96e2e2961919c7371fc7\", \"commit\": \"59e43016ae5831b049e3bd55ef438c035f02e05c\", \"expected_blob\": \"c03d8e0c6bd8de568f3c96e2e2961919c7371fc7\", \"path\": \"artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/events.jsonl\", \"raw_byte_length\": 15585, \"raw_sha256\": \"7086eb7ed20e8618bb64b4bd7b5b662b6149bdddddc5441cda509f1bd6504902\"}, \"ledger\": {\"actual_blob\": \"468de3f4ccb02c858cb880805056478611e100ec\", \"commit\": \"59e43016ae5831b049e3bd55ef438c035f02e05c\", \"expected_blob\": \"468de3f4ccb02c858cb880805056478611e100ec\", \"path\": \"docs/research/FSP-STAGE-LEDGER.md\", \"raw_byte_length\": 26996, \"raw_sha256\": \"7879da88a22d7bda05b629b02cc6d345883a38ab98bd8014e0a767b8592b9f69\"}, \"program\": {\"actual_blob\": \"377d09780e0a3949a172d89c3bc12de40245f8e8\", \"commit\": \"59e43016ae5831b049e3bd55ef438c035f02e05c\", \"expected_blob\": \"377d09780e0a3949a172d89c3bc12de40245f8e8\", \"path\": \"artifacts/ROUTE-STATE-MACHINE-001A/program_state.json\", \"raw_byte_length\": 15263, \"raw_sha256\": \"79915a56fa7c6735d7cbc3941972f4c709144b2bb75a79911a65ee08ddb90807\"}, \"state\": {\"actual_blob\": \"261b9ce78fd88a70c5f78646ce9209eb8bacee08\", \"commit\": \"59e43016ae5831b049e3bd55ef438c035f02e05c\", \"expected_blob\": \"261b9ce78fd88a70c5f78646ce9209eb8bacee08\", \"path\": \"artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/state.json\", \"raw_byte_length\": 25228, \"raw_sha256\": \"c31158f8713a9ba6df4255c8bed938ae0dd8b84fb2088d71741d536442b5ab5f\"}, \"status\": {\"actual_blob\": \"a617d17b855433e14832cf4f1149396548545d67\", \"commit\": \"59e43016ae5831b049e3bd55ef438c035f02e05c\", \"expected_blob\": \"a617d17b855433e14832cf4f1149396548545d67\", \"path\": \"artifacts/ROUTE-STATE-MACHINE-001A/STATUS.md\", \"raw_byte_length\": 16246, \"raw_sha256\": \"3883d6b73471ba63f740859733864af34e4baf01a17b9b9bada04a2861ec5f6b\"}}, \"card_aggregation_rule\": \"pass iff the serialized pin, bank-commit ancestry, committed Git blob, and committed raw SHA-256 match, and the checkout is uniform LF or CRLF with normalized content equal to the committed LF bytes; raw checkout equality is recorded, not assumed\", \"card_checkout_representation\": {\"checkout\": {\"counts\": {\"bare_cr\": 0, \"crlf\": 984, \"lf\": 0}, \"raw_sha256\": \"ca8d826892e37ffd13ee37e7c5ab3a61c99ff0856a023e06625b380f984cc245\", \"representation\": \"CRLF\"}, \"committed\": {\"counts\": {\"bare_cr\": 0, \"crlf\": 0, \"lf\": 984}, \"raw_sha256\": \"5a4635934948ca59e107f48c7197fde9143574a16a6b6f6a6e34972c67cc042b\", \"representation\": \"LF\"}, \"normalized_checkout_equality\": true, \"raw_byte_equality\": false, \"raw_byte_equality_claimed\": false}, \"card_committed_git_blob\": {\"blob\": \"b52e09ba7f9a103a70819add3ea3ed2df206617f\", \"commit\": \"7b3fc536e7b24896dc2f9f9957b7aae0e8cc5c45\", \"path\": \"docs/codex/tasks/K0-OPERATOR-CLOSE-WITHOUT-SCIENCE-ADJUDICATION-001A.md\", \"raw_byte_length\": 29423, \"raw_sha256\": \"5a4635934948ca59e107f48c7197fde9143574a16a6b6f6a6e34972c67cc042b\"}, \"card_pin_verdict\": \"pass\", \"code_path_hash\": \"26d495cf4417ed43f3ffaaf7ddbd26cc37d36b5834aa35870692b10ba5d5d180\", \"event_verdict\": \"pass\", \"input_artifacts\": [\"artifacts/ROUTE-STATE-MACHINE-001A/STATUS.md\", \"artifacts/ROUTE-STATE-MACHINE-001A/program_state.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/closure.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/events.jsonl\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/state.json\", \"docs/codex/tasks/K0-OPERATOR-CLOSE-WITHOUT-SCIENCE-ADJUDICATION-001A.md\", \"docs/research/FSP-STAGE-LEDGER.md\"], \"input_hashes\": {\"checkout:artifacts/ROUTE-STATE-MACHINE-001A/STATUS.md\": \"3883d6b73471ba63f740859733864af34e4baf01a17b9b9bada04a2861ec5f6b\", \"checkout:artifacts/ROUTE-STATE-MACHINE-001A/program_state.json\": \"79915a56fa7c6735d7cbc3941972f4c709144b2bb75a79911a65ee08ddb90807\", \"checkout:artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/closure.json\": \"bfe1d92cbb1938f6bfe206f84693fef90f64c1458ec576eb384bd5869de3ff93\", \"checkout:artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/events.jsonl\": \"fb363cf87d54aa1b33c4c66975f5e02dc4dcaef234b28f0d67790f643eb3e468\", \"checkout:artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/state.json\": \"c31158f8713a9ba6df4255c8bed938ae0dd8b84fb2088d71741d536442b5ab5f\", \"checkout:docs/codex/tasks/K0-OPERATOR-CLOSE-WITHOUT-SCIENCE-ADJUDICATION-001A.md\": \"ca8d826892e37ffd13ee37e7c5ab3a61c99ff0856a023e06625b380f984cc245\", \"checkout:docs/research/FSP-STAGE-LEDGER.md\": \"2e71d576581a2917c6c6a1f7779035f03f7bc2aaf225b92ec5b70b7988564ff7\", \"git:artifacts/ROUTE-STATE-MACHINE-001A/STATUS.md\": \"3883d6b73471ba63f740859733864af34e4baf01a17b9b9bada04a2861ec5f6b\", \"git:artifacts/ROUTE-STATE-MACHINE-001A/program_state.json\": \"79915a56fa7c6735d7cbc3941972f4c709144b2bb75a79911a65ee08ddb90807\", \"git:artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/closure.json\": \"bfe1d92cbb1938f6bfe206f84693fef90f64c1458ec576eb384bd5869de3ff93\", \"git:artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/events.jsonl\": \"7086eb7ed20e8618bb64b4bd7b5b662b6149bdddddc5441cda509f1bd6504902\", \"git:artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/state.json\": \"c31158f8713a9ba6df4255c8bed938ae0dd8b84fb2088d71741d536442b5ab5f\", \"git:docs/codex/tasks/K0-OPERATOR-CLOSE-WITHOUT-SCIENCE-ADJUDICATION-001A.md\": \"5a4635934948ca59e107f48c7197fde9143574a16a6b6f6a6e34972c67cc042b\", \"git:docs/research/FSP-STAGE-LEDGER.md\": \"7879da88a22d7bda05b629b02cc6d345883a38ab98bd8014e0a767b8592b9f69\"}, \"ledger_suffix_verdict\": \"pass\", \"producer_function\": \"validate_operator_closure_repository\", \"run_id\": \"k0-operator-closure-7b3fc536e7b2-26d495cf4417\"}, \"operator_closure_verdict\": \"pass\", \"precondition_checked_paths\": [{\"match\": false, \"path\": \"artifacts/ITL-K0-H0-CODE-FIRST-PREBANK-001A/baseline_ablation_contract.json\", \"phase_c_git_object_sha256\": \"dfed5afb744af7f16744aa210fa76dbe4e1a500b7b6ad1ba38c3e7641e74dd16\", \"recorded_sha256\": \"a7fcd1c997c99f4da49ac3c6b02cb12204d61c38a8b759ba8e183c9d62d1fcf6\"}, {\"match\": false, \"path\": \"artifacts/ITL-K0-H0-CODE-FIRST-PREBANK-001A/claim_ceiling.txt\", \"phase_c_git_object_sha256\": \"dfdd9cdb5d5b7d37d75a21001f17ffb35930cff0ed4954a673d5ccc638ea23f6\", \"recorded_sha256\": \"4c02143f546e7871d285b6a528c7f04df4c4d3a111f5da0f356005f06ca671ec\"}, {\"match\": false, \"path\": \"artifacts/ITL-K0-H0-CODE-FIRST-PREBANK-001A/normative_field_manifest.json\", \"phase_c_git_object_sha256\": \"3ab87a100e8d1358a55f87bf1f6a1e20fe3f9c8cf3f78bbbf0a5792601cbeb59\", \"recorded_sha256\": \"72970dc68c10da1d6405b57ce4253856320f6ea1194da696c8ee5848f2db6b18\"}, {\"match\": false, \"path\": \"artifacts/ITL-K0-H0-CODE-FIRST-PREBANK-001A/transformation_catalog.json\", \"phase_c_git_object_sha256\": \"d13ecf9cb4de105ab44e06c0cf6e3774521948d67e4e04e6c4ea794fe87064ad\", \"recorded_sha256\": \"c64afe25a41d52b9863173684e7e0bd34a2b06063193b36759698ca55dff481b\"}, {\"match\": true, \"path\": \"src/itl_k0_h0_h1_instrument_001a/__init__.py\", \"phase_c_git_object_sha256\": \"2722775ce728a634103b59148ad32d07cf69ab1ada0e21952d55ee0477204341\", \"recorded_sha256\": \"2722775ce728a634103b59148ad32d07cf69ab1ada0e21952d55ee0477204341\"}, {\"match\": true, \"path\": \"src/itl_k0_h0_h1_instrument_001a/h0_cli.py\", \"phase_c_git_object_sha256\": \"30f6264c990aca1ffe5542a0dbc590b428eb6c6415957384cce12033b6af4ec5\", \"recorded_sha256\": \"30f6264c990aca1ffe5542a0dbc590b428eb6c6415957384cce12033b6af4ec5\"}, {\"match\": true, \"path\": \"src/itl_k0_h0_h1_instrument_001a/h0_freeze.py\", \"phase_c_git_object_sha256\": \"b9cff3d3a132ddcd6f7e491197fe48421cd8b56d2f7aa5c9126b98642b335bb4\", \"recorded_sha256\": \"b9cff3d3a132ddcd6f7e491197fe48421cd8b56d2f7aa5c9126b98642b335bb4\"}, {\"match\": true, \"path\": \"src/itl_k0_h0_h1_instrument_001a/h0_registry.py\", \"phase_c_git_object_sha256\": \"506c5ec10454df0136951d2d503ddec712f3b7d61602f9b1f05cdc4b627a3b61\", \"recorded_sha256\": \"506c5ec10454df0136951d2d503ddec712f3b7d61602f9b1f05cdc4b627a3b61\"}, {\"match\": true, \"path\": \"src/itl_k0_h0_h1_instrument_001a/h0_resolver.py\", \"phase_c_git_object_sha256\": \"4e888f2e7233f82a52075da608e74a72ecce22a7579c89859572afddff1057f3\", \"recorded_sha256\": \"4e888f2e7233f82a52075da608e74a72ecce22a7579c89859572afddff1057f3\"}, {\"match\": true, \"path\": \"src/itl_k0_h0_h1_instrument_001a/h0_schema.py\", \"phase_c_git_object_sha256\": \"8ac93784e504719c1eca0aa09f8012cfec05319385bc895e8a7d29c6bc568647\", \"recorded_sha256\": \"8ac93784e504719c1eca0aa09f8012cfec05319385bc895e8a7d29c6bc568647\"}, {\"match\": true, \"path\": \"src/itl_k0_h0_h1_instrument_001a/h0_validation.py\", \"phase_c_git_object_sha256\": \"83ae9211db4ada2ddbf6d47da03102070b9b69e6fc66773b4e70db093f9c29ba\", \"recorded_sha256\": \"83ae9211db4ada2ddbf6d47da03102070b9b69e6fc66773b4e70db093f9c29ba\"}, {\"match\": true, \"path\": \"tests/itl_k0_h0_h1_instrument_001a/test_h0_cli.py\", \"phase_c_git_object_sha256\": \"991a860b1892cf8c1dc97d700102cf50f6451feba92321139fe6d83cd14d8d75\", \"recorded_sha256\": \"991a860b1892cf8c1dc97d700102cf50f6451feba92321139fe6d83cd14d8d75\"}, {\"match\": true, \"path\": \"tests/itl_k0_h0_h1_instrument_001a/test_h0_registry.py\", \"phase_c_git_object_sha256\": \"fba89c229e40bdc811ed4bf700598705bd7f51360a87a2c2869301b00ba6bbe3\", \"recorded_sha256\": \"fba89c229e40bdc811ed4bf700598705bd7f51360a87a2c2869301b00ba6bbe3\"}, {\"match\": true, \"path\": \"tests/itl_k0_h0_h1_instrument_001a/test_h0_resolver.py\", \"phase_c_git_object_sha256\": \"32b1dd4f417913d1e00aa2c00448b3b535c93cfc974b1286ade14de9fcc86193\", \"recorded_sha256\": \"32b1dd4f417913d1e00aa2c00448b3b535c93cfc974b1286ade14de9fcc86193\"}, {\"match\": true, \"path\": \"tests/itl_k0_h0_h1_instrument_001a/test_h0_schema.py\", \"phase_c_git_object_sha256\": \"49ee8f18a72a47339e0a2ea6430346ac1c7111fa51cd03948703c7e2f041cef8\", \"recorded_sha256\": \"49ee8f18a72a47339e0a2ea6430346ac1c7111fa51cd03948703c7e2f041cef8\"}, {\"match\": true, \"path\": \"tests/itl_k0_h0_h1_instrument_001a/test_h0_validation.py\", \"phase_c_git_object_sha256\": \"0b0009735177e18595ee524c44119e2d29d4f100097cc437c512bb7043d8b444\", \"recorded_sha256\": \"0b0009735177e18595ee524c44119e2d29d4f100097cc437c512bb7043d8b444\"}], \"precondition_closure_verdict\": \"pass\", \"precondition_failure\": {\"checked_path_count\": 16, \"classification\": \"IMPLEMENTATION_DEFECT\", \"failure_class\": \"IMPLEMENTATION_DEFECT\", \"freeze_manifest_self_hash_covered\": false, \"instrument_validity\": \"NOT_TESTED\", \"mechanism_evidence\": \"NOT_TESTED\", \"mismatch_count\": 4, \"mismatch_paths\": [\"artifacts/ITL-K0-H0-CODE-FIRST-PREBANK-001A/baseline_ablation_contract.json\", \"artifacts/ITL-K0-H0-CODE-FIRST-PREBANK-001A/claim_ceiling.txt\", \"artifacts/ITL-K0-H0-CODE-FIRST-PREBANK-001A/normative_field_manifest.json\", \"artifacts/ITL-K0-H0-CODE-FIRST-PREBANK-001A/transformation_catalog.json\"], \"official_run_invoked\": false, \"phase_c_commit\": \"381cc5f28b597325efba9abda055507b58c2133f\", \"phase_c_source_test_freeze_modified_by_closure\": false, \"phase_d_artifacts_present\": false, \"source_test_blob_drift\": false, \"subtype\": \"PORTABLE_BYTE_FREEZE_PRECONDITION_INVALID\", \"working_vs_git_line_ending_only_count\": 5, \"working_vs_git_line_ending_only_paths\": [\"artifacts/ITL-K0-H0-CODE-FIRST-PREBANK-001A/freeze_manifest.json\", \"artifacts/ITL-K0-H0-CODE-FIRST-PREBANK-001A/baseline_ablation_contract.json\", \"artifacts/ITL-K0-H0-CODE-FIRST-PREBANK-001A/claim_ceiling.txt\", \"artifacts/ITL-K0-H0-CODE-FIRST-PREBANK-001A/normative_field_manifest.json\", \"artifacts/ITL-K0-H0-CODE-FIRST-PREBANK-001A/transformation_catalog.json\"], \"working_vs_git_other_difference_paths\": []}, \"present_phase_d_artifact_paths\": [], \"producer_function\": \"build_validation_report\", \"product_axis_authority\": \"SOLE\", \"product_axis_authority_route_id\": \"EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A\", \"product_axis_live_view_verdict\": \"pass\", \"product_axis_selector_source\": \"artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json\", \"program_state_actions_are_live\": false, \"program_state_verdict\": \"pass\", \"red_field_addendum_verdict\": \"historical_only_not_semantically_revalidated\", \"red_field_correction_verdict\": \"historical_only_not_semantically_revalidated\", \"replacement_card_pin_verdict\": \"pass\", \"replacement_card_provenance\": {\"aggregation_rule\": \"pass iff bank ancestry, exact Git blob, canonical LF SHA-256/byte length, and normalized checkout equality all pass\", \"checkout_representation\": {\"normalized_checkout_equality\": true, \"raw_byte_length\": 19037, \"raw_sha256\": \"440b678900d3743168e1c04c9f9d83a949b7dd96858d84749115e5f76c9cd1ce\", \"representation\": \"CRLF\"}, \"committed_git_blob\": {\"actual_blob\": \"12bb3670f3be2766b54a3f5d965fed79e154a5a9\", \"commit\": \"ea288bd8f539f3558b75e451593d8e06bc5650b8\", \"expected_blob\": \"12bb3670f3be2766b54a3f5d965fed79e154a5a9\", \"path\": \"docs/codex/tasks/K0-TERMINAL-BOUNDARY-VERIFIER-REPLACEMENT-001A.md\", \"raw_byte_length\": 18310, \"raw_sha256\": \"6264e3e6d19030519cb96e1ed0ee518f65b3945c0aa4472c66ca6ec516d8d4d9\", \"representation\": \"LF\"}, \"input_artifacts\": [\"docs/codex/tasks/K0-TERMINAL-BOUNDARY-VERIFIER-REPLACEMENT-001A.md\"], \"producer_function\": \"validate_k0_terminal_replacement_card_pin\", \"replacement_task_pin\": {\"bank_commit\": \"ea288bd8f539f3558b75e451593d8e06bc5650b8\", \"card_blob\": \"12bb3670f3be2766b54a3f5d965fed79e154a5a9\", \"card_byte_length\": 18310, \"card_path\": \"docs/codex/tasks/K0-TERMINAL-BOUNDARY-VERIFIER-REPLACEMENT-001A.md\", \"card_sha256\": \"6264e3e6d19030519cb96e1ed0ee518f65b3945c0aa4472c66ca6ec516d8d4d9\", \"task_id\": \"K0-TERMINAL-BOUNDARY-VERIFIER-REPLACEMENT-001A\"}, \"verdict\": \"pass\"}, \"replacement_review_status\": \"PENDING_INDEPENDENT_HOSTILE_REVIEW\", \"route_count\": 8, \"routes\": [{\"closure_type\": \"ARTIFACT_ONLY\", \"current_state\": \"ADJUDICATED\", \"route_id\": \"EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\", \"verdict\": \"pass\"}, {\"closure_type\": null, \"current_state\": \"READY_TO_IMPLEMENT\", \"route_id\": \"EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A\", \"verdict\": \"pass\"}, {\"closure_type\": \"GOVERNANCE_STOP\", \"current_state\": \"ADJUDICATED\", \"route_id\": \"EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A\", \"verdict\": \"pass\"}, {\"closure_type\": \"ARTIFACT_ONLY\", \"current_state\": \"ADJUDICATED\", \"route_id\": \"EGO-VISIBLE-LIFE-PROXY-V0-PRODUCT-CORE-ADOPTION-001A\", \"verdict\": \"pass\"}, {\"closure_type\": \"CLOSED_WITHOUT_SCIENCE_ADJUDICATION\", \"current_state\": \"ADJUDICATED\", \"route_id\": \"K0-DUAL-TRACK-SUPERSESSION-001A\", \"verdict\": \"pass\"}, {\"closure_type\": \"BASELINE_EQUIVALENCE\", \"current_state\": \"ADJUDICATED\", \"route_id\": \"N2-SBMC-ENV-REDESIGN-001A\", \"verdict\": \"pass\"}, {\"closure_type\": \"INSTRUMENT_INVALID\", \"current_state\": \"TOMBSTONED\", \"route_id\": \"PUM-ENV-v0\", \"verdict\": \"pass\"}, {\"closure_type\": \"BASELINE_EQUIVALENCE\", \"current_state\": \"ADJUDICATED\", \"route_id\": \"SAME-AGENT-MINIMAL-KERNEL-BRIDGE-001A\", \"verdict\": \"pass\"}], \"run_id\": \"route-state-machine-001a-20260718T213450Z-67dc2b85\", \"suppressed_legacy_product_actions\": [\"bank_EGO-PET-WORLD-V1-CAPABILITY-HEADROOM-001A\", \"bank_EGO_learned_outcome_kernel_capability_card_under_separate_task_after_EGO_sync\", \"draft_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A_only_after_EGO_sync_validation\", \"implement_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A\", \"implement_EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A\", \"implement_EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A\", \"repair_EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A\", \"sync_EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A_ready_authority_under_separate_task\", \"sync_EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A_ready_authority_under_separate_task\", \"sync_EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A_authority_under_separate_task\", \"sync_EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A_authority_under_separate_task\", \"sync_EGO_visible_life_proxy_v0_product_core_authority_under_separate_task\"], \"task_id\": \"ROUTE-STATE-MACHINE-001A\", \"terminal_anchor_active\": true, \"terminal_boundary_provenance\": {\"aggregation_rule\": \"pass iff terminal obligation is unconditionally required, Git status is ANCESTOR_FULL_HISTORY, witness vector is ALL_EXACT, and all six mandatory production callables return pass\", \"code_path_hash\": \"26d495cf4417ed43f3ffaaf7ddbd26cc37d36b5834aa35870692b10ba5d5d180\", \"git_probe_commands_and_return_codes\": [{\"command\": \"git rev-parse --is-inside-work-tree\", \"error_class\": null, \"return_code\": 0}, {\"command\": \"git rev-parse --is-shallow-repository\", \"error_class\": null, \"return_code\": 0}, {\"command\": \"git cat-file -e 59e43016ae5831b049e3bd55ef438c035f02e05c^{commit}\", \"error_class\": null, \"return_code\": 0}, {\"command\": \"git cat-file -e HEAD^{commit}\", \"error_class\": null, \"return_code\": 0}, {\"command\": \"git merge-base --is-ancestor 59e43016ae5831b049e3bd55ef438c035f02e05c HEAD\", \"error_class\": null, \"return_code\": 0}], \"git_probe_status\": \"ANCESTOR_FULL_HISTORY\", \"input_artifact_hashes\": {\"artifacts/ROUTE-STATE-MACHINE-001A/STATUS.md\": \"3883d6b73471ba63f740859733864af34e4baf01a17b9b9bada04a2861ec5f6b\", \"artifacts/ROUTE-STATE-MACHINE-001A/program_state.json\": \"79915a56fa7c6735d7cbc3941972f4c709144b2bb75a79911a65ee08ddb90807\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/closure.json\": \"bfe1d92cbb1938f6bfe206f84693fef90f64c1458ec576eb384bd5869de3ff93\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/events.jsonl\": \"fb363cf87d54aa1b33c4c66975f5e02dc4dcaef234b28f0d67790f643eb3e468\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/state.json\": \"c31158f8713a9ba6df4255c8bed938ae0dd8b84fb2088d71741d536442b5ab5f\", \"checkout:artifacts/ROUTE-STATE-MACHINE-001A/STATUS.md\": \"3883d6b73471ba63f740859733864af34e4baf01a17b9b9bada04a2861ec5f6b\", \"checkout:artifacts/ROUTE-STATE-MACHINE-001A/program_state.json\": \"79915a56fa7c6735d7cbc3941972f4c709144b2bb75a79911a65ee08ddb90807\", \"checkout:artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/closure.json\": \"bfe1d92cbb1938f6bfe206f84693fef90f64c1458ec576eb384bd5869de3ff93\", \"checkout:artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/events.jsonl\": \"fb363cf87d54aa1b33c4c66975f5e02dc4dcaef234b28f0d67790f643eb3e468\", \"checkout:artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/state.json\": \"c31158f8713a9ba6df4255c8bed938ae0dd8b84fb2088d71741d536442b5ab5f\", \"checkout:docs/codex/tasks/K0-OPERATOR-CLOSE-WITHOUT-SCIENCE-ADJUDICATION-001A.md\": \"ca8d826892e37ffd13ee37e7c5ab3a61c99ff0856a023e06625b380f984cc245\", \"checkout:docs/codex/tasks/K0-TERMINAL-BOUNDARY-VERIFIER-REPLACEMENT-001A.md\": \"440b678900d3743168e1c04c9f9d83a949b7dd96858d84749115e5f76c9cd1ce\", \"checkout:docs/research/FSP-STAGE-LEDGER.md\": \"2e71d576581a2917c6c6a1f7779035f03f7bc2aaf225b92ec5b70b7988564ff7\", \"docs/research/FSP-STAGE-LEDGER.md\": \"2e71d576581a2917c6c6a1f7779035f03f7bc2aaf225b92ec5b70b7988564ff7\", \"git:artifacts/ROUTE-STATE-MACHINE-001A/STATUS.md\": \"3883d6b73471ba63f740859733864af34e4baf01a17b9b9bada04a2861ec5f6b\", \"git:artifacts/ROUTE-STATE-MACHINE-001A/program_state.json\": \"79915a56fa7c6735d7cbc3941972f4c709144b2bb75a79911a65ee08ddb90807\", \"git:artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/closure.json\": \"bfe1d92cbb1938f6bfe206f84693fef90f64c1458ec576eb384bd5869de3ff93\", \"git:artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/events.jsonl\": \"7086eb7ed20e8618bb64b4bd7b5b662b6149bdddddc5441cda509f1bd6504902\", \"git:artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/state.json\": \"c31158f8713a9ba6df4255c8bed938ae0dd8b84fb2088d71741d536442b5ab5f\", \"git:docs/codex/tasks/K0-OPERATOR-CLOSE-WITHOUT-SCIENCE-ADJUDICATION-001A.md\": \"5a4635934948ca59e107f48c7197fde9143574a16a6b6f6a6e34972c67cc042b\", \"git:docs/codex/tasks/K0-TERMINAL-BOUNDARY-VERIFIER-REPLACEMENT-001A.md\": \"6264e3e6d19030519cb96e1ed0ee518f65b3945c0aa4472c66ca6ec516d8d4d9\", \"git:docs/research/FSP-STAGE-LEDGER.md\": \"7879da88a22d7bda05b629b02cc6d345883a38ab98bd8014e0a767b8592b9f69\"}, \"input_artifacts\": [\"Ego@7dd6619c0c643344984d49383c61190bbab04f21\", \"Ego@8318bb33212f79e1e0a9cea15cad7b9cd176a0f5:artifacts/ego_k0_foundation_001a\", \"Ego@a95aa3f2d94bc4cb36f83e29e34a2c69da28497a:tests/test_ego_k0_foundation.py\", \"artifacts/ITL-K0-H0-ADMISSION-CONTRACT-002A/effective_h0_contract.json\", \"artifacts/ITL-K0-H0-CODE-FIRST-PREBANK-001A/baseline_ablation_contract.json\", \"artifacts/ITL-K0-H0-CODE-FIRST-PREBANK-001A/claim_ceiling.txt\", \"artifacts/ITL-K0-H0-CODE-FIRST-PREBANK-001A/freeze_manifest.json\", \"artifacts/ITL-K0-H0-CODE-FIRST-PREBANK-001A/normative_field_manifest.json\", \"artifacts/ITL-K0-H0-CODE-FIRST-PREBANK-001A/transformation_catalog.json\", \"artifacts/K0-DUAL-TRACK-RED-FIELD-ADDENDUM-001A/red_field_contract.json\", \"artifacts/K0-DUAL-TRACK-RED-FIELD-CORRECTION-001A/red_field_correction_contract.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/STATUS.md\", \"artifacts/ROUTE-STATE-MACHINE-001A/program_state.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/closure.json\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/events.jsonl\", \"artifacts/ROUTE-STATE-MACHINE-001A/routes/K0-DUAL-TRACK-SUPERSESSION-001A/state.json\", \"docs/codex/tasks/ITL-K0-H0-ADMISSION-CONTRACT-002A.md\", \"docs/codex/tasks/ITL-K0-H0-CODE-FIRST-PREBANK-001A.md\", \"docs/codex/tasks/ITL-K0-H0-CODE-FIRST-PREBANK-PRECONDITION-CLOSURE-001A.md\", \"docs/codex/tasks/K0-DUAL-TRACK-RED-FIELD-ADDENDUM-001A.md\", \"docs/codex/tasks/K0-DUAL-TRACK-RED-FIELD-CORRECTION-001A.md\", \"docs/codex/tasks/K0-OPERATOR-CLOSE-WITHOUT-SCIENCE-ADJUDICATION-001A.md\", \"docs/codex/tasks/K0-TERMINAL-BOUNDARY-VERIFIER-REPLACEMENT-001A.md\", \"docs/research/FSP-STAGE-LEDGER.md\", \"src/itl_k0_h0_h1_instrument_001a/__init__.py\", \"src/itl_k0_h0_h1_instrument_001a/h0_cli.py\", \"src/itl_k0_h0_h1_instrument_001a/h0_freeze.py\", \"src/itl_k0_h0_h1_instrument_001a/h0_registry.py\", \"src/itl_k0_h0_h1_instrument_001a/h0_resolver.py\", \"src/itl_k0_h0_h1_instrument_001a/h0_schema.py\", \"src/itl_k0_h0_h1_instrument_001a/h0_validation.py\", \"tests/itl_k0_h0_h1_instrument_001a/test_h0_cli.py\", \"tests/itl_k0_h0_h1_instrument_001a/test_h0_registry.py\", \"tests/itl_k0_h0_h1_instrument_001a/test_h0_resolver.py\", \"tests/itl_k0_h0_h1_instrument_001a/test_h0_schema.py\", \"tests/itl_k0_h0_h1_instrument_001a/test_h0_validation.py\"], \"producer_function\": \"validate_required_k0_terminal_boundary\", \"replacement_contract_version\": \"K0_TERMINAL_BOUNDARY_CURRENT_SOURCE_V1\", \"replacement_task_pin\": {\"bank_commit\": \"ea288bd8f539f3558b75e451593d8e06bc5650b8\", \"card_blob\": \"12bb3670f3be2766b54a3f5d965fed79e154a5a9\", \"card_byte_length\": 18310, \"card_path\": \"docs/codex/tasks/K0-TERMINAL-BOUNDARY-VERIFIER-REPLACEMENT-001A.md\", \"card_sha256\": \"6264e3e6d19030519cb96e1ed0ee518f65b3945c0aa4472c66ca6ec516d8d4d9\", \"task_id\": \"K0-TERMINAL-BOUNDARY-VERIFIER-REPLACEMENT-001A\"}, \"required_check_verdicts\": {\"code_first_prebank_task_pin\": \"pass\", \"foundation_acceptance\": \"pass\", \"historical_h0_object_pins\": \"pass\", \"operator_closure\": \"pass\", \"precondition_closure_recomputation\": \"pass\", \"replacement_card_provenance\": \"pass\"}, \"run_id\": \"k0-terminal-boundary-replacement-20260718T213450Z-478dfa6b\", \"terminal_obligation\": \"REQUIRED_CURRENT_SOURCE\", \"terminal_witness_status\": \"ALL_EXACT\", \"witness_vector\": {\"closure\": \"exact\", \"l028\": \"exact\", \"l029\": \"exact\", \"program\": \"exact\", \"repair_event\": \"exact\", \"state\": \"exact\", \"status\": \"exact\", \"terminal_event\": \"exact\"}}, \"terminal_boundary_verifier_verdict\": \"pass\", \"terminal_git_provenance_status\": \"ANCESTOR_FULL_HISTORY\", \"terminal_obligation\": \"REQUIRED_CURRENT_SOURCE\", \"terminal_required_check_verdicts\": {\"code_first_prebank_task_pin\": \"pass\", \"foundation_acceptance\": \"pass\", \"historical_h0_object_pins\": \"pass\", \"operator_closure\": \"pass\", \"precondition_closure_recomputation\": \"pass\", \"replacement_card_provenance\": \"pass\"}, \"terminal_witness_status\": \"ALL_EXACT\", \"validation_errors\": [], \"validation_warnings\": [], \"verdict\": \"pass\"}"
+      ],
+      "stderr": [],
+      "duration_seconds": 40.866673
+    }
+  },
+  "tk_probe_attempts": [
+    {
+      "attempt": 1,
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-c",
+        "import tkinter as tk; r=tk.Tk(); r.update_idletasks(); r.destroy(); print('ok')"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "exit_code": 0,
+      "stdout": [
+        "ok"
+      ],
+      "stderr": [],
+      "duration_seconds": 0.180666
+    },
+    {
+      "attempt": 2,
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-c",
+        "import tkinter as tk; r=tk.Tk(); r.update_idletasks(); r.destroy(); print('ok')"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "exit_code": 0,
+      "stdout": [
+        "ok"
+      ],
+      "stderr": [],
+      "duration_seconds": 0.18581
+    },
+    {
+      "attempt": 3,
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-c",
+        "import tkinter as tk; r=tk.Tk(); r.update_idletasks(); r.destroy(); print('ok')"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "exit_code": 0,
+      "stdout": [
+        "ok"
+      ],
+      "stderr": [],
+      "duration_seconds": 0.201298
+    },
+    {
+      "attempt": 4,
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-c",
+        "import tkinter as tk; r=tk.Tk(); r.update_idletasks(); r.destroy(); print('ok')"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "exit_code": 0,
+      "stdout": [
+        "ok"
+      ],
+      "stderr": [],
+      "duration_seconds": 0.232765
+    },
+    {
+      "attempt": 5,
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-c",
+        "import tkinter as tk; r=tk.Tk(); r.update_idletasks(); r.destroy(); print('ok')"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "exit_code": 0,
+      "stdout": [
+        "ok"
+      ],
+      "stderr": [],
+      "duration_seconds": 0.216349
+    },
+    {
+      "attempt": 6,
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-c",
+        "import tkinter as tk; r=tk.Tk(); r.update_idletasks(); r.destroy(); print('ok')"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "exit_code": 0,
+      "stdout": [
+        "ok"
+      ],
+      "stderr": [],
+      "duration_seconds": 0.207686
+    },
+    {
+      "attempt": 7,
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-c",
+        "import tkinter as tk; r=tk.Tk(); r.update_idletasks(); r.destroy(); print('ok')"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "exit_code": 0,
+      "stdout": [
+        "ok"
+      ],
+      "stderr": [],
+      "duration_seconds": 0.202746
+    },
+    {
+      "attempt": 8,
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-c",
+        "import tkinter as tk; r=tk.Tk(); r.update_idletasks(); r.destroy(); print('ok')"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "exit_code": 0,
+      "stdout": [
+        "ok"
+      ],
+      "stderr": [],
+      "duration_seconds": 0.213951
+    },
+    {
+      "attempt": 9,
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-c",
+        "import tkinter as tk; r=tk.Tk(); r.update_idletasks(); r.destroy(); print('ok')"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "exit_code": 0,
+      "stdout": [
+        "ok"
+      ],
+      "stderr": [],
+      "duration_seconds": 0.206032
+    },
+    {
+      "attempt": 10,
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-c",
+        "import tkinter as tk; r=tk.Tk(); r.update_idletasks(); r.destroy(); print('ok')"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "exit_code": 0,
+      "stdout": [
+        "ok"
+      ],
+      "stderr": [],
+      "duration_seconds": 0.207888
+    },
+    {
+      "attempt": 11,
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-c",
+        "import tkinter as tk; r=tk.Tk(); r.update_idletasks(); r.destroy(); print('ok')"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "exit_code": 0,
+      "stdout": [
+        "ok"
+      ],
+      "stderr": [],
+      "duration_seconds": 0.209598
+    },
+    {
+      "attempt": 12,
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-c",
+        "import tkinter as tk; r=tk.Tk(); r.update_idletasks(); r.destroy(); print('ok')"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "exit_code": 0,
+      "stdout": [
+        "ok"
+      ],
+      "stderr": [],
+      "duration_seconds": 0.1968
+    },
+    {
+      "attempt": 13,
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-c",
+        "import tkinter as tk; r=tk.Tk(); r.update_idletasks(); r.destroy(); print('ok')"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "exit_code": 0,
+      "stdout": [
+        "ok"
+      ],
+      "stderr": [],
+      "duration_seconds": 0.204063
+    },
+    {
+      "attempt": 14,
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-c",
+        "import tkinter as tk; r=tk.Tk(); r.update_idletasks(); r.destroy(); print('ok')"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "exit_code": 0,
+      "stdout": [
+        "ok"
+      ],
+      "stderr": [],
+      "duration_seconds": 0.207144
+    },
+    {
+      "attempt": 15,
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-c",
+        "import tkinter as tk; r=tk.Tk(); r.update_idletasks(); r.destroy(); print('ok')"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "exit_code": 0,
+      "stdout": [
+        "ok"
+      ],
+      "stderr": [],
+      "duration_seconds": 0.220297
+    },
+    {
+      "attempt": 16,
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-c",
+        "import tkinter as tk; r=tk.Tk(); r.update_idletasks(); r.destroy(); print('ok')"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "exit_code": 0,
+      "stdout": [
+        "ok"
+      ],
+      "stderr": [],
+      "duration_seconds": 0.230783
+    },
+    {
+      "attempt": 17,
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-c",
+        "import tkinter as tk; r=tk.Tk(); r.update_idletasks(); r.destroy(); print('ok')"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "exit_code": 0,
+      "stdout": [
+        "ok"
+      ],
+      "stderr": [],
+      "duration_seconds": 0.211273
+    },
+    {
+      "attempt": 18,
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-c",
+        "import tkinter as tk; r=tk.Tk(); r.update_idletasks(); r.destroy(); print('ok')"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "exit_code": 0,
+      "stdout": [
+        "ok"
+      ],
+      "stderr": [],
+      "duration_seconds": 0.213706
+    },
+    {
+      "attempt": 19,
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-c",
+        "import tkinter as tk; r=tk.Tk(); r.update_idletasks(); r.destroy(); print('ok')"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "exit_code": 0,
+      "stdout": [
+        "ok"
+      ],
+      "stderr": [],
+      "duration_seconds": 0.209207
+    },
+    {
+      "attempt": 20,
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-c",
+        "import tkinter as tk; r=tk.Tk(); r.update_idletasks(); r.destroy(); print('ok')"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego",
+      "exit_code": 0,
+      "stdout": [
+        "ok"
+      ],
+      "stderr": [],
+      "duration_seconds": 0.196826
+    }
+  ],
+  "product_source_baseline_negative_control": {
+    "worktree": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a",
+    "source_commit": "722a9cd11b5f6349242bcf8a7cf2e48f67122b3c",
+    "matches_expected_preexisting_failure_shape": true,
+    "command_result": {
+      "command": [
+        "C:\\Python313\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "scripts/tests/test_verify_ego_life_kernel_v2_microworld.py::test_p2_callable_verifier_is_deterministic_and_preserves_negative_result",
+        "scripts/tests/test_verify_ego_life_kernel_v2_microworld.py::test_p1_callable_verifier_generates_recomputed_reports_without_learning_report"
+      ],
+      "cwd": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a",
+      "exit_code": 1,
+      "stdout": [
+        "FF                                                                       [100%]",
+        "================================== FAILURES ===================================",
+        "__ test_p2_callable_verifier_is_deterministic_and_preserves_negative_result ___",
+        "",
+        "tmp_path = WindowsPath('C:/Users/LEO/AppData/Local/Temp/pytest-of-LEO/pytest-2369/test_p2_callable_verifier_is_d0')",
+        "",
+        "    def test_p2_callable_verifier_is_deterministic_and_preserves_negative_result(tmp_path):",
+        "        verifier = _verifier()",
+        "        first = tmp_path / \"p2-a\"",
+        "        second = tmp_path / \"p2-b\"",
+        "        result_a = verifier.run_p2_verification(first)",
+        "        result_b = verifier.run_p2_verification(second)",
+        "        assert result_a == result_b",
+        ">       assert result_a[\"implementation_controls_passed\"] is True",
+        "E       assert False is True",
+        "",
+        "scripts\\tests\\test_verify_ego_life_kernel_v2_microworld.py:507: AssertionError",
+        "_ test_p1_callable_verifier_generates_recomputed_reports_without_learning_report _",
+        "",
+        "tmp_path = WindowsPath('C:/Users/LEO/AppData/Local/Temp/pytest-of-LEO/pytest-2369/test_p1_callable_verifier_gene0')",
+        "",
+        "    def test_p1_callable_verifier_generates_recomputed_reports_without_learning_report(tmp_path):",
+        "        verifier = _verifier()",
+        "        output = tmp_path / \"p1-evidence\"",
+        "        result = verifier.run_p1_verification(output)",
+        "    ",
+        "        required = {",
+        "            \"continuity.sqlite3\",",
+        "            \"trace.jsonl\",",
+        "            \"product_trigger_receipt.json\",",
+        "            \"headroom_report.json\",",
+        "            \"collision_record.json\",",
+        "            \"baseline_comparison.json\",",
+        "            \"ablation_report.json\",",
+        "            \"replay_report.json\",",
+        "            \"leakage_report.json\",",
+        "            \"failure_manifest.json\",",
+        "            \"claim_ceiling.txt\",",
+        "            \"result.json\",",
+        "        }",
+        "        assert required <= {path.name for path in output.iterdir()}",
+        "        assert not (output / \"learning_report.json\").exists()",
+        "        stored_result = json.loads((output / \"result.json\").read_text(encoding=\"utf-8\"))",
+        "        assert stored_result == result",
+        "        assert stored_result[\"verdict\"] == \"memory_conditioned_effect_not_observed_in_frozen_pair\"",
+        "        assert stored_result[\"claim_status\"] == \"bounded_negative_for_memory_conditioned_effect\"",
+        "        assert stored_result[\"blocking_failures\"] == []",
+        "        assert \"control_baseline_equivalent\" in stored_result[\"claim_blockers\"]",
+        "        assert \"freeze_downstream_contrast_inert_side_a\" in stored_result[\"claim_blockers\"]",
+        "        assert \"freeze_downstream_contrast_inert_side_b\" in stored_result[\"claim_blockers\"]",
+        "        assert \"memory_conditioned_effect_not_observed\" in stored_result[\"claim_blockers\"]",
+        "        assert \"source_deletion_target_unavailable\" in stored_result[\"claim_blockers\"]",
+        "        assert \"shuffle_provenance_effect_not_observed\" in stored_result[\"claim_blockers\"]",
+        "        assert stored_result[\"frozen_config\"][\"provenance_shuffle_seed\"] == 17",
+        "        assert stored_result[\"frozen_config\"][\"pair_policy_seed\"] == 101",
+        "        assert set(stored_result[\"frozen_config_usage\"]) == set(",
+        "            stored_result[\"frozen_config\"]",
+        "        )",
+        "        assert all(",
+        "            item[\"used\"] is True",
+        "            for item in stored_result[\"frozen_config_usage\"].values()",
+        "        )",
+        "        assert all(",
+        "            record[\"trace_hash\"] and record[\"state_after_hash\"]",
+        "            for record in stored_result[\"intervention_output_registry\"].values()",
+        "        )",
+        "        assert stored_result[\"switches\"] == {",
+        "            \"enabled\": False,",
+        "            \"default_enabled\": False,",
+        "            \"mainline_connected\": False,",
+        "            \"runtime_mainline_connected\": False,",
+        "            \"runtime_authority\": \"none\",",
+        "            \"science_weight\": 0,",
+        "            \"remote_anchor\": False,",
+        "            \"proactive_action_enabled\": False,",
+        "            \"initiative_executor_authorized\": False,",
+        "            \"background_dispatch\": False,",
+        "            \"external_side_effects\": False,",
+        "            \"llm\": \"forbidden\",",
+        "            \"network\": \"forbidden\",",
+        "        }",
+        "    ",
+        "        baseline = json.loads((output / \"baseline_comparison.json\").read_text(encoding=\"utf-8\"))",
+        ">       assert baseline[\"strongest_matching_control\"] in {",
+        "            \"last_success\",",
+        "            \"count_table\",",
+        "            \"transition_table\",",
+        "            \"exact_public_history_lookup\",",
+        "            \"from_scratch\",",
+        "        }",
+        "E       AssertionError: assert 'successor_map' in {'count_table', 'exact_public_history_lookup', 'from_scratch', 'last_success', 'transition_table'}",
+        "",
+        "scripts\\tests\\test_verify_ego_life_kernel_v2_microworld.py:790: AssertionError",
+        "=========================== short test summary info ===========================",
+        "FAILED scripts/tests/test_verify_ego_life_kernel_v2_microworld.py::test_p2_callable_verifier_is_deterministic_and_preserves_negative_result",
+        "FAILED scripts/tests/test_verify_ego_life_kernel_v2_microworld.py::test_p1_callable_verifier_generates_recomputed_reports_without_learning_report",
+        "2 failed in 57.96s"
+      ],
+      "stderr": [],
+      "duration_seconds": 58.340144
+    }
+  },
+  "known_limitations": [
+    "Vanilla bundle checkout does not reproduce every mixed-EOL working byte; combined bundle plus hashed raw archive does.",
+    "The source commit itself has two historical science-verifier assertion failures and optional Tk skips; these are reproduced on the untouched V2 worktree and are not relabelled.",
+    "Tk availability was intermittent during this session; the non-skipped real visual verifier and at least one fresh probe must pass, while the 20-probe distribution is reported verbatim."
+  ],
+  "claim_ceiling": "Local repository/product-development placement and preservation evidence only; runtime and mechanism claims remain closed."
+}

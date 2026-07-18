@@ -1083,32 +1083,39 @@ def _r1_visual_source_fixture() -> dict:
     state = {
         "route_id": codex_session_guard.R1_VISUAL_ROUTE_ID,
         "task_id": codex_session_guard.R1_VISUAL_TRANSITION_TASK_ID,
-        "phase": "V2_ACTION_PERSEVERATION_REPAIR_READY_TO_IMPLEMENT",
-        "operator_decision": "AUTHORIZE_EXACT_DEFAULT_OFF_ACTION_PERSEVERATION_REPAIR_AFTER_LIVE_TRACE_DIAGNOSIS",
-        "execution_state": "AUTHORIZED_BUT_BLOCKED_UNTIL_EXACT_V2_WORKTREE_TRANSCRIPTION",
+        "phase": "V2_PRODUCT_MAIN_TAKEOVER_READY_TO_EXECUTE",
+        "operator_decision": "AUTHORIZE_EXACT_DEFAULT_OFF_V2_PRODUCT_MAIN_TAKEOVER_AFTER_NEGATIVE_CHECKPOINT_PRESERVATION",
+        "execution_state": "AUTHORIZED_CHECKPOINT_PRESERVATION_ONLY__FAST_FORWARD_AND_SYNC_CONDITIONAL",
         "conditional_actions": {
+            codex_session_guard.R1_VISUAL_FAST_FORWARD_ACTION_ID: {
+                "authorization": "GRANTED_EXACT_FAST_FORWARD_MANIFEST",
+                "execution_precondition": "EXACT_19_PATH_CHECKPOINT_COMMIT_EXTERNAL_BUNDLE_VERIFY_AND_BYTE_RECONSTRUCTION",
+                "state": "AUTHORIZED_BUT_BLOCKED_UNTIL_EXACT_NEGATIVE_CHECKPOINT_PRESERVATION",
+            },
             codex_session_guard.R1_VISUAL_IMPLEMENT_ACTION_ID: {
-                "authorization": "GRANTED_EXACT_TARGETS",
-                "execution_precondition": "EXACT_COMMITTED_ACTIVE_V2_WORKTREE_TRANSCRIPTION_AND_DUAL_REPO_VALIDATION",
-                "state": "AUTHORIZED_BUT_BLOCKED_UNTIL_EXACT_V2_WORKTREE_TRANSCRIPTION",
+                "authorization": "GRANTED_EXACT_26_PATH_TRANSCRIPTION",
+                "execution_precondition": "EGO_MAIN_EXACTLY_AT_PINNED_V2_COMMIT_AND_TREE_WITH_CLEAN_INDEX_WORKTREE",
+                "state": "AUTHORIZED_BUT_BLOCKED_UNTIL_EXACT_MAIN_FAST_FORWARD",
             }
         },
         "allowed_next_actions": [
-            codex_session_guard.R1_VISUAL_SYNC_ACTION_ID,
+            codex_session_guard.R1_VISUAL_PRESERVE_ACTION_ID,
+            codex_session_guard.R1_VISUAL_FAST_FORWARD_ACTION_ID,
             codex_session_guard.R1_VISUAL_IMPLEMENT_ACTION_ID,
             codex_session_guard.R1_VISUAL_VALIDATION_ACTION_ID,
         ],
         "currently_executable_actions": [
-            codex_session_guard.R1_VISUAL_SYNC_ACTION_ID,
+            codex_session_guard.R1_VISUAL_PRESERVE_ACTION_ID,
             codex_session_guard.R1_VISUAL_VALIDATION_ACTION_ID,
         ],
         "implementation_authorized": True,
         "authorized_implementation_targets": list(codex_session_guard.R1_VISUAL_IMPLEMENTATION_TARGETS),
         "consumed_implementation": copy.deepcopy(codex_session_guard.R1_VISUAL_CONSUMED_IMPLEMENTATION),
         "product_development_core_lineage": copy.deepcopy(codex_session_guard.R1_VISUAL_LINEAGE),
-        "real_trigger_evidence": "PINNED_LIFE_VISUAL_001_ACTION_PERSEVERATION_TRACE_AND_CALLABLE_MEMORY_OFF_CONTRAST",
+        "real_trigger_evidence": "PINNED_ACTION_PERSEVERATION_REPAIR_RESULT_CONSUMED_WITHOUT_CLAIM_UPGRADE",
         "forbidden_next_actions": list(codex_session_guard.R1_VISUAL_FORBIDDEN_NEXT_ACTIONS),
         "claim_ceiling": copy.deepcopy(codex_session_guard.R1_VISUAL_CLAIM_CEILING),
+        "repository_takeover_contract": copy.deepcopy(codex_session_guard.R1_VISUAL_TAKEOVER_CONTRACT),
         **copy.deepcopy(codex_session_guard.R1_VISUAL_CLOSED_SWITCHES),
     }
     product_axis = {
@@ -1117,17 +1124,20 @@ def _r1_visual_source_fixture() -> dict:
             "authority": "SOLE",
             "authority_route_id": codex_session_guard.R1_VISUAL_ROUTE_ID,
             "authorized_implementation_targets": list(codex_session_guard.R1_VISUAL_IMPLEMENTATION_TARGETS),
-            "conditional_authorized_actions": [codex_session_guard.R1_VISUAL_IMPLEMENT_ACTION_ID],
+            "conditional_authorized_actions": [
+                codex_session_guard.R1_VISUAL_FAST_FORWARD_ACTION_ID,
+                codex_session_guard.R1_VISUAL_IMPLEMENT_ACTION_ID,
+            ],
             "currently_executable_actions": [
-                codex_session_guard.R1_VISUAL_SYNC_ACTION_ID,
+                codex_session_guard.R1_VISUAL_PRESERVE_ACTION_ID,
                 codex_session_guard.R1_VISUAL_VALIDATION_ACTION_ID,
             ],
             "effective_live_product_actions": [
-                codex_session_guard.R1_VISUAL_SYNC_ACTION_ID,
+                codex_session_guard.R1_VISUAL_PRESERVE_ACTION_ID,
                 codex_session_guard.R1_VISUAL_VALIDATION_ACTION_ID,
             ],
             "source_commit": codex_session_guard.R1_VISUAL_V2_BASE_COMMIT,
-            "state": "V2_ACTION_PERSEVERATION_REPAIR_AUTHORIZED_ACTIVE_V2_TRANSCRIPTION_REQUIRED",
+            "state": "V2_PRODUCT_MAIN_TAKEOVER_AUTHORIZED_CHECKPOINT_PRESERVATION_REQUIRED",
             "enabled": False,
             "default_enabled": False,
             "mainline_connected": False,
@@ -1135,10 +1145,12 @@ def _r1_visual_source_fixture() -> dict:
             "runtime_authority": "none",
             "science_weight": 0,
             "remote_anchor": False,
+            "repository_main_placement_complete": False,
+            "repository_main_takeover_authorized": True,
         },
     }
     report = {"verdict": "pass", "route_id": codex_session_guard.R1_VISUAL_ROUTE_ID}
-    return {"product_axis": product_axis, "v2_state": state, "v2_events": [{"event_id": "001"}, {"event_id": "002"}, {"event_id": "003"}], "v2_report": report}
+    return {"product_axis": product_axis, "v2_state": state, "v2_events": [{"event_id": "001"}, {"event_id": "002"}, {"event_id": "003"}, {"event_id": "004"}], "v2_report": report}
 
 
 def test_r1_visual_authority_projection_is_exact_and_fail_closed() -> None:
@@ -1146,22 +1158,19 @@ def test_r1_visual_authority_projection_is_exact_and_fail_closed() -> None:
     authority = codex_session_guard.build_r1_visual_source_projection(source)
     result = codex_session_guard.validate_r1_visual_authority_payload(authority, source_objects=source)
     assert result["status"] == "pass", result["errors"]
-    assert authority["action_repair"]["effective_allowed_next_actions"] == [
-        codex_session_guard.R1_VISUAL_IMPLEMENT_ACTION_ID,
-        codex_session_guard.R1_VISUAL_VALIDATION_ACTION_ID,
-    ]
-    assert authority["action_repair"]["authorized_implementation_targets"] == codex_session_guard.R1_VISUAL_IMPLEMENTATION_TARGETS
+    assert authority["main_takeover"]["effective_allowed_next_actions"] == [codex_session_guard.R1_VISUAL_VALIDATION_ACTION_ID]
+    assert authority["main_takeover"]["authorized_implementation_targets"] == codex_session_guard.R1_VISUAL_IMPLEMENTATION_TARGETS
 
     reordered = copy.deepcopy(authority)
-    reordered["action_repair"]["authorized_implementation_targets"] = list(reversed(codex_session_guard.R1_VISUAL_IMPLEMENTATION_TARGETS))
+    reordered["main_takeover"]["authorized_implementation_targets"] = list(reversed(codex_session_guard.R1_VISUAL_IMPLEMENTATION_TARGETS))
     assert "r1_visual_authority_projection_mismatch" in codex_session_guard.validate_r1_visual_authority_payload(reordered, source_objects=source)["errors"]
 
     opened = copy.deepcopy(authority)
-    opened["action_repair"]["switches"]["background_dispatch"] = True
+    opened["main_takeover"]["switches"]["background_dispatch"] = True
     assert "r1_visual_authority_projection_mismatch" in codex_session_guard.validate_r1_visual_authority_payload(opened, source_objects=source)["errors"]
 
     old_action = copy.deepcopy(authority)
-    old_action["action_repair"]["effective_allowed_next_actions"].insert(0, codex_session_guard.PHASE_C_V2_LEGACY_IMPLEMENT_ACTION_ID)
+    old_action["main_takeover"]["effective_allowed_next_actions"].insert(0, codex_session_guard.PHASE_C_V2_LEGACY_IMPLEMENT_ACTION_ID)
     assert "r1_visual_authority_projection_mismatch" in codex_session_guard.validate_r1_visual_authority_payload(old_action, source_objects=source)["errors"]
 
 

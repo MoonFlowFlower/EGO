@@ -1,10 +1,10 @@
 # Status — EGO-CANONICAL-MECHANISM-INTEGRATION-001A
 
-> `CURRENT_MACHINE_ROUTE_AUTHORITY: EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A__EXACT_25_PATH_PRODUCT_AUTHORITY_DEFAULT_OFF`
+> `CURRENT_MACHINE_ROUTE_AUTHORITY: EGO-V2-PRODUCT-MAIN-TAKEOVER-001A__EGO_MAIN_PRODUCT_DEVELOPMENT_DEFAULT_OFF`
 >
 > `HISTORICAL_8692_EGODESKTOP_ROUTE: SUPERSEDED_ARCHIVE_POINTER_ONLY`
 >
-> This status body is retained as a historical M0/M1 record only. It cannot authorize M1 or EgoDesktop work; current product authority is the exact default-off V2 Phase-C envelope on `codex/ego-v2-product-first-001a` after its typed postcommit gate.
+> This status body is retained as a historical M0/M1 record only. It cannot authorize M1 or EgoDesktop work; active default-off V2 product development is now located on Ego `main`, and the linked V2 worktree is frozen rollback-reference only.
 
 Current milestone: `HISTORICAL_M0_COMPLETE__M1_NOT_AUTHORIZED`
 

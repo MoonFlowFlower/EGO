@@ -1,0 +1,161 @@
+{
+  "task_id": "EGO-V2-PRODUCT-MAIN-TAKEOVER-001A",
+  "run_id": "ego-v2-product-main-takeover-001a-20260718T213140Z",
+  "verdict": "pass",
+  "producer_function": "BUILD_TAKEOVER_ARTIFACTS.main",
+  "producer_code_path": "D:\\Project\\AIProject\\MyProject\\external-checkpoints\\EGO-V2-PRODUCT-MAIN-TAKEOVER-001A\\BUILD_TAKEOVER_ARTIFACTS.py",
+  "producer_code_path_hash": "537ee8924c473a9915fa110885bb9d3cf31f1994ddc7dd88f1ef3b86bf4e7fad",
+  "input_artifacts": {
+    "card_sha256": "f51e8a39d072d3495426de30d8869a03f44b7ac7baa4b070c8d6a4c713e1b8c2",
+    "checkpoint_external_receipt_sha256": "aced0f7aa46d5c72f8e1b0c3a85967e475b59af648fa39d175414757775f2618",
+    "fast_forward_precheck_sha256": "d2b6f6ed21f6fe5917b5af3adb2dca2c94f868032547b55264d05eed9f6e95ae",
+    "fast_forward_postcheck_sha256": "0a8e2bea9012c84180d638bd989c1eee26a46713d5db1983f2b9c123791a98d4",
+    "itl_commit": "d338bc522d4be6e1f6f4733466b0688c0a494acf",
+    "product_source_commit": "722a9cd11b5f6349242bcf8a7cf2e48f67122b3c",
+    "product_source_tree": "8da84639fa9c849f64a59506dbbccfb554d38cfd"
+  },
+  "aggregation_rule": "pass iff every named callable check is true and source-baseline negative failures remain classified, not relabelled",
+  "python_version": "3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]",
+  "git_version": "git version 2.50.1.windows.1",
+  "checkpoint_commit": "35db7ab27ce1815f96fe53ffd64b89aab5101c49",
+  "main_ref": "722a9cd11b5f6349242bcf8a7cf2e48f67122b3c",
+  "authority_commit_requirement": "THIS_ARTIFACT_IS_COMMITTED_ONLY_IN_AN_EXACT_DIRECT_CHILD_OF_PRODUCT_SOURCE_COMMIT",
+  "changed_paths_at_candidate_time": [
+    "AGENTS.md",
+    "README.md",
+    "artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/checkpoint_preservation_receipt.json",
+    "artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/claim_ceiling.txt",
+    "artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/failure_manifest.json",
+    "artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/main_takeover_receipt.json",
+    "artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/validation_report.json",
+    "artifacts/reports/program_state_summary.md",
+    "docs/ACTIVE_CONTEXT_PACK.md",
+    "docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md",
+    "docs/MAINLINE_QUICKSTART.md",
+    "docs/PROGRAM_STATE_UNIFIED.yaml",
+    "docs/REPO_SURFACE_MAP.md",
+    "docs/STATUS.md",
+    "docs/codex/tasks/TASK_LANE_INDEX.md",
+    "docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md",
+    "docs/codex/tasks/ego-v2-product-main-takeover-001a/COLLISION_RECORD.md",
+    "docs/codex/tasks/ego-v2-product-main-takeover-001a/ITL_AUTHORITY_CROSSWALK.json",
+    "docs/codex/tasks/ego-v2-product-main-takeover-001a/MUTATION_SCOPE_MAIN.yaml",
+    "docs/codex/tasks/ego-v2-product-main-takeover-001a/STAGE_CARD.md",
+    "scripts/codex/tests/test_route_governance_supersession.py",
+    "scripts/codex/verify_route_convergence.py",
+    "scripts/codex_session_guard.py",
+    "scripts/tests/test_codex_session_guard.py",
+    "scripts/tests/test_route_governance_supersession.py"
+  ],
+  "product_clean_filter_rows": [
+    {
+      "path": "labs/ego_life_playground_v0/__init__.py",
+      "base_blob": "b8cf67b92912adeb161399a35fe8f22bb7c534d6",
+      "working_clean_blob": "b8cf67b92912adeb161399a35fe8f22bb7c534d6",
+      "matches": true
+    },
+    {
+      "path": "labs/ego_life_playground_v0/app.py",
+      "base_blob": "d50773816163ce93e1624c1b5b405221cd346e7a",
+      "working_clean_blob": "d50773816163ce93e1624c1b5b405221cd346e7a",
+      "matches": true
+    },
+    {
+      "path": "labs/ego_life_playground_v0/claims.py",
+      "base_blob": "b5d0bfad6473df9db233c98e727ad18788355c2c",
+      "working_clean_blob": "b5d0bfad6473df9db233c98e727ad18788355c2c",
+      "matches": true
+    },
+    {
+      "path": "labs/ego_life_playground_v0/engine.py",
+      "base_blob": "be56fabe7172fd2a5bc49d25fd60167cb2e4adff",
+      "working_clean_blob": "be56fabe7172fd2a5bc49d25fd60167cb2e4adff",
+      "matches": true
+    },
+    {
+      "path": "labs/ego_life_playground_v0/microworld.py",
+      "base_blob": "87116b9a076f831a3b7c08191563e6337207dc06",
+      "working_clean_blob": "87116b9a076f831a3b7c08191563e6337207dc06",
+      "matches": true
+    },
+    {
+      "path": "labs/ego_life_playground_v0/store.py",
+      "base_blob": "63cb8298c433a4f5a2583b0e7d907167325a129a",
+      "working_clean_blob": "63cb8298c433a4f5a2583b0e7d907167325a129a",
+      "matches": true
+    },
+    {
+      "path": "scripts/codex/verify_ego_life_kernel_v2_microworld.py",
+      "base_blob": "bed7f0709420f9dfc2b136c6c13edbf227f0da5e",
+      "working_clean_blob": "bed7f0709420f9dfc2b136c6c13edbf227f0da5e",
+      "matches": true
+    },
+    {
+      "path": "scripts/codex/verify_ego_v2_action_perseveration_repair_001a.py",
+      "base_blob": "0e4d078895e92338c1549c4010bc371d78290865",
+      "working_clean_blob": "0e4d078895e92338c1549c4010bc371d78290865",
+      "matches": true
+    },
+    {
+      "path": "scripts/codex/verify_ego_v2_p0_visual_console_live_001a.py",
+      "base_blob": "9eb232d86619c41dc7e6c0e37fe9df5c87abd301",
+      "working_clean_blob": "9eb232d86619c41dc7e6c0e37fe9df5c87abd301",
+      "matches": true
+    },
+    {
+      "path": "scripts/run_ego_life_playground_v0.py",
+      "base_blob": "df6dcdfcd7911645e4d963e2dc1548e0e6f92514",
+      "working_clean_blob": "df6dcdfcd7911645e4d963e2dc1548e0e6f92514",
+      "matches": true
+    },
+    {
+      "path": "scripts/tests/test_verify_ego_life_kernel_v2_microworld.py",
+      "base_blob": "aa65d31a0379a9898173a168e2861d1d21d2c7e9",
+      "working_clean_blob": "aa65d31a0379a9898173a168e2861d1d21d2c7e9",
+      "matches": true
+    },
+    {
+      "path": "scripts/tests/test_verify_ego_v2_action_perseveration_repair_001a.py",
+      "base_blob": "5b8f11bb8e3de62a1ad820942c4d7ee732906e76",
+      "working_clean_blob": "5b8f11bb8e3de62a1ad820942c4d7ee732906e76",
+      "matches": true
+    },
+    {
+      "path": "scripts/tests/test_verify_ego_v2_p0_visual_console_live_001a.py",
+      "base_blob": "e10da93e5f3b73557d4d52eedb0029a0118392cc",
+      "working_clean_blob": "e10da93e5f3b73557d4d52eedb0029a0118392cc",
+      "matches": true
+    },
+    {
+      "path": "tests/test_ego_life_playground_v0.py",
+      "base_blob": "f2ae61b40a2cd4560fdee90e2b2c61bc1b5443b2",
+      "working_clean_blob": "f2ae61b40a2cd4560fdee90e2b2c61bc1b5443b2",
+      "matches": true
+    },
+    {
+      "path": "tests/test_ego_life_playground_v2_microworld.py",
+      "base_blob": "43568683a3275374f1232a5cf3fe338ec01ae87b",
+      "working_clean_blob": "43568683a3275374f1232a5cf3fe338ec01ae87b",
+      "matches": true
+    }
+  ],
+  "checks": {
+    "checkpoint_receipt_pass": true,
+    "fast_forward_precheck_pass": true,
+    "fast_forward_postcheck_pass": true,
+    "main_head_is_pinned_v2_source": true,
+    "main_tree_is_pinned_v2_tree": true,
+    "checkpoint_ref_preserved": true,
+    "itl_head_pinned": true,
+    "candidate_paths_within_exact_26": true,
+    "all_product_clean_filter_hashes_match_base": true,
+    "ego_route_convergence_pass": true,
+    "focused_governance_pass": true,
+    "full_route_governance_pass": true,
+    "product_acceptance_non_skip_pass": true,
+    "itl_global_callable_pass_route_count_8": true,
+    "source_baseline_negative_failures_reproduced": true,
+    "tk_probe_has_real_success": true
+  },
+  "claim_ceiling": "Local repository/product-development placement and preservation evidence only; runtime and mechanism claims remain closed."
+}

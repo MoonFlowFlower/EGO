@@ -1,10 +1,10 @@
 # EGO Repo AGENTS
 
-> `CURRENT_MACHINE_ROUTE_AUTHORITY: EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A__EXACT_25_PATH_PRODUCT_AUTHORITY_DEFAULT_OFF`
+> `CURRENT_MACHINE_ROUTE_AUTHORITY: EGO-V2-PRODUCT-MAIN-TAKEOVER-001A__EGO_MAIN_PRODUCT_DEVELOPMENT_DEFAULT_OFF`
 >
 > `HISTORICAL_8692_EGODESKTOP_ROUTE: SUPERSEDED_ARCHIVE_POINTER_ONLY`
 >
-> After the exact Phase-C direct-child commit passes its typed postcommit gate, `codex/ego-v2-product-first-001a` is the sole active V2 development authority. `main@089ab5ef...` with 19 dirty paths is `NON_LIVE_NEGATIVE_ANTI_ZENO_CHECKPOINT`. V2 remains default-off and runtime/science/remote/proactive/LLM/network closed.
+> `D:/Project/AIProject/MyProject/Ego` on `main` is the sole active V2 product-development worktree. The linked `codex/ego-v2-product-first-001a` worktree is a frozen rollback reference only; the 19-path state is preserved on `codex/non-live-negative-anti-zeno-checkpoint-20260718` plus a verified external recovery package. V2 remains default-off and runtime/science/remote/proactive/LLM/network closed.
 
 适用范围：`/mnt/d/Project/AIProject/MyProject/Ego`
 

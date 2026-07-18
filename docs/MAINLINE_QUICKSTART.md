@@ -1,10 +1,16 @@
 # Mainline Quickstart
 
-> `CURRENT_MACHINE_ROUTE_AUTHORITY: EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A__EXACT_25_PATH_PRODUCT_AUTHORITY_DEFAULT_OFF`
+> `CURRENT_MACHINE_ROUTE_AUTHORITY: EGO-V2-PRODUCT-MAIN-TAKEOVER-001A__EGO_MAIN_PRODUCT_DEVELOPMENT_DEFAULT_OFF`
 >
 > `HISTORICAL_8692_EGODESKTOP_ROUTE: SUPERSEDED_ARCHIVE_POINTER_ONLY`
 >
-> EgoOperator remains the active runtime default. After the valid typed Phase-C commit, the only live product-development action is the exact default-off V2 microworld implementation on `codex/ego-v2-product-first-001a`; dirty main and older successor text are non-live history.
+> EgoOperator remains the active runtime default. V2 product development now occurs from Ego `main`; the linked V2 worktree is frozen rollback-reference only. The V2 console remains default-off and is not connected to the runtime mainline.
+
+Default-off V2 console from this repository:
+
+```powershell
+python .\scripts\run_ego_life_playground_v0.py --db C:\t\ego-life.sqlite3 --run-id life-001 --seed 701 --world-seed 42 --layout p2_vertical_v1
+```
 
 ## Current Mainline
 

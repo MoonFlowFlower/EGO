@@ -8,8 +8,8 @@
 
 | field | value |
 |---|---|
-| current_phase | `v2_action_perseveration_repair_authority__exact_phase_a_action_admitted_default_off` |
-| current_layer | `engineering bounded policy repair + product-development control-plane` |
+| current_phase | `v2_product_main_takeover_authority_transcribed_default_off` |
+| current_layer | `engineering repository integration + product-development control-plane` |
 | highest_evidence_level | `E3` |
 | verification_level | `V3` |
 | mainline_connected | `True` |
@@ -19,11 +19,11 @@
 
 ## North Star
 
-Repair the reproduced default-off V2 action-perseveration failure on the sole canonical ego_life_playground_v0 path while keeping runtime/science/remote/proactive/LLM/network switches closed.
+Keep the validated default-off V2 product-development lineage in the Ego main repository/worktree while preserving the exact non-live negative checkpoint and all runtime/science claim boundaries.
 
 ## Current Focus
 
-- ITL commit `980d5af51dc201b8fd7c46374d542f9938099048` admits one exact ordered 17-path action-perseveration repair. V2 transcribes four committed Git objects through one strict canonical projection; this direct-child commit, after typed-receipt readback, is the sole active repair authority.
+- ITL commit `d338bc522d4be6e1f6f4733466b0688c0a494acf` admits the exact checkpoint, CAS fast-forward, and 26-path authority transcription. Ego main now contains the pinned V2 source tree; the checkpoint branch and external recovery package preserve the prior non-live bytes.
 - Product-development authority and runtime mainline remain separate: the repair is default-off and bounded to the canonical local product path, science_weight=0, remote/proactive/LLM/network closed, while EgoOperator remains the existing active runtime default.
 - The 8692 K0 Foundation -> VirtualCat-derived adapter -> EgoDesktop route is additively superseded before M1. M1, M2, and M3 were not started and are cancelled by supersession; historical route prose is not current authority.
 - EgoDesktop is archived as a legacy LLM/UI reference only. It is not an active route, successor dependency, runtime target, or runtime authority; this authority archive does not move, delete, or rewrite EgoDesktop source.
@@ -158,7 +158,7 @@ Repair the reproduced default-off V2 action-perseveration failure on the sole ca
 
 ## Next Minimal Action
 
-After the exact R1 direct-child commit and one postcommit readback pass, execute `repair_EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A` test-first inside the exact ordered 17-path allowlist; keep runtime/science/remote/proactive/LLM/network authority closed.
+Complete the exact direct-child Phase-Main commit and run dual-repo route plus existing canonical Step/Run, SQLite, recover, waypoint, replay, export, leakage, fresh-process, and Tk acceptance from Ego.
 
 ## Real Trigger Evidence
 

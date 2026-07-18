@@ -1121,23 +1121,28 @@ def _r1_visual_program_projection(program_state: dict[str, Any]) -> dict[str, An
             "commit": authority_source.get("pinned_commit"),
             "objects": authority_source.get("objects"),
         },
-        "action_repair": {
+        "main_takeover": {
             "route_id": v2.get("route_id"),
             "transition_task_id": v2.get("transition_task_id"),
             "implementation_task_id": v2.get("implementation_task_id"),
             "phase": v2.get("phase"),
             "operator_decision": v2.get("operator_decision"),
+            "source_execution_state": v2.get("source_execution_state"),
             "execution_state": v2.get("execution_state"),
-            "conditional_action": v2.get("conditional_action"),
+            "conditional_actions": v2.get("conditional_actions"),
             "implementation_action": v2.get("implementation_action"),
             "implementation_task_kind": v2.get("implementation_task_kind"),
             "validation_action": v2.get("validation_action"),
+            "source_allowed_next_actions": v2.get("source_allowed_next_actions"),
+            "source_currently_executable_actions": v2.get("source_currently_executable_actions"),
             "effective_allowed_next_actions": v2.get("allowed_next_actions"),
             "implementation_authorized": v2.get("implementation_authorized"),
             "authorized_implementation_targets": v2.get("authorized_implementation_targets"),
-            "consumed_sync_action": v2.get("consumed_sync_action"),
+            "consumed_actions": v2.get("consumed_actions"),
             "consumed_implementation": v2.get("consumed_implementation"),
             "product_development_core_lineage": v2.get("product_development_core_lineage"),
+            "repository_takeover_contract": v2.get("repository_takeover_contract"),
+            "repository_main_placement_complete": v2.get("repository_main_placement_complete"),
             "source_v2_commit": v2.get("source_v2_commit"),
             "switches": {
                 key: v2.get(key) for key in route_sync_guard.R1_VISUAL_CLOSED_SWITCHES
@@ -1168,7 +1173,7 @@ def _validate_r1_visual_route_guard_v7(
     source = route_guard.get("authority_source") or {}
     expected_source = {
         "authority_rule": (
-            "FOUR_PINNED_COMMITTED_ITL_OBJECTS_ARE_SOLE_ACTION_REPAIR_ROUTE_SOURCE__"
+            "FOUR_PINNED_COMMITTED_ITL_OBJECTS_ARE_SOLE_PRODUCT_MAIN_TAKEOVER_ROUTE_SOURCE__"
             "FIELD_BY_FIELD_TRANSCRIPTION_ONLY"
         ),
         "repo": "intelligence-theory-lab",
@@ -1197,7 +1202,7 @@ def _validate_r1_visual_route_guard_v7(
             errors.append("Phase-C V2 program projection canonicalization failed")
 
     task_routes = ((route_guard.get("route_views") or {}).get("task_routes") or {})
-    active = task_routes.get("ego-life-kernel-v1-continuity-playground-post-result-routing-001a") or {}
+    active = task_routes.get("ego-v2-product-main-takeover-001a") or {}
     if active.get("lane") != "supporting_active":
         errors.append("Phase-C V2 authority task must own the supporting-active product lane")
     predecessor = task_routes.get("ego-life-kernel-v1-continuity-playground-ready-transition-001a") or {}
@@ -1597,7 +1602,16 @@ def validate_route_convergence(
     future_product_route = (governance_sync or {}).get("future_product_route") or {}
     preflight = future_product_route.get("candidate_independent_preflight") or {}
     source_actions = (((route_guard.get("transcribed_itl") or {}).get("route_state") or {}).get("allowed_next_actions") or [])
-    if route_guard.get("schema_version") in {"ego.route_guard.v6", "ego.route_guard.v7"}:
+    if route_guard.get("schema_version") == "ego.route_guard.v7":
+        product_actions = (route_guard.get("v2_authority") or {}).get("allowed_next_actions") or []
+        if source_actions != ["run_route_state_machine_validation"]:
+            errors.append("closed ITL Card2 route must expose validation only")
+        if product_actions != [route_sync_guard.R1_VISUAL_VALIDATION_ACTION_ID]:
+            errors.append("completed main takeover must expose route validation only")
+        takeover_entries = [entry for entry in entries if entry.key == "ego-v2-product-main-takeover-001a"]
+        if len(takeover_entries) != 1 or takeover_entries[0].lane != "supporting_active":
+            errors.append("main takeover authority task must appear exactly once in the supporting-active lane")
+    elif route_guard.get("schema_version") == "ego.route_guard.v6":
         product_actions = (route_guard.get("v2_authority") or {}).get("allowed_next_actions") or []
         if source_actions != ["run_route_state_machine_validation"]:
             errors.append("closed ITL Card2 route must expose validation only")

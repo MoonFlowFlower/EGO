@@ -432,7 +432,7 @@ PHASE_C_V2_REVIEWED_PATHS = [
 ]
 PHASE_C_V2_COMMIT_PATHS = [*PHASE_C_V2_REVIEWED_PATHS, PHASE_C_V2_RECEIPT_PATH]
 
-# EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A-R1-ROUTE-ADMISSION-001A-R2
+# EGO-V2-PRODUCT-MAIN-TAKEOVER-001A
 #
 # This is the one-way successor to the v6 authority above.  The v6 helpers stay
 # callable for immutable historical commits; the active route guard is v7 and
@@ -441,63 +441,57 @@ PHASE_C_V2_LEGACY_IMPLEMENT_ACTION_ID = PHASE_C_V2_IMPLEMENT_ACTION_ID
 PHASE_C_V2_LEGACY_IMPLEMENTATION_TARGETS = list(PHASE_C_V2_IMPLEMENTATION_TARGETS)
 PHASE_C_V2_LEGACY_ROUTE_REVISION = PHASE_C_V2_ROUTE_REVISION
 
-R1_VISUAL_TRANSITION_TASK_ID = (
-    "EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A-R1"
-)
-R1_VISUAL_PRODUCT_TASK_ID = "EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A"
+R1_VISUAL_TRANSITION_TASK_ID = "EGO-V2-PRODUCT-MAIN-TAKEOVER-001A"
+R1_VISUAL_PRODUCT_TASK_ID = R1_VISUAL_TRANSITION_TASK_ID
 R1_VISUAL_ROUTE_ID = "EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A"
-R1_VISUAL_ROUTE_REVISION = "EGO_V2_P0_ACTION_PERSEVERATION_REPAIR_001A_R1_ADMISSION"
-R1_VISUAL_AUTHORITY_SCHEMA_VERSION = "ego.r1.action_perseveration_repair_authority.v1"
-R1_VISUAL_RECEIPT_SCHEMA_VERSION = "ego.r1.action_perseveration_repair_red_review.v1"
-R1_VISUAL_SCOPE_SCHEMA_VERSION = "ego.r1.action_perseveration_repair_phase_c_scope.v1"
-R1_VISUAL_PHASE_A_SCOPE_SCHEMA_VERSION = "ego.action_perseveration_repair.phase_a_mutation_scope.v1"
-R1_VISUAL_V2_BASE_COMMIT = "78e8517db22229eafb914fe97313b92923aa7485"
-R1_VISUAL_ITL_COMMIT = "980d5af51dc201b8fd7c46374d542f9938099048"
-R1_VISUAL_CARD_SHA256 = "00ba5d35b26110e0208aa9357e4ec903156478da20d07e849199e0595a1482db"
-R1_VISUAL_IMPLEMENT_ACTION_ID = "repair_EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A"
-R1_VISUAL_SYNC_ACTION_ID = (
-    "sync_EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A_authority_under_separate_task"
-)
+R1_VISUAL_ROUTE_REVISION = "EGO_V2_PRODUCT_MAIN_TAKEOVER_001A_AUTHORITY_ON_MAIN"
+R1_VISUAL_AUTHORITY_SCHEMA_VERSION = "ego.v2_product_main_takeover.authority.v1"
+R1_VISUAL_RECEIPT_SCHEMA_VERSION = "ego.v2_product_main_takeover.red_review.v1"
+R1_VISUAL_SCOPE_SCHEMA_VERSION = "ego.v2_product_main_takeover.mutation_scope.v1"
+R1_VISUAL_PHASE_A_SCOPE_SCHEMA_VERSION = R1_VISUAL_SCOPE_SCHEMA_VERSION
+R1_VISUAL_V2_BASE_COMMIT = "722a9cd11b5f6349242bcf8a7cf2e48f67122b3c"
+R1_VISUAL_ITL_COMMIT = "d338bc522d4be6e1f6f4733466b0688c0a494acf"
+R1_VISUAL_CARD_SHA256 = "f51e8a39d072d3495426de30d8869a03f44b7ac7baa4b070c8d6a4c713e1b8c2"
+R1_VISUAL_PRESERVE_ACTION_ID = "preserve_Ego_main_NON_LIVE_NEGATIVE_ANTI_ZENO_CHECKPOINT_for_V2_takeover"
+R1_VISUAL_FAST_FORWARD_ACTION_ID = "fast_forward_Ego_main_to_EGO-V2-PRODUCT-FIRST-001A_after_exact_preservation"
+R1_VISUAL_IMPLEMENT_ACTION_ID = "sync_EGO-V2-PRODUCT-MAIN-TAKEOVER-001A_authority_on_main"
+R1_VISUAL_SYNC_ACTION_ID = R1_VISUAL_IMPLEMENT_ACTION_ID
 R1_VISUAL_VALIDATION_ACTION_ID = "run_route_state_machine_validation"
-R1_VISUAL_IMPLEMENT_TASK_KIND = "bounded_action_perseveration_repair"
-R1_VISUAL_TRANSITION_ACTION_ID = "transcribe_EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A_authority"
-R1_VISUAL_TRANSITION_TASK_KIND = "operator_authorized_action_perseveration_repair_route_transcription"
-R1_VISUAL_TASK_PREFIX = (
-    "docs/codex/tasks/ego-v2-p0-action-perseveration-repair-001a-r1-admission/"
-)
-R1_VISUAL_SCOPE_PATH = f"{R1_VISUAL_TASK_PREFIX}MUTATION_SCOPE_PHASE_C.yaml"
+R1_VISUAL_IMPLEMENT_TASK_KIND = "repository_main_authority_transcription"
+R1_VISUAL_TRANSITION_ACTION_ID = "transcribe_EGO-V2-PRODUCT-MAIN-TAKEOVER-001A_authority_on_main"
+R1_VISUAL_TRANSITION_TASK_KIND = "operator_authorized_repository_main_takeover_transcription"
+R1_VISUAL_TASK_PREFIX = "docs/codex/tasks/ego-v2-product-main-takeover-001a/"
+R1_VISUAL_SCOPE_PATH = f"{R1_VISUAL_TASK_PREFIX}MUTATION_SCOPE_MAIN.yaml"
 R1_VISUAL_AUTHORITY_PATH = f"{R1_VISUAL_TASK_PREFIX}ITL_AUTHORITY_CROSSWALK.json"
-R1_VISUAL_RECEIPT_PATH = f"{R1_VISUAL_TASK_PREFIX}PHASE_C_RED_REVIEW.json"
+R1_VISUAL_RECEIPT_PATH = f"{R1_VISUAL_TASK_PREFIX}PHASE_MAIN_RED_REVIEW.json"
 R1_VISUAL_STAGE_CARD_PATH = f"{R1_VISUAL_TASK_PREFIX}STAGE_CARD.md"
 R1_VISUAL_COLLISION_PATH = f"{R1_VISUAL_TASK_PREFIX}COLLISION_RECORD.md"
-R1_VISUAL_PHASE_A_CARD_PATH = "docs/codex/tasks/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A.md"
-R1_VISUAL_PHASE_A_SCOPE_PATH = (
-    "docs/codex/tasks/EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A-MUTATION_SCOPE.yaml"
-)
+R1_VISUAL_PHASE_A_CARD_PATH = R1_VISUAL_STAGE_CARD_PATH
+R1_VISUAL_PHASE_A_SCOPE_PATH = R1_VISUAL_SCOPE_PATH
 R1_VISUAL_SOURCE_OBJECTS = {
     "product_axis": {
         "path": "artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json",
-        "git_blob_oid": "28860339bd751f5fa504efbf0e73b0c7e6b114ea",
-        "payload_sha256": "16b0eedb6d66c8e8619162664f5c898103f05fa1606f3919cceb19576e79ba04",
-        "bytes": 3855,
+        "git_blob_oid": "be543f3977ff6fb186a680fc651ff14c994eff5a",
+        "payload_sha256": "2146a1db60810546f6162aff616acaa0fce058c19363a5455f461c7706a161ec",
+        "bytes": 4483,
     },
     "v2_state": {
         "path": (
             "artifacts/ROUTE-STATE-MACHINE-001A/routes/"
             "EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/state.json"
         ),
-        "git_blob_oid": "232864a6c83454dc212708f46a16fb79e935ebcf",
-        "payload_sha256": "4d2283b7d262dfd5dfa87742871f9207bfa1e639c31ac98e44c2db656c3c9c4e",
-        "bytes": 8060,
+        "git_blob_oid": "c79d322e76733459258f59e116e105f9e00464d6",
+        "payload_sha256": "74cb3a8b1729d689dcd3e46986dec4eeb8fe4f700f76adb45882f2fe8ab049f2",
+        "bytes": 10188,
     },
     "v2_events": {
         "path": (
             "artifacts/ROUTE-STATE-MACHINE-001A/routes/"
             "EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/events.jsonl"
         ),
-        "git_blob_oid": "96125a6500495726f6503917dd058402bb6e16ca",
-        "payload_sha256": "3030c5e63d7eac1cddb7c9f44ed05cc47081562ace1b899a97b8e71cbbcba381",
-        "bytes": 7988,
+        "git_blob_oid": "c07b730d262d36db4ba56f20aae1a533f19a57e3",
+        "payload_sha256": "bb219a372e5d35c58ac23bb5fa6ce16066e4dea29e135895b83fb31ee83d4579",
+        "bytes": 12188,
     },
     "v2_report": {
         "path": (
@@ -505,29 +499,27 @@ R1_VISUAL_SOURCE_OBJECTS = {
             "EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/"
             "ready_transition_validation_report.json"
         ),
-        "git_blob_oid": "0ad10f349789bab5452e0f1b6502dfb43b76c8a3",
-        "payload_sha256": "bf689ab9b16b91bb9e2615c0c455fe863d9dcae7563a1ba58ac791b4ef905c2d",
-        "bytes": 14646,
+        "git_blob_oid": "676c3bd3a1cde9c7154d8644775c9f285a98c005",
+        "payload_sha256": "5421bcbb088b48cd08c73c615c59800d87d236609283a02667c51238452625fd",
+        "bytes": 15109,
     },
 }
 R1_VISUAL_IMPLEMENTATION_TARGETS = [
-    "labs/ego_life_playground_v0/engine.py",
-    "labs/ego_life_playground_v0/claims.py",
-    "labs/ego_life_playground_v0/microworld.py",
-    "tests/test_ego_life_playground_v2_microworld.py",
-    "tests/test_ego_life_playground_v0.py",
-    "scripts/codex/verify_ego_v2_action_perseveration_repair_001a.py",
-    "scripts/tests/test_verify_ego_v2_action_perseveration_repair_001a.py",
-    "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/result.json",
-    "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/trace.jsonl",
-    "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/baseline_comparison.json",
-    "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/ablation_report.json",
-    "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/replay_report.json",
-    "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/leakage_report.json",
-    "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/failure_manifest.json",
-    "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/diagnostic_readback.json",
-    "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/live_repair_receipt.json",
-    "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/claim_ceiling.txt",
+    "AGENTS.md", "README.md", "artifacts/reports/program_state_summary.md",
+    "docs/ACTIVE_CONTEXT_PACK.md", "docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md",
+    "docs/MAINLINE_QUICKSTART.md", "docs/PROGRAM_STATE_UNIFIED.yaml", "docs/REPO_SURFACE_MAP.md",
+    "docs/STATUS.md", "docs/codex/tasks/TASK_LANE_INDEX.md",
+    "docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md",
+    "artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/checkpoint_preservation_receipt.json",
+    "artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/main_takeover_receipt.json",
+    "artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/validation_report.json",
+    "artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/failure_manifest.json",
+    "artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/claim_ceiling.txt",
+    R1_VISUAL_COLLISION_PATH, R1_VISUAL_AUTHORITY_PATH, R1_VISUAL_SCOPE_PATH,
+    R1_VISUAL_RECEIPT_PATH, R1_VISUAL_STAGE_CARD_PATH,
+    "scripts/codex/tests/test_route_governance_supersession.py",
+    "scripts/codex/verify_route_convergence.py", "scripts/codex_session_guard.py",
+    "scripts/tests/test_codex_session_guard.py", "scripts/tests/test_route_governance_supersession.py",
 ]
 R1_VISUAL_CLOSED_SWITCHES = {
     "enabled": False,
@@ -546,11 +538,13 @@ R1_VISUAL_CLOSED_SWITCHES = {
     "network": "forbidden",
 }
 R1_VISUAL_CONSUMED_IMPLEMENTATION = {
-    "action": "implement_EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A",
+    "action": "repair_EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A",
+    "action_perseveration_repair_commit": R1_VISUAL_V2_BASE_COMMIT,
+    "action_perseveration_repair_result_verdict": "pass",
     "bounded_result_commit": "68de924e0f3af392e659ad8f8b39a734b08038f3",
     "bounded_result_verdict": "bounded_update_and_heldout_comparison_measured_with_control_equivalence",
-    "claim_disposition": "PRESERVE_MEMORY_CAUSALITY_AND_LEARNING_LIMITS__NO_RESULT_UPGRADE",
-    "visual_console_commit": R1_VISUAL_V2_BASE_COMMIT,
+    "claim_disposition": "CONSUMED_FOR_REPOSITORY_PLACEMENT__PRESERVE_ALL_LIMITS__NO_RESULT_UPGRADE",
+    "visual_console_commit": "78e8517db22229eafb914fe97313b92923aa7485",
     "visual_console_result_verdict": "pass",
 }
 R1_VISUAL_LINEAGE = {
@@ -564,7 +558,21 @@ R1_VISUAL_LINEAGE = {
     "v1_implementation_commit": "7ca4ad3b00a41723c04dde388212ad617479ad81",
     "v2_bounded_result_commit": "68de924e0f3af392e659ad8f8b39a734b08038f3",
     "v2_preregistration_commit": PHASE_C_V2_EGO_BASE_COMMIT,
-    "visual_console_commit": R1_VISUAL_V2_BASE_COMMIT,
+    "visual_console_commit": "78e8517db22229eafb914fe97313b92923aa7485",
+    "action_perseveration_repair_commit": R1_VISUAL_V2_BASE_COMMIT,
+}
+R1_VISUAL_TAKEOVER_CONTRACT = {
+    "authority_transcription_path_count": 26,
+    "checkpoint_branch": "codex/non-live-negative-anti-zeno-checkpoint-20260718",
+    "checkpoint_manifest_sha256": "1fca3401433e34f42b43e1b21f619cec5a6701b4d91a447ee138195dadba767d",
+    "checkpoint_parent_commit": PHASE_C_V2_EGO_BASE_COMMIT,
+    "checkpoint_path_count": 19,
+    "fast_forward_delta_manifest_sha256": "15addfabc9cbb6bfed935a4d8c6808e581f245325c6716dd8eb71f47c19f9d23",
+    "fast_forward_delta_path_count": 80,
+    "fast_forward_target_commit": R1_VISUAL_V2_BASE_COMMIT,
+    "fast_forward_target_tree": "8da84639fa9c849f64a59506dbbccfb554d38cfd",
+    "repository_main_worktree": "D:/Project/AIProject/MyProject/Ego",
+    "runtime_mainline_connected": False,
 }
 R1_VISUAL_FORBIDDEN_NEXT_ACTIONS = [
     "modify_reopen_or_rerun_EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A",
@@ -589,10 +597,12 @@ R1_VISUAL_FORBIDDEN_NEXT_ACTIONS = [
     "retune_repair_or_rerun_V1_to_force_memory_conditioning",
     "rewrite_V1_ready_report_or_first_event",
     "start_V2_before_exact_Ego_phase_C_transcription",
-    "execute_action_perseveration_repair_before_exact_V2_worktree_transcription_validation",
-    "reactivate_consumed_visual_console_implementation_action",
-    "modify_unlisted_action_perseveration_repair_target",
-    "modify_app_store_launcher_or_sqlite_schema",
+    "fast_forward_Ego_main_before_exact_checkpoint_commit_bundle_and_reconstruction",
+    "sync_takeover_authority_before_exact_fast_forward_and_clean_main_readback",
+    "reactivate_consumed_action_perseveration_repair_action",
+    "merge_NON_LIVE_negative_checkpoint_into_main",
+    "modify_unlisted_takeover_target",
+    "modify_product_controller_world_store_replay_or_UI_during_authority_transcription",
     "enable_proactive_initiative_or_background_dispatch",
 ]
 R1_VISUAL_CLAIM_CEILING = {
@@ -618,44 +628,44 @@ R1_VISUAL_CLAIM_CEILING = {
         "bounded_online_learning_success",
         "mechanism_non_equivalence",
         "v2_implementation_or_trigger",
+        "runtime_mainline_enablement",
+        "product_readiness",
         "general_learning",
-        "associative_memory",
+        "memory_causality",
         "controlled_initiative",
     ],
     "max": (
-        "machine-readable product control-plane admission of one exact default-off local "
-        "action-perseveration repair action and exact 17-path boundary, blocked on exact "
-        "active-V2 transcription"
+        "machine-readable product control-plane admission of one exact default-off "
+        "repository-main takeover sequence with a 19-path non-live checkpoint, 80-path "
+        "fast-forward manifest, and exact 26-path authority transcription"
     ),
 }
-R1_VISUAL_REVIEWED_PATHS = [
-    R1_VISUAL_PHASE_A_CARD_PATH,
-    R1_VISUAL_PHASE_A_SCOPE_PATH,
-    "docs/PROGRAM_STATE_UNIFIED.yaml",
-    "docs/STATUS.md",
-    "artifacts/reports/program_state_summary.md",
-    "docs/codex/tasks/TASK_LANE_INDEX.md",
-    "docs/REPO_SURFACE_MAP.md",
-    R1_VISUAL_COLLISION_PATH,
-    R1_VISUAL_AUTHORITY_PATH,
-    R1_VISUAL_SCOPE_PATH,
-    R1_VISUAL_STAGE_CARD_PATH,
-    "scripts/codex_session_guard.py",
-    "scripts/tests/test_codex_session_guard.py",
-    "scripts/codex/verify_route_convergence.py",
-    "scripts/codex/tests/test_route_governance_supersession.py",
-]
-R1_VISUAL_COMMIT_PATHS = [
-    *R1_VISUAL_REVIEWED_PATHS[:10],
-    R1_VISUAL_RECEIPT_PATH,
-    *R1_VISUAL_REVIEWED_PATHS[10:],
-]
+R1_VISUAL_COMMIT_PATHS = list(R1_VISUAL_IMPLEMENTATION_TARGETS)
+R1_VISUAL_REVIEWED_PATHS = [path for path in R1_VISUAL_COMMIT_PATHS if path != R1_VISUAL_RECEIPT_PATH]
 
 # Backward-compatible live aliases used by the pre-v7 test/readback surface.
 # Historical v6 validators use the explicit LEGACY constants above.
 PHASE_C_V2_ROUTE_REVISION = R1_VISUAL_ROUTE_REVISION
-PHASE_C_V2_IMPLEMENT_ACTION_ID = R1_VISUAL_IMPLEMENT_ACTION_ID
-PHASE_C_V2_IMPLEMENTATION_TARGETS = R1_VISUAL_IMPLEMENTATION_TARGETS
+PHASE_C_V2_IMPLEMENT_ACTION_ID = "repair_EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A"
+PHASE_C_V2_IMPLEMENTATION_TARGETS = [
+    "labs/ego_life_playground_v0/engine.py",
+    "labs/ego_life_playground_v0/claims.py",
+    "labs/ego_life_playground_v0/microworld.py",
+    "tests/test_ego_life_playground_v2_microworld.py",
+    "tests/test_ego_life_playground_v0.py",
+    "scripts/codex/verify_ego_v2_action_perseveration_repair_001a.py",
+    "scripts/tests/test_verify_ego_v2_action_perseveration_repair_001a.py",
+    "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/result.json",
+    "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/trace.jsonl",
+    "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/baseline_comparison.json",
+    "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/ablation_report.json",
+    "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/replay_report.json",
+    "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/leakage_report.json",
+    "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/failure_manifest.json",
+    "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/diagnostic_readback.json",
+    "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/live_repair_receipt.json",
+    "artifacts/EGO-V2-P0-ACTION-PERSEVERATION-REPAIR-001A/claim_ceiling.txt",
+]
 
 if str(SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIR))
@@ -1577,74 +1587,88 @@ def validate_phase_c_v2_scope_payload(payload: Any) -> list[str]:
 def _r1_visual_worktree_authority_projection() -> dict[str, Any]:
     return {
         "negative_checkpoint": {
-            "path": "D:/Project/AIProject/MyProject/Ego",
-            "branch": "main",
-            "head": PHASE_C_V2_EGO_BASE_COMMIT,
-            "status": PHASE_C_V2_NEGATIVE_CHECKPOINT,
+            "archive_branch": "codex/non-live-negative-anti-zeno-checkpoint-20260718",
+            "head": "35db7ab27ce1815f96fe53ffd64b89aab5101c49",
+            "parent": PHASE_C_V2_EGO_BASE_COMMIT,
+            "status": "NON_LIVE_NEGATIVE_ANTI_ZENO_CHECKPOINT",
             "live_authority": False,
+            "never_merge_to_main": True,
         },
         "active_v2_development_authority": {
+            "worktree": "D:/Project/AIProject/MyProject/Ego",
+            "branch": "main",
+            "product_source_commit": R1_VISUAL_V2_BASE_COMMIT,
+            "activation_condition": "THIS_DIRECT_CHILD_COMMIT_PASSES_MAIN_TAKEOVER_GATE",
+            "sole": True,
+        },
+        "linked_v2_rollback_reference": {
             "worktree": "D:/Project/AIProject/MyProject/Ego-v2-product-first-001a",
             "branch": PHASE_C_V2_BRANCH,
-            "activation_condition": "THIS_DIRECT_CHILD_COMMIT_PASSES_PHASE_C_V2_GATE",
-            "sole": True,
+            "head": R1_VISUAL_V2_BASE_COMMIT,
+            "active_development_authority": False,
+            "frozen": True,
         },
     }
 
 
 def _r1_visual_field_crosswalk() -> list[dict[str, str]]:
     rows = [
-        ("v2_state", "/route_id", "/action_repair/route_id", "copy_exact"),
-        ("v2_state", "/task_id", "/action_repair/transition_task_id", "copy_exact"),
-        ("v2_state", "/phase", "/action_repair/phase", "copy_exact"),
-        ("v2_state", "/operator_decision", "/action_repair/operator_decision", "copy_exact"),
-        ("v2_state", "/execution_state", "/action_repair/execution_state", "copy_exact"),
+        ("v2_state", "/route_id", "/main_takeover/route_id", "copy_exact"),
+        ("v2_state", "/task_id", "/main_takeover/transition_task_id", "copy_exact"),
+        ("v2_state", "/phase", "/main_takeover/phase", "copy_exact"),
+        ("v2_state", "/operator_decision", "/main_takeover/operator_decision", "copy_exact"),
         (
             "v2_state",
-            f"/conditional_actions/{_json_pointer_escape(R1_VISUAL_IMPLEMENT_ACTION_ID)}",
-            "/action_repair/conditional_action",
+            "/conditional_actions",
+            "/main_takeover/conditional_actions",
             "copy_exact",
         ),
         (
             "v2_state",
             "/authorized_implementation_targets",
-            "/action_repair/authorized_implementation_targets",
+            "/main_takeover/authorized_implementation_targets",
             "copy_exact_ordered",
         ),
         (
             "v2_state",
             "/consumed_implementation",
-            "/action_repair/consumed_implementation",
+            "/main_takeover/consumed_implementation",
             "copy_exact",
         ),
         (
             "v2_state",
             "/product_development_core_lineage",
-            "/action_repair/product_development_core_lineage",
+            "/main_takeover/product_development_core_lineage",
             "copy_exact",
         ),
         (
             "v2_state",
             "/real_trigger_evidence",
-            "/action_repair/real_trigger_evidence",
+            "/main_takeover/real_trigger_evidence",
             "copy_exact",
         ),
         (
             "v2_state",
             "/forbidden_next_actions",
-            "/action_repair/forbidden_next_actions",
+            "/main_takeover/forbidden_next_actions",
             "copy_exact_ordered",
         ),
         (
             "v2_state",
             "/claim_ceiling",
-            "/action_repair/claim_ceiling",
+            "/main_takeover/claim_ceiling",
             "copy_exact",
         ),
         (
             "product_axis",
             "/product_development_axis/source_commit",
-            "/action_repair/source_v2_commit",
+            "/main_takeover/source_v2_commit",
+            "copy_exact",
+        ),
+        (
+            "v2_state",
+            "/repository_takeover_contract",
+            "/main_takeover/repository_takeover_contract",
             "copy_exact",
         ),
         (
@@ -1655,7 +1679,7 @@ def _r1_visual_field_crosswalk() -> list[dict[str, str]]:
         ),
         (
             "v2_events",
-            "/2/event_id",
+            "/3/event_id",
             "/transcription_contract/source_admission_event_id",
             "copy_exact",
         ),
@@ -1664,7 +1688,7 @@ def _r1_visual_field_crosswalk() -> list[dict[str, str]]:
         (
             "v2_state",
             f"/{_json_pointer_escape(key)}",
-            f"/action_repair/switches/{_json_pointer_escape(key)}",
+            f"/main_takeover/switches/{_json_pointer_escape(key)}",
             "copy_exact_typed",
         )
         for key in R1_VISUAL_CLOSED_SWITCHES
@@ -1697,8 +1721,8 @@ def validate_r1_visual_source_objects_payload(source_objects: Any) -> list[str]:
     if not isinstance(state, dict):
         errors.append("r1_visual_v2_state_object_required")
         state = {}
-    if not isinstance(events, list) or len(events) != 3 or any(not isinstance(row, dict) for row in events):
-        errors.append("r1_visual_v2_events_exact_three_objects_required")
+    if not isinstance(events, list) or len(events) != 4 or any(not isinstance(row, dict) for row in events):
+        errors.append("r1_visual_v2_events_exact_four_objects_required")
         events = []
     if not isinstance(report, dict):
         errors.append("r1_visual_v2_report_object_required")
@@ -1711,11 +1735,11 @@ def validate_r1_visual_source_objects_payload(source_objects: Any) -> list[str]:
         "authority": "SOLE",
         "authority_route_id": R1_VISUAL_ROUTE_ID,
         "authorized_implementation_targets": R1_VISUAL_IMPLEMENTATION_TARGETS,
-        "conditional_authorized_actions": [R1_VISUAL_IMPLEMENT_ACTION_ID],
-        "currently_executable_actions": [R1_VISUAL_SYNC_ACTION_ID, R1_VISUAL_VALIDATION_ACTION_ID],
-        "effective_live_product_actions": [R1_VISUAL_SYNC_ACTION_ID, R1_VISUAL_VALIDATION_ACTION_ID],
+        "conditional_authorized_actions": [R1_VISUAL_FAST_FORWARD_ACTION_ID, R1_VISUAL_IMPLEMENT_ACTION_ID],
+        "currently_executable_actions": [R1_VISUAL_PRESERVE_ACTION_ID, R1_VISUAL_VALIDATION_ACTION_ID],
+        "effective_live_product_actions": [R1_VISUAL_PRESERVE_ACTION_ID, R1_VISUAL_VALIDATION_ACTION_ID],
         "source_commit": R1_VISUAL_V2_BASE_COMMIT,
-        "state": "V2_ACTION_PERSEVERATION_REPAIR_AUTHORIZED_ACTIVE_V2_TRANSCRIPTION_REQUIRED",
+        "state": "V2_PRODUCT_MAIN_TAKEOVER_AUTHORIZED_CHECKPOINT_PRESERVATION_REQUIRED",
         "enabled": False,
         "default_enabled": False,
         "mainline_connected": False,
@@ -1723,6 +1747,8 @@ def validate_r1_visual_source_objects_payload(source_objects: Any) -> list[str]:
         "runtime_authority": "none",
         "science_weight": 0,
         "remote_anchor": False,
+        "repository_main_placement_complete": False,
+        "repository_main_takeover_authorized": True,
     }
     for key, expected in expected_axis.items():
         if axis.get(key) != expected or type(axis.get(key)) is not type(expected):
@@ -1730,16 +1756,17 @@ def validate_r1_visual_source_objects_payload(source_objects: Any) -> list[str]:
     expected_state = {
         "route_id": R1_VISUAL_ROUTE_ID,
         "task_id": R1_VISUAL_TRANSITION_TASK_ID,
-        "phase": "V2_ACTION_PERSEVERATION_REPAIR_READY_TO_IMPLEMENT",
-        "operator_decision": "AUTHORIZE_EXACT_DEFAULT_OFF_ACTION_PERSEVERATION_REPAIR_AFTER_LIVE_TRACE_DIAGNOSIS",
-        "execution_state": "AUTHORIZED_BUT_BLOCKED_UNTIL_EXACT_V2_WORKTREE_TRANSCRIPTION",
+        "phase": "V2_PRODUCT_MAIN_TAKEOVER_READY_TO_EXECUTE",
+        "operator_decision": "AUTHORIZE_EXACT_DEFAULT_OFF_V2_PRODUCT_MAIN_TAKEOVER_AFTER_NEGATIVE_CHECKPOINT_PRESERVATION",
+        "execution_state": "AUTHORIZED_CHECKPOINT_PRESERVATION_ONLY__FAST_FORWARD_AND_SYNC_CONDITIONAL",
         "implementation_authorized": True,
         "authorized_implementation_targets": R1_VISUAL_IMPLEMENTATION_TARGETS,
         "consumed_implementation": R1_VISUAL_CONSUMED_IMPLEMENTATION,
         "product_development_core_lineage": R1_VISUAL_LINEAGE,
-        "real_trigger_evidence": "PINNED_LIFE_VISUAL_001_ACTION_PERSEVERATION_TRACE_AND_CALLABLE_MEMORY_OFF_CONTRAST",
+        "real_trigger_evidence": "PINNED_ACTION_PERSEVERATION_REPAIR_RESULT_CONSUMED_WITHOUT_CLAIM_UPGRADE",
         "forbidden_next_actions": R1_VISUAL_FORBIDDEN_NEXT_ACTIONS,
         "claim_ceiling": R1_VISUAL_CLAIM_CEILING,
+        "repository_takeover_contract": R1_VISUAL_TAKEOVER_CONTRACT,
     }
     for key, expected in expected_state.items():
         if state.get(key) != expected or type(state.get(key)) is not type(expected):
@@ -1748,22 +1775,26 @@ def validate_r1_visual_source_objects_payload(source_objects: Any) -> list[str]:
         if state.get(key) != expected or type(state.get(key)) is not type(expected):
             errors.append(f"r1_visual_v2_state_switch_{key}_mismatch")
     conditional = state.get("conditional_actions")
-    if not isinstance(conditional, dict) or list(conditional) != [R1_VISUAL_IMPLEMENT_ACTION_ID]:
+    if not isinstance(conditional, dict) or list(conditional) != [
+        R1_VISUAL_FAST_FORWARD_ACTION_ID,
+        R1_VISUAL_IMPLEMENT_ACTION_ID,
+    ]:
         errors.append("r1_visual_conditional_action_mismatch")
     if state.get("allowed_next_actions") != [
-        R1_VISUAL_SYNC_ACTION_ID,
+        R1_VISUAL_PRESERVE_ACTION_ID,
+        R1_VISUAL_FAST_FORWARD_ACTION_ID,
         R1_VISUAL_IMPLEMENT_ACTION_ID,
         R1_VISUAL_VALIDATION_ACTION_ID,
     ]:
         errors.append("r1_visual_source_allowed_actions_mismatch")
     if state.get("currently_executable_actions") != [
-        R1_VISUAL_SYNC_ACTION_ID,
+        R1_VISUAL_PRESERVE_ACTION_ID,
         R1_VISUAL_VALIDATION_ACTION_ID,
     ]:
         errors.append("r1_visual_source_executable_actions_mismatch")
     if events:
-        expected_event = f"{R1_VISUAL_ROUTE_ID}:READY_TO_IMPLEMENT:003"
-        if events[2].get("event_id") not in {expected_event, "003"}:
+        expected_event = f"{R1_VISUAL_ROUTE_ID}:READY_TO_IMPLEMENT:004"
+        if events[3].get("event_id") not in {expected_event, "004"}:
             errors.append("r1_visual_admission_event_mismatch")
     if report.get("verdict") != "pass":
         errors.append("r1_visual_source_report_not_pass")
@@ -1825,8 +1856,7 @@ def build_r1_visual_source_projection(source_objects: Any) -> dict[str, Any]:
         return {}
     product_axis = axis.get("product_development_axis") or {}
     conditional = state.get("conditional_actions") or {}
-    conditional_action = conditional.get(R1_VISUAL_IMPLEMENT_ACTION_ID)
-    admission_event_id = events[2].get("event_id") if len(events) > 2 and isinstance(events[2], dict) else None
+    admission_event_id = events[3].get("event_id") if len(events) > 3 and isinstance(events[3], dict) else None
     return {
         "schema_version": R1_VISUAL_AUTHORITY_SCHEMA_VERSION,
         "base_commit": R1_VISUAL_V2_BASE_COMMIT,
@@ -1835,26 +1865,32 @@ def build_r1_visual_source_projection(source_objects: Any) -> dict[str, Any]:
             "commit": R1_VISUAL_ITL_COMMIT,
             "objects": copy.deepcopy(R1_VISUAL_SOURCE_OBJECTS),
         },
-        "action_repair": {
+        "main_takeover": {
             "route_id": state.get("route_id"),
             "transition_task_id": state.get("task_id"),
             "implementation_task_id": R1_VISUAL_PRODUCT_TASK_ID,
             "phase": state.get("phase"),
             "operator_decision": state.get("operator_decision"),
-            "execution_state": "AUTHORIZED_FOR_EXACT_ACTIVE_V2_IMPLEMENTATION_SCOPE",
-            "conditional_action": conditional_action,
+            "source_execution_state": state.get("execution_state"),
+            "execution_state": "REPOSITORY_MAIN_PLACEMENT_COMPLETE__AUTHORITY_TRANSCRIBED_DEFAULT_OFF",
+            "conditional_actions": conditional,
             "implementation_action": R1_VISUAL_IMPLEMENT_ACTION_ID,
             "implementation_task_kind": R1_VISUAL_IMPLEMENT_TASK_KIND,
             "validation_action": R1_VISUAL_VALIDATION_ACTION_ID,
-            "effective_allowed_next_actions": [
-                R1_VISUAL_IMPLEMENT_ACTION_ID,
-                R1_VISUAL_VALIDATION_ACTION_ID,
-            ],
+            "source_allowed_next_actions": state.get("allowed_next_actions"),
+            "source_currently_executable_actions": state.get("currently_executable_actions"),
+            "effective_allowed_next_actions": [R1_VISUAL_VALIDATION_ACTION_ID],
             "implementation_authorized": state.get("implementation_authorized"),
             "authorized_implementation_targets": state.get("authorized_implementation_targets"),
-            "consumed_sync_action": R1_VISUAL_SYNC_ACTION_ID,
+            "consumed_actions": [
+                R1_VISUAL_PRESERVE_ACTION_ID,
+                R1_VISUAL_FAST_FORWARD_ACTION_ID,
+                R1_VISUAL_IMPLEMENT_ACTION_ID,
+            ],
             "consumed_implementation": state.get("consumed_implementation"),
             "product_development_core_lineage": state.get("product_development_core_lineage"),
+            "repository_takeover_contract": state.get("repository_takeover_contract"),
+            "repository_main_placement_complete": True,
             "source_v2_commit": product_axis.get("source_commit"),
             "switches": {key: state.get(key) for key in R1_VISUAL_CLOSED_SWITCHES},
             "real_trigger_evidence": state.get("real_trigger_evidence"),
@@ -1903,7 +1939,7 @@ def validate_r1_visual_authority_payload(
         "source_projection_sha256": hashlib.sha256(expected_bytes).hexdigest() if expected_bytes else None,
         "target_projection_sha256": hashlib.sha256(actual_bytes).hexdigest() if actual_bytes else None,
         "authorized_implementation_targets": (
-            ((authority or {}).get("action_repair") or {}).get("authorized_implementation_targets") or []
+            ((authority or {}).get("main_takeover") or {}).get("authorized_implementation_targets") or []
             if isinstance(authority, dict)
             else []
         ),
@@ -2049,14 +2085,14 @@ def build_r1_visual_authority_manifest(
             }
         )
     payload = {
-        "schema_version": "ego.r1.action_perseveration_repair_authority_manifest.v1",
+        "schema_version": "ego.v2_product_main_takeover.authority_manifest.v1",
         "base_commit": R1_VISUAL_V2_BASE_COMMIT,
         "reviewed_paths": sorted(R1_VISUAL_REVIEWED_PATHS),
         "blobs": rows,
     }
     raw = _canonical_json_bytes(payload)
     return {
-        "status": "pass" if not errors and len(rows) == 15 else "fail",
+        "status": "pass" if not errors and len(rows) == 25 else "fail",
         "errors": sorted(set(errors)),
         "payload": payload,
         "authority_manifest_sha256": hashlib.sha256(raw).hexdigest(),
@@ -2092,7 +2128,7 @@ def build_r1_visual_review_bundle(
     staged_diff_sha256: Any,
 ) -> dict[str, Any]:
     payload = {
-        "schema_version": "ego.r1.action_perseveration_repair_review_bundle.v1",
+        "schema_version": "ego.v2_product_main_takeover.review_bundle.v1",
         "task_id": R1_VISUAL_TRANSITION_TASK_ID,
         "card_sha256": R1_VISUAL_CARD_SHA256,
         "base_commit": R1_VISUAL_V2_BASE_COMMIT,
@@ -2103,7 +2139,7 @@ def build_r1_visual_review_bundle(
         "authority_manifest_sha256": authority_manifest_sha256,
         "authority_projection_sha256": authority_projection_sha256,
         "staged_diff_sha256": staged_diff_sha256,
-        "exclusion_rule": "PHASE_C_RED_REVIEW_EXCLUDED_ONLY_TO_AVOID_SELF_REFERENCE",
+        "exclusion_rule": "PHASE_MAIN_RED_REVIEW_EXCLUDED_ONLY_TO_AVOID_SELF_REFERENCE",
         "commit_requirement": "EXACT_DIRECT_CHILD_OF_PINNED_V2_BASE",
     }
     try:
@@ -2153,7 +2189,7 @@ def validate_r1_visual_receipt_payload(
         "card_sha256": R1_VISUAL_CARD_SHA256,
         "base_commit": R1_VISUAL_V2_BASE_COMMIT,
         "itl_commit": R1_VISUAL_ITL_COMMIT,
-        "exclusion_rule": "PHASE_C_RED_REVIEW_EXCLUDED_ONLY_TO_AVOID_SELF_REFERENCE",
+        "exclusion_rule": "PHASE_MAIN_RED_REVIEW_EXCLUDED_ONLY_TO_AVOID_SELF_REFERENCE",
         "commit_requirement": "EXACT_DIRECT_CHILD_OF_PINNED_V2_BASE",
     }
     for key, expected in expected_literals.items():
@@ -2230,8 +2266,8 @@ def validate_r1_visual_candidate(
     actual = phase_c_v2_actual_changed_paths(repo=repo)
     errors = list(actual.get("errors") or [])
     changed = actual.get("changed_paths") or []
-    if changed != sorted(R1_VISUAL_COMMIT_PATHS) or len(changed) != 16:
-        errors.append("r1_visual_precommit_exact_16_paths_required")
+    if changed != sorted(R1_VISUAL_COMMIT_PATHS) or len(changed) != 26:
+        errors.append("r1_visual_precommit_exact_26_paths_required")
     manifest = build_r1_visual_authority_manifest(repo=repo)
     errors.extend(manifest.get("errors") or [])
     diff = compute_r1_visual_staged_diff_sha256(repo=repo)
@@ -2302,8 +2338,8 @@ def validate_r1_visual_commit(
     result["changed_paths"] = changed
     if actual.get("parent") != R1_VISUAL_V2_BASE_COMMIT:
         errors.append("r1_visual_authority_commit_not_exact_direct_child")
-    if changed != sorted(R1_VISUAL_COMMIT_PATHS) or len(changed) != 16:
-        errors.append("r1_visual_authority_commit_exact_16_paths_required")
+    if changed != sorted(R1_VISUAL_COMMIT_PATHS) or len(changed) != 26:
+        errors.append("r1_visual_authority_commit_exact_26_paths_required")
     manifest = build_r1_visual_authority_manifest(repo=repo, ref=authority_commit)
     errors.extend(manifest.get("errors") or [])
     diff = compute_r1_visual_staged_diff_sha256(repo=repo, commit=authority_commit)

@@ -1,0 +1,627 @@
+{
+  "task_id": "EGO-V2-PRODUCT-MAIN-TAKEOVER-001A",
+  "run_id": "ego-v2-product-main-takeover-001a-checkpoint-20260718T203224Z",
+  "verdict": "pass",
+  "producer_function": "VERIFY_CHECKPOINT.main",
+  "producer_code_path": "D:\\Project\\AIProject\\MyProject\\external-checkpoints\\EGO-V2-PRODUCT-MAIN-TAKEOVER-001A\\VERIFY_CHECKPOINT.py",
+  "producer_code_path_hash": "6bc458a6254b4966f4a249a345fb70757b07659c52083dae29a0023122cec339",
+  "input_artifacts": {
+    "card_sha256": "f51e8a39d072d3495426de30d8869a03f44b7ac7baa4b070c8d6a4c713e1b8c2",
+    "negative_checkpoint_manifest_path": "D:\\Project\\AIProject\\MyProject\\external-plans\\EGO-V2-PRODUCT-MAIN-TAKEOVER-001A\\NEGATIVE_CHECKPOINT_MANIFEST.json",
+    "negative_checkpoint_manifest_file_sha256": "30221c731d2effc44430e54b0609bd1324a4d8b8e7eaca65a08f573e8c5b0df8",
+    "negative_checkpoint_manifest_aggregate_sha256": "1fca3401433e34f42b43e1b21f619cec5a6701b4d91a447ee138195dadba767d",
+    "bundle_path": "D:\\Project\\AIProject\\MyProject\\external-checkpoints\\EGO-V2-PRODUCT-MAIN-TAKEOVER-001A\\EGO-MAIN-NON-LIVE-NEGATIVE-ANTI-ZENO-20260718-35db7ab2.bundle",
+    "bundle_sha256": "0df6ee2962612666c4e7bbbba0cf0410a8cb3de2562396a0761bbcd01420de66",
+    "bundle_bytes": 71475511,
+    "raw_zip_path": "D:\\Project\\AIProject\\MyProject\\external-checkpoints\\EGO-V2-PRODUCT-MAIN-TAKEOVER-001A\\EGO-MAIN-NON-LIVE-NEGATIVE-ANTI-ZENO-20260718-RAW-BYTES.zip",
+    "raw_zip_sha256": "29accbcc999d20e6183bd627f8d7c135eb805c0768b2194bb914e1f82fe7a2b5",
+    "raw_zip_bytes": 280202
+  },
+  "git": {
+    "version": "git version 2.50.1.windows.1",
+    "checkpoint_branch": "codex/non-live-negative-anti-zeno-checkpoint-20260718",
+    "checkpoint_commit": "35db7ab27ce1815f96fe53ffd64b89aab5101c49",
+    "checkpoint_parent": "089ab5ef27431eb5ace4ff4795f57f08fd052779",
+    "delta_path_count": 19,
+    "delta_paths": [
+      "AGENTS.md",
+      "README.md",
+      "artifacts/reports/program_state_summary.md",
+      "docs/ACTIVE_CONTEXT_PACK.md",
+      "docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md",
+      "docs/MAINLINE_QUICKSTART.md",
+      "docs/PROGRAM_STATE_UNIFIED.yaml",
+      "docs/REPO_SURFACE_MAP.md",
+      "docs/STATUS.md",
+      "docs/codex/tasks/TASK_LANE_INDEX.md",
+      "docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md",
+      "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/COLLISION_RECORD.md",
+      "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/ITL_AUTHORITY_CROSSWALK.json",
+      "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/MUTATION_SCOPE_PHASE_C.yaml",
+      "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/STAGE_CARD.md",
+      "scripts/codex/verify_route_convergence.py",
+      "scripts/codex_session_guard.py",
+      "scripts/tests/test_codex_session_guard.py",
+      "scripts/tests/test_route_governance_supersession.py"
+    ],
+    "bundle_verify_exit_code": 0,
+    "bundle_verify_stdout": [
+      "The bundle contains this ref:",
+      "35db7ab27ce1815f96fe53ffd64b89aab5101c49 refs/heads/codex/non-live-negative-anti-zeno-checkpoint-20260718",
+      "The bundle records a complete history.",
+      "The bundle uses this hash algorithm: sha1"
+    ],
+    "bundle_verify_stderr": [
+      "D:/Project/AIProject/MyProject/external-checkpoints/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/EGO-MAIN-NON-LIVE-NEGATIVE-ANTI-ZENO-20260718-35db7ab2.bundle is okay"
+    ]
+  },
+  "python_version": "3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]",
+  "aggregation_rule": "sort by UTF-8 path bytes; status<TAB>path<TAB>byte_length<TAB>sha256; LF; final LF",
+  "reconstruction": {
+    "vanilla_checkout_path": "D:\\t\\ego-neg-35db",
+    "exact_combined_reconstruction_path": "D:\\t\\ego-neg-35db-exact",
+    "core_autocrlf": "true",
+    "core_longpaths": "true",
+    "vanilla_checkout_results": [
+      {
+        "path": "AGENTS.md",
+        "byte_length": 26350,
+        "sha256": "2e1c5c8a353b6606e99776e49043d65387191182aa7edcdbb6c4d440e33c9e8d",
+        "matches_manifest": false
+      },
+      {
+        "path": "README.md",
+        "byte_length": 9060,
+        "sha256": "302c8b8bf597fec29dc0a0ab5cf6caae1fbe88835ecad22cca339b59db2e74f6",
+        "matches_manifest": false
+      },
+      {
+        "path": "artifacts/reports/program_state_summary.md",
+        "byte_length": 958,
+        "sha256": "dc1e3fd8fb2efab516d4d050ec143fcf64ca0473715f4021de76668a64200aa7",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/ACTIVE_CONTEXT_PACK.md",
+        "byte_length": 5684,
+        "sha256": "386002c80ded8579e052680fdb83f8084ea38ef37dc43c6e5be440f7348f2d61",
+        "matches_manifest": false
+      },
+      {
+        "path": "docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md",
+        "byte_length": 6992,
+        "sha256": "043766b1bb5e74331b8a731ee0b83977825775f250b96e0700887d20fca4af03",
+        "matches_manifest": false
+      },
+      {
+        "path": "docs/MAINLINE_QUICKSTART.md",
+        "byte_length": 5138,
+        "sha256": "78f52b9d8cda62ea04630083e49ba2c2c4f1756b421c068c3705956ae65af9c0",
+        "matches_manifest": false
+      },
+      {
+        "path": "docs/PROGRAM_STATE_UNIFIED.yaml",
+        "byte_length": 275414,
+        "sha256": "7271b44d6458be184c895fcd2901b2442b8651fb6be3cd01c2175d31ca2c3b1d",
+        "matches_manifest": false
+      },
+      {
+        "path": "docs/REPO_SURFACE_MAP.md",
+        "byte_length": 3769,
+        "sha256": "66279cfa60d8ec90a725b0d1ae968fa94f49e1a7125e2901760e773ea6022c21",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/STATUS.md",
+        "byte_length": 130583,
+        "sha256": "6e18f3a1357d8db4ff0882310bc1c06f47f5b52772d2e03ee61cd27de3236baa",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/codex/tasks/TASK_LANE_INDEX.md",
+        "byte_length": 70745,
+        "sha256": "7aa801fbd8ce7e6297865edf5be832f93cd06b556ebddc0814af0d93334c6ba4",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md",
+        "byte_length": 2534,
+        "sha256": "60cb142ce405f9c74b9634c0b2d2352d7694fbead9ddc13fa43c988ee03001ef",
+        "matches_manifest": false
+      },
+      {
+        "path": "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/COLLISION_RECORD.md",
+        "byte_length": 10581,
+        "sha256": "573aa8681b9b041d27d1038d465cfc714f6ecb729d0ca7d773d28a5f6fde0391",
+        "matches_manifest": false
+      },
+      {
+        "path": "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/ITL_AUTHORITY_CROSSWALK.json",
+        "byte_length": 148520,
+        "sha256": "b972a37c2c79e989c7816e181f3a19ad83a3c77b240d4c496fb59a68a3ee5a38",
+        "matches_manifest": false
+      },
+      {
+        "path": "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/MUTATION_SCOPE_PHASE_C.yaml",
+        "byte_length": 6539,
+        "sha256": "e0c9cddb3df9414275594161774eb39e2abdc921ab9606d20bbf908750986f29",
+        "matches_manifest": false
+      },
+      {
+        "path": "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/STAGE_CARD.md",
+        "byte_length": 26872,
+        "sha256": "40d0f30797d3d68afb7bf1a1aa1ae0aaab8bd4a98871e48082794b410c978f98",
+        "matches_manifest": false
+      },
+      {
+        "path": "scripts/codex/verify_route_convergence.py",
+        "byte_length": 94528,
+        "sha256": "55893868cf58966cc0efa82a10cff6694fa4669db93bc38d167d18b775937bc7",
+        "matches_manifest": false
+      },
+      {
+        "path": "scripts/codex_session_guard.py",
+        "byte_length": 343306,
+        "sha256": "14621c8b33503f6268edb7e78e88cd27b543417f49d3b7835da56da1a6346797",
+        "matches_manifest": false
+      },
+      {
+        "path": "scripts/tests/test_codex_session_guard.py",
+        "byte_length": 99709,
+        "sha256": "4eee847a4eb98118fe367db7aa706aa1d55cb62b93d57f42ef8b372677babbdf",
+        "matches_manifest": false
+      },
+      {
+        "path": "scripts/tests/test_route_governance_supersession.py",
+        "byte_length": 51738,
+        "sha256": "a74d34e44434fb537d7ecddee91b10c6cc86413b5b4ef6fdb8f2b2492e8d79db",
+        "matches_manifest": false
+      }
+    ],
+    "vanilla_checkout_all_19_bytes_exact": false,
+    "exact_combined_results": [
+      {
+        "path": "AGENTS.md",
+        "byte_length": 25880,
+        "sha256": "1b3459388385c194424ceb840c84e548c62a8f655006a4b61956e46fd53ce016",
+        "matches_manifest": true
+      },
+      {
+        "path": "README.md",
+        "byte_length": 8958,
+        "sha256": "0fba0dfc10d2a3ac7b08bc8c1d8309f2547b0fca9e11f407296b26072fbd695e",
+        "matches_manifest": true
+      },
+      {
+        "path": "artifacts/reports/program_state_summary.md",
+        "byte_length": 958,
+        "sha256": "dc1e3fd8fb2efab516d4d050ec143fcf64ca0473715f4021de76668a64200aa7",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/ACTIVE_CONTEXT_PACK.md",
+        "byte_length": 5542,
+        "sha256": "e4ec6bc095a1ccdfa8fecc0cf5ee028e43951df9817b249d218abf6503343818",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md",
+        "byte_length": 6809,
+        "sha256": "18403256b10cf02e3b8667266527290e055fd4dc5ef1cca3e2060fc65c306757",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/MAINLINE_QUICKSTART.md",
+        "byte_length": 5048,
+        "sha256": "e5bd5d01b56d64473b66c322a74201729ad97a699d6355cf832ebcb81bdd3a96",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/PROGRAM_STATE_UNIFIED.yaml",
+        "byte_length": 275412,
+        "sha256": "7fcaefd5930ace0a8e997f452084c5613ddd473ea51a914bcc9032444ffdd6fa",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/REPO_SURFACE_MAP.md",
+        "byte_length": 3769,
+        "sha256": "66279cfa60d8ec90a725b0d1ae968fa94f49e1a7125e2901760e773ea6022c21",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/STATUS.md",
+        "byte_length": 130583,
+        "sha256": "6e18f3a1357d8db4ff0882310bc1c06f47f5b52772d2e03ee61cd27de3236baa",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/codex/tasks/TASK_LANE_INDEX.md",
+        "byte_length": 70745,
+        "sha256": "7aa801fbd8ce7e6297865edf5be832f93cd06b556ebddc0814af0d93334c6ba4",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md",
+        "byte_length": 2470,
+        "sha256": "442a480c946fe03f32cb5a5a806003b57502db1f4102c2299111fb7ffe1b8bc2",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/COLLISION_RECORD.md",
+        "byte_length": 10393,
+        "sha256": "cf771161d498e371f69c36d2d167d94c7d4df9576df8e8ddcef4b2a233efd3b1",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/ITL_AUTHORITY_CROSSWALK.json",
+        "byte_length": 145695,
+        "sha256": "5fca0aa7f894cbd5f17f0fcf91fe3e5128c87abb6ea99e85d98fa6a7e61b300d",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/MUTATION_SCOPE_PHASE_C.yaml",
+        "byte_length": 6414,
+        "sha256": "79bbd9f2ca04d697bf756077f9ef911a8331d4f1bcacdca3b438cc409944ce85",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/STAGE_CARD.md",
+        "byte_length": 26345,
+        "sha256": "224546a6e34069017aae3760f049def694a3b6cd56bb517805530784de7f2d14",
+        "matches_manifest": true
+      },
+      {
+        "path": "scripts/codex/verify_route_convergence.py",
+        "byte_length": 93957,
+        "sha256": "5fd4c6e37ef8e01fb5764d1e4ebfee3e52c30a0c6133b05f5d77073091fca318",
+        "matches_manifest": true
+      },
+      {
+        "path": "scripts/codex_session_guard.py",
+        "byte_length": 336219,
+        "sha256": "10f1666257503e076b6fe7705710210b63911851e356c8580a115a5ba9e7c7f4",
+        "matches_manifest": true
+      },
+      {
+        "path": "scripts/tests/test_codex_session_guard.py",
+        "byte_length": 97244,
+        "sha256": "35743b53c4eb6527cab7c107dd117b68120f8c371161973bde89353e448b2a88",
+        "matches_manifest": true
+      },
+      {
+        "path": "scripts/tests/test_route_governance_supersession.py",
+        "byte_length": 50461,
+        "sha256": "e204c6b506b94bed4c22a84796aebc1c0f52d6e1627c2919ac6b5530a5a8fc14",
+        "matches_manifest": true
+      }
+    ],
+    "exact_combined_clean_filter_results": [
+      {
+        "path": "AGENTS.md",
+        "clean_hash": "23d1fa8b7ef569f1b65110473a999268155b14ab",
+        "head_blob": "23d1fa8b7ef569f1b65110473a999268155b14ab",
+        "matches": true
+      },
+      {
+        "path": "README.md",
+        "clean_hash": "b5be11ca6f91b3abd899c91519ba8413c5d663b9",
+        "head_blob": "b5be11ca6f91b3abd899c91519ba8413c5d663b9",
+        "matches": true
+      },
+      {
+        "path": "artifacts/reports/program_state_summary.md",
+        "clean_hash": "6aa13cd7c982cd1d4022933cd8eee7a3f674375e",
+        "head_blob": "6aa13cd7c982cd1d4022933cd8eee7a3f674375e",
+        "matches": true
+      },
+      {
+        "path": "docs/ACTIVE_CONTEXT_PACK.md",
+        "clean_hash": "c4ada11ca4ba1d03be4c526ef99bd53822e0a351",
+        "head_blob": "c4ada11ca4ba1d03be4c526ef99bd53822e0a351",
+        "matches": true
+      },
+      {
+        "path": "docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md",
+        "clean_hash": "a8ec657194e688bb69faae0c3a47ea6da135e508",
+        "head_blob": "a8ec657194e688bb69faae0c3a47ea6da135e508",
+        "matches": true
+      },
+      {
+        "path": "docs/MAINLINE_QUICKSTART.md",
+        "clean_hash": "78efe536d04d61e5f839685d1100fd8410814fe1",
+        "head_blob": "78efe536d04d61e5f839685d1100fd8410814fe1",
+        "matches": true
+      },
+      {
+        "path": "docs/PROGRAM_STATE_UNIFIED.yaml",
+        "clean_hash": "51606af910257a45ab7ce624253b8453c7a03479",
+        "head_blob": "51606af910257a45ab7ce624253b8453c7a03479",
+        "matches": true
+      },
+      {
+        "path": "docs/REPO_SURFACE_MAP.md",
+        "clean_hash": "537a6edb6ea8747274c24bed4d668d6b33adeb30",
+        "head_blob": "537a6edb6ea8747274c24bed4d668d6b33adeb30",
+        "matches": true
+      },
+      {
+        "path": "docs/STATUS.md",
+        "clean_hash": "9a1d0c1dbf4cb80cb06abb1fc30e85ee3f8deaee",
+        "head_blob": "9a1d0c1dbf4cb80cb06abb1fc30e85ee3f8deaee",
+        "matches": true
+      },
+      {
+        "path": "docs/codex/tasks/TASK_LANE_INDEX.md",
+        "clean_hash": "643ac273d804d805ec33b14aa1850e0963082bc8",
+        "head_blob": "643ac273d804d805ec33b14aa1850e0963082bc8",
+        "matches": true
+      },
+      {
+        "path": "docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md",
+        "clean_hash": "c4f2c4ac59f9571688dca47e30a3cb415fa4d5da",
+        "head_blob": "c4f2c4ac59f9571688dca47e30a3cb415fa4d5da",
+        "matches": true
+      },
+      {
+        "path": "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/COLLISION_RECORD.md",
+        "clean_hash": "100daeb315c9e136d2c3b4ddfda4601f221c6451",
+        "head_blob": "100daeb315c9e136d2c3b4ddfda4601f221c6451",
+        "matches": true
+      },
+      {
+        "path": "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/ITL_AUTHORITY_CROSSWALK.json",
+        "clean_hash": "7f2647ac90e895397145e7de574c458c2a16054c",
+        "head_blob": "7f2647ac90e895397145e7de574c458c2a16054c",
+        "matches": true
+      },
+      {
+        "path": "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/MUTATION_SCOPE_PHASE_C.yaml",
+        "clean_hash": "b5bb5eb41b85780ba22bfc95f55c27b5589d8bc5",
+        "head_blob": "b5bb5eb41b85780ba22bfc95f55c27b5589d8bc5",
+        "matches": true
+      },
+      {
+        "path": "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/STAGE_CARD.md",
+        "clean_hash": "8a32daa1054effdcc4d28c7f018380b09b4af668",
+        "head_blob": "8a32daa1054effdcc4d28c7f018380b09b4af668",
+        "matches": true
+      },
+      {
+        "path": "scripts/codex/verify_route_convergence.py",
+        "clean_hash": "0f05dcdc7f994340736ad46013d617bd20c52654",
+        "head_blob": "0f05dcdc7f994340736ad46013d617bd20c52654",
+        "matches": true
+      },
+      {
+        "path": "scripts/codex_session_guard.py",
+        "clean_hash": "3157bc0180e67238afdd2450866a941e7874b707",
+        "head_blob": "3157bc0180e67238afdd2450866a941e7874b707",
+        "matches": true
+      },
+      {
+        "path": "scripts/tests/test_codex_session_guard.py",
+        "clean_hash": "86f8e123d9cbc54a5573c9c9c84411d605540878",
+        "head_blob": "86f8e123d9cbc54a5573c9c9c84411d605540878",
+        "matches": true
+      },
+      {
+        "path": "scripts/tests/test_route_governance_supersession.py",
+        "clean_hash": "f017a19ad51bcfff2ff6098995915e89f2c6c9a5",
+        "head_blob": "f017a19ad51bcfff2ff6098995915e89f2c6c9a5",
+        "matches": true
+      }
+    ],
+    "exact_combined_git_diff_quiet_exit_code": 0,
+    "exact_combined_status_lines_after_raw_restore": [
+      "1 .M N... 100644 100644 100644 23d1fa8b7ef569f1b65110473a999268155b14ab 23d1fa8b7ef569f1b65110473a999268155b14ab AGENTS.md",
+      "1 .M N... 100644 100644 100644 b5be11ca6f91b3abd899c91519ba8413c5d663b9 b5be11ca6f91b3abd899c91519ba8413c5d663b9 README.md",
+      "1 .M N... 100644 100644 100644 c4ada11ca4ba1d03be4c526ef99bd53822e0a351 c4ada11ca4ba1d03be4c526ef99bd53822e0a351 docs/ACTIVE_CONTEXT_PACK.md",
+      "1 .M N... 100644 100644 100644 a8ec657194e688bb69faae0c3a47ea6da135e508 a8ec657194e688bb69faae0c3a47ea6da135e508 docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md",
+      "1 .M N... 100644 100644 100644 78efe536d04d61e5f839685d1100fd8410814fe1 78efe536d04d61e5f839685d1100fd8410814fe1 docs/MAINLINE_QUICKSTART.md",
+      "1 .M N... 100644 100644 100644 51606af910257a45ab7ce624253b8453c7a03479 51606af910257a45ab7ce624253b8453c7a03479 docs/PROGRAM_STATE_UNIFIED.yaml",
+      "1 .M N... 100644 100644 100644 c4f2c4ac59f9571688dca47e30a3cb415fa4d5da c4f2c4ac59f9571688dca47e30a3cb415fa4d5da docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md",
+      "1 .M N... 100644 100644 100644 100daeb315c9e136d2c3b4ddfda4601f221c6451 100daeb315c9e136d2c3b4ddfda4601f221c6451 docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/COLLISION_RECORD.md",
+      "1 .M N... 100644 100644 100644 7f2647ac90e895397145e7de574c458c2a16054c 7f2647ac90e895397145e7de574c458c2a16054c docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/ITL_AUTHORITY_CROSSWALK.json",
+      "1 .M N... 100644 100644 100644 b5bb5eb41b85780ba22bfc95f55c27b5589d8bc5 b5bb5eb41b85780ba22bfc95f55c27b5589d8bc5 docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/MUTATION_SCOPE_PHASE_C.yaml",
+      "1 .M N... 100644 100644 100644 8a32daa1054effdcc4d28c7f018380b09b4af668 8a32daa1054effdcc4d28c7f018380b09b4af668 docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/STAGE_CARD.md",
+      "1 .M N... 100644 100644 100644 0f05dcdc7f994340736ad46013d617bd20c52654 0f05dcdc7f994340736ad46013d617bd20c52654 scripts/codex/verify_route_convergence.py",
+      "1 .M N... 100644 100644 100644 3157bc0180e67238afdd2450866a941e7874b707 3157bc0180e67238afdd2450866a941e7874b707 scripts/codex_session_guard.py",
+      "1 .M N... 100644 100644 100644 86f8e123d9cbc54a5573c9c9c84411d605540878 86f8e123d9cbc54a5573c9c9c84411d605540878 scripts/tests/test_codex_session_guard.py",
+      "1 .M N... 100644 100644 100644 f017a19ad51bcfff2ff6098995915e89f2c6c9a5 f017a19ad51bcfff2ff6098995915e89f2c6c9a5 scripts/tests/test_route_governance_supersession.py"
+    ],
+    "git_blob_normalization_mismatches": [
+      {
+        "path": "artifacts/reports/program_state_summary.md",
+        "git_blob_byte_length": 945,
+        "git_blob_sha256": "3c21535951e804577128439bea78245dba1d161d484deac473d3e49e1a8f42fe",
+        "working_byte_length": 958,
+        "working_sha256": "dc1e3fd8fb2efab516d4d050ec143fcf64ca0473715f4021de76668a64200aa7",
+        "cause": "Git text normalization; exact mixed-EOL bytes require the separately hashed raw-byte archive"
+      },
+      {
+        "path": "docs/PROGRAM_STATE_UNIFIED.yaml",
+        "git_blob_byte_length": 271068,
+        "git_blob_sha256": "86be63aa644ad32730c6fc32523f6623751555f77ecdf9fcd9ed796de43146f4",
+        "working_byte_length": 275412,
+        "working_sha256": "7fcaefd5930ace0a8e997f452084c5613ddd473ea51a914bcc9032444ffdd6fa",
+        "cause": "Git text normalization; exact mixed-EOL bytes require the separately hashed raw-byte archive"
+      },
+      {
+        "path": "docs/REPO_SURFACE_MAP.md",
+        "git_blob_byte_length": 3741,
+        "git_blob_sha256": "43bc4c19da5bebddad42ceff7c891e61da5023fb74d1ca8e34a441c4f6b489d4",
+        "working_byte_length": 3769,
+        "working_sha256": "66279cfa60d8ec90a725b0d1ae968fa94f49e1a7125e2901760e773ea6022c21",
+        "cause": "Git text normalization; exact mixed-EOL bytes require the separately hashed raw-byte archive"
+      },
+      {
+        "path": "docs/STATUS.md",
+        "git_blob_byte_length": 130352,
+        "git_blob_sha256": "40fe6255a469250435f234ff7b3263ff71664624dbae9f0f6a5213c4aaa56907",
+        "working_byte_length": 130583,
+        "working_sha256": "6e18f3a1357d8db4ff0882310bc1c06f47f5b52772d2e03ee61cd27de3236baa",
+        "cause": "Git text normalization; exact mixed-EOL bytes require the separately hashed raw-byte archive"
+      },
+      {
+        "path": "docs/codex/tasks/TASK_LANE_INDEX.md",
+        "git_blob_byte_length": 70431,
+        "git_blob_sha256": "ca34073d4fa264d450fdcf39e430734dbb1e44cd137afb075dd44eabe429929e",
+        "working_byte_length": 70745,
+        "working_sha256": "7aa801fbd8ce7e6297865edf5be832f93cd06b556ebddc0814af0d93334c6ba4",
+        "cause": "Git text normalization; exact mixed-EOL bytes require the separately hashed raw-byte archive"
+      },
+      {
+        "path": "scripts/codex/verify_route_convergence.py",
+        "git_blob_byte_length": 92774,
+        "git_blob_sha256": "3436ee031dcbcddb271087e460a930314c26988f23c88ce361220c6d61da64ba",
+        "working_byte_length": 93957,
+        "working_sha256": "5fd4c6e37ef8e01fb5764d1e4ebfee3e52c30a0c6133b05f5d77073091fca318",
+        "cause": "Git text normalization; exact mixed-EOL bytes require the separately hashed raw-byte archive"
+      }
+    ],
+    "raw_zip_results": [
+      {
+        "path": "AGENTS.md",
+        "byte_length": 25880,
+        "sha256": "1b3459388385c194424ceb840c84e548c62a8f655006a4b61956e46fd53ce016",
+        "matches_manifest": true
+      },
+      {
+        "path": "README.md",
+        "byte_length": 8958,
+        "sha256": "0fba0dfc10d2a3ac7b08bc8c1d8309f2547b0fca9e11f407296b26072fbd695e",
+        "matches_manifest": true
+      },
+      {
+        "path": "artifacts/reports/program_state_summary.md",
+        "byte_length": 958,
+        "sha256": "dc1e3fd8fb2efab516d4d050ec143fcf64ca0473715f4021de76668a64200aa7",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/ACTIVE_CONTEXT_PACK.md",
+        "byte_length": 5542,
+        "sha256": "e4ec6bc095a1ccdfa8fecc0cf5ee028e43951df9817b249d218abf6503343818",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md",
+        "byte_length": 6809,
+        "sha256": "18403256b10cf02e3b8667266527290e055fd4dc5ef1cca3e2060fc65c306757",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/MAINLINE_QUICKSTART.md",
+        "byte_length": 5048,
+        "sha256": "e5bd5d01b56d64473b66c322a74201729ad97a699d6355cf832ebcb81bdd3a96",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/PROGRAM_STATE_UNIFIED.yaml",
+        "byte_length": 275412,
+        "sha256": "7fcaefd5930ace0a8e997f452084c5613ddd473ea51a914bcc9032444ffdd6fa",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/REPO_SURFACE_MAP.md",
+        "byte_length": 3769,
+        "sha256": "66279cfa60d8ec90a725b0d1ae968fa94f49e1a7125e2901760e773ea6022c21",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/STATUS.md",
+        "byte_length": 130583,
+        "sha256": "6e18f3a1357d8db4ff0882310bc1c06f47f5b52772d2e03ee61cd27de3236baa",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/codex/tasks/TASK_LANE_INDEX.md",
+        "byte_length": 70745,
+        "sha256": "7aa801fbd8ce7e6297865edf5be832f93cd06b556ebddc0814af0d93334c6ba4",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md",
+        "byte_length": 2470,
+        "sha256": "442a480c946fe03f32cb5a5a806003b57502db1f4102c2299111fb7ffe1b8bc2",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/COLLISION_RECORD.md",
+        "byte_length": 10393,
+        "sha256": "cf771161d498e371f69c36d2d167d94c7d4df9576df8e8ddcef4b2a233efd3b1",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/ITL_AUTHORITY_CROSSWALK.json",
+        "byte_length": 145695,
+        "sha256": "5fca0aa7f894cbd5f17f0fcf91fe3e5128c87abb6ea99e85d98fa6a7e61b300d",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/MUTATION_SCOPE_PHASE_C.yaml",
+        "byte_length": 6414,
+        "sha256": "79bbd9f2ca04d697bf756077f9ef911a8331d4f1bcacdca3b438cc409944ce85",
+        "matches_manifest": true
+      },
+      {
+        "path": "docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/STAGE_CARD.md",
+        "byte_length": 26345,
+        "sha256": "224546a6e34069017aae3760f049def694a3b6cd56bb517805530784de7f2d14",
+        "matches_manifest": true
+      },
+      {
+        "path": "scripts/codex/verify_route_convergence.py",
+        "byte_length": 93957,
+        "sha256": "5fd4c6e37ef8e01fb5764d1e4ebfee3e52c30a0c6133b05f5d77073091fca318",
+        "matches_manifest": true
+      },
+      {
+        "path": "scripts/codex_session_guard.py",
+        "byte_length": 336219,
+        "sha256": "10f1666257503e076b6fe7705710210b63911851e356c8580a115a5ba9e7c7f4",
+        "matches_manifest": true
+      },
+      {
+        "path": "scripts/tests/test_codex_session_guard.py",
+        "byte_length": 97244,
+        "sha256": "35743b53c4eb6527cab7c107dd117b68120f8c371161973bde89353e448b2a88",
+        "matches_manifest": true
+      },
+      {
+        "path": "scripts/tests/test_route_governance_supersession.py",
+        "byte_length": 50461,
+        "sha256": "e204c6b506b94bed4c22a84796aebc1c0f52d6e1627c2919ac6b5530a5a8fc14",
+        "matches_manifest": true
+      }
+    ],
+    "failed_first_attempt": {
+      "path": "D:\\Project\\AIProject\\MyProject\\external-checkpoints\\EGO-V2-PRODUCT-MAIN-TAKEOVER-001A\\reconstruction-35db7ab2",
+      "classification": "instrument_environment_failure",
+      "reason": "Windows path-length checkout failure before HEAD was established",
+      "used_for_acceptance": false
+    },
+    "interpretation": "The bundle alone preserves Git lineage, modes, tracked state, and normalized blobs. The separately hashed raw-byte archive restores the frozen mixed-EOL working bytes. The combined reconstruction is byte-exact and Git clean-filter-equivalent; the vanilla checkout byte mismatch is retained as negative evidence rather than relabelled."
+  },
+  "checks": {
+    "manifest_declared_sha_matches": true,
+    "manifest_aggregate_recomputes": true,
+    "manifest_path_count_is_19": true,
+    "checkpoint_head_matches": true,
+    "checkpoint_parent_matches": true,
+    "reconstruction_branch_matches": true,
+    "reconstruction_is_clean": true,
+    "reconstruction_core_autocrlf_true": true,
+    "reconstruction_core_longpaths_true": true,
+    "checkpoint_delta_exact": true,
+    "checkpoint_labels_present": true,
+    "bundle_verify_passed": true,
+    "combined_bundle_and_raw_archive_all_19_bytes_exact": true,
+    "combined_reconstruction_clean_filter_equivalent": true,
+    "combined_reconstruction_git_diff_quiet": true,
+    "raw_zip_all_19_bytes_exact": true,
+    "raw_zip_entry_set_exact": true,
+    "git_normalization_is_bounded_to_6_paths": true
+  },
+  "claim_ceiling": "Exact local preservation and reconstructability of the 19-path NON_LIVE negative checkpoint; no runtime authority, mechanism validity, product readiness, agency, subjectivity, or consciousness claim."
+}

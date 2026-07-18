@@ -24,7 +24,7 @@ def live_state() -> dict:
     return verify.load_program_state()
 
 
-def test_live_v7_route_exposes_only_action_repair_and_exact_targets() -> None:
+def test_live_v7_route_exposes_only_takeover_validation_and_exact_targets() -> None:
     state = live_state()
     errors, details = verify.validate_route_guard(state)
 
@@ -35,7 +35,6 @@ def test_live_v7_route_exposes_only_action_repair_and_exact_targets() -> None:
     assert details["route_fingerprint"] == route_guard["route_fingerprint"]
     assert details["authorized_implementation_targets"] == guard.R1_VISUAL_IMPLEMENTATION_TARGETS
     assert verify.route_allowed_next_action_ids(route_guard) == [
-        guard.R1_VISUAL_IMPLEMENT_ACTION_ID,
         guard.R1_VISUAL_VALIDATION_ACTION_ID,
     ]
 
@@ -70,7 +69,7 @@ def test_live_v7_phase_a_scope_positive_controls_are_fail_closed() -> None:
         "labs/ego_life_playground_v0/app.py",
         "labs/ego_life_playground_v0/store.py",
         "scripts/run_ego_life_playground_v0.py",
-        "docs/PROGRAM_STATE_UNIFIED.yaml",
+        "tests/test_ego_life_playground_v0.py",
     ):
         hostile = copy.deepcopy(scope)
         hostile["authorized_implementation_targets"] = [

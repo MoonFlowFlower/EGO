@@ -1,0 +1,123 @@
+schema_version: ego.v2_product_main_takeover.mutation_scope.v1
+task_id: EGO-V2-PRODUCT-MAIN-TAKEOVER-001A
+task_kind: operator_authorized_repository_main_takeover_transcription
+requested_action_id: transcribe_EGO-V2-PRODUCT-MAIN-TAKEOVER-001A_authority_on_main
+base_commit: 722a9cd11b5f6349242bcf8a7cf2e48f67122b3c
+itl_commit: d338bc522d4be6e1f6f4733466b0688c0a494acf
+authority_path: docs/codex/tasks/ego-v2-product-main-takeover-001a/ITL_AUTHORITY_CROSSWALK.json
+receipt_path: docs/codex/tasks/ego-v2-product-main-takeover-001a/PHASE_MAIN_RED_REVIEW.json
+card_sha256: f51e8a39d072d3495426de30d8869a03f44b7ac7baa4b070c8d6a4c713e1b8c2
+source_objects:
+  product_axis:
+    path: artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json
+    git_blob_oid: be543f3977ff6fb186a680fc651ff14c994eff5a
+    payload_sha256: 2146a1db60810546f6162aff616acaa0fce058c19363a5455f461c7706a161ec
+    bytes: 4483
+  v2_state:
+    path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/state.json
+    git_blob_oid: c79d322e76733459258f59e116e105f9e00464d6
+    payload_sha256: 74cb3a8b1729d689dcd3e46986dec4eeb8fe4f700f76adb45882f2fe8ab049f2
+    bytes: 10188
+  v2_events:
+    path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/events.jsonl
+    git_blob_oid: c07b730d262d36db4ba56f20aae1a533f19a57e3
+    payload_sha256: bb219a372e5d35c58ac23bb5fa6ce16066e4dea29e135895b83fb31ee83d4579
+    bytes: 12188
+  v2_report:
+    path: artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/ready_transition_validation_report.json
+    git_blob_oid: 676c3bd3a1cde9c7154d8644775c9f285a98c005
+    payload_sha256: 5421bcbb088b48cd08c73c615c59800d87d236609283a02667c51238452625fd
+    bytes: 15109
+reviewed_nonreceipt_paths:
+- AGENTS.md
+- README.md
+- artifacts/reports/program_state_summary.md
+- docs/ACTIVE_CONTEXT_PACK.md
+- docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md
+- docs/MAINLINE_QUICKSTART.md
+- docs/PROGRAM_STATE_UNIFIED.yaml
+- docs/REPO_SURFACE_MAP.md
+- docs/STATUS.md
+- docs/codex/tasks/TASK_LANE_INDEX.md
+- docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md
+- artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/checkpoint_preservation_receipt.json
+- artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/main_takeover_receipt.json
+- artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/validation_report.json
+- artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/failure_manifest.json
+- artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/claim_ceiling.txt
+- docs/codex/tasks/ego-v2-product-main-takeover-001a/COLLISION_RECORD.md
+- docs/codex/tasks/ego-v2-product-main-takeover-001a/ITL_AUTHORITY_CROSSWALK.json
+- docs/codex/tasks/ego-v2-product-main-takeover-001a/MUTATION_SCOPE_MAIN.yaml
+- docs/codex/tasks/ego-v2-product-main-takeover-001a/STAGE_CARD.md
+- scripts/codex/tests/test_route_governance_supersession.py
+- scripts/codex/verify_route_convergence.py
+- scripts/codex_session_guard.py
+- scripts/tests/test_codex_session_guard.py
+- scripts/tests/test_route_governance_supersession.py
+allowed_mutation_paths: &id001
+- AGENTS.md
+- README.md
+- artifacts/reports/program_state_summary.md
+- docs/ACTIVE_CONTEXT_PACK.md
+- docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md
+- docs/MAINLINE_QUICKSTART.md
+- docs/PROGRAM_STATE_UNIFIED.yaml
+- docs/REPO_SURFACE_MAP.md
+- docs/STATUS.md
+- docs/codex/tasks/TASK_LANE_INDEX.md
+- docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md
+- artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/checkpoint_preservation_receipt.json
+- artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/main_takeover_receipt.json
+- artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/validation_report.json
+- artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/failure_manifest.json
+- artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/claim_ceiling.txt
+- docs/codex/tasks/ego-v2-product-main-takeover-001a/COLLISION_RECORD.md
+- docs/codex/tasks/ego-v2-product-main-takeover-001a/ITL_AUTHORITY_CROSSWALK.json
+- docs/codex/tasks/ego-v2-product-main-takeover-001a/MUTATION_SCOPE_MAIN.yaml
+- docs/codex/tasks/ego-v2-product-main-takeover-001a/PHASE_MAIN_RED_REVIEW.json
+- docs/codex/tasks/ego-v2-product-main-takeover-001a/STAGE_CARD.md
+- scripts/codex/tests/test_route_governance_supersession.py
+- scripts/codex/verify_route_convergence.py
+- scripts/codex_session_guard.py
+- scripts/tests/test_codex_session_guard.py
+- scripts/tests/test_route_governance_supersession.py
+exact_commit_paths: *id001
+implementation_allowlist:
+- AGENTS.md
+- README.md
+- artifacts/reports/program_state_summary.md
+- docs/ACTIVE_CONTEXT_PACK.md
+- docs/EGO_CANONICAL_MECHANISM_INTEGRATION_ROUTE_001A.md
+- docs/MAINLINE_QUICKSTART.md
+- docs/PROGRAM_STATE_UNIFIED.yaml
+- docs/REPO_SURFACE_MAP.md
+- docs/STATUS.md
+- docs/codex/tasks/TASK_LANE_INDEX.md
+- docs/codex/tasks/ego-canonical-mechanism-integration-001a/STATUS.md
+- artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/checkpoint_preservation_receipt.json
+- artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/main_takeover_receipt.json
+- artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/validation_report.json
+- artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/failure_manifest.json
+- artifacts/EGO-V2-PRODUCT-MAIN-TAKEOVER-001A/claim_ceiling.txt
+- docs/codex/tasks/ego-v2-product-main-takeover-001a/COLLISION_RECORD.md
+- docs/codex/tasks/ego-v2-product-main-takeover-001a/ITL_AUTHORITY_CROSSWALK.json
+- docs/codex/tasks/ego-v2-product-main-takeover-001a/MUTATION_SCOPE_MAIN.yaml
+- docs/codex/tasks/ego-v2-product-main-takeover-001a/PHASE_MAIN_RED_REVIEW.json
+- docs/codex/tasks/ego-v2-product-main-takeover-001a/STAGE_CARD.md
+- scripts/codex/tests/test_route_governance_supersession.py
+- scripts/codex/verify_route_convergence.py
+- scripts/codex_session_guard.py
+- scripts/tests/test_codex_session_guard.py
+- scripts/tests/test_route_governance_supersession.py
+enabled: false
+runtime_authority: none
+mainline_connected: false
+auto_remote_anchor: forbidden
+independent_red_review_required: true
+stop_conditions:
+- unlisted_path
+- source_pin_drift
+- runtime_enablement
+- product_source_edit
+- push_or_tag
+rollback_plan: before commit use reverse CAS only inside authorized window; after commit requires separate Red transition
