@@ -1,0 +1,54 @@
+{
+  "aggregation_rule": "recover from serialized initial state plus ordered commands and recompute the same trace",
+  "code_path_hash": "63b6f1745b219bd2df0ea395dedbbc27aa67d01335eee8c427c97f60b18a65a5",
+  "fresh_process": {
+    "command_count": 3,
+    "producer_function": "_fresh_process_recover",
+    "recovered": true,
+    "returncode": 0,
+    "run_id": "ego-v2-visual-console-live-001",
+    "selected_action": "explore",
+    "sequence": 3,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_sha256": "61bc456bc7ac8592a5aecd36e6391ffbd75fdb7ce0aba8663e67d626baafb279",
+    "trace_hash": "5905b26a4b3bc5f618f9bd2ed7f96f390c80655a2d3e724c78874f98e48487eb"
+  },
+  "input_artifacts": [
+    {
+      "bytes": 87154,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\labs\\ego_life_playground_v0\\app.py",
+      "sha256": "da8205b6c979c9f28b1baa35a614d14e8d6fd4bf2dcfe41d9f0255fe802468d0"
+    },
+    {
+      "bytes": 72601,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\labs\\ego_life_playground_v0\\engine.py",
+      "sha256": "179a4cdf4a6753c7f8386dd9c6623f048b2ff6a36223ca2fffac128cc6ad3efc"
+    },
+    {
+      "bytes": 13758,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\labs\\ego_life_playground_v0\\store.py",
+      "sha256": "ed65524b7f0e83e47e2353144d4efc7d885e857dd93ac99f9681b1317e62da06"
+    },
+    {
+      "bytes": 29496,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\scripts\\codex\\verify_ego_v2_p0_visual_console_live_001a.py",
+      "sha256": "f74239e72075edda63ac387a9bb733a54fd361999cfa71a02e5a27a1026c12c0"
+    },
+    {
+      "bytes": 79364,
+      "path": "artifacts\\EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A\\trace.jsonl",
+      "sha256": "49450e6863eb8690a2ed5a4d460c2d8bf15351abc227840fe90fb2aaead0d7c8"
+    }
+  ],
+  "producer_function": "run_visual_verification.replay_report",
+  "recomputed_trace_equal": true,
+  "run_id": "ego-v2-visual-console-live-001",
+  "schema_version": "ego.visual_console.replay_report.v1",
+  "seed_context_episode_ids": {
+    "layout_id": "p2_offset_v1",
+    "run_seed": 701,
+    "sequence": 3,
+    "world_seed": 42
+  },
+  "stored_trace_hash_only_comparison": false
+}

@@ -1,0 +1,121 @@
+{
+  "aggregation_rule": "real Tk triggers plus SQLite/recovery/path/capture readback",
+  "capture": {
+    "bytes": 119684,
+    "height": 940,
+    "path": "D:\\Project\\AIProject\\MyProject\\external-phase-a\\EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A\\visual-console-live.png",
+    "producer_function": "_capture_window",
+    "sha256": "a23c44f91f1773fa60df8244da56e07ed74f85c7149b5d35b3297f3ec242274b",
+    "width": 1480
+  },
+  "code_path_hash": "63b6f1745b219bd2df0ea395dedbbc27aa67d01335eee8c427c97f60b18a65a5",
+  "default_off": true,
+  "dispatch_observed_animating_states": [
+    false,
+    false,
+    false
+  ],
+  "first_actual_scheduled_waypoints": [
+    [
+      3,
+      4
+    ],
+    [
+      3,
+      3
+    ],
+    [
+      4,
+      3
+    ],
+    [
+      5,
+      3
+    ]
+  ],
+  "first_expected_waypoints": [
+    [
+      3,
+      4
+    ],
+    [
+      3,
+      3
+    ],
+    [
+      4,
+      3
+    ],
+    [
+      5,
+      3
+    ]
+  ],
+  "first_recovered_sequence": 1,
+  "input_artifacts": [
+    {
+      "bytes": 87154,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\labs\\ego_life_playground_v0\\app.py",
+      "sha256": "da8205b6c979c9f28b1baa35a614d14e8d6fd4bf2dcfe41d9f0255fe802468d0"
+    },
+    {
+      "bytes": 72601,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\labs\\ego_life_playground_v0\\engine.py",
+      "sha256": "179a4cdf4a6753c7f8386dd9c6623f048b2ff6a36223ca2fffac128cc6ad3efc"
+    },
+    {
+      "bytes": 13758,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\labs\\ego_life_playground_v0\\store.py",
+      "sha256": "ed65524b7f0e83e47e2353144d4efc7d885e857dd93ac99f9681b1317e62da06"
+    },
+    {
+      "bytes": 29496,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\scripts\\codex\\verify_ego_v2_p0_visual_console_live_001a.py",
+      "sha256": "f74239e72075edda63ac387a9bb733a54fd361999cfa71a02e5a27a1026c12c0"
+    }
+  ],
+  "panel_frame_ids": {
+    "advanced": 3175227554896,
+    "before": 3175227554896,
+    "candidates": 3175227554896,
+    "continuity": 3175227554896,
+    "event": 3175227554896,
+    "goal": 3175227554896,
+    "map": 3175227554896,
+    "memory": 3175227554896,
+    "result": 3175227554896,
+    "status": 3175227554896
+  },
+  "pause_close_row_counts": {
+    "after_close": [
+      3,
+      3
+    ],
+    "after_pause_wait": [
+      3,
+      3
+    ],
+    "at_pause": [
+      3,
+      3
+    ],
+    "before_close": [
+      3,
+      3
+    ]
+  },
+  "producer_function": "run_visual_verification.live_ui_receipt",
+  "run_id": "ego-v2-visual-console-live-001",
+  "runtime_authority": "none",
+  "schema_version": "ego.visual_console.live_ui_receipt.v1",
+  "seed_context_episode_ids": {
+    "layout_id": "p2_offset_v1",
+    "run_seed": 701,
+    "world_seed": 42
+  },
+  "sqlite_row_counts": [
+    3,
+    3
+  ],
+  "tk_patchlevel": "8.6.15"
+}

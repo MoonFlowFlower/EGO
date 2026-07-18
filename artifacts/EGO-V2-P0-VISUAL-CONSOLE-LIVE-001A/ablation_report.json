@@ -1,0 +1,97 @@
+{
+  "aggregation_rule": "every named intervention must produce its predeclared failure",
+  "animation_latch_held_closed": {
+    "failure_observed": true,
+    "producer_function": "PlaygroundWindow._run_tick",
+    "row_counts_after": [
+      3,
+      3
+    ],
+    "row_counts_before": [
+      3,
+      3
+    ]
+  },
+  "code_path_hash": "63b6f1745b219bd2df0ea395dedbbc27aa67d01335eee8c427c97f60b18a65a5",
+  "id_only_translation": {
+    "failure_observed": true,
+    "producer_function": "build_chinese_causal_view"
+  },
+  "input_artifacts": [
+    {
+      "bytes": 87154,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\labs\\ego_life_playground_v0\\app.py",
+      "sha256": "da8205b6c979c9f28b1baa35a614d14e8d6fd4bf2dcfe41d9f0255fe802468d0"
+    },
+    {
+      "bytes": 72601,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\labs\\ego_life_playground_v0\\engine.py",
+      "sha256": "179a4cdf4a6753c7f8386dd9c6623f048b2ff6a36223ca2fffac128cc6ad3efc"
+    },
+    {
+      "bytes": 13758,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\labs\\ego_life_playground_v0\\store.py",
+      "sha256": "ed65524b7f0e83e47e2353144d4efc7d885e857dd93ac99f9681b1317e62da06"
+    },
+    {
+      "bytes": 29496,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego-v2-product-first-001a\\scripts\\codex\\verify_ego_v2_p0_visual_console_live_001a.py",
+      "sha256": "f74239e72075edda63ac387a9bb733a54fd361999cfa71a02e5a27a1026c12c0"
+    }
+  ],
+  "leakage_positive_control": {
+    "failure_observed": true,
+    "positive_control_matches": [
+      "hidden_regime"
+    ],
+    "producer_function": "scan_forbidden_tokens"
+  },
+  "no_op_dispatch": {
+    "failure_observed": true,
+    "producer_function": "_run_no_op_dispatch_ablation",
+    "row_counts": [
+      0,
+      0
+    ]
+  },
+  "producer_function": "run_visual_verification.ablation_report",
+  "run_id": "ego-v2-visual-console-live-001",
+  "schema_version": "ego.visual_console.ablation_report.v1",
+  "seed_context_episode_ids": {
+    "layout_id": "p2_offset_v1",
+    "run_seed": 701,
+    "world_seed": 42
+  },
+  "straight_line_decoy": {
+    "decoy": [
+      [
+        3,
+        4
+      ],
+      [
+        5,
+        3
+      ]
+    ],
+    "expected": [
+      [
+        3,
+        4
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        5,
+        3
+      ]
+    ],
+    "failure_observed": true,
+    "producer_function": "validate_scheduled_waypoints"
+  }
+}

@@ -7,6 +7,7 @@ import json
 import math
 from pathlib import Path
 import sys
+import time
 
 import pytest
 
@@ -863,11 +864,11 @@ def test_v1_real_tk_run_button_uses_after_then_committed_callback_redraws_once(
         assert "display_interval" not in causal_bytes
         assert len(window.timeline_tree.get_children()) == 2
         assert len(window.candidate_tree.get_children()) == len(engine.ACTIONS)
-        assert '"ui_run_button"' in window.trace_text.get("1.0", tk.END)
-        assert "global_tick=1" in window.status_var.get()
+        assert '"ui_run_button"' in window.advanced_text.get("1.0", tk.END)
+        assert "序列 1" in window.status_var.get()
         goal = controller.state["current_goal"]
         expected_goal_age = controller.state["clock"]["global_tick"] - goal["selected_global_tick"]
-        assert f"goal_age_ticks={expected_goal_age}" in window.goals_text.get("1.0", tk.END)
+        assert f"保持步数：{expected_goal_age}" in window.goals_text.get("1.0", tk.END)
 
         store.connection.execute(
             "CREATE TRIGGER force_tk_trace_failure BEFORE INSERT ON traces "
@@ -918,8 +919,8 @@ def test_v1_invalid_memory_off_shuffle_ui_combination_fails_paused_without_tk_ca
         controller = PlaygroundController(store, run_id="tk-invalid-intervention", seed=17)
         window = PlaygroundWindow(root, controller, display_interval_ms=1000)
 
-        window.memory_mode_var.set("off")
-        window.provenance_mode_var.set("shuffle_projection")
+        window.memory_mode_var.set("关闭记忆读取")
+        window.provenance_mode_var.set("打乱来源投影")
         window.run_button.invoke()
         root.update()
 
@@ -933,15 +934,15 @@ def test_v1_invalid_memory_off_shuffle_ui_combination_fails_paused_without_tk_ca
 
         # The real combobox events also keep the two forbidden modes mutually
         # exclusive before dispatch is attempted.
-        window.provenance_mode_var.set("canonical")
-        window.memory_mode_var.set("off")
+        window.provenance_mode_var.set("标准来源")
+        window.memory_mode_var.set("关闭记忆读取")
         window.memory_mode_box.event_generate("<<ComboboxSelected>>")
         root.update()
-        window.provenance_mode_var.set("shuffle_projection")
+        window.provenance_mode_var.set("打乱来源投影")
         window.provenance_mode_box.event_generate("<<ComboboxSelected>>")
         root.update()
-        assert window.provenance_mode_var.get() == "shuffle_projection"
-        assert window.memory_mode_var.get() == "canonical"
+        assert window.provenance_mode_var.get() == "打乱来源投影"
+        assert window.memory_mode_var.get() == "标准记忆"
     finally:
         try:
             root.destroy()
@@ -1031,7 +1032,7 @@ def test_v1_historical_timeline_frame_is_read_only_and_disables_progress_control
         assert engine.canonical_json(controller.state) == latest_bytes
         assert window.step_button.instate(["disabled"])
         assert window.run_button.instate(["disabled"])
-        assert "read-only" in window.status_var.get().lower()
+        assert "历史只读" in window.status_var.get()
         initial_energy = recovery.frames[0].state["organism"]["energy"]
         assert window.state_widgets["energy"][1].cget("text") == f"{initial_energy:.3f}"
 
@@ -1045,6 +1046,219 @@ def test_v1_historical_timeline_frame_is_read_only_and_disables_progress_control
             root.destroy()
         finally:
             store.close()
+
+
+def _pump_tk_until(root, predicate, *, timeout=4.0):
+    deadline = time.monotonic() + timeout
+    while not predicate():
+        if time.monotonic() >= deadline:
+            raise AssertionError("Tk condition did not become true before timeout")
+        root.update()
+        time.sleep(0.005)
+
+
+def test_visual_console_chinese_view_is_trace_bound_and_does_not_change_causal_bytes(tmp_path):
+    from labs.ego_life_playground_v0.app import (
+        build_advanced_details,
+        build_chinese_causal_view,
+    )
+
+    store = SQLiteEventStore(tmp_path / "chinese-view.sqlite3")
+    try:
+        controller = PlaygroundController(
+            store,
+            run_id="chinese-view",
+            seed=701,
+            world_seed=42,
+            layout_id="p2_offset_v1",
+        )
+        result = controller.dispatch(
+            "contact",
+            DEFAULT_INTERVENTIONS,
+            trigger_source="terminal_event",
+            world_event="social_signal",
+        )
+        assert result.receipt.committed, result.receipt.error
+        frame = controller.recovery.frames[-1]
+        causal_before = canonical_json({"state": frame.state, "trace": frame.trace})
+
+        view = build_chinese_causal_view(frame)
+        advanced = build_advanced_details(frame, controller=controller)
+
+        assert canonical_json({"state": frame.state, "trace": frame.trace}) == causal_before
+        assert view["外部事件"]["发生了什么"] == "社交信号出现"
+        assert view["外部事件"]["是否来自用户注入"] == "是"
+        assert view["候选与选择"]["选择的行动"] == "靠近"
+        assert view["动作连续性"]["之前动作"] == "未记录／未知"
+        assert view["动作连续性"]["中断原因"] == "未记录／未知"
+        ordinary_bytes = json.dumps(view, ensure_ascii=False, sort_keys=True)
+        assert "social_signal" not in ordinary_bytes
+        assert frame.trace["command_hash"] not in ordinary_bytes
+        assert "内心想法" not in ordinary_bytes
+        assert advanced["run_id"] == controller.run_id
+        assert advanced["event_id"] == "social_signal"
+        assert advanced["command_hash"] == frame.trace["command_hash"]
+        assert advanced["code_path_hash"] == frame.trace["code_path_hash"]
+    finally:
+        store.close()
+
+
+def test_visual_console_waypoint_contract_rejects_straight_line_decoy(tmp_path):
+    from labs.ego_life_playground_v0.app import (
+        recorded_waypoints,
+        validate_scheduled_waypoints,
+    )
+
+    store = SQLiteEventStore(tmp_path / "waypoints.sqlite3")
+    try:
+        controller = PlaygroundController(
+            store,
+            run_id="waypoints",
+            seed=701,
+            world_seed=42,
+            layout_id="p2_offset_v1",
+        )
+        result = controller.dispatch(
+            "contact",
+            DEFAULT_INTERVENTIONS,
+            trigger_source="ui_step_button",
+            world_event="social_signal",
+        )
+        assert result.receipt.committed, result.receipt.error
+        frame = controller.recovery.frames[-1]
+        expected = [[3, 4], [3, 3], [4, 3], [5, 3]]
+        assert recorded_waypoints(frame) == expected
+        assert validate_scheduled_waypoints(expected, deepcopy(expected)) == expected
+        with pytest.raises(ValueError, match="recorded path"):
+            validate_scheduled_waypoints(expected, [[3, 4], [4, 4], [5, 3]])
+    finally:
+        store.close()
+
+
+def test_visual_console_real_step_run_commit_recover_animate_lockstep_and_pause_close(
+    tmp_path, monkeypatch
+):
+    import tkinter as tk
+
+    from labs.ego_life_playground_v0.app import PlaygroundWindow, recorded_waypoints
+
+    root = tk.Tk()  # Acceptance evidence: target interpreter Tk must not be skipped.
+    store = SQLiteEventStore(tmp_path / "visual-live.sqlite3")
+    try:
+        root.withdraw()
+        controller = PlaygroundController(
+            store,
+            run_id="visual-live",
+            seed=701,
+            world_seed=42,
+            layout_id="p2_offset_v1",
+        )
+        window = PlaygroundWindow(
+            root,
+            controller,
+            display_interval_ms=25,
+            animation_segment_ms=90,
+        )
+        dispatch_during_animation = []
+        original_dispatch = controller.dispatch
+
+        def observed_dispatch(*args, **kwargs):
+            dispatch_during_animation.append(window._animating)
+            return original_dispatch(*args, **kwargs)
+
+        monkeypatch.setattr(controller, "dispatch", observed_dispatch)
+
+        window.event_display_var.set("社交信号出现")
+        window.step_button.invoke()
+        assert store.row_counts(controller.run_id) == (1, 1)
+        frame = controller.recovery.frames[-1]
+        expected = recorded_waypoints(frame)
+        assert len(expected) >= 4
+        assert window._expected_waypoints == expected
+        assert window._scheduled_waypoints == expected[:1]
+        assert window._animating is True
+        assert len(set(window._panel_frame_ids.values())) == 1
+        assert next(iter(window._panel_frame_ids.values())) == id(frame)
+        assert "步骤发生前" in window.before_text.get("1.0", tk.END)
+        assert "外部事件" in window.event_text.get("1.0", tk.END)
+
+        _pump_tk_until(root, lambda: not window._animating)
+        assert window._scheduled_waypoints == expected
+        assert window._animation_completed_sequence == 1
+
+        window.run_button.invoke()
+        _pump_tk_until(root, lambda: store.row_counts(controller.run_id)[0] == 2)
+        assert window._animating is True
+        time.sleep(0.03)
+        root.update()
+        assert store.row_counts(controller.run_id) == (2, 2)
+
+        _pump_tk_until(root, lambda: store.row_counts(controller.run_id)[0] == 3)
+        assert dispatch_during_animation == [False, False, False]
+        window.pause_button.invoke()
+        paused_counts = store.row_counts(controller.run_id)
+        for _ in range(12):
+            root.update()
+            time.sleep(0.01)
+        assert store.row_counts(controller.run_id) == paused_counts
+
+        window.close()
+        for _ in range(5):
+            try:
+                root.update()
+            except tk.TclError:
+                break
+        assert store.row_counts(controller.run_id) == paused_counts
+    finally:
+        try:
+            if root.winfo_exists():
+                root.destroy()
+        except tk.TclError:
+            pass
+        store.close()
+
+
+def test_visual_console_inject_export_bytes_and_advanced_only_technical_fields(
+    tmp_path, monkeypatch
+):
+    import tkinter as tk
+
+    from labs.ego_life_playground_v0.app import PlaygroundWindow
+
+    root = tk.Tk()  # Acceptance evidence: this is intentionally non-skipped.
+    store = SQLiteEventStore(tmp_path / "visual-controls.sqlite3")
+    try:
+        root.withdraw()
+        controller = PlaygroundController(
+            store,
+            run_id="visual-controls",
+            seed=701,
+            world_seed=42,
+            layout_id="p2_offset_v1",
+        )
+        window = PlaygroundWindow(root, controller, animation_segment_ms=0)
+        window.event_display_var.set("社交信号出现")
+        window.inject_button.invoke()
+        assert controller.last_trace["trigger_source"] == "terminal_event"
+        assert controller.last_trace["world_event"] == "social_signal"
+        assert "social_signal" not in window.event_text.get("1.0", tk.END)
+        assert "social_signal" in window.advanced_text.get("1.0", tk.END)
+
+        direct_path = tmp_path / "direct.jsonl"
+        ui_path = tmp_path / "ui.jsonl"
+        controller.export(direct_path)
+        monkeypatch.setattr(
+            "labs.ego_life_playground_v0.app.filedialog.asksaveasfilename",
+            lambda **_kwargs: str(ui_path),
+        )
+        window._export()
+        assert ui_path.read_bytes() == direct_path.read_bytes()
+    finally:
+        try:
+            root.destroy()
+        except tk.TclError:
+            pass
+        store.close()
 
 
 def test_v1_launcher_headless_smoke_reports_continuity_shape(tmp_path, capsys):
