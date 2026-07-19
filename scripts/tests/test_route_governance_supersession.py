@@ -311,8 +311,16 @@ def test_phase_c_v2_live_authority_is_exact_and_default_off() -> None:
     assert authority["allowed_next_actions"] == [guard.PHASE_C_V2_VALIDATION_ACTION_ID]
     for key, expected in guard.PHASE_C_V2_CLOSED_SWITCHES.items():
         assert authority[key] == expected
-    assert authority["worktree_authority"] == guard._r1_visual_worktree_authority_projection()  # noqa: SLF001
-    assert authority["worktree_authority"]["linked_v2_rollback_reference"]["frozen"] is True
+    assert authority["worktree_authority"] == guard._r1_visual_retired_worktree_authority_projection()  # noqa: SLF001
+    linked = authority["worktree_authority"]["linked_v2_rollback_reference"]
+    assert linked["frozen"] is True
+    assert linked["worktree"] is None
+    assert linked["worktree_registered"] is False
+    assert linked["former_worktree"] == "D:/Project/AIProject/MyProject/Ego-v2-product-first-001a"
+    assert linked["head"] == "722a9cd11b5f6349242bcf8a7cf2e48f67122b3c"
+    assert linked["tree"] == "8da84639fa9c849f64a59506dbbccfb554d38cfd"
+    assert linked["retention_mode"] == "BRANCH_REF_PLUS_VERIFIED_EXTERNAL_BUNDLE"
+    assert linked["external_bundle"]["sha256"] == guard.V2_RETIREMENT_BUNDLE_SHA256
 
 
 def test_phase_c_v2_source_pin_mutation_is_rejected() -> None:
@@ -354,7 +362,7 @@ def test_phase_c_v2_dirty_main_cannot_be_promoted_to_live_authority() -> None:
 
     errors, _ = verify.validate_route_guard(state)
 
-    assert "Phase-C V2 program projection canonical bytes mismatch" in errors
+    assert "Phase-C V2 active retirement worktree authority mismatch" in errors
 
 
 def test_phase_c_v2_successor_branch_cannot_lose_sole_authority_binding() -> None:
@@ -367,7 +375,29 @@ def test_phase_c_v2_successor_branch_cannot_lose_sole_authority_binding() -> Non
 
     errors, _ = verify.validate_route_guard(state)
 
-    assert "Phase-C V2 program projection canonical bytes mismatch" in errors
+    assert "Phase-C V2 active retirement worktree authority mismatch" in errors
+
+
+def test_phase_c_v2_retired_rollback_reference_rejects_stale_path_and_bundle_drift() -> None:
+    stale = copy.deepcopy(live_state())
+    linked = stale["route_guard"]["v2_authority"]["worktree_authority"][
+        "linked_v2_rollback_reference"
+    ]
+    linked["worktree"] = "D:/Project/AIProject/MyProject/Ego-v2-product-first-001a"
+    linked["worktree_registered"] = True
+
+    stale_errors, _ = verify.validate_route_guard(stale)
+
+    assert "Phase-C V2 active retirement worktree authority mismatch" in stale_errors
+
+    wrong_bundle = copy.deepcopy(live_state())
+    wrong_bundle["route_guard"]["v2_authority"]["worktree_authority"][
+        "linked_v2_rollback_reference"
+    ]["external_bundle"]["sha256"] = "0" * 64
+
+    bundle_errors, _ = verify.validate_route_guard(wrong_bundle)
+
+    assert "Phase-C V2 active retirement worktree authority mismatch" in bundle_errors
 
 
 def test_phase_c_v2_main_readback_uses_exact_implementation_actions() -> None:

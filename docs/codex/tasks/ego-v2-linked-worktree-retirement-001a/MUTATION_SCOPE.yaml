@@ -1,0 +1,58 @@
+schema_version: ego.v2_linked_worktree_retirement.mutation_scope.v1
+task_id: EGO-V2-LINKED-WORKTREE-RETIREMENT-001A-R2
+task_kind: operator_authorized_linked_worktree_retirement
+card_sha256: 0fef18a8a25483f2ff703dcf7a4a35841449ca4b11cf0ac3c087fdafbc63c043
+base_commit: ac11d4baec78fb4acc0e9f13f391f16a6a76c644
+itl_commit: d338bc522d4be6e1f6f4733466b0688c0a494acf
+rollback_branch: codex/ego-v2-product-first-001a
+rollback_head: 722a9cd11b5f6349242bcf8a7cf2e48f67122b3c
+rollback_tree: 8da84639fa9c849f64a59506dbbccfb554d38cfd
+retired_worktree: D:/Project/AIProject/MyProject/Ego-v2-product-first-001a
+external_bundle:
+  path: D:/Project/AIProject/MyProject/external-checkpoints/EGO-V2-LINKED-WORKTREE-RETIREMENT-001A/EGO-V2-ROLLBACK-722a9cd1.bundle
+  bytes: 79862719
+  sha256: 3fe162caf195cbee289643fce64ee3127212dae6eceabaf3eb946367335770b4
+retention_mode: BRANCH_REF_PLUS_VERIFIED_EXTERNAL_BUNDLE
+allowed_mutation_paths: &exact_paths
+  - README.md
+  - docs/ACTIVE_CONTEXT_PACK.md
+  - docs/MAINLINE_QUICKSTART.md
+  - docs/PROGRAM_STATE_UNIFIED.yaml
+  - docs/codex/tasks/TASK_LANE_INDEX.md
+  - scripts/codex_session_guard.py
+  - scripts/codex/verify_route_convergence.py
+  - scripts/tests/test_route_governance_supersession.py
+  - scripts/tests/test_codex_session_guard.py
+  - scripts/codex/verify_ego_v2_linked_worktree_retirement_001a.py
+  - scripts/tests/test_verify_ego_v2_linked_worktree_retirement_001a.py
+  - docs/codex/tasks/ego-v2-linked-worktree-retirement-001a/STAGE_CARD.md
+  - docs/codex/tasks/ego-v2-linked-worktree-retirement-001a/MUTATION_SCOPE.yaml
+  - docs/codex/tasks/ego-v2-linked-worktree-retirement-001a/COLLISION_RECORD.md
+  - docs/codex/tasks/ego-v2-linked-worktree-retirement-001a/PHASE_RED_REVIEW.json
+  - artifacts/EGO-V2-LINKED-WORKTREE-RETIREMENT-001A/retirement_receipt.json
+  - artifacts/EGO-V2-LINKED-WORKTREE-RETIREMENT-001A/validation_report.json
+  - artifacts/EGO-V2-LINKED-WORKTREE-RETIREMENT-001A/failure_manifest.json
+  - artifacts/EGO-V2-LINKED-WORKTREE-RETIREMENT-001A/claim_ceiling.txt
+exact_commit_paths: *exact_paths
+implementation_allowlist: *exact_paths
+enabled: false
+default_enabled: false
+runtime_authority: none
+runtime_mainline_connected: false
+background_dispatch: false
+llm: forbidden
+network: forbidden
+auto_remote_anchor: forbidden
+independent_red_review_required: true
+stop_conditions:
+  - source_pin_drift
+  - dirty_worktree_before_preflight
+  - route_authority_conflict
+  - bundle_or_reconstruction_failure
+  - force_required
+  - branch_or_checkpoint_ref_loss
+  - unlisted_path
+  - runtime_enablement
+  - independent_review_blocking
+  - push_tag_or_remote_anchor
+rollback_plan: ordinary git worktree add before final commit; after commit requires a separate operator-authorized Red transition

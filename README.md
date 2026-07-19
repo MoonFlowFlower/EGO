@@ -4,7 +4,7 @@
 >
 > `HISTORICAL_8692_EGODESKTOP_ROUTE: SUPERSEDED_ARCHIVE_POINTER_ONLY`
 >
-> Active V2 product development now lives in this Ego `main` worktree. The linked V2 worktree is frozen rollback-reference only, and the former 19-path dirty state is preserved on a dedicated non-live checkpoint branch plus a verified external recovery package. This repository placement does not enable the default-off product runtime.
+> Active V2 product development lives in this Ego `main` worktree. The former linked V2 checkout has been retired through ordinary Git worktree removal; rollback commit `722a9cd1...` remains preserved by branch `codex/ego-v2-product-first-001a` plus a verified external bundle. The former 19-path dirty state remains on its dedicated non-live checkpoint branch and recovery package. This repository placement does not enable the default-off product runtime.
 
 EGO 是 AI Agent 项目的总仓。当前默认 human/operator 体验主线已经切到 `EgoOperator`（formerly `Ego_handmade`）；旧 `EgoCore`、`OpenEmotion`、`ego_desktop_lab` 已归档为 legacy reference / algorithm source，当前工作树不再保留其 bulky runtime code。
 

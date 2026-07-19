@@ -20,7 +20,7 @@
 | `active_default` | 1 |
 | `supporting_active` | 2 |
 | `parked` | 1 |
-| `closed_evidence` | 28 |
+| `closed_evidence` | 29 |
 | `reference_only` | 236 |
 
 ## Active Default
@@ -33,7 +33,7 @@
 
 | entry | kind | workstream | paths | why |
 |---|---|---|---|---|
-| EGO V2 Product Main Takeover 001A | `codex_task` | `program_state_governance` | `docs/codex/tasks/ego-v2-product-main-takeover-001a/` | Sole repository/product-development placement authority; Ego main owns active V2 development, linked V2 is a frozen rollback reference, and runtime/science switches remain closed. Current workstream status: `pass`. |
+| EGO V2 Product Main Takeover 001A | `codex_task` | `program_state_governance` | `docs/codex/tasks/ego-v2-product-main-takeover-001a/` | Sole repository/product-development placement authority; Ego main owns active V2 development, the former linked checkout is retained only by its rollback branch and verified external bundle, and runtime/science switches remain closed. Current workstream status: `pass`. |
 | Repo Mainline Clarity v1 | `codex_task` | n/a | `docs/codex/tasks/repo-mainline-clarity-v1/` | Supporting repo-view slice for mainline onboarding, surface-map clarity, and staged operational-exhaust hygiene; must not replace the active default track. |
 
 ## Parked
@@ -55,6 +55,7 @@
 | EGO Pet World v1 Card 2 ITL Authority Sync 001A | `codex_task` | `program_state_governance` | `docs/codex/tasks/ego-pet-world-v1-card2-itl-authority-sync-001a/` | Field-by-field governance sync from committed ITL objects; no Card 2 bank, execution, runtime, product, experiment, scoring, or science authorization. Current workstream status: `pass`. |
 | EGO Route 8692 Supersession and EgoDesktop Authority Archive 001A | `codex_task` | n/a | `docs/codex/tasks/ego-route-8692-supersession-and-egodesktop-authority-archive-001a/` | Completed product/capability governance correction; the only following permission is Card 2 drafting and banking, not execution. |
 | EGO V2 Action Perseveration Repair Exact Admission 001A | `codex_task` | n/a | `docs/codex/tasks/ego-life-kernel-v1-continuity-playground-post-result-routing-001a/` | Consumed action-perseveration repair authority; result remains preserved at its bounded engineering claim ceiling and grants no continuing action. |
+| EGO V2 Linked Worktree Retirement 001A | `codex_task` | `program_state_governance` | `docs/codex/tasks/ego-v2-linked-worktree-retirement-001a/` | Controlled repository-maintenance transition that retired the redundant linked checkout while retaining the exact rollback branch, commit/tree, and verified external bundle; it grants no runtime, product, or science action. Current workstream status: `pass`. |
 | EGO Visible Life Proxy v0 Product-Core Authority Sync 001A | `codex_task` | n/a | `docs/codex/tasks/ego-visible-life-proxy-v0-core-adoption-001a/` | Historical predecessor authority-sync boundary, consumed by the V1 READY transition; the immutable V0 Git-object baseline and local replayable trigger remain preserved without live action authority. |
 | EGO Visible Life Proxy v0 Route Replacement 001A | `codex_task` | n/a | `docs/codex/tasks/ego-visible-life-proxy-v0-route-replacement-001a/` | The exact-six playground implementation action is consumed and preserved as the immutable V0 baseline; it grants no continuing implementation, runtime, or science authority. |
 | EgoDesktop PET World Integration 001A | `codex_task` | n/a | `docs/codex/tasks/egodesktop-pet-world-integration-001a/` | Frozen predecessor engineering evidence. P2 remains unexecuted; no historical go-for or successor text grants current authority. |

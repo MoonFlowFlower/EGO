@@ -1160,6 +1160,21 @@ def test_r1_visual_authority_projection_is_exact_and_fail_closed() -> None:
     assert result["status"] == "pass", result["errors"]
     assert authority["main_takeover"]["effective_allowed_next_actions"] == [codex_session_guard.R1_VISUAL_VALIDATION_ACTION_ID]
     assert authority["main_takeover"]["authorized_implementation_targets"] == codex_session_guard.R1_VISUAL_IMPLEMENTATION_TARGETS
+    source_linked = authority["main_takeover"]["worktree_authority"][
+        "linked_v2_rollback_reference"
+    ]
+    assert source_linked["worktree"] == (
+        "D:/Project/AIProject/MyProject/Ego-v2-product-first-001a"
+    )
+    assert "external_bundle" not in source_linked
+
+    retired = codex_session_guard._r1_visual_retired_worktree_authority_projection()  # noqa: SLF001
+    retired_linked = retired["linked_v2_rollback_reference"]
+    assert retired_linked["worktree"] is None
+    assert retired_linked["worktree_registered"] is False
+    assert retired_linked["external_bundle"]["sha256"] == (
+        codex_session_guard.V2_RETIREMENT_BUNDLE_SHA256
+    )
 
     reordered = copy.deepcopy(authority)
     reordered["main_takeover"]["authorized_implementation_targets"] = list(reversed(codex_session_guard.R1_VISUAL_IMPLEMENTATION_TARGETS))
@@ -1184,3 +1199,36 @@ def test_r1_visual_source_object_pin_and_phase_a_scope_hostile_controls() -> Non
     assert codex_session_guard.validate_r1_visual_phase_a_scope_payload(scope) == []
     scope["authorized_implementation_targets"].append("labs/ego_life_playground_v0/app.py")
     assert "r1_visual_phase_a_targets_mismatch" in codex_session_guard.validate_r1_visual_phase_a_scope_payload(scope)
+
+
+def test_v2_linked_worktree_retirement_scope_and_authority_are_fail_closed() -> None:
+    payload = codex_session_guard._load_yaml(  # noqa: SLF001
+        ROOT / codex_session_guard.V2_RETIREMENT_SCOPE_PATH,
+        code="missing_v2_retirement_scope",
+    )
+    assert codex_session_guard.validate_v2_retirement_scope_payload(payload) == []
+
+    reordered = copy.deepcopy(payload)
+    reordered["allowed_mutation_paths"] = list(
+        reversed(codex_session_guard.V2_RETIREMENT_PATHS)
+    )
+    assert "v2_retirement_scope_allowed_mutation_paths_mismatch" in (
+        codex_session_guard.validate_v2_retirement_scope_payload(reordered)
+    )
+
+    opened = copy.deepcopy(payload)
+    opened["background_dispatch"] = True
+    assert "v2_retirement_scope_background_dispatch_mismatch" in (
+        codex_session_guard.validate_v2_retirement_scope_payload(opened)
+    )
+
+    authority = codex_session_guard._r1_visual_retired_worktree_authority_projection()  # noqa: SLF001
+    linked = authority["linked_v2_rollback_reference"]
+    assert linked["worktree"] is None
+    assert linked["worktree_registered"] is False
+    assert linked["head"] == codex_session_guard.R1_VISUAL_V2_BASE_COMMIT
+    assert linked["tree"] == "8da84639fa9c849f64a59506dbbccfb554d38cfd"
+    assert linked["retention_mode"] == "BRANCH_REF_PLUS_VERIFIED_EXTERNAL_BUNDLE"
+    assert linked["external_bundle"]["sha256"] == (
+        codex_session_guard.V2_RETIREMENT_BUNDLE_SHA256
+    )

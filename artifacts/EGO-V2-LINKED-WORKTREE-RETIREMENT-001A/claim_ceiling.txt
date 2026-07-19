@@ -1,0 +1,2 @@
+The redundant clean linked checkout was retired while its exact rollback branch, commit, tree, and verified external bundle remained reconstructable; Ego main remained the sole product-development worktree.
+This does not prove runtime integration, product readiness, learning, memory causality, initiative, agency, subjectivity, consciousness, or electronic life.

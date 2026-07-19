@@ -444,7 +444,8 @@ PHASE_C_V2_LEGACY_ROUTE_REVISION = PHASE_C_V2_ROUTE_REVISION
 R1_VISUAL_TRANSITION_TASK_ID = "EGO-V2-PRODUCT-MAIN-TAKEOVER-001A"
 R1_VISUAL_PRODUCT_TASK_ID = R1_VISUAL_TRANSITION_TASK_ID
 R1_VISUAL_ROUTE_ID = "EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A"
-R1_VISUAL_ROUTE_REVISION = "EGO_V2_PRODUCT_MAIN_TAKEOVER_001A_AUTHORITY_ON_MAIN"
+R1_VISUAL_PRE_RETIREMENT_ROUTE_REVISION = "EGO_V2_PRODUCT_MAIN_TAKEOVER_001A_AUTHORITY_ON_MAIN"
+R1_VISUAL_ROUTE_REVISION = "EGO_V2_LINKED_WORKTREE_RETIREMENT_001A_BRANCH_BUNDLE_RETENTION"
 R1_VISUAL_AUTHORITY_SCHEMA_VERSION = "ego.v2_product_main_takeover.authority.v1"
 R1_VISUAL_RECEIPT_SCHEMA_VERSION = "ego.v2_product_main_takeover.red_review.v1"
 R1_VISUAL_SCOPE_SCHEMA_VERSION = "ego.v2_product_main_takeover.mutation_scope.v1"
@@ -642,6 +643,40 @@ R1_VISUAL_CLAIM_CEILING = {
 }
 R1_VISUAL_COMMIT_PATHS = list(R1_VISUAL_IMPLEMENTATION_TARGETS)
 R1_VISUAL_REVIEWED_PATHS = [path for path in R1_VISUAL_COMMIT_PATHS if path != R1_VISUAL_RECEIPT_PATH]
+
+V2_RETIREMENT_TASK_ID = "EGO-V2-LINKED-WORKTREE-RETIREMENT-001A-R2"
+V2_RETIREMENT_TASK_KIND = "operator_authorized_linked_worktree_retirement"
+V2_RETIREMENT_CARD_SHA256 = "0fef18a8a25483f2ff703dcf7a4a35841449ca4b11cf0ac3c087fdafbc63c043"
+V2_RETIREMENT_SCOPE_SCHEMA_VERSION = "ego.v2_linked_worktree_retirement.mutation_scope.v1"
+V2_RETIREMENT_SCOPE_PATH = "docs/codex/tasks/ego-v2-linked-worktree-retirement-001a/MUTATION_SCOPE.yaml"
+V2_RETIREMENT_RECEIPT_PATH = "artifacts/EGO-V2-LINKED-WORKTREE-RETIREMENT-001A/retirement_receipt.json"
+V2_RETIREMENT_BUNDLE_PATH = (
+    "D:/Project/AIProject/MyProject/external-checkpoints/"
+    "EGO-V2-LINKED-WORKTREE-RETIREMENT-001A/EGO-V2-ROLLBACK-722a9cd1.bundle"
+)
+V2_RETIREMENT_BUNDLE_BYTES = 79862719
+V2_RETIREMENT_BUNDLE_SHA256 = "3fe162caf195cbee289643fce64ee3127212dae6eceabaf3eb946367335770b4"
+V2_RETIREMENT_PATHS = [
+    "README.md",
+    "docs/ACTIVE_CONTEXT_PACK.md",
+    "docs/MAINLINE_QUICKSTART.md",
+    "docs/PROGRAM_STATE_UNIFIED.yaml",
+    "docs/codex/tasks/TASK_LANE_INDEX.md",
+    "scripts/codex_session_guard.py",
+    "scripts/codex/verify_route_convergence.py",
+    "scripts/tests/test_route_governance_supersession.py",
+    "scripts/tests/test_codex_session_guard.py",
+    "scripts/codex/verify_ego_v2_linked_worktree_retirement_001a.py",
+    "scripts/tests/test_verify_ego_v2_linked_worktree_retirement_001a.py",
+    "docs/codex/tasks/ego-v2-linked-worktree-retirement-001a/STAGE_CARD.md",
+    V2_RETIREMENT_SCOPE_PATH,
+    "docs/codex/tasks/ego-v2-linked-worktree-retirement-001a/COLLISION_RECORD.md",
+    "docs/codex/tasks/ego-v2-linked-worktree-retirement-001a/PHASE_RED_REVIEW.json",
+    V2_RETIREMENT_RECEIPT_PATH,
+    "artifacts/EGO-V2-LINKED-WORKTREE-RETIREMENT-001A/validation_report.json",
+    "artifacts/EGO-V2-LINKED-WORKTREE-RETIREMENT-001A/failure_manifest.json",
+    "artifacts/EGO-V2-LINKED-WORKTREE-RETIREMENT-001A/claim_ceiling.txt",
+]
 
 # Backward-compatible live aliases used by the pre-v7 test/readback surface.
 # Historical v6 validators use the explicit LEGACY constants above.
@@ -1584,7 +1619,13 @@ def validate_phase_c_v2_scope_payload(payload: Any) -> list[str]:
     return sorted(set(errors))
 
 
-def _r1_visual_worktree_authority_projection() -> dict[str, Any]:
+def _r1_visual_source_worktree_authority_projection() -> dict[str, Any]:
+    """Return the immutable takeover-envelope worktree projection.
+
+    This projection is provenance for the completed takeover and intentionally
+    retains the then-registered linked checkout.  Local physical retirement is
+    represented by the separate active projection below.
+    """
     return {
         "negative_checkpoint": {
             "archive_branch": "codex/non-live-negative-anti-zeno-checkpoint-20260718",
@@ -1607,6 +1648,46 @@ def _r1_visual_worktree_authority_projection() -> dict[str, Any]:
             "head": R1_VISUAL_V2_BASE_COMMIT,
             "active_development_authority": False,
             "frozen": True,
+        },
+    }
+
+
+def _r1_visual_retired_worktree_authority_projection() -> dict[str, Any]:
+    """Return the active local branch/bundle-only retirement projection."""
+    return {
+        "negative_checkpoint": {
+            "archive_branch": "codex/non-live-negative-anti-zeno-checkpoint-20260718",
+            "head": "35db7ab27ce1815f96fe53ffd64b89aab5101c49",
+            "parent": PHASE_C_V2_EGO_BASE_COMMIT,
+            "status": "NON_LIVE_NEGATIVE_ANTI_ZENO_CHECKPOINT",
+            "live_authority": False,
+            "never_merge_to_main": True,
+        },
+        "active_v2_development_authority": {
+            "worktree": "D:/Project/AIProject/MyProject/Ego",
+            "branch": "main",
+            "product_source_commit": R1_VISUAL_V2_BASE_COMMIT,
+            "activation_condition": "THIS_DIRECT_CHILD_COMMIT_PASSES_MAIN_TAKEOVER_GATE",
+            "sole": True,
+        },
+        "linked_v2_rollback_reference": {
+            "worktree": None,
+            "worktree_registered": False,
+            "former_worktree": "D:/Project/AIProject/MyProject/Ego-v2-product-first-001a",
+            "former_worktree_disposition": "RETIRED_BY_ORDINARY_GIT_WORKTREE_REMOVE",
+            "branch": PHASE_C_V2_BRANCH,
+            "head": R1_VISUAL_V2_BASE_COMMIT,
+            "tree": "8da84639fa9c849f64a59506dbbccfb554d38cfd",
+            "active_development_authority": False,
+            "frozen": True,
+            "retention_mode": "BRANCH_REF_PLUS_VERIFIED_EXTERNAL_BUNDLE",
+            "external_bundle": {
+                "path": V2_RETIREMENT_BUNDLE_PATH,
+                "bytes": V2_RETIREMENT_BUNDLE_BYTES,
+                "sha256": V2_RETIREMENT_BUNDLE_SHA256,
+            },
+            "retirement_task_id": V2_RETIREMENT_TASK_ID,
+            "retirement_receipt": V2_RETIREMENT_RECEIPT_PATH,
         },
     }
 
@@ -1896,7 +1977,7 @@ def build_r1_visual_source_projection(source_objects: Any) -> dict[str, Any]:
             "real_trigger_evidence": state.get("real_trigger_evidence"),
             "forbidden_next_actions": state.get("forbidden_next_actions"),
             "claim_ceiling": state.get("claim_ceiling"),
-            "worktree_authority": _r1_visual_worktree_authority_projection(),
+            "worktree_authority": _r1_visual_source_worktree_authority_projection(),
         },
         "transcription_contract": {
             "rule": "FIELD_BY_FIELD_FROM_PINNED_GIT_OBJECTS__SYNC_CONSUMED__NO_UNION_OR_FALLBACK",
@@ -2054,6 +2135,48 @@ def validate_r1_visual_transition_scope_payload(payload: Any) -> list[str]:
         errors.append("r1_visual_transition_scope_commit_paths_mismatch")
     if payload.get("implementation_allowlist") != R1_VISUAL_IMPLEMENTATION_TARGETS:
         errors.append("r1_visual_transition_scope_implementation_allowlist_mismatch")
+    return sorted(set(errors))
+
+
+def validate_v2_retirement_scope_payload(payload: Any) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(payload, dict):
+        return ["v2_retirement_scope_object_required"]
+    expected_literals = {
+        "schema_version": V2_RETIREMENT_SCOPE_SCHEMA_VERSION,
+        "task_id": V2_RETIREMENT_TASK_ID,
+        "task_kind": V2_RETIREMENT_TASK_KIND,
+        "card_sha256": V2_RETIREMENT_CARD_SHA256,
+        "base_commit": "ac11d4baec78fb4acc0e9f13f391f16a6a76c644",
+        "itl_commit": R1_VISUAL_ITL_COMMIT,
+        "rollback_branch": PHASE_C_V2_BRANCH,
+        "rollback_head": R1_VISUAL_V2_BASE_COMMIT,
+        "rollback_tree": "8da84639fa9c849f64a59506dbbccfb554d38cfd",
+        "retired_worktree": "D:/Project/AIProject/MyProject/Ego-v2-product-first-001a",
+        "retention_mode": "BRANCH_REF_PLUS_VERIFIED_EXTERNAL_BUNDLE",
+        "enabled": False,
+        "default_enabled": False,
+        "runtime_authority": "none",
+        "runtime_mainline_connected": False,
+        "background_dispatch": False,
+        "llm": "forbidden",
+        "network": "forbidden",
+        "auto_remote_anchor": "forbidden",
+        "independent_red_review_required": True,
+    }
+    for key, expected in expected_literals.items():
+        if payload.get(key) != expected or type(payload.get(key)) is not type(expected):
+            errors.append(f"v2_retirement_scope_{key}_mismatch")
+    expected_bundle = {
+        "path": V2_RETIREMENT_BUNDLE_PATH,
+        "bytes": V2_RETIREMENT_BUNDLE_BYTES,
+        "sha256": V2_RETIREMENT_BUNDLE_SHA256,
+    }
+    if payload.get("external_bundle") != expected_bundle:
+        errors.append("v2_retirement_scope_bundle_mismatch")
+    for key in ("allowed_mutation_paths", "exact_commit_paths", "implementation_allowlist"):
+        if payload.get(key) != V2_RETIREMENT_PATHS:
+            errors.append(f"v2_retirement_scope_{key}_mismatch")
     return sorted(set(errors))
 
 
@@ -5015,6 +5138,33 @@ def validate_route_mutation_scope(
     blockers: list[dict[str, Any]] = []
     raw_scope = scope.get("raw") if isinstance(scope, dict) else None
     raw_scope = raw_scope if isinstance(raw_scope, dict) and raw_scope else scope
+    if isinstance(raw_scope, dict) and raw_scope.get("task_id") == V2_RETIREMENT_TASK_ID:
+        for error in validate_v2_retirement_scope_payload(raw_scope):
+            blockers.append({"reason": error})
+        actual = phase_c_v2_actual_changed_paths(repo=ROOT)
+        if actual.get("status") != "pass":
+            blockers.append(
+                {
+                    "reason": "v2_retirement_actual_git_paths_unavailable",
+                    "errors": actual.get("errors") or [],
+                }
+            )
+        elif actual.get("changed_paths") != sorted(V2_RETIREMENT_PATHS):
+            blockers.append(
+                {
+                    "reason": "v2_retirement_exact_18_paths_required",
+                    "paths": actual.get("changed_paths") or [],
+                }
+            )
+        authority = ((program_state.get("route_guard") or {}).get("v2_authority") or {})
+        if authority.get("worktree_authority") != _r1_visual_retired_worktree_authority_projection():
+            blockers.append({"reason": "v2_retirement_worktree_authority_mismatch"})
+        for key, expected in R1_VISUAL_CLOSED_SWITCHES.items():
+            if authority.get(key) != expected or type(authority.get(key)) is not type(expected):
+                blockers.append({"reason": f"v2_retirement_closed_switch_mismatch:{key}"})
+        if authority.get("allowed_next_actions") != [R1_VISUAL_VALIDATION_ACTION_ID]:
+            blockers.append({"reason": "v2_retirement_live_action_mismatch"})
+        return blockers
     if isinstance(raw_scope, dict) and raw_scope.get("task_id") == R1_VISUAL_TRANSITION_TASK_ID:
         for error in validate_r1_visual_transition_scope_payload(raw_scope):
             blockers.append({"reason": error})

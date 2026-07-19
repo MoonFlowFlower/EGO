@@ -4,7 +4,7 @@
 >
 > `HISTORICAL_8692_EGODESKTOP_ROUTE: SUPERSEDED_ARCHIVE_POINTER_ONLY`
 >
-> Ego `main` is the sole active V2 product-development worktree. The linked V2 worktree is frozen rollback-reference only; the 19-path non-live checkpoint is preserved on its dedicated branch and external recovery package. Older mechanism-successor sections below are archive pointers only.
+> Ego `main` is the sole active V2 product-development worktree. The former linked V2 checkout is retired; its exact rollback state remains on branch `codex/ego-v2-product-first-001a` plus a verified external Git bundle. The 19-path non-live checkpoint remains preserved on its dedicated branch and external recovery package. Older mechanism-successor sections below are archive pointers only.
 
 Source of truth: `docs/PROGRAM_STATE_UNIFIED.yaml`.
 

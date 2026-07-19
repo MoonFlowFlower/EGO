@@ -1,0 +1,49 @@
+{
+  "aggregation_rule": "pass iff every named callable Git, route, bundle, and boundary check is true",
+  "bundle": {
+    "bytes": 79862719,
+    "path": "D:\\Project\\AIProject\\MyProject\\external-checkpoints\\EGO-V2-LINKED-WORKTREE-RETIREMENT-001A\\EGO-V2-ROLLBACK-722a9cd1.bundle",
+    "sha256": "3fe162caf195cbee289643fce64ee3127212dae6eceabaf3eb946367335770b4"
+  },
+  "claim_ceiling": "The redundant clean linked checkout was retired while its exact rollback branch, commit, tree, and verified external bundle remained reconstructable; Ego main remained the sole product-development worktree.",
+  "code_path_hash": "d6d58ac07097b0c9f76ad26cb0d8eb881c22ce2521e5585c0a643a0576d9273b",
+  "failed_checks": [],
+  "input_artifacts": [
+    {
+      "bytes": 8953,
+      "path": "D:\\Project\\AIProject\\MyProject\\external-plans\\EGO-V2-LINKED-WORKTREE-RETIREMENT-001A-R2\\RETIREMENT_CARD_R2.md",
+      "sha256": "0fef18a8a25483f2ff703dcf7a4a35841449ca4b11cf0ac3c087fdafbc63c043"
+    },
+    {
+      "bytes": 8973,
+      "path": "D:\\Project\\AIProject\\MyProject\\external-checkpoints\\EGO-V2-LINKED-WORKTREE-RETIREMENT-001A\\preflight.json",
+      "sha256": "080fa0e443041dd3e2dd099f061d2ba5a09831233b0c9e751029cdc4b7024eae"
+    },
+    {
+      "bytes": 70931,
+      "path": "D:\\Project\\AIProject\\MyProject\\external-checkpoints\\EGO-V2-LINKED-WORKTREE-RETIREMENT-001A\\bundle_verification.json",
+      "sha256": "7d7d5a332bd86a42b0b979d7a5825c48115bd46255204f18d6083513e6d23f68"
+    },
+    {
+      "bytes": 9030,
+      "path": "D:\\Project\\AIProject\\MyProject\\external-checkpoints\\EGO-V2-LINKED-WORKTREE-RETIREMENT-001A\\post_removal.json",
+      "sha256": "3b3a46755e8cb1eb04d6fb1981f1a49a76484526cc29263b59eae7c6841584a9"
+    }
+  ],
+  "producer_function": "verify_ego_v2_linked_worktree_retirement_001a.finalize",
+  "retired_worktree": "D:/Project/AIProject/MyProject/Ego-v2-product-first-001a",
+  "retirement_method": "git worktree remove without --force",
+  "rollback_branch": "codex/ego-v2-product-first-001a",
+  "rollback_head": "722a9cd11b5f6349242bcf8a7cf2e48f67122b3c",
+  "rollback_tree": "8da84639fa9c849f64a59506dbbccfb554d38cfd",
+  "run_id": "ego-v2-linked-worktree-retirement-001a-finalize-20260718T232319Z",
+  "task_id": "EGO-V2-LINKED-WORKTREE-RETIREMENT-001A-R2",
+  "verdict": "pass",
+  "worktrees_after": [
+    {
+      "HEAD": "ac11d4baec78fb4acc0e9f13f391f16a6a76c644",
+      "branch": "refs/heads/main",
+      "worktree": "D:/Project/AIProject/MyProject/Ego"
+    }
+  ]
+}

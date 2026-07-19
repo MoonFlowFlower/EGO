@@ -1,7 +1,7 @@
 program:
   version: 1
-  north_star: "Keep the validated default-off V2 product-development lineage in the Ego main repository/worktree while preserving the exact non-live negative checkpoint and all runtime/science claim boundaries."
-  current_phase: "v2_product_main_takeover_authority_transcribed_default_off"
+  north_star: "Keep the validated default-off V2 product-development lineage in the Ego main repository/worktree while preserving the rollback branch, verified external bundle, exact non-live negative checkpoint, and all runtime/science claim boundaries."
+  current_phase: "v2_linked_worktree_retired_branch_bundle_preserved_default_off"
   current_layer: "engineering repository integration + product-development control-plane"
   highest_evidence_level: "E3"
   verification_level: "V3"
@@ -17,7 +17,7 @@ program:
     - evidence_id: "ego_operator_human_operator_trial_v2_real_provider_scripted_run"
       note: "A fresh scripted v2 human-operator trial ran with a real OpenRouter provider and recorded 18/18 observations at `EgoOperator/artifacts/human_operator_trial/v2_latest/`; this is provider-scripted review evidence only, not a human-observation pass."
   current_focus:
-    - "ITL commit `d338bc522d4be6e1f6f4733466b0688c0a494acf` admits the exact checkpoint, CAS fast-forward, and 26-path authority transcription. Ego main now contains the pinned V2 source tree; the checkpoint branch and external recovery package preserve the prior non-live bytes."
+    - "ITL commit `d338bc522d4be6e1f6f4733466b0688c0a494acf` admitted the exact checkpoint, CAS fast-forward, and 26-path authority transcription. Ego main contains the pinned V2 source tree; the retired linked checkout is preserved by its rollback branch and verified external bundle, while the checkpoint branch and recovery package preserve the prior non-live bytes."
     - "Product-development authority and runtime mainline remain separate: the repair is default-off and bounded to the canonical local product path, science_weight=0, remote/proactive/LLM/network closed, while EgoOperator remains the existing active runtime default."
     - "The 8692 K0 Foundation -> VirtualCat-derived adapter -> EgoDesktop route is additively superseded before M1. M1, M2, and M3 were not started and are cancelled by supersession; historical route prose is not current authority."
     - "EgoDesktop is archived as a legacy LLM/UI reference only. It is not an active route, successor dependency, runtime target, or runtime authority; this authority archive does not move, delete, or rewrite EgoDesktop source."
@@ -143,7 +143,7 @@ program:
     - "Which legacy algorithms should be reimplemented as EgoOperator primitives, and which should remain reference-only."
     - "Whether future command/network transaction approvals should be added after file-write transaction approval has proved ergonomic."
     - "What evidence threshold should trigger any future deletion of legacy code rather than reference preservation."
-  next_minimal_action: "Complete the exact direct-child Phase-Main commit and run dual-repo route plus existing canonical Step/Run, SQLite, recover, waypoint, replay, export, leakage, fresh-process, and Tk acceptance from Ego."
+  next_minimal_action: "Run route-state validation from Ego main; any future V2 product change requires a separate bounded task and must keep the console default-off unless separately authorized."
   last_verified_commit: "af561e0d"
   last_verified_at: "2026-05-18T03:48:22Z"
   status_owner: "EgoOperator"
@@ -156,7 +156,7 @@ program:
 
 route_guard:
   schema_version: ego.route_guard.v7
-  route_revision_id: EGO_V2_PRODUCT_MAIN_TAKEOVER_001A_AUTHORITY_ON_MAIN
+  route_revision_id: EGO_V2_LINKED_WORKTREE_RETIREMENT_001A_BRANCH_BUNDLE_RETENTION
   authority_source:
     authority_rule: FOUR_PINNED_COMMITTED_ITL_OBJECTS_ARE_SOLE_PRODUCT_MAIN_TAKEOVER_ROUTE_SOURCE__FIELD_BY_FIELD_TRANSCRIPTION_ONLY
     repo: intelligence-theory-lab
@@ -1536,11 +1536,22 @@ route_guard:
         activation_condition: THIS_DIRECT_CHILD_COMMIT_PASSES_MAIN_TAKEOVER_GATE
         sole: true
       linked_v2_rollback_reference:
-        worktree: D:/Project/AIProject/MyProject/Ego-v2-product-first-001a
+        worktree: null
+        worktree_registered: false
+        former_worktree: D:/Project/AIProject/MyProject/Ego-v2-product-first-001a
+        former_worktree_disposition: RETIRED_BY_ORDINARY_GIT_WORKTREE_REMOVE
         branch: codex/ego-v2-product-first-001a
         head: 722a9cd11b5f6349242bcf8a7cf2e48f67122b3c
+        tree: 8da84639fa9c849f64a59506dbbccfb554d38cfd
         active_development_authority: false
         frozen: true
+        retention_mode: BRANCH_REF_PLUS_VERIFIED_EXTERNAL_BUNDLE
+        external_bundle:
+          path: D:/Project/AIProject/MyProject/external-checkpoints/EGO-V2-LINKED-WORKTREE-RETIREMENT-001A/EGO-V2-ROLLBACK-722a9cd1.bundle
+          bytes: 79862719
+          sha256: 3fe162caf195cbee289643fce64ee3127212dae6eceabaf3eb946367335770b4
+        retirement_task_id: EGO-V2-LINKED-WORKTREE-RETIREMENT-001A-R2
+        retirement_receipt: artifacts/EGO-V2-LINKED-WORKTREE-RETIREMENT-001A/retirement_receipt.json
     real_trigger_evidence: PINNED_ACTION_PERSEVERATION_REPAIR_RESULT_CONSUMED_WITHOUT_CLAIM_UPGRADE
     forbidden_next_actions:
     - modify_reopen_or_rerun_EGO-PET-WORLD-V1-CAPABILITY-CARD-BANK-ADMISSION-001A
@@ -1638,7 +1649,7 @@ route_guard:
       authorized_target_count: 0
       repository_main_placement_complete: true
       active_development_worktree: D:/Project/AIProject/MyProject/Ego
-      linked_v2_disposition: FROZEN_ROLLBACK_REFERENCE_ONLY
+      linked_v2_disposition: RETIRED_CHECKOUT__BRANCH_REF_PLUS_VERIFIED_EXTERNAL_BUNDLE
     relation: historical_local_surface_status_not_route_authority
   route_views:
     task_routes:
@@ -1688,8 +1699,14 @@ route_guard:
       ego-v2-product-main-takeover-001a:
         lane: supporting_active
         label: EGO V2 Product Main Takeover 001A
-        why: Sole repository/product-development placement authority; Ego main owns active V2 development, linked V2 is a
-          frozen rollback reference, and runtime/science switches remain closed.
+        why: Sole repository/product-development placement authority; Ego main owns active V2 development, the former linked
+          checkout is retained only by its rollback branch and verified external bundle, and runtime/science switches remain closed.
+        workstream_id: program_state_governance
+      ego-v2-linked-worktree-retirement-001a:
+        lane: closed_evidence
+        label: EGO V2 Linked Worktree Retirement 001A
+        why: Controlled repository-maintenance transition that retired the redundant linked checkout while retaining the exact
+          rollback branch, commit/tree, and verified external bundle; it grants no runtime, product, or science action.
         workstream_id: program_state_governance
     current_surfaces:
     - surface: operator_runtime
@@ -1723,11 +1740,16 @@ route_guard:
       reviewed_nonreceipt_path_count: 25
       review_binding: FIXED_TYPED_JSON__25_GIT_BLOB_MANIFEST__RAW_STAGED_DIFF__CONTROLLER_ATTESTED_LOCAL_ONLY
       receipt_commit_relation: SAME_DIRECT_CHILD_COMMIT__RECEIPT_EXCLUDED_FROM_REVIEWED_MANIFEST
+    linked_worktree_retirement:
+      path: docs/codex/tasks/ego-v2-linked-worktree-retirement-001a/PHASE_RED_REVIEW.json
+      card_sha256: 0fef18a8a25483f2ff703dcf7a4a35841449ca4b11cf0ac3c087fdafbc63c043
+      reviewed_nonreceipt_path_count: 18
+      review_binding: PRECHECK_PLUS_RAW_STAGED_DIFF_POSTCHECK__CONTROLLER_ATTESTED_LOCAL_ONLY
     review_invalidated_by_diff_change: true
     unresolved_review_blockers: []
-  claim_ceiling: local exact-commit repository/product-development-main placement with preserved negative checkpoint and pre-existing
-    callable V2 evidence; no runtime-mainline, readiness, learning, memory causality, agency, subjectivity, consciousness,
-    or electronic-life claim
+  claim_ceiling: local repository/product-development-main placement plus controlled linked-checkout retirement with preserved
+    rollback branch, verified bundle, negative checkpoint, and pre-existing callable V2 evidence; no runtime-mainline, readiness,
+    learning, memory causality, agency, subjectivity, consciousness, or electronic-life claim
   transcription_contract:
     rule: FIELD_BY_FIELD_FROM_PINNED_GIT_OBJECTS__SYNC_CONSUMED__NO_UNION_OR_FALLBACK
     source_report_verdict: pass
@@ -1851,16 +1873,16 @@ route_guard:
     source_pointer: /network
     target_pointer: /main_takeover/switches/network
     rule: copy_exact_typed
-  route_fingerprint: 324609c8afcb444c65e5995845318286e1dfc26882cc2b8e860d224add4aa501
+  route_fingerprint: d5f87aa22fd32966d57f8c90aee673a1e55c1d00c42d953d0632ae2d02fc0887
 workstreams:
   - id: "ego_life_playground_v0_product_development_core"
     owner: "Operator + Codex"
-    status: "v2_product_first_authority__exact_phase_c_commit_gate__default_off"
+    status: "v2_product_on_ego_main__linked_checkout_retired__branch_bundle_preserved__default_off"
     evidence_level: "E3"
     verification_level: "V3"
     mainline_connected: false
     enabled: false
-    summary: "The immutable V0 boundary remains the sole product lineage root. ITL commit `4a4746435f9bdb0eba02e6c036c2e34a089ece26` supplies the exact V2 authority projection; after one valid direct-child typed-receipt commit, `codex/ego-v2-product-first-001a` is the sole V2 development authority for the ordered 25-path allowlist. V2 stays default-off, runtime-disconnected, without runtime authority or V2 trigger, science_weight=0, remote/proactive/LLM/network closed. This does not establish learning, memory causality, initiative, agency, emotion understanding, subjectivity, consciousness, electronic life, readiness, or runtime-mainline effect."
+    summary: "The immutable V0 boundary remains the sole product lineage root. Ego main owns active V2 product development; the former linked checkout is retired and its exact `722a9cd1` rollback state is retained by branch plus verified external bundle. V2 stays default-off, runtime-disconnected, without runtime authority or V2 trigger, science_weight=0, remote/proactive/LLM/network closed. This does not establish learning, memory causality, initiative, agency, emotion understanding, subjectivity, consciousness, electronic life, readiness, or runtime-mainline effect."
   - id: "ego_operator_first_transition"
     owner: "EgoOperator"
     status: "human_operator_trial_v2_human_review_template_ready"

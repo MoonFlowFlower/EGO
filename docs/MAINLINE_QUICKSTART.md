@@ -4,7 +4,7 @@
 >
 > `HISTORICAL_8692_EGODESKTOP_ROUTE: SUPERSEDED_ARCHIVE_POINTER_ONLY`
 >
-> EgoOperator remains the active runtime default. V2 product development now occurs from Ego `main`; the linked V2 worktree is frozen rollback-reference only. The V2 console remains default-off and is not connected to the runtime mainline.
+> EgoOperator remains the active runtime default. V2 product development occurs from Ego `main`; the former linked V2 checkout is retired and recoverable from branch `codex/ego-v2-product-first-001a` plus its verified external bundle. The V2 console remains default-off and is not connected to the runtime mainline.
 
 Default-off V2 console from this repository:
 

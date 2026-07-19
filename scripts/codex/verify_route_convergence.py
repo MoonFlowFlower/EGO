@@ -1150,7 +1150,10 @@ def _r1_visual_program_projection(program_state: dict[str, Any]) -> dict[str, An
             "real_trigger_evidence": v2.get("real_trigger_evidence"),
             "forbidden_next_actions": v2.get("forbidden_next_actions"),
             "claim_ceiling": v2.get("claim_ceiling"),
-            "worktree_authority": v2.get("worktree_authority"),
+            # The committed takeover envelope is immutable provenance.  The
+            # active local branch/bundle-only retirement disposition is checked
+            # independently below rather than being rewritten into that source.
+            "worktree_authority": route_sync_guard._r1_visual_source_worktree_authority_projection(),  # noqa: SLF001
         },
         "transcription_contract": route_guard.get("transcription_contract"),
         "field_crosswalk": route_guard.get("field_crosswalk"),
@@ -1200,6 +1203,12 @@ def _validate_r1_visual_route_guard_v7(
                 errors.append("Phase-C V2 program projection canonical bytes mismatch")
         except (TypeError, ValueError, UnicodeEncodeError):
             errors.append("Phase-C V2 program projection canonicalization failed")
+
+    expected_active_worktrees = (
+        route_sync_guard._r1_visual_retired_worktree_authority_projection()  # noqa: SLF001
+    )
+    if (route_guard.get("v2_authority") or {}).get("worktree_authority") != expected_active_worktrees:
+        errors.append("Phase-C V2 active retirement worktree authority mismatch")
 
     task_routes = ((route_guard.get("route_views") or {}).get("task_routes") or {})
     active = task_routes.get("ego-v2-product-main-takeover-001a") or {}

@@ -1,0 +1,46 @@
+{
+  "schema_version": "ego.v2_linked_worktree_retirement.red_review.v1",
+  "task_id": "EGO-V2-LINKED-WORKTREE-RETIREMENT-001A-R2",
+  "card_sha256": "0fef18a8a25483f2ff703dcf7a4a35841449ca4b11cf0ac3c087fdafbc63c043",
+  "precheck": {
+    "verdict": "NO_BLOCKING_FINDINGS",
+    "reviewer": "Claude",
+    "review_source": "Claude Web",
+    "review_id": "linked-worktree-retirement-r2-scope-repair-precheck",
+    "packet_sha256": null,
+    "manifest_sha256": null,
+    "raw_output_path": "D:/Project/AIProject/MyProject/external-plans/EGO-V2-LINKED-WORKTREE-RETIREMENT-001A-R2/CLAUDE_PRECHECK_RESPONSE.txt",
+    "raw_output_sha256": "f8d0727b4a3a7ea73c0fdfcd3f4c0ecece8d4cffb5cf4ea03ea1750cdce07a0f",
+    "blocking_findings": []
+  },
+  "postcheck": {
+    "verdict": "NO_BLOCKING_FINDINGS",
+    "reviewer": "Claude",
+    "review_source": "Claude Web",
+    "review_id": "linked-worktree-retirement-r2-staged-postcheck-recheck",
+    "source_url": "https://claude.ai/chat/7c1b9198-26ff-4356-adfc-e65a3f3f60fd",
+    "packet_sha256": "9aa8eb9432134238a421459f4fd15adf19179623c097e4311c9fbafae7ad23a2",
+    "manifest_sha256": "19ad9f35e3eb1c3e44b7a606622c04d1eb3c8ce043b1c985367bcef8f3565f25",
+    "raw_output_path": "D:/Project/AIProject/MyProject/external-checkpoints/EGO-V2-LINKED-WORKTREE-RETIREMENT-001A/staged-postcheck/CLAUDE_STAGED_POSTCHECK_NO_BLOCKING_RESPONSE.txt",
+    "raw_output_sha256": "892c31bab3cb33d587c9b0c3d8c5a0d0ec9b2aec63e6014db3e21832493928d8",
+    "raw_output_bytes": 5888,
+    "blocking_findings": []
+  },
+  "invalidated_postchecks": [
+    {
+      "verdict": "BLOCKING_FINDINGS",
+      "reviewer": "Claude",
+      "review_source": "Claude Web",
+      "packet_sha256": "b1d10323edb2ca25325a25147ce5e689e15637c82e90ac65d65b9a39f975f430",
+      "manifest_sha256": "97d86ac4f045703fa22736b5c70e781f6295c4decea7c43de6a58a2b04cf0282",
+      "raw_output_path": "D:/Project/AIProject/MyProject/external-checkpoints/EGO-V2-LINKED-WORKTREE-RETIREMENT-001A/staged-postcheck/CLAUDE_STAGED_POSTCHECK_BLOCKING_RESPONSE.txt",
+      "raw_output_sha256": "94d4ef36b48eb95a61d0a3d574484bb45c0b59b91adde25e2942a149446834e3",
+      "blocking_findings": [
+        "PROGRAM_STATE_UNIFIED retirement red_review bound the superseded R1 card and used an ambiguous exact_path_count"
+      ],
+      "invalidation_reason": "authorized PROGRAM_STATE_UNIFIED binding repair changed the staged diff"
+    }
+  ],
+  "review_invalidated_by_diff_change": false,
+  "auto_remote_anchor": "forbidden"
+}
