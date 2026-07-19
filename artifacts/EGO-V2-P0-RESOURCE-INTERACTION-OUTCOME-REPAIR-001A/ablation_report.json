@@ -1,0 +1,21 @@
+{
+  "aggregation_rule": "rerun the same serialized state and command with in-memory FOOD_ENERGY_GAIN=0",
+  "code_path_hash": "c7c9fd6d128d5e5104ea5c7c2df4302558ccf0fa26dd9b5b392db683089da6d3",
+  "food_gain_disabled": {
+    "ablation_energy_after": 0.0,
+    "canonical_energy_after": 0.24,
+    "same_resource_interaction": true,
+    "same_selected_action": true
+  },
+  "input_artifacts": [
+    "state:47e1c8646ccdcaf0fb49066a96708880b8fd0242f36e92796369b4e31fdad7c5",
+    "command:5c3bcc1568ed3a5db611d76072a3c73315086141774f5c5449b8846027e5129d"
+  ],
+  "producer_function": "verify_ego_v2_p0_resource_interaction_outcome_repair_001a._food_gain_ablation",
+  "run_id": "ego-v2-p0-resource-interaction-verify-food-gain-ablation",
+  "schema_version": "ego.life_playground.resource_ablation.v1",
+  "seed_context_episode_ids": {
+    "episode_id": "episode-000000-0982fd8e254238a3",
+    "run_seed": 18
+  }
+}

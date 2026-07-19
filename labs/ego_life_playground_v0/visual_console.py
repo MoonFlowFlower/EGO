@@ -113,12 +113,12 @@ _ZH_LABELS: dict[str, dict[str, str]] = {
     "action": {
         "approach": "靠近",
         "explore": "探索",
-        "forage": "获取资源",
+        "forage": "尝试获取资源",
         "rest": "休整",
         "withdraw": "撤离",
     },
     "event": {
-        "resource_appears": "资源出现",
+        "resource_appears": "资源线索出现",
         "social_signal": "社交信号出现",
         "novel_object": "新奇物体出现",
         "threat_nearby": "附近出现威胁",
@@ -150,6 +150,13 @@ _ZH_LABELS: dict[str, dict[str, str]] = {
         "connection": "连接",
         "stimulation": "刺激",
     },
+}
+
+_RESOURCE_FAILURE_LABELS = {
+    None: "无",
+    "no_resource_event": "当前事件没有可结算资源",
+    "resource_not_attempted": "未执行资源获取尝试",
+    "harmful_or_unusable_resource": "资源有害或不可用",
 }
 
 
@@ -245,6 +252,13 @@ def build_chinese_causal_view(frame: RecoveryFrame) -> dict[str, Any]:
                 "当前预期": "未记录／未知",
                 "实际结果": "未记录／未知",
                 "预测误差": "未记录／未知",
+                "资源实例": "未记录／未知",
+                "资源结果": "未记录／未知",
+                "失败原因": "未记录／未知",
+                "食物补能": "未记录／未知",
+                "基础消耗": "未记录／未知",
+                "动作成本": "未记录／未知",
+                "能量净变化": "未记录／未知",
                 "更新与巩固": "未记录／未知",
                 "内部状态变化": _format_internal_state(state.get("organism")),
                 "记忆与来源变化": "未记录／未知",
@@ -323,6 +337,35 @@ def build_chinese_causal_view(frame: RecoveryFrame) -> dict[str, Any]:
     claim_update = claim_update if isinstance(claim_update, Mapping) else {}
     memory_bytes = trace.get("memory_bytes")
     memory_bytes = memory_bytes if isinstance(memory_bytes, Mapping) else {}
+    world_transition = trace.get("world_transition")
+    world_transition = (
+        world_transition if isinstance(world_transition, Mapping) else {}
+    )
+    resource_interaction = world_transition.get("resource_interaction")
+    resource_interaction = (
+        resource_interaction if isinstance(resource_interaction, Mapping) else {}
+    )
+    metabolism = trace.get("metabolism")
+    metabolism = metabolism if isinstance(metabolism, Mapping) else {}
+    if resource_interaction.get("resolved") is True:
+        resource_result = (
+            "成功：已获得食物"
+            if resource_interaction.get("food_obtained") is True
+            else "失败：未获得食物"
+        )
+    elif resource_interaction.get("available") is True:
+        resource_result = "未结算：没有获取尝试"
+    elif resource_interaction:
+        resource_result = "未结算：当前无资源"
+    else:
+        resource_result = "未记录／未知"
+    failure_reason = _RESOURCE_FAILURE_LABELS.get(
+        resource_interaction.get("failure_reason"), "未记录／未知"
+    )
+    instance_id = resource_interaction.get("instance_id")
+    shown_instance_id = (
+        instance_id if type(instance_id) is str and instance_id else "无"
+    )
     update_text = (
         f"模型更新：{'已应用' if model_update.get('applied') is True else '未应用'}；"
         f"记忆写入：{'已应用' if memory_update.get('applied') is True else '未应用'}；"
@@ -365,6 +408,23 @@ def build_chinese_causal_view(frame: RecoveryFrame) -> dict[str, Any]:
             "当前预期": _format_delta(trace.get("prediction")),
             "实际结果": _format_delta(trace.get("actual_delta")),
             "预测误差": _format_delta(trace.get("prediction_error")),
+            "资源实例": shown_instance_id,
+            "资源结果": resource_result,
+            "失败原因": failure_reason,
+            "食物补能": _format_number(metabolism.get("food_gain"), signed=True),
+            "基础消耗": _format_number(
+                -float(metabolism["passive_decay"]), signed=True
+            )
+            if type(metabolism.get("passive_decay")) in {int, float}
+            else "未记录／未知",
+            "动作成本": _format_number(
+                -float(metabolism["action_cost"]), signed=True
+            )
+            if type(metabolism.get("action_cost")) in {int, float}
+            else "未记录／未知",
+            "能量净变化": _format_number(
+                metabolism.get("energy_delta"), signed=True
+            ),
             "更新与巩固": update_text,
             "内部状态变化": (
                 f"之前：{_format_internal_state(before_internal)}\n"

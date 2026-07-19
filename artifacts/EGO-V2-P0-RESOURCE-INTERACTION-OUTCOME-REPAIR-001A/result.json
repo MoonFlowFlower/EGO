@@ -1,0 +1,289 @@
+{
+  "aggregation_rule": "derive task status only by aggregate_checks over callable computed evidence records",
+  "checks": {
+    "controller_replay_and_tamper_checks": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "c7c9fd6d128d5e5104ea5c7c2df4302558ccf0fa26dd9b5b392db683089da6d3",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        {
+          "bytes": 6425,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-V2-P0-RESOURCE-INTERACTION-OUTCOME-REPAIR-001A\\replay_report.json",
+          "sha256": "93ae18e7514b83aed05e7451c96e648eb2cc3a8aba17b83735fd17f28cf2a77f"
+        }
+      ],
+      "producer_function": "verify_ego_v2_p0_resource_interaction_outcome_repair_001a._controller_replay_report",
+      "run_id": "ego-v2-p0-resource-interaction-verify",
+      "seed_context_episode_ids": {
+        "context_ids": [
+          "episode-000000-16de427cf0b205cd"
+        ],
+        "run_seed": 18
+      },
+      "value": true
+    },
+    "food_gain_ablation_energy_only": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "c7c9fd6d128d5e5104ea5c7c2df4302558ccf0fa26dd9b5b392db683089da6d3",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        {
+          "bytes": 901,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-V2-P0-RESOURCE-INTERACTION-OUTCOME-REPAIR-001A\\ablation_report.json",
+          "sha256": "751904ee31bcd10fcdb7be3228b2139850de062c7eef24d5914f621fa322f544"
+        }
+      ],
+      "producer_function": "verify_ego_v2_p0_resource_interaction_outcome_repair_001a._food_gain_ablation",
+      "run_id": "ego-v2-p0-resource-interaction-verify",
+      "seed_context_episode_ids": {
+        "context_ids": [
+          "episode-000000-0982fd8e254238a3"
+        ],
+        "run_seed": 18
+      },
+      "value": true
+    },
+    "hostile_baselines_diverge": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "c7c9fd6d128d5e5104ea5c7c2df4302558ccf0fa26dd9b5b392db683089da6d3",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        {
+          "bytes": 2790,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-V2-P0-RESOURCE-INTERACTION-OUTCOME-REPAIR-001A\\baseline_comparison.json",
+          "sha256": "aaf648699dcddb478a189a0280d12a35894142b15ed8028583c3c96ca1d71be9"
+        }
+      ],
+      "producer_function": "verify_ego_v2_p0_resource_interaction_outcome_repair_001a._baseline_report",
+      "run_id": "ego-v2-p0-resource-interaction-verify",
+      "seed_context_episode_ids": {
+        "context_ids": [
+          "episode-000000-d6d813c75542a626",
+          "episode-000000-0da55bcc8349a99f",
+          "episode-000000-b8a0a2854ae554c6"
+        ],
+        "run_seed": 18
+      },
+      "value": true
+    },
+    "negative_and_no_gain_controls": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "c7c9fd6d128d5e5104ea5c7c2df4302558ccf0fa26dd9b5b392db683089da6d3",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        {
+          "bytes": 123808,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-V2-P0-RESOURCE-INTERACTION-OUTCOME-REPAIR-001A\\trace.jsonl",
+          "sha256": "5ba18213b31e0ce9ae6666ed1867cb6089b5706d5768f663d692c166809f7f59"
+        }
+      ],
+      "producer_function": "verify_ego_v2_p0_resource_interaction_outcome_repair_001a.run_resource_interaction_verification",
+      "run_id": "ego-v2-p0-resource-interaction-verify",
+      "seed_context_episode_ids": {
+        "context_ids": [
+          "episode-000000-0da55bcc8349a99f",
+          "episode-000000-98980143ffb2f712",
+          "episode-000000-b8a0a2854ae554c6"
+        ],
+        "run_seed": 18
+      },
+      "value": true
+    },
+    "required_artifacts_present": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "c7c9fd6d128d5e5104ea5c7c2df4302558ccf0fa26dd9b5b392db683089da6d3",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-V2-P0-RESOURCE-INTERACTION-OUTCOME-REPAIR-001A"
+      ],
+      "producer_function": "verify_ego_v2_p0_resource_interaction_outcome_repair_001a.run_resource_interaction_verification",
+      "run_id": "ego-v2-p0-resource-interaction-verify",
+      "seed_context_episode_ids": {
+        "context_ids": [
+          "EGO-V2-P0-RESOURCE-INTERACTION-OUTCOME-REPAIR-001A"
+        ],
+        "run_seed": 18
+      },
+      "value": true
+    },
+    "resource_instance_identity_and_single_settlement": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "c7c9fd6d128d5e5104ea5c7c2df4302558ccf0fa26dd9b5b392db683089da6d3",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        "command:5c3bcc1568ed3a5db611d76072a3c73315086141774f5c5449b8846027e5129d",
+        {
+          "bytes": 6425,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-V2-P0-RESOURCE-INTERACTION-OUTCOME-REPAIR-001A\\replay_report.json",
+          "sha256": "93ae18e7514b83aed05e7451c96e648eb2cc3a8aba17b83735fd17f28cf2a77f"
+        }
+      ],
+      "producer_function": "ego_life_playground_v0.microworld.transition_world + SQLiteEventStore.append_step",
+      "run_id": "ego-v2-p0-resource-interaction-verify",
+      "seed_context_episode_ids": {
+        "context_ids": [
+          "episode-000000-d6d813c75542a626",
+          "ego-v2-p0-resource-interaction-verify-controller"
+        ],
+        "run_seed": 18
+      },
+      "value": true
+    },
+    "resource_leakage_scan": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "c7c9fd6d128d5e5104ea5c7c2df4302558ccf0fa26dd9b5b392db683089da6d3",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        {
+          "bytes": 2464,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-V2-P0-RESOURCE-INTERACTION-OUTCOME-REPAIR-001A\\leakage_report.json",
+          "sha256": "b3b51a14e17c319fe5cb19abd9b206e5390ac7c3f27ec769b95292496f604129"
+        }
+      ],
+      "producer_function": "verify_ego_v2_p0_resource_interaction_outcome_repair_001a.scan_policy_for_resource_leakage",
+      "run_id": "ego-v2-p0-resource-interaction-verify",
+      "seed_context_episode_ids": {
+        "context_ids": [
+          "episode-000000-d6d813c75542a626"
+        ],
+        "run_seed": 18
+      },
+      "value": true
+    },
+    "stationary_positive_causal_repair": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "c7c9fd6d128d5e5104ea5c7c2df4302558ccf0fa26dd9b5b392db683089da6d3",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        {
+          "bytes": 123808,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-V2-P0-RESOURCE-INTERACTION-OUTCOME-REPAIR-001A\\trace.jsonl",
+          "sha256": "5ba18213b31e0ce9ae6666ed1867cb6089b5706d5768f663d692c166809f7f59"
+        },
+        "command:5c3bcc1568ed3a5db611d76072a3c73315086141774f5c5449b8846027e5129d"
+      ],
+      "producer_function": "verify_ego_v2_p0_resource_interaction_outcome_repair_001a.run_resource_interaction_verification",
+      "run_id": "ego-v2-p0-resource-interaction-verify",
+      "seed_context_episode_ids": {
+        "context_ids": [
+          "episode-000000-d6d813c75542a626"
+        ],
+        "run_seed": 18
+      },
+      "value": true
+    },
+    "trace_bound_visual_result": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "c7c9fd6d128d5e5104ea5c7c2df4302558ccf0fa26dd9b5b392db683089da6d3",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        "trace:80868211d03167e29bead07931a68a910f9bca3da943d8f8e37a5b66ade1fa61",
+        {
+          "bytes": 71057,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\visual_console.py",
+          "sha256": "e554e1956ef2c4bd7324097bc58a77f5e5cd948c43f67d0733f91de9ec51c89f"
+        },
+        {
+          "bytes": 6425,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-V2-P0-RESOURCE-INTERACTION-OUTCOME-REPAIR-001A\\replay_report.json",
+          "sha256": "93ae18e7514b83aed05e7451c96e648eb2cc3a8aba17b83735fd17f28cf2a77f"
+        }
+      ],
+      "producer_function": "verify_ego_v2_p0_resource_interaction_outcome_repair_001a._visual_trace_binding_report",
+      "run_id": "ego-v2-p0-resource-interaction-verify",
+      "seed_context_episode_ids": {
+        "context_ids": [
+          "episode-000000-16de427cf0b205cd"
+        ],
+        "run_seed": 18
+      },
+      "value": true
+    }
+  },
+  "claim_ceiling": "Layer 2 repair only",
+  "code_path_hash": "c7c9fd6d128d5e5104ea5c7c2df4302558ccf0fa26dd9b5b392db683089da6d3",
+  "input_artifacts": [
+    {
+      "bytes": 43014,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_resource_interaction_outcome_repair_001a.py",
+      "sha256": "e729a75c6e00b42c614b63aa72ea732c6ebf10e8a458e713cead23cba591d162"
+    },
+    {
+      "bytes": 85985,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+      "sha256": "10d2c0aa10f937c13b05f4a68c652ac34e89e5e20b1c63f1961769316779b9ef"
+    },
+    {
+      "bytes": 29082,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\microworld.py",
+      "sha256": "11e0924b8acf09bd9a42997a10f96d30917b3c60cfdd7c3b4edac81a6f26cae5"
+    },
+    {
+      "bytes": 71057,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\visual_console.py",
+      "sha256": "e554e1956ef2c4bd7324097bc58a77f5e5cd948c43f67d0733f91de9ec51c89f"
+    },
+    {
+      "bytes": 7948,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+      "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+    },
+    {
+      "bytes": 13786,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+      "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+    },
+    {
+      "bytes": 15116,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-RESOURCE-INTERACTION-OUTCOME-REPAIR-001A.md",
+      "sha256": "c7f3ea8746fb22746dedd1cbc3990be5e435890867a4a85d5049a530cab539c7"
+    },
+    {
+      "bytes": 123808,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-V2-P0-RESOURCE-INTERACTION-OUTCOME-REPAIR-001A\\trace.jsonl",
+      "sha256": "5ba18213b31e0ce9ae6666ed1867cb6089b5706d5768f663d692c166809f7f59"
+    },
+    {
+      "bytes": 2790,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-V2-P0-RESOURCE-INTERACTION-OUTCOME-REPAIR-001A\\baseline_comparison.json",
+      "sha256": "aaf648699dcddb478a189a0280d12a35894142b15ed8028583c3c96ca1d71be9"
+    },
+    {
+      "bytes": 901,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-V2-P0-RESOURCE-INTERACTION-OUTCOME-REPAIR-001A\\ablation_report.json",
+      "sha256": "751904ee31bcd10fcdb7be3228b2139850de062c7eef24d5914f621fa322f544"
+    },
+    {
+      "bytes": 2464,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-V2-P0-RESOURCE-INTERACTION-OUTCOME-REPAIR-001A\\leakage_report.json",
+      "sha256": "b3b51a14e17c319fe5cb19abd9b206e5390ac7c3f27ec769b95292496f604129"
+    },
+    {
+      "bytes": 6425,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-V2-P0-RESOURCE-INTERACTION-OUTCOME-REPAIR-001A\\replay_report.json",
+      "sha256": "93ae18e7514b83aed05e7451c96e648eb2cc3a8aba17b83735fd17f28cf2a77f"
+    },
+    {
+      "bytes": 2211,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-V2-P0-RESOURCE-INTERACTION-OUTCOME-REPAIR-001A\\experiment_ledger.jsonl",
+      "sha256": "82a489c3adc02f5b449f97dcda2ab10e82d73558714e160fdc42c8d8b67153b2"
+    },
+    {
+      "bytes": 496,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-V2-P0-RESOURCE-INTERACTION-OUTCOME-REPAIR-001A\\claim_ceiling.txt",
+      "sha256": "143f35b386eb627af4eb1d93ba5a168a9b6d51ca0619621a6b7ec3d39d849eef"
+    }
+  ],
+  "producer_function": "verify_ego_v2_p0_resource_interaction_outcome_repair_001a.run_resource_interaction_verification",
+  "run_id": "ego-v2-p0-resource-interaction-verify",
+  "seed_context_episode_ids": {
+    "context_ids": [
+      "episode-000000-d6d813c75542a626",
+      "episode-000000-0da55bcc8349a99f",
+      "ego-v2-p0-resource-interaction-verify-controller"
+    ],
+    "run_seed": 18
+  },
+  "task_id": "EGO-V2-P0-RESOURCE-INTERACTION-OUTCOME-REPAIR-001A",
+  "verdict": "pass"
+}

@@ -922,7 +922,7 @@ def test_action_repair_claim_retrieval_filters_mismatched_cue_and_goal_events():
     ]
 
 
-def test_action_repair_zero_distance_repeat_writes_no_site_outcome_claim():
+def test_action_repair_stationary_new_resource_writes_site_outcome_claim():
     state = engine.initial_state(
         {
             "energy": 0.0,
@@ -953,8 +953,55 @@ def test_action_repair_zero_distance_repeat_writes_no_site_outcome_claim():
     assert traces[0]["world_transition"]["moved"] is True
     assert traces[0]["claim_update"]["applied"] is True
     assert traces[1]["world_transition"]["moved"] is False
-    assert traces[1]["world_transition"]["outcome"] is None
-    assert traces[1]["claim_update"] == {
+    assert traces[1]["world_transition"]["outcome"] == 1.0
+    assert traces[1]["world_transition"]["visited_site"] == "site_a"
+    assert traces[1]["world_transition"]["resource_interaction"]["resolved"] is True
+    assert traces[1]["world_transition"]["resource_interaction"][
+        "food_obtained"
+    ] is True
+    assert traces[1]["claim_update"]["applied"] is True
+    assert (
+        traces[0]["world_transition"]["resource_interaction"]["instance_id"]
+        != traces[1]["world_transition"]["resource_interaction"]["instance_id"]
+    )
+
+
+def test_action_repair_zero_distance_without_resource_writes_no_site_outcome_claim():
+    run_id = "action-repair-zero-distance-no-resource"
+    state = engine.initial_state(
+        {
+            "energy": 0.0,
+            "safety": 0.9,
+            "connection": 0.9,
+            "stimulation": 0.9,
+        },
+        run_id=run_id,
+        seed=18,
+    )
+    state["world"]["agent"]["position"] = "site_a"
+    state["world"]["public_observation"]["agent_position"] = "site_a"
+    microworld.verify_world_state(state["world"])
+    command = engine.make_command(
+        sequence=1,
+        cue="quiet",
+        world_event="quiet_interval",
+        trigger_source="paired_intervention",
+        interventions=engine.DEFAULT_INTERVENTIONS,
+        prev_command_hash=None,
+    )
+
+    trace = engine.compute_step(
+        state, command, engine.make_run_metadata(run_id, 18)
+    ).trace
+
+    assert trace["selected_action"] == "forage"
+    assert trace["world_transition"]["moved"] is False
+    assert trace["world_transition"]["outcome"] is None
+    assert trace["world_transition"]["food_obtained"] is False
+    assert trace["world_transition"]["resource_interaction"]["failure_reason"] == (
+        "no_resource_event"
+    )
+    assert trace["claim_update"] == {
         "applied": False,
         "event_id": None,
         "claim_id": None,

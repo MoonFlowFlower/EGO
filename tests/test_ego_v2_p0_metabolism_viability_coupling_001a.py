@@ -100,7 +100,7 @@ def test_every_no_food_tick_pays_passive_decay_and_action_cost():
     assert all(after < before for before, after in zip(energies, energies[1:]))
 
 
-def test_forage_requires_real_positive_moved_food_outcome():
+def test_forage_requires_real_positive_resource_interaction_outcome():
     negative_run = "metabolism-forage-negative"
     negative_state = _energy_focused_state(negative_run, seed=17)
     negative_meta = engine.make_run_metadata(negative_run, 17)
@@ -127,8 +127,12 @@ def test_forage_requires_real_positive_moved_food_outcome():
     )
     assert repeated.trace["selected_action"] == "forage"
     assert repeated.trace["world_transition"]["moved"] is False
-    assert repeated.trace["world_outcome"]["value"] is None
+    assert repeated.trace["world_outcome"]["value"] == -1.0
     assert repeated.trace["world_transition"]["food_obtained"] is False
+    assert repeated.trace["world_transition"]["resource_interaction"]["resolved"] is True
+    assert repeated.trace["world_transition"]["resource_interaction"][
+        "failure_reason"
+    ] == "harmful_or_unusable_resource"
     assert repeated.trace["food_gain"] == 0.0
     assert repeated.trace["energy_after"] < repeated.trace["energy_before"]
 

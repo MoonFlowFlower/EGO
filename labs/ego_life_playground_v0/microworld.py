@@ -101,6 +101,20 @@ def _canonical_hash(value: Any) -> str:
     return hashlib.sha256(_canonical_json(value).encode("utf-8")).hexdigest()
 
 
+def resource_instance_id_for_command(source_command_hash: str) -> str:
+    """Derive a post-outcome resource instance ID from one source command."""
+
+    if not (
+        type(source_command_hash) is str
+        and len(source_command_hash) == 64
+        and all(character in "0123456789abcdef" for character in source_command_hash)
+    ):
+        raise ValueError("resource source command hash must be sha256")
+    return hashlib.sha256(
+        f"resource_instance|{source_command_hash}".encode("utf-8")
+    ).hexdigest()
+
+
 def cue_for_event(event: str) -> str:
     if type(event) is not str or event not in _EVENT_TO_CUE:
         raise ValueError(
@@ -387,6 +401,7 @@ def verify_world_state(world: Any) -> None:
     history = private["outcome_history"]
     if not isinstance(history, list) or len(history) != private["visit_count"]:
         raise ValueError("microworld outcome history does not match visit_count")
+    source_hashes: set[str] = set()
     for record in history:
         if not isinstance(record, Mapping) or set(record) != _PRIVATE_HISTORY_KEYS:
             raise ValueError("microworld private history schema mismatch")
@@ -407,6 +422,9 @@ def verify_world_state(world: Any) -> None:
             and all(character in "0123456789abcdef" for character in source_hash)
         ):
             raise ValueError("microworld private history command hash is not sha256")
+        if source_hash in source_hashes:
+            raise ValueError("microworld private history command hash is duplicated")
+        source_hashes.add(source_hash)
 
 
 def world_hash(world: Mapping[str, Any]) -> str:
@@ -494,10 +512,31 @@ def transition_world(
     from_position = str(transitioned["agent"]["position"])
     to_position = str(path["target_position"])
     moved = from_position != to_position
-    visited_site = _SITE_ACTION.get(selected_action) if moved else None
     transitioned["agent"]["position"] = to_position
     observation = deepcopy(transitioned["public_observation"])
     observation["agent_position"] = to_position
+    resource_event = observation.get("event") == "resource_appears"
+    resource_available = bool(
+        resource_event
+        and any(
+            item.get("kind") == "resource"
+            and item.get("position") == "site_a"
+            and item.get("visible") is True
+            for item in transitioned["objects"]
+            if isinstance(item, Mapping)
+        )
+    )
+    resource_attempted = bool(
+        selected_action == "forage" and to_position == "site_a"
+    )
+    resource_resolved = resource_available and resource_attempted
+    resource_instance_id = (
+        resource_instance_id_for_command(source_command_hash)
+        if resource_available
+        else None
+    )
+    moved_site = _SITE_ACTION.get(selected_action) if moved else None
+    visited_site = "site_a" if resource_resolved else moved_site
     outcome: float | None = None
     drift_applied = False
     if visited_site is not None:
@@ -531,12 +570,24 @@ def transition_world(
                 else "site_a_high"
             )
             drift_applied = True
-    food_obtained = bool(
-        selected_action == "forage"
-        and moved
-        and visited_site == "site_a"
-        and outcome == 1.0
-    )
+    food_obtained = bool(resource_resolved and outcome == 1.0)
+    if not resource_available:
+        resource_failure_reason = "no_resource_event"
+    elif not resource_attempted:
+        resource_failure_reason = "resource_not_attempted"
+    elif not food_obtained:
+        resource_failure_reason = "harmful_or_unusable_resource"
+    else:
+        resource_failure_reason = None
+    resource_interaction = {
+        "instance_id": resource_instance_id,
+        "available": resource_available,
+        "attempted": resource_attempted,
+        "resolved": resource_resolved,
+        "outcome": outcome if resource_resolved else None,
+        "food_obtained": food_obtained,
+        "failure_reason": resource_failure_reason,
+    }
     observation["revealed_outcome"] = outcome
     transitioned["public_observation"] = observation
     verify_world_state(transitioned)
@@ -550,6 +601,7 @@ def transition_world(
         "visited_site": visited_site,
         "outcome": outcome,
         "food_obtained": food_obtained,
+        "resource_interaction": resource_interaction,
         "revealed_after_selection": outcome is not None,
     }
 
@@ -641,6 +693,7 @@ __all__ = [
     "observation_hash",
     "public_world_hash",
     "public_world_projection",
+    "resource_instance_id_for_command",
     "oracle_evidence_record",
     "observe_world_event",
     "transition_world",

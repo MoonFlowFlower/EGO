@@ -25,6 +25,7 @@ from .microworld import (
     legal_action_gate,
     observation_hash,
     observe_world_event,
+    resource_instance_id_for_command,
     transition_world,
     verify_world_state,
     world_hash,
@@ -44,7 +45,7 @@ EPISODE_SPAN_TICKS = 8
 STATE_SCHEMA_VERSION = "ego.life_playground.state.v2"
 RUN_SCHEMA_VERSION = "ego.life_playground.run.v2"
 COMMAND_SCHEMA_VERSION = "ego.life_playground.command.v4"
-TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v5"
+TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v6"
 
 TRIGGER_SOURCES = (
     "ui_step_button",
@@ -718,19 +719,74 @@ def compute_metabolism_ledger(
         raise EngineInvariantError("metabolism selected action is not canonical")
     if not isinstance(world_transition, Mapping):
         raise EngineInvariantError("metabolism world transition must be an object")
+    interaction = world_transition.get("resource_interaction")
+    interaction_keys = {
+        "instance_id",
+        "available",
+        "attempted",
+        "resolved",
+        "outcome",
+        "food_obtained",
+        "failure_reason",
+    }
+    if not isinstance(interaction, Mapping) or set(interaction) != interaction_keys:
+        raise EngineInvariantError("resource interaction schema mismatch")
+    available = interaction.get("available")
+    attempted = interaction.get("attempted")
+    resolved = interaction.get("resolved")
+    interaction_food = interaction.get("food_obtained")
+    if any(type(value) is not bool for value in (available, attempted, resolved, interaction_food)):
+        raise EngineInvariantError("resource interaction flags must be boolean")
+    if resolved != bool(available and attempted):
+        raise EngineInvariantError("resource interaction resolution is inconsistent")
+    instance_id = interaction.get("instance_id")
+    expected_instance_id = resource_instance_id_for_command(command_hash)
+    if available:
+        if instance_id != expected_instance_id:
+            raise EngineInvariantError("resource interaction instance id mismatch")
+    elif instance_id is not None:
+        raise EngineInvariantError("unavailable resource interaction has an instance id")
+    interaction_outcome = interaction.get("outcome")
+    if resolved:
+        if type(interaction_outcome) is not float or interaction_outcome not in {-1.0, 1.0}:
+            raise EngineInvariantError("resolved resource interaction outcome is invalid")
+        if interaction_outcome != world_transition.get("outcome"):
+            raise EngineInvariantError("resource interaction outcome differs from world outcome")
+    elif interaction_outcome is not None:
+        raise EngineInvariantError("unresolved resource interaction has an outcome")
+    qualifying_interaction_food = bool(resolved and interaction_outcome == 1.0)
+    if interaction_food != qualifying_interaction_food:
+        raise EngineInvariantError("resource interaction food flag differs from outcome")
+    expected_failure_reason = (
+        "no_resource_event"
+        if not available
+        else (
+            "resource_not_attempted"
+            if not attempted
+            else (
+                "harmful_or_unusable_resource"
+                if not interaction_food
+                else None
+            )
+        )
+    )
+    if interaction.get("failure_reason") != expected_failure_reason:
+        raise EngineInvariantError("resource interaction failure reason is inconsistent")
+
     food_obtained = world_transition.get("food_obtained")
     if type(food_obtained) is not bool:
         raise EngineInvariantError("world transition food_obtained must be boolean")
     qualifying_food_outcome = bool(
         selected_action == "forage"
         and world_transition.get("selected_action") == "forage"
-        and world_transition.get("moved") is True
         and world_transition.get("visited_site") == "site_a"
         and world_transition.get("outcome") == 1.0
+        and resolved
+        and interaction_food
     )
-    if food_obtained != qualifying_food_outcome:
+    if food_obtained != interaction_food or food_obtained != qualifying_food_outcome:
         raise EngineInvariantError(
-            "environment food flag differs from realized forage outcome"
+            "environment food flag differs from resource interaction outcome"
         )
     if type(episode_id) is not str or not episode_id:
         raise EngineInvariantError("metabolism episode_id must be non-empty")
