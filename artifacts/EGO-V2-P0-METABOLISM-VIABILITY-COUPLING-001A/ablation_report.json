@@ -1,6 +1,6 @@
 {
   "aggregation_rule": "same serialized state and command, then rerun with food gain zeroed in-memory",
-  "code_path_hash": "50a1d099f5f753a1c483e4264cc038fdc025066cf879785ad9f724f29b5d3113",
+  "code_path_hash": "9c57113b8c192a89f4c8e16d3392242db6ada51b553375332ecb0dd807409db3",
   "food_gain_disabled": {
     "ablation_energy_after": 0.36,
     "ablation_food_gain": 0.0,

@@ -743,8 +743,14 @@ def run_metabolism_verification(output_dir: str | Path) -> dict[str, Any]:
         {
             "schema_version": "ego.life_playground.metabolism_experiment_ledger_entry.v1",
             "producer_function": "run_metabolism_verification",
+            "input_artifacts": deepcopy(inputs),
             "task_id": TASK_ID,
             "run_id": RUN_ID,
+            "seed_context_episode_ids": {
+                "run_seed": RUN_SEED,
+                "focus_iteration": 1,
+            },
+            "aggregation_rule": "record the scoped computed verifier verdict after the metabolism coupling iteration",
             "focus_iteration": 1,
             "phase": "A",
             "changed_variable": "metabolism_viability_coupling",
@@ -755,8 +761,14 @@ def run_metabolism_verification(output_dir: str | Path) -> dict[str, Any]:
         {
             "schema_version": "ego.life_playground.metabolism_experiment_ledger_entry.v1",
             "producer_function": "run_metabolism_verification",
+            "input_artifacts": deepcopy(inputs),
             "task_id": TASK_ID,
             "run_id": RUN_ID,
+            "seed_context_episode_ids": {
+                "run_seed": RUN_SEED,
+                "focus_iteration": 2,
+            },
+            "aggregation_rule": "record the scoped computed verifier verdict after the replay-provenance hardening iteration",
             "focus_iteration": 2,
             "phase": "A",
             "changed_variable": "fresh_process_replay_and_tamper_provenance",

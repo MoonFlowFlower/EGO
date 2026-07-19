@@ -3,13 +3,13 @@
   "checks": {
     "baseline_shows_pre_repair_false_gain": {
       "aggregation_rule": "boolean result from the named callable computation path",
-      "code_path_hash": "50a1d099f5f753a1c483e4264cc038fdc025066cf879785ad9f724f29b5d3113",
+      "code_path_hash": "9c57113b8c192a89f4c8e16d3392242db6ada51b553375332ecb0dd807409db3",
       "evidence_record_type": "computed_evidence",
       "input_artifacts": [
         {
-          "bytes": 32141,
+          "bytes": 32751,
           "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
-          "sha256": "ccd43ae3a40927c2d81e59418589f187c8641b53b24bd90a888e35cc86a3498a"
+          "sha256": "23f0313c938b75133d7345289dd139172c76a685bac8da8e482181818e04a8cf"
         },
         {
           "bytes": 83335,
@@ -49,13 +49,13 @@
     },
     "critical_energy_restricts_next_selector_call": {
       "aggregation_rule": "boolean result from the named callable computation path",
-      "code_path_hash": "50a1d099f5f753a1c483e4264cc038fdc025066cf879785ad9f724f29b5d3113",
+      "code_path_hash": "9c57113b8c192a89f4c8e16d3392242db6ada51b553375332ecb0dd807409db3",
       "evidence_record_type": "computed_evidence",
       "input_artifacts": [
         {
-          "bytes": 32141,
+          "bytes": 32751,
           "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
-          "sha256": "ccd43ae3a40927c2d81e59418589f187c8641b53b24bd90a888e35cc86a3498a"
+          "sha256": "23f0313c938b75133d7345289dd139172c76a685bac8da8e482181818e04a8cf"
         },
         {
           "bytes": 83335,
@@ -95,13 +95,13 @@
     },
     "food_gain_ablation_load_bears": {
       "aggregation_rule": "boolean result from the named callable computation path",
-      "code_path_hash": "50a1d099f5f753a1c483e4264cc038fdc025066cf879785ad9f724f29b5d3113",
+      "code_path_hash": "9c57113b8c192a89f4c8e16d3392242db6ada51b553375332ecb0dd807409db3",
       "evidence_record_type": "computed_evidence",
       "input_artifacts": [
         {
-          "bytes": 32141,
+          "bytes": 32751,
           "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
-          "sha256": "ccd43ae3a40927c2d81e59418589f187c8641b53b24bd90a888e35cc86a3498a"
+          "sha256": "23f0313c938b75133d7345289dd139172c76a685bac8da8e482181818e04a8cf"
         },
         {
           "bytes": 83335,
@@ -141,13 +141,13 @@
     },
     "monotonic_no_food_decay": {
       "aggregation_rule": "boolean result from the named callable computation path",
-      "code_path_hash": "50a1d099f5f753a1c483e4264cc038fdc025066cf879785ad9f724f29b5d3113",
+      "code_path_hash": "9c57113b8c192a89f4c8e16d3392242db6ada51b553375332ecb0dd807409db3",
       "evidence_record_type": "computed_evidence",
       "input_artifacts": [
         {
-          "bytes": 32141,
+          "bytes": 32751,
           "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
-          "sha256": "ccd43ae3a40927c2d81e59418589f187c8641b53b24bd90a888e35cc86a3498a"
+          "sha256": "23f0313c938b75133d7345289dd139172c76a685bac8da8e482181818e04a8cf"
         },
         {
           "bytes": 83335,
@@ -187,13 +187,13 @@
     },
     "negative_or_zero_distance_forage_has_no_food_gain": {
       "aggregation_rule": "boolean result from the named callable computation path",
-      "code_path_hash": "50a1d099f5f753a1c483e4264cc038fdc025066cf879785ad9f724f29b5d3113",
+      "code_path_hash": "9c57113b8c192a89f4c8e16d3392242db6ada51b553375332ecb0dd807409db3",
       "evidence_record_type": "computed_evidence",
       "input_artifacts": [
         {
-          "bytes": 32141,
+          "bytes": 32751,
           "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
-          "sha256": "ccd43ae3a40927c2d81e59418589f187c8641b53b24bd90a888e35cc86a3498a"
+          "sha256": "23f0313c938b75133d7345289dd139172c76a685bac8da8e482181818e04a8cf"
         },
         {
           "bytes": 83335,
@@ -233,13 +233,13 @@
     },
     "positive_food_outcome_replenishes_by_frozen_amount": {
       "aggregation_rule": "boolean result from the named callable computation path",
-      "code_path_hash": "50a1d099f5f753a1c483e4264cc038fdc025066cf879785ad9f724f29b5d3113",
+      "code_path_hash": "9c57113b8c192a89f4c8e16d3392242db6ada51b553375332ecb0dd807409db3",
       "evidence_record_type": "computed_evidence",
       "input_artifacts": [
         {
-          "bytes": 32141,
+          "bytes": 32751,
           "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
-          "sha256": "ccd43ae3a40927c2d81e59418589f187c8641b53b24bd90a888e35cc86a3498a"
+          "sha256": "23f0313c938b75133d7345289dd139172c76a685bac8da8e482181818e04a8cf"
         },
         {
           "bytes": 83335,
@@ -279,13 +279,13 @@
     },
     "real_controller_dispatch_exercises_live_path": {
       "aggregation_rule": "boolean result from the named callable computation path",
-      "code_path_hash": "50a1d099f5f753a1c483e4264cc038fdc025066cf879785ad9f724f29b5d3113",
+      "code_path_hash": "9c57113b8c192a89f4c8e16d3392242db6ada51b553375332ecb0dd807409db3",
       "evidence_record_type": "computed_evidence",
       "input_artifacts": [
         {
-          "bytes": 32141,
+          "bytes": 32751,
           "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
-          "sha256": "ccd43ae3a40927c2d81e59418589f187c8641b53b24bd90a888e35cc86a3498a"
+          "sha256": "23f0313c938b75133d7345289dd139172c76a685bac8da8e482181818e04a8cf"
         },
         {
           "bytes": 83335,
@@ -325,13 +325,13 @@
     },
     "replay_and_tamper_checks_pass": {
       "aggregation_rule": "boolean result from the named callable computation path",
-      "code_path_hash": "50a1d099f5f753a1c483e4264cc038fdc025066cf879785ad9f724f29b5d3113",
+      "code_path_hash": "9c57113b8c192a89f4c8e16d3392242db6ada51b553375332ecb0dd807409db3",
       "evidence_record_type": "computed_evidence",
       "input_artifacts": [
         {
-          "bytes": 32141,
+          "bytes": 32751,
           "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
-          "sha256": "ccd43ae3a40927c2d81e59418589f187c8641b53b24bd90a888e35cc86a3498a"
+          "sha256": "23f0313c938b75133d7345289dd139172c76a685bac8da8e482181818e04a8cf"
         },
         {
           "bytes": 83335,
@@ -372,13 +372,13 @@
     }
   },
   "claim_ceiling": "Bounded product-engineering repair only: each explicit V2 tick now pays passive energy decay plus action cost, only a realized environment-owned food outcome can replenish energy, critical energy restricts the canonical action set, and SQLite replay recomputes the same ledger from serialized state plus ordered commands. This does not establish viability as a mechanism, learning, memory causality, dynamic causal boundary, initiative, agency, autonomy, emotion, subjectivity, consciousness, electronic life, Joi-like existence, or product readiness.",
-  "code_path_hash": "50a1d099f5f753a1c483e4264cc038fdc025066cf879785ad9f724f29b5d3113",
+  "code_path_hash": "9c57113b8c192a89f4c8e16d3392242db6ada51b553375332ecb0dd807409db3",
   "failed_checks": [],
   "input_artifacts": [
     {
-      "bytes": 32141,
+      "bytes": 32751,
       "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
-      "sha256": "ccd43ae3a40927c2d81e59418589f187c8641b53b24bd90a888e35cc86a3498a"
+      "sha256": "23f0313c938b75133d7345289dd139172c76a685bac8da8e482181818e04a8cf"
     },
     {
       "bytes": 83335,
@@ -407,7 +407,7 @@
     },
     {
       "bytes": 248242,
-      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-V2-P0-METABOLISM-VIABILITY-COUPLING-001A\\trace.jsonl",
+      "path": "artifacts\\EGO-V2-P0-METABOLISM-VIABILITY-COUPLING-001A\\trace.jsonl",
       "sha256": "ba1cbfe0dc1e797624366d7049ab053b4899b0bd13e422ceb29e8c19dbb4fb28"
     }
   ],

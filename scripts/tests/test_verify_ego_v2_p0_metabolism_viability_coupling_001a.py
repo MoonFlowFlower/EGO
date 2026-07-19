@@ -100,6 +100,11 @@ def test_metabolism_verifier_emits_exact_artifacts_and_passes(tmp_path):
         "metabolism_viability_coupling",
         "fresh_process_replay_and_tamper_provenance",
     ]
+    assert all(entry["input_artifacts"] for entry in ledger)
+    assert [
+        entry["seed_context_episode_ids"]["focus_iteration"] for entry in ledger
+    ] == [1, 2]
+    assert all(entry["aggregation_rule"] for entry in ledger)
 
     scorecard = json.loads(
         (output / "stage_scorecard.json").read_text(encoding="utf-8")
