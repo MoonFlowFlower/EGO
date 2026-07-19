@@ -63,6 +63,9 @@ FORBIDDEN_RENDERER_TOKENS = (
     "correct_action",
 )
 APP_PATH = REPO_ROOT / "labs" / "ego_life_playground_v0" / "app.py"
+CONTROLLER_PATH = REPO_ROOT / "labs" / "ego_life_playground_v0" / "controller.py"
+TERMINAL_PATH = REPO_ROOT / "labs" / "ego_life_playground_v0" / "terminal.py"
+VISUAL_PATH = REPO_ROOT / "labs" / "ego_life_playground_v0" / "visual_console.py"
 ENGINE_PATH = REPO_ROOT / "labs" / "ego_life_playground_v0" / "engine.py"
 STORE_PATH = REPO_ROOT / "labs" / "ego_life_playground_v0" / "store.py"
 
@@ -87,7 +90,10 @@ def _code_path_hash() -> str:
         _canonical_bytes(
             {
                 "engine_code_path_hash": compute_code_path_hash(),
-                "app_sha256": _file_record(APP_PATH)["sha256"],
+                "view_module_sha256": {
+                    str(path.relative_to(REPO_ROOT)): _file_record(path)["sha256"]
+                    for path in (APP_PATH, CONTROLLER_PATH, TERMINAL_PATH, VISUAL_PATH)
+                },
                 "verifier_sha256": _file_record(Path(__file__))["sha256"],
             }
         )
@@ -139,7 +145,7 @@ def scan_forbidden_tokens(path: str | Path) -> dict[str, Any]:
     }
 
 
-def _scan_second_engine_path(path: Path = APP_PATH) -> dict[str, Any]:
+def _scan_second_engine_path(path: Path = VISUAL_PATH) -> dict[str, Any]:
     tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
     window_class = next(
         node
@@ -327,6 +333,9 @@ def run_visual_verification(
 
     input_artifacts = [
         _file_record(APP_PATH),
+        _file_record(CONTROLLER_PATH),
+        _file_record(TERMINAL_PATH),
+        _file_record(VISUAL_PATH),
         _file_record(ENGINE_PATH),
         _file_record(STORE_PATH),
         _file_record(Path(__file__)),
@@ -430,7 +439,7 @@ def run_visual_verification(
                 == controller.recovery.traces[-1]["trace_hash"]
             )
 
-            app_scan = scan_forbidden_tokens(APP_PATH)
+            app_scan = scan_forbidden_tokens(VISUAL_PATH)
             positive_control = temp_root / "leakage-positive-control.txt"
             positive_control.write_text(
                 "hidden_regime = 'scanner-positive-control'\n", encoding="utf-8"
@@ -578,7 +587,7 @@ def run_visual_verification(
                 "capture": capture,
                 "tk_patchlevel": tk_patchlevel,
                 "default_off": True,
-                "runtime_authority": "none",
+                "runtime_authority": "local_explicit_v2_only",
             }
 
             pause_close_zero = (

@@ -1,0 +1,1130 @@
+{
+  "aggregation_rule": "pass iff pinned mirror, generated views, positive controls, caller scan, retirement recovery, and one controller/reducer/store/replay structure pass; requested runtime and visual checks must also pass",
+  "causal_producer_hashes": {
+    "labs/ego_life_playground_v0/claims.py": "3a66d006b4977a499225f8a2dae594be8c75d861fab4ec023081b5cb8f851044",
+    "labs/ego_life_playground_v0/engine.py": "71e0d77d5aadd93f3843b4cbf7252ee431ada52f425385620f0f5aa830b45720",
+    "labs/ego_life_playground_v0/microworld.py": "60f97d7bbe756da730e9860180dbc4cce48e3abb0c23672ef9502e391cd5dce4",
+    "labs/ego_life_playground_v0/store.py": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+  },
+  "checks": {
+    "generated_views": "pass",
+    "legacy_callers_zero": "pass",
+    "pinned_mirror": "pass",
+    "retirement_recovery": "pass",
+    "single_execution_path": "pass",
+    "stale_scanner_positive_controls": "pass"
+  },
+  "claim_ceiling": "local V2 product routing and evidence hygiene only",
+  "code_path_hash": "f961a2f3fa3f05362ba0a86efc492c85e0aa3527590fb40ca75533564f88e5d9",
+  "controller_definition_count": 1,
+  "input_artifacts": [
+    "AGENTS.md",
+    "D:\\Project\\AIProject\\MyProject\\intelligence-theory-lab@d01f5e300162e417115cc81334730732e27af303:artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json",
+    "README.md",
+    "artifacts/ROUTE-STATE-MACHINE-001A/product_axis_source_pin.json",
+    "artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json",
+    "artifacts/reports/program_state_summary.md",
+    "docs/ACTIVE_CONTEXT_PACK.md",
+    "docs/MAINLINE_QUICKSTART.md",
+    "docs/PROGRAM_STATE_UNIFIED.yaml",
+    "docs/REPO_SURFACE_MAP.md",
+    "docs/STATUS.md",
+    "docs/codex/tasks/TASK_LANE_INDEX.md",
+    "labs/ego_life_playground_v0/claims.py",
+    "labs/ego_life_playground_v0/engine.py",
+    "labs/ego_life_playground_v0/microworld.py",
+    "labs/ego_life_playground_v0/store.py"
+  ],
+  "legacy_callers": [],
+  "mirror": {
+    "aggregation_rule": "pass iff pinned commit:path resolves to the pinned blob/hash and its raw bytes and parsed object exactly equal the Ego mirror",
+    "code_path_hash": "d6f6006d62dd818ce5583848921b69680e8633ba8f86c12218f43dd613c35e4f",
+    "errors": [],
+    "input_artifacts": [
+      "artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json",
+      "artifacts/ROUTE-STATE-MACHINE-001A/product_axis_source_pin.json",
+      "D:\\Project\\AIProject\\MyProject\\intelligence-theory-lab@d01f5e300162e417115cc81334730732e27af303:artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json"
+    ],
+    "mirror_sha256": "0ffbfc107307c94de598f1a59a18a13a1a0a6cc354fe93cfc7c2fdd8c9758816",
+    "producer_function": "verify_pinned_itl_mirror",
+    "run_id": "product-axis-mirror-b491036cf5ac4fd381d1a7e40a6ecc8e",
+    "source_blob_oid": "65f6d4c54465b989b2215bd435744c1d771c54f8",
+    "source_commit": "d01f5e300162e417115cc81334730732e27af303",
+    "source_sha256": "0ffbfc107307c94de598f1a59a18a13a1a0a6cc354fe93cfc7c2fdd8c9758816",
+    "verdict": "pass"
+  },
+  "positive_controls": {
+    "aggregation_rule": "pass iff every injected defect is rejected by scan_active_views",
+    "cases": {
+      "enablement_drift": {
+        "detected": true,
+        "finding_codes": [
+          "generated_view_drift"
+        ],
+        "scanner_producer": "scan_active_views"
+      },
+      "entrypoint_drift": {
+        "detected": true,
+        "finding_codes": [
+          "generated_view_drift"
+        ],
+        "scanner_producer": "scan_active_views"
+      },
+      "old_active_owner": {
+        "detected": true,
+        "finding_codes": [
+          "generated_view_drift",
+          "retired_active_owner_claim"
+        ],
+        "scanner_producer": "scan_active_views"
+      },
+      "source_pin_drift": {
+        "detected": true,
+        "finding_codes": [
+          "generated_view_drift"
+        ],
+        "scanner_producer": "scan_active_views"
+      }
+    },
+    "code_path_hash": "2aa3bc273a8febd6ceacf79500adfe4c35062c8cdabfa4a27a0ea90fa46ad95b",
+    "input_artifacts": [
+      "AGENTS.md",
+      "README.md",
+      "artifacts/reports/program_state_summary.md",
+      "docs/ACTIVE_CONTEXT_PACK.md",
+      "docs/MAINLINE_QUICKSTART.md",
+      "docs/PROGRAM_STATE_UNIFIED.yaml",
+      "docs/REPO_SURFACE_MAP.md",
+      "docs/STATUS.md",
+      "docs/codex/tasks/TASK_LANE_INDEX.md"
+    ],
+    "producer_function": "run_positive_controls",
+    "run_id": "stale-positive-control-d0d42dd8f04d4b5fa4103f12ac2a575b",
+    "verdict": "pass"
+  },
+  "producer_function": "build_report",
+  "retirement_evidence": {
+    "active_retired_roots": [],
+    "aggregation_rule": "pass iff every tracked retired blob is recoverable from the rollback tag and active retired roots are absent; when full local retirement recovery is requested, every preserved untracked byte must also be recoverable from the external quarantine",
+    "code_path_hash": "f961a2f3fa3f05362ba0a86efc492c85e0aa3527590fb40ca75533564f88e5d9",
+    "errors": [],
+    "full_local_recovery_requested": true,
+    "input_artifacts": [
+      "artifacts/archive/pre_v2_runtime_retirement_manifest.json",
+      "ego-pre-v2-only-mainline-20260718-d1b72a3f"
+    ],
+    "producer_function": "build_retirement_evidence",
+    "removed_path_count": 184,
+    "rollback_commit": "d1b72a3f39564c2f1c4fe474974017ed3d5b17e9",
+    "rollback_tag": "ego-pre-v2-only-mainline-20260718-d1b72a3f",
+    "run_id": "retirement-evidence-73cfc589ebf5434280ff9b1f62d07ae7",
+    "tracked_recovery": {
+      "aggregation_rule": "pass iff tag commit and every recorded blob OID/SHA are independently recoverable",
+      "code_path_hash": "43bf887180b237d3d86cada3fee06efca0352df078786a45f0d9a8c859a4f111",
+      "errors": [],
+      "input_artifacts": [
+        "ego-pre-v2-only-mainline-20260718-d1b72a3f",
+        "artifacts/archive/pre_v2_runtime_retirement_manifest.json"
+      ],
+      "producer_function": "verify_manifest_recoverable",
+      "run_id": "retired-runtime-recovery-e02cd5409718487ab1311def68dd8f8c",
+      "verdict": "pass"
+    },
+    "untracked_recovery": {
+      "aggregation_rule": "pass iff active retired roots are absent and quarantine path set, byte lengths, and every SHA-256 equal the frozen inventory",
+      "code_path_hash": "43bf887180b237d3d86cada3fee06efca0352df078786a45f0d9a8c859a4f111",
+      "entry_set_sha256": "c90e4887391d2b6c9ef140ba3b5eb4959f6254f393527cfeb1d1839f62ecaa11",
+      "errors": [],
+      "file_count": 4561,
+      "input_artifacts": [
+        "artifacts/archive/pre_v2_runtime_retirement_manifest.json",
+        "D:\\Project\\AIProject\\MyProject\\.ego-retired-untracked-quarantine\\ego-pre-v2-only-mainline-20260718-d1b72a3f"
+      ],
+      "producer_function": "verify_preserved_untracked_inventory",
+      "quarantine_root": "D:\\Project\\AIProject\\MyProject\\.ego-retired-untracked-quarantine\\ego-pre-v2-only-mainline-20260718-d1b72a3f",
+      "run_id": "retired-untracked-recovery-09e5ab6cf22e481cb5b22cda4a1d7025",
+      "total_bytes": 524784031,
+      "verdict": "pass"
+    },
+    "verdict": "pass"
+  },
+  "run_id": "ego-v2-only-convergence-608b6385015e4cf081fb97e942fa5628",
+  "runtime_evidence": {
+    "aggregation_rule": "pass iff explicit quick-check commits, terminal step/run/save/replay succeeds, SQLite command/trace counts agree, and a fresh process loads and recomputes every frame",
+    "artifact_hashes": {
+      "artifacts/EGO-ITL-V2-ONLY-SIMPLIFICATION-001A/runtime.sqlite3": "baaa516251f822f025847bdeb8e9160fa3c8fb1a7800a79d81f93ba2ece08999",
+      "artifacts/EGO-ITL-V2-ONLY-SIMPLIFICATION-001A/runtime_export.json": "70389e4130fb55077b0466c3990e8f501c2cc97b2169f0e1da6404b5fff65ccc"
+    },
+    "checks": {
+      "export_present": true,
+      "fresh_process_load_replay": true,
+      "quick_check_transition": true,
+      "sqlite_state_and_trace": true,
+      "terminal_step_run_save_replay": true
+    },
+    "code_path_hash": "f961a2f3fa3f05362ba0a86efc492c85e0aa3527590fb40ca75533564f88e5d9",
+    "commands": [
+      [
+        "C:\\Python313\\python.exe",
+        "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\run_ego_life_playground_v0.py",
+        "--quick-check",
+        "--db",
+        "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-ITL-V2-ONLY-SIMPLIFICATION-001A\\runtime.sqlite3",
+        "--run-id",
+        "ego-itl-v2-only-runtime-001a"
+      ],
+      [
+        "C:\\Python313\\python.exe",
+        "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\run_ego_life_playground_v0.py",
+        "--terminal",
+        "--db",
+        "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-ITL-V2-ONLY-SIMPLIFICATION-001A\\runtime.sqlite3",
+        "--run-id",
+        "ego-itl-v2-only-runtime-001a",
+        "--command",
+        "step resource_appears",
+        "--command",
+        "run 2",
+        "--command",
+        "save D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-ITL-V2-ONLY-SIMPLIFICATION-001A\\runtime_export.json",
+        "--command",
+        "replay"
+      ],
+      [
+        "C:\\Python313\\python.exe",
+        "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\run_ego_life_playground_v0.py",
+        "--terminal",
+        "--db",
+        "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-ITL-V2-ONLY-SIMPLIFICATION-001A\\runtime.sqlite3",
+        "--run-id",
+        "ego-itl-v2-only-runtime-001a",
+        "--command",
+        "load ego-itl-v2-only-runtime-001a",
+        "--command",
+        "replay"
+      ]
+    ],
+    "fresh_process_frame_count": 5,
+    "fresh_process_status_sequence": [
+      "loaded",
+      "recomputed"
+    ],
+    "input_artifacts": [
+      "scripts/run_ego_life_playground_v0.py",
+      "labs/ego_life_playground_v0/controller.py",
+      "labs/ego_life_playground_v0/store.py",
+      "artifacts/EGO-ITL-V2-ONLY-SIMPLIFICATION-001A/runtime.sqlite3",
+      "artifacts/EGO-ITL-V2-ONLY-SIMPLIFICATION-001A/runtime_export.json"
+    ],
+    "producer_function": "run_runtime_evidence",
+    "quick_check": [
+      {
+        "clock": {
+          "episode_id": "episode-000000-741bc5e66dee061a",
+          "episode_index": 0,
+          "episode_tick": 1,
+          "global_tick": 1
+        },
+        "current_goal": {
+          "entry_deficit": 0.29,
+          "selected_global_tick": 0,
+          "selection_reason": "initial_max_deficit",
+          "state_variable": "stimulation",
+          "status": "active",
+          "target": 0.72
+        },
+        "frame_count": 2,
+        "interventions": {
+          "consolidation_mode": "canonical",
+          "memory_mode": "canonical",
+          "provenance_mode": "canonical",
+          "provenance_shuffle_seed": "17",
+          "update_mode": "enabled"
+        },
+        "public_state_hash": "9a059a39e9936a4c57720df292e3d9017b202fa188985f75c8fef7def5af06a6",
+        "recovered": true,
+        "run_id": "ego-itl-v2-only-runtime-001a",
+        "science_weight": 0,
+        "selected_action": "explore",
+        "trigger_source": "headless_acceptance"
+      }
+    ],
+    "run_id": "ego-itl-v2-only-runtime-001a",
+    "seed_context": {
+      "episode_id": "ego-itl-v2-only-runtime-001a",
+      "seed": 17,
+      "world_seed": 271828
+    },
+    "sqlite_counts": {
+      "commands": 4,
+      "runs": 1,
+      "traces": 4
+    },
+    "terminal_status_sequence": [
+      "committed",
+      "committed",
+      "saved",
+      "recomputed"
+    ],
+    "verdict": "pass"
+  },
+  "single_execution_path": {
+    "aggregation_rule": "pass iff the active source AST contains exactly one canonical controller, reducer, store, dispatch, and replay/recompute definition at the frozen paths",
+    "code_path_hash": "f961a2f3fa3f05362ba0a86efc492c85e0aa3527590fb40ca75533564f88e5d9",
+    "errors": [],
+    "expected": {
+      "class:PlaygroundController": [
+        "labs/ego_life_playground_v0/controller.py"
+      ],
+      "class:SQLiteEventStore": [
+        "labs/ego_life_playground_v0/store.py"
+      ],
+      "function:compute_step": [
+        "labs/ego_life_playground_v0/engine.py"
+      ],
+      "function:dispatch": [
+        "labs/ego_life_playground_v0/controller.py"
+      ],
+      "function:recover_run": [
+        "labs/ego_life_playground_v0/store.py"
+      ]
+    },
+    "found": {
+      "class:PlaygroundController": [
+        "labs/ego_life_playground_v0/controller.py"
+      ],
+      "class:SQLiteEventStore": [
+        "labs/ego_life_playground_v0/store.py"
+      ],
+      "function:compute_step": [
+        "labs/ego_life_playground_v0/engine.py"
+      ],
+      "function:dispatch": [
+        "labs/ego_life_playground_v0/controller.py"
+      ],
+      "function:recover_run": [
+        "labs/ego_life_playground_v0/store.py"
+      ]
+    },
+    "input_artifacts": [
+      "labs/ego_life_playground_v0/app.py",
+      "labs/ego_life_playground_v0/controller.py",
+      "labs/ego_life_playground_v0/engine.py",
+      "labs/ego_life_playground_v0/store.py",
+      "labs/ego_life_playground_v0/terminal.py",
+      "labs/ego_life_playground_v0/visual_console.py",
+      "scripts/run_ego_life_playground_v0.py"
+    ],
+    "producer_function": "scan_single_execution_path",
+    "run_id": "single-v2-path-64fe7cbec9164833b4688aacfaf12a34",
+    "verdict": "pass"
+  },
+  "stale_context": {
+    "aggregation_rule": "pass iff active path set and bytes equal the production renderer and no retired project is described with active/default/runtime-owner/successor semantics",
+    "code_path_hash": "2aa3bc273a8febd6ceacf79500adfe4c35062c8cdabfa4a27a0ea90fa46ad95b",
+    "findings": [],
+    "input_artifacts": [
+      "AGENTS.md",
+      "README.md",
+      "artifacts/reports/program_state_summary.md",
+      "docs/ACTIVE_CONTEXT_PACK.md",
+      "docs/MAINLINE_QUICKSTART.md",
+      "docs/PROGRAM_STATE_UNIFIED.yaml",
+      "docs/REPO_SURFACE_MAP.md",
+      "docs/STATUS.md",
+      "docs/codex/tasks/TASK_LANE_INDEX.md"
+    ],
+    "producer_function": "scan_active_views",
+    "run_id": "stale-context-9bd95e0fa08047ac8ef38d6ee14aa8f6",
+    "verdict": "pass"
+  },
+  "task_id": "EGO-ITL-V2-ONLY-SIMPLIFICATION-001A",
+  "validation_errors": [],
+  "verdict": "pass",
+  "visual_smoke": {
+    "aggregation_rule": "pass iff a fresh process runs the real Tk verifier, all computed UI/SQLite/replay checks pass, and the retained bounded evidence set is hashed",
+    "artifact_hashes": {
+      "artifacts/EGO-ITL-V2-ONLY-SIMPLIFICATION-001A/visual_smoke/evidence/ablation_report.json": "5f34371183e974cebb946882eaf8289607391aeb977567b9a8dac9929c23fb40",
+      "artifacts/EGO-ITL-V2-ONLY-SIMPLIFICATION-001A/visual_smoke/evidence/baseline_comparison.json": "65c4c4c511083ae59c95c4835e04538abfbbfca2217cb32059466219a0521e20",
+      "artifacts/EGO-ITL-V2-ONLY-SIMPLIFICATION-001A/visual_smoke/evidence/claim_ceiling.txt": "9ebc38d739f5c1ae2f7ede96c06d74e3e5003f7319e267a08eb27830e8c7239e",
+      "artifacts/EGO-ITL-V2-ONLY-SIMPLIFICATION-001A/visual_smoke/evidence/failure_manifest.json": "3b2d0c0ac79bbf87764fa3196c279c126dc6cd329180bb56d945737002e08200",
+      "artifacts/EGO-ITL-V2-ONLY-SIMPLIFICATION-001A/visual_smoke/evidence/live_ui_receipt.json": "3cf1d40efcd201571df6d154ae09cb3c61759cd51c96bfd80036bd85be7541be",
+      "artifacts/EGO-ITL-V2-ONLY-SIMPLIFICATION-001A/visual_smoke/evidence/replay_report.json": "8d59e314aaa535fa262a8f21313b1f0b783357a4c2fc326c2b8b8b0e46e73f23",
+      "artifacts/EGO-ITL-V2-ONLY-SIMPLIFICATION-001A/visual_smoke/evidence/result.json": "ae506f1f85b192983892957a2916198c2a44b639d143fdf241dad0f9d7ea884d",
+      "artifacts/EGO-ITL-V2-ONLY-SIMPLIFICATION-001A/visual_smoke/evidence/trace.jsonl": "71561d13a4c76f83790e3a0a71611d75f810160426d9c57fd8907922f477b44c",
+      "artifacts/EGO-ITL-V2-ONLY-SIMPLIFICATION-001A/visual_smoke/visual.png": "c483a9a2603847b3d3091a2d7273cc66d0ad7b240f65f9aac08eff653917a682"
+    },
+    "code_path_hash": "f961a2f3fa3f05362ba0a86efc492c85e0aa3527590fb40ca75533564f88e5d9",
+    "command": [
+      "C:\\Python313\\python.exe",
+      "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_visual_console_live_001a.py",
+      "--output-dir",
+      "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-ITL-V2-ONLY-SIMPLIFICATION-001A\\visual_smoke\\evidence",
+      "--screenshot",
+      "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-ITL-V2-ONLY-SIMPLIFICATION-001A\\visual_smoke\\visual.png"
+    ],
+    "computed_result": {
+      "aggregation_rule": "pass iff all 14 callable integration checks are true",
+      "checks": {
+        "chinese_mapping_causal_bytes_unchanged": {
+          "aggregation_rule": "boolean result from the named callable computation path",
+          "code_path_hash": "ac1b19c08d0da8ace9dbdc9ce5bee8b95ff0f79ce26be2f23b1cf19c3a800510",
+          "input_artifacts": [
+            {
+              "bytes": 986,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\app.py",
+              "sha256": "2bad03fc96d823ac04737112505a02b69013dc73793982162381c72071b0dede"
+            },
+            {
+              "bytes": 7948,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+              "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+            },
+            {
+              "bytes": 13695,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\terminal.py",
+              "sha256": "fe1bec420f29560beca65f95aadee344a9be9e23bd54bcc069b3bb543b7240d8"
+            },
+            {
+              "bytes": 68393,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\visual_console.py",
+              "sha256": "d1e1637e29ccefb95ff2cacb40e1feb8377ad3c6878db2f149c4a1a39be9eb35"
+            },
+            {
+              "bytes": 75156,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+              "sha256": "71e0d77d5aadd93f3843b4cbf7252ee431ada52f425385620f0f5aa830b45720"
+            },
+            {
+              "bytes": 13786,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+              "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+            },
+            {
+              "bytes": 30766,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_visual_console_live_001a.py",
+              "sha256": "4e5ef4851be782ca96fc37aea60170cc2b8cdcd41677292659b64aea8da85be6"
+            }
+          ],
+          "producer_function": "build_chinese_causal_view",
+          "run_id": "ego-v2-visual-console-live-001",
+          "seed_context_episode_ids": {
+            "layout_id": "p2_offset_v1",
+            "run_seed": 701,
+            "world_seed": 42
+          },
+          "value": true
+        },
+        "export_byte_identity": {
+          "aggregation_rule": "boolean result from the named callable computation path",
+          "code_path_hash": "ac1b19c08d0da8ace9dbdc9ce5bee8b95ff0f79ce26be2f23b1cf19c3a800510",
+          "input_artifacts": [
+            {
+              "bytes": 986,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\app.py",
+              "sha256": "2bad03fc96d823ac04737112505a02b69013dc73793982162381c72071b0dede"
+            },
+            {
+              "bytes": 7948,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+              "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+            },
+            {
+              "bytes": 13695,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\terminal.py",
+              "sha256": "fe1bec420f29560beca65f95aadee344a9be9e23bd54bcc069b3bb543b7240d8"
+            },
+            {
+              "bytes": 68393,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\visual_console.py",
+              "sha256": "d1e1637e29ccefb95ff2cacb40e1feb8377ad3c6878db2f149c4a1a39be9eb35"
+            },
+            {
+              "bytes": 75156,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+              "sha256": "71e0d77d5aadd93f3843b4cbf7252ee431ada52f425385620f0f5aa830b45720"
+            },
+            {
+              "bytes": 13786,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+              "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+            },
+            {
+              "bytes": 30766,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_visual_console_live_001a.py",
+              "sha256": "4e5ef4851be782ca96fc37aea60170cc2b8cdcd41677292659b64aea8da85be6"
+            }
+          ],
+          "producer_function": "PlaygroundWindow._export -> PlaygroundController.export",
+          "run_id": "ego-v2-visual-console-live-001",
+          "seed_context_episode_ids": {
+            "layout_id": "p2_offset_v1",
+            "run_seed": 701,
+            "world_seed": 42
+          },
+          "value": true
+        },
+        "fresh_process_and_tk_non_skip": {
+          "aggregation_rule": "boolean result from the named callable computation path",
+          "code_path_hash": "ac1b19c08d0da8ace9dbdc9ce5bee8b95ff0f79ce26be2f23b1cf19c3a800510",
+          "input_artifacts": [
+            {
+              "bytes": 986,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\app.py",
+              "sha256": "2bad03fc96d823ac04737112505a02b69013dc73793982162381c72071b0dede"
+            },
+            {
+              "bytes": 7948,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+              "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+            },
+            {
+              "bytes": 13695,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\terminal.py",
+              "sha256": "fe1bec420f29560beca65f95aadee344a9be9e23bd54bcc069b3bb543b7240d8"
+            },
+            {
+              "bytes": 68393,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\visual_console.py",
+              "sha256": "d1e1637e29ccefb95ff2cacb40e1feb8377ad3c6878db2f149c4a1a39be9eb35"
+            },
+            {
+              "bytes": 75156,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+              "sha256": "71e0d77d5aadd93f3843b4cbf7252ee431ada52f425385620f0f5aa830b45720"
+            },
+            {
+              "bytes": 13786,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+              "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+            },
+            {
+              "bytes": 30766,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_visual_console_live_001a.py",
+              "sha256": "4e5ef4851be782ca96fc37aea60170cc2b8cdcd41677292659b64aea8da85be6"
+            }
+          ],
+          "producer_function": "tk.Tk + _fresh_process_recover",
+          "run_id": "ego-v2-visual-console-live-001",
+          "seed_context_episode_ids": {
+            "layout_id": "p2_offset_v1",
+            "run_seed": 701,
+            "world_seed": 42
+          },
+          "value": true
+        },
+        "fresh_process_recover": {
+          "aggregation_rule": "boolean result from the named callable computation path",
+          "code_path_hash": "ac1b19c08d0da8ace9dbdc9ce5bee8b95ff0f79ce26be2f23b1cf19c3a800510",
+          "input_artifacts": [
+            {
+              "bytes": 986,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\app.py",
+              "sha256": "2bad03fc96d823ac04737112505a02b69013dc73793982162381c72071b0dede"
+            },
+            {
+              "bytes": 7948,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+              "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+            },
+            {
+              "bytes": 13695,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\terminal.py",
+              "sha256": "fe1bec420f29560beca65f95aadee344a9be9e23bd54bcc069b3bb543b7240d8"
+            },
+            {
+              "bytes": 68393,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\visual_console.py",
+              "sha256": "d1e1637e29ccefb95ff2cacb40e1feb8377ad3c6878db2f149c4a1a39be9eb35"
+            },
+            {
+              "bytes": 75156,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+              "sha256": "71e0d77d5aadd93f3843b4cbf7252ee431ada52f425385620f0f5aa830b45720"
+            },
+            {
+              "bytes": 13786,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+              "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+            },
+            {
+              "bytes": 30766,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_visual_console_live_001a.py",
+              "sha256": "4e5ef4851be782ca96fc37aea60170cc2b8cdcd41677292659b64aea8da85be6"
+            }
+          ],
+          "producer_function": "_fresh_process_recover",
+          "run_id": "ego-v2-visual-console-live-001",
+          "seed_context_episode_ids": {
+            "layout_id": "p2_offset_v1",
+            "run_seed": 701,
+            "world_seed": 42
+          },
+          "value": true
+        },
+        "no_second_engine_path": {
+          "aggregation_rule": "boolean result from the named callable computation path",
+          "code_path_hash": "ac1b19c08d0da8ace9dbdc9ce5bee8b95ff0f79ce26be2f23b1cf19c3a800510",
+          "input_artifacts": [
+            {
+              "bytes": 986,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\app.py",
+              "sha256": "2bad03fc96d823ac04737112505a02b69013dc73793982162381c72071b0dede"
+            },
+            {
+              "bytes": 7948,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+              "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+            },
+            {
+              "bytes": 13695,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\terminal.py",
+              "sha256": "fe1bec420f29560beca65f95aadee344a9be9e23bd54bcc069b3bb543b7240d8"
+            },
+            {
+              "bytes": 68393,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\visual_console.py",
+              "sha256": "d1e1637e29ccefb95ff2cacb40e1feb8377ad3c6878db2f149c4a1a39be9eb35"
+            },
+            {
+              "bytes": 75156,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+              "sha256": "71e0d77d5aadd93f3843b4cbf7252ee431ada52f425385620f0f5aa830b45720"
+            },
+            {
+              "bytes": 13786,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+              "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+            },
+            {
+              "bytes": 30766,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_visual_console_live_001a.py",
+              "sha256": "4e5ef4851be782ca96fc37aea60170cc2b8cdcd41677292659b64aea8da85be6"
+            }
+          ],
+          "producer_function": "_scan_second_engine_path",
+          "run_id": "ego-v2-visual-console-live-001",
+          "seed_context_episode_ids": {
+            "layout_id": "p2_offset_v1",
+            "run_seed": 701,
+            "world_seed": 42
+          },
+          "value": true
+        },
+        "pause_close_zero_extra_dispatch": {
+          "aggregation_rule": "boolean result from the named callable computation path",
+          "code_path_hash": "ac1b19c08d0da8ace9dbdc9ce5bee8b95ff0f79ce26be2f23b1cf19c3a800510",
+          "input_artifacts": [
+            {
+              "bytes": 986,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\app.py",
+              "sha256": "2bad03fc96d823ac04737112505a02b69013dc73793982162381c72071b0dede"
+            },
+            {
+              "bytes": 7948,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+              "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+            },
+            {
+              "bytes": 13695,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\terminal.py",
+              "sha256": "fe1bec420f29560beca65f95aadee344a9be9e23bd54bcc069b3bb543b7240d8"
+            },
+            {
+              "bytes": 68393,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\visual_console.py",
+              "sha256": "d1e1637e29ccefb95ff2cacb40e1feb8377ad3c6878db2f149c4a1a39be9eb35"
+            },
+            {
+              "bytes": 75156,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+              "sha256": "71e0d77d5aadd93f3843b4cbf7252ee431ada52f425385620f0f5aa830b45720"
+            },
+            {
+              "bytes": 13786,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+              "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+            },
+            {
+              "bytes": 30766,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_visual_console_live_001a.py",
+              "sha256": "4e5ef4851be782ca96fc37aea60170cc2b8cdcd41677292659b64aea8da85be6"
+            }
+          ],
+          "producer_function": "PlaygroundWindow._pause/close",
+          "run_id": "ego-v2-visual-console-live-001",
+          "seed_context_episode_ids": {
+            "layout_id": "p2_offset_v1",
+            "run_seed": 701,
+            "world_seed": 42
+          },
+          "value": true
+        },
+        "private_field_leakage_scan_positive_control": {
+          "aggregation_rule": "boolean result from the named callable computation path",
+          "code_path_hash": "ac1b19c08d0da8ace9dbdc9ce5bee8b95ff0f79ce26be2f23b1cf19c3a800510",
+          "input_artifacts": [
+            {
+              "bytes": 986,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\app.py",
+              "sha256": "2bad03fc96d823ac04737112505a02b69013dc73793982162381c72071b0dede"
+            },
+            {
+              "bytes": 7948,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+              "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+            },
+            {
+              "bytes": 13695,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\terminal.py",
+              "sha256": "fe1bec420f29560beca65f95aadee344a9be9e23bd54bcc069b3bb543b7240d8"
+            },
+            {
+              "bytes": 68393,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\visual_console.py",
+              "sha256": "d1e1637e29ccefb95ff2cacb40e1feb8377ad3c6878db2f149c4a1a39be9eb35"
+            },
+            {
+              "bytes": 75156,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+              "sha256": "71e0d77d5aadd93f3843b4cbf7252ee431ada52f425385620f0f5aa830b45720"
+            },
+            {
+              "bytes": 13786,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+              "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+            },
+            {
+              "bytes": 30766,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_visual_console_live_001a.py",
+              "sha256": "4e5ef4851be782ca96fc37aea60170cc2b8cdcd41677292659b64aea8da85be6"
+            }
+          ],
+          "producer_function": "scan_forbidden_tokens",
+          "run_id": "ego-v2-visual-console-live-001",
+          "seed_context_episode_ids": {
+            "layout_id": "p2_offset_v1",
+            "run_seed": 701,
+            "world_seed": 42
+          },
+          "value": true
+        },
+        "replay_recomputes_serialized_state_observation": {
+          "aggregation_rule": "boolean result from the named callable computation path",
+          "code_path_hash": "ac1b19c08d0da8ace9dbdc9ce5bee8b95ff0f79ce26be2f23b1cf19c3a800510",
+          "input_artifacts": [
+            {
+              "bytes": 986,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\app.py",
+              "sha256": "2bad03fc96d823ac04737112505a02b69013dc73793982162381c72071b0dede"
+            },
+            {
+              "bytes": 7948,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+              "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+            },
+            {
+              "bytes": 13695,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\terminal.py",
+              "sha256": "fe1bec420f29560beca65f95aadee344a9be9e23bd54bcc069b3bb543b7240d8"
+            },
+            {
+              "bytes": 68393,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\visual_console.py",
+              "sha256": "d1e1637e29ccefb95ff2cacb40e1feb8377ad3c6878db2f149c4a1a39be9eb35"
+            },
+            {
+              "bytes": 75156,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+              "sha256": "71e0d77d5aadd93f3843b4cbf7252ee431ada52f425385620f0f5aa830b45720"
+            },
+            {
+              "bytes": 13786,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+              "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+            },
+            {
+              "bytes": 30766,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_visual_console_live_001a.py",
+              "sha256": "4e5ef4851be782ca96fc37aea60170cc2b8cdcd41677292659b64aea8da85be6"
+            }
+          ],
+          "producer_function": "SQLiteEventStore.recover_run",
+          "run_id": "ego-v2-visual-console-live-001",
+          "seed_context_episode_ids": {
+            "layout_id": "p2_offset_v1",
+            "run_seed": 701,
+            "world_seed": 42
+          },
+          "value": true
+        },
+        "run_commit_recover_animate_lockstep": {
+          "aggregation_rule": "boolean result from the named callable computation path",
+          "code_path_hash": "ac1b19c08d0da8ace9dbdc9ce5bee8b95ff0f79ce26be2f23b1cf19c3a800510",
+          "input_artifacts": [
+            {
+              "bytes": 986,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\app.py",
+              "sha256": "2bad03fc96d823ac04737112505a02b69013dc73793982162381c72071b0dede"
+            },
+            {
+              "bytes": 7948,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+              "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+            },
+            {
+              "bytes": 13695,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\terminal.py",
+              "sha256": "fe1bec420f29560beca65f95aadee344a9be9e23bd54bcc069b3bb543b7240d8"
+            },
+            {
+              "bytes": 68393,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\visual_console.py",
+              "sha256": "d1e1637e29ccefb95ff2cacb40e1feb8377ad3c6878db2f149c4a1a39be9eb35"
+            },
+            {
+              "bytes": 75156,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+              "sha256": "71e0d77d5aadd93f3843b4cbf7252ee431ada52f425385620f0f5aa830b45720"
+            },
+            {
+              "bytes": 13786,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+              "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+            },
+            {
+              "bytes": 30766,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_visual_console_live_001a.py",
+              "sha256": "4e5ef4851be782ca96fc37aea60170cc2b8cdcd41677292659b64aea8da85be6"
+            }
+          ],
+          "producer_function": "PlaygroundWindow._animation_complete",
+          "run_id": "ego-v2-visual-console-live-001",
+          "seed_context_episode_ids": {
+            "layout_id": "p2_offset_v1",
+            "run_seed": 701,
+            "world_seed": 42
+          },
+          "value": true
+        },
+        "same_recovery_frame_all_panels": {
+          "aggregation_rule": "boolean result from the named callable computation path",
+          "code_path_hash": "ac1b19c08d0da8ace9dbdc9ce5bee8b95ff0f79ce26be2f23b1cf19c3a800510",
+          "input_artifacts": [
+            {
+              "bytes": 986,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\app.py",
+              "sha256": "2bad03fc96d823ac04737112505a02b69013dc73793982162381c72071b0dede"
+            },
+            {
+              "bytes": 7948,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+              "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+            },
+            {
+              "bytes": 13695,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\terminal.py",
+              "sha256": "fe1bec420f29560beca65f95aadee344a9be9e23bd54bcc069b3bb543b7240d8"
+            },
+            {
+              "bytes": 68393,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\visual_console.py",
+              "sha256": "d1e1637e29ccefb95ff2cacb40e1feb8377ad3c6878db2f149c4a1a39be9eb35"
+            },
+            {
+              "bytes": 75156,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+              "sha256": "71e0d77d5aadd93f3843b4cbf7252ee431ada52f425385620f0f5aa830b45720"
+            },
+            {
+              "bytes": 13786,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+              "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+            },
+            {
+              "bytes": 30766,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_visual_console_live_001a.py",
+              "sha256": "4e5ef4851be782ca96fc37aea60170cc2b8cdcd41677292659b64aea8da85be6"
+            }
+          ],
+          "producer_function": "PlaygroundWindow.redraw",
+          "run_id": "ego-v2-visual-console-live-001",
+          "seed_context_episode_ids": {
+            "layout_id": "p2_offset_v1",
+            "run_seed": 701,
+            "world_seed": 42
+          },
+          "value": true
+        },
+        "scheduled_waypoints_equal_trace": {
+          "aggregation_rule": "boolean result from the named callable computation path",
+          "code_path_hash": "ac1b19c08d0da8ace9dbdc9ce5bee8b95ff0f79ce26be2f23b1cf19c3a800510",
+          "input_artifacts": [
+            {
+              "bytes": 986,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\app.py",
+              "sha256": "2bad03fc96d823ac04737112505a02b69013dc73793982162381c72071b0dede"
+            },
+            {
+              "bytes": 7948,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+              "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+            },
+            {
+              "bytes": 13695,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\terminal.py",
+              "sha256": "fe1bec420f29560beca65f95aadee344a9be9e23bd54bcc069b3bb543b7240d8"
+            },
+            {
+              "bytes": 68393,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\visual_console.py",
+              "sha256": "d1e1637e29ccefb95ff2cacb40e1feb8377ad3c6878db2f149c4a1a39be9eb35"
+            },
+            {
+              "bytes": 75156,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+              "sha256": "71e0d77d5aadd93f3843b4cbf7252ee431ada52f425385620f0f5aa830b45720"
+            },
+            {
+              "bytes": 13786,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+              "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+            },
+            {
+              "bytes": 30766,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_visual_console_live_001a.py",
+              "sha256": "4e5ef4851be782ca96fc37aea60170cc2b8cdcd41677292659b64aea8da85be6"
+            }
+          ],
+          "producer_function": "validate_scheduled_waypoints",
+          "run_id": "ego-v2-visual-console-live-001",
+          "seed_context_episode_ids": {
+            "layout_id": "p2_offset_v1",
+            "run_seed": 701,
+            "world_seed": 42
+          },
+          "value": true
+        },
+        "sqlite_committed_transition": {
+          "aggregation_rule": "boolean result from the named callable computation path",
+          "code_path_hash": "ac1b19c08d0da8ace9dbdc9ce5bee8b95ff0f79ce26be2f23b1cf19c3a800510",
+          "input_artifacts": [
+            {
+              "bytes": 986,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\app.py",
+              "sha256": "2bad03fc96d823ac04737112505a02b69013dc73793982162381c72071b0dede"
+            },
+            {
+              "bytes": 7948,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+              "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+            },
+            {
+              "bytes": 13695,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\terminal.py",
+              "sha256": "fe1bec420f29560beca65f95aadee344a9be9e23bd54bcc069b3bb543b7240d8"
+            },
+            {
+              "bytes": 68393,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\visual_console.py",
+              "sha256": "d1e1637e29ccefb95ff2cacb40e1feb8377ad3c6878db2f149c4a1a39be9eb35"
+            },
+            {
+              "bytes": 75156,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+              "sha256": "71e0d77d5aadd93f3843b4cbf7252ee431ada52f425385620f0f5aa830b45720"
+            },
+            {
+              "bytes": 13786,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+              "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+            },
+            {
+              "bytes": 30766,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_visual_console_live_001a.py",
+              "sha256": "4e5ef4851be782ca96fc37aea60170cc2b8cdcd41677292659b64aea8da85be6"
+            }
+          ],
+          "producer_function": "SQLiteEventStore.row_counts",
+          "run_id": "ego-v2-visual-console-live-001",
+          "seed_context_episode_ids": {
+            "layout_id": "p2_offset_v1",
+            "run_seed": 701,
+            "world_seed": 42
+          },
+          "value": true
+        },
+        "ui_step_calls_canonical_dispatch": {
+          "aggregation_rule": "boolean result from the named callable computation path",
+          "code_path_hash": "ac1b19c08d0da8ace9dbdc9ce5bee8b95ff0f79ce26be2f23b1cf19c3a800510",
+          "input_artifacts": [
+            {
+              "bytes": 986,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\app.py",
+              "sha256": "2bad03fc96d823ac04737112505a02b69013dc73793982162381c72071b0dede"
+            },
+            {
+              "bytes": 7948,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+              "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+            },
+            {
+              "bytes": 13695,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\terminal.py",
+              "sha256": "fe1bec420f29560beca65f95aadee344a9be9e23bd54bcc069b3bb543b7240d8"
+            },
+            {
+              "bytes": 68393,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\visual_console.py",
+              "sha256": "d1e1637e29ccefb95ff2cacb40e1feb8377ad3c6878db2f149c4a1a39be9eb35"
+            },
+            {
+              "bytes": 75156,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+              "sha256": "71e0d77d5aadd93f3843b4cbf7252ee431ada52f425385620f0f5aa830b45720"
+            },
+            {
+              "bytes": 13786,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+              "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+            },
+            {
+              "bytes": 30766,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_visual_console_live_001a.py",
+              "sha256": "4e5ef4851be782ca96fc37aea60170cc2b8cdcd41677292659b64aea8da85be6"
+            }
+          ],
+          "producer_function": "PlaygroundWindow._step_once -> PlaygroundController.dispatch",
+          "run_id": "ego-v2-visual-console-live-001",
+          "seed_context_episode_ids": {
+            "layout_id": "p2_offset_v1",
+            "run_seed": 701,
+            "world_seed": 42
+          },
+          "value": true
+        },
+        "ux_capture_produced": {
+          "aggregation_rule": "boolean result from the named callable computation path",
+          "code_path_hash": "ac1b19c08d0da8ace9dbdc9ce5bee8b95ff0f79ce26be2f23b1cf19c3a800510",
+          "input_artifacts": [
+            {
+              "bytes": 986,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\app.py",
+              "sha256": "2bad03fc96d823ac04737112505a02b69013dc73793982162381c72071b0dede"
+            },
+            {
+              "bytes": 7948,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+              "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+            },
+            {
+              "bytes": 13695,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\terminal.py",
+              "sha256": "fe1bec420f29560beca65f95aadee344a9be9e23bd54bcc069b3bb543b7240d8"
+            },
+            {
+              "bytes": 68393,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\visual_console.py",
+              "sha256": "d1e1637e29ccefb95ff2cacb40e1feb8377ad3c6878db2f149c4a1a39be9eb35"
+            },
+            {
+              "bytes": 75156,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+              "sha256": "71e0d77d5aadd93f3843b4cbf7252ee431ada52f425385620f0f5aa830b45720"
+            },
+            {
+              "bytes": 13786,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+              "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+            },
+            {
+              "bytes": 30766,
+              "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_visual_console_live_001a.py",
+              "sha256": "4e5ef4851be782ca96fc37aea60170cc2b8cdcd41677292659b64aea8da85be6"
+            }
+          ],
+          "producer_function": "_capture_window",
+          "run_id": "ego-v2-visual-console-live-001",
+          "seed_context_episode_ids": {
+            "layout_id": "p2_offset_v1",
+            "run_seed": 701,
+            "world_seed": 42
+          },
+          "value": true
+        }
+      },
+      "claim_ceiling": "Local default-off visual console connected to the canonical controller, SQLite, recomputing recovery/replay, and recorded trace path, with Chinese display limited to recorded fields. This does not establish thought, emotion, learning success, memory causality, initiative, agency, subjectivity, consciousness, electronic life, product readiness, or user value.",
+      "code_path_hash": "ac1b19c08d0da8ace9dbdc9ce5bee8b95ff0f79ce26be2f23b1cf19c3a800510",
+      "failed_checks": [],
+      "input_artifacts": [
+        {
+          "bytes": 986,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\app.py",
+          "sha256": "2bad03fc96d823ac04737112505a02b69013dc73793982162381c72071b0dede"
+        },
+        {
+          "bytes": 7948,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+          "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+        },
+        {
+          "bytes": 13695,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\terminal.py",
+          "sha256": "fe1bec420f29560beca65f95aadee344a9be9e23bd54bcc069b3bb543b7240d8"
+        },
+        {
+          "bytes": 68393,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\visual_console.py",
+          "sha256": "d1e1637e29ccefb95ff2cacb40e1feb8377ad3c6878db2f149c4a1a39be9eb35"
+        },
+        {
+          "bytes": 75156,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+          "sha256": "71e0d77d5aadd93f3843b4cbf7252ee431ada52f425385620f0f5aa830b45720"
+        },
+        {
+          "bytes": 13786,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 30766,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_visual_console_live_001a.py",
+          "sha256": "4e5ef4851be782ca96fc37aea60170cc2b8cdcd41677292659b64aea8da85be6"
+        },
+        {
+          "bytes": 115221,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-ITL-V2-ONLY-SIMPLIFICATION-001A\\visual_smoke\\evidence\\trace.jsonl",
+          "sha256": "71561d13a4c76f83790e3a0a71611d75f810160426d9c57fd8907922f477b44c"
+        }
+      ],
+      "producer_function": "run_visual_verification",
+      "run_id": "ego-v2-visual-console-live-001",
+      "schema_version": "ego.visual_console.result.v1",
+      "seed_context_episode_ids": {
+        "layout_id": "p2_offset_v1",
+        "run_seed": 701,
+        "world_seed": 42
+      },
+      "task_id": "EGO-V2-P0-VISUAL-CONSOLE-LIVE-001A",
+      "verdict": "pass"
+    },
+    "errors": [],
+    "input_artifacts": [
+      "scripts/codex/verify_ego_v2_p0_visual_console_live_001a.py",
+      "labs/ego_life_playground_v0/controller.py",
+      "labs/ego_life_playground_v0/visual_console.py"
+    ],
+    "producer_function": "run_visual_smoke",
+    "returncode": 0,
+    "run_id": "ego-v2-visual-console-live-001",
+    "seed_context": {
+      "layout_id": "p2_offset_v1",
+      "run_seed": 701,
+      "world_seed": 42
+    },
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_sha256": "487a3f29da026abba1552cb24f61ae7e8d18539354fbd4ef94297d84509833c9",
+    "verdict": "pass"
+  }
+}

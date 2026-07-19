@@ -56,6 +56,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="exercise one real command + recomputing recovery without opening Tk",
     )
     mode.add_argument(
+        "--quick-check",
+        action="store_true",
+        help="exercise one real command + SQLite commit + recomputing recovery without Tk",
+    )
+    mode.add_argument(
         "--terminal",
         action="store_true",
         help="open the interactive P0 microworld terminal instead of Tk",
@@ -96,7 +101,7 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     if args.command and not args.terminal:
         raise SystemExit("--command requires --terminal")
-    if args.headless_smoke:
+    if args.headless_smoke or args.quick_check:
         with SQLiteEventStore(args.db) as store:
             try:
                 controller = PlaygroundController(

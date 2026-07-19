@@ -1,0 +1,58 @@
+{
+  "aggregation_rule": "live path must commit and fresh-recover; frozen player must not dispatch or commit",
+  "code_path_hash": "ac1b19c08d0da8ace9dbdc9ce5bee8b95ff0f79ce26be2f23b1cf19c3a800510",
+  "frozen_player_no_dispatch": {
+    "committed_sequence_delta": 0,
+    "fresh_recovered_sequence": 0,
+    "producer_function": "_frozen_player_baseline"
+  },
+  "input_artifacts": [
+    {
+      "bytes": 986,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\app.py",
+      "sha256": "2bad03fc96d823ac04737112505a02b69013dc73793982162381c72071b0dede"
+    },
+    {
+      "bytes": 7948,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+      "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+    },
+    {
+      "bytes": 13695,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\terminal.py",
+      "sha256": "fe1bec420f29560beca65f95aadee344a9be9e23bd54bcc069b3bb543b7240d8"
+    },
+    {
+      "bytes": 68393,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\visual_console.py",
+      "sha256": "d1e1637e29ccefb95ff2cacb40e1feb8377ad3c6878db2f149c4a1a39be9eb35"
+    },
+    {
+      "bytes": 75156,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+      "sha256": "71e0d77d5aadd93f3843b4cbf7252ee431ada52f425385620f0f5aa830b45720"
+    },
+    {
+      "bytes": 13786,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+      "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+    },
+    {
+      "bytes": 30766,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_visual_console_live_001a.py",
+      "sha256": "4e5ef4851be782ca96fc37aea60170cc2b8cdcd41677292659b64aea8da85be6"
+    }
+  ],
+  "live_visual_console": {
+    "committed_sequence_delta": 4,
+    "fresh_recovered_sequence": 4
+  },
+  "producer_function": "run_visual_verification.baseline_comparison",
+  "run_id": "ego-v2-visual-console-live-001",
+  "schema_version": "ego.visual_console.baseline_comparison.v1",
+  "seed_context_episode_ids": {
+    "layout_id": "p2_offset_v1",
+    "run_seed": 701,
+    "world_seed": 42
+  }
+}

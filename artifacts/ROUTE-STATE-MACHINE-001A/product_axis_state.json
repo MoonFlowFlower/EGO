@@ -1,0 +1,68 @@
+{
+  "authority_semantics": "SOLE_MACHINE_READABLE_PRODUCT_DEVELOPMENT_AXIS_AUTHORITY",
+  "legacy_program_state_disposition": "GENERATED_COMPATIBILITY_VIEW_NOT_PRODUCT_AXIS_AUTHORITY",
+  "product_development_axis": {
+    "authority": "SOLE",
+    "authority_route_id": "EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A",
+    "authority_state_path": "artifacts/ROUTE-STATE-MACHINE-001A/routes/EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A/state.json",
+    "autostart": false,
+    "background_dispatch": false,
+    "claim_ceiling": "local explicit V2 product mainline, repository simplification, mirror integrity, and bounded execution/replay evidence only",
+    "core_id": "ego_life_playground_v0",
+    "default_enabled": false,
+    "descendant_id": "EGO-LIFE-KERNEL-V2-MICROWORLD-MEMORY-CAUSALITY-001A",
+    "effective_live_product_actions": [
+      "retire_pre_v2_runtime_under_local_tag_and_manifest",
+      "verify_v2_explicit_trigger_and_replay",
+      "run_route_state_machine_validation"
+    ],
+    "ego_local_development_policy": {
+      "boundary_fields_requiring_itl_transition": [
+        "product_mainline",
+        "interactive_entrypoint",
+        "enabled",
+        "default_enabled",
+        "autostart",
+        "background_dispatch",
+        "network",
+        "llm",
+        "science_weight",
+        "runtime_authority",
+        "retired_projects",
+        "claim_ceiling"
+      ],
+      "ordinary_bounded_v2_source_task_requires_itl_sync": false
+    },
+    "ego_source_commit": "d1b72a3f39564c2f1c4fe474974017ed3d5b17e9",
+    "enabled": true,
+    "implementation_authorized": true,
+    "interactive_entrypoint": "scripts/run_ego_life_playground_v0.py",
+    "llm": false,
+    "mainline_connected": true,
+    "network": false,
+    "next_actions": [
+      "retire_pre_v2_runtime_under_local_tag_and_manifest",
+      "verify_v2_explicit_trigger_and_replay",
+      "run_route_state_machine_validation"
+    ],
+    "predecessor_descendant_id": "EGO-LIFE-KERNEL-V1-CONTINUITY-PLAYGROUND-001A",
+    "product_mainline": true,
+    "remote_anchor": false,
+    "repository_main_placement_complete": true,
+    "retired_projects": {
+      "EgoDesktop": "retirement_authorized_pending_receipt",
+      "EgoOperator": "retirement_authorized_pending_receipt"
+    },
+    "runtime_authority": "local_explicit_v2_only",
+    "runtime_mainline_connected": true,
+    "science_weight": 0,
+    "state": "V2_ONLY_SIMPLIFICATION_AUTHORIZED_PENDING_EGO_RECEIPT",
+    "suppressed_legacy_product_actions": [
+      "run_EgoDesktop_as_successor",
+      "run_EgoOperator_as_active_default",
+      "use_historical_program_state_as_product_authority"
+    ]
+  },
+  "schema_version": "itl.route_axis_state.v2",
+  "updated_at_utc": "2026-07-18T23:30:00Z"
+}

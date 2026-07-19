@@ -1,0 +1,46 @@
+{
+  "schema_version": "ego.v2_only_simplification.red_precheck.v1",
+  "task_id": "EGO-ITL-V2-ONLY-SIMPLIFICATION-001A",
+  "phase": "EGO_Y_RETIREMENT_AND_ITL_X_MIRROR",
+  "base_commit": "d1b72a3f39564c2f1c4fe474974017ed3d5b17e9",
+  "review_binding_source": "GIT_INDEX_AT_INDEPENDENT_REVIEW",
+  "reviewed_diff_sha256": "d62b668b0685745977f524e08c183d16fcc90da8a786b035df8914506100c37d",
+  "review_bundle_sha256": "434ae86415234aa556b880f7632589063518040bce454d75ed023cbda85b8fdd",
+  "review_bundle_bytes": 29335,
+  "reviewer": "Claude",
+  "review_source": "Claude Web",
+  "reviewer_session_id": "eab056cd-4f2c-44c6-9480-301bff881a86",
+  "reviewed_at_utc": "2026-07-19T05:37:13.0886227Z",
+  "verdict": "NO_BLOCKING_FINDINGS",
+  "blocking_findings": [],
+  "resolved_findings": [
+    "fixed the operator-supplied X-to-Y-to-Z-to-W convergence and mutation-scope blockers before execution",
+    "preserved every ignored or untracked retired-root file in an external hash-verified quarantine instead of deleting user data",
+    "replaced file-existence assertions with an AST single-controller-reducer-store-replay scanner",
+    "added full tracked-tag and untracked-quarantine recovery verification to the Ego Y receipt",
+    "retained real Tk smoke artifacts and fresh-process SQLite replay evidence",
+    "made the default verifier clean-clone portable while requiring --retirement-check for the authoritative Ego Y receipt"
+  ],
+  "review_attempts": [
+    {
+      "source": "Claude Web",
+      "bundle_sha256": "ff9abde4d00561036f328a513b7c106af6a75470f0ed45e1df4c19a2bcdbd451",
+      "verdict": "NO_BLOCKING_FINDINGS",
+      "finding_count": 0
+    },
+    {
+      "source": "Claude Web",
+      "bundle_sha256": "434ae86415234aa556b880f7632589063518040bce454d75ed023cbda85b8fdd",
+      "verdict": "NO_BLOCKING_FINDINGS",
+      "finding_count": 0
+    }
+  ],
+  "reviewer_followup_gate_for_itl_z": [
+    "ego_receipt.retirement_evidence.full_local_recovery_requested must be true",
+    "ego_receipt.retirement_evidence.untracked_recovery.verdict must be pass",
+    "ITL Z must recompute Ego Y commit objects rather than trust receipt self-report"
+  ],
+  "receipt_exclusion_rule": "this receipt is excluded from reviewed_diff_sha256 to avoid self-reference",
+  "claim_ceiling_acknowledged": true,
+  "auto_remote_anchor": "forbidden"
+}

@@ -1,0 +1,9 @@
+{
+  "mirror_policy": "read_only_exact_git_blob_bytes",
+  "schema_version": "ego.itl_product_axis_pin.v1",
+  "source_blob_oid": "65f6d4c54465b989b2215bd435744c1d771c54f8",
+  "source_commit": "d01f5e300162e417115cc81334730732e27af303",
+  "source_path": "artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json",
+  "source_repo_hint": "D:\\Project\\AIProject\\MyProject\\intelligence-theory-lab",
+  "source_sha256": "0ffbfc107307c94de598f1a59a18a13a1a0a6cc354fe93cfc7c2fdd8c9758816"
+}
