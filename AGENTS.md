@@ -22,11 +22,11 @@ llm: false
 science_weight: 0
 runtime_authority: local_explicit_v2_only
 repository_main_placement_complete: true
-retired_pre_v2_operator: retirement_authorized_pending_receipt
-retired_pre_v2_desktop: retirement_authorized_pending_receipt
-itl_source_commit: d01f5e300162e417115cc81334730732e27af303
-itl_source_blob: 65f6d4c54465b989b2215bd435744c1d771c54f8
-next_action: retire_pre_v2_runtime_under_local_tag_and_manifest
+retired_pre_v2_operator: retired_from_current_tree
+retired_pre_v2_desktop: retired_from_current_tree
+itl_source_commit: d0d392dc18cb9f0fcfff8874714edf543a476feb
+itl_source_blob: bcd6ce6dc0c04e5e97efd61b48e164ace71ee687
+next_action: develop_v2_in_ego_with_local_bounded_task_card
 claim_ceiling: local explicit V2 product mainline, repository simplification, mirror integrity, and bounded execution/replay evidence only
 ```
 

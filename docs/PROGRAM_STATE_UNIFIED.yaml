@@ -3,16 +3,16 @@
   "claim_ceiling": "local explicit V2 product mainline, repository simplification, mirror integrity, and bounded execution/replay evidence only",
   "entrypoint": "scripts/run_ego_life_playground_v0.py",
   "generated_from": "artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json",
-  "next_action": "retire_pre_v2_runtime_under_local_tag_and_manifest",
-  "phase": "V2_ONLY_SIMPLIFICATION_AUTHORIZED_PENDING_EGO_RECEIPT",
+  "next_action": "develop_v2_in_ego_with_local_bounded_task_card",
+  "phase": "V2_ONLY_SIMPLIFICATION_COMPLETE",
   "retired_projects": {
-    "EgoDesktop": "retirement_authorized_pending_receipt",
-    "EgoOperator": "retirement_authorized_pending_receipt"
+    "EgoDesktop": "retired_from_current_tree",
+    "EgoOperator": "retired_from_current_tree"
   },
   "schema_version": "ego.program_state_compat.v2",
   "source_pin": {
-    "blob": "65f6d4c54465b989b2215bd435744c1d771c54f8",
-    "commit": "d01f5e300162e417115cc81334730732e27af303"
+    "blob": "bcd6ce6dc0c04e5e97efd61b48e164ace71ee687",
+    "commit": "d0d392dc18cb9f0fcfff8874714edf543a476feb"
   },
   "switches": {
     "autostart": false,
