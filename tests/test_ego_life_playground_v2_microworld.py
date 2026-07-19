@@ -1435,9 +1435,11 @@ def test_p1_normal_terminal_and_tk_payloads_are_invariant_to_private_only_change
 def test_p1_paired_observation_mismatched_context_withholds_raw_claim_history():
     state_a, state_b, traces_a, traces_b = _p1_paired_checkpoint_states()
     assert [trace["selected_action"] for trace in traces_a] == ["forage", "approach"]
-    assert [trace["selected_action"] for trace in traces_b] == ["forage", "approach"]
+    assert [trace["selected_action"] for trace in traces_b] == ["forage", "forage"]
     assert {trace["world_outcome"]["value"] for trace in traces_a} == {-1.0, 1.0}
-    assert {trace["world_outcome"]["value"] for trace in traces_b} == {-1.0, 1.0}
+    assert {trace["world_outcome"]["value"] for trace in traces_b} == {-1.0, None}
+    assert traces_b[0]["food_gain"] == 0.0
+    assert traces_b[1]["world_transition"]["moved"] is False
     assert engine.canonical_json(state_a["memory"]) != engine.canonical_json(state_b["memory"])
     assert (
         microworld.oracle_evidence_record(state_a["world"])["correct_action"]

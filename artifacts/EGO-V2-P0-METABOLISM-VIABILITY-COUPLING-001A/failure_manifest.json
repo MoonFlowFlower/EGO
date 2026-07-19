@@ -1,0 +1,23 @@
+{
+  "aggregation_rule": "preserve baseline shortcut evidence and scoped verification failures without upgrading claims",
+  "code_path_hash": "95b88538eb9896b5ff13aee531528571c90b06bf10bb5a5abccbd59108a8d085",
+  "full_repository_suite": "not_claimed_by_this_scoped_verifier",
+  "input_artifacts": [
+    {
+      "bytes": 29152,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
+      "sha256": "183f4f71dca4410c69f4825c165a285808f457ce569b73bbe90b980efcf44689"
+    }
+  ],
+  "preserved_negative_evidence": {
+    "legacy_quiet_rest_shortcut": true,
+    "legacy_shortcut_can_fake_energy_gain": true
+  },
+  "producer_function": "run_metabolism_verification.failure_manifest",
+  "run_id": "ego-v2-metabolism-viability-001",
+  "schema_version": "ego.metabolism_viability.failure_manifest.v1",
+  "scoped_verdict_failures": [],
+  "seed_context_episode_ids": {
+    "run_seed": 18
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "aggregation_rule": "compare the task reducer against an independent legacy heuristic energy equation on fixed counterexamples",
+  "code_path_hash": "95b88538eb9896b5ff13aee531528571c90b06bf10bb5a5abccbd59108a8d085",
+  "input_artifacts": [
+    {
+      "bytes": 29152,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
+      "sha256": "183f4f71dca4410c69f4825c165a285808f457ce569b73bbe90b980efcf44689"
+    }
+  ],
+  "legacy_quiet_rest": {
+    "energy_before": 0.5,
+    "legacy_energy_after": 0.68,
+    "selected_action": "explore",
+    "task_energy_after": 0.455
+  },
+  "legacy_resource_forage_negative_outcome": {
+    "energy_before": 0.4,
+    "legacy_energy_after": 0.68,
+    "realized_outcome": -1.0,
+    "task_energy_after": 0.36
+  },
+  "producer_function": "run_metabolism_verification.baseline_comparison",
+  "run_id": "ego-v2-metabolism-viability-001",
+  "schema_version": "ego.metabolism_viability.baseline_comparison.v1",
+  "seed_context_episode_ids": {
+    "run_seed": 18
+  }
+}

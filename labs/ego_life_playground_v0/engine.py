@@ -44,7 +44,7 @@ EPISODE_SPAN_TICKS = 8
 STATE_SCHEMA_VERSION = "ego.life_playground.state.v2"
 RUN_SCHEMA_VERSION = "ego.life_playground.run.v2"
 COMMAND_SCHEMA_VERSION = "ego.life_playground.command.v4"
-TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v4"
+TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v5"
 
 TRIGGER_SOURCES = (
     "ui_step_button",
@@ -126,6 +126,21 @@ ACTION_COSTS = {
     "rest": 0.010,
     "withdraw": 0.015,
 }
+
+# Task-local V2 product metabolism constants. ACTION_COSTS remains the existing
+# selector cost table and is also the physical per-action energy cost so the
+# trace has one auditable cost value rather than a second hidden table.
+PASSIVE_ENERGY_DECAY_PER_TICK = 0.020
+FOOD_ENERGY_GAIN = 0.280
+CRITICAL_ENERGY_THRESHOLD = 0.150
+CRITICAL_ENERGY_ALLOWED_ACTIONS = ("forage", "rest", "withdraw")
+METABOLISM_PRODUCER_FUNCTION = (
+    "ego_life_playground_v0.engine.compute_metabolism_ledger"
+)
+METABOLISM_AGGREGATION_RULE = (
+    "clamp01(energy_before-passive_decay-action_cost+food_gain); "
+    "food_gain iff environment transition food_obtained is true"
+)
 
 
 class EngineInvariantError(ValueError):
@@ -367,6 +382,12 @@ def compute_step(
     world_observation = deepcopy(decision_state["world"]["public_observation"])
     cue = str(world_observation["cue"])
     decision_hash = state_hash(decision_state)
+    energy_before = _round(float(decision_state["organism"]["energy"]))
+    viability_gate = compute_viability_action_gate(
+        energy_before=energy_before,
+        topology_legal_actions=action_gate["legal_actions"],
+    )
+    legal_actions = list(viability_gate["legal_actions"])
     goal_before = deepcopy(decision_state["current_goal"])
     current_goal = goal_before["state_variable"] or "homeostasis"
     context_key = f"{cue}|{current_goal}"
@@ -390,7 +411,7 @@ def compute_step(
         "observation": deepcopy(world_observation),
         "organism": deepcopy(decision_state["organism"]),
         "current_goal": deepcopy(goal_before),
-        "legal_actions": list(action_gate["legal_actions"]),
+        "legal_actions": list(legal_actions),
         "action_paths": deepcopy(action_gate["action_paths"]),
         "model": deepcopy(decision_state["model"]),
         "sequence": sequence,
@@ -418,13 +439,18 @@ def compute_step(
         )
         for action in ACTIONS
     ]
-    legal_actions = list(action_gate["legal_actions"])
     gated_actions = deepcopy(action_gate["gated_actions"])
     for candidate in candidates:
-        candidate["legal"] = candidate["action"] in legal_actions
-        candidate["gate_reasons"] = (
-            [] if candidate["legal"] else ["unreachable_target"]
-        )
+        topology_legal = candidate["action"] in action_gate["legal_actions"]
+        viability_legal = candidate["action"] in legal_actions
+        candidate["legal"] = topology_legal and viability_legal
+        candidate["gate_reasons"] = []
+        if not topology_legal:
+            candidate["gate_reasons"].append("unreachable_target")
+        if topology_legal and not viability_legal:
+            candidate["gate_reasons"].append(
+                "critical_energy_capability_restriction"
+            )
     positive_progress_actions = sorted(
         str(candidate["action"])
         for candidate in candidates
@@ -470,10 +496,22 @@ def compute_step(
         raise EngineInvariantError("world transition path differs from scored canonical path")
     world_outcome_value = world_transition.get("outcome")
     actual_delta = _actual_delta(cue, selected_action, world_outcome=world_outcome_value)
+    metabolism = compute_metabolism_ledger(
+        energy_before=energy_before,
+        selected_action=selected_action,
+        world_transition=world_transition,
+        run_meta=run_meta,
+        episode_id=str(decision_state["clock"]["episode_id"]),
+        command_hash=str(command["command_hash"]),
+        code_path_hash=current_code_hash,
+    )
+    actual_delta["energy"] = metabolism["energy_delta"]
     prediction_error = {
         key: _round(actual_delta[key] - predicted_delta[key]) for key in STATE_KEYS
     }
     next_state["organism"] = _apply_delta(decision_state["organism"], actual_delta)
+    if next_state["organism"]["energy"] != metabolism["energy_after"]:
+        raise EngineInvariantError("metabolism ledger differs from applied organism energy")
     next_state["last_action"] = selected_action
     next_state["last_command_hash"] = command["command_hash"]
     next_state["current_goal"], goal_progress, goal_transition = _advance_goal(
@@ -560,6 +598,7 @@ def compute_step(
         "policy_projection": policy_projection,
         "policy_projection_hash": canonical_hash(policy_projection),
         "action_gate": action_gate,
+        "viability_gate": viability_gate,
         "legal_actions": legal_actions,
         "gated_actions": gated_actions,
         "world_transition": world_transition,
@@ -568,6 +607,7 @@ def compute_step(
             "revealed_after_selection": bool(world_transition.get("revealed_after_selection")),
             "visited_site": world_transition.get("visited_site"),
             "value": world_outcome_value,
+            "food_obtained": bool(world_transition.get("food_obtained")),
         },
         "episode_before": deepcopy(before["clock"]),
         "episode_transition": episode_transition,
@@ -585,6 +625,13 @@ def compute_step(
         "memory_refs": selected["memory_refs"],
         "claim_retrieval": claim_retrieval,
         "actual_delta": actual_delta,
+        "energy_before": metabolism["energy_before"],
+        "passive_decay": metabolism["passive_decay"],
+        "action_cost": metabolism["action_cost"],
+        "food_gain": metabolism["food_gain"],
+        "energy_after": metabolism["energy_after"],
+        "downstream_effect": metabolism["downstream_effect"],
+        "metabolism": metabolism,
         "prediction_error": prediction_error,
         "model_update": model_update,
         "memory_update": memory_update,
@@ -607,6 +654,139 @@ def compute_step(
     trace["trace_hash"] = compute_trace_hash(trace)
     next_state["last_trace_hash"] = trace["trace_hash"]
     return StepResult(next_state=next_state, trace=trace)
+
+
+def compute_viability_action_gate(
+    *, energy_before: float, topology_legal_actions: Any
+) -> dict[str, Any]:
+    """Intersect the existing topology gate with the task-local energy gate."""
+
+    if type(energy_before) is not float or not math.isfinite(energy_before):
+        raise EngineInvariantError("viability gate energy_before must be a finite float")
+    if not 0.0 <= energy_before <= 1.0:
+        raise EngineInvariantError("viability gate energy_before is outside range")
+    if not isinstance(topology_legal_actions, (list, tuple)):
+        raise EngineInvariantError("topology legal actions must be an ordered sequence")
+    topology_legal = list(topology_legal_actions)
+    if len(topology_legal) != len(set(topology_legal)) or any(
+        type(action) is not str or action not in ACTIONS for action in topology_legal
+    ):
+        raise EngineInvariantError("topology legal actions are not canonical")
+
+    active = energy_before <= CRITICAL_ENERGY_THRESHOLD
+    legal = [
+        action
+        for action in topology_legal
+        if not active or action in CRITICAL_ENERGY_ALLOWED_ACTIONS
+    ]
+    if not legal:
+        raise EngineInvariantError("viability gate removed every topology-legal action")
+    return {
+        "producer_function": (
+            "ego_life_playground_v0.engine.compute_viability_action_gate"
+        ),
+        "rule": "critical_energy_intersects_existing_topology_legal_actions_v1",
+        "energy_before": energy_before,
+        "critical_energy_threshold": CRITICAL_ENERGY_THRESHOLD,
+        "active": active,
+        "topology_legal_actions": topology_legal,
+        "allowed_actions_when_critical": list(CRITICAL_ENERGY_ALLOWED_ACTIONS),
+        "legal_actions": legal,
+        "restricted_actions": [
+            action for action in topology_legal if action not in legal
+        ],
+    }
+
+
+def compute_metabolism_ledger(
+    *,
+    energy_before: float,
+    selected_action: str,
+    world_transition: Mapping[str, Any],
+    run_meta: Mapping[str, Any],
+    episode_id: str,
+    command_hash: str,
+    code_path_hash: str,
+) -> dict[str, Any]:
+    """Compute the only per-tick energy accounting used by live and replay."""
+
+    if type(energy_before) is not float or not math.isfinite(energy_before):
+        raise EngineInvariantError("metabolism energy_before must be a finite float")
+    if not 0.0 <= energy_before <= 1.0:
+        raise EngineInvariantError("metabolism energy_before is outside range")
+    if selected_action not in ACTIONS:
+        raise EngineInvariantError("metabolism selected action is not canonical")
+    if not isinstance(world_transition, Mapping):
+        raise EngineInvariantError("metabolism world transition must be an object")
+    food_obtained = world_transition.get("food_obtained")
+    if type(food_obtained) is not bool:
+        raise EngineInvariantError("world transition food_obtained must be boolean")
+    qualifying_food_outcome = bool(
+        selected_action == "forage"
+        and world_transition.get("selected_action") == "forage"
+        and world_transition.get("moved") is True
+        and world_transition.get("visited_site") == "site_a"
+        and world_transition.get("outcome") == 1.0
+    )
+    if food_obtained != qualifying_food_outcome:
+        raise EngineInvariantError(
+            "environment food flag differs from realized forage outcome"
+        )
+    if type(episode_id) is not str or not episode_id:
+        raise EngineInvariantError("metabolism episode_id must be non-empty")
+    if not _is_sha256(command_hash) or not _is_sha256(code_path_hash):
+        raise EngineInvariantError("metabolism provenance hashes must be sha256")
+
+    passive_decay = PASSIVE_ENERGY_DECAY_PER_TICK
+    action_cost = ACTION_COSTS[selected_action]
+    food_gain = FOOD_ENERGY_GAIN if food_obtained else 0.0
+    energy_after = _round(
+        _clamp(energy_before - passive_decay - action_cost + food_gain)
+    )
+    critical_before = energy_before <= CRITICAL_ENERGY_THRESHOLD
+    critical_after = energy_after <= CRITICAL_ENERGY_THRESHOLD
+    downstream_effect = {
+        "producer_function": METABOLISM_PRODUCER_FUNCTION,
+        "critical_energy_threshold": CRITICAL_ENERGY_THRESHOLD,
+        "critical_before": critical_before,
+        "critical_after": critical_after,
+        "entered_critical": (not critical_before) and critical_after,
+        "capability_restriction_active": critical_before,
+        "next_tick_capability_restriction": critical_after,
+        "allowed_actions_when_critical": list(CRITICAL_ENERGY_ALLOWED_ACTIONS),
+        "effect": (
+            "current_tick_action_set_restricted"
+            if critical_before
+            else (
+                "critical_threshold_crossed_next_tick_action_set_restricted"
+                if critical_after
+                else "none"
+            )
+        ),
+    }
+    return {
+        "schema_version": "ego.life_playground.metabolism_ledger.v1",
+        "producer_function": METABOLISM_PRODUCER_FUNCTION,
+        "input_artifacts": [
+            f"run:{run_meta['run_id']}",
+            f"command:{command_hash}",
+            f"world_transition:{canonical_hash(world_transition)}",
+        ],
+        "run_id": run_meta["run_id"],
+        "seed": int(run_meta["seed"]),
+        "episode_id": episode_id,
+        "aggregation_rule": METABOLISM_AGGREGATION_RULE,
+        "code_path_hash": code_path_hash,
+        "selected_action": selected_action,
+        "food_obtained": food_obtained,
+        "energy_before": energy_before,
+        "passive_decay": passive_decay,
+        "action_cost": action_cost,
+        "food_gain": food_gain,
+        "energy_after": energy_after,
+        "energy_delta": _round(energy_after - energy_before),
+        "downstream_effect": downstream_effect,
+    }
 
 
 def propose_goals(organism: Mapping[str, float]) -> list[dict[str, Any]]:
@@ -1201,12 +1381,15 @@ def _actual_delta(
     delta = dict(ACTION_PRIORS[action])
     for key, bonus in CUE_BONUSES.get(cue, {}).get(action, {}).items():
         delta[key] += bonus
+    # Energy is exclusively supplied by compute_metabolism_ledger. The old
+    # action/cue energy values remain prediction priors so the existing learner
+    # can observe their error, but never become realized energy directly.
+    delta["energy"] = 0.0
     if world_outcome is not None:
         if type(world_outcome) is not float or world_outcome not in {-1.0, 1.0}:
             raise EngineInvariantError("world outcome is outside the canonical site range")
         # Delayed site outcome is applied only after selection. It therefore
         # affects the prediction error/update, never the current policy input.
-        delta["energy"] += 0.05 * world_outcome
         delta["safety"] += 0.03 * world_outcome
     return {key: _round(delta[key]) for key in STATE_KEYS}
 

@@ -445,14 +445,19 @@ def test_v1_engine_rollover_occurs_before_ticks_9_and_17_and_carries_goal():
 
 def test_v1_engine_goal_carries_until_completion_then_enters_homeostasis():
     state = engine.initial_state(
-        {"energy": 0.70, "safety": 1.0, "connection": 1.0, "stimulation": 1.0},
+        {"energy": 0.50, "safety": 1.0, "connection": 1.0, "stimulation": 1.0},
         run_id="goal-complete",
+        seed=18,
     )
     goal_before = deepcopy(state["current_goal"])
-    result, _, _ = _v1_step(state, run_id="goal-complete", cue="resource")
+    result, _, _ = _v1_step(
+        state, run_id="goal-complete", seed=18, cue="resource"
+    )
 
     assert goal_before["state_variable"] == "energy"
     assert result.trace["goal_before"] == goal_before
+    assert result.trace["world_transition"]["food_obtained"] is True
+    assert result.trace["food_gain"] == engine.FOOD_ENERGY_GAIN
     assert result.trace["goal_progress"]["completed"] is True
     assert result.trace["goal_transition"]["kind"] == "completed_to_homeostasis"
     assert result.next_state["current_goal"]["state_variable"] is None
@@ -1200,15 +1205,19 @@ def test_visual_console_real_step_run_commit_recover_animate_lockstep_and_pause_
         assert window._scheduled_waypoints == expected
         assert window._animation_completed_sequence == 1
 
+        # The sequence-2 default event may now legitimately produce a
+        # zero-distance action after its realized metabolism update. Run must
+        # advance it without inventing animation, then animate the next real
+        # movement before dispatching another tick.
         window.run_button.invoke()
-        _pump_tk_until(root, lambda: store.row_counts(controller.run_id)[0] == 2)
+        _pump_tk_until(root, lambda: store.row_counts(controller.run_id)[0] == 3)
         assert window._animating is True
         time.sleep(0.03)
         root.update()
-        assert store.row_counts(controller.run_id) == (2, 2)
+        assert store.row_counts(controller.run_id) == (3, 3)
 
-        _pump_tk_until(root, lambda: store.row_counts(controller.run_id)[0] == 3)
-        assert dispatch_during_animation == [False, False, False]
+        _pump_tk_until(root, lambda: store.row_counts(controller.run_id)[0] == 4)
+        assert dispatch_during_animation == [False, False, False, False]
         window.pause_button.invoke()
         paused_counts = store.row_counts(controller.run_id)
         for _ in range(12):

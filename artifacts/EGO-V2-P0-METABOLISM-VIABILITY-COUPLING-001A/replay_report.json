@@ -1,0 +1,125 @@
+{
+  "aggregation_rule": "recover the SQLite run from serialized initial state plus ordered commands, require fresh-process x2 equality, and require tamper to fail closed",
+  "code_path_hash": "95b88538eb9896b5ff13aee531528571c90b06bf10bb5a5abccbd59108a8d085",
+  "fresh_process_a": {
+    "command_count": 3,
+    "downstream_effects": [
+      "none",
+      "none",
+      "none"
+    ],
+    "energy_path": [
+      0.64,
+      0.6,
+      0.56
+    ],
+    "final_state_hash": "5bcf0cf7e5f435c928e8d88f7900fda58a449700955d771364e2ccfbc8988aca",
+    "food_gains": [
+      0.28,
+      0.0,
+      0.0
+    ],
+    "producer_function": "SQLiteEventStore.recover_run",
+    "run_id": "metabolism-verifier-sqlite",
+    "selected_actions": [
+      "forage",
+      "forage",
+      "forage"
+    ],
+    "trace_hashes": [
+      "8539a7cefb2c449616ae75ee1863129bc9604d1990375a5bc38daa94e45804ce",
+      "a7fa9072c5b09b7e5ffcc7d3b7cde388558c0775ff018339d70a626715744978",
+      "4ab991ff004a2b0932de6dfaa59d4c572a81f3e40a6f4a25a3f1a723cbc0f9f9"
+    ]
+  },
+  "fresh_process_b": {
+    "command_count": 3,
+    "downstream_effects": [
+      "none",
+      "none",
+      "none"
+    ],
+    "energy_path": [
+      0.64,
+      0.6,
+      0.56
+    ],
+    "final_state_hash": "5bcf0cf7e5f435c928e8d88f7900fda58a449700955d771364e2ccfbc8988aca",
+    "food_gains": [
+      0.28,
+      0.0,
+      0.0
+    ],
+    "producer_function": "SQLiteEventStore.recover_run",
+    "run_id": "metabolism-verifier-sqlite",
+    "selected_actions": [
+      "forage",
+      "forage",
+      "forage"
+    ],
+    "trace_hashes": [
+      "8539a7cefb2c449616ae75ee1863129bc9604d1990375a5bc38daa94e45804ce",
+      "a7fa9072c5b09b7e5ffcc7d3b7cde388558c0775ff018339d70a626715744978",
+      "4ab991ff004a2b0932de6dfaa59d4c572a81f3e40a6f4a25a3f1a723cbc0f9f9"
+    ]
+  },
+  "fresh_process_runs_equal": true,
+  "input_artifacts": [
+    {
+      "bytes": 29152,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
+      "sha256": "183f4f71dca4410c69f4825c165a285808f457ce569b73bbe90b980efcf44689"
+    },
+    {
+      "bytes": 243971,
+      "path": "artifacts\\EGO-V2-P0-METABOLISM-VIABILITY-COUPLING-001A\\trace.jsonl",
+      "sha256": "405b26e8d82178be2bc8bf54f5df791da1f7b9c9fb785fb6c02210b76bbe6cef"
+    }
+  ],
+  "producer_function": "run_metabolism_verification.replay_report",
+  "recovered": {
+    "command_count": 3,
+    "downstream_effects": [
+      "none",
+      "none",
+      "none"
+    ],
+    "energy_path": [
+      0.64,
+      0.6,
+      0.56
+    ],
+    "final_state_hash": "5bcf0cf7e5f435c928e8d88f7900fda58a449700955d771364e2ccfbc8988aca",
+    "food_gains": [
+      0.28,
+      0.0,
+      0.0
+    ],
+    "producer_function": "SQLiteEventStore.recover_run",
+    "run_id": "metabolism-verifier-sqlite",
+    "selected_actions": [
+      "forage",
+      "forage",
+      "forage"
+    ],
+    "trace_hashes": [
+      "8539a7cefb2c449616ae75ee1863129bc9604d1990375a5bc38daa94e45804ce",
+      "a7fa9072c5b09b7e5ffcc7d3b7cde388558c0775ff018339d70a626715744978",
+      "4ab991ff004a2b0932de6dfaa59d4c572a81f3e40a6f4a25a3f1a723cbc0f9f9"
+    ]
+  },
+  "row_counts": {
+    "commands": 3,
+    "runs": 1,
+    "traces": 3
+  },
+  "run_id": "metabolism-verifier-sqlite",
+  "schema_version": "ego.metabolism_viability.replay_report.v1",
+  "seed_context_episode_ids": {
+    "run_seed": 18
+  },
+  "serialized_command_count": 3,
+  "sqlite_recovery_matches_fresh_process": true,
+  "tamper_error": "stored trace differs from independent recomputation",
+  "tamper_fail_closed": true
+}

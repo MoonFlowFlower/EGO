@@ -531,6 +531,12 @@ def transition_world(
                 else "site_a_high"
             )
             drift_applied = True
+    food_obtained = bool(
+        selected_action == "forage"
+        and moved
+        and visited_site == "site_a"
+        and outcome == 1.0
+    )
     observation["revealed_outcome"] = outcome
     transitioned["public_observation"] = observation
     verify_world_state(transitioned)
@@ -543,6 +549,7 @@ def transition_world(
         "path": path,
         "visited_site": visited_site,
         "outcome": outcome,
+        "food_obtained": food_obtained,
         "revealed_after_selection": outcome is not None,
     }
 
