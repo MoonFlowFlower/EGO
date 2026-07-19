@@ -1,251 +1,428 @@
 {
-  "aggregation_rule": "pass iff every named monotonic decay, real food gain, critical restriction, replay, tamper, and controller-path check is true",
+  "aggregation_rule": "pass iff every named computed repair check is true",
   "checks": {
-    "critical_energy_has_real_downstream_capability_restriction": {
+    "baseline_shows_pre_repair_false_gain": {
       "aggregation_rule": "boolean result from the named callable computation path",
-      "code_path_hash": "95b88538eb9896b5ff13aee531528571c90b06bf10bb5a5abccbd59108a8d085",
+      "code_path_hash": "50a1d099f5f753a1c483e4264cc038fdc025066cf879785ad9f724f29b5d3113",
       "evidence_record_type": "computed_evidence",
       "input_artifacts": [
         {
-          "bytes": 29152,
+          "bytes": 32141,
           "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
-          "sha256": "183f4f71dca4410c69f4825c165a285808f457ce569b73bbe90b980efcf44689"
+          "sha256": "ccd43ae3a40927c2d81e59418589f187c8641b53b24bd90a888e35cc86a3498a"
+        },
+        {
+          "bytes": 83335,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+          "sha256": "780e48a92326a7600be72052f08324c0748a93775a3f026a3d788eb9c7fb1285"
+        },
+        {
+          "bytes": 26946,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\microworld.py",
+          "sha256": "a4f77aee3f2b22f2fc73c1296b0cd9957a22cd43f5bc67a1dce030196ff8a986"
+        },
+        {
+          "bytes": 7948,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+          "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+        },
+        {
+          "bytes": 13786,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 12954,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-METABOLISM-VIABILITY-COUPLING-001A.md",
+          "sha256": "a805953201cd4a7d33325fde29f8f289efe10f742bdc3b65f8d7405bd3b45b8d"
         }
       ],
-      "producer_function": "_run_critical_gate",
-      "run_id": "ego-v2-metabolism-viability-001",
+      "producer_function": "_legacy_energy_after",
+      "run_id": "ego-v2-metabolism-verify",
       "seed_context_episode_ids": {
         "context_ids": [
-          "no_food_monotonic",
-          "positive_food",
-          "critical_gate",
-          "sqlite_replay",
+          "baseline_comparison"
+        ],
+        "run_seed": 18
+      },
+      "value": true
+    },
+    "critical_energy_restricts_next_selector_call": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "50a1d099f5f753a1c483e4264cc038fdc025066cf879785ad9f724f29b5d3113",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        {
+          "bytes": 32141,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
+          "sha256": "ccd43ae3a40927c2d81e59418589f187c8641b53b24bd90a888e35cc86a3498a"
+        },
+        {
+          "bytes": 83335,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+          "sha256": "780e48a92326a7600be72052f08324c0748a93775a3f026a3d788eb9c7fb1285"
+        },
+        {
+          "bytes": 26946,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\microworld.py",
+          "sha256": "a4f77aee3f2b22f2fc73c1296b0cd9957a22cd43f5bc67a1dce030196ff8a986"
+        },
+        {
+          "bytes": 7948,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+          "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+        },
+        {
+          "bytes": 13786,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 12954,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-METABOLISM-VIABILITY-COUPLING-001A.md",
+          "sha256": "a805953201cd4a7d33325fde29f8f289efe10f742bdc3b65f8d7405bd3b45b8d"
+        }
+      ],
+      "producer_function": "_critical_gate_traces",
+      "run_id": "ego-v2-metabolism-verify",
+      "seed_context_episode_ids": {
+        "context_ids": [
+          "critical_gate"
+        ],
+        "run_seed": 18
+      },
+      "value": true
+    },
+    "food_gain_ablation_load_bears": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "50a1d099f5f753a1c483e4264cc038fdc025066cf879785ad9f724f29b5d3113",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        {
+          "bytes": 32141,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
+          "sha256": "ccd43ae3a40927c2d81e59418589f187c8641b53b24bd90a888e35cc86a3498a"
+        },
+        {
+          "bytes": 83335,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+          "sha256": "780e48a92326a7600be72052f08324c0748a93775a3f026a3d788eb9c7fb1285"
+        },
+        {
+          "bytes": 26946,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\microworld.py",
+          "sha256": "a4f77aee3f2b22f2fc73c1296b0cd9957a22cd43f5bc67a1dce030196ff8a986"
+        },
+        {
+          "bytes": 7948,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+          "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+        },
+        {
+          "bytes": 13786,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 12954,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-METABOLISM-VIABILITY-COUPLING-001A.md",
+          "sha256": "a805953201cd4a7d33325fde29f8f289efe10f742bdc3b65f8d7405bd3b45b8d"
+        }
+      ],
+      "producer_function": "engine.compute_step with in-memory FOOD_ENERGY_GAIN intervention",
+      "run_id": "ego-v2-metabolism-verify",
+      "seed_context_episode_ids": {
+        "context_ids": [
+          "food_gain_ablation"
+        ],
+        "run_seed": 18
+      },
+      "value": true
+    },
+    "monotonic_no_food_decay": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "50a1d099f5f753a1c483e4264cc038fdc025066cf879785ad9f724f29b5d3113",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        {
+          "bytes": 32141,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
+          "sha256": "ccd43ae3a40927c2d81e59418589f187c8641b53b24bd90a888e35cc86a3498a"
+        },
+        {
+          "bytes": 83335,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+          "sha256": "780e48a92326a7600be72052f08324c0748a93775a3f026a3d788eb9c7fb1285"
+        },
+        {
+          "bytes": 26946,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\microworld.py",
+          "sha256": "a4f77aee3f2b22f2fc73c1296b0cd9957a22cd43f5bc67a1dce030196ff8a986"
+        },
+        {
+          "bytes": 7948,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+          "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+        },
+        {
+          "bytes": 13786,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 12954,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-METABOLISM-VIABILITY-COUPLING-001A.md",
+          "sha256": "a805953201cd4a7d33325fde29f8f289efe10f742bdc3b65f8d7405bd3b45b8d"
+        }
+      ],
+      "producer_function": "_quiet_decay_traces",
+      "run_id": "ego-v2-metabolism-verify",
+      "seed_context_episode_ids": {
+        "context_ids": [
+          "quiet_decay"
+        ],
+        "run_seed": 18
+      },
+      "value": true
+    },
+    "negative_or_zero_distance_forage_has_no_food_gain": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "50a1d099f5f753a1c483e4264cc038fdc025066cf879785ad9f724f29b5d3113",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        {
+          "bytes": 32141,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
+          "sha256": "ccd43ae3a40927c2d81e59418589f187c8641b53b24bd90a888e35cc86a3498a"
+        },
+        {
+          "bytes": 83335,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+          "sha256": "780e48a92326a7600be72052f08324c0748a93775a3f026a3d788eb9c7fb1285"
+        },
+        {
+          "bytes": 26946,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\microworld.py",
+          "sha256": "a4f77aee3f2b22f2fc73c1296b0cd9957a22cd43f5bc67a1dce030196ff8a986"
+        },
+        {
+          "bytes": 7948,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+          "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+        },
+        {
+          "bytes": 13786,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 12954,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-METABOLISM-VIABILITY-COUPLING-001A.md",
+          "sha256": "a805953201cd4a7d33325fde29f8f289efe10f742bdc3b65f8d7405bd3b45b8d"
+        }
+      ],
+      "producer_function": "_negative_resource_trace + _zero_distance_resource_trace",
+      "run_id": "ego-v2-metabolism-verify",
+      "seed_context_episode_ids": {
+        "context_ids": [
+          "resource_negative_outcome"
+        ],
+        "run_seed": 18
+      },
+      "value": true
+    },
+    "positive_food_outcome_replenishes_by_frozen_amount": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "50a1d099f5f753a1c483e4264cc038fdc025066cf879785ad9f724f29b5d3113",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        {
+          "bytes": 32141,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
+          "sha256": "ccd43ae3a40927c2d81e59418589f187c8641b53b24bd90a888e35cc86a3498a"
+        },
+        {
+          "bytes": 83335,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+          "sha256": "780e48a92326a7600be72052f08324c0748a93775a3f026a3d788eb9c7fb1285"
+        },
+        {
+          "bytes": 26946,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\microworld.py",
+          "sha256": "a4f77aee3f2b22f2fc73c1296b0cd9957a22cd43f5bc67a1dce030196ff8a986"
+        },
+        {
+          "bytes": 7948,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+          "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+        },
+        {
+          "bytes": 13786,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 12954,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-METABOLISM-VIABILITY-COUPLING-001A.md",
+          "sha256": "a805953201cd4a7d33325fde29f8f289efe10f742bdc3b65f8d7405bd3b45b8d"
+        }
+      ],
+      "producer_function": "_positive_resource_trace",
+      "run_id": "ego-v2-metabolism-verify",
+      "seed_context_episode_ids": {
+        "context_ids": [
+          "resource_positive_outcome"
+        ],
+        "run_seed": 18
+      },
+      "value": true
+    },
+    "real_controller_dispatch_exercises_live_path": {
+      "aggregation_rule": "boolean result from the named callable computation path",
+      "code_path_hash": "50a1d099f5f753a1c483e4264cc038fdc025066cf879785ad9f724f29b5d3113",
+      "evidence_record_type": "computed_evidence",
+      "input_artifacts": [
+        {
+          "bytes": 32141,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
+          "sha256": "ccd43ae3a40927c2d81e59418589f187c8641b53b24bd90a888e35cc86a3498a"
+        },
+        {
+          "bytes": 83335,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+          "sha256": "780e48a92326a7600be72052f08324c0748a93775a3f026a3d788eb9c7fb1285"
+        },
+        {
+          "bytes": 26946,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\microworld.py",
+          "sha256": "a4f77aee3f2b22f2fc73c1296b0cd9957a22cd43f5bc67a1dce030196ff8a986"
+        },
+        {
+          "bytes": 7948,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+          "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+        },
+        {
+          "bytes": 13786,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 12954,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-METABOLISM-VIABILITY-COUPLING-001A.md",
+          "sha256": "a805953201cd4a7d33325fde29f8f289efe10f742bdc3b65f8d7405bd3b45b8d"
+        }
+      ],
+      "producer_function": "PlaygroundController.dispatch -> SQLiteEventStore.recover_run",
+      "run_id": "ego-v2-metabolism-verify",
+      "seed_context_episode_ids": {
+        "context_ids": [
           "controller_dispatch"
         ],
         "run_seed": 18
       },
       "value": true
     },
-    "fresh_process_x2_consistent": {
+    "replay_and_tamper_checks_pass": {
       "aggregation_rule": "boolean result from the named callable computation path",
-      "code_path_hash": "95b88538eb9896b5ff13aee531528571c90b06bf10bb5a5abccbd59108a8d085",
+      "code_path_hash": "50a1d099f5f753a1c483e4264cc038fdc025066cf879785ad9f724f29b5d3113",
       "evidence_record_type": "computed_evidence",
       "input_artifacts": [
         {
-          "bytes": 29152,
+          "bytes": 32141,
           "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
-          "sha256": "183f4f71dca4410c69f4825c165a285808f457ce569b73bbe90b980efcf44689"
-        }
-      ],
-      "producer_function": "_fresh_process_summary",
-      "run_id": "ego-v2-metabolism-viability-001",
-      "seed_context_episode_ids": {
-        "context_ids": [
-          "no_food_monotonic",
-          "positive_food",
-          "critical_gate",
-          "sqlite_replay",
-          "controller_dispatch"
-        ],
-        "run_seed": 18
-      },
-      "value": true
-    },
-    "no_food_ticks_monotonic_energy_decay": {
-      "aggregation_rule": "boolean result from the named callable computation path",
-      "code_path_hash": "95b88538eb9896b5ff13aee531528571c90b06bf10bb5a5abccbd59108a8d085",
-      "evidence_record_type": "computed_evidence",
-      "input_artifacts": [
+          "sha256": "ccd43ae3a40927c2d81e59418589f187c8641b53b24bd90a888e35cc86a3498a"
+        },
         {
-          "bytes": 29152,
-          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
-          "sha256": "183f4f71dca4410c69f4825c165a285808f457ce569b73bbe90b980efcf44689"
-        }
-      ],
-      "producer_function": "_run_no_food_monotonic",
-      "run_id": "ego-v2-metabolism-viability-001",
-      "seed_context_episode_ids": {
-        "context_ids": [
-          "no_food_monotonic",
-          "positive_food",
-          "critical_gate",
-          "sqlite_replay",
-          "controller_dispatch"
-        ],
-        "run_seed": 18
-      },
-      "value": true
-    },
-    "no_real_food_outcome_no_gain": {
-      "aggregation_rule": "boolean result from the named callable computation path",
-      "code_path_hash": "95b88538eb9896b5ff13aee531528571c90b06bf10bb5a5abccbd59108a8d085",
-      "evidence_record_type": "computed_evidence",
-      "input_artifacts": [
+          "bytes": 83335,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+          "sha256": "780e48a92326a7600be72052f08324c0748a93775a3f026a3d788eb9c7fb1285"
+        },
         {
-          "bytes": 29152,
-          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
-          "sha256": "183f4f71dca4410c69f4825c165a285808f457ce569b73bbe90b980efcf44689"
-        }
-      ],
-      "producer_function": "_run_negative_food",
-      "run_id": "ego-v2-metabolism-viability-001",
-      "seed_context_episode_ids": {
-        "context_ids": [
-          "no_food_monotonic",
-          "positive_food",
-          "critical_gate",
-          "sqlite_replay",
-          "controller_dispatch"
-        ],
-        "run_seed": 18
-      },
-      "value": true
-    },
-    "real_controller_dispatch_commits_and_recovers": {
-      "aggregation_rule": "boolean result from the named callable computation path",
-      "code_path_hash": "95b88538eb9896b5ff13aee531528571c90b06bf10bb5a5abccbd59108a8d085",
-      "evidence_record_type": "computed_evidence",
-      "input_artifacts": [
+          "bytes": 26946,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\microworld.py",
+          "sha256": "a4f77aee3f2b22f2fc73c1296b0cd9957a22cd43f5bc67a1dce030196ff8a986"
+        },
         {
-          "bytes": 29152,
-          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
-          "sha256": "183f4f71dca4410c69f4825c165a285808f457ce569b73bbe90b980efcf44689"
-        }
-      ],
-      "producer_function": "_run_controller_dispatch",
-      "run_id": "ego-v2-metabolism-viability-001",
-      "seed_context_episode_ids": {
-        "context_ids": [
-          "no_food_monotonic",
-          "positive_food",
-          "critical_gate",
-          "sqlite_replay",
-          "controller_dispatch"
-        ],
-        "run_seed": 18
-      },
-      "value": true
-    },
-    "real_food_outcome_exact_gain": {
-      "aggregation_rule": "boolean result from the named callable computation path",
-      "code_path_hash": "95b88538eb9896b5ff13aee531528571c90b06bf10bb5a5abccbd59108a8d085",
-      "evidence_record_type": "computed_evidence",
-      "input_artifacts": [
+          "bytes": 7948,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+          "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+        },
         {
-          "bytes": 29152,
-          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
-          "sha256": "183f4f71dca4410c69f4825c165a285808f457ce569b73bbe90b980efcf44689"
-        }
-      ],
-      "producer_function": "_run_positive_food",
-      "run_id": "ego-v2-metabolism-viability-001",
-      "seed_context_episode_ids": {
-        "context_ids": [
-          "no_food_monotonic",
-          "positive_food",
-          "critical_gate",
-          "sqlite_replay",
-          "controller_dispatch"
-        ],
-        "run_seed": 18
-      },
-      "value": true
-    },
-    "sqlite_replay_recomputes_from_serialized_state_and_commands": {
-      "aggregation_rule": "boolean result from the named callable computation path",
-      "code_path_hash": "95b88538eb9896b5ff13aee531528571c90b06bf10bb5a5abccbd59108a8d085",
-      "evidence_record_type": "computed_evidence",
-      "input_artifacts": [
+          "bytes": 13786,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
         {
-          "bytes": 29152,
-          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
-          "sha256": "183f4f71dca4410c69f4825c165a285808f457ce569b73bbe90b980efcf44689"
+          "bytes": 12954,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-METABOLISM-VIABILITY-COUPLING-001A.md",
+          "sha256": "a805953201cd4a7d33325fde29f8f289efe10f742bdc3b65f8d7405bd3b45b8d"
         }
       ],
-      "producer_function": "_run_sqlite_replay",
-      "run_id": "ego-v2-metabolism-viability-001",
+      "producer_function": "_sqlite_replay_probe + fresh SQLiteEventStore.recover_run x2",
+      "run_id": "ego-v2-metabolism-verify",
       "seed_context_episode_ids": {
         "context_ids": [
-          "no_food_monotonic",
-          "positive_food",
-          "critical_gate",
           "sqlite_replay",
-          "controller_dispatch"
-        ],
-        "run_seed": 18
-      },
-      "value": true
-    },
-    "tamper_failure_closes": {
-      "aggregation_rule": "boolean result from the named callable computation path",
-      "code_path_hash": "95b88538eb9896b5ff13aee531528571c90b06bf10bb5a5abccbd59108a8d085",
-      "evidence_record_type": "computed_evidence",
-      "input_artifacts": [
-        {
-          "bytes": 29152,
-          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
-          "sha256": "183f4f71dca4410c69f4825c165a285808f457ce569b73bbe90b980efcf44689"
-        }
-      ],
-      "producer_function": "_run_sqlite_replay",
-      "run_id": "ego-v2-metabolism-viability-001",
-      "seed_context_episode_ids": {
-        "context_ids": [
-          "no_food_monotonic",
-          "positive_food",
-          "critical_gate",
-          "sqlite_replay",
-          "controller_dispatch"
-        ],
-        "run_seed": 18
-      },
-      "value": true
-    },
-    "trace_contains_required_ledger_fields": {
-      "aggregation_rule": "boolean result from the named callable computation path",
-      "code_path_hash": "95b88538eb9896b5ff13aee531528571c90b06bf10bb5a5abccbd59108a8d085",
-      "evidence_record_type": "computed_evidence",
-      "input_artifacts": [
-        {
-          "bytes": 29152,
-          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
-          "sha256": "183f4f71dca4410c69f4825c165a285808f457ce569b73bbe90b980efcf44689"
-        }
-      ],
-      "producer_function": "run_metabolism_verification.trace_field_scan",
-      "run_id": "ego-v2-metabolism-viability-001",
-      "seed_context_episode_ids": {
-        "context_ids": [
-          "no_food_monotonic",
-          "positive_food",
-          "critical_gate",
-          "sqlite_replay",
-          "controller_dispatch"
+          "fresh_process"
         ],
         "run_seed": 18
       },
       "value": true
     }
   },
-  "claim_ceiling": "Bounded local V2 product engineering repair only: each canonical tick now pays a passive decay, action cost is charged through the sole reducer/replay path, only environment-owned moved positive forage outcomes replenish energy, and critical energy causes a real reducer-side capability restriction. Evidence is limited to this explicit default-off product path and frozen distributions; it does not establish viability as a mechanism, learning, dynamic causal boundary, agency, subjectivity, consciousness, electronic life, Joi-like existence, product readiness, or stable user benefit.",
-  "code_path_hash": "95b88538eb9896b5ff13aee531528571c90b06bf10bb5a5abccbd59108a8d085",
+  "claim_ceiling": "Bounded product-engineering repair only: each explicit V2 tick now pays passive energy decay plus action cost, only a realized environment-owned food outcome can replenish energy, critical energy restricts the canonical action set, and SQLite replay recomputes the same ledger from serialized state plus ordered commands. This does not establish viability as a mechanism, learning, memory causality, dynamic causal boundary, initiative, agency, autonomy, emotion, subjectivity, consciousness, electronic life, Joi-like existence, or product readiness.",
+  "code_path_hash": "50a1d099f5f753a1c483e4264cc038fdc025066cf879785ad9f724f29b5d3113",
   "failed_checks": [],
   "input_artifacts": [
     {
-      "bytes": 29152,
+      "bytes": 32141,
       "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
-      "sha256": "183f4f71dca4410c69f4825c165a285808f457ce569b73bbe90b980efcf44689"
+      "sha256": "ccd43ae3a40927c2d81e59418589f187c8641b53b24bd90a888e35cc86a3498a"
     },
     {
-      "bytes": 243971,
-      "path": "artifacts\\EGO-V2-P0-METABOLISM-VIABILITY-COUPLING-001A\\trace.jsonl",
-      "sha256": "405b26e8d82178be2bc8bf54f5df791da1f7b9c9fb785fb6c02210b76bbe6cef"
+      "bytes": 83335,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+      "sha256": "780e48a92326a7600be72052f08324c0748a93775a3f026a3d788eb9c7fb1285"
+    },
+    {
+      "bytes": 26946,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\microworld.py",
+      "sha256": "a4f77aee3f2b22f2fc73c1296b0cd9957a22cd43f5bc67a1dce030196ff8a986"
+    },
+    {
+      "bytes": 7948,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+      "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+    },
+    {
+      "bytes": 13786,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+      "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+    },
+    {
+      "bytes": 12954,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-METABOLISM-VIABILITY-COUPLING-001A.md",
+      "sha256": "a805953201cd4a7d33325fde29f8f289efe10f742bdc3b65f8d7405bd3b45b8d"
+    },
+    {
+      "bytes": 248242,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-V2-P0-METABOLISM-VIABILITY-COUPLING-001A\\trace.jsonl",
+      "sha256": "ba1cbfe0dc1e797624366d7049ab053b4899b0bd13e422ceb29e8c19dbb4fb28"
     }
   ],
   "producer_function": "run_metabolism_verification",
-  "run_id": "ego-v2-metabolism-viability-001",
-  "schema_version": "ego.metabolism_viability.result.v1",
+  "run_id": "ego-v2-metabolism-verify",
+  "schema_version": "ego.life_playground.metabolism_result.v1",
   "seed_context_episode_ids": {
+    "context_ids": [
+      "negative_resource",
+      "positive_resource",
+      "quiet_decay",
+      "critical_gate",
+      "sqlite_replay",
+      "controller_dispatch"
+    ],
     "run_seed": 18
   },
   "task_id": "EGO-V2-P0-METABOLISM-VIABILITY-COUPLING-001A",

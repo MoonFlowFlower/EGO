@@ -1,29 +1,56 @@
 {
-  "aggregation_rule": "compare the task reducer against an independent legacy heuristic energy equation on fixed counterexamples",
-  "code_path_hash": "95b88538eb9896b5ff13aee531528571c90b06bf10bb5a5abccbd59108a8d085",
+  "aggregation_rule": "compare repaired energy_after against independent pre-repair heuristic energy update",
+  "code_path_hash": "50a1d099f5f753a1c483e4264cc038fdc025066cf879785ad9f724f29b5d3113",
   "input_artifacts": [
     {
-      "bytes": 29152,
+      "bytes": 32141,
       "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
-      "sha256": "183f4f71dca4410c69f4825c165a285808f457ce569b73bbe90b980efcf44689"
-    }
+      "sha256": "ccd43ae3a40927c2d81e59418589f187c8641b53b24bd90a888e35cc86a3498a"
+    },
+    {
+      "bytes": 83335,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+      "sha256": "780e48a92326a7600be72052f08324c0748a93775a3f026a3d788eb9c7fb1285"
+    },
+    {
+      "bytes": 26946,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\microworld.py",
+      "sha256": "a4f77aee3f2b22f2fc73c1296b0cd9957a22cd43f5bc67a1dce030196ff8a986"
+    },
+    {
+      "bytes": 7948,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+      "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+    },
+    {
+      "bytes": 13786,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+      "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+    },
+    {
+      "bytes": 12954,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-METABOLISM-VIABILITY-COUPLING-001A.md",
+      "sha256": "a805953201cd4a7d33325fde29f8f289efe10f742bdc3b65f8d7405bd3b45b8d"
+    },
+    "trace:f2e68b22461e12a0def185b618b877281c74e6e64c05a3a12a0488a95f692c0c",
+    "trace:923ea4e83c6bfe6a91cfc141616ceceb49d9e0f4f46341d8e99973573ca68039"
   ],
   "legacy_quiet_rest": {
-    "energy_before": 0.5,
     "legacy_energy_after": 0.68,
-    "selected_action": "explore",
-    "task_energy_after": 0.455
+    "task_energy_after": 0.47
   },
   "legacy_resource_forage_negative_outcome": {
-    "energy_before": 0.4,
-    "legacy_energy_after": 0.68,
-    "realized_outcome": -1.0,
+    "legacy_energy_after": 0.63,
     "task_energy_after": 0.36
   },
-  "producer_function": "run_metabolism_verification.baseline_comparison",
-  "run_id": "ego-v2-metabolism-viability-001",
-  "schema_version": "ego.metabolism_viability.baseline_comparison.v1",
+  "producer_function": "_legacy_energy_after",
+  "run_id": "ego-v2-metabolism-verify",
+  "schema_version": "ego.life_playground.metabolism_baseline.v1",
   "seed_context_episode_ids": {
+    "context_ids": [
+      "resource_negative_outcome",
+      "quiet_decay"
+    ],
     "run_seed": 18
   }
 }

@@ -1,125 +1,257 @@
 {
-  "aggregation_rule": "recover the SQLite run from serialized initial state plus ordered commands, require fresh-process x2 equality, and require tamper to fail closed",
-  "code_path_hash": "95b88538eb9896b5ff13aee531528571c90b06bf10bb5a5abccbd59108a8d085",
-  "fresh_process_a": {
-    "command_count": 3,
-    "downstream_effects": [
-      "none",
-      "none",
-      "none"
-    ],
-    "energy_path": [
-      0.64,
-      0.6,
-      0.56
-    ],
-    "final_state_hash": "5bcf0cf7e5f435c928e8d88f7900fda58a449700955d771364e2ccfbc8988aca",
-    "food_gains": [
-      0.28,
-      0.0,
-      0.0
-    ],
-    "producer_function": "SQLiteEventStore.recover_run",
-    "run_id": "metabolism-verifier-sqlite",
-    "selected_actions": [
-      "forage",
-      "forage",
-      "forage"
-    ],
-    "trace_hashes": [
-      "8539a7cefb2c449616ae75ee1863129bc9604d1990375a5bc38daa94e45804ce",
-      "a7fa9072c5b09b7e5ffcc7d3b7cde388558c0775ff018339d70a626715744978",
-      "4ab991ff004a2b0932de6dfaa59d4c572a81f3e40a6f4a25a3f1a723cbc0f9f9"
-    ]
-  },
-  "fresh_process_b": {
-    "command_count": 3,
-    "downstream_effects": [
-      "none",
-      "none",
-      "none"
-    ],
-    "energy_path": [
-      0.64,
-      0.6,
-      0.56
-    ],
-    "final_state_hash": "5bcf0cf7e5f435c928e8d88f7900fda58a449700955d771364e2ccfbc8988aca",
-    "food_gains": [
-      0.28,
-      0.0,
-      0.0
-    ],
-    "producer_function": "SQLiteEventStore.recover_run",
-    "run_id": "metabolism-verifier-sqlite",
-    "selected_actions": [
-      "forage",
-      "forage",
-      "forage"
-    ],
-    "trace_hashes": [
-      "8539a7cefb2c449616ae75ee1863129bc9604d1990375a5bc38daa94e45804ce",
-      "a7fa9072c5b09b7e5ffcc7d3b7cde388558c0775ff018339d70a626715744978",
-      "4ab991ff004a2b0932de6dfaa59d4c572a81f3e40a6f4a25a3f1a723cbc0f9f9"
-    ]
-  },
+  "aggregation_rule": "require local sqlite recomputation and two fresh-process recover_run summaries to match byte-for-byte, with independent trace and initial-state tamper clones failing closed",
+  "code_path_hash": "50a1d099f5f753a1c483e4264cc038fdc025066cf879785ad9f724f29b5d3113",
+  "fresh_process_digests": [
+    "c38eca9b28300c82c2ed9a51c46eb15da572d12f8221fa23b6e72c1f75a39d53",
+    "c38eca9b28300c82c2ed9a51c46eb15da572d12f8221fa23b6e72c1f75a39d53"
+  ],
   "fresh_process_runs_equal": true,
   "input_artifacts": [
     {
-      "bytes": 29152,
+      "bytes": 32141,
       "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
-      "sha256": "183f4f71dca4410c69f4825c165a285808f457ce569b73bbe90b980efcf44689"
+      "sha256": "ccd43ae3a40927c2d81e59418589f187c8641b53b24bd90a888e35cc86a3498a"
     },
     {
-      "bytes": 243971,
-      "path": "artifacts\\EGO-V2-P0-METABOLISM-VIABILITY-COUPLING-001A\\trace.jsonl",
-      "sha256": "405b26e8d82178be2bc8bf54f5df791da1f7b9c9fb785fb6c02210b76bbe6cef"
+      "bytes": 83335,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+      "sha256": "780e48a92326a7600be72052f08324c0748a93775a3f026a3d788eb9c7fb1285"
+    },
+    {
+      "bytes": 26946,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\microworld.py",
+      "sha256": "a4f77aee3f2b22f2fc73c1296b0cd9957a22cd43f5bc67a1dce030196ff8a986"
+    },
+    {
+      "bytes": 7948,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+      "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+    },
+    {
+      "bytes": 13786,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+      "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+    },
+    {
+      "bytes": 12954,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-METABOLISM-VIABILITY-COUPLING-001A.md",
+      "sha256": "a805953201cd4a7d33325fde29f8f289efe10f742bdc3b65f8d7405bd3b45b8d"
+    },
+    {
+      "bytes": 248242,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-V2-P0-METABOLISM-VIABILITY-COUPLING-001A\\trace.jsonl",
+      "sha256": "ba1cbfe0dc1e797624366d7049ab053b4899b0bd13e422ceb29e8c19dbb4fb28"
     }
   ],
-  "producer_function": "run_metabolism_verification.replay_report",
-  "recovered": {
-    "command_count": 3,
-    "downstream_effects": [
-      "none",
-      "none",
-      "none"
-    ],
-    "energy_path": [
-      0.64,
-      0.6,
-      0.56
-    ],
-    "final_state_hash": "5bcf0cf7e5f435c928e8d88f7900fda58a449700955d771364e2ccfbc8988aca",
-    "food_gains": [
-      0.28,
-      0.0,
-      0.0
-    ],
-    "producer_function": "SQLiteEventStore.recover_run",
-    "run_id": "metabolism-verifier-sqlite",
-    "selected_actions": [
-      "forage",
-      "forage",
-      "forage"
-    ],
-    "trace_hashes": [
-      "8539a7cefb2c449616ae75ee1863129bc9604d1990375a5bc38daa94e45804ce",
-      "a7fa9072c5b09b7e5ffcc7d3b7cde388558c0775ff018339d70a626715744978",
-      "4ab991ff004a2b0932de6dfaa59d4c572a81f3e40a6f4a25a3f1a723cbc0f9f9"
-    ]
-  },
-  "row_counts": {
-    "commands": 3,
-    "runs": 1,
-    "traces": 3
-  },
-  "run_id": "metabolism-verifier-sqlite",
-  "schema_version": "ego.metabolism_viability.replay_report.v1",
+  "local_recovery_digest": "c38eca9b28300c82c2ed9a51c46eb15da572d12f8221fa23b6e72c1f75a39d53",
+  "producer_function": "_sqlite_replay_probe + fresh SQLiteEventStore.recover_run x2",
+  "run_id": "ego-v2-metabolism-verify",
+  "schema_version": "ego.life_playground.metabolism_replay_report.v1",
   "seed_context_episode_ids": {
+    "context_ids": [
+      "sqlite_recovery",
+      "fresh_sqlite_process_a",
+      "fresh_sqlite_process_b"
+    ],
     "run_seed": 18
   },
-  "serialized_command_count": 3,
+  "sqlite_probe": {
+    "canonical_trace_hashes": [
+      "82d9c38df66a9f714eb19106b1bc3e75a1b3e692383d6550bc28bc81063119de",
+      "f4f16143029f6127e9368774b00fc7c85f372307af9fab60ea9e47b320037a29"
+    ],
+    "command_count": 2,
+    "final_state_hash": "d7c7d17e0de56a71bbc09834a649f5f4ed73cc1f9b0472f549ee049cf994bb50",
+    "fresh_process_summaries": [
+      {
+        "digest": "c38eca9b28300c82c2ed9a51c46eb15da572d12f8221fa23b6e72c1f75a39d53",
+        "payload": {
+          "command_count": 2,
+          "metabolism_ledgers": [
+            {
+              "action_cost": 0.02,
+              "downstream_effect": {
+                "allowed_actions_when_critical": [
+                  "forage",
+                  "rest",
+                  "withdraw"
+                ],
+                "capability_restriction_active": false,
+                "critical_after": false,
+                "critical_before": false,
+                "critical_energy_threshold": 0.15,
+                "effect": "none",
+                "entered_critical": false,
+                "next_tick_capability_restriction": false,
+                "producer_function": "ego_life_playground_v0.engine.compute_metabolism_ledger"
+              },
+              "energy_after": 0.64,
+              "energy_before": 0.4,
+              "food_gain": 0.28,
+              "passive_decay": 0.02
+            },
+            {
+              "action_cost": 0.02,
+              "downstream_effect": {
+                "allowed_actions_when_critical": [
+                  "forage",
+                  "rest",
+                  "withdraw"
+                ],
+                "capability_restriction_active": false,
+                "critical_after": false,
+                "critical_before": false,
+                "critical_energy_threshold": 0.15,
+                "effect": "none",
+                "entered_critical": false,
+                "next_tick_capability_restriction": false,
+                "producer_function": "ego_life_playground_v0.engine.compute_metabolism_ledger"
+              },
+              "energy_after": 0.6,
+              "energy_before": 0.64,
+              "food_gain": 0.0,
+              "passive_decay": 0.02
+            }
+          ],
+          "run_id": "ego-v2-metabolism-verify-sqlite-replay",
+          "state_hash": "d7c7d17e0de56a71bbc09834a649f5f4ed73cc1f9b0472f549ee049cf994bb50",
+          "trace_hashes": [
+            "82d9c38df66a9f714eb19106b1bc3e75a1b3e692383d6550bc28bc81063119de",
+            "f4f16143029f6127e9368774b00fc7c85f372307af9fab60ea9e47b320037a29"
+          ]
+        },
+        "producer_function": "SQLiteEventStore.recover_run"
+      },
+      {
+        "digest": "c38eca9b28300c82c2ed9a51c46eb15da572d12f8221fa23b6e72c1f75a39d53",
+        "payload": {
+          "command_count": 2,
+          "metabolism_ledgers": [
+            {
+              "action_cost": 0.02,
+              "downstream_effect": {
+                "allowed_actions_when_critical": [
+                  "forage",
+                  "rest",
+                  "withdraw"
+                ],
+                "capability_restriction_active": false,
+                "critical_after": false,
+                "critical_before": false,
+                "critical_energy_threshold": 0.15,
+                "effect": "none",
+                "entered_critical": false,
+                "next_tick_capability_restriction": false,
+                "producer_function": "ego_life_playground_v0.engine.compute_metabolism_ledger"
+              },
+              "energy_after": 0.64,
+              "energy_before": 0.4,
+              "food_gain": 0.28,
+              "passive_decay": 0.02
+            },
+            {
+              "action_cost": 0.02,
+              "downstream_effect": {
+                "allowed_actions_when_critical": [
+                  "forage",
+                  "rest",
+                  "withdraw"
+                ],
+                "capability_restriction_active": false,
+                "critical_after": false,
+                "critical_before": false,
+                "critical_energy_threshold": 0.15,
+                "effect": "none",
+                "entered_critical": false,
+                "next_tick_capability_restriction": false,
+                "producer_function": "ego_life_playground_v0.engine.compute_metabolism_ledger"
+              },
+              "energy_after": 0.6,
+              "energy_before": 0.64,
+              "food_gain": 0.0,
+              "passive_decay": 0.02
+            }
+          ],
+          "run_id": "ego-v2-metabolism-verify-sqlite-replay",
+          "state_hash": "d7c7d17e0de56a71bbc09834a649f5f4ed73cc1f9b0472f549ee049cf994bb50",
+          "trace_hashes": [
+            "82d9c38df66a9f714eb19106b1bc3e75a1b3e692383d6550bc28bc81063119de",
+            "f4f16143029f6127e9368774b00fc7c85f372307af9fab60ea9e47b320037a29"
+          ]
+        },
+        "producer_function": "SQLiteEventStore.recover_run"
+      }
+    ],
+    "fresh_process_x2_matches_local_recovery": true,
+    "initial_state_tamper_fail_closed": true,
+    "local_recovery_summary": {
+      "digest": "c38eca9b28300c82c2ed9a51c46eb15da572d12f8221fa23b6e72c1f75a39d53",
+      "payload": {
+        "command_count": 2,
+        "metabolism_ledgers": [
+          {
+            "action_cost": 0.02,
+            "downstream_effect": {
+              "allowed_actions_when_critical": [
+                "forage",
+                "rest",
+                "withdraw"
+              ],
+              "capability_restriction_active": false,
+              "critical_after": false,
+              "critical_before": false,
+              "critical_energy_threshold": 0.15,
+              "effect": "none",
+              "entered_critical": false,
+              "next_tick_capability_restriction": false,
+              "producer_function": "ego_life_playground_v0.engine.compute_metabolism_ledger"
+            },
+            "energy_after": 0.64,
+            "energy_before": 0.4,
+            "food_gain": 0.28,
+            "passive_decay": 0.02
+          },
+          {
+            "action_cost": 0.02,
+            "downstream_effect": {
+              "allowed_actions_when_critical": [
+                "forage",
+                "rest",
+                "withdraw"
+              ],
+              "capability_restriction_active": false,
+              "critical_after": false,
+              "critical_before": false,
+              "critical_energy_threshold": 0.15,
+              "effect": "none",
+              "entered_critical": false,
+              "next_tick_capability_restriction": false,
+              "producer_function": "ego_life_playground_v0.engine.compute_metabolism_ledger"
+            },
+            "energy_after": 0.6,
+            "energy_before": 0.64,
+            "food_gain": 0.0,
+            "passive_decay": 0.02
+          }
+        ],
+        "run_id": "ego-v2-metabolism-verify-sqlite-replay",
+        "state_hash": "d7c7d17e0de56a71bbc09834a649f5f4ed73cc1f9b0472f549ee049cf994bb50",
+        "trace_hashes": [
+          "82d9c38df66a9f714eb19106b1bc3e75a1b3e692383d6550bc28bc81063119de",
+          "f4f16143029f6127e9368774b00fc7c85f372307af9fab60ea9e47b320037a29"
+        ]
+      },
+      "producer_function": "SQLiteEventStore.recover_run"
+    },
+    "producer_function": "_sqlite_replay_probe",
+    "recovered_state_hash": "d7c7d17e0de56a71bbc09834a649f5f4ed73cc1f9b0472f549ee049cf994bb50",
+    "recovered_trace_hashes": [
+      "82d9c38df66a9f714eb19106b1bc3e75a1b3e692383d6550bc28bc81063119de",
+      "f4f16143029f6127e9368774b00fc7c85f372307af9fab60ea9e47b320037a29"
+    ],
+    "sqlite_recovery_matches_canonical": true,
+    "stored_trace_tamper_fail_closed": true
+  },
   "sqlite_recovery_matches_fresh_process": true,
-  "tamper_error": "stored trace differs from independent recomputation",
   "tamper_fail_closed": true
 }

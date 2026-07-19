@@ -1,10 +1,47 @@
 {
-  "claim_ceiling": "Bounded local V2 product engineering repair only: each canonical tick now pays a passive decay, action cost is charged through the sole reducer/replay path, only environment-owned moved positive forage outcomes replenish energy, and critical energy causes a real reducer-side capability restriction. Evidence is limited to this explicit default-off product path and frozen distributions; it does not establish viability as a mechanism, learning, dynamic causal boundary, agency, subjectivity, consciousness, electronic life, Joi-like existence, product readiness, or stable user benefit.",
-  "code_path_hash": "95b88538eb9896b5ff13aee531528571c90b06bf10bb5a5abccbd59108a8d085",
-  "enabled_state": "explicit Step/Run only",
+  "aggregation_rule": "stage score equals scoped verifier verdict after two single-variable iterations",
+  "code_path_hash": "50a1d099f5f753a1c483e4264cc038fdc025066cf879785ad9f724f29b5d3113",
   "failed_checks": [],
-  "focus_iteration": 1,
-  "mainline_target": "existing explicit default-off V2 product chain only",
-  "task_id": "EGO-V2-P0-METABOLISM-VIABILITY-COUPLING-001A",
+  "focus_iteration": 2,
+  "input_artifacts": [
+    {
+      "bytes": 32141,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
+      "sha256": "ccd43ae3a40927c2d81e59418589f187c8641b53b24bd90a888e35cc86a3498a"
+    },
+    {
+      "bytes": 83335,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+      "sha256": "780e48a92326a7600be72052f08324c0748a93775a3f026a3d788eb9c7fb1285"
+    },
+    {
+      "bytes": 26946,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\microworld.py",
+      "sha256": "a4f77aee3f2b22f2fc73c1296b0cd9957a22cd43f5bc67a1dce030196ff8a986"
+    },
+    {
+      "bytes": 7948,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+      "sha256": "ffd5c8b4a6c31a1b668470e40e76d2388a7941dda0ba9fb2564f6be3565279af"
+    },
+    {
+      "bytes": 13786,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+      "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+    },
+    {
+      "bytes": 12954,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-METABOLISM-VIABILITY-COUPLING-001A.md",
+      "sha256": "a805953201cd4a7d33325fde29f8f289efe10f742bdc3b65f8d7405bd3b45b8d"
+    }
+  ],
+  "phase": "A",
+  "producer_function": "run_metabolism_verification",
+  "run_id": "ego-v2-metabolism-verify",
+  "schema_version": "ego.life_playground.metabolism_stage_scorecard.v1",
+  "seed_context_episode_ids": {
+    "focus_iteration": 2,
+    "run_seed": 18
+  },
   "verdict": "pass"
 }

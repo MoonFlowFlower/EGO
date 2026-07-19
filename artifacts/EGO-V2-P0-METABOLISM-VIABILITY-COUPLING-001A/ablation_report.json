@@ -1,27 +1,22 @@
 {
-  "aggregation_rule": "rerun the same realized food outcome under an in-memory food_gain=0 reducer intervention",
-  "code_path_hash": "95b88538eb9896b5ff13aee531528571c90b06bf10bb5a5abccbd59108a8d085",
+  "aggregation_rule": "same serialized state and command, then rerun with food gain zeroed in-memory",
+  "code_path_hash": "50a1d099f5f753a1c483e4264cc038fdc025066cf879785ad9f724f29b5d3113",
   "food_gain_disabled": {
     "ablation_energy_after": 0.36,
     "ablation_food_gain": 0.0,
     "canonical_energy_after": 0.64,
     "canonical_food_gain": 0.28,
-    "same_world_outcome": true
+    "same_selected_action": true
   },
   "input_artifacts": [
-    {
-      "bytes": 29152,
-      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_p0_metabolism_viability_coupling_001a.py",
-      "sha256": "183f4f71dca4410c69f4825c165a285808f457ce569b73bbe90b980efcf44689"
-    }
+    "state:286c56a7f5ec8902448d05730c01902e252d52a2832b54ffde8169155e34ea55",
+    "command:5c3bcc1568ed3a5db611d76072a3c73315086141774f5c5449b8846027e5129d"
   ],
-  "producer_function": "run_metabolism_verification.ablation_report",
-  "run_id": "ego-v2-metabolism-viability-001",
-  "schema_version": "ego.metabolism_viability.ablation_report.v1",
+  "producer_function": "engine.compute_step with in-memory FOOD_ENERGY_GAIN intervention",
+  "run_id": "ego-v2-metabolism-verify-food-ablation",
+  "schema_version": "ego.life_playground.metabolism_ablation.v1",
   "seed_context_episode_ids": {
-    "context_ids": [
-      "food_gain_disabled"
-    ],
+    "episode_id": "episode-000000-2c7420d1b75d2a3d",
     "run_seed": 18
   }
 }
