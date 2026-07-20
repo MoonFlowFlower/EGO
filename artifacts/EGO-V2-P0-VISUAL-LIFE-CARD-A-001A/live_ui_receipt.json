@@ -1,0 +1,192 @@
+{
+  "aggregation_rule": "hidden Tk invokes real Step then Run, pauses after bounded observed commits, and reads back SQLite/recovery/panel state only",
+  "candidate_rows": [
+    [
+      "move_forward",
+      "+0.0880",
+      "+0.0500",
+      "+0.0000"
+    ],
+    [
+      "rest",
+      "+0.0180",
+      "+0.0000",
+      "+0.0000"
+    ],
+    [
+      "turn_right",
+      "+0.0160",
+      "+0.0100",
+      "+0.0000"
+    ],
+    [
+      "turn_left",
+      "+0.0160",
+      "+0.0100",
+      "+0.0000"
+    ],
+    [
+      "interact",
+      "-0.0080",
+      "+0.0000",
+      "+0.0000"
+    ]
+  ],
+  "code_path_hash": "a1e3c0df45a8108531e41f0c72e7d44d1325e1c039e875daa95e318f29631e82",
+  "db_path": "C:\\Users\\LEO\\AppData\\Local\\Temp\\ego-v2-card-a-ui-ttbo5vha\\live-ui.sqlite3",
+  "displayed_sequence": 3,
+  "displayed_visual": [
+    [
+      "wall",
+      "wall",
+      "wall",
+      "wall",
+      "occluded"
+    ],
+    [
+      "occluded",
+      "empty",
+      "empty",
+      "wall",
+      "occluded"
+    ],
+    [
+      "occluded",
+      "v0",
+      "self",
+      "wall",
+      "occluded"
+    ],
+    [
+      "occluded",
+      "v3",
+      "empty",
+      "wall",
+      "occluded"
+    ],
+    [
+      "occluded",
+      "empty",
+      "empty",
+      "wall",
+      "occluded"
+    ]
+  ],
+  "engine_code_path_hash": "6346db715bcf191e1d13c619103c1743a1f4985f995ae9ff7b0ab5f7c10c4079",
+  "history_rows": [
+    [
+      "0",
+      "0",
+      "",
+      ""
+    ],
+    [
+      "1",
+      "1",
+      "move_forward",
+      "ui_step_button"
+    ],
+    [
+      "2",
+      "2",
+      "interact",
+      "ui_run_button"
+    ],
+    [
+      "3",
+      "3",
+      "move_forward",
+      "ui_run_button"
+    ]
+  ],
+  "input_artifacts": [
+    {
+      "bytes": 7990,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+      "sha256": "6ced573f544e47237ef6b4da0da1a0eee20c907a720c66d8d313129f971fff0d"
+    },
+    {
+      "bytes": 75390,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+      "sha256": "e4e89f77f3f080410def8149e711e8f15031029ac01a54df494f8bb7de992e0a"
+    },
+    {
+      "bytes": 25710,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\microworld.py",
+      "sha256": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923"
+    },
+    {
+      "bytes": 13786,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+      "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+    },
+    {
+      "bytes": 13284,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\terminal.py",
+      "sha256": "0fa19f158981389f407f2f76b41f24e816200066f9845afe0c36de0f0b1189e8"
+    },
+    {
+      "bytes": 34076,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\visual_console.py",
+      "sha256": "3c34abe2a540cca8e2b7cfdc9967af231fcbe06de7152ddfbd4b3447643e0704"
+    },
+    {
+      "bytes": 7293,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\run_ego_life_playground_v0.py",
+      "sha256": "d4e51cea9a5aa6484277c238c199459d136fa9cc217916717872eaafcd958a75"
+    },
+    {
+      "bytes": 8406,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A\\PRODUCT_CONTRACT.md",
+      "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+    },
+    {
+      "bytes": 2626,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A\\CARD_A_EGOCENTRIC_ECOLOGY.md",
+      "sha256": "514c404e2a3850fd4e27d42713fed37fa41a5742e28622f79345d3459f054aca"
+    },
+    {
+      "bytes": 56183,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_visual_life_001a.py",
+      "sha256": "c08fbdef7a39bf9f5a686ab716da5f34c0830c2e4cf92e6d5bed12ab4e2634d8"
+    },
+    {
+      "bytes": 81920,
+      "path": "C:\\Users\\LEO\\AppData\\Local\\Temp\\ego-v2-card-a-ui-ttbo5vha\\live-ui.sqlite3",
+      "sha256": "9fa35227b1ded3fee1acc5a0a1d8492646920649d2c6df508ea38b13b15ee113"
+    }
+  ],
+  "latest_selected_action": "move_forward",
+  "observer_canvas_data": {
+    "observation_hash": "9380bcca10bf003558ce8c912859918dc5a25862c70c705a6a371fe2c85f5577",
+    "observer_pose": {
+      "facing": "W",
+      "position": [
+        2,
+        1
+      ]
+    },
+    "sequence": 3,
+    "world_hash": "de2da691561c7af8a6f3e9e143765882e557ceef2f01152e81840a9bea8c8566"
+  },
+  "paused_at_command_count": 3,
+  "producer_function": "exercise_live_ui",
+  "recovered_trace_hash": "d8cc3573bdb7c21b4e59c89f7c3ac7c2541de1ddddb4ad386c378985bb9b61e5",
+  "run_id": "ego-v2-card-a-verify-live-ui",
+  "run_triggered": true,
+  "seed_context_episode_ids": {
+    "context_id": "ui_live",
+    "run_seed": 17,
+    "world_seed": 1701
+  },
+  "sqlite_command_count": 3,
+  "sqlite_trace_count": 3,
+  "step_triggered": true,
+  "tk_available": true,
+  "trigger_sources": [
+    "ui_step_button",
+    "ui_run_button",
+    "ui_run_button"
+  ],
+  "verifier_source_hash": "c08fbdef7a39bf9f5a686ab716da5f34c0830c2e4cf92e6d5bed12ab4e2634d8"
+}

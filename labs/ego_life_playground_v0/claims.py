@@ -13,10 +13,12 @@ import json
 import math
 from typing import Any, Iterable, Mapping
 
+VISUAL_TOKENS = frozenset({"self", "empty", "wall", "occluded", "v0", "v1", "v2", "v3", "v4"})
+INTEROCEPTION_KEYS = ("energy", "safety", "connection", "stimulation")
 
-CLAIM_MEMORY_SCHEMA_VERSION = "ego.life_playground.claim_memory.v1"
-CLAIM_EVENT_SCHEMA_VERSION = "ego.life_playground.claim_event.v1"
-CLAIM_RETRIEVAL_SCHEMA_VERSION = "ego.life_playground.claim_retrieval.v1"
+CLAIM_MEMORY_SCHEMA_VERSION = "ego.life_playground.claim_memory.v2"
+CLAIM_EVENT_SCHEMA_VERSION = "ego.life_playground.claim_event.v2"
+CLAIM_RETRIEVAL_SCHEMA_VERSION = "ego.life_playground.claim_retrieval.v2"
 CLAIM_BIAS_COEFFICIENT = 0.45
 CLAIM_BIAS_CLIP = 0.5
 
@@ -76,7 +78,11 @@ def _round(value: float) -> float:
 
 
 def empty_claim_memory() -> dict[str, list[dict[str, Any]]]:
-    return {"claim_events": [], "competing_claims": []}
+    return {
+        "schema_version": CLAIM_MEMORY_SCHEMA_VERSION,
+        "claim_events": [],
+        "competing_claims": [],
+    }
 
 
 def ensure_claim_memory(memory: Mapping[str, Any]) -> dict[str, Any]:
@@ -85,6 +91,7 @@ def ensure_claim_memory(memory: Mapping[str, Any]) -> dict[str, Any]:
     if not isinstance(memory, Mapping):
         raise ValueError("memory must be an object")
     copied = deepcopy(dict(memory))
+    copied.setdefault("schema_version", CLAIM_MEMORY_SCHEMA_VERSION)
     copied.setdefault("claim_events", [])
     copied.setdefault("competing_claims", [])
     return copied
@@ -93,13 +100,44 @@ def ensure_claim_memory(memory: Mapping[str, Any]) -> dict[str, Any]:
 def _verify_public_features(value: Any) -> None:
     if not isinstance(value, Mapping):
         raise ValueError("observed_public_features must be an object")
+    if set(value) != {"observation_hash", "visual", "current_goal", "interoception_delta"}:
+        raise ValueError("observed_public_features schema mismatch")
+    if not _is_sha256(value["observation_hash"]):
+        raise ValueError("observed_public_features observation_hash must be sha256")
+    _verify_visual(value["visual"], label="observed_public_features visual")
+    if type(value["current_goal"]) is not str or not value["current_goal"]:
+        raise ValueError("observed_public_features current_goal must be a non-empty string")
+    _verify_interoception_delta(value["interoception_delta"], label="observed_public_features interoception_delta")
     encoded = _canonical_json(value).lower()
-    if any(token in encoded for token in _FORBIDDEN_PUBLIC_TOKENS):
+    if any(token in encoded for token in (*_FORBIDDEN_PUBLIC_TOKENS, "source_", "command", "life", "seed", "map", "position")):
         raise ValueError("observed_public_features contains a forbidden private/oracle field")
 
 
+def _verify_visual(value: Any, *, label: str) -> None:
+    if (
+        not isinstance(value, list)
+        or len(value) != 5
+        or any(not isinstance(row, list) or len(row) != 5 for row in value)
+        or any(type(token) is not str or token not in VISUAL_TOKENS for row in value for token in row)
+    ):
+        raise ValueError(f"{label} must be an exact 5x5 visual token grid")
+
+
+def _verify_interoception_delta(value: Any, *, label: str) -> None:
+    if not isinstance(value, Mapping) or set(value) != set(INTEROCEPTION_KEYS):
+        raise ValueError(f"{label} schema mismatch")
+    for key in INTEROCEPTION_KEYS:
+        scalar = value[key]
+        if isinstance(scalar, bool) or not isinstance(scalar, (int, float)) or not math.isfinite(float(scalar)):
+            raise ValueError(f"{label} {key} must be finite numeric")
+
+
 def verify_claim_memory(memory: Mapping[str, Any]) -> None:
-    if not isinstance(memory, Mapping) or not set(CLAIM_MEMORY_KEYS) <= set(memory):
+    if (
+        not isinstance(memory, Mapping)
+        or memory.get("schema_version") != CLAIM_MEMORY_SCHEMA_VERSION
+        or not {"schema_version", *CLAIM_MEMORY_KEYS} <= set(memory)
+    ):
         raise ValueError("claim memory schema mismatch")
     events = memory["claim_events"]
     claims = memory["competing_claims"]
@@ -283,17 +321,11 @@ def retrieve_competing_claims(
     current_goal: str,
 ) -> dict[str, Any]:
     verify_claim_memory(memory)
-    if not isinstance(observation, Mapping):
-        raise ValueError("retrieval observation must be an object")
-    _verify_public_features(observation)
+    _verify_observation(observation)
     if type(current_goal) is not str or not current_goal:
         raise ValueError("retrieval current_goal must be a non-empty string")
 
-    position = str(observation.get("agent_position", "unknown"))
-    cue = observation.get("cue")
-    if type(cue) is not str or not cue:
-        raise ValueError("retrieval cue must be a non-empty public string")
-    association = 1.0 if position == "fork" else 0.65
+    observation_key = _canonical_hash(observation)
     retrieved: list[dict[str, Any]] = []
     withheld: list[dict[str, Any]] = []
     event_by_id = {
@@ -302,14 +334,14 @@ def retrieve_competing_claims(
     raw_support_by_action: dict[str, float] = {}
     withheld_refs: set[str] = set()
     for claim in memory["competing_claims"]:
-        if claim["subject"] != "microworld:opaque_fork":
+        if claim["subject"] != "visual_context" or claim["predicate"] != "preferred_action":
             continue
         raw_refs = [str(event_id) for event_id in claim["provenance_event_ids"]]
         eligible_refs = [
             event_id
             for event_id in raw_refs
-            if (event_by_id[event_id].get("observed_public_features") or {}).get("cue")
-            == cue
+            if (event_by_id[event_id].get("observed_public_features") or {}).get("observation_hash")
+            == observation_key
             and (event_by_id[event_id].get("observed_public_features") or {}).get(
                 "current_goal"
             )
@@ -317,9 +349,7 @@ def retrieve_competing_claims(
         ]
         ineligible_refs = sorted(set(raw_refs) - set(eligible_refs))
         withheld_refs.update(ineligible_refs)
-        raw_support_by_action[str(claim["value"])] = _round(
-            float(claim["support"]) * association
-        )
+        raw_support_by_action[str(claim["value"])] = _round(float(claim["support"]))
         if not eligible_refs:
             withheld.append(
                 {
@@ -328,7 +358,7 @@ def retrieve_competing_claims(
                     "context_eligible": False,
                     "eligible_provenance_event_ids": [],
                     "withheld_provenance_event_ids": ineligible_refs,
-                    "reason": "cue_or_current_goal_mismatch",
+                    "reason": "visual_context_mismatch",
                 }
             )
             continue
@@ -339,13 +369,12 @@ def retrieve_competing_claims(
             )
         )
         item = deepcopy(claim)
-        item["association_score"] = association
         item["raw_support"] = float(claim["support"])
         item["eligible_support"] = eligible_support
         item["context_eligible"] = True
         item["eligible_provenance_event_ids"] = sorted(eligible_refs)
         item["withheld_provenance_event_ids"] = ineligible_refs
-        item["retrieval_score"] = _round(eligible_support * association)
+        item["retrieval_score"] = eligible_support
         retrieved.append(item)
     retrieved.sort(key=lambda item: (-float(item["retrieval_score"]), str(item["value"])))
     withheld.sort(key=lambda item: (str(item["value"]), str(item["claim_id"])))
@@ -362,10 +391,9 @@ def retrieve_competing_claims(
         "status": "retrieved" if retrieved else "no_matching_claims",
         "producer_function": "ego_life_playground_v0.claims.retrieve_competing_claims",
         "query": {
-            "subject": "microworld:opaque_fork",
-            "predicate": "preferred_site_action",
-            "agent_position": position,
-            "cue": cue,
+            "subject": "visual_context",
+            "predicate": "preferred_action",
+            "observation_hash": observation_key,
             "current_goal": current_goal,
         },
         "claims": retrieved,
@@ -386,7 +414,26 @@ def retrieve_competing_claims(
                 for event_id in refs
             }
         ),
+        "policy_summary": {
+            "schema_version": "ego.life_playground.claim_policy_summary.v2",
+            "support_by_action": {
+                str(item["value"]): float(item["retrieval_score"]) for item in retrieved
+            },
+            "support_margin": _round(max(supports) - min(supports)) if len(supports) >= 2 else 0.0,
+            "uncertainty": _round(1.0 / (1.0 + (max(supports) - min(supports))))
+            if len(supports) >= 2
+            else 1.0,
+            "claim_count": len(retrieved),
+        },
     }
+
+
+def _verify_observation(observation: Any) -> None:
+    if not isinstance(observation, Mapping) or set(observation) != {"schema_version", "visual"}:
+        raise ValueError("retrieval observation schema mismatch")
+    if observation["schema_version"] != "ego.life_playground.microworld.observation.v4":
+        raise ValueError("retrieval observation schema_version is not canonical")
+    _verify_visual(observation["visual"], label="retrieval observation visual")
 
 
 def memory_bias_for_action(retrieval: Mapping[str, Any], action: str) -> float:

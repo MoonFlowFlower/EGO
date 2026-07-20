@@ -1,0 +1,385 @@
+{
+  "aggregation_rule": "report equal-access baseline match rates; engineering acceptance does not fail on equivalence",
+  "code_path_hash": "a1e3c0df45a8108531e41f0c72e7d44d1325e1c039e875daa95e318f29631e82",
+  "comparisons": [
+    {
+      "baseline_id": "hash_policy",
+      "match_rate": 0.6,
+      "predictions": [
+        {
+          "candidate_action": "move_forward",
+          "context_id": "offset_seed_1709",
+          "matched": true,
+          "predicted_action": "move_forward",
+          "trace_hash": "f0d786d42e0016484f4e46571fd73605c49356051b141913bf0953ef275bfc62"
+        },
+        {
+          "candidate_action": "move_forward",
+          "context_id": "offset_seed_1709",
+          "matched": true,
+          "predicted_action": "move_forward",
+          "trace_hash": "85fa1a58b3434a8840c0a83874eabdae6bd91d8b739e954f2df64df49660873a"
+        },
+        {
+          "candidate_action": "move_forward",
+          "context_id": "offset_seed_1709",
+          "matched": true,
+          "predicted_action": "move_forward",
+          "trace_hash": "ae7a93a7628cb5f56d20edf80b7301f513a8eefc9e34ba88db3eb94ec3300769"
+        },
+        {
+          "candidate_action": "move_forward",
+          "context_id": "offset_seed_1709",
+          "matched": true,
+          "predicted_action": "move_forward",
+          "trace_hash": "7d793b9da1f0346adace0bff152bd83692c4ca485c92b56fb554d32745278384"
+        },
+        {
+          "candidate_action": "rest",
+          "context_id": "offset_seed_1709",
+          "matched": false,
+          "predicted_action": "move_forward",
+          "trace_hash": "b3c732c0eb04513c53d271390653e2ac46ec273f3c48718e5814833a8b73c41b"
+        },
+        {
+          "candidate_action": "turn_left",
+          "context_id": "offset_seed_1709",
+          "matched": true,
+          "predicted_action": "turn_left",
+          "trace_hash": "2ebc6d9adaccda6dd01096cf2b3f410b425ac148efdfcbc01f84e7662b1bf7e5"
+        },
+        {
+          "candidate_action": "move_forward",
+          "context_id": "offset_seed_1709",
+          "matched": false,
+          "predicted_action": "turn_left",
+          "trace_hash": "56785069650de511bf9414c80f37473c6d835b140bdfbe50db7d9f4bfc9be7bd"
+        },
+        {
+          "candidate_action": "interact",
+          "context_id": "offset_seed_1709",
+          "matched": true,
+          "predicted_action": "interact",
+          "trace_hash": "33c05ffedf4147aba6db2611103044a8c9346efcb463fd7c3a34405501536dde"
+        },
+        {
+          "candidate_action": "move_forward",
+          "context_id": "offset_seed_1709",
+          "matched": false,
+          "predicted_action": "turn_left",
+          "trace_hash": "6e958c393887105350993f167a9b7a6894c7bc90acb393c9c8db07712ae16f10"
+        },
+        {
+          "candidate_action": "move_forward",
+          "context_id": "offset_seed_1709",
+          "matched": false,
+          "predicted_action": "turn_right",
+          "trace_hash": "2ebf12aa60a65d18f64caf73e6b3b92a59d8072ac5a1191d480158aaba316c79"
+        }
+      ]
+    },
+    {
+      "baseline_id": "visual_lookup_countq",
+      "match_rate": 0.1,
+      "predictions": [
+        {
+          "candidate_action": "move_forward",
+          "context_id": "offset_seed_1709",
+          "matched": false,
+          "predicted_action": "interact",
+          "trace_hash": "f0d786d42e0016484f4e46571fd73605c49356051b141913bf0953ef275bfc62"
+        },
+        {
+          "candidate_action": "move_forward",
+          "context_id": "offset_seed_1709",
+          "matched": false,
+          "predicted_action": "interact",
+          "trace_hash": "85fa1a58b3434a8840c0a83874eabdae6bd91d8b739e954f2df64df49660873a"
+        },
+        {
+          "candidate_action": "move_forward",
+          "context_id": "offset_seed_1709",
+          "matched": false,
+          "predicted_action": "interact",
+          "trace_hash": "ae7a93a7628cb5f56d20edf80b7301f513a8eefc9e34ba88db3eb94ec3300769"
+        },
+        {
+          "candidate_action": "move_forward",
+          "context_id": "offset_seed_1709",
+          "matched": false,
+          "predicted_action": "interact",
+          "trace_hash": "7d793b9da1f0346adace0bff152bd83692c4ca485c92b56fb554d32745278384"
+        },
+        {
+          "candidate_action": "rest",
+          "context_id": "offset_seed_1709",
+          "matched": false,
+          "predicted_action": "interact",
+          "trace_hash": "b3c732c0eb04513c53d271390653e2ac46ec273f3c48718e5814833a8b73c41b"
+        },
+        {
+          "candidate_action": "turn_left",
+          "context_id": "offset_seed_1709",
+          "matched": false,
+          "predicted_action": "interact",
+          "trace_hash": "2ebc6d9adaccda6dd01096cf2b3f410b425ac148efdfcbc01f84e7662b1bf7e5"
+        },
+        {
+          "candidate_action": "move_forward",
+          "context_id": "offset_seed_1709",
+          "matched": false,
+          "predicted_action": "interact",
+          "trace_hash": "56785069650de511bf9414c80f37473c6d835b140bdfbe50db7d9f4bfc9be7bd"
+        },
+        {
+          "candidate_action": "interact",
+          "context_id": "offset_seed_1709",
+          "matched": true,
+          "predicted_action": "interact",
+          "trace_hash": "33c05ffedf4147aba6db2611103044a8c9346efcb463fd7c3a34405501536dde"
+        },
+        {
+          "candidate_action": "move_forward",
+          "context_id": "offset_seed_1709",
+          "matched": false,
+          "predicted_action": "interact",
+          "trace_hash": "6e958c393887105350993f167a9b7a6894c7bc90acb393c9c8db07712ae16f10"
+        },
+        {
+          "candidate_action": "move_forward",
+          "context_id": "offset_seed_1709",
+          "matched": false,
+          "predicted_action": "interact",
+          "trace_hash": "2ebf12aa60a65d18f64caf73e6b3b92a59d8072ac5a1191d480158aaba316c79"
+        }
+      ]
+    }
+  ],
+  "disposition": "non_equivalent",
+  "engine_code_path_hash": "6346db715bcf191e1d13c619103c1743a1f4985f995ae9ff7b0ab5f7c10c4079",
+  "eval_count": 10,
+  "input_artifacts": [
+    {
+      "bytes": 7990,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+      "sha256": "6ced573f544e47237ef6b4da0da1a0eee20c907a720c66d8d313129f971fff0d"
+    },
+    {
+      "bytes": 75390,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+      "sha256": "e4e89f77f3f080410def8149e711e8f15031029ac01a54df494f8bb7de992e0a"
+    },
+    {
+      "bytes": 25710,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\microworld.py",
+      "sha256": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923"
+    },
+    {
+      "bytes": 13786,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+      "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+    },
+    {
+      "bytes": 13284,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\terminal.py",
+      "sha256": "0fa19f158981389f407f2f76b41f24e816200066f9845afe0c36de0f0b1189e8"
+    },
+    {
+      "bytes": 34076,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\visual_console.py",
+      "sha256": "3c34abe2a540cca8e2b7cfdc9967af231fcbe06de7152ddfbd4b3447643e0704"
+    },
+    {
+      "bytes": 7293,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\run_ego_life_playground_v0.py",
+      "sha256": "d4e51cea9a5aa6484277c238c199459d136fa9cc217916717872eaafcd958a75"
+    },
+    {
+      "bytes": 8406,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A\\PRODUCT_CONTRACT.md",
+      "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+    },
+    {
+      "bytes": 2626,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A\\CARD_A_EGOCENTRIC_ECOLOGY.md",
+      "sha256": "514c404e2a3850fd4e27d42713fed37fa41a5742e28622f79345d3459f054aca"
+    },
+    {
+      "bytes": 56183,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_visual_life_001a.py",
+      "sha256": "c08fbdef7a39bf9f5a686ab716da5f34c0830c2e4cf92e6d5bed12ab4e2634d8"
+    }
+  ],
+  "invocation_ledger": [
+    {
+      "access_fields": [
+        "current_goal.state_variable",
+        "legal_actions",
+        "observation.visual",
+        "observed_deltas",
+        "organism"
+      ],
+      "aggregation_rule": "predeclared train/eval split using policy-visible projection and observed deltas only",
+      "baseline_id": "hash_policy",
+      "code_path_hash": "a1e3c0df45a8108531e41f0c72e7d44d1325e1c039e875daa95e318f29631e82",
+      "engine_code_path_hash": "6346db715bcf191e1d13c619103c1743a1f4985f995ae9ff7b0ab5f7c10c4079",
+      "input_access_hash": "6ee642d0bacd1bb4a5c0048686bd916ae82ec02b5740999bd3432392456d5e42",
+      "input_artifacts": [
+        {
+          "bytes": 7990,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+          "sha256": "6ced573f544e47237ef6b4da0da1a0eee20c907a720c66d8d313129f971fff0d"
+        },
+        {
+          "bytes": 75390,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+          "sha256": "e4e89f77f3f080410def8149e711e8f15031029ac01a54df494f8bb7de992e0a"
+        },
+        {
+          "bytes": 25710,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\microworld.py",
+          "sha256": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923"
+        },
+        {
+          "bytes": 13786,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 13284,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\terminal.py",
+          "sha256": "0fa19f158981389f407f2f76b41f24e816200066f9845afe0c36de0f0b1189e8"
+        },
+        {
+          "bytes": 34076,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\visual_console.py",
+          "sha256": "3c34abe2a540cca8e2b7cfdc9967af231fcbe06de7152ddfbd4b3447643e0704"
+        },
+        {
+          "bytes": 7293,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\run_ego_life_playground_v0.py",
+          "sha256": "d4e51cea9a5aa6484277c238c199459d136fa9cc217916717872eaafcd958a75"
+        },
+        {
+          "bytes": 8406,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A\\PRODUCT_CONTRACT.md",
+          "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+        },
+        {
+          "bytes": 2626,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A\\CARD_A_EGOCENTRIC_ECOLOGY.md",
+          "sha256": "514c404e2a3850fd4e27d42713fed37fa41a5742e28622f79345d3459f054aca"
+        },
+        {
+          "bytes": 56183,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_visual_life_001a.py",
+          "sha256": "c08fbdef7a39bf9f5a686ab716da5f34c0830c2e4cf92e6d5bed12ab4e2634d8"
+        }
+      ],
+      "invoked": true,
+      "producer_function": "baseline:hash_policy",
+      "run_id": "ego-v2-card-a-verify",
+      "seed_context_episode_ids": {
+        "eval_context_ids": [
+          "offset_seed_1709"
+        ],
+        "train_context_ids": [
+          "cross_seed_1701"
+        ]
+      },
+      "verifier_source_hash": "c08fbdef7a39bf9f5a686ab716da5f34c0830c2e4cf92e6d5bed12ab4e2634d8"
+    },
+    {
+      "access_fields": [
+        "current_goal.state_variable",
+        "legal_actions",
+        "observation.visual",
+        "observed_deltas",
+        "organism"
+      ],
+      "aggregation_rule": "predeclared train/eval split using policy-visible projection and observed deltas only",
+      "baseline_id": "visual_lookup_countq",
+      "code_path_hash": "a1e3c0df45a8108531e41f0c72e7d44d1325e1c039e875daa95e318f29631e82",
+      "engine_code_path_hash": "6346db715bcf191e1d13c619103c1743a1f4985f995ae9ff7b0ab5f7c10c4079",
+      "input_access_hash": "6ee642d0bacd1bb4a5c0048686bd916ae82ec02b5740999bd3432392456d5e42",
+      "input_artifacts": [
+        {
+          "bytes": 7990,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+          "sha256": "6ced573f544e47237ef6b4da0da1a0eee20c907a720c66d8d313129f971fff0d"
+        },
+        {
+          "bytes": 75390,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+          "sha256": "e4e89f77f3f080410def8149e711e8f15031029ac01a54df494f8bb7de992e0a"
+        },
+        {
+          "bytes": 25710,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\microworld.py",
+          "sha256": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923"
+        },
+        {
+          "bytes": 13786,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 13284,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\terminal.py",
+          "sha256": "0fa19f158981389f407f2f76b41f24e816200066f9845afe0c36de0f0b1189e8"
+        },
+        {
+          "bytes": 34076,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\visual_console.py",
+          "sha256": "3c34abe2a540cca8e2b7cfdc9967af231fcbe06de7152ddfbd4b3447643e0704"
+        },
+        {
+          "bytes": 7293,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\run_ego_life_playground_v0.py",
+          "sha256": "d4e51cea9a5aa6484277c238c199459d136fa9cc217916717872eaafcd958a75"
+        },
+        {
+          "bytes": 8406,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A\\PRODUCT_CONTRACT.md",
+          "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+        },
+        {
+          "bytes": 2626,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A\\CARD_A_EGOCENTRIC_ECOLOGY.md",
+          "sha256": "514c404e2a3850fd4e27d42713fed37fa41a5742e28622f79345d3459f054aca"
+        },
+        {
+          "bytes": 56183,
+          "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_visual_life_001a.py",
+          "sha256": "c08fbdef7a39bf9f5a686ab716da5f34c0830c2e4cf92e6d5bed12ab4e2634d8"
+        }
+      ],
+      "invoked": true,
+      "producer_function": "baseline:visual_lookup_countq",
+      "run_id": "ego-v2-card-a-verify",
+      "seed_context_episode_ids": {
+        "eval_context_ids": [
+          "offset_seed_1709"
+        ],
+        "train_context_ids": [
+          "cross_seed_1701"
+        ]
+      },
+      "verifier_source_hash": "c08fbdef7a39bf9f5a686ab716da5f34c0830c2e4cf92e6d5bed12ab4e2634d8"
+    }
+  ],
+  "producer_function": "build_baseline_report",
+  "run_id": "ego-v2-card-a-verify",
+  "seed_context_episode_ids": {
+    "eval_context_ids": [
+      "offset_seed_1709"
+    ],
+    "train_context_ids": [
+      "cross_seed_1701"
+    ]
+  },
+  "strongest_baseline": "hash_policy",
+  "strongest_match_rate": 0.6,
+  "train_count": 10,
+  "verifier_source_hash": "c08fbdef7a39bf9f5a686ab716da5f34c0830c2e4cf92e6d5bed12ab4e2634d8"
+}

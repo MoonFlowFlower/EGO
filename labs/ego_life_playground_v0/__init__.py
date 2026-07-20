@@ -1,10 +1,15 @@
 """Default-off local continuity and P0 microworld playground."""
 
+from .controller import (
+    DISCLOSURE,
+    DispatchResult,
+    PlaygroundController,
+    public_state_hash,
+    public_state_projection,
+)
 from .engine import (
     ACTIONS,
-    CUES,
     DEFAULT_INTERVENTIONS,
-    DEFAULT_TOGGLES,
     EPISODE_SPAN_TICKS,
     EngineInvariantError,
     StepResult,
@@ -19,21 +24,21 @@ from .engine import (
 )
 from .microworld import (
     ALLOWED_WORLD_EVENTS,
-    cue_for_event,
-    default_event_for_sequence,
     initial_world_state,
-    legal_action_gate,
     make_public_frame,
     observe_world_event,
     transition_world,
     world_hash,
 )
+from .terminal import TerminalPlayground, build_terminal_snapshot
 
 __all__ = [
+    "DISCLOSURE",
+    "DispatchResult",
+    "PlaygroundController",
+    "TerminalPlayground",
     "ACTIONS",
-    "CUES",
     "DEFAULT_INTERVENTIONS",
-    "DEFAULT_TOGGLES",
     "EPISODE_SPAN_TICKS",
     "EngineInvariantError",
     "StepResult",
@@ -46,12 +51,12 @@ __all__ = [
     "make_command",
     "make_run_metadata",
     "ALLOWED_WORLD_EVENTS",
-    "cue_for_event",
-    "default_event_for_sequence",
     "initial_world_state",
-    "legal_action_gate",
     "make_public_frame",
     "observe_world_event",
+    "build_terminal_snapshot",
+    "public_state_hash",
+    "public_state_projection",
     "transition_world",
     "world_hash",
 ]

@@ -1,0 +1,461 @@
+{
+  "aggregation_rule": "require local recovery and two fresh-process recoveries to match for every dataset context, with tampered clones failing closed",
+  "code_path_hash": "a1e3c0df45a8108531e41f0c72e7d44d1325e1c039e875daa95e318f29631e82",
+  "contexts": {
+    "cross_seed_1701": {
+      "fresh_process_runs_equal": true,
+      "fresh_processes": [
+        {
+          "digest": "c79bb34680ebafabd6e13f579fd6c0e859d4c019ef7c00ea40e63bb778fb4362",
+          "payload": {
+            "episode_ids": [
+              "episode-000000-b6462d3798eace33",
+              "episode-000000-b6462d3798eace33",
+              "episode-000000-b6462d3798eace33",
+              "episode-000000-b6462d3798eace33",
+              "episode-000000-b6462d3798eace33",
+              "episode-000000-b6462d3798eace33",
+              "episode-000000-b6462d3798eace33",
+              "episode-000000-b6462d3798eace33",
+              "episode-000001-fd2ac5f55d422ed5",
+              "episode-000001-fd2ac5f55d422ed5"
+            ],
+            "run_id": "ego-v2-card-a-verify-cross",
+            "run_meta": {
+              "aggregation_rule": "single_step_deterministic_one_step_argmax",
+              "code_path_hash": "6346db715bcf191e1d13c619103c1743a1f4985f995ae9ff7b0ab5f7c10c4079",
+              "episode_span_ticks": 8,
+              "producer_function": "ego_life_playground_v0.engine.compute_step",
+              "run_id": "ego-v2-card-a-verify-cross",
+              "schema_version": "ego.life_playground.run.v3",
+              "science_weight": 0,
+              "seed": 17
+            },
+            "selected_actions": [
+              "move_forward",
+              "interact",
+              "move_forward",
+              "move_forward",
+              "rest",
+              "move_forward",
+              "rest",
+              "turn_right",
+              "move_forward",
+              "move_forward"
+            ],
+            "state_hash": "0a32695657ca63a94fefbfd0081511b367cf49db40b31831471d0c4177b8a95f",
+            "trace_hashes": [
+              "24b3a5c794c1060baf72a9914f85cfd64d58c2c9fb92cff89d296fa7ae7de5f7",
+              "5b87954b2369a1910431d96d4396fb0358bca6305a0ee99eef42151ca80d777f",
+              "96f289ff727ce04d3c8e01a771b0c7063191a7ce8f511f83fa60f3f7b7816a5f",
+              "95dd5545cbf41e033da6424b9f712c7d87e22708a662e6d0ecac3b8b00e784bb",
+              "c3d1bdd1404d00fbf8e75384df08fc720275525e28fbb6d83bc370b20ff6dd22",
+              "2986cb9d08f3326c7cd0e1936f6857667c92f4dc4f940449e2266b2a211120ef",
+              "dc55e4e040d4214de06e0dd7ba0211105c8e98d3a87d7a4b41a3de84c0a0d8a4",
+              "ec2667bb27d6dea6b67760c069c3b9df80cf8148d63ed853ca951349de68a115",
+              "fe87795d757f337d0e219024e3c677378b60e4fd7304487e9096cc0324f3caa3",
+              "1e1b1276170ca8c6f43b48bb5faf6def15192aad7d9b511e9cf0428aff257bf5"
+            ]
+          }
+        },
+        {
+          "digest": "c79bb34680ebafabd6e13f579fd6c0e859d4c019ef7c00ea40e63bb778fb4362",
+          "payload": {
+            "episode_ids": [
+              "episode-000000-b6462d3798eace33",
+              "episode-000000-b6462d3798eace33",
+              "episode-000000-b6462d3798eace33",
+              "episode-000000-b6462d3798eace33",
+              "episode-000000-b6462d3798eace33",
+              "episode-000000-b6462d3798eace33",
+              "episode-000000-b6462d3798eace33",
+              "episode-000000-b6462d3798eace33",
+              "episode-000001-fd2ac5f55d422ed5",
+              "episode-000001-fd2ac5f55d422ed5"
+            ],
+            "run_id": "ego-v2-card-a-verify-cross",
+            "run_meta": {
+              "aggregation_rule": "single_step_deterministic_one_step_argmax",
+              "code_path_hash": "6346db715bcf191e1d13c619103c1743a1f4985f995ae9ff7b0ab5f7c10c4079",
+              "episode_span_ticks": 8,
+              "producer_function": "ego_life_playground_v0.engine.compute_step",
+              "run_id": "ego-v2-card-a-verify-cross",
+              "schema_version": "ego.life_playground.run.v3",
+              "science_weight": 0,
+              "seed": 17
+            },
+            "selected_actions": [
+              "move_forward",
+              "interact",
+              "move_forward",
+              "move_forward",
+              "rest",
+              "move_forward",
+              "rest",
+              "turn_right",
+              "move_forward",
+              "move_forward"
+            ],
+            "state_hash": "0a32695657ca63a94fefbfd0081511b367cf49db40b31831471d0c4177b8a95f",
+            "trace_hashes": [
+              "24b3a5c794c1060baf72a9914f85cfd64d58c2c9fb92cff89d296fa7ae7de5f7",
+              "5b87954b2369a1910431d96d4396fb0358bca6305a0ee99eef42151ca80d777f",
+              "96f289ff727ce04d3c8e01a771b0c7063191a7ce8f511f83fa60f3f7b7816a5f",
+              "95dd5545cbf41e033da6424b9f712c7d87e22708a662e6d0ecac3b8b00e784bb",
+              "c3d1bdd1404d00fbf8e75384df08fc720275525e28fbb6d83bc370b20ff6dd22",
+              "2986cb9d08f3326c7cd0e1936f6857667c92f4dc4f940449e2266b2a211120ef",
+              "dc55e4e040d4214de06e0dd7ba0211105c8e98d3a87d7a4b41a3de84c0a0d8a4",
+              "ec2667bb27d6dea6b67760c069c3b9df80cf8148d63ed853ca951349de68a115",
+              "fe87795d757f337d0e219024e3c677378b60e4fd7304487e9096cc0324f3caa3",
+              "1e1b1276170ca8c6f43b48bb5faf6def15192aad7d9b511e9cf0428aff257bf5"
+            ]
+          }
+        }
+      ],
+      "local_summary": {
+        "digest": "c79bb34680ebafabd6e13f579fd6c0e859d4c019ef7c00ea40e63bb778fb4362",
+        "payload": {
+          "episode_ids": [
+            "episode-000000-b6462d3798eace33",
+            "episode-000000-b6462d3798eace33",
+            "episode-000000-b6462d3798eace33",
+            "episode-000000-b6462d3798eace33",
+            "episode-000000-b6462d3798eace33",
+            "episode-000000-b6462d3798eace33",
+            "episode-000000-b6462d3798eace33",
+            "episode-000000-b6462d3798eace33",
+            "episode-000001-fd2ac5f55d422ed5",
+            "episode-000001-fd2ac5f55d422ed5"
+          ],
+          "run_id": "ego-v2-card-a-verify-cross",
+          "run_meta": {
+            "aggregation_rule": "single_step_deterministic_one_step_argmax",
+            "code_path_hash": "6346db715bcf191e1d13c619103c1743a1f4985f995ae9ff7b0ab5f7c10c4079",
+            "episode_span_ticks": 8,
+            "producer_function": "ego_life_playground_v0.engine.compute_step",
+            "run_id": "ego-v2-card-a-verify-cross",
+            "schema_version": "ego.life_playground.run.v3",
+            "science_weight": 0,
+            "seed": 17
+          },
+          "selected_actions": [
+            "move_forward",
+            "interact",
+            "move_forward",
+            "move_forward",
+            "rest",
+            "move_forward",
+            "rest",
+            "turn_right",
+            "move_forward",
+            "move_forward"
+          ],
+          "state_hash": "0a32695657ca63a94fefbfd0081511b367cf49db40b31831471d0c4177b8a95f",
+          "trace_hashes": [
+            "24b3a5c794c1060baf72a9914f85cfd64d58c2c9fb92cff89d296fa7ae7de5f7",
+            "5b87954b2369a1910431d96d4396fb0358bca6305a0ee99eef42151ca80d777f",
+            "96f289ff727ce04d3c8e01a771b0c7063191a7ce8f511f83fa60f3f7b7816a5f",
+            "95dd5545cbf41e033da6424b9f712c7d87e22708a662e6d0ecac3b8b00e784bb",
+            "c3d1bdd1404d00fbf8e75384df08fc720275525e28fbb6d83bc370b20ff6dd22",
+            "2986cb9d08f3326c7cd0e1936f6857667c92f4dc4f940449e2266b2a211120ef",
+            "dc55e4e040d4214de06e0dd7ba0211105c8e98d3a87d7a4b41a3de84c0a0d8a4",
+            "ec2667bb27d6dea6b67760c069c3b9df80cf8148d63ed853ca951349de68a115",
+            "fe87795d757f337d0e219024e3c677378b60e4fd7304487e9096cc0324f3caa3",
+            "1e1b1276170ca8c6f43b48bb5faf6def15192aad7d9b511e9cf0428aff257bf5"
+          ]
+        }
+      },
+      "local_vs_fresh_equal": true,
+      "tamper_controls": {
+        "command_payload": {
+          "failed_closed": true,
+          "observed_failure_class": "RecoveryError",
+          "observed_reason": "command recomputation failed: command chain mismatch",
+          "tamper_id": "command-payload"
+        },
+        "initial_state": {
+          "failed_closed": true,
+          "observed_failure_class": "RecoveryError",
+          "observed_reason": "stored trace differs from independent recomputation",
+          "tamper_id": "initial-state"
+        },
+        "trace_prev_hash": {
+          "failed_closed": true,
+          "observed_failure_class": "RecoveryError",
+          "observed_reason": "stored trace differs from independent recomputation",
+          "tamper_id": "trace-prev-hash"
+        },
+        "trace_selected_action": {
+          "failed_closed": true,
+          "observed_failure_class": "RecoveryError",
+          "observed_reason": "stored trace differs from independent recomputation",
+          "tamper_id": "trace-selected-action"
+        }
+      }
+    },
+    "offset_seed_1709": {
+      "fresh_process_runs_equal": true,
+      "fresh_processes": [
+        {
+          "digest": "2595bde02948c2f30dbed324ba47cac77d7ec5d3f14a119f67c7323a8f7a3c8e",
+          "payload": {
+            "episode_ids": [
+              "episode-000000-26352c9cefbfc191",
+              "episode-000000-26352c9cefbfc191",
+              "episode-000000-26352c9cefbfc191",
+              "episode-000000-26352c9cefbfc191",
+              "episode-000000-26352c9cefbfc191",
+              "episode-000000-26352c9cefbfc191",
+              "episode-000000-26352c9cefbfc191",
+              "episode-000000-26352c9cefbfc191",
+              "episode-000001-bdc05f2f1d570271",
+              "episode-000001-bdc05f2f1d570271"
+            ],
+            "run_id": "ego-v2-card-a-verify-offset",
+            "run_meta": {
+              "aggregation_rule": "single_step_deterministic_one_step_argmax",
+              "code_path_hash": "6346db715bcf191e1d13c619103c1743a1f4985f995ae9ff7b0ab5f7c10c4079",
+              "episode_span_ticks": 8,
+              "producer_function": "ego_life_playground_v0.engine.compute_step",
+              "run_id": "ego-v2-card-a-verify-offset",
+              "schema_version": "ego.life_playground.run.v3",
+              "science_weight": 0,
+              "seed": 17
+            },
+            "selected_actions": [
+              "move_forward",
+              "move_forward",
+              "move_forward",
+              "move_forward",
+              "rest",
+              "turn_left",
+              "move_forward",
+              "interact",
+              "move_forward",
+              "move_forward"
+            ],
+            "state_hash": "451c5493d8d4a20d452d749dad4fc30a3612d5bbc8ff54a184b4d6f1ccc331a6",
+            "trace_hashes": [
+              "f0d786d42e0016484f4e46571fd73605c49356051b141913bf0953ef275bfc62",
+              "85fa1a58b3434a8840c0a83874eabdae6bd91d8b739e954f2df64df49660873a",
+              "ae7a93a7628cb5f56d20edf80b7301f513a8eefc9e34ba88db3eb94ec3300769",
+              "7d793b9da1f0346adace0bff152bd83692c4ca485c92b56fb554d32745278384",
+              "b3c732c0eb04513c53d271390653e2ac46ec273f3c48718e5814833a8b73c41b",
+              "2ebc6d9adaccda6dd01096cf2b3f410b425ac148efdfcbc01f84e7662b1bf7e5",
+              "56785069650de511bf9414c80f37473c6d835b140bdfbe50db7d9f4bfc9be7bd",
+              "33c05ffedf4147aba6db2611103044a8c9346efcb463fd7c3a34405501536dde",
+              "6e958c393887105350993f167a9b7a6894c7bc90acb393c9c8db07712ae16f10",
+              "2ebf12aa60a65d18f64caf73e6b3b92a59d8072ac5a1191d480158aaba316c79"
+            ]
+          }
+        },
+        {
+          "digest": "2595bde02948c2f30dbed324ba47cac77d7ec5d3f14a119f67c7323a8f7a3c8e",
+          "payload": {
+            "episode_ids": [
+              "episode-000000-26352c9cefbfc191",
+              "episode-000000-26352c9cefbfc191",
+              "episode-000000-26352c9cefbfc191",
+              "episode-000000-26352c9cefbfc191",
+              "episode-000000-26352c9cefbfc191",
+              "episode-000000-26352c9cefbfc191",
+              "episode-000000-26352c9cefbfc191",
+              "episode-000000-26352c9cefbfc191",
+              "episode-000001-bdc05f2f1d570271",
+              "episode-000001-bdc05f2f1d570271"
+            ],
+            "run_id": "ego-v2-card-a-verify-offset",
+            "run_meta": {
+              "aggregation_rule": "single_step_deterministic_one_step_argmax",
+              "code_path_hash": "6346db715bcf191e1d13c619103c1743a1f4985f995ae9ff7b0ab5f7c10c4079",
+              "episode_span_ticks": 8,
+              "producer_function": "ego_life_playground_v0.engine.compute_step",
+              "run_id": "ego-v2-card-a-verify-offset",
+              "schema_version": "ego.life_playground.run.v3",
+              "science_weight": 0,
+              "seed": 17
+            },
+            "selected_actions": [
+              "move_forward",
+              "move_forward",
+              "move_forward",
+              "move_forward",
+              "rest",
+              "turn_left",
+              "move_forward",
+              "interact",
+              "move_forward",
+              "move_forward"
+            ],
+            "state_hash": "451c5493d8d4a20d452d749dad4fc30a3612d5bbc8ff54a184b4d6f1ccc331a6",
+            "trace_hashes": [
+              "f0d786d42e0016484f4e46571fd73605c49356051b141913bf0953ef275bfc62",
+              "85fa1a58b3434a8840c0a83874eabdae6bd91d8b739e954f2df64df49660873a",
+              "ae7a93a7628cb5f56d20edf80b7301f513a8eefc9e34ba88db3eb94ec3300769",
+              "7d793b9da1f0346adace0bff152bd83692c4ca485c92b56fb554d32745278384",
+              "b3c732c0eb04513c53d271390653e2ac46ec273f3c48718e5814833a8b73c41b",
+              "2ebc6d9adaccda6dd01096cf2b3f410b425ac148efdfcbc01f84e7662b1bf7e5",
+              "56785069650de511bf9414c80f37473c6d835b140bdfbe50db7d9f4bfc9be7bd",
+              "33c05ffedf4147aba6db2611103044a8c9346efcb463fd7c3a34405501536dde",
+              "6e958c393887105350993f167a9b7a6894c7bc90acb393c9c8db07712ae16f10",
+              "2ebf12aa60a65d18f64caf73e6b3b92a59d8072ac5a1191d480158aaba316c79"
+            ]
+          }
+        }
+      ],
+      "local_summary": {
+        "digest": "2595bde02948c2f30dbed324ba47cac77d7ec5d3f14a119f67c7323a8f7a3c8e",
+        "payload": {
+          "episode_ids": [
+            "episode-000000-26352c9cefbfc191",
+            "episode-000000-26352c9cefbfc191",
+            "episode-000000-26352c9cefbfc191",
+            "episode-000000-26352c9cefbfc191",
+            "episode-000000-26352c9cefbfc191",
+            "episode-000000-26352c9cefbfc191",
+            "episode-000000-26352c9cefbfc191",
+            "episode-000000-26352c9cefbfc191",
+            "episode-000001-bdc05f2f1d570271",
+            "episode-000001-bdc05f2f1d570271"
+          ],
+          "run_id": "ego-v2-card-a-verify-offset",
+          "run_meta": {
+            "aggregation_rule": "single_step_deterministic_one_step_argmax",
+            "code_path_hash": "6346db715bcf191e1d13c619103c1743a1f4985f995ae9ff7b0ab5f7c10c4079",
+            "episode_span_ticks": 8,
+            "producer_function": "ego_life_playground_v0.engine.compute_step",
+            "run_id": "ego-v2-card-a-verify-offset",
+            "schema_version": "ego.life_playground.run.v3",
+            "science_weight": 0,
+            "seed": 17
+          },
+          "selected_actions": [
+            "move_forward",
+            "move_forward",
+            "move_forward",
+            "move_forward",
+            "rest",
+            "turn_left",
+            "move_forward",
+            "interact",
+            "move_forward",
+            "move_forward"
+          ],
+          "state_hash": "451c5493d8d4a20d452d749dad4fc30a3612d5bbc8ff54a184b4d6f1ccc331a6",
+          "trace_hashes": [
+            "f0d786d42e0016484f4e46571fd73605c49356051b141913bf0953ef275bfc62",
+            "85fa1a58b3434a8840c0a83874eabdae6bd91d8b739e954f2df64df49660873a",
+            "ae7a93a7628cb5f56d20edf80b7301f513a8eefc9e34ba88db3eb94ec3300769",
+            "7d793b9da1f0346adace0bff152bd83692c4ca485c92b56fb554d32745278384",
+            "b3c732c0eb04513c53d271390653e2ac46ec273f3c48718e5814833a8b73c41b",
+            "2ebc6d9adaccda6dd01096cf2b3f410b425ac148efdfcbc01f84e7662b1bf7e5",
+            "56785069650de511bf9414c80f37473c6d835b140bdfbe50db7d9f4bfc9be7bd",
+            "33c05ffedf4147aba6db2611103044a8c9346efcb463fd7c3a34405501536dde",
+            "6e958c393887105350993f167a9b7a6894c7bc90acb393c9c8db07712ae16f10",
+            "2ebf12aa60a65d18f64caf73e6b3b92a59d8072ac5a1191d480158aaba316c79"
+          ]
+        }
+      },
+      "local_vs_fresh_equal": true,
+      "tamper_controls": {
+        "command_payload": {
+          "failed_closed": true,
+          "observed_failure_class": "RecoveryError",
+          "observed_reason": "command recomputation failed: command chain mismatch",
+          "tamper_id": "command-payload"
+        },
+        "initial_state": {
+          "failed_closed": true,
+          "observed_failure_class": "RecoveryError",
+          "observed_reason": "stored trace differs from independent recomputation",
+          "tamper_id": "initial-state"
+        },
+        "trace_prev_hash": {
+          "failed_closed": true,
+          "observed_failure_class": "RecoveryError",
+          "observed_reason": "stored trace differs from independent recomputation",
+          "tamper_id": "trace-prev-hash"
+        },
+        "trace_selected_action": {
+          "failed_closed": true,
+          "observed_failure_class": "RecoveryError",
+          "observed_reason": "stored trace differs from independent recomputation",
+          "tamper_id": "trace-selected-action"
+        }
+      }
+    }
+  },
+  "engine_code_path_hash": "6346db715bcf191e1d13c619103c1743a1f4985f995ae9ff7b0ab5f7c10c4079",
+  "input_artifacts": [
+    {
+      "bytes": 7990,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+      "sha256": "6ced573f544e47237ef6b4da0da1a0eee20c907a720c66d8d313129f971fff0d"
+    },
+    {
+      "bytes": 75390,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+      "sha256": "e4e89f77f3f080410def8149e711e8f15031029ac01a54df494f8bb7de992e0a"
+    },
+    {
+      "bytes": 25710,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\microworld.py",
+      "sha256": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923"
+    },
+    {
+      "bytes": 13786,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+      "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+    },
+    {
+      "bytes": 13284,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\terminal.py",
+      "sha256": "0fa19f158981389f407f2f76b41f24e816200066f9845afe0c36de0f0b1189e8"
+    },
+    {
+      "bytes": 34076,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\visual_console.py",
+      "sha256": "3c34abe2a540cca8e2b7cfdc9967af231fcbe06de7152ddfbd4b3447643e0704"
+    },
+    {
+      "bytes": 7293,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\run_ego_life_playground_v0.py",
+      "sha256": "d4e51cea9a5aa6484277c238c199459d136fa9cc217916717872eaafcd958a75"
+    },
+    {
+      "bytes": 8406,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A\\PRODUCT_CONTRACT.md",
+      "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+    },
+    {
+      "bytes": 2626,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A\\CARD_A_EGOCENTRIC_ECOLOGY.md",
+      "sha256": "514c404e2a3850fd4e27d42713fed37fa41a5742e28622f79345d3459f054aca"
+    },
+    {
+      "bytes": 56183,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_visual_life_001a.py",
+      "sha256": "c08fbdef7a39bf9f5a686ab716da5f34c0830c2e4cf92e6d5bed12ab4e2634d8"
+    },
+    {
+      "bytes": 225280,
+      "path": "C:\\Users\\LEO\\AppData\\Local\\Temp\\ego-v2-card-a-dataset-4t_5y72e\\cross_seed_1701\\run.sqlite3",
+      "sha256": "4e1e30650426d88bd7ab65ce66d61c1c4ad7ba8ed753cf7adb9218aed8149b66"
+    },
+    {
+      "bytes": 221184,
+      "path": "C:\\Users\\LEO\\AppData\\Local\\Temp\\ego-v2-card-a-dataset-4t_5y72e\\offset_seed_1709\\run.sqlite3",
+      "sha256": "847c79f619ea8e83b93b2422bc52115db9d5127ec95b804a0af70f946ffbf8f3"
+    }
+  ],
+  "producer_function": "build_replay_report",
+  "run_id": "ego-v2-card-a-verify",
+  "seed_context_episode_ids": {
+    "context_ids": [
+      "cross_seed_1701",
+      "offset_seed_1709"
+    ]
+  },
+  "stored_selected_action_comparison_only": true,
+  "verifier_source_hash": "c08fbdef7a39bf9f5a686ab716da5f34c0830c2e4cf92e6d5bed12ab4e2634d8"
+}

@@ -19,13 +19,13 @@ from typing import Any, Mapping
 
 from . import claims as claim_memory
 from .microworld import (
-    cue_for_event,
-    event_for_cue,
+    ACTIONS as WORLD_ACTIONS,
+    ALLOWED_WORLD_EVENTS,
     initial_world_state,
-    legal_action_gate,
     observation_hash,
     observe_world_event,
-    resource_instance_id_for_command,
+    policy_observation,
+    public_world_projection,
     transition_world,
     verify_world_state,
     world_hash,
@@ -33,8 +33,7 @@ from .microworld import (
 
 
 STATE_KEYS = ("energy", "safety", "connection", "stimulation")
-ACTIONS = ("approach", "explore", "forage", "rest", "withdraw")
-CUES = ("resource", "contact", "novelty", "threat", "quiet")
+ACTIONS = WORLD_ACTIONS
 TARGET_LEVEL = 0.72
 EMA_ALPHA = 0.35
 DEFAULT_PROVENANCE_SHUFFLE_SEED = 17
@@ -42,10 +41,10 @@ DEFAULT_PRIVATE_WORLD_SEED = 1701
 CONSOLIDATION_THRESHOLD = 3
 EPISODE_SPAN_TICKS = 8
 
-STATE_SCHEMA_VERSION = "ego.life_playground.state.v2"
-RUN_SCHEMA_VERSION = "ego.life_playground.run.v2"
-COMMAND_SCHEMA_VERSION = "ego.life_playground.command.v4"
-TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v6"
+STATE_SCHEMA_VERSION = "ego.life_playground.state.v3"
+RUN_SCHEMA_VERSION = "ego.life_playground.run.v3"
+COMMAND_SCHEMA_VERSION = "ego.life_playground.command.v5"
+TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v7"
 
 TRIGGER_SOURCES = (
     "ui_step_button",
@@ -57,9 +56,10 @@ TRIGGER_SOURCES = (
     "terminal_event",
 )
 MEMORY_MODES = ("canonical", "off")
-UPDATE_MODES = ("enabled", "frozen")
+UPDATE_MODES = ("canonical", "frozen")
 PROVENANCE_MODES = ("canonical", "shuffle_projection")
 CONSOLIDATION_MODES = ("canonical", "off_projection")
+VISION_MODES = ("canonical", "no_occlusion")
 RUN_PRODUCER_FUNCTION = "ego_life_playground_v0.engine.compute_step"
 RUN_AGGREGATION_RULE = "single_step_deterministic_one_step_argmax"
 GOAL_SELECTION_REASONS = (
@@ -83,64 +83,39 @@ _PROJECTION_REQUIRED_FIELDS = frozenset(
 )
 DEFAULT_INTERVENTIONS = {
     "memory_mode": "canonical",
-    "update_mode": "enabled",
+    "update_mode": "canonical",
     "provenance_mode": "canonical",
     "provenance_shuffle_seed": str(DEFAULT_PROVENANCE_SHUFFLE_SEED),
     "consolidation_mode": "canonical",
-}
-
-# Kept as a source-compatibility constant only.  It is never accepted in a V1
-# command; the exact command schema uses DEFAULT_INTERVENTIONS above.
-DEFAULT_TOGGLES = {
-    "memory_on": True,
-    "learning_on": True,
-    "consolidation_on": True,
+    "vision_mode": "canonical",
 }
 
 # These V0 constants are intentionally unchanged.
-ACTION_PRIORS: dict[str, dict[str, float]] = {
-    "forage": {"energy": 0.12, "safety": -0.03, "connection": 0.00, "stimulation": 0.02},
-    "rest": {"energy": 0.09, "safety": 0.04, "connection": 0.00, "stimulation": -0.04},
-    "approach": {"energy": -0.02, "safety": -0.02, "connection": 0.11, "stimulation": 0.03},
-    "explore": {"energy": -0.05, "safety": -0.03, "connection": 0.00, "stimulation": 0.10},
-    "withdraw": {"energy": -0.01, "safety": 0.10, "connection": -0.04, "stimulation": -0.03},
-}
-
-CUE_BONUSES: dict[str, dict[str, dict[str, float]]] = {
-    "resource": {"forage": {"energy": 0.16}},
-    "contact": {"approach": {"connection": 0.16}},
-    "novelty": {"explore": {"stimulation": 0.16}},
-    "threat": {
-        "withdraw": {"safety": 0.18},
-        "approach": {"safety": -0.09},
-        "explore": {"safety": -0.08},
-        "forage": {"safety": -0.07},
-        "rest": {"safety": -0.05},
-    },
-    "quiet": {"rest": {"energy": 0.09, "safety": 0.04}},
-}
-
 ACTION_COSTS = {
-    "approach": 0.018,
-    "explore": 0.025,
-    "forage": 0.020,
-    "rest": 0.010,
-    "withdraw": 0.015,
+    "turn_left": 0.004,
+    "turn_right": 0.004,
+    "move_forward": 0.012,
+    "interact": 0.008,
+    "rest": 0.002,
 }
 
 # Task-local V2 product metabolism constants. ACTION_COSTS remains the existing
 # selector cost table and is also the physical per-action energy cost so the
 # trace has one auditable cost value rather than a second hidden table.
-PASSIVE_ENERGY_DECAY_PER_TICK = 0.020
-FOOD_ENERGY_GAIN = 0.280
-CRITICAL_ENERGY_THRESHOLD = 0.150
-CRITICAL_ENERGY_ALLOWED_ACTIONS = ("forage", "rest", "withdraw")
+PASSIVE_ENERGY_DECAY_PER_TICK = 0.010
+CAUSE_DELTAS = {
+    "resource": {"energy": 0.280, "safety": 0.0, "connection": 0.0, "stimulation": 0.0},
+    "social": {"energy": 0.0, "safety": 0.0, "connection": 0.160, "stimulation": 0.020},
+    "novelty": {"energy": 0.0, "safety": -0.020, "connection": 0.0, "stimulation": 0.160},
+    "threat": {"energy": 0.0, "safety": -0.180, "connection": 0.0, "stimulation": 0.040},
+    "shelter": {"energy": 0.0, "safety": 0.120, "connection": 0.0, "stimulation": 0.0},
+}
+REST_DELTA = {"energy": 0.0, "safety": 0.020, "connection": 0.0, "stimulation": 0.0}
 METABOLISM_PRODUCER_FUNCTION = (
     "ego_life_playground_v0.engine.compute_metabolism_ledger"
 )
 METABOLISM_AGGREGATION_RULE = (
-    "clamp01(energy_before-passive_decay-action_cost+food_gain); "
-    "food_gain iff environment transition food_obtained is true"
+    "clamp01(energy_before-passive_decay-action_cost+resource_gain_if_successful_resource_interact)"
 )
 
 
@@ -172,7 +147,7 @@ def compute_code_path_manifest() -> dict[str, Any]:
         Path(__file__).with_name("store.py"),
     )
     return {
-        "schema_version": "ego.life_playground.code_path.v3",
+        "schema_version": "ego.life_playground.code_path.v4",
         "files": [
             {"path": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
             for path in source_paths
@@ -264,23 +239,13 @@ def initial_state(
 def make_command(
     *,
     sequence: int,
-    cue: str,
     trigger_source: str,
     interventions: Mapping[str, str],
     prev_command_hash: str | None,
-    world_event: str | None = None,
+    injected_event: str | None = None,
 ) -> dict[str, Any]:
     if type(sequence) is not int or sequence <= 0:
         raise EngineInvariantError("command sequence must be a positive integer")
-    if type(cue) is not str or cue not in CUES:
-        raise EngineInvariantError(f"unknown cue: {cue}")
-    selected_event = event_for_cue(cue) if world_event is None else world_event
-    try:
-        event_cue = cue_for_event(selected_event)
-    except ValueError as exc:
-        raise EngineInvariantError(str(exc)) from exc
-    if event_cue != cue:
-        raise EngineInvariantError("world_event and cue are inconsistent")
     if type(trigger_source) is not str or trigger_source not in TRIGGER_SOURCES:
         raise EngineInvariantError(f"unknown trigger_source: {trigger_source}")
     if sequence == 1 and prev_command_hash is not None:
@@ -288,11 +253,13 @@ def make_command(
     if sequence > 1 and not _is_sha256(prev_command_hash):
         raise EngineInvariantError("noninitial command prev_command_hash must be sha256")
     normalized = _normalize_interventions(interventions)
+    if injected_event is not None:
+        if type(injected_event) is not str or injected_event not in ALLOWED_WORLD_EVENTS:
+            raise EngineInvariantError("injected_event is not canonical")
     payload: dict[str, Any] = {
         "schema_version": COMMAND_SCHEMA_VERSION,
         "sequence": sequence,
-        "cue": cue,
-        "world_event": selected_event,
+        "injected_event": injected_event,
         "trigger_source": trigger_source,
         "interventions": normalized,
         "prev_command_hash": prev_command_hash,
@@ -305,8 +272,7 @@ def verify_command(command: Mapping[str, Any], state: Mapping[str, Any]) -> None
     allowed = {
         "schema_version",
         "sequence",
-        "cue",
-        "world_event",
+        "injected_event",
         "trigger_source",
         "interventions",
         "prev_command_hash",
@@ -327,14 +293,11 @@ def verify_command(command: Mapping[str, Any], state: Mapping[str, Any]) -> None
         raise EngineInvariantError("command sequence is not the next global tick")
     if command["prev_command_hash"] != state.get("last_command_hash"):
         raise EngineInvariantError("command chain mismatch")
-    if command["cue"] not in CUES:
-        raise EngineInvariantError("command cue is not canonical")
-    try:
-        event_cue = cue_for_event(command["world_event"])
-    except ValueError as exc:
-        raise EngineInvariantError(str(exc)) from exc
-    if event_cue != command["cue"]:
-        raise EngineInvariantError("command world_event and cue are inconsistent")
+    injected_event = command["injected_event"]
+    if injected_event is not None and (
+        type(injected_event) is not str or injected_event not in ALLOWED_WORLD_EVENTS
+    ):
+        raise EngineInvariantError("command injected_event is not canonical")
     if command["trigger_source"] not in TRIGGER_SOURCES:
         raise EngineInvariantError("command trigger_source is not canonical")
     _normalize_interventions(command["interventions"])
@@ -368,30 +331,30 @@ def compute_step(
     before = deepcopy(dict(state))
     before_hash = state_hash(before)
     sequence = int(command["sequence"])
-    world_event = str(command["world_event"])
     interventions = _normalize_interventions(command["interventions"])
 
     decision_state, episode_transition = _decision_state_for_tick(
         before, run_id=str(run_meta["run_id"]), sequence=sequence
     )
     world_before = deepcopy(decision_state["world"])
+    injected_event = command["injected_event"]
+    if injected_event is not None:
+        try:
+            decision_state["world"] = observe_world_event(world_before, injected_event)
+        except ValueError as exc:
+            raise EngineInvariantError(str(exc)) from exc
     try:
-        decision_state["world"] = observe_world_event(world_before, world_event)
-        action_gate = legal_action_gate(decision_state["world"], ACTIONS)
+        world_observation = policy_observation(
+            decision_state["world"],
+            occlusion=interventions["vision_mode"] == "canonical",
+        )
     except ValueError as exc:
         raise EngineInvariantError(str(exc)) from exc
-    world_observation = deepcopy(decision_state["world"]["public_observation"])
-    cue = str(world_observation["cue"])
     decision_hash = state_hash(decision_state)
-    energy_before = _round(float(decision_state["organism"]["energy"]))
-    viability_gate = compute_viability_action_gate(
-        energy_before=energy_before,
-        topology_legal_actions=action_gate["legal_actions"],
-    )
-    legal_actions = list(viability_gate["legal_actions"])
+    observation_key = observation_hash(world_observation)
     goal_before = deepcopy(decision_state["current_goal"])
     current_goal = goal_before["state_variable"] or "homeostasis"
-    context_key = f"{cue}|{current_goal}"
+    context_key = f"{observation_key}|{current_goal}"
 
     memory_view, provenance_projection = _memory_read_view(
         decision_state["memory"],
@@ -407,79 +370,60 @@ def compute_step(
     )
     if interventions["memory_mode"] == "off":
         claim_retrieval["status"] = "memory_disabled"
-    policy_non_memory_projection = {
-        "schema_version": "ego.life_playground.policy_non_memory_projection.v2",
+    memory_summary = _policy_memory_summary(
+        memory_view,
+        cue=observation_key,
+        current_goal=current_goal,
+    )
+    claim_summary = deepcopy(claim_retrieval["policy_summary"])
+    policy_projection = {
+        "schema_version": "ego.life_playground.policy_projection.v3",
         "observation": deepcopy(world_observation),
         "organism": deepcopy(decision_state["organism"]),
-        "current_goal": deepcopy(goal_before),
-        "legal_actions": list(legal_actions),
-        "action_paths": deepcopy(action_gate["action_paths"]),
+        "current_goal": _sanitized_goal(goal_before),
         "model": deepcopy(decision_state["model"]),
-        "sequence": sequence,
-        "policy_tie_seed": int(run_meta["seed"]),
-        "context_key": context_key,
-    }
-    policy_projection = {
-        "schema_version": "ego.life_playground.policy_projection.v2",
-        "non_memory": deepcopy(policy_non_memory_projection),
-        "resolved_memory_view": deepcopy(memory_view),
-        "claim_retrieval": deepcopy(claim_retrieval),
+        "memory_summary": memory_summary,
+        "claim_summary": claim_summary,
     }
     candidates = [
         _score_candidate(
-            state=decision_state,
-            memory_view=memory_view,
-            claim_retrieval=claim_retrieval,
-            cue=cue,
+            organism=decision_state["organism"],
+            model=decision_state["model"],
+            memory_summary=memory_summary,
+            claim_summary=claim_summary,
+            observation=world_observation,
             context_key=context_key,
             current_goal=goal_before,
             action=action,
-            path=action_gate["action_paths"][action],
-            sequence=sequence,
-            seed=int(run_meta["seed"]),
+            policy_projection=policy_projection,
         )
         for action in ACTIONS
     ]
-    gated_actions = deepcopy(action_gate["gated_actions"])
     for candidate in candidates:
-        topology_legal = candidate["action"] in action_gate["legal_actions"]
-        viability_legal = candidate["action"] in legal_actions
-        candidate["legal"] = topology_legal and viability_legal
-        candidate["gate_reasons"] = []
-        if not topology_legal:
-            candidate["gate_reasons"].append("unreachable_target")
-        if topology_legal and not viability_legal:
-            candidate["gate_reasons"].append(
-                "critical_energy_capability_restriction"
-            )
-    positive_progress_actions = sorted(
-        str(candidate["action"])
-        for candidate in candidates
-        if candidate["legal"]
-        and float(candidate["current_goal_deficit_reduction"]) > 0.0
-    )
-    progress_gate_active = bool(positive_progress_actions)
-    for candidate in candidates:
-        positive_progress = candidate["action"] in positive_progress_actions
-        candidate["progress_gate"] = {
-            "rule": "legal_positive_goal_progress_precedes_zero_or_negative_progress",
-            "active": progress_gate_active,
-            "positive_progress_actions": list(positive_progress_actions),
-        }
-        candidate["selection_eligible"] = bool(
-            candidate["legal"] and (not progress_gate_active or positive_progress)
+        action = str(candidate["action"])
+        audit_bias, legacy_refs = _memory_bias(
+            memory_view,
+            cue=observation_key,
+            current_goal=current_goal,
+            action=action,
         )
-        candidate["selection_exclusion_reasons"] = list(candidate["gate_reasons"])
-        if candidate["legal"] and progress_gate_active and not positive_progress:
-            candidate["selection_exclusion_reasons"].append(
-                "zero_or_negative_current_goal_progress"
-            )
+        if _round(audit_bias) != candidate["legacy_memory_bias"]:
+            raise EngineInvariantError("policy memory summary differs from audited memory view")
+        claim_refs = sorted(
+            {
+                str(event_id)
+                for item in claim_retrieval.get("claims", [])
+                if item.get("value") == action
+                for event_id in item.get("eligible_provenance_event_ids", [])
+            }
+        )
+        candidate["claim_refs"] = claim_refs
+        candidate["memory_refs"] = sorted(set(legacy_refs) | set(claim_refs))
     candidates.sort(key=lambda item: item["action"])
-    selected = max(
-        (item for item in candidates if item["selection_eligible"]),
-        key=lambda item: (item["total_score"], item["deterministic_tie"]),
-    )
+    selected = max(candidates, key=lambda item: (item["total_score"], item["deterministic_tie"]))
     selected_action = str(selected["action"])
+    for candidate in candidates:
+        candidate["selected"] = candidate["action"] == selected_action
     predicted_delta = deepcopy(selected["predicted_delta"])
 
     next_state = deepcopy(decision_state)
@@ -493,10 +437,8 @@ def compute_step(
         )
     except ValueError as exc:
         raise EngineInvariantError(str(exc)) from exc
-    if world_transition.get("path") != selected["path"]:
-        raise EngineInvariantError("world transition path differs from scored canonical path")
-    world_outcome_value = world_transition.get("outcome")
-    actual_delta = _actual_delta(cue, selected_action, world_outcome=world_outcome_value)
+    actual_delta = _actual_delta(world_transition, selected_action=selected_action)
+    energy_before = _round(float(decision_state["organism"]["energy"]))
     metabolism = compute_metabolism_ledger(
         energy_before=energy_before,
         selected_action=selected_action,
@@ -522,7 +464,7 @@ def compute_step(
         global_tick=sequence,
     )
 
-    updates_enabled = interventions["update_mode"] == "enabled"
+    updates_enabled = interventions["update_mode"] == "canonical"
     model_before_hash = canonical_hash(decision_state["model"])
     memory_before_hash = canonical_hash(decision_state["memory"])
     model_update = _update_model(
@@ -538,7 +480,7 @@ def compute_step(
         before_organism=decision_state["organism"],
         after_organism=next_state["organism"],
         actual_delta=actual_delta,
-        cue=cue,
+        cue=observation_key,
         current_goal=current_goal,
         action=selected_action,
         sequence=sequence,
@@ -552,7 +494,7 @@ def compute_step(
         observation=world_observation,
         current_goal=current_goal,
         action=selected_action,
-        outcome=world_outcome_value,
+        actual_delta=actual_delta,
         sequence=sequence,
         command_hash=str(command["command_hash"]),
         source_episode_id=str(decision_state["clock"]["episode_id"]),
@@ -579,8 +521,7 @@ def compute_step(
         "aggregation_rule": run_meta["aggregation_rule"],
         "sequence": sequence,
         "trigger_source": command["trigger_source"],
-        "world_event": world_event,
-        "cue": cue,
+        "injected_event": injected_event,
         "interventions": interventions,
         "command": deepcopy(dict(command)),
         "command_hash": command["command_hash"],
@@ -594,22 +535,10 @@ def compute_step(
         "world_observation": world_observation,
         "observation": deepcopy(world_observation),
         "observation_hash": observation_hash(world_observation),
-        "policy_non_memory_projection": policy_non_memory_projection,
-        "policy_non_memory_projection_hash": canonical_hash(policy_non_memory_projection),
         "policy_projection": policy_projection,
         "policy_projection_hash": canonical_hash(policy_projection),
-        "action_gate": action_gate,
-        "viability_gate": viability_gate,
-        "legal_actions": legal_actions,
-        "gated_actions": gated_actions,
+        "candidate_actions": list(ACTIONS),
         "world_transition": world_transition,
-        "world_outcome": {
-            "producer_function": "ego_life_playground_v0.microworld.transition_world",
-            "revealed_after_selection": bool(world_transition.get("revealed_after_selection")),
-            "visited_site": world_transition.get("visited_site"),
-            "value": world_outcome_value,
-            "food_obtained": bool(world_transition.get("food_obtained")),
-        },
         "episode_before": deepcopy(before["clock"]),
         "episode_transition": episode_transition,
         "action_episode": deepcopy(decision_state["clock"]),
@@ -618,7 +547,6 @@ def compute_step(
         "goal_transition": goal_transition,
         "goal_after": deepcopy(next_state["current_goal"]),
         "context_key": context_key,
-        "goals": propose_goals(decision_state["organism"]),
         "candidates": candidates,
         "selected_action": selected_action,
         "prediction": predicted_delta,
@@ -649,54 +577,16 @@ def compute_step(
         },
         "consolidation_refs": memory_update["consolidation_refs"],
         "provenance_projection": provenance_projection,
+        "vision_ablation": {
+            "mode": interventions["vision_mode"],
+            "applied": interventions["vision_mode"] != "canonical",
+        },
         "code_path_hash": current_code_hash,
         "prev_trace_hash": before.get("last_trace_hash"),
     }
     trace["trace_hash"] = compute_trace_hash(trace)
     next_state["last_trace_hash"] = trace["trace_hash"]
     return StepResult(next_state=next_state, trace=trace)
-
-
-def compute_viability_action_gate(
-    *, energy_before: float, topology_legal_actions: Any
-) -> dict[str, Any]:
-    """Intersect the existing topology gate with the task-local energy gate."""
-
-    if type(energy_before) is not float or not math.isfinite(energy_before):
-        raise EngineInvariantError("viability gate energy_before must be a finite float")
-    if not 0.0 <= energy_before <= 1.0:
-        raise EngineInvariantError("viability gate energy_before is outside range")
-    if not isinstance(topology_legal_actions, (list, tuple)):
-        raise EngineInvariantError("topology legal actions must be an ordered sequence")
-    topology_legal = list(topology_legal_actions)
-    if len(topology_legal) != len(set(topology_legal)) or any(
-        type(action) is not str or action not in ACTIONS for action in topology_legal
-    ):
-        raise EngineInvariantError("topology legal actions are not canonical")
-
-    active = energy_before <= CRITICAL_ENERGY_THRESHOLD
-    legal = [
-        action
-        for action in topology_legal
-        if not active or action in CRITICAL_ENERGY_ALLOWED_ACTIONS
-    ]
-    if not legal:
-        raise EngineInvariantError("viability gate removed every topology-legal action")
-    return {
-        "producer_function": (
-            "ego_life_playground_v0.engine.compute_viability_action_gate"
-        ),
-        "rule": "critical_energy_intersects_existing_topology_legal_actions_v1",
-        "energy_before": energy_before,
-        "critical_energy_threshold": CRITICAL_ENERGY_THRESHOLD,
-        "active": active,
-        "topology_legal_actions": topology_legal,
-        "allowed_actions_when_critical": list(CRITICAL_ENERGY_ALLOWED_ACTIONS),
-        "legal_actions": legal,
-        "restricted_actions": [
-            action for action in topology_legal if action not in legal
-        ],
-    }
 
 
 def compute_metabolism_ledger(
@@ -709,8 +599,6 @@ def compute_metabolism_ledger(
     command_hash: str,
     code_path_hash: str,
 ) -> dict[str, Any]:
-    """Compute the only per-tick energy accounting used by live and replay."""
-
     if type(energy_before) is not float or not math.isfinite(energy_before):
         raise EngineInvariantError("metabolism energy_before must be a finite float")
     if not 0.0 <= energy_before <= 1.0:
@@ -719,75 +607,6 @@ def compute_metabolism_ledger(
         raise EngineInvariantError("metabolism selected action is not canonical")
     if not isinstance(world_transition, Mapping):
         raise EngineInvariantError("metabolism world transition must be an object")
-    interaction = world_transition.get("resource_interaction")
-    interaction_keys = {
-        "instance_id",
-        "available",
-        "attempted",
-        "resolved",
-        "outcome",
-        "food_obtained",
-        "failure_reason",
-    }
-    if not isinstance(interaction, Mapping) or set(interaction) != interaction_keys:
-        raise EngineInvariantError("resource interaction schema mismatch")
-    available = interaction.get("available")
-    attempted = interaction.get("attempted")
-    resolved = interaction.get("resolved")
-    interaction_food = interaction.get("food_obtained")
-    if any(type(value) is not bool for value in (available, attempted, resolved, interaction_food)):
-        raise EngineInvariantError("resource interaction flags must be boolean")
-    if resolved != bool(available and attempted):
-        raise EngineInvariantError("resource interaction resolution is inconsistent")
-    instance_id = interaction.get("instance_id")
-    expected_instance_id = resource_instance_id_for_command(command_hash)
-    if available:
-        if instance_id != expected_instance_id:
-            raise EngineInvariantError("resource interaction instance id mismatch")
-    elif instance_id is not None:
-        raise EngineInvariantError("unavailable resource interaction has an instance id")
-    interaction_outcome = interaction.get("outcome")
-    if resolved:
-        if type(interaction_outcome) is not float or interaction_outcome not in {-1.0, 1.0}:
-            raise EngineInvariantError("resolved resource interaction outcome is invalid")
-        if interaction_outcome != world_transition.get("outcome"):
-            raise EngineInvariantError("resource interaction outcome differs from world outcome")
-    elif interaction_outcome is not None:
-        raise EngineInvariantError("unresolved resource interaction has an outcome")
-    qualifying_interaction_food = bool(resolved and interaction_outcome == 1.0)
-    if interaction_food != qualifying_interaction_food:
-        raise EngineInvariantError("resource interaction food flag differs from outcome")
-    expected_failure_reason = (
-        "no_resource_event"
-        if not available
-        else (
-            "resource_not_attempted"
-            if not attempted
-            else (
-                "harmful_or_unusable_resource"
-                if not interaction_food
-                else None
-            )
-        )
-    )
-    if interaction.get("failure_reason") != expected_failure_reason:
-        raise EngineInvariantError("resource interaction failure reason is inconsistent")
-
-    food_obtained = world_transition.get("food_obtained")
-    if type(food_obtained) is not bool:
-        raise EngineInvariantError("world transition food_obtained must be boolean")
-    qualifying_food_outcome = bool(
-        selected_action == "forage"
-        and world_transition.get("selected_action") == "forage"
-        and world_transition.get("visited_site") == "site_a"
-        and world_transition.get("outcome") == 1.0
-        and resolved
-        and interaction_food
-    )
-    if food_obtained != interaction_food or food_obtained != qualifying_food_outcome:
-        raise EngineInvariantError(
-            "environment food flag differs from resource interaction outcome"
-        )
     if type(episode_id) is not str or not episode_id:
         raise EngineInvariantError("metabolism episode_id must be non-empty")
     if not _is_sha256(command_hash) or not _is_sha256(code_path_hash):
@@ -795,30 +614,17 @@ def compute_metabolism_ledger(
 
     passive_decay = PASSIVE_ENERGY_DECAY_PER_TICK
     action_cost = ACTION_COSTS[selected_action]
-    food_gain = FOOD_ENERGY_GAIN if food_obtained else 0.0
+    food_gain = (
+        CAUSE_DELTAS["resource"]["energy"]
+        if selected_action == "interact" and world_transition.get("cause") == "resource"
+        else 0.0
+    )
     energy_after = _round(
         _clamp(energy_before - passive_decay - action_cost + food_gain)
     )
-    critical_before = energy_before <= CRITICAL_ENERGY_THRESHOLD
-    critical_after = energy_after <= CRITICAL_ENERGY_THRESHOLD
     downstream_effect = {
         "producer_function": METABOLISM_PRODUCER_FUNCTION,
-        "critical_energy_threshold": CRITICAL_ENERGY_THRESHOLD,
-        "critical_before": critical_before,
-        "critical_after": critical_after,
-        "entered_critical": (not critical_before) and critical_after,
-        "capability_restriction_active": critical_before,
-        "next_tick_capability_restriction": critical_after,
-        "allowed_actions_when_critical": list(CRITICAL_ENERGY_ALLOWED_ACTIONS),
-        "effect": (
-            "current_tick_action_set_restricted"
-            if critical_before
-            else (
-                "critical_threshold_crossed_next_tick_action_set_restricted"
-                if critical_after
-                else "none"
-            )
-        ),
+        "effect": "passive_and_action_cost_applied",
     }
     return {
         "schema_version": "ego.life_playground.metabolism_ledger.v1",
@@ -834,7 +640,7 @@ def compute_metabolism_ledger(
         "aggregation_rule": METABOLISM_AGGREGATION_RULE,
         "code_path_hash": code_path_hash,
         "selected_action": selected_action,
-        "food_obtained": food_obtained,
+        "food_obtained": bool(food_gain > 0.0),
         "energy_before": energy_before,
         "passive_decay": passive_decay,
         "action_cost": action_cost,
@@ -991,8 +797,8 @@ def _verify_model(model: Any) -> None:
     for context_key, actions in model.items():
         if type(context_key) is not str or context_key.count("|") != 1:
             raise EngineInvariantError("model context key is not canonical")
-        cue, goal = context_key.split("|", 1)
-        if cue not in CUES or goal not in {*STATE_KEYS, "homeostasis"}:
+        observation_key, goal = context_key.split("|", 1)
+        if not _is_sha256(observation_key) or goal not in {*STATE_KEYS, "homeostasis"}:
             raise EngineInvariantError("model context key is not canonical")
         if not isinstance(actions, Mapping):
             raise EngineInvariantError("model context action table must be an object")
@@ -1008,6 +814,7 @@ def _verify_model(model: Any) -> None:
 
 def _verify_memory(memory: Any) -> None:
     if not isinstance(memory, Mapping) or set(memory) != {
+        "schema_version",
         "episodic",
         "consolidated",
         "claim_events",
@@ -1124,7 +931,7 @@ def _verify_consolidated_memory_entry(entry: Any) -> None:
 
 
 def _verify_memory_slot(entry: Mapping[str, Any], label: str) -> None:
-    if type(entry["cue"]) is not str or entry["cue"] not in CUES:
+    if type(entry["cue"]) is not str or not _is_sha256(entry["cue"]):
         raise EngineInvariantError(f"{label} cue is not canonical")
     if type(entry["current_goal"]) is not str or entry["current_goal"] not in {
         *STATE_KEYS,
@@ -1298,155 +1105,89 @@ def _advance_goal(
 
 def _score_candidate(
     *,
-    state: Mapping[str, Any],
-    memory_view: Mapping[str, Any],
-    claim_retrieval: Mapping[str, Any],
-    cue: str,
+    organism: Mapping[str, float],
+    model: Mapping[str, Any],
+    memory_summary: Mapping[str, Any],
+    claim_summary: Mapping[str, Any],
+    observation: Mapping[str, Any],
     context_key: str,
     current_goal: Mapping[str, Any],
     action: str,
-    path: Mapping[str, Any],
-    sequence: int,
-    seed: int,
+    policy_projection: Mapping[str, Any],
 ) -> dict[str, Any]:
-    model_entry = state["model"].get(context_key, {}).get(action)
+    model_entry = model.get(context_key, {}).get(action)
     if model_entry and int(model_entry["count"]) > 0:
         predicted = {key: float(model_entry["ema_delta"][key]) for key in STATE_KEYS}
-        model_ref = {
-            "source": "tabular_ema",
-            "context_key": context_key,
-            "action": action,
-            "count": int(model_entry["count"]),
-        }
+        model_ref = {"source": "tabular_ema", "context_key": context_key, "action": action, "count": int(model_entry["count"])}
     else:
-        predicted = _prior_prediction(cue, action)
-        model_ref = {
-            "source": "hardcoded_prior",
-            "context_key": context_key,
-            "action": action,
-            "count": 0,
-        }
-    predicted_after = _apply_delta(state["organism"], predicted)
-    goal_reduction = _current_goal_deficit_reduction(
-        state["organism"], predicted_after, current_goal
-    )
-    total_reduction = _round(
-        _total_deficit(state["organism"]) - _total_deficit(predicted_after)
-    )
-    legacy_memory_bias, legacy_memory_refs = _memory_bias(
-        memory_view,
-        cue=cue,
-        current_goal=current_goal["state_variable"] or "homeostasis",
-        action=action,
-    )
-    claim_memory_bias = claim_memory.memory_bias_for_action(claim_retrieval, action)
-    raw_claim_memory_bias = claim_memory.raw_memory_bias_for_action(
-        claim_retrieval, action
-    )
-    claim_refs = sorted(
+        predicted = _prior_prediction(observation, action)
+        model_ref = {"source": "visual_prior", "context_key": context_key, "action": action, "count": 0}
+    predicted_after = _apply_delta(organism, predicted)
+    goal_reduction = _current_goal_deficit_reduction(organism, predicted_after, current_goal)
+    total_reduction = _round(_total_deficit(organism) - _total_deficit(predicted_after))
+    legacy_memory_bias = float(memory_summary["legacy_bias_by_action"][action])
+    claim_memory_bias = claim_memory.memory_bias_for_action(
         {
-            str(event_id)
-            for item in claim_retrieval.get("claims", [])
-            if item.get("value") == action
-            for event_id in item.get("eligible_provenance_event_ids", [])
-        }
+            "claims": [{}] * int(claim_summary["claim_count"]),
+            "support_by_action": claim_summary["support_by_action"],
+        },
+        action,
     )
     memory_bias = max(-0.5, min(0.5, legacy_memory_bias + claim_memory_bias))
-    raw_memory_bias = max(
-        -0.5, min(0.5, legacy_memory_bias + raw_claim_memory_bias)
+    deterministic_tie = _deterministic_tie(policy_projection, action)
+    total_score = _round(
+        goal_reduction + total_reduction + memory_bias - ACTION_COSTS[action] + deterministic_tie,
+        digits=9,
     )
-    memory_refs = sorted(set(legacy_memory_refs) | set(claim_refs))
-    context_memory_eligible = bool(
-        legacy_memory_refs
-        or action in claim_retrieval.get("support_by_action", {})
-    )
-    untried_bonus = 0.025 if model_ref["count"] == 0 else 0.0
-    deterministic_tie = _deterministic_tie(seed, sequence, context_key, action)
-    reachable = path.get("reachable") is True
-    topology_cost = path.get("normalized_topology_cost")
-    if reachable:
-        if type(topology_cost) is not float or not 0.0 <= topology_cost <= 1.0:
-            raise EngineInvariantError("reachable action path has invalid topology cost")
-        shortest_path_steps = path.get("shortest_path_steps")
-        walkable_cell_count = path.get("walkable_cell_count")
-        if (
-            type(shortest_path_steps) is not int
-            or shortest_path_steps < 0
-            or type(walkable_cell_count) is not int
-            or walkable_cell_count <= 0
-            or topology_cost
-            != round(shortest_path_steps / walkable_cell_count, 9)
-        ):
-            raise EngineInvariantError("action path topology cost is not canonical")
-        topology_cost_contribution: float | None = topology_cost
-        total_score: float | None = _round(
-            goal_reduction
-            + total_reduction
-            + memory_bias
-            + untried_bonus
-            - ACTION_COSTS[action]
-            - topology_cost_contribution
-            + deterministic_tie,
-            digits=9,
-        )
-    else:
-        if topology_cost is not None or path.get("shortest_path_steps") is not None:
-            raise EngineInvariantError("unreachable action path carries a topology cost")
-        topology_cost_contribution = None
-        total_score = None
     return {
         "action": action,
         "predicted_delta": {key: _round(predicted[key]) for key in STATE_KEYS},
         "current_goal_deficit_reduction": goal_reduction,
         "total_deficit_reduction": total_reduction,
-        "memory_bias": _round(memory_bias),
-        "raw_memory_bias": _round(raw_memory_bias),
         "legacy_memory_bias": _round(legacy_memory_bias),
         "claim_memory_bias": _round(claim_memory_bias),
-        "raw_claim_memory_bias": _round(raw_claim_memory_bias),
-        "context_memory_eligible": context_memory_eligible,
-        "claim_support": _round(
-            float(claim_retrieval.get("support_by_action", {}).get(action, 0.0))
-        ),
-        "raw_claim_support": _round(
-            float(claim_retrieval.get("raw_support_by_action", {}).get(action, 0.0))
-        ),
-        "untried_bonus": untried_bonus,
+        "memory_bias": _round(memory_bias),
         "action_cost": ACTION_COSTS[action],
-        "topology_cost": topology_cost,
-        "topology_cost_contribution": topology_cost_contribution,
-        "path": deepcopy(dict(path)),
         "deterministic_tie": deterministic_tie,
         "total_score": total_score,
         "model_ref": model_ref,
-        "memory_refs": memory_refs,
-        "claim_refs": claim_refs,
+        "memory_refs": [],
+        "claim_refs": [],
+        "selected": False,
     }
 
 
-def _prior_prediction(cue: str, action: str) -> dict[str, float]:
-    prior = dict(ACTION_PRIORS[action])
-    for key, bonus in CUE_BONUSES.get(cue, {}).get(action, {}).items():
-        prior[key] += 0.5 * bonus
-    return {key: _round(prior[key]) for key in STATE_KEYS}
+def _prior_prediction(observation: Mapping[str, Any], action: str) -> dict[str, float]:
+    visual = observation.get("visual", [])
+    flat = [token for row in visual for token in row]
+    front = visual[1][2] if isinstance(visual, list) and len(visual) == 5 else "wall"
+    predicted = {key: 0.0 for key in STATE_KEYS}
+    if action == "rest":
+        predicted["safety"] = REST_DELTA["safety"]
+    elif action == "interact" and front in {"v0", "v1", "v2", "v3", "v4"}:
+        predicted["energy"] = 0.18
+        predicted["connection"] = 0.02
+        predicted["stimulation"] = 0.02
+    elif action == "move_forward" and front == "empty":
+        predicted["stimulation"] = 0.03
+    elif action in {"turn_left", "turn_right"}:
+        predicted["stimulation"] = 0.01
+    if flat.count("occluded") >= 4 and action == "move_forward":
+        predicted["stimulation"] += 0.02
+    return {key: _round(predicted[key]) for key in STATE_KEYS}
 
 
-def _actual_delta(
-    cue: str, action: str, *, world_outcome: float | None = None
-) -> dict[str, float]:
-    delta = dict(ACTION_PRIORS[action])
-    for key, bonus in CUE_BONUSES.get(cue, {}).get(action, {}).items():
-        delta[key] += bonus
-    # Energy is exclusively supplied by compute_metabolism_ledger. The old
-    # action/cue energy values remain prediction priors so the existing learner
-    # can observe their error, but never become realized energy directly.
+def _actual_delta(world_transition: Mapping[str, Any], *, selected_action: str) -> dict[str, float]:
+    delta = {key: 0.0 for key in STATE_KEYS}
+    if selected_action == "rest":
+        delta.update(REST_DELTA)
+    if world_transition.get("outcome_type") == "interacted":
+        cause = world_transition.get("cause")
+        if cause not in CAUSE_DELTAS:
+            raise EngineInvariantError("interact cause is not canonical")
+        for key, value in CAUSE_DELTAS[str(cause)].items():
+            delta[key] += float(value)
     delta["energy"] = 0.0
-    if world_outcome is not None:
-        if type(world_outcome) is not float or world_outcome not in {-1.0, 1.0}:
-            raise EngineInvariantError("world outcome is outside the canonical site range")
-        # Delayed site outcome is applied only after selection. It therefore
-        # affects the prediction error/update, never the current policy input.
-        delta["safety"] += 0.03 * world_outcome
     return {key: _round(delta[key]) for key in STATE_KEYS}
 
 
@@ -1651,7 +1392,7 @@ def _update_claim_memory(
     observation: Mapping[str, Any],
     current_goal: str,
     action: str,
-    outcome: Any,
+    actual_delta: Mapping[str, Any],
     sequence: int,
     command_hash: str,
     source_episode_id: str,
@@ -1672,34 +1413,29 @@ def _update_claim_memory(
             "claim_id": None,
             "reason": "adaptive_updates_frozen",
         }
-    if outcome is None:
-        return {
-            "applied": False,
-            "event_id": None,
-            "claim_id": None,
-            "reason": "no_site_outcome",
-        }
     event_id = f"claim-event-{canonical_hash({'command_hash': command_hash, 'action': action})[:20]}"
     updated, report = claim_memory.record_outcome_evidence(
         state["memory"],
-        subject="microworld:opaque_fork",
-        predicate="preferred_site_action",
+        subject="visual_context",
+        predicate="preferred_action",
         value=action,
-        evidence_strength=float(outcome),
+        evidence_strength=float(actual_delta.get(current_goal, 0.0)),
         event_id=event_id,
         source_episode_id=source_episode_id,
         source_command_hash=command_hash,
         source_sequence=sequence,
         observed_public_features={
-            "agent_position": observation.get("agent_position"),
-            "visible_object_ids": deepcopy(observation.get("visible_object_ids", [])),
-            "cue": observation.get("cue"),
+            "observation_hash": observation_hash(observation),
+            "visual": deepcopy(observation.get("visual")),
             "current_goal": current_goal,
+            "interoception_delta": {
+                key: _round(float(actual_delta[key])) for key in STATE_KEYS
+            },
         },
     )
     state["memory"] = updated
     result = deepcopy(report)
-    result["reason"] = "site_outcome_recorded"
+    result["reason"] = "visual_outcome_recorded"
     return result
 
 
@@ -1976,6 +1712,7 @@ def _normalize_interventions(interventions: Mapping[str, str]) -> dict[str, str]
         or normalized["update_mode"] not in UPDATE_MODES
         or normalized["provenance_mode"] not in PROVENANCE_MODES
         or normalized["consolidation_mode"] not in CONSOLIDATION_MODES
+        or normalized["vision_mode"] not in VISION_MODES
     ):
         raise EngineInvariantError("intervention enum mismatch")
     try:
@@ -1999,10 +1736,50 @@ def _normalize_interventions(interventions: Mapping[str, str]) -> dict[str, str]
     return normalized
 
 
-def _deterministic_tie(seed: int, sequence: int, context_key: str, action: str) -> float:
-    digest = hashlib.sha256(f"{seed}|{sequence}|{context_key}|{action}".encode("utf-8")).digest()
+def _deterministic_tie(seed: int | Mapping[str, Any], sequence: int | str, context_key: str | None = None, action: str | None = None) -> float:
+    if action is None:
+        action = str(sequence)
+        payload = seed
+    else:
+        payload = seed
+    digest = hashlib.sha256(
+        canonical_json({"policy_projection": payload, "action": action}).encode("utf-8")
+    ).digest()
     integer = int.from_bytes(digest[:8], "big")
     return _round((integer / float(2**64 - 1)) * 1e-6, digits=12)
+
+
+def _policy_memory_summary(
+    memory: Mapping[str, Any], *, cue: str, current_goal: str
+) -> dict[str, Any]:
+    legacy_bias_by_action = {
+        action: _round(
+            _memory_bias(
+                memory,
+                cue=cue,
+                current_goal=current_goal,
+                action=action,
+            )[0]
+        )
+        for action in ACTIONS
+    }
+    return {
+        "schema_version": "ego.life_playground.policy_memory_summary.v2",
+        "episodic_count": len(memory.get("episodic", [])),
+        "consolidated_count": len(memory.get("consolidated", [])),
+        "claim_event_count": len(memory.get("claim_events", [])),
+        "competing_claim_count": len(memory.get("competing_claims", [])),
+        "legacy_bias_by_action": legacy_bias_by_action,
+    }
+
+
+def _sanitized_goal(goal: Mapping[str, Any]) -> dict[str, Any]:
+    return {
+        "state_variable": goal.get("state_variable"),
+        "target": goal.get("target"),
+        "status": goal.get("status"),
+        "entry_deficit": goal.get("entry_deficit"),
+    }
 
 
 def _current_goal_deficit_reduction(

@@ -9,9 +9,6 @@ from .controller import DispatchResult, PlaygroundController, public_state_hash
 from .engine import DEFAULT_INTERVENTIONS, EngineInvariantError
 from .microworld import (
     ALLOWED_WORLD_EVENTS,
-    cue_for_event,
-    default_event_for_sequence,
-    event_for_cue,
     make_public_frame,
 )
 from .store import RecoveryResult
@@ -31,11 +28,15 @@ def _timeline_from_recovery(recovery: RecoveryResult) -> list[dict[str, Any]]:
                 "episode_index": clock["episode_index"],
                 "episode_tick": clock["episode_tick"],
                 "layout_id": frame.state["world"]["layout"]["layout_id"],
-                "event": "quiet_interval" if trace is None else event_for_cue(trace["cue"]),
-                "observation": "quiet" if trace is None else trace["cue"],
+                "injected_event": None
+                if trace is None
+                else trace.get("injected_event"),
+                "observation": None if trace is None else deepcopy(trace["observation"]),
                 "observation_hash": None if trace is None else trace["observation_hash"],
                 "selected_action": None if trace is None else trace["selected_action"],
-                "world_outcome": None if trace is None else deepcopy(trace.get("world_outcome")),
+                "world_transition": None
+                if trace is None
+                else deepcopy(trace.get("world_transition")),
                 "prediction_error_l1": None
                 if trace is None
                 else round(sum(abs(float(value)) for value in prediction_error.values()), 6),
@@ -93,8 +94,9 @@ def build_terminal_snapshot(controller: PlaygroundController) -> dict[str, Any]:
         "internal_state": deepcopy(state["organism"]),
         "current_goal": deepcopy(state["current_goal"]),
         "candidates": [] if trace is None else deepcopy(trace["candidates"]),
-        "legal_actions": [] if trace is None else deepcopy(trace["legal_actions"]),
-        "gated_actions": [] if trace is None else deepcopy(trace["gated_actions"]),
+        "candidate_actions": []
+        if trace is None
+        else deepcopy(trace.get("candidate_actions", [])),
         "selected_action": None if trace is None else trace["selected_action"],
         "selected_score": None if selected_candidate is None else selected_candidate["total_score"],
         "prediction": None if trace is None else deepcopy(trace["prediction"]),
@@ -113,13 +115,12 @@ def build_terminal_snapshot(controller: PlaygroundController) -> dict[str, Any]:
             "claim_write": None if trace is None else deepcopy(trace.get("claim_update")),
             "persistent_state": deepcopy(state["memory"]),
         },
-        "world_outcome": None if trace is None else deepcopy(trace.get("world_outcome")),
+        "world_transition": None
+        if trace is None
+        else deepcopy(trace.get("world_transition")),
         "policy_projection_hash": None
         if trace is None
         else trace.get("policy_projection_hash"),
-        "policy_non_memory_projection_hash": None
-        if trace is None
-        else trace.get("policy_non_memory_projection_hash"),
         "state_transition": {
             "public_before_hash": public_state_hash(previous_state),
             "public_after_hash": public_state_hash(state),
@@ -143,8 +144,8 @@ class TerminalPlayground:
     """
 
     HELP = (
-        "step [event] | run N | pause | inspect | inject EVENT | "
-        "save PATH | load RUN_ID | reset [RUN_ID] | replay | help | quit"
+        "step | run N | pause | inspect | inject EVENT | save PATH | "
+        "load RUN_ID | reset [RUN_ID] | replay | help | quit"
     )
 
     def __init__(self, controller: PlaygroundController) -> None:
@@ -153,10 +154,9 @@ class TerminalPlayground:
 
     def _dispatch_event(self, event: str, trigger_source: str) -> DispatchResult:
         return self.controller.dispatch(
-            cue_for_event(event),
-            DEFAULT_INTERVENTIONS,
             trigger_source=trigger_source,
-            world_event=event,
+            interventions=DEFAULT_INTERVENTIONS,
+            injected_event=event,
         )
 
     def execute(self, command_line: str) -> dict[str, Any]:
@@ -188,17 +188,17 @@ class TerminalPlayground:
                     raise ValueError("usage: inspect")
                 return {"command": "inspect", "status": "ok", "snapshot": build_terminal_snapshot(self.controller)}
             if operation == "step":
-                if len(parts) > 2:
-                    raise ValueError("usage: step [event]")
-                sequence = int(self.controller.state["clock"]["global_tick"]) + 1
-                event = parts[1] if len(parts) == 2 else default_event_for_sequence(sequence)
-                result = self._dispatch_event(event, "terminal_step")
+                if len(parts) != 1:
+                    raise ValueError("usage: step")
+                result = self.controller.dispatch(
+                    DEFAULT_INTERVENTIONS,
+                    trigger_source="terminal_step",
+                )
                 if not result.receipt.committed:
                     raise RuntimeError(result.receipt.error or "atomic commit rejected")
                 self.paused = True
                 return {
                     "command": "step",
-                    "event": event,
                     "status": "committed",
                     "snapshot": build_terminal_snapshot(self.controller),
                 }
@@ -224,9 +224,10 @@ class TerminalPlayground:
                     raise ValueError("run tick count must be between 1 and 10000")
                 self.paused = False
                 for _ in range(ticks):
-                    sequence = int(self.controller.state["clock"]["global_tick"]) + 1
-                    event = default_event_for_sequence(sequence)
-                    result = self._dispatch_event(event, "terminal_run")
+                    result = self.controller.dispatch(
+                        DEFAULT_INTERVENTIONS,
+                        trigger_source="terminal_run",
+                    )
                     if not result.receipt.committed:
                         self.paused = True
                         raise RuntimeError(result.receipt.error or "atomic commit rejected")

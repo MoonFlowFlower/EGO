@@ -36,7 +36,7 @@ def build_parser() -> argparse.ArgumentParser:
         )
     )
     parser.add_argument("--db", type=Path, default=default_db_path(), help="SQLite path (outside repo by default)")
-    parser.add_argument("--seed", type=int, default=17, help="deterministic tie-break seed")
+    parser.add_argument("--seed", type=int, default=17, help="deterministic run seed recorded in run metadata")
     parser.add_argument(
         "--world-seed",
         type=int,
@@ -115,25 +115,28 @@ def main(argv: list[str] | None = None) -> int:
                 _print_controller_construction_error(args, exc)
                 return 2
             dispatched = controller.dispatch(
-                "resource",
                 DEFAULT_INTERVENTIONS,
                 trigger_source="headless_acceptance",
             )
             if not dispatched.receipt.committed:
                 raise RuntimeError(dispatched.receipt.error)
             recovered = controller.recover()
+            trace = recovered.traces[-1]
             print(
                 json.dumps(
                     {
                         "run_id": controller.run_id,
+                        "state_schema_version": recovered.state["schema_version"],
+                        "command_schema_version": trace["command"]["schema_version"],
                         "clock": recovered.state["clock"],
                         "current_goal": recovered.state["current_goal"],
-                        "selected_action": recovered.traces[-1]["selected_action"],
+                        "selected_action": trace["selected_action"],
+                        "observation_hash": trace["observation_hash"],
                         "public_state_hash": public_state_hash(recovered.state),
                         "recovered": recovered.recovered,
                         "frame_count": len(recovered.frames),
-                        "trigger_source": recovered.traces[-1]["trigger_source"],
-                        "interventions": recovered.traces[-1]["interventions"],
+                        "trigger_source": trace["trigger_source"],
+                        "interventions": trace["interventions"],
                         "science_weight": 0,
                     },
                     sort_keys=True,
@@ -166,7 +169,7 @@ def main(argv: list[str] | None = None) -> int:
 
             print("EGO V2 P0 local microworld (default-off; science_weight=0)")
             print(TerminalPlayground.HELP)
-            print("allowed events: " + ", ".join(terminal.execute("help")["allowed_world_events"]))
+            print("injection events: " + ", ".join(terminal.execute("help")["allowed_world_events"]))
             print(json.dumps(terminal.execute("inspect"), indent=2, ensure_ascii=False))
             while True:
                 try:

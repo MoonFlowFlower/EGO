@@ -1,0 +1,74 @@
+{
+  "aggregation_rule": "preserve failed engineering checks and baseline downgrade evidence",
+  "claim_blockers": [],
+  "code_path_hash": "a1e3c0df45a8108531e41f0c72e7d44d1325e1c039e875daa95e318f29631e82",
+  "engine_code_path_hash": "6346db715bcf191e1d13c619103c1743a1f4985f995ae9ff7b0ab5f7c10c4079",
+  "engineering_failures": [],
+  "input_artifacts": [
+    {
+      "bytes": 7990,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\controller.py",
+      "sha256": "6ced573f544e47237ef6b4da0da1a0eee20c907a720c66d8d313129f971fff0d"
+    },
+    {
+      "bytes": 75390,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\engine.py",
+      "sha256": "e4e89f77f3f080410def8149e711e8f15031029ac01a54df494f8bb7de992e0a"
+    },
+    {
+      "bytes": 25710,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\microworld.py",
+      "sha256": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923"
+    },
+    {
+      "bytes": 13786,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\store.py",
+      "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+    },
+    {
+      "bytes": 13284,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\terminal.py",
+      "sha256": "0fa19f158981389f407f2f76b41f24e816200066f9845afe0c36de0f0b1189e8"
+    },
+    {
+      "bytes": 34076,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\labs\\ego_life_playground_v0\\visual_console.py",
+      "sha256": "3c34abe2a540cca8e2b7cfdc9967af231fcbe06de7152ddfbd4b3447643e0704"
+    },
+    {
+      "bytes": 7293,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\run_ego_life_playground_v0.py",
+      "sha256": "d4e51cea9a5aa6484277c238c199459d136fa9cc217916717872eaafcd958a75"
+    },
+    {
+      "bytes": 8406,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A\\PRODUCT_CONTRACT.md",
+      "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+    },
+    {
+      "bytes": 2626,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\docs\\codex\\tasks\\EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A\\CARD_A_EGOCENTRIC_ECOLOGY.md",
+      "sha256": "514c404e2a3850fd4e27d42713fed37fa41a5742e28622f79345d3459f054aca"
+    },
+    {
+      "bytes": 56183,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\scripts\\codex\\verify_ego_v2_visual_life_001a.py",
+      "sha256": "c08fbdef7a39bf9f5a686ab716da5f34c0830c2e4cf92e6d5bed12ab4e2634d8"
+    },
+    {
+      "bytes": 417731,
+      "path": "D:\\Project\\AIProject\\MyProject\\Ego\\artifacts\\EGO-V2-P0-VISUAL-LIFE-CARD-A-001A\\trace.jsonl",
+      "sha256": "e5873038f90769f10a52a0ccaac919919fab9addbcf5652dd74495817f0b82bc"
+    }
+  ],
+  "producer_function": "run_card_a_verification.failure_manifest",
+  "run_id": "ego-v2-card-a-verify",
+  "seed_context_episode_ids": {
+    "context_ids": [
+      "cross_seed_1701",
+      "offset_seed_1709"
+    ]
+  },
+  "status": "clean",
+  "verifier_source_hash": "c08fbdef7a39bf9f5a686ab716da5f34c0830c2e4cf92e6d5bed12ab4e2634d8"
+}

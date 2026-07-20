@@ -9,6 +9,7 @@ from typing import Any, Callable, Mapping
 import uuid
 
 from .engine import (
+    DEFAULT_INTERVENTIONS,
     DEFAULT_PRIVATE_WORLD_SEED,
     EngineInvariantError,
     StepResult,
@@ -111,19 +112,17 @@ class PlaygroundController:
 
     def dispatch(
         self,
-        cue: str,
-        interventions: Mapping[str, str],
+        interventions: Mapping[str, str] | None = None,
         *,
         trigger_source: str = "ui_step_button",
-        world_event: str | None = None,
+        injected_event: str | None = None,
     ) -> DispatchResult:
         command = make_command(
             sequence=int(self.state["clock"]["global_tick"]) + 1,
-            cue=cue,
             trigger_source=trigger_source,
-            interventions=interventions,
+            interventions=DEFAULT_INTERVENTIONS if interventions is None else interventions,
             prev_command_hash=self.state.get("last_command_hash"),
-            world_event=world_event,
+            injected_event=injected_event,
         )
         computed = compute_step(self.state, command, self.run_meta)
         receipt = self.store.append_step(command, computed.trace)
