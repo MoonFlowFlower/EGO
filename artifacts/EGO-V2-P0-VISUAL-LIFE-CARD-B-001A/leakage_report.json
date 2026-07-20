@@ -1,0 +1,236 @@
+{
+  "aggregation_rule": "scan goal, policy, terminal, and tk payload projections plus a positive control bundle",
+  "clean_scan": {
+    "aggregation_rule": "recursive structured key and value-pattern scan over goal and payload projections",
+    "code_path_hash": "c09a4074f51741d5afda7b447cb0c55b3a1984384b0eca7f1a59c844cb0cc750",
+    "engine_code_path_hash": "860b764f6958c1cd545f437a475128be6842aa8f70f346e2c05446e58a5fc818",
+    "input_artifacts": [
+      {
+        "bytes": 7990,
+        "path": "labs/ego_life_playground_v0/controller.py",
+        "sha256": "6ced573f544e47237ef6b4da0da1a0eee20c907a720c66d8d313129f971fff0d"
+      },
+      {
+        "bytes": 91572,
+        "path": "labs/ego_life_playground_v0/engine.py",
+        "sha256": "ecc3d281826921f8157652956892e832c4c4921e31f00901a0cfcf2337d3f5e2"
+      },
+      {
+        "bytes": 13786,
+        "path": "labs/ego_life_playground_v0/store.py",
+        "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+      },
+      {
+        "bytes": 13620,
+        "path": "labs/ego_life_playground_v0/terminal.py",
+        "sha256": "9e85adf69da5fbd5f565fb376c85014cfed9025b55921a7dddc85e8d1574a3e0"
+      },
+      {
+        "bytes": 35046,
+        "path": "labs/ego_life_playground_v0/visual_console.py",
+        "sha256": "7731ad4c9ad14ea7fd045dd23caf0456836166fcad6293492b30f3d1590d9ca0"
+      },
+      {
+        "bytes": 2380,
+        "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_B_GOAL_HYSTERESIS.md",
+        "sha256": "96f53aba2e9afe970f688cd610bd448ea3ce5ce91bc913e0a3b0f23b4bd99a33"
+      },
+      {
+        "bytes": 8406,
+        "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+        "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+      },
+      {
+        "bytes": 55394,
+        "path": "scripts/codex/verify_ego_v2_visual_life_goal_001a.py",
+        "sha256": "48679d7a19fc5fd48b819c657ada78beadb44217b38527a0ecd447aed74695b4"
+      }
+    ],
+    "offenders": [],
+    "positive_control_detected": false,
+    "positive_control_injected": false,
+    "producer_function": "scan_goal_payloads",
+    "record_type": "evidence_record",
+    "run_id": "ego-v2-card-b-verify",
+    "seed_context_episode_ids": {
+      "goal_payload_scan": true
+    },
+    "verifier_source_hash": "48679d7a19fc5fd48b819c657ada78beadb44217b38527a0ecd447aed74695b4"
+  },
+  "code_path_hash": "c09a4074f51741d5afda7b447cb0c55b3a1984384b0eca7f1a59c844cb0cc750",
+  "engine_code_path_hash": "860b764f6958c1cd545f437a475128be6842aa8f70f346e2c05446e58a5fc818",
+  "input_artifacts": [
+    {
+      "bytes": 7990,
+      "path": "labs/ego_life_playground_v0/controller.py",
+      "sha256": "6ced573f544e47237ef6b4da0da1a0eee20c907a720c66d8d313129f971fff0d"
+    },
+    {
+      "bytes": 91572,
+      "path": "labs/ego_life_playground_v0/engine.py",
+      "sha256": "ecc3d281826921f8157652956892e832c4c4921e31f00901a0cfcf2337d3f5e2"
+    },
+    {
+      "bytes": 13786,
+      "path": "labs/ego_life_playground_v0/store.py",
+      "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+    },
+    {
+      "bytes": 13620,
+      "path": "labs/ego_life_playground_v0/terminal.py",
+      "sha256": "9e85adf69da5fbd5f565fb376c85014cfed9025b55921a7dddc85e8d1574a3e0"
+    },
+    {
+      "bytes": 35046,
+      "path": "labs/ego_life_playground_v0/visual_console.py",
+      "sha256": "7731ad4c9ad14ea7fd045dd23caf0456836166fcad6293492b30f3d1590d9ca0"
+    },
+    {
+      "bytes": 2380,
+      "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_B_GOAL_HYSTERESIS.md",
+      "sha256": "96f53aba2e9afe970f688cd610bd448ea3ce5ce91bc913e0a3b0f23b4bd99a33"
+    },
+    {
+      "bytes": 8406,
+      "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+      "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+    },
+    {
+      "bytes": 55394,
+      "path": "scripts/codex/verify_ego_v2_visual_life_goal_001a.py",
+      "sha256": "48679d7a19fc5fd48b819c657ada78beadb44217b38527a0ecd447aed74695b4"
+    },
+    {
+      "bytes": 125621,
+      "path": "artifacts/EGO-V2-P0-VISUAL-LIFE-CARD-B-001A/trace.jsonl",
+      "sha256": "c1e7d8355f665d0da5e4c87c67036bd6731c7ec838e5dafd125c7a81f0eae7cf"
+    }
+  ],
+  "positive_control_scan": {
+    "aggregation_rule": "recursive structured key and value-pattern scan over goal and payload projections",
+    "code_path_hash": "c09a4074f51741d5afda7b447cb0c55b3a1984384b0eca7f1a59c844cb0cc750",
+    "engine_code_path_hash": "860b764f6958c1cd545f437a475128be6842aa8f70f346e2c05446e58a5fc818",
+    "input_artifacts": [
+      {
+        "bytes": 7990,
+        "path": "labs/ego_life_playground_v0/controller.py",
+        "sha256": "6ced573f544e47237ef6b4da0da1a0eee20c907a720c66d8d313129f971fff0d"
+      },
+      {
+        "bytes": 91572,
+        "path": "labs/ego_life_playground_v0/engine.py",
+        "sha256": "ecc3d281826921f8157652956892e832c4c4921e31f00901a0cfcf2337d3f5e2"
+      },
+      {
+        "bytes": 13786,
+        "path": "labs/ego_life_playground_v0/store.py",
+        "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+      },
+      {
+        "bytes": 13620,
+        "path": "labs/ego_life_playground_v0/terminal.py",
+        "sha256": "9e85adf69da5fbd5f565fb376c85014cfed9025b55921a7dddc85e8d1574a3e0"
+      },
+      {
+        "bytes": 35046,
+        "path": "labs/ego_life_playground_v0/visual_console.py",
+        "sha256": "7731ad4c9ad14ea7fd045dd23caf0456836166fcad6293492b30f3d1590d9ca0"
+      },
+      {
+        "bytes": 2380,
+        "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_B_GOAL_HYSTERESIS.md",
+        "sha256": "96f53aba2e9afe970f688cd610bd448ea3ce5ce91bc913e0a3b0f23b4bd99a33"
+      },
+      {
+        "bytes": 8406,
+        "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+        "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+      },
+      {
+        "bytes": 55394,
+        "path": "scripts/codex/verify_ego_v2_visual_life_goal_001a.py",
+        "sha256": "48679d7a19fc5fd48b819c657ada78beadb44217b38527a0ecd447aed74695b4"
+      }
+    ],
+    "offenders": [
+      {
+        "category": "semantic_event",
+        "path": "/positive_control_bundle/world_event",
+        "reason": "forbidden_key_or_alias"
+      },
+      {
+        "category": "semantic_event",
+        "path": "/positive_control_bundle/world_event",
+        "reason": "forbidden_scalar_value_pattern"
+      },
+      {
+        "category": "absolute_position",
+        "path": "/positive_control_bundle/position",
+        "reason": "forbidden_key_or_alias"
+      },
+      {
+        "category": "absolute_position",
+        "path": "/positive_control_bundle/position",
+        "reason": "forbidden_list_value_pattern"
+      },
+      {
+        "category": "absolute_position",
+        "path": "/positive_control_bundle/layout_id",
+        "reason": "forbidden_key_or_alias"
+      },
+      {
+        "category": "absolute_position",
+        "path": "/positive_control_bundle/layout_id",
+        "reason": "forbidden_scalar_value_pattern"
+      },
+      {
+        "category": "seed_or_life_id",
+        "path": "/positive_control_bundle/seed",
+        "reason": "forbidden_key_or_alias"
+      },
+      {
+        "category": "seed_or_life_id",
+        "path": "/positive_control_bundle/life_id",
+        "reason": "forbidden_key_or_alias"
+      },
+      {
+        "category": "trace_lineage",
+        "path": "/positive_control_bundle/trace_hash",
+        "reason": "forbidden_key_or_alias"
+      },
+      {
+        "category": "trace_lineage",
+        "path": "/positive_control_bundle/trace_hash",
+        "reason": "forbidden_scalar_value_pattern"
+      },
+      {
+        "category": "semantic_event",
+        "path": "/positive_control_bundle/token_mapping",
+        "reason": "forbidden_key_or_alias"
+      }
+    ],
+    "positive_control_detected": true,
+    "positive_control_injected": true,
+    "producer_function": "scan_goal_payloads",
+    "record_type": "evidence_record",
+    "run_id": "ego-v2-card-b-verify",
+    "seed_context_episode_ids": {
+      "goal_payload_scan": true
+    },
+    "verifier_source_hash": "48679d7a19fc5fd48b819c657ada78beadb44217b38527a0ecd447aed74695b4"
+  },
+  "producer_function": "build_leakage_report",
+  "record_type": "evidence_record",
+  "run_id": "ego-v2-card-b-verify",
+  "seed_context_episode_ids": {
+    "scenario_ids": [
+      "carry",
+      "completion",
+      "explore",
+      "reentry",
+      "severe_initial",
+      "severe_post_action"
+    ]
+  },
+  "verifier_source_hash": "48679d7a19fc5fd48b819c657ada78beadb44217b38527a0ecd447aed74695b4"
+}

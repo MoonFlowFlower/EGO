@@ -1,0 +1,415 @@
+{
+  "aggregation_rule": "compare one independent equal-access fixed-priority FSM against the canonical selected action per predeclared scenario",
+  "baseline_id": "equal_access_fixed_priority_fsm",
+  "code_path_hash": "c09a4074f51741d5afda7b447cb0c55b3a1984384b0eca7f1a59c844cb0cc750",
+  "comparisons": {
+    "carry": {
+      "aggregation_rule": "compare equal-access fixed-priority FSM selected action against canonical selected action for one scenario",
+      "baseline_selected_action": "interact",
+      "candidate_selected_action": "rest",
+      "code_path_hash": "c09a4074f51741d5afda7b447cb0c55b3a1984384b0eca7f1a59c844cb0cc750",
+      "engine_code_path_hash": "860b764f6958c1cd545f437a475128be6842aa8f70f346e2c05446e58a5fc818",
+      "goal_transition_reason": "hysteresis_carry",
+      "input_artifacts": [
+        {
+          "bytes": 7990,
+          "path": "labs/ego_life_playground_v0/controller.py",
+          "sha256": "6ced573f544e47237ef6b4da0da1a0eee20c907a720c66d8d313129f971fff0d"
+        },
+        {
+          "bytes": 91572,
+          "path": "labs/ego_life_playground_v0/engine.py",
+          "sha256": "ecc3d281826921f8157652956892e832c4c4921e31f00901a0cfcf2337d3f5e2"
+        },
+        {
+          "bytes": 13786,
+          "path": "labs/ego_life_playground_v0/store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 13620,
+          "path": "labs/ego_life_playground_v0/terminal.py",
+          "sha256": "9e85adf69da5fbd5f565fb376c85014cfed9025b55921a7dddc85e8d1574a3e0"
+        },
+        {
+          "bytes": 35046,
+          "path": "labs/ego_life_playground_v0/visual_console.py",
+          "sha256": "7731ad4c9ad14ea7fd045dd23caf0456836166fcad6293492b30f3d1590d9ca0"
+        },
+        {
+          "bytes": 2380,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_B_GOAL_HYSTERESIS.md",
+          "sha256": "96f53aba2e9afe970f688cd610bd448ea3ce5ce91bc913e0a3b0f23b4bd99a33"
+        },
+        {
+          "bytes": 8406,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+          "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+        },
+        {
+          "bytes": 55394,
+          "path": "scripts/codex/verify_ego_v2_visual_life_goal_001a.py",
+          "sha256": "48679d7a19fc5fd48b819c657ada78beadb44217b38527a0ecd447aed74695b4"
+        }
+      ],
+      "matched": false,
+      "producer_function": "equal_access_fixed_priority_fsm",
+      "record_type": "evidence_record",
+      "run_id": "ego-v2-card-b-verify",
+      "seed_context_episode_ids": {
+        "scenario_id": "carry"
+      },
+      "verifier_source_hash": "48679d7a19fc5fd48b819c657ada78beadb44217b38527a0ecd447aed74695b4"
+    },
+    "completion": {
+      "aggregation_rule": "compare equal-access fixed-priority FSM selected action against canonical selected action for one scenario",
+      "baseline_selected_action": "interact",
+      "candidate_selected_action": "interact",
+      "code_path_hash": "c09a4074f51741d5afda7b447cb0c55b3a1984384b0eca7f1a59c844cb0cc750",
+      "engine_code_path_hash": "860b764f6958c1cd545f437a475128be6842aa8f70f346e2c05446e58a5fc818",
+      "goal_transition_reason": "completed_goal_to_explore",
+      "input_artifacts": [
+        {
+          "bytes": 7990,
+          "path": "labs/ego_life_playground_v0/controller.py",
+          "sha256": "6ced573f544e47237ef6b4da0da1a0eee20c907a720c66d8d313129f971fff0d"
+        },
+        {
+          "bytes": 91572,
+          "path": "labs/ego_life_playground_v0/engine.py",
+          "sha256": "ecc3d281826921f8157652956892e832c4c4921e31f00901a0cfcf2337d3f5e2"
+        },
+        {
+          "bytes": 13786,
+          "path": "labs/ego_life_playground_v0/store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 13620,
+          "path": "labs/ego_life_playground_v0/terminal.py",
+          "sha256": "9e85adf69da5fbd5f565fb376c85014cfed9025b55921a7dddc85e8d1574a3e0"
+        },
+        {
+          "bytes": 35046,
+          "path": "labs/ego_life_playground_v0/visual_console.py",
+          "sha256": "7731ad4c9ad14ea7fd045dd23caf0456836166fcad6293492b30f3d1590d9ca0"
+        },
+        {
+          "bytes": 2380,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_B_GOAL_HYSTERESIS.md",
+          "sha256": "96f53aba2e9afe970f688cd610bd448ea3ce5ce91bc913e0a3b0f23b4bd99a33"
+        },
+        {
+          "bytes": 8406,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+          "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+        },
+        {
+          "bytes": 55394,
+          "path": "scripts/codex/verify_ego_v2_visual_life_goal_001a.py",
+          "sha256": "48679d7a19fc5fd48b819c657ada78beadb44217b38527a0ecd447aed74695b4"
+        }
+      ],
+      "matched": true,
+      "producer_function": "equal_access_fixed_priority_fsm",
+      "record_type": "evidence_record",
+      "run_id": "ego-v2-card-b-verify",
+      "seed_context_episode_ids": {
+        "scenario_id": "completion"
+      },
+      "verifier_source_hash": "48679d7a19fc5fd48b819c657ada78beadb44217b38527a0ecd447aed74695b4"
+    },
+    "explore": {
+      "aggregation_rule": "compare equal-access fixed-priority FSM selected action against canonical selected action for one scenario",
+      "baseline_selected_action": "interact",
+      "candidate_selected_action": "interact",
+      "code_path_hash": "c09a4074f51741d5afda7b447cb0c55b3a1984384b0eca7f1a59c844cb0cc750",
+      "engine_code_path_hash": "860b764f6958c1cd545f437a475128be6842aa8f70f346e2c05446e58a5fc818",
+      "goal_transition_reason": "explore_no_eligible_body_goal",
+      "input_artifacts": [
+        {
+          "bytes": 7990,
+          "path": "labs/ego_life_playground_v0/controller.py",
+          "sha256": "6ced573f544e47237ef6b4da0da1a0eee20c907a720c66d8d313129f971fff0d"
+        },
+        {
+          "bytes": 91572,
+          "path": "labs/ego_life_playground_v0/engine.py",
+          "sha256": "ecc3d281826921f8157652956892e832c4c4921e31f00901a0cfcf2337d3f5e2"
+        },
+        {
+          "bytes": 13786,
+          "path": "labs/ego_life_playground_v0/store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 13620,
+          "path": "labs/ego_life_playground_v0/terminal.py",
+          "sha256": "9e85adf69da5fbd5f565fb376c85014cfed9025b55921a7dddc85e8d1574a3e0"
+        },
+        {
+          "bytes": 35046,
+          "path": "labs/ego_life_playground_v0/visual_console.py",
+          "sha256": "7731ad4c9ad14ea7fd045dd23caf0456836166fcad6293492b30f3d1590d9ca0"
+        },
+        {
+          "bytes": 2380,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_B_GOAL_HYSTERESIS.md",
+          "sha256": "96f53aba2e9afe970f688cd610bd448ea3ce5ce91bc913e0a3b0f23b4bd99a33"
+        },
+        {
+          "bytes": 8406,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+          "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+        },
+        {
+          "bytes": 55394,
+          "path": "scripts/codex/verify_ego_v2_visual_life_goal_001a.py",
+          "sha256": "48679d7a19fc5fd48b819c657ada78beadb44217b38527a0ecd447aed74695b4"
+        }
+      ],
+      "matched": true,
+      "producer_function": "equal_access_fixed_priority_fsm",
+      "record_type": "evidence_record",
+      "run_id": "ego-v2-card-b-verify",
+      "seed_context_episode_ids": {
+        "scenario_id": "explore"
+      },
+      "verifier_source_hash": "48679d7a19fc5fd48b819c657ada78beadb44217b38527a0ecd447aed74695b4"
+    },
+    "reentry": {
+      "aggregation_rule": "compare equal-access fixed-priority FSM selected action against canonical selected action for one scenario",
+      "baseline_selected_action": "interact",
+      "candidate_selected_action": "rest",
+      "code_path_hash": "c09a4074f51741d5afda7b447cb0c55b3a1984384b0eca7f1a59c844cb0cc750",
+      "engine_code_path_hash": "860b764f6958c1cd545f437a475128be6842aa8f70f346e2c05446e58a5fc818",
+      "goal_transition_reason": "reentry_below_threshold",
+      "input_artifacts": [
+        {
+          "bytes": 7990,
+          "path": "labs/ego_life_playground_v0/controller.py",
+          "sha256": "6ced573f544e47237ef6b4da0da1a0eee20c907a720c66d8d313129f971fff0d"
+        },
+        {
+          "bytes": 91572,
+          "path": "labs/ego_life_playground_v0/engine.py",
+          "sha256": "ecc3d281826921f8157652956892e832c4c4921e31f00901a0cfcf2337d3f5e2"
+        },
+        {
+          "bytes": 13786,
+          "path": "labs/ego_life_playground_v0/store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 13620,
+          "path": "labs/ego_life_playground_v0/terminal.py",
+          "sha256": "9e85adf69da5fbd5f565fb376c85014cfed9025b55921a7dddc85e8d1574a3e0"
+        },
+        {
+          "bytes": 35046,
+          "path": "labs/ego_life_playground_v0/visual_console.py",
+          "sha256": "7731ad4c9ad14ea7fd045dd23caf0456836166fcad6293492b30f3d1590d9ca0"
+        },
+        {
+          "bytes": 2380,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_B_GOAL_HYSTERESIS.md",
+          "sha256": "96f53aba2e9afe970f688cd610bd448ea3ce5ce91bc913e0a3b0f23b4bd99a33"
+        },
+        {
+          "bytes": 8406,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+          "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+        },
+        {
+          "bytes": 55394,
+          "path": "scripts/codex/verify_ego_v2_visual_life_goal_001a.py",
+          "sha256": "48679d7a19fc5fd48b819c657ada78beadb44217b38527a0ecd447aed74695b4"
+        }
+      ],
+      "matched": false,
+      "producer_function": "equal_access_fixed_priority_fsm",
+      "record_type": "evidence_record",
+      "run_id": "ego-v2-card-b-verify",
+      "seed_context_episode_ids": {
+        "scenario_id": "reentry"
+      },
+      "verifier_source_hash": "48679d7a19fc5fd48b819c657ada78beadb44217b38527a0ecd447aed74695b4"
+    },
+    "severe_initial": {
+      "aggregation_rule": "compare equal-access fixed-priority FSM selected action against canonical selected action for one scenario",
+      "baseline_selected_action": "interact",
+      "candidate_selected_action": "interact",
+      "code_path_hash": "c09a4074f51741d5afda7b447cb0c55b3a1984384b0eca7f1a59c844cb0cc750",
+      "engine_code_path_hash": "860b764f6958c1cd545f437a475128be6842aa8f70f346e2c05446e58a5fc818",
+      "goal_transition_reason": "critical_override_energy",
+      "input_artifacts": [
+        {
+          "bytes": 7990,
+          "path": "labs/ego_life_playground_v0/controller.py",
+          "sha256": "6ced573f544e47237ef6b4da0da1a0eee20c907a720c66d8d313129f971fff0d"
+        },
+        {
+          "bytes": 91572,
+          "path": "labs/ego_life_playground_v0/engine.py",
+          "sha256": "ecc3d281826921f8157652956892e832c4c4921e31f00901a0cfcf2337d3f5e2"
+        },
+        {
+          "bytes": 13786,
+          "path": "labs/ego_life_playground_v0/store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 13620,
+          "path": "labs/ego_life_playground_v0/terminal.py",
+          "sha256": "9e85adf69da5fbd5f565fb376c85014cfed9025b55921a7dddc85e8d1574a3e0"
+        },
+        {
+          "bytes": 35046,
+          "path": "labs/ego_life_playground_v0/visual_console.py",
+          "sha256": "7731ad4c9ad14ea7fd045dd23caf0456836166fcad6293492b30f3d1590d9ca0"
+        },
+        {
+          "bytes": 2380,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_B_GOAL_HYSTERESIS.md",
+          "sha256": "96f53aba2e9afe970f688cd610bd448ea3ce5ce91bc913e0a3b0f23b4bd99a33"
+        },
+        {
+          "bytes": 8406,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+          "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+        },
+        {
+          "bytes": 55394,
+          "path": "scripts/codex/verify_ego_v2_visual_life_goal_001a.py",
+          "sha256": "48679d7a19fc5fd48b819c657ada78beadb44217b38527a0ecd447aed74695b4"
+        }
+      ],
+      "matched": true,
+      "producer_function": "equal_access_fixed_priority_fsm",
+      "record_type": "evidence_record",
+      "run_id": "ego-v2-card-b-verify",
+      "seed_context_episode_ids": {
+        "scenario_id": "severe_initial"
+      },
+      "verifier_source_hash": "48679d7a19fc5fd48b819c657ada78beadb44217b38527a0ecd447aed74695b4"
+    },
+    "severe_post_action": {
+      "aggregation_rule": "compare equal-access fixed-priority FSM selected action against canonical selected action for one scenario",
+      "baseline_selected_action": "turn_left",
+      "candidate_selected_action": "turn_left",
+      "code_path_hash": "c09a4074f51741d5afda7b447cb0c55b3a1984384b0eca7f1a59c844cb0cc750",
+      "engine_code_path_hash": "860b764f6958c1cd545f437a475128be6842aa8f70f346e2c05446e58a5fc818",
+      "goal_transition_reason": "critical_override_energy",
+      "input_artifacts": [
+        {
+          "bytes": 7990,
+          "path": "labs/ego_life_playground_v0/controller.py",
+          "sha256": "6ced573f544e47237ef6b4da0da1a0eee20c907a720c66d8d313129f971fff0d"
+        },
+        {
+          "bytes": 91572,
+          "path": "labs/ego_life_playground_v0/engine.py",
+          "sha256": "ecc3d281826921f8157652956892e832c4c4921e31f00901a0cfcf2337d3f5e2"
+        },
+        {
+          "bytes": 13786,
+          "path": "labs/ego_life_playground_v0/store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 13620,
+          "path": "labs/ego_life_playground_v0/terminal.py",
+          "sha256": "9e85adf69da5fbd5f565fb376c85014cfed9025b55921a7dddc85e8d1574a3e0"
+        },
+        {
+          "bytes": 35046,
+          "path": "labs/ego_life_playground_v0/visual_console.py",
+          "sha256": "7731ad4c9ad14ea7fd045dd23caf0456836166fcad6293492b30f3d1590d9ca0"
+        },
+        {
+          "bytes": 2380,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_B_GOAL_HYSTERESIS.md",
+          "sha256": "96f53aba2e9afe970f688cd610bd448ea3ce5ce91bc913e0a3b0f23b4bd99a33"
+        },
+        {
+          "bytes": 8406,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+          "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+        },
+        {
+          "bytes": 55394,
+          "path": "scripts/codex/verify_ego_v2_visual_life_goal_001a.py",
+          "sha256": "48679d7a19fc5fd48b819c657ada78beadb44217b38527a0ecd447aed74695b4"
+        }
+      ],
+      "matched": true,
+      "producer_function": "equal_access_fixed_priority_fsm",
+      "record_type": "evidence_record",
+      "run_id": "ego-v2-card-b-verify",
+      "seed_context_episode_ids": {
+        "scenario_id": "severe_post_action"
+      },
+      "verifier_source_hash": "48679d7a19fc5fd48b819c657ada78beadb44217b38527a0ecd447aed74695b4"
+    }
+  },
+  "disposition": "non_equivalent",
+  "engine_code_path_hash": "860b764f6958c1cd545f437a475128be6842aa8f70f346e2c05446e58a5fc818",
+  "input_artifacts": [
+    {
+      "bytes": 7990,
+      "path": "labs/ego_life_playground_v0/controller.py",
+      "sha256": "6ced573f544e47237ef6b4da0da1a0eee20c907a720c66d8d313129f971fff0d"
+    },
+    {
+      "bytes": 91572,
+      "path": "labs/ego_life_playground_v0/engine.py",
+      "sha256": "ecc3d281826921f8157652956892e832c4c4921e31f00901a0cfcf2337d3f5e2"
+    },
+    {
+      "bytes": 13786,
+      "path": "labs/ego_life_playground_v0/store.py",
+      "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+    },
+    {
+      "bytes": 13620,
+      "path": "labs/ego_life_playground_v0/terminal.py",
+      "sha256": "9e85adf69da5fbd5f565fb376c85014cfed9025b55921a7dddc85e8d1574a3e0"
+    },
+    {
+      "bytes": 35046,
+      "path": "labs/ego_life_playground_v0/visual_console.py",
+      "sha256": "7731ad4c9ad14ea7fd045dd23caf0456836166fcad6293492b30f3d1590d9ca0"
+    },
+    {
+      "bytes": 2380,
+      "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_B_GOAL_HYSTERESIS.md",
+      "sha256": "96f53aba2e9afe970f688cd610bd448ea3ce5ce91bc913e0a3b0f23b4bd99a33"
+    },
+    {
+      "bytes": 8406,
+      "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+      "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+    },
+    {
+      "bytes": 55394,
+      "path": "scripts/codex/verify_ego_v2_visual_life_goal_001a.py",
+      "sha256": "48679d7a19fc5fd48b819c657ada78beadb44217b38527a0ecd447aed74695b4"
+    }
+  ],
+  "match_count": 4,
+  "producer_function": "build_baseline_report",
+  "record_type": "evidence_record",
+  "run_id": "ego-v2-card-b-verify",
+  "scenario_count": 6,
+  "seed_context_episode_ids": {
+    "scenario_ids": [
+      "carry",
+      "completion",
+      "explore",
+      "reentry",
+      "severe_initial",
+      "severe_post_action"
+    ]
+  },
+  "verifier_source_hash": "48679d7a19fc5fd48b819c657ada78beadb44217b38527a0ecd447aed74695b4"
+}

@@ -84,6 +84,10 @@ def build_tk_trace_payload(
             "code_path_hash": trace.get("code_path_hash"),
             "command_hash": trace.get("command_hash"),
             "trace_hash": trace.get("trace_hash"),
+            "goal_before": deepcopy(trace.get("goal_before")),
+            "goal_progress": deepcopy(trace.get("goal_progress")),
+            "goal_transition": deepcopy(trace.get("goal_transition")),
+            "goal_after": deepcopy(trace.get("goal_after")),
         }
     )
     return payload
@@ -154,6 +158,8 @@ def build_chinese_causal_view(frame: RecoveryFrame) -> dict[str, Any]:
         }
     trace = frame.trace
     world_transition = _copy_mapping(trace.get("world_transition"))
+    goal_progress = _copy_mapping(trace.get("goal_progress"))
+    goal_transition = _copy_mapping(trace.get("goal_transition"))
     return {
         "观察者全局视图": {
             "位置": str(observer_world["agent"]["position"]),
@@ -165,6 +171,16 @@ def build_chinese_causal_view(frame: RecoveryFrame) -> dict[str, Any]:
             "选择动作": trace.get("selected_action"),
             "触发来源": trace.get("trigger_source"),
             "候选数量": len(trace.get("candidates", [])),
+        },
+        "目标仲裁": {
+            "之前": deepcopy(trace.get("goal_before")),
+            "之后": deepcopy(trace.get("goal_after")),
+            "切换类型": goal_transition.get("kind"),
+            "切换原因": goal_transition.get("reason"),
+            "已完成": goal_progress.get("completed"),
+            "迟滞状态": deepcopy(goal_progress.get("completed_latches_after")),
+            "重入变量": deepcopy(goal_progress.get("reentered_variables", [])),
+            "严重缺口": deepcopy(goal_progress.get("severe_variables_after", [])),
         },
         "结果与变化": {
             "世界结果": world_transition.get("outcome_type"),

@@ -102,6 +102,14 @@ def build_terminal_snapshot(controller: PlaygroundController) -> dict[str, Any]:
         "prediction": None if trace is None else deepcopy(trace["prediction"]),
         "actual_delta": None if trace is None else deepcopy(trace["actual_delta"]),
         "prediction_error": None if trace is None else deepcopy(trace["prediction_error"]),
+        "goal_trace": None
+        if trace is None
+        else {
+            "goal_before": deepcopy(trace.get("goal_before")),
+            "goal_progress": deepcopy(trace.get("goal_progress")),
+            "goal_transition": deepcopy(trace.get("goal_transition")),
+            "goal_after": deepcopy(trace.get("goal_after")),
+        },
         "model_update": None if trace is None else deepcopy(trace["model_update"]),
         "memory": {
             "read": None

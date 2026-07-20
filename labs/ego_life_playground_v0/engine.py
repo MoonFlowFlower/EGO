@@ -40,6 +40,9 @@ DEFAULT_PROVENANCE_SHUFFLE_SEED = 17
 DEFAULT_PRIVATE_WORLD_SEED = 1701
 CONSOLIDATION_THRESHOLD = 3
 EPISODE_SPAN_TICKS = 8
+REENTRY_THRESHOLD = 0.60
+CRITICAL_OVERRIDE_THRESHOLD = 0.15
+VISUAL_TRANSITION_MODEL_KEY = "__visual_transition_counts__"
 
 STATE_SCHEMA_VERSION = "ego.life_playground.state.v3"
 RUN_SCHEMA_VERSION = "ego.life_playground.run.v3"
@@ -60,15 +63,23 @@ UPDATE_MODES = ("canonical", "frozen")
 PROVENANCE_MODES = ("canonical", "shuffle_projection")
 CONSOLIDATION_MODES = ("canonical", "off_projection")
 VISION_MODES = ("canonical", "no_occlusion")
+HYSTERESIS_MODES = ("canonical", "no_hysteresis")
+NOVELTY_MODES = ("canonical", "no_novelty")
+OVERRIDE_MODES = ("canonical", "no_override")
 RUN_PRODUCER_FUNCTION = "ego_life_playground_v0.engine.compute_step"
 RUN_AGGREGATION_RULE = "single_step_deterministic_one_step_argmax"
 GOAL_SELECTION_REASONS = (
-    "initial_max_deficit",
-    "deficit_reappeared",
     "previous_goal_completed",
-    "no_active_deficit",
+    "initial_deficit_priority",
+    "reentry_below_threshold",
+    "critical_override_energy",
+    "critical_override_body_deficit",
+    "explore_no_eligible_body_goal",
+    "ablation_max_deficit_retarget",
 )
-ACTIVE_GOAL_SELECTION_REASONS = GOAL_SELECTION_REASONS[:-1]
+ACTIVE_GOAL_SELECTION_REASONS = tuple(
+    reason for reason in GOAL_SELECTION_REASONS if reason != "explore_no_eligible_body_goal"
+)
 _PROJECTION_REQUIRED_FIELDS = frozenset(
     {
         "cue",
@@ -88,6 +99,9 @@ DEFAULT_INTERVENTIONS = {
     "provenance_shuffle_seed": str(DEFAULT_PROVENANCE_SHUFFLE_SEED),
     "consolidation_mode": "canonical",
     "vision_mode": "canonical",
+    "hysteresis_mode": "canonical",
+    "novelty_mode": "canonical",
+    "override_mode": "canonical",
 }
 
 # These V0 constants are intentionally unchanged.
@@ -223,7 +237,10 @@ def initial_state(
         },
         "organism": normalized,
         "world": initial_world_state(seed=seed, layout_id=layout_id),
-        "current_goal": _select_goal(normalized, global_tick=0, reason="initial_max_deficit"),
+        "current_goal": _select_initial_goal(
+            normalized,
+            global_tick=0,
+        ),
         "model": {},
         "memory": {
             "episodic": [],
@@ -353,7 +370,7 @@ def compute_step(
     decision_hash = state_hash(decision_state)
     observation_key = observation_hash(world_observation)
     goal_before = deepcopy(decision_state["current_goal"])
-    current_goal = goal_before["state_variable"] or "homeostasis"
+    current_goal = _goal_context_key(goal_before)
     context_key = f"{observation_key}|{current_goal}"
 
     memory_view, provenance_projection = _memory_read_view(
@@ -396,6 +413,7 @@ def compute_step(
             current_goal=goal_before,
             action=action,
             policy_projection=policy_projection,
+            novelty_mode=interventions["novelty_mode"],
         )
         for action in ACTIONS
     ]
@@ -457,11 +475,19 @@ def compute_step(
         raise EngineInvariantError("metabolism ledger differs from applied organism energy")
     next_state["last_action"] = selected_action
     next_state["last_command_hash"] = command["command_hash"]
+    next_observation = policy_observation(
+        next_state["world"],
+        occlusion=interventions["vision_mode"] == "canonical",
+    )
+    next_observation_hash = observation_hash(next_observation)
     next_state["current_goal"], goal_progress, goal_transition = _advance_goal(
         goal_before,
         before_organism=decision_state["organism"],
         after_organism=next_state["organism"],
         global_tick=sequence,
+        interventions=interventions,
+        observation_key=observation_key,
+        model=decision_state["model"],
     )
 
     updates_enabled = interventions["update_mode"] == "canonical"
@@ -474,6 +500,14 @@ def compute_step(
         prediction_before=predicted_delta,
         actual_delta=actual_delta,
         apply_update=updates_enabled,
+        observation_key=observation_key,
+        next_observation_hash=next_observation_hash,
+    )
+    goal_progress["novelty_counter_hash_after"] = canonical_hash(
+        _transition_counts_for_observation(next_state["model"], observation_key)
+    )
+    goal_progress["novelty_transition_update"] = deepcopy(
+        model_update["visual_transition_update"]
     )
     memory_update = _update_memory(
         next_state,
@@ -795,10 +829,13 @@ def _verify_model(model: Any) -> None:
     if not isinstance(model, Mapping):
         raise EngineInvariantError("model must be an object")
     for context_key, actions in model.items():
+        if context_key == VISUAL_TRANSITION_MODEL_KEY:
+            _verify_visual_transition_counts(actions)
+            continue
         if type(context_key) is not str or context_key.count("|") != 1:
             raise EngineInvariantError("model context key is not canonical")
         observation_key, goal = context_key.split("|", 1)
-        if not _is_sha256(observation_key) or goal not in {*STATE_KEYS, "homeostasis"}:
+        if not _is_sha256(observation_key) or goal not in {*STATE_KEYS, "explore"}:
             raise EngineInvariantError("model context key is not canonical")
         if not isinstance(actions, Mapping):
             raise EngineInvariantError("model context action table must be an object")
@@ -935,7 +972,7 @@ def _verify_memory_slot(entry: Mapping[str, Any], label: str) -> None:
         raise EngineInvariantError(f"{label} cue is not canonical")
     if type(entry["current_goal"]) is not str or entry["current_goal"] not in {
         *STATE_KEYS,
-        "homeostasis",
+        "explore",
     }:
         raise EngineInvariantError(f"{label} current_goal is not canonical")
     if type(entry["action"]) is not str or entry["action"] not in ACTIONS:
@@ -963,6 +1000,48 @@ def _is_sha256(value: Any) -> bool:
     )
 
 
+def _empty_completed_latches() -> dict[str, bool]:
+    return {key: False for key in STATE_KEYS}
+
+
+def _verify_completed_latches(value: Any) -> None:
+    if not isinstance(value, Mapping) or set(value) != set(STATE_KEYS):
+        raise EngineInvariantError("completed_latches schema mismatch")
+    for key in STATE_KEYS:
+        if type(value[key]) is not bool:
+            raise EngineInvariantError("completed_latches values must be booleans")
+
+
+def _verify_visual_transition_counts(value: Any) -> None:
+    if not isinstance(value, Mapping):
+        raise EngineInvariantError("visual transition counts must be an object")
+    for observation_key, by_action in value.items():
+        if not _is_sha256(observation_key):
+            raise EngineInvariantError("visual transition observation key must be sha256")
+        if not isinstance(by_action, Mapping):
+            raise EngineInvariantError("visual transition action table must be an object")
+        for action, entry in by_action.items():
+            if action not in ACTIONS or not isinstance(entry, Mapping):
+                raise EngineInvariantError("visual transition action entry is not canonical")
+            if set(entry) != {"total", "next_counts"}:
+                raise EngineInvariantError("visual transition entry schema mismatch")
+            total = entry["total"]
+            next_counts = entry["next_counts"]
+            if type(total) is not int or total < 0:
+                raise EngineInvariantError("visual transition total must be a non-negative integer")
+            if not isinstance(next_counts, Mapping):
+                raise EngineInvariantError("visual transition next_counts must be an object")
+            rebuilt_total = 0
+            for next_observation_hash, count in next_counts.items():
+                if not _is_sha256(next_observation_hash):
+                    raise EngineInvariantError("visual transition next observation hash must be sha256")
+                if type(count) is not int or count <= 0:
+                    raise EngineInvariantError("visual transition next observation count must be positive")
+                rebuilt_total += count
+            if rebuilt_total != total:
+                raise EngineInvariantError("visual transition total must match next_counts sum")
+
+
 def _verify_goal(goal: Mapping[str, Any], *, global_tick: int) -> None:
     required = {
         "state_variable",
@@ -971,6 +1050,7 @@ def _verify_goal(goal: Mapping[str, Any], *, global_tick: int) -> None:
         "entry_deficit",
         "status",
         "selection_reason",
+        "completed_latches",
     }
     if set(goal) != required:
         raise EngineInvariantError("current_goal schema mismatch")
@@ -984,22 +1064,25 @@ def _verify_goal(goal: Mapping[str, Any], *, global_tick: int) -> None:
         raise EngineInvariantError("entry_deficit must be a finite float")
     if not 0.0 <= goal["entry_deficit"] <= TARGET_LEVEL:
         raise EngineInvariantError("entry_deficit is outside the canonical range")
-    if goal["status"] not in {"active", "homeostasis"}:
+    if goal["status"] not in {"active", "explore"}:
         raise EngineInvariantError("current_goal status is not canonical")
     if goal["selection_reason"] not in GOAL_SELECTION_REASONS:
         raise EngineInvariantError("current_goal selection_reason is not canonical")
+    _verify_completed_latches(goal["completed_latches"])
     if goal["status"] == "active" and goal["state_variable"] not in STATE_KEYS:
         raise EngineInvariantError("active current_goal state variable is not canonical")
     if goal["status"] == "active" and goal["selection_reason"] not in ACTIVE_GOAL_SELECTION_REASONS:
         raise EngineInvariantError("active current_goal selection_reason is not canonical")
     if goal["status"] == "active" and goal["entry_deficit"] <= 0.0:
         raise EngineInvariantError("active current_goal entry_deficit must be positive")
-    if goal["status"] == "homeostasis" and goal["state_variable"] is not None:
-        raise EngineInvariantError("homeostasis current_goal must have null state variable")
-    if goal["status"] == "homeostasis" and goal["selection_reason"] != "no_active_deficit":
-        raise EngineInvariantError("homeostasis current_goal selection_reason is not canonical")
-    if goal["status"] == "homeostasis" and goal["entry_deficit"] != 0.0:
-        raise EngineInvariantError("homeostasis current_goal entry_deficit must be zero")
+    if goal["status"] == "active" and goal["completed_latches"][goal["state_variable"]]:
+        raise EngineInvariantError("active current_goal cannot also be completed-latched")
+    if goal["status"] == "explore" and goal["state_variable"] is not None:
+        raise EngineInvariantError("explore current_goal must have null state variable")
+    if goal["status"] == "explore" and goal["selection_reason"] != "explore_no_eligible_body_goal":
+        raise EngineInvariantError("explore current_goal selection_reason is not canonical")
+    if goal["status"] == "explore" and goal["entry_deficit"] != 0.0:
+        raise EngineInvariantError("explore current_goal entry_deficit must be zero")
 
 
 def _decision_state_for_tick(
@@ -1035,19 +1118,22 @@ def _decision_state_for_tick(
 
 
 def _select_goal(
-    organism: Mapping[str, float], *, global_tick: int, reason: str
+    organism: Mapping[str, float], *, global_tick: int, reason: str, completed_latches: Mapping[str, bool]
 ) -> dict[str, Any]:
-    deficits = [(key, max(0.0, TARGET_LEVEL - float(organism[key]))) for key in STATE_KEYS]
-    state_variable, deficit = max(deficits, key=lambda item: item[1])
-    if deficit <= 0.0:
+    latches = _normalize_completed_latches(completed_latches)
+    candidates = _eligible_goal_candidates(organism, latches)
+    if not candidates:
         return {
             "state_variable": None,
             "target": TARGET_LEVEL,
             "selected_global_tick": int(global_tick),
             "entry_deficit": 0.0,
-            "status": "homeostasis",
-            "selection_reason": "no_active_deficit",
+            "status": "explore",
+            "selection_reason": "explore_no_eligible_body_goal",
+            "completed_latches": latches,
         }
+    state_variable = candidates[0]["state_variable"]
+    deficit = candidates[0]["deficit"]
     return {
         "state_variable": state_variable,
         "target": TARGET_LEVEL,
@@ -1055,7 +1141,36 @@ def _select_goal(
         "entry_deficit": _round(deficit),
         "status": "active",
         "selection_reason": reason,
+        "completed_latches": latches,
     }
+
+
+def _select_initial_goal(
+    organism: Mapping[str, float], *, global_tick: int
+) -> dict[str, Any]:
+    latches = {
+        key: float(organism[key]) >= TARGET_LEVEL for key in STATE_KEYS
+    }
+    override = _critical_override_candidate(organism)
+    if override is not None:
+        reason = (
+            "critical_override_energy"
+            if override == "energy"
+            else "critical_override_body_deficit"
+        )
+        return _goal_record(
+            override,
+            organism,
+            global_tick=global_tick,
+            reason=reason,
+            completed_latches=latches,
+        )
+    return _select_goal(
+        organism,
+        global_tick=global_tick,
+        reason="initial_deficit_priority",
+        completed_latches=latches,
+    )
 
 
 def _advance_goal(
@@ -1064,43 +1179,246 @@ def _advance_goal(
     before_organism: Mapping[str, float],
     after_organism: Mapping[str, float],
     global_tick: int,
+    interventions: Mapping[str, str],
+    observation_key: str,
+    model: Mapping[str, Any],
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
-    if goal_before["status"] == "homeostasis":
-        next_goal = _select_goal(
-            after_organism, global_tick=global_tick, reason="deficit_reappeared"
+    before_latches = _normalize_completed_latches(goal_before.get("completed_latches"))
+    after_latches, reentered_variables = _updated_completed_latches(before_latches, after_organism)
+    severe_after = _severe_variables(after_organism)
+    eligible_after = _eligible_goal_candidates(after_organism, after_latches)
+    eligible_names = [item["state_variable"] for item in eligible_after]
+    transition_counts = _transition_counts_for_observation(model, observation_key)
+    progress = {
+        "state_variable": goal_before.get("state_variable"),
+        "deficit_before": 0.0,
+        "deficit_after": 0.0,
+        "deficit_reduction": 0.0,
+        "completed": False,
+        "completed_latches_before": deepcopy(before_latches),
+        "completed_latches_after": deepcopy(after_latches),
+        "reentered_variables": reentered_variables,
+        "severe_variables_after": severe_after,
+        "eligible_body_goals": [
+            name for name in eligible_names if name != goal_before.get("state_variable")
+        ],
+        "variable_states_before": _goal_variable_states(
+            before_organism, before_latches
+        ),
+        "variable_states_after": _goal_variable_states(
+            after_organism, after_latches
+        ),
+        "novelty_counter_hash_before": canonical_hash(transition_counts),
+        "novelty_counter_hash_after": canonical_hash(transition_counts),
+    }
+    if goal_before["status"] == "active":
+        key = str(goal_before["state_variable"])
+        before_deficit = max(0.0, TARGET_LEVEL - float(before_organism[key]))
+        after_deficit = max(0.0, TARGET_LEVEL - float(after_organism[key]))
+        completed = after_deficit <= 0.0
+        progress.update(
+            {
+                "state_variable": key,
+                "deficit_before": _round(before_deficit),
+                "deficit_after": _round(after_deficit),
+                "deficit_reduction": _round(before_deficit - after_deficit),
+                "completed": completed,
+            }
         )
-        reappeared = next_goal["status"] == "active"
-        if not reappeared:
-            next_goal = deepcopy(dict(goal_before))
-        return next_goal, {
-            "state_variable": None,
-            "deficit_before": 0.0,
-            "deficit_after": 0.0,
-            "deficit_reduction": 0.0,
-            "completed": False,
-        }, {
-            "changed": reappeared,
-            "kind": "deficit_reappeared" if reappeared else "homeostasis_carried",
+
+    override_candidate = _critical_override_candidate(after_organism)
+    if interventions["override_mode"] == "canonical" and override_candidate is not None:
+        reason = (
+            "critical_override_energy"
+            if override_candidate == "energy"
+            else "critical_override_body_deficit"
+        )
+        changed = not (
+            goal_before.get("status") == "active"
+            and goal_before.get("state_variable") == override_candidate
+        )
+        next_goal = (
+            _goal_record(
+                override_candidate,
+                after_organism,
+                global_tick=global_tick,
+                reason=reason,
+                completed_latches=after_latches,
+            )
+            if changed
+            else {
+                **deepcopy(dict(goal_before)),
+                "completed_latches": deepcopy(after_latches),
+            }
+        )
+        return next_goal, progress, {
+            "changed": changed,
+            "kind": "critical_override" if changed else "critical_goal_carried",
+            "reason": reason,
         }
 
-    key = str(goal_before["state_variable"])
-    before_deficit = max(0.0, TARGET_LEVEL - float(before_organism[key]))
-    after_deficit = max(0.0, TARGET_LEVEL - float(after_organism[key]))
-    completed = after_deficit <= 0.0
-    progress = {
-        "state_variable": key,
-        "deficit_before": _round(before_deficit),
-        "deficit_after": _round(after_deficit),
-        "deficit_reduction": _round(before_deficit - after_deficit),
-        "completed": completed,
+    if interventions["hysteresis_mode"] == "no_hysteresis":
+        ablated_latches = {
+            key: float(after_organism[key]) >= TARGET_LEVEL for key in STATE_KEYS
+        }
+        next_goal = _select_goal(
+            after_organism,
+            global_tick=global_tick,
+            reason="ablation_max_deficit_retarget",
+            completed_latches=ablated_latches,
+        )
+        return next_goal, progress, {
+            "changed": canonical_json(next_goal) != canonical_json(dict(goal_before)),
+            "kind": "ablation_retargeted" if next_goal["status"] == "active" else "explore_carried",
+            "reason": "ablation_max_deficit_retarget",
+        }
+
+    if goal_before["status"] == "active" and progress["completed"] is False:
+        carried = {
+            **deepcopy(dict(goal_before)),
+            "completed_latches": deepcopy(after_latches),
+        }
+        return carried, progress, {"changed": False, "kind": "carried_active_goal", "reason": "hysteresis_carry"}
+
+    if eligible_after:
+        if progress["completed"]:
+            reason = "previous_goal_completed"
+        else:
+            reason = "reentry_below_threshold"
+        next_goal = _select_goal(
+            after_organism,
+            global_tick=global_tick,
+            reason=reason,
+            completed_latches=after_latches,
+        )
+        kind = (
+            "completed_goal_to_body_goal"
+            if progress["completed"]
+            else "reentry"
+        )
+        return next_goal, progress, {"changed": True, "kind": kind, "reason": reason}
+
+    if progress["completed"]:
+        next_goal = _select_goal(
+            after_organism,
+            global_tick=global_tick,
+            reason="explore_no_eligible_body_goal",
+            completed_latches=after_latches,
+        )
+        return next_goal, progress, {
+            "changed": True,
+            "kind": "completed_goal_to_explore",
+            "reason": "completed_goal_to_explore",
+        }
+    carried_explore = {
+        **deepcopy(dict(goal_before)),
+        "completed_latches": deepcopy(after_latches),
     }
-    if not completed:
-        return deepcopy(dict(goal_before)), progress, {"changed": False, "kind": "carried"}
-    next_goal = _select_goal(
-        after_organism, global_tick=global_tick, reason="previous_goal_completed"
-    )
-    kind = "completed_to_homeostasis" if next_goal["status"] == "homeostasis" else "previous_goal_completed"
-    return next_goal, progress, {"changed": True, "kind": kind}
+    return carried_explore, progress, {
+        "changed": False,
+        "kind": "explore_carried",
+        "reason": "explore_no_eligible_body_goal",
+    }
+
+
+def _normalize_completed_latches(value: Any) -> dict[str, bool]:
+    if value is None:
+        return _empty_completed_latches()
+    _verify_completed_latches(value)
+    return {key: bool(value[key]) for key in STATE_KEYS}
+
+
+def _eligible_goal_candidates(
+    organism: Mapping[str, float], completed_latches: Mapping[str, bool]
+) -> list[dict[str, float | str]]:
+    candidates = []
+    for index, key in enumerate(STATE_KEYS):
+        deficit = max(0.0, TARGET_LEVEL - float(organism[key]))
+        if deficit <= 0.0 or bool(completed_latches[key]):
+            continue
+        candidates.append(
+            {
+                "state_variable": key,
+                "deficit": _round(deficit),
+                "state_key_order": index,
+            }
+        )
+    candidates.sort(key=lambda item: (-float(item["deficit"]), int(item["state_key_order"])))
+    return candidates
+
+
+def _goal_variable_states(
+    organism: Mapping[str, float], completed_latches: Mapping[str, bool]
+) -> dict[str, dict[str, Any]]:
+    latches = _normalize_completed_latches(completed_latches)
+    return {
+        key: {
+            "value": _round(float(organism[key])),
+            "deficit": _round(max(0.0, TARGET_LEVEL - float(organism[key]))),
+            "latched": bool(latches[key]),
+            "eligible": bool(
+                float(organism[key]) < TARGET_LEVEL and not latches[key]
+            ),
+            "severe": bool(
+                float(organism[key]) <= CRITICAL_OVERRIDE_THRESHOLD
+            ),
+        }
+        for key in STATE_KEYS
+    }
+
+
+def _updated_completed_latches(
+    completed_latches: Mapping[str, bool], organism: Mapping[str, float]
+) -> tuple[dict[str, bool], list[str]]:
+    updated = _normalize_completed_latches(completed_latches)
+    reentered: list[str] = []
+    for key in STATE_KEYS:
+        current = float(organism[key])
+        if current >= TARGET_LEVEL:
+            updated[key] = True
+        elif updated[key] and current < REENTRY_THRESHOLD:
+            updated[key] = False
+            reentered.append(key)
+    return updated, reentered
+
+
+def _severe_variables(organism: Mapping[str, float]) -> list[str]:
+    return [key for key in STATE_KEYS if float(organism[key]) <= CRITICAL_OVERRIDE_THRESHOLD]
+
+
+def _critical_override_candidate(organism: Mapping[str, float]) -> str | None:
+    severe = _severe_variables(organism)
+    if not severe:
+        return None
+    if "energy" in severe:
+        return "energy"
+    return min(severe, key=lambda key: (float(organism[key]), STATE_KEYS.index(key)))
+
+
+def _goal_record(
+    state_variable: str,
+    organism: Mapping[str, float],
+    *,
+    global_tick: int,
+    reason: str,
+    completed_latches: Mapping[str, bool],
+    selected_tick: int | None = None,
+) -> dict[str, Any]:
+    return {
+        "state_variable": state_variable,
+        "target": TARGET_LEVEL,
+        "selected_global_tick": int(global_tick if selected_tick is None else selected_tick),
+        "entry_deficit": _round(max(0.0, TARGET_LEVEL - float(organism[state_variable]))),
+        "status": "active",
+        "selection_reason": reason,
+        "completed_latches": _normalize_completed_latches(completed_latches),
+    }
+
+
+def _goal_context_key(goal: Mapping[str, Any]) -> str:
+    if goal.get("status") == "active" and goal.get("state_variable") in STATE_KEYS:
+        return str(goal["state_variable"])
+    return "explore"
 
 
 def _score_candidate(
@@ -1114,6 +1432,7 @@ def _score_candidate(
     current_goal: Mapping[str, Any],
     action: str,
     policy_projection: Mapping[str, Any],
+    novelty_mode: str,
 ) -> dict[str, Any]:
     model_entry = model.get(context_key, {}).get(action)
     if model_entry and int(model_entry["count"]) > 0:
@@ -1134,9 +1453,21 @@ def _score_candidate(
         action,
     )
     memory_bias = max(-0.5, min(0.5, legacy_memory_bias + claim_memory_bias))
+    transition_counts = _transition_counts_for_observation(model, observation_hash(observation))
+    novelty = _explore_novelty_score(
+        transition_counts,
+        action,
+        enabled=current_goal.get("status") == "explore",
+        novelty_mode=novelty_mode,
+    )
     deterministic_tie = _deterministic_tie(policy_projection, action)
     total_score = _round(
-        goal_reduction + total_reduction + memory_bias - ACTION_COSTS[action] + deterministic_tie,
+        goal_reduction
+        + total_reduction
+        + memory_bias
+        + novelty["score"]
+        - ACTION_COSTS[action]
+        + deterministic_tie,
         digits=9,
     )
     return {
@@ -1147,6 +1478,12 @@ def _score_candidate(
         "legacy_memory_bias": _round(legacy_memory_bias),
         "claim_memory_bias": _round(claim_memory_bias),
         "memory_bias": _round(memory_bias),
+        "explore_score": novelty["score"],
+        "explore_novelty": novelty["novelty"],
+        "explore_uncertainty": novelty["uncertainty"],
+        "novelty_total_count": novelty["total"],
+        "novelty_unique_next_observation_count": novelty["unique"],
+        "novelty_counter_hash": novelty["counter_hash"],
         "action_cost": ACTION_COSTS[action],
         "deterministic_tie": deterministic_tie,
         "total_score": total_score,
@@ -1199,6 +1536,8 @@ def _update_model(
     prediction_before: Mapping[str, float],
     actual_delta: Mapping[str, float],
     apply_update: bool,
+    observation_key: str,
+    next_observation_hash: str,
 ) -> dict[str, Any]:
     before_hash = canonical_hash(state["model"])
     context_before = state["model"].get(context_key, {})
@@ -1223,6 +1562,12 @@ def _update_model(
             "prediction_after": {key: _round(float(prediction_before[key])) for key in STATE_KEYS},
             "model_before_hash": before_hash,
             "model_after_hash": before_hash,
+            "visual_transition_update": {
+                "applied": False,
+                "observation_hash": observation_key,
+                "next_observation_hash": next_observation_hash,
+                "action": action,
+            },
         }
     context = state["model"].setdefault(context_key, {})
     applied_delta = {key: _round(EMA_ALPHA * signed_error[key]) for key in STATE_KEYS}
@@ -1231,6 +1576,12 @@ def _update_model(
         for key in STATE_KEYS
     }
     context[action] = {"count": previous_count + 1, "ema_delta": new_delta}
+    transition_update = _update_visual_transition_counts(
+        state["model"],
+        observation_key=observation_key,
+        action=action,
+        next_observation_hash=next_observation_hash,
+    )
     after_hash = canonical_hash(state["model"])
     return {
         "applied": True,
@@ -1246,6 +1597,7 @@ def _update_model(
         "prediction_after": new_delta,
         "model_before_hash": before_hash,
         "model_after_hash": after_hash,
+        "visual_transition_update": transition_update,
     }
 
 
@@ -1701,6 +2053,77 @@ def _memory_bias(
     return max(-0.5, min(0.5, bias)), sorted(set(refs))
 
 
+def _transition_counts_for_observation(
+    model: Mapping[str, Any], observation_key: str
+) -> dict[str, Any]:
+    counts = model.get(VISUAL_TRANSITION_MODEL_KEY, {})
+    if not isinstance(counts, Mapping):
+        return {}
+    entry = counts.get(observation_key, {})
+    return deepcopy(dict(entry)) if isinstance(entry, Mapping) else {}
+
+
+def _explore_novelty_score(
+    transition_counts: Mapping[str, Any], action: str, *, enabled: bool, novelty_mode: str
+) -> dict[str, Any]:
+    entry = transition_counts.get(action, {})
+    if not isinstance(entry, Mapping):
+        entry = {}
+    next_counts = entry.get("next_counts", {})
+    if not isinstance(next_counts, Mapping):
+        next_counts = {}
+    total = int(entry.get("total", 0)) if isinstance(entry.get("total", 0), int) else 0
+    unique = len(next_counts)
+    score = 0.0
+    novelty = 0.0
+    uncertainty = 0.0
+    if enabled and novelty_mode == "canonical":
+        novelty = _round(1.0 / (1.0 + total))
+        if total == 0:
+            uncertainty = 1.0
+        else:
+            uncertainty = _round(
+                1.0 - (max(int(count) for count in next_counts.values()) / total)
+            )
+        score = _round(novelty + uncertainty)
+    return {
+        "score": score,
+        "novelty": novelty,
+        "uncertainty": uncertainty,
+        "total": total,
+        "unique": unique,
+        "counter_hash": canonical_hash(
+            {
+                "action": action,
+                "total": total,
+                "next_counts": dict(sorted(next_counts.items())),
+            }
+        ),
+    }
+
+
+def _update_visual_transition_counts(
+    model: dict[str, Any], *, observation_key: str, action: str, next_observation_hash: str
+) -> dict[str, Any]:
+    counts = model.setdefault(VISUAL_TRANSITION_MODEL_KEY, {})
+    by_action = counts.setdefault(observation_key, {})
+    entry = by_action.setdefault(action, {"total": 0, "next_counts": {}})
+    before_hash = canonical_hash(entry)
+    entry["total"] = int(entry["total"]) + 1
+    entry["next_counts"][next_observation_hash] = int(entry["next_counts"].get(next_observation_hash, 0)) + 1
+    after_hash = canonical_hash(entry)
+    return {
+        "applied": True,
+        "observation_hash": observation_key,
+        "next_observation_hash": next_observation_hash,
+        "action": action,
+        "count_before": entry["total"] - 1,
+        "count_after": entry["total"],
+        "entry_hash_before": before_hash,
+        "entry_hash_after": after_hash,
+    }
+
+
 def _normalize_interventions(interventions: Mapping[str, str]) -> dict[str, str]:
     if not isinstance(interventions, Mapping) or set(interventions) != set(DEFAULT_INTERVENTIONS):
         raise EngineInvariantError("intervention keys do not match canonical schema")
@@ -1713,6 +2136,9 @@ def _normalize_interventions(interventions: Mapping[str, str]) -> dict[str, str]
         or normalized["provenance_mode"] not in PROVENANCE_MODES
         or normalized["consolidation_mode"] not in CONSOLIDATION_MODES
         or normalized["vision_mode"] not in VISION_MODES
+        or normalized["hysteresis_mode"] not in HYSTERESIS_MODES
+        or normalized["novelty_mode"] not in NOVELTY_MODES
+        or normalized["override_mode"] not in OVERRIDE_MODES
     ):
         raise EngineInvariantError("intervention enum mismatch")
     try:
@@ -1779,13 +2205,15 @@ def _sanitized_goal(goal: Mapping[str, Any]) -> dict[str, Any]:
         "target": goal.get("target"),
         "status": goal.get("status"),
         "entry_deficit": goal.get("entry_deficit"),
+        "selection_reason": goal.get("selection_reason"),
+        "completed_latches": deepcopy(goal.get("completed_latches", _empty_completed_latches())),
     }
 
 
 def _current_goal_deficit_reduction(
     before: Mapping[str, float], after: Mapping[str, float], goal: Mapping[str, Any]
 ) -> float:
-    if goal["status"] == "homeostasis":
+    if goal["status"] != "active":
         return 0.0
     key = str(goal["state_variable"])
     return _round(
