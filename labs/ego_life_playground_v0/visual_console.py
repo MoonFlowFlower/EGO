@@ -15,6 +15,25 @@ from .microworld import ALLOWED_WORLD_EVENTS, FACING_DELTAS, make_public_frame
 from .store import RecoveryFrame, SQLiteEventStore, default_db_path
 from .terminal import build_terminal_snapshot
 
+
+def _lifecycle_payload(state: Mapping[str, Any], trace: Mapping[str, Any] | None) -> dict[str, Any]:
+    lifecycle = deepcopy(state.get("lifecycle", {}))
+    results = lifecycle.get("life_results", []) if isinstance(lifecycle, dict) else []
+    trace_mapping = trace if isinstance(trace, Mapping) else {}
+    return {
+        "lifecycle": lifecycle,
+        "life_survival": [int(item["survival_ticks"]) for item in results],
+        "fourth_life_result": None
+        if not isinstance(lifecycle, dict)
+        else deepcopy(lifecycle.get("fourth_life_result")),
+        "transition_kind": trace_mapping.get("transition_kind"),
+        "policy_invoked": None
+        if trace is None
+        else bool(trace_mapping.get("policy_invoked")),
+        "life_termination": deepcopy(trace_mapping.get("life_termination")),
+        "carry_reset_receipt": deepcopy(trace_mapping.get("carry_reset_receipt")),
+    }
+
 _TOKEN_COLORS = {
     "self": "#73d2de",
     "empty": "#1c2533",
@@ -67,6 +86,7 @@ def build_tk_trace_payload(
             "world_visible_to_policy": False,
             "policy_visual_exact_tokens_only": True,
         },
+        **_lifecycle_payload(state, trace),
     }
     if trace is None:
         payload["selected_action"] = None
@@ -154,6 +174,12 @@ def build_chinese_causal_view(frame: RecoveryFrame) -> dict[str, Any]:
             },
             "有机体5x5视觉": _format_visual(policy_visual),
             "候选与选择": {"选择动作": "未记录／初始状态", "触发来源": "未记录／初始状态"},
+            "生命周期": {
+                "当前状态": payload["lifecycle"].get("trial_status"),
+                "当前生命": payload["lifecycle"].get("life_index"),
+                "生存刻度": deepcopy(payload["life_survival"]),
+                "第四生命结果": deepcopy(payload["fourth_life_result"]),
+            },
             "结果与变化": {"世界结果": "未记录／初始状态", "状态哈希": payload["public_state_hash"]},
         }
     trace = frame.trace
@@ -182,6 +208,16 @@ def build_chinese_causal_view(frame: RecoveryFrame) -> dict[str, Any]:
             "重入变量": deepcopy(goal_progress.get("reentered_variables", [])),
             "严重缺口": deepcopy(goal_progress.get("severe_variables_after", [])),
         },
+        "生命周期": {
+            "当前状态": payload["lifecycle"].get("trial_status"),
+            "当前生命": payload["lifecycle"].get("life_index"),
+            "生存刻度": deepcopy(payload["life_survival"]),
+            "第四生命结果": deepcopy(payload["fourth_life_result"]),
+            "转换类型": payload["transition_kind"],
+            "调用策略": payload["policy_invoked"],
+            "上一生命终结": deepcopy(payload["life_termination"]),
+            "重生回执": deepcopy(payload["carry_reset_receipt"]),
+        },
         "结果与变化": {
             "世界结果": world_transition.get("outcome_type"),
             "命令注入": trace["command"].get("injected_event"),
@@ -203,6 +239,9 @@ def build_advanced_details(
         "run_id": controller.run_id,
         "sequence": frame.sequence,
         "clock": deepcopy(frame.state["clock"]),
+        "lifecycle": deepcopy(frame.state.get("lifecycle")),
+        "life_survival": deepcopy(payload.get("life_survival")),
+        "fourth_life_result": deepcopy(payload.get("fourth_life_result")),
         "before_pose": before_pose,
         "after_pose": after_pose,
         "public_state_hash": payload["public_state_hash"],
@@ -210,6 +249,10 @@ def build_advanced_details(
         "observer_observation_hash": payload["observer_observation_hash"],
         "policy_projection_hash": payload.get("policy_projection_hash"),
         "provenance_projection": deepcopy(payload.get("provenance_projection")),
+        "transition_kind": payload.get("transition_kind"),
+        "policy_invoked": payload.get("policy_invoked"),
+        "life_termination": deepcopy(payload.get("life_termination")),
+        "carry_reset_receipt": deepcopy(payload.get("carry_reset_receipt")),
         "command_hash": trace.get("command_hash"),
         "trace_hash": trace.get("trace_hash"),
         "prev_trace_hash": trace.get("prev_trace_hash"),
@@ -459,11 +502,15 @@ class PlaygroundWindow:
     def _is_historical(self) -> bool:
         return self._display_sequence != self._latest_sequence()
 
+    def _is_terminal(self) -> bool:
+        lifecycle = self.controller.state.get("lifecycle", {})
+        return isinstance(lifecycle, Mapping) and lifecycle.get("trial_status") == "terminal"
+
     def _interventions(self) -> dict[str, str]:
         return deepcopy(DEFAULT_INTERVENTIONS)
 
     def _dispatch(self, *, trigger_source: str, injected_event: str | None = None) -> bool:
-        if self._closed or self._animating or self._is_historical():
+        if self._closed or self._animating or self._is_historical() or self._is_terminal():
             return False
         try:
             result = self.controller.dispatch(
@@ -486,12 +533,12 @@ class PlaygroundWindow:
         return True
 
     def _step_once(self) -> None:
-        if self.running or self._animating or self._is_historical():
+        if self.running or self._animating or self._is_historical() or self._is_terminal():
             return
         self._dispatch(trigger_source="ui_step_button")
 
     def _start_run(self) -> None:
-        if self._closed or self.running or self._is_historical():
+        if self._closed or self.running or self._is_historical() or self._is_terminal():
             return
         self.running = True
         self._update_controls()
@@ -499,12 +546,12 @@ class PlaygroundWindow:
 
     def _run_tick(self) -> None:
         self._run_after_id = None
-        if self._closed or not self.running or self._animating or self._is_historical():
+        if self._closed or not self.running or self._animating or self._is_historical() or self._is_terminal():
             return
         self._dispatch(trigger_source="ui_run_button")
 
     def _queue_next_run_tick(self) -> None:
-        if self._closed or not self.running or self._animating:
+        if self._closed or not self.running or self._animating or self._is_terminal():
             return
         self._run_after_id = self.root.after(
             max(1, int(self.display_interval_ms)), self._run_tick
@@ -526,7 +573,7 @@ class PlaygroundWindow:
             self._update_controls()
 
     def _inject_selected_event(self) -> None:
-        if self.running or self._animating or self._is_historical():
+        if self.running or self._animating or self._is_historical() or self._is_terminal():
             return
         event = self.inject_event_var.get().strip()
         if not event:
@@ -544,7 +591,9 @@ class PlaygroundWindow:
         self._animating = len(expected) == 2
         self.redraw(frame=frame, observer_pose=before_pose if self._animating else after_pose)
         if not self._animating:
-            if self.running:
+            if self._is_terminal():
+                self._pause()
+            elif self.running:
                 self._queue_next_run_tick()
             self._update_controls()
             return
@@ -559,7 +608,9 @@ class PlaygroundWindow:
                 return
             self._animating = False
             self.redraw(frame=frame, observer_pose=after_pose)
-            if self.running:
+            if self._is_terminal():
+                self._pause()
+            elif self.running:
                 self._queue_next_run_tick()
             self._update_controls()
 
@@ -795,10 +846,17 @@ class PlaygroundWindow:
 
     def _update_controls(self) -> None:
         blocked = self._is_historical()
-        self.step_button.state(["disabled"] if blocked or self.running or self._animating else ["!disabled"])
-        self.run_button.state(["disabled"] if blocked or self.running else ["!disabled"])
+        terminal = self._is_terminal()
+        self.step_button.state(
+            ["disabled"] if blocked or terminal or self.running or self._animating else ["!disabled"]
+        )
+        self.run_button.state(
+            ["disabled"] if blocked or terminal or self.running else ["!disabled"]
+        )
         self.pause_button.state(["!disabled"] if self.running or self._animating else ["disabled"])
-        self.inject_button.state(["disabled"] if blocked or self.running or self._animating else ["!disabled"])
+        self.inject_button.state(
+            ["disabled"] if blocked or terminal or self.running or self._animating else ["!disabled"]
+        )
 
     def redraw(
         self,
@@ -835,10 +893,18 @@ class PlaygroundWindow:
             f"life {int(clock['episode_index']) + 1} · tick {clock['episode_tick']}"
         )
         trigger = None if frame.trace is None else frame.trace.get("trigger_source")
+        lifecycle = payload["lifecycle"]
+        status_bits = [
+            f"observer={payload['observer_public_world_hash'][:8]}",
+            f"policy={payload['observer_observation_hash'][:8]}",
+            f"trigger={trigger or 'initial'}",
+            f"trial={lifecycle.get('trial_status')}",
+            f"survival={payload['life_survival']}",
+        ]
+        if payload["fourth_life_result"] is not None:
+            status_bits.append(f"fourth={payload['fourth_life_result']}")
         self.status_var.set(
-            f"observer={payload['observer_public_world_hash'][:8]} "
-            f"policy={payload['observer_observation_hash'][:8]} "
-            f"trigger={trigger or 'initial'}"
+            " ".join(status_bits)
         )
         self._update_controls()
 

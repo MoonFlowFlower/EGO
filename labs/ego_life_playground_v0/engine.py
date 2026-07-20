@@ -26,6 +26,7 @@ from .microworld import (
     observe_world_event,
     policy_observation,
     public_world_projection,
+    reset_world_for_life,
     transition_world,
     verify_world_state,
     world_hash,
@@ -39,7 +40,8 @@ EMA_ALPHA = 0.35
 DEFAULT_PROVENANCE_SHUFFLE_SEED = 17
 DEFAULT_PRIVATE_WORLD_SEED = 1701
 CONSOLIDATION_THRESHOLD = 3
-EPISODE_SPAN_TICKS = 8
+EPISODE_SPAN_TICKS = 256
+MAX_LIVES = 4
 REENTRY_THRESHOLD = 0.60
 CRITICAL_OVERRIDE_THRESHOLD = 0.15
 VISUAL_TRANSITION_MODEL_KEY = "__visual_transition_counts__"
@@ -67,7 +69,7 @@ HYSTERESIS_MODES = ("canonical", "no_hysteresis")
 NOVELTY_MODES = ("canonical", "no_novelty")
 OVERRIDE_MODES = ("canonical", "no_override")
 RUN_PRODUCER_FUNCTION = "ego_life_playground_v0.engine.compute_step"
-RUN_AGGREGATION_RULE = "single_step_deterministic_one_step_argmax"
+RUN_AGGREGATION_RULE = "single_reducer_command_transition_action_or_respawn"
 GOAL_SELECTION_REASONS = (
     "previous_goal_completed",
     "initial_deficit_priority",
@@ -112,6 +114,12 @@ ACTION_COSTS = {
     "interact": 0.008,
     "rest": 0.002,
 }
+INITIAL_ORGANISM = {
+    "energy": 0.45,
+    "safety": 0.62,
+    "connection": 0.50,
+    "stimulation": 0.43,
+}
 
 # Task-local V2 product metabolism constants. ACTION_COSTS remains the existing
 # selector cost table and is also the physical per-action energy cost so the
@@ -141,6 +149,9 @@ class EngineInvariantError(ValueError):
 class StepResult:
     next_state: dict[str, Any]
     trace: dict[str, Any]
+
+
+_COMPONENT_ABSENT = object()
 
 
 def canonical_json(value: Any) -> str:
@@ -196,7 +207,7 @@ def make_run_metadata(
     if type(episode_span_ticks) is not int:
         raise EngineInvariantError("episode_span_ticks must be an integer")
     if episode_span_ticks != EPISODE_SPAN_TICKS:
-        raise EngineInvariantError("episode_span_ticks is frozen at 8")
+        raise EngineInvariantError("episode_span_ticks is frozen at 256")
     return {
         "schema_version": RUN_SCHEMA_VERSION,
         "run_id": run_id,
@@ -216,12 +227,7 @@ def initial_state(
     seed: int = 17,
     layout_id: str = "p0_cross_v1",
 ) -> dict[str, Any]:
-    values = {
-        "energy": 0.45,
-        "safety": 0.62,
-        "connection": 0.50,
-        "stimulation": 0.43,
-    }
+    values = dict(INITIAL_ORGANISM)
     if organism is not None:
         values.update({key: float(value) for key, value in organism.items()})
     if set(values) != set(STATE_KEYS):
@@ -246,6 +252,13 @@ def initial_state(
             "episodic": [],
             "consolidated": [],
             **claim_memory.empty_claim_memory(),
+        },
+        "lifecycle": {
+            "trial_status": "active",
+            "life_index": 1,
+            "awaiting_respawn": False,
+            "life_results": [],
+            "fourth_life_result": None,
         },
         "last_action": None,
         "last_command_hash": None,
@@ -335,6 +348,174 @@ def compute_trace_hash(trace: Mapping[str, Any]) -> str:
     return canonical_hash({key: value for key, value in trace.items() if key != "trace_hash"})
 
 
+def _initial_organism() -> dict[str, float]:
+    return {key: float(value) for key, value in INITIAL_ORGANISM.items()}
+
+
+def _life_result(*, life_index: int, survival_ticks: int, censored: bool, termination: str) -> dict[str, Any]:
+    return {
+        "life_index": life_index,
+        "survival_ticks": survival_ticks,
+        "censored": censored,
+        "termination": termination,
+    }
+
+
+def _component_receipt(before_value: Any, after_value: Any, expected_value: Any) -> dict[str, Any]:
+    before_absent = before_value is _COMPONENT_ABSENT
+    after_absent = after_value is _COMPONENT_ABSENT
+    expected_absent = expected_value is _COMPONENT_ABSENT
+    before_hash = None if before_absent else canonical_hash(before_value)
+    after_hash = None if after_absent else canonical_hash(after_value)
+    expected_hash = None if expected_absent else canonical_hash(expected_value)
+    return {
+        "before_hash": before_hash,
+        "after_hash": after_hash,
+        "expected_hash": expected_hash,
+        "matches_expected": after_hash == expected_hash and after_absent == expected_absent,
+        "changed": before_hash != after_hash or before_absent != after_absent,
+        "absent_before": before_absent,
+        "absent_after": after_absent,
+        "expected_absent": expected_absent,
+    }
+
+
+def _respawn_trace(
+    before: Mapping[str, Any],
+    next_state: Mapping[str, Any],
+    *,
+    command: Mapping[str, Any],
+    run_meta: Mapping[str, Any],
+    current_code_hash: str,
+    sequence: int,
+    before_hash: str,
+    after_hash: str,
+    carry_reset_receipt: Mapping[str, Any],
+) -> dict[str, Any]:
+    expected_world_after = reset_world_for_life(before["world"], int(next_state["lifecycle"]["life_index"]))
+    carry_checks = {
+        "organism_reset_applied": canonical_json(before["organism"]) != canonical_json(next_state["organism"]),
+        "model_unchanged": canonical_json(before["model"]) == canonical_json(next_state["model"]),
+        "memory_unchanged": canonical_json(before["memory"]) == canonical_json(next_state["memory"]),
+        "current_goal_reset_applied": canonical_json(before["current_goal"])
+        != canonical_json(next_state["current_goal"]),
+        "world_reset_applied": canonical_json(before["world"]) != canonical_json(next_state["world"]),
+        "world_matches_expected_reset": canonical_json(next_state["world"])
+        == canonical_json(expected_world_after),
+        "command_chain_continued": command["prev_command_hash"] == before.get("last_command_hash"),
+        "trace_chain_continued": False,
+    }
+    trace: dict[str, Any] = {
+        "schema_version": TRACE_SCHEMA_VERSION,
+        "producer_function": RUN_PRODUCER_FUNCTION,
+        "input_artifacts": [
+            f"run:{run_meta['run_id']}",
+            f"command:{command['command_hash']}",
+        ],
+        "run_id": run_meta["run_id"],
+        "seed": int(run_meta["seed"]),
+        "episode_id": next_state["clock"]["episode_id"],
+        "episode_index": next_state["clock"]["episode_index"],
+        "global_tick": sequence,
+        "episode_tick": next_state["clock"]["episode_tick"],
+        "aggregation_rule": run_meta["aggregation_rule"],
+        "sequence": sequence,
+        "trigger_source": command["trigger_source"],
+        "injected_event": None,
+        "interventions": _normalize_interventions(command["interventions"]),
+        "command": deepcopy(dict(command)),
+        "command_hash": command["command_hash"],
+        "prev_command_hash": command["prev_command_hash"],
+        "state_before_hash": before_hash,
+        "decision_state_hash": None,
+        "state_after_hash": after_hash,
+        "world_before_hash": world_hash(before["world"]),
+        "world_decision_hash": None,
+        "world_after_hash": world_hash(next_state["world"]),
+        "world_observation": None,
+        "observation": None,
+        "observation_hash": None,
+        "policy_projection": None,
+        "policy_projection_hash": None,
+        "candidate_actions": [],
+        "world_transition": None,
+        "episode_before": deepcopy(before["clock"]),
+        "episode_transition": {
+            "applied": True,
+            "from_episode_index": before["clock"]["episode_index"],
+            "to_episode_index": next_state["clock"]["episode_index"],
+            "rollover_global_tick": sequence,
+            "carry_checks": carry_checks,
+        },
+        "action_episode": None,
+        "goal_before": deepcopy(before["current_goal"]),
+        "goal_progress": None,
+        "goal_transition": None,
+        "goal_after": deepcopy(next_state["current_goal"]),
+        "context_key": None,
+        "candidates": [],
+        "selected_action": None,
+        "prediction": None,
+        "model_ref": None,
+        "memory_refs": [],
+        "claim_retrieval": None,
+        "actual_delta": None,
+        "energy_before": None,
+        "passive_decay": None,
+        "action_cost": None,
+        "food_gain": None,
+        "energy_after": None,
+        "downstream_effect": None,
+        "metabolism": None,
+        "prediction_error": None,
+        "model_update": {"applied": False, "reason": "pure_respawn"},
+        "memory_update": {"applied": False, "reason": "pure_respawn", "consolidation_refs": []},
+        "claim_update": {"applied": False, "reason": "pure_respawn"},
+        "model_bytes": {
+            "before_hash": canonical_hash(before["model"]),
+            "after_hash": canonical_hash(next_state["model"]),
+            "changed": canonical_hash(before["model"]) != canonical_hash(next_state["model"]),
+        },
+        "memory_bytes": {
+            "before_hash": canonical_hash(before["memory"]),
+            "after_hash": canonical_hash(next_state["memory"]),
+            "changed": canonical_hash(before["memory"]) != canonical_hash(next_state["memory"]),
+        },
+        "consolidation_refs": [],
+        "provenance_projection": None,
+        "vision_ablation": {
+            "requested_mode": command["interventions"]["vision_mode"],
+            "applied": False,
+        },
+        "code_path_hash": current_code_hash,
+        "prev_trace_hash": before.get("last_trace_hash"),
+        "transition_kind": "respawn",
+        "policy_invoked": False,
+        "lifecycle_before": deepcopy(before["lifecycle"]),
+        "lifecycle_after": deepcopy(next_state["lifecycle"]),
+        "life_termination": deepcopy(before["lifecycle"]["life_results"][-1]),
+        "command_chain": {
+            "before_last_command_hash": before.get("last_command_hash"),
+            "command_prev_matches_before": command["prev_command_hash"] == before.get("last_command_hash"),
+            "after_last_command_hash": next_state.get("last_command_hash"),
+            "after_matches_command_hash": next_state.get("last_command_hash") == command["command_hash"],
+        },
+        "trace_chain": {
+            "before_last_trace_hash": before.get("last_trace_hash"),
+            "trace_prev_matches_before": before.get("last_trace_hash") is not None,
+        },
+        "carry_reset_receipt": deepcopy(carry_reset_receipt),
+    }
+    trace["episode_transition"]["carry_checks"]["trace_chain_continued"] = (
+        trace["prev_trace_hash"] == before.get("last_trace_hash")
+    )
+    trace["trace_chain"]["trace_prev_matches_before"] = (
+        trace["prev_trace_hash"] == before.get("last_trace_hash")
+    )
+    trace["trace_hash"] = compute_trace_hash(trace)
+    return trace
+
+
 def compute_step(
     state: Mapping[str, Any], command: Mapping[str, Any], run_meta: Mapping[str, Any]
 ) -> StepResult:
@@ -349,6 +530,167 @@ def compute_step(
     before_hash = state_hash(before)
     sequence = int(command["sequence"])
     interventions = _normalize_interventions(command["interventions"])
+    lifecycle_before = deepcopy(before["lifecycle"])
+
+    if lifecycle_before["trial_status"] == "terminal":
+        raise EngineInvariantError("trial is terminal")
+    if lifecycle_before["awaiting_respawn"]:
+        if command["injected_event"] is not None:
+            raise EngineInvariantError("respawn command must reject injected_event")
+        next_life_index = int(lifecycle_before["life_index"]) + 1
+        if next_life_index > MAX_LIVES:
+            raise EngineInvariantError("trial cannot respawn beyond the fourth life")
+        next_state = deepcopy(before)
+        expected_world_after = reset_world_for_life(before["world"], next_life_index)
+        next_state["clock"] = {
+            "global_tick": sequence,
+            "episode_index": next_life_index - 1,
+            "episode_id": episode_id_for(str(run_meta["run_id"]), next_life_index - 1),
+            "episode_tick": 0,
+        }
+        next_state["organism"] = _initial_organism()
+        next_state["world"] = deepcopy(expected_world_after)
+        next_state["current_goal"] = _select_initial_goal(
+            next_state["organism"],
+            global_tick=sequence,
+        )
+        next_state["lifecycle"] = {
+            "trial_status": "active",
+            "life_index": next_life_index,
+            "awaiting_respawn": False,
+            "life_results": deepcopy(lifecycle_before["life_results"]),
+            "fourth_life_result": deepcopy(lifecycle_before["fourth_life_result"]),
+        }
+        next_state["last_action"] = None
+        next_state["last_command_hash"] = command["command_hash"]
+        carry_reset_receipt = {
+            "model": _component_receipt(before["model"], next_state["model"], before["model"]),
+            "memory_schema_version": _component_receipt(
+                before["memory"]["schema_version"],
+                next_state["memory"]["schema_version"],
+                before["memory"]["schema_version"],
+            ),
+            "memory_episodic": _component_receipt(
+                before["memory"]["episodic"],
+                next_state["memory"]["episodic"],
+                before["memory"]["episodic"],
+            ),
+            "memory_consolidated": _component_receipt(
+                before["memory"]["consolidated"],
+                next_state["memory"]["consolidated"],
+                before["memory"]["consolidated"],
+            ),
+            "memory_claim_events": _component_receipt(
+                before["memory"]["claim_events"],
+                next_state["memory"]["claim_events"],
+                before["memory"]["claim_events"],
+            ),
+            "memory_competing_claims": _component_receipt(
+                before["memory"]["competing_claims"],
+                next_state["memory"]["competing_claims"],
+                before["memory"]["competing_claims"],
+            ),
+            "token_mapping": _component_receipt(
+                before["world"]["trial"]["token_mapping"],
+                next_state["world"]["trial"]["token_mapping"],
+                before["world"]["trial"]["token_mapping"],
+            ),
+            "organism": _component_receipt(before["organism"], next_state["organism"], _initial_organism()),
+            "world": _component_receipt(
+                before["world"],
+                next_state["world"],
+                expected_world_after,
+            ),
+            "agent_position": _component_receipt(
+                before["world"]["agent"]["position"],
+                next_state["world"]["agent"]["position"],
+                expected_world_after["agent"]["position"],
+            ),
+            "agent_facing": _component_receipt(
+                before["world"]["agent"]["facing"],
+                next_state["world"]["agent"]["facing"],
+                expected_world_after["agent"]["facing"],
+            ),
+            "object_positions": _component_receipt(
+                {
+                    cause: item["position"]
+                    for cause, item in before["world"]["objects_by_cause"].items()
+                },
+                {
+                    cause: item["position"]
+                    for cause, item in next_state["world"]["objects_by_cause"].items()
+                },
+                {
+                    cause: item["position"]
+                    for cause, item in expected_world_after["objects_by_cause"].items()
+                },
+            ),
+            "object_spawn_counts": _component_receipt(
+                {
+                    cause: item["spawn_count"]
+                    for cause, item in before["world"]["objects_by_cause"].items()
+                },
+                {
+                    cause: item["spawn_count"]
+                    for cause, item in next_state["world"]["objects_by_cause"].items()
+                },
+                {
+                    cause: item["spawn_count"]
+                    for cause, item in expected_world_after["objects_by_cause"].items()
+                },
+            ),
+            "object_injection_counts": _component_receipt(
+                {
+                    cause: item["injection_count"]
+                    for cause, item in before["world"]["objects_by_cause"].items()
+                },
+                {
+                    cause: item["injection_count"]
+                    for cause, item in next_state["world"]["objects_by_cause"].items()
+                },
+                {
+                    cause: item["injection_count"]
+                    for cause, item in expected_world_after["objects_by_cause"].items()
+                },
+            ),
+            "current_goal": _component_receipt(
+                before["current_goal"],
+                next_state["current_goal"],
+                _select_initial_goal(_initial_organism(), global_tick=sequence),
+            ),
+            "goal_completed_latches": _component_receipt(
+                before["current_goal"]["completed_latches"],
+                next_state["current_goal"]["completed_latches"],
+                _select_initial_goal(_initial_organism(), global_tick=sequence)[
+                    "completed_latches"
+                ],
+            ),
+            "last_action": _component_receipt(before.get("last_action"), next_state.get("last_action"), None),
+            "episode_tick": _component_receipt(
+                before["clock"]["episode_tick"],
+                next_state["clock"]["episode_tick"],
+                0,
+            ),
+            "working_spatial_state": _component_receipt(
+                _COMPONENT_ABSENT,
+                _COMPONENT_ABSENT,
+                _COMPONENT_ABSENT,
+            ),
+        }
+        after_hash = state_hash(next_state)
+        trace = _respawn_trace(
+            before,
+            next_state,
+            command=command,
+            run_meta=run_meta,
+            current_code_hash=current_code_hash,
+            sequence=sequence,
+            before_hash=before_hash,
+            after_hash=after_hash,
+            carry_reset_receipt=carry_reset_receipt,
+        )
+        next_state["last_trace_hash"] = trace["trace_hash"]
+        return StepResult(next_state=next_state, trace=trace)
 
     decision_state, episode_transition = _decision_state_for_tick(
         before, run_id=str(run_meta["run_id"]), sequence=sequence
@@ -460,6 +802,8 @@ def compute_step(
     metabolism = compute_metabolism_ledger(
         energy_before=energy_before,
         selected_action=selected_action,
+        world_before=decision_state["world"],
+        world_after=next_state["world"],
         world_transition=world_transition,
         run_meta=run_meta,
         episode_id=str(decision_state["clock"]["episode_id"]),
@@ -537,6 +881,45 @@ def compute_step(
     )
     model_after_hash = canonical_hash(next_state["model"])
     memory_after_hash = canonical_hash(next_state["memory"])
+    life_termination = None
+    if next_state["organism"]["energy"] == 0.0:
+        life_termination = _life_result(
+            life_index=int(lifecycle_before["life_index"]),
+            survival_ticks=int(next_state["clock"]["episode_tick"]),
+            censored=False,
+            termination="death",
+        )
+    elif int(next_state["clock"]["episode_tick"]) == EPISODE_SPAN_TICKS:
+        life_termination = _life_result(
+            life_index=int(lifecycle_before["life_index"]),
+            survival_ticks=EPISODE_SPAN_TICKS,
+            censored=True,
+            termination="censored",
+        )
+    if life_termination is None:
+        next_state["lifecycle"] = deepcopy(lifecycle_before)
+    else:
+        life_results = deepcopy(lifecycle_before["life_results"])
+        life_results.append(life_termination)
+        if int(lifecycle_before["life_index"]) < MAX_LIVES:
+            next_state["lifecycle"] = {
+                "trial_status": "awaiting_respawn",
+                "life_index": int(lifecycle_before["life_index"]),
+                "awaiting_respawn": True,
+                "life_results": life_results,
+                "fourth_life_result": None,
+            }
+        else:
+            next_state["lifecycle"] = {
+                "trial_status": "terminal",
+                "life_index": MAX_LIVES,
+                "awaiting_respawn": False,
+                "life_results": life_results,
+                "fourth_life_result": {
+                    "survival_ticks": min(int(life_termination["survival_ticks"]), EPISODE_SPAN_TICKS),
+                    "censored": bool(life_termination["censored"]),
+                },
+            }
 
     after_hash = state_hash(next_state)
     trace: dict[str, Any] = {
@@ -617,6 +1000,12 @@ def compute_step(
         },
         "code_path_hash": current_code_hash,
         "prev_trace_hash": before.get("last_trace_hash"),
+        "transition_kind": "action",
+        "policy_invoked": True,
+        "lifecycle_before": lifecycle_before,
+        "lifecycle_after": deepcopy(next_state["lifecycle"]),
+        "life_termination": life_termination,
+        "carry_reset_receipt": None,
     }
     trace["trace_hash"] = compute_trace_hash(trace)
     next_state["last_trace_hash"] = trace["trace_hash"]
@@ -627,6 +1016,8 @@ def compute_metabolism_ledger(
     *,
     energy_before: float,
     selected_action: str,
+    world_before: Mapping[str, Any],
+    world_after: Mapping[str, Any],
     world_transition: Mapping[str, Any],
     run_meta: Mapping[str, Any],
     episode_id: str,
@@ -639,8 +1030,16 @@ def compute_metabolism_ledger(
         raise EngineInvariantError("metabolism energy_before is outside range")
     if selected_action not in ACTIONS:
         raise EngineInvariantError("metabolism selected action is not canonical")
+    if not isinstance(world_before, Mapping) or not isinstance(world_after, Mapping):
+        raise EngineInvariantError("metabolism world states must be objects")
     if not isinstance(world_transition, Mapping):
         raise EngineInvariantError("metabolism world transition must be an object")
+    _verify_metabolism_world_transition(
+        selected_action,
+        world_before=world_before,
+        world_after=world_after,
+        world_transition=world_transition,
+    )
     if type(episode_id) is not str or not episode_id:
         raise EngineInvariantError("metabolism episode_id must be non-empty")
     if not _is_sha256(command_hash) or not _is_sha256(code_path_hash):
@@ -650,7 +1049,8 @@ def compute_metabolism_ledger(
     action_cost = ACTION_COSTS[selected_action]
     food_gain = (
         CAUSE_DELTAS["resource"]["energy"]
-        if selected_action == "interact" and world_transition.get("cause") == "resource"
+        if world_transition["outcome_type"] == "interacted"
+        and world_transition["cause"] == "resource"
         else 0.0
     )
     energy_after = _round(
@@ -666,6 +1066,8 @@ def compute_metabolism_ledger(
         "input_artifacts": [
             f"run:{run_meta['run_id']}",
             f"command:{command_hash}",
+            f"world_before:{world_hash(world_before)}",
+            f"world_after:{world_hash(world_after)}",
             f"world_transition:{canonical_hash(world_transition)}",
         ],
         "run_id": run_meta["run_id"],
@@ -683,6 +1085,34 @@ def compute_metabolism_ledger(
         "energy_delta": _round(energy_after - energy_before),
         "downstream_effect": downstream_effect,
     }
+
+
+def _verify_metabolism_world_transition(
+    selected_action: str,
+    *,
+    world_before: Mapping[str, Any],
+    world_after: Mapping[str, Any],
+    world_transition: Mapping[str, Any],
+) -> None:
+    """Recompute the action transition so cause/token/location cannot be forged."""
+
+    try:
+        verify_world_state(world_before)
+        verify_world_state(world_after)
+        expected_world, expected_transition = transition_world(
+            world_before,
+            selected_action,
+        )
+    except ValueError as exc:
+        raise EngineInvariantError(str(exc)) from exc
+    if canonical_json(expected_transition) != canonical_json(world_transition):
+        raise EngineInvariantError(
+            "metabolism world transition does not match the selected action"
+        )
+    if canonical_json(expected_world) != canonical_json(world_after):
+        raise EngineInvariantError(
+            "metabolism world-after state does not match the selected action"
+        )
 
 
 def propose_goals(organism: Mapping[str, float]) -> list[dict[str, Any]]:
@@ -725,7 +1155,7 @@ def _verify_run_metadata(run_meta: Mapping[str, Any], current_code_hash: str) ->
     if type(run_meta["episode_span_ticks"]) is not int:
         raise EngineInvariantError("episode_span_ticks must be an integer")
     if run_meta["episode_span_ticks"] != EPISODE_SPAN_TICKS:
-        raise EngineInvariantError("episode_span_ticks is frozen at 8")
+        raise EngineInvariantError("episode_span_ticks is frozen at 256")
     if run_meta["producer_function"] != RUN_PRODUCER_FUNCTION:
         raise EngineInvariantError("producer_function is not canonical")
     if run_meta["aggregation_rule"] != RUN_AGGREGATION_RULE:
@@ -747,6 +1177,7 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
         "current_goal",
         "model",
         "memory",
+        "lifecycle",
         "last_action",
         "last_command_hash",
         "last_trace_hash",
@@ -770,14 +1201,29 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
     if type(clock["episode_id"]) is not str or not clock["episode_id"]:
         raise EngineInvariantError("episode_id must be a non-empty string")
     tick = clock["global_tick"]
-    expected_index = 0 if tick == 0 else (tick - 1) // EPISODE_SPAN_TICKS
-    expected_episode_tick = 0 if tick == 0 else ((tick - 1) % EPISODE_SPAN_TICKS) + 1
+    lifecycle = state["lifecycle"]
+    _verify_lifecycle(lifecycle)
+    expected_index = int(lifecycle["life_index"]) - 1
     if clock["episode_index"] != expected_index:
-        raise EngineInvariantError("episode_index does not match global_tick")
-    if clock["episode_tick"] != expected_episode_tick:
-        raise EngineInvariantError("episode_tick does not match global_tick")
+        raise EngineInvariantError("episode_index does not match life_index")
     if clock["episode_id"] != episode_id_for(run_id, expected_index):
-        raise EngineInvariantError("episode_id does not match run and episode_index")
+        raise EngineInvariantError("episode_id does not match run and life_index")
+    if int(state["world"]["trial"]["life_index"]) != int(lifecycle["life_index"]):
+        raise EngineInvariantError("world life_index does not match lifecycle")
+    completed_tick_sum = sum(int(item["survival_ticks"]) for item in lifecycle["life_results"])
+    completed_respawns = int(lifecycle["life_index"]) - 1
+    episode_tick = int(clock["episode_tick"])
+    if lifecycle["trial_status"] == "active":
+        if not 0 <= episode_tick <= EPISODE_SPAN_TICKS - 1:
+            raise EngineInvariantError("active episode_tick must be within 0..255")
+        expected_global_tick = completed_tick_sum + completed_respawns + episode_tick
+    else:
+        latest_survival = int(lifecycle["life_results"][-1]["survival_ticks"])
+        if episode_tick != latest_survival:
+            raise EngineInvariantError("terminal/awaiting episode_tick must equal latest recorded survival")
+        expected_global_tick = completed_tick_sum + completed_respawns
+    if tick != expected_global_tick:
+        raise EngineInvariantError("global_tick does not match lifecycle command-count equation")
 
     organism = state["organism"]
     if not isinstance(organism, Mapping) or set(organism) != set(STATE_KEYS):
@@ -790,6 +1236,14 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
             raise EngineInvariantError(f"organism {key} must be finite")
         if not 0.0 <= value <= 1.0:
             raise EngineInvariantError(f"organism {key} is outside the canonical range")
+    if lifecycle["trial_status"] == "active" and organism["energy"] <= 0.0:
+        raise EngineInvariantError("active lifecycle requires positive energy")
+    if lifecycle["trial_status"] != "active":
+        latest_termination = lifecycle["life_results"][-1]["termination"]
+        if latest_termination == "death" and organism["energy"] != 0.0:
+            raise EngineInvariantError("death terminal/awaiting lifecycle requires zero energy")
+        if latest_termination == "censored" and organism["energy"] <= 0.0:
+            raise EngineInvariantError("censored terminal/awaiting lifecycle requires positive energy")
 
     try:
         verify_world_state(state["world"])
@@ -812,8 +1266,9 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
             raise EngineInvariantError("last_trace_hash must be null at the initial clock")
     else:
         if last_action is None:
-            raise EngineInvariantError("last_action must be non-null after the initial clock")
-        if type(last_action) is not str or last_action not in ACTIONS:
+            if lifecycle["trial_status"] != "active" or int(clock["episode_tick"]) != 0:
+                raise EngineInvariantError("last_action may be null only for active life start/respawn")
+        elif type(last_action) is not str or last_action not in ACTIONS:
             raise EngineInvariantError("last_action is not canonical")
         if last_command_hash is None:
             raise EngineInvariantError("last_command_hash must be non-null after the initial clock")
@@ -823,6 +1278,12 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
             raise EngineInvariantError("last_trace_hash must be non-null after the initial clock")
         if not _is_sha256(last_trace_hash):
             raise EngineInvariantError("last_trace_hash must be sha256")
+    if last_action is None and episode_tick != 0:
+        raise EngineInvariantError("episode_tick must be zero when last_action is null")
+    if last_action is not None:
+        max_episode_tick = EPISODE_SPAN_TICKS - 1 if lifecycle["trial_status"] == "active" else EPISODE_SPAN_TICKS
+        if not 1 <= episode_tick <= max_episode_tick:
+            raise EngineInvariantError("episode_tick must be within the lifecycle-allowed range")
 
 
 def _verify_model(model: Any) -> None:
@@ -1042,6 +1503,75 @@ def _verify_visual_transition_counts(value: Any) -> None:
                 raise EngineInvariantError("visual transition total must match next_counts sum")
 
 
+def _verify_lifecycle(lifecycle: Any) -> None:
+    required = {
+        "trial_status",
+        "life_index",
+        "awaiting_respawn",
+        "life_results",
+        "fourth_life_result",
+    }
+    if not isinstance(lifecycle, Mapping) or set(lifecycle) != required:
+        raise EngineInvariantError("lifecycle schema mismatch")
+    if lifecycle["trial_status"] not in {"active", "awaiting_respawn", "terminal"}:
+        raise EngineInvariantError("lifecycle trial_status is not canonical")
+    if type(lifecycle["life_index"]) is not int or not 1 <= lifecycle["life_index"] <= MAX_LIVES:
+        raise EngineInvariantError("lifecycle life_index must be within four lives")
+    if type(lifecycle["awaiting_respawn"]) is not bool:
+        raise EngineInvariantError("lifecycle awaiting_respawn must be boolean")
+    if lifecycle["awaiting_respawn"] != (lifecycle["trial_status"] == "awaiting_respawn"):
+        raise EngineInvariantError("lifecycle awaiting_respawn does not match trial_status")
+    results = lifecycle["life_results"]
+    if not isinstance(results, list):
+        raise EngineInvariantError("lifecycle life_results must be a list")
+    for expected_life_index, item in enumerate(results, start=1):
+        if not isinstance(item, Mapping) or set(item) != {
+            "life_index",
+            "survival_ticks",
+            "censored",
+            "termination",
+        }:
+            raise EngineInvariantError("life result schema mismatch")
+        if item["life_index"] != expected_life_index:
+            raise EngineInvariantError("life results must be ordered by life_index")
+        if type(item["survival_ticks"]) is not int or not 1 <= item["survival_ticks"] <= EPISODE_SPAN_TICKS:
+            raise EngineInvariantError("life result survival_ticks must be within one life")
+        if type(item["censored"]) is not bool:
+            raise EngineInvariantError("life result censored must be boolean")
+        if item["termination"] not in {"death", "censored"}:
+            raise EngineInvariantError("life result termination is not canonical")
+        if item["censored"] != (item["termination"] == "censored"):
+            raise EngineInvariantError("life result censor flag does not match termination")
+    if lifecycle["trial_status"] == "active" and len(results) != lifecycle["life_index"] - 1:
+        raise EngineInvariantError("active lifecycle must have completed prior lives only")
+    if lifecycle["trial_status"] == "awaiting_respawn" and len(results) != lifecycle["life_index"]:
+        raise EngineInvariantError("awaiting_respawn lifecycle must include current life result")
+    if lifecycle["trial_status"] == "terminal" and len(results) != MAX_LIVES:
+        raise EngineInvariantError("terminal lifecycle must include exactly four life results")
+    fourth = lifecycle["fourth_life_result"]
+    if fourth is None:
+        if lifecycle["trial_status"] == "terminal":
+            raise EngineInvariantError("terminal lifecycle requires fourth_life_result")
+        return
+    if lifecycle["trial_status"] != "terminal":
+        raise EngineInvariantError("fourth_life_result is only allowed for terminal lifecycle")
+    if not isinstance(fourth, Mapping) or set(fourth) != {"survival_ticks", "censored"}:
+        raise EngineInvariantError("fourth_life_result schema mismatch")
+    if type(fourth["survival_ticks"]) is not int or not 1 <= fourth["survival_ticks"] <= EPISODE_SPAN_TICKS:
+        raise EngineInvariantError("fourth_life_result survival_ticks must be within one life")
+    if type(fourth["censored"]) is not bool:
+        raise EngineInvariantError("fourth_life_result censored must be boolean")
+    if not results:
+        raise EngineInvariantError("fourth_life_result requires recorded life results")
+    last = results[-1]
+    if last["life_index"] != MAX_LIVES:
+        raise EngineInvariantError("fourth_life_result requires a fourth life record")
+    if fourth["survival_ticks"] != min(int(last["survival_ticks"]), EPISODE_SPAN_TICKS):
+        raise EngineInvariantError("fourth_life_result survival_ticks mismatch")
+    if fourth["censored"] != bool(last["censored"]):
+        raise EngineInvariantError("fourth_life_result censored mismatch")
+
+
 def _verify_goal(goal: Mapping[str, Any], *, global_tick: int) -> None:
     required = {
         "state_variable",
@@ -1088,8 +1618,9 @@ def _verify_goal(goal: Mapping[str, Any], *, global_tick: int) -> None:
 def _decision_state_for_tick(
     before: Mapping[str, Any], *, run_id: str, sequence: int
 ) -> tuple[dict[str, Any], dict[str, Any]]:
-    episode_index = (sequence - 1) // EPISODE_SPAN_TICKS
-    episode_tick = ((sequence - 1) % EPISODE_SPAN_TICKS) + 1
+    life_index = int(before["lifecycle"]["life_index"])
+    episode_index = life_index - 1
+    episode_tick = int(before["clock"]["episode_tick"]) + 1
     decision = deepcopy(dict(before))
     decision["clock"] = {
         "global_tick": sequence,
@@ -1097,7 +1628,6 @@ def _decision_state_for_tick(
         "episode_id": episode_id_for(run_id, episode_index),
         "episode_tick": episode_tick,
     }
-    applied = episode_index != int(before["clock"]["episode_index"])
     carry_checks = {
         "organism_unchanged": canonical_json(before["organism"]) == canonical_json(decision["organism"]),
         "model_unchanged": canonical_json(before["model"]) == canonical_json(decision["model"]),
@@ -1109,10 +1639,10 @@ def _decision_state_for_tick(
         "trace_chain_unchanged": before.get("last_trace_hash") == decision.get("last_trace_hash"),
     }
     return decision, {
-        "applied": applied,
+        "applied": False,
         "from_episode_index": int(before["clock"]["episode_index"]),
         "to_episode_index": episode_index,
-        "rollover_global_tick": sequence if applied else None,
+        "rollover_global_tick": None,
         "carry_checks": carry_checks,
     }
 

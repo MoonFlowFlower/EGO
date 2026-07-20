@@ -137,7 +137,7 @@ def test_card_a_trace_provenance_and_hash_chain_are_computed():
         "run:trace-provenance",
         f"command:{command['command_hash']}",
     ]
-    assert trace["aggregation_rule"] == "single_step_deterministic_one_step_argmax"
+    assert trace["aggregation_rule"] == "single_reducer_command_transition_action_or_respawn"
     assert trace["run_id"] == "trace-provenance"
     assert trace["seed"] == 17
     assert trace["episode_id"] == result.next_state["clock"]["episode_id"]

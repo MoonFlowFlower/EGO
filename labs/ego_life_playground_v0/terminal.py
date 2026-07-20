@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from typing import Any
+from typing import Any, Mapping
 
 from .controller import DispatchResult, PlaygroundController, public_state_hash
 from .engine import DEFAULT_INTERVENTIONS, EngineInvariantError
@@ -13,56 +13,62 @@ from .microworld import (
 )
 from .store import RecoveryResult
 
+
+def _trace_mapping(trace: Mapping[str, Any] | None) -> Mapping[str, Any]:
+    return trace if isinstance(trace, Mapping) else {}
+
+
+def _lifecycle_summary(state: Mapping[str, Any]) -> dict[str, Any]:
+    lifecycle = deepcopy(state.get("lifecycle", {}))
+    results = lifecycle.get("life_results", []) if isinstance(lifecycle, dict) else []
+    return {
+        "lifecycle": lifecycle,
+        "life_survival": [int(item["survival_ticks"]) for item in results],
+        "fourth_life_result": None
+        if not isinstance(lifecycle, dict)
+        else deepcopy(lifecycle.get("fourth_life_result")),
+    }
+
 def _timeline_from_recovery(recovery: RecoveryResult) -> list[dict[str, Any]]:
     timeline: list[dict[str, Any]] = []
     for frame in recovery.frames:
         trace = frame.trace
+        trace_mapping = _trace_mapping(trace)
         clock = frame.state["clock"]
-        model_update = {} if trace is None else trace.get("model_update", {})
-        memory_update = {} if trace is None else trace.get("memory_update", {})
-        prediction_error = {} if trace is None else trace.get("prediction_error", {})
-        timeline.append(
-            {
-                "sequence": frame.sequence,
-                "global_tick": clock["global_tick"],
-                "episode_index": clock["episode_index"],
-                "episode_tick": clock["episode_tick"],
-                "layout_id": frame.state["world"]["layout"]["layout_id"],
-                "injected_event": None
-                if trace is None
-                else trace.get("injected_event"),
-                "observation": None if trace is None else deepcopy(trace["observation"]),
-                "observation_hash": None if trace is None else trace["observation_hash"],
-                "selected_action": None if trace is None else trace["selected_action"],
-                "world_transition": None
-                if trace is None
-                else deepcopy(trace.get("world_transition")),
-                "prediction_error_l1": None
-                if trace is None
-                else round(sum(abs(float(value)) for value in prediction_error.values()), 6),
-                "model_count_before": None if trace is None else model_update.get("previous_count"),
-                "model_count_after": None if trace is None else model_update.get("new_count"),
-                "bounded_update_applied": False if trace is None else bool(model_update.get("applied")),
-                "consolidation_applied": False
-                if trace is None
-                else bool(memory_update.get("consolidation_applied")),
-                "consolidation_lineage_count": 0
-                if trace is None
-                else len(memory_update.get("consolidation_refs", [])),
-                "consolidation_lineage_hashes": []
-                if trace is None
-                else deepcopy(memory_update.get("consolidation_refs", [])),
-                "claim_support_margin": None
-                if trace is None
-                else trace.get("claim_retrieval", {}).get("support_margin"),
-                "claim_provenance_event_ids": []
-                if trace is None
-                else deepcopy(
-                    trace.get("claim_retrieval", {}).get("provenance_event_ids", [])
-                ),
-                "public_state_hash": public_state_hash(frame.state),
-            }
-        )
+        model_update = trace_mapping.get("model_update", {})
+        memory_update = trace_mapping.get("memory_update", {})
+        prediction_error = trace_mapping.get("prediction_error", {})
+        claim_retrieval = trace_mapping.get("claim_retrieval") or {}
+        entry = {
+            "sequence": frame.sequence,
+            "global_tick": clock["global_tick"],
+            "episode_index": clock["episode_index"],
+            "episode_tick": clock["episode_tick"],
+            "layout_id": frame.state["world"]["layout"]["layout_id"],
+            "injected_event": trace_mapping.get("injected_event"),
+            "observation": deepcopy(trace_mapping.get("observation")),
+            "observation_hash": trace_mapping.get("observation_hash"),
+            "selected_action": trace_mapping.get("selected_action"),
+            "world_transition": deepcopy(trace_mapping.get("world_transition")),
+            "prediction_error_l1": None
+            if not prediction_error
+            else round(sum(abs(float(value)) for value in prediction_error.values()), 6),
+            "model_count_before": model_update.get("previous_count"),
+            "model_count_after": model_update.get("new_count"),
+            "bounded_update_applied": bool(model_update.get("applied")),
+            "consolidation_applied": bool(memory_update.get("consolidation_applied")),
+            "consolidation_lineage_count": len(memory_update.get("consolidation_refs", [])),
+            "consolidation_lineage_hashes": deepcopy(memory_update.get("consolidation_refs", [])),
+            "claim_support_margin": claim_retrieval.get("support_margin"),
+            "claim_provenance_event_ids": deepcopy(claim_retrieval.get("provenance_event_ids", [])),
+            "transition_kind": trace_mapping.get("transition_kind"),
+            "policy_invoked": bool(trace_mapping.get("policy_invoked")) if trace is not None else None,
+            "life_termination": deepcopy(trace_mapping.get("life_termination")),
+            "carry_reset_receipt": deepcopy(trace_mapping.get("carry_reset_receipt")),
+            "public_state_hash": public_state_hash(frame.state),
+        }
+        entry.update(_lifecycle_summary(frame.state))
+        timeline.append(entry)
     return timeline
 
 
@@ -73,13 +79,22 @@ def build_terminal_snapshot(controller: PlaygroundController) -> dict[str, Any]:
     frame = recovery.frames[-1]
     state = frame.state
     trace = frame.trace
+    trace_mapping = _trace_mapping(trace)
+    claim_retrieval = trace_mapping.get("claim_retrieval") or {}
     previous_state = recovery.frames[-2].state if len(recovery.frames) > 1 else state
     selected_candidate = None
-    if trace is not None:
+    selected_action = trace_mapping.get("selected_action")
+    if selected_action is not None:
         selected_candidate = next(
-            item for item in trace["candidates"] if item["action"] == trace["selected_action"]
+            (
+                item
+                for item in trace_mapping.get("candidates", [])
+                if item.get("action") == selected_action
+            ),
+            None,
         )
     world_frame = make_public_frame(state, trace)
+    lifecycle_summary = _lifecycle_summary(state)
     return {
         "run_id": controller.run_id,
         "world": world_frame,
@@ -87,48 +102,48 @@ def build_terminal_snapshot(controller: PlaygroundController) -> dict[str, Any]:
         "observation_hash": world_frame["observation_hash"],
         "decision_observation": deepcopy(world_frame["observation"])
         if trace is None
-        else deepcopy(trace["observation"]),
+        else deepcopy(trace_mapping.get("observation")),
         "decision_observation_hash": world_frame["observation_hash"]
         if trace is None
-        else trace["observation_hash"],
+        else trace_mapping.get("observation_hash"),
         "internal_state": deepcopy(state["organism"]),
         "current_goal": deepcopy(state["current_goal"]),
-        "candidates": [] if trace is None else deepcopy(trace["candidates"]),
+        "candidates": [] if trace is None else deepcopy(trace_mapping.get("candidates", [])),
         "candidate_actions": []
         if trace is None
-        else deepcopy(trace.get("candidate_actions", [])),
-        "selected_action": None if trace is None else trace["selected_action"],
+        else deepcopy(trace_mapping.get("candidate_actions", [])),
+        "selected_action": None if trace is None else trace_mapping.get("selected_action"),
         "selected_score": None if selected_candidate is None else selected_candidate["total_score"],
-        "prediction": None if trace is None else deepcopy(trace["prediction"]),
-        "actual_delta": None if trace is None else deepcopy(trace["actual_delta"]),
-        "prediction_error": None if trace is None else deepcopy(trace["prediction_error"]),
+        "prediction": None if trace is None else deepcopy(trace_mapping.get("prediction")),
+        "actual_delta": None if trace is None else deepcopy(trace_mapping.get("actual_delta")),
+        "prediction_error": None if trace is None else deepcopy(trace_mapping.get("prediction_error")),
         "goal_trace": None
         if trace is None
         else {
-            "goal_before": deepcopy(trace.get("goal_before")),
-            "goal_progress": deepcopy(trace.get("goal_progress")),
-            "goal_transition": deepcopy(trace.get("goal_transition")),
-            "goal_after": deepcopy(trace.get("goal_after")),
+            "goal_before": deepcopy(trace_mapping.get("goal_before")),
+            "goal_progress": deepcopy(trace_mapping.get("goal_progress")),
+            "goal_transition": deepcopy(trace_mapping.get("goal_transition")),
+            "goal_after": deepcopy(trace_mapping.get("goal_after")),
         },
-        "model_update": None if trace is None else deepcopy(trace["model_update"]),
+        "model_update": None if trace is None else deepcopy(trace_mapping.get("model_update")),
         "memory": {
             "read": None
             if trace is None
             else {
-                "refs": deepcopy(trace["memory_refs"]),
-                "projection": deepcopy(trace["provenance_projection"]),
-                "claim_retrieval": deepcopy(trace.get("claim_retrieval")),
+                "refs": deepcopy(trace_mapping.get("memory_refs")),
+                "projection": deepcopy(trace_mapping.get("provenance_projection")),
+                "claim_retrieval": deepcopy(claim_retrieval),
             },
-            "write": None if trace is None else deepcopy(trace["memory_update"]),
-            "claim_write": None if trace is None else deepcopy(trace.get("claim_update")),
+            "write": None if trace is None else deepcopy(trace_mapping.get("memory_update")),
+            "claim_write": None if trace is None else deepcopy(trace_mapping.get("claim_update")),
             "persistent_state": deepcopy(state["memory"]),
         },
         "world_transition": None
         if trace is None
-        else deepcopy(trace.get("world_transition")),
+        else deepcopy(trace_mapping.get("world_transition")),
         "policy_projection_hash": None
         if trace is None
-        else trace.get("policy_projection_hash"),
+        else trace_mapping.get("policy_projection_hash"),
         "state_transition": {
             "public_before_hash": public_state_hash(previous_state),
             "public_after_hash": public_state_hash(state),
@@ -141,6 +156,11 @@ def build_terminal_snapshot(controller: PlaygroundController) -> dict[str, Any]:
         "public_state_hash": public_state_hash(state),
         "recovered": recovery.recovered,
         "science_weight": 0,
+        "transition_kind": trace_mapping.get("transition_kind"),
+        "policy_invoked": bool(trace_mapping.get("policy_invoked")) if trace is not None else None,
+        "life_termination": deepcopy(trace_mapping.get("life_termination")),
+        "carry_reset_receipt": deepcopy(trace_mapping.get("carry_reset_receipt")),
+        **lifecycle_summary,
     }
 
 
@@ -231,6 +251,7 @@ class TerminalPlayground:
                 if ticks <= 0 or ticks > 10000:
                     raise ValueError("run tick count must be between 1 and 10000")
                 self.paused = False
+                ticks_committed = 0
                 for _ in range(ticks):
                     result = self.controller.dispatch(
                         DEFAULT_INTERVENTIONS,
@@ -239,12 +260,23 @@ class TerminalPlayground:
                     if not result.receipt.committed:
                         self.paused = True
                         raise RuntimeError(result.receipt.error or "atomic commit rejected")
+                    ticks_committed += 1
+                    lifecycle = self.controller.state.get("lifecycle", {})
+                    if isinstance(lifecycle, Mapping) and lifecycle.get("trial_status") == "terminal":
+                        break
                 self.paused = True
+                snapshot = build_terminal_snapshot(self.controller)
                 return {
                     "command": "run",
                     "status": "committed",
-                    "ticks_committed": ticks,
-                    "snapshot": build_terminal_snapshot(self.controller),
+                    "requested_ticks": ticks,
+                    "ticks_committed": ticks_committed,
+                    "survival_summary": {
+                        "life_survival": deepcopy(snapshot["life_survival"]),
+                        "fourth_life_result": deepcopy(snapshot["fourth_life_result"]),
+                        "trial_status": snapshot["lifecycle"].get("trial_status"),
+                    },
+                    "snapshot": snapshot,
                 }
             if operation == "save":
                 path_text = raw[len(parts[0]) :].strip()

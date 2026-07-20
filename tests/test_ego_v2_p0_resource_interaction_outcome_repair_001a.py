@@ -1,23 +1,36 @@
 from __future__ import annotations
 
 from copy import deepcopy
-import hashlib
+import json
 
 import pytest
 
 from labs.ego_life_playground_v0 import engine, microworld
 from labs.ego_life_playground_v0.controller import PlaygroundController
-from labs.ego_life_playground_v0.store import RecoveryFrame, SQLiteEventStore
-from labs.ego_life_playground_v0.visual_console import build_chinese_causal_view
+from labs.ego_life_playground_v0.store import (
+    RecoveryError,
+    RecoveryFrame,
+    SQLiteEventStore,
+)
+from labs.ego_life_playground_v0.terminal import build_terminal_snapshot
+from labs.ego_life_playground_v0.visual_console import (
+    build_chinese_causal_view,
+    build_tk_trace_payload,
+)
 
 
-def _resource_instance_id(command_hash: str) -> str:
-    return hashlib.sha256(
-        f"resource_instance|{command_hash}".encode("utf-8")
-    ).hexdigest()
+_AGENT_POSITION = [4, 2]
+_FORWARD_POSITION = [4, 1]
+_OFF_AXIS_POSITIONS = ([1, 1], [7, 1], [2, 3], [6, 3], [3, 3])
 
 
-def _stationary_state(*, run_id: str, seed: int, energy: float) -> dict:
+def _state_with_front_object(
+    *,
+    run_id: str,
+    seed: int = 18,
+    energy: float = 0.1,
+    front_cause: str | None = "resource",
+) -> dict:
     state = engine.initial_state(
         {
             "energy": energy,
@@ -28,316 +41,420 @@ def _stationary_state(*, run_id: str, seed: int, energy: float) -> dict:
         run_id=run_id,
         seed=seed,
     )
-    state["world"]["agent"]["position"] = "site_a"
-    state["world"]["public_observation"]["agent_position"] = "site_a"
-    microworld.verify_world_state(state["world"])
+    world = deepcopy(state["world"])
+    world["agent"]["position"] = list(_AGENT_POSITION)
+    world["agent"]["facing"] = "N"
+
+    remaining_positions = iter(deepcopy(list(_OFF_AXIS_POSITIONS)))
+    for cause in sorted(world["objects_by_cause"]):
+        world["objects_by_cause"][cause]["position"] = (
+            list(_FORWARD_POSITION)
+            if cause == front_cause
+            else next(remaining_positions)
+        )
+
+    microworld.verify_world_state(world)
+    state["world"] = world
     return state
 
 
-def _command(state: dict, *, cue: str, world_event: str) -> dict:
+def _command(
+    state: dict,
+    *,
+    injected_event: str | None = None,
+    trigger_source: str = "headless_acceptance",
+) -> dict:
     return engine.make_command(
         sequence=int(state["clock"]["global_tick"]) + 1,
-        cue=cue,
-        world_event=world_event,
-        trigger_source="headless_acceptance",
+        injected_event=injected_event,
+        trigger_source=trigger_source,
         interventions=engine.DEFAULT_INTERVENTIONS,
         prev_command_hash=state["last_command_hash"],
     )
 
 
-def _step(state: dict, meta: dict, *, cue: str, world_event: str):
-    command = _command(state, cue=cue, world_event=world_event)
+def _step(state: dict, meta: dict, *, injected_event: str | None = None):
+    command = _command(state, injected_event=injected_event)
     return engine.compute_step(state, command, meta), command
 
 
-def test_stationary_positive_resource_instance_resolves_and_replenishes_energy():
-    run_id = "resource-interaction-stationary-positive"
-    state = _stationary_state(run_id=run_id, seed=18, energy=0.0)
+def _metabolism(
+    *,
+    selected_action: str,
+    world_before: dict,
+    world_after: dict,
+    world_transition: dict,
+    energy_before: float = 0.4,
+    run_id: str,
+) -> dict:
+    meta = engine.make_run_metadata(run_id, 18)
+    return engine.compute_metabolism_ledger(
+        energy_before=energy_before,
+        selected_action=selected_action,
+        world_before=world_before,
+        world_after=world_after,
+        world_transition=world_transition,
+        run_meta=meta,
+        episode_id=engine.episode_id_for(run_id, 0),
+        command_hash=engine.canonical_hash({"test_run_id": run_id}),
+        code_path_hash=meta["code_path_hash"],
+    )
+
+
+def test_real_resource_directly_ahead_requires_interact_and_replenishes_energy():
+    run_id = "resource-interaction-v4-positive"
+    state = _state_with_front_object(run_id=run_id)
+    world_before = deepcopy(state["world"])
     meta = engine.make_run_metadata(run_id, 18)
 
-    result, command = _step(
-        state,
-        meta,
-        cue="resource",
-        world_event="resource_appears",
-    )
-
+    result, command = _step(state, meta)
     trace = result.trace
-    interaction = trace["world_transition"]["resource_interaction"]
-    assert trace["schema_version"] == "ego.life_playground.trace.v6"
-    assert trace["selected_action"] == "forage"
-    assert trace["world_transition"]["moved"] is False
-    assert trace["world_transition"]["visited_site"] == "site_a"
-    assert trace["world_transition"]["outcome"] == 1.0
-    assert trace["world_transition"]["food_obtained"] is True
-    assert interaction == {
-        "instance_id": _resource_instance_id(command["command_hash"]),
-        "available": True,
-        "attempted": True,
-        "resolved": True,
-        "outcome": 1.0,
-        "food_obtained": True,
-        "failure_reason": None,
+    transition = trace["world_transition"]
+    resource_before = world_before["objects_by_cause"]["resource"]
+    resource_after = result.next_state["world"]["objects_by_cause"]["resource"]
+
+    assert trace["schema_version"] == engine.TRACE_SCHEMA_VERSION
+    assert trace["world_observation"]["schema_version"] == (
+        microworld.PUBLIC_OBSERVATION_SCHEMA_VERSION
+    )
+    assert trace["selected_action"] == "interact"
+    assert transition == {
+        "outcome_type": "interacted",
+        "cause": "resource",
+        "token": resource_before["token"],
     }
-    assert interaction["instance_id"] not in engine.canonical_json(
-        trace["policy_projection"]
+    assert command["injected_event"] is None
+    assert result.next_state["world"]["agent"] == world_before["agent"]
+    assert resource_after["cause"] == "resource"
+    assert resource_after["token"] == resource_before["token"]
+    assert resource_after["spawn_count"] == resource_before["spawn_count"] + 1
+    assert resource_after["injection_count"] == resource_before["injection_count"]
+
+    assert trace["energy_before"] == 0.1
+    assert trace["passive_decay"] == engine.PASSIVE_ENERGY_DECAY_PER_TICK == 0.01
+    assert trace["action_cost"] == engine.ACTION_COSTS["interact"] == 0.008
+    assert trace["food_gain"] == engine.CAUSE_DELTAS["resource"]["energy"] == 0.28
+    assert trace["metabolism"]["food_obtained"] is True
+    assert trace["energy_after"] == pytest.approx(0.362)
+    assert result.next_state["organism"]["energy"] == pytest.approx(0.362)
+
+    policy_bytes = engine.canonical_json(trace["policy_projection"])
+    assert "objects_by_cause" not in policy_bytes
+    assert "token_mapping" not in policy_bytes
+    assert '"resource"' not in policy_bytes
+
+
+def test_no_gain_from_non_resource_no_object_or_blocked_attempts():
+    social_world = _state_with_front_object(
+        run_id="resource-control-social", front_cause="social"
+    )["world"]
+    social_after, social_transition = microworld.transition_world(social_world, "interact")
+    assert social_transition["outcome_type"] == "interacted"
+    assert social_transition["cause"] == "social"
+
+    empty_world = _state_with_front_object(
+        run_id="resource-control-empty", front_cause=None
+    )["world"]
+    empty_after, no_object_transition = microworld.transition_world(
+        empty_world, "interact"
     )
-    assert interaction["instance_id"] not in engine.canonical_json(
-        trace["policy_non_memory_projection"]
+    assert no_object_transition == {"outcome_type": "no_object"}
+    assert empty_after == empty_world
+
+    resource_world = _state_with_front_object(
+        run_id="resource-control-blocked"
+    )["world"]
+    blocked_after, blocked_transition = microworld.transition_world(
+        resource_world, "move_forward"
     )
-    assert trace["energy_before"] == 0.0
-    assert trace["passive_decay"] == 0.02
-    assert trace["action_cost"] == engine.ACTION_COSTS["forage"] == 0.02
-    assert trace["food_gain"] == engine.FOOD_ENERGY_GAIN == 0.28
-    assert trace["energy_after"] == pytest.approx(0.24)
-    assert result.next_state["organism"]["energy"] == pytest.approx(0.24)
-    history = result.next_state["world"]["private_dynamics"]["outcome_history"]
-    assert len(history) == 1
-    assert history[0]["source_command_hash"] == command["command_hash"]
+    assert blocked_transition == {"outcome_type": "blocked", "blocked_by": "object"}
+    assert blocked_after["agent"]["position"] == resource_world["agent"]["position"]
 
-
-def test_stationary_negative_resource_resolves_without_food_gain():
-    run_id = "resource-interaction-stationary-negative"
-    state = _stationary_state(run_id=run_id, seed=17, energy=0.4)
-    meta = engine.make_run_metadata(run_id, 17)
-
-    result, _ = _step(
-        state,
-        meta,
-        cue="resource",
-        world_event="resource_appears",
+    controls = (
+        (
+            "interact",
+            social_world,
+            social_after,
+            social_transition,
+            "resource-control-social-ledger",
+        ),
+        (
+            "interact",
+            empty_world,
+            empty_after,
+            no_object_transition,
+            "resource-control-empty-ledger",
+        ),
+        (
+            "move_forward",
+            resource_world,
+            blocked_after,
+            blocked_transition,
+            "resource-control-blocked-ledger",
+        ),
     )
-
-    trace = result.trace
-    interaction = trace["world_transition"]["resource_interaction"]
-    assert trace["selected_action"] == "forage"
-    assert trace["world_transition"]["moved"] is False
-    assert trace["world_transition"]["outcome"] == -1.0
-    assert trace["world_transition"]["food_obtained"] is False
-    assert interaction["available"] is True
-    assert interaction["attempted"] is True
-    assert interaction["resolved"] is True
-    assert interaction["outcome"] == -1.0
-    assert interaction["food_obtained"] is False
-    assert interaction["failure_reason"] == "harmful_or_unusable_resource"
-    assert trace["food_gain"] == 0.0
-    assert trace["energy_after"] == pytest.approx(0.36)
+    for action, world_before, world_after, transition, run_id in controls:
+        ledger = _metabolism(
+            selected_action=action,
+            world_before=world_before,
+            world_after=world_after,
+            world_transition=transition,
+            run_id=run_id,
+        )
+        assert ledger["food_obtained"] is False
+        assert ledger["food_gain"] == 0.0
+        assert ledger["energy_after"] == pytest.approx(
+            0.4 - engine.PASSIVE_ENERGY_DECAY_PER_TICK - engine.ACTION_COSTS[action]
+        )
 
 
-def test_no_resource_event_and_non_forage_action_cannot_obtain_food():
-    quiet_world = microworld.observe_world_event(
-        microworld.initial_world_state(seed=18), "quiet_interval"
-    )
-    quiet_after, quiet_transition = microworld.transition_world(
-        quiet_world,
-        "forage",
+def test_resource_settlement_object_respawn_and_life_reset_are_deterministic():
+    world = _state_with_front_object(run_id="resource-deterministic-respawn")[
+        "world"
+    ]
+    before = deepcopy(world)
+    before_item = deepcopy(world["objects_by_cause"]["resource"])
+
+    first_world, first_transition = microworld.transition_world(
+        deepcopy(world),
+        "interact",
         source_sequence=1,
-        source_episode_id="episode-control-quiet",
+        source_episode_id="episode-resource-a",
         source_command_hash="a" * 64,
     )
-    assert quiet_transition["outcome"] == 1.0
-    assert quiet_transition["food_obtained"] is False
-    assert quiet_transition["resource_interaction"] == {
-        "instance_id": None,
-        "available": False,
-        "attempted": True,
-        "resolved": False,
-        "outcome": None,
-        "food_obtained": False,
-        "failure_reason": "no_resource_event",
-    }
-    assert quiet_after["public_observation"]["event"] == "quiet_interval"
-
-    resource_world = microworld.observe_world_event(
-        microworld.initial_world_state(seed=17), "resource_appears"
-    )
-    resource_after, non_forage_transition = microworld.transition_world(
-        resource_world,
-        "approach",
-        source_sequence=1,
-        source_episode_id="episode-control-non-forage",
+    second_world, second_transition = microworld.transition_world(
+        deepcopy(world),
+        "interact",
+        source_sequence=999,
+        source_episode_id="episode-resource-b",
         source_command_hash="b" * 64,
     )
-    assert non_forage_transition["outcome"] == 1.0
-    assert non_forage_transition["food_obtained"] is False
-    assert non_forage_transition["resource_interaction"] == {
-        "instance_id": _resource_instance_id("b" * 64),
-        "available": True,
-        "attempted": False,
-        "resolved": False,
-        "outcome": None,
-        "food_obtained": False,
-        "failure_reason": "resource_not_attempted",
+
+    assert world == before
+    assert first_transition == second_transition == {
+        "outcome_type": "interacted",
+        "cause": "resource",
+        "token": before_item["token"],
     }
-    assert resource_after["public_observation"]["event"] == "resource_appears"
+    assert first_world == second_world
+    first_item = first_world["objects_by_cause"]["resource"]
+    assert first_item["cause"] == before_item["cause"]
+    assert first_item["token"] == before_item["token"]
+    assert first_item["spawn_count"] == before_item["spawn_count"] + 1
+    assert first_item["injection_count"] == before_item["injection_count"]
+    assert first_item["position"] in microworld.validate_layout_topology(
+        first_world["layout"]
+    )["walkable_cells"]
 
-
-def test_resource_instance_is_command_derived_and_each_new_command_settles_once():
-    run_id = "resource-interaction-command-identity"
-    state = _stationary_state(run_id=run_id, seed=18, energy=0.0)
-    meta = engine.make_run_metadata(run_id, 18)
-
-    first, first_command = _step(
-        state,
-        meta,
-        cue="resource",
-        world_event="resource_appears",
-    )
-    second, second_command = _step(
-        first.next_state,
-        meta,
-        cue="resource",
-        world_event="resource_appears",
-    )
-
-    first_interaction = first.trace["world_transition"]["resource_interaction"]
-    second_interaction = second.trace["world_transition"]["resource_interaction"]
-    assert first_command["command_hash"] != second_command["command_hash"]
-    assert first_interaction["instance_id"] == _resource_instance_id(
-        first_command["command_hash"]
-    )
-    assert second_interaction["instance_id"] == _resource_instance_id(
-        second_command["command_hash"]
-    )
-    assert first_interaction["instance_id"] != second_interaction["instance_id"]
-    history = second.next_state["world"]["private_dynamics"]["outcome_history"]
-    assert [record["source_command_hash"] for record in history] == [
-        first_command["command_hash"],
-        second_command["command_hash"],
-    ]
-
-    observed = microworld.observe_world_event(state["world"], "resource_appears")
-    rerun_a = microworld.transition_world(
-        observed,
-        "forage",
-        source_sequence=1,
-        source_episode_id=state["clock"]["episode_id"],
-        source_command_hash=first_command["command_hash"],
-    )
-    rerun_b = microworld.transition_world(
-        observed,
-        "forage",
-        source_sequence=1,
-        source_episode_id=state["clock"]["episode_id"],
-        source_command_hash=first_command["command_hash"],
-    )
-    assert rerun_a == rerun_b
-    assert len(rerun_a[0]["private_dynamics"]["outcome_history"]) == 1
-
-
-def test_metabolism_rejects_forged_resource_food_flag():
-    world = microworld.observe_world_event(
-        microworld.initial_world_state(seed=17), "resource_appears"
-    )
-    _, transition = microworld.transition_world(
-        world,
-        "forage",
-        source_sequence=1,
-        source_episode_id="episode-forged-food",
-        source_command_hash="c" * 64,
-    )
-    assert transition["outcome"] == -1.0
-    forged = deepcopy(transition)
-    forged["food_obtained"] = True
-    forged["resource_interaction"]["food_obtained"] = True
-
-    meta = engine.make_run_metadata("resource-interaction-forged-food", 17)
-    with pytest.raises(engine.EngineInvariantError, match="resource interaction"):
-        engine.compute_metabolism_ledger(
-            energy_before=0.4,
-            selected_action="forage",
-            world_transition=forged,
-            run_meta=meta,
-            episode_id="episode-forged-food",
-            command_hash="c" * 64,
-            code_path_hash=meta["code_path_hash"],
-        )
-
-
-def test_visual_result_separates_resource_attempt_from_positive_outcome():
-    run_id = "resource-interaction-ui-positive"
-    state = _stationary_state(run_id=run_id, seed=18, energy=0.0)
-    result, _ = _step(
-        state,
-        engine.make_run_metadata(run_id, 18),
-        cue="resource",
-        world_event="resource_appears",
+    life_two_a = microworld.reset_world_for_life(first_world, 2)
+    life_two_b = microworld.reset_world_for_life(second_world, 2)
+    assert life_two_a == life_two_b
+    assert life_two_a["trial"]["token_mapping"] == world["trial"]["token_mapping"]
+    assert life_two_a["objects_by_cause"]["resource"]["token"] == before_item["token"]
+    assert all(
+        item["spawn_count"] == 0 and item["injection_count"] == 0
+        for item in life_two_a["objects_by_cause"].values()
     )
 
-    view = build_chinese_causal_view(
-        RecoveryFrame(sequence=1, state=result.next_state, trace=result.trace)
+
+def test_metabolism_rejects_forged_resource_cause_on_no_object_outcome():
+    state = _state_with_front_object(
+        run_id="resource-forged-outcome", front_cause=None
+    )
+    no_object_after, no_object_transition = microworld.transition_world(
+        state["world"], "interact"
+    )
+    assert no_object_transition == {"outcome_type": "no_object"}
+    assert (
+        _metabolism(
+            selected_action="interact",
+            world_before=state["world"],
+            world_after=no_object_after,
+            world_transition=no_object_transition,
+            run_id="resource-unforged-no-object",
+        )["food_gain"]
+        == 0.0
     )
 
-    assert view["外部事件"]["发生了什么"] == "资源线索出现"
-    assert view["候选与选择"]["选择的行动"] == "尝试获取资源"
-    shown = view["结果与变化"]
-    interaction = result.trace["world_transition"]["resource_interaction"]
-    assert shown["资源实例"] == interaction["instance_id"]
-    assert shown["资源结果"] == "成功：已获得食物"
-    assert shown["失败原因"] == "无"
-    assert shown["食物补能"] == "+0.280"
-    assert shown["基础消耗"] == "-0.020"
-    assert shown["动作成本"] == "-0.020"
-    assert shown["能量净变化"] == "+0.240"
-
-
-def test_controller_sqlite_stationary_resource_ui_is_trace_bound(tmp_path):
-    run_id = "resource-interaction-ui-recovered"
-    state = _stationary_state(run_id=run_id, seed=18, energy=0.0)
-    meta = engine.make_run_metadata(run_id, 18)
-    with SQLiteEventStore(tmp_path / "resource-ui.sqlite3") as store:
-        store.create_run(meta, state)
-        controller = PlaygroundController(store, run_id=run_id)
-        dispatched = controller.dispatch(
-            "resource",
-            engine.DEFAULT_INTERVENTIONS,
-            trigger_source="ui_step_button",
-            world_event="resource_appears",
-        )
-        assert dispatched.receipt.committed is True
-        recovered = controller.recover()
-
-    frame = recovered.frames[-1]
-    trace = frame.trace
-    assert trace is not None
-    assert trace["world_transition"]["moved"] is False
-    assert trace["world_transition"]["resource_interaction"]["resolved"] is True
-    assert trace["food_gain"] == 0.28
-    real_view = build_chinese_causal_view(frame)
-    assert real_view["外部事件"]["发生了什么"] == "资源线索出现"
-    assert real_view["候选与选择"]["选择的行动"] == "尝试获取资源"
-    assert real_view["结果与变化"]["资源结果"] == "成功：已获得食物"
-    assert real_view["结果与变化"]["食物补能"] == "+0.280"
-
-    trace_variant = deepcopy(trace)
-    trace_variant["world_transition"]["outcome"] = -1.0
-    trace_variant["world_transition"]["food_obtained"] = False
-    trace_variant["world_transition"]["resource_interaction"].update(
+    forged_transition = deepcopy(no_object_transition)
+    forged_transition.update(
         {
-            "outcome": -1.0,
-            "food_obtained": False,
-            "failure_reason": "harmful_or_unusable_resource",
+            "cause": "resource",
+            "token": state["world"]["objects_by_cause"]["resource"]["token"],
         }
     )
-    trace_variant["world_outcome"]["value"] = -1.0
-    trace_variant["world_outcome"]["food_obtained"] = False
-    trace_variant["food_gain"] = 0.0
-    trace_variant["metabolism"]["food_gain"] = 0.0
-    trace_variant["metabolism"]["energy_after"] = 0.0
-    trace_variant["metabolism"]["energy_delta"] = 0.0
+    with pytest.raises(engine.EngineInvariantError):
+        _metabolism(
+            selected_action="interact",
+            world_before=state["world"],
+            world_after=no_object_after,
+            world_transition=forged_transition,
+            run_id="resource-forged-no-object",
+        )
+
+
+def test_metabolism_rejects_valid_shape_cause_token_relabeling() -> None:
+    state = _state_with_front_object(
+        run_id="resource-forged-cause-token", front_cause="social"
+    )
+    social_after, genuine = microworld.transition_world(state["world"], "interact")
+    assert genuine["outcome_type"] == "interacted"
+    assert genuine["cause"] == "social"
+
+    forged = deepcopy(genuine)
+    forged["cause"] = "resource"
+    with pytest.raises(engine.EngineInvariantError):
+        _metabolism(
+            selected_action="interact",
+            world_before=state["world"],
+            world_after=social_after,
+            world_transition=forged,
+            run_id="resource-forged-cause-token-ledger",
+        )
+
+
+def test_observer_and_chinese_ui_results_are_recovered_trace_bound():
+    run_id = "resource-ui-trace-bound"
+    state = _state_with_front_object(run_id=run_id)
+    result, _ = _step(state, engine.make_run_metadata(run_id, 18))
+    frame = RecoveryFrame(sequence=1, state=result.next_state, trace=result.trace)
+
+    payload = build_tk_trace_payload(frame.state, frame.trace)
+    view = build_chinese_causal_view(frame)
+    assert payload["observer_frame"]["world"] == result.next_state["world"]
+    assert payload["policy_visual"] == result.trace["observation"]
+    assert payload["selected_action"] == result.trace["selected_action"] == "interact"
+    assert "resource" not in engine.canonical_json(payload["policy_visual"])
+    assert view["候选与选择"]["选择动作"] == "interact"
+    assert view["结果与变化"]["世界结果"] == "interacted"
+    assert view["结果与变化"]["命令注入"] is None
+
+    trace_variant = deepcopy(result.trace)
+    trace_variant["world_transition"] = {"outcome_type": "no_object"}
     variant_frame = RecoveryFrame(
         sequence=frame.sequence,
         state=deepcopy(frame.state),
         trace=trace_variant,
     )
+    variant_payload = build_tk_trace_payload(variant_frame.state, variant_frame.trace)
     variant_view = build_chinese_causal_view(variant_frame)
 
-    assert trace_variant["seed"] == trace["seed"]
-    assert trace_variant["run_id"] == trace["run_id"]
-    assert trace_variant["world_event"] == trace["world_event"]
-    assert trace_variant["selected_action"] == trace["selected_action"]
-    assert variant_view["外部事件"] == real_view["外部事件"]
-    assert variant_view["候选与选择"]["选择的行动"] == "尝试获取资源"
-    assert variant_view["结果与变化"]["资源结果"] == "失败：未获得食物"
-    assert variant_view["结果与变化"]["失败原因"] == "资源有害或不可用"
-    assert variant_view["结果与变化"]["食物补能"] == "+0.000"
+    assert variant_payload["observer_frame"] == payload["observer_frame"]
+    assert variant_payload["policy_visual"] == payload["policy_visual"]
+    assert variant_view["观察者全局视图"] == view["观察者全局视图"]
+    assert variant_view["候选与选择"] == view["候选与选择"]
+    assert variant_view["结果与变化"]["世界结果"] == "no_object"
+
+
+def test_controller_sqlite_non_resource_interact_never_produces_food(tmp_path):
+    run_id = "resource-controller-social-control"
+    state = _state_with_front_object(run_id=run_id, front_cause="social")
+    meta = engine.make_run_metadata(run_id, 18)
+
+    with SQLiteEventStore(tmp_path / "resource-social-control.sqlite3") as store:
+        store.create_run(meta, state)
+        controller = PlaygroundController(store, run_id=run_id)
+        dispatched = controller.dispatch(
+            engine.DEFAULT_INTERVENTIONS,
+            trigger_source="ui_step_button",
+        )
+        assert dispatched.receipt.committed is True
+        assert dispatched.step is not None
+
+        recovered = controller.recover()
+        trace = recovered.traces[0]
+        assert trace["selected_action"] == "interact"
+        assert trace["world_transition"]["outcome_type"] == "interacted"
+        assert trace["world_transition"]["cause"] == "social"
+        assert trace["metabolism"]["food_obtained"] is False
+        assert trace["food_gain"] == 0.0
+        assert trace["energy_after"] == pytest.approx(0.082)
+
+        snapshot = build_terminal_snapshot(controller)
+        assert snapshot["selected_action"] == trace["selected_action"]
+        assert snapshot["world_transition"] == trace["world_transition"]
+        assert snapshot["actual_delta"] == trace["actual_delta"]
+
+
+def test_controller_sqlite_recomputes_resource_interaction_and_rejects_trace_tamper(
+    tmp_path,
+):
+    run_id = "resource-controller-replay"
+    state = _state_with_front_object(run_id=run_id)
+    meta = engine.make_run_metadata(run_id, 18)
+
+    with SQLiteEventStore(tmp_path / "resource-replay.sqlite3") as store:
+        store.create_run(meta, state)
+        controller = PlaygroundController(store, run_id=run_id)
+        dispatched = controller.dispatch(
+            engine.DEFAULT_INTERVENTIONS,
+            trigger_source="ui_step_button",
+        )
+        assert dispatched.receipt.committed is True
+        assert dispatched.step is not None
+
+        recovered_a = controller.recover()
+        recovered_b = store.recover_run(run_id)
+        assert store.row_counts(run_id) == (1, 1)
+        assert recovered_a.state == recovered_b.state == dispatched.step.next_state
+        assert recovered_a.traces == recovered_b.traces == [dispatched.step.trace]
+        assert recovered_a.traces[0]["selected_action"] == "interact"
+        assert recovered_a.traces[0]["world_transition"]["cause"] == "resource"
+        assert recovered_a.traces[0]["food_gain"] == 0.28
+        terminal_snapshot = build_terminal_snapshot(controller)
+        assert terminal_snapshot["selected_action"] == "interact"
+        assert terminal_snapshot["world_transition"] == recovered_a.traces[0][
+            "world_transition"
+        ]
+        recovered_view = build_chinese_causal_view(recovered_a.frames[-1])
+        assert recovered_view["候选与选择"]["选择动作"] == "interact"
+        assert recovered_view["结果与变化"]["世界结果"] == "interacted"
+
+        tampered = deepcopy(recovered_a.traces[0])
+        tampered["world_transition"] = {"outcome_type": "no_object"}
+        tampered["trace_hash"] = engine.compute_trace_hash(tampered)
+        store.connection.execute(
+            "UPDATE traces SET trace_json = ?, trace_hash = ? "
+            "WHERE run_id = ? AND sequence = 1",
+            (
+                engine.canonical_json(tampered),
+                tampered["trace_hash"],
+                run_id,
+            ),
+        )
+        with pytest.raises(RecoveryError, match="independent recomputation"):
+            store.recover_run(run_id)
+
+
+def test_controller_sqlite_rejects_valid_schema_initial_world_tamper(tmp_path):
+    run_id = "resource-controller-initial-state-tamper"
+    state = _state_with_front_object(run_id=run_id)
+    meta = engine.make_run_metadata(run_id, 18)
+
+    with SQLiteEventStore(tmp_path / "resource-initial-tamper.sqlite3") as store:
+        store.create_run(meta, state)
+        controller = PlaygroundController(store, run_id=run_id)
+        dispatched = controller.dispatch(
+            engine.DEFAULT_INTERVENTIONS,
+            trigger_source="ui_step_button",
+        )
+        assert dispatched.receipt.committed is True
+
+        row = store.connection.execute(
+            "SELECT initial_state_json FROM runs WHERE run_id = ?",
+            (run_id,),
+        ).fetchone()
+        tampered_state = json.loads(row["initial_state_json"])
+        tampered_state["world"]["objects_by_cause"]["resource"]["position"] = [3, 3]
+        microworld.verify_world_state(tampered_state["world"])
+        store.connection.execute(
+            "UPDATE runs SET initial_state_json = ?, initial_state_hash = ? "
+            "WHERE run_id = ?",
+            (
+                engine.canonical_json(tampered_state),
+                engine.canonical_hash(tampered_state),
+                run_id,
+            ),
+        )
+        with pytest.raises(RecoveryError, match="independent recomputation"):
+            store.recover_run(run_id)

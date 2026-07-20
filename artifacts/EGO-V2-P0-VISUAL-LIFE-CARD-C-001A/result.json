@@ -1,0 +1,1497 @@
+{
+  "ablation_observation": {
+    "aggregation_rule": "compare action/goal/delta behavior and post-command memory bytes without authorizing a science conclusion",
+    "behavior_equivalent": true,
+    "canonical_post_respawn_hashes": {
+      "memory": "1c0306a8e57e57206a9c4e88976be14d64d4d166bedeb661c49feea36edbee65",
+      "model": "a6e7838e6306b37695799277efa53def47f3a4cb3de4e58ff8a8304046e5bc9b"
+    },
+    "code_path_hash": "0e80352e9ec4e416a38d242b374b0c135c8ab3f7b91f3626fed38bb2fec6c739",
+    "constructor_hashes": {
+      "memory": "045ae9de550e43ca2c2d24f350ccd994fd61a80b03d63ba9b46ff227900a4373",
+      "model": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    "engine_code_path_hash": "8e560de51e4c657bb04b590984be248b3f6100688c514afc29a21bef56d0bcb7",
+    "input_artifacts": [
+      {
+        "bytes": 27044,
+        "path": "labs/ego_life_playground_v0/claims.py",
+        "sha256": "4f22ef4e1038757d7afa85d024bdc52cbda7f51958b7cfee3d36593d25bbd7e8"
+      },
+      {
+        "bytes": 8193,
+        "path": "labs/ego_life_playground_v0/controller.py",
+        "sha256": "d8212d649a9d2ee6a2b177bca7233072324421d048fc03424cc66062ee53d4fc"
+      },
+      {
+        "bytes": 116161,
+        "path": "labs/ego_life_playground_v0/engine.py",
+        "sha256": "6f9cf7fb0d649df8969c875aa7710cd75357f8dbad6a8c3ab847729b49dd3eae"
+      },
+      {
+        "bytes": 25710,
+        "path": "labs/ego_life_playground_v0/microworld.py",
+        "sha256": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923"
+      },
+      {
+        "bytes": 13786,
+        "path": "labs/ego_life_playground_v0/store.py",
+        "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+      },
+      {
+        "bytes": 15470,
+        "path": "labs/ego_life_playground_v0/terminal.py",
+        "sha256": "c33262dd1e5c450b6a917f091c095c0614b9721ffabd420a738ced5eac3f2348"
+      },
+      {
+        "bytes": 38323,
+        "path": "labs/ego_life_playground_v0/visual_console.py",
+        "sha256": "dd79619d50341497638c8ddfc289fbd002365ed13d9c699f38b60e142e923ae5"
+      },
+      {
+        "bytes": 7293,
+        "path": "scripts/run_ego_life_playground_v0.py",
+        "sha256": "d4e51cea9a5aa6484277c238c199459d136fa9cc217916717872eaafcd958a75"
+      },
+      {
+        "bytes": 2659,
+        "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_C_FOUR_LIFE_LIFECYCLE.md",
+        "sha256": "63477c11bc38f137ac4e1e0958470e7ff9dcd5598023c270fc6f66dffc1b6ebe"
+      },
+      {
+        "bytes": 8406,
+        "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+        "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+      },
+      {
+        "bytes": 2578,
+        "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/COLLISION_RECORD.md",
+        "sha256": "51586d6dc8b55f8184638b1d30b39b6875959273d0229e91d57a41c7471c4416"
+      },
+      {
+        "bytes": 92961,
+        "path": "scripts/codex/verify_ego_v2_visual_life_lifecycle_001a.py",
+        "sha256": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+      }
+    ],
+    "intervened_post_respawn_hashes": {
+      "memory": "045ae9de550e43ca2c2d24f350ccd994fd61a80b03d63ba9b46ff227900a4373",
+      "model": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    "memory_differs_from_canonical_post_respawn": true,
+    "memory_matches_empty_constructor": true,
+    "model_differs_from_canonical_post_respawn": true,
+    "model_matches_empty_constructor": true,
+    "producer_function": "build_no_carry_ablation_report.compare",
+    "record_type": "evidence_record",
+    "retained_memory_equivalent": false,
+    "run_id": "ego-v2-card-c-verify",
+    "seed_context_episode_ids": {
+      "life_index": 2,
+      "scenario_id": "death_respawn_next_action"
+    },
+    "starting_model_memory_were_cleared": true,
+    "verifier_source_hash": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+  },
+  "aggregation_rule": "pass iff every declared Card-C engineering check is computed true; baseline or ablation equivalence blocks science claims but is not an engineering failure",
+  "baseline_disposition": "observable_equivalence_claim_blocker",
+  "checks": {
+    "censor_respawn_chain": {
+      "aggregation_rule": "living tick 256 must censor and the next command must be pure respawn",
+      "code_path_hash": "0e80352e9ec4e416a38d242b374b0c135c8ab3f7b91f3626fed38bb2fec6c739",
+      "engine_code_path_hash": "8e560de51e4c657bb04b590984be248b3f6100688c514afc29a21bef56d0bcb7",
+      "input_artifacts": [
+        {
+          "bytes": 27044,
+          "path": "labs/ego_life_playground_v0/claims.py",
+          "sha256": "4f22ef4e1038757d7afa85d024bdc52cbda7f51958b7cfee3d36593d25bbd7e8"
+        },
+        {
+          "bytes": 8193,
+          "path": "labs/ego_life_playground_v0/controller.py",
+          "sha256": "d8212d649a9d2ee6a2b177bca7233072324421d048fc03424cc66062ee53d4fc"
+        },
+        {
+          "bytes": 116161,
+          "path": "labs/ego_life_playground_v0/engine.py",
+          "sha256": "6f9cf7fb0d649df8969c875aa7710cd75357f8dbad6a8c3ab847729b49dd3eae"
+        },
+        {
+          "bytes": 25710,
+          "path": "labs/ego_life_playground_v0/microworld.py",
+          "sha256": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923"
+        },
+        {
+          "bytes": 13786,
+          "path": "labs/ego_life_playground_v0/store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 15470,
+          "path": "labs/ego_life_playground_v0/terminal.py",
+          "sha256": "c33262dd1e5c450b6a917f091c095c0614b9721ffabd420a738ced5eac3f2348"
+        },
+        {
+          "bytes": 38323,
+          "path": "labs/ego_life_playground_v0/visual_console.py",
+          "sha256": "dd79619d50341497638c8ddfc289fbd002365ed13d9c699f38b60e142e923ae5"
+        },
+        {
+          "bytes": 7293,
+          "path": "scripts/run_ego_life_playground_v0.py",
+          "sha256": "d4e51cea9a5aa6484277c238c199459d136fa9cc217916717872eaafcd958a75"
+        },
+        {
+          "bytes": 2659,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_C_FOUR_LIFE_LIFECYCLE.md",
+          "sha256": "63477c11bc38f137ac4e1e0958470e7ff9dcd5598023c270fc6f66dffc1b6ebe"
+        },
+        {
+          "bytes": 8406,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+          "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+        },
+        {
+          "bytes": 2578,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/COLLISION_RECORD.md",
+          "sha256": "51586d6dc8b55f8184638b1d30b39b6875959273d0229e91d57a41c7471c4416"
+        },
+        {
+          "bytes": 92961,
+          "path": "scripts/codex/verify_ego_v2_visual_life_lifecycle_001a.py",
+          "sha256": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+        }
+      ],
+      "producer_function": "engine.compute_step",
+      "record_type": "evidence_record",
+      "run_id": "ego-v2-card-c-verify",
+      "seed_context_episode_ids": {
+        "life_indices": [
+          1,
+          2
+        ],
+        "scenario_id": "censor_respawn"
+      },
+      "value": true,
+      "verifier_source_hash": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+    },
+    "death_respawn_next_action_chain": {
+      "aggregation_rule": "terminal death action keeps updates, next command is pure respawn, and the following command invokes one life-two policy action",
+      "code_path_hash": "0e80352e9ec4e416a38d242b374b0c135c8ab3f7b91f3626fed38bb2fec6c739",
+      "engine_code_path_hash": "8e560de51e4c657bb04b590984be248b3f6100688c514afc29a21bef56d0bcb7",
+      "input_artifacts": [
+        {
+          "bytes": 27044,
+          "path": "labs/ego_life_playground_v0/claims.py",
+          "sha256": "4f22ef4e1038757d7afa85d024bdc52cbda7f51958b7cfee3d36593d25bbd7e8"
+        },
+        {
+          "bytes": 8193,
+          "path": "labs/ego_life_playground_v0/controller.py",
+          "sha256": "d8212d649a9d2ee6a2b177bca7233072324421d048fc03424cc66062ee53d4fc"
+        },
+        {
+          "bytes": 116161,
+          "path": "labs/ego_life_playground_v0/engine.py",
+          "sha256": "6f9cf7fb0d649df8969c875aa7710cd75357f8dbad6a8c3ab847729b49dd3eae"
+        },
+        {
+          "bytes": 25710,
+          "path": "labs/ego_life_playground_v0/microworld.py",
+          "sha256": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923"
+        },
+        {
+          "bytes": 13786,
+          "path": "labs/ego_life_playground_v0/store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 15470,
+          "path": "labs/ego_life_playground_v0/terminal.py",
+          "sha256": "c33262dd1e5c450b6a917f091c095c0614b9721ffabd420a738ced5eac3f2348"
+        },
+        {
+          "bytes": 38323,
+          "path": "labs/ego_life_playground_v0/visual_console.py",
+          "sha256": "dd79619d50341497638c8ddfc289fbd002365ed13d9c699f38b60e142e923ae5"
+        },
+        {
+          "bytes": 7293,
+          "path": "scripts/run_ego_life_playground_v0.py",
+          "sha256": "d4e51cea9a5aa6484277c238c199459d136fa9cc217916717872eaafcd958a75"
+        },
+        {
+          "bytes": 2659,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_C_FOUR_LIFE_LIFECYCLE.md",
+          "sha256": "63477c11bc38f137ac4e1e0958470e7ff9dcd5598023c270fc6f66dffc1b6ebe"
+        },
+        {
+          "bytes": 8406,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+          "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+        },
+        {
+          "bytes": 2578,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/COLLISION_RECORD.md",
+          "sha256": "51586d6dc8b55f8184638b1d30b39b6875959273d0229e91d57a41c7471c4416"
+        },
+        {
+          "bytes": 92961,
+          "path": "scripts/codex/verify_ego_v2_visual_life_lifecycle_001a.py",
+          "sha256": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+        }
+      ],
+      "producer_function": "engine.compute_step",
+      "record_type": "evidence_record",
+      "run_id": "ego-v2-card-c-verify",
+      "seed_context_episode_ids": {
+        "life_indices": [
+          1,
+          2
+        ],
+        "scenario_id": "death_respawn_next_action"
+      },
+      "value": true,
+      "verifier_source_hash": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+    },
+    "declared_lifecycle_scenarios_observed": {
+      "aggregation_rule": "all three predeclared Card-C reducer scenarios must execute",
+      "code_path_hash": "0e80352e9ec4e416a38d242b374b0c135c8ab3f7b91f3626fed38bb2fec6c739",
+      "engine_code_path_hash": "8e560de51e4c657bb04b590984be248b3f6100688c514afc29a21bef56d0bcb7",
+      "input_artifacts": [
+        {
+          "bytes": 27044,
+          "path": "labs/ego_life_playground_v0/claims.py",
+          "sha256": "4f22ef4e1038757d7afa85d024bdc52cbda7f51958b7cfee3d36593d25bbd7e8"
+        },
+        {
+          "bytes": 8193,
+          "path": "labs/ego_life_playground_v0/controller.py",
+          "sha256": "d8212d649a9d2ee6a2b177bca7233072324421d048fc03424cc66062ee53d4fc"
+        },
+        {
+          "bytes": 116161,
+          "path": "labs/ego_life_playground_v0/engine.py",
+          "sha256": "6f9cf7fb0d649df8969c875aa7710cd75357f8dbad6a8c3ab847729b49dd3eae"
+        },
+        {
+          "bytes": 25710,
+          "path": "labs/ego_life_playground_v0/microworld.py",
+          "sha256": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923"
+        },
+        {
+          "bytes": 13786,
+          "path": "labs/ego_life_playground_v0/store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 15470,
+          "path": "labs/ego_life_playground_v0/terminal.py",
+          "sha256": "c33262dd1e5c450b6a917f091c095c0614b9721ffabd420a738ced5eac3f2348"
+        },
+        {
+          "bytes": 38323,
+          "path": "labs/ego_life_playground_v0/visual_console.py",
+          "sha256": "dd79619d50341497638c8ddfc289fbd002365ed13d9c699f38b60e142e923ae5"
+        },
+        {
+          "bytes": 7293,
+          "path": "scripts/run_ego_life_playground_v0.py",
+          "sha256": "d4e51cea9a5aa6484277c238c199459d136fa9cc217916717872eaafcd958a75"
+        },
+        {
+          "bytes": 2659,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_C_FOUR_LIFE_LIFECYCLE.md",
+          "sha256": "63477c11bc38f137ac4e1e0958470e7ff9dcd5598023c270fc6f66dffc1b6ebe"
+        },
+        {
+          "bytes": 8406,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+          "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+        },
+        {
+          "bytes": 2578,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/COLLISION_RECORD.md",
+          "sha256": "51586d6dc8b55f8184638b1d30b39b6875959273d0229e91d57a41c7471c4416"
+        },
+        {
+          "bytes": 92961,
+          "path": "scripts/codex/verify_ego_v2_visual_life_lifecycle_001a.py",
+          "sha256": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+        }
+      ],
+      "producer_function": "_build_declared_scenarios",
+      "record_type": "evidence_record",
+      "run_id": "ego-v2-card-c-verify",
+      "seed_context_episode_ids": {
+        "scenario_ids": [
+          "censor_respawn",
+          "death_respawn_next_action",
+          "life_four_terminal"
+        ]
+      },
+      "value": true,
+      "verifier_source_hash": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+    },
+    "independent_scripted_respawn_baseline_reported": {
+      "aggregation_rule": "independent scripted lifecycle baseline must run without candidate reducer or scorer; equivalence blocks claims but not engineering",
+      "code_path_hash": "0e80352e9ec4e416a38d242b374b0c135c8ab3f7b91f3626fed38bb2fec6c739",
+      "engine_code_path_hash": "8e560de51e4c657bb04b590984be248b3f6100688c514afc29a21bef56d0bcb7",
+      "input_artifacts": [
+        {
+          "bytes": 27044,
+          "path": "labs/ego_life_playground_v0/claims.py",
+          "sha256": "4f22ef4e1038757d7afa85d024bdc52cbda7f51958b7cfee3d36593d25bbd7e8"
+        },
+        {
+          "bytes": 8193,
+          "path": "labs/ego_life_playground_v0/controller.py",
+          "sha256": "d8212d649a9d2ee6a2b177bca7233072324421d048fc03424cc66062ee53d4fc"
+        },
+        {
+          "bytes": 116161,
+          "path": "labs/ego_life_playground_v0/engine.py",
+          "sha256": "6f9cf7fb0d649df8969c875aa7710cd75357f8dbad6a8c3ab847729b49dd3eae"
+        },
+        {
+          "bytes": 25710,
+          "path": "labs/ego_life_playground_v0/microworld.py",
+          "sha256": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923"
+        },
+        {
+          "bytes": 13786,
+          "path": "labs/ego_life_playground_v0/store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 15470,
+          "path": "labs/ego_life_playground_v0/terminal.py",
+          "sha256": "c33262dd1e5c450b6a917f091c095c0614b9721ffabd420a738ced5eac3f2348"
+        },
+        {
+          "bytes": 38323,
+          "path": "labs/ego_life_playground_v0/visual_console.py",
+          "sha256": "dd79619d50341497638c8ddfc289fbd002365ed13d9c699f38b60e142e923ae5"
+        },
+        {
+          "bytes": 7293,
+          "path": "scripts/run_ego_life_playground_v0.py",
+          "sha256": "d4e51cea9a5aa6484277c238c199459d136fa9cc217916717872eaafcd958a75"
+        },
+        {
+          "bytes": 2659,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_C_FOUR_LIFE_LIFECYCLE.md",
+          "sha256": "63477c11bc38f137ac4e1e0958470e7ff9dcd5598023c270fc6f66dffc1b6ebe"
+        },
+        {
+          "bytes": 8406,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+          "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+        },
+        {
+          "bytes": 2578,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/COLLISION_RECORD.md",
+          "sha256": "51586d6dc8b55f8184638b1d30b39b6875959273d0229e91d57a41c7471c4416"
+        },
+        {
+          "bytes": 92961,
+          "path": "scripts/codex/verify_ego_v2_visual_life_lifecycle_001a.py",
+          "sha256": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+        }
+      ],
+      "producer_function": "build_baseline_report",
+      "record_type": "evidence_record",
+      "run_id": "ego-v2-card-c-verify",
+      "seed_context_episode_ids": {
+        "scenario_ids": [
+          "censor_respawn",
+          "death_respawn_next_action",
+          "life_four_terminal"
+        ]
+      },
+      "value": true,
+      "verifier_source_hash": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+    },
+    "life_four_terminal_reject": {
+      "aggregation_rule": "life-four censor must end the trial, emit the fourth-life metric, and reject both reducer and controller follow-up dispatch",
+      "code_path_hash": "0e80352e9ec4e416a38d242b374b0c135c8ab3f7b91f3626fed38bb2fec6c739",
+      "engine_code_path_hash": "8e560de51e4c657bb04b590984be248b3f6100688c514afc29a21bef56d0bcb7",
+      "input_artifacts": [
+        {
+          "bytes": 27044,
+          "path": "labs/ego_life_playground_v0/claims.py",
+          "sha256": "4f22ef4e1038757d7afa85d024bdc52cbda7f51958b7cfee3d36593d25bbd7e8"
+        },
+        {
+          "bytes": 8193,
+          "path": "labs/ego_life_playground_v0/controller.py",
+          "sha256": "d8212d649a9d2ee6a2b177bca7233072324421d048fc03424cc66062ee53d4fc"
+        },
+        {
+          "bytes": 116161,
+          "path": "labs/ego_life_playground_v0/engine.py",
+          "sha256": "6f9cf7fb0d649df8969c875aa7710cd75357f8dbad6a8c3ab847729b49dd3eae"
+        },
+        {
+          "bytes": 25710,
+          "path": "labs/ego_life_playground_v0/microworld.py",
+          "sha256": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923"
+        },
+        {
+          "bytes": 13786,
+          "path": "labs/ego_life_playground_v0/store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 15470,
+          "path": "labs/ego_life_playground_v0/terminal.py",
+          "sha256": "c33262dd1e5c450b6a917f091c095c0614b9721ffabd420a738ced5eac3f2348"
+        },
+        {
+          "bytes": 38323,
+          "path": "labs/ego_life_playground_v0/visual_console.py",
+          "sha256": "dd79619d50341497638c8ddfc289fbd002365ed13d9c699f38b60e142e923ae5"
+        },
+        {
+          "bytes": 7293,
+          "path": "scripts/run_ego_life_playground_v0.py",
+          "sha256": "d4e51cea9a5aa6484277c238c199459d136fa9cc217916717872eaafcd958a75"
+        },
+        {
+          "bytes": 2659,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_C_FOUR_LIFE_LIFECYCLE.md",
+          "sha256": "63477c11bc38f137ac4e1e0958470e7ff9dcd5598023c270fc6f66dffc1b6ebe"
+        },
+        {
+          "bytes": 8406,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+          "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+        },
+        {
+          "bytes": 2578,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/COLLISION_RECORD.md",
+          "sha256": "51586d6dc8b55f8184638b1d30b39b6875959273d0229e91d57a41c7471c4416"
+        },
+        {
+          "bytes": 92961,
+          "path": "scripts/codex/verify_ego_v2_visual_life_lifecycle_001a.py",
+          "sha256": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+        }
+      ],
+      "producer_function": "engine.compute_step + terminal guards",
+      "record_type": "evidence_record",
+      "run_id": "ego-v2-card-c-verify",
+      "seed_context_episode_ids": {
+        "life_index": 4,
+        "scenario_id": "life_four_terminal"
+      },
+      "value": true,
+      "verifier_source_hash": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+    },
+    "no_carry_ablation_executed": {
+      "aggregation_rule": "canonical and test-only cleared post-respawn states must rerun the same command through compute_step; observed equivalence is reported, not adjudicated",
+      "code_path_hash": "0e80352e9ec4e416a38d242b374b0c135c8ab3f7b91f3626fed38bb2fec6c739",
+      "engine_code_path_hash": "8e560de51e4c657bb04b590984be248b3f6100688c514afc29a21bef56d0bcb7",
+      "input_artifacts": [
+        {
+          "bytes": 27044,
+          "path": "labs/ego_life_playground_v0/claims.py",
+          "sha256": "4f22ef4e1038757d7afa85d024bdc52cbda7f51958b7cfee3d36593d25bbd7e8"
+        },
+        {
+          "bytes": 8193,
+          "path": "labs/ego_life_playground_v0/controller.py",
+          "sha256": "d8212d649a9d2ee6a2b177bca7233072324421d048fc03424cc66062ee53d4fc"
+        },
+        {
+          "bytes": 116161,
+          "path": "labs/ego_life_playground_v0/engine.py",
+          "sha256": "6f9cf7fb0d649df8969c875aa7710cd75357f8dbad6a8c3ab847729b49dd3eae"
+        },
+        {
+          "bytes": 25710,
+          "path": "labs/ego_life_playground_v0/microworld.py",
+          "sha256": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923"
+        },
+        {
+          "bytes": 13786,
+          "path": "labs/ego_life_playground_v0/store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 15470,
+          "path": "labs/ego_life_playground_v0/terminal.py",
+          "sha256": "c33262dd1e5c450b6a917f091c095c0614b9721ffabd420a738ced5eac3f2348"
+        },
+        {
+          "bytes": 38323,
+          "path": "labs/ego_life_playground_v0/visual_console.py",
+          "sha256": "dd79619d50341497638c8ddfc289fbd002365ed13d9c699f38b60e142e923ae5"
+        },
+        {
+          "bytes": 7293,
+          "path": "scripts/run_ego_life_playground_v0.py",
+          "sha256": "d4e51cea9a5aa6484277c238c199459d136fa9cc217916717872eaafcd958a75"
+        },
+        {
+          "bytes": 2659,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_C_FOUR_LIFE_LIFECYCLE.md",
+          "sha256": "63477c11bc38f137ac4e1e0958470e7ff9dcd5598023c270fc6f66dffc1b6ebe"
+        },
+        {
+          "bytes": 8406,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+          "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+        },
+        {
+          "bytes": 2578,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/COLLISION_RECORD.md",
+          "sha256": "51586d6dc8b55f8184638b1d30b39b6875959273d0229e91d57a41c7471c4416"
+        },
+        {
+          "bytes": 92961,
+          "path": "scripts/codex/verify_ego_v2_visual_life_lifecycle_001a.py",
+          "sha256": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+        }
+      ],
+      "producer_function": "build_no_carry_ablation_report",
+      "record_type": "evidence_record",
+      "run_id": "ego-v2-card-c-verify",
+      "seed_context_episode_ids": {
+        "life_index": 2,
+        "scenario_id": "death_respawn_next_action"
+      },
+      "value": true,
+      "verifier_source_hash": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+    },
+    "policy_projection_leakage_scan_clean_positive_control_fires": {
+      "aggregation_rule": "only policy projections are scanned; they must be clean while all three declared structured positive controls fire",
+      "code_path_hash": "0e80352e9ec4e416a38d242b374b0c135c8ab3f7b91f3626fed38bb2fec6c739",
+      "engine_code_path_hash": "8e560de51e4c657bb04b590984be248b3f6100688c514afc29a21bef56d0bcb7",
+      "input_artifacts": [
+        {
+          "bytes": 27044,
+          "path": "labs/ego_life_playground_v0/claims.py",
+          "sha256": "4f22ef4e1038757d7afa85d024bdc52cbda7f51958b7cfee3d36593d25bbd7e8"
+        },
+        {
+          "bytes": 8193,
+          "path": "labs/ego_life_playground_v0/controller.py",
+          "sha256": "d8212d649a9d2ee6a2b177bca7233072324421d048fc03424cc66062ee53d4fc"
+        },
+        {
+          "bytes": 116161,
+          "path": "labs/ego_life_playground_v0/engine.py",
+          "sha256": "6f9cf7fb0d649df8969c875aa7710cd75357f8dbad6a8c3ab847729b49dd3eae"
+        },
+        {
+          "bytes": 25710,
+          "path": "labs/ego_life_playground_v0/microworld.py",
+          "sha256": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923"
+        },
+        {
+          "bytes": 13786,
+          "path": "labs/ego_life_playground_v0/store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 15470,
+          "path": "labs/ego_life_playground_v0/terminal.py",
+          "sha256": "c33262dd1e5c450b6a917f091c095c0614b9721ffabd420a738ced5eac3f2348"
+        },
+        {
+          "bytes": 38323,
+          "path": "labs/ego_life_playground_v0/visual_console.py",
+          "sha256": "dd79619d50341497638c8ddfc289fbd002365ed13d9c699f38b60e142e923ae5"
+        },
+        {
+          "bytes": 7293,
+          "path": "scripts/run_ego_life_playground_v0.py",
+          "sha256": "d4e51cea9a5aa6484277c238c199459d136fa9cc217916717872eaafcd958a75"
+        },
+        {
+          "bytes": 2659,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_C_FOUR_LIFE_LIFECYCLE.md",
+          "sha256": "63477c11bc38f137ac4e1e0958470e7ff9dcd5598023c270fc6f66dffc1b6ebe"
+        },
+        {
+          "bytes": 8406,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+          "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+        },
+        {
+          "bytes": 2578,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/COLLISION_RECORD.md",
+          "sha256": "51586d6dc8b55f8184638b1d30b39b6875959273d0229e91d57a41c7471c4416"
+        },
+        {
+          "bytes": 92961,
+          "path": "scripts/codex/verify_ego_v2_visual_life_lifecycle_001a.py",
+          "sha256": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+        },
+        {
+          "bytes": 35972,
+          "path": "artifacts/EGO-V2-P0-VISUAL-LIFE-CARD-C-001A/trace.jsonl",
+          "sha256": "209efb5c69a14b1d50d246b7e50a8dc8cc3fd4fce65b8784aa7dd5c2e27d4726"
+        }
+      ],
+      "producer_function": "scan_policy_projection",
+      "record_type": "evidence_record",
+      "run_id": "ego-v2-card-c-verify",
+      "seed_context_episode_ids": {
+        "scenario_ids": [
+          "censor_respawn",
+          "death_respawn_next_action",
+          "life_four_terminal"
+        ]
+      },
+      "value": true,
+      "verifier_source_hash": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+    },
+    "pure_respawn_carry_reset_exact": {
+      "aggregation_rule": "every declared respawn must invoke no policy/metabolism/update and every named carry/reset component must match its recomputed expected bytes",
+      "code_path_hash": "0e80352e9ec4e416a38d242b374b0c135c8ab3f7b91f3626fed38bb2fec6c739",
+      "engine_code_path_hash": "8e560de51e4c657bb04b590984be248b3f6100688c514afc29a21bef56d0bcb7",
+      "input_artifacts": [
+        {
+          "bytes": 27044,
+          "path": "labs/ego_life_playground_v0/claims.py",
+          "sha256": "4f22ef4e1038757d7afa85d024bdc52cbda7f51958b7cfee3d36593d25bbd7e8"
+        },
+        {
+          "bytes": 8193,
+          "path": "labs/ego_life_playground_v0/controller.py",
+          "sha256": "d8212d649a9d2ee6a2b177bca7233072324421d048fc03424cc66062ee53d4fc"
+        },
+        {
+          "bytes": 116161,
+          "path": "labs/ego_life_playground_v0/engine.py",
+          "sha256": "6f9cf7fb0d649df8969c875aa7710cd75357f8dbad6a8c3ab847729b49dd3eae"
+        },
+        {
+          "bytes": 25710,
+          "path": "labs/ego_life_playground_v0/microworld.py",
+          "sha256": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923"
+        },
+        {
+          "bytes": 13786,
+          "path": "labs/ego_life_playground_v0/store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 15470,
+          "path": "labs/ego_life_playground_v0/terminal.py",
+          "sha256": "c33262dd1e5c450b6a917f091c095c0614b9721ffabd420a738ced5eac3f2348"
+        },
+        {
+          "bytes": 38323,
+          "path": "labs/ego_life_playground_v0/visual_console.py",
+          "sha256": "dd79619d50341497638c8ddfc289fbd002365ed13d9c699f38b60e142e923ae5"
+        },
+        {
+          "bytes": 7293,
+          "path": "scripts/run_ego_life_playground_v0.py",
+          "sha256": "d4e51cea9a5aa6484277c238c199459d136fa9cc217916717872eaafcd958a75"
+        },
+        {
+          "bytes": 2659,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_C_FOUR_LIFE_LIFECYCLE.md",
+          "sha256": "63477c11bc38f137ac4e1e0958470e7ff9dcd5598023c270fc6f66dffc1b6ebe"
+        },
+        {
+          "bytes": 8406,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+          "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+        },
+        {
+          "bytes": 2578,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/COLLISION_RECORD.md",
+          "sha256": "51586d6dc8b55f8184638b1d30b39b6875959273d0229e91d57a41c7471c4416"
+        },
+        {
+          "bytes": 92961,
+          "path": "scripts/codex/verify_ego_v2_visual_life_lifecycle_001a.py",
+          "sha256": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+        }
+      ],
+      "producer_function": "engine.compute_step respawn branch",
+      "record_type": "evidence_record",
+      "run_id": "ego-v2-card-c-verify",
+      "seed_context_episode_ids": {
+        "scenario_ids": [
+          "death_respawn_next_action",
+          "censor_respawn"
+        ]
+      },
+      "value": true,
+      "verifier_source_hash": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+    },
+    "real_terminal_controller_sqlite_path": {
+      "aggregation_rule": "real TerminalPlayground run must traverse controller plus SQLite and recover",
+      "code_path_hash": "0e80352e9ec4e416a38d242b374b0c135c8ab3f7b91f3626fed38bb2fec6c739",
+      "engine_code_path_hash": "8e560de51e4c657bb04b590984be248b3f6100688c514afc29a21bef56d0bcb7",
+      "input_artifacts": [
+        {
+          "bytes": 27044,
+          "path": "labs/ego_life_playground_v0/claims.py",
+          "sha256": "4f22ef4e1038757d7afa85d024bdc52cbda7f51958b7cfee3d36593d25bbd7e8"
+        },
+        {
+          "bytes": 8193,
+          "path": "labs/ego_life_playground_v0/controller.py",
+          "sha256": "d8212d649a9d2ee6a2b177bca7233072324421d048fc03424cc66062ee53d4fc"
+        },
+        {
+          "bytes": 116161,
+          "path": "labs/ego_life_playground_v0/engine.py",
+          "sha256": "6f9cf7fb0d649df8969c875aa7710cd75357f8dbad6a8c3ab847729b49dd3eae"
+        },
+        {
+          "bytes": 25710,
+          "path": "labs/ego_life_playground_v0/microworld.py",
+          "sha256": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923"
+        },
+        {
+          "bytes": 13786,
+          "path": "labs/ego_life_playground_v0/store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 15470,
+          "path": "labs/ego_life_playground_v0/terminal.py",
+          "sha256": "c33262dd1e5c450b6a917f091c095c0614b9721ffabd420a738ced5eac3f2348"
+        },
+        {
+          "bytes": 38323,
+          "path": "labs/ego_life_playground_v0/visual_console.py",
+          "sha256": "dd79619d50341497638c8ddfc289fbd002365ed13d9c699f38b60e142e923ae5"
+        },
+        {
+          "bytes": 7293,
+          "path": "scripts/run_ego_life_playground_v0.py",
+          "sha256": "d4e51cea9a5aa6484277c238c199459d136fa9cc217916717872eaafcd958a75"
+        },
+        {
+          "bytes": 2659,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_C_FOUR_LIFE_LIFECYCLE.md",
+          "sha256": "63477c11bc38f137ac4e1e0958470e7ff9dcd5598023c270fc6f66dffc1b6ebe"
+        },
+        {
+          "bytes": 8406,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+          "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+        },
+        {
+          "bytes": 2578,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/COLLISION_RECORD.md",
+          "sha256": "51586d6dc8b55f8184638b1d30b39b6875959273d0229e91d57a41c7471c4416"
+        },
+        {
+          "bytes": 92961,
+          "path": "scripts/codex/verify_ego_v2_visual_life_lifecycle_001a.py",
+          "sha256": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+        },
+        {
+          "bytes": 35972,
+          "path": "artifacts/EGO-V2-P0-VISUAL-LIFE-CARD-C-001A/trace.jsonl",
+          "sha256": "209efb5c69a14b1d50d246b7e50a8dc8cc3fd4fce65b8784aa7dd5c2e27d4726"
+        }
+      ],
+      "producer_function": "TerminalPlayground.execute -> PlaygroundController.dispatch -> SQLiteEventStore.append_step/recover_run",
+      "record_type": "evidence_record",
+      "run_id": "ego-v2-card-c-verify",
+      "seed_context_episode_ids": {
+        "scenario_id": "terminal_controller_sqlite"
+      },
+      "value": true,
+      "verifier_source_hash": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+    },
+    "real_tk_run_controller_sqlite_path": {
+      "aggregation_rule": "real Tk Run control must traverse controller plus SQLite to a recovered life-four terminal state; Tk unavailability is a blocker",
+      "code_path_hash": "0e80352e9ec4e416a38d242b374b0c135c8ab3f7b91f3626fed38bb2fec6c739",
+      "engine_code_path_hash": "8e560de51e4c657bb04b590984be248b3f6100688c514afc29a21bef56d0bcb7",
+      "input_artifacts": [
+        {
+          "bytes": 27044,
+          "path": "labs/ego_life_playground_v0/claims.py",
+          "sha256": "4f22ef4e1038757d7afa85d024bdc52cbda7f51958b7cfee3d36593d25bbd7e8"
+        },
+        {
+          "bytes": 8193,
+          "path": "labs/ego_life_playground_v0/controller.py",
+          "sha256": "d8212d649a9d2ee6a2b177bca7233072324421d048fc03424cc66062ee53d4fc"
+        },
+        {
+          "bytes": 116161,
+          "path": "labs/ego_life_playground_v0/engine.py",
+          "sha256": "6f9cf7fb0d649df8969c875aa7710cd75357f8dbad6a8c3ab847729b49dd3eae"
+        },
+        {
+          "bytes": 25710,
+          "path": "labs/ego_life_playground_v0/microworld.py",
+          "sha256": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923"
+        },
+        {
+          "bytes": 13786,
+          "path": "labs/ego_life_playground_v0/store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 15470,
+          "path": "labs/ego_life_playground_v0/terminal.py",
+          "sha256": "c33262dd1e5c450b6a917f091c095c0614b9721ffabd420a738ced5eac3f2348"
+        },
+        {
+          "bytes": 38323,
+          "path": "labs/ego_life_playground_v0/visual_console.py",
+          "sha256": "dd79619d50341497638c8ddfc289fbd002365ed13d9c699f38b60e142e923ae5"
+        },
+        {
+          "bytes": 7293,
+          "path": "scripts/run_ego_life_playground_v0.py",
+          "sha256": "d4e51cea9a5aa6484277c238c199459d136fa9cc217916717872eaafcd958a75"
+        },
+        {
+          "bytes": 2659,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_C_FOUR_LIFE_LIFECYCLE.md",
+          "sha256": "63477c11bc38f137ac4e1e0958470e7ff9dcd5598023c270fc6f66dffc1b6ebe"
+        },
+        {
+          "bytes": 8406,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+          "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+        },
+        {
+          "bytes": 2578,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/COLLISION_RECORD.md",
+          "sha256": "51586d6dc8b55f8184638b1d30b39b6875959273d0229e91d57a41c7471c4416"
+        },
+        {
+          "bytes": 92961,
+          "path": "scripts/codex/verify_ego_v2_visual_life_lifecycle_001a.py",
+          "sha256": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+        },
+        {
+          "bytes": 35972,
+          "path": "artifacts/EGO-V2-P0-VISUAL-LIFE-CARD-C-001A/trace.jsonl",
+          "sha256": "209efb5c69a14b1d50d246b7e50a8dc8cc3fd4fce65b8784aa7dd5c2e27d4726"
+        }
+      ],
+      "producer_function": "PlaygroundWindow.Run -> PlaygroundController.dispatch -> SQLiteEventStore.append_step/recover_run",
+      "record_type": "evidence_record",
+      "run_id": "ego-v2-card-c-verify",
+      "seed_context_episode_ids": {
+        "scenario_id": "tk_controller_sqlite_terminal"
+      },
+      "value": true,
+      "verifier_source_hash": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+    },
+    "recursive_provenance_present": {
+      "aggregation_rule": "all nested metric/verdict records including trace records require complete provenance and raw_data cannot hide evidence signals",
+      "code_path_hash": "0e80352e9ec4e416a38d242b374b0c135c8ab3f7b91f3626fed38bb2fec6c739",
+      "engine_code_path_hash": "8e560de51e4c657bb04b590984be248b3f6100688c514afc29a21bef56d0bcb7",
+      "input_artifacts": [
+        {
+          "bytes": 27044,
+          "path": "labs/ego_life_playground_v0/claims.py",
+          "sha256": "4f22ef4e1038757d7afa85d024bdc52cbda7f51958b7cfee3d36593d25bbd7e8"
+        },
+        {
+          "bytes": 8193,
+          "path": "labs/ego_life_playground_v0/controller.py",
+          "sha256": "d8212d649a9d2ee6a2b177bca7233072324421d048fc03424cc66062ee53d4fc"
+        },
+        {
+          "bytes": 116161,
+          "path": "labs/ego_life_playground_v0/engine.py",
+          "sha256": "6f9cf7fb0d649df8969c875aa7710cd75357f8dbad6a8c3ab847729b49dd3eae"
+        },
+        {
+          "bytes": 25710,
+          "path": "labs/ego_life_playground_v0/microworld.py",
+          "sha256": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923"
+        },
+        {
+          "bytes": 13786,
+          "path": "labs/ego_life_playground_v0/store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 15470,
+          "path": "labs/ego_life_playground_v0/terminal.py",
+          "sha256": "c33262dd1e5c450b6a917f091c095c0614b9721ffabd420a738ced5eac3f2348"
+        },
+        {
+          "bytes": 38323,
+          "path": "labs/ego_life_playground_v0/visual_console.py",
+          "sha256": "dd79619d50341497638c8ddfc289fbd002365ed13d9c699f38b60e142e923ae5"
+        },
+        {
+          "bytes": 7293,
+          "path": "scripts/run_ego_life_playground_v0.py",
+          "sha256": "d4e51cea9a5aa6484277c238c199459d136fa9cc217916717872eaafcd958a75"
+        },
+        {
+          "bytes": 2659,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_C_FOUR_LIFE_LIFECYCLE.md",
+          "sha256": "63477c11bc38f137ac4e1e0958470e7ff9dcd5598023c270fc6f66dffc1b6ebe"
+        },
+        {
+          "bytes": 8406,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+          "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+        },
+        {
+          "bytes": 2578,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/COLLISION_RECORD.md",
+          "sha256": "51586d6dc8b55f8184638b1d30b39b6875959273d0229e91d57a41c7471c4416"
+        },
+        {
+          "bytes": 92961,
+          "path": "scripts/codex/verify_ego_v2_visual_life_lifecycle_001a.py",
+          "sha256": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+        },
+        {
+          "bytes": 35972,
+          "path": "artifacts/EGO-V2-P0-VISUAL-LIFE-CARD-C-001A/trace.jsonl",
+          "sha256": "209efb5c69a14b1d50d246b7e50a8dc8cc3fd4fce65b8784aa7dd5c2e27d4726"
+        }
+      ],
+      "producer_function": "validate_recursive_provenance",
+      "record_type": "evidence_record",
+      "run_id": "ego-v2-card-c-verify",
+      "seed_context_episode_ids": {
+        "scenario_ids": [
+          "censor_respawn",
+          "death_respawn_next_action",
+          "life_four_terminal",
+          "terminal_controller_sqlite"
+        ]
+      },
+      "value": true,
+      "verifier_source_hash": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+    },
+    "replay_tamper_controls_fail_closed": {
+      "aggregation_rule": "initial/command/trace/carry/policy-flag/fourth-result hostile controls must all fail closed where applicable",
+      "code_path_hash": "0e80352e9ec4e416a38d242b374b0c135c8ab3f7b91f3626fed38bb2fec6c739",
+      "engine_code_path_hash": "8e560de51e4c657bb04b590984be248b3f6100688c514afc29a21bef56d0bcb7",
+      "input_artifacts": [
+        {
+          "bytes": 27044,
+          "path": "labs/ego_life_playground_v0/claims.py",
+          "sha256": "4f22ef4e1038757d7afa85d024bdc52cbda7f51958b7cfee3d36593d25bbd7e8"
+        },
+        {
+          "bytes": 8193,
+          "path": "labs/ego_life_playground_v0/controller.py",
+          "sha256": "d8212d649a9d2ee6a2b177bca7233072324421d048fc03424cc66062ee53d4fc"
+        },
+        {
+          "bytes": 116161,
+          "path": "labs/ego_life_playground_v0/engine.py",
+          "sha256": "6f9cf7fb0d649df8969c875aa7710cd75357f8dbad6a8c3ab847729b49dd3eae"
+        },
+        {
+          "bytes": 25710,
+          "path": "labs/ego_life_playground_v0/microworld.py",
+          "sha256": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923"
+        },
+        {
+          "bytes": 13786,
+          "path": "labs/ego_life_playground_v0/store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 15470,
+          "path": "labs/ego_life_playground_v0/terminal.py",
+          "sha256": "c33262dd1e5c450b6a917f091c095c0614b9721ffabd420a738ced5eac3f2348"
+        },
+        {
+          "bytes": 38323,
+          "path": "labs/ego_life_playground_v0/visual_console.py",
+          "sha256": "dd79619d50341497638c8ddfc289fbd002365ed13d9c699f38b60e142e923ae5"
+        },
+        {
+          "bytes": 7293,
+          "path": "scripts/run_ego_life_playground_v0.py",
+          "sha256": "d4e51cea9a5aa6484277c238c199459d136fa9cc217916717872eaafcd958a75"
+        },
+        {
+          "bytes": 2659,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_C_FOUR_LIFE_LIFECYCLE.md",
+          "sha256": "63477c11bc38f137ac4e1e0958470e7ff9dcd5598023c270fc6f66dffc1b6ebe"
+        },
+        {
+          "bytes": 8406,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+          "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+        },
+        {
+          "bytes": 2578,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/COLLISION_RECORD.md",
+          "sha256": "51586d6dc8b55f8184638b1d30b39b6875959273d0229e91d57a41c7471c4416"
+        },
+        {
+          "bytes": 92961,
+          "path": "scripts/codex/verify_ego_v2_visual_life_lifecycle_001a.py",
+          "sha256": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+        },
+        {
+          "bytes": 35972,
+          "path": "artifacts/EGO-V2-P0-VISUAL-LIFE-CARD-C-001A/trace.jsonl",
+          "sha256": "209efb5c69a14b1d50d246b7e50a8dc8cc3fd4fce65b8784aa7dd5c2e27d4726"
+        }
+      ],
+      "producer_function": "build_replay_report",
+      "record_type": "evidence_record",
+      "run_id": "ego-v2-card-c-verify",
+      "seed_context_episode_ids": {
+        "scenario_ids": [
+          "censor_respawn",
+          "death_respawn_next_action",
+          "life_four_terminal",
+          "terminal_controller_sqlite"
+        ]
+      },
+      "value": true,
+      "verifier_source_hash": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+    },
+    "replay_two_fresh_processes_match": {
+      "aggregation_rule": "all declared bundles must replay identically locally and in two fresh processes from initial state plus commands without stored action inputs",
+      "code_path_hash": "0e80352e9ec4e416a38d242b374b0c135c8ab3f7b91f3626fed38bb2fec6c739",
+      "engine_code_path_hash": "8e560de51e4c657bb04b590984be248b3f6100688c514afc29a21bef56d0bcb7",
+      "input_artifacts": [
+        {
+          "bytes": 27044,
+          "path": "labs/ego_life_playground_v0/claims.py",
+          "sha256": "4f22ef4e1038757d7afa85d024bdc52cbda7f51958b7cfee3d36593d25bbd7e8"
+        },
+        {
+          "bytes": 8193,
+          "path": "labs/ego_life_playground_v0/controller.py",
+          "sha256": "d8212d649a9d2ee6a2b177bca7233072324421d048fc03424cc66062ee53d4fc"
+        },
+        {
+          "bytes": 116161,
+          "path": "labs/ego_life_playground_v0/engine.py",
+          "sha256": "6f9cf7fb0d649df8969c875aa7710cd75357f8dbad6a8c3ab847729b49dd3eae"
+        },
+        {
+          "bytes": 25710,
+          "path": "labs/ego_life_playground_v0/microworld.py",
+          "sha256": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923"
+        },
+        {
+          "bytes": 13786,
+          "path": "labs/ego_life_playground_v0/store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 15470,
+          "path": "labs/ego_life_playground_v0/terminal.py",
+          "sha256": "c33262dd1e5c450b6a917f091c095c0614b9721ffabd420a738ced5eac3f2348"
+        },
+        {
+          "bytes": 38323,
+          "path": "labs/ego_life_playground_v0/visual_console.py",
+          "sha256": "dd79619d50341497638c8ddfc289fbd002365ed13d9c699f38b60e142e923ae5"
+        },
+        {
+          "bytes": 7293,
+          "path": "scripts/run_ego_life_playground_v0.py",
+          "sha256": "d4e51cea9a5aa6484277c238c199459d136fa9cc217916717872eaafcd958a75"
+        },
+        {
+          "bytes": 2659,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_C_FOUR_LIFE_LIFECYCLE.md",
+          "sha256": "63477c11bc38f137ac4e1e0958470e7ff9dcd5598023c270fc6f66dffc1b6ebe"
+        },
+        {
+          "bytes": 8406,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+          "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+        },
+        {
+          "bytes": 2578,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/COLLISION_RECORD.md",
+          "sha256": "51586d6dc8b55f8184638b1d30b39b6875959273d0229e91d57a41c7471c4416"
+        },
+        {
+          "bytes": 92961,
+          "path": "scripts/codex/verify_ego_v2_visual_life_lifecycle_001a.py",
+          "sha256": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+        },
+        {
+          "bytes": 35972,
+          "path": "artifacts/EGO-V2-P0-VISUAL-LIFE-CARD-C-001A/trace.jsonl",
+          "sha256": "209efb5c69a14b1d50d246b7e50a8dc8cc3fd4fce65b8784aa7dd5c2e27d4726"
+        }
+      ],
+      "producer_function": "build_replay_report",
+      "record_type": "evidence_record",
+      "run_id": "ego-v2-card-c-verify",
+      "seed_context_episode_ids": {
+        "scenario_ids": [
+          "censor_respawn",
+          "death_respawn_next_action",
+          "life_four_terminal",
+          "terminal_controller_sqlite"
+        ]
+      },
+      "value": true,
+      "verifier_source_hash": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+    },
+    "single_controller_reducer_store_path": {
+      "aggregation_rule": "AST/source scan must find no second controller/reducer/store/UI bypass",
+      "code_path_hash": "0e80352e9ec4e416a38d242b374b0c135c8ab3f7b91f3626fed38bb2fec6c739",
+      "engine_code_path_hash": "8e560de51e4c657bb04b590984be248b3f6100688c514afc29a21bef56d0bcb7",
+      "input_artifacts": [
+        {
+          "bytes": 27044,
+          "path": "labs/ego_life_playground_v0/claims.py",
+          "sha256": "4f22ef4e1038757d7afa85d024bdc52cbda7f51958b7cfee3d36593d25bbd7e8"
+        },
+        {
+          "bytes": 8193,
+          "path": "labs/ego_life_playground_v0/controller.py",
+          "sha256": "d8212d649a9d2ee6a2b177bca7233072324421d048fc03424cc66062ee53d4fc"
+        },
+        {
+          "bytes": 116161,
+          "path": "labs/ego_life_playground_v0/engine.py",
+          "sha256": "6f9cf7fb0d649df8969c875aa7710cd75357f8dbad6a8c3ab847729b49dd3eae"
+        },
+        {
+          "bytes": 25710,
+          "path": "labs/ego_life_playground_v0/microworld.py",
+          "sha256": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923"
+        },
+        {
+          "bytes": 13786,
+          "path": "labs/ego_life_playground_v0/store.py",
+          "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+        },
+        {
+          "bytes": 15470,
+          "path": "labs/ego_life_playground_v0/terminal.py",
+          "sha256": "c33262dd1e5c450b6a917f091c095c0614b9721ffabd420a738ced5eac3f2348"
+        },
+        {
+          "bytes": 38323,
+          "path": "labs/ego_life_playground_v0/visual_console.py",
+          "sha256": "dd79619d50341497638c8ddfc289fbd002365ed13d9c699f38b60e142e923ae5"
+        },
+        {
+          "bytes": 7293,
+          "path": "scripts/run_ego_life_playground_v0.py",
+          "sha256": "d4e51cea9a5aa6484277c238c199459d136fa9cc217916717872eaafcd958a75"
+        },
+        {
+          "bytes": 2659,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_C_FOUR_LIFE_LIFECYCLE.md",
+          "sha256": "63477c11bc38f137ac4e1e0958470e7ff9dcd5598023c270fc6f66dffc1b6ebe"
+        },
+        {
+          "bytes": 8406,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+          "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+        },
+        {
+          "bytes": 2578,
+          "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/COLLISION_RECORD.md",
+          "sha256": "51586d6dc8b55f8184638b1d30b39b6875959273d0229e91d57a41c7471c4416"
+        },
+        {
+          "bytes": 92961,
+          "path": "scripts/codex/verify_ego_v2_visual_life_lifecycle_001a.py",
+          "sha256": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+        }
+      ],
+      "producer_function": "build_single_path_source_report",
+      "record_type": "evidence_record",
+      "run_id": "ego-v2-card-c-verify",
+      "seed_context_episode_ids": {
+        "source_scan": true
+      },
+      "value": true,
+      "verifier_source_hash": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+    }
+  },
+  "claim_blockers": [
+    "scripted_respawn_observable_equivalence",
+    "no_carry_behavior_equivalence_science_unadjudicated"
+  ],
+  "claim_ceiling": "Engineering lifecycle evidence only (science_weight=0): the local explicit V2 product path computes death/censor, pure respawn, four-life termination, exact carry/reset receipts, SQLite recovery, Terminal/Tk triggers, independent scripted baseline comparison, a test-only no-carry intervention, leakage controls, and fresh-process replay. Science adjudication is unauthorized. This does not establish electronic life, subjectivity, consciousness, emotion, agency, autonomy, general learning, memory causality, mechanism validity, or stable user benefit.",
+  "code_path_hash": "0e80352e9ec4e416a38d242b374b0c135c8ab3f7b91f3626fed38bb2fec6c739",
+  "enabled_status": "enabled=true; default_enabled=false; explicit launch only",
+  "engine_code_path_hash": "8e560de51e4c657bb04b590984be248b3f6100688c514afc29a21bef56d0bcb7",
+  "environment_blockers": [],
+  "failed_checks": [],
+  "input_artifacts": [
+    {
+      "bytes": 27044,
+      "path": "labs/ego_life_playground_v0/claims.py",
+      "sha256": "4f22ef4e1038757d7afa85d024bdc52cbda7f51958b7cfee3d36593d25bbd7e8"
+    },
+    {
+      "bytes": 8193,
+      "path": "labs/ego_life_playground_v0/controller.py",
+      "sha256": "d8212d649a9d2ee6a2b177bca7233072324421d048fc03424cc66062ee53d4fc"
+    },
+    {
+      "bytes": 116161,
+      "path": "labs/ego_life_playground_v0/engine.py",
+      "sha256": "6f9cf7fb0d649df8969c875aa7710cd75357f8dbad6a8c3ab847729b49dd3eae"
+    },
+    {
+      "bytes": 25710,
+      "path": "labs/ego_life_playground_v0/microworld.py",
+      "sha256": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923"
+    },
+    {
+      "bytes": 13786,
+      "path": "labs/ego_life_playground_v0/store.py",
+      "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+    },
+    {
+      "bytes": 15470,
+      "path": "labs/ego_life_playground_v0/terminal.py",
+      "sha256": "c33262dd1e5c450b6a917f091c095c0614b9721ffabd420a738ced5eac3f2348"
+    },
+    {
+      "bytes": 38323,
+      "path": "labs/ego_life_playground_v0/visual_console.py",
+      "sha256": "dd79619d50341497638c8ddfc289fbd002365ed13d9c699f38b60e142e923ae5"
+    },
+    {
+      "bytes": 7293,
+      "path": "scripts/run_ego_life_playground_v0.py",
+      "sha256": "d4e51cea9a5aa6484277c238c199459d136fa9cc217916717872eaafcd958a75"
+    },
+    {
+      "bytes": 2659,
+      "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_C_FOUR_LIFE_LIFECYCLE.md",
+      "sha256": "63477c11bc38f137ac4e1e0958470e7ff9dcd5598023c270fc6f66dffc1b6ebe"
+    },
+    {
+      "bytes": 8406,
+      "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+      "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+    },
+    {
+      "bytes": 2578,
+      "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/COLLISION_RECORD.md",
+      "sha256": "51586d6dc8b55f8184638b1d30b39b6875959273d0229e91d57a41c7471c4416"
+    },
+    {
+      "bytes": 92961,
+      "path": "scripts/codex/verify_ego_v2_visual_life_lifecycle_001a.py",
+      "sha256": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+    },
+    {
+      "bytes": 35972,
+      "path": "artifacts/EGO-V2-P0-VISUAL-LIFE-CARD-C-001A/trace.jsonl",
+      "sha256": "209efb5c69a14b1d50d246b7e50a8dc8cc3fd4fce65b8784aa7dd5c2e27d4726"
+    }
+  ],
+  "layer": "Layer 2 engineering plus bounded Layer 3 mechanism hypothesis",
+  "mainline_integration_status": "existing explicit local V2 product path",
+  "producer_function": "run_card_c_verification",
+  "provenance_scan": {
+    "aggregation_rule": "fail closed on any nested evidence signal missing full provenance and on any raw_data record carrying an evidence signal",
+    "code_path_hash": "0e80352e9ec4e416a38d242b374b0c135c8ab3f7b91f3626fed38bb2fec6c739",
+    "engine_code_path_hash": "8e560de51e4c657bb04b590984be248b3f6100688c514afc29a21bef56d0bcb7",
+    "evidence_record_count": 101,
+    "input_artifacts": [
+      {
+        "bytes": 27044,
+        "path": "labs/ego_life_playground_v0/claims.py",
+        "sha256": "4f22ef4e1038757d7afa85d024bdc52cbda7f51958b7cfee3d36593d25bbd7e8"
+      },
+      {
+        "bytes": 8193,
+        "path": "labs/ego_life_playground_v0/controller.py",
+        "sha256": "d8212d649a9d2ee6a2b177bca7233072324421d048fc03424cc66062ee53d4fc"
+      },
+      {
+        "bytes": 116161,
+        "path": "labs/ego_life_playground_v0/engine.py",
+        "sha256": "6f9cf7fb0d649df8969c875aa7710cd75357f8dbad6a8c3ab847729b49dd3eae"
+      },
+      {
+        "bytes": 25710,
+        "path": "labs/ego_life_playground_v0/microworld.py",
+        "sha256": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923"
+      },
+      {
+        "bytes": 13786,
+        "path": "labs/ego_life_playground_v0/store.py",
+        "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+      },
+      {
+        "bytes": 15470,
+        "path": "labs/ego_life_playground_v0/terminal.py",
+        "sha256": "c33262dd1e5c450b6a917f091c095c0614b9721ffabd420a738ced5eac3f2348"
+      },
+      {
+        "bytes": 38323,
+        "path": "labs/ego_life_playground_v0/visual_console.py",
+        "sha256": "dd79619d50341497638c8ddfc289fbd002365ed13d9c699f38b60e142e923ae5"
+      },
+      {
+        "bytes": 7293,
+        "path": "scripts/run_ego_life_playground_v0.py",
+        "sha256": "d4e51cea9a5aa6484277c238c199459d136fa9cc217916717872eaafcd958a75"
+      },
+      {
+        "bytes": 2659,
+        "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_C_FOUR_LIFE_LIFECYCLE.md",
+        "sha256": "63477c11bc38f137ac4e1e0958470e7ff9dcd5598023c270fc6f66dffc1b6ebe"
+      },
+      {
+        "bytes": 8406,
+        "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+        "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+      },
+      {
+        "bytes": 2578,
+        "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/COLLISION_RECORD.md",
+        "sha256": "51586d6dc8b55f8184638b1d30b39b6875959273d0229e91d57a41c7471c4416"
+      },
+      {
+        "bytes": 92961,
+        "path": "scripts/codex/verify_ego_v2_visual_life_lifecycle_001a.py",
+        "sha256": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+      }
+    ],
+    "offenders": [],
+    "producer_function": "validate_recursive_provenance",
+    "record_type": "evidence_record",
+    "run_id": "ego-v2-card-c-verify",
+    "seed_context_episode_ids": {
+      "recursive_provenance_scan": true
+    },
+    "verifier_source_hash": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+  },
+  "record_type": "evidence_record",
+  "run_id": "ego-v2-card-c-verify",
+  "science_adjudication_authorized": false,
+  "science_weight": 0,
+  "seed_context_episode_ids": {
+    "life_indices": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "scenario_ids": [
+      "censor_respawn",
+      "death_respawn_next_action",
+      "life_four_terminal",
+      "terminal_controller_sqlite"
+    ]
+  },
+  "source_scan": {
+    "aggregation_rule": "AST scan requires one controller, one reducer, one SQLite store; UI/runner may not call reducer/store mutation helpers; dispatch/recovery own their declared single calls; versions and table shape stay frozen",
+    "code_path_hash": "0e80352e9ec4e416a38d242b374b0c135c8ab3f7b91f3626fed38bb2fec6c739",
+    "controller_dispatch_append_step_calls": 1,
+    "controller_dispatch_compute_step_calls": 1,
+    "definition_counts": {
+      "PlaygroundController": 1,
+      "SQLiteEventStore": 1,
+      "compute_step": 1
+    },
+    "engine_code_path_hash": "8e560de51e4c657bb04b590984be248b3f6100688c514afc29a21bef56d0bcb7",
+    "input_artifacts": [
+      {
+        "bytes": 27044,
+        "path": "labs/ego_life_playground_v0/claims.py",
+        "sha256": "4f22ef4e1038757d7afa85d024bdc52cbda7f51958b7cfee3d36593d25bbd7e8"
+      },
+      {
+        "bytes": 8193,
+        "path": "labs/ego_life_playground_v0/controller.py",
+        "sha256": "d8212d649a9d2ee6a2b177bca7233072324421d048fc03424cc66062ee53d4fc"
+      },
+      {
+        "bytes": 116161,
+        "path": "labs/ego_life_playground_v0/engine.py",
+        "sha256": "6f9cf7fb0d649df8969c875aa7710cd75357f8dbad6a8c3ab847729b49dd3eae"
+      },
+      {
+        "bytes": 25710,
+        "path": "labs/ego_life_playground_v0/microworld.py",
+        "sha256": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923"
+      },
+      {
+        "bytes": 13786,
+        "path": "labs/ego_life_playground_v0/store.py",
+        "sha256": "ae3e0065f7ca361ae8109becb87b2e00ef72b4cbda7d699a3144847a0955aeff"
+      },
+      {
+        "bytes": 15470,
+        "path": "labs/ego_life_playground_v0/terminal.py",
+        "sha256": "c33262dd1e5c450b6a917f091c095c0614b9721ffabd420a738ced5eac3f2348"
+      },
+      {
+        "bytes": 38323,
+        "path": "labs/ego_life_playground_v0/visual_console.py",
+        "sha256": "dd79619d50341497638c8ddfc289fbd002365ed13d9c699f38b60e142e923ae5"
+      },
+      {
+        "bytes": 7293,
+        "path": "scripts/run_ego_life_playground_v0.py",
+        "sha256": "d4e51cea9a5aa6484277c238c199459d136fa9cc217916717872eaafcd958a75"
+      },
+      {
+        "bytes": 2659,
+        "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/CARD_C_FOUR_LIFE_LIFECYCLE.md",
+        "sha256": "63477c11bc38f137ac4e1e0958470e7ff9dcd5598023c270fc6f66dffc1b6ebe"
+      },
+      {
+        "bytes": 8406,
+        "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/PRODUCT_CONTRACT.md",
+        "sha256": "f6871ceb60c1c0821a90a586d6a3d191f44e26deed4606822a4b4d3ae8d21821"
+      },
+      {
+        "bytes": 2578,
+        "path": "docs/codex/tasks/EGO-V2-P0-VISUAL-LIFE-CONTRACT-001A/COLLISION_RECORD.md",
+        "sha256": "51586d6dc8b55f8184638b1d30b39b6875959273d0229e91d57a41c7471c4416"
+      },
+      {
+        "bytes": 92961,
+        "path": "scripts/codex/verify_ego_v2_visual_life_lifecycle_001a.py",
+        "sha256": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+      }
+    ],
+    "producer_function": "build_single_path_source_report",
+    "record_type": "evidence_record",
+    "run_id": "ego-v2-card-c-verify",
+    "runner_forbidden_calls": [],
+    "seed_context_episode_ids": {
+      "source_scan": true
+    },
+    "sqlite_migration_detected": false,
+    "store_recovery_compute_step_calls": 1,
+    "ui_forbidden_calls": {
+      "terminal.py": [],
+      "visual_console.py": []
+    },
+    "value": true,
+    "verifier_source_hash": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5",
+    "versions": {
+      "claim_memory": "ego.life_playground.claim_memory.v2",
+      "code_path_manifest": "ego.life_playground.code_path.v4",
+      "command": "ego.life_playground.command.v5",
+      "observer_frame": "ego.life_playground.microworld.public_frame.v5",
+      "policy_observation": "ego.life_playground.microworld.observation.v4",
+      "run": "ego.life_playground.run.v3",
+      "state": "ego.life_playground.state.v3",
+      "trace": "ego.life_playground.trace.v7",
+      "world": "ego.life_playground.microworld.state.v4"
+    }
+  },
+  "task_id": "EGO-V2-P0-VISUAL-LIFE-CARD-C-001A",
+  "verdict": "pass",
+  "verifier_source_hash": "16d8bd4bdeec390237711a0ae0e938e3b5d688685843518c19b037086db1edc5"
+}

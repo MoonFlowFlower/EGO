@@ -117,6 +117,9 @@ class PlaygroundController:
         trigger_source: str = "ui_step_button",
         injected_event: str | None = None,
     ) -> DispatchResult:
+        lifecycle = self.state.get("lifecycle", {})
+        if isinstance(lifecycle, Mapping) and lifecycle.get("trial_status") == "terminal":
+            raise EngineInvariantError("trial is terminal")
         command = make_command(
             sequence=int(self.state["clock"]["global_tick"]) + 1,
             trigger_source=trigger_source,
