@@ -1170,10 +1170,10 @@ def run_card_a_verification(output_dir: str | Path) -> dict[str, Any]:
         "schema_versions_match_contract": _check_record(
             contract_world["schema_versions"]
             == {
-                "state": "ego.life_playground.state.v3",
-                "run": "ego.life_playground.run.v3",
-                "command": "ego.life_playground.command.v5",
-                "trace": "ego.life_playground.trace.v7",
+                "state": "ego.life_playground.state.v4",
+                "run": "ego.life_playground.run.v4",
+                "command": "ego.life_playground.command.v6",
+                "trace": "ego.life_playground.trace.v8",
                 "world": "ego.life_playground.microworld.state.v4",
                 "observation": "ego.life_playground.microworld.observation.v4",
                 "public_frame": "ego.life_playground.microworld.public_frame.v5",

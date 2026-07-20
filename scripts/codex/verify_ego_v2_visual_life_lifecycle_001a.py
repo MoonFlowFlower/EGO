@@ -2,7 +2,7 @@
 """Callable engineering-evidence producer for Visual Life Card C.
 
 The verifier deliberately preserves the cheap explanation.  It measures the
-four-life reducer, persistence, UI, replay, baseline, and hostile controls; it
+sixteen-life reducer, persistence, UI, replay, baseline, and hostile controls; it
 does not turn any of those observations into a science adjudication.
 """
 
@@ -44,7 +44,7 @@ POLICY_SEED = 17
 WORLD_SEED = 30
 CLAIM_CEILING = (
     "Engineering lifecycle evidence only (science_weight=0): the local explicit V2 "
-    "product path computes death/censor, pure respawn, four-life termination, exact "
+    "product path computes death/censor, pure respawn, sixteen-life termination, exact "
     "carry/reset receipts, SQLite recovery, Terminal/Tk triggers, independent scripted "
     "baseline comparison, a test-only no-carry intervention, leakage controls, and "
     "fresh-process replay. Science adjudication is unauthorized. This does not establish "
@@ -138,7 +138,7 @@ ACCEPTANCE_GATE_IDS = [
     "declared_lifecycle_scenarios_observed",
     "death_respawn_next_action_chain",
     "censor_respawn_chain",
-    "life_four_terminal_reject",
+    "life_sixteen_terminal_reject",
     "real_terminal_controller_sqlite_path",
     "real_tk_run_controller_sqlite_path",
     "pure_respawn_carry_reset_exact",
@@ -431,7 +431,7 @@ def _active_life_state(
             }
             for index in range(1, life_index)
         ],
-        "fourth_life_result": None,
+        "terminal_life_result": None,
     }
     state["world"] = reset_world_for_life(state["world"], life_index)
     if state["clock"]["global_tick"]:
@@ -485,7 +485,7 @@ def _run_commands(
 def _build_declared_scenarios() -> dict[str, dict[str, Any]]:
     death_run = f"{RUN_ID}-death"
     censor_run = f"{RUN_ID}-censor"
-    fourth_run = f"{RUN_ID}-fourth"
+    fourth_run = f"{RUN_ID}-sixteenth"
     return {
         "death_respawn_next_action": _run_commands(
             scenario_id="death_respawn_next_action",
@@ -503,11 +503,14 @@ def _build_declared_scenarios() -> dict[str, dict[str, Any]]:
             ),
             command_count=2,
         ),
-        "life_four_terminal": _run_commands(
-            scenario_id="life_four_terminal",
+        "life_sixteen_terminal": _run_commands(
+            scenario_id="life_sixteen_terminal",
             run_id=fourth_run,
             initial_state=_active_life_state(
-                run_id=fourth_run, life_index=4, episode_tick=255, energy=0.90
+                run_id=fourth_run,
+                life_index=engine.MAX_LIVES,
+                episode_tick=255,
+                energy=0.90,
             ),
             command_count=1,
         ),
@@ -563,7 +566,7 @@ def _pure_respawn(trace: Mapping[str, Any]) -> bool:
     )
 
 
-def _life_four_rejection_report(
+def _life_sixteen_rejection_report(
     scenario: Mapping[str, Any], temp_root: Path
 ) -> dict[str, Any]:
     terminal_state = deepcopy(scenario["final_state"])
@@ -600,8 +603,8 @@ def _life_four_rejection_report(
             "engine.compute_step terminal guard + PlaygroundController.dispatch terminal guard"
         ),
         input_artifacts=_source_inputs(),
-        seed_context_episode_ids={"scenario_id": "life_four_terminal", "life_index": 4},
-        aggregation_rule="terminal life-four state must reject both reducer and controller dispatch",
+        seed_context_episode_ids={"scenario_id": "life_sixteen_terminal", "life_index": engine.MAX_LIVES},
+        aggregation_rule="terminal final-life state must reject both reducer and controller dispatch",
         direct_rejected=direct_rejected,
         direct_error_class=direct_error_class,
         controller_rejected=controller_rejected,
@@ -700,20 +703,14 @@ def _prefill_until_before_terminal(
     store: SQLiteEventStore, *, run_id: str
 ) -> tuple[dict[str, Any], dict[str, Any], int]:
     run_meta = engine.make_run_metadata(run_id, POLICY_SEED)
-    state = engine.initial_state(run_id=run_id, seed=WORLD_SEED)
+    state = _active_life_state(
+        run_id=run_id,
+        life_index=engine.MAX_LIVES,
+        episode_tick=engine.EPISODE_SPAN_TICKS - 1,
+        energy=0.90,
+    )
     store.create_run(run_meta, state)
-    for committed in range(0, 1500):
-        ui_probe_command = _command_for(state, trigger_source="ui_run_button")
-        ui_probe = engine.compute_step(state, ui_probe_command, run_meta)
-        if ui_probe.next_state["lifecycle"]["trial_status"] == "terminal":
-            return state, run_meta, committed
-        command = _command_for(state, trigger_source="headless_acceptance")
-        step = engine.compute_step(state, command, run_meta)
-        receipt = store.append_step(command, step.trace)
-        if not receipt.committed:
-            raise RuntimeError(f"prefill commit rejected: {receipt.error}")
-        state = step.next_state
-    raise RuntimeError("canonical run did not reach a pre-terminal state within 1500 commands")
+    return state, run_meta, 0
 
 
 def exercise_real_tk_run(
@@ -768,14 +765,18 @@ def exercise_real_tk_run(
                     and window.running is False
                 ),
             )
+            window._pause()
+            window.redraw()
+            root.update_idletasks()
+            root.update()
             row_counts = store.row_counts(run_id)
             latest_trace = deepcopy(controller.recovery.traces[-1])
-            fourth_result = deepcopy(controller.state["lifecycle"]["fourth_life_result"])
+            fourth_result = deepcopy(controller.state["lifecycle"]["terminal_life_result"])
             controls_disabled = all(
                 "disabled" in button.state()
                 for button in (window.step_button, window.run_button, window.inject_button)
             )
-            advanced_has_survival = "fourth_life_result" in window.advanced_text.get(
+            advanced_has_survival = "terminal_life_result" in window.advanced_text.get(
                 "1.0", "end-1c"
             )
             ok = (
@@ -783,7 +784,7 @@ def exercise_real_tk_run(
                 and row_counts == (before_count + 1, before_count + 1)
                 and latest_trace["trigger_source"] == "ui_run_button"
                 and latest_trace["lifecycle_after"]["trial_status"] == "terminal"
-                and latest_trace["life_termination"]["life_index"] == 4
+                and latest_trace["life_termination"]["life_index"] == engine.MAX_LIVES
                 and fourth_result is not None
                 and controls_disabled
                 and advanced_has_survival
@@ -799,7 +800,7 @@ def exercise_real_tk_run(
                 "final_command_count": fresh.command_count,
                 "final_trigger_source": latest_trace["trigger_source"],
                 "final_transition_kind": latest_trace["transition_kind"],
-                "fourth_life_result": fourth_result,
+                "terminal_life_result": fourth_result,
                 "controls_disabled": controls_disabled,
                 "advanced_has_survival": advanced_has_survival,
                 "fresh_recovery_terminal": fresh.state["lifecycle"]["trial_status"] == "terminal",
@@ -812,12 +813,12 @@ def exercise_real_tk_run(
             input_artifacts=_source_inputs(),
             seed_context_episode_ids={
                 "scenario_id": "tk_controller_sqlite_terminal",
-                "life_index": 4,
+                "life_index": engine.MAX_LIVES,
             },
             aggregation_rule=(
                 "prefill one canonical SQLite command chain to the last pre-terminal state, "
                 "then require the real hidden Tk Run control to commit and render the final "
-                "life-four transition through controller plus SQLite"
+                "life-sixteen transition through controller plus SQLite"
             ),
             run_id=run_id,
         )
@@ -882,8 +883,8 @@ def _baseline_respawn_summary(pre_respawn: Mapping[str, Any]) -> dict[str, Any]:
     ):
         raise ValueError("baseline respawn input must be awaiting_respawn")
     life_index = int(lifecycle["life_index"])
-    if not 1 <= life_index < 4:
-        raise ValueError("baseline respawn input life index must be 1..3")
+    if not 1 <= life_index < engine.MAX_LIVES:
+        raise ValueError("baseline respawn input life index must precede max_lives")
     next_life = life_index + 1
     expected_world = reset_world_for_life(pre_respawn["world"], next_life)
     expected_goal = _baseline_initial_goal(
@@ -922,7 +923,7 @@ def _baseline_respawn_summary(pre_respawn: Mapping[str, Any]) -> dict[str, Any]:
         "life_index": next_life,
         "awaiting_respawn": False,
         "life_results": deepcopy(lifecycle["life_results"]),
-        "fourth_life_result": deepcopy(lifecycle["fourth_life_result"]),
+        "terminal_life_result": deepcopy(lifecycle["terminal_life_result"]),
     }
     return {
         "transition_kind": "respawn",
@@ -941,11 +942,12 @@ def _baseline_terminal_output(terminal_state: Mapping[str, Any]) -> dict[str, An
         raise ValueError("baseline terminal input must be terminal")
     life_results = lifecycle["life_results"]
     if (
-        int(lifecycle["life_index"]) != 4
-        or len(life_results) != 4
-        or [int(item["life_index"]) for item in life_results] != [1, 2, 3, 4]
+        int(lifecycle["life_index"]) != engine.MAX_LIVES
+        or len(life_results) != engine.MAX_LIVES
+        or [int(item["life_index"]) for item in life_results]
+        != list(range(1, engine.MAX_LIVES + 1))
     ):
-        raise ValueError("baseline terminal input must contain exactly four ordered lives")
+        raise ValueError("baseline terminal input must contain the complete ordered lives")
     fourth = life_results[-1]
     derived_fourth_result = {
         "survival_ticks": min(int(fourth["survival_ticks"]), 256),
@@ -953,9 +955,9 @@ def _baseline_terminal_output(terminal_state: Mapping[str, Any]) -> dict[str, An
     }
     return {
         "trial_status": "terminal",
-        "life_index": 4,
+        "life_index": engine.MAX_LIVES,
         "life_results_hash": engine.canonical_hash(life_results),
-        "fourth_life_result": derived_fourth_result,
+        "terminal_life_result": derived_fourth_result,
         "further_dispatch": "rejected",
     }
 
@@ -1024,7 +1026,7 @@ def _candidate_terminal_output(terminal_state: Mapping[str, Any]) -> dict[str, A
         "trial_status": lifecycle["trial_status"],
         "life_index": lifecycle["life_index"],
         "life_results_hash": engine.canonical_hash(lifecycle["life_results"]),
-        "fourth_life_result": deepcopy(lifecycle["fourth_life_result"]),
+        "terminal_life_result": deepcopy(lifecycle["terminal_life_result"]),
         "further_dispatch": "rejected",
     }
 
@@ -1160,7 +1162,7 @@ def build_baseline_report(
         "censor_respawn": scenarios["censor_respawn"],
     }
     pre_respawn_states = [scenario["states"][1] for scenario in respawn_specs.values()]
-    terminal_states = [scenarios["life_four_terminal"]["final_state"]]
+    terminal_states = [scenarios["life_sixteen_terminal"]["final_state"]]
     baseline_output, independence_probe = _baseline_independence_probe(
         pre_respawn_states, terminal_states
     )
@@ -1208,7 +1210,7 @@ def build_baseline_report(
         "trial_status",
         "life_index",
         "life_results_hash",
-        "fourth_life_result",
+        "terminal_life_result",
         "further_dispatch",
     )
     terminal_matches = {
@@ -1216,7 +1218,7 @@ def build_baseline_report(
             baseline_terminal[field] == candidate_terminal[field],
             producer_function="build_baseline_report.terminal_match",
             input_artifacts=_source_inputs(),
-            seed_context_episode_ids={"scenario_id": "life_four_terminal", "component": field},
+            seed_context_episode_ids={"scenario_id": "life_sixteen_terminal", "component": field},
             aggregation_rule="scripted terminal output must equal candidate serialized terminal output",
             component=field,
             baseline_hash=engine.canonical_hash(baseline_terminal[field]),
@@ -1225,9 +1227,9 @@ def build_baseline_report(
         for field in terminal_fields
     }
     terminal_equivalent = all(record["value"] for record in terminal_matches.values())
-    comparisons["life_four_terminal"] = _evidence_payload(
+    comparisons["life_sixteen_terminal"] = _evidence_payload(
         {
-            "comparison_id": "life_four_terminal",
+            "comparison_id": "life_sixteen_terminal",
             "baseline_summary_hash": engine.canonical_hash(baseline_terminal),
             "candidate_summary_hash": engine.canonical_hash(candidate_terminal),
             "component_matches": terminal_matches,
@@ -1236,8 +1238,8 @@ def build_baseline_report(
         },
         producer_function="build_baseline_report.terminal_comparison",
         input_artifacts=_source_inputs(),
-        seed_context_episode_ids={"scenario_id": "life_four_terminal", "life_index": 4},
-        aggregation_rule="compare independently scripted terminal/fourth-life output to candidate state",
+        seed_context_episode_ids={"scenario_id": "life_sixteen_terminal", "life_index": engine.MAX_LIVES},
+        aggregation_rule="compare independently scripted final-life output to candidate state",
     )
 
     all_equivalent = all(item["observable_equivalent"] for item in comparisons.values())
@@ -1416,7 +1418,7 @@ def scan_policy_projection(
         "trial_status": "life_metadata",
         "awaiting_respawn": "life_metadata",
         "life_results": "life_metadata",
-        "fourth_life_result": "life_metadata",
+        "terminal_life_result": "life_metadata",
         "seed": "seed",
         "world_seed": "seed",
         "trial_seed": "seed",
@@ -1475,9 +1477,9 @@ def _bundle_for_replay(scenario: Mapping[str, Any]) -> dict[str, Any]:
         "expected_policy_flags": [trace["policy_invoked"] for trace in traces],
         "expected_carry_receipts": expected_carry_receipts,
     }
-    fourth = scenario["final_state"]["lifecycle"].get("fourth_life_result")
+    fourth = scenario["final_state"]["lifecycle"].get("terminal_life_result")
     if fourth is not None:
-        bundle["expected_fourth_life_result"] = deepcopy(fourth)
+        bundle["expected_terminal_life_result"] = deepcopy(fourth)
     return bundle
 
 
@@ -1508,12 +1510,12 @@ def _replay_bundle(bundle: Mapping[str, Any]) -> dict[str, Any]:
         actual = traces[index]["carry_reset_receipt"]
         if engine.canonical_json(actual) != engine.canonical_json(expected):
             raise RecoveryError("stored carry/reset receipt differs from recomputation")
-    if "expected_fourth_life_result" in bundle:
+    if "expected_terminal_life_result" in bundle:
         if (
-            state["lifecycle"]["fourth_life_result"]
-            != bundle["expected_fourth_life_result"]
+            state["lifecycle"]["terminal_life_result"]
+            != bundle["expected_terminal_life_result"]
         ):
-            raise RecoveryError("stored fourth-life result differs from recomputation")
+            raise RecoveryError("stored final-life result differs from recomputation")
     return {
         "scenario_id": bundle["scenario_id"],
         "trace_hashes": actual_trace_hashes,
@@ -1526,7 +1528,7 @@ def _replay_bundle(bundle: Mapping[str, Any]) -> dict[str, Any]:
             for trace in traces
             if trace.get("carry_reset_receipt") is not None
         },
-        "fourth_life_result": deepcopy(state["lifecycle"]["fourth_life_result"]),
+        "terminal_life_result": deepcopy(state["lifecycle"]["terminal_life_result"]),
         "final_state_hash": engine.state_hash(state),
     }
 
@@ -1562,8 +1564,8 @@ def _tamper_bundle(bundle: Mapping[str, Any], tamper_id: str) -> dict[str, Any]:
         tampered["expected_carry_receipts"][sequence]["model"]["after_hash"] = "0" * 64
     elif tamper_id == "policy_flag":
         tampered["expected_policy_flags"][0] = not tampered["expected_policy_flags"][0]
-    elif tamper_id == "fourth_life_result":
-        tampered["expected_fourth_life_result"]["survival_ticks"] = -1
+    elif tamper_id == "terminal_life_result":
+        tampered["expected_terminal_life_result"]["survival_ticks"] = -1
     else:
         raise ValueError(tamper_id)
     return tampered
@@ -1613,8 +1615,8 @@ def build_replay_report(
             tamper_ids = ["initial_state", "command", "stored_trace", "policy_flag"]
             if bundle["expected_carry_receipts"]:
                 tamper_ids.append("carry_receipt")
-            if "expected_fourth_life_result" in bundle:
-                tamper_ids.append("fourth_life_result")
+            if "expected_terminal_life_result" in bundle:
+                tamper_ids.append("terminal_life_result")
             by_scenario[scenario_id] = _evidence_payload(
                 {
                     "scenario_id": scenario_id,
@@ -1626,7 +1628,7 @@ def build_replay_report(
                             "selected_actions": local["selected_actions"],
                             "life_indices": local["life_indices"],
                             "carry_receipt_hashes": local["carry_receipt_hashes"],
-                            "fourth_life_result": local["fourth_life_result"],
+                            "terminal_life_result": local["terminal_life_result"],
                             "final_state_hash": local["final_state_hash"],
                         }
                     ),
@@ -1774,15 +1776,15 @@ def build_single_path_source_report() -> dict[str, Any]:
         "code_path_manifest": engine.compute_code_path_manifest()["schema_version"],
     }
     expected_versions = {
-        "state": "ego.life_playground.state.v3",
-        "run": "ego.life_playground.run.v3",
-        "command": "ego.life_playground.command.v5",
-        "trace": "ego.life_playground.trace.v7",
+        "state": "ego.life_playground.state.v4",
+        "run": "ego.life_playground.run.v4",
+        "command": "ego.life_playground.command.v6",
+        "trace": "ego.life_playground.trace.v8",
         "world": "ego.life_playground.microworld.state.v4",
         "policy_observation": "ego.life_playground.microworld.observation.v4",
         "observer_frame": "ego.life_playground.microworld.public_frame.v5",
         "claim_memory": "ego.life_playground.claim_memory.v2",
-        "code_path_manifest": "ego.life_playground.code_path.v4",
+        "code_path_manifest": "ego.life_playground.code_path.v5",
     }
     ok = (
         definition_counts
@@ -1889,7 +1891,7 @@ def _trace_records(
                 "value": tk_live["value"],
                 "tk_available": tk_live["tk_available"],
                 "final_trace_hash": tk_live.get("final_trace_hash"),
-                "fourth_life_result": deepcopy(tk_live.get("fourth_life_result")),
+                "terminal_life_result": deepcopy(tk_live.get("terminal_life_result")),
             },
             producer_function="trace_record.tk_live",
             input_artifacts=_source_inputs(),
@@ -1909,8 +1911,8 @@ def run_card_c_verification(output_dir: str | Path) -> dict[str, Any]:
 
     with tempfile.TemporaryDirectory(prefix="ego-v2-card-c-live-") as temp_name:
         temp_root = Path(temp_name)
-        life_four_reject = _life_four_rejection_report(
-            scenarios["life_four_terminal"], temp_root
+        life_sixteen_reject = _life_sixteen_rejection_report(
+            scenarios["life_sixteen_terminal"], temp_root
         )
         terminal_live = exercise_real_terminal_run(temp_root)
         tk_live = exercise_real_tk_run(temp_root)
@@ -1965,7 +1967,7 @@ def run_card_c_verification(output_dir: str | Path) -> dict[str, Any]:
             "leakage": leakage,
             "replay": replay,
             "source_scan": source_scan,
-            "life_four_reject": life_four_reject,
+            "life_sixteen_reject": life_sixteen_reject,
             "terminal_live": {
                 key: value for key, value in terminal_live.items() if key != "bundle_source"
             },
@@ -1976,7 +1978,7 @@ def run_card_c_verification(output_dir: str | Path) -> dict[str, Any]:
 
     death = scenarios["death_respawn_next_action"]
     censor = scenarios["censor_respawn"]
-    fourth = scenarios["life_four_terminal"]
+    fourth = scenarios["life_sixteen_terminal"]
     death_transitions = [trace["transition_kind"] for trace in death["traces"]]
     death_flags = [trace["policy_invoked"] for trace in death["traces"]]
     censor_transitions = [trace["transition_kind"] for trace in censor["traces"]]
@@ -1990,7 +1992,7 @@ def run_card_c_verification(output_dir: str | Path) -> dict[str, Any]:
     checks = {
         "declared_lifecycle_scenarios_observed": _check_record(
             set(scenarios)
-            == {"death_respawn_next_action", "censor_respawn", "life_four_terminal"},
+            == {"death_respawn_next_action", "censor_respawn", "life_sixteen_terminal"},
             producer_function="_build_declared_scenarios",
             input_artifacts=inputs,
             seed_context_episode_ids={"scenario_ids": sorted(scenarios)},
@@ -2026,17 +2028,18 @@ def run_card_c_verification(output_dir: str | Path) -> dict[str, Any]:
             seed_context_episode_ids={"scenario_id": "censor_respawn", "life_indices": [1, 2]},
             aggregation_rule="living tick 256 must censor and the next command must be pure respawn",
         ),
-        "life_four_terminal_reject": _check_record(
+        "life_sixteen_terminal_reject": _check_record(
             fourth["final_state"]["lifecycle"]["trial_status"] == "terminal"
-            and len(fourth["final_state"]["lifecycle"]["life_results"]) == 4
-            and fourth["final_state"]["lifecycle"]["fourth_life_result"]
+            and len(fourth["final_state"]["lifecycle"]["life_results"])
+            == engine.MAX_LIVES
+            and fourth["final_state"]["lifecycle"]["terminal_life_result"]
             == {"survival_ticks": 256, "censored": True}
-            and life_four_reject["value"] is True,
+            and life_sixteen_reject["value"] is True,
             producer_function="engine.compute_step + terminal guards",
             input_artifacts=inputs,
-            seed_context_episode_ids={"scenario_id": "life_four_terminal", "life_index": 4},
+            seed_context_episode_ids={"scenario_id": "life_sixteen_terminal", "life_index": engine.MAX_LIVES},
             aggregation_rule=(
-                "life-four censor must end the trial, emit the fourth-life metric, and reject "
+                "final-life censor must end the trial, emit the terminal-life metric, and reject "
                 "both reducer and controller follow-up dispatch"
             ),
         ),
@@ -2185,7 +2188,10 @@ def run_card_c_verification(output_dir: str | Path) -> dict[str, Any]:
         },
         producer_function="run_card_c_verification",
         input_artifacts=[*inputs, trace_input],
-        seed_context_episode_ids={"scenario_ids": sorted(replay["scenarios"]), "life_indices": [1, 2, 3, 4]},
+        seed_context_episode_ids={
+            "scenario_ids": sorted(replay["scenarios"]),
+            "life_indices": list(range(1, engine.MAX_LIVES + 1)),
+        },
         aggregation_rule=(
             "pass iff every declared Card-C engineering check is computed true; baseline or "
             "ablation equivalence blocks science claims but is not an engineering failure"

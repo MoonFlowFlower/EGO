@@ -10,7 +10,7 @@ from tkinter import filedialog, messagebox, simpledialog, ttk
 from typing import Any, Mapping
 
 from .controller import PlaygroundController, public_state_hash
-from .engine import DEFAULT_INTERVENTIONS, DEFAULT_PRIVATE_WORLD_SEED, EngineInvariantError
+from .engine import DEFAULT_INTERVENTIONS, DEFAULT_PRIVATE_WORLD_SEED, EngineInvariantError, MAX_LIVES
 from .microworld import ALLOWED_WORLD_EVENTS, FACING_DELTAS, make_public_frame
 from .store import RecoveryFrame, SQLiteEventStore, default_db_path
 from .terminal import build_terminal_snapshot
@@ -23,9 +23,9 @@ def _lifecycle_payload(state: Mapping[str, Any], trace: Mapping[str, Any] | None
     return {
         "lifecycle": lifecycle,
         "life_survival": [int(item["survival_ticks"]) for item in results],
-        "fourth_life_result": None
+        "terminal_life_result": None
         if not isinstance(lifecycle, dict)
-        else deepcopy(lifecycle.get("fourth_life_result")),
+        else deepcopy(lifecycle.get("terminal_life_result")),
         "transition_kind": trace_mapping.get("transition_kind"),
         "policy_invoked": None
         if trace is None
@@ -33,6 +33,31 @@ def _lifecycle_payload(state: Mapping[str, Any], trace: Mapping[str, Any] | None
         "life_termination": deepcopy(trace_mapping.get("life_termination")),
         "carry_reset_receipt": deepcopy(trace_mapping.get("carry_reset_receipt")),
     }
+
+
+def _survival_window_summary(life_survival: list[int]) -> dict[str, float | None]:
+    early = life_survival[:4]
+    late = life_survival[12:16]
+    return {
+        "lives_1_4_mean": None if len(early) < 4 else round(sum(early) / 4.0, 3),
+        "lives_13_16_mean": None if len(late) < 4 else round(sum(late) / 4.0, 3),
+    }
+
+
+def _resource_success_count(controller: PlaygroundController, *, through_sequence: int) -> int:
+    recovery = getattr(controller, "recovery", None)
+    frames = getattr(recovery, "frames", ())
+    return sum(
+        1
+        for recovered_frame in frames
+        if recovered_frame.sequence <= through_sequence
+        and isinstance(recovered_frame.trace, Mapping)
+        and bool(
+            (recovered_frame.trace.get("survival_learning") or {}).get(
+                "successful_resource_interaction"
+            )
+        )
+    )
 
 _TOKEN_COLORS = {
     "self": "#73d2de",
@@ -108,6 +133,7 @@ def build_tk_trace_payload(
             "goal_progress": deepcopy(trace.get("goal_progress")),
             "goal_transition": deepcopy(trace.get("goal_transition")),
             "goal_after": deepcopy(trace.get("goal_after")),
+            "survival_learning": deepcopy(trace.get("survival_learning")),
         }
     )
     return payload
@@ -155,7 +181,9 @@ def _format_visual(visual: list[list[str]]) -> str:
     return "\n".join(" ".join(row) for row in visual)
 
 
-def build_chinese_causal_view(frame: RecoveryFrame) -> dict[str, Any]:
+def build_chinese_causal_view(
+    frame: RecoveryFrame, *, controller: PlaygroundController | None = None
+) -> dict[str, Any]:
     """Summarize one recovered frame without adding a second transition path."""
 
     payload = build_tk_trace_payload(frame.state, frame.trace)
@@ -176,9 +204,10 @@ def build_chinese_causal_view(frame: RecoveryFrame) -> dict[str, Any]:
             "候选与选择": {"选择动作": "未记录／初始状态", "触发来源": "未记录／初始状态"},
             "生命周期": {
                 "当前状态": payload["lifecycle"].get("trial_status"),
-                "当前生命": payload["lifecycle"].get("life_index"),
+                "当前生命": f"{payload['lifecycle'].get('life_index')}/{MAX_LIVES}",
                 "生存刻度": deepcopy(payload["life_survival"]),
-                "第四生命结果": deepcopy(payload["fourth_life_result"]),
+                "终局生命结果": deepcopy(payload["terminal_life_result"]),
+                "早晚生命均值": _survival_window_summary(payload["life_survival"]),
             },
             "结果与变化": {"世界结果": "未记录／初始状态", "状态哈希": payload["public_state_hash"]},
         }
@@ -186,6 +215,9 @@ def build_chinese_causal_view(frame: RecoveryFrame) -> dict[str, Any]:
     world_transition = _copy_mapping(trace.get("world_transition"))
     goal_progress = _copy_mapping(trace.get("goal_progress"))
     goal_transition = _copy_mapping(trace.get("goal_transition"))
+    survival_trace = _copy_mapping(trace.get("survival_learning"))
+    selection = _copy_mapping(survival_trace.get("selection"))
+    update = _copy_mapping(survival_trace.get("update"))
     return {
         "观察者全局视图": {
             "位置": str(observer_world["agent"]["position"]),
@@ -210,13 +242,27 @@ def build_chinese_causal_view(frame: RecoveryFrame) -> dict[str, Any]:
         },
         "生命周期": {
             "当前状态": payload["lifecycle"].get("trial_status"),
-            "当前生命": payload["lifecycle"].get("life_index"),
+            "当前生命": f"{payload['lifecycle'].get('life_index')}/{MAX_LIVES}",
             "生存刻度": deepcopy(payload["life_survival"]),
-            "第四生命结果": deepcopy(payload["fourth_life_result"]),
+            "终局生命结果": deepcopy(payload["terminal_life_result"]),
+            "早晚生命均值": _survival_window_summary(payload["life_survival"]),
             "转换类型": payload["transition_kind"],
             "调用策略": payload["policy_invoked"],
             "上一生命终结": deepcopy(payload["life_termination"]),
             "重生回执": deepcopy(payload["carry_reset_receipt"]),
+        },
+        "生存学习": {
+            "模式": selection.get("selection_mode"),
+            "epsilon": selection.get("epsilon"),
+            "动作Q值": deepcopy(selection.get("q_by_action", {})),
+            "reward": update.get("reward"),
+            "TD目标": update.get("td_target"),
+            "TD误差": update.get("td_error"),
+            "Q表大小": survival_trace.get("q_table_size"),
+            "更新次数": survival_trace.get("update_count"),
+            "成功资源交互次数": None
+            if controller is None
+            else _resource_success_count(controller, through_sequence=frame.sequence),
         },
         "结果与变化": {
             "世界结果": world_transition.get("outcome_type"),
@@ -241,7 +287,10 @@ def build_advanced_details(
         "clock": deepcopy(frame.state["clock"]),
         "lifecycle": deepcopy(frame.state.get("lifecycle")),
         "life_survival": deepcopy(payload.get("life_survival")),
-        "fourth_life_result": deepcopy(payload.get("fourth_life_result")),
+        "terminal_life_result": deepcopy(payload.get("terminal_life_result")),
+        "survival_window_summary": _survival_window_summary(
+            deepcopy(payload.get("life_survival") or [])
+        ),
         "before_pose": before_pose,
         "after_pose": after_pose,
         "public_state_hash": payload["public_state_hash"],
@@ -253,6 +302,10 @@ def build_advanced_details(
         "policy_invoked": payload.get("policy_invoked"),
         "life_termination": deepcopy(payload.get("life_termination")),
         "carry_reset_receipt": deepcopy(payload.get("carry_reset_receipt")),
+        "survival_learning": deepcopy(trace.get("survival_learning")),
+        "successful_resource_interactions": _resource_success_count(
+            controller, through_sequence=frame.sequence
+        ),
         "command_hash": trace.get("command_hash"),
         "trace_hash": trace.get("trace_hash"),
         "prev_trace_hash": trace.get("prev_trace_hash"),
@@ -347,6 +400,7 @@ class PlaygroundWindow:
         self._animating = False
         self._timeline_refreshing = False
         self.inject_event_var = tk.StringVar(value="")
+        self.survival_learning_mode_var = tk.StringVar(value="off")
         self.sequence_var = tk.StringVar(value="")
         self.status_var = tk.StringVar(value="")
 
@@ -384,6 +438,15 @@ class PlaygroundWindow:
             width=18,
             state="readonly",
         ).pack(side=tk.LEFT, padx=(0, 12))
+        ttk.Label(controls, text="Survival learning").pack(side=tk.LEFT, padx=(0, 4))
+        self.survival_learning_mode_box = ttk.Combobox(
+            controls,
+            textvariable=self.survival_learning_mode_var,
+            values=("off", "expected_sarsa_lambda"),
+            width=22,
+            state="readonly",
+        )
+        self.survival_learning_mode_box.pack(side=tk.LEFT, padx=(0, 12))
         ttk.Button(controls, text="Inspect", command=self._inspect_latest).pack(
             side=tk.LEFT, padx=(0, 6)
         )
@@ -464,12 +527,13 @@ class PlaygroundWindow:
         candidate_box.pack(fill=tk.BOTH, expand=True, pady=(0, 8))
         self.candidate_tree = ttk.Treeview(
             candidate_box,
-            columns=("action", "score", "goal", "memory"),
+            columns=("action", "q", "score", "goal", "memory"),
             show="headings",
             height=6,
         )
         for column, heading, width in (
             ("action", "Action", 90),
+            ("q", "Q", 75),
             ("score", "Score", 90),
             ("goal", "Goal", 90),
             ("memory", "Memory", 90),
@@ -507,7 +571,10 @@ class PlaygroundWindow:
         return isinstance(lifecycle, Mapping) and lifecycle.get("trial_status") == "terminal"
 
     def _interventions(self) -> dict[str, str]:
-        return deepcopy(DEFAULT_INTERVENTIONS)
+        return dict(
+            DEFAULT_INTERVENTIONS,
+            survival_learning_mode=self.survival_learning_mode_var.get(),
+        )
 
     def _dispatch(self, *, trigger_source: str, injected_event: str | None = None) -> bool:
         if self._closed or self._animating or self._is_historical() or self._is_terminal():
@@ -736,6 +803,7 @@ class PlaygroundWindow:
                 tk.END,
                 values=(
                     candidate.get("action"),
+                    _format_float(candidate.get("survival_q")),
                     _format_float(candidate.get("total_score")),
                     _format_float(candidate.get("current_goal_deficit_reduction")),
                     _format_float(candidate.get("memory_bias")),
@@ -857,6 +925,9 @@ class PlaygroundWindow:
         self.inject_button.state(
             ["disabled"] if blocked or terminal or self.running or self._animating else ["!disabled"]
         )
+        self.survival_learning_mode_box.configure(
+            state="disabled" if blocked or terminal or self.running or self._animating else "readonly"
+        )
 
     def redraw(
         self,
@@ -872,7 +943,7 @@ class PlaygroundWindow:
         self._draw_observer_world(frame, observer_pose=observer_pose)
         self._draw_policy_visual(payload["policy_visual"]["visual"])
         self._draw_candidates(frame.trace)
-        causal_view = build_chinese_causal_view(frame)
+        causal_view = build_chinese_causal_view(frame, controller=self.controller)
         _set_text(
             self.explanation_text,
             json.dumps(causal_view, indent=2, ensure_ascii=False, sort_keys=True),
@@ -890,7 +961,7 @@ class PlaygroundWindow:
         clock = frame.state["clock"]
         self.sequence_var.set(
             f"Sequence {frame.sequence} / {self._latest_sequence()} · "
-            f"life {int(clock['episode_index']) + 1} · tick {clock['episode_tick']}"
+            f"life {int(clock['episode_index']) + 1}/{MAX_LIVES} · tick {clock['episode_tick']}"
         )
         trigger = None if frame.trace is None else frame.trace.get("trigger_source")
         lifecycle = payload["lifecycle"]
@@ -901,8 +972,8 @@ class PlaygroundWindow:
             f"trial={lifecycle.get('trial_status')}",
             f"survival={payload['life_survival']}",
         ]
-        if payload["fourth_life_result"] is not None:
-            status_bits.append(f"fourth={payload['fourth_life_result']}")
+        if payload["terminal_life_result"] is not None:
+            status_bits.append(f"terminal_life={payload['terminal_life_result']}")
         self.status_var.set(
             " ".join(status_bits)
         )

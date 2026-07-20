@@ -15,6 +15,7 @@ from labs.ego_life_playground_v0.controller import PlaygroundController
 from labs.ego_life_playground_v0.engine import (
     DEFAULT_INTERVENTIONS,
     EPISODE_SPAN_TICKS,
+    MAX_LIVES,
     EngineInvariantError,
     canonical_hash,
     compute_step,
@@ -102,7 +103,7 @@ def _death_ready_state(*, run_id: str, life_index: int = 1, global_tick: int = 0
             "life_index": life_index,
             "awaiting_respawn": False,
             "life_results": prior_results,
-            "fourth_life_result": None,
+            "terminal_life_result": None,
         }
         state["last_action"] = "rest"
         state["last_command_hash"] = "a" * 64
@@ -147,7 +148,7 @@ def _valid_fast_forward_state(
         "life_index": life_index,
         "awaiting_respawn": False,
         "life_results": prior_results,
-        "fourth_life_result": None,
+        "terminal_life_result": None,
     }
     state["last_action"] = "rest"
     state["last_command_hash"] = "a" * 64
@@ -166,7 +167,7 @@ def _respawning_state(monkeypatch: pytest.MonkeyPatch, *, run_id: str, life_inde
 def test_card_c_initial_lifecycle_and_episode_contract():
     state = initial_state(run_id="card-c-initial")
 
-    assert state["schema_version"] == "ego.life_playground.state.v3"
+    assert state["schema_version"] == "ego.life_playground.state.v4"
     assert state["clock"] == {
         "global_tick": 0,
         "episode_index": 0,
@@ -179,7 +180,7 @@ def test_card_c_initial_lifecycle_and_episode_contract():
         "life_index": 1,
         "awaiting_respawn": False,
         "life_results": [],
-        "fourth_life_result": None,
+        "terminal_life_result": None,
     }
 
 
@@ -395,14 +396,14 @@ def test_card_c_death_wins_over_censor_at_tick_256(monkeypatch: pytest.MonkeyPat
     }
 
 
-def test_card_c_life_four_terminal_rejects_further_compute_and_controller_dispatch(
+def test_card_c_life_sixteen_terminal_rejects_further_compute_and_controller_dispatch(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ):
-    run_id = "card-c-life-four"
+    run_id = "card-c-life-sixteen"
     _force_action(monkeypatch, "rest")
     before_terminal = _valid_fast_forward_state(
         run_id=run_id,
-        life_index=4,
+        life_index=MAX_LIVES,
         episode_tick=255,
         energy=0.90,
     )
@@ -410,19 +411,19 @@ def test_card_c_life_four_terminal_rejects_further_compute_and_controller_dispat
     terminal = terminal_result.next_state
 
     assert terminal_result.trace["life_termination"] == {
-        "life_index": 4,
+        "life_index": MAX_LIVES,
         "survival_ticks": 256,
         "censored": True,
         "termination": "censored",
     }
     assert terminal["lifecycle"]["trial_status"] == "terminal"
     assert terminal["lifecycle"]["awaiting_respawn"] is False
-    assert len(terminal["lifecycle"]["life_results"]) == 4
-    assert terminal["lifecycle"]["fourth_life_result"] == {"survival_ticks": 256, "censored": True}
+    assert len(terminal["lifecycle"]["life_results"]) == MAX_LIVES
+    assert terminal["lifecycle"]["terminal_life_result"] == {"survival_ticks": 256, "censored": True}
     with pytest.raises(EngineInvariantError, match="terminal"):
         compute_step(terminal, _command_for(terminal), _run_meta(run_id))
 
-    db_path = tmp_path / "card-c-life-four.sqlite3"
+    db_path = tmp_path / "card-c-life-sixteen.sqlite3"
     with SQLiteEventStore(db_path) as store:
         controller = PlaygroundController(store, run_id=run_id, seed=17)
         controller.state = deepcopy(terminal)
@@ -430,14 +431,14 @@ def test_card_c_life_four_terminal_rejects_further_compute_and_controller_dispat
             controller.dispatch(trigger_source="ui_step_button")
 
 
-def test_card_c_life_four_death_precedence_generates_terminal_without_life_five(
+def test_card_c_life_sixteen_death_precedence_generates_terminal_without_life_seventeen(
     monkeypatch: pytest.MonkeyPatch,
 ):
-    run_id = "card-c-life-four-death"
+    run_id = "card-c-life-sixteen-death"
     _force_action(monkeypatch, "turn_left")
     before_terminal = _valid_fast_forward_state(
         run_id=run_id,
-        life_index=4,
+        life_index=MAX_LIVES,
         episode_tick=255,
         energy=0.014,
     )
@@ -446,19 +447,45 @@ def test_card_c_life_four_death_precedence_generates_terminal_without_life_five(
 
     assert result.trace["energy_after"] == pytest.approx(0.0)
     assert result.trace["life_termination"] == {
-        "life_index": 4,
+        "life_index": MAX_LIVES,
         "survival_ticks": 256,
         "censored": False,
         "termination": "death",
     }
     assert result.next_state["lifecycle"]["trial_status"] == "terminal"
-    assert len(result.next_state["lifecycle"]["life_results"]) == 4
-    assert result.next_state["lifecycle"]["fourth_life_result"] == {
+    assert len(result.next_state["lifecycle"]["life_results"]) == MAX_LIVES
+    assert result.next_state["lifecycle"]["terminal_life_result"] == {
         "survival_ticks": 256,
         "censored": False,
     }
     with pytest.raises(EngineInvariantError, match="terminal"):
         compute_step(result.next_state, _command_for(result.next_state), _run_meta(run_id))
+
+
+def test_card_c_life_fifteen_can_respawn_into_life_sixteen(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    run_id = "card-c-life-fifteen-respawn"
+    _force_action(monkeypatch, "rest")
+    before = _valid_fast_forward_state(
+        run_id=run_id,
+        life_index=MAX_LIVES - 1,
+        episode_tick=255,
+        energy=0.90,
+    )
+
+    awaiting = compute_step(before, _command_for(before), _run_meta(run_id))
+    assert awaiting.next_state["lifecycle"]["trial_status"] == "awaiting_respawn"
+    assert awaiting.next_state["lifecycle"]["life_index"] == MAX_LIVES - 1
+
+    respawned = compute_step(
+        awaiting.next_state,
+        _command_for(awaiting.next_state),
+        _run_meta(run_id),
+    )
+    assert respawned.next_state["lifecycle"]["trial_status"] == "active"
+    assert respawned.next_state["lifecycle"]["life_index"] == MAX_LIVES
+    assert respawned.next_state["clock"]["episode_index"] == MAX_LIVES - 1
 
 
 def test_card_c_respawn_rejects_injected_event(monkeypatch: pytest.MonkeyPatch):

@@ -6,7 +6,7 @@ from copy import deepcopy
 from typing import Any, Mapping
 
 from .controller import DispatchResult, PlaygroundController, public_state_hash
-from .engine import DEFAULT_INTERVENTIONS, EngineInvariantError
+from .engine import DEFAULT_INTERVENTIONS, EngineInvariantError, MAX_LIVES
 from .microworld import (
     ALLOWED_WORLD_EVENTS,
     make_public_frame,
@@ -24,9 +24,9 @@ def _lifecycle_summary(state: Mapping[str, Any]) -> dict[str, Any]:
     return {
         "lifecycle": lifecycle,
         "life_survival": [int(item["survival_ticks"]) for item in results],
-        "fourth_life_result": None
+        "terminal_life_result": None
         if not isinstance(lifecycle, dict)
-        else deepcopy(lifecycle.get("fourth_life_result")),
+        else deepcopy(lifecycle.get("terminal_life_result")),
     }
 
 def _timeline_from_recovery(recovery: RecoveryResult) -> list[dict[str, Any]]:
@@ -65,6 +65,7 @@ def _timeline_from_recovery(recovery: RecoveryResult) -> list[dict[str, Any]]:
             "policy_invoked": bool(trace_mapping.get("policy_invoked")) if trace is not None else None,
             "life_termination": deepcopy(trace_mapping.get("life_termination")),
             "carry_reset_receipt": deepcopy(trace_mapping.get("carry_reset_receipt")),
+            "survival_learning": deepcopy(trace_mapping.get("survival_learning")),
             "public_state_hash": public_state_hash(frame.state),
         }
         entry.update(_lifecycle_summary(frame.state))
@@ -95,6 +96,19 @@ def build_terminal_snapshot(controller: PlaygroundController) -> dict[str, Any]:
         )
     world_frame = make_public_frame(state, trace)
     lifecycle_summary = _lifecycle_summary(state)
+    life_survival = lifecycle_summary["life_survival"]
+    early = life_survival[:4]
+    late = life_survival[12:16]
+    resource_successes = sum(
+        1
+        for recovered_frame in recovery.frames
+        if isinstance(recovered_frame.trace, Mapping)
+        and bool(
+            (recovered_frame.trace.get("survival_learning") or {}).get(
+                "successful_resource_interaction"
+            )
+        )
+    )
     return {
         "run_id": controller.run_id,
         "world": world_frame,
@@ -160,6 +174,13 @@ def build_terminal_snapshot(controller: PlaygroundController) -> dict[str, Any]:
         "policy_invoked": bool(trace_mapping.get("policy_invoked")) if trace is not None else None,
         "life_termination": deepcopy(trace_mapping.get("life_termination")),
         "carry_reset_receipt": deepcopy(trace_mapping.get("carry_reset_receipt")),
+        "survival_learning": deepcopy(trace_mapping.get("survival_learning")),
+        "survival_learning_summary": {
+            "max_lives": MAX_LIVES,
+            "lives_1_4_mean": None if len(early) < 4 else round(sum(early) / 4.0, 3),
+            "lives_13_16_mean": None if len(late) < 4 else round(sum(late) / 4.0, 3),
+            "successful_resource_interactions": resource_successes,
+        },
         **lifecycle_summary,
     }
 
@@ -172,18 +193,25 @@ class TerminalPlayground:
     """
 
     HELP = (
-        "step | run N | pause | inspect | inject EVENT | save PATH | "
+        "step | run N | learning {on|off} | pause | inspect | inject EVENT | save PATH | "
         "load RUN_ID | reset [RUN_ID] | replay | help | quit"
     )
 
     def __init__(self, controller: PlaygroundController) -> None:
         self.controller = controller
         self.paused = True
+        self.survival_learning_mode = "off"
+
+    def _interventions(self) -> dict[str, str]:
+        return dict(
+            DEFAULT_INTERVENTIONS,
+            survival_learning_mode=self.survival_learning_mode,
+        )
 
     def _dispatch_event(self, event: str, trigger_source: str) -> DispatchResult:
         return self.controller.dispatch(
             trigger_source=trigger_source,
-            interventions=DEFAULT_INTERVENTIONS,
+            interventions=self._interventions(),
             injected_event=event,
         )
 
@@ -215,11 +243,22 @@ class TerminalPlayground:
                 if len(parts) != 1:
                     raise ValueError("usage: inspect")
                 return {"command": "inspect", "status": "ok", "snapshot": build_terminal_snapshot(self.controller)}
+            if operation == "learning":
+                if len(parts) != 2 or parts[1].lower() not in {"on", "off"}:
+                    raise ValueError("usage: learning {on|off}")
+                self.survival_learning_mode = (
+                    "expected_sarsa_lambda" if parts[1].lower() == "on" else "off"
+                )
+                return {
+                    "command": "learning",
+                    "status": "ok",
+                    "survival_learning_mode": self.survival_learning_mode,
+                }
             if operation == "step":
                 if len(parts) != 1:
                     raise ValueError("usage: step")
                 result = self.controller.dispatch(
-                    DEFAULT_INTERVENTIONS,
+                    self._interventions(),
                     trigger_source="terminal_step",
                 )
                 if not result.receipt.committed:
@@ -254,7 +293,7 @@ class TerminalPlayground:
                 ticks_committed = 0
                 for _ in range(ticks):
                     result = self.controller.dispatch(
-                        DEFAULT_INTERVENTIONS,
+                        self._interventions(),
                         trigger_source="terminal_run",
                     )
                     if not result.receipt.committed:
@@ -273,7 +312,7 @@ class TerminalPlayground:
                     "ticks_committed": ticks_committed,
                     "survival_summary": {
                         "life_survival": deepcopy(snapshot["life_survival"]),
-                        "fourth_life_result": deepcopy(snapshot["fourth_life_result"]),
+                        "terminal_life_result": deepcopy(snapshot["terminal_life_result"]),
                         "trial_status": snapshot["lifecycle"].get("trial_status"),
                     },
                     "snapshot": snapshot,

@@ -16,6 +16,7 @@ from .engine import (
     compute_code_path_hash,
     compute_step,
     compute_trace_hash,
+    verify_replay_boundary,
 )
 
 
@@ -134,6 +135,7 @@ class SQLiteEventStore:
     def create_run(self, run_meta: dict[str, Any], state: dict[str, Any]) -> None:
         if run_meta.get("code_path_hash") != compute_code_path_hash():
             raise EngineInvariantError("new run metadata does not match current engine bytes")
+        verify_replay_boundary(state, run_meta)
         self._connection.execute(
             "INSERT INTO runs(run_id, run_meta_json, initial_state_json, initial_state_hash, code_path_hash) "
             "VALUES(?, ?, ?, ?, ?)",
@@ -221,6 +223,10 @@ class SQLiteEventStore:
         current_code_hash = compute_code_path_hash()
         if row["code_path_hash"] != current_code_hash or run_meta.get("code_path_hash") != current_code_hash:
             raise RecoveryError("engine code-path drift detected")
+        try:
+            verify_replay_boundary(initial, run_meta)
+        except (EngineInvariantError, KeyError, TypeError, ValueError) as exc:
+            raise RecoveryError(f"initial replay boundary invalid: {exc}") from exc
 
         command_rows = self._connection.execute(
             "SELECT sequence, command_json, command_hash FROM commands "
@@ -236,8 +242,10 @@ class SQLiteEventStore:
             raise RecoveryError("command/trace row parity mismatch")
 
         state = initial
-        frames = [RecoveryFrame(sequence=0, state=initial, trace=None)]
-        for expected_sequence, command_row in enumerate(command_rows, start=1):
+        initial_sequence = int(initial["clock"]["global_tick"])
+        frames = [RecoveryFrame(sequence=initial_sequence, state=initial, trace=None)]
+        for offset, command_row in enumerate(command_rows, start=1):
+            expected_sequence = initial_sequence + offset
             if int(command_row["sequence"]) != expected_sequence:
                 raise RecoveryError("persisted command sequence is not contiguous")
             command = _decode_json(command_row["command_json"], "command")

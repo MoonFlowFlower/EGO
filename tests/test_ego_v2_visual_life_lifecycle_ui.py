@@ -19,6 +19,7 @@ if str(REPO_ROOT) not in sys.path:
 from labs.ego_life_playground_v0.controller import DispatchResult, PlaygroundController
 from labs.ego_life_playground_v0.engine import (
     DEFAULT_INTERVENTIONS,
+    MAX_LIVES,
     compute_step,
     episode_id_for,
     initial_state,
@@ -95,7 +96,7 @@ def _valid_life_state(
             }
             for index in range(1, life_index)
         ],
-        "fourth_life_result": None,
+        "terminal_life_result": None,
     }
     state["last_action"] = "rest"
     state["last_command_hash"] = "a" * 64
@@ -182,10 +183,12 @@ def _respawn_recovery(monkeypatch: pytest.MonkeyPatch) -> tuple[RecoveryResult, 
     return recovery, recovery.frames[-1]
 
 
-def _terminal_life_four_recovery(monkeypatch: pytest.MonkeyPatch) -> tuple[RecoveryResult, RecoveryFrame]:
+def _terminal_life_sixteen_recovery(monkeypatch: pytest.MonkeyPatch) -> tuple[RecoveryResult, RecoveryFrame]:
     _force_action(monkeypatch, "rest")
     run_id = "terminal-ui"
-    before = _valid_life_state(run_id=run_id, life_index=4, episode_tick=255, energy=0.90)
+    before = _valid_life_state(
+        run_id=run_id, life_index=MAX_LIVES, episode_tick=255, energy=0.90
+    )
     terminal = compute_step(before, _command_for(before), _run_meta(run_id))
     recovery = RecoveryResult(
         run_id=run_id,
@@ -226,13 +229,13 @@ def test_snapshot_and_timeline_accept_pure_respawn_and_terminal_frames(
     assert snapshot["timeline"][-1]["observation"] is None
     assert snapshot["timeline"][-1]["carry_reset_receipt"] == respawn_frame.trace["carry_reset_receipt"]
 
-    terminal_recovery, terminal_frame = _terminal_life_four_recovery(monkeypatch)
+    terminal_recovery, terminal_frame = _terminal_life_sixteen_recovery(monkeypatch)
     terminal_controller = SimpleNamespace(run_id=terminal_recovery.run_id, recovery=terminal_recovery)
     terminal_snapshot = build_terminal_snapshot(terminal_controller)
 
     assert terminal_snapshot["lifecycle"]["trial_status"] == "terminal"
-    assert terminal_snapshot["life_survival"] == [256, 256, 256, 256]
-    assert terminal_snapshot["fourth_life_result"] == {"survival_ticks": 256, "censored": True}
+    assert terminal_snapshot["life_survival"] == [256] * MAX_LIVES
+    assert terminal_snapshot["terminal_life_result"] == {"survival_ticks": 256, "censored": True}
     assert terminal_snapshot["transition_kind"] == "action"
     assert terminal_snapshot["policy_invoked"] is True
     assert terminal_snapshot["life_termination"] == terminal_frame.trace["life_termination"]
@@ -246,7 +249,7 @@ def test_terminal_run_counts_committed_steps_and_stops_when_trial_turns_terminal
     controller = _MemoryController(
         _valid_life_state(
             run_id="terminal-run-stop",
-            life_index=4,
+            life_index=MAX_LIVES,
             episode_tick=255,
             energy=0.90,
         ),
@@ -261,8 +264,8 @@ def test_terminal_run_counts_committed_steps_and_stops_when_trial_turns_terminal
     assert result["ticks_committed"] == 1
     assert result["snapshot"]["lifecycle"]["trial_status"] == "terminal"
     assert result["survival_summary"] == {
-        "life_survival": [256, 256, 256, 256],
-        "fourth_life_result": {"survival_ticks": 256, "censored": True},
+        "life_survival": [256] * MAX_LIVES,
+        "terminal_life_result": {"survival_ticks": 256, "censored": True},
         "trial_status": "terminal",
     }
     assert controller.committed_count == 1
@@ -352,7 +355,7 @@ def test_tk_run_crosses_respawn_then_pauses_and_disables_controls_at_terminal(
     controller = _MemoryController(
         _valid_life_state(
             run_id="window-terminal-stop",
-            life_index=4,
+            life_index=MAX_LIVES,
             episode_tick=255,
             energy=0.90,
         ),
@@ -379,7 +382,7 @@ def test_tk_run_crosses_respawn_then_pauses_and_disables_controls_at_terminal(
         assert "terminal" in window.status_var.get()
         advanced_text = window.advanced_text.get("1.0", "end-1c")
         assert "life_survival" in advanced_text
-        assert "fourth_life_result" in advanced_text
+        assert "terminal_life_result" in advanced_text
         after_terminal = controller.recovery.frames[-1].sequence
         window.step_button.invoke()
         window.run_button.invoke()
@@ -416,3 +419,62 @@ def test_terminal_and_visual_console_source_guard_lifecycle_stays_in_controller_
             if target == "dispatch":
                 dispatch_calls += 1
     assert dispatch_calls >= 3
+
+
+def test_terminal_explicit_learning_mode_reaches_controller_trace(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    _force_action(monkeypatch, "rest")
+    run_id = "terminal-learning-mode"
+    controller = _MemoryController(initial_state(run_id=run_id), run_id=run_id)
+    terminal = TerminalPlayground(controller)
+
+    enabled = terminal.execute("learning on")
+    stepped = terminal.execute("step")
+
+    assert enabled["survival_learning_mode"] == "expected_sarsa_lambda"
+    assert stepped["status"] == "committed"
+    trace = controller.last_trace
+    assert trace["trigger_source"] == "terminal_step"
+    assert trace["interventions"]["survival_learning_mode"] == "expected_sarsa_lambda"
+    assert trace["survival_learning"]["update"]["applied"] is True
+
+
+def test_tk_run_button_explicit_learning_mode_commits_and_recovers_sqlite(
+    tmp_path: Path,
+) -> None:
+    controller, store, _db_path = _controller_and_store(
+        tmp_path, run_id="tk-learning-mode"
+    )
+    try:
+        root = tk.Tk()
+    except tk.TclError as exc:
+        store.close()
+        pytest.skip(f"tk unavailable: {exc}")
+    root.withdraw()
+    window = PlaygroundWindow(root, controller)
+    window.display_interval_ms = 5
+    try:
+        window.survival_learning_mode_var.set("expected_sarsa_lambda")
+        window.run_button.invoke()
+        deadline = time.time() + 2.0
+        while controller.recovery.command_count < 1 and time.time() < deadline:
+            root.update_idletasks()
+            root.update()
+            time.sleep(0.01)
+        window._pause()
+
+        assert controller.recovery.command_count >= 1
+        first = controller.recovery.traces[0]
+        assert first["trigger_source"] == "ui_run_button"
+        assert first["interventions"]["survival_learning_mode"] == "expected_sarsa_lambda"
+        assert first["survival_learning"]["update"]["applied"] is True
+        fresh = store.recover_run(controller.run_id)
+        assert fresh.traces[0]["trace_hash"] == first["trace_hash"]
+    finally:
+        window.close()
+        try:
+            root.destroy()
+        except tk.TclError:
+            pass
+        store.close()

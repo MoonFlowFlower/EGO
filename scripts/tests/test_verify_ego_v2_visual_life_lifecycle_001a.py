@@ -41,7 +41,7 @@ def test_card_c_verifier_runs_and_writes_exact_artifacts(tmp_path: Path) -> None
     assert result["checks"]["declared_lifecycle_scenarios_observed"]["value"] is True
     assert result["checks"]["death_respawn_next_action_chain"]["value"] is True
     assert result["checks"]["censor_respawn_chain"]["value"] is True
-    assert result["checks"]["life_four_terminal_reject"]["value"] is True
+    assert result["checks"]["life_sixteen_terminal_reject"]["value"] is True
     assert result["checks"]["real_terminal_controller_sqlite_path"]["value"] is True
     assert result["checks"]["pure_respawn_carry_reset_exact"]["value"] is True
     assert result["checks"]["independent_scripted_respawn_baseline_reported"]["value"] is True
@@ -52,15 +52,15 @@ def test_card_c_verifier_runs_and_writes_exact_artifacts(tmp_path: Path) -> None
     assert result["checks"]["single_controller_reducer_store_path"]["value"] is True
     assert result["checks"]["recursive_provenance_present"]["value"] is True
     assert result["source_scan"]["versions"] == {
-        "state": "ego.life_playground.state.v3",
-        "run": "ego.life_playground.run.v3",
-        "command": "ego.life_playground.command.v5",
-        "trace": "ego.life_playground.trace.v7",
+        "state": "ego.life_playground.state.v4",
+        "run": "ego.life_playground.run.v4",
+        "command": "ego.life_playground.command.v6",
+        "trace": "ego.life_playground.trace.v8",
         "world": "ego.life_playground.microworld.state.v4",
         "policy_observation": "ego.life_playground.microworld.observation.v4",
         "observer_frame": "ego.life_playground.microworld.public_frame.v5",
         "claim_memory": "ego.life_playground.claim_memory.v2",
-        "code_path_manifest": "ego.life_playground.code_path.v4",
+        "code_path_manifest": "ego.life_playground.code_path.v5",
     }
 
     tk_check = result["checks"]["real_tk_run_controller_sqlite_path"]
@@ -104,7 +104,7 @@ def test_card_c_verifier_runs_and_writes_exact_artifacts(tmp_path: Path) -> None
     assert set(baseline["comparisons"]) == {
         "death_respawn",
         "censor_respawn",
-        "life_four_terminal",
+        "life_sixteen_terminal",
     }
     assert all(
         comparison["observable_equivalent"] is True
@@ -113,7 +113,7 @@ def test_card_c_verifier_runs_and_writes_exact_artifacts(tmp_path: Path) -> None
     assert all(
         component["value"] is True
         for comparison_id, comparison in baseline["comparisons"].items()
-        if comparison_id != "life_four_terminal"
+        if comparison_id != "life_sixteen_terminal"
         for component in comparison["component_matches"].values()
     )
 
@@ -131,7 +131,7 @@ def test_card_c_verifier_runs_and_writes_exact_artifacts(tmp_path: Path) -> None
     assert set(replay["scenarios"]) == {
         "death_respawn_next_action",
         "censor_respawn",
-        "life_four_terminal",
+        "life_sixteen_terminal",
         "terminal_controller_sqlite",
     }
     assert replay["stored_selected_actions_used_as_input"] is False
@@ -150,7 +150,7 @@ def test_card_c_verifier_runs_and_writes_exact_artifacts(tmp_path: Path) -> None
         "stored_trace",
         "carry_receipt",
         "policy_flag",
-        "fourth_life_result",
+        "terminal_life_result",
     }
     assert all(
         control["value"] is True
@@ -214,17 +214,17 @@ def test_card_c_scripted_respawn_baseline_is_independent_of_candidate(
                 "termination": "death",
             }
         ],
-        "fourth_life_result": None,
+        "terminal_life_result": None,
     }
     terminal = verifier._active_life_state(
         run_id="baseline-terminal",
-        life_index=4,
+        life_index=verifier.engine.MAX_LIVES,
         episode_tick=255,
         energy=0.9,
     )
     terminal["lifecycle"] = {
         "trial_status": "terminal",
-        "life_index": 4,
+        "life_index": verifier.engine.MAX_LIVES,
         "awaiting_respawn": False,
         "life_results": [
             {
@@ -233,9 +233,9 @@ def test_card_c_scripted_respawn_baseline_is_independent_of_candidate(
                 "censored": True,
                 "termination": "censored",
             }
-            for index in range(1, 5)
+            for index in range(1, verifier.engine.MAX_LIVES + 1)
         ],
-        "fourth_life_result": {"survival_ticks": 256, "censored": True},
+        "terminal_life_result": {"survival_ticks": 256, "censored": True},
     }
 
     baseline = verifier.independent_scripted_respawn_baseline(
@@ -260,7 +260,7 @@ def test_card_c_scripted_respawn_baseline_is_independent_of_candidate(
         verifier.BASELINE_INITIAL_ORGANISM
     )
     assert respawn["life_result"] == pre_respawn["lifecycle"]["life_results"][-1]
-    assert baseline["terminal_outputs"][0]["fourth_life_result"] == {
+    assert baseline["terminal_outputs"][0]["terminal_life_result"] == {
         "survival_ticks": 256,
         "censored": True,
     }

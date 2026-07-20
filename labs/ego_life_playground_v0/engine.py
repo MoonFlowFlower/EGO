@@ -18,6 +18,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from . import claims as claim_memory
+from . import survival_learning
 from .microworld import (
     ACTIONS as WORLD_ACTIONS,
     ALLOWED_WORLD_EVENTS,
@@ -41,15 +42,15 @@ DEFAULT_PROVENANCE_SHUFFLE_SEED = 17
 DEFAULT_PRIVATE_WORLD_SEED = 1701
 CONSOLIDATION_THRESHOLD = 3
 EPISODE_SPAN_TICKS = 256
-MAX_LIVES = 4
+MAX_LIVES = 16
 REENTRY_THRESHOLD = 0.60
 CRITICAL_OVERRIDE_THRESHOLD = 0.15
 VISUAL_TRANSITION_MODEL_KEY = "__visual_transition_counts__"
 
-STATE_SCHEMA_VERSION = "ego.life_playground.state.v3"
-RUN_SCHEMA_VERSION = "ego.life_playground.run.v3"
-COMMAND_SCHEMA_VERSION = "ego.life_playground.command.v5"
-TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v7"
+STATE_SCHEMA_VERSION = "ego.life_playground.state.v4"
+RUN_SCHEMA_VERSION = "ego.life_playground.run.v4"
+COMMAND_SCHEMA_VERSION = "ego.life_playground.command.v6"
+TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v8"
 
 TRIGGER_SOURCES = (
     "ui_step_button",
@@ -68,6 +69,7 @@ VISION_MODES = ("canonical", "no_occlusion")
 HYSTERESIS_MODES = ("canonical", "no_hysteresis")
 NOVELTY_MODES = ("canonical", "no_novelty")
 OVERRIDE_MODES = ("canonical", "no_override")
+SURVIVAL_LEARNING_MODES = survival_learning.POLICY_MODES
 RUN_PRODUCER_FUNCTION = "ego_life_playground_v0.engine.compute_step"
 RUN_AGGREGATION_RULE = "single_reducer_command_transition_action_or_respawn"
 GOAL_SELECTION_REASONS = (
@@ -104,6 +106,7 @@ DEFAULT_INTERVENTIONS = {
     "hysteresis_mode": "canonical",
     "novelty_mode": "canonical",
     "override_mode": "canonical",
+    "survival_learning_mode": "off",
 }
 
 # These V0 constants are intentionally unchanged.
@@ -169,10 +172,11 @@ def compute_code_path_manifest() -> dict[str, Any]:
         Path(__file__),
         Path(__file__).with_name("microworld.py"),
         Path(__file__).with_name("claims.py"),
+        Path(__file__).with_name("survival_learning.py"),
         Path(__file__).with_name("store.py"),
     )
     return {
-        "schema_version": "ego.life_playground.code_path.v4",
+        "schema_version": "ego.life_playground.code_path.v5",
         "files": [
             {"path": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
             for path in source_paths
@@ -213,6 +217,11 @@ def make_run_metadata(
         "run_id": run_id,
         "seed": seed,
         "episode_span_ticks": EPISODE_SPAN_TICKS,
+        "max_lives": MAX_LIVES,
+        "survival_learning": survival_learning.hyperparameters(),
+        "default_survival_learning_mode": DEFAULT_INTERVENTIONS[
+            "survival_learning_mode"
+        ],
         "producer_function": RUN_PRODUCER_FUNCTION,
         "aggregation_rule": RUN_AGGREGATION_RULE,
         "code_path_hash": compute_code_path_hash(),
@@ -253,12 +262,13 @@ def initial_state(
             "consolidated": [],
             **claim_memory.empty_claim_memory(),
         },
+        "survival_learner": survival_learning.empty_survival_learner(),
         "lifecycle": {
             "trial_status": "active",
             "life_index": 1,
             "awaiting_respawn": False,
             "life_results": [],
-            "fourth_life_result": None,
+            "terminal_life_result": None,
         },
         "last_action": None,
         "last_command_hash": None,
@@ -348,6 +358,16 @@ def compute_trace_hash(trace: Mapping[str, Any]) -> str:
     return canonical_hash({key: value for key, value in trace.items() if key != "trace_hash"})
 
 
+def verify_replay_boundary(
+    state: Mapping[str, Any], run_meta: Mapping[str, Any]
+) -> None:
+    """Validate serialized run metadata and state before command recomputation."""
+
+    current_code_hash = compute_code_path_hash()
+    _verify_run_metadata(run_meta, current_code_hash)
+    _verify_state(state, run_id=str(run_meta["run_id"]))
+
+
 def _initial_organism() -> dict[str, float]:
     return {key: float(value) for key, value in INITIAL_ORGANISM.items()}
 
@@ -397,6 +417,18 @@ def _respawn_trace(
         "organism_reset_applied": canonical_json(before["organism"]) != canonical_json(next_state["organism"]),
         "model_unchanged": canonical_json(before["model"]) == canonical_json(next_state["model"]),
         "memory_unchanged": canonical_json(before["memory"]) == canonical_json(next_state["memory"]),
+        "survival_q_unchanged": canonical_json(
+            before["survival_learner"]["q_values"]
+        )
+        == canonical_json(next_state["survival_learner"]["q_values"]),
+        "survival_visits_unchanged": canonical_json(
+            before["survival_learner"]["visit_counts"]
+        )
+        == canonical_json(next_state["survival_learner"]["visit_counts"]),
+        "survival_eligibility_cleared": next_state["survival_learner"][
+            "eligibility"
+        ]
+        == {},
         "current_goal_reset_applied": canonical_json(before["current_goal"])
         != canonical_json(next_state["current_goal"]),
         "world_reset_applied": canonical_json(before["world"]) != canonical_json(next_state["world"]),
@@ -471,6 +503,18 @@ def _respawn_trace(
         "model_update": {"applied": False, "reason": "pure_respawn"},
         "memory_update": {"applied": False, "reason": "pure_respawn", "consolidation_refs": []},
         "claim_update": {"applied": False, "reason": "pure_respawn"},
+        "survival_learning": {
+            "selection": None,
+            "update": None,
+            "respawn_eligibility_cleared": True,
+            "learner_hash_after": survival_learning.learner_state_hash(
+                next_state["survival_learner"]
+            ),
+            "q_table_size": survival_learning.q_table_size(
+                next_state["survival_learner"]
+            ),
+            "update_count": int(next_state["survival_learner"]["update_count"]),
+        },
         "model_bytes": {
             "before_hash": canonical_hash(before["model"]),
             "after_hash": canonical_hash(next_state["model"]),
@@ -539,7 +583,7 @@ def compute_step(
             raise EngineInvariantError("respawn command must reject injected_event")
         next_life_index = int(lifecycle_before["life_index"]) + 1
         if next_life_index > MAX_LIVES:
-            raise EngineInvariantError("trial cannot respawn beyond the fourth life")
+            raise EngineInvariantError("trial cannot respawn beyond max_lives")
         next_state = deepcopy(before)
         expected_world_after = reset_world_for_life(before["world"], next_life_index)
         next_state["clock"] = {
@@ -554,12 +598,19 @@ def compute_step(
             next_state["organism"],
             global_tick=sequence,
         )
+        next_state["survival_learner"] = (
+            survival_learning.clear_eligibility_for_respawn(
+                before["survival_learner"]
+            )
+        )
         next_state["lifecycle"] = {
             "trial_status": "active",
             "life_index": next_life_index,
             "awaiting_respawn": False,
             "life_results": deepcopy(lifecycle_before["life_results"]),
-            "fourth_life_result": deepcopy(lifecycle_before["fourth_life_result"]),
+            "terminal_life_result": deepcopy(
+                lifecycle_before["terminal_life_result"]
+            ),
         }
         next_state["last_action"] = None
         next_state["last_command_hash"] = command["command_hash"]
@@ -589,6 +640,26 @@ def compute_step(
                 before["memory"]["competing_claims"],
                 next_state["memory"]["competing_claims"],
                 before["memory"]["competing_claims"],
+            ),
+            "survival_q_values": _component_receipt(
+                before["survival_learner"]["q_values"],
+                next_state["survival_learner"]["q_values"],
+                before["survival_learner"]["q_values"],
+            ),
+            "survival_visit_counts": _component_receipt(
+                before["survival_learner"]["visit_counts"],
+                next_state["survival_learner"]["visit_counts"],
+                before["survival_learner"]["visit_counts"],
+            ),
+            "survival_update_count": _component_receipt(
+                before["survival_learner"]["update_count"],
+                next_state["survival_learner"]["update_count"],
+                before["survival_learner"]["update_count"],
+            ),
+            "survival_eligibility": _component_receipt(
+                before["survival_learner"]["eligibility"],
+                next_state["survival_learner"]["eligibility"],
+                {},
             ),
             "token_mapping": _component_receipt(
                 before["world"]["trial"]["token_mapping"],
@@ -714,6 +785,13 @@ def compute_step(
     goal_before = deepcopy(decision_state["current_goal"])
     current_goal = _goal_context_key(goal_before)
     context_key = f"{observation_key}|{current_goal}"
+    try:
+        survival_state_key = survival_learning.build_state_key(
+            observation_key,
+            float(decision_state["organism"]["energy"]),
+        )
+    except survival_learning.SurvivalLearningInvariantError as exc:
+        raise EngineInvariantError(str(exc)) from exc
 
     memory_view, provenance_projection = _memory_read_view(
         decision_state["memory"],
@@ -780,9 +858,30 @@ def compute_step(
         candidate["claim_refs"] = claim_refs
         candidate["memory_refs"] = sorted(set(legacy_refs) | set(claim_refs))
     candidates.sort(key=lambda item: item["action"])
-    selected = max(candidates, key=lambda item: (item["total_score"], item["deterministic_tie"]))
-    selected_action = str(selected["action"])
+    candidate_scores = {
+        str(candidate["action"]): float(candidate["total_score"])
+        for candidate in candidates
+    }
+    try:
+        selected_action, survival_selection = survival_learning.select_action(
+            decision_state["survival_learner"],
+            state_key=survival_state_key,
+            candidate_scores=candidate_scores,
+            run_seed=int(run_meta["seed"]),
+            episode_index=int(decision_state["clock"]["episode_index"]),
+            sequence=sequence,
+            life_index=int(lifecycle_before["life_index"]),
+            mode=interventions["survival_learning_mode"],
+        )
+    except survival_learning.SurvivalLearningInvariantError as exc:
+        raise EngineInvariantError(str(exc)) from exc
+    selected = next(
+        candidate for candidate in candidates if candidate["action"] == selected_action
+    )
     for candidate in candidates:
+        candidate["survival_q"] = survival_selection["q_by_action"][
+            candidate["action"]
+        ]
         candidate["selected"] = candidate["action"] == selected_action
     predicted_delta = deepcopy(selected["predicted_delta"])
 
@@ -834,6 +933,72 @@ def compute_step(
         model=decision_state["model"],
     )
 
+    life_termination = None
+    if next_state["organism"]["energy"] == 0.0:
+        life_termination = _life_result(
+            life_index=int(lifecycle_before["life_index"]),
+            survival_ticks=int(next_state["clock"]["episode_tick"]),
+            censored=False,
+            termination="death",
+        )
+    elif int(next_state["clock"]["episode_tick"]) == EPISODE_SPAN_TICKS:
+        life_termination = _life_result(
+            life_index=int(lifecycle_before["life_index"]),
+            survival_ticks=EPISODE_SPAN_TICKS,
+            censored=True,
+            termination="censored",
+        )
+
+    try:
+        next_survival_state_key = survival_learning.build_state_key(
+            next_observation_hash,
+            float(next_state["organism"]["energy"]),
+        )
+        next_state["survival_learner"], survival_update = (
+            survival_learning.update_expected_sarsa_lambda(
+                decision_state["survival_learner"],
+                state_key=survival_state_key,
+                action=selected_action,
+                reward=1.0 if float(next_state["organism"]["energy"]) > 0.0 else 0.0,
+                next_state_key=next_survival_state_key,
+                next_candidate_scores=candidate_scores,
+                next_life_index=int(lifecycle_before["life_index"]),
+                terminal=life_termination is not None,
+                updates_enabled=(
+                    interventions["survival_learning_mode"]
+                    == survival_learning.ALGORITHM
+                    and interventions["update_mode"] == "canonical"
+                ),
+            )
+        )
+    except survival_learning.SurvivalLearningInvariantError as exc:
+        raise EngineInvariantError(str(exc)) from exc
+    if interventions["survival_learning_mode"] == "off":
+        if life_termination is not None and interventions["update_mode"] == "canonical":
+            next_state["survival_learner"] = (
+                survival_learning.clear_eligibility_for_respawn(
+                    next_state["survival_learner"]
+                )
+            )
+            survival_update.update(
+                {
+                    "reason": "survival_learning_off_terminal_reset",
+                    "eligibility_reset_applied": True,
+                    "q_table_hash_after": survival_learning.q_table_hash(
+                        next_state["survival_learner"]
+                    ),
+                    "eligibility_hash_after": survival_learning.eligibility_hash(
+                        next_state["survival_learner"]
+                    ),
+                    "learner_hash_after": survival_learning.learner_state_hash(
+                        next_state["survival_learner"]
+                    ),
+                }
+            )
+        else:
+            survival_update["reason"] = "survival_learning_off"
+            survival_update["eligibility_reset_applied"] = False
+
     updates_enabled = interventions["update_mode"] == "canonical"
     model_before_hash = canonical_hash(decision_state["model"])
     memory_before_hash = canonical_hash(decision_state["memory"])
@@ -881,21 +1046,6 @@ def compute_step(
     )
     model_after_hash = canonical_hash(next_state["model"])
     memory_after_hash = canonical_hash(next_state["memory"])
-    life_termination = None
-    if next_state["organism"]["energy"] == 0.0:
-        life_termination = _life_result(
-            life_index=int(lifecycle_before["life_index"]),
-            survival_ticks=int(next_state["clock"]["episode_tick"]),
-            censored=False,
-            termination="death",
-        )
-    elif int(next_state["clock"]["episode_tick"]) == EPISODE_SPAN_TICKS:
-        life_termination = _life_result(
-            life_index=int(lifecycle_before["life_index"]),
-            survival_ticks=EPISODE_SPAN_TICKS,
-            censored=True,
-            termination="censored",
-        )
     if life_termination is None:
         next_state["lifecycle"] = deepcopy(lifecycle_before)
     else:
@@ -907,7 +1057,7 @@ def compute_step(
                 "life_index": int(lifecycle_before["life_index"]),
                 "awaiting_respawn": True,
                 "life_results": life_results,
-                "fourth_life_result": None,
+                "terminal_life_result": None,
             }
         else:
             next_state["lifecycle"] = {
@@ -915,7 +1065,7 @@ def compute_step(
                 "life_index": MAX_LIVES,
                 "awaiting_respawn": False,
                 "life_results": life_results,
-                "fourth_life_result": {
+                "terminal_life_result": {
                     "survival_ticks": min(int(life_termination["survival_ticks"]), EPISODE_SPAN_TICKS),
                     "censored": bool(life_termination["censored"]),
                 },
@@ -982,6 +1132,31 @@ def compute_step(
         "model_update": model_update,
         "memory_update": memory_update,
         "claim_update": claim_update,
+        "survival_learning": {
+            "schema_version": "ego.life_playground.survival_trace.v1",
+            "producer_function": RUN_PRODUCER_FUNCTION,
+            "state_key_inputs": {
+                "policy_observation_hash": observation_key,
+                "energy_milli": round(
+                    float(decision_state["organism"]["energy"]) * 1000
+                ),
+            },
+            "state_key": survival_state_key,
+            "next_state_key": next_survival_state_key,
+            "selection": survival_selection,
+            "update": survival_update,
+            "successful_resource_interaction": (
+                world_transition.get("outcome_type") == "interacted"
+                and world_transition.get("cause") == "resource"
+            ),
+            "learner_hash_after": survival_learning.learner_state_hash(
+                next_state["survival_learner"]
+            ),
+            "q_table_size": survival_learning.q_table_size(
+                next_state["survival_learner"]
+            ),
+            "update_count": int(next_state["survival_learner"]["update_count"]),
+        },
         "model_bytes": {
             "before_hash": model_before_hash,
             "after_hash": model_after_hash,
@@ -1139,6 +1314,9 @@ def _verify_run_metadata(run_meta: Mapping[str, Any], current_code_hash: str) ->
         "run_id",
         "seed",
         "episode_span_ticks",
+        "max_lives",
+        "survival_learning",
+        "default_survival_learning_mode",
         "producer_function",
         "aggregation_rule",
         "code_path_hash",
@@ -1156,6 +1334,14 @@ def _verify_run_metadata(run_meta: Mapping[str, Any], current_code_hash: str) ->
         raise EngineInvariantError("episode_span_ticks must be an integer")
     if run_meta["episode_span_ticks"] != EPISODE_SPAN_TICKS:
         raise EngineInvariantError("episode_span_ticks is frozen at 256")
+    if type(run_meta["max_lives"]) is not int or run_meta["max_lives"] != MAX_LIVES:
+        raise EngineInvariantError("max_lives must match the fixed product lifecycle")
+    if canonical_json(run_meta["survival_learning"]) != canonical_json(
+        survival_learning.hyperparameters()
+    ):
+        raise EngineInvariantError("survival learning metadata mismatch")
+    if run_meta["default_survival_learning_mode"] != "off":
+        raise EngineInvariantError("survival learner default must remain off before acceptance")
     if run_meta["producer_function"] != RUN_PRODUCER_FUNCTION:
         raise EngineInvariantError("producer_function is not canonical")
     if run_meta["aggregation_rule"] != RUN_AGGREGATION_RULE:
@@ -1177,6 +1363,7 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
         "current_goal",
         "model",
         "memory",
+        "survival_learner",
         "lifecycle",
         "last_action",
         "last_command_hash",
@@ -1253,6 +1440,14 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
     _verify_goal(state["current_goal"], global_tick=tick)
     _verify_model(state["model"])
     _verify_memory(state["memory"])
+    try:
+        survival_learning.validate_survival_learner(state["survival_learner"])
+    except survival_learning.SurvivalLearningInvariantError as exc:
+        raise EngineInvariantError(str(exc)) from exc
+    if tick == 0 and canonical_json(state["survival_learner"]) != canonical_json(
+        survival_learning.empty_survival_learner()
+    ):
+        raise EngineInvariantError("initial survival learner must be empty")
 
     last_action = state["last_action"]
     last_command_hash = state["last_command_hash"]
@@ -1509,14 +1704,14 @@ def _verify_lifecycle(lifecycle: Any) -> None:
         "life_index",
         "awaiting_respawn",
         "life_results",
-        "fourth_life_result",
+        "terminal_life_result",
     }
     if not isinstance(lifecycle, Mapping) or set(lifecycle) != required:
         raise EngineInvariantError("lifecycle schema mismatch")
     if lifecycle["trial_status"] not in {"active", "awaiting_respawn", "terminal"}:
         raise EngineInvariantError("lifecycle trial_status is not canonical")
     if type(lifecycle["life_index"]) is not int or not 1 <= lifecycle["life_index"] <= MAX_LIVES:
-        raise EngineInvariantError("lifecycle life_index must be within four lives")
+        raise EngineInvariantError("lifecycle life_index must be within max_lives")
     if type(lifecycle["awaiting_respawn"]) is not bool:
         raise EngineInvariantError("lifecycle awaiting_respawn must be boolean")
     if lifecycle["awaiting_respawn"] != (lifecycle["trial_status"] == "awaiting_respawn"):
@@ -1547,29 +1742,29 @@ def _verify_lifecycle(lifecycle: Any) -> None:
     if lifecycle["trial_status"] == "awaiting_respawn" and len(results) != lifecycle["life_index"]:
         raise EngineInvariantError("awaiting_respawn lifecycle must include current life result")
     if lifecycle["trial_status"] == "terminal" and len(results) != MAX_LIVES:
-        raise EngineInvariantError("terminal lifecycle must include exactly four life results")
-    fourth = lifecycle["fourth_life_result"]
-    if fourth is None:
+        raise EngineInvariantError("terminal lifecycle must include exactly max_lives results")
+    terminal_result = lifecycle["terminal_life_result"]
+    if terminal_result is None:
         if lifecycle["trial_status"] == "terminal":
-            raise EngineInvariantError("terminal lifecycle requires fourth_life_result")
+            raise EngineInvariantError("terminal lifecycle requires terminal_life_result")
         return
     if lifecycle["trial_status"] != "terminal":
-        raise EngineInvariantError("fourth_life_result is only allowed for terminal lifecycle")
-    if not isinstance(fourth, Mapping) or set(fourth) != {"survival_ticks", "censored"}:
-        raise EngineInvariantError("fourth_life_result schema mismatch")
-    if type(fourth["survival_ticks"]) is not int or not 1 <= fourth["survival_ticks"] <= EPISODE_SPAN_TICKS:
-        raise EngineInvariantError("fourth_life_result survival_ticks must be within one life")
-    if type(fourth["censored"]) is not bool:
-        raise EngineInvariantError("fourth_life_result censored must be boolean")
+        raise EngineInvariantError("terminal_life_result is only allowed for terminal lifecycle")
+    if not isinstance(terminal_result, Mapping) or set(terminal_result) != {"survival_ticks", "censored"}:
+        raise EngineInvariantError("terminal_life_result schema mismatch")
+    if type(terminal_result["survival_ticks"]) is not int or not 1 <= terminal_result["survival_ticks"] <= EPISODE_SPAN_TICKS:
+        raise EngineInvariantError("terminal_life_result survival_ticks must be within one life")
+    if type(terminal_result["censored"]) is not bool:
+        raise EngineInvariantError("terminal_life_result censored must be boolean")
     if not results:
-        raise EngineInvariantError("fourth_life_result requires recorded life results")
+        raise EngineInvariantError("terminal_life_result requires recorded life results")
     last = results[-1]
     if last["life_index"] != MAX_LIVES:
-        raise EngineInvariantError("fourth_life_result requires a fourth life record")
-    if fourth["survival_ticks"] != min(int(last["survival_ticks"]), EPISODE_SPAN_TICKS):
-        raise EngineInvariantError("fourth_life_result survival_ticks mismatch")
-    if fourth["censored"] != bool(last["censored"]):
-        raise EngineInvariantError("fourth_life_result censored mismatch")
+        raise EngineInvariantError("terminal_life_result requires the final life record")
+    if terminal_result["survival_ticks"] != min(int(last["survival_ticks"]), EPISODE_SPAN_TICKS):
+        raise EngineInvariantError("terminal_life_result survival_ticks mismatch")
+    if terminal_result["censored"] != bool(last["censored"]):
+        raise EngineInvariantError("terminal_life_result censored mismatch")
 
 
 def _verify_goal(goal: Mapping[str, Any], *, global_tick: int) -> None:
@@ -1632,6 +1827,8 @@ def _decision_state_for_tick(
         "organism_unchanged": canonical_json(before["organism"]) == canonical_json(decision["organism"]),
         "model_unchanged": canonical_json(before["model"]) == canonical_json(decision["model"]),
         "memory_unchanged": canonical_json(before["memory"]) == canonical_json(decision["memory"]),
+        "survival_learner_unchanged": canonical_json(before["survival_learner"])
+        == canonical_json(decision["survival_learner"]),
         "current_goal_unchanged": canonical_json(before["current_goal"])
         == canonical_json(decision["current_goal"]),
         "command_chain_unchanged": before.get("last_command_hash")
@@ -2669,6 +2866,7 @@ def _normalize_interventions(interventions: Mapping[str, str]) -> dict[str, str]
         or normalized["hysteresis_mode"] not in HYSTERESIS_MODES
         or normalized["novelty_mode"] not in NOVELTY_MODES
         or normalized["override_mode"] not in OVERRIDE_MODES
+        or normalized["survival_learning_mode"] not in SURVIVAL_LEARNING_MODES
     ):
         raise EngineInvariantError("intervention enum mismatch")
     try:
