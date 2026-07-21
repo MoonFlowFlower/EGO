@@ -1374,8 +1374,11 @@ def compute_step(
         "world_before_hash": world_hash(world_before),
         "world_decision_hash": world_hash(decision_state["world"]),
         "world_after_hash": world_hash(next_state["world"]),
-        "observation": world_observation,
-        "observation_hash": observation_hash(world_observation),
+        # The public renderer observes the committed post-action world.  The
+        # policy-facing pre-action observation remains explicitly bound inside
+        # policy_projection and its hash-bound decision input.
+        "observation": next_observation,
+        "observation_hash": next_observation_hash,
         "policy_projection": policy_projection,
         "policy_projection_hash": canonical_hash(policy_projection),
         "candidate_actions": list(ACTIONS),

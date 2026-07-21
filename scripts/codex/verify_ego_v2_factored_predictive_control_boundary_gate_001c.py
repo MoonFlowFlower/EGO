@@ -103,6 +103,10 @@ def _context_id(layout: str, world_seed: int, policy_seed: int) -> str:
     return f"{layout}:world={world_seed}:policy={policy_seed}"
 
 
+def _current_smoke_run_id(context_id: str) -> str:
+    return f"{TASK_ID}:current-smoke:{context_id}"
+
+
 def _gate_code_path_hash() -> str:
     return _canonical_hash(
         {
@@ -755,9 +759,10 @@ def _run_smoke_context(
     policy_seed: int,
 ) -> tuple[dict[str, Any], list[dict[str, Any]], list[dict[str, Any]]]:
     context_id = _context_id(layout, world_seed, policy_seed)
-    run_id = next(
+    fixture_run_id = next(
         run["run_id"] for run in fixture["runs"] if run["context_id"] == context_id
     )
+    run_id = _current_smoke_run_id(context_id)
     db_path = output_dir / f"smoke_{layout}.sqlite3"
     for candidate in (db_path, Path(str(db_path) + "-wal"), Path(str(db_path) + "-shm")):
         if candidate.exists():
@@ -885,6 +890,7 @@ def _run_smoke_context(
         action_ids=list(engine.ACTIONS),
     ) | {
         "world_seed": world_seed,
+        "prechange_fixture_run_id": fixture_run_id,
         "database_path": db_path.name,
         "export_path": export_path.name,
         "command_count": len(trace_rows),
@@ -1699,6 +1705,7 @@ def run_gate(output_dir: Path) -> dict[str, Any]:
         action_ids=list(engine.ACTIONS),
     ) | {
         "eligible": eligible,
+        "eligible_for_separate_effect_card": eligible,
         "verdict": verdict,
         "fresh_effect_seeds_consumed": False,
         "route_or_enablement_record": False,

@@ -60,6 +60,10 @@ def _context_id(layout: str, world_seed: int, policy_seed: int) -> str:
     return f"{layout}:world={world_seed}:policy={policy_seed}"
 
 
+def _policy_observation_from_trace(trace: Mapping[str, Any]) -> Mapping[str, Any]:
+    return (trace.get("policy_projection") or {}).get("observation") or {}
+
+
 def _fresh_replay(db_path: Path, run_id: str) -> dict[str, Any]:
     with SQLiteEventStore(db_path) as store:
         recovered = store.recover_run(run_id)
@@ -176,7 +180,7 @@ def _run_smoke_context(
                 action = trace.get("selected_action")
                 plan = ((trace.get("predictive_control") or {}).get("plan") or {})
                 update = ((trace.get("predictive_control") or {}).get("update") or {})
-                observation = trace.get("observation") or trace.get("world_observation") or {}
+                observation = _policy_observation_from_trace(trace)
                 visual = observation.get("visual") or []
                 front_token = visual[1][2] if len(visual) == 5 else None
                 token_count = int(

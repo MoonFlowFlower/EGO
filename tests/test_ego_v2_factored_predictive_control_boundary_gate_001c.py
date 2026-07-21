@@ -456,7 +456,7 @@ def test_engine_public_actual_delta_and_compact_trace_fail_closed(monkeypatch) -
         "episode_tick": trace["action_episode"]["episode_tick"],
         "episode_before": trace["action_episode"],
         "policy_decision_input_hash": trace["policy_projection"]["decision_input_hash"],
-        "world_observation": trace["observation"],
+        "world_observation": trace["policy_projection"]["observation"],
     }
     assert not (set(repeated_fields) & set(trace))
     legacy_repeated = deepcopy(trace)
