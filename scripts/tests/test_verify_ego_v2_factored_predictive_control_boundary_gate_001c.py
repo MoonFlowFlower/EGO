@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 from collections import Counter, defaultdict
+import json
 from pathlib import Path
+import subprocess
 import sys
 
 
@@ -52,6 +54,25 @@ def test_capture_baseline_emits_deterministic_four_life_fixture(tmp_path, monkey
     assert fixture_a["aggregation_rule"] == "ordered_committed_controller_steps_until_four_completed_lives_per_context"
     assert fixture_a["input_source_hashes"]
     assert fixture_a["code_path_hash"]
+    assert fixture_a["input_source_hashes"][
+        "scripts/codex/verify_ego_v2_factored_predictive_control_boundary_gate_001c.py"
+    ]
+
+    required_plan_semantics = {
+        "producer_function",
+        "algorithm",
+        "horizon",
+        "beam_width",
+        "discount",
+        "relative_map_mode",
+        "goal_value_mode",
+        "active_goal",
+        "predictor_input_goal_independent",
+        "coverage_step",
+        "exploration_hash",
+        "model_hash",
+        "belief_hash",
+    }
 
     required_step_keys = {
         "run_id",
@@ -92,7 +113,56 @@ def test_capture_baseline_emits_deterministic_four_life_fixture(tmp_path, monkey
         "p0_cross_v1:world=52:policy=711": [1, 2, 3, 4],
         "p2_vertical_v1:world=54:policy=711": [1, 2, 3, 4],
     }
+    assert all(run["life_count"] == 4 for run in fixture_a["runs"])
     assert Counter(call["trigger_source"] for call in calls) == {"ui_run_button": len(calls)}
     assert Counter(call["predictive_control_mode"] for call in calls) == {
         "factored_mpc": len(calls)
     }
+    assert required_plan_semantics <= set(fixture_a["steps"][0]["predictive_selection"])
+
+
+def test_checked_in_fixture_binds_to_current_capture_script_bytes():
+    artifact_path = (
+        REPO_ROOT
+        / "artifacts"
+        / target.TASK_ID
+        / target.FIXTURE_NAME
+    )
+    artifact = json.loads(artifact_path.read_text(encoding="utf-8"))
+    expected_script_hash = target._hash_file(  # noqa: SLF001
+        REPO_ROOT / "scripts/codex/verify_ego_v2_factored_predictive_control_boundary_gate_001c.py"
+    )
+
+    assert artifact["producer_function"] == (
+        "verify_ego_v2_factored_predictive_control_boundary_gate_001c.capture_prechange_baseline"
+    )
+    assert artifact["input_source_hashes"][
+        "scripts/codex/verify_ego_v2_factored_predictive_control_boundary_gate_001c.py"
+    ] == expected_script_hash
+    assert all(run["life_count"] == 4 for run in artifact["runs"])
+    first_step = artifact["steps"][0]
+    assert first_step["predictive_selection"]["algorithm"] == "online_linear_softmax_factored_mpc"
+    assert first_step["predictive_selection"]["producer_function"] == (
+        "ego_life_playground_v0.predictive_control.plan_action"
+    )
+    assert first_step["predictive_selection"]["horizon"] == 12
+    assert first_step["predictive_selection"]["beam_width"] == 16
+    assert first_step["predictive_selection"]["coverage_step"] >= 0
+
+
+def test_cli_requires_capture_baseline_flag(tmp_path):
+    completed = subprocess.run(
+        [
+            sys.executable,
+            str(REPO_ROOT / "scripts/codex/verify_ego_v2_factored_predictive_control_boundary_gate_001c.py"),
+            "--output-dir",
+            str(tmp_path),
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+        cwd=REPO_ROOT,
+    )
+
+    assert completed.returncode != 0
+    assert "requires --capture-baseline" in completed.stderr
