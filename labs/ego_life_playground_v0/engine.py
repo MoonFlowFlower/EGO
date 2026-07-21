@@ -48,10 +48,10 @@ REENTRY_THRESHOLD = 0.60
 CRITICAL_OVERRIDE_THRESHOLD = 0.15
 VISUAL_TRANSITION_MODEL_KEY = "__visual_transition_counts__"
 
-STATE_SCHEMA_VERSION = "ego.life_playground.state.v7"
-RUN_SCHEMA_VERSION = "ego.life_playground.run.v7"
+STATE_SCHEMA_VERSION = "ego.life_playground.state.v8"
+RUN_SCHEMA_VERSION = "ego.life_playground.run.v8"
 COMMAND_SCHEMA_VERSION = "ego.life_playground.command.v7"
-TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v12"
+TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v13"
 COMPONENT_HASH_SCHEMA_VERSION = "ego.life_playground.component_hashes.v2"
 
 TRIGGER_SOURCES = (
@@ -187,7 +187,7 @@ def compute_code_path_manifest() -> dict[str, Any]:
         Path(__file__).with_name("store.py"),
     )
     return {
-        "schema_version": "ego.life_playground.code_path.v8",
+        "schema_version": "ego.life_playground.code_path.v9",
         "files": [
             {"path": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
             for path in source_paths
@@ -585,8 +585,7 @@ def _respawn_trace(
             "update_count": int(next_state["survival_learner"]["update_count"]),
         },
         "predictive_control": {
-            "schema_version": "ego.life_playground.predictive_control_trace.v2",
-            "producer_function": RUN_PRODUCER_FUNCTION,
+            "schema_version": "ego.life_playground.predictive_control_trace.v3",
             "mode": command["interventions"]["predictive_control_mode"],
             "belief_observation": {
                 "applied": True,
@@ -605,7 +604,7 @@ def _respawn_trace(
                 next_state["predictive_control"]["model"]["update_count"]
             ),
             "plan": None,
-            "update": {
+            "selected_action_update": {
                 "applied": False,
                 "reason": "pure_respawn",
             },
@@ -1121,7 +1120,10 @@ def compute_step(
         )
     except ValueError as exc:
         raise EngineInvariantError(str(exc)) from exc
-    actual_delta = _actual_delta(world_transition, selected_action=selected_action)
+    actual_delta = compute_actual_delta(
+        world_transition,
+        selected_action=selected_action,
+    )
     energy_before = _round(float(decision_state["organism"]["energy"]))
     metabolism = compute_metabolism_ledger(
         energy_before=energy_before,
@@ -1435,8 +1437,7 @@ def compute_step(
             "update_count": int(next_state["survival_learner"]["update_count"]),
         },
         "predictive_control": {
-            "schema_version": "ego.life_playground.predictive_control_trace.v2",
-            "producer_function": RUN_PRODUCER_FUNCTION,
+            "schema_version": "ego.life_playground.predictive_control_trace.v3",
             "mode": interventions["predictive_control_mode"],
             "belief_observation": predictive_belief_receipt,
             "belief_hash": canonical_hash(
@@ -1452,7 +1453,7 @@ def compute_step(
                 next_state["predictive_control"]["model"]["update_count"]
             ),
             "plan": _compact_predictive_plan(predictive_plan),
-            "update": _compact_predictive_update(predictive_update),
+            "selected_action_update": _compact_predictive_update(predictive_update),
         },
         "model_bytes": {
             "before_hash": model_before_hash,
@@ -2594,7 +2595,11 @@ def _prior_prediction(observation: Mapping[str, Any], action: str) -> dict[str, 
     return {key: _round(predicted[key]) for key in STATE_KEYS}
 
 
-def _actual_delta(world_transition: Mapping[str, Any], *, selected_action: str) -> dict[str, float]:
+def compute_actual_delta(
+    world_transition: Mapping[str, Any], *, selected_action: str
+) -> dict[str, float]:
+    """Compute the observed non-metabolic organism delta for live and evaluation use."""
+
     delta = {key: 0.0 for key in STATE_KEYS}
     if selected_action == "rest":
         delta.update(REST_DELTA)
@@ -2606,6 +2611,14 @@ def _actual_delta(world_transition: Mapping[str, Any], *, selected_action: str) 
             delta[key] += float(value)
     delta["energy"] = 0.0
     return {key: _round(delta[key]) for key in STATE_KEYS}
+
+
+def _actual_delta(
+    world_transition: Mapping[str, Any], *, selected_action: str
+) -> dict[str, float]:
+    """Compatibility wrapper for the former private boundary."""
+
+    return compute_actual_delta(world_transition, selected_action=selected_action)
 
 
 def _update_model(
@@ -3245,28 +3258,55 @@ def _compact_predictive_plan(
     if not isinstance(plan, Mapping):
         return None
     predictions: dict[str, Any] = {}
+    predictor_contexts: set[tuple[Any, Any]] = set()
     for action, prediction in (plan.get("predictions_by_action") or {}).items():
         if not isinstance(prediction, Mapping):
             continue
+        predictor_contexts.add(
+            (prediction.get("input_hash"), prediction.get("feature_hash"))
+        )
         predictions[str(action)] = {
             key: deepcopy(prediction.get(key))
             for key in (
-                "input_hash",
-                "feature_hash",
                 "outcome_probabilities",
                 "predicted_delta",
                 "resource_interaction_probability",
                 "terminal_risk",
-                "uncertainty",
-                "visit_count",
             )
-        }
+        } | {"prediction_hash": canonical_hash(prediction)}
+    if len(predictor_contexts) > 1:
+        raise EngineInvariantError("predictive root actions do not share one context")
+    predictor_context_hash = (
+        None
+        if not predictor_contexts
+        else canonical_hash(
+            {
+                "input_hash": next(iter(predictor_contexts))[0],
+                "feature_hash": next(iter(predictor_contexts))[1],
+            }
+        )
+    )
+    candidate_values = deepcopy(plan.get("candidate_values"))
+    candidate_value_hashes = {
+        str(action): canonical_hash(value)
+        for action, value in (plan.get("candidate_values") or {}).items()
+    }
+    beam = plan.get("beam_receipt") or {}
+    root_actions_by_depth = beam.get("root_actions_by_depth") or []
+    compact_beam = {
+        "expanded_by_depth": deepcopy(beam.get("expanded_by_depth")),
+        "retained_by_depth": deepcopy(beam.get("retained_by_depth")),
+        "root_action_counts_by_depth": [
+            len(set(actions)) for actions in root_actions_by_depth
+        ],
+        "all_probability_mass_normalized": deepcopy(
+            beam.get("all_probability_mass_normalized")
+        ),
+    }
     return {
         key: deepcopy(plan.get(key))
         for key in (
             "schema_version",
-            "producer_function",
-            "algorithm",
             "horizon",
             "beam_width",
             "discount",
@@ -3274,7 +3314,6 @@ def _compact_predictive_plan(
             "goal_value_mode",
             "active_goal",
             "predictor_input_goal_independent",
-            "candidate_values",
             "selected_action",
             "planned_actions",
             "mpc_selected_action",
@@ -3286,11 +3325,16 @@ def _compact_predictive_plan(
             "exploration_hash",
             "tie_break_used",
             "tie_break_source",
-            "beam_receipt",
             "model_hash",
             "belief_hash",
         )
-    } | {"predictions_by_action": predictions}
+    } | {
+        "predictor_context_hash": predictor_context_hash,
+        "predictions_by_action": predictions,
+        "candidate_values": candidate_values,
+        "candidate_value_hashes": candidate_value_hashes,
+        "beam_receipt": compact_beam,
+    }
 
 
 def _compact_predictive_update(report: Mapping[str, Any]) -> dict[str, Any]:
@@ -3298,7 +3342,6 @@ def _compact_predictive_update(report: Mapping[str, Any]) -> dict[str, Any]:
         key: deepcopy(report.get(key))
         for key in (
             "schema_version",
-            "producer_function",
             "applied",
             "reason",
             "action",

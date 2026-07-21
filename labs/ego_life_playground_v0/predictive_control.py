@@ -12,18 +12,21 @@ from copy import deepcopy
 import hashlib
 import json
 import math
+import platform
 from typing import Any, Mapping
+
+import numpy as np
 
 from .microworld import ACTIONS, FACING_DELTAS, FACING_ORDER, PUBLIC_OBSERVATION_SCHEMA_VERSION
 
 
-STATE_SCHEMA_VERSION = "ego.life_playground.predictive_control.v2"
+STATE_SCHEMA_VERSION = "ego.life_playground.predictive_control.v3"
 BELIEF_SCHEMA_VERSION = "ego.life_playground.relative_belief.v1"
-MODEL_SCHEMA_VERSION = "ego.life_playground.factored_predictor.v2"
+MODEL_SCHEMA_VERSION = "ego.life_playground.factored_predictor.v3"
 EXPLORATION_SCHEMA_VERSION = "ego.life_playground.predictive_exploration.v1"
-PREDICTION_SCHEMA_VERSION = "ego.life_playground.outcome_prediction.v2"
-PLAN_SCHEMA_VERSION = "ego.life_playground.factored_plan.v2"
-UPDATE_SCHEMA_VERSION = "ego.life_playground.predictor_update.v2"
+PREDICTION_SCHEMA_VERSION = "ego.life_playground.outcome_prediction.v3"
+PLAN_SCHEMA_VERSION = "ego.life_playground.factored_plan.v3"
+UPDATE_SCHEMA_VERSION = "ego.life_playground.predictor_update.v3"
 ALGORITHM = "online_linear_softmax_factored_mpc"
 LEARNING_RATE = 0.08
 HORIZON = 12
@@ -68,6 +71,13 @@ _FORBIDDEN_PREDICTOR_FIELDS = frozenset(
         "world_position",
     }
 )
+NUMERIC_BACKEND_ID = "numpy"
+NUMERIC_BACKEND_VERSION = "2.2.6"
+NUMERIC_DTYPE = np.dtype(np.float64)
+ACTION_INDEX = {action: index for index, action in enumerate(ACTIONS)}
+OUTCOME_INDEX = {outcome: index for index, outcome in enumerate(OUTCOMES)}
+STATE_INDEX = {key: index for index, key in enumerate(STATE_KEYS)}
+FEATURE_INDEX = {feature: index for index, feature in enumerate(FEATURE_NAMES)}
 
 
 class PredictiveControlInvariantError(ValueError):
@@ -95,7 +105,27 @@ def _sigmoid(value: float) -> float:
     return 1.0 / (1.0 + math.exp(-clipped))
 
 
+def numeric_runtime_contract() -> dict[str, str]:
+    """Return and enforce the sole numeric runtime used by the predictor."""
+
+    if np.__version__ != NUMERIC_BACKEND_VERSION:
+        raise PredictiveControlInvariantError(
+            f"predictive control requires numpy {NUMERIC_BACKEND_VERSION}"
+        )
+    return {
+        "backend": NUMERIC_BACKEND_ID,
+        "backend_version": NUMERIC_BACKEND_VERSION,
+        "dtype": NUMERIC_DTYPE.str,
+        "python_version": platform.python_version(),
+    }
+
+
 def hyperparameters() -> dict[str, Any]:
+    runtime = numeric_runtime_contract()
+    action_order = list(ACTIONS)
+    outcome_order = list(OUTCOMES)
+    state_order = list(STATE_KEYS)
+    feature_order = list(FEATURE_NAMES)
     return {
         "algorithm": ALGORITHM,
         "learning_rate": LEARNING_RATE,
@@ -108,20 +138,32 @@ def hyperparameters() -> dict[str, Any]:
         "goal_is_predictor_input": False,
         "action_exposure_target": ACTION_EXPOSURE_TARGET,
         "token_interaction_target": TOKEN_INTERACTION_TARGET,
+        "numeric_runtime": runtime,
+        "action_order": action_order,
+        "outcome_order": outcome_order,
+        "state_order": state_order,
+        "feature_order": feature_order,
+        "action_order_hash": _canonical_hash(action_order),
+        "outcome_order_hash": _canonical_hash(outcome_order),
+        "state_order_hash": _canonical_hash(state_order),
+        "feature_order_hash": _canonical_hash(feature_order),
     }
 
 
-def _zero_row() -> dict[str, float]:
-    return {feature: 0.0 for feature in FEATURE_NAMES}
+def _zero_vector(length: int) -> list[float]:
+    return [0.0] * length
 
 
-def _empty_action_model() -> dict[str, Any]:
-    return {
-        "outcome_weights": {outcome: _zero_row() for outcome in OUTCOMES},
-        "delta_weights": {key: _zero_row() for key in STATE_KEYS},
-        "resource_weights": _zero_row(),
-        "terminal_weights": _zero_row(),
-    }
+def _empty_outcome_weights() -> list[list[list[float]]]:
+    return [[_zero_vector(len(FEATURE_NAMES)) for _ in OUTCOMES] for _ in ACTIONS]
+
+
+def _empty_delta_weights() -> list[list[list[float]]]:
+    return [[_zero_vector(len(FEATURE_NAMES)) for _ in STATE_KEYS] for _ in ACTIONS]
+
+
+def _empty_action_feature_weights() -> list[list[float]]:
+    return [_zero_vector(len(FEATURE_NAMES)) for _ in ACTIONS]
 
 
 def _empty_belief(episode_index: int = 0) -> dict[str, Any]:
@@ -145,6 +187,7 @@ def _empty_exploration() -> dict[str, Any]:
 
 
 def empty_state() -> dict[str, Any]:
+    numeric_runtime_contract()
     return {
         "schema_version": STATE_SCHEMA_VERSION,
         "belief": _empty_belief(),
@@ -152,7 +195,10 @@ def empty_state() -> dict[str, Any]:
         "model": {
             "schema_version": MODEL_SCHEMA_VERSION,
             "algorithm": ALGORITHM,
-            "actions": {action: _empty_action_model() for action in ACTIONS},
+            "outcome_weights": _empty_outcome_weights(),
+            "delta_weights": _empty_delta_weights(),
+            "resource_weights": _empty_action_feature_weights(),
+            "terminal_weights": _empty_action_feature_weights(),
             "visit_counts": {},
             "update_count": 0,
         },
@@ -290,15 +336,21 @@ def predictor_input_snapshot(
     )
 
 
-def _validate_weight_row(row: Any) -> None:
-    if not isinstance(row, Mapping) or set(row) != set(FEATURE_NAMES):
-        raise PredictiveControlInvariantError("predictor weight row schema mismatch")
-    for value in row.values():
-        if type(value) is not float or not math.isfinite(value):
-            raise PredictiveControlInvariantError("predictor weight must be finite float")
+def _validate_weight_array(name: str, value: Any, shape: tuple[int, ...]) -> None:
+    try:
+        array = np.asarray(value, dtype=object)
+    except (TypeError, ValueError) as exc:
+        raise PredictiveControlInvariantError(f"{name} shape mismatch") from exc
+    if array.shape != shape:
+        raise PredictiveControlInvariantError(f"{name} shape mismatch")
+    if any(type(item) is not float for item in array.flat):
+        raise PredictiveControlInvariantError(f"{name} must contain floats")
+    if any(not math.isfinite(item) for item in array.flat):
+        raise PredictiveControlInvariantError(f"{name} must be finite")
 
 
 def validate_state(state: Mapping[str, Any]) -> None:
+    numeric_runtime_contract()
     if not isinstance(state, Mapping) or set(state) != {
         "schema_version",
         "belief",
@@ -371,37 +423,59 @@ def validate_state(state: Mapping[str, Any]) -> None:
     model = state["model"]
     if (
         not isinstance(model, Mapping)
-        or set(model) != {"schema_version", "algorithm", "actions", "visit_counts", "update_count"}
-        or model.get("schema_version") != MODEL_SCHEMA_VERSION
-        or model.get("algorithm") != ALGORITHM
-        or type(model.get("update_count")) is not int
-        or model["update_count"] < 0
-        or not isinstance(model.get("actions"), Mapping)
-        or set(model["actions"]) != set(ACTIONS)
-        or not isinstance(model.get("visit_counts"), Mapping)
-    ):
-        raise PredictiveControlInvariantError("predictor model schema mismatch")
-    for action_model in model["actions"].values():
-        if not isinstance(action_model, Mapping) or set(action_model) != {
+        or set(model)
+        != {
+            "schema_version",
+            "algorithm",
             "outcome_weights",
             "delta_weights",
             "resource_weights",
             "terminal_weights",
-        }:
-            raise PredictiveControlInvariantError("predictor action model schema mismatch")
-        if set(action_model["outcome_weights"]) != set(OUTCOMES):
-            raise PredictiveControlInvariantError("predictor outcome weights mismatch")
-        if set(action_model["delta_weights"]) != set(STATE_KEYS):
-            raise PredictiveControlInvariantError("predictor delta weights mismatch")
-        for row in action_model["outcome_weights"].values():
-            _validate_weight_row(row)
-        for row in action_model["delta_weights"].values():
-            _validate_weight_row(row)
-        _validate_weight_row(action_model["resource_weights"])
-        _validate_weight_row(action_model["terminal_weights"])
+            "visit_counts",
+            "update_count",
+        }
+        or model.get("schema_version") != MODEL_SCHEMA_VERSION
+        or model.get("algorithm") != ALGORITHM
+        or type(model.get("update_count")) is not int
+        or model["update_count"] < 0
+        or not isinstance(model.get("visit_counts"), Mapping)
+    ):
+        raise PredictiveControlInvariantError("predictor model schema mismatch")
+    _validate_weight_array(
+        "outcome_weights",
+        model["outcome_weights"],
+        (len(ACTIONS), len(OUTCOMES), len(FEATURE_NAMES)),
+    )
+    _validate_weight_array(
+        "delta_weights",
+        model["delta_weights"],
+        (len(ACTIONS), len(STATE_KEYS), len(FEATURE_NAMES)),
+    )
+    _validate_weight_array(
+        "resource_weights",
+        model["resource_weights"],
+        (len(ACTIONS), len(FEATURE_NAMES)),
+    )
+    _validate_weight_array(
+        "terminal_weights",
+        model["terminal_weights"],
+        (len(ACTIONS), len(FEATURE_NAMES)),
+    )
     for key, count in model["visit_counts"].items():
         if type(key) is not str or len(key) != 64 or type(count) is not int or count < 1:
             raise PredictiveControlInvariantError("predictor visit count is invalid")
+
+
+def _compiled_model_arrays(model: Mapping[str, Any]) -> dict[str, np.ndarray]:
+    """Compile the serialized fixed arrays exactly once per public operation."""
+
+    numeric_runtime_contract()
+    return {
+        "outcome_weights": np.asarray(model["outcome_weights"], dtype=NUMERIC_DTYPE),
+        "delta_weights": np.asarray(model["delta_weights"], dtype=NUMERIC_DTYPE),
+        "resource_weights": np.asarray(model["resource_weights"], dtype=NUMERIC_DTYPE),
+        "terminal_weights": np.asarray(model["terminal_weights"], dtype=NUMERIC_DTYPE),
+    }
 
 
 def model_hash(state: Mapping[str, Any]) -> str:
@@ -556,54 +630,78 @@ def _predictor_input(
     )
 
 
-def _features(payload: Mapping[str, Any]) -> dict[str, float]:
-    organism = payload["organism"]
-    summary = payload["belief_summary"]
+def _feature_vector_from_summary(
+    *, organism: Mapping[str, float], summary: Mapping[str, Any]
+) -> np.ndarray:
     front = str(summary["front_token"])
     known = int(summary["known_cell_count"])
     objects = int(summary["known_object_count"])
-    values = {
-        "bias": 1.0,
-        **{key: float(organism[key]) for key in STATE_KEYS},
-        "front_empty": 1.0 if front == "empty" else 0.0,
-        "front_wall": 1.0 if front == "wall" else 0.0,
-        "front_occluded": 1.0 if front == "occluded" else 0.0,
-        **{f"front_v{index}": 1.0 if front == f"v{index}" else 0.0 for index in range(5)},
-        "known_cell_fraction": min(1.0, known / 81.0),
-        "known_object_fraction": min(1.0, objects / 5.0),
+    vector = np.zeros(len(FEATURE_NAMES), dtype=NUMERIC_DTYPE)
+    vector[FEATURE_INDEX["bias"]] = 1.0
+    vector[FEATURE_INDEX["energy"]] = float(organism["energy"])
+    vector[FEATURE_INDEX["safety"]] = float(organism["safety"])
+    vector[FEATURE_INDEX["connection"]] = float(organism["connection"])
+    vector[FEATURE_INDEX["stimulation"]] = float(organism["stimulation"])
+    if front in {"empty", "wall", "occluded"}:
+        vector[FEATURE_INDEX[f"front_{front}"]] = 1.0
+    elif front.startswith("v") and f"front_{front}" in FEATURE_INDEX:
+        vector[FEATURE_INDEX[f"front_{front}"]] = 1.0
+    vector[FEATURE_INDEX["known_cell_fraction"]] = min(1.0, known / 81.0)
+    vector[FEATURE_INDEX["known_object_fraction"]] = min(1.0, objects / 5.0)
+    return vector
+
+
+def _feature_mapping_from_vector(vector: np.ndarray) -> dict[str, float]:
+    return {
+        feature: float(vector[FEATURE_INDEX[feature]])
+        for feature in FEATURE_NAMES
     }
-    return {name: float(values[name]) for name in FEATURE_NAMES}
 
 
-def _dot(weights: Mapping[str, float], features: Mapping[str, float]) -> float:
-    return (
-        weights["bias"] * features["bias"]
-        + weights["energy"] * features["energy"]
-        + weights["safety"] * features["safety"]
-        + weights["connection"] * features["connection"]
-        + weights["stimulation"] * features["stimulation"]
-        + weights["front_empty"] * features["front_empty"]
-        + weights["front_wall"] * features["front_wall"]
-        + weights["front_occluded"] * features["front_occluded"]
-        + weights["front_v0"] * features["front_v0"]
-        + weights["front_v1"] * features["front_v1"]
-        + weights["front_v2"] * features["front_v2"]
-        + weights["front_v3"] * features["front_v3"]
-        + weights["front_v4"] * features["front_v4"]
-        + weights["known_cell_fraction"] * features["known_cell_fraction"]
-        + weights["known_object_fraction"] * features["known_object_fraction"]
+def _features(payload: Mapping[str, Any]) -> dict[str, float]:
+    return _feature_mapping_from_vector(
+        _feature_vector_from_summary(
+            organism=payload["organism"],
+            summary=payload["belief_summary"],
+        )
     )
 
 
-def _softmax(
-    logits: Mapping[str, float], *, round_values: bool = True
-) -> dict[str, float]:
-    maximum = max(logits.values())
-    exponentials = {key: math.exp(float(value) - maximum) for key, value in logits.items()}
-    total = sum(exponentials.values())
+def _softmax_array(logits: np.ndarray, *, round_values: bool = True) -> dict[str, float]:
+    maximum = max(float(value) for value in logits)
+    exponentials = [math.exp(float(value) - maximum) for value in logits]
+    total = sum(exponentials)
+    values = [value / total for value in exponentials]
     if round_values:
-        return {key: _round(exponentials[key] / total) for key in OUTCOMES}
-    return {key: exponentials[key] / total for key in OUTCOMES}
+        return {
+            outcome: _round(float(values[OUTCOME_INDEX[outcome]]))
+            for outcome in OUTCOMES
+        }
+    return {
+        outcome: float(values[OUTCOME_INDEX[outcome]])
+        for outcome in OUTCOMES
+    }
+
+
+def _ordered_dot(weights: np.ndarray, features: np.ndarray) -> float:
+    products = np.multiply(weights, features, dtype=NUMERIC_DTYPE)
+    return (
+        float(products[0])
+        + float(products[1])
+        + float(products[2])
+        + float(products[3])
+        + float(products[4])
+        + float(products[5])
+        + float(products[6])
+        + float(products[7])
+        + float(products[8])
+        + float(products[9])
+        + float(products[10])
+        + float(products[11])
+        + float(products[12])
+        + float(products[13])
+        + float(products[14])
+    )
 
 
 def _visit_key(action: str, payload: Mapping[str, Any]) -> str:
@@ -624,24 +722,34 @@ def _predict_from_payload(
     action: str,
     *,
     include_hashes: bool = True,
-    precomputed_features: Mapping[str, float] | None = None,
+    precomputed_features: np.ndarray | None = None,
+    compiled_model: dict[str, np.ndarray] | None = None,
     visit_key_cache: dict[tuple[Any, ...], str] | None = None,
 ) -> dict[str, Any]:
     if action not in ACTIONS:
         raise PredictiveControlInvariantError("predictor action is invalid")
-    features = (
-        _features(payload)
+    feature_vector = (
+        _feature_vector_from_summary(
+            organism=payload["organism"],
+            summary=payload["belief_summary"],
+        )
         if precomputed_features is None
         else precomputed_features
     )
-    action_model = state["model"]["actions"][action]
-    probabilities = _softmax(
-        {
-            outcome: _dot(action_model["outcome_weights"][outcome], features)
-            for outcome in OUTCOMES
-        },
-        round_values=include_hashes,
+    compiled = (
+        _compiled_model_arrays(state["model"])
+        if compiled_model is None
+        else compiled_model
     )
+    action_index = ACTION_INDEX[action]
+    outcome_logits = np.asarray(
+        [
+            _ordered_dot(compiled["outcome_weights"][action_index, outcome_index], feature_vector)
+            for outcome_index in range(len(OUTCOMES))
+        ],
+        dtype=NUMERIC_DTYPE,
+    )
+    probabilities = _softmax_array(outcome_logits, round_values=include_hashes)
     visit_descriptor = (
         action,
         payload["belief_summary"]["front_token"],
@@ -659,20 +767,37 @@ def _predict_from_payload(
         "schema_version": PREDICTION_SCHEMA_VERSION,
         "producer_function": "ego_life_playground_v0.predictive_control.predict_action",
         "input_hash": _canonical_hash(payload) if include_hashes else None,
-        "feature_hash": _canonical_hash(features) if include_hashes else None,
+        "feature_hash": (
+            _canonical_hash(_feature_mapping_from_vector(feature_vector))
+            if include_hashes
+            else None
+        ),
         "action": action,
         "outcome_probabilities": probabilities,
         "predicted_delta": {
             key: round_prediction(
-                max(-0.35, min(0.35, _dot(action_model["delta_weights"][key], features)))
+                max(
+                    -0.35,
+                    min(
+                        0.35,
+                        _ordered_dot(
+                            compiled["delta_weights"][action_index, STATE_INDEX[key]],
+                            feature_vector,
+                        ),
+                    ),
+                )
             )
             for key in STATE_KEYS
         },
         "resource_interaction_probability": round_prediction(
-            _sigmoid(_dot(action_model["resource_weights"], features))
+            _sigmoid(
+                _ordered_dot(compiled["resource_weights"][action_index], feature_vector)
+            )
         ),
         "terminal_risk": round_prediction(
-            _sigmoid(_dot(action_model["terminal_weights"], features))
+            _sigmoid(
+                _ordered_dot(compiled["terminal_weights"][action_index], feature_vector)
+            )
         ),
         "uncertainty": round_prediction(1.0 / math.sqrt(1.0 + visit_count)),
         "visit_count": visit_count,
@@ -921,6 +1046,7 @@ def _prediction_for_pose(
     observation: Mapping[str, Any] | None,
     organism: Mapping[str, float],
     action: str,
+    compiled_model: dict[str, np.ndarray],
     prediction_cache: dict[tuple[Any, ...], dict[str, Any]],
     summary_cache: dict[tuple[int, int, str, bool], dict[str, Any]],
     visit_key_cache: dict[tuple[Any, ...], str],
@@ -935,21 +1061,32 @@ def _prediction_for_pose(
             observation=observation,
         )
         summary_cache[summary_key] = summary
-    payload = {
-        "observation": observation,
-        "organism": organism,
-        "belief_summary": summary,
-    }
-    feature_values = _features(payload)
-    cache_key = (action, *(feature_values[name] for name in FEATURE_NAMES))
+    organism_tuple = tuple(float(organism[key]) for key in STATE_KEYS)
+    cache_key = (
+        ACTION_INDEX[action],
+        organism_tuple,
+        str(summary["front_token"]),
+        int(summary["known_cell_count"]),
+        int(summary["known_object_count"]),
+    )
     prediction = prediction_cache.get(cache_key)
     if prediction is None:
+        feature_vector = _feature_vector_from_summary(
+            organism=organism,
+            summary=summary,
+        )
+        payload = {
+            "observation": observation,
+            "organism": organism,
+            "belief_summary": summary,
+        }
         prediction = _predict_from_payload(
             state,
             payload,
             action,
             include_hashes=False,
-            precomputed_features=feature_values,
+            precomputed_features=feature_vector,
+            compiled_model=compiled_model,
             visit_key_cache=visit_key_cache,
         )
         prediction_cache[cache_key] = prediction
@@ -967,6 +1104,7 @@ def _expand_node(
     goal_value_mode: str,
     depth: int,
     discount: float,
+    compiled_model: dict[str, np.ndarray],
     prediction_cache: dict[tuple[Any, ...], dict[str, Any]],
     summary_cache: dict[tuple[int, int, str, bool], dict[str, Any]],
     unknown_cache: dict[tuple[int, int], float],
@@ -987,6 +1125,7 @@ def _expand_node(
             observation=observation,
             organism=node["organism"],
             action=action,
+            compiled_model=compiled_model,
             prediction_cache=prediction_cache,
             summary_cache=summary_cache,
             visit_key_cache=visit_key_cache,
@@ -1146,8 +1285,19 @@ def plan_action(
         organism=organism,
         relative_map_mode=relative_map_mode,
     )
+    compiled_model = _compiled_model_arrays(state["model"])
+    current_features = _feature_vector_from_summary(
+        organism=current_payload["organism"],
+        summary=current_payload["belief_summary"],
+    )
     predictions = {
-        action: _predict_from_payload(state, current_payload, action)
+        action: _predict_from_payload(
+            state,
+            current_payload,
+            action,
+            precomputed_features=current_features,
+            compiled_model=compiled_model,
+        )
         for action in ACTIONS
     }
     base_belief = (
@@ -1191,6 +1341,7 @@ def plan_action(
                 goal_value_mode=goal_value_mode,
                 depth=depth,
                 discount=discount,
+                compiled_model=compiled_model,
                 prediction_cache=prediction_cache,
                 summary_cache=summary_cache,
                 unknown_cache=unknown_cache,
@@ -1326,17 +1477,29 @@ def plan_action(
     }
 
 
-def _updated_row(
-    row: Mapping[str, float],
-    features: Mapping[str, float],
+def _updated_vector(
+    row: np.ndarray,
+    features: np.ndarray,
     multiplier: float,
-) -> dict[str, float]:
-    return {
-        feature: _round(
-            max(-4.0, min(4.0, float(row[feature]) + LEARNING_RATE * multiplier * float(features[feature])))
-        )
-        for feature in FEATURE_NAMES
-    }
+) -> np.ndarray:
+    return np.asarray(
+        [
+            _round(
+                max(
+                    -4.0,
+                    min(
+                        4.0,
+                        float(row[index])
+                        + LEARNING_RATE
+                        * float(multiplier)
+                        * float(features[index]),
+                    ),
+                )
+            )
+            for index in range(len(FEATURE_NAMES))
+        ],
+        dtype=NUMERIC_DTYPE,
+    )
 
 
 def update_after_transition(
@@ -1370,7 +1533,18 @@ def update_after_transition(
         organism=organism_before,
         relative_map_mode=relative_map_mode,
     )
-    prediction_before = _predict_from_payload(state, payload, action)
+    compiled_model = _compiled_model_arrays(state["model"])
+    feature_vector = _feature_vector_from_summary(
+        organism=payload["organism"],
+        summary=payload["belief_summary"],
+    )
+    prediction_before = _predict_from_payload(
+        state,
+        payload,
+        action,
+        precomputed_features=feature_vector,
+        compiled_model=compiled_model,
+    )
     before_hash = _canonical_hash(state["model"])
     updated = dict(state)
     exploration_before_hash = _canonical_hash(state["exploration"])
@@ -1387,35 +1561,37 @@ def update_after_transition(
     updated["exploration"] = exploration
     model = dict(state["model"])
     if updates_enabled:
-        actions = dict(model["actions"])
-        action_model = deepcopy(actions[action])
-        features = _features(payload)
+        action_index = ACTION_INDEX[action]
         probabilities = prediction_before["outcome_probabilities"]
         for outcome in OUTCOMES:
             target = 1.0 if outcome == actual_outcome_type else 0.0
-            action_model["outcome_weights"][outcome] = _updated_row(
-                action_model["outcome_weights"][outcome],
-                features,
+            outcome_index = OUTCOME_INDEX[outcome]
+            compiled_model["outcome_weights"][action_index, outcome_index] = _updated_vector(
+                compiled_model["outcome_weights"][action_index, outcome_index],
+                feature_vector,
                 target - float(probabilities[outcome]),
             )
         for key in STATE_KEYS:
             error = float(actual_delta[key]) - float(prediction_before["predicted_delta"][key])
-            action_model["delta_weights"][key] = _updated_row(
-                action_model["delta_weights"][key], features, error
+            state_index = STATE_INDEX[key]
+            compiled_model["delta_weights"][action_index, state_index] = _updated_vector(
+                compiled_model["delta_weights"][action_index, state_index],
+                feature_vector,
+                error,
             )
-        action_model["resource_weights"] = _updated_row(
-            action_model["resource_weights"],
-            features,
+        compiled_model["resource_weights"][action_index] = _updated_vector(
+            compiled_model["resource_weights"][action_index],
+            feature_vector,
             (1.0 if resource_interaction else 0.0)
             - float(prediction_before["resource_interaction_probability"]),
         )
-        action_model["terminal_weights"] = _updated_row(
-            action_model["terminal_weights"],
-            features,
+        compiled_model["terminal_weights"][action_index] = _updated_vector(
+            compiled_model["terminal_weights"][action_index],
+            feature_vector,
             (1.0 if terminal else 0.0) - float(prediction_before["terminal_risk"]),
         )
-        actions[action] = action_model
-        model["actions"] = actions
+        for field, array in compiled_model.items():
+            model[field] = array.tolist()
         visit_counts = dict(model["visit_counts"])
         visit_key = _visit_key(action, payload)
         visit_counts[visit_key] = int(visit_counts.get(visit_key, 0)) + 1
@@ -1429,7 +1605,13 @@ def update_after_transition(
         updated["belief"] = _integrate_observation(belief, next_observation)
     elif relative_map_mode != "off":
         raise PredictiveControlInvariantError("relative map mode is invalid")
-    prediction_after = _predict_from_payload(updated, payload, action)
+    prediction_after = _predict_from_payload(
+        updated,
+        payload,
+        action,
+        precomputed_features=feature_vector,
+        compiled_model=compiled_model,
+    )
     probability = max(1e-12, float(prediction_before["outcome_probabilities"][actual_outcome_type]))
     brier = sum(
         (
@@ -1486,6 +1668,7 @@ __all__ = [
     "exploration_hash",
     "hyperparameters",
     "model_hash",
+    "numeric_runtime_contract",
     "observe_belief",
     "plan_action",
     "predict_action",
