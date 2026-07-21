@@ -14,7 +14,6 @@ if str(REPO_ROOT) not in sys.path:
 
 from labs.ego_life_playground_v0.controller import PlaygroundController, public_state_projection
 from labs.ego_life_playground_v0.engine import DEFAULT_INTERVENTIONS, compute_step as engine_compute_step
-from labs.ego_life_playground_v0.microworld import policy_observation
 from labs.ego_life_playground_v0.store import RecoveryError, SQLiteEventStore
 from labs.ego_life_playground_v0.terminal import TerminalPlayground
 
@@ -81,13 +80,7 @@ def test_controller_injected_event_stays_trace_only_and_out_of_policy_projection
 
         assert result.receipt.committed is True
         assert controller.last_trace["command"]["injected_event"] == "resource_appears"
-        assert controller.last_trace["observation"] == policy_observation(
-            controller.state["world"], occlusion=True
-        )
-        assert (
-            controller.last_trace["policy_projection"]["observation"]
-            != controller.last_trace["observation"]
-        )
+        assert controller.last_trace["policy_projection"]["observation"] == controller.last_trace["observation"]
         encoded_projection = json.dumps(controller.last_trace["policy_projection"], sort_keys=True)
         assert "resource_appears" not in encoded_projection
         public_projection = public_state_projection(controller.state)

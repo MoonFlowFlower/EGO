@@ -204,10 +204,7 @@ def test_forward_resource_interaction_produces_exact_food_gain() -> None:
 
     result, _ = _step(state, meta)
 
-    assert (
-        result.trace["policy_projection"]["observation"]["visual"][1][2]
-        == resource_token
-    )
+    assert result.trace["observation"]["visual"][1][2] == resource_token
     assert result.trace["selected_action"] == "interact"
     assert result.trace["world_transition"] == {
         "outcome_type": "interacted",
@@ -244,10 +241,7 @@ def test_forward_non_resource_interaction_changes_body_but_not_energy_gain() -> 
 
     result, _ = _step(state, meta)
 
-    assert (
-        result.trace["policy_projection"]["observation"]["visual"][1][2]
-        == social_token
-    )
+    assert result.trace["observation"]["visual"][1][2] == social_token
     assert result.trace["world_transition"] == {
         "outcome_type": "interacted",
         "cause": "social",

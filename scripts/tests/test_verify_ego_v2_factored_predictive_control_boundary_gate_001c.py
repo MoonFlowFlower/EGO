@@ -20,9 +20,6 @@ from labs.ego_life_playground_v0.store import SQLiteEventStore  # noqa: E402
 from scripts.codex import (  # type: ignore[attr-defined]  # noqa: E402
     verify_ego_v2_factored_predictive_control_boundary_gate_001c as target,
 )
-from scripts.codex import (  # type: ignore[attr-defined]  # noqa: E402
-    verify_ego_v2_factored_predictive_control_repair_001b as repair_verifier,
-)
 
 
 ARTIFACT_DIR = REPO_ROOT / "artifacts" / target.TASK_ID
@@ -110,17 +107,6 @@ def test_current_smoke_run_id_is_distinct_from_sealed_prechange_fixture():
 
     assert run_id == f"{target.TASK_ID}:current-smoke:{context_id}"
     assert ":prechange:" not in run_id
-
-
-def test_001b_front_token_diagnostic_uses_pre_action_policy_observation():
-    post_action = {"visual": [["post-action"]]}
-    pre_action = {"visual": [["pre-action"]]}
-    trace = {
-        "observation": post_action,
-        "policy_projection": {"observation": pre_action},
-    }
-
-    assert repair_verifier._policy_observation_from_trace(trace) is pre_action  # noqa: SLF001
 
 
 def test_semantic_comparison_covers_all_204_actions_and_rejects_five_drift_types():

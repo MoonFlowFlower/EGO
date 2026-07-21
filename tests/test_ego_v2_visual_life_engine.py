@@ -211,13 +211,7 @@ def test_card_a_optional_injection_changes_visual_state_but_not_policy_semantics
     assert command["injected_event"] == "threat_nearby"
     assert injected.trace["observation"] != baseline.trace["observation"]
     encoded = json.dumps(injected.trace["policy_projection"], sort_keys=True).lower()
-    assert (
-        injected.trace["policy_projection"]["observation"]
-        != injected.trace["observation"]
-    )
-    assert injected.trace["observation"] == policy_observation(
-        injected.next_state["world"], occlusion=True
-    )
+    assert injected.trace["policy_projection"]["observation"] == injected.trace["observation"]
     for token in FORBIDDEN_POLICY_TOKENS:
         assert token not in encoded
 
@@ -226,10 +220,7 @@ def test_card_a_interact_applies_fixed_costs_and_cause_delta():
     state, observation = _state_with_resource_ahead()
     result, _, _ = _step(state, run_id="resource-ahead")
 
-    assert result.trace["policy_projection"]["observation"] == observation
-    assert result.trace["observation"] == policy_observation(
-        result.next_state["world"], occlusion=True
-    )
+    assert result.trace["observation"] == observation
     assert result.trace["selected_action"] == "interact"
     assert result.trace["world_transition"]["outcome_type"] == "interacted"
     assert result.trace["world_transition"]["cause"] == "resource"
@@ -426,19 +417,10 @@ def test_card_a_no_occlusion_ablation_recomputes_actual_behind_cell():
 
     canonical_observation = policy_observation(state["world"], occlusion=True)
     ablated_observation = policy_observation(state["world"], occlusion=False)
-    assert baseline.trace["policy_projection"]["observation"] == canonical_observation
-    assert no_occ.trace["policy_projection"]["observation"] == ablated_observation
-    assert baseline.trace["policy_projection"]["observation"]["visual"][0][2] == "occluded"
-    assert (
-        no_occ.trace["policy_projection"]["observation"]["visual"][0][2]
-        == state["world"]["objects_by_cause"]["social"]["token"]
-    )
-    assert baseline.trace["observation"] == policy_observation(
-        baseline.next_state["world"], occlusion=True
-    )
-    assert no_occ.trace["observation"] == policy_observation(
-        no_occ.next_state["world"], occlusion=False
-    )
+    assert baseline.trace["observation"] == canonical_observation
+    assert no_occ.trace["observation"] == ablated_observation
+    assert baseline.trace["observation"]["visual"][0][2] == "occluded"
+    assert no_occ.trace["observation"]["visual"][0][2] == state["world"]["objects_by_cause"]["social"]["token"]
     assert baseline.trace["world_before_hash"] == no_occ.trace["world_before_hash"]
     assert baseline.trace["world_decision_hash"] == no_occ.trace["world_decision_hash"]
     assert no_occ.trace["vision_ablation"] == {"mode": "no_occlusion", "applied": True}

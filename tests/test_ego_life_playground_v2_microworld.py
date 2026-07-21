@@ -23,6 +23,7 @@ from labs.ego_life_playground_v0.microworld import (
     apply_operator_injection,
     initial_world_state,
     make_public_frame,
+    observation_hash,
     policy_observation,
     public_world_projection,
     reset_world_for_life,
@@ -298,12 +299,14 @@ def test_card_a_tk_window_step_run_inject_and_visual_split(tmp_path: Path):
             _spin(root, timeout=0.2)
             assert controller.recovery.frames[-1].sequence >= before_run + 1
 
-            before_inject = deepcopy(controller.last_trace["observation"])
             window.inject_event_var.set("social_signal")
             window.inject_button.invoke()
             _spin(root, timeout=0.8)
-            assert controller.last_trace["command"]["injected_event"] == "social_signal"
-            assert controller.last_trace["observation"] != before_inject
+            trace = controller.last_trace
+            assert trace["command"]["injected_event"] == "social_signal"
+            assert trace["world_before_hash"] != trace["world_decision_hash"]
+            assert trace["observation_hash"] == observation_hash(trace["observation"])
+            assert window.visual_grid_data == trace["observation"]["visual"]
         finally:
             window.close()
             try:
