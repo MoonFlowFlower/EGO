@@ -48,10 +48,10 @@ REENTRY_THRESHOLD = 0.60
 CRITICAL_OVERRIDE_THRESHOLD = 0.15
 VISUAL_TRANSITION_MODEL_KEY = "__visual_transition_counts__"
 
-STATE_SCHEMA_VERSION = "ego.life_playground.state.v6"
-RUN_SCHEMA_VERSION = "ego.life_playground.run.v6"
+STATE_SCHEMA_VERSION = "ego.life_playground.state.v7"
+RUN_SCHEMA_VERSION = "ego.life_playground.run.v7"
 COMMAND_SCHEMA_VERSION = "ego.life_playground.command.v7"
-TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v11"
+TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v12"
 COMPONENT_HASH_SCHEMA_VERSION = "ego.life_playground.component_hashes.v2"
 
 TRIGGER_SOURCES = (
@@ -187,7 +187,7 @@ def compute_code_path_manifest() -> dict[str, Any]:
         Path(__file__).with_name("store.py"),
     )
     return {
-        "schema_version": "ego.life_playground.code_path.v7",
+        "schema_version": "ego.life_playground.code_path.v8",
         "files": [
             {"path": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
             for path in source_paths
@@ -585,7 +585,7 @@ def _respawn_trace(
             "update_count": int(next_state["survival_learner"]["update_count"]),
         },
         "predictive_control": {
-            "schema_version": "ego.life_playground.predictive_control_trace.v1",
+            "schema_version": "ego.life_playground.predictive_control_trace.v2",
             "producer_function": RUN_PRODUCER_FUNCTION,
             "mode": command["interventions"]["predictive_control_mode"],
             "belief_observation": {
@@ -597,6 +597,9 @@ def _respawn_trace(
             ),
             "model_hash": canonical_hash(
                 next_state["predictive_control"]["model"]
+            ),
+            "exploration_hash": canonical_hash(
+                next_state["predictive_control"]["exploration"]
             ),
             "model_update_count": int(
                 next_state["predictive_control"]["model"]["update_count"]
@@ -1063,9 +1066,16 @@ def compute_step(
                 relative_map_mode=interventions["relative_map_mode"],
                 goal_value_mode=interventions["goal_value_mode"],
                 action_costs=ACTION_COSTS,
+                run_seed=int(run_meta["seed"]),
+                episode_index=int(decision_state["clock"]["episode_index"]),
+                sequence=sequence,
             )
+            # The existing survival selector remains the sole downstream
+            # action-selection receipt.  In factored mode its score surface is
+            # a delegation receipt for the plan's bounded-explore/MPC choice;
+            # the unmodified expected values remain in predictive_plan.
             selection_scores = {
-                action: float(predictive_plan["candidate_values"][action]["total"])
+                action: 1.0 if action == predictive_plan["selected_action"] else 0.0
                 for action in ACTIONS
             }
             selection_learning_mode = "off"
@@ -1425,7 +1435,7 @@ def compute_step(
             "update_count": int(next_state["survival_learner"]["update_count"]),
         },
         "predictive_control": {
-            "schema_version": "ego.life_playground.predictive_control_trace.v1",
+            "schema_version": "ego.life_playground.predictive_control_trace.v2",
             "producer_function": RUN_PRODUCER_FUNCTION,
             "mode": interventions["predictive_control_mode"],
             "belief_observation": predictive_belief_receipt,
@@ -1434,6 +1444,9 @@ def compute_step(
             ),
             "model_hash": canonical_hash(
                 next_state["predictive_control"]["model"]
+            ),
+            "exploration_hash": canonical_hash(
+                next_state["predictive_control"]["exploration"]
             ),
             "model_update_count": int(
                 next_state["predictive_control"]["model"]["update_count"]
@@ -3264,6 +3277,16 @@ def _compact_predictive_plan(
             "candidate_values",
             "selected_action",
             "planned_actions",
+            "mpc_selected_action",
+            "selection_mode",
+            "exploration_reason",
+            "action_exposure_counts",
+            "token_interaction_counts",
+            "coverage_step",
+            "exploration_hash",
+            "tie_break_used",
+            "tie_break_source",
+            "beam_receipt",
             "model_hash",
             "belief_hash",
         )
@@ -3288,6 +3311,11 @@ def _compact_predictive_update(report: Mapping[str, Any]) -> dict[str, Any]:
             "model_hash_before",
             "model_hash_after",
             "belief_hash_after",
+            "exploration_hash_before",
+            "exploration_hash_after",
+            "action_exposure_counts_after",
+            "token_interaction_counts_after",
+            "coverage_step_after",
             "update_count_after",
         )
         if key in report

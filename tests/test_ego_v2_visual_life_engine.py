@@ -158,8 +158,8 @@ def test_card_a_schema_versions_and_command_v5_shape():
         injected_event="social_signal",
     )
 
-    assert state["schema_version"] == "ego.life_playground.state.v6"
-    assert meta["schema_version"] == "ego.life_playground.run.v6"
+    assert state["schema_version"] == "ego.life_playground.state.v7"
+    assert meta["schema_version"] == "ego.life_playground.run.v7"
     assert command["schema_version"] == "ego.life_playground.command.v7"
     assert set(command) == {
         "schema_version",
@@ -180,7 +180,7 @@ def test_card_a_step_is_deterministic_and_command_contains_only_replay_inputs():
     state = initial_state(run_id="deterministic")
     result_b = compute_step(state, deepcopy(command), deepcopy(meta))
 
-    assert result_a.trace["schema_version"] == "ego.life_playground.trace.v11"
+    assert result_a.trace["schema_version"] == "ego.life_playground.trace.v12"
     assert result_a.trace["selected_action"] in ACTIONS
     assert {item["action"] for item in result_a.trace["candidates"]} == set(ACTIONS)
     assert result_a.trace["selected_action"] == next(
@@ -305,7 +305,7 @@ def test_card_a_visual_context_model_update_and_claim_v2_policy_summary():
 
 def test_card_a_hash_and_code_path_v4_fail_closed():
     manifest = compute_code_path_manifest()
-    assert manifest["schema_version"] == "ego.life_playground.code_path.v7"
+    assert manifest["schema_version"] == "ego.life_playground.code_path.v8"
     assert {entry["path"] for entry in manifest["files"]} == {
         "engine.py",
         "microworld.py",

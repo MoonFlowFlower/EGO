@@ -17,18 +17,21 @@ from typing import Any, Mapping
 from .microworld import ACTIONS, FACING_DELTAS, FACING_ORDER, PUBLIC_OBSERVATION_SCHEMA_VERSION
 
 
-STATE_SCHEMA_VERSION = "ego.life_playground.predictive_control.v1"
+STATE_SCHEMA_VERSION = "ego.life_playground.predictive_control.v2"
 BELIEF_SCHEMA_VERSION = "ego.life_playground.relative_belief.v1"
-MODEL_SCHEMA_VERSION = "ego.life_playground.factored_predictor.v1"
-PREDICTION_SCHEMA_VERSION = "ego.life_playground.outcome_prediction.v1"
-PLAN_SCHEMA_VERSION = "ego.life_playground.factored_plan.v1"
-UPDATE_SCHEMA_VERSION = "ego.life_playground.predictor_update.v1"
+MODEL_SCHEMA_VERSION = "ego.life_playground.factored_predictor.v2"
+EXPLORATION_SCHEMA_VERSION = "ego.life_playground.predictive_exploration.v1"
+PREDICTION_SCHEMA_VERSION = "ego.life_playground.outcome_prediction.v2"
+PLAN_SCHEMA_VERSION = "ego.life_playground.factored_plan.v2"
+UPDATE_SCHEMA_VERSION = "ego.life_playground.predictor_update.v2"
 ALGORITHM = "online_linear_softmax_factored_mpc"
 LEARNING_RATE = 0.08
 HORIZON = 12
 BEAM_WIDTH = 16
 DISCOUNT = 0.97
 TARGET_LEVEL = 0.72
+ACTION_EXPOSURE_TARGET = 4
+TOKEN_INTERACTION_TARGET = 2
 OUTCOMES = ("moved", "blocked", "interacted", "no_object", "rested", "turned")
 STATE_KEYS = ("energy", "safety", "connection", "stimulation")
 RELATIVE_MAP_MODES = ("relative", "off")
@@ -51,6 +54,20 @@ FEATURE_NAMES = (
     "known_object_fraction",
 )
 _VISIBLE_TOKENS = frozenset({"self", "empty", "wall", "occluded", "v0", "v1", "v2", "v3", "v4"})
+_FORBIDDEN_PREDICTOR_FIELDS = frozenset(
+    {
+        "cause",
+        "future_observation",
+        "global_coordinates",
+        "global_position",
+        "objects_by_cause",
+        "run_seed",
+        "seed",
+        "seed_id",
+        "token_mapping",
+        "world_position",
+    }
+)
 
 
 class PredictiveControlInvariantError(ValueError):
@@ -89,6 +106,8 @@ def hyperparameters() -> dict[str, Any]:
         "feature_names": list(FEATURE_NAMES),
         "predictor_inputs": ["policy_observation", "organism", "relative_belief"],
         "goal_is_predictor_input": False,
+        "action_exposure_target": ACTION_EXPOSURE_TARGET,
+        "token_interaction_target": TOKEN_INTERACTION_TARGET,
     }
 
 
@@ -116,10 +135,20 @@ def _empty_belief(episode_index: int = 0) -> dict[str, Any]:
     }
 
 
+def _empty_exploration() -> dict[str, Any]:
+    return {
+        "schema_version": EXPLORATION_SCHEMA_VERSION,
+        "action_exposure_counts": {action: 0 for action in ACTIONS},
+        "token_interaction_counts": {f"v{index}": 0 for index in range(5)},
+        "coverage_step": 0,
+    }
+
+
 def empty_state() -> dict[str, Any]:
     return {
         "schema_version": STATE_SCHEMA_VERSION,
         "belief": _empty_belief(),
+        "exploration": _empty_exploration(),
         "model": {
             "schema_version": MODEL_SCHEMA_VERSION,
             "algorithm": ALGORITHM,
@@ -187,9 +216,42 @@ def _validate_belief_summary(summary: Any) -> None:
         raise PredictiveControlInvariantError("belief token counts are invalid")
 
 
+def scan_predictor_input_leakage(payload: Any) -> dict[str, Any]:
+    """Scan the predictor input boundary for explicitly forbidden private fields."""
+
+    findings: list[dict[str, str]] = []
+
+    def visit(value: Any, path: str) -> None:
+        if isinstance(value, Mapping):
+            for key, child in value.items():
+                field = str(key)
+                child_path = f"{path}.{field}" if path else field
+                if field.lower() in _FORBIDDEN_PREDICTOR_FIELDS:
+                    findings.append({"field": field, "path": child_path})
+                visit(child, child_path)
+        elif isinstance(value, (list, tuple)):
+            for index, child in enumerate(value):
+                visit(child, f"{path}[{index}]")
+
+    visit(payload, "")
+    findings.sort(key=lambda item: (item["field"], item["path"]))
+    return {
+        "schema_version": "ego.life_playground.predictor_leakage_scan.v1",
+        "producer_function": (
+            "ego_life_playground_v0.predictive_control.scan_predictor_input_leakage"
+        ),
+        "clean": not findings,
+        "findings": findings,
+        "input_hash": _canonical_hash(payload),
+    }
+
+
 def validate_predictor_input(payload: Mapping[str, Any]) -> dict[str, Any]:
     """Validate the complete goal/private-world-free predictor input surface."""
 
+    leakage = scan_predictor_input_leakage(payload)
+    if not leakage["clean"]:
+        raise PredictiveControlInvariantError("predictor input contains forbidden private fields")
     if not isinstance(payload, Mapping) or set(payload) != {
         "observation",
         "organism",
@@ -206,6 +268,28 @@ def validate_predictor_input(payload: Mapping[str, Any]) -> dict[str, Any]:
     }
 
 
+def predictor_input_snapshot(
+    state: Mapping[str, Any],
+    *,
+    observation: Mapping[str, Any],
+    organism: Mapping[str, float],
+    relative_map_mode: str,
+) -> dict[str, Any]:
+    """Return the validated, auditable predictor input without planning or updating."""
+
+    validate_state(state)
+    _validate_observation(observation)
+    _validate_organism(organism)
+    if relative_map_mode not in RELATIVE_MAP_MODES:
+        raise PredictiveControlInvariantError("relative map mode is invalid")
+    return _predictor_input(
+        state,
+        observation=observation,
+        organism=organism,
+        relative_map_mode=relative_map_mode,
+    )
+
+
 def _validate_weight_row(row: Any) -> None:
     if not isinstance(row, Mapping) or set(row) != set(FEATURE_NAMES):
         raise PredictiveControlInvariantError("predictor weight row schema mismatch")
@@ -215,7 +299,12 @@ def _validate_weight_row(row: Any) -> None:
 
 
 def validate_state(state: Mapping[str, Any]) -> None:
-    if not isinstance(state, Mapping) or set(state) != {"schema_version", "belief", "model"}:
+    if not isinstance(state, Mapping) or set(state) != {
+        "schema_version",
+        "belief",
+        "exploration",
+        "model",
+    }:
         raise PredictiveControlInvariantError("predictive control state schema mismatch")
     if state["schema_version"] != STATE_SCHEMA_VERSION:
         raise PredictiveControlInvariantError("predictive control state version mismatch")
@@ -251,6 +340,34 @@ def validate_state(state: Mapping[str, Any]) -> None:
             raise PredictiveControlInvariantError("relative belief cell key is invalid") from exc
         if token not in _VISIBLE_TOKENS - {"self", "occluded"}:
             raise PredictiveControlInvariantError("relative belief cell token is invalid")
+    exploration = state["exploration"]
+    if (
+        not isinstance(exploration, Mapping)
+        or set(exploration)
+        != {
+            "schema_version",
+            "action_exposure_counts",
+            "token_interaction_counts",
+            "coverage_step",
+        }
+        or exploration.get("schema_version") != EXPLORATION_SCHEMA_VERSION
+        or type(exploration.get("coverage_step")) is not int
+        or exploration["coverage_step"] < 0
+        or not isinstance(exploration.get("action_exposure_counts"), Mapping)
+        or set(exploration["action_exposure_counts"]) != set(ACTIONS)
+        or any(
+            type(count) is not int or count < 0
+            for count in exploration["action_exposure_counts"].values()
+        )
+        or not isinstance(exploration.get("token_interaction_counts"), Mapping)
+        or set(exploration["token_interaction_counts"])
+        != {f"v{index}" for index in range(5)}
+        or any(
+            type(count) is not int or count < 0
+            for count in exploration["token_interaction_counts"].values()
+        )
+    ):
+        raise PredictiveControlInvariantError("predictive exploration state mismatch")
     model = state["model"]
     if (
         not isinstance(model, Mapping)
@@ -295,6 +412,11 @@ def model_hash(state: Mapping[str, Any]) -> str:
 def belief_hash(state: Mapping[str, Any]) -> str:
     validate_state(state)
     return _canonical_hash(state["belief"])
+
+
+def exploration_hash(state: Mapping[str, Any]) -> str:
+    validate_state(state)
+    return _canonical_hash(state["exploration"])
 
 
 def reset_for_respawn(state: Mapping[str, Any], *, episode_index: int) -> dict[str, Any]:
@@ -376,8 +498,12 @@ def _front_position(belief: Mapping[str, Any]) -> tuple[int, int]:
     return int(x) + dx, int(y) + dy
 
 
-def _belief_summary(
-    belief: Mapping[str, Any], observation: Mapping[str, Any] | None
+def _belief_summary_at(
+    belief: Mapping[str, Any],
+    *,
+    pose: tuple[int, int],
+    facing: str,
+    observation: Mapping[str, Any] | None,
 ) -> dict[str, Any]:
     cells = belief["cells"]
     token_counts = {f"v{index}": 0 for index in range(5)}
@@ -387,16 +513,27 @@ def _belief_summary(
     if observation is not None:
         front_token = observation["visual"][1][2]
     else:
-        front_x, front_y = _front_position(belief)
-        front_token = cells.get(f"{front_x},{front_y}", "occluded")
+        dx, dy = FACING_DELTAS[facing]
+        front_token = cells.get(f"{pose[0] + dx},{pose[1] + dy}", "occluded")
     return {
-        "relative_pose": list(belief["relative_pose"]),
-        "relative_facing": str(belief["relative_facing"]),
+        "relative_pose": [pose[0], pose[1]],
+        "relative_facing": facing,
         "known_cell_count": len(cells),
         "known_object_count": sum(1 for token in cells.values() if token.startswith("v")),
         "front_token": front_token,
         "token_counts": token_counts,
     }
+
+
+def _belief_summary(
+    belief: Mapping[str, Any], observation: Mapping[str, Any] | None
+) -> dict[str, Any]:
+    return _belief_summary_at(
+        belief,
+        pose=(int(belief["relative_pose"][0]), int(belief["relative_pose"][1])),
+        facing=str(belief["relative_facing"]),
+        observation=observation,
+    )
 
 
 def _predictor_input(
@@ -458,11 +595,15 @@ def _dot(weights: Mapping[str, float], features: Mapping[str, float]) -> float:
     )
 
 
-def _softmax(logits: Mapping[str, float]) -> dict[str, float]:
+def _softmax(
+    logits: Mapping[str, float], *, round_values: bool = True
+) -> dict[str, float]:
     maximum = max(logits.values())
     exponentials = {key: math.exp(float(value) - maximum) for key, value in logits.items()}
     total = sum(exponentials.values())
-    return {key: _round(exponentials[key] / total) for key in OUTCOMES}
+    if round_values:
+        return {key: _round(exponentials[key] / total) for key in OUTCOMES}
+    return {key: exponentials[key] / total for key in OUTCOMES}
 
 
 def _visit_key(action: str, payload: Mapping[str, Any]) -> str:
@@ -483,19 +624,37 @@ def _predict_from_payload(
     action: str,
     *,
     include_hashes: bool = True,
+    precomputed_features: Mapping[str, float] | None = None,
+    visit_key_cache: dict[tuple[Any, ...], str] | None = None,
 ) -> dict[str, Any]:
     if action not in ACTIONS:
         raise PredictiveControlInvariantError("predictor action is invalid")
-    features = _features(payload)
+    features = (
+        _features(payload)
+        if precomputed_features is None
+        else precomputed_features
+    )
     action_model = state["model"]["actions"][action]
     probabilities = _softmax(
         {
             outcome: _dot(action_model["outcome_weights"][outcome], features)
             for outcome in OUTCOMES
-        }
+        },
+        round_values=include_hashes,
     )
-    visit_key = _visit_key(action, payload)
+    visit_descriptor = (
+        action,
+        payload["belief_summary"]["front_token"],
+        int(float(payload["organism"]["energy"]) * 10),
+        payload["belief_summary"]["known_object_count"],
+    )
+    visit_key = None if visit_key_cache is None else visit_key_cache.get(visit_descriptor)
+    if visit_key is None:
+        visit_key = _visit_key(action, payload)
+        if visit_key_cache is not None:
+            visit_key_cache[visit_descriptor] = visit_key
     visit_count = int(state["model"]["visit_counts"].get(visit_key, 0))
+    round_prediction = _round if include_hashes else float
     prediction = {
         "schema_version": PREDICTION_SCHEMA_VERSION,
         "producer_function": "ego_life_playground_v0.predictive_control.predict_action",
@@ -504,16 +663,18 @@ def _predict_from_payload(
         "action": action,
         "outcome_probabilities": probabilities,
         "predicted_delta": {
-            key: _round(max(-0.35, min(0.35, _dot(action_model["delta_weights"][key], features))))
+            key: round_prediction(
+                max(-0.35, min(0.35, _dot(action_model["delta_weights"][key], features)))
+            )
             for key in STATE_KEYS
         },
-        "resource_interaction_probability": _round(
+        "resource_interaction_probability": round_prediction(
             _sigmoid(_dot(action_model["resource_weights"], features))
         ),
-        "terminal_risk": _round(
+        "terminal_risk": round_prediction(
             _sigmoid(_dot(action_model["terminal_weights"], features))
         ),
-        "uncertainty": _round(1.0 / math.sqrt(1.0 + visit_count)),
+        "uncertainty": round_prediction(1.0 / math.sqrt(1.0 + visit_count)),
         "visit_count": visit_count,
     }
     return prediction
@@ -561,32 +722,134 @@ def _advance_belief_pose(
     return updated
 
 
-def _most_likely_outcome(prediction: Mapping[str, Any], action: str, front_token: str) -> str:
-    probabilities = prediction["outcome_probabilities"]
-    maximum = max(probabilities.values())
-    tied = [outcome for outcome in OUTCOMES if probabilities[outcome] == maximum]
-    if action == "move_forward" and front_token == "wall":
-        return "blocked"
-    preferred = {
-        "turn_left": "turned",
-        "turn_right": "turned",
-        "rest": "rested",
-        "interact": "interacted" if front_token.startswith("v") else "no_object",
-        "move_forward": "moved",
-    }[action]
-    return preferred if preferred in tied else tied[0]
+def _pose_after(
+    pose: tuple[int, int], facing: str, *, action: str, outcome_type: str
+) -> tuple[int, int, str]:
+    if action == "turn_left" and outcome_type == "turned":
+        return pose[0], pose[1], _turn(facing, -1)
+    if action == "turn_right" and outcome_type == "turned":
+        return pose[0], pose[1], _turn(facing, 1)
+    if action == "move_forward" and outcome_type == "moved":
+        dx, dy = FACING_DELTAS[facing]
+        return pose[0] + dx, pose[1] + dy, facing
+    return pose[0], pose[1], facing
+
+
+def _unknown_fraction(belief: Mapping[str, Any], pose: tuple[int, int]) -> float:
+    cells = belief["cells"]
+    unknown = sum(
+        1
+        for dy in range(-2, 3)
+        for dx in range(-2, 3)
+        if f"{pose[0] + dx},{pose[1] + dy}" not in cells
+    )
+    return _round(unknown / 25.0)
+
+
+def _expected_pose_distribution(
+    *,
+    pose: tuple[int, int],
+    facing: str,
+    action: str,
+    outcome_probabilities: Mapping[str, float],
+) -> dict[tuple[int, int, str], float]:
+    stay = (pose[0], pose[1], facing)
+    if action == "move_forward":
+        changed_outcome = "moved"
+    elif action in {"turn_left", "turn_right"}:
+        changed_outcome = "turned"
+    else:
+        changed_outcome = None
+    if changed_outcome is None:
+        return {stay: 1.0}
+    changed = _pose_after(
+        pose, facing, action=action, outcome_type=changed_outcome
+    )
+    changed_probability = float(outcome_probabilities[changed_outcome])
+    successor_mass = {stay: 1.0 - changed_probability}
+    successor_mass[changed] = successor_mass.get(changed, 0.0) + changed_probability
+    successor_mass = {key: value for key, value in successor_mass.items() if value > 0.0}
+    total_mass = sum(successor_mass.values())
+    if total_mass <= 0.0:
+        raise PredictiveControlInvariantError("outcome probability mass vanished")
+    return {key: value / total_mass for key, value in successor_mass.items()}
+
+
+def expected_pose_receipt(
+    *,
+    belief: Mapping[str, Any],
+    pose: tuple[int, int],
+    facing: str,
+    action: str,
+    outcome_probabilities: Mapping[str, float],
+) -> dict[str, Any]:
+    """Compute the planner's probability-weighted relative-pose information value."""
+
+    if (
+        not isinstance(belief, Mapping)
+        or belief.get("schema_version") != BELIEF_SCHEMA_VERSION
+        or not isinstance(belief.get("cells"), Mapping)
+    ):
+        raise PredictiveControlInvariantError("expected pose belief is invalid")
+    if (
+        not isinstance(pose, tuple)
+        or len(pose) != 2
+        or any(type(item) is not int for item in pose)
+        or facing not in FACING_ORDER
+        or action not in ACTIONS
+    ):
+        raise PredictiveControlInvariantError("expected pose request is invalid")
+    if (
+        not isinstance(outcome_probabilities, Mapping)
+        or set(outcome_probabilities) != set(OUTCOMES)
+        or any(
+            isinstance(value, bool)
+            or not isinstance(value, (int, float))
+            or not math.isfinite(float(value))
+            or float(value) < 0.0
+            for value in outcome_probabilities.values()
+        )
+        or abs(sum(float(value) for value in outcome_probabilities.values()) - 1.0)
+        > 1e-9
+    ):
+        raise PredictiveControlInvariantError("outcome probabilities are invalid")
+    distribution = _expected_pose_distribution(
+        pose=pose,
+        facing=facing,
+        action=action,
+        outcome_probabilities=outcome_probabilities,
+    )
+    expected_unknown = sum(
+        probability * _unknown_fraction(belief, (pose_x, pose_y))
+        for (pose_x, pose_y, _next_facing), probability in distribution.items()
+    )
+    return {
+        "schema_version": "ego.life_playground.expected_pose_receipt.v1",
+        "producer_function": (
+            "ego_life_playground_v0.predictive_control.expected_pose_receipt"
+        ),
+        "successor_distribution": [
+            [pose_x, pose_y, next_facing, _round(probability)]
+            for (pose_x, pose_y, next_facing), probability in sorted(
+                distribution.items()
+            )
+        ],
+        "expected_newly_observable_unknown_fraction": _round(expected_unknown),
+        "map_information_value": _round(0.20 * expected_unknown),
+    }
 
 
 def _value_breakdown(
     organism: Mapping[str, float],
-    prediction: Mapping[str, Any],
     *,
+    expected_delta: Mapping[str, float],
+    predicted_terminal_risk: float,
+    expected_newly_observable_unknown_fraction: float,
     active_goal: str,
     goal_value_mode: str,
-    action_cost: float,
 ) -> dict[str, float]:
     predicted_after = {
-        key: _clamp(float(organism[key]) + float(prediction["predicted_delta"][key]))
+        key: _clamp(float(organism[key]) + float(expected_delta[key]))
         for key in STATE_KEYS
     }
     changes = {
@@ -596,175 +859,241 @@ def _value_breakdown(
         )
         for key in STATE_KEYS
     }
-    if goal_value_mode == "equal" or active_goal == "explore":
-        weighted = sum(changes.values())
-        intent = 0.0
-    else:
-        weighted = sum(
-            value * (2.0 if key == active_goal else 1.0)
-            for key, value in changes.items()
+    weights = {
+        key: (
+            2.0
+            if goal_value_mode == "contextual" and active_goal == key
+            else 1.0
         )
-        intent = changes[active_goal]
-    terminal = -1.25 * float(prediction["terminal_risk"])
-    cost = -0.25 * float(action_cost)
-    exploration = 0.12 * float(prediction["uncertainty"])
-    resource = (
-        (0.16 if active_goal == "energy" else 0.03)
-        * float(prediction["resource_interaction_probability"])
+        for key in STATE_KEYS
+    }
+    survival_value = _round(1.0 - predicted_terminal_risk)
+    homeostatic_value = _round(
+        sum(weights[key] * changes[key] for key in STATE_KEYS)
+    )
+    map_information_value = _round(
+        0.20 * expected_newly_observable_unknown_fraction
     )
     return {
-        "total_deficit_change": sum(changes.values()),
-        "weighted_deficit_change": weighted,
-        "intent_deficit_change": intent,
-        "terminal_risk_value": terminal,
-        "action_cost_value": cost,
-        "exploration_uncertainty_value": exploration,
-        "resource_value": resource,
-        "total": weighted + 0.5 * intent + terminal + cost + exploration + resource,
+        "total_deficit_change": _round(sum(changes.values())),
+        "intent_deficit_change": (
+            0.0 if active_goal == "explore" else _round(changes[active_goal])
+        ),
+        "predicted_terminal_risk": _round(predicted_terminal_risk),
+        "expected_newly_observable_unknown_fraction": _round(
+            expected_newly_observable_unknown_fraction
+        ),
+        "survival_value": survival_value,
+        "homeostatic_value": homeostatic_value,
+        "map_information_value": map_information_value,
+        "total": _round(survival_value + homeostatic_value + map_information_value),
     }
 
 
-def _rollout_for_first_action(
+def _serialized_pose_distribution(
+    pose_distribution: Mapping[tuple[int, int, str], float]
+) -> list[list[Any]]:
+    return [
+        [pose_x, pose_y, facing, _round(probability)]
+        for (pose_x, pose_y, facing), probability in sorted(pose_distribution.items())
+    ]
+
+
+def _node_sort_key(node: Mapping[str, Any]) -> tuple[Any, ...]:
+    return (
+        -float(node["score"]),
+        tuple(ACTIONS.index(action) for action in node["actions"]),
+        tuple(
+            (pose_x, pose_y, facing, _round(probability))
+            for (pose_x, pose_y, facing), probability in sorted(
+                node["pose_distribution"].items()
+            )
+        ),
+    )
+
+
+def _prediction_for_pose(
     state: Mapping[str, Any],
     *,
-    observation: Mapping[str, Any],
+    belief: Mapping[str, Any],
+    pose: tuple[int, int],
+    facing: str,
+    observation: Mapping[str, Any] | None,
     organism: Mapping[str, float],
-    first_action: str,
-    active_goal: str,
-    horizon: int,
-    beam_width: int,
-    discount: float,
-    relative_map_mode: str,
-    goal_value_mode: str,
-    action_costs: Mapping[str, float],
+    action: str,
     prediction_cache: dict[tuple[Any, ...], dict[str, Any]],
+    summary_cache: dict[tuple[int, int, str, bool], dict[str, Any]],
+    visit_key_cache: dict[tuple[Any, ...], str],
 ) -> dict[str, Any]:
-    base_belief = deepcopy(
-        state["belief"] if relative_map_mode == "relative" else _empty_belief(
-            int(state["belief"]["episode_index"])
+    summary_key = (pose[0], pose[1], facing, observation is not None)
+    summary = summary_cache.get(summary_key)
+    if summary is None:
+        summary = _belief_summary_at(
+            belief,
+            pose=pose,
+            facing=facing,
+            observation=observation,
         )
+        summary_cache[summary_key] = summary
+    payload = {
+        "observation": observation,
+        "organism": organism,
+        "belief_summary": summary,
+    }
+    feature_values = _features(payload)
+    cache_key = (action, *(feature_values[name] for name in FEATURE_NAMES))
+    prediction = prediction_cache.get(cache_key)
+    if prediction is None:
+        prediction = _predict_from_payload(
+            state,
+            payload,
+            action,
+            include_hashes=False,
+            precomputed_features=feature_values,
+            visit_key_cache=visit_key_cache,
+        )
+        prediction_cache[cache_key] = prediction
+    return prediction
+
+
+def _expand_node(
+    state: Mapping[str, Any],
+    node: Mapping[str, Any],
+    *,
+    action: str,
+    belief: Mapping[str, Any],
+    observation: Mapping[str, Any] | None,
+    active_goal: str,
+    goal_value_mode: str,
+    depth: int,
+    discount: float,
+    prediction_cache: dict[tuple[Any, ...], dict[str, Any]],
+    summary_cache: dict[tuple[int, int, str, bool], dict[str, Any]],
+    unknown_cache: dict[tuple[int, int], float],
+    visit_key_cache: dict[tuple[Any, ...], str],
+) -> dict[str, Any]:
+    successor_mass: dict[tuple[int, int, str], float] = {}
+    expected_delta = {key: 0.0 for key in STATE_KEYS}
+    expected_terminal_risk = 0.0
+    expected_resource_probability = 0.0
+    expected_uncertainty = 0.0
+    for pose_key, pose_probability in node["pose_distribution"].items():
+        pose_x, pose_y, facing = pose_key
+        prediction = _prediction_for_pose(
+            state,
+            belief=belief,
+            pose=(pose_x, pose_y),
+            facing=facing,
+            observation=observation,
+            organism=node["organism"],
+            action=action,
+            prediction_cache=prediction_cache,
+            summary_cache=summary_cache,
+            visit_key_cache=visit_key_cache,
+        )
+        for key in STATE_KEYS:
+            expected_delta[key] += pose_probability * float(
+                prediction["predicted_delta"][key]
+            )
+        expected_terminal_risk += pose_probability * float(prediction["terminal_risk"])
+        expected_resource_probability += pose_probability * float(
+            prediction["resource_interaction_probability"]
+        )
+        expected_uncertainty += pose_probability * float(prediction["uncertainty"])
+        local_successors = _expected_pose_distribution(
+            pose=(pose_x, pose_y),
+            facing=facing,
+            action=action,
+            outcome_probabilities=prediction["outcome_probabilities"],
+        )
+        for successor, successor_probability in local_successors.items():
+            successor_mass[successor] = successor_mass.get(successor, 0.0) + (
+                pose_probability * successor_probability
+            )
+    total_mass = sum(successor_mass.values())
+    if total_mass <= 0.0:
+        raise PredictiveControlInvariantError("beam successor probability mass vanished")
+    successor_distribution = {
+        key: value / total_mass for key, value in successor_mass.items()
+    }
+    expected_unknown = 0.0
+    for (pose_x, pose_y, _facing), probability in successor_distribution.items():
+        pose = (pose_x, pose_y)
+        unknown = unknown_cache.get(pose)
+        if unknown is None:
+            unknown = _unknown_fraction(belief, pose)
+            unknown_cache[pose] = unknown
+        expected_unknown += probability * unknown
+    rounded_delta = {key: _round(value) for key, value in expected_delta.items()}
+    breakdown = _value_breakdown(
+        node["organism"],
+        expected_delta=rounded_delta,
+        predicted_terminal_risk=expected_terminal_risk,
+        expected_newly_observable_unknown_fraction=expected_unknown,
+        active_goal=active_goal,
+        goal_value_mode=goal_value_mode,
     )
-    template_bank = [
-        ("rest",),
-        ("move_forward",),
-        ("interact",),
-        ("turn_left",),
-        ("turn_right",),
-        ("move_forward", "interact"),
-        ("turn_left", "move_forward"),
-        ("turn_right", "move_forward"),
-        ("move_forward", "turn_left"),
-        ("move_forward", "turn_right"),
-        ("turn_left", "move_forward", "interact"),
-        ("turn_right", "move_forward", "interact"),
-        ("move_forward", "move_forward", "interact"),
-        ("interact", "turn_left", "move_forward"),
-        ("interact", "turn_right", "move_forward"),
-        ACTIONS,
-    ]
-    if len(template_bank) != beam_width:
-        raise PredictiveControlInvariantError("beam template count differs from beam width")
-    # The beam-width contract applies to the whole first-action frontier, not
-    # independently to each of its five action groups.  Allocate 4+3+3+3+3
-    # deterministic trajectories so all five first actions are represented by
-    # exactly 16 total beams without multiplying the width by five.
-    allocation = 4 if first_action == ACTIONS[0] else 3
-    start = ACTIONS.index(first_action) * 3
-    continuation_templates = [
-        template_bank[(start + offset) % len(template_bank)]
-        for offset in range(allocation)
-    ]
-    beams: list[dict[str, Any]] = []
-    for template in continuation_templates:
-        actions = [first_action]
-        while len(actions) < horizon:
-            actions.append(template[(len(actions) - 1) % len(template)])
-        node_organism = {key: float(organism[key]) for key in STATE_KEYS}
-        node_belief = deepcopy(base_belief)
-        node_observation: Mapping[str, Any] | None = observation
-        score = 0.0
-        first_breakdown = None
-        for depth, action in enumerate(actions):
-            summary = _belief_summary(node_belief, node_observation)
-            payload = {
-                # Internal trajectory prediction uses only the already-derived
-                # belief summary and organism vector.  The observation is not
-                # a model feature after the visible tokens have entered belief.
-                "observation": observation,
-                "organism": node_organism,
-                "belief_summary": summary,
-            }
-            feature_values = _features(payload)
-            cache_key = (
-                action,
-                *(feature_values[name] for name in FEATURE_NAMES),
-            )
-            prediction = prediction_cache.get(cache_key)
-            if prediction is None:
-                prediction = _predict_from_payload(
-                    state, payload, action, include_hashes=False
-                )
-                prediction_cache[cache_key] = prediction
-            breakdown = _value_breakdown(
-                node_organism,
-                prediction,
-                active_goal=active_goal,
-                goal_value_mode=goal_value_mode,
-                action_cost=float(action_costs[action]),
-            )
-            if first_breakdown is None:
-                first_breakdown = breakdown
-            score = score + (discount**depth) * float(breakdown["total"])
-            node_organism = {
-                key: max(
-                    0.0,
-                    min(
-                        1.0,
-                        float(node_organism[key])
-                        + float(prediction["predicted_delta"][key]),
-                    ),
-                )
-                for key in STATE_KEYS
-            }
-            outcome = _most_likely_outcome(
-                prediction, action, str(summary["front_token"])
-            )
-            node_belief = _advance_belief_pose(
-                node_belief, action=action, outcome_type=outcome
-            )
-            node_observation = None
-        beams.append(
-            {
-                "score": score,
-                "organism": node_organism,
-                "belief": node_belief,
-                "actions": actions,
-                "first_breakdown": first_breakdown,
-            }
-        )
-    beams.sort(
-        key=lambda node: (
-            -float(node["score"]),
-            tuple(ACTIONS.index(action) for action in node["actions"]),
-        )
-    )
-    best = beams[0]
+    next_organism = {
+        key: _clamp(float(node["organism"][key]) + rounded_delta[key])
+        for key in STATE_KEYS
+    }
+    actions = [*node["actions"], action]
     return {
-        **{
-            key: _round(value)
-            for key, value in best["first_breakdown"].items()
+        "root_action": actions[0],
+        "actions": actions,
+        "pose_distribution": successor_distribution,
+        "organism": next_organism,
+        "score": _round(
+            float(node["score"]) + (discount**depth) * float(breakdown["total"])
+        ),
+        "first_breakdown": node["first_breakdown"] or breakdown,
+        "last_prediction_summary": {
+            "terminal_risk": _round(expected_terminal_risk),
+            "resource_interaction_probability": _round(expected_resource_probability),
+            "uncertainty": _round(expected_uncertainty),
+            "predicted_delta": rounded_delta,
         },
-        "total": _round(float(best["score"])),
-        "plan_actions": list(best["actions"][:3]),
-        "trajectory_hash": _canonical_hash(
+    }
+
+
+def _retain_global_beam(nodes: list[dict[str, Any]], beam_width: int) -> list[dict[str, Any]]:
+    ordered = sorted(nodes, key=_node_sort_key)
+    retained: list[dict[str, Any]] = []
+    used_ids: set[int] = set()
+    for action in ACTIONS:
+        best = next(node for node in ordered if node["root_action"] == action)
+        retained.append(best)
+        used_ids.add(id(best))
+    for node in ordered:
+        if len(retained) >= beam_width:
+            break
+        if id(node) not in used_ids:
+            retained.append(node)
+            used_ids.add(id(node))
+    return sorted(retained, key=_node_sort_key)
+
+
+def _deterministic_action_order(
+    actions: tuple[str, ...] | list[str],
+    *,
+    run_seed: int = 0,
+    episode_index: int = 0,
+    sequence: int = 1,
+    current_belief_hash: str,
+) -> list[str]:
+    return sorted(
+        actions,
+        key=lambda action: _canonical_hash(
             {
-                "actions": best["actions"],
-                "score": best["score"],
-                "organism": best["organism"],
-                "belief": best["belief"],
+                "producer": "ego_life_playground_v0.predictive_control.deterministic_order",
+                "run_seed": run_seed,
+                "episode_index": episode_index,
+                "sequence": sequence,
+                "belief_hash": current_belief_hash,
+                "action": action,
             }
         ),
-    }
+    )
 
 
 def plan_action(
@@ -780,6 +1109,9 @@ def plan_action(
     relative_map_mode: str = "relative",
     goal_value_mode: str = "contextual",
     action_costs: Mapping[str, float],
+    run_seed: int = 0,
+    episode_index: int = 0,
+    sequence: int = 1,
 ) -> dict[str, Any]:
     validate_state(state)
     _validate_observation(observation)
@@ -802,6 +1134,12 @@ def plan_action(
         raise PredictiveControlInvariantError("planning ablation mode is invalid")
     if not isinstance(action_costs, Mapping) or set(action_costs) != set(ACTIONS):
         raise PredictiveControlInvariantError("planning action costs are invalid")
+    if type(run_seed) is not int:
+        raise PredictiveControlInvariantError("planning run_seed must be an integer")
+    if type(episode_index) is not int or episode_index < 0:
+        raise PredictiveControlInvariantError("planning episode_index is invalid")
+    if type(sequence) is not int or sequence < 1:
+        raise PredictiveControlInvariantError("planning sequence is invalid")
     current_payload = _predictor_input(
         state,
         observation=observation,
@@ -812,31 +1150,147 @@ def plan_action(
         action: _predict_from_payload(state, current_payload, action)
         for action in ACTIONS
     }
-    prediction_cache: dict[tuple[Any, ...], dict[str, Any]] = {}
-    values = {
-        action: _rollout_for_first_action(
-            state,
-            observation=observation,
-            organism=organism,
-            first_action=action,
-            active_goal=active_goal,
-            horizon=horizon,
-            beam_width=beam_width,
-            discount=discount,
-            relative_map_mode=relative_map_mode,
-            goal_value_mode=goal_value_mode,
-            action_costs=action_costs,
-            prediction_cache=prediction_cache,
-        )
-        for action in ACTIONS
-    }
-    selected = max(
-        ACTIONS,
-        key=lambda action: (
-            float(values[action]["total"]),
-            -ACTIONS.index(action),
-        ),
+    base_belief = (
+        state["belief"]
+        if relative_map_mode == "relative"
+        else _empty_belief(int(state["belief"]["episode_index"]))
     )
+    pose = (
+        int(base_belief["relative_pose"][0]),
+        int(base_belief["relative_pose"][1]),
+        str(base_belief["relative_facing"]),
+    )
+    beam: list[dict[str, Any]] = [
+        {
+            "root_action": None,
+            "actions": [],
+            "pose_distribution": {pose: 1.0},
+            "organism": {key: float(organism[key]) for key in STATE_KEYS},
+            "score": 0.0,
+            "first_breakdown": None,
+            "last_prediction_summary": None,
+        }
+    ]
+    prediction_cache: dict[tuple[Any, ...], dict[str, Any]] = {}
+    summary_cache: dict[tuple[int, int, str, bool], dict[str, Any]] = {}
+    unknown_cache: dict[tuple[int, int], float] = {}
+    visit_key_cache: dict[tuple[Any, ...], str] = {}
+    expanded_by_depth: list[int] = []
+    retained_by_depth: list[int] = []
+    root_actions_by_depth: list[list[str]] = []
+    probability_mass_normalized = True
+    for depth in range(horizon):
+        expanded = [
+            _expand_node(
+                state,
+                node,
+                action=action,
+                belief=base_belief,
+                observation=observation if depth == 0 else None,
+                active_goal=active_goal,
+                goal_value_mode=goal_value_mode,
+                depth=depth,
+                discount=discount,
+                prediction_cache=prediction_cache,
+                summary_cache=summary_cache,
+                unknown_cache=unknown_cache,
+                visit_key_cache=visit_key_cache,
+            )
+            for node in beam
+            for action in ACTIONS
+        ]
+        expanded_by_depth.append(len(expanded))
+        beam = (
+            sorted(expanded, key=_node_sort_key)
+            if len(expanded) <= beam_width
+            else _retain_global_beam(expanded, beam_width)
+        )
+        retained_by_depth.append(len(beam))
+        roots = [action for action in ACTIONS if any(node["root_action"] == action for node in beam)]
+        root_actions_by_depth.append(roots)
+        probability_mass_normalized = probability_mass_normalized and all(
+            abs(sum(node["pose_distribution"].values()) - 1.0) <= 1e-9
+            for node in beam
+        )
+    values: dict[str, Any] = {}
+    for action in ACTIONS:
+        best = min(
+            (node for node in beam if node["root_action"] == action),
+            key=_node_sort_key,
+        )
+        values[action] = {
+            **{key: _round(value) for key, value in best["first_breakdown"].items()},
+            "total": _round(float(best["score"])),
+            "plan_actions": list(best["actions"][:3]),
+            "resource_interaction_probability": _round(
+                float(predictions[action]["resource_interaction_probability"])
+            ),
+            "trajectory_hash": _canonical_hash(
+                {
+                    "actions": best["actions"],
+                    "score": best["score"],
+                    "organism": best["organism"],
+                    "pose_distribution": _serialized_pose_distribution(
+                        best["pose_distribution"]
+                    ),
+                }
+            ),
+        }
+    maximum_value = max(float(values[action]["total"]) for action in ACTIONS)
+    value_ties = [
+        action for action in ACTIONS if float(values[action]["total"]) == maximum_value
+    ]
+    tie_break_used = len(value_ties) > 1
+    if tie_break_used:
+        maximum_heuristic = max(float(heuristic_scores[action]) for action in value_ties)
+        heuristic_ties = [
+            action
+            for action in value_ties
+            if float(heuristic_scores[action]) == maximum_heuristic
+        ]
+        mpc_selected = _deterministic_action_order(
+            heuristic_ties,
+            run_seed=run_seed,
+            episode_index=episode_index,
+            sequence=sequence,
+            current_belief_hash=_canonical_hash(state["belief"]),
+        )[0]
+        tie_break_source = "heuristic_score" if len(heuristic_ties) == 1 else "deterministic_hash"
+    else:
+        mpc_selected = value_ties[0]
+        tie_break_source = "none"
+    exploration = state["exploration"]
+    exposure_counts = exploration["action_exposure_counts"]
+    minimum_exposure = min(int(exposure_counts[action]) for action in ACTIONS)
+    underexposed = [
+        action
+        for action in ACTIONS
+        if int(exposure_counts[action]) == minimum_exposure
+        and int(exposure_counts[action]) < ACTION_EXPOSURE_TARGET
+    ]
+    front_token = str(current_payload["belief_summary"]["front_token"])
+    if underexposed:
+        selected = _deterministic_action_order(
+            underexposed,
+            run_seed=run_seed,
+            episode_index=episode_index,
+            sequence=sequence,
+            current_belief_hash=_canonical_hash(state["belief"]),
+        )[0]
+        selection_mode = "bounded_explore"
+        exploration_reason = "action_coverage"
+    elif (
+        front_token in exploration["token_interaction_counts"]
+        and int(exploration["token_interaction_counts"][front_token])
+        < TOKEN_INTERACTION_TARGET
+    ):
+        selected = "interact"
+        selection_mode = "bounded_explore"
+        exploration_reason = "front_token_identification"
+    else:
+        selected = mpc_selected
+        selection_mode = "mpc_exploit"
+        exploration_reason = "none"
     return {
         "schema_version": PLAN_SCHEMA_VERSION,
         "producer_function": "ego_life_playground_v0.predictive_control.plan_action",
@@ -852,6 +1306,21 @@ def plan_action(
         "candidate_values": values,
         "selected_action": selected,
         "planned_actions": values[selected]["plan_actions"],
+        "mpc_selected_action": mpc_selected,
+        "selection_mode": selection_mode,
+        "exploration_reason": exploration_reason,
+        "action_exposure_counts": dict(exposure_counts),
+        "token_interaction_counts": dict(exploration["token_interaction_counts"]),
+        "coverage_step": int(exploration["coverage_step"]),
+        "exploration_hash": _canonical_hash(exploration),
+        "tie_break_used": tie_break_used,
+        "tie_break_source": tie_break_source,
+        "beam_receipt": {
+            "expanded_by_depth": expanded_by_depth,
+            "retained_by_depth": retained_by_depth,
+            "root_actions_by_depth": root_actions_by_depth,
+            "all_probability_mass_normalized": probability_mass_normalized,
+        },
         "model_hash": _canonical_hash(state["model"]),
         "belief_hash": _canonical_hash(state["belief"]),
     }
@@ -904,6 +1373,18 @@ def update_after_transition(
     prediction_before = _predict_from_payload(state, payload, action)
     before_hash = _canonical_hash(state["model"])
     updated = dict(state)
+    exploration_before_hash = _canonical_hash(state["exploration"])
+    exploration = deepcopy(dict(state["exploration"]))
+    action_exposure_counts = dict(exploration["action_exposure_counts"])
+    action_exposure_counts[action] = int(action_exposure_counts[action]) + 1
+    exploration["action_exposure_counts"] = action_exposure_counts
+    token_interaction_counts = dict(exploration["token_interaction_counts"])
+    front_token = str(payload["belief_summary"]["front_token"])
+    if action == "interact" and front_token in token_interaction_counts:
+        token_interaction_counts[front_token] = int(token_interaction_counts[front_token]) + 1
+    exploration["token_interaction_counts"] = token_interaction_counts
+    exploration["coverage_step"] = int(exploration["coverage_step"]) + 1
+    updated["exploration"] = exploration
     model = dict(state["model"])
     if updates_enabled:
         actions = dict(model["actions"])
@@ -978,6 +1459,11 @@ def update_after_transition(
         "model_hash_before": before_hash,
         "model_hash_after": _canonical_hash(updated["model"]),
         "belief_hash_after": _canonical_hash(updated["belief"]),
+        "exploration_hash_before": exploration_before_hash,
+        "exploration_hash_after": _canonical_hash(updated["exploration"]),
+        "action_exposure_counts_after": dict(action_exposure_counts),
+        "token_interaction_counts_after": dict(token_interaction_counts),
+        "coverage_step_after": int(exploration["coverage_step"]),
         "update_count_after": int(updated["model"]["update_count"]),
     }
     validate_state(updated)
@@ -996,12 +1482,16 @@ __all__ = [
     "RELATIVE_MAP_MODES",
     "belief_hash",
     "empty_state",
+    "expected_pose_receipt",
+    "exploration_hash",
     "hyperparameters",
     "model_hash",
     "observe_belief",
     "plan_action",
     "predict_action",
+    "predictor_input_snapshot",
     "reset_for_respawn",
+    "scan_predictor_input_leakage",
     "update_after_transition",
     "validate_predictor_input",
     "validate_state",

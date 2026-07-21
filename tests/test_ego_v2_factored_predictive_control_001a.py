@@ -168,8 +168,10 @@ def test_goal_counterfactual_changes_values_not_predictions() -> None:
 
     assert energy["predictions_by_action"] == stimulation["predictions_by_action"]
     assert energy["candidate_values"] != stimulation["candidate_values"]
-    assert energy["selected_action"] == "interact"
-    assert stimulation["selected_action"] == "turn_left"
+    # Bounded coverage may temporarily override the MPC action; the goal
+    # counterfactual contract is about the goal-conditioned MPC ranking.
+    assert energy["mpc_selected_action"] == "interact"
+    assert stimulation["mpc_selected_action"] == "turn_left"
 
 
 def test_predictor_input_leakage_scanner_has_positive_control() -> None:

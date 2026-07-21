@@ -276,11 +276,22 @@ def build_chinese_causal_view(
         },
         "预测控制": {
             "模式": predictive_trace.get("mode"),
+            "决策模式": predictive_plan.get("selection_mode"),
+            "探索原因": predictive_plan.get("exploration_reason"),
+            "动作暴露计数": deepcopy(
+                predictive_plan.get("action_exposure_counts")
+            ),
+            "token交互计数": deepcopy(
+                predictive_plan.get("token_interaction_counts")
+            ),
             "选择动作": predictive_plan.get("selected_action"),
+            "MPC选择动作": predictive_plan.get("mpc_selected_action"),
             "前三计划动作": deepcopy(predictive_plan.get("planned_actions")),
             "候选价值": deepcopy(predictive_plan.get("candidate_values")),
+            "beam回执": deepcopy(predictive_plan.get("beam_receipt")),
             "模型哈希": predictive_trace.get("model_hash"),
             "信念哈希": predictive_trace.get("belief_hash"),
+            "探索哈希": predictive_trace.get("exploration_hash"),
             "更新次数": predictive_trace.get("model_update_count"),
             "outcome_Brier": predictive_update.get("outcome_brier"),
             "outcome_NLL": predictive_update.get("outcome_nll"),
