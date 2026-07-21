@@ -114,7 +114,7 @@ def test_real_resource_directly_ahead_requires_interact_and_replenishes_energy()
     resource_after = result.next_state["world"]["objects_by_cause"]["resource"]
 
     assert trace["schema_version"] == engine.TRACE_SCHEMA_VERSION
-    assert trace["world_observation"]["schema_version"] == (
+    assert trace["observation"]["schema_version"] == (
         microworld.PUBLIC_OBSERVATION_SCHEMA_VERSION
     )
     assert trace["selected_action"] == "interact"

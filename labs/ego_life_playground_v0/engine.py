@@ -604,7 +604,7 @@ def _respawn_trace(
                 next_state["predictive_control"]["model"]["update_count"]
             ),
             "plan": None,
-            "selected_action_update": {
+            "update": {
                 "applied": False,
                 "reason": "pure_respawn",
             },
@@ -1360,9 +1360,6 @@ def compute_step(
         "run_id": run_meta["run_id"],
         "seed": int(run_meta["seed"]),
         "episode_id": decision_state["clock"]["episode_id"],
-        "episode_index": decision_state["clock"]["episode_index"],
-        "global_tick": sequence,
-        "episode_tick": decision_state["clock"]["episode_tick"],
         "aggregation_rule": run_meta["aggregation_rule"],
         "sequence": sequence,
         "trigger_source": command["trigger_source"],
@@ -1377,15 +1374,12 @@ def compute_step(
         "world_before_hash": world_hash(world_before),
         "world_decision_hash": world_hash(decision_state["world"]),
         "world_after_hash": world_hash(next_state["world"]),
-        "world_observation": world_observation,
-        "observation": deepcopy(world_observation),
+        "observation": world_observation,
         "observation_hash": observation_hash(world_observation),
         "policy_projection": policy_projection,
         "policy_projection_hash": canonical_hash(policy_projection),
-        "policy_decision_input_hash": policy_decision_input_hash,
         "candidate_actions": list(ACTIONS),
         "world_transition": world_transition,
-        "episode_before": deepcopy(before["clock"]),
         "episode_transition": episode_transition,
         "action_episode": deepcopy(decision_state["clock"]),
         "goal_before": goal_before,
@@ -1453,7 +1447,7 @@ def compute_step(
                 next_state["predictive_control"]["model"]["update_count"]
             ),
             "plan": _compact_predictive_plan(predictive_plan),
-            "selected_action_update": _compact_predictive_update(predictive_update),
+            "update": _compact_predictive_update(predictive_update),
         },
         "model_bytes": {
             "before_hash": model_before_hash,
@@ -3287,10 +3281,6 @@ def _compact_predictive_plan(
         )
     )
     candidate_values = deepcopy(plan.get("candidate_values"))
-    candidate_value_hashes = {
-        str(action): canonical_hash(value)
-        for action, value in (plan.get("candidate_values") or {}).items()
-    }
     beam = plan.get("beam_receipt") or {}
     root_actions_by_depth = beam.get("root_actions_by_depth") or []
     compact_beam = {
@@ -3332,7 +3322,6 @@ def _compact_predictive_plan(
         "predictor_context_hash": predictor_context_hash,
         "predictions_by_action": predictions,
         "candidate_values": candidate_values,
-        "candidate_value_hashes": candidate_value_hashes,
         "beam_receipt": compact_beam,
     }
 

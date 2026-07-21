@@ -70,7 +70,7 @@ def test_card_a_command_v5_and_compute_step_are_deterministic_replay_inputs_only
     state, meta, command, result = _step(run_id="deterministic")
     replayed = compute_step(deepcopy(state), deepcopy(command), deepcopy(meta))
 
-    assert result.trace["schema_version"] == "ego.life_playground.trace.v12"
+    assert result.trace["schema_version"] == "ego.life_playground.trace.v13"
     assert command["schema_version"] == "ego.life_playground.command.v7"
     assert set(command) == {
         "schema_version",
@@ -316,7 +316,7 @@ def test_card_a_recovery_rejects_state_world_tamper_and_missing_trace_parity(tmp
 
 def test_card_a_code_path_drift_and_source_bytes_fail_closed(tmp_path: Path):
     manifest = compute_code_path_manifest()
-    assert manifest["schema_version"] == "ego.life_playground.code_path.v8"
+    assert manifest["schema_version"] == "ego.life_playground.code_path.v9"
     assert {entry["path"] for entry in manifest["files"]} == {
         "claims.py",
         "engine.py",

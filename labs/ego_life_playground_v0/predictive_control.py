@@ -97,7 +97,7 @@ def _round(value: float) -> float:
 
 
 def _clamp(value: float, lower: float = 0.0, upper: float = 1.0) -> float:
-    return _round(max(lower, min(upper, float(value))))
+    return round(max(lower, min(upper, float(value))), 12)
 
 
 def _sigmoid(value: float) -> float:
@@ -636,19 +636,26 @@ def _feature_vector_from_summary(
     front = str(summary["front_token"])
     known = int(summary["known_cell_count"])
     objects = int(summary["known_object_count"])
-    vector = np.zeros(len(FEATURE_NAMES), dtype=NUMERIC_DTYPE)
-    vector[FEATURE_INDEX["bias"]] = 1.0
-    vector[FEATURE_INDEX["energy"]] = float(organism["energy"])
-    vector[FEATURE_INDEX["safety"]] = float(organism["safety"])
-    vector[FEATURE_INDEX["connection"]] = float(organism["connection"])
-    vector[FEATURE_INDEX["stimulation"]] = float(organism["stimulation"])
-    if front in {"empty", "wall", "occluded"}:
-        vector[FEATURE_INDEX[f"front_{front}"]] = 1.0
-    elif front.startswith("v") and f"front_{front}" in FEATURE_INDEX:
-        vector[FEATURE_INDEX[f"front_{front}"]] = 1.0
-    vector[FEATURE_INDEX["known_cell_fraction"]] = min(1.0, known / 81.0)
-    vector[FEATURE_INDEX["known_object_fraction"]] = min(1.0, objects / 5.0)
-    return vector
+    return np.asarray(
+        (
+            1.0,
+            float(organism["energy"]),
+            float(organism["safety"]),
+            float(organism["connection"]),
+            float(organism["stimulation"]),
+            1.0 if front == "empty" else 0.0,
+            1.0 if front == "wall" else 0.0,
+            1.0 if front == "occluded" else 0.0,
+            1.0 if front == "v0" else 0.0,
+            1.0 if front == "v1" else 0.0,
+            1.0 if front == "v2" else 0.0,
+            1.0 if front == "v3" else 0.0,
+            1.0 if front == "v4" else 0.0,
+            min(1.0, known / 81.0),
+            min(1.0, objects / 5.0),
+        ),
+        dtype=NUMERIC_DTYPE,
+    )
 
 
 def _feature_mapping_from_vector(vector: np.ndarray) -> dict[str, float]:
@@ -667,11 +674,35 @@ def _features(payload: Mapping[str, Any]) -> dict[str, float]:
     )
 
 
-def _softmax_array(logits: np.ndarray, *, round_values: bool = True) -> dict[str, float]:
-    maximum = max(float(value) for value in logits)
-    exponentials = [math.exp(float(value) - maximum) for value in logits]
+def _softmax_values(logits: np.ndarray) -> tuple[float, ...]:
+    logit_0 = float(logits[0])
+    logit_1 = float(logits[1])
+    logit_2 = float(logits[2])
+    logit_3 = float(logits[3])
+    logit_4 = float(logits[4])
+    logit_5 = float(logits[5])
+    maximum = max(logit_0, logit_1, logit_2, logit_3, logit_4, logit_5)
+    exponentials = (
+        math.exp(logit_0 - maximum),
+        math.exp(logit_1 - maximum),
+        math.exp(logit_2 - maximum),
+        math.exp(logit_3 - maximum),
+        math.exp(logit_4 - maximum),
+        math.exp(logit_5 - maximum),
+    )
     total = sum(exponentials)
-    values = [value / total for value in exponentials]
+    return (
+        exponentials[0] / total,
+        exponentials[1] / total,
+        exponentials[2] / total,
+        exponentials[3] / total,
+        exponentials[4] / total,
+        exponentials[5] / total,
+    )
+
+
+def _softmax_array(logits: np.ndarray, *, round_values: bool = True) -> dict[str, float]:
+    values = _softmax_values(logits)
     if round_values:
         return {
             outcome: _round(float(values[OUTCOME_INDEX[outcome]]))
@@ -704,6 +735,29 @@ def _ordered_dot(weights: np.ndarray, features: np.ndarray) -> float:
     )
 
 
+def _compiled_prediction_matrix(
+    compiled_model: Mapping[str, np.ndarray],
+) -> np.ndarray:
+    """Pack the frozen 6+4+1+1 predictor heads once per planning call."""
+
+    return np.concatenate(
+        (
+            compiled_model["outcome_weights"],
+            compiled_model["delta_weights"],
+            compiled_model["resource_weights"][:, np.newaxis, :],
+            compiled_model["terminal_weights"][:, np.newaxis, :],
+        ),
+        axis=1,
+        dtype=NUMERIC_DTYPE,
+    )
+
+
+def _prediction_dot_batch(weights: np.ndarray, features: np.ndarray) -> np.ndarray:
+    """Evaluate the frozen predictor heads without per-head Python loops."""
+
+    return np.asarray(weights @ features, dtype=NUMERIC_DTYPE)
+
+
 def _visit_key(action: str, payload: Mapping[str, Any]) -> str:
     summary = payload["belief_summary"]
     return _canonical_hash(
@@ -716,6 +770,46 @@ def _visit_key(action: str, payload: Mapping[str, Any]) -> str:
     )
 
 
+def _planning_prediction_vector(
+    state: Mapping[str, Any],
+    *,
+    payload: Mapping[str, Any],
+    action: str,
+    feature_vector: np.ndarray,
+    compiled_prediction_matrix: np.ndarray,
+    visit_key_cache: dict[tuple[Any, ...], str],
+) -> tuple[float, ...]:
+    """Return the frozen planner prediction heads without report-only dictionaries."""
+
+    action_index = ACTION_INDEX[action]
+    packed_values = _prediction_dot_batch(
+        compiled_prediction_matrix[action_index], feature_vector
+    )
+    probabilities = _softmax_values(packed_values[: len(OUTCOMES)])
+    summary = payload["belief_summary"]
+    visit_descriptor = (
+        action,
+        summary["front_token"],
+        int(float(payload["organism"]["energy"]) * 10),
+        summary["known_object_count"],
+    )
+    visit_key = visit_key_cache.get(visit_descriptor)
+    if visit_key is None:
+        visit_key = _visit_key(action, payload)
+        visit_key_cache[visit_descriptor] = visit_key
+    visit_count = int(state["model"]["visit_counts"].get(visit_key, 0))
+    delta_offset = len(OUTCOMES)
+    return probabilities + (
+        max(-0.35, min(0.35, float(packed_values[delta_offset]))),
+        max(-0.35, min(0.35, float(packed_values[delta_offset + 1]))),
+        max(-0.35, min(0.35, float(packed_values[delta_offset + 2]))),
+        max(-0.35, min(0.35, float(packed_values[delta_offset + 3]))),
+        _sigmoid(float(packed_values[delta_offset + len(STATE_KEYS)])),
+        _sigmoid(float(packed_values[delta_offset + len(STATE_KEYS) + 1])),
+        1.0 / math.sqrt(1.0 + visit_count),
+    )
+
+
 def _predict_from_payload(
     state: Mapping[str, Any],
     payload: Mapping[str, Any],
@@ -724,6 +818,7 @@ def _predict_from_payload(
     include_hashes: bool = True,
     precomputed_features: np.ndarray | None = None,
     compiled_model: dict[str, np.ndarray] | None = None,
+    compiled_prediction_matrix: np.ndarray | None = None,
     visit_key_cache: dict[tuple[Any, ...], str] | None = None,
 ) -> dict[str, Any]:
     if action not in ACTIONS:
@@ -742,12 +837,26 @@ def _predict_from_payload(
         else compiled_model
     )
     action_index = ACTION_INDEX[action]
-    outcome_logits = np.asarray(
-        [
-            _ordered_dot(compiled["outcome_weights"][action_index, outcome_index], feature_vector)
-            for outcome_index in range(len(OUTCOMES))
-        ],
-        dtype=NUMERIC_DTYPE,
+    packed_values = (
+        None
+        if compiled_prediction_matrix is None
+        else _prediction_dot_batch(
+            compiled_prediction_matrix[action_index], feature_vector
+        )
+    )
+    outcome_logits = (
+        np.asarray(
+            [
+                _ordered_dot(
+                    compiled["outcome_weights"][action_index, outcome_index],
+                    feature_vector,
+                )
+                for outcome_index in range(len(OUTCOMES))
+            ],
+            dtype=NUMERIC_DTYPE,
+        )
+        if packed_values is None
+        else packed_values[: len(OUTCOMES)]
     )
     probabilities = _softmax_array(outcome_logits, round_values=include_hashes)
     visit_descriptor = (
@@ -780,9 +889,17 @@ def _predict_from_payload(
                     -0.35,
                     min(
                         0.35,
-                        _ordered_dot(
-                            compiled["delta_weights"][action_index, STATE_INDEX[key]],
-                            feature_vector,
+                        (
+                            _ordered_dot(
+                                compiled["delta_weights"][
+                                    action_index, STATE_INDEX[key]
+                                ],
+                                feature_vector,
+                            )
+                            if packed_values is None
+                            else float(
+                                packed_values[len(OUTCOMES) + STATE_INDEX[key]]
+                            )
                         ),
                     ),
                 )
@@ -791,12 +908,26 @@ def _predict_from_payload(
         },
         "resource_interaction_probability": round_prediction(
             _sigmoid(
-                _ordered_dot(compiled["resource_weights"][action_index], feature_vector)
+                (
+                    _ordered_dot(
+                        compiled["resource_weights"][action_index], feature_vector
+                    )
+                    if packed_values is None
+                    else float(packed_values[len(OUTCOMES) + len(STATE_KEYS)])
+                )
             )
         ),
         "terminal_risk": round_prediction(
             _sigmoid(
-                _ordered_dot(compiled["terminal_weights"][action_index], feature_vector)
+                (
+                    _ordered_dot(
+                        compiled["terminal_weights"][action_index], feature_vector
+                    )
+                    if packed_values is None
+                    else float(
+                        packed_values[len(OUTCOMES) + len(STATE_KEYS) + 1]
+                    )
+                )
             )
         ),
         "uncertainty": round_prediction(1.0 / math.sqrt(1.0 + visit_count)),
@@ -878,6 +1009,32 @@ def _expected_pose_distribution(
     action: str,
     outcome_probabilities: Mapping[str, float],
 ) -> dict[tuple[int, int, str], float]:
+    if action == "move_forward":
+        changed_outcome = "moved"
+    elif action in {"turn_left", "turn_right"}:
+        changed_outcome = "turned"
+    else:
+        changed_outcome = None
+    changed_probability = (
+        0.0
+        if changed_outcome is None
+        else float(outcome_probabilities[changed_outcome])
+    )
+    return _expected_pose_distribution_for_probability(
+        pose=pose,
+        facing=facing,
+        action=action,
+        changed_probability=changed_probability,
+    )
+
+
+def _expected_pose_distribution_for_probability(
+    *,
+    pose: tuple[int, int],
+    facing: str,
+    action: str,
+    changed_probability: float,
+) -> dict[tuple[int, int, str], float]:
     stay = (pose[0], pose[1], facing)
     if action == "move_forward":
         changed_outcome = "moved"
@@ -890,7 +1047,6 @@ def _expected_pose_distribution(
     changed = _pose_after(
         pose, facing, action=action, outcome_type=changed_outcome
     )
-    changed_probability = float(outcome_probabilities[changed_outcome])
     successor_mass = {stay: 1.0 - changed_probability}
     successor_mass[changed] = successor_mass.get(changed, 0.0) + changed_probability
     successor_mass = {key: value for key, value in successor_mass.items() if value > 0.0}
@@ -965,53 +1121,59 @@ def expected_pose_receipt(
 
 
 def _value_breakdown(
-    organism: Mapping[str, float],
+    organism_values: tuple[float, ...],
     *,
-    expected_delta: Mapping[str, float],
+    expected_delta: tuple[float, ...],
     predicted_terminal_risk: float,
     expected_newly_observable_unknown_fraction: float,
     active_goal: str,
     goal_value_mode: str,
 ) -> dict[str, float]:
-    predicted_after = {
-        key: _clamp(float(organism[key]) + float(expected_delta[key]))
-        for key in STATE_KEYS
-    }
-    changes = {
-        key: _round(
-            max(0.0, TARGET_LEVEL - float(organism[key]))
-            - max(0.0, TARGET_LEVEL - predicted_after[key])
+    changes = tuple(
+        round(
+            max(0.0, TARGET_LEVEL - organism_values[index])
+            - max(
+                0.0,
+                TARGET_LEVEL
+                - _clamp(organism_values[index] + expected_delta[index]),
+            ),
+            12,
         )
-        for key in STATE_KEYS
-    }
-    weights = {
-        key: (
-            2.0
-            if goal_value_mode == "contextual" and active_goal == key
-            else 1.0
-        )
-        for key in STATE_KEYS
-    }
-    survival_value = _round(1.0 - predicted_terminal_risk)
-    homeostatic_value = _round(
-        sum(weights[key] * changes[key] for key in STATE_KEYS)
+        for index in range(len(STATE_KEYS))
     )
-    map_information_value = _round(
-        0.20 * expected_newly_observable_unknown_fraction
+    survival_value = round(1.0 - predicted_terminal_risk, 12)
+    homeostatic_value = round(
+        sum(
+            (
+                2.0
+                if goal_value_mode == "contextual" and active_goal == key
+                else 1.0
+            )
+            * changes[index]
+            for index, key in enumerate(STATE_KEYS)
+        ),
+        12,
+    )
+    map_information_value = round(
+        0.20 * expected_newly_observable_unknown_fraction, 12
     )
     return {
-        "total_deficit_change": _round(sum(changes.values())),
+        "total_deficit_change": round(sum(changes), 12),
         "intent_deficit_change": (
-            0.0 if active_goal == "explore" else _round(changes[active_goal])
+            0.0
+            if active_goal == "explore"
+            else round(changes[STATE_INDEX[active_goal]], 12)
         ),
-        "predicted_terminal_risk": _round(predicted_terminal_risk),
-        "expected_newly_observable_unknown_fraction": _round(
-            expected_newly_observable_unknown_fraction
+        "predicted_terminal_risk": round(predicted_terminal_risk, 12),
+        "expected_newly_observable_unknown_fraction": round(
+            expected_newly_observable_unknown_fraction, 12
         ),
         "survival_value": survival_value,
         "homeostatic_value": homeostatic_value,
         "map_information_value": map_information_value,
-        "total": _round(survival_value + homeostatic_value + map_information_value),
+        "total": round(
+            survival_value + homeostatic_value + map_information_value, 12
+        ),
     }
 
 
@@ -1027,9 +1189,9 @@ def _serialized_pose_distribution(
 def _node_sort_key(node: Mapping[str, Any]) -> tuple[Any, ...]:
     return (
         -float(node["score"]),
-        tuple(ACTIONS.index(action) for action in node["actions"]),
+        tuple(ACTION_INDEX[action] for action in node["actions"]),
         tuple(
-            (pose_x, pose_y, facing, _round(probability))
+            (pose_x, pose_y, facing, round(float(probability), 12))
             for (pose_x, pose_y, facing), probability in sorted(
                 node["pose_distribution"].items()
             )
@@ -1045,12 +1207,14 @@ def _prediction_for_pose(
     facing: str,
     observation: Mapping[str, Any] | None,
     organism: Mapping[str, float],
+    organism_tuple: tuple[float, ...],
     action: str,
     compiled_model: dict[str, np.ndarray],
-    prediction_cache: dict[tuple[Any, ...], dict[str, Any]],
+    compiled_prediction_matrix: np.ndarray,
+    prediction_cache: dict[tuple[Any, ...], tuple[float, ...]],
     summary_cache: dict[tuple[int, int, str, bool], dict[str, Any]],
     visit_key_cache: dict[tuple[Any, ...], str],
-) -> dict[str, Any]:
+) -> tuple[float, ...]:
     summary_key = (pose[0], pose[1], facing, observation is not None)
     summary = summary_cache.get(summary_key)
     if summary is None:
@@ -1061,7 +1225,6 @@ def _prediction_for_pose(
             observation=observation,
         )
         summary_cache[summary_key] = summary
-    organism_tuple = tuple(float(organism[key]) for key in STATE_KEYS)
     cache_key = (
         ACTION_INDEX[action],
         organism_tuple,
@@ -1080,13 +1243,12 @@ def _prediction_for_pose(
             "organism": organism,
             "belief_summary": summary,
         }
-        prediction = _predict_from_payload(
+        prediction = _planning_prediction_vector(
             state,
-            payload,
-            action,
-            include_hashes=False,
-            precomputed_features=feature_vector,
-            compiled_model=compiled_model,
+            payload=payload,
+            action=action,
+            feature_vector=feature_vector,
+            compiled_prediction_matrix=compiled_prediction_matrix,
             visit_key_cache=visit_key_cache,
         )
         prediction_cache[cache_key] = prediction
@@ -1105,49 +1267,97 @@ def _expand_node(
     depth: int,
     discount: float,
     compiled_model: dict[str, np.ndarray],
-    prediction_cache: dict[tuple[Any, ...], dict[str, Any]],
+    compiled_prediction_matrix: np.ndarray,
+    prediction_cache: dict[tuple[Any, ...], tuple[float, ...]],
+    pose_prediction_cache: dict[tuple[Any, ...], tuple[float, ...]],
     summary_cache: dict[tuple[int, int, str, bool], dict[str, Any]],
     unknown_cache: dict[tuple[int, int], float],
     visit_key_cache: dict[tuple[Any, ...], str],
 ) -> dict[str, Any]:
     successor_mass: dict[tuple[int, int, str], float] = {}
-    expected_delta = {key: 0.0 for key in STATE_KEYS}
+    expected_delta_values = [0.0] * len(STATE_KEYS)
     expected_terminal_risk = 0.0
     expected_resource_probability = 0.0
     expected_uncertainty = 0.0
+    changed_outcome = (
+        "moved"
+        if action == "move_forward"
+        else "turned" if action in {"turn_left", "turn_right"} else None
+    )
     for pose_key, pose_probability in node["pose_distribution"].items():
         pose_x, pose_y, facing = pose_key
-        prediction = _prediction_for_pose(
-            state,
-            belief=belief,
-            pose=(pose_x, pose_y),
-            facing=facing,
-            observation=observation,
-            organism=node["organism"],
-            action=action,
-            compiled_model=compiled_model,
-            prediction_cache=prediction_cache,
-            summary_cache=summary_cache,
-            visit_key_cache=visit_key_cache,
+        pose_prediction_key = (
+            node["organism_tuple"],
+            pose_x,
+            pose_y,
+            facing,
+            observation is not None,
+            ACTION_INDEX[action],
         )
-        for key in STATE_KEYS:
-            expected_delta[key] += pose_probability * float(
-                prediction["predicted_delta"][key]
+        prediction = pose_prediction_cache.get(pose_prediction_key)
+        if prediction is None:
+            prediction = _prediction_for_pose(
+                state,
+                belief=belief,
+                pose=(pose_x, pose_y),
+                facing=facing,
+                observation=observation,
+                organism=node["organism"],
+                organism_tuple=node["organism_tuple"],
+                action=action,
+                compiled_model=compiled_model,
+                compiled_prediction_matrix=compiled_prediction_matrix,
+                prediction_cache=prediction_cache,
+                summary_cache=summary_cache,
+                visit_key_cache=visit_key_cache,
             )
-        expected_terminal_risk += pose_probability * float(prediction["terminal_risk"])
-        expected_resource_probability += pose_probability * float(
-            prediction["resource_interaction_probability"]
-        )
-        expected_uncertainty += pose_probability * float(prediction["uncertainty"])
-        local_successors = _expected_pose_distribution(
-            pose=(pose_x, pose_y),
-            facing=facing,
+            pose_prediction_cache[pose_prediction_key] = prediction
+        delta_offset = len(OUTCOMES)
+        for index in range(len(STATE_KEYS)):
+            expected_delta_values[index] += (
+                pose_probability * prediction[delta_offset + index]
+            )
+        expected_resource_probability += pose_probability * prediction[
+            delta_offset + len(STATE_KEYS)
+        ]
+        expected_terminal_risk += pose_probability * prediction[
+            delta_offset + len(STATE_KEYS) + 1
+        ]
+        expected_uncertainty += pose_probability * prediction[
+            delta_offset + len(STATE_KEYS) + 2
+        ]
+        stay = (pose_x, pose_y, facing)
+        if changed_outcome is None:
+            successor_mass[stay] = successor_mass.get(stay, 0.0) + pose_probability
+            continue
+        changed = _pose_after(
+            (pose_x, pose_y),
+            facing,
             action=action,
-            outcome_probabilities=prediction["outcome_probabilities"],
+            outcome_type=changed_outcome,
         )
-        for successor, successor_probability in local_successors.items():
-            successor_mass[successor] = successor_mass.get(successor, 0.0) + (
-                pose_probability * successor_probability
+        changed_probability = prediction[OUTCOME_INDEX[changed_outcome]]
+        stay_probability = 1.0 - changed_probability
+        if changed == stay:
+            combined_probability = stay_probability + changed_probability
+            successor_mass[stay] = successor_mass.get(stay, 0.0) + (
+                pose_probability * (combined_probability / combined_probability)
+            )
+            continue
+        total_local_mass = 0.0
+        if stay_probability > 0.0:
+            total_local_mass += stay_probability
+        if changed_probability > 0.0:
+            total_local_mass += changed_probability
+        if total_local_mass <= 0.0:
+            raise PredictiveControlInvariantError("outcome probability mass vanished")
+        if stay_probability > 0.0:
+            successor_mass[stay] = successor_mass.get(stay, 0.0) + (
+                pose_probability * (stay_probability / total_local_mass)
+            )
+        if changed_probability > 0.0:
+            successor_mass[changed] = successor_mass.get(changed, 0.0) + (
+                pose_probability * (changed_probability / total_local_mass)
             )
     total_mass = sum(successor_mass.values())
     if total_mass <= 0.0:
@@ -1163,18 +1373,26 @@ def _expand_node(
             unknown = _unknown_fraction(belief, pose)
             unknown_cache[pose] = unknown
         expected_unknown += probability * unknown
-    rounded_delta = {key: _round(value) for key, value in expected_delta.items()}
+    rounded_delta_values = tuple(round(float(value), 12) for value in expected_delta_values)
+    rounded_delta = {
+        key: rounded_delta_values[index]
+        for index, key in enumerate(STATE_KEYS)
+    }
     breakdown = _value_breakdown(
-        node["organism"],
-        expected_delta=rounded_delta,
+        node["organism_tuple"],
+        expected_delta=rounded_delta_values,
         predicted_terminal_risk=expected_terminal_risk,
         expected_newly_observable_unknown_fraction=expected_unknown,
         active_goal=active_goal,
         goal_value_mode=goal_value_mode,
     )
+    next_organism_tuple = tuple(
+        _clamp(node["organism_tuple"][index] + rounded_delta_values[index])
+        for index in range(len(STATE_KEYS))
+    )
     next_organism = {
-        key: _clamp(float(node["organism"][key]) + rounded_delta[key])
-        for key in STATE_KEYS
+        key: next_organism_tuple[index]
+        for index, key in enumerate(STATE_KEYS)
     }
     actions = [*node["actions"], action]
     return {
@@ -1182,14 +1400,18 @@ def _expand_node(
         "actions": actions,
         "pose_distribution": successor_distribution,
         "organism": next_organism,
-        "score": _round(
-            float(node["score"]) + (discount**depth) * float(breakdown["total"])
+        "organism_tuple": next_organism_tuple,
+        "score": round(
+            float(node["score"]) + (discount**depth) * float(breakdown["total"]),
+            12,
         ),
         "first_breakdown": node["first_breakdown"] or breakdown,
         "last_prediction_summary": {
-            "terminal_risk": _round(expected_terminal_risk),
-            "resource_interaction_probability": _round(expected_resource_probability),
-            "uncertainty": _round(expected_uncertainty),
+            "terminal_risk": round(expected_terminal_risk, 12),
+            "resource_interaction_probability": round(
+                expected_resource_probability, 12
+            ),
+            "uncertainty": round(expected_uncertainty, 12),
             "predicted_delta": rounded_delta,
         },
     }
@@ -1286,6 +1508,7 @@ def plan_action(
         relative_map_mode=relative_map_mode,
     )
     compiled_model = _compiled_model_arrays(state["model"])
+    compiled_prediction_matrix = _compiled_prediction_matrix(compiled_model)
     current_features = _feature_vector_from_summary(
         organism=current_payload["organism"],
         summary=current_payload["belief_summary"],
@@ -1297,6 +1520,7 @@ def plan_action(
             action,
             precomputed_features=current_features,
             compiled_model=compiled_model,
+            compiled_prediction_matrix=compiled_prediction_matrix,
         )
         for action in ACTIONS
     }
@@ -1316,12 +1540,14 @@ def plan_action(
             "actions": [],
             "pose_distribution": {pose: 1.0},
             "organism": {key: float(organism[key]) for key in STATE_KEYS},
+            "organism_tuple": tuple(float(organism[key]) for key in STATE_KEYS),
             "score": 0.0,
             "first_breakdown": None,
             "last_prediction_summary": None,
         }
     ]
-    prediction_cache: dict[tuple[Any, ...], dict[str, Any]] = {}
+    prediction_cache: dict[tuple[Any, ...], tuple[float, ...]] = {}
+    pose_prediction_cache: dict[tuple[Any, ...], tuple[float, ...]] = {}
     summary_cache: dict[tuple[int, int, str, bool], dict[str, Any]] = {}
     unknown_cache: dict[tuple[int, int], float] = {}
     visit_key_cache: dict[tuple[Any, ...], str] = {}
@@ -1342,7 +1568,9 @@ def plan_action(
                 depth=depth,
                 discount=discount,
                 compiled_model=compiled_model,
+                compiled_prediction_matrix=compiled_prediction_matrix,
                 prediction_cache=prediction_cache,
+                pose_prediction_cache=pose_prediction_cache,
                 summary_cache=summary_cache,
                 unknown_cache=unknown_cache,
                 visit_key_cache=visit_key_cache,

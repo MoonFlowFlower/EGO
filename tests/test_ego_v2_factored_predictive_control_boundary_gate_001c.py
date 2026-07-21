@@ -12,6 +12,7 @@ from labs.ego_life_playground_v0 import engine, predictive_control
 from labs.ego_life_playground_v0.controller import PlaygroundController
 from labs.ego_life_playground_v0.microworld import PUBLIC_OBSERVATION_SCHEMA_VERSION, policy_observation
 from labs.ego_life_playground_v0.store import SQLiteEventStore
+from labs.ego_life_playground_v0.visual_console import build_tk_trace_payload
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -120,14 +121,99 @@ def test_validate_state_rejects_malformed_or_nonfinite_fixed_arrays() -> None:
         predictive_control.validate_state(nonfinite)
 
 
+def test_packed_prediction_matrix_matches_frozen_ordered_dot_contract() -> None:
+    state, observation = _prepared_state()
+    model = deepcopy(state["model"])
+    for action_index in range(len(engine.ACTIONS)):
+        for outcome_index in range(len(predictive_control.OUTCOMES)):
+            for feature_index in range(len(predictive_control.FEATURE_NAMES)):
+                model["outcome_weights"][action_index][outcome_index][feature_index] = (
+                    (action_index + 1) * (outcome_index + 2) * (feature_index - 5) / 1000.0
+                )
+        for state_index in range(len(predictive_control.STATE_KEYS)):
+            for feature_index in range(len(predictive_control.FEATURE_NAMES)):
+                model["delta_weights"][action_index][state_index][feature_index] = (
+                    (action_index + 3) * (state_index + 1) * (feature_index - 8) / 1500.0
+                )
+    compiled = predictive_control._compiled_model_arrays(model)  # noqa: SLF001
+    packed = predictive_control._compiled_prediction_matrix(compiled)  # noqa: SLF001
+    payload = predictive_control.predictor_input_snapshot(
+        state | {"model": model},
+        observation=observation,
+        organism=_organism(),
+        relative_map_mode="relative",
+    )
+    features = predictive_control._feature_vector_from_summary(  # noqa: SLF001
+        organism=payload["organism"],
+        summary=payload["belief_summary"],
+    )
+    for action_index in range(len(engine.ACTIONS)):
+        observed = predictive_control._prediction_dot_batch(  # noqa: SLF001
+            packed[action_index], features
+        )
+        expected = [
+            predictive_control._ordered_dot(row, features)  # noqa: SLF001
+            for row in packed[action_index]
+        ]
+        assert observed.tolist() == pytest.approx(expected, abs=1e-15)
+
+
+def test_compact_planning_prediction_matches_full_internal_prediction() -> None:
+    state, observation = _prepared_state()
+    payload = predictive_control.predictor_input_snapshot(
+        state,
+        observation=observation,
+        organism=_organism(),
+        relative_map_mode="relative",
+    )
+    compiled = predictive_control._compiled_model_arrays(state["model"])  # noqa: SLF001
+    packed = predictive_control._compiled_prediction_matrix(compiled)  # noqa: SLF001
+    features = predictive_control._feature_vector_from_summary(  # noqa: SLF001
+        organism=payload["organism"],
+        summary=payload["belief_summary"],
+    )
+    for action in engine.ACTIONS:
+        full = predictive_control._predict_from_payload(  # noqa: SLF001
+            state,
+            payload,
+            action,
+            include_hashes=False,
+            precomputed_features=features,
+            compiled_model=compiled,
+            compiled_prediction_matrix=packed,
+            visit_key_cache={},
+        )
+        compact = predictive_control._planning_prediction_vector(  # noqa: SLF001
+            state,
+            payload=payload,
+            action=action,
+            feature_vector=features,
+            compiled_prediction_matrix=packed,
+            visit_key_cache={},
+        )
+        expected = tuple(
+            full["outcome_probabilities"][outcome]
+            for outcome in predictive_control.OUTCOMES
+        ) + tuple(full["predicted_delta"][key] for key in predictive_control.STATE_KEYS) + (
+            full["resource_interaction_probability"],
+            full["terminal_risk"],
+            full["uncertainty"],
+        )
+        assert compact == pytest.approx(expected, abs=1e-15)
+
+
 def test_plan_action_preserves_semantics_and_reuses_cached_feature_vectors(monkeypatch) -> None:
     state, observation = _prepared_state()
     feature_calls = 0
     compiled_calls = 0
     pose_prediction_calls = 0
+    successor_distribution_calls = 0
     original_feature_vector = predictive_control._feature_vector_from_summary  # noqa: SLF001
     original_compiled = predictive_control._compiled_model_arrays  # noqa: SLF001
     original_prediction_for_pose = predictive_control._prediction_for_pose  # noqa: SLF001
+    original_expected_pose_distribution = (  # noqa: SLF001
+        predictive_control._expected_pose_distribution
+    )
 
     def counting_feature_vector(*, organism, summary):
         nonlocal feature_calls
@@ -144,6 +230,11 @@ def test_plan_action_preserves_semantics_and_reuses_cached_feature_vectors(monke
         pose_prediction_calls += 1
         return original_prediction_for_pose(*args, **kwargs)
 
+    def counting_expected_pose_distribution(*args, **kwargs):
+        nonlocal successor_distribution_calls
+        successor_distribution_calls += 1
+        return original_expected_pose_distribution(*args, **kwargs)
+
     monkeypatch.setattr(
         predictive_control,
         "_feature_vector_from_summary",
@@ -154,6 +245,11 @@ def test_plan_action_preserves_semantics_and_reuses_cached_feature_vectors(monke
         predictive_control,
         "_prediction_for_pose",
         counting_prediction_for_pose,
+    )
+    monkeypatch.setattr(
+        predictive_control,
+        "_expected_pose_distribution",
+        counting_expected_pose_distribution,
     )
     monkeypatch.setattr(
         predictive_control,
@@ -190,6 +286,8 @@ def test_plan_action_preserves_semantics_and_reuses_cached_feature_vectors(monke
     )
     assert compiled_calls == 2
     assert pose_prediction_calls > feature_calls
+    assert pose_prediction_calls < 2_000
+    assert successor_distribution_calls <= pose_prediction_calls
     assert feature_calls < 120
 
 
@@ -339,7 +437,7 @@ def test_engine_public_actual_delta_and_compact_trace_fail_closed(monkeypatch) -
     assert "producer_function" not in plan
     assert "algorithm" not in plan
     assert "predictor_context_hash" in plan
-    assert set(plan["candidate_value_hashes"]) == set(engine.ACTIONS)
+    assert "candidate_value_hashes" not in plan
     assert set(plan["predictions_by_action"]) == set(engine.ACTIONS)
     for prediction in plan["predictions_by_action"].values():
         assert "input_hash" not in prediction
@@ -348,8 +446,32 @@ def test_engine_public_actual_delta_and_compact_trace_fail_closed(monkeypatch) -
         assert "visit_count" not in prediction
         assert "prediction_hash" in prediction
     assert plan["beam_receipt"]["root_action_counts_by_depth"] == [5] * 12
-    assert "selected_action_update" in trace["predictive_control"]
-    assert "update" not in trace["predictive_control"]
+    assert "update" in trace["predictive_control"]
+    assert "selected_action_update" not in trace["predictive_control"]
+    assert "world_observation" not in trace
+    assert trace["command"] == command
+    repeated_fields = {
+        "global_tick": trace["sequence"],
+        "episode_index": trace["action_episode"]["episode_index"],
+        "episode_tick": trace["action_episode"]["episode_tick"],
+        "episode_before": trace["action_episode"],
+        "policy_decision_input_hash": trace["policy_projection"]["decision_input_hash"],
+        "world_observation": trace["observation"],
+    }
+    assert not (set(repeated_fields) & set(trace))
+    legacy_repeated = deepcopy(trace)
+    legacy_repeated.update(repeated_fields)
+    legacy_repeated["predictive_control"]["plan"]["candidate_value_hashes"] = {
+        action: engine.canonical_hash(value)
+        for action, value in plan["candidate_values"].items()
+    }
+    assert len(engine.canonical_json(legacy_repeated).encode("utf-8")) - len(
+        engine.canonical_json(trace).encode("utf-8")
+    ) >= 900
+    ui_payload = build_tk_trace_payload(result.next_state, trace)
+    assert ui_payload["predictive_control"]["update"]["outcome_brier"] == trace[
+        "predictive_control"
+    ]["update"]["outcome_brier"]
 
     assert engine.compute_actual_delta(
         {"outcome_type": "interacted", "cause": "resource"},

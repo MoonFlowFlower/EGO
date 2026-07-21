@@ -245,7 +245,7 @@ def test_engine_factored_mode_updates_through_only_compute_step() -> None:
     assert set(receipt["plan"]["predictions_by_action"]) == set(engine.ACTIONS)
     assert set(receipt["plan"]["candidate_values"]) == set(engine.ACTIONS)
     assert len(receipt["plan"]["planned_actions"]) == 3
-    assert receipt["selected_action_update"]["applied"] is True
+    assert receipt["update"]["applied"] is True
     assert result.next_state["predictive_control"]["model"]["update_count"] == 1
     assert result.trace["survival_learning"]["selection"]["selection_mode"] == "delegated_factored_mpc"
 
@@ -282,7 +282,7 @@ def test_frozen_predictor_updates_belief_but_not_model() -> None:
         prev_command_hash=None,
     )
     result = engine.compute_step(state, command, meta)
-    update = result.trace["predictive_control"]["selected_action_update"]
+    update = result.trace["predictive_control"]["update"]
     assert update["applied"] is False
     assert update["reason"] == "predictor_updates_frozen"
     assert update["model_hash_before"] == update["model_hash_after"]
@@ -323,7 +323,7 @@ def test_sqlite_recovery_recomputes_predictive_state_and_rejects_trace_tamper(tm
         import json
 
         trace = json.loads(row["trace_json"])
-        trace["predictive_control"]["selected_action_update"]["outcome_brier"] = 0.0
+        trace["predictive_control"]["update"]["outcome_brier"] = 0.0
         trace["trace_hash"] = engine.compute_trace_hash(trace)
         store.connection.execute(
             "UPDATE traces SET trace_json = ?, trace_hash = ? WHERE run_id = ? AND sequence = 4",

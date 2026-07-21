@@ -176,7 +176,7 @@ def _run_smoke_context(
                 action = trace.get("selected_action")
                 plan = ((trace.get("predictive_control") or {}).get("plan") or {})
                 update = ((trace.get("predictive_control") or {}).get("update") or {})
-                observation = trace.get("world_observation") or {}
+                observation = trace.get("observation") or trace.get("world_observation") or {}
                 visual = observation.get("visual") or []
                 front_token = visual[1][2] if len(visual) == 5 else None
                 token_count = int(
