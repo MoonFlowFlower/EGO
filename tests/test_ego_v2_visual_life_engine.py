@@ -110,6 +110,7 @@ def _state_with_resource_ahead(*, run_id="resource-ahead"):
             }
         }
     }
+    state["component_hashes"]["model"] = canonical_hash(state["model"])
     return state, observation
 
 
@@ -157,8 +158,8 @@ def test_card_a_schema_versions_and_command_v5_shape():
         injected_event="social_signal",
     )
 
-    assert state["schema_version"] == "ego.life_playground.state.v4"
-    assert meta["schema_version"] == "ego.life_playground.run.v4"
+    assert state["schema_version"] == "ego.life_playground.state.v5"
+    assert meta["schema_version"] == "ego.life_playground.run.v5"
     assert command["schema_version"] == "ego.life_playground.command.v6"
     assert set(command) == {
         "schema_version",
@@ -179,7 +180,7 @@ def test_card_a_step_is_deterministic_and_command_contains_only_replay_inputs():
     state = initial_state(run_id="deterministic")
     result_b = compute_step(state, deepcopy(command), deepcopy(meta))
 
-    assert result_a.trace["schema_version"] == "ego.life_playground.trace.v8"
+    assert result_a.trace["schema_version"] == "ego.life_playground.trace.v10"
     assert result_a.trace["selected_action"] in ACTIONS
     assert {item["action"] for item in result_a.trace["candidates"]} == set(ACTIONS)
     assert result_a.trace["selected_action"] == next(
@@ -304,7 +305,7 @@ def test_card_a_visual_context_model_update_and_claim_v2_policy_summary():
 
 def test_card_a_hash_and_code_path_v4_fail_closed():
     manifest = compute_code_path_manifest()
-    assert manifest["schema_version"] == "ego.life_playground.code_path.v5"
+    assert manifest["schema_version"] == "ego.life_playground.code_path.v6"
     assert {entry["path"] for entry in manifest["files"]} == {
         "engine.py",
         "microworld.py",

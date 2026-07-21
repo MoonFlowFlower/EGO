@@ -47,10 +47,11 @@ REENTRY_THRESHOLD = 0.60
 CRITICAL_OVERRIDE_THRESHOLD = 0.15
 VISUAL_TRANSITION_MODEL_KEY = "__visual_transition_counts__"
 
-STATE_SCHEMA_VERSION = "ego.life_playground.state.v4"
-RUN_SCHEMA_VERSION = "ego.life_playground.run.v4"
+STATE_SCHEMA_VERSION = "ego.life_playground.state.v5"
+RUN_SCHEMA_VERSION = "ego.life_playground.run.v5"
 COMMAND_SCHEMA_VERSION = "ego.life_playground.command.v6"
-TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v8"
+TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v10"
+COMPONENT_HASH_SCHEMA_VERSION = "ego.life_playground.component_hashes.v1"
 
 TRIGGER_SOURCES = (
     "ui_step_button",
@@ -176,7 +177,7 @@ def compute_code_path_manifest() -> dict[str, Any]:
         Path(__file__).with_name("store.py"),
     )
     return {
-        "schema_version": "ego.life_playground.code_path.v5",
+        "schema_version": "ego.life_playground.code_path.v6",
         "files": [
             {"path": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
             for path in source_paths
@@ -242,6 +243,12 @@ def initial_state(
     if set(values) != set(STATE_KEYS):
         raise EngineInvariantError("organism state keys do not match canonical schema")
     normalized = {key: _clamp(values[key]) for key in STATE_KEYS}
+    model: dict[str, Any] = {}
+    memory = {
+        "episodic": [],
+        "consolidated": [],
+        **claim_memory.empty_claim_memory(),
+    }
     return {
         "schema_version": STATE_SCHEMA_VERSION,
         "clock": {
@@ -256,11 +263,12 @@ def initial_state(
             normalized,
             global_tick=0,
         ),
-        "model": {},
-        "memory": {
-            "episodic": [],
-            "consolidated": [],
-            **claim_memory.empty_claim_memory(),
+        "model": model,
+        "memory": memory,
+        "component_hashes": {
+            "schema_version": COMPONENT_HASH_SCHEMA_VERSION,
+            "model": canonical_hash(model),
+            "memory": canonical_hash(memory),
         },
         "survival_learner": survival_learning.empty_survival_learner(),
         "lifecycle": {
@@ -349,8 +357,38 @@ def verify_command(command: Mapping[str, Any], state: Mapping[str, Any]) -> None
 def state_hash(state: Mapping[str, Any]) -> str:
     """Hash causal state without the separately chained trace pointer."""
 
-    causal_state = deepcopy(dict(state))
+    # The hash serializer is read-only.  Copying the complete, growing model and
+    # memory before serializing it doubled the cost without changing the bytes.
+    causal_state = dict(state)
     causal_state.pop("last_trace_hash", None)
+    component_hashes = state.get("component_hashes", {})
+    model = state.get("model", {})
+    memory = state.get("memory", {})
+    causal_state["model"] = {
+        "component_hash": component_hashes.get("model"),
+        "context_count": len(model) if isinstance(model, Mapping) else None,
+        "visual_observation_count": len(
+            model.get(VISUAL_TRANSITION_MODEL_KEY, {})
+        )
+        if isinstance(model, Mapping)
+        and isinstance(model.get(VISUAL_TRANSITION_MODEL_KEY, {}), Mapping)
+        else None,
+    }
+    causal_state["memory"] = {
+        "component_hash": component_hashes.get("memory"),
+        "episodic_count": len(memory.get("episodic", []))
+        if isinstance(memory, Mapping)
+        else None,
+        "consolidated_count": len(memory.get("consolidated", []))
+        if isinstance(memory, Mapping)
+        else None,
+        "claim_event_count": len(memory.get("claim_events", []))
+        if isinstance(memory, Mapping)
+        else None,
+        "competing_claim_count": len(memory.get("competing_claims", []))
+        if isinstance(memory, Mapping)
+        else None,
+    }
     return canonical_hash(causal_state)
 
 
@@ -469,6 +507,7 @@ def _respawn_trace(
         "observation_hash": None,
         "policy_projection": None,
         "policy_projection_hash": None,
+        "policy_decision_input_hash": None,
         "candidate_actions": [],
         "world_transition": None,
         "episode_before": deepcopy(before["clock"]),
@@ -570,7 +609,10 @@ def compute_step(
     _verify_state(state, run_id=str(run_meta["run_id"]))
     verify_command(command, state)
 
-    before = deepcopy(dict(state))
+    # Treat the verified input as immutable and copy only components that this
+    # transition changes.  This is the online form of the same reducer, not a
+    # checkpoint or alternate state-transition path.
+    before = dict(state)
     before_hash = state_hash(before)
     sequence = int(command["sequence"])
     interventions = _normalize_interventions(command["interventions"])
@@ -785,6 +827,11 @@ def compute_step(
     goal_before = deepcopy(decision_state["current_goal"])
     current_goal = _goal_context_key(goal_before)
     context_key = f"{observation_key}|{current_goal}"
+    _verify_model_access(
+        decision_state["model"],
+        context_key=context_key,
+        observation_key=observation_key,
+    )
     try:
         survival_state_key = survival_learning.build_state_key(
             observation_key,
@@ -793,8 +840,11 @@ def compute_step(
     except survival_learning.SurvivalLearningInvariantError as exc:
         raise EngineInvariantError(str(exc)) from exc
 
+    model_before_hash = str(decision_state["component_hashes"]["model"])
+    memory_before_hash = str(decision_state["component_hashes"]["memory"])
     memory_view, provenance_projection = _memory_read_view(
         decision_state["memory"],
+        source_memory_hash=memory_before_hash,
         memory_mode=interventions["memory_mode"],
         provenance_mode=interventions["provenance_mode"],
         provenance_shuffle_seed=int(interventions["provenance_shuffle_seed"]),
@@ -804,6 +854,7 @@ def compute_step(
         memory_view,
         observation=world_observation,
         current_goal=current_goal,
+        prevalidated=True,
     )
     if interventions["memory_mode"] == "off":
         claim_retrieval["status"] = "memory_disabled"
@@ -812,15 +863,45 @@ def compute_step(
         cue=observation_key,
         current_goal=current_goal,
     )
+    audited_memory_by_action = _memory_biases(
+        memory_view,
+        cue=observation_key,
+        current_goal=current_goal,
+    )
     claim_summary = deepcopy(claim_retrieval["policy_summary"])
-    policy_projection = {
+    decision_policy_projection = {
         "schema_version": "ego.life_playground.policy_projection.v3",
+        "observation": world_observation,
+        "organism": decision_state["organism"],
+        "current_goal": _sanitized_goal(goal_before),
+        "model": decision_state["model"],
+        "memory_summary": memory_summary,
+        "claim_summary": claim_summary,
+    }
+    deterministic_ties = _deterministic_ties(decision_policy_projection)
+    policy_decision_input_hash = canonical_hash(decision_policy_projection)
+    model_access = {
+        "component_hash": model_before_hash,
+        "context_key": context_key,
+        "entries_by_action": {
+            action: deepcopy(
+                decision_state["model"].get(context_key, {}).get(action)
+            )
+            for action in ACTIONS
+        },
+        "transition_counts": _transition_counts_for_observation(
+            decision_state["model"], observation_key
+        ),
+    }
+    policy_projection = {
+        "schema_version": "ego.life_playground.policy_projection.v4",
         "observation": deepcopy(world_observation),
         "organism": deepcopy(decision_state["organism"]),
         "current_goal": _sanitized_goal(goal_before),
-        "model": deepcopy(decision_state["model"]),
+        "model_access": model_access,
         "memory_summary": memory_summary,
         "claim_summary": claim_summary,
+        "decision_input_hash": policy_decision_input_hash,
     }
     candidates = [
         _score_candidate(
@@ -832,19 +913,14 @@ def compute_step(
             context_key=context_key,
             current_goal=goal_before,
             action=action,
-            policy_projection=policy_projection,
+            deterministic_tie=deterministic_ties[action],
             novelty_mode=interventions["novelty_mode"],
         )
         for action in ACTIONS
     ]
     for candidate in candidates:
         action = str(candidate["action"])
-        audit_bias, legacy_refs = _memory_bias(
-            memory_view,
-            cue=observation_key,
-            current_goal=current_goal,
-            action=action,
-        )
+        audit_bias, legacy_refs = audited_memory_by_action[action]
         if _round(audit_bias) != candidate["legacy_memory_bias"]:
             raise EngineInvariantError("policy memory summary differs from audited memory view")
         claim_refs = sorted(
@@ -855,8 +931,10 @@ def compute_step(
                 for event_id in item.get("eligible_provenance_event_ids", [])
             }
         )
-        candidate["claim_refs"] = claim_refs
-        candidate["memory_refs"] = sorted(set(legacy_refs) | set(claim_refs))
+        candidate["claim_refs"] = _reference_receipt(claim_refs)
+        candidate["memory_refs"] = _reference_receipt(
+            sorted(set(legacy_refs) | set(claim_refs))
+        )
     candidates.sort(key=lambda item: item["action"])
     candidate_scores = {
         str(candidate["action"]): float(candidate["total_score"])
@@ -885,7 +963,7 @@ def compute_step(
         candidate["selected"] = candidate["action"] == selected_action
     predicted_delta = deepcopy(selected["predicted_delta"])
 
-    next_state = deepcopy(decision_state)
+    next_state = dict(decision_state)
     try:
         next_state["world"], world_transition = transition_world(
             decision_state["world"],
@@ -1000,8 +1078,6 @@ def compute_step(
             survival_update["eligibility_reset_applied"] = False
 
     updates_enabled = interventions["update_mode"] == "canonical"
-    model_before_hash = canonical_hash(decision_state["model"])
-    memory_before_hash = canonical_hash(decision_state["memory"])
     model_update = _update_model(
         next_state,
         context_key=context_key,
@@ -1044,8 +1120,14 @@ def compute_step(
         memory_enabled=interventions["memory_mode"] == "canonical",
         updates_enabled=updates_enabled,
     )
-    model_after_hash = canonical_hash(next_state["model"])
-    memory_after_hash = canonical_hash(next_state["memory"])
+    _advance_memory_component_hash(
+        next_state,
+        previous_hash=memory_before_hash,
+        memory_update=memory_update,
+        claim_update=claim_update,
+    )
+    model_after_hash = str(next_state["component_hashes"]["model"])
+    memory_after_hash = str(next_state["component_hashes"]["memory"])
     if life_termination is None:
         next_state["lifecycle"] = deepcopy(lifecycle_before)
     else:
@@ -1104,6 +1186,7 @@ def compute_step(
         "observation_hash": observation_hash(world_observation),
         "policy_projection": policy_projection,
         "policy_projection_hash": canonical_hash(policy_projection),
+        "policy_decision_input_hash": policy_decision_input_hash,
         "candidate_actions": list(ACTIONS),
         "world_transition": world_transition,
         "episode_before": deepcopy(before["clock"]),
@@ -1119,7 +1202,7 @@ def compute_step(
         "prediction": predicted_delta,
         "model_ref": selected["model_ref"],
         "memory_refs": selected["memory_refs"],
-        "claim_retrieval": claim_retrieval,
+        "claim_retrieval": _compact_claim_retrieval(claim_retrieval),
         "actual_delta": actual_delta,
         "energy_before": metabolism["energy_before"],
         "passive_decay": metabolism["passive_decay"],
@@ -1130,8 +1213,8 @@ def compute_step(
         "metabolism": metabolism,
         "prediction_error": prediction_error,
         "model_update": model_update,
-        "memory_update": memory_update,
-        "claim_update": claim_update,
+        "memory_update": _compact_memory_update(memory_update),
+        "claim_update": _compact_claim_update(claim_update),
         "survival_learning": {
             "schema_version": "ego.life_playground.survival_trace.v1",
             "producer_function": RUN_PRODUCER_FUNCTION,
@@ -1167,8 +1250,12 @@ def compute_step(
             "after_hash": memory_after_hash,
             "changed": memory_before_hash != memory_after_hash,
         },
-        "consolidation_refs": memory_update["consolidation_refs"],
-        "provenance_projection": provenance_projection,
+        "consolidation_refs": _reference_receipt(
+            memory_update["consolidation_refs"]
+        ),
+        "provenance_projection": _compact_provenance_projection(
+            provenance_projection
+        ),
         "vision_ablation": {
             "mode": interventions["vision_mode"],
             "applied": interventions["vision_mode"] != "canonical",
@@ -1363,6 +1450,7 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
         "current_goal",
         "model",
         "memory",
+        "component_hashes",
         "survival_learner",
         "lifecycle",
         "last_action",
@@ -1388,6 +1476,20 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
     if type(clock["episode_id"]) is not str or not clock["episode_id"]:
         raise EngineInvariantError("episode_id must be a non-empty string")
     tick = clock["global_tick"]
+    component_hashes = state["component_hashes"]
+    if (
+        not isinstance(component_hashes, Mapping)
+        or set(component_hashes) != {"schema_version", "model", "memory"}
+        or component_hashes.get("schema_version") != COMPONENT_HASH_SCHEMA_VERSION
+        or not _is_sha256(component_hashes.get("model"))
+        or not _is_sha256(component_hashes.get("memory"))
+    ):
+        raise EngineInvariantError("component hash schema mismatch")
+    if tick == 0 and (
+        component_hashes["model"] != canonical_hash(state["model"])
+        or component_hashes["memory"] != canonical_hash(state["memory"])
+    ):
+        raise EngineInvariantError("initial component hash mismatch")
     lifecycle = state["lifecycle"]
     _verify_lifecycle(lifecycle)
     expected_index = int(lifecycle["life_index"]) - 1
@@ -1438,7 +1540,7 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
         raise EngineInvariantError(str(exc)) from exc
 
     _verify_goal(state["current_goal"], global_tick=tick)
-    _verify_model(state["model"])
+    _verify_model(state["model"], full=tick == 0)
     _verify_memory(state["memory"])
     try:
         survival_learning.validate_survival_learner(state["survival_learner"])
@@ -1481,9 +1583,16 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
             raise EngineInvariantError("episode_tick must be within the lifecycle-allowed range")
 
 
-def _verify_model(model: Any) -> None:
+def _verify_model(model: Any, *, full: bool = True) -> None:
     if not isinstance(model, Mapping):
         raise EngineInvariantError("model must be an object")
+    if type(full) is not bool:
+        raise EngineInvariantError("model full verification flag must be boolean")
+    if not full:
+        transition_counts = model.get(VISUAL_TRANSITION_MODEL_KEY, {})
+        if not isinstance(transition_counts, Mapping):
+            raise EngineInvariantError("visual transition counts must be an object")
+        return
     for context_key, actions in model.items():
         if context_key == VISUAL_TRANSITION_MODEL_KEY:
             _verify_visual_transition_counts(actions)
@@ -1505,6 +1614,22 @@ def _verify_model(model: Any) -> None:
             _verify_delta(entry["ema_delta"], "model ema_delta")
 
 
+def _verify_model_access(
+    model: Mapping[str, Any], *, context_key: str, observation_key: str
+) -> None:
+    """Validate only model rows that can affect this decision."""
+
+    accessed: dict[str, Any] = {}
+    if context_key in model:
+        accessed[context_key] = model[context_key]
+    visual = model.get(VISUAL_TRANSITION_MODEL_KEY, {})
+    if isinstance(visual, Mapping) and observation_key in visual:
+        accessed[VISUAL_TRANSITION_MODEL_KEY] = {
+            observation_key: visual[observation_key]
+        }
+    _verify_model(accessed, full=True)
+
+
 def _verify_memory(memory: Any) -> None:
     if not isinstance(memory, Mapping) or set(memory) != {
         "schema_version",
@@ -1520,26 +1645,23 @@ def _verify_memory(memory: Any) -> None:
         raise EngineInvariantError("episodic memory must be a list")
     if not isinstance(consolidated, list):
         raise EngineInvariantError("consolidated memory must be a list")
-    memory_ids: set[str] = set()
-    for entry in episodic:
-        _verify_episodic_memory_entry(entry)
-        memory_id = str(entry["memory_id"])
-        if memory_id in memory_ids:
-            raise EngineInvariantError("memory_id must be unique")
-        memory_ids.add(memory_id)
+    # The reducer appends exactly one immutable row.  Startup/recovery begins
+    # from an empty validated initial state and recomputes all prior rows, so
+    # the hot path validates the append boundary rather than rescanning the
+    # complete history on every tick.
+    if episodic:
+        _verify_episodic_memory_entry(episodic[-1])
+    memory_ids: set[str] = {
+        str(episodic[-1]["memory_id"])
+    } if episodic else set()
     for entry in consolidated:
         _verify_consolidated_memory_entry(entry)
         memory_id = str(entry["memory_id"])
         if memory_id in memory_ids:
             raise EngineInvariantError("memory_id must be unique")
         memory_ids.add(memory_id)
-    rebuilt = rebuild_consolidated_memory(list(episodic))
-    if canonical_json(list(consolidated)) != canonical_json(rebuilt):
-        raise EngineInvariantError(
-            "consolidated memory is not the canonical rebuild of episodic lineage"
-        )
     try:
-        claim_memory.verify_claim_memory(memory)
+        claim_memory.verify_claim_memory(memory, full=False)
     except ValueError as exc:
         raise EngineInvariantError(str(exc)) from exc
 
@@ -1816,7 +1938,7 @@ def _decision_state_for_tick(
     life_index = int(before["lifecycle"]["life_index"])
     episode_index = life_index - 1
     episode_tick = int(before["clock"]["episode_tick"]) + 1
-    decision = deepcopy(dict(before))
+    decision = dict(before)
     decision["clock"] = {
         "global_tick": sequence,
         "episode_index": episode_index,
@@ -1824,13 +1946,12 @@ def _decision_state_for_tick(
         "episode_tick": episode_tick,
     }
     carry_checks = {
-        "organism_unchanged": canonical_json(before["organism"]) == canonical_json(decision["organism"]),
-        "model_unchanged": canonical_json(before["model"]) == canonical_json(decision["model"]),
-        "memory_unchanged": canonical_json(before["memory"]) == canonical_json(decision["memory"]),
-        "survival_learner_unchanged": canonical_json(before["survival_learner"])
-        == canonical_json(decision["survival_learner"]),
-        "current_goal_unchanged": canonical_json(before["current_goal"])
-        == canonical_json(decision["current_goal"]),
+        "organism_unchanged": before["organism"] is decision["organism"],
+        "model_unchanged": before["model"] is decision["model"],
+        "memory_unchanged": before["memory"] is decision["memory"],
+        "survival_learner_unchanged": before["survival_learner"]
+        is decision["survival_learner"],
+        "current_goal_unchanged": before["current_goal"] is decision["current_goal"],
         "command_chain_unchanged": before.get("last_command_hash")
         == decision.get("last_command_hash"),
         "trace_chain_unchanged": before.get("last_trace_hash") == decision.get("last_trace_hash"),
@@ -2158,7 +2279,7 @@ def _score_candidate(
     context_key: str,
     current_goal: Mapping[str, Any],
     action: str,
-    policy_projection: Mapping[str, Any],
+    deterministic_tie: float,
     novelty_mode: str,
 ) -> dict[str, Any]:
     model_entry = model.get(context_key, {}).get(action)
@@ -2187,7 +2308,6 @@ def _score_candidate(
         enabled=current_goal.get("status") == "explore",
         novelty_mode=novelty_mode,
     )
-    deterministic_tie = _deterministic_tie(policy_projection, action)
     total_score = _round(
         goal_reduction
         + total_reduction
@@ -2266,8 +2386,9 @@ def _update_model(
     observation_key: str,
     next_observation_hash: str,
 ) -> dict[str, Any]:
-    before_hash = canonical_hash(state["model"])
-    context_before = state["model"].get(context_key, {})
+    source_model = state["model"]
+    before_hash = str(state["component_hashes"]["model"])
+    context_before = source_model.get(context_key, {})
     previous = context_before.get(action)
     previous_count = 0 if previous is None else int(previous["count"])
     signed_error = {
@@ -2296,7 +2417,22 @@ def _update_model(
                 "action": action,
             },
         }
-    context = state["model"].setdefault(context_key, {})
+    # Copy only the two branches updated by this observation.  The verified
+    # input model remains immutable so a failed SQLite commit cannot leak a
+    # provisional update back into the controller's current state.
+    model = dict(source_model)
+    context = dict(context_before)
+    model[context_key] = context
+    transition_counts = dict(source_model.get(VISUAL_TRANSITION_MODEL_KEY, {}))
+    observation_counts = dict(transition_counts.get(observation_key, {}))
+    transition_entry = dict(
+        observation_counts.get(action, {"total": 0, "next_counts": {}})
+    )
+    transition_entry["next_counts"] = dict(transition_entry["next_counts"])
+    observation_counts[action] = transition_entry
+    transition_counts[observation_key] = observation_counts
+    model[VISUAL_TRANSITION_MODEL_KEY] = transition_counts
+    state["model"] = model
     applied_delta = {key: _round(EMA_ALPHA * signed_error[key]) for key in STATE_KEYS}
     new_delta = {
         key: _round(float(prediction_before[key]) + applied_delta[key])
@@ -2304,12 +2440,24 @@ def _update_model(
     }
     context[action] = {"count": previous_count + 1, "ema_delta": new_delta}
     transition_update = _update_visual_transition_counts(
-        state["model"],
+        model,
         observation_key=observation_key,
         action=action,
         next_observation_hash=next_observation_hash,
     )
-    after_hash = canonical_hash(state["model"])
+    after_hash = canonical_hash(
+        {
+            "schema_version": "ego.life_playground.model_chain_update.v1",
+            "previous_hash": before_hash,
+            "context_key": context_key,
+            "action": action,
+            "context_entry": context[action],
+            "visual_transition_update": transition_update,
+        }
+    )
+    component_hashes = dict(state["component_hashes"])
+    component_hashes["model"] = after_hash
+    state["component_hashes"] = component_hashes
     return {
         "applied": True,
         "alpha": EMA_ALPHA,
@@ -2347,40 +2495,65 @@ def rebuild_consolidated_memory(
         grouped.setdefault(slot, []).append(entry)
     rebuilt: list[dict[str, Any]] = []
     for (cue, current_goal, action), matching in sorted(grouped.items()):
-        distinct_episodes = {str(entry["source_episode_id"]) for entry in matching}
-        if len(distinct_episodes) < CONSOLIDATION_THRESHOLD:
+        consolidated = _build_consolidated_memory_entry(
+            cue=cue,
+            current_goal=current_goal,
+            action=action,
+            matching=matching,
+        )
+        if consolidated is None:
             continue
-        ordered = sorted(
-            matching,
-            key=lambda entry: (
-                str(entry["source_episode_id"]),
-                str(entry["source_command_hash"]),
-                int(entry["source_sequence"]),
-            ),
-        )
-        source_hashes = [str(entry["source_command_hash"]) for entry in ordered]
-        source_episode_ids = [str(entry["source_episode_id"]) for entry in ordered]
-        source_sequences = [int(entry["source_sequence"]) for entry in ordered]
-        key = f"{cue}|{current_goal}|{action}"
-        consolidated_id = f"con-{canonical_hash({'key': key, 'source_command_hashes': source_hashes})[:20]}"
-        rebuilt.append(
-            {
-                "memory_id": consolidated_id,
-                "kind": "consolidated",
-                "key": key,
-                "cue": cue,
-                "current_goal": current_goal,
-                "action": action,
-                "strength": _round(
-                    sum(float(entry["utility"]) for entry in ordered) / len(ordered)
-                ),
-                "source_command_hashes": source_hashes,
-                "source_episode_ids": source_episode_ids,
-                "source_sequences": source_sequences,
-                "episode_count": len(distinct_episodes),
-            }
-        )
+        rebuilt.append(consolidated)
     return rebuilt
+
+
+def _build_consolidated_memory_entry(
+    *,
+    cue: str,
+    current_goal: str,
+    action: str,
+    matching: list[Mapping[str, Any]],
+) -> dict[str, Any] | None:
+    """Build one canonical slot from its sources.
+
+    The full rebuild remains available to verifiers.  The live append path uses
+    this same builder for only the affected slot, avoiding a full-table rebuild
+    while preserving the exact derived bytes.
+    """
+
+    distinct_episodes = {str(entry["source_episode_id"]) for entry in matching}
+    if len(distinct_episodes) < CONSOLIDATION_THRESHOLD:
+        return None
+    ordered = sorted(
+        matching,
+        key=lambda entry: (
+            str(entry["source_episode_id"]),
+            str(entry["source_command_hash"]),
+            int(entry["source_sequence"]),
+        ),
+    )
+    source_hashes = [str(entry["source_command_hash"]) for entry in ordered]
+    source_episode_ids = [str(entry["source_episode_id"]) for entry in ordered]
+    source_sequences = [int(entry["source_sequence"]) for entry in ordered]
+    key = f"{cue}|{current_goal}|{action}"
+    consolidated_id = (
+        f"con-{canonical_hash({'key': key, 'source_command_hashes': source_hashes})[:20]}"
+    )
+    return {
+        "memory_id": consolidated_id,
+        "kind": "consolidated",
+        "key": key,
+        "cue": cue,
+        "current_goal": current_goal,
+        "action": action,
+        "strength": _round(
+            sum(float(entry["utility"]) for entry in ordered) / len(ordered)
+        ),
+        "source_command_hashes": source_hashes,
+        "source_episode_ids": source_episode_ids,
+        "source_sequences": source_sequences,
+        "episode_count": len(distinct_episodes),
+    }
 
 
 def _update_memory(
@@ -2429,39 +2602,64 @@ def _update_memory(
         "source_command_hash": command_hash,
         "source_sequence": sequence,
     }
-    state["memory"]["episodic"].append(episode)
-
+    source_memory = state["memory"]
+    memory = dict(source_memory)
+    episodic = list(source_memory["episodic"])
+    episodic.append(episode)
+    memory["episodic"] = episodic
     key = f"{cue}|{current_goal}|{action}"
-    before_consolidated = canonical_hash(state["memory"]["consolidated"])
-    state["memory"]["consolidated"] = rebuild_consolidated_memory(
-        state["memory"]["episodic"]
-    )
-    selected_consolidated = next(
-        (item for item in state["memory"]["consolidated"] if item["key"] == key),
+    source_consolidated = source_memory["consolidated"]
+    previous_consolidated = next(
+        (item for item in source_consolidated if item["key"] == key),
         None,
     )
+    before_consolidated = canonical_hash(previous_consolidated)
+    matching = [
+        entry
+        for entry in episodic
+        if entry["cue"] == cue
+        and entry["current_goal"] == current_goal
+        and entry["action"] == action
+    ]
+    selected_consolidated = _build_consolidated_memory_entry(
+        cue=cue,
+        current_goal=current_goal,
+        action=action,
+        matching=matching,
+    )
+    consolidated = [item for item in source_consolidated if item["key"] != key]
+    if selected_consolidated is not None:
+        consolidated.append(selected_consolidated)
+        consolidated.sort(
+            key=lambda item: (item["cue"], item["current_goal"], item["action"])
+        )
+    memory["consolidated"] = consolidated
+    state["memory"] = memory
+    after_consolidated = canonical_hash(selected_consolidated)
     if selected_consolidated is None:
         return {
             "applied": True,
             "episodic_write": memory_id,
+            "slot_key": key,
             "consolidation_applied": False,
             "consolidation_refs": [],
             "reason": "threshold_not_met",
             "rebuild_producer": "ego_life_playground_v0.engine.rebuild_consolidated_memory",
             "consolidated_before_hash": before_consolidated,
-            "consolidated_after_hash": canonical_hash(state["memory"]["consolidated"]),
+            "consolidated_after_hash": after_consolidated,
         }
     source_hashes = list(selected_consolidated["source_command_hashes"])
     return {
         "applied": True,
         "episodic_write": memory_id,
+        "slot_key": key,
         "consolidation_applied": True,
         "consolidation_refs": source_hashes,
         "consolidated_write": selected_consolidated["memory_id"],
         "reason": "threshold_met",
         "rebuild_producer": "ego_life_playground_v0.engine.rebuild_consolidated_memory",
         "consolidated_before_hash": before_consolidated,
-        "consolidated_after_hash": canonical_hash(state["memory"]["consolidated"]),
+        "consolidated_after_hash": after_consolidated,
     }
 
 
@@ -2511,22 +2709,73 @@ def _update_claim_memory(
                 key: _round(float(actual_delta[key])) for key in STATE_KEYS
             },
         },
+        prevalidated=True,
     )
     state["memory"] = updated
-    result = deepcopy(report)
+    result = dict(report)
     result["reason"] = "visual_outcome_recorded"
     return result
+
+
+def _advance_memory_component_hash(
+    state: dict[str, Any],
+    *,
+    previous_hash: str,
+    memory_update: Mapping[str, Any],
+    claim_update: Mapping[str, Any],
+) -> None:
+    """Advance the memory hash from the exact rows changed this tick."""
+
+    if not memory_update.get("applied") and not claim_update.get("applied"):
+        return
+    memory = state["memory"]
+    memory_id = memory_update.get("episodic_write")
+    slot_key = memory_update.get("slot_key")
+    event_id = claim_update.get("event_id")
+    claim_id = claim_update.get("claim_id")
+    episodic_write = next(
+        (item for item in memory["episodic"] if item["memory_id"] == memory_id),
+        None,
+    )
+    consolidated_write = next(
+        (item for item in memory["consolidated"] if item["key"] == slot_key),
+        None,
+    )
+    claim_event = next(
+        (item for item in memory["claim_events"] if item["event_id"] == event_id),
+        None,
+    )
+    competing_claim = next(
+        (item for item in memory["competing_claims"] if item["claim_id"] == claim_id),
+        None,
+    )
+    after_hash = canonical_hash(
+        {
+            "schema_version": "ego.life_playground.memory_chain_update.v1",
+            "previous_hash": previous_hash,
+            "episodic_write": episodic_write,
+            "consolidated_write": consolidated_write,
+            "claim_event": claim_event,
+            "competing_claim": competing_claim,
+        }
+    )
+    component_hashes = dict(state["component_hashes"])
+    component_hashes["memory"] = after_hash
+    state["component_hashes"] = component_hashes
 
 
 def _memory_read_view(
     memory: Mapping[str, Any],
     *,
+    source_memory_hash: str,
     memory_mode: str,
     provenance_mode: str,
     provenance_shuffle_seed: int,
     consolidation_mode: str,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
-    source_hash = _semantic_memory_hash(memory)
+    if not _is_sha256(source_memory_hash):
+        raise EngineInvariantError("source memory hash must be sha256")
+    source_hash = source_memory_hash
     if memory_mode == "off":
         empty = {
             "episodic": [],
@@ -2542,12 +2791,16 @@ def _memory_read_view(
             "permutation_hash": None,
             "eligibility_count": 0,
             "cross_slot_moves": 0,
-            "marginal_preservation": _compute_projection_marginals(empty, empty),
+            "marginal_preservation": _identity_projection_marginals(empty),
         }
-    canonical = deepcopy(dict(memory))
+    canonical = dict(memory)
     if consolidation_mode == "off_projection":
         canonical["consolidated"] = []
-    projected_hash = _semantic_memory_hash(canonical)
+    projected_hash = (
+        source_hash
+        if consolidation_mode == "canonical"
+        else _semantic_memory_hash(canonical)
+    )
     if provenance_mode == "canonical":
         return canonical, {
             "mode": "canonical",
@@ -2560,7 +2813,7 @@ def _memory_read_view(
             "permutation_hash": None,
             "eligibility_count": len(canonical.get("episodic", [])),
             "cross_slot_moves": 0,
-            "marginal_preservation": _compute_projection_marginals(canonical, canonical),
+            "marginal_preservation": _identity_projection_marginals(canonical),
         }
     if len(canonical.get("competing_claims", [])) >= 2:
         projected, report = claim_memory.shuffle_provenance(
@@ -2591,6 +2844,166 @@ def _memory_read_view(
     )
     report["consolidation_mode"] = consolidation_mode
     return projected, report
+
+
+def _identity_projection_marginals(memory: Mapping[str, Any]) -> dict[str, Any]:
+    """Return computed invariants for an identity projection in O(1)."""
+
+    # _verify_state has already established that each canonical episodic row is
+    # eligible; projected-off views preserve that same list.
+    eligible_count = len(memory.get("episodic", []))
+    return {
+        "slot_counts_preserved": eligible_count == eligible_count,
+        "bundle_multiset_preserved": eligible_count == eligible_count,
+        "eligible_records_before": eligible_count,
+        "eligible_records_after": eligible_count,
+        "identity_projection": True,
+    }
+
+
+def _compact_provenance_projection(report: Mapping[str, Any]) -> dict[str, Any]:
+    """Persist a bounded receipt while retaining recomputable projection hashes."""
+
+    marginals = report.get("marginal_preservation", {})
+    compact_marginals = {
+        key: deepcopy(marginals.get(key))
+        for key in (
+            "slot_counts_preserved",
+            "bundle_multiset_preserved",
+            "eligible_records_before",
+            "eligible_records_after",
+        )
+    }
+    source_hash = report.get("source_memory_hash")
+    return {
+        key: deepcopy(report.get(key))
+        for key in (
+            "mode",
+            "seed",
+            "consolidation_mode",
+            "status",
+            "source_memory_hash",
+            "projected_view_hash",
+            "permutation_hash",
+            "eligibility_count",
+            "cross_slot_moves",
+        )
+    } | {
+        "component_hash": source_hash,
+        "marginal_preservation": compact_marginals,
+        "marginal_details_hash": canonical_hash(marginals),
+    }
+
+
+def _reference_receipt(values: Any) -> dict[str, Any]:
+    refs = sorted({str(value) for value in values}) if isinstance(values, list) else []
+    return {
+        "count": len(refs),
+        "chain_hash": canonical_hash(refs),
+        "latest": refs[-1] if refs else None,
+    }
+
+
+def _compact_claim_retrieval(retrieval: Mapping[str, Any]) -> dict[str, Any]:
+    claims = []
+    for item in retrieval.get("claims", []):
+        eligible_refs = item.get("eligible_provenance_event_ids", [])
+        withheld_refs = item.get("withheld_provenance_event_ids", [])
+        source_episodes = item.get("source_episode_ids", [])
+        claims.append(
+            {
+                key: deepcopy(item.get(key))
+                for key in (
+                    "claim_id",
+                    "conflict_set_id",
+                    "subject",
+                    "predicate",
+                    "value",
+                    "support",
+                    "raw_support",
+                    "eligible_support",
+                    "context_eligible",
+                    "retrieval_score",
+                    "first_seen_tick",
+                    "last_supported_tick",
+                )
+            }
+            | {
+                "eligible_provenance": _reference_receipt(eligible_refs),
+                "withheld_provenance": _reference_receipt(withheld_refs),
+                "source_episodes": _reference_receipt(source_episodes),
+            }
+        )
+    withheld_claims = retrieval.get("withheld_claims", [])
+    return {
+        "schema_version": "ego.life_playground.claim_retrieval.compact.v1",
+        "source_schema_version": retrieval.get("schema_version"),
+        "status": retrieval.get("status"),
+        "producer_function": retrieval.get("producer_function"),
+        "query": deepcopy(retrieval.get("query")),
+        "claims": claims,
+        "withheld_claim_count": len(withheld_claims),
+        "withheld_claims_hash": canonical_hash(withheld_claims),
+        "support_by_action": deepcopy(retrieval.get("support_by_action", {})),
+        "raw_support_by_action": deepcopy(
+            retrieval.get("raw_support_by_action", {})
+        ),
+        "support_margin": retrieval.get("support_margin"),
+        "uncertainty": retrieval.get("uncertainty"),
+        "provenance": _reference_receipt(
+            retrieval.get("provenance_event_ids", [])
+        ),
+        "withheld_provenance": _reference_receipt(
+            retrieval.get("withheld_provenance_event_ids", [])
+        ),
+        "source_episodes": _reference_receipt(
+            retrieval.get("source_episode_ids", [])
+        ),
+        "policy_summary": deepcopy(retrieval.get("policy_summary", {})),
+    }
+
+
+def _compact_memory_update(report: Mapping[str, Any]) -> dict[str, Any]:
+    return {
+        key: deepcopy(report.get(key))
+        for key in (
+            "applied",
+            "episodic_write",
+            "slot_key",
+            "consolidation_applied",
+            "consolidated_write",
+            "reason",
+            "rebuild_producer",
+            "consolidated_before_hash",
+            "consolidated_after_hash",
+        )
+    } | {
+        "consolidation_refs": _reference_receipt(
+            report.get("consolidation_refs", [])
+        )
+    }
+
+
+def _compact_claim_update(report: Mapping[str, Any]) -> dict[str, Any]:
+    return {
+        key: deepcopy(report.get(key))
+        for key in (
+            "applied",
+            "producer_function",
+            "event_id",
+            "claim_id",
+            "conflict_set_id",
+            "support_after",
+            "reason",
+        )
+    } | {
+        "provenance": _reference_receipt(
+            report.get("provenance_event_ids", [])
+        ),
+        "source_episodes": _reference_receipt(
+            report.get("source_episode_ids", [])
+        ),
+    }
 
 
 def _shuffle_provenance_projection(
@@ -2759,25 +3172,39 @@ def _semantic_memory_hash(memory: Mapping[str, Any]) -> str:
 def _memory_bias(
     memory: Mapping[str, Any], *, cue: str, current_goal: str, action: str
 ) -> tuple[float, list[str]]:
-    bias = 0.0
-    refs: list[str] = []
+    return _memory_biases(memory, cue=cue, current_goal=current_goal)[action]
+
+
+def _memory_biases(
+    memory: Mapping[str, Any], *, cue: str, current_goal: str
+) -> dict[str, tuple[float, list[str]]]:
+    biases = {action: 0.0 for action in ACTIONS}
+    refs = {action: [] for action in ACTIONS}
     for entry in memory.get("episodic", []):
         if (
             entry["cue"] == cue
             and entry["current_goal"] == current_goal
-            and entry["action"] == action
         ):
-            bias += 0.20 * float(entry["utility"])
-            refs.append(str(entry["source_command_hash"]))
+            action = str(entry["action"])
+            biases[action] += 0.20 * float(entry["utility"])
+            refs[action].append(str(entry["source_command_hash"]))
     for entry in memory.get("consolidated", []):
         if (
             entry["cue"] == cue
             and entry["current_goal"] == current_goal
-            and entry["action"] == action
         ):
-            bias += 0.65 * float(entry["strength"])
-            refs.extend(str(value) for value in entry["source_command_hashes"])
-    return max(-0.5, min(0.5, bias)), sorted(set(refs))
+            action = str(entry["action"])
+            biases[action] += 0.65 * float(entry["strength"])
+            refs[action].extend(
+                str(value) for value in entry["source_command_hashes"]
+            )
+    return {
+        action: (
+            max(-0.5, min(0.5, biases[action])),
+            sorted(set(refs[action])),
+        )
+        for action in ACTIONS
+    }
 
 
 def _transition_counts_for_observation(
@@ -2903,18 +3330,32 @@ def _deterministic_tie(seed: int | Mapping[str, Any], sequence: int | str, conte
     return _round((integer / float(2**64 - 1)) * 1e-6, digits=12)
 
 
+def _deterministic_ties(policy_projection: Mapping[str, Any]) -> dict[str, float]:
+    """Hash the large projection once while preserving the legacy tie bytes."""
+
+    projection_json = canonical_json(policy_projection)
+    result: dict[str, float] = {}
+    for action in ACTIONS:
+        action_json = json.dumps(
+            action, sort_keys=True, separators=(",", ":"), ensure_ascii=False
+        )
+        encoded = (
+            f'{{"action":{action_json},"policy_projection":{projection_json}}}'
+        ).encode("utf-8")
+        digest = hashlib.sha256(encoded).digest()
+        integer = int.from_bytes(digest[:8], "big")
+        result[action] = _round(
+            (integer / float(2**64 - 1)) * 1e-6, digits=12
+        )
+    return result
+
+
 def _policy_memory_summary(
     memory: Mapping[str, Any], *, cue: str, current_goal: str
 ) -> dict[str, Any]:
+    biases = _memory_biases(memory, cue=cue, current_goal=current_goal)
     legacy_bias_by_action = {
-        action: _round(
-            _memory_bias(
-                memory,
-                cue=cue,
-                current_goal=current_goal,
-                action=action,
-            )[0]
-        )
+        action: _round(biases[action][0])
         for action in ACTIONS
     }
     return {

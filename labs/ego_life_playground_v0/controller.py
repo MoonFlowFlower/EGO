@@ -5,6 +5,7 @@ from __future__ import annotations
 from copy import deepcopy
 from dataclasses import dataclass
 from pathlib import Path
+import time
 from typing import Any, Callable, Mapping
 import uuid
 
@@ -20,7 +21,13 @@ from .engine import (
     make_run_metadata,
 )
 from .microworld import LAYOUTS, public_world_projection
-from .store import CommitReceipt, RecoveryResult, SQLiteEventStore
+from .store import (
+    CommitReceipt,
+    RecoveryError,
+    RecoveryFrame,
+    RecoveryResult,
+    SQLiteEventStore,
+)
 
 DISCLOSURE = (
     "Deterministic visible microworld + deficit scorer + tabular EMA; "
@@ -72,6 +79,9 @@ class PlaygroundController:
         self.world_seed = world_seed
         self.on_committed = on_committed
         self.on_recovered = on_recovered
+        self.integrity_blocked = False
+        self.last_dispatch_duration_seconds: float | None = None
+        self.last_commit_receipt: CommitReceipt | None = None
         selected_run_id = run_id if run_id is not None else store.latest_compatible_run_id()
 
         if selected_run_id is not None and store.run_exists(selected_run_id):
@@ -86,7 +96,7 @@ class PlaygroundController:
             else:
                 self.run_id = selected_run_id
                 self._adopt_recovery(recovered)
-                self.recovery_status = f"recomputed {recovered.command_count} command(s)"
+                self.recovery_status = f"fully replayed {recovered.command_count} command(s)"
                 if self.on_recovered is not None:
                     self.on_recovered(recovered)
                 return
@@ -110,6 +120,36 @@ class PlaygroundController:
         self.state = recovered.state
         self.last_trace = recovered.traces[-1] if recovered.traces else None
 
+    def _adopt_committed_step(self, computed: StepResult) -> None:
+        """Adopt one atomically persisted step without claiming full replay."""
+
+        prior = self.recovery
+        frame = RecoveryFrame(
+            sequence=int(computed.trace["sequence"]),
+            state=computed.next_state,
+            trace=computed.trace,
+        )
+        timeline = RecoveryResult(
+            run_id=self.run_id,
+            run_meta=self.run_meta,
+            frames=(*prior.frames, frame),
+            recovered=False,
+            verification_mode="incremental_committed",
+            last_full_replay_sequence=prior.last_full_replay_sequence,
+        )
+        self._adopt_recovery(timeline)
+
+    def _full_replay_after_terminal(self) -> None:
+        try:
+            recovered = self.store.recover_run(self.run_id)
+        except RecoveryError as exc:
+            self.integrity_blocked = True
+            self.recovery_status = f"integrity_blocked at terminal: {exc}"
+            raise EngineInvariantError(self.recovery_status) from exc
+        self._adopt_recovery(recovered)
+        self.integrity_blocked = False
+        self.recovery_status = f"fully replayed {recovered.command_count} command(s) at terminal"
+
     def dispatch(
         self,
         interventions: Mapping[str, str] | None = None,
@@ -117,6 +157,9 @@ class PlaygroundController:
         trigger_source: str = "ui_step_button",
         injected_event: str | None = None,
     ) -> DispatchResult:
+        if self.integrity_blocked:
+            raise EngineInvariantError("controller is integrity_blocked; explicit recovery required")
+        started = time.perf_counter()
         lifecycle = self.state.get("lifecycle", {})
         if isinstance(lifecycle, Mapping) and lifecycle.get("trial_status") == "terminal":
             raise EngineInvariantError("trial is terminal")
@@ -129,24 +172,34 @@ class PlaygroundController:
         )
         computed = compute_step(self.state, command, self.run_meta)
         receipt = self.store.append_step(command, computed.trace)
+        self.last_commit_receipt = receipt
         if not receipt.committed:
             # Neither controller state, its derived recovery timeline, nor a
             # renderer callback changes after an atomic transaction failure.
+            self.last_dispatch_duration_seconds = time.perf_counter() - started
             return DispatchResult(receipt=receipt, step=None)
 
-        # Timeline truth is always rebuilt from serialized initial state plus
-        # ordered commands.  Stored traces remain comparison-only inputs.
-        recovered = self.store.recover_run(self.run_id)
-        self._adopt_recovery(recovered)
-        self.recovery_status = f"committed tick {receipt.sequence}"
+        self._adopt_committed_step(computed)
+        self.recovery_status = (
+            f"incrementally committed tick {receipt.sequence}; "
+            f"full replay through {self.recovery.last_full_replay_sequence}"
+        )
+        self.last_dispatch_duration_seconds = time.perf_counter() - started
+        lifecycle = self.state.get("lifecycle", {})
+        if isinstance(lifecycle, Mapping) and lifecycle.get("trial_status") == "terminal":
+            self._full_replay_after_terminal()
         if self.on_committed is not None:
-            self.on_committed(deepcopy(self.state), deepcopy(self.last_trace))
+            # The in-process renderer is a read-only observer of the committed
+            # controller objects.  Copying the complete growing state here
+            # reintroduced the same per-tick scaling problem after persistence.
+            self.on_committed(self.state, self.last_trace)
         return DispatchResult(receipt=receipt, step=computed)
 
     def recover(self) -> RecoveryResult:
         recovered = self.store.recover_run(self.run_id)
         self._adopt_recovery(recovered)
-        self.recovery_status = f"recomputed {recovered.command_count} command(s)"
+        self.integrity_blocked = False
+        self.recovery_status = f"fully replayed {recovered.command_count} command(s)"
         if self.on_recovered is not None:
             self.on_recovered(recovered)
         return recovered
@@ -166,7 +219,8 @@ class PlaygroundController:
         recovered = self.store.recover_run(run_id)
         self.run_id = run_id
         self._adopt_recovery(recovered)
-        self.recovery_status = f"loaded + recomputed {recovered.command_count} command(s)"
+        self.integrity_blocked = False
+        self.recovery_status = f"loaded + fully replayed {recovered.command_count} command(s)"
         if self.on_recovered is not None:
             self.on_recovered(recovered)
         return recovered
@@ -189,6 +243,7 @@ class PlaygroundController:
         recovered = self.store.recover_run(selected)
         self.run_id = selected
         self._adopt_recovery(recovered)
+        self.integrity_blocked = False
         self.recovery_status = "new run after reset"
         if self.on_recovered is not None:
             self.on_recovered(recovered)

@@ -31,6 +31,7 @@ class CommitReceipt:
     sequence: int
     trace_hash: str | None
     error: str | None = None
+    row_readback_verified: bool = False
 
 
 @dataclass(frozen=True)
@@ -50,6 +51,8 @@ class RecoveryResult:
     run_meta: dict[str, Any]
     frames: tuple[RecoveryFrame, ...]
     recovered: bool
+    verification_mode: str = "full_replay"
+    last_full_replay_sequence: int | None = None
 
     @property
     def state(self) -> dict[str, Any]:
@@ -62,6 +65,10 @@ class RecoveryResult:
     @property
     def command_count(self) -> int:
         return len(self.frames) - 1
+
+    @property
+    def last_committed_sequence(self) -> int:
+        return int(self.frames[-1].sequence)
 
 
 def default_db_path() -> Path:
@@ -201,8 +208,32 @@ class SQLiteEventStore:
                 "INSERT INTO traces(run_id, sequence, trace_json, trace_hash) VALUES(?, ?, ?, ?)",
                 (run_id, sequence, canonical_json(trace), trace_hash),
             )
+            command_row = self._connection.execute(
+                "SELECT command_json, command_hash FROM commands WHERE run_id = ? AND sequence = ?",
+                (run_id, sequence),
+            ).fetchone()
+            trace_row = self._connection.execute(
+                "SELECT trace_json, trace_hash FROM traces WHERE run_id = ? AND sequence = ?",
+                (run_id, sequence),
+            ).fetchone()
+            if command_row is None or trace_row is None:
+                raise EngineInvariantError("atomic append row readback is incomplete")
+            if (
+                str(command_row["command_json"]) != canonical_json(command)
+                or str(command_row["command_hash"]) != command["command_hash"]
+                or str(trace_row["trace_json"]) != canonical_json(trace)
+                or str(trace_row["trace_hash"]) != trace_hash
+            ):
+                raise EngineInvariantError("atomic append row readback differs from submitted bytes")
             self._connection.execute("COMMIT")
-            return CommitReceipt(True, run_id, sequence, str(trace_hash), None)
+            return CommitReceipt(
+                True,
+                run_id,
+                sequence,
+                str(trace_hash),
+                None,
+                row_readback_verified=True,
+            )
         except Exception as exc:  # typed, fail-closed receipt for UI commit ordering
             if self._connection.in_transaction:
                 self._connection.execute("ROLLBACK")
@@ -288,6 +319,8 @@ class SQLiteEventStore:
             run_meta=run_meta,
             frames=tuple(frames),
             recovered=True,
+            verification_mode="full_replay",
+            last_full_replay_sequence=int(frames[-1].sequence),
         )
 
     def export_run(self, run_id: str, output_path: str | os.PathLike[str]) -> Path:

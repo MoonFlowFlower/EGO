@@ -86,14 +86,21 @@ def empty_claim_memory() -> dict[str, list[dict[str, Any]]]:
 
 
 def ensure_claim_memory(memory: Mapping[str, Any]) -> dict[str, Any]:
-    """Return a copied full memory object with the P1 claim keys present."""
+    """Return a copy-on-write claim-memory envelope.
+
+    Existing event and claim records are immutable.  Copying both complete
+    histories before appending one event made runtime cost grow with every
+    tick without adding evidence integrity.
+    """
 
     if not isinstance(memory, Mapping):
         raise ValueError("memory must be an object")
-    copied = deepcopy(dict(memory))
+    copied = dict(memory)
     copied.setdefault("schema_version", CLAIM_MEMORY_SCHEMA_VERSION)
     copied.setdefault("claim_events", [])
     copied.setdefault("competing_claims", [])
+    copied["claim_events"] = list(copied["claim_events"])
+    copied["competing_claims"] = list(copied["competing_claims"])
     return copied
 
 
@@ -132,7 +139,9 @@ def _verify_interoception_delta(value: Any, *, label: str) -> None:
             raise ValueError(f"{label} {key} must be finite numeric")
 
 
-def verify_claim_memory(memory: Mapping[str, Any]) -> None:
+def verify_claim_memory(memory: Mapping[str, Any], *, full: bool = True) -> None:
+    if type(full) is not bool:
+        raise ValueError("claim memory full verification flag must be boolean")
     if (
         not isinstance(memory, Mapping)
         or memory.get("schema_version") != CLAIM_MEMORY_SCHEMA_VERSION
@@ -143,6 +152,78 @@ def verify_claim_memory(memory: Mapping[str, Any]) -> None:
     claims = memory["competing_claims"]
     if not isinstance(events, list) or not isinstance(claims, list):
         raise ValueError("claim events and competing claims must be lists")
+
+    if not full:
+        # The event log is append-only in the reducer.  Validate the newly
+        # exposed boundary row plus every bounded aggregate claim; explicit
+        # recovery still rebuilds the same sequence from the empty initial
+        # state and compares every stored trace.
+        for event in events[-1:]:
+            if not isinstance(event, Mapping) or set(event) != CLAIM_EVENT_KEYS:
+                raise ValueError("claim event schema mismatch")
+            if event["schema_version"] != CLAIM_EVENT_SCHEMA_VERSION:
+                raise ValueError("claim event schema_version is not canonical")
+            for key in (
+                "event_id",
+                "subject",
+                "predicate",
+                "value",
+                "source_episode_id",
+            ):
+                if type(event[key]) is not str or not event[key]:
+                    raise ValueError(f"claim event {key} must be a non-empty string")
+            strength = event["evidence_strength"]
+            if (
+                type(strength) is not float
+                or not math.isfinite(strength)
+                or not -1.0 <= strength <= 1.0
+            ):
+                raise ValueError(
+                    "claim event evidence_strength must be a finite float in [-1,1]"
+                )
+            if not _is_sha256(event["source_command_hash"]):
+                raise ValueError("claim event source_command_hash must be sha256")
+            if (
+                type(event["source_sequence"]) is not int
+                or event["source_sequence"] <= 0
+            ):
+                raise ValueError("claim event source_sequence must be positive")
+            _verify_public_features(event["observed_public_features"])
+        claim_ids: set[str] = set()
+        identities: set[tuple[str, str, str]] = set()
+        for claim in claims:
+            if not isinstance(claim, Mapping) or set(claim) != CLAIM_KEYS:
+                raise ValueError("competing claim schema mismatch")
+            identity = (
+                str(claim["subject"]),
+                str(claim["predicate"]),
+                str(claim["value"]),
+            )
+            if (
+                claim["claim_id"] != _claim_id(*identity)
+                or claim["conflict_set_id"] != _conflict_set_id(*identity[:2])
+            ):
+                raise ValueError("competing claim identity hash mismatch")
+            if claim["claim_id"] in claim_ids or identity in identities:
+                raise ValueError("competing claim identity must be unique")
+            claim_ids.add(str(claim["claim_id"]))
+            identities.add(identity)
+            refs = claim["provenance_event_ids"]
+            episodes = claim["source_episode_ids"]
+            if not isinstance(refs, list) or not refs or len(refs) != len(set(refs)):
+                raise ValueError("competing claim provenance must be a non-empty unique list")
+            if not isinstance(episodes, list) or episodes != sorted(set(episodes)):
+                raise ValueError("competing claim source episodes must be canonical")
+            if type(claim["support"]) is not float or not math.isfinite(claim["support"]):
+                raise ValueError("competing claim support must be finite")
+            if (
+                type(claim["first_seen_tick"]) is not int
+                or type(claim["last_supported_tick"]) is not int
+                or claim["first_seen_tick"] <= 0
+                or claim["last_supported_tick"] < claim["first_seen_tick"]
+            ):
+                raise ValueError("competing claim tick bounds are not canonical")
+        return
 
     event_by_id: dict[str, Mapping[str, Any]] = {}
     for event in events:
@@ -271,9 +352,13 @@ def record_outcome_evidence(
     source_command_hash: str,
     source_sequence: int,
     observed_public_features: Mapping[str, Any],
+    prevalidated: bool = False,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     updated = ensure_claim_memory(memory)
-    verify_claim_memory(updated)
+    if type(prevalidated) is not bool:
+        raise ValueError("claim write prevalidated flag must be boolean")
+    if not prevalidated:
+        verify_claim_memory(updated)
     if any(event["event_id"] == event_id for event in updated["claim_events"]):
         raise ValueError("claim event_id already exists")
     event = {
@@ -288,20 +373,62 @@ def record_outcome_evidence(
         "source_sequence": source_sequence,
         "observed_public_features": deepcopy(dict(observed_public_features)),
     }
-    candidate = deepcopy(updated)
-    candidate["claim_events"].append(event)
-    candidate["claim_events"].sort(
+    # Validate the appended record through the public schema before it enters
+    # the copy-on-write aggregate.
+    singleton_claim = _claim_from_refs(
+        subject=subject,
+        predicate=predicate,
+        value=value,
+        refs=[event_id],
+        event_by_id={event_id: event},
+    )
+    verify_claim_memory(
+        {
+            "schema_version": CLAIM_MEMORY_SCHEMA_VERSION,
+            "claim_events": [event],
+            "competing_claims": [singleton_claim],
+        }
+    )
+
+    candidate = dict(updated)
+    events = list(updated["claim_events"])
+    events.append(event)
+    events.sort(
         key=lambda item: (int(item["source_sequence"]), str(item["event_id"]))
     )
-    candidate["competing_claims"] = _rebuild_canonical_claims(candidate["claim_events"])
-    verify_claim_memory(candidate)
-    written_claim = next(
-        claim
-        for claim in candidate["competing_claims"]
-        if claim["subject"] == subject
-        and claim["predicate"] == predicate
-        and claim["value"] == value
+    candidate["claim_events"] = events
+    event_by_id = {str(item["event_id"]): item for item in events}
+    claims = list(updated["competing_claims"])
+    previous_claim = next(
+        (
+            claim
+            for claim in claims
+            if claim["subject"] == subject
+            and claim["predicate"] == predicate
+            and claim["value"] == value
+        ),
+        None,
     )
+    refs = [event_id]
+    if previous_claim is not None:
+        refs.extend(str(ref) for ref in previous_claim["provenance_event_ids"])
+        claims.remove(previous_claim)
+    written_claim = _claim_from_refs(
+        subject=subject,
+        predicate=predicate,
+        value=value,
+        refs=refs,
+        event_by_id=event_by_id,
+    )
+    claims.append(written_claim)
+    claims.sort(
+        key=lambda claim: (
+            claim["conflict_set_id"],
+            claim["value"],
+            claim["claim_id"],
+        )
+    )
+    candidate["competing_claims"] = claims
     return candidate, {
         "applied": True,
         "producer_function": "ego_life_playground_v0.claims.record_outcome_evidence",
@@ -319,8 +446,12 @@ def retrieve_competing_claims(
     *,
     observation: Mapping[str, Any],
     current_goal: str,
+    prevalidated: bool = False,
 ) -> dict[str, Any]:
-    verify_claim_memory(memory)
+    if type(prevalidated) is not bool:
+        raise ValueError("retrieval prevalidated flag must be boolean")
+    if not prevalidated:
+        verify_claim_memory(memory)
     _verify_observation(observation)
     if type(current_goal) is not str or not current_goal:
         raise ValueError("retrieval current_goal must be a non-empty string")

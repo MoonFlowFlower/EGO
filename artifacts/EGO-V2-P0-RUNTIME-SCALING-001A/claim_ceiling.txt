@@ -1,0 +1,1 @@
+Bounded Ego V2 runtime scaling, atomic online commit readback, and explicit initial-state-plus-commands replay evidence only.

@@ -33,6 +33,9 @@ def _observation_hash(observation: dict[str, object]) -> str:
 
 
 def _step(state, *, run_id="goal-test", interventions=None):
+    if int(state["clock"]["global_tick"]) == 0:
+        state["component_hashes"]["model"] = _observation_hash(state["model"])
+        state["component_hashes"]["memory"] = _observation_hash(state["memory"])
     meta = make_run_metadata(run_id, 17)
     command = make_command(
         sequence=state["clock"]["global_tick"] + 1,

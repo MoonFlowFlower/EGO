@@ -47,6 +47,12 @@ def _survival_window_summary(life_survival: list[int]) -> dict[str, float | None
 def _resource_success_count(controller: PlaygroundController, *, through_sequence: int) -> int:
     recovery = getattr(controller, "recovery", None)
     frames = getattr(recovery, "frames", ())
+    if (
+        frames
+        and through_sequence == frames[-1].sequence
+        and hasattr(controller, "_ui_resource_successes")
+    ):
+        return int(getattr(controller, "_ui_resource_successes"))
     return sum(
         1
         for recovered_frame in frames
@@ -399,6 +405,9 @@ class PlaygroundWindow:
         self._animation_after_id: str | None = None
         self._animating = False
         self._timeline_refreshing = False
+        self.controller._ui_resource_successes = _resource_success_count(
+            controller, through_sequence=self._display_sequence
+        )
         self.inject_event_var = tk.StringVar(value="")
         self.survival_learning_mode_var = tk.StringVar(value="off")
         self.sequence_var = tk.StringVar(value="")
@@ -588,7 +597,10 @@ class PlaygroundWindow:
         except EngineInvariantError as exc:
             self._pause()
             messagebox.showerror("Dispatch rejected", str(exc))
-            self.status_var.set(f"Paused without commit: {exc}")
+            if bool(getattr(self.controller, "integrity_blocked", False)):
+                self.status_var.set(f"Paused integrity_blocked after commit: {exc}")
+            else:
+                self.status_var.set(f"Paused without commit: {exc}")
             return False
         if not result.receipt.committed:
             self._pause()
@@ -653,10 +665,23 @@ class PlaygroundWindow:
             return
         self._display_sequence = self._latest_sequence()
         frame = self._frame_for_sequence(self._display_sequence)
+        if bool(
+            ((frame.trace or {}).get("survival_learning") or {}).get(
+                "successful_resource_interaction"
+            )
+        ):
+            self.controller._ui_resource_successes = int(
+                getattr(self.controller, "_ui_resource_successes", 0)
+            ) + 1
+        self._append_history_frame(frame)
         expected = recorded_waypoints(frame)
         before_pose, after_pose = _poses_from_recovered_frame(frame)
         self._animating = len(expected) == 2
-        self.redraw(frame=frame, observer_pose=before_pose if self._animating else after_pose)
+        self.redraw(
+            frame=frame,
+            observer_pose=before_pose if self._animating else after_pose,
+            rebuild_history=False,
+        )
         if not self._animating:
             if self._is_terminal():
                 self._pause()
@@ -674,7 +699,11 @@ class PlaygroundWindow:
                 self.status_var.set(f"Animation rejected: {exc}")
                 return
             self._animating = False
-            self.redraw(frame=frame, observer_pose=after_pose)
+            self.redraw(
+                frame=frame,
+                observer_pose=after_pose,
+                rebuild_history=False,
+            )
             if self._is_terminal():
                 self._pause()
             elif self.running:
@@ -688,6 +717,16 @@ class PlaygroundWindow:
         if self._closed:
             return
         self._display_sequence = self._latest_sequence()
+        self.controller._ui_resource_successes = sum(
+            1
+            for frame in self.controller.recovery.frames
+            if isinstance(frame.trace, Mapping)
+            and bool(
+                (frame.trace.get("survival_learning") or {}).get(
+                    "successful_resource_interaction"
+                )
+            )
+        )
         self.redraw()
 
     def _recover(self) -> None:
@@ -745,6 +784,42 @@ class PlaygroundWindow:
             json.dumps(snapshot, indent=2, ensure_ascii=False, sort_keys=True),
         )
 
+    def _draw_live_inspect(self, frame: RecoveryFrame) -> None:
+        """Render only the recovered latest receipt on the per-tick hot path."""
+
+        trace = frame.trace or {}
+        payload = {
+            "run_id": self.controller.run_id,
+            "verification_mode": getattr(
+                self.controller.recovery, "verification_mode", "unknown"
+            ),
+            "last_committed_sequence": getattr(
+                self.controller.recovery, "last_committed_sequence", None
+            ),
+            "last_full_replay_sequence": getattr(
+                self.controller.recovery, "last_full_replay_sequence", None
+            ),
+            "row_readback_verified": bool(
+                getattr(
+                    getattr(self.controller, "last_commit_receipt", None),
+                    "row_readback_verified",
+                    False,
+                )
+            ),
+            "state_component_hashes": deepcopy(
+                frame.state.get("component_hashes", {})
+            ),
+            "command_hash": trace.get("command_hash"),
+            "trace_hash": trace.get("trace_hash"),
+            "model_update": deepcopy(trace.get("model_update")),
+            "memory_update": deepcopy(trace.get("memory_update")),
+            "claim_update": deepcopy(trace.get("claim_update")),
+        }
+        _set_text(
+            self.inspect_text,
+            json.dumps(payload, indent=2, ensure_ascii=False, sort_keys=True),
+        )
+
     def _on_history_select(self, _event: tk.Event[tk.Misc]) -> None:
         if self._timeline_refreshing:
             return
@@ -757,7 +832,28 @@ class PlaygroundWindow:
         self._display_sequence = sequence
         if self._is_historical():
             self._pause()
-        self.redraw(frame=self._frame_for_sequence(sequence))
+        self.redraw(
+            frame=self._frame_for_sequence(sequence), rebuild_history=False
+        )
+
+    def _append_history_frame(self, frame: RecoveryFrame) -> None:
+        self._timeline_refreshing = True
+        try:
+            trace = frame.trace
+            iid = self.history_tree.insert(
+                "",
+                tk.END,
+                values=(
+                    frame.sequence,
+                    frame.state["clock"]["global_tick"],
+                    "" if trace is None else trace.get("selected_action"),
+                    "" if trace is None else trace.get("trigger_source"),
+                ),
+            )
+            self.history_tree.selection_set(iid)
+            self.history_tree.see(iid)
+        finally:
+            self._timeline_refreshing = False
 
     def _rebuild_history(self) -> None:
         self._timeline_refreshing = True
@@ -934,11 +1030,13 @@ class PlaygroundWindow:
         *,
         frame: RecoveryFrame | None = None,
         observer_pose: Mapping[str, Any] | None = None,
+        rebuild_history: bool = True,
     ) -> None:
         if frame is None:
             frame = self._frame_for_sequence(self._display_sequence)
         self.redraw_count += 1
-        self._rebuild_history()
+        if rebuild_history:
+            self._rebuild_history()
         payload = build_tk_trace_payload(frame.state, frame.trace)
         self._draw_observer_world(frame, observer_pose=observer_pose)
         self._draw_policy_visual(payload["policy_visual"]["visual"])
@@ -957,7 +1055,7 @@ class PlaygroundWindow:
                 sort_keys=True,
             ),
         )
-        self._inspect_latest()
+        self._draw_live_inspect(frame)
         clock = frame.state["clock"]
         self.sequence_var.set(
             f"Sequence {frame.sequence} / {self._latest_sequence()} · "
@@ -971,7 +1069,19 @@ class PlaygroundWindow:
             f"trigger={trigger or 'initial'}",
             f"trial={lifecycle.get('trial_status')}",
             f"survival={payload['life_survival']}",
+            f"verify={getattr(self.controller.recovery, 'verification_mode', 'unknown')}",
+            f"audit={getattr(self.controller.recovery, 'last_full_replay_sequence', None)}",
+            f"row_readback={bool(getattr(getattr(self.controller, 'last_commit_receipt', None), 'row_readback_verified', False))}",
         ]
+        dispatch_duration = getattr(
+            self.controller, "last_dispatch_duration_seconds", None
+        )
+        if dispatch_duration is not None:
+            status_bits.append(
+                f"step_ms={float(dispatch_duration) * 1000.0:.1f}"
+            )
+        if bool(getattr(self.controller, "integrity_blocked", False)):
+            status_bits.append("integrity_blocked=true")
         if payload["terminal_life_result"] is not None:
             status_bits.append(f"terminal_life={payload['terminal_life_result']}")
         self.status_var.set(

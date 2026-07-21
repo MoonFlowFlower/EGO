@@ -87,6 +87,7 @@ def _force_action(state: dict, action: str) -> None:
             action: {"count": 1, "ema_delta": predicted_delta}
         }
     }
+    state["component_hashes"]["model"] = engine.canonical_hash(state["model"])
 
 
 def _assert_ledger_reconciles(trace: dict) -> None:

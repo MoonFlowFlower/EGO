@@ -39,6 +39,7 @@ def _timeline_from_recovery(recovery: RecoveryResult) -> list[dict[str, Any]]:
         memory_update = trace_mapping.get("memory_update", {})
         prediction_error = trace_mapping.get("prediction_error", {})
         claim_retrieval = trace_mapping.get("claim_retrieval") or {}
+        consolidation_receipt = memory_update.get("consolidation_refs") or {}
         entry = {
             "sequence": frame.sequence,
             "global_tick": clock["global_tick"],
@@ -57,10 +58,10 @@ def _timeline_from_recovery(recovery: RecoveryResult) -> list[dict[str, Any]]:
             "model_count_after": model_update.get("new_count"),
             "bounded_update_applied": bool(model_update.get("applied")),
             "consolidation_applied": bool(memory_update.get("consolidation_applied")),
-            "consolidation_lineage_count": len(memory_update.get("consolidation_refs", [])),
-            "consolidation_lineage_hashes": deepcopy(memory_update.get("consolidation_refs", [])),
+            "consolidation_lineage_count": consolidation_receipt.get("count", 0),
+            "consolidation_lineage": deepcopy(consolidation_receipt),
             "claim_support_margin": claim_retrieval.get("support_margin"),
-            "claim_provenance_event_ids": deepcopy(claim_retrieval.get("provenance_event_ids", [])),
+            "claim_provenance": deepcopy(claim_retrieval.get("provenance", {})),
             "transition_kind": trace_mapping.get("transition_kind"),
             "policy_invoked": bool(trace_mapping.get("policy_invoked")) if trace is not None else None,
             "life_termination": deepcopy(trace_mapping.get("life_termination")),
@@ -169,6 +170,16 @@ def build_terminal_snapshot(controller: PlaygroundController) -> dict[str, Any]:
         "timeline": _timeline_from_recovery(recovery),
         "public_state_hash": public_state_hash(state),
         "recovered": recovery.recovered,
+        "verification_mode": recovery.verification_mode,
+        "last_committed_sequence": recovery.last_committed_sequence,
+        "last_full_replay_sequence": recovery.last_full_replay_sequence,
+        "integrity_blocked": bool(getattr(controller, "integrity_blocked", False)),
+        "last_dispatch_duration_seconds": getattr(
+            controller, "last_dispatch_duration_seconds", None
+        ),
+        "row_readback_verified": bool(
+            getattr(getattr(controller, "last_commit_receipt", None), "row_readback_verified", False)
+        ),
         "science_weight": 0,
         "transition_kind": trace_mapping.get("transition_kind"),
         "policy_invoked": bool(trace_mapping.get("policy_invoked")) if trace is not None else None,

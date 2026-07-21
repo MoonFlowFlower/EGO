@@ -62,7 +62,7 @@
   not reset, checkout, clean, migrate, delete, or rewrite existing databases or
   artifacts.
 - **Expected changed files:** this card and collision record; bounded edits in
-  `labs/ego_life_playground_v0/{controller,engine,store,terminal,visual_console}.py`;
+  `labs/ego_life_playground_v0/{claims,controller,engine,store,terminal,visual_console}.py`;
   focused V2 tests; one callable verifier and a new artifact directory for this
   task.
 - **Forbidden changes:** route-state artifacts, `AGENTS.md`,

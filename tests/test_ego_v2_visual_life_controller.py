@@ -53,7 +53,13 @@ def test_controller_dispatch_uses_one_cue_free_compute_commit_and_recovery_path(
 
         assert result.receipt.committed is True
         assert store.row_counts(controller.run_id) == (1, 1)
-        assert calls == {"make_command": [calls["make_command"][0]], "compute_step": 1, "recover_run": 1}
+        assert calls == {
+            "make_command": [calls["make_command"][0]],
+            "compute_step": 1,
+            "recover_run": 0,
+        }
+        assert controller.recovery.verification_mode == "incremental_committed"
+        assert result.receipt.row_readback_verified is True
         assert calls["make_command"][0] == {
             "sequence": 1,
             "trigger_source": "ui_step_button",
