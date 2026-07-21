@@ -5,29 +5,19 @@ import inspect
 import json
 from pathlib import Path
 
+import pytest
+
 from labs.ego_life_playground_v0.controller import PlaygroundController
 from labs.ego_life_playground_v0.engine import (
     DEFAULT_INTERVENTIONS,
+    EngineInvariantError,
     canonical_json,
     compute_step,
     initial_state,
     make_run_metadata,
 )
 from labs.ego_life_playground_v0.store import SQLiteEventStore
-from scripts.codex.capture_ego_v2_runtime_scaling_baseline_001a import (
-    semantic_projection,
-)
-
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
-
-
-def _semantic_without_code_provenance(value):
-    copied = deepcopy(value)
-    metabolism = copied.get("metabolism")
-    if isinstance(metabolism, dict):
-        metabolism.pop("code_path_hash", None)
-    return copied
 
 
 def test_dispatch_adopts_atomic_commit_without_full_history_replay(
@@ -128,7 +118,7 @@ def test_controller_dispatch_source_has_no_recover_run_call() -> None:
     assert "append_step(" in source
 
 
-def test_first_64_frozen_commands_preserve_behavior_semantics() -> None:
+def test_phase_a_command_fixture_fails_closed_after_phase_b_schema_bump() -> None:
     baseline = json.loads(
         (
             REPO_ROOT
@@ -142,13 +132,5 @@ def test_first_64_frozen_commands_preserve_behavior_semantics() -> None:
     )
     run_meta = make_run_metadata(baseline["run_id"], int(baseline["seed"]))
 
-    for record in baseline["records"][:64]:
-        result = compute_step(state, record["command"], run_meta)
-        state = result.next_state
-        actual = _semantic_without_code_provenance(
-            semantic_projection(state, result.trace)
-        )
-        expected = _semantic_without_code_provenance(
-            record["semantic_projection"]
-        )
-        assert actual == expected, f"semantic drift at sequence {record['command']['sequence']}"
+    with pytest.raises(EngineInvariantError, match="command schema_version"):
+        compute_step(state, baseline["records"][0]["command"], run_meta)

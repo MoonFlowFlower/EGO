@@ -67,7 +67,7 @@ def test_controller_dispatch_uses_one_cue_free_compute_commit_and_recovery_path(
             "prev_command_hash": None,
             "injected_event": None,
         }
-        assert controller.last_trace["command"]["schema_version"] == "ego.life_playground.command.v6"
+        assert controller.last_trace["command"]["schema_version"] == "ego.life_playground.command.v7"
         assert "cue" not in controller.last_trace["command"]
         assert controller.last_trace["command"]["interventions"] == DEFAULT_INTERVENTIONS
 
@@ -183,7 +183,7 @@ def test_launcher_quick_check_uses_cue_free_dispatch_and_reports_headless_fields
     payload = json.loads(capsys.readouterr().out.strip())
 
     assert result == 0
-    assert payload["command_schema_version"] == "ego.life_playground.command.v6"
+    assert payload["command_schema_version"] == "ego.life_playground.command.v7"
     assert payload["selected_action"] is not None
     assert isinstance(payload["observation_hash"], str) and len(payload["observation_hash"]) == 64
     assert payload["recovered"] is True

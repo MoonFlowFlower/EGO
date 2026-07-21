@@ -140,6 +140,7 @@ def build_tk_trace_payload(
             "goal_transition": deepcopy(trace.get("goal_transition")),
             "goal_after": deepcopy(trace.get("goal_after")),
             "survival_learning": deepcopy(trace.get("survival_learning")),
+            "predictive_control": deepcopy(trace.get("predictive_control")),
         }
     )
     return payload
@@ -224,6 +225,9 @@ def build_chinese_causal_view(
     survival_trace = _copy_mapping(trace.get("survival_learning"))
     selection = _copy_mapping(survival_trace.get("selection"))
     update = _copy_mapping(survival_trace.get("update"))
+    predictive_trace = _copy_mapping(trace.get("predictive_control"))
+    predictive_plan = _copy_mapping(predictive_trace.get("plan"))
+    predictive_update = _copy_mapping(predictive_trace.get("update"))
     return {
         "观察者全局视图": {
             "位置": str(observer_world["agent"]["position"]),
@@ -270,6 +274,17 @@ def build_chinese_causal_view(
             if controller is None
             else _resource_success_count(controller, through_sequence=frame.sequence),
         },
+        "预测控制": {
+            "模式": predictive_trace.get("mode"),
+            "选择动作": predictive_plan.get("selected_action"),
+            "前三计划动作": deepcopy(predictive_plan.get("planned_actions")),
+            "候选价值": deepcopy(predictive_plan.get("candidate_values")),
+            "模型哈希": predictive_trace.get("model_hash"),
+            "信念哈希": predictive_trace.get("belief_hash"),
+            "更新次数": predictive_trace.get("model_update_count"),
+            "outcome_Brier": predictive_update.get("outcome_brier"),
+            "outcome_NLL": predictive_update.get("outcome_nll"),
+        },
         "结果与变化": {
             "世界结果": world_transition.get("outcome_type"),
             "命令注入": trace["command"].get("injected_event"),
@@ -309,6 +324,7 @@ def build_advanced_details(
         "life_termination": deepcopy(payload.get("life_termination")),
         "carry_reset_receipt": deepcopy(payload.get("carry_reset_receipt")),
         "survival_learning": deepcopy(trace.get("survival_learning")),
+        "predictive_control": deepcopy(trace.get("predictive_control")),
         "successful_resource_interactions": _resource_success_count(
             controller, through_sequence=frame.sequence
         ),
@@ -410,6 +426,7 @@ class PlaygroundWindow:
         )
         self.inject_event_var = tk.StringVar(value="")
         self.survival_learning_mode_var = tk.StringVar(value="off")
+        self.predictive_control_mode_var = tk.StringVar(value="off")
         self.sequence_var = tk.StringVar(value="")
         self.status_var = tk.StringVar(value="")
 
@@ -456,6 +473,21 @@ class PlaygroundWindow:
             state="readonly",
         )
         self.survival_learning_mode_box.pack(side=tk.LEFT, padx=(0, 12))
+        self.survival_learning_mode_box.bind(
+            "<<ComboboxSelected>>", self._on_survival_mode_selected
+        )
+        ttk.Label(controls, text="Predictive control").pack(side=tk.LEFT, padx=(0, 4))
+        self.predictive_control_mode_box = ttk.Combobox(
+            controls,
+            textvariable=self.predictive_control_mode_var,
+            values=("off", "factored_mpc"),
+            width=16,
+            state="readonly",
+        )
+        self.predictive_control_mode_box.pack(side=tk.LEFT, padx=(0, 12))
+        self.predictive_control_mode_box.bind(
+            "<<ComboboxSelected>>", self._on_predictive_mode_selected
+        )
         ttk.Button(controls, text="Inspect", command=self._inspect_latest).pack(
             side=tk.LEFT, padx=(0, 6)
         )
@@ -536,13 +568,14 @@ class PlaygroundWindow:
         candidate_box.pack(fill=tk.BOTH, expand=True, pady=(0, 8))
         self.candidate_tree = ttk.Treeview(
             candidate_box,
-            columns=("action", "q", "score", "goal", "memory"),
+            columns=("action", "q", "mpc", "score", "goal", "memory"),
             show="headings",
             height=6,
         )
         for column, heading, width in (
             ("action", "Action", 90),
             ("q", "Q", 75),
+            ("mpc", "MPC", 85),
             ("score", "Score", 90),
             ("goal", "Goal", 90),
             ("memory", "Memory", 90),
@@ -583,7 +616,16 @@ class PlaygroundWindow:
         return dict(
             DEFAULT_INTERVENTIONS,
             survival_learning_mode=self.survival_learning_mode_var.get(),
+            predictive_control_mode=self.predictive_control_mode_var.get(),
         )
+
+    def _on_survival_mode_selected(self, _event: object = None) -> None:
+        if self.survival_learning_mode_var.get() != "off":
+            self.predictive_control_mode_var.set("off")
+
+    def _on_predictive_mode_selected(self, _event: object = None) -> None:
+        if self.predictive_control_mode_var.get() != "off":
+            self.survival_learning_mode_var.set("off")
 
     def _dispatch(self, *, trigger_source: str, injected_event: str | None = None) -> bool:
         if self._closed or self._animating or self._is_historical() or self._is_terminal():
@@ -887,6 +929,11 @@ class PlaygroundWindow:
         if not isinstance(trace, Mapping):
             return
         candidates = [item for item in trace.get("candidates", []) if isinstance(item, Mapping)]
+        predictive_values = (
+            ((trace.get("predictive_control") or {}).get("plan") or {}).get(
+                "candidate_values", {}
+            )
+        )
         for candidate in sorted(
             candidates,
             key=lambda item: float("-inf")
@@ -900,6 +947,11 @@ class PlaygroundWindow:
                 values=(
                     candidate.get("action"),
                     _format_float(candidate.get("survival_q")),
+                    _format_float(
+                        (predictive_values.get(candidate.get("action")) or {}).get(
+                            "total"
+                        )
+                    ),
                     _format_float(candidate.get("total_score")),
                     _format_float(candidate.get("current_goal_deficit_reduction")),
                     _format_float(candidate.get("memory_bias")),
@@ -1023,6 +1075,11 @@ class PlaygroundWindow:
         )
         self.survival_learning_mode_box.configure(
             state="disabled" if blocked or terminal or self.running or self._animating else "readonly"
+        )
+        self.predictive_control_mode_box.configure(
+            state="disabled"
+            if blocked or terminal or self.running or self._animating
+            else "readonly"
         )
 
     def redraw(

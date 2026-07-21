@@ -1776,15 +1776,15 @@ def build_single_path_source_report() -> dict[str, Any]:
         "code_path_manifest": engine.compute_code_path_manifest()["schema_version"],
     }
     expected_versions = {
-        "state": "ego.life_playground.state.v4",
-        "run": "ego.life_playground.run.v4",
-        "command": "ego.life_playground.command.v6",
-        "trace": "ego.life_playground.trace.v8",
+        "state": "ego.life_playground.state.v6",
+        "run": "ego.life_playground.run.v6",
+        "command": "ego.life_playground.command.v7",
+        "trace": "ego.life_playground.trace.v11",
         "world": "ego.life_playground.microworld.state.v4",
         "policy_observation": "ego.life_playground.microworld.observation.v4",
         "observer_frame": "ego.life_playground.microworld.public_frame.v5",
         "claim_memory": "ego.life_playground.claim_memory.v2",
-        "code_path_manifest": "ego.life_playground.code_path.v5",
+        "code_path_manifest": "ego.life_playground.code_path.v7",
     }
     ok = (
         definition_counts

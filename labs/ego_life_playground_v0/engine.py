@@ -18,6 +18,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from . import claims as claim_memory
+from . import predictive_control
 from . import survival_learning
 from .microworld import (
     ACTIONS as WORLD_ACTIONS,
@@ -47,11 +48,11 @@ REENTRY_THRESHOLD = 0.60
 CRITICAL_OVERRIDE_THRESHOLD = 0.15
 VISUAL_TRANSITION_MODEL_KEY = "__visual_transition_counts__"
 
-STATE_SCHEMA_VERSION = "ego.life_playground.state.v5"
-RUN_SCHEMA_VERSION = "ego.life_playground.run.v5"
-COMMAND_SCHEMA_VERSION = "ego.life_playground.command.v6"
-TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v10"
-COMPONENT_HASH_SCHEMA_VERSION = "ego.life_playground.component_hashes.v1"
+STATE_SCHEMA_VERSION = "ego.life_playground.state.v6"
+RUN_SCHEMA_VERSION = "ego.life_playground.run.v6"
+COMMAND_SCHEMA_VERSION = "ego.life_playground.command.v7"
+TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v11"
+COMPONENT_HASH_SCHEMA_VERSION = "ego.life_playground.component_hashes.v2"
 
 TRIGGER_SOURCES = (
     "ui_step_button",
@@ -71,6 +72,10 @@ HYSTERESIS_MODES = ("canonical", "no_hysteresis")
 NOVELTY_MODES = ("canonical", "no_novelty")
 OVERRIDE_MODES = ("canonical", "no_override")
 SURVIVAL_LEARNING_MODES = survival_learning.POLICY_MODES
+PREDICTIVE_CONTROL_MODES = ("off", "factored_mpc")
+PREDICTIVE_HORIZON_MODES = ("h12", "h1")
+RELATIVE_MAP_MODES = predictive_control.RELATIVE_MAP_MODES
+GOAL_VALUE_MODES = predictive_control.GOAL_VALUE_MODES
 RUN_PRODUCER_FUNCTION = "ego_life_playground_v0.engine.compute_step"
 RUN_AGGREGATION_RULE = "single_reducer_command_transition_action_or_respawn"
 GOAL_SELECTION_REASONS = (
@@ -108,6 +113,10 @@ DEFAULT_INTERVENTIONS = {
     "novelty_mode": "canonical",
     "override_mode": "canonical",
     "survival_learning_mode": "off",
+    "predictive_control_mode": "off",
+    "predictive_horizon_mode": "h12",
+    "relative_map_mode": "relative",
+    "goal_value_mode": "contextual",
 }
 
 # These V0 constants are intentionally unchanged.
@@ -173,11 +182,12 @@ def compute_code_path_manifest() -> dict[str, Any]:
         Path(__file__),
         Path(__file__).with_name("microworld.py"),
         Path(__file__).with_name("claims.py"),
+        Path(__file__).with_name("predictive_control.py"),
         Path(__file__).with_name("survival_learning.py"),
         Path(__file__).with_name("store.py"),
     )
     return {
-        "schema_version": "ego.life_playground.code_path.v6",
+        "schema_version": "ego.life_playground.code_path.v7",
         "files": [
             {"path": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
             for path in source_paths
@@ -222,6 +232,10 @@ def make_run_metadata(
         "survival_learning": survival_learning.hyperparameters(),
         "default_survival_learning_mode": DEFAULT_INTERVENTIONS[
             "survival_learning_mode"
+        ],
+        "predictive_control": predictive_control.hyperparameters(),
+        "default_predictive_control_mode": DEFAULT_INTERVENTIONS[
+            "predictive_control_mode"
         ],
         "producer_function": RUN_PRODUCER_FUNCTION,
         "aggregation_rule": RUN_AGGREGATION_RULE,
@@ -269,8 +283,10 @@ def initial_state(
             "schema_version": COMPONENT_HASH_SCHEMA_VERSION,
             "model": canonical_hash(model),
             "memory": canonical_hash(memory),
+            "predictive_control": canonical_hash(predictive_control.empty_state()),
         },
         "survival_learner": survival_learning.empty_survival_learner(),
+        "predictive_control": predictive_control.empty_state(),
         "lifecycle": {
             "trial_status": "active",
             "life_index": 1,
@@ -388,6 +404,20 @@ def state_hash(state: Mapping[str, Any]) -> str:
         "competing_claim_count": len(memory.get("competing_claims", []))
         if isinstance(memory, Mapping)
         else None,
+    }
+    predictive = state.get("predictive_control", {})
+    causal_state["predictive_control"] = {
+        "component_hash": component_hashes.get("predictive_control"),
+        "model_update_count": (
+            predictive.get("model", {}).get("update_count")
+            if isinstance(predictive, Mapping)
+            else None
+        ),
+        "belief_observation_count": (
+            predictive.get("belief", {}).get("observation_count")
+            if isinstance(predictive, Mapping)
+            else None
+        ),
     }
     return canonical_hash(causal_state)
 
@@ -554,6 +584,29 @@ def _respawn_trace(
             ),
             "update_count": int(next_state["survival_learner"]["update_count"]),
         },
+        "predictive_control": {
+            "schema_version": "ego.life_playground.predictive_control_trace.v1",
+            "producer_function": RUN_PRODUCER_FUNCTION,
+            "mode": command["interventions"]["predictive_control_mode"],
+            "belief_observation": {
+                "applied": True,
+                "reason": "episode_relative_belief_reset",
+            },
+            "belief_hash": canonical_hash(
+                next_state["predictive_control"]["belief"]
+            ),
+            "model_hash": canonical_hash(
+                next_state["predictive_control"]["model"]
+            ),
+            "model_update_count": int(
+                next_state["predictive_control"]["model"]["update_count"]
+            ),
+            "plan": None,
+            "update": {
+                "applied": False,
+                "reason": "pure_respawn",
+            },
+        },
         "model_bytes": {
             "before_hash": canonical_hash(before["model"]),
             "after_hash": canonical_hash(next_state["model"]),
@@ -645,6 +698,14 @@ def compute_step(
                 before["survival_learner"]
             )
         )
+        next_state["predictive_control"] = predictive_control.reset_for_respawn(
+            before["predictive_control"], episode_index=next_life_index - 1
+        )
+        component_hashes = dict(before["component_hashes"])
+        component_hashes["predictive_control"] = canonical_hash(
+            next_state["predictive_control"]
+        )
+        next_state["component_hashes"] = component_hashes
         next_state["lifecycle"] = {
             "trial_status": "active",
             "life_index": next_life_index,
@@ -702,6 +763,17 @@ def compute_step(
                 before["survival_learner"]["eligibility"],
                 next_state["survival_learner"]["eligibility"],
                 {},
+            ),
+            "predictive_model": _component_receipt(
+                before["predictive_control"]["model"],
+                next_state["predictive_control"]["model"],
+                before["predictive_control"]["model"],
+            ),
+            "predictive_belief": _component_receipt(
+                before["predictive_control"]["belief"],
+                next_state["predictive_control"]["belief"],
+                predictive_control.empty_state()["belief"]
+                | {"episode_index": next_life_index - 1},
             ),
             "token_mapping": _component_receipt(
                 before["world"]["trial"]["token_mapping"],
@@ -822,6 +894,35 @@ def compute_step(
         )
     except ValueError as exc:
         raise EngineInvariantError(str(exc)) from exc
+    predictive_belief_receipt: dict[str, Any] = {
+        "applied": False,
+        "reason": "predictive_control_off",
+        "belief_hash_before": canonical_hash(
+            decision_state["predictive_control"]["belief"]
+        ),
+        "belief_hash_after": canonical_hash(
+            decision_state["predictive_control"]["belief"]
+        ),
+    }
+    if interventions["predictive_control_mode"] == "factored_mpc":
+        decision_state = dict(decision_state)
+        try:
+            (
+                decision_state["predictive_control"],
+                predictive_belief_receipt,
+            ) = predictive_control.observe_belief(
+                decision_state["predictive_control"],
+                observation=world_observation,
+                episode_index=int(decision_state["clock"]["episode_index"]),
+                mode=interventions["relative_map_mode"],
+            )
+        except predictive_control.PredictiveControlInvariantError as exc:
+            raise EngineInvariantError(str(exc)) from exc
+        component_hashes = dict(decision_state["component_hashes"])
+        component_hashes["predictive_control"] = canonical_hash(
+            decision_state["predictive_control"]
+        )
+        decision_state["component_hashes"] = component_hashes
     decision_hash = state_hash(decision_state)
     observation_key = observation_hash(world_observation)
     goal_before = deepcopy(decision_state["current_goal"])
@@ -940,19 +1041,55 @@ def compute_step(
         str(candidate["action"]): float(candidate["total_score"])
         for candidate in candidates
     }
+    predictive_plan: dict[str, Any] | None = None
+    selection_scores = candidate_scores
+    selection_learning_mode = interventions["survival_learning_mode"]
+    if interventions["predictive_control_mode"] == "factored_mpc":
+        active_goal = _goal_context_key(goal_before)
+        try:
+            predictive_plan = predictive_control.plan_action(
+                state=decision_state["predictive_control"],
+                observation=world_observation,
+                organism=decision_state["organism"],
+                active_goal=active_goal,
+                heuristic_scores=candidate_scores,
+                horizon=(
+                    predictive_control.HORIZON
+                    if interventions["predictive_horizon_mode"] == "h12"
+                    else 1
+                ),
+                beam_width=predictive_control.BEAM_WIDTH,
+                discount=predictive_control.DISCOUNT,
+                relative_map_mode=interventions["relative_map_mode"],
+                goal_value_mode=interventions["goal_value_mode"],
+                action_costs=ACTION_COSTS,
+            )
+            selection_scores = {
+                action: float(predictive_plan["candidate_values"][action]["total"])
+                for action in ACTIONS
+            }
+            selection_learning_mode = "off"
+        except predictive_control.PredictiveControlInvariantError as exc:
+            raise EngineInvariantError(str(exc)) from exc
     try:
         selected_action, survival_selection = survival_learning.select_action(
             decision_state["survival_learner"],
             state_key=survival_state_key,
-            candidate_scores=candidate_scores,
+            candidate_scores=selection_scores,
             run_seed=int(run_meta["seed"]),
             episode_index=int(decision_state["clock"]["episode_index"]),
             sequence=sequence,
             life_index=int(lifecycle_before["life_index"]),
-            mode=interventions["survival_learning_mode"],
+            mode=selection_learning_mode,
         )
     except survival_learning.SurvivalLearningInvariantError as exc:
         raise EngineInvariantError(str(exc)) from exc
+    if predictive_plan is not None:
+        if selected_action != str(predictive_plan["selected_action"]):
+            raise EngineInvariantError(
+                "predictive plan and deterministic selection receipt differ"
+            )
+        survival_selection["selection_mode"] = "delegated_factored_mpc"
     selected = next(
         candidate for candidate in candidates if candidate["action"] == selected_action
     )
@@ -1026,6 +1163,53 @@ def compute_step(
             censored=True,
             termination="censored",
         )
+
+    predictive_update: dict[str, Any] = {
+        "schema_version": predictive_control.UPDATE_SCHEMA_VERSION,
+        "producer_function": (
+            "ego_life_playground_v0.predictive_control.update_after_transition"
+        ),
+        "applied": False,
+        "reason": "predictive_control_off",
+        "model_hash_before": canonical_hash(
+            decision_state["predictive_control"]["model"]
+        ),
+        "model_hash_after": canonical_hash(
+            decision_state["predictive_control"]["model"]
+        ),
+        "belief_hash_after": canonical_hash(
+            decision_state["predictive_control"]["belief"]
+        ),
+        "update_count_after": int(
+            decision_state["predictive_control"]["model"]["update_count"]
+        ),
+    }
+    if interventions["predictive_control_mode"] == "factored_mpc":
+        try:
+            (
+                next_state["predictive_control"],
+                predictive_update,
+            ) = predictive_control.update_after_transition(
+                decision_state["predictive_control"],
+                observation=world_observation,
+                organism_before=decision_state["organism"],
+                action=selected_action,
+                actual_outcome_type=str(world_transition["outcome_type"]),
+                actual_delta=actual_delta,
+                terminal=life_termination is not None,
+                resource_interaction=float(metabolism["food_gain"]) > 0.0,
+                next_observation=next_observation,
+                episode_index=int(decision_state["clock"]["episode_index"]),
+                relative_map_mode=interventions["relative_map_mode"],
+                updates_enabled=interventions["update_mode"] == "canonical",
+            )
+        except predictive_control.PredictiveControlInvariantError as exc:
+            raise EngineInvariantError(str(exc)) from exc
+        component_hashes = dict(next_state["component_hashes"])
+        component_hashes["predictive_control"] = canonical_hash(
+            next_state["predictive_control"]
+        )
+        next_state["component_hashes"] = component_hashes
 
     try:
         next_survival_state_key = survival_learning.build_state_key(
@@ -1240,6 +1424,23 @@ def compute_step(
             ),
             "update_count": int(next_state["survival_learner"]["update_count"]),
         },
+        "predictive_control": {
+            "schema_version": "ego.life_playground.predictive_control_trace.v1",
+            "producer_function": RUN_PRODUCER_FUNCTION,
+            "mode": interventions["predictive_control_mode"],
+            "belief_observation": predictive_belief_receipt,
+            "belief_hash": canonical_hash(
+                next_state["predictive_control"]["belief"]
+            ),
+            "model_hash": canonical_hash(
+                next_state["predictive_control"]["model"]
+            ),
+            "model_update_count": int(
+                next_state["predictive_control"]["model"]["update_count"]
+            ),
+            "plan": _compact_predictive_plan(predictive_plan),
+            "update": _compact_predictive_update(predictive_update),
+        },
         "model_bytes": {
             "before_hash": model_before_hash,
             "after_hash": model_after_hash,
@@ -1404,6 +1605,8 @@ def _verify_run_metadata(run_meta: Mapping[str, Any], current_code_hash: str) ->
         "max_lives",
         "survival_learning",
         "default_survival_learning_mode",
+        "predictive_control",
+        "default_predictive_control_mode",
         "producer_function",
         "aggregation_rule",
         "code_path_hash",
@@ -1429,6 +1632,12 @@ def _verify_run_metadata(run_meta: Mapping[str, Any], current_code_hash: str) ->
         raise EngineInvariantError("survival learning metadata mismatch")
     if run_meta["default_survival_learning_mode"] != "off":
         raise EngineInvariantError("survival learner default must remain off before acceptance")
+    if canonical_json(run_meta["predictive_control"]) != canonical_json(
+        predictive_control.hyperparameters()
+    ):
+        raise EngineInvariantError("predictive control metadata mismatch")
+    if run_meta["default_predictive_control_mode"] != "off":
+        raise EngineInvariantError("predictive control default must remain off")
     if run_meta["producer_function"] != RUN_PRODUCER_FUNCTION:
         raise EngineInvariantError("producer_function is not canonical")
     if run_meta["aggregation_rule"] != RUN_AGGREGATION_RULE:
@@ -1452,6 +1661,7 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
         "memory",
         "component_hashes",
         "survival_learner",
+        "predictive_control",
         "lifecycle",
         "last_action",
         "last_command_hash",
@@ -1479,15 +1689,19 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
     component_hashes = state["component_hashes"]
     if (
         not isinstance(component_hashes, Mapping)
-        or set(component_hashes) != {"schema_version", "model", "memory"}
+        or set(component_hashes)
+        != {"schema_version", "model", "memory", "predictive_control"}
         or component_hashes.get("schema_version") != COMPONENT_HASH_SCHEMA_VERSION
         or not _is_sha256(component_hashes.get("model"))
         or not _is_sha256(component_hashes.get("memory"))
+        or not _is_sha256(component_hashes.get("predictive_control"))
     ):
         raise EngineInvariantError("component hash schema mismatch")
     if tick == 0 and (
         component_hashes["model"] != canonical_hash(state["model"])
         or component_hashes["memory"] != canonical_hash(state["memory"])
+        or component_hashes["predictive_control"]
+        != canonical_hash(state["predictive_control"])
     ):
         raise EngineInvariantError("initial component hash mismatch")
     lifecycle = state["lifecycle"]
@@ -1545,6 +1759,10 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
     try:
         survival_learning.validate_survival_learner(state["survival_learner"])
     except survival_learning.SurvivalLearningInvariantError as exc:
+        raise EngineInvariantError(str(exc)) from exc
+    try:
+        predictive_control.validate_state(state["predictive_control"])
+    except predictive_control.PredictiveControlInvariantError as exc:
         raise EngineInvariantError(str(exc)) from exc
     if tick == 0 and canonical_json(state["survival_learner"]) != canonical_json(
         survival_learning.empty_survival_learner()
@@ -1951,6 +2169,8 @@ def _decision_state_for_tick(
         "memory_unchanged": before["memory"] is decision["memory"],
         "survival_learner_unchanged": before["survival_learner"]
         is decision["survival_learner"],
+        "predictive_control_unchanged": before["predictive_control"]
+        is decision["predictive_control"],
         "current_goal_unchanged": before["current_goal"] is decision["current_goal"],
         "command_chain_unchanged": before.get("last_command_hash")
         == decision.get("last_command_hash"),
@@ -3006,6 +3226,78 @@ def _compact_claim_update(report: Mapping[str, Any]) -> dict[str, Any]:
     }
 
 
+def _compact_predictive_plan(
+    plan: Mapping[str, Any] | None,
+) -> dict[str, Any] | None:
+    if not isinstance(plan, Mapping):
+        return None
+    predictions: dict[str, Any] = {}
+    for action, prediction in (plan.get("predictions_by_action") or {}).items():
+        if not isinstance(prediction, Mapping):
+            continue
+        predictions[str(action)] = {
+            key: deepcopy(prediction.get(key))
+            for key in (
+                "input_hash",
+                "feature_hash",
+                "outcome_probabilities",
+                "predicted_delta",
+                "resource_interaction_probability",
+                "terminal_risk",
+                "uncertainty",
+                "visit_count",
+            )
+        }
+    return {
+        key: deepcopy(plan.get(key))
+        for key in (
+            "schema_version",
+            "producer_function",
+            "algorithm",
+            "horizon",
+            "beam_width",
+            "discount",
+            "relative_map_mode",
+            "goal_value_mode",
+            "active_goal",
+            "predictor_input_goal_independent",
+            "candidate_values",
+            "selected_action",
+            "planned_actions",
+            "model_hash",
+            "belief_hash",
+        )
+    } | {"predictions_by_action": predictions}
+
+
+def _compact_predictive_update(report: Mapping[str, Any]) -> dict[str, Any]:
+    compact = {
+        key: deepcopy(report.get(key))
+        for key in (
+            "schema_version",
+            "producer_function",
+            "applied",
+            "reason",
+            "action",
+            "actual_outcome_type",
+            "resource_interaction",
+            "terminal",
+            "outcome_brier",
+            "outcome_nll",
+            "delta_error",
+            "model_hash_before",
+            "model_hash_after",
+            "belief_hash_after",
+            "update_count_after",
+        )
+        if key in report
+    }
+    for field in ("prediction_before", "prediction_after"):
+        if isinstance(report.get(field), Mapping):
+            compact[f"{field}_hash"] = canonical_hash(report[field])
+    return compact
+
+
 def _shuffle_provenance_projection(
     memory: Mapping[str, Any], *, seed: int
 ) -> tuple[dict[str, Any], dict[str, Any]]:
@@ -3294,8 +3586,19 @@ def _normalize_interventions(interventions: Mapping[str, str]) -> dict[str, str]
         or normalized["novelty_mode"] not in NOVELTY_MODES
         or normalized["override_mode"] not in OVERRIDE_MODES
         or normalized["survival_learning_mode"] not in SURVIVAL_LEARNING_MODES
+        or normalized["predictive_control_mode"] not in PREDICTIVE_CONTROL_MODES
+        or normalized["predictive_horizon_mode"] not in PREDICTIVE_HORIZON_MODES
+        or normalized["relative_map_mode"] not in RELATIVE_MAP_MODES
+        or normalized["goal_value_mode"] not in GOAL_VALUE_MODES
     ):
         raise EngineInvariantError("intervention enum mismatch")
+    if (
+        normalized["predictive_control_mode"] == "factored_mpc"
+        and normalized["survival_learning_mode"] != "off"
+    ):
+        raise EngineInvariantError(
+            "predictive control and Expected SARSA cannot both select actions"
+        )
     try:
         shuffle_seed = int(normalized["provenance_shuffle_seed"])
     except ValueError as exc:
