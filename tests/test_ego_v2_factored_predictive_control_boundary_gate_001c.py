@@ -81,9 +81,9 @@ def test_numpy_runtime_contract_and_fixed_array_state_schema() -> None:
 
     state = predictive_control.empty_state()
     model = state["model"]
-    assert model["schema_version"] == "ego.life_playground.factored_predictor.v3"
+    assert model["schema_version"] == "ego.life_playground.factored_predictor.v4"
     assert np.asarray(model["outcome_weights"]).shape == (5, 6, 15)
-    assert np.asarray(model["delta_weights"]).shape == (5, 4, 15)
+    assert np.asarray(model["delta_weights"]).shape == (5, 6, 4, 15)
     assert np.asarray(model["resource_weights"]).shape == (5, 15)
     assert np.asarray(model["terminal_weights"]).shape == (5, 15)
     predictive_control.validate_state(state)
@@ -116,7 +116,7 @@ def test_validate_state_rejects_malformed_or_nonfinite_fixed_arrays() -> None:
         predictive_control.validate_state(malformed)
 
     nonfinite = deepcopy(state)
-    nonfinite["model"]["delta_weights"][3][2][7] = float("nan")
+    nonfinite["model"]["delta_weights"][3][2][1][7] = float("nan")
     with pytest.raises(predictive_control.PredictiveControlInvariantError, match="finite"):
         predictive_control.validate_state(nonfinite)
 
@@ -130,11 +130,18 @@ def test_packed_prediction_matrix_matches_frozen_ordered_dot_contract() -> None:
                 model["outcome_weights"][action_index][outcome_index][feature_index] = (
                     (action_index + 1) * (outcome_index + 2) * (feature_index - 5) / 1000.0
                 )
-        for state_index in range(len(predictive_control.STATE_KEYS)):
-            for feature_index in range(len(predictive_control.FEATURE_NAMES)):
-                model["delta_weights"][action_index][state_index][feature_index] = (
-                    (action_index + 3) * (state_index + 1) * (feature_index - 8) / 1500.0
-                )
+        for outcome_index in range(len(predictive_control.OUTCOMES)):
+            for state_index in range(len(predictive_control.STATE_KEYS)):
+                for feature_index in range(len(predictive_control.FEATURE_NAMES)):
+                    model["delta_weights"][action_index][outcome_index][state_index][
+                        feature_index
+                    ] = (
+                        (action_index + 3)
+                        * (outcome_index + 1)
+                        * (state_index + 1)
+                        * (feature_index - 8)
+                        / 9000.0
+                    )
     compiled = predictive_control._compiled_model_arrays(model)  # noqa: SLF001
     packed = predictive_control._compiled_prediction_matrix(compiled)  # noqa: SLF001
     payload = predictive_control.predictor_input_snapshot(
@@ -405,7 +412,7 @@ def test_update_only_changes_selected_action_and_frozen_updates_keep_model_hash(
 
 def test_engine_public_actual_delta_and_compact_trace_fail_closed(monkeypatch) -> None:
     meta = engine.make_run_metadata("trace-boundary", 711)
-    assert meta["schema_version"] == "ego.life_playground.run.v8"
+    assert meta["schema_version"] == "ego.life_playground.run.v9"
     assert meta["default_predictive_control_mode"] == "off"
     assert meta["predictive_control"]["numeric_runtime"]["backend_version"] == "2.2.6"
 
@@ -432,7 +439,7 @@ def test_engine_public_actual_delta_and_compact_trace_fail_closed(monkeypatch) -
     trace = result.trace
 
     assert actual_delta_calls == 1
-    assert trace["schema_version"] == "ego.life_playground.trace.v13"
+    assert trace["schema_version"] == "ego.life_playground.trace.v14"
     plan = trace["predictive_control"]["plan"]
     assert "producer_function" not in plan
     assert "algorithm" not in plan
@@ -444,6 +451,8 @@ def test_engine_public_actual_delta_and_compact_trace_fail_closed(monkeypatch) -
         assert "feature_hash" not in prediction
         assert "uncertainty" not in prediction
         assert "visit_count" not in prediction
+        assert "conditional_delta_hash" in prediction
+        assert "conditional_delta_by_outcome" not in prediction
         assert "prediction_hash" in prediction
     assert plan["beam_receipt"]["root_action_counts_by_depth"] == [5] * 12
     assert "update" in trace["predictive_control"]

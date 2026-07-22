@@ -268,7 +268,7 @@ def test_card_a_headless_launcher_real_controller_store_and_recovery(tmp_path: P
 
     assert result.returncode == 0
     assert payload["command_schema_version"] == "ego.life_playground.command.v7"
-    assert payload["state_schema_version"] == "ego.life_playground.state.v8"
+    assert payload["state_schema_version"] == "ego.life_playground.state.v9"
     assert payload["recovered"] is True
     assert payload["frame_count"] == 2
     assert payload["science_weight"] == 0

@@ -167,7 +167,7 @@ def _respawning_state(monkeypatch: pytest.MonkeyPatch, *, run_id: str, life_inde
 def test_card_c_initial_lifecycle_and_episode_contract():
     state = initial_state(run_id="card-c-initial")
 
-    assert state["schema_version"] == "ego.life_playground.state.v8"
+    assert state["schema_version"] == "ego.life_playground.state.v9"
     assert state["clock"] == {
         "global_tick": 0,
         "episode_index": 0,

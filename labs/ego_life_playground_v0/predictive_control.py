@@ -20,13 +20,13 @@ import numpy as np
 from .microworld import ACTIONS, FACING_DELTAS, FACING_ORDER, PUBLIC_OBSERVATION_SCHEMA_VERSION
 
 
-STATE_SCHEMA_VERSION = "ego.life_playground.predictive_control.v3"
+STATE_SCHEMA_VERSION = "ego.life_playground.predictive_control.v4"
 BELIEF_SCHEMA_VERSION = "ego.life_playground.relative_belief.v1"
-MODEL_SCHEMA_VERSION = "ego.life_playground.factored_predictor.v3"
+MODEL_SCHEMA_VERSION = "ego.life_playground.factored_predictor.v4"
 EXPLORATION_SCHEMA_VERSION = "ego.life_playground.predictive_exploration.v1"
-PREDICTION_SCHEMA_VERSION = "ego.life_playground.outcome_prediction.v3"
-PLAN_SCHEMA_VERSION = "ego.life_playground.factored_plan.v3"
-UPDATE_SCHEMA_VERSION = "ego.life_playground.predictor_update.v3"
+PREDICTION_SCHEMA_VERSION = "ego.life_playground.outcome_prediction.v4"
+PLAN_SCHEMA_VERSION = "ego.life_playground.factored_plan.v4"
+UPDATE_SCHEMA_VERSION = "ego.life_playground.predictor_update.v4"
 ALGORITHM = "online_linear_softmax_factored_mpc"
 LEARNING_RATE = 0.08
 HORIZON = 12
@@ -158,8 +158,14 @@ def _empty_outcome_weights() -> list[list[list[float]]]:
     return [[_zero_vector(len(FEATURE_NAMES)) for _ in OUTCOMES] for _ in ACTIONS]
 
 
-def _empty_delta_weights() -> list[list[list[float]]]:
-    return [[_zero_vector(len(FEATURE_NAMES)) for _ in STATE_KEYS] for _ in ACTIONS]
+def _empty_delta_weights() -> list[list[list[list[float]]]]:
+    return [
+        [
+            [_zero_vector(len(FEATURE_NAMES)) for _ in STATE_KEYS]
+            for _ in OUTCOMES
+        ]
+        for _ in ACTIONS
+    ]
 
 
 def _empty_action_feature_weights() -> list[list[float]]:
@@ -449,7 +455,7 @@ def validate_state(state: Mapping[str, Any]) -> None:
     _validate_weight_array(
         "delta_weights",
         model["delta_weights"],
-        (len(ACTIONS), len(STATE_KEYS), len(FEATURE_NAMES)),
+        (len(ACTIONS), len(OUTCOMES), len(STATE_KEYS), len(FEATURE_NAMES)),
     )
     _validate_weight_array(
         "resource_weights",
@@ -738,12 +744,16 @@ def _ordered_dot(weights: np.ndarray, features: np.ndarray) -> float:
 def _compiled_prediction_matrix(
     compiled_model: Mapping[str, np.ndarray],
 ) -> np.ndarray:
-    """Pack the frozen 6+4+1+1 predictor heads once per planning call."""
+    """Pack the frozen 6+(6x4)+1+1 predictor heads once per planning call."""
 
     return np.concatenate(
         (
             compiled_model["outcome_weights"],
-            compiled_model["delta_weights"],
+            compiled_model["delta_weights"].reshape(
+                len(ACTIONS),
+                len(OUTCOMES) * len(STATE_KEYS),
+                len(FEATURE_NAMES),
+            ),
             compiled_model["resource_weights"][:, np.newaxis, :],
             compiled_model["terminal_weights"][:, np.newaxis, :],
         ),
@@ -785,6 +795,23 @@ def _planning_prediction_vector(
     packed_values = _prediction_dot_batch(
         compiled_prediction_matrix[action_index], feature_vector
     )
+    return _planning_prediction_vector_from_packed(
+        state,
+        payload=payload,
+        action=action,
+        packed_values=packed_values,
+        visit_key_cache=visit_key_cache,
+    )
+
+
+def _planning_prediction_vector_from_packed(
+    state: Mapping[str, Any],
+    *,
+    payload: Mapping[str, Any],
+    action: str,
+    packed_values: np.ndarray,
+    visit_key_cache: dict[tuple[Any, ...], str],
+) -> tuple[float, ...]:
     probabilities = _softmax_values(packed_values[: len(OUTCOMES)])
     summary = payload["belief_summary"]
     visit_descriptor = (
@@ -798,14 +825,52 @@ def _planning_prediction_vector(
         visit_key = _visit_key(action, payload)
         visit_key_cache[visit_descriptor] = visit_key
     visit_count = int(state["model"]["visit_counts"].get(visit_key, 0))
-    delta_offset = len(OUTCOMES)
-    return probabilities + (
-        max(-0.35, min(0.35, float(packed_values[delta_offset]))),
-        max(-0.35, min(0.35, float(packed_values[delta_offset + 1]))),
-        max(-0.35, min(0.35, float(packed_values[delta_offset + 2]))),
-        max(-0.35, min(0.35, float(packed_values[delta_offset + 3]))),
-        _sigmoid(float(packed_values[delta_offset + len(STATE_KEYS)])),
-        _sigmoid(float(packed_values[delta_offset + len(STATE_KEYS) + 1])),
+    conditional_offset = len(OUTCOMES)
+    conditional_values = packed_values[
+        conditional_offset : conditional_offset
+        + len(OUTCOMES) * len(STATE_KEYS)
+    ].reshape(len(OUTCOMES), len(STATE_KEYS))
+    conditional_values.clip(
+        -0.35,
+        0.35,
+        out=conditional_values,
+    )
+    probability_0 = probabilities[0]
+    probability_1 = probabilities[1]
+    probability_2 = probabilities[2]
+    probability_3 = probabilities[3]
+    probability_4 = probabilities[4]
+    probability_5 = probabilities[5]
+    expected_delta = (
+        probability_0 * float(conditional_values[0, 0])
+        + probability_1 * float(conditional_values[1, 0])
+        + probability_2 * float(conditional_values[2, 0])
+        + probability_3 * float(conditional_values[3, 0])
+        + probability_4 * float(conditional_values[4, 0])
+        + probability_5 * float(conditional_values[5, 0]),
+        probability_0 * float(conditional_values[0, 1])
+        + probability_1 * float(conditional_values[1, 1])
+        + probability_2 * float(conditional_values[2, 1])
+        + probability_3 * float(conditional_values[3, 1])
+        + probability_4 * float(conditional_values[4, 1])
+        + probability_5 * float(conditional_values[5, 1]),
+        probability_0 * float(conditional_values[0, 2])
+        + probability_1 * float(conditional_values[1, 2])
+        + probability_2 * float(conditional_values[2, 2])
+        + probability_3 * float(conditional_values[3, 2])
+        + probability_4 * float(conditional_values[4, 2])
+        + probability_5 * float(conditional_values[5, 2]),
+        probability_0 * float(conditional_values[0, 3])
+        + probability_1 * float(conditional_values[1, 3])
+        + probability_2 * float(conditional_values[2, 3])
+        + probability_3 * float(conditional_values[3, 3])
+        + probability_4 * float(conditional_values[4, 3])
+        + probability_5 * float(conditional_values[5, 3]),
+    )
+    scalar_offset = conditional_offset + len(OUTCOMES) * len(STATE_KEYS)
+    return probabilities + expected_delta + (
+        _sigmoid(float(packed_values[scalar_offset])),
+        _sigmoid(float(packed_values[scalar_offset + 1])),
         1.0 / math.sqrt(1.0 + visit_count),
     )
 
@@ -858,7 +923,15 @@ def _predict_from_payload(
         if packed_values is None
         else packed_values[: len(OUTCOMES)]
     )
-    probabilities = _softmax_array(outcome_logits, round_values=include_hashes)
+    probability_values = _softmax_values(outcome_logits)
+    probabilities = {
+        outcome: (
+            _round(probability_values[OUTCOME_INDEX[outcome]])
+            if include_hashes
+            else float(probability_values[OUTCOME_INDEX[outcome]])
+        )
+        for outcome in OUTCOMES
+    }
     visit_descriptor = (
         action,
         payload["belief_summary"]["front_token"],
@@ -872,6 +945,59 @@ def _predict_from_payload(
             visit_key_cache[visit_descriptor] = visit_key
     visit_count = int(state["model"]["visit_counts"].get(visit_key, 0))
     round_prediction = _round if include_hashes else float
+    conditional_offset = len(OUTCOMES)
+    conditional_values = (
+        np.asarray(
+            [
+                [
+                    _ordered_dot(
+                        compiled["delta_weights"][
+                            action_index, outcome_index, state_index
+                        ],
+                        feature_vector,
+                    )
+                    for state_index in range(len(STATE_KEYS))
+                ]
+                for outcome_index in range(len(OUTCOMES))
+            ],
+            dtype=NUMERIC_DTYPE,
+        )
+        if packed_values is None
+        else packed_values[
+            conditional_offset : conditional_offset
+            + len(OUTCOMES) * len(STATE_KEYS)
+        ].reshape(len(OUTCOMES), len(STATE_KEYS))
+    )
+    conditional_delta_by_outcome = {
+        outcome: {
+            key: round_prediction(
+                max(
+                    -0.35,
+                    min(
+                        0.35,
+                        float(
+                            conditional_values[
+                                OUTCOME_INDEX[outcome], STATE_INDEX[key]
+                            ]
+                        ),
+                    ),
+                )
+            )
+            for key in STATE_KEYS
+        }
+        for outcome in OUTCOMES
+    }
+    expected_delta = {
+        key: round_prediction(
+            sum(
+                probability_values[OUTCOME_INDEX[outcome]]
+                * float(conditional_delta_by_outcome[outcome][key])
+                for outcome in OUTCOMES
+            )
+        )
+        for key in STATE_KEYS
+    }
+    scalar_offset = conditional_offset + len(OUTCOMES) * len(STATE_KEYS)
     prediction = {
         "schema_version": PREDICTION_SCHEMA_VERSION,
         "producer_function": "ego_life_playground_v0.predictive_control.predict_action",
@@ -883,29 +1009,9 @@ def _predict_from_payload(
         ),
         "action": action,
         "outcome_probabilities": probabilities,
-        "predicted_delta": {
-            key: round_prediction(
-                max(
-                    -0.35,
-                    min(
-                        0.35,
-                        (
-                            _ordered_dot(
-                                compiled["delta_weights"][
-                                    action_index, STATE_INDEX[key]
-                                ],
-                                feature_vector,
-                            )
-                            if packed_values is None
-                            else float(
-                                packed_values[len(OUTCOMES) + STATE_INDEX[key]]
-                            )
-                        ),
-                    ),
-                )
-            )
-            for key in STATE_KEYS
-        },
+        "conditional_delta_by_outcome": conditional_delta_by_outcome,
+        "conditional_delta_hash": _canonical_hash(conditional_delta_by_outcome),
+        "predicted_delta": expected_delta,
         "resource_interaction_probability": round_prediction(
             _sigmoid(
                 (
@@ -913,7 +1019,7 @@ def _predict_from_payload(
                         compiled["resource_weights"][action_index], feature_vector
                     )
                     if packed_values is None
-                    else float(packed_values[len(OUTCOMES) + len(STATE_KEYS)])
+                    else float(packed_values[scalar_offset])
                 )
             )
         ),
@@ -925,7 +1031,7 @@ def _predict_from_payload(
                     )
                     if packed_values is None
                     else float(
-                        packed_values[len(OUTCOMES) + len(STATE_KEYS) + 1]
+                        packed_values[scalar_offset + 1]
                     )
                 )
             )
@@ -1129,36 +1235,44 @@ def _value_breakdown(
     active_goal: str,
     goal_value_mode: str,
 ) -> dict[str, float]:
-    changes = tuple(
-        round(
-            max(0.0, TARGET_LEVEL - organism_values[index])
-            - max(
-                0.0,
-                TARGET_LEVEL
-                - _clamp(organism_values[index] + expected_delta[index]),
-            ),
-            12,
-        )
-        for index in range(len(STATE_KEYS))
+    change_0 = round(
+        max(0.0, TARGET_LEVEL - organism_values[0])
+        - max(0.0, TARGET_LEVEL - _clamp(organism_values[0] + expected_delta[0])),
+        12,
     )
+    change_1 = round(
+        max(0.0, TARGET_LEVEL - organism_values[1])
+        - max(0.0, TARGET_LEVEL - _clamp(organism_values[1] + expected_delta[1])),
+        12,
+    )
+    change_2 = round(
+        max(0.0, TARGET_LEVEL - organism_values[2])
+        - max(0.0, TARGET_LEVEL - _clamp(organism_values[2] + expected_delta[2])),
+        12,
+    )
+    change_3 = round(
+        max(0.0, TARGET_LEVEL - organism_values[3])
+        - max(0.0, TARGET_LEVEL - _clamp(organism_values[3] + expected_delta[3])),
+        12,
+    )
+    changes = (change_0, change_1, change_2, change_3)
     survival_value = round(1.0 - predicted_terminal_risk, 12)
     homeostatic_value = round(
-        sum(
-            (
-                2.0
-                if goal_value_mode == "contextual" and active_goal == key
-                else 1.0
-            )
-            * changes[index]
-            for index, key in enumerate(STATE_KEYS)
-        ),
+        (2.0 if goal_value_mode == "contextual" and active_goal == STATE_KEYS[0] else 1.0)
+        * change_0
+        + (2.0 if goal_value_mode == "contextual" and active_goal == STATE_KEYS[1] else 1.0)
+        * change_1
+        + (2.0 if goal_value_mode == "contextual" and active_goal == STATE_KEYS[2] else 1.0)
+        * change_2
+        + (2.0 if goal_value_mode == "contextual" and active_goal == STATE_KEYS[3] else 1.0)
+        * change_3,
         12,
     )
     map_information_value = round(
         0.20 * expected_newly_observable_unknown_fraction, 12
     )
     return {
-        "total_deficit_change": round(sum(changes), 12),
+        "total_deficit_change": round(change_0 + change_1 + change_2 + change_3, 12),
         "intent_deficit_change": (
             0.0
             if active_goal == "explore"
@@ -1275,7 +1389,10 @@ def _expand_node(
     visit_key_cache: dict[tuple[Any, ...], str],
 ) -> dict[str, Any]:
     successor_mass: dict[tuple[int, int, str], float] = {}
-    expected_delta_values = [0.0] * len(STATE_KEYS)
+    expected_delta_0 = 0.0
+    expected_delta_1 = 0.0
+    expected_delta_2 = 0.0
+    expected_delta_3 = 0.0
     expected_terminal_risk = 0.0
     expected_resource_probability = 0.0
     expected_uncertainty = 0.0
@@ -1313,10 +1430,10 @@ def _expand_node(
             )
             pose_prediction_cache[pose_prediction_key] = prediction
         delta_offset = len(OUTCOMES)
-        for index in range(len(STATE_KEYS)):
-            expected_delta_values[index] += (
-                pose_probability * prediction[delta_offset + index]
-            )
+        expected_delta_0 += pose_probability * prediction[delta_offset]
+        expected_delta_1 += pose_probability * prediction[delta_offset + 1]
+        expected_delta_2 += pose_probability * prediction[delta_offset + 2]
+        expected_delta_3 += pose_probability * prediction[delta_offset + 3]
         expected_resource_probability += pose_probability * prediction[
             delta_offset + len(STATE_KEYS)
         ]
@@ -1373,7 +1490,12 @@ def _expand_node(
             unknown = _unknown_fraction(belief, pose)
             unknown_cache[pose] = unknown
         expected_unknown += probability * unknown
-    rounded_delta_values = tuple(round(float(value), 12) for value in expected_delta_values)
+    rounded_delta_values = (
+        round(float(expected_delta_0), 12),
+        round(float(expected_delta_1), 12),
+        round(float(expected_delta_2), 12),
+        round(float(expected_delta_3), 12),
+    )
     rounded_delta = {
         key: rounded_delta_values[index]
         for index, key in enumerate(STATE_KEYS)
@@ -1386,9 +1508,11 @@ def _expand_node(
         active_goal=active_goal,
         goal_value_mode=goal_value_mode,
     )
-    next_organism_tuple = tuple(
-        _clamp(node["organism_tuple"][index] + rounded_delta_values[index])
-        for index in range(len(STATE_KEYS))
+    next_organism_tuple = (
+        _clamp(node["organism_tuple"][0] + rounded_delta_values[0]),
+        _clamp(node["organism_tuple"][1] + rounded_delta_values[1]),
+        _clamp(node["organism_tuple"][2] + rounded_delta_values[2]),
+        _clamp(node["organism_tuple"][3] + rounded_delta_values[3]),
     )
     next_organism = {
         key: next_organism_tuple[index]
@@ -1799,11 +1923,21 @@ def update_after_transition(
                 feature_vector,
                 target - float(probabilities[outcome]),
             )
+        conditional_delta_hash_before = _canonical_hash(model["delta_weights"])
+        actual_outcome_index = OUTCOME_INDEX[actual_outcome_type]
         for key in STATE_KEYS:
-            error = float(actual_delta[key]) - float(prediction_before["predicted_delta"][key])
+            error = float(actual_delta[key]) - float(
+                prediction_before["conditional_delta_by_outcome"][actual_outcome_type][
+                    key
+                ]
+            )
             state_index = STATE_INDEX[key]
-            compiled_model["delta_weights"][action_index, state_index] = _updated_vector(
-                compiled_model["delta_weights"][action_index, state_index],
+            compiled_model["delta_weights"][
+                action_index, actual_outcome_index, state_index
+            ] = _updated_vector(
+                compiled_model["delta_weights"][
+                    action_index, actual_outcome_index, state_index
+                ],
                 feature_vector,
                 error,
             )
@@ -1826,6 +1960,8 @@ def update_after_transition(
         model["visit_counts"] = visit_counts
         model["update_count"] = int(model["update_count"]) + 1
         updated["model"] = model
+    else:
+        conditional_delta_hash_before = _canonical_hash(model["delta_weights"])
     if relative_map_mode == "relative":
         belief = _advance_belief_pose(
             state["belief"], action=action, outcome_type=actual_outcome_type
@@ -1866,6 +2002,11 @@ def update_after_transition(
             key: _round(float(actual_delta[key]) - float(prediction_before["predicted_delta"][key]))
             for key in STATE_KEYS
         },
+        "delta_outcome_updated": actual_outcome_type if updates_enabled else None,
+        "conditional_delta_hash_before": conditional_delta_hash_before,
+        "conditional_delta_hash_after": _canonical_hash(
+            updated["model"]["delta_weights"]
+        ),
         "model_hash_before": before_hash,
         "model_hash_after": _canonical_hash(updated["model"]),
         "belief_hash_after": _canonical_hash(updated["belief"]),

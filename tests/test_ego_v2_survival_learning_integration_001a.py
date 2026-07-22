@@ -49,13 +49,13 @@ def test_initial_state_run_metadata_and_code_manifest_bind_survival_learner() ->
     meta = make_run_metadata("learner-schema", 701)
     manifest = compute_code_path_manifest()
 
-    assert state["schema_version"] == "ego.life_playground.state.v8"
+    assert state["schema_version"] == "ego.life_playground.state.v9"
     assert state["survival_learner"]["algorithm"] == ALGORITHM
     assert state["survival_learner"]["q_values"] == {}
-    assert meta["schema_version"] == "ego.life_playground.run.v8"
+    assert meta["schema_version"] == "ego.life_playground.run.v9"
     assert meta["max_lives"] == 16 == MAX_LIVES
     assert meta["survival_learning"]["algorithm"] == ALGORITHM
-    assert manifest["schema_version"] == "ego.life_playground.code_path.v9"
+    assert manifest["schema_version"] == "ego.life_playground.code_path.v10"
     assert "survival_learning.py" in {item["path"] for item in manifest["files"]}
 
 
