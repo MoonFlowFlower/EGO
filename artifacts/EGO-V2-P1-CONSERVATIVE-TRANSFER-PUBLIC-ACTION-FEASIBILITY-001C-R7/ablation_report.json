@@ -1,0 +1,104 @@
+{
+  "aggregation_rule": "exact_loss_geometry_quotient_over_10_remaining_sets_6_completions_and_63_nonempty_exact_member_masks",
+  "code_path_hash": "a892ca7de553a53ab9d0df2a9bbe381159a999e7dd495de020fd13baa77931de",
+  "external_provenance_tool": {
+    "name": "git",
+    "repository_root": "D:\\Project\\AIProject\\MyProject\\Ego",
+    "role": "external_provenance_tool_only",
+    "version": "git version 2.50.1.windows.1"
+  },
+  "input_artifacts": [
+    {
+      "path": "docs/codex/tasks/EGO-V2-P1-CONSERVATIVE-TRANSFER-PUBLIC-ACTION-FEASIBILITY-001C-R7.md",
+      "role": "r7_parent_card",
+      "sha256": "4dc267bde27b3caf39f495026891990779f7b4376abf6a380149bd2537a63f92"
+    },
+    {
+      "path": "docs/codex/tasks/ego-v2-p1-conservative-transfer-public-action-feasibility-001c-r7/COLLISION_RECORD.md",
+      "role": "r7_parent_collision",
+      "sha256": "c50e372966750e0f4d67edde22535c4fbf349f8cea6b741b1eca6b3923cd57a2"
+    },
+    {
+      "path": "docs/codex/tasks/ego-v2-p1-conservative-transfer-public-action-feasibility-001c-r7/FROZEN_DESIGN.json",
+      "role": "r7_parent_design",
+      "sha256": "1009c951fca9cf2982f6e2ac82550aa8b979e3ef3534eac29858219e5bb8c7e8"
+    },
+    {
+      "path": "docs/codex/tasks/EGO-V2-P1-CONSERVATIVE-TRANSFER-PUBLIC-ACTION-FEASIBILITY-IMPLEMENTATION-001C-R7-I1.md",
+      "role": "r7_implementation_card",
+      "sha256": "cb452ccb9408547f99e7ef62dd286dffcae5e60ccfda07c225b9129a71d672ab"
+    },
+    {
+      "path": "scripts/codex/check_ego_v2_conservative_transfer_public_action_feasibility_001c_r7.py",
+      "role": "producer",
+      "sha256": "a892ca7de553a53ab9d0df2a9bbe381159a999e7dd495de020fd13baa77931de"
+    },
+    {
+      "path": "scripts/codex/tests/test_check_ego_v2_conservative_transfer_public_action_feasibility_001c_r7.py",
+      "role": "verification_test",
+      "sha256": "699d59b8efff303faf4c1530195aaf0ddf3267bba0630f5dcb6bbd9c60480341"
+    }
+  ],
+  "may_rescue_formal_verdict": false,
+  "mean_baseline_ablation": {
+    "strictly_worse_geometry_count": 10,
+    "total_aggregate_excess_error_micro": 8599980,
+    "verdict_role": "diagnostic_only_cannot_replace_L1_baseline"
+  },
+  "positive_dispatch_reached": true,
+  "producer_function": "check_ego_v2_conservative_transfer_public_action_feasibility_001c_r7.write_evidence_bundle",
+  "run_id": "public-action-r7-740e0f1ca074c28f",
+  "runtime_receipt": {
+    "decision_dtype": "unbounded Python int",
+    "external_executable_dependency": "git for provenance gate only",
+    "floating_verdict_arithmetic": false,
+    "python_dependency_policy": "Python standard library only",
+    "python_implementation": "CPython",
+    "python_version": "3.13.7"
+  },
+  "schema_version": "ego.v2.conservative_transfer.public_action_feasibility.v1.ablation",
+  "source_provenance": {
+    "cumulative_diff_paths": [
+      "docs/codex/tasks/EGO-V2-P1-CONSERVATIVE-TRANSFER-PUBLIC-ACTION-FEASIBILITY-IMPLEMENTATION-001C-R7-I1.md",
+      "scripts/codex/check_ego_v2_conservative_transfer_public_action_feasibility_001c_r7.py",
+      "scripts/codex/tests/test_check_ego_v2_conservative_transfer_public_action_feasibility_001c_r7.py"
+    ],
+    "cumulative_diff_within_allowlist": true,
+    "current_head": "de38ec9804227783581604014e66923afe8b02b9",
+    "dynamic_source_hash_policy": "tracked_worktree_bytes_must_match_HEAD_no_self_expected_SHA_literal",
+    "failure_codes": [],
+    "formal_eligible": true,
+    "nonartifact_dirty_path_count": 0,
+    "parent_design_commit": "ed0902c686cb60b189bce8944d17f5e84a62b3ff",
+    "phase_a_commit": "682c1debb271a2b34c20a9c5822ecea78f16bd3b",
+    "phase_a_is_ancestor": true,
+    "required_source_lineage_present": true,
+    "source_commit": "de38ec9804227783581604014e66923afe8b02b9",
+    "sources_tracked_and_match_head": true
+  },
+  "task_id": "EGO-V2-P1-CONSERVATIVE-TRANSFER-PUBLIC-ACTION-FEASIBILITY-001C-R7",
+  "zero_gain_A_equals_B_positive_control": {
+    "action_equals_public_median": true,
+    "dispatch_summary": {
+      "bounded_feasible_mask_count": 1,
+      "inconclusive_mask_count": 0,
+      "strict_feasible_mask_count": 1
+    },
+    "mask": 1,
+    "remaining_prototypes": [
+      0,
+      1,
+      2
+    ],
+    "strict_feasible": true,
+    "true_gain_threshold_micro": 0,
+    "truth_benefits_micro": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}
