@@ -20,15 +20,21 @@
    tests.
 7. Cover all 120 target mappings by an explicit symmetry argument, separately
    require exact-target membership for the true-analogy positive branch, and
-   compare with a structurally separate 20-ordered-pair enumeration.
+   compare with an explicit same-kernel 20-ordered-pair expansion.
 8. Verify stored verdict/output never enters recomputation.
 9. Record both maximum positive-effect count and nontrivial gate-use count.
 10. Treat zero headroom as the reference/gate's bounded failure, not causal-
     schema, transfer learning, neural learning, or AGI falsification.
 
-The two enumeration implementations and role reviews remain inside the same
-model/tool lineage.  They provide algorithmic cross-checking, not external
-independent audit.
+The primary and ordered-pair cross-check share one integer arithmetic kernel,
+and all role reviews remain inside the same model/tool lineage.  The cross-check
+tests coverage/symmetry only; it is neither an independent math implementation
+nor external independent audit.
+
+The producer and dispatcher must not assert the expected zero answer as a
+precondition.  Synthetic positive and negative inputs must prove that both
+verdict branches are operationally reachable before the computed R6 result is
+banked.
 
 ## Expected negative mechanism
 

@@ -126,11 +126,13 @@ plus prototype.  Two implementations copying an unbound table are not accepted.
 - Separately enumerate the true-analogy subset by requiring the exact target
   mapping to appear one or more times in the six-source multiset; report its
   own case count, positive count, and maximum improvement.
-- Cross-check with a slower structurally independent root implementation over
-  all 20 ordered observed-prototype pairs (`2,227,680` state/target cases).
+- Cross-check the symmetry reduction by explicitly expanding all 20 ordered
+  observed-prototype pairs (`2,227,680` state/target cases) through the same
+  frozen integer arithmetic kernel.  This is a coverage/symmetry cross-check;
+  it is not an independent implementation of contribution, rounding, or q05.
 
-The cross-check is algorithmic/structural separation performed inside the same
-model/tool lineage.  It is not external independent audit.
+The primary enumeration, symmetry cross-check, tests, and role reviews are all
+inside the same model/tool lineage.  None is external independent audit.
 
 This is a complete finite enumeration, not statistical sampling; no p-value or
 confidence interval is applicable.
@@ -138,10 +140,18 @@ confidence interval is applicable.
 ## Trace/replay requirement
 
 The producer writes canonical machine-readable outputs under the task artifact
-root and a replay verifier reruns the producer, canonicalizes JSON, and requires
-exact equality of result content and canonical hashes.  Stored verdict fields
-are never inputs to enumeration.  The trace records coverage counts, arithmetic
-contract, maximum case, and gate-use counts, not per-world or private data.
+root.  A **fresh CLI process** must rerun the producer before reading the prior
+bundle, canonicalize outputs, and require exact equality of result content and
+core file hashes.  Stored verdict fields are never inputs to enumeration.  The
+trace records coverage counts, arithmetic contract, maximum case, and gate-use
+counts, not per-world or private data.
+
+The enumerator must be outcome-neutral: computation returns observed values
+without asserting the expected negative answer.  A separate first-true
+dispatcher implements both positive and negative branches, with synthetic
+tests proving the positive branch is reachable and private/instrument-invalid
+branches retain priority.  Expected R6 values may be asserted in tests only
+after this two-sided dispatch property is established.
 
 ## Leakage and seed firewall
 
@@ -177,12 +187,16 @@ Accept only if:
 3. the producer has tests for fixed signatures, contribution grammar, state
    count, complete target coverage, half-even rounding, exact quantile boundary,
    output schema, no input surface, and expected failure dispatch;
-4. the producer and structurally separate same-lineage recomputation agree on
-   zero positive cases and maximum improvement;
+4. the primary symmetry-reduced enumeration and explicit 20-ordered-pair
+   same-kernel expansion agree on zero positive cases and maximum improvement;
 5. replay from code recomputation matches canonical result bytes;
 6. all evidence files derive from callable computation and contain producer,
    inputs, aggregation, code hash, and run receipt;
-7. no product source, controller, seed, mapping, pilot, push, or tag is used.
+7. tests exercise the exact vectorized half-even and q05 functions used by the
+   evidence path, not unused scalar lookalikes;
+8. provenance binds the producer, test file, Python version, NumPy version,
+   dtype, R5/R6 authority bytes, and fresh-process replay mode;
+9. no product source, controller, seed, mapping, pilot, push, or tag is used.
 
 ## Stop conditions
 
