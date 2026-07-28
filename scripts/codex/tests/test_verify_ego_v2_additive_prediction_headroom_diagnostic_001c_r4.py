@@ -855,6 +855,63 @@ def test_materialized_runtime_import_matches_banked_sqlite_code_path(tmp_path) -
     }
 
 
+def test_frozen_subprocess_environment_pins_direct_and_nested_numeric_runtime(
+    tmp_path,
+) -> None:
+    probe = tmp_path / "runtime_probe.py"
+    probe.write_text(
+        """
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import numpy as np
+
+code = (
+    "import json,sys; from pathlib import Path; import numpy as np; "
+    "print(json.dumps({'python_version':sys.version.split()[0],"
+    "'numpy_version':np.__version__,'no_user_site':bool(sys.flags.no_user_site),"
+    "'numpy_module_path':str(Path(np.__file__).resolve())},sort_keys=True))"
+)
+nested = subprocess.run(
+    [sys.executable, "-c", code],
+    check=True,
+    capture_output=True,
+    text=True,
+    env=os.environ.copy(),
+)
+direct = {
+    "python_version": sys.version.split()[0],
+    "numpy_version": np.__version__,
+    "no_user_site": bool(sys.flags.no_user_site),
+    "numpy_module_path": str(Path(np.__file__).resolve()),
+}
+print(json.dumps({"direct": direct, "nested": json.loads(nested.stdout)}, sort_keys=True))
+""".strip()
+        + "\n",
+        encoding="utf-8",
+    )
+    environment = verifier.frozen_subprocess_environment(tmp_path)
+
+    completed = subprocess.run(
+        [sys.executable, str(probe)],
+        check=True,
+        capture_output=True,
+        text=True,
+        env=environment,
+    )
+    receipt = json.loads(completed.stdout)
+
+    assert receipt["direct"] == receipt["nested"]
+    assert receipt["direct"]["python_version"] == "3.13.7"
+    assert receipt["direct"]["numpy_version"] == "2.2.6"
+    assert receipt["direct"]["no_user_site"] is True
+    assert receipt["direct"]["numpy_module_path"] == str(
+        verifier.Path(verifier.np.__file__).resolve()
+    )
+
+
 def test_import_receipt_is_bound_to_materialized_files(tmp_path) -> None:
     manifest = verifier._materialize_frozen_source(tmp_path)
     receipt = {
@@ -874,6 +931,7 @@ def test_import_receipt_is_bound_to_materialized_files(tmp_path) -> None:
             }.items()
         },
         "engine_code_path_hash": verifier.R2_RUNTIME_CODE_PATH_HASH,
+        "numeric_runtime": verifier.expected_numeric_runtime_receipt(),
     }
 
     verified = verifier.validate_import_receipt(receipt, manifest)
@@ -883,6 +941,11 @@ def test_import_receipt_is_bound_to_materialized_files(tmp_path) -> None:
         "D:/Project/AIProject/MyProject/Ego/labs/ego_life_playground_v0/engine.py"
     )
     with pytest.raises(verifier.HeadroomDiagnosticError, match="import receipt"):
+        verifier.validate_import_receipt(receipt, manifest)
+
+    receipt["modules"]["engine"]["path"] = "labs/ego_life_playground_v0/engine.py"
+    receipt["numeric_runtime"]["no_user_site"] = False
+    with pytest.raises(verifier.HeadroomDiagnosticError, match="numeric runtime"):
         verifier.validate_import_receipt(receipt, manifest)
 
 

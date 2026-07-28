@@ -240,6 +240,7 @@ def collect_contract_manifest(*, require_clean: bool) -> dict[str, Any]:
         if (
             sys.version.split()[0] != FROZEN_PYTHON_VERSION
             or np.__version__ != FROZEN_NUMPY_VERSION
+            or not bool(sys.flags.no_user_site)
         ):
             raise HeadroomDiagnosticError("R4 frozen numeric runtime drifted")
         for relative in R4_CONTRACT_PATHS:
@@ -261,9 +262,34 @@ def collect_contract_manifest(*, require_clean: bool) -> dict[str, Any]:
             "python_version": sys.version.split()[0],
             "numpy_version": np.__version__,
             "numpy_dtype": np.dtype(np.float64).str,
+            "no_user_site": bool(sys.flags.no_user_site),
+            "python_executable": str(Path(sys.executable).resolve()),
+            "numpy_module_path": str(Path(np.__file__).resolve()),
         },
         "clean_and_tracked_required": require_clean,
     }
+
+
+def expected_numeric_runtime_receipt() -> dict[str, Any]:
+    return {
+        "python_version": FROZEN_PYTHON_VERSION,
+        "numpy_version": FROZEN_NUMPY_VERSION,
+        "numpy_dtype": np.dtype(np.float64).str,
+        "no_user_site": True,
+        "python_executable": str(Path(sys.executable).resolve()),
+        "numpy_module_path": str(Path(np.__file__).resolve()),
+    }
+
+
+def frozen_subprocess_environment(snapshot: Path) -> dict[str, str]:
+    environment = os.environ.copy()
+    existing = environment.get("PYTHONPATH", "")
+    environment["PYTHONPATH"] = str(snapshot) + (
+        os.pathsep + existing if existing else ""
+    )
+    # This propagates into the frozen R2 evaluator's own private subprocess.
+    environment["PYTHONNOUSERSITE"] = "1"
+    return environment
 
 
 def _git(*args: str, binary: bool = False) -> str | bytes:
@@ -1544,7 +1570,14 @@ def validate_import_receipt(
             )
     if receipt.get("engine_code_path_hash") != R2_RUNTIME_CODE_PATH_HASH:
         raise HeadroomDiagnosticError("materialized import receipt code-path drifted")
-    return {"exact": True, "modules": dict(modules), "engine_code_path_hash": R2_RUNTIME_CODE_PATH_HASH}
+    if receipt.get("numeric_runtime") != expected_numeric_runtime_receipt():
+        raise HeadroomDiagnosticError("materialized numeric runtime receipt drifted")
+    return {
+        "exact": True,
+        "modules": dict(modules),
+        "engine_code_path_hash": R2_RUNTIME_CODE_PATH_HASH,
+        "numeric_runtime": dict(receipt["numeric_runtime"]),
+    }
 
 
 _FROZEN_DRIVER = r'''
@@ -1559,6 +1592,7 @@ snapshot = Path(sys.argv[1]).resolve()
 packet = Path(sys.argv[2]).resolve()
 sys.path.insert(0, str(snapshot))
 
+import numpy as np
 from scripts.codex import verify_ego_v2_hierarchical_outcome_delta_repair_001c_r2 as r2
 from scripts.codex import verify_ego_v2_factored_predictive_control_boundary_gate_001c as boundary
 from labs.ego_life_playground_v0 import controller, engine, microworld, predictive_control, store
@@ -1589,6 +1623,21 @@ for name, module in modules.items():
 import_receipt["engine_code_path_hash"] = engine.compute_code_path_hash()
 if import_receipt["engine_code_path_hash"] != "b6eadf0c8ba7244ea08cd67eb936438fda182f43e56c65918bde8264fd5b9d29":
     raise RuntimeError("materialized runtime does not recover the banked R2 code path")
+import_receipt["numeric_runtime"] = {
+    "python_version": sys.version.split()[0],
+    "numpy_version": np.__version__,
+    "numpy_dtype": np.dtype(np.float64).str,
+    "no_user_site": bool(sys.flags.no_user_site),
+    "python_executable": str(Path(sys.executable).resolve()),
+    "numpy_module_path": str(Path(np.__file__).resolve()),
+}
+if (
+    import_receipt["numeric_runtime"]["python_version"] != "3.13.7"
+    or import_receipt["numeric_runtime"]["numpy_version"] != "2.2.6"
+    or import_receipt["numeric_runtime"]["numpy_dtype"] != "<f8"
+    or import_receipt["numeric_runtime"]["no_user_site"] is not True
+):
+    raise RuntimeError("materialized numeric runtime drifted")
 report = r2.run_balanced(packet, smoke)
 training_rows = []
 for run, (layout, world_seed, policy_seed) in zip(smoke["runs"], r2.CONTEXTS):
@@ -1644,10 +1693,9 @@ def _run_frozen_balanced() -> tuple[dict[str, Any], dict[str, Any], dict[str, An
             shutil.copyfile(SOURCE_PACKET / name, packet / name)
         driver = root / "frozen_headroom_driver.py"
         driver.write_text(_FROZEN_DRIVER, encoding="utf-8", newline="\n")
-        environment = os.environ.copy()
-        environment["PYTHONPATH"] = str(snapshot) + os.pathsep + environment.get("PYTHONPATH", "")
+        environment = frozen_subprocess_environment(snapshot)
         completed = subprocess.run(
-            [sys.executable, str(driver), str(snapshot), str(packet)],
+            [sys.executable, "-s", str(driver), str(snapshot), str(packet)],
             cwd=snapshot,
             env=environment,
             check=True,

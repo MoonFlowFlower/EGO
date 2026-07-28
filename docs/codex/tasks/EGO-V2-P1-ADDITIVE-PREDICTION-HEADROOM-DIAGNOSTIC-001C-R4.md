@@ -70,6 +70,14 @@
   Every imported source path and SHA must be reported.  Failure of any step is
   `BLOCKED_PROVENANCE_OR_RECOMPUTATION`; no semantic or EOL approximation is
   allowed.
+- **Frozen numeric runtime:** the outer verifier, materialized evaluator
+  subprocess, and the frozen evaluator's nested private subprocess must all use
+  Python `3.13.7`, NumPy `2.2.6`, float64 dtype `<f8`, and disabled user-site
+  imports.  The outer command and inherited child environment must set
+  `PYTHONNOUSERSITE=1`; the first child also uses `-s`.  The materialized import
+  receipt must record and assert Python version/executable, NumPy version/module
+  path/dtype, and `sys.flags.no_user_site=true`.  Any mismatch is
+  `BLOCKED_PROVENANCE_OR_RECOMPUTATION` before packet publication.
 - **Frozen input authority:** read and verify these R2 inputs, then copy only
   the three execution inputs into an isolated temporary packet; never write
   into the R2 packet and do not duplicate the databases into final artifacts:
@@ -142,7 +150,8 @@
   layout/seed/context drift, old-artifact mutation, canonical-output/nonempty
   no-overwrite, complete frozen-check-set consistency, independent row/digest/
   legacy/ablation/support recomputation mismatch, required-section deletion,
-  check-truth tampering, mid-write transactional failure, and verdict priority.  Tests
+  check-truth tampering, direct/nested subprocess numeric-runtime escape,
+  mid-write transactional failure, and verdict priority.  Tests
   must include positive-control contaminated copies and may not execute
   formal/controller/fresh worlds.
 - **Instrument-validity contract:** the exact frozen check-key set is an input
