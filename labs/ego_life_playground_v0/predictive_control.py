@@ -20,14 +20,14 @@ import numpy as np
 from .microworld import ACTIONS, FACING_DELTAS, FACING_ORDER, PUBLIC_OBSERVATION_SCHEMA_VERSION
 
 
-STATE_SCHEMA_VERSION = "ego.life_playground.predictive_control.v4"
+STATE_SCHEMA_VERSION = "ego.life_playground.predictive_control.v5"
 BELIEF_SCHEMA_VERSION = "ego.life_playground.relative_belief.v1"
-MODEL_SCHEMA_VERSION = "ego.life_playground.factored_predictor.v4"
+MODEL_SCHEMA_VERSION = "ego.life_playground.factored_predictor.v5"
 EXPLORATION_SCHEMA_VERSION = "ego.life_playground.predictive_exploration.v1"
-PREDICTION_SCHEMA_VERSION = "ego.life_playground.outcome_prediction.v4"
-PLAN_SCHEMA_VERSION = "ego.life_playground.factored_plan.v4"
-UPDATE_SCHEMA_VERSION = "ego.life_playground.predictor_update.v4"
-ALGORITHM = "online_linear_softmax_factored_mpc"
+PREDICTION_SCHEMA_VERSION = "ego.life_playground.outcome_prediction.v5"
+PLAN_SCHEMA_VERSION = "ego.life_playground.factored_plan.v5"
+UPDATE_SCHEMA_VERSION = "ego.life_playground.predictor_update.v5"
+ALGORITHM = "online_identified_additive_outcome_delta_factored_mpc"
 LEARNING_RATE = 0.08
 HORIZON = 12
 BEAM_WIDTH = 16
@@ -134,6 +134,8 @@ def hyperparameters() -> dict[str, Any]:
         "discount": DISCOUNT,
         "outcomes": list(OUTCOMES),
         "feature_names": list(FEATURE_NAMES),
+        "delta_model": "shared_action_state_feature_plus_zero_sum_outcome_offset",
+        "delta_update": "joint_nlms_then_prediction_invariant_zero_sum_projection",
         "predictor_inputs": ["policy_observation", "organism", "relative_belief"],
         "goal_is_predictor_input": False,
         "action_exposure_target": ACTION_EXPOSURE_TARGET,
@@ -158,12 +160,16 @@ def _empty_outcome_weights() -> list[list[list[float]]]:
     return [[_zero_vector(len(FEATURE_NAMES)) for _ in OUTCOMES] for _ in ACTIONS]
 
 
-def _empty_delta_weights() -> list[list[list[list[float]]]]:
+def _empty_delta_base_weights() -> list[list[list[float]]]:
     return [
-        [
-            [_zero_vector(len(FEATURE_NAMES)) for _ in STATE_KEYS]
-            for _ in OUTCOMES
-        ]
+        [_zero_vector(len(FEATURE_NAMES)) for _ in STATE_KEYS]
+        for _ in ACTIONS
+    ]
+
+
+def _empty_delta_outcome_offsets() -> list[list[list[float]]]:
+    return [
+        [_zero_vector(len(STATE_KEYS)) for _ in OUTCOMES]
         for _ in ACTIONS
     ]
 
@@ -202,7 +208,8 @@ def empty_state() -> dict[str, Any]:
             "schema_version": MODEL_SCHEMA_VERSION,
             "algorithm": ALGORITHM,
             "outcome_weights": _empty_outcome_weights(),
-            "delta_weights": _empty_delta_weights(),
+            "delta_base_weights": _empty_delta_base_weights(),
+            "delta_outcome_offsets": _empty_delta_outcome_offsets(),
             "resource_weights": _empty_action_feature_weights(),
             "terminal_weights": _empty_action_feature_weights(),
             "visit_counts": {},
@@ -434,7 +441,8 @@ def validate_state(state: Mapping[str, Any]) -> None:
             "schema_version",
             "algorithm",
             "outcome_weights",
-            "delta_weights",
+            "delta_base_weights",
+            "delta_outcome_offsets",
             "resource_weights",
             "terminal_weights",
             "visit_counts",
@@ -453,10 +461,26 @@ def validate_state(state: Mapping[str, Any]) -> None:
         (len(ACTIONS), len(OUTCOMES), len(FEATURE_NAMES)),
     )
     _validate_weight_array(
-        "delta_weights",
-        model["delta_weights"],
-        (len(ACTIONS), len(OUTCOMES), len(STATE_KEYS), len(FEATURE_NAMES)),
+        "delta_base_weights",
+        model["delta_base_weights"],
+        (len(ACTIONS), len(STATE_KEYS), len(FEATURE_NAMES)),
     )
+    _validate_weight_array(
+        "delta_outcome_offsets",
+        model["delta_outcome_offsets"],
+        (len(ACTIONS), len(OUTCOMES), len(STATE_KEYS)),
+    )
+    outcome_offsets = np.asarray(
+        model["delta_outcome_offsets"], dtype=NUMERIC_DTYPE
+    )
+    if np.any(np.abs(outcome_offsets) > 4.0):
+        raise PredictiveControlInvariantError(
+            "delta_outcome_offsets exceed frozen weight bounds"
+        )
+    if np.any(np.abs(outcome_offsets.sum(axis=1)) > 1e-9):
+        raise PredictiveControlInvariantError(
+            "delta_outcome_offsets must sum to zero by action/state"
+        )
     _validate_weight_array(
         "resource_weights",
         model["resource_weights"],
@@ -478,7 +502,12 @@ def _compiled_model_arrays(model: Mapping[str, Any]) -> dict[str, np.ndarray]:
     numeric_runtime_contract()
     return {
         "outcome_weights": np.asarray(model["outcome_weights"], dtype=NUMERIC_DTYPE),
-        "delta_weights": np.asarray(model["delta_weights"], dtype=NUMERIC_DTYPE),
+        "delta_base_weights": np.asarray(
+            model["delta_base_weights"], dtype=NUMERIC_DTYPE
+        ),
+        "delta_outcome_offsets": np.asarray(
+            model["delta_outcome_offsets"], dtype=NUMERIC_DTYPE
+        ),
         "resource_weights": np.asarray(model["resource_weights"], dtype=NUMERIC_DTYPE),
         "terminal_weights": np.asarray(model["terminal_weights"], dtype=NUMERIC_DTYPE),
     }
@@ -744,16 +773,12 @@ def _ordered_dot(weights: np.ndarray, features: np.ndarray) -> float:
 def _compiled_prediction_matrix(
     compiled_model: Mapping[str, np.ndarray],
 ) -> np.ndarray:
-    """Pack the frozen 6+(6x4)+1+1 predictor heads once per planning call."""
+    """Pack the frozen 6+4+1+1 feature heads once per planning call."""
 
     return np.concatenate(
         (
             compiled_model["outcome_weights"],
-            compiled_model["delta_weights"].reshape(
-                len(ACTIONS),
-                len(OUTCOMES) * len(STATE_KEYS),
-                len(FEATURE_NAMES),
-            ),
+            compiled_model["delta_base_weights"],
             compiled_model["resource_weights"][:, np.newaxis, :],
             compiled_model["terminal_weights"][:, np.newaxis, :],
         ),
@@ -786,6 +811,7 @@ def _planning_prediction_vector(
     payload: Mapping[str, Any],
     action: str,
     feature_vector: np.ndarray,
+    compiled_model: Mapping[str, np.ndarray],
     compiled_prediction_matrix: np.ndarray,
     visit_key_cache: dict[tuple[Any, ...], str],
 ) -> tuple[float, ...]:
@@ -800,6 +826,7 @@ def _planning_prediction_vector(
         payload=payload,
         action=action,
         packed_values=packed_values,
+        delta_outcome_offsets=compiled_model["delta_outcome_offsets"][action_index],
         visit_key_cache=visit_key_cache,
     )
 
@@ -810,6 +837,7 @@ def _planning_prediction_vector_from_packed(
     payload: Mapping[str, Any],
     action: str,
     packed_values: np.ndarray,
+    delta_outcome_offsets: np.ndarray,
     visit_key_cache: dict[tuple[Any, ...], str],
 ) -> tuple[float, ...]:
     probabilities = _softmax_values(packed_values[: len(OUTCOMES)])
@@ -825,11 +853,12 @@ def _planning_prediction_vector_from_packed(
         visit_key = _visit_key(action, payload)
         visit_key_cache[visit_descriptor] = visit_key
     visit_count = int(state["model"]["visit_counts"].get(visit_key, 0))
-    conditional_offset = len(OUTCOMES)
-    conditional_values = packed_values[
-        conditional_offset : conditional_offset
-        + len(OUTCOMES) * len(STATE_KEYS)
-    ].reshape(len(OUTCOMES), len(STATE_KEYS))
+    base_offset = len(OUTCOMES)
+    base_values = packed_values[base_offset : base_offset + len(STATE_KEYS)]
+    conditional_values = np.asarray(
+        base_values[np.newaxis, :] + delta_outcome_offsets,
+        dtype=NUMERIC_DTYPE,
+    )
     conditional_values.clip(
         -0.35,
         0.35,
@@ -867,7 +896,7 @@ def _planning_prediction_vector_from_packed(
         + probability_4 * float(conditional_values[4, 3])
         + probability_5 * float(conditional_values[5, 3]),
     )
-    scalar_offset = conditional_offset + len(OUTCOMES) * len(STATE_KEYS)
+    scalar_offset = base_offset + len(STATE_KEYS)
     return probabilities + expected_delta + (
         _sigmoid(float(packed_values[scalar_offset])),
         _sigmoid(float(packed_values[scalar_offset + 1])),
@@ -945,28 +974,25 @@ def _predict_from_payload(
             visit_key_cache[visit_descriptor] = visit_key
     visit_count = int(state["model"]["visit_counts"].get(visit_key, 0))
     round_prediction = _round if include_hashes else float
-    conditional_offset = len(OUTCOMES)
-    conditional_values = (
+    base_offset = len(OUTCOMES)
+    base_values = (
         np.asarray(
             [
-                [
-                    _ordered_dot(
-                        compiled["delta_weights"][
-                            action_index, outcome_index, state_index
-                        ],
-                        feature_vector,
-                    )
-                    for state_index in range(len(STATE_KEYS))
-                ]
-                for outcome_index in range(len(OUTCOMES))
+                _ordered_dot(
+                    compiled["delta_base_weights"][action_index, state_index],
+                    feature_vector,
+                )
+                for state_index in range(len(STATE_KEYS))
             ],
             dtype=NUMERIC_DTYPE,
         )
         if packed_values is None
-        else packed_values[
-            conditional_offset : conditional_offset
-            + len(OUTCOMES) * len(STATE_KEYS)
-        ].reshape(len(OUTCOMES), len(STATE_KEYS))
+        else packed_values[base_offset : base_offset + len(STATE_KEYS)]
+    )
+    conditional_values = np.asarray(
+        base_values[np.newaxis, :]
+        + compiled["delta_outcome_offsets"][action_index],
+        dtype=NUMERIC_DTYPE,
     )
     conditional_delta_by_outcome = {
         outcome: {
@@ -997,7 +1023,7 @@ def _predict_from_payload(
         )
         for key in STATE_KEYS
     }
-    scalar_offset = conditional_offset + len(OUTCOMES) * len(STATE_KEYS)
+    scalar_offset = base_offset + len(STATE_KEYS)
     prediction = {
         "schema_version": PREDICTION_SCHEMA_VERSION,
         "producer_function": "ego_life_playground_v0.predictive_control.predict_action",
@@ -1362,6 +1388,7 @@ def _prediction_for_pose(
             payload=payload,
             action=action,
             feature_vector=feature_vector,
+            compiled_model=compiled_model,
             compiled_prediction_matrix=compiled_prediction_matrix,
             visit_key_cache=visit_key_cache,
         )
@@ -1854,6 +1881,81 @@ def _updated_vector(
     )
 
 
+def _updated_identified_delta(
+    base_row: np.ndarray,
+    outcome_offsets: np.ndarray,
+    features: np.ndarray,
+    *,
+    actual_outcome_index: int,
+    error: float,
+) -> tuple[np.ndarray, np.ndarray, dict[str, Any]]:
+    """Apply joint NLMS, then remove the additive intercept gauge exactly."""
+
+    denominator = float(np.dot(features, features)) + 1.0
+    if not math.isfinite(denominator) or denominator <= 0.0:
+        raise PredictiveControlInvariantError("delta NLMS denominator is invalid")
+    step = LEARNING_RATE * float(error) / denominator
+    raw_base = np.asarray(
+        [
+            _round(float(base_row[index]) + step * float(features[index]))
+            for index in range(len(FEATURE_NAMES))
+        ],
+        dtype=NUMERIC_DTYPE,
+    )
+    raw_offsets = np.asarray(outcome_offsets, dtype=NUMERIC_DTYPE).copy()
+    raw_offsets[actual_outcome_index] = _round(
+        float(raw_offsets[actual_outcome_index]) + step
+    )
+    projection_mean = float(np.mean(raw_offsets, dtype=NUMERIC_DTYPE))
+    projected_base = raw_base.copy()
+    projected_base[FEATURE_INDEX["bias"]] = (
+        float(projected_base[FEATURE_INDEX["bias"]]) + projection_mean
+    )
+    projected_offsets = np.asarray(
+        [float(value) - projection_mean for value in raw_offsets],
+        dtype=NUMERIC_DTYPE,
+    )
+    if np.any(np.abs(projected_base) > 4.0) or np.any(
+        np.abs(projected_offsets) > 4.0
+    ):
+        raise PredictiveControlInvariantError(
+            "identified delta update exceeds frozen weight bounds"
+        )
+    raw_conditionals = [
+        _round(float(raw_base[FEATURE_INDEX["bias"]]) + float(raw_offsets[index]))
+        for index in range(len(OUTCOMES))
+    ]
+    projected_conditionals = [
+        _round(
+            float(projected_base[FEATURE_INDEX["bias"]])
+            + float(projected_offsets[index])
+        )
+        for index in range(len(OUTCOMES))
+    ]
+    projection_max_abs_difference = max(
+        abs(float(raw) - float(projected))
+        for raw, projected in zip(raw_conditionals, projected_conditionals)
+    )
+    projection_preserved = projection_max_abs_difference <= 1e-11
+    if not projection_preserved:
+        raise PredictiveControlInvariantError(
+            "zero-sum projection changed conditional delta intercepts"
+        )
+    return projected_base, projected_offsets, {
+        "nlms_denominator": _round(denominator),
+        "nlms_step": _round(step),
+        "projection_mean": _round(projection_mean),
+        "raw_conditionals_hash": _canonical_hash(
+            [round(value, 10) for value in raw_conditionals]
+        ),
+        "projected_conditionals_hash": _canonical_hash(
+            [round(value, 10) for value in projected_conditionals]
+        ),
+        "projection_max_abs_difference": projection_max_abs_difference,
+        "projection_preserved_conditionals": projection_preserved,
+    }
+
+
 def update_after_transition(
     state: Mapping[str, Any],
     *,
@@ -1923,8 +2025,18 @@ def update_after_transition(
                 feature_vector,
                 target - float(probabilities[outcome]),
             )
-        conditional_delta_hash_before = _canonical_hash(model["delta_weights"])
+        delta_base_hash_before = _canonical_hash(model["delta_base_weights"])
+        delta_outcome_offset_hash_before = _canonical_hash(
+            model["delta_outcome_offsets"]
+        )
+        conditional_delta_hash_before = _canonical_hash(
+            {
+                "delta_base_weights": model["delta_base_weights"],
+                "delta_outcome_offsets": model["delta_outcome_offsets"],
+            }
+        )
         actual_outcome_index = OUTCOME_INDEX[actual_outcome_type]
+        delta_projection_by_state: dict[str, Any] = {}
         for key in STATE_KEYS:
             error = float(actual_delta[key]) - float(
                 prediction_before["conditional_delta_by_outcome"][actual_outcome_type][
@@ -1932,14 +2044,16 @@ def update_after_transition(
                 ]
             )
             state_index = STATE_INDEX[key]
-            compiled_model["delta_weights"][
-                action_index, actual_outcome_index, state_index
-            ] = _updated_vector(
-                compiled_model["delta_weights"][
-                    action_index, actual_outcome_index, state_index
-                ],
+            (
+                compiled_model["delta_base_weights"][action_index, state_index],
+                compiled_model["delta_outcome_offsets"][action_index, :, state_index],
+                delta_projection_by_state[key],
+            ) = _updated_identified_delta(
+                compiled_model["delta_base_weights"][action_index, state_index],
+                compiled_model["delta_outcome_offsets"][action_index, :, state_index],
                 feature_vector,
-                error,
+                actual_outcome_index=actual_outcome_index,
+                error=error,
             )
         compiled_model["resource_weights"][action_index] = _updated_vector(
             compiled_model["resource_weights"][action_index],
@@ -1961,7 +2075,17 @@ def update_after_transition(
         model["update_count"] = int(model["update_count"]) + 1
         updated["model"] = model
     else:
-        conditional_delta_hash_before = _canonical_hash(model["delta_weights"])
+        delta_base_hash_before = _canonical_hash(model["delta_base_weights"])
+        delta_outcome_offset_hash_before = _canonical_hash(
+            model["delta_outcome_offsets"]
+        )
+        conditional_delta_hash_before = _canonical_hash(
+            {
+                "delta_base_weights": model["delta_base_weights"],
+                "delta_outcome_offsets": model["delta_outcome_offsets"],
+            }
+        )
+        delta_projection_by_state = {}
     if relative_map_mode == "relative":
         belief = _advance_belief_pose(
             state["belief"], action=action, outcome_type=actual_outcome_type
@@ -2003,9 +2127,21 @@ def update_after_transition(
             for key in STATE_KEYS
         },
         "delta_outcome_updated": actual_outcome_type if updates_enabled else None,
+        "delta_projection_by_state": delta_projection_by_state,
+        "delta_base_hash_before": delta_base_hash_before,
+        "delta_base_hash_after": _canonical_hash(
+            updated["model"]["delta_base_weights"]
+        ),
+        "delta_outcome_offset_hash_before": delta_outcome_offset_hash_before,
+        "delta_outcome_offset_hash_after": _canonical_hash(
+            updated["model"]["delta_outcome_offsets"]
+        ),
         "conditional_delta_hash_before": conditional_delta_hash_before,
         "conditional_delta_hash_after": _canonical_hash(
-            updated["model"]["delta_weights"]
+            {
+                "delta_base_weights": updated["model"]["delta_base_weights"],
+                "delta_outcome_offsets": updated["model"]["delta_outcome_offsets"],
+            }
         ),
         "model_hash_before": before_hash,
         "model_hash_after": _canonical_hash(updated["model"]),

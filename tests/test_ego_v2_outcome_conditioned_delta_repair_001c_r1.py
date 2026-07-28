@@ -10,6 +10,12 @@ from labs.ego_life_playground_v0 import engine, predictive_control
 from labs.ego_life_playground_v0.microworld import PUBLIC_OBSERVATION_SCHEMA_VERSION
 
 
+# R1's dense v4 tensor is an intentionally superseded live schema. Its banked
+# artifacts and verifier remain immutable; R2 has its own executable contract
+# tests rather than silently making these v4 assertions describe v5.
+pytestmark = pytest.mark.skip(reason="superseded dense-v4 implementation contract")
+
+
 def _observation(front: str = "empty") -> dict:
     visual = [["occluded" for _ in range(5)] for _ in range(5)]
     visual[2][2] = "self"

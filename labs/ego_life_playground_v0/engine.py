@@ -48,10 +48,10 @@ REENTRY_THRESHOLD = 0.60
 CRITICAL_OVERRIDE_THRESHOLD = 0.15
 VISUAL_TRANSITION_MODEL_KEY = "__visual_transition_counts__"
 
-STATE_SCHEMA_VERSION = "ego.life_playground.state.v9"
-RUN_SCHEMA_VERSION = "ego.life_playground.run.v9"
+STATE_SCHEMA_VERSION = "ego.life_playground.state.v10"
+RUN_SCHEMA_VERSION = "ego.life_playground.run.v10"
 COMMAND_SCHEMA_VERSION = "ego.life_playground.command.v7"
-TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v14"
+TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v15"
 COMPONENT_HASH_SCHEMA_VERSION = "ego.life_playground.component_hashes.v2"
 
 TRIGGER_SOURCES = (
@@ -187,7 +187,7 @@ def compute_code_path_manifest() -> dict[str, Any]:
         Path(__file__).with_name("store.py"),
     )
     return {
-        "schema_version": "ego.life_playground.code_path.v10",
+        "schema_version": "ego.life_playground.code_path.v11",
         "files": [
             {"path": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
             for path in source_paths
@@ -585,7 +585,7 @@ def _respawn_trace(
             "update_count": int(next_state["survival_learner"]["update_count"]),
         },
         "predictive_control": {
-            "schema_version": "ego.life_playground.predictive_control_trace.v3",
+            "schema_version": "ego.life_playground.predictive_control_trace.v4",
             "mode": command["interventions"]["predictive_control_mode"],
             "belief_observation": {
                 "applied": True,
@@ -1431,7 +1431,7 @@ def compute_step(
             "update_count": int(next_state["survival_learner"]["update_count"]),
         },
         "predictive_control": {
-            "schema_version": "ego.life_playground.predictive_control_trace.v3",
+            "schema_version": "ego.life_playground.predictive_control_trace.v4",
             "mode": interventions["predictive_control_mode"],
             "belief_observation": predictive_belief_receipt,
             "belief_hash": canonical_hash(
@@ -3342,6 +3342,11 @@ def _compact_predictive_update(report: Mapping[str, Any]) -> dict[str, Any]:
             "outcome_nll",
             "delta_error",
             "delta_outcome_updated",
+            "delta_projection_by_state",
+            "delta_base_hash_before",
+            "delta_base_hash_after",
+            "delta_outcome_offset_hash_before",
+            "delta_outcome_offset_hash_after",
             "conditional_delta_hash_before",
             "conditional_delta_hash_after",
             "model_hash_before",
