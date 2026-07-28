@@ -1,0 +1,1272 @@
+{
+  "ablation_registry": {
+    "causal_effect_predicates": {
+      "ABL_LOCAL_SHIFT_DELETE": "semantic posterior and either query or unqueried prediction changes on at least one D2 case",
+      "ABL_NO_UPDATE": "complete member-and-forward fails and at least one primary canonical member same-history or common-forward benefit is reduced by >=4375/1000000",
+      "ABL_POSTQUERY_SOURCE_DELETE": "complete member-and-forward fails and at least one primary canonical member same-history benefit is reduced by >=4375/1000000",
+      "ABL_QUERY_OUTCOME_MASK": "complete member-and-forward fails and at least one primary canonical member same-history or common-forward benefit is reduced by >=4375/1000000",
+      "ABL_SHAM_ROTATION": "both registered sham EVSI arms fail complete member-and-forward"
+    },
+    "count": 13,
+    "omission": "ACTIVE_TRANSFER_INSTRUMENT_INVALID",
+    "records": [
+      {
+        "ablation_id": "ABL_SOURCE_DELETE",
+        "definition": "Delete source and local families and invoke canonical PUBLIC_L1_RISK_DP; semantic state, query, and prediction bytes must be identical; no duplicate callable.",
+        "kind": "ablation",
+        "registered_arm_ids": [
+          "ARM_I_SCRATCH__A_L1_EVSI__D_SCRATCH_L1"
+        ]
+      },
+      {
+        "ablation_id": "ABL_LOCAL_SHIFT_DELETE",
+        "definition": "Use I_TRANSFER_NO_LOCAL with primitive mapping weight 1+20*c_B; normalization cancels.",
+        "kind": "ablation",
+        "registered_arm_ids": [
+          "ARM_I_TRANSFER_NO_LOCAL__A_L1_EVSI__D_LCB05_FALLBACK"
+        ]
+      },
+      {
+        "ablation_id": "ABL_NO_UPDATE",
+        "definition": "Rows remain receipts and observed-value copies but never condition the unqueried inference or acquisition distribution.",
+        "kind": "ablation",
+        "registered_arm_ids": [
+          "ARM_I_NO_UPDATE__A_L1_EVSI__D_LCB05_FALLBACK",
+          "ARM_I_NO_UPDATE__A_PASSIVE__D_LCB05_FALLBACK"
+        ]
+      },
+      {
+        "ablation_id": "ABL_ACTIVE_DELETE",
+        "definition": "For each conservative candidate retain its inference and decision and replace acquisition with A_PASSIVE.",
+        "kind": "ablation",
+        "registered_arm_ids": [
+          "ARM_I_TRANSFER__A_PASSIVE__D_LCB05_FALLBACK"
+        ]
+      },
+      {
+        "ablation_id": "ABL_QUERY_OUTCOME_MASK",
+        "definition": "Choose under transfer H1, serialize and copy the H2 observed token, but retain H1 posterior for all unqueried predictions.",
+        "kind": "ablation",
+        "registered_arm_ids": [
+          "ARM_I_TRANSFER_MASK_H2__A_L1_EVSI__D_LCB05_FALLBACK"
+        ]
+      },
+      {
+        "ablation_id": "ABL_POSTQUERY_SOURCE_DELETE",
+        "definition": "Choose under transfer H1, then use exact scratch posterior on the identical H2 and D_SCRATCH_L1 before prediction.",
+        "kind": "ablation",
+        "registered_arm_ids": [
+          "ARM_I_TRANSFER_THEN_SCRATCH__A_L1_EVSI__D_SCRATCH_L1"
+        ]
+      },
+      {
+        "ablation_id": "ABL_SHAM_ROTATION",
+        "definition": "Replace every source tuple (m0,m1,m2,m3,m4) with (m1,m2,m3,m4,m0) before all counts.",
+        "kind": "ablation",
+        "registered_arm_ids": [
+          "ARM_I_SHAM__A_L1_EVSI__D_LCB05_FALLBACK",
+          "ARM_I_SHAM__A_L1_EVSI__D_L1_MEDIAN"
+        ]
+      },
+      {
+        "ablation_id": "ABL_MULTIPLICITY_FLATTEN",
+        "definition": "Unique support has equal mass and local shift is regenerated from unique support with weight k+120*c_U+12*c_LU.",
+        "kind": "ablation",
+        "registered_arm_ids": [
+          "ARM_I_TRANSFER_FLAT__A_L1_EVSI__D_LCB05_FALLBACK"
+        ]
+      },
+      {
+        "ablation_id": "INV_SOURCE_ORDER",
+        "definition": "Enumerate all 6!/product(multiplicity factorial) unique entry orders; canonical semantic state, query, and prediction bytes are invariant.",
+        "kind": "invariance",
+        "scope": "every unique bank; every registered trajectory arm"
+      },
+      {
+        "ablation_id": "INV_TOKEN_RELABEL",
+        "cross_with_prototype_relabel": false,
+        "definition": "Separately run all 120 token permutations, relabel source/target columns and initial token, inverse-map outputs, and require semantic equality.",
+        "kind": "invariance",
+        "scope_arms": [
+          "ARM_I_TRANSFER__A_L1_EVSI__D_LCB05_FALLBACK",
+          "ARM_I_SCRATCH__A_L1_EVSI__D_SCRATCH_L1",
+          "ARM_I_CONSISTENCY__A_L1_EVSI__D_L1_MEDIAN"
+        ],
+        "scope_roles": [
+          "HASH_00",
+          "B_SEPARABLE",
+          "B_COLLISION",
+          "B_DECOY",
+          "B_BALANCED_MARGINAL"
+        ]
+      },
+      {
+        "ablation_id": "INV_PROTOTYPE_RELABEL",
+        "cross_with_token_relabel": false,
+        "definition": "Separately run all 120 prototype permutations, relabel prototype indices and table rows together, inverse-map receipts, and require semantic equality.",
+        "kind": "invariance",
+        "scope_arms": [
+          "ARM_I_TRANSFER__A_L1_EVSI__D_LCB05_FALLBACK",
+          "ARM_I_SCRATCH__A_L1_EVSI__D_SCRATCH_L1",
+          "ARM_I_CONSISTENCY__A_L1_EVSI__D_L1_MEDIAN"
+        ],
+        "scope_roles": [
+          "HASH_00",
+          "B_SEPARABLE",
+          "B_COLLISION",
+          "B_DECOY",
+          "B_BALANCED_MARGINAL"
+        ]
+      },
+      {
+        "ablation_id": "INV_EIG_ENTROPY_ALIAS",
+        "definition": "Independent EIG and maximum-outcome-entropy callables match every integer score, minimizer set, and lexical choice.",
+        "kind": "invariance",
+        "scope_inference_ids": [
+          "I_TRANSFER",
+          "I_SCRATCH",
+          "I_CONSISTENCY"
+        ]
+      },
+      {
+        "ablation_id": "ABL_NO_QUERY",
+        "definition": "Run all three registered H1-only arms; own-unqueried endpoint has four tokens and 16 components.",
+        "kind": "ablation",
+        "registered_arm_ids": [
+          "ARM_I_TRANSFER__A_NO_QUERY__D_LCB05_FALLBACK",
+          "ARM_I_SCRATCH__A_NO_QUERY__D_SCRATCH_L1",
+          "ARM_I_CONSISTENCY__A_NO_QUERY__D_L1_MEDIAN"
+        ]
+      }
+    ]
+  },
+  "acquisition": {
+    "A_ALL_QUERY_ORACLE": "verifier-only four-query enumeration; no witness enters arm or verdict",
+    "A_EIG": {
+      "equivalence": "deterministic-outcome mutual information equals outcome entropy",
+      "objective": "minimize product over positive N_qy of N_qy**N_qy where N_qy=sum W_H1(pi)*1[pi[q]=y]",
+      "tie": "lexical minimum"
+    },
+    "A_FIXED": "named fixed eligible token in base runs",
+    "A_L1_EVSI": {
+      "endpoint_components": 12,
+      "endpoint_tokens": 3,
+      "horizon_queries": 1,
+      "objective": "minimize R(q)=sum_y sum_{pi:W_H1(pi)>0,pi[q]=y} W_H1(pi)*sum_{r not in {initial,q}} L1(a_qy[r],P[pi[r]])",
+      "outcome_weight": "exact posterior predictive primitive integer mass",
+      "tie": "lexical minimum"
+    },
+    "A_MAX_OUTCOME_ENTROPY": "independent callable; must reproduce every A_EIG score, minimizer set, and choice",
+    "A_NO_QUERY": "stop at H1",
+    "A_PASSIVE": "minimum eligible token",
+    "A_UNIFORM_MIXTURE": "exact 1/4 expectation over four fixed-query branches; aggregate only and cannot rescue trajectory gate",
+    "ids": [
+      "A_L1_EVSI",
+      "A_EIG",
+      "A_MAX_OUTCOME_ENTROPY",
+      "A_PASSIVE",
+      "A_FIXED_V1",
+      "A_FIXED_V2",
+      "A_FIXED_V3",
+      "A_FIXED_V4",
+      "A_NO_QUERY",
+      "A_UNIFORM_MIXTURE",
+      "A_ALL_QUERY_ORACLE"
+    ],
+    "tie_policy_enumeration": "for each bank/arm enumerate Cartesian choices of one exact minimizer per nonempty H1 leaf; pairwise gates enumerate product policies; max 4^5 per arm/bank",
+    "tie_sensitivity_failure": "ACTIVE_TRANSFER_QUERY_TIE_SENSITIVE"
+  },
+  "amortization_ceiling_control": {
+    "builder": "separate callable enumerates frozen public domain and invokes canonical primary once per canonical (bank,H1) query state and (bank,H2) prediction state",
+    "control_id": "CANDIDATE_RULE_AMORTIZED_LOOKUP",
+    "inside_45_arm_registry": false,
+    "interpretation": "match is tautological and expected; it blocks learned-representation and non-memorization claims but does not block an algorithmic-reference verdict",
+    "lookup_input": "same exact closed public fields; no target, scorer, stratum, distance, or future key",
+    "required_result": "byte-match primary on every in-suite public state; mismatch is ACTIVE_TRANSFER_INSTRUMENT_INVALID",
+    "stored_row": "{public_state_key:canonical_output_bytes} only"
+  },
+  "arm_registry": {
+    "BANK_CONSISTENCY_L1_RISK_DP": "ARM_I_CONSISTENCY__A_L1_EVSI__D_L1_MEDIAN",
+    "PUBLIC_L1_RISK_DP": "ARM_I_SCRATCH__A_L1_EVSI__D_SCRATCH_L1",
+    "active_objective_diagnostic": "ARM_I_TRANSFER__A_EIG__D_LCB05_FALLBACK",
+    "arm_id_format": "ARM_<inference>__<acquisition>__<decision>; aggregate prefix AGG",
+    "conservative_candidates": [
+      "ARM_I_TRANSFER__A_L1_EVSI__D_LCB05_FALLBACK"
+    ],
+    "core_acquisition_order": [
+      "A_L1_EVSI",
+      "A_EIG",
+      "A_PASSIVE",
+      "A_FIXED_V1",
+      "A_FIXED_V2",
+      "A_FIXED_V3",
+      "A_FIXED_V4"
+    ],
+    "core_count": 28,
+    "core_generation": [
+      {
+        "count": 14,
+        "decision_ids": [
+          "D_LCB05_FALLBACK",
+          "D_L1_MEDIAN"
+        ],
+        "inference_id": "I_TRANSFER"
+      },
+      {
+        "count": 7,
+        "decision_ids": [
+          "D_SCRATCH_L1"
+        ],
+        "inference_id": "I_SCRATCH"
+      },
+      {
+        "count": 7,
+        "decision_ids": [
+          "D_L1_MEDIAN"
+        ],
+        "inference_id": "I_CONSISTENCY"
+      }
+    ],
+    "extra_or_missing_arm": "ACTIVE_TRANSFER_INSTRUMENT_INVALID",
+    "primary_conservative": "ARM_I_TRANSFER__A_L1_EVSI__D_LCB05_FALLBACK",
+    "raw_upside": "ARM_I_TRANSFER__A_L1_EVSI__D_L1_MEDIAN",
+    "records": [
+      {
+        "acquisition_id": "A_L1_EVSI",
+        "arm_id": "ARM_I_TRANSFER__A_L1_EVSI__D_LCB05_FALLBACK",
+        "decision_id": "D_LCB05_FALLBACK",
+        "inference_id": "I_TRANSFER",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_L1_EVSI",
+        "arm_id": "ARM_I_TRANSFER__A_L1_EVSI__D_L1_MEDIAN",
+        "decision_id": "D_L1_MEDIAN",
+        "inference_id": "I_TRANSFER",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_EIG",
+        "arm_id": "ARM_I_TRANSFER__A_EIG__D_LCB05_FALLBACK",
+        "decision_id": "D_LCB05_FALLBACK",
+        "inference_id": "I_TRANSFER",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_EIG",
+        "arm_id": "ARM_I_TRANSFER__A_EIG__D_L1_MEDIAN",
+        "decision_id": "D_L1_MEDIAN",
+        "inference_id": "I_TRANSFER",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_PASSIVE",
+        "arm_id": "ARM_I_TRANSFER__A_PASSIVE__D_LCB05_FALLBACK",
+        "decision_id": "D_LCB05_FALLBACK",
+        "inference_id": "I_TRANSFER",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_PASSIVE",
+        "arm_id": "ARM_I_TRANSFER__A_PASSIVE__D_L1_MEDIAN",
+        "decision_id": "D_L1_MEDIAN",
+        "inference_id": "I_TRANSFER",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_FIXED_V1",
+        "arm_id": "ARM_I_TRANSFER__A_FIXED_V1__D_LCB05_FALLBACK",
+        "decision_id": "D_LCB05_FALLBACK",
+        "inference_id": "I_TRANSFER",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_FIXED_V1",
+        "arm_id": "ARM_I_TRANSFER__A_FIXED_V1__D_L1_MEDIAN",
+        "decision_id": "D_L1_MEDIAN",
+        "inference_id": "I_TRANSFER",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_FIXED_V2",
+        "arm_id": "ARM_I_TRANSFER__A_FIXED_V2__D_LCB05_FALLBACK",
+        "decision_id": "D_LCB05_FALLBACK",
+        "inference_id": "I_TRANSFER",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_FIXED_V2",
+        "arm_id": "ARM_I_TRANSFER__A_FIXED_V2__D_L1_MEDIAN",
+        "decision_id": "D_L1_MEDIAN",
+        "inference_id": "I_TRANSFER",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_FIXED_V3",
+        "arm_id": "ARM_I_TRANSFER__A_FIXED_V3__D_LCB05_FALLBACK",
+        "decision_id": "D_LCB05_FALLBACK",
+        "inference_id": "I_TRANSFER",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_FIXED_V3",
+        "arm_id": "ARM_I_TRANSFER__A_FIXED_V3__D_L1_MEDIAN",
+        "decision_id": "D_L1_MEDIAN",
+        "inference_id": "I_TRANSFER",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_FIXED_V4",
+        "arm_id": "ARM_I_TRANSFER__A_FIXED_V4__D_LCB05_FALLBACK",
+        "decision_id": "D_LCB05_FALLBACK",
+        "inference_id": "I_TRANSFER",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_FIXED_V4",
+        "arm_id": "ARM_I_TRANSFER__A_FIXED_V4__D_L1_MEDIAN",
+        "decision_id": "D_L1_MEDIAN",
+        "inference_id": "I_TRANSFER",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_L1_EVSI",
+        "arm_id": "ARM_I_SCRATCH__A_L1_EVSI__D_SCRATCH_L1",
+        "decision_id": "D_SCRATCH_L1",
+        "inference_id": "I_SCRATCH",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_EIG",
+        "arm_id": "ARM_I_SCRATCH__A_EIG__D_SCRATCH_L1",
+        "decision_id": "D_SCRATCH_L1",
+        "inference_id": "I_SCRATCH",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_PASSIVE",
+        "arm_id": "ARM_I_SCRATCH__A_PASSIVE__D_SCRATCH_L1",
+        "decision_id": "D_SCRATCH_L1",
+        "inference_id": "I_SCRATCH",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_FIXED_V1",
+        "arm_id": "ARM_I_SCRATCH__A_FIXED_V1__D_SCRATCH_L1",
+        "decision_id": "D_SCRATCH_L1",
+        "inference_id": "I_SCRATCH",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_FIXED_V2",
+        "arm_id": "ARM_I_SCRATCH__A_FIXED_V2__D_SCRATCH_L1",
+        "decision_id": "D_SCRATCH_L1",
+        "inference_id": "I_SCRATCH",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_FIXED_V3",
+        "arm_id": "ARM_I_SCRATCH__A_FIXED_V3__D_SCRATCH_L1",
+        "decision_id": "D_SCRATCH_L1",
+        "inference_id": "I_SCRATCH",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_FIXED_V4",
+        "arm_id": "ARM_I_SCRATCH__A_FIXED_V4__D_SCRATCH_L1",
+        "decision_id": "D_SCRATCH_L1",
+        "inference_id": "I_SCRATCH",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_L1_EVSI",
+        "arm_id": "ARM_I_CONSISTENCY__A_L1_EVSI__D_L1_MEDIAN",
+        "decision_id": "D_L1_MEDIAN",
+        "inference_id": "I_CONSISTENCY",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_EIG",
+        "arm_id": "ARM_I_CONSISTENCY__A_EIG__D_L1_MEDIAN",
+        "decision_id": "D_L1_MEDIAN",
+        "inference_id": "I_CONSISTENCY",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_PASSIVE",
+        "arm_id": "ARM_I_CONSISTENCY__A_PASSIVE__D_L1_MEDIAN",
+        "decision_id": "D_L1_MEDIAN",
+        "inference_id": "I_CONSISTENCY",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_FIXED_V1",
+        "arm_id": "ARM_I_CONSISTENCY__A_FIXED_V1__D_L1_MEDIAN",
+        "decision_id": "D_L1_MEDIAN",
+        "inference_id": "I_CONSISTENCY",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_FIXED_V2",
+        "arm_id": "ARM_I_CONSISTENCY__A_FIXED_V2__D_L1_MEDIAN",
+        "decision_id": "D_L1_MEDIAN",
+        "inference_id": "I_CONSISTENCY",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_FIXED_V3",
+        "arm_id": "ARM_I_CONSISTENCY__A_FIXED_V3__D_L1_MEDIAN",
+        "decision_id": "D_L1_MEDIAN",
+        "inference_id": "I_CONSISTENCY",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_FIXED_V4",
+        "arm_id": "ARM_I_CONSISTENCY__A_FIXED_V4__D_L1_MEDIAN",
+        "decision_id": "D_L1_MEDIAN",
+        "inference_id": "I_CONSISTENCY",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_MAX_OUTCOME_ENTROPY",
+        "arm_id": "ARM_I_TRANSFER__A_MAX_OUTCOME_ENTROPY__D_LCB05_FALLBACK",
+        "decision_id": "D_LCB05_FALLBACK",
+        "inference_id": "I_TRANSFER",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_MAX_OUTCOME_ENTROPY",
+        "arm_id": "ARM_I_SCRATCH__A_MAX_OUTCOME_ENTROPY__D_SCRATCH_L1",
+        "decision_id": "D_SCRATCH_L1",
+        "inference_id": "I_SCRATCH",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_MAX_OUTCOME_ENTROPY",
+        "arm_id": "ARM_I_CONSISTENCY__A_MAX_OUTCOME_ENTROPY__D_L1_MEDIAN",
+        "decision_id": "D_L1_MEDIAN",
+        "inference_id": "I_CONSISTENCY",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_ALL_ROWS"
+      },
+      {
+        "acquisition_id": "A_L1_EVSI",
+        "arm_id": "ARM_I_SHAM__A_L1_EVSI__D_LCB05_FALLBACK",
+        "decision_id": "D_LCB05_FALLBACK",
+        "inference_id": "I_SHAM",
+        "kind": "trajectory",
+        "transition_id": "SHAM_ROTATE_SOURCE_BEFORE_COUNTS"
+      },
+      {
+        "acquisition_id": "A_L1_EVSI",
+        "arm_id": "ARM_I_SHAM__A_L1_EVSI__D_L1_MEDIAN",
+        "decision_id": "D_L1_MEDIAN",
+        "inference_id": "I_SHAM",
+        "kind": "trajectory",
+        "transition_id": "SHAM_ROTATE_SOURCE_BEFORE_COUNTS"
+      },
+      {
+        "acquisition_id": "A_L1_EVSI",
+        "arm_id": "ARM_I_NO_UPDATE__A_L1_EVSI__D_LCB05_FALLBACK",
+        "decision_id": "D_LCB05_FALLBACK",
+        "inference_id": "I_NO_UPDATE",
+        "kind": "trajectory",
+        "transition_id": "RECEIPTS_WITHOUT_POSTERIOR_CONDITIONING"
+      },
+      {
+        "acquisition_id": "A_PASSIVE",
+        "arm_id": "ARM_I_NO_UPDATE__A_PASSIVE__D_LCB05_FALLBACK",
+        "decision_id": "D_LCB05_FALLBACK",
+        "inference_id": "I_NO_UPDATE",
+        "kind": "trajectory",
+        "transition_id": "RECEIPTS_WITHOUT_POSTERIOR_CONDITIONING"
+      },
+      {
+        "acquisition_id": "A_L1_EVSI",
+        "arm_id": "ARM_I_TRANSFER_NO_LOCAL__A_L1_EVSI__D_LCB05_FALLBACK",
+        "decision_id": "D_LCB05_FALLBACK",
+        "inference_id": "I_TRANSFER_NO_LOCAL",
+        "kind": "trajectory",
+        "transition_id": "DELETE_LOCAL_FAMILY"
+      },
+      {
+        "acquisition_id": "A_L1_EVSI",
+        "arm_id": "ARM_I_TRANSFER_FLAT__A_L1_EVSI__D_LCB05_FALLBACK",
+        "decision_id": "D_LCB05_FALLBACK",
+        "inference_id": "I_TRANSFER_FLAT",
+        "kind": "trajectory",
+        "transition_id": "FLATTEN_SOURCE_AND_REBUILD_LOCAL"
+      },
+      {
+        "acquisition_id": "A_L1_EVSI",
+        "arm_id": "ARM_I_TRANSFER_MASK_H2__A_L1_EVSI__D_LCB05_FALLBACK",
+        "decision_id": "D_LCB05_FALLBACK",
+        "inference_id": "I_TRANSFER_MASK_H2",
+        "kind": "trajectory",
+        "transition_id": "CONDITION_H1_MASK_H2_FROM_UNQUERIED_POSTERIOR"
+      },
+      {
+        "acquisition_id": "A_L1_EVSI",
+        "arm_id": "ARM_I_TRANSFER_THEN_SCRATCH__A_L1_EVSI__D_SCRATCH_L1",
+        "decision_id": "D_SCRATCH_L1",
+        "inference_id": "I_TRANSFER_THEN_SCRATCH",
+        "kind": "trajectory",
+        "transition_id": "TRANSFER_QUERY_THEN_SCRATCH_SAME_H2"
+      },
+      {
+        "acquisition_id": "A_NO_QUERY",
+        "arm_id": "ARM_I_TRANSFER__A_NO_QUERY__D_LCB05_FALLBACK",
+        "decision_id": "D_LCB05_FALLBACK",
+        "inference_id": "I_TRANSFER",
+        "kind": "trajectory",
+        "transition_id": "STOP_AT_H1"
+      },
+      {
+        "acquisition_id": "A_NO_QUERY",
+        "arm_id": "ARM_I_SCRATCH__A_NO_QUERY__D_SCRATCH_L1",
+        "decision_id": "D_SCRATCH_L1",
+        "inference_id": "I_SCRATCH",
+        "kind": "trajectory",
+        "transition_id": "STOP_AT_H1"
+      },
+      {
+        "acquisition_id": "A_NO_QUERY",
+        "arm_id": "ARM_I_CONSISTENCY__A_NO_QUERY__D_L1_MEDIAN",
+        "decision_id": "D_L1_MEDIAN",
+        "inference_id": "I_CONSISTENCY",
+        "kind": "trajectory",
+        "transition_id": "STOP_AT_H1"
+      },
+      {
+        "acquisition_id": "A_UNIFORM_MIXTURE",
+        "arm_id": "AGG_I_TRANSFER__A_UNIFORM_MIXTURE__D_LCB05_FALLBACK",
+        "decision_id": "D_LCB05_FALLBACK",
+        "inference_id": "I_TRANSFER",
+        "kind": "aggregate",
+        "transition_id": "EXPECTATION_OVER_FOUR_FIXED_BRANCHES"
+      },
+      {
+        "acquisition_id": "A_UNIFORM_MIXTURE",
+        "arm_id": "AGG_I_SCRATCH__A_UNIFORM_MIXTURE__D_SCRATCH_L1",
+        "decision_id": "D_SCRATCH_L1",
+        "inference_id": "I_SCRATCH",
+        "kind": "aggregate",
+        "transition_id": "EXPECTATION_OVER_FOUR_FIXED_BRANCHES"
+      },
+      {
+        "acquisition_id": "A_UNIFORM_MIXTURE",
+        "arm_id": "AGG_I_CONSISTENCY__A_UNIFORM_MIXTURE__D_L1_MEDIAN",
+        "decision_id": "D_L1_MEDIAN",
+        "inference_id": "I_CONSISTENCY",
+        "kind": "aggregate",
+        "transition_id": "EXPECTATION_OVER_FOUR_FIXED_BRANCHES"
+      }
+    ],
+    "standalone_count": 17,
+    "total_count": 45
+  },
+  "authority": {
+    "r7_card_sha256": "4dc267bde27b3caf39f495026891990779f7b4376abf6a380149bd2537a63f92",
+    "r7_collision_sha256": "c50e372966750e0f4d67edde22535c4fbf349f8cea6b741b1eca6b3923cd57a2",
+    "r7_design_sha256": "1009c951fca9cf2982f6e2ac82550aa8b979e3ef3534eac29858219e5bb8c7e8",
+    "r7_implementation_card_sha256": "cb452ccb9408547f99e7ef62dd286dffcae5e60ccfda07c225b9129a71d672ab",
+    "r7_producer_sha256": "a892ca7de553a53ab9d0df2a9bbe381159a999e7dd495de020fd13baa77931de",
+    "r7_result_sha256": "3087b66cf01e0809181483c1b96667fa50d6d25e4e72e9e8deb1328311909587",
+    "r7_test_sha256": "699d59b8efff303faf4c1530195aaf0ddf3267bba0630f5dcb6bbd9c60480341",
+    "r7_verdict": "PUBLIC_INFORMATION_TWO_SIDED_HEADROOM_ABSENT"
+  },
+  "auto_remote_anchor": "forbidden",
+  "bank_suite": {
+    "alias_rule": "compute once; retain and gate every role label",
+    "canonical_bank_bytes": "compact JSON of six mapping arrays sorted lexicographically with duplicates retained",
+    "hash_bank": {
+      "digest": "SHA256(UTF8(task_id + U+001F + \"HASH_BANK\" + U+001F + decimal(index) + U+001F + compact_mapping_json))",
+      "indices_inclusive": [
+        0,
+        63
+      ],
+      "secondary_key": "compact mapping bytes",
+      "selected_distinct_mappings": 6
+    },
+    "missing_property_role": "ACTIVE_TRANSFER_INSTRUMENT_INVALID",
+    "multiplicity_bank": {
+      "digest": "SHA256(UTF8(task_id + U+001F + \"MULTIPLICITY\" + U+001F + compact_partition_json + U+001F + compact_mapping_json))",
+      "partitions": [
+        [
+          6
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          1,
+          1
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          3,
+          2,
+          1
+        ],
+        [
+          3,
+          1,
+          1,
+          1
+        ],
+        [
+          2,
+          2,
+          2
+        ],
+        [
+          2,
+          2,
+          1,
+          1
+        ],
+        [
+          2,
+          1,
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      ]
+    },
+    "post_result_mutation_allowed": false,
+    "primary_role_count": 75,
+    "primary_role_ids": [
+      "HASH_00",
+      "HASH_01",
+      "HASH_02",
+      "HASH_03",
+      "HASH_04",
+      "HASH_05",
+      "HASH_06",
+      "HASH_07",
+      "HASH_08",
+      "HASH_09",
+      "HASH_10",
+      "HASH_11",
+      "HASH_12",
+      "HASH_13",
+      "HASH_14",
+      "HASH_15",
+      "HASH_16",
+      "HASH_17",
+      "HASH_18",
+      "HASH_19",
+      "HASH_20",
+      "HASH_21",
+      "HASH_22",
+      "HASH_23",
+      "HASH_24",
+      "HASH_25",
+      "HASH_26",
+      "HASH_27",
+      "HASH_28",
+      "HASH_29",
+      "HASH_30",
+      "HASH_31",
+      "HASH_32",
+      "HASH_33",
+      "HASH_34",
+      "HASH_35",
+      "HASH_36",
+      "HASH_37",
+      "HASH_38",
+      "HASH_39",
+      "HASH_40",
+      "HASH_41",
+      "HASH_42",
+      "HASH_43",
+      "HASH_44",
+      "HASH_45",
+      "HASH_46",
+      "HASH_47",
+      "HASH_48",
+      "HASH_49",
+      "HASH_50",
+      "HASH_51",
+      "HASH_52",
+      "HASH_53",
+      "HASH_54",
+      "HASH_55",
+      "HASH_56",
+      "HASH_57",
+      "HASH_58",
+      "HASH_59",
+      "HASH_60",
+      "HASH_61",
+      "HASH_62",
+      "HASH_63",
+      "MULT_6",
+      "MULT_5_1",
+      "MULT_4_2",
+      "MULT_4_1_1",
+      "MULT_3_3",
+      "MULT_3_2_1",
+      "MULT_3_1_1_1",
+      "MULT_2_2_2",
+      "MULT_2_2_1_1",
+      "MULT_2_1_1_1_1",
+      "MULT_1_1_1_1_1_1"
+    ],
+    "primary_unique_bank_count": "derived_from_canonical_bank_bytes_not_hard_coded",
+    "property_predicates": {
+      "B_BALANCED_MARGINAL": "exists y with at least two distinct compatible source mappings, exactly equal label-sensitive four conditional source-entry marginal vectors, and at least two unequal label-sensitive ordered 25-cell joint vectors; EIG tie gate is I_CONSISTENCY, not I_TRANSFER",
+      "B_COLLISION": "for every legal policy exists nonempty G_y and distinct m,m_prime with same selected outcome plus common-unqueried token r with positive prototype L1 distance",
+      "B_DECOY": "exists legal H1 where I_TRANSFER plus midpoint D_L1_MEDIAN gives unique A_EIG and unique A_L1_EVSI minimizers and they differ",
+      "B_SEPARABLE": "exists policy y->q_y over every nonempty G_y such that m->m[q_y] is injective on each G_y"
+    },
+    "property_roles_are_positive_coverage": false,
+    "property_roles_can_block": true,
+    "property_scan_indices_inclusive": [
+      0,
+      65535
+    ],
+    "property_selection": "lowest satisfying scan index; report index, canonical bytes, SHA256, and lexically first witness",
+    "property_witness_encoding": {
+      "B_BALANCED_MARGINAL": "lowest witnessing y and lexical first unequal ordered-pair-vector pair",
+      "B_COLLISION": "every legal policy in lexical order with its lexical first (y,m,m_prime,r) witness",
+      "B_DECOY": "lowest witnessing y followed by the two unique query indices",
+      "B_SEPARABLE": "lexically first satisfying policy",
+      "policy": "five-int tuple ordered by y; -1 for empty leaf; lexical order"
+    },
+    "scope": "bounded development suite; not the complete C(125,6)=4690625500 multiset family and not an all-bank or all-grammar theorem",
+    "truths_per_unique_bank": 120
+  },
+  "base": {
+    "branch": "codex/ego-v2-active-transfer-headroom-001d",
+    "head": "e443fc08c3172746856a1ef880f8a133307d8f98",
+    "repo_root": "D:\\Project\\AIProject\\MyProject\\Ego"
+  },
+  "checkpoint": {
+    "arm_owns_second_history": true,
+    "base_transition": "H1(v0)->one selected H2(v1..v4); no H3",
+    "budget_rows": 2,
+    "cross_arm_exogenous_identity": "for fixed bank and H1 leaf, every arm receives byte-identical prototype_table, source_mappings, initial_token_index, public_history, query_counts, and remaining_budget; full state differs only by frozen arm semantics",
+    "same_H1_quantifier": "for each fixed registered trajectory arm A: same bank and initial-token outcome implies identical full A H1 input, A pre-query semantic state, and A query",
+    "same_H2_quantifier": "for each fixed registered trajectory arm A: also same A-selected-query outcome implies identical full A H2 input, A posterior, A decision, and A prediction",
+    "truth_grouping_before_query_scoring": true
+  },
+  "claim_ceiling": "Docs-only freeze for a future seed/world-free exact active-information algorithmic reference on the preregistered bounded hostile bank suite. Candidate-rule amortized lookup equivalence is expected, so 001D cannot prove learned representation or non-memorization. It is not an all-bank/all-grammar theorem and provides no product, controller, neural, heldout, survival, AGI, agency, consciousness, subjectivity, emotion, companion, or electronic-life evidence.",
+  "closed_schemas": {
+    "ACTIVE_TRANSFER_PUBLIC_INPUT_V1": {
+      "base_initial_token_index": 0,
+      "keys": [
+        "schema_version",
+        "prototype_table",
+        "source_mappings",
+        "initial_token_index",
+        "public_history",
+        "query_counts",
+        "remaining_budget",
+        "learner_state"
+      ],
+      "no_recursive_extras": true,
+      "source_canonicalization": "immediate multiset canonicalization"
+    },
+    "AGGREGATE_METRIC_V1": {
+      "has_selected_query_or_prediction": false,
+      "keys": [
+        "schema_version",
+        "arm_id",
+        "branch_arm_ids",
+        "branch_weights",
+        "expected_metric_rationals"
+      ]
+    },
+    "FINITE_ACTIVE_TRANSFER_STATE_V1": {
+      "consistency_counts_rule": "c_B(pi) times full-history compatibility for every arm, before fallback",
+      "effective_rule": "elementwise sum of sealed_family_contributions; normalize only for decision",
+      "family_contribution_shape": {
+        "local": 120,
+        "scratch": 120,
+        "source": 120
+      },
+      "keys": [
+        "schema_version",
+        "arm_id",
+        "inference_id",
+        "acquisition_id",
+        "decision_id",
+        "transition_id",
+        "stage",
+        "feedback_count",
+        "incoming_family_contributions",
+        "sealed_family_contributions",
+        "effective_mapping_weights",
+        "consistency_counts",
+        "selected_second_token"
+      ],
+      "mapping_vector_length": 120,
+      "no_open_slots": true,
+      "semantic_recompute_before_use": true
+    },
+    "PREDICTION_DECISION_V1": {
+      "keys": [
+        "schema_version",
+        "arm_id",
+        "prediction_micro",
+        "median_endpoints_micro",
+        "used_transfer",
+        "lcb05_benefit_micro"
+      ],
+      "median_endpoint_shape": [
+        5,
+        4,
+        2
+      ],
+      "prediction_shape": [
+        5,
+        4
+      ]
+    },
+    "QUERY_DECISION_V1": {
+      "exact_score_row_keys": [
+        "token_index",
+        "int_score"
+      ],
+      "keys": [
+        "schema_version",
+        "arm_id",
+        "eligible_tokens",
+        "score_kind",
+        "exact_scores",
+        "minimizing_tokens",
+        "selected_token",
+        "tie_rule"
+      ],
+      "score_kinds": [
+        "l1_risk_integer",
+        "eig_product_integer",
+        "lexical_rank_integer",
+        "fixed_indicator_integer",
+        "none"
+      ]
+    },
+    "VERIFIER_PRIVATE_ENVELOPE_V1": {
+      "ever_passed_or_aliased_to_arm": false,
+      "keys": [
+        "schema_version",
+        "bank_role_ids",
+        "canonical_bank_sha256",
+        "target_mapping",
+        "stratum",
+        "source_occurrence",
+        "distance",
+        "scorer_truth",
+        "metric_rows",
+        "artifact_receipts"
+      ]
+    },
+    "reduced_rational": {
+      "constraints": "integers; d>0; gcd(abs(n),d)=1; zero is {n:0,d:1}",
+      "keys": [
+        "n",
+        "d"
+      ]
+    }
+  },
+  "decision": {
+    "ids": [
+      "D_L1_MEDIAN",
+      "D_LCB05_FALLBACK",
+      "D_SCRATCH_L1"
+    ],
+    "lcb05_benefit": "same-history scratch token L1 loss minus transfer token L1 loss under each transfer-posterior mapping",
+    "lcb05_quantile": "smallest sorted benefit with 20*cumulative_weight>=total_weight",
+    "lcb05_rule": "use transfer iff exact lower-5-percent quantile>=0; otherwise same-history scratch",
+    "loss": "sum absolute error in signed integer micro-units",
+    "median_assertions": [
+      "lower<=serialized_midpoint<=upper",
+      "lower, serialized midpoint, and upper have equal minimal weighted L1 risk"
+    ],
+    "median_lower": "min x where 2*sum_{v<=x}w(v)>=W",
+    "median_midpoint": "Fraction(lower+upper,2), serialized by exact round-half-even to integer",
+    "median_sensitivity_conventions": [
+      "lower",
+      "midpoint_integer",
+      "upper"
+    ],
+    "median_sensitivity_failure": "ACTIVE_TRANSFER_MEDIAN_SELECTION_SENSITIVE",
+    "median_upper": "max x where 2*sum_{v>=x}w(v)>=W",
+    "observed_tokens": "copy exact public prototype"
+  },
+  "endpoints": {
+    "all_truths_per_unique_bank": 120,
+    "decomposition": {
+      "common_raw": "baseline loss minus candidate loss outside {initial,qC,qB}",
+      "identity": "full_improvement_raw=common_raw+query_asymmetry_raw",
+      "query_asymmetry_raw": "baseline loss at qC minus candidate loss at qB when qC!=qB; else 0"
+    },
+    "member_weighting": "distinct exact members equal weight; entry-weighted summaries diagnostic only",
+    "no_query": {
+      "observed_tokens": 1,
+      "own_unqueried_components": 16,
+      "own_unqueried_tokens": 4
+    },
+    "normalization": "raw_abs_micro_loss/(component_denominator*1000000)",
+    "one_query": {
+      "common_unqueried": {
+        "components_different_query": 8,
+        "components_same_query": 12
+      },
+      "full": {
+        "components": 20,
+        "tokens": 5
+      },
+      "own_unqueried": {
+        "components": 12,
+        "tokens": 3
+      },
+      "same_history_forward": {
+        "comparator": "D_SCRATCH_L1 on identical candidate H2",
+        "components": 12,
+        "tokens": 3
+      }
+    },
+    "uniform_mixture": "exact expected fixed-branch metrics; no single token set or prediction; cannot rescue"
+  },
+  "future_runtime_blocker": {
+    "fact": "controller on_committed callback is absent from store recovery recomputation",
+    "forbidden": "effectful transfer state mutation in callback or outside canonical reducer state; direct transition_world or selected-action injection",
+    "minimum_future_resolution": "callbacks read-only; whitelist-only pending public row in replay-canonical reducer state, adopted after successful commit and consumed on next compute, or separately frozen replay-equivalent rule",
+    "resolved_by_this_card": false
+  },
+  "future_stage_authorization": {
+    "artifact_generation": false,
+    "environment_metabolism_action_semantics_change": false,
+    "neural_training_or_candidate": false,
+    "producer_implementation": false,
+    "product_or_controller_implementation": false,
+    "push_or_tag": false,
+    "requires_separate_implementation_card": true,
+    "world_seed_or_pilot_execution": false
+  },
+  "gates": {
+    "active_delete": "on B_SEPARABLE a unique candidate query differs from passive and candidate common-unqueried advantage>=4375/1000000 for at least one exact member",
+    "attribution_gate": "joint_ablation plus replay/leakage prerequisites and no omitted execution",
+    "bounded_core": "member_and_forward and bounded_safety",
+    "bounded_joint": "bounded_core and attribution_gate",
+    "bounded_safety": "every D2-D5 primary target full regret vs PUBLIC<=4375/1000000",
+    "candidate_selection": "sole conservative primary ARM_I_TRANSFER__A_L1_EVSI__D_LCB05_FALLBACK; EIG/passive/fixed cannot rescue",
+    "canonical_member": "lexicographically smallest distinct source mapping fixed per each of 75 primary roles",
+    "control_pareto_match": "over every primary target control full MAE<=candidate and over every distinct member control common-unqueried MAE<=candidate, with at least one strict improvement or byte-identical metrics everywhere",
+    "explicit_consistency_non_equivalence": "candidate common-unqueried advantage>=4375/1000000 on at least one exact member and candidate full MAE no worse by any positive amount on every primary target; otherwise control_match=true",
+    "invalidating_control_ids": [
+      "ARM_I_TRANSFER__A_PASSIVE__D_LCB05_FALLBACK",
+      "ARM_I_TRANSFER__A_FIXED_V1__D_LCB05_FALLBACK",
+      "ARM_I_TRANSFER__A_FIXED_V2__D_LCB05_FALLBACK",
+      "ARM_I_TRANSFER__A_FIXED_V3__D_LCB05_FALLBACK",
+      "ARM_I_TRANSFER__A_FIXED_V4__D_LCB05_FALLBACK",
+      "ARM_I_SCRATCH__A_L1_EVSI__D_SCRATCH_L1",
+      "ARM_I_SCRATCH__A_EIG__D_SCRATCH_L1",
+      "ARM_I_SCRATCH__A_PASSIVE__D_SCRATCH_L1",
+      "ARM_I_SCRATCH__A_FIXED_V1__D_SCRATCH_L1",
+      "ARM_I_SCRATCH__A_FIXED_V2__D_SCRATCH_L1",
+      "ARM_I_SCRATCH__A_FIXED_V3__D_SCRATCH_L1",
+      "ARM_I_SCRATCH__A_FIXED_V4__D_SCRATCH_L1",
+      "ARM_I_CONSISTENCY__A_L1_EVSI__D_L1_MEDIAN",
+      "ARM_I_CONSISTENCY__A_EIG__D_L1_MEDIAN",
+      "ARM_I_CONSISTENCY__A_PASSIVE__D_L1_MEDIAN",
+      "ARM_I_CONSISTENCY__A_FIXED_V1__D_L1_MEDIAN",
+      "ARM_I_CONSISTENCY__A_FIXED_V2__D_L1_MEDIAN",
+      "ARM_I_CONSISTENCY__A_FIXED_V3__D_L1_MEDIAN",
+      "ARM_I_CONSISTENCY__A_FIXED_V4__D_L1_MEDIAN"
+    ],
+    "joint_ablation": "all causal_effect_predicates, property controls, invariances, replay/leakage prerequisites, amortized-lookup byte equality, and no omitted execution",
+    "member_and_forward": "every distinct exact member full improvement vs PUBLIC>=21875/1000000 and common/same-history>=0; canonical member common and same-history>=4375/1000000",
+    "property_negative_controls": {
+      "B_BALANCED_MARGINAL": "on witness H1 ARM_I_CONSISTENCY__A_EIG__D_L1_MEDIAN has all four eligible tokens as exact minimizers and the I_CONSISTENCY maximum-outcome-entropy alias matches",
+      "B_COLLISION": "emit unavoidable loss-relevant leaf and never report full source-support identification",
+      "B_DECOY": "frozen unique A_EIG and A_L1_EVSI minimizers exist and differ",
+      "MULT_6": "ordinary transfer and multiplicity-flattened transfer have byte-identical semantic state, query score, choice, and prediction"
+    },
+    "raw_bounded_safety": "raw challenger full regret vs PUBLIC<=4375/1000000 on every D2-D5 primary target",
+    "raw_upside": "raw arm clears member_and_forward",
+    "source_delete": "member-and-forward fails and full benefit of every distinct exact member in every primary role is reduced by >=21875/1000000",
+    "strict_core": "member_and_forward and strict_safety",
+    "strict_joint": "strict_core and attribution_gate",
+    "strict_safety": "every D2-D5 primary target full regret vs PUBLIC<=0"
+  },
+  "inference": {
+    "canonical_state_contributions": {
+      "I_CONSISTENCY": "H1 incoming {0,c_B,0}; H2 incoming previous sealed; positive compatible source seals {0,c_B*compat,0}; zero source seals exact full-history scratch {compat,0,0}",
+      "I_NO_UPDATE": "incoming and sealed equal unconditioned I_TRANSFER components at both H1 and H2",
+      "I_SCRATCH": "{scratch:1,source:0,local:0} with ordinary conditioning; H2 incoming is previous sealed",
+      "I_SHAM": "I_TRANSFER rule with sham-rotated source counts",
+      "I_TRANSFER": "H1 incoming {1,20*c_B,2*c_L}; ordinary rows multiply components by compatibility; H2 incoming is previous sealed",
+      "I_TRANSFER_FLAT": "{k,120*c_U,12*c_LU} with ordinary conditioning",
+      "I_TRANSFER_MASK_H2": "ordinary transfer H1; H2 incoming and sealed both equal sealed H1 contributions",
+      "I_TRANSFER_NO_LOCAL": "{1,20*c_B,0} with ordinary conditioning",
+      "I_TRANSFER_THEN_SCRATCH": "ordinary transfer H1; H2 incoming scratch conditioned on H1 and sealed scratch conditioned on full H2; source/local zero"
+    },
+    "definitions": {
+      "I_CONSISTENCY": "compatible source entries with multiplicity; exact same-history scratch fallback if empty",
+      "I_NO_UPDATE": "unconditioned transfer and scratch priors for unqueried acquisition, prediction, and LCB comparison; rows only receipts and observed copies",
+      "I_SCRATCH": "uniform weight 1 over 120 mappings conditioned on every row",
+      "I_SHAM": "I_TRANSFER on cyclic source tuple rotation (m1,m2,m3,m4,m0)",
+      "I_TRANSFER": "primitive weight 1+20*c_B(pi)+2*c_L(pi), exactly equal thirds scratch/source/60-entry one-transposition local family",
+      "I_TRANSFER_FLAT": "k+120*c_U(pi)+12*c_LU(pi) over unique support and its regenerated local neighbours",
+      "I_TRANSFER_MASK_H2": "condition H1; serialize/copy H2 observed token but retain H1 transfer and H1 scratch posteriors for unqueried prediction and LCB comparison",
+      "I_TRANSFER_NO_LOCAL": "primitive weight 1+20*c_B(pi)",
+      "I_TRANSFER_THEN_SCRATCH": "choose under transfer H1 then exact scratch on identical H2"
+    },
+    "likelihood": "1 iff all legal own-history rows agree with mapping; else 0",
+    "mdl_use": "none; combining an unfrozen code score with normalized finite Bayes would double-count evidence",
+    "model_average": "canonical sealed scratch/source/local contribution arrays implement BMA; decisions normalize only their elementwise sum; family sums are derived receipts, never a free posterior decomposition",
+    "zero_total_evidence": "unexpected zero effective mass is ACTIVE_TRANSFER_INSTRUMENT_INVALID; declared I_CONSISTENCY empty-source support first transitions to exact same-history scratch and seals nonzero state"
+  },
+  "leakage": {
+    "field_name_scanner_sufficient": false,
+    "forbidden_classes": [
+      "target mapping truth",
+      "membership stratum or distance",
+      "bank role",
+      "future outcome",
+      "world layout policy run source IDs",
+      "hidden cause or objects_by_cause",
+      "private or global state",
+      "scorer or future truth",
+      "checkpoint metric",
+      "verdict",
+      "artifact path or hash alias",
+      "static oracle output"
+    ],
+    "learner_input_only": "ACTIVE_TRANSFER_PUBLIC_INPUT_V1 exact closed schema",
+    "positive_controls": "inject every forbidden class as extra key and encoded wrong-type/range content; schema plus semantic recomputation must reject"
+  },
+  "lineage_discontinuity": {
+    "changed_variable": "second public query selected after a byte-identical H1 public leaf",
+    "development_only": true,
+    "r5_r6_r7_mutable": false,
+    "r7_closed_contract": "fixed_two_row_same_information_state_universal_pointwise_action_contract",
+    "world_seed_execution": false
+  },
+  "public_grammar": {
+    "base_initial_token_index": 0,
+    "d1_exists": false,
+    "mapping_count": 120,
+    "mapping_space": "all itertools.permutations(range(5)) in lexicographic order; pi[q] is prototype index",
+    "prototype_vectors_micro": [
+      [
+        0,
+        -20000,
+        0,
+        160000
+      ],
+      [
+        0,
+        -180000,
+        0,
+        40000
+      ],
+      [
+        0,
+        0,
+        160000,
+        20000
+      ],
+      [
+        0,
+        120000,
+        0,
+        0
+      ],
+      [
+        280000,
+        0,
+        0,
+        0
+      ]
+    ],
+    "target_strata": [
+      {
+        "distance": 0,
+        "id": "EXACT_MEMBER_D0",
+        "source_occurrence_reported": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "distance": 2,
+        "id": "LOCAL_SHIFT_D2"
+      },
+      {
+        "distance": 3,
+        "id": "NONMEMBER_D3"
+      },
+      {
+        "distance": 4,
+        "id": "NONMEMBER_D4"
+      },
+      {
+        "distance": 5,
+        "id": "NONMEMBER_D5"
+      }
+    ],
+    "tokens": [
+      "v0",
+      "v1",
+      "v2",
+      "v3",
+      "v4"
+    ],
+    "truth_private_to_verifier": true
+  },
+  "research_question": "From an identical H1 public leaf, can source-aware loss-matched active diagnosis produce exact-member genuine-forward gain and bounded or strict D2-D5 safety beyond equal-access public and consistency risk-DP controls on the frozen bounded suite?",
+  "schema_version": "ego.v2.active_transfer_headroom_preflight.design.v2",
+  "science_weight": 0,
+  "task_id": "EGO-V2-P1-ACTIVE-TRANSFER-HEADROOM-PREFLIGHT-001D",
+  "task_type": "docs_only_seed_world_free_exact_active_information_headroom_preflight",
+  "thresholds": {
+    "active_delete_common_forward_effect_min": "4375/1000000",
+    "canonical_member_common_forward_min": "4375/1000000",
+    "canonical_member_same_history_forward_min": "4375/1000000",
+    "consistency_any_primary_full_regression_max": "0/1",
+    "consistency_member_common_forward_advantage_min": "4375/1000000",
+    "member_common_forward_min": "0/1",
+    "member_full_improvement_min": "21875/1000000",
+    "member_same_history_forward_min": "0/1",
+    "nonmember_bounded_full_regret_max": "4375/1000000",
+    "nonmember_strict_full_regret_max": "0/1",
+    "source_delete_each_claimed_full_benefit_reduction_min": "21875/1000000"
+  },
+  "trace_replay": {
+    "arithmetic": "unbounded signed integers and exact reduced rationals only",
+    "fresh_process_recompute_before_read": true,
+    "future_bundle": [
+      "result.json",
+      "trace.jsonl",
+      "baseline_comparison.json",
+      "ablation_report.json",
+      "replay_report.json",
+      "failure_manifest.json",
+      "claim_ceiling.txt"
+    ],
+    "independent_implementation_path_row_and_aggregate_recompute": true,
+    "stored_actions_metrics_winners_witnesses_verdicts_are_inputs": false
+  },
+  "verdict_dispatch": [
+    {
+      "predicate": "any forbidden direct/encoded input or leakage positive-control failure",
+      "priority": 1,
+      "verdict": "ACTIVE_TRANSFER_PRIVATE_TRUTH_LEAKAGE"
+    },
+    {
+      "predicate": "authority, schema, bank, arm, ablation, replay, amortized-lookup mismatch, or recompute failure not assigned a sensitivity verdict",
+      "priority": 2,
+      "verdict": "ACTIVE_TRANSFER_INSTRUMENT_INVALID"
+    },
+    {
+      "predicate": "ordinary non-sensitivity verdict differs across lower, midpoint, and upper legal median conventions",
+      "priority": 3,
+      "verdict": "ACTIVE_TRANSFER_MEDIAN_SELECTION_SENSITIVE"
+    },
+    {
+      "predicate": "ordinary non-sensitivity verdict differs across exact minimizing-query policies",
+      "priority": 4,
+      "verdict": "ACTIVE_TRANSFER_QUERY_TIE_SENSITIVE"
+    },
+    {
+      "predicate": "raw_upside and raw challenger fails bounded safety and conservative primary fails bounded_core",
+      "priority": 5,
+      "verdict": "ACTIVE_TRANSFER_RAW_UPSIDE_WITH_UNCONTROLLED_TAIL"
+    },
+    {
+      "predicate": "raw_upside and raw challenger clears bounded safety and conservative primary fails bounded_core",
+      "priority": 6,
+      "verdict": "ACTIVE_TRANSFER_CONSERVATIVE_SELECTION_FAILED"
+    },
+    {
+      "predicate": "not raw_upside and conservative primary fails bounded_core",
+      "priority": 7,
+      "verdict": "ACTIVE_TRANSFER_NO_TWO_SIDED_HEADROOM"
+    },
+    {
+      "predicate": "conservative primary clears bounded_core and fails attribution_gate",
+      "priority": 8,
+      "verdict": "ACTIVE_TRANSFER_CAUSAL_ATTRIBUTION_FAILED"
+    },
+    {
+      "predicate": "conservative primary clears bounded_joint and fails strict_core",
+      "priority": 9,
+      "verdict": "ACTIVE_TRANSFER_BOUNDED_REGRET_ONLY"
+    },
+    {
+      "predicate": "conservative primary clears strict_joint and has structural control_match=true",
+      "priority": 10,
+      "verdict": "ACTIVE_TRANSFER_OBSERVATION_OR_LOOKUP_SATURATED"
+    },
+    {
+      "predicate": "conservative primary clears strict_joint with structural control_match=false; amortized lookup equality limits this to algorithmic-reference evidence",
+      "priority": 11,
+      "verdict": "ACTIVE_TRANSFER_STATIC_REFERENCE_FEASIBLE"
+    }
+  ],
+  "verdict_properties": {
+    "amortized_lookup_match_expected": true,
+    "bounded_regret_only_is_positive_safety": false,
+    "dispatch_outcome_single_valued_by_first_true_priority": true,
+    "exhaustive_after_leakage_and_instrument_resolution": true,
+    "mutually_exclusive": false,
+    "ordinary_branches_5_through_11_exhaustive_and_mutually_exclusive": true,
+    "static_reference_feasible_proves_learning_or_nonmemorization": false,
+    "underlying_predicates_may_overlap": true
+  }
+}
