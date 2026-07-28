@@ -1,0 +1,452 @@
+{
+  "schema_version": "ego.v2.conservative_transfer_benchmark_admission.design.v2",
+  "task_id": "EGO-V2-P1-CONSERVATIVE-TRANSFER-BENCHMARK-ADMISSION-001C-R5",
+  "stage": "docs_only_learner_input_blind_developer_designed_freeze",
+  "science_weight": 0,
+  "base": {
+    "repo_root": "D:\\Project\\AIProject\\MyProject\\Ego",
+    "branch": "codex/ego-v2-identifiable-active-diagnostic-admission-001c-r5",
+    "head": "a93514fa2658a111d7ee8ac20209f87b1ad1ade9"
+  },
+  "lineage_discontinuity": {
+    "isolated_successor_lane": true,
+    "r4_repair_or_rescore": false,
+    "statement": "R5 asks a new prospective token-to-realized-delta transfer question and cannot promote, patch, or reinterpret R4 into a pass."
+  },
+  "historical_authority": {
+    "r4_task_id": "EGO-V2-P1-ADDITIVE-PREDICTION-HEADROOM-DIAGNOSTIC-001C-R4",
+    "r4_verdict": "INSUFFICIENT_OUTCOME_SUPPORT",
+    "r4_status": "byte-valid and computationally replayable packet whose scientific admission instrument failed support and had an algebraically impossible raw rank target",
+    "r4_mutable": false,
+    "r4_rescore_allowed": false
+  },
+  "research_question": "Does unchanged V2 public token/action/organism history support conservative reuse of anonymous source mappings while retaining scratch and one-swap local-shift alternatives, first at fixed-packet encounter inference and then through the sole primitive-action path?",
+  "epistemic_status": {
+    "facts": [
+      "R4 raw rank 15 is algebraically impossible because bias equals the sum of exhaustive front-token indicators.",
+      "R4 outcome_type is perfectly decoded in-sample by public action plus front_token.",
+      "Interacted organism response depends on a private seed-specific visible-token permutation.",
+      "The production command schema has no selected-action override.",
+      "The current controller has no source-bank import."
+    ],
+    "inferences": [
+      "The relevant transfer surface is public token-to-organism mechanism reuse and rejection, not outcome-category diagnosis."
+    ],
+    "assumptions": [
+      "Complete non-clipped public source interactions recover the common five anonymous mechanism prototypes."
+    ],
+    "unknowns": [
+      "Encounter headroom, equal-access baseline non-equivalence, primitive-action feasibility, and any fresh held-out effect."
+    ]
+  },
+  "seed_firewall": {
+    "source_schedule": [
+      {"layout": "p0_cross_v1", "worlds": [52, 53], "policy_seeds": [711, 712]},
+      {"layout": "p2_vertical_v1", "worlds": [54, 55], "policy_seeds": [711, 712]},
+      {"layout": "p2_offset_v1", "worlds": [56, 57], "policy_seeds": [711, 712]}
+    ],
+    "development_schedule": [
+      {"layout": "p0_cross_v1", "worlds": [76, 77], "policy_seeds": [713, 714]},
+      {"layout": "p2_vertical_v1", "worlds": [78, 79], "policy_seeds": [713, 714]},
+      {"layout": "p2_offset_v1", "worlds": [80, 81], "policy_seeds": [713, 714]}
+    ],
+    "development_classification": "learner-input-blind, developer-designed, mapping-stratified development fixture",
+    "evaluator_only_true_analogy": {"target_world": 81, "source_world": 57},
+    "evaluator_only_mismatches": [
+      {"target_world": 76, "nearest_source_hamming_distance": 2},
+      {"target_world": 77, "nearest_source_hamming_distance": 3},
+      {"target_world": 78, "nearest_source_hamming_distance": 4},
+      {"target_world": 79, "nearest_source_hamming_distance": 2},
+      {"target_world": 80, "nearest_source_hamming_distance": 3}
+    ],
+    "private_exposure_ledger": [
+      {"operation": "mapping inventory", "world_range_inclusive": [30, 72]},
+      {"operation": "source-match scan", "world_range_inclusive": [66, 150]},
+      {"operation": "mapping inventory", "world_range_inclusive": [78, 83]},
+      {"operation": "first-block scan", "candidate_start_range_inclusive": [66, 145]}
+    ],
+    "verbatim_command_text_status": "unknown_not_deposited_in_repository",
+    "private_mapping_exposure_union": [30, 150],
+    "canonical_fresh_worlds_forbidden_inclusive": [30, 150],
+    "original_heldout_policy_seeds_unrun_but_cannot_rescue_worlds": [721, 722],
+    "controller_or_outcome_execution_during_exposure": false,
+    "replacement_heldout_rule": "After implementation, thresholds, and development verdict are frozen, a process outside the implementation lineage must select and commitment-hash a block wholly above world 150 and give implementation only opaque run handles and public rows.",
+    "same_model_roles_external_independence": false
+  },
+  "run_id_grammars": {
+    "source": "R5:SRC:<exact_tabled_layout>:world=<exact_tabled_world>:policy=<exact_tabled_policy>",
+    "primitive_development": "R5:DEV:<frozen_arm_id>:<exact_tabled_layout>:world=<exact_tabled_world>:policy=<exact_tabled_policy>",
+    "encounter": "R5:ENC:<frozen_inference_id>:world=<opaque_dev_handle>",
+    "visibility": "verifier_only; no run-ID bytes or hashes enter a learner"
+  },
+  "single_real_path": "PlaygroundController.dispatch -> engine.compute_step -> predictive_control.plan_action -> survival_learning.select_action -> transition_world -> compute_metabolism_ledger -> predictive_control.update_after_transition -> SQLite append/recover",
+  "learner_public_history_row": [
+    "pre_public_observation from microworld.policy_observation(world_before)",
+    "post_public_observation from microworld.policy_observation(world_after)",
+    "pre_organism with four public components",
+    "post_organism with four public components",
+    "realized_delta[key]=round(post_organism[key]-pre_organism[key],6)",
+    "own selected primitive action",
+    "public outcome type"
+  ],
+  "realized_delta_contract": {
+    "normative_value": "round6(post_organism-pre_organism) componentwise",
+    "raw_trace_actual_delta_allowed": false,
+    "current_update_argument_allowed": false,
+    "conditional_exception": "Only a later row-by-row equality verifier may establish equivalence for a row.",
+    "scorer_semantics": "The same public realized post-minus-pre delta, including metabolism and clipping."
+  },
+  "public_history_projector": {
+    "producer": "whitelist-only projector after controller.on_committed(next_state,trace)",
+    "observation_function": "microworld.policy_observation",
+    "forbidden_whole_structures": [
+      "controller.public_state_projection",
+      "microworld.public_world_projection",
+      "trace.policy_projection",
+      "trace.world_transition",
+      "raw trace"
+    ]
+  },
+  "verifier_only_provenance": [
+    "world, layout, policy, run, split, class, and source IDs",
+    "command_hash, pre_state_hash, post_state_hash, trace_hash",
+    "code, dependency, artifact, and payload hashes",
+    "evaluator truth and scorer receipts"
+  ],
+  "hash_alias_firewall": {
+    "learner_may_receive_any_provenance_hash": false,
+    "bank_entry_id": "sha256(learner_payload), verifier/container key only",
+    "bank_entry_id_learner_readable": false,
+    "prohibited_uses": ["likelihood", "prediction", "acquisition", "stopping", "tie_break", "rng", "serialized_model_state"]
+  },
+  "forbidden_arm_inputs": [
+    "world, layout, policy, run, split, target-class, distance, or source identity",
+    "private token mapping, cause, or objects_by_cause",
+    "private or global world state",
+    "injected event semantics",
+    "observation beyond the committed current transition",
+    "unchosen or forced-action truth",
+    "candidate metric, verdict, support-pass state, or adaptive stopping flag",
+    "full-state, trace, command, run, payload, or artifact hash alias"
+  ],
+  "source_bank": {
+    "generator_id": "SOURCE_LEXICOGRAPHIC_COVERAGE_V1",
+    "requested_token_order": ["v0", "v1", "v2", "v3", "v4"],
+    "advance_rule": "Advance after first successful fully non-clipped interact row for requested token.",
+    "navigation_adapter": "COMMON_PUBLIC_BFS_NAVIGATION_V1",
+    "max_committed_primitive_actions": 128,
+    "max_lives": 4,
+    "required_runs": 12,
+    "aggregate_unit": "one anonymous mapping per source world, validated by both policy runs",
+    "required_anonymous_mapping_count": 6,
+    "imputation_allowed": false,
+    "run_extension_allowed": false,
+    "admission": [
+      "all five tokens have a successful fully non-clipped row in every run",
+      "both policy runs for a world recover identical mappings",
+      "each source mapping is a bijection",
+      "all sources expose the same set of five distinct public prototypes"
+    ],
+    "failure_verdict": "SOURCE_BANK_INADMISSIBLE",
+    "public_interact_base_increment": [-0.018, 0.0, 0.0, 0.0],
+    "prototype_recovery": "For fully non-clipped interactions, canonical six-decimal z=realized_delta-base_increment.",
+    "prototype_id": "lowercase sha256 hex of canonical public four-vector bytes, with no cause name",
+    "learner_payload_schema": {
+      "schema_version": "SOURCE_BANK_AND_VERSION_SPACE_V1",
+      "prototype_table": "exactly five rows {prototype_id,vector}",
+      "source_mappings": "exactly six rows {mapping:[[v0,id],...,[v4,id]]}, duplicates retained"
+    },
+    "vector_component_order": ["energy", "safety", "connection", "stimulation"],
+    "canonicalization": "Python half-even round(float,6), normalize negative zero to 0.0, UTF-8 JSON list with separators comma/colon, lowercase SHA-256 hex",
+    "prototype_table_order": "canonical vector bytes",
+    "mapping_order": "tokens v0..v4; six mappings sorted by canonical mapping bytes",
+    "fully_non_clipped_predicate": "action interact, outcome interacted, pre visual[1][2] in v0..v4, and every post-organism component strictly between 0 and 1",
+    "replicate_agreement": "exact equality of five canonical token/prototype_id pairs",
+    "learner_payload_excludes": ["cause labels", "source/world/run IDs", "run receipts", "provenance hashes"],
+    "data_hash_phase": "Bind actual source trace/state/payload hashes after implementation freeze in a separate pre-target provenance gate."
+  },
+  "stages": {
+    "stage1_fixed_packet_inference": {
+      "purpose": "isolate inference and model comparison",
+      "packet_generation": "Private scorer, unchanged transition semantics, canonical organism S=[0.45,0.62,0.50,0.43], lexical token presentation v0..v4",
+      "feedback_budgets": [0, 1, 2, 4, 5],
+      "packet_rule": "Every inference method receives byte-identical prefix rows.",
+      "primitive_navigation": false,
+      "policy_seed_input": false,
+      "private_truth_return_to_arm": false,
+      "endpoint_scorer": "Reset an independent deep-copy organism to canonical S for every token.",
+      "maximum_positive_verdict": "ENCOUNTER_REFERENCE_HEADROOM_OBSERVED"
+    },
+    "stage2_primitive_acquisition": {
+      "purpose": "isolate and cross inference with active acquisition on the sole controller path",
+      "history_rule": "Each arm starts from the same paired checkpoint and generates its own legal history; no common packet or forced action is injected.",
+      "feedback_checkpoints": [0, 1, 2, 4, 8],
+      "max_committed_primitive_actions": 128,
+      "max_successful_interactions": 8,
+      "max_lives": 4,
+      "planning_horizon": 12,
+      "beam_width": 16,
+      "max_hypothesis_action_scoring_calls_per_committed_action": 512,
+      "max_serialized_arm_state_bytes": 262144,
+      "wall_time": "report_only_not_gate",
+      "unreached_checkpoint": "ACQUISITION_SUPPORT_INFEASIBLE",
+      "scorer": "After checkpoint freeze, query each frozen learner at public canonical S=[0.45,0.62,0.50,0.43] and evaluate every token on an independent deep copy reset to S; never use the arm checkpoint organism; no truth/update returns to arm; all S+base+prototype components are interior so truth is unclipped base+prototype."
+    }
+  },
+  "stage_firewall": {
+    "artifact_roots_disjoint": true,
+    "stage2_loader_allowlist": ["finalized task hash", "finalized design hash", "source-bank learner payload", "frozen arm registry", "implementation provenance receipt"],
+    "stage2_loader_rejects": ["Stage1 target packet or prefix", "Stage1 posterior or learner state", "Stage1 metric", "Stage1 scorer receipt or truth", "evaluator label", "selected checkpoint or snapshot", "Stage1 verdict bytes"],
+    "stage1_positive_may_authorize_stage2_start": true,
+    "stage1_target_bytes_may_condition_stage2": false,
+    "shared_navigation_code": true,
+    "shared_mutable_navigation_or_learner_state": false,
+    "stage2_checkpoint_envelopes": ["learner_public", "verifier_private"],
+    "scorer_write_order": "seal learner-public bytes, then write verifier-private scorer envelope",
+    "arm_receives_scorer_handle_or_bytes": false,
+    "cross_envelope_import": "CONSERVATIVE_TRANSFER_PRIVATE_TRUTH_LEAKAGE"
+  },
+  "common_navigation_adapter": {
+    "id": "COMMON_PUBLIC_BFS_NAVIGATION_V1",
+    "exact_input_fields": ["schema_version", "desired_token", "current_public_observation", "navigation_state", "committed_row_or_null"],
+    "forbidden_inputs": ["organism", "goal", "run metadata", "hashes", "raw history"],
+    "observation": "canonical public schema/version and 5x5 visual only",
+    "state_fields": ["schema_version", "relative_pose{x,y,facing}", "cells", "step_count"],
+    "initial_state": "pose=(0,0,N), empty cells, step_count=0",
+    "cell_schema": "rows {x,y,value} sorted by (y,x); value empty/wall/v0..v4; omitted means unknown",
+    "observation_projection": "skip center/self and occluded; dx=column-2,dy=row-2; rotate N:(dx,dy), E:(-dy,dx), S:(-dx,-dy), W:(dy,-dx); add pose; overwrite with post observation; then unconditionally write current relative-pose cell as empty",
+    "pose_update": "own committed turned/moved outcome only; blocked move does not move pose",
+    "bfs_node": "(x,y,facing)",
+    "bfs_edges": "turns cost1; forward cost1 only into known empty; edge iteration follows primitive_tie_order",
+    "known_target_rule": "goal is a known empty cell adjacent to observed desired-token cell and facing it; shortest sequence then lexicographically smallest full action sequence",
+    "frontier_rule": "directed edge from known empty into omitted/unknown; rank by shortest turn/move distance then (y,x,facing_index); append one move_forward probe",
+    "already_front_rule": "if visual[1][2] is desired token, interact",
+    "no_route_or_frontier": "rest",
+    "primitive_tie_order": ["turn_left", "turn_right", "move_forward", "interact", "rest"],
+    "exact_output_fields": ["schema_version", "desired_token", "selected_primitive_action", "candidate_scores", "planned_actions", "navigation_state_after_observation"],
+    "candidate_scores": "all five actions; float 1.0 selected and 0.0 otherwise",
+    "selector_boundary": "exact candidate_scores into existing sole survival_learning.select_action with learning mode off; unique 1.0 action must be returned",
+    "life_reset": "navigation state resets to initial; learner posterior, query counts, and latched desired token persist within arm run",
+    "step_count": "increments once per committed primitive action and is not a model/acquisition threshold",
+    "shared_mutable_state": false,
+    "direct_transition_or_second_reducer": false
+  },
+  "finite_reference": {
+    "prototype_count": 5,
+    "prototype_table_access": "shared identically by all 120-space arms including structure-matched scratch",
+    "transfer_advantage_under_test": "source mapping-prior reuse, not prototype-catalog discovery",
+    "structure_matched_scratch_is_pure_zero_source": false,
+    "mapping_space": "all 5! = 120 bijections from v0..v4 to public prototype IDs",
+    "mapping_order": "itertools.permutations of prototype IDs sorted by canonical vector bytes, assigned to tokens v0..v4",
+    "one_swap_order": [[0,1],[0,2],[0,3],[0,4],[1,2],[1,3],[1,4],[2,3],[2,4],[3,4]],
+    "serialized_state": {
+      "schema_version": "FINITE_TRANSFER_STATE_V1",
+      "exact_fields": ["schema_version", "prototype_table", "feedback_count", "canonical_legal_interaction_rows", "three_length_120_consistency_masks", "reduced_rational_joint_posterior_pairs_per_family_and_mapping"],
+      "integer_encoding": "decimal JSON integers",
+      "array_order": "normative mapping order",
+      "normalization": "retain unnormalized family-by-mapping joint masses and normalize once over total mixture evidence",
+      "non_scratch_zero_family": "allowed; set family posterior and all joint cells to zero; emit diagnostic {row_index,family,all_zero:true}; no failure",
+      "instrument_invalid_zero_case": "total mixture evidence zero, equivalently full-support scratch evidence zero; do not mutate or smooth before dispatch"
+    },
+    "family_prior_mass": {"scratch": "1/3", "source_reuse": "1/3", "local_shift": "1/3"},
+    "within_family_priors": {
+      "scratch": "q_S(pi)=1/120",
+      "source_reuse": "q_R(pi)=count_j[s_j=pi]/6",
+      "local_shift": "q_L(pi)=count_(j,t)[one_transposition_t(s_j)=pi]/60 over 6 sources x 10 transpositions"
+    },
+    "duplicate_rule": "Accumulate duplicate mapping mass; normalize every family to one before applying family mass.",
+    "target_fitting_of_prior": false,
+    "prediction_kernel": "x_hat_prime=round6(clamp01(x+[-0.018,0,0,0]+z[pi(token)]))",
+    "likelihood": "1 iff all four predicted post components exactly equal canonical six-decimal observed post components; otherwise 0",
+    "non_interaction_likelihood_role": "navigation only",
+    "all_scratch_zero_likelihood": "CONSERVATIVE_TRANSFER_INSTRUMENT_INVALID",
+    "noise_or_epsilon_tuning_allowed": false,
+    "posterior_update": "exact normalized multiplication with canonical sorted accumulation",
+    "reported_model_comparison": ["family marginal likelihoods", "posterior family masses"],
+    "bma_distribution": "posterior mixture of deterministic realized deltas",
+    "bma_point_prediction": "componentwise posterior mean rounded to six decimals",
+    "mdl": {
+      "definition": "MDL_b=-log2(Z_b), where Z_b is sequential marginal likelihood",
+      "role": "audit-equivalent prequential codelength only",
+      "may_reenter_weights_or_decisions": false
+    },
+    "conservative_transfer_gate": {
+      "benefit_estimand_per_mapping": "MAE(scratch_prediction,delta_pi)-MAE(candidate_prediction,delta_pi) across four components",
+      "quantile": "exact posterior-weighted lower 5% quantile inf{x:CDF(x)>=0.05}",
+      "use_transfer_when": "quantile >= 0",
+      "fallback": "structure-matched scratch prediction",
+      "frequentist_confidence_interval_claim": false
+    },
+    "primary_acquisition": {
+      "criterion": "exact I(pi;Y_token|legal_history) in bits over unique mapping and finite outcome partition",
+      "eligible_tokens": "tokens with minimum successful-query count",
+      "tie_order": ["v0", "v1", "v2", "v3", "v4"]
+    },
+    "evsi_role": "separately reported challenger with no normative role"
+  },
+  "mandatory_transfer_controls": [
+    "structure-matched scratch Bayes: same 120 mappings, likelihood, BMA, EIG, access, compute, memory, and scorer; uniform prior only",
+    "consistency-set eliminator: exact source multiset elimination; equal-entry mapping distribution with duplicate multiplicity if nonempty, exact scratch posterior if empty; no three-family BMA or MDL; EIG/passive/uniform acquisition cells use this distribution",
+    "passive fixed-order exact transfer Bayes",
+    "sham source bank using deterministic cyclic token rotation v0<-v1<-v2<-v3<-v4<-v0",
+    "matched-capacity scratch-local: first six normative lexicographic mappings as target/source-independent anchors plus their sixty ordered one-swap components; same 1/3 masses and likelihood; EIG under own posterior; no source-derived mass",
+    "hard best-source reuse: minimize cumulative four-component public post-organism MAE across successful rows, tie canonical mapping bytes, no scratch fallback, passive acquisition",
+    "uniform source averaging: equal-entry six-source prediction, target evidence never changes weights, passive acquisition"
+  ],
+  "factorial_panel": {
+    "inference_ids": ["I_TRANSFER", "I_SCRATCH", "I_CONSISTENCY"],
+    "acquisition_ids": ["A_EIG", "A_PASSIVE", "A_UNIFORM"],
+    "arm_ids": [
+      "ARM_I_TRANSFER__A_EIG",
+      "ARM_I_TRANSFER__A_PASSIVE",
+      "ARM_I_TRANSFER__A_UNIFORM",
+      "ARM_I_SCRATCH__A_EIG",
+      "ARM_I_SCRATCH__A_PASSIVE",
+      "ARM_I_SCRATCH__A_UNIFORM",
+      "ARM_I_CONSISTENCY__A_EIG",
+      "ARM_I_CONSISTENCY__A_PASSIVE",
+      "ARM_I_CONSISTENCY__A_UNIFORM"
+    ],
+    "design": "full 3x3 cross before standalone challengers"
+  },
+  "registered_ids": {
+    "stage_ids": ["S1_FIXED_PACKET", "S2_PRIMITIVE"],
+    "inference_ids": ["I_TRANSFER", "I_SCRATCH", "I_CONSISTENCY", "I_SHAM", "I_SCRATCH_LOCAL", "I_HARD_SOURCE", "I_SOURCE_AVERAGE"],
+    "acquisition_control_ids": ["A_EIG", "A_PASSIVE", "A_UNIFORM", "A_FIXED_QUOTA", "A_ROUND_ROBIN", "A_D_OPTIMAL", "A_VISIT_COUNT", "A_FRONT_HEURISTIC", "A_POSTERIOR_SAMPLING"],
+    "standalone_arm_ids": [
+      "ARM_I_SHAM__A_EIG",
+      "ARM_I_SCRATCH_LOCAL__A_EIG",
+      "ARM_I_HARD_SOURCE__A_PASSIVE",
+      "ARM_I_SOURCE_AVERAGE__A_PASSIVE",
+      "ARM_I_TRANSFER__A_FIXED_QUOTA",
+      "ARM_I_TRANSFER__A_ROUND_ROBIN",
+      "ARM_I_TRANSFER__A_D_OPTIMAL",
+      "ARM_I_TRANSFER__A_VISIT_COUNT",
+      "ARM_I_TRANSFER__A_FRONT_HEURISTIC",
+      "ARM_I_TRANSFER__A_POSTERIOR_SAMPLING"
+    ],
+    "unregistered_id_executable": false,
+    "deferred_challenger_rule": "Lookup/count/transition/successor/FSM/episodic challengers require exact new registered IDs and callable contracts in the later implementation card before pre-run provenance."
+  },
+  "acquisition_contract": {
+    "decision_times": "once at arm start and only after a successful desired-token interaction",
+    "desired_token_latched_between_decisions": true,
+    "query_counts_persist_across_lives": true,
+    "passive": "lexical token among minimum successful-query count",
+    "uniform_eligible_set": "tokens at minimum successful-query count, sorted lexical",
+    "uniform_choice": "floor(u*eligible_count)",
+    "uniform_replacement": "without replacement until all five counts tie; balanced replacement thereafter",
+    "posterior_sampling": "inverse-CDF sample one mapping in normative order; among minimum-count tokens maximize MAE(sampled four-vector,current posterior-mean four-vector), tie lexical",
+    "stochastic_draws_per_acquisition_decision": 1,
+    "draw_cursor_reset": "zero for each arm run",
+    "retry_draw_consumption": 0
+  },
+  "additional_equal_access_challengers": [
+    "current fixed quota",
+    "deterministic round robin",
+    "D-optimal public design",
+    "exact visit-count greedy",
+    "public-front-token heuristic",
+    "constrained posterior sampling",
+    "exact visible-token lookup",
+    "count, transition, and successor tables",
+    "FSM planner",
+    "episodic or nearest-neighbour traversal"
+  ],
+  "rng_contract": {
+    "applies_to": ["uniform_random", "constrained_posterior_sampling"],
+    "draw_index_range_inclusive": {"minimum": 0, "maximum": 511},
+    "digest": "SHA256(UTF8(task_id + U+001F + stage_id + U+001F + control_id + U+001F + decimal_draw_index))",
+    "uniform_conversion": "u=(unsigned_big_endian_first_64_bits+0.5)/2^64",
+    "forbidden_digest_inputs": ["world", "layout", "policy", "checkpoint", "source", "target class", "outcome", "private or provenance hash"],
+    "receipt": "draw index and value",
+    "candidate_values": "deterministic",
+    "deterministic_ties": "frozen lexical order",
+    "reference_policy_seed_input": false,
+    "legacy_fixed_quota_exception": "Historical seed semantics retained and reported separately."
+  },
+  "endpoint": {
+    "metric": "equal-weight MAE over five tokens times four public realized-delta components",
+    "primary_feedback_budget": 2,
+    "effect_scale_derivation": {
+      "source": "immutable environment CAUSE_DELTAS only; no target mapping or result",
+      "pairwise_mae_sorted": [0.07, 0.075, 0.075, 0.08, 0.085, 0.09, 0.1, 0.115, 0.115, 0.125],
+      "median_effect_unit": 0.0875,
+      "interaction_energy_base_cancels_pairwise": true,
+      "scorer_organism": [0.45, 0.62, 0.5, 0.43],
+      "scorer_truth_unclipped": true
+    },
+    "true_analogy_min_absolute_improvement_vs_scratch": 0.021875,
+    "per_mismatch_max_absolute_regret_vs_scratch": 0.004375,
+    "margin_status": "Preregistered substantive value choices, not power-derived confidence bounds: one-quarter and one-twentieth of a typical mechanism separation.",
+    "stage1_joint_rule": "Target 81 passes benefit and every target 76..80 passes mismatch margin.",
+    "stage2_joint_rule": "Both target-81 policy pairs pass benefit and all ten target-76..80 policy pairs pass mismatch margin separately.",
+    "means_can_rescue_pair_failure": false,
+    "frequentist_or_credible_interval_from_two_policy_seeds": false,
+    "source_deletion_requirement": "Delete source and source-derived shift mass; true-analogy benefit must decrease by at least 0.021875 and fail the benefit rule.",
+    "information_ablation_scope": "Stage2 only; Stage1 has no acquisition claim.",
+    "information_ablation_requirement": "Before budget 2 change at least one non-tie query and worsen target-81 MAE by at least 0.004375 or increase worst mismatch regret by at least 0.004375.",
+    "equal_access_control_may_meet_both_sides": false,
+    "budget2_rationale": "Two distinct observed tokens leave three of five assignments unresolved, retaining both positive-transfer and negative-transfer risk."
+  },
+  "trace_replay_requirements": [
+    "serialize or hash-bind priors, consistency masks, likelihood increments, marginal likelihoods, posterior masses, BMA distributions and means",
+    "serialize or hash-bind MDL receipts, 5% benefit quantiles, EIG partitions and values, desired tokens, primitive score surfaces, sole-selector receipts, updates, and scorer receipts",
+    "replay recomputes behavior before reading stored outputs",
+    "stored selected action is never a replay input",
+    "source-order permutation leaves values and choices unchanged"
+  ],
+  "leakage_positive_controls": [
+    "cause",
+    "private token mapping",
+    "objects_by_cause",
+    "world, layout, policy, run, source, split, class, and distance IDs",
+    "private or global state",
+    "injected event",
+    "observation beyond committed current transition",
+    "unchosen scorer truth",
+    "full-state, trace, command, run, payload, and artifact hash aliases"
+  ],
+  "future_verdict_dispatch": {
+    "stage1_first_true": [
+      "CONSERVATIVE_TRANSFER_PRIVATE_TRUTH_LEAKAGE",
+      "CONSERVATIVE_TRANSFER_INSTRUMENT_INVALID",
+      "SOURCE_BANK_INADMISSIBLE",
+      "CONSERVATIVE_TRANSFER_OBSERVATION_OR_LOOKUP_SATURATED",
+      "CONSERVATIVE_TRANSFER_NO_LEGAL_HEADROOM",
+      "ENCOUNTER_REFERENCE_HEADROOM_OBSERVED"
+    ],
+    "stage2_precondition": "Stage1 verdict equals ENCOUNTER_REFERENCE_HEADROOM_OBSERVED",
+    "stage2_overall_first_true": [
+      "CONSERVATIVE_TRANSFER_PRIVATE_TRUTH_LEAKAGE",
+      "CONSERVATIVE_TRANSFER_INSTRUMENT_INVALID",
+      "SOURCE_BANK_INADMISSIBLE",
+      "CONSERVATIVE_TRANSFER_OBSERVATION_OR_LOOKUP_SATURATED",
+      "CONSERVATIVE_TRANSFER_PRIMITIVE_PATH_INFEASIBLE if any required pair cannot reach checkpoint 2 under caps",
+      "CONSERVATIVE_TRANSFER_NO_LEGAL_HEADROOM if checkpoints are reached but joint effect or ablation fails",
+      "CONSERVATIVE_TRANSFER_BENCHMARK_ADMITTED"
+    ],
+    "stage1_positive_reconsidered_by_overall_dispatch": false
+  },
+  "quarantined_future_primitive_predictor_instrument": {
+    "part_of_r5_encounter_reference": false,
+    "part_of_r5_admission_endpoint": false,
+    "historical_note": "A future R4-style multinomial predictor would need intercept plus front_empty reference coding, an exact gauge, and separately feasible rank/support gates; those are not scored by this 120-mapping reference."
+  },
+  "source_import_dependency": "A later implementation card must authorize one schema-validated, hash-bound source-bank import at the existing controller/engine initial-state boundary; no second reducer or action path.",
+  "provenance_phase_rule": "Freeze normative card/design bytes first; bind actual source, dependency, test, code-path, and artifact hashes only after later implementation in a separate pre-run provenance gate.",
+  "authorization": {
+    "candidate_implementation": false,
+    "source_modification": false,
+    "test_modification": false,
+    "script_modification": false,
+    "artifact_generation": false,
+    "source_seed_execution": false,
+    "development_seed_execution": false,
+    "heldout_seed_execution": false,
+    "environment_or_action_semantics_change": false,
+    "push_or_tag": false
+  },
+  "claim_ceiling": "Local docs-only prospective design freeze with explicitly contaminated development lineage; no computed headroom, implementation, controller-path effect, adaptation, survival improvement, fresh held-out result, product readiness, AGI, agency, consciousness, subjective experience, or electronic-life evidence.",
+  "auto_remote_anchor": "forbidden"
+}
