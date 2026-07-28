@@ -421,7 +421,7 @@ def test_independent_recompute_rebuilds_and_binds_frozen_balanced_digest() -> No
         for phase in ("early", "late")
         for context in ("a", "b")
         for model in ("learned", "no_update")
-        for action in ("move_forward", "rest")
+        for action in verifier.ACTIONS
     ]
     aggregate = verifier.recompute_balanced_aggregate(rows)
     snapshot_hashes = ["a:early", "b:early", "a:late", "b:late"]
@@ -496,6 +496,40 @@ def test_independent_recompute_rejects_duplicate_or_unpaired_balanced_row() -> N
 
     assert recomputed["checks"]["balanced_row_pairing_exact"] is False
     assert recomputed["all_exact"] is False
+
+
+def test_balanced_pairing_rejects_global_balance_without_per_snapshot_five_actions() -> None:
+    rows = []
+    for layout, world, policy in verifier.CONTEXTS:
+        context = f"{layout}:world={world}:policy={policy}"
+        for phase in ("early", "late"):
+            for snapshot_index, actions in enumerate(
+                (
+                    ("turn_right", "turn_right", "move_forward", "interact", "rest"),
+                    ("turn_left", "turn_left", "move_forward", "interact", "rest"),
+                )
+            ):
+                for row_index, action in enumerate(actions):
+                    for model in ("learned", "no_update"):
+                        row = _trace_row(
+                            model=model,
+                            phase=phase,
+                            context=context,
+                            action=action,
+                        )
+                        row["snapshot_hash"] = f"{context}:{phase}:{snapshot_index}"
+                        row["sequence"] = 100 * snapshot_index + row_index
+                        rows.append(row)
+
+    learned = [row for row in rows if row["model"] == "learned"]
+    assert len({row["snapshot_hash"] for row in learned}) == 8
+    assert len(set(row["action"] for row in learned)) == len(verifier.ACTIONS)
+    assert len(set(
+        (row["context_id"], row["phase"], row["action"])
+        for row in learned
+    )) == len(verifier.CONTEXTS) * 2 * len(verifier.ACTIONS)
+
+    assert verifier._balanced_row_pairing_exact(rows) is False
 
 
 @pytest.mark.parametrize(

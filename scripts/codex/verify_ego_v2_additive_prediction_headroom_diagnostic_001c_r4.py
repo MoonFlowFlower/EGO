@@ -616,13 +616,21 @@ def _recompute_training_support(training_rows: list[Mapping[str, Any]]) -> dict[
 
 def _balanced_row_pairing_exact(rows: list[Mapping[str, Any]]) -> bool:
     pairs: dict[tuple[Any, ...], dict[str, Mapping[str, Any]]] = defaultdict(dict)
+    identity_by_snapshot: dict[str, tuple[str, str, int]] = {}
+    actions_by_snapshot_model: dict[
+        tuple[str, str], Counter[str]
+    ] = defaultdict(Counter)
     for row in rows:
         try:
-            key = (
-                str(row["snapshot_hash"]),
+            snapshot_hash = str(row["snapshot_hash"])
+            snapshot_identity = (
                 str(row["context_id"]),
                 str(row["phase"]),
                 int(row["sequence"]),
+            )
+            key = (
+                snapshot_hash,
+                *snapshot_identity,
                 str(row["action"]),
             )
             model = str(row["model"])
@@ -630,13 +638,25 @@ def _balanced_row_pairing_exact(rows: list[Mapping[str, Any]]) -> bool:
             return False
         if model not in {"learned", "no_update"} or model in pairs[key]:
             return False
+        if (
+            snapshot_hash in identity_by_snapshot
+            and identity_by_snapshot[snapshot_hash] != snapshot_identity
+        ):
+            return False
+        identity_by_snapshot[snapshot_hash] = snapshot_identity
+        actions_by_snapshot_model[(snapshot_hash, model)][str(row["action"])] += 1
         pairs[key][model] = row
     if not pairs:
         return False
+    expected_actions = Counter(ACTIONS)
     return all(
         set(models) == {"learned", "no_update"}
         and _numbers_equal(models["learned"]["truth"], models["no_update"]["truth"])
         for models in pairs.values()
+    ) and all(
+        actions_by_snapshot_model[(snapshot_hash, model)] == expected_actions
+        for snapshot_hash in identity_by_snapshot
+        for model in ("learned", "no_update")
     )
 
 
@@ -915,6 +935,25 @@ def independently_derive_frozen_checks(
         return True
 
     unique_snapshots = {str(row["snapshot_hash"]) for row in learned_rows}
+    learned_actions_by_snapshot: dict[str, Counter[str]] = defaultdict(Counter)
+    learned_identities_by_snapshot: dict[str, set[tuple[str, str, int]]] = defaultdict(
+        set
+    )
+    for row in learned_rows:
+        snapshot_hash = str(row["snapshot_hash"])
+        learned_actions_by_snapshot[snapshot_hash][str(row["action"])] += 1
+        learned_identities_by_snapshot[snapshot_hash].add(
+            (
+                str(row["context_id"]),
+                str(row["phase"]),
+                int(row["sequence"]),
+            )
+        )
+    per_snapshot_action_coverage = all(
+        len(learned_identities_by_snapshot[snapshot_hash]) == 1
+        and learned_actions_by_snapshot[snapshot_hash] == Counter(ACTIONS)
+        for snapshot_hash in unique_snapshots
+    )
     all_effect_strata_estimable = all(
         phase_report["all_strata_estimable"]
         for model_report in stratified.values()
@@ -928,6 +967,7 @@ def independently_derive_frozen_checks(
         "no_snapshot_action_context_unused": (
             len(learned_rows) == int(report["snapshot_count"]) * len(ACTIONS)
             and len(unique_snapshots) == int(report["snapshot_count"])
+            and per_snapshot_action_coverage
             and set(context_phase_counts) == expected_cells
             and all(count > 0 for count in context_phase_counts.values())
         ),
