@@ -1,0 +1,377 @@
+diff --git a/labs/ego_life_playground_v0/engine.py b/labs/ego_life_playground_v0/engine.py
+index 3cbc1325..92ffed3d 100644
+--- a/labs/ego_life_playground_v0/engine.py
++++ b/labs/ego_life_playground_v0/engine.py
+@@ -51,7 +51,7 @@ VISUAL_TRANSITION_MODEL_KEY = "__visual_transition_counts__"
+ STATE_SCHEMA_VERSION = "ego.life_playground.state.v10"
+ RUN_SCHEMA_VERSION = "ego.life_playground.run.v10"
+ COMMAND_SCHEMA_VERSION = "ego.life_playground.command.v7"
+-TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v15"
++TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v16"
+ COMPONENT_HASH_SCHEMA_VERSION = "ego.life_playground.component_hashes.v2"
+ 
+ TRIGGER_SOURCES = (
+@@ -187,7 +187,7 @@ def compute_code_path_manifest() -> dict[str, Any]:
+         Path(__file__).with_name("store.py"),
+     )
+     return {
+-        "schema_version": "ego.life_playground.code_path.v11",
++        "schema_version": "ego.life_playground.code_path.v12",
+         "files": [
+             {"path": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+             for path in source_paths
+@@ -585,7 +585,7 @@ def _respawn_trace(
+             "update_count": int(next_state["survival_learner"]["update_count"]),
+         },
+         "predictive_control": {
+-            "schema_version": "ego.life_playground.predictive_control_trace.v4",
++            "schema_version": "ego.life_playground.predictive_control_trace.v5",
+             "mode": command["interventions"]["predictive_control_mode"],
+             "belief_observation": {
+                 "applied": True,
+@@ -1431,7 +1431,7 @@ def compute_step(
+             "update_count": int(next_state["survival_learner"]["update_count"]),
+         },
+         "predictive_control": {
+-            "schema_version": "ego.life_playground.predictive_control_trace.v4",
++            "schema_version": "ego.life_playground.predictive_control_trace.v5",
+             "mode": interventions["predictive_control_mode"],
+             "belief_observation": predictive_belief_receipt,
+             "belief_hash": canonical_hash(
+@@ -3324,6 +3324,7 @@ def _compact_predictive_plan(
+         "predictions_by_action": predictions,
+         "candidate_values": candidate_values,
+         "beam_receipt": compact_beam,
++        "batch_receipt": deepcopy(plan.get("batch_receipt")),
+     }
+ 
+ 
+@@ -3342,7 +3343,6 @@ def _compact_predictive_update(report: Mapping[str, Any]) -> dict[str, Any]:
+             "outcome_nll",
+             "delta_error",
+             "delta_outcome_updated",
+-            "delta_projection_by_state",
+             "delta_base_hash_before",
+             "delta_base_hash_after",
+             "delta_outcome_offset_hash_before",
+@@ -3364,6 +3364,34 @@ def _compact_predictive_update(report: Mapping[str, Any]) -> dict[str, Any]:
+     for field in ("prediction_before", "prediction_after"):
+         if isinstance(report.get(field), Mapping):
+             compact[f"{field}_hash"] = canonical_hash(report[field])
++    projection_by_state = report.get("delta_projection_by_state")
++    if isinstance(projection_by_state, Mapping) and projection_by_state:
++        compact["delta_projection"] = {
++            "projection_mean_by_state": {
++                key: projection_by_state[key]["projection_mean"]
++                for key in STATE_KEYS
++            },
++            "raw_conditionals_hash": canonical_hash(
++                {
++                    key: projection_by_state[key]["raw_conditionals_hash"]
++                    for key in STATE_KEYS
++                }
++            ),
++            "projected_conditionals_hash": canonical_hash(
++                {
++                    key: projection_by_state[key]["projected_conditionals_hash"]
++                    for key in STATE_KEYS
++                }
++            ),
++            "projection_max_abs_difference": max(
++                float(projection_by_state[key]["projection_max_abs_difference"])
++                for key in STATE_KEYS
++            ),
++            "all_projection_conditionals_preserved": all(
++                bool(projection_by_state[key]["projection_preserved_conditionals"])
++                for key in STATE_KEYS
++            ),
++        }
+     return compact
+ 
+ 
+diff --git a/labs/ego_life_playground_v0/predictive_control.py b/labs/ego_life_playground_v0/predictive_control.py
+index 5f0de5e9..e3b15068 100644
+--- a/labs/ego_life_playground_v0/predictive_control.py
++++ b/labs/ego_life_playground_v0/predictive_control.py
+@@ -904,6 +904,59 @@ def _planning_prediction_vector_from_packed(
+     )
+ 
+ 
++def _batch_planning_prediction_vectors(
++    packed_rows: np.ndarray,
++    *,
++    delta_outcome_offsets: np.ndarray,
++    visit_counts: list[int],
++) -> list[tuple[float, ...]]:
++    """Evaluate additive conditional expectations across independent rows."""
++
++    rows = np.asarray(packed_rows, dtype=NUMERIC_DTYPE)
++    offsets = np.asarray(delta_outcome_offsets, dtype=NUMERIC_DTYPE)
++    expected_shape = (len(visit_counts), len(OUTCOMES) + len(STATE_KEYS) + 2)
++    if rows.shape != expected_shape:
++        raise PredictiveControlInvariantError("batched packed prediction shape mismatch")
++    if offsets.shape != (len(OUTCOMES), len(STATE_KEYS)):
++        raise PredictiveControlInvariantError("batched outcome offset shape mismatch")
++    if any(type(count) is not int or count < 0 for count in visit_counts):
++        raise PredictiveControlInvariantError("batched visit counts are invalid")
++    probabilities = [
++        _softmax_values(rows[index, : len(OUTCOMES)])
++        for index in range(len(visit_counts))
++    ]
++    probability_rows = np.asarray(probabilities, dtype=NUMERIC_DTYPE)
++    base_offset = len(OUTCOMES)
++    base_values = rows[:, base_offset : base_offset + len(STATE_KEYS)]
++    conditional_values = np.asarray(
++        base_values[:, np.newaxis, :] + offsets[np.newaxis, :, :],
++        dtype=NUMERIC_DTYPE,
++    )
++    conditional_values.clip(-0.35, 0.35, out=conditional_values)
++    expected_delta = (
++        probability_rows[:, 0, np.newaxis] * conditional_values[:, 0, :]
++        + probability_rows[:, 1, np.newaxis] * conditional_values[:, 1, :]
++        + probability_rows[:, 2, np.newaxis] * conditional_values[:, 2, :]
++        + probability_rows[:, 3, np.newaxis] * conditional_values[:, 3, :]
++        + probability_rows[:, 4, np.newaxis] * conditional_values[:, 4, :]
++        + probability_rows[:, 5, np.newaxis] * conditional_values[:, 5, :]
++    )
++    scalar_offset = base_offset + len(STATE_KEYS)
++    return [
++        probabilities[index]
++        + (
++            float(expected_delta[index, 0]),
++            float(expected_delta[index, 1]),
++            float(expected_delta[index, 2]),
++            float(expected_delta[index, 3]),
++            _sigmoid(float(rows[index, scalar_offset])),
++            _sigmoid(float(rows[index, scalar_offset + 1])),
++            1.0 / math.sqrt(1.0 + visit_counts[index]),
++        )
++        for index in range(len(visit_counts))
++    ]
++
++
+ def _predict_from_payload(
+     state: Mapping[str, Any],
+     payload: Mapping[str, Any],
+@@ -1396,6 +1449,118 @@ def _prediction_for_pose(
+     return prediction
+ 
+ 
++def _prewarm_depth_prediction_caches(
++    state: Mapping[str, Any],
++    beam: list[Mapping[str, Any]],
++    *,
++    belief: Mapping[str, Any],
++    observation: Mapping[str, Any] | None,
++    compiled_model: dict[str, np.ndarray],
++    compiled_prediction_matrix: np.ndarray,
++    prediction_cache: dict[tuple[Any, ...], tuple[float, ...]],
++    pose_prediction_cache: dict[tuple[Any, ...], tuple[float, ...]],
++    summary_cache: dict[tuple[int, int, str, bool], dict[str, Any]],
++    visit_key_cache: dict[tuple[Any, ...], str],
++) -> dict[str, int]:
++    """Precompute one depth's unique prediction misses in action-wise batches."""
++
++    pending_by_action: dict[
++        str,
++        dict[tuple[Any, ...], tuple[np.ndarray, int]],
++    ] = {action: {} for action in ACTIONS}
++    pose_bindings: dict[tuple[Any, ...], tuple[Any, ...]] = {}
++    request_count = 0
++    for node in beam:
++        organism = node["organism"]
++        organism_tuple = node["organism_tuple"]
++        for action in ACTIONS:
++            action_index = ACTION_INDEX[action]
++            for pose_x, pose_y, facing in node["pose_distribution"]:
++                request_count += 1
++                pose_prediction_key = (
++                    organism_tuple,
++                    pose_x,
++                    pose_y,
++                    facing,
++                    observation is not None,
++                    action_index,
++                )
++                if pose_prediction_key in pose_prediction_cache:
++                    continue
++                summary_key = (pose_x, pose_y, facing, observation is not None)
++                summary = summary_cache.get(summary_key)
++                if summary is None:
++                    summary = _belief_summary_at(
++                        belief,
++                        pose=(pose_x, pose_y),
++                        facing=facing,
++                        observation=observation,
++                    )
++                    summary_cache[summary_key] = summary
++                cache_key = (
++                    action_index,
++                    organism_tuple,
++                    str(summary["front_token"]),
++                    int(summary["known_cell_count"]),
++                    int(summary["known_object_count"]),
++                )
++                pose_bindings[pose_prediction_key] = cache_key
++                cached = prediction_cache.get(cache_key)
++                if cached is not None:
++                    pose_prediction_cache[pose_prediction_key] = cached
++                    continue
++                if cache_key in pending_by_action[action]:
++                    continue
++                features = _feature_vector_from_summary(
++                    organism=organism,
++                    summary=summary,
++                )
++                packed_values = _prediction_dot_batch(
++                    compiled_prediction_matrix[action_index], features
++                )
++                visit_descriptor = (
++                    action,
++                    summary["front_token"],
++                    int(float(organism["energy"]) * 10),
++                    summary["known_object_count"],
++                )
++                visit_key = visit_key_cache.get(visit_descriptor)
++                if visit_key is None:
++                    payload = {
++                        "observation": observation,
++                        "organism": organism,
++                        "belief_summary": summary,
++                    }
++                    visit_key = _visit_key(action, payload)
++                    visit_key_cache[visit_descriptor] = visit_key
++                visit_count = int(state["model"]["visit_counts"].get(visit_key, 0))
++                pending_by_action[action][cache_key] = (packed_values, visit_count)
++    unique_miss_count = 0
++    for action in ACTIONS:
++        pending = pending_by_action[action]
++        if not pending:
++            continue
++        keys = list(pending)
++        packed_rows = np.stack([pending[key][0] for key in keys])
++        visit_counts = [pending[key][1] for key in keys]
++        vectors = _batch_planning_prediction_vectors(
++            packed_rows,
++            delta_outcome_offsets=compiled_model["delta_outcome_offsets"][
++                ACTION_INDEX[action]
++            ],
++            visit_counts=visit_counts,
++        )
++        for key, vector in zip(keys, vectors):
++            prediction_cache[key] = vector
++        unique_miss_count += len(keys)
++    for pose_key, cache_key in pose_bindings.items():
++        pose_prediction_cache[pose_key] = prediction_cache[cache_key]
++    return {
++        "request_count": request_count,
++        "unique_miss_count": unique_miss_count,
++    }
++
++
+ def _expand_node(
+     state: Mapping[str, Any],
+     node: Mapping[str, Any],
+@@ -1706,7 +1871,23 @@ def plan_action(
+     retained_by_depth: list[int] = []
+     root_actions_by_depth: list[list[str]] = []
+     probability_mass_normalized = True
++    batch_request_count = 0
++    batch_unique_miss_count = 0
+     for depth in range(horizon):
++        batch_receipt = _prewarm_depth_prediction_caches(
++            state,
++            beam,
++            belief=base_belief,
++            observation=observation if depth == 0 else None,
++            compiled_model=compiled_model,
++            compiled_prediction_matrix=compiled_prediction_matrix,
++            prediction_cache=prediction_cache,
++            pose_prediction_cache=pose_prediction_cache,
++            summary_cache=summary_cache,
++            visit_key_cache=visit_key_cache,
++        )
++        batch_request_count += int(batch_receipt["request_count"])
++        batch_unique_miss_count += int(batch_receipt["unique_miss_count"])
+         expanded = [
+             _expand_node(
+                 state,
+@@ -1851,6 +2032,15 @@ def plan_action(
+             "root_actions_by_depth": root_actions_by_depth,
+             "all_probability_mass_normalized": probability_mass_normalized,
+         },
++        "batch_receipt": {
++            "producer_function": (
++                "ego_life_playground_v0.predictive_control."
++                "_prewarm_depth_prediction_caches"
++            ),
++            "request_count": batch_request_count,
++            "unique_miss_count": batch_unique_miss_count,
++            "scalar_equivalence_contract": "bit_exact_tuple_and_recovery_gate",
++        },
+         "model_hash": _canonical_hash(state["model"]),
+         "belief_hash": _canonical_hash(state["belief"]),
+     }
+diff --git a/tests/test_ego_life_playground_v0.py b/tests/test_ego_life_playground_v0.py
+index bf47a93c..60ae3c5f 100644
+--- a/tests/test_ego_life_playground_v0.py
++++ b/tests/test_ego_life_playground_v0.py
+@@ -70,7 +70,7 @@ def test_card_a_command_v5_and_compute_step_are_deterministic_replay_inputs_only
+     state, meta, command, result = _step(run_id="deterministic")
+     replayed = compute_step(deepcopy(state), deepcopy(command), deepcopy(meta))
+ 
+-    assert result.trace["schema_version"] == "ego.life_playground.trace.v14"
++    assert result.trace["schema_version"] == "ego.life_playground.trace.v16"
+     assert command["schema_version"] == "ego.life_playground.command.v7"
+     assert set(command) == {
+         "schema_version",
+@@ -316,7 +316,7 @@ def test_card_a_recovery_rejects_state_world_tamper_and_missing_trace_parity(tmp
+ 
+ def test_card_a_code_path_drift_and_source_bytes_fail_closed(tmp_path: Path):
+     manifest = compute_code_path_manifest()
+-    assert manifest["schema_version"] == "ego.life_playground.code_path.v10"
++    assert manifest["schema_version"] == "ego.life_playground.code_path.v12"
+     assert {entry["path"] for entry in manifest["files"]} == {
+         "claims.py",
+         "engine.py",
+diff --git a/tests/test_ego_v2_factored_predictive_control_boundary_gate_001c.py b/tests/test_ego_v2_factored_predictive_control_boundary_gate_001c.py
+index 54ef8850..051f6fe2 100644
+--- a/tests/test_ego_v2_factored_predictive_control_boundary_gate_001c.py
++++ b/tests/test_ego_v2_factored_predictive_control_boundary_gate_001c.py
+@@ -292,9 +292,11 @@ def test_plan_action_preserves_semantics_and_reuses_cached_feature_vectors(monke
+         for prediction in first["predictions_by_action"].values()
+     )
+     assert compiled_calls == 2
+-    assert pose_prediction_calls > feature_calls
+-    assert pose_prediction_calls < 2_000
+-    assert successor_distribution_calls <= pose_prediction_calls
++    assert pose_prediction_calls == 0
++    assert successor_distribution_calls == 0
++    assert first["batch_receipt"]["request_count"] > first["batch_receipt"][
++        "unique_miss_count"
++    ]
+     assert feature_calls < 120
+ 
+ 
+@@ -440,7 +442,7 @@ def test_engine_public_actual_delta_and_compact_trace_fail_closed(monkeypatch) -
+     trace = result.trace
+ 
+     assert actual_delta_calls == 1
+-    assert trace["schema_version"] == "ego.life_playground.trace.v15"
++    assert trace["schema_version"] == "ego.life_playground.trace.v16"
+     plan = trace["predictive_control"]["plan"]
+     assert "producer_function" not in plan
+     assert "algorithm" not in plan
+diff --git a/tests/test_ego_v2_hierarchical_outcome_delta_repair_001c_r2.py b/tests/test_ego_v2_hierarchical_outcome_delta_repair_001c_r2.py
+index 3d8da8b5..8d786a87 100644
+--- a/tests/test_ego_v2_hierarchical_outcome_delta_repair_001c_r2.py
++++ b/tests/test_ego_v2_hierarchical_outcome_delta_repair_001c_r2.py
+@@ -251,7 +251,7 @@ def test_engine_trace_binds_hierarchical_delta_receipt() -> None:
+ 
+     assert meta["schema_version"] == "ego.life_playground.run.v10"
+     assert result.next_state["schema_version"] == "ego.life_playground.state.v10"
+-    assert result.trace["schema_version"] == "ego.life_playground.trace.v15"
++    assert result.trace["schema_version"] == "ego.life_playground.trace.v16"
+     for prediction in result.trace["predictive_control"]["plan"][
+         "predictions_by_action"
+     ].values():
