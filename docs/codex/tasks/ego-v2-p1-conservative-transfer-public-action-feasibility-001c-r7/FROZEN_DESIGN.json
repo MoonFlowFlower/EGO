@@ -1,0 +1,167 @@
+{
+  "schema_version": "ego.v2.conservative_transfer.public_action_feasibility_design.v1",
+  "task_id": "EGO-V2-P1-CONSERVATIVE-TRANSFER-PUBLIC-ACTION-FEASIBILITY-001C-R7",
+  "task_type": "docs_only_freeze_for_seed_free_static_public_information_feasibility_preflight",
+  "base_commit": "28ac8ce8ea4d751af10b7d77265fadd3e6edbbc8",
+  "science_weight": 0,
+  "lineage_discontinuity": "R7 does not edit, rescore, repair, or promote R5 or R6 evidence and does not authorize product implementation.",
+  "authority": {
+    "r6_card_sha256": "7c346dc7823450c9d0e46c34755dd6d5201f49ed25321786197d6c1d1686dfdf",
+    "r6_collision_sha256": "09892072532fa9f6aacabc0b78c7a4a40611cc369f34c4416c46529e1e7ae9e3",
+    "r6_producer_sha256": "342161a515eaeea9e0c1c7f0c9178a23215174b1b12a9009abdc7d7ac6905d9e",
+    "r6_test_sha256": "100160fdb8c68a1450d17b2433b357cae3a9f6c96de7754e9db8667f764af475",
+    "r6_result_file_sha256": "498225d48a3deb4dd484cbfbace5ef739470a969efbfe300a74b403e2a58477b"
+  },
+  "public_information": {
+    "prototype_count": 5,
+    "prototype_component_count": 4,
+    "observed_distinct_successful_rows": 2,
+    "unobserved_token_count": 3,
+    "compatible_completion_count": 6,
+    "anonymous_source_mapping_count": 6,
+    "learner_may_use": [
+      "canonical public prototype table",
+      "six anonymous public source mappings with duplicates retained",
+      "two canonical successful public target rows",
+      "the exact-membership mask over six compatible completions derived from the public source bank"
+    ],
+    "learner_forbidden": [
+      "realized target truth or that truth's evaluator class label",
+      "world, seed, run, source, target, class, or distance ID",
+      "hidden mapping, cause, or objects_by_cause",
+      "scorer, verdict, artifact hash, or future observation"
+    ],
+    "prototype_canonical_json": [
+      "[0.0,-0.02,0.0,0.16]",
+      "[0.0,-0.18,0.0,0.04]",
+      "[0.0,0.0,0.16,0.02]",
+      "[0.0,0.12,0.0,0.0]",
+      "[0.28,0.0,0.0,0.0]"
+    ],
+    "prototype_sha256": [
+      "22659515e916b3b5ead3390438733bda2e15df9b44b6b0b9afcab30718b0dae9",
+      "9799be678e4269454a06e199889f37eee9cc1aec02b810befdef3fcc583b04b8",
+      "3d6288b3042ee89950548d7a3ef44d183243feb7af0913ce9a25b9a2b040099f",
+      "4df0754afbdd63f7e4865bfd10062c20ec5414e469c6b4f8776cddbd8babd5ff",
+      "846bdcd2a0768a906623d807c95580c025a63b99d87b2335d7d097f972f71c16"
+    ]
+  },
+  "loss_contract": {
+    "loss": "sum_absolute_error_in_signed_integer_micro_units",
+    "mae_denominator": 20,
+    "micro_units_per_unit": 1000000,
+    "true_gain_threshold_total_error_micro": 437500,
+    "strict_nonmember_regret_total_error_micro": 0,
+    "bounded_nonmember_regret_total_error_micro": 87500,
+    "true_gain_threshold_mae": "21875/1000000",
+    "bounded_nonmember_regret_mae": "4375/1000000"
+  },
+  "primary_baseline": {
+    "id": "PUBLIC_PREFIX_L1_MEDIAN_MINIMAX",
+    "action": "for each of three unobserved tokens and four components, the scalar median of the three remaining public prototype increments",
+    "tie_rule": "three scalar values have an odd count; use the unique sorted middle value",
+    "access": "public prototype table plus two public rows only",
+    "r5_mean_role": "historical_loss_mismatch_diagnostic_only"
+  },
+  "membership_contract": {
+    "true_analogy": "exact target mapping occurs at least once in the six-source multiset",
+    "nonmember_completion": "exact target mapping does not occur in the six-source multiset; theorem-local superset, not a synonym for R5 designated D2/D3/D4 near-miss targets",
+    "evaluated_nonempty_masks": 63,
+    "evaluated_membership_sizes": [1, 2, 3, 4, 5, 6],
+    "universal_rule": "every exact-member completion meets true gain and every nonmember completion meets the selected regret bound",
+    "formal_quantifiers": "for every public source bank B and legal H2, M=M(B,H2), A=f(B,H2), score the same A against every realized pi in Omega(H2)",
+    "geometry_quotient": "the ten remaining sets quotient observed-token order, relabeling, and bank identity because the proof universally quantifies over every derived mask and every action"
+  },
+  "proof_contract": {
+    "remaining_prototype_set_count": 10,
+    "permutation_count_per_set": 6,
+    "loss_sum_identity": "sum_over_six L(A,pi) = 2*sum_over_three_tokens_and_three_remaining_prototypes L1(a_token,prototype)",
+    "unique_equality_condition": "equality to public baseline total loss iff every action component equals the unique scalar median",
+    "minimax_derivation": "L(B,pi)=C_R for every completion and max L(A)>=average L(A)>=average L(B)=C_R=max L(B)",
+    "randomized_extension": "take expectation of the deterministic loss-sum inequality; equality requires probability one on the unique public median action",
+    "bounded_constraint_sum_by_membership_size": "-k*437500+(6-k)*87500 = 525000*(1-k)",
+    "strict_constraint_sum_by_membership_size": "-k*437500",
+    "decision_arithmetic": "exact_signed_integer_micro_units_only",
+    "optimizer_status_as_proof": false
+  },
+  "formal_candidate_set": [
+    "unrestricted target-truth-blind public action feasibility",
+    "source-aware posterior L1 median as non-adjudicative expected-risk challenger",
+    "baseline-regret-constrained Bayes action feasibility before optimizer implementation"
+  ],
+  "formal_controls": [
+    "PUBLIC_PREFIX_L1_MEDIAN_MINIMAX",
+    "R5_SCRATCH_MEAN_DIAGNOSTIC_ONLY",
+    "zero_true_gain_A_equals_B_exact_positive_control"
+  ],
+  "verdict_priority": [
+    "PRIVATE_TRUTH_OR_SEED_INPUT",
+    "PUBLIC_ACTION_FEASIBILITY_INSTRUMENT_INVALID",
+    "PUBLIC_INFORMATION_TWO_SIDED_HEADROOM_ABSENT",
+    "BOUNDED_REGRET_ONLY",
+    "R7_STATIC_REFERENCE_FEASIBLE"
+  ],
+  "trace_replay": {
+    "fresh_cli_process_required": true,
+    "stored_verdict_is_input": false,
+    "stored_action_or_feasible_witness_is_input": false,
+    "canonical_json_sort_keys": true,
+    "cli_allowlist": ["--output-dir", "--replay-expected-dir"],
+    "core_files": [
+      "result.json",
+      "trace.jsonl",
+      "baseline_comparison.json",
+      "ablation_report.json",
+      "failure_manifest.json",
+      "claim_ceiling.txt"
+    ],
+    "runtime_contract": {
+      "python_implementation": "CPython",
+      "dependency_policy": "Python standard library only",
+      "decision_dtype": "unbounded Python int",
+      "required_receipts": [
+        "python implementation",
+        "python version",
+        "dependency policy",
+        "decision dtype"
+      ]
+    },
+    "required_receipts": [
+      "prototype hashes",
+      "remaining sets and permutations",
+      "median actions and baseline errors",
+      "membership-size algebraic bounds",
+      "strict and bounded feasibility counts",
+      "producer, task, collision, design, and test hashes",
+      "runtime versions and run ID"
+    ]
+  },
+  "contamination_firewall": {
+    "run_worlds_or_seeds": false,
+    "inspect_worlds_30_through_150": false,
+    "inspect_worlds_above_150": false,
+    "fresh_confirmatory_claim_allowed": false,
+    "reason": "The fixed five-prototype grammar was already exhaustively inspected by R6."
+  },
+  "implementation_scope": "docs_only_freeze; producer, tests, and evidence require a separate successor implementation card bound to committed R7 document hashes",
+  "product_path_implementation_authorized": false,
+  "neural_candidate_authorized": false,
+  "active_acquisition_authorized": false,
+  "static_oracle_output_role": "verifier_only_and_forbidden_as_future_candidate_forward_input",
+  "future_candidate_public_input_allowlist": [
+    "canonical public prototype table",
+    "six anonymous public source mappings",
+    "committed legal public history including own action and public outcome",
+    "public per-token feedback counts",
+    "budget remaining",
+    "own serialized learner state"
+  ],
+  "future_candidate_forbidden_inputs": [
+    "world, seed, run, source, target, class, or distance ID",
+    "hidden mapping, cause, or objects_by_cause",
+    "scorer, future observation, checkpoint-selection metric, or static-oracle output",
+    "proof action, feasibility status, membership-size bound, verdict, or artifact hash"
+  ],
+  "auto_remote_anchor": "forbidden",
+  "claim_ceiling": "Docs-only freeze for a future exact test of universal exact-member benefit and nonmember-completion safety at the fixed R6 geometry and two-row information boundary; no adjudication of R5 D2/D3/D4, local-shift, fixed-bank, distributional, active-query, product, neural, AGI, agency, consciousness, or electronic-life claims."
+}
