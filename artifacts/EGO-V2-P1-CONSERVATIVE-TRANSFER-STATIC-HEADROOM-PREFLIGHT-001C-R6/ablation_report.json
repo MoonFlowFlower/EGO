@@ -1,0 +1,62 @@
+{
+  "aggregation_rule": "complete_integer_enumeration_of_all_six_source_posterior_weight_states_and_all_120_target_mappings_at_feedback_budget_2",
+  "code_path_hash": "342161a515eaeea9e0c1c7f0c9178a23215174b1b12a9009abdc7d7ac6905d9e",
+  "gate_deleted_diagnostic": {
+    "ablation": "delete_lower_5pct_gate_and_always_use_transfer_bma",
+    "evaluated_prior_target_case_count": 1113840,
+    "interpretation": "The frozen gate removes both potential benefit and negative-transfer harm; this diagnostic does not authorize changing the frozen rule.",
+    "maximum_total_absolute_error_reduction_micro": 641974,
+    "minimum_total_absolute_error_reduction_micro": -365433,
+    "positive_case_count": 446982,
+    "verdict_role": "diagnostic_only_cannot_rescue"
+  },
+  "input_artifacts": [
+    {
+      "path": "docs/codex/tasks/EGO-V2-P1-CONSERVATIVE-TRANSFER-BENCHMARK-ADMISSION-001C-R5.md",
+      "role": "normative_r5",
+      "sha256": "d9bef189de2d62f157fafcf44874940cdf41a1997c51d4ebbfe27e7d094fbc53"
+    },
+    {
+      "path": "docs/codex/tasks/ego-v2-p1-conservative-transfer-benchmark-admission-001c-r5/COLLISION_RECORD.md",
+      "role": "normative_r5",
+      "sha256": "44d76988be7269201ff606c16c7813f634ee0afa7b3dff676e7fedc2c8962c1a"
+    },
+    {
+      "path": "docs/codex/tasks/ego-v2-p1-conservative-transfer-benchmark-admission-001c-r5/FROZEN_DESIGN.json",
+      "role": "normative_r5",
+      "sha256": "07abe6caadce1f7b76cfeee051b5d62c63a11f0f115e912e09c89eea42296443"
+    },
+    {
+      "path": "docs/codex/tasks/EGO-V2-P1-CONSERVATIVE-TRANSFER-STATIC-HEADROOM-PREFLIGHT-001C-R6.md",
+      "role": "r6_task_authority",
+      "sha256": "7c346dc7823450c9d0e46c34755dd6d5201f49ed25321786197d6c1d1686dfdf"
+    },
+    {
+      "path": "docs/codex/tasks/ego-v2-p1-conservative-transfer-static-headroom-preflight-001c-r6/COLLISION_RECORD.md",
+      "role": "r6_task_authority",
+      "sha256": "09892072532fa9f6aacabc0b78c7a4a40611cc369f34c4416c46529e1e7ae9e3"
+    },
+    {
+      "path": "scripts/codex/tests/test_check_ego_v2_conservative_transfer_static_headroom_001c_r6.py",
+      "role": "verification_test",
+      "sha256": "100160fdb8c68a1450d17b2433b357cae3a9f6c96de7754e9db8667f764af475"
+    }
+  ],
+  "may_rescue_verdict": false,
+  "normative_gate_enabled": {
+    "maximum_total_absolute_error_reduction_micro": 0,
+    "nontrivial_gate_use_count": 0,
+    "positive_case_count": 0
+  },
+  "producer_function": "check_ego_v2_conservative_transfer_static_headroom_001c_r6.write_evidence_bundle",
+  "run_id": "static-headroom-9a8a0100facc747d",
+  "runtime_receipt": {
+    "decision_arithmetic": "signed_integer_micro_units",
+    "dtype": "<i8",
+    "numpy_role": "batched_integer_arithmetic_only",
+    "numpy_version": "2.5.1",
+    "python_version": "3.13.7"
+  },
+  "schema_version": "ego.v2.conservative_transfer.static_headroom_preflight.v1.ablation",
+  "task_id": "EGO-V2-P1-CONSERVATIVE-TRANSFER-STATIC-HEADROOM-PREFLIGHT-001C-R6"
+}
