@@ -43,16 +43,21 @@ At feedback budget two, enumerate every posterior weight state attainable from:
 - frozen six-decimal BMA predictions;
 - the frozen posterior-weighted lower-5% benefit gate with scratch fallback.
 
-Determine whether any target/source state can produce positive budget-2
-endpoint MAE improvement over structure-matched scratch, and whether the frozen
-minimum required improvement `0.021875` is reachable.
+Determine both (a) whether any target/source state can produce positive
+budget-2 endpoint MAE improvement over structure-matched scratch and (b)
+whether a **true-analogy-constrained** state, in which the exact target mapping
+occurs at least once in the six-source multiset, can reach the frozen minimum
+required improvement `0.021875`.  The unconstrained maximum is a stronger
+negative diagnostic only; it cannot by itself authorize a positive return.
 
 ## Hypothesis and falsifier
 
-- **H1:** at least one admissible six-source state and target mapping yields a
-  gated budget-2 improvement of at least `0.021875` over scratch.
+- **H1:** at least one admissible **true-analogy-constrained** six-source state
+  and target mapping yields a gated budget-2 improvement of at least `0.021875`
+  over scratch.
 - **Falsifier:** complete enumeration returns zero positive gated cases or a
-  maximum below `0.021875`.
+  true-analogy-constrained maximum below `0.021875`.  If the unconstrained
+  superset maximum is also zero, report that strictly stronger no-go fact.
 
 If falsified, verdict is `CONSERVATIVE_TRANSFER_NO_LEGAL_HEADROOM` and R6
 product-path implementation must stop.  Thresholds, priors, quantile, budget,
@@ -76,6 +81,27 @@ The only adjudicative ablation is the frozen gate itself:
 
 ## Exact finite arithmetic
 
+### Frozen anonymous prototype geometry
+
+This source-history-free checker does not infer or choose prototype geometry.
+It freezes the exact five public mechanism-increment vectors used by the R5
+endpoint, excluding common interaction base `[-18000,0,0,0]`.  These are the
+integer-micro-unit form of the immutable environment increments, but carry no
+cause names or token mapping:
+
+| Order | Integer micro-units | Canonical JSON bytes | Lowercase SHA-256 |
+|---:|---|---|---|
+| 0 | `[0,-20000,0,160000]` | `[0.0,-0.02,0.0,0.16]` | `22659515e916b3b5ead3390438733bda2e15df9b44b6b0b9afcab30718b0dae9` |
+| 1 | `[0,-180000,0,40000]` | `[0.0,-0.18,0.0,0.04]` | `9799be678e4269454a06e199889f37eee9cc1aec02b810befdef3fcc583b04b8` |
+| 2 | `[0,0,160000,20000]` | `[0.0,0.0,0.16,0.02]` | `3d6288b3042ee89950548d7a3ef44d183243feb7af0913ce9a25b9a2b040099f` |
+| 3 | `[0,120000,0,0]` | `[0.0,0.12,0.0,0.0]` | `4df0754afbdd63f7e4865bfd10062c20ec5414e469c6b4f8776cddbd8babd5ff` |
+| 4 | `[280000,0,0,0]` | `[0.28,0.0,0.0,0.0]` | `846bdcd2a0768a906623d807c95580c025a63b99d87b2335d7d097f972f71c16` |
+
+Order is the lexicographic order of the listed canonical UTF-8 JSON bytes.
+Tests must rederive every hash from these card-frozen bytes and must also verify
+the canonical scorer posts from `S=[450000,620000,500000,430000]` plus base
+plus prototype.  Two implementations copying an unbound table are not accepted.
+
 - Prototype/delta/prediction values use signed integer micro-units (`10^6`).
 - Prototype order and SHA-256 values are rederived from the frozen canonical
   JSON vectors.
@@ -97,8 +123,14 @@ The only adjudicative ablation is the frozen gate itself:
 - Cover every remaining-prototype set (`C(5,3)=10`) and every truth order
   (`3!=6`).  The two orders of the already observed complement are proven
   grammar-equivalent, yielding all `10 x 6 x 2 = 120` target mappings.
+- Separately enumerate the true-analogy subset by requiring the exact target
+  mapping to appear one or more times in the six-source multiset; report its
+  own case count, positive count, and maximum improvement.
 - Cross-check with a slower structurally independent root implementation over
   all 20 ordered observed-prototype pairs (`2,227,680` state/target cases).
+
+The cross-check is algorithmic/structural separation performed inside the same
+model/tool lineage.  It is not external independent audit.
 
 This is a complete finite enumeration, not statistical sampling; no p-value or
 confidence interval is applicable.
@@ -145,8 +177,8 @@ Accept only if:
 3. the producer has tests for fixed signatures, contribution grammar, state
    count, complete target coverage, half-even rounding, exact quantile boundary,
    output schema, no input surface, and expected failure dispatch;
-4. the producer and independent root implementation agree on zero positive
-   cases and maximum improvement;
+4. the producer and structurally separate same-lineage recomputation agree on
+   zero positive cases and maximum improvement;
 5. replay from code recomputation matches canonical result bytes;
 6. all evidence files derive from callable computation and contain producer,
    inputs, aggregation, code hash, and run receipt;
@@ -193,9 +225,11 @@ First true condition:
 
 1. `PRIVATE_TRUTH_OR_SEED_INPUT`;
 2. `STATIC_HEADROOM_INSTRUMENT_INVALID`;
-3. `CONSERVATIVE_TRANSFER_NO_LEGAL_HEADROOM` when maximum gated improvement is
-   below `0.021875`;
-4. `STATIC_REFERENCE_HEADROOM_FEASIBLE` otherwise.
+3. `CONSERVATIVE_TRANSFER_NO_LEGAL_HEADROOM` when the
+   true-analogy-constrained maximum gated improvement is below `0.021875`;
+4. `STATIC_REFERENCE_HEADROOM_FEASIBLE` only when the constrained maximum meets
+   `0.021875`; an unconstrained-only positive case returns `UNKNOWN` and cannot
+   authorize implementation.
 
 No verdict authorizes product-path implementation automatically.  A positive
 result would only return to a separately frozen implementation card.  A

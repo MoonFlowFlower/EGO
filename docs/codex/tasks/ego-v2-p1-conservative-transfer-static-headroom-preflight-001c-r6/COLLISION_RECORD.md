@@ -18,12 +18,17 @@
 5. Use integer micro-units and exact half-even rational rounding.
 6. Use integer 5% CDF crossing, including exact 1/20 and below-1/20 boundary
    tests.
-7. Cover all 120 target mappings by an explicit symmetry argument and compare
-   with an independent 20-ordered-pair enumeration.
+7. Cover all 120 target mappings by an explicit symmetry argument, separately
+   require exact-target membership for the true-analogy positive branch, and
+   compare with a structurally separate 20-ordered-pair enumeration.
 8. Verify stored verdict/output never enters recomputation.
 9. Record both maximum positive-effect count and nontrivial gate-use count.
 10. Treat zero headroom as the reference/gate's bounded failure, not causal-
     schema, transfer learning, neural learning, or AGI falsification.
+
+The two enumeration implementations and role reviews remain inside the same
+model/tool lineage.  They provide algorithmic cross-checking, not external
+independent audit.
 
 ## Expected negative mechanism
 
