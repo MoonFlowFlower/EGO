@@ -109,6 +109,12 @@ R2_REQUIRED_PROVENANCE_INPUT_PATHS = (
 R2_REQUIRED_PROVENANCE_DEPENDENCY_PATHS = ("requirements-ego-v2.txt",)
 R2_PROVENANCE_RELPATH = "docs/codex/tasks/ego-v2-p1-acquisition-capacity-certificate-001h-r2/PRE_RUN_PROVENANCE.json"
 R2_OUTPUT_RELPATH = "artifacts/EGO-V2-P1-ACQUISITION-CAPACITY-CERTIFICATE-001H-R2"
+NORMATIVE_INTERPRETER_SPEC_COMMIT = "c0f9d24c0e00d03b27e93fe35d73be1c021bb8b2"
+NORMATIVE_INTERPRETER_SPEC_PATHS = (
+    "docs/codex/tasks/EGO-V2-P1-ACQUISITION-CAPACITY-CERTIFICATE-001H-R2.md",
+    "docs/codex/tasks/ego-v2-p1-acquisition-capacity-certificate-001h-r2/COLLISION_RECORD.md",
+    "docs/codex/tasks/ego-v2-p1-acquisition-capacity-certificate-001h-r2/IMPLEMENTATION_PLAN.md",
+)
 
 
 def _load_r1_module():
@@ -335,7 +341,7 @@ def build_live_witness_root(context_spec: dict[str, Any]) -> dict[str, Any]:
         layout_id=layout_id,
         world_seed=world_seed,
         policy_seed=policy_seed,
-        run_id=f"{context_id}:r2_witness",
+        run_id=context_id,
     )
     return make_search_node(
         evaluator_state=state,
@@ -378,7 +384,53 @@ def expand_live_witness_node(
         row.setdefault("context_id", state.get("run_id", ""))
         row.setdefault("action_index", int(node["g"]) + 1)
         accepted_rows = [*deepcopy(node["accepted_rows"]), row]
-        if next_state.get("awaiting_respawn") and int(next_state.get("respawn_count", 0)) < 3:
+        if (
+            int(node["g"]) + 1 < int(action_budget)
+            and next_state.get("awaiting_respawn")
+            and int(next_state.get("respawn_count", 0)) < 3
+        ):
+            next_state = advance_evaluator_respawn(next_state)
+        child = make_search_node(
+            evaluator_state=next_state,
+            g=int(node["g"]) + 1,
+            prefix=tuple(node["prefix"]) + (ACTION_INDEX[action],),
+            support_counts=_clipped_support_counts(accepted_rows),
+            rank_rows=_rank_rows_from_rows(accepted_rows),
+            accepted_rows=accepted_rows,
+            life_index=int(next_state.get("life_index", row.get("life_index", 1))),
+            respawn_count=int(next_state.get("respawn_count", row.get("respawn_count", 0))),
+        )
+        children.append({"action": action, "node": child})
+    return children
+
+
+def expand_live_witness_node_independent(
+    node: dict[str, Any],
+    *,
+    action_budget: int,
+) -> list[dict[str, Any]]:
+    """Checker-owned live expansion; intentionally does not call the primary expander."""
+    if int(node["g"]) >= int(action_budget):
+        return []
+    state = deepcopy(node["evaluator_state"])
+    if state.get("awaiting_respawn"):
+        if int(state.get("respawn_count", node["respawn_count"])) >= 3:
+            return []
+        state = advance_evaluator_respawn(state)
+    children: list[dict[str, Any]] = []
+    for action in ACTION_ORDER:
+        advanced = advance_evaluator_action(deepcopy(state), action)
+        next_state = deepcopy(advanced["state"])
+        row = deepcopy(advanced["row"])
+        validate_producer_receipts(row.get("producer_receipts", {}))
+        row.setdefault("context_id", state.get("run_id", ""))
+        row.setdefault("action_index", int(node["g"]) + 1)
+        accepted_rows = [*deepcopy(node["accepted_rows"]), row]
+        if (
+            int(node["g"]) + 1 < int(action_budget)
+            and next_state.get("awaiting_respawn")
+            and int(next_state.get("respawn_count", 0)) < 3
+        ):
             next_state = advance_evaluator_respawn(next_state)
         child = make_search_node(
             evaluator_state=next_state,
@@ -521,7 +573,6 @@ class ReceiptStream:
         self._first_samples: list[dict[str, Any]] = []
         self._final_samples: deque[dict[str, Any]] = deque(maxlen=32)
         self._every_10000th: list[dict[str, Any]] = []
-        self._all_samples: list[dict[str, Any]] = []
         self._disposition_counts: Counter[str] = Counter()
 
     def add(self, sample: dict[str, Any]) -> None:
@@ -533,7 +584,6 @@ class ReceiptStream:
         ).encode("utf-8")
         self._chain.update(hashlib.sha256(encoded).digest())
         self.processed_nodes += 1
-        self._all_samples.append(normalized)
         if "node_disposition" in normalized:
             self._disposition_counts[str(normalized["node_disposition"])] += 1
         else:
@@ -578,8 +628,6 @@ def _normalize_expansion(expanded: Any, g: int) -> tuple[list[dict[str, Any]], l
                 raise ValueError("child prefix does not identify frozen action")
             action = ACTION_ORDER[int(prefix[g])]
         if action in dispositions:
-            if dispositions[action].get("child_digest") == search_node_digest(child):
-                continue
             raise ValueError("duplicate action disposition")
         children.append(child)
         dispositions[action] = {
@@ -617,19 +665,23 @@ def depth_first_branch_and_bound(
     root_digest = search_node_digest(root)
     stream = ReceiptStream(contract_digest, root_digest)
     stack = [root]
+    duplicate_nodes_skipped = 0
     while stack:
         node = stack.pop()
         observed = ledger.observe(node)
         if observed["status"] == "duplicate":
+            duplicate_nodes_skipped += 1
             continue
         if stream.processed_nodes >= int(processed_node_cap):
             receipt_stream = stream.finish()
+            receipt_stream["duplicate_nodes_skipped"] = duplicate_nodes_skipped
             return {
                 "status": "WITNESS_SEARCH_INCONCLUSIVE",
                 "complete_search": False,
                 "unprocessed_legal_child": True,
                 "processed_nodes": receipt_stream["processed_nodes"],
                 "receipt_stream": receipt_stream,
+                "duplicate_nodes_skipped": duplicate_nodes_skipped,
             }
         g = int(node["g"])
         h = int(bound_fn(node))
@@ -646,6 +698,7 @@ def depth_first_branch_and_bound(
                 }
             )
             receipt_stream = stream.finish()
+            receipt_stream["duplicate_nodes_skipped"] = duplicate_nodes_skipped
             return {
                 "status": "goal_found",
                 "goal_node": deepcopy(node),
@@ -653,6 +706,7 @@ def depth_first_branch_and_bound(
                 "unprocessed_legal_child": False,
                 "processed_nodes": receipt_stream["processed_nodes"],
                 "receipt_stream": receipt_stream,
+                "duplicate_nodes_skipped": duplicate_nodes_skipped,
             }
         if g == int(action_budget):
             stream.add(
@@ -704,12 +758,14 @@ def depth_first_branch_and_bound(
         for child in reversed(children):
             stack.append(child)
     receipt_stream = stream.finish()
+    receipt_stream["duplicate_nodes_skipped"] = duplicate_nodes_skipped
     return {
         "status": "search_exhausted",
         "complete_search": True,
         "unprocessed_legal_child": False,
         "processed_nodes": receipt_stream["processed_nodes"],
         "receipt_stream": receipt_stream,
+        "duplicate_nodes_skipped": duplicate_nodes_skipped,
     }
 
 
@@ -729,10 +785,12 @@ def _copy_state(state: dict[str, Any]) -> dict[str, Any]:
 def _advance_with_respawn(
     state: dict[str, Any],
     action: str,
+    *,
+    allow_respawn: bool,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     advanced = advance_evaluator_action(state, action)
     next_state = advanced["state"]
-    if next_state.get("awaiting_respawn"):
+    if allow_respawn and next_state.get("awaiting_respawn"):
         next_state = advance_evaluator_respawn(next_state)
     return next_state, advanced["row"]
 
@@ -743,11 +801,16 @@ def _replay_actions(
     actions: list[str],
     context_id: str,
     action_index_offset: int = 0,
+    respawn_after_final: bool = False,
 ) -> dict[str, Any]:
     state = _copy_state(initial_state)
     rows = []
     for index, action in enumerate(actions, start=1):
-        state, row = _advance_with_respawn(state, action)
+        state, row = _advance_with_respawn(
+            state,
+            action,
+            allow_respawn=index < len(actions) or respawn_after_final,
+        )
         decorated = deepcopy(row)
         decorated.setdefault("context_id", context_id)
         decorated.setdefault("action_index", action_index_offset + index)
@@ -867,6 +930,10 @@ def run_live_warm_start(
                 actions=candidate["primitive_actions"],
                 context_id=context_id,
                 action_index_offset=len(rows),
+                respawn_after_final=(
+                    len(chosen_actions) + len(candidate["primitive_actions"])
+                    < int(action_budget)
+                ),
             )
             score = _score_candidate(
                 context_id=context_id,
@@ -923,10 +990,12 @@ def independent_verify_witness_search(
     ledger = DuplicateLedger(tmp_dir / "checker.sqlite3")
     stack = [root]
     status = "search_exhausted"
+    duplicate_nodes_skipped = 0
     while stack:
         node = stack.pop()
         observed = ledger.observe(node)
         if observed["status"] == "duplicate":
+            duplicate_nodes_skipped += 1
             continue
         if stream.processed_nodes >= int(processed_node_cap):
             status = "WITNESS_SEARCH_INCONCLUSIVE"
@@ -996,6 +1065,7 @@ def independent_verify_witness_search(
         for child in reversed(children):
             stack.append(child)
     receipt_stream = stream.finish()
+    receipt_stream["duplicate_nodes_skipped"] = duplicate_nodes_skipped
     failures = []
     if receipt_stream["digest_chain"] != expected_receipt_stream.get("digest_chain"):
         failures.append("digest_chain")
@@ -1004,6 +1074,8 @@ def independent_verify_witness_search(
     for field in ("first_samples", "every_10000th", "final_samples", "samples", "disposition_counts"):
         if receipt_stream.get(field) != expected_receipt_stream.get(field):
             failures.append("serialized_receipts" if field != "disposition_counts" else "disposition_counts")
+    if duplicate_nodes_skipped != int(expected_receipt_stream.get("duplicate_nodes_skipped", 0)):
+        failures.append("duplicate_nodes_skipped")
     return {
         "verified": not failures,
         "failure_reasons": sorted(set(failures)),
@@ -1011,7 +1083,33 @@ def independent_verify_witness_search(
         "edge_census_digest": receipt_stream["digest_chain"],
         "processed_nodes": receipt_stream["processed_nodes"],
         "receipt_stream": receipt_stream,
+        "duplicate_nodes_skipped": duplicate_nodes_skipped,
     }
+
+
+def independent_verify_live_witness_search(
+    *,
+    context_spec: dict[str, Any],
+    action_budget: int,
+    processed_node_cap: int,
+    expected_receipt_stream: dict[str, Any],
+    contract_digest: str,
+    scratch_dir: Path | str,
+) -> dict[str, Any]:
+    return independent_verify_witness_search(
+        root=build_live_witness_root(context_spec),
+        expand_fn=lambda node: expand_live_witness_node_independent(
+            node,
+            action_budget=action_budget,
+        ),
+        goal_fn=lambda node: live_witness_goal(node, action_budget=action_budget),
+        bound_fn=live_witness_lower_bound,
+        action_budget=action_budget,
+        processed_node_cap=processed_node_cap,
+        expected_receipt_stream=expected_receipt_stream,
+        contract_digest=contract_digest,
+        scratch_dir=scratch_dir,
+    )
 
 
 def initialize_panel_rollout_state(
@@ -1595,12 +1693,27 @@ def validate_receipt_stream_summary(stream: dict[str, Any]) -> bool:
 
 def scan_r2_evidence_leakage(contexts: dict[str, Any]) -> dict[str, Any]:
     findings = []
+
+    def scan_direct(value: Any, path: str) -> None:
+        if isinstance(value, dict):
+            for key, nested in value.items():
+                if key in {"world_seed", "policy_seed", "world_index", "policy_index"}:
+                    findings.append(f"private numeric index at {path}.{key}")
+                scan_direct(nested, f"{path}.{key}")
+        elif isinstance(value, list):
+            for index, nested in enumerate(value):
+                scan_direct(nested, f"{path}[{index}]")
+        elif isinstance(value, str) and ("world=" in value or "policy=" in value):
+            findings.append(f"private direct identifier at {path}")
+
     for context in contexts.values():
         for stage in ("witness", "panel"):
             for row in context.get(stage, {}).get("rows", []):
-                report = scan_learner_projection(row.get("learner_projection", {}))
+                projection = row.get("learner_projection", {})
+                report = scan_learner_projection(projection)
                 if not report.get("clean", False):
                     findings.extend(deepcopy(report.get("findings", [])))
+                scan_direct(projection, "$.learner_projection")
     controls = recursive_leakage_scan(
         {
             "direct_control": "world=52",
@@ -1616,6 +1729,62 @@ def scan_r2_evidence_leakage(contexts: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _tamper_control_packet_bundle() -> dict[str, Any]:
+    context_id = FROZEN_CONTEXTS[0]["context_id"]
+    zero_support = {token: 0 for token in PANEL_FLOORS}
+    return {
+        "contexts": {
+            context_id: {
+                "control": {"prefix": []},
+                "witness": {
+                    "rows": [],
+                    "rank_reports": {},
+                    "replay_valid": False,
+                    "search_report": {},
+                    "ablation_report": {},
+                },
+                "panel": {
+                    "rows": [],
+                    "panel_rollout_ids": list(range(9, 17)),
+                    "target_order": list(PANEL_TARGET_MULTISET),
+                    "rollouts": [],
+                    "raw_checkpoints": [],
+                    "retained_checkpoints": [],
+                    "rank_reports": {},
+                    "support_report": {
+                        "before_dedupe": deepcopy(zero_support),
+                        "after_dedupe": deepcopy(zero_support),
+                        "required_floors": deepcopy(PANEL_FLOORS),
+                        "passed": False,
+                    },
+                    "cell_support_report": {
+                        "cell_counts": {},
+                        "required_floor_by_cell": {},
+                        "passed": False,
+                    },
+                    "construction_complete": False,
+                    "panel_capacity_admitted": False,
+                    "panel_hash": engine.canonical_hash({}),
+                },
+            }
+        },
+        "adjudication": {"verdict": "PANEL_CAPACITY_NOT_CERTIFIED"},
+        "source_hashes": {},
+        "input_hashes": {},
+        "dependency_hashes": {},
+        "provenance_document": {
+            "runtime_receipt": runtime_receipt(),
+            "implementation_commit": "0" * 40,
+        },
+        "leakage_report": {
+            "all_clean": True,
+            "all_positive_controls_detected": True,
+            "findings": [],
+        },
+        "fresh_recompute_report": {"equal": True, "contexts": {}},
+    }
+
+
 def run_r2_tamper_controls(
     *,
     contract: dict[str, Any],
@@ -1623,20 +1792,41 @@ def run_r2_tamper_controls(
     witness_reports: list[dict[str, Any]],
     panel_reports: list[dict[str, Any]],
     scratch_dir: Path | str,
+    provenance_document: dict[str, Any],
+    provenance_observation: dict[str, Any],
 ) -> dict[str, Any]:
     controls: dict[str, dict[str, Any]] = {}
 
+    if validate_frozen_contract(contract)["valid"] is not True or source_hashes != FROZEN_SOURCE_PINS:
+        raise ValueError("tamper controls require valid frozen inputs")
+    validate_pre_run_provenance(provenance_document, provenance_observation)
+
     budget_tamper = deepcopy(contract)
     budget_tamper["witness_search"]["action_budget"] -= 1
+    budget_document = deepcopy(provenance_document)
+    budget_document["frozen_contract_digest"] = engine.canonical_hash(budget_tamper)
+    budget_rejected = False
+    try:
+        validate_pre_run_provenance(budget_document, provenance_observation)
+    except ValueError:
+        budget_rejected = True
     controls["contract_budget"] = {
-        "rejected": validate_frozen_contract(budget_tamper)["verdict"] == "INVALID_POSTRESULT_RESCUE"
+        "rejected": budget_rejected,
+        "validator": "validate_pre_run_provenance",
+        "mutated_field": "witness_search.action_budget",
     }
 
-    authority_tamper = deepcopy(source_hashes)
+    authority_document = deepcopy(provenance_document)
     first_authority = next(iter(FROZEN_SOURCE_PINS))
-    authority_tamper[first_authority] = "0" * 64
+    authority_document["authority_pins"][first_authority] = "0" * 64
+    authority_rejected = False
+    try:
+        validate_pre_run_provenance(authority_document, provenance_observation)
+    except ValueError:
+        authority_rejected = True
     controls["authority_hash"] = {
-        "rejected": authority_tamper != FROZEN_SOURCE_PINS and source_hashes == FROZEN_SOURCE_PINS
+        "rejected": authority_rejected,
+        "validator": "validate_pre_run_provenance",
     }
 
     sample_rows = deepcopy(next((report.get("rows", []) for report in witness_reports if isinstance(report, dict)), []))
@@ -1678,15 +1868,28 @@ def run_r2_tamper_controls(
         receipt_rejected = True
     controls["search_receipt"] = {"rejected": receipt_rejected}
 
-    unknown = dispatch_r2_verdict(
-        provenance_clean=True,
-        contract_valid=True,
-        witness_reports=[{"status": "tampered_unknown"}],
-        panel_reports=panel_reports,
+    scratch = Path(scratch_dir)
+    scratch.mkdir(parents=True, exist_ok=True)
+    packet = scratch / "unknown_verdict_packet"
+    write_r2_formal_packet(packet, _tamper_control_packet_bundle())
+    result_path = packet / "result.json"
+    result = json.loads(result_path.read_text(encoding="utf-8"))
+    result["verdict"] = "UNKNOWN_TAMPERED_VERDICT"
+    result.setdefault("adjudication", {})["verdict"] = "UNKNOWN_TAMPERED_VERDICT"
+    result_path.write_text(json.dumps(result, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    (packet / "artifact_manifest.json").write_text(
+        json.dumps(build_artifact_manifest(packet), sort_keys=True, indent=2) + "\n",
+        encoding="utf-8",
     )
-    controls["unknown_verdict"] = {"rejected": unknown == "SEARCH_IMPLEMENTATION_INVALID"}
-
-    Path(scratch_dir).mkdir(parents=True, exist_ok=True)
+    unknown_rejected = False
+    try:
+        verify_r2_formal_packet(packet)
+    except ValueError:
+        unknown_rejected = True
+    controls["unknown_verdict"] = {
+        "rejected": unknown_rejected,
+        "validator": "verify_r2_formal_packet",
+    }
     return {
         "all_tamper_controls_rejected": all(item.get("rejected") is True for item in controls.values()),
         "controls": controls,
@@ -1722,6 +1925,13 @@ def collect_r2_pre_run_observation(
     except ValueError:
         output_relpath = output.resolve().as_posix()
     contract = build_frozen_contract()
+    normative_changed = _R1._git_stdout(
+        "diff-tree",
+        "--no-commit-id",
+        "--name-only",
+        "-r",
+        NORMATIVE_INTERPRETER_SPEC_COMMIT,
+    )
     return {
         "repository_root": repository_root,
         "branch": branch,
@@ -1751,6 +1961,16 @@ def collect_r2_pre_run_observation(
             "stale_world_seeds": sorted(STALE_WORLD_SEEDS),
             "stale_policy_seeds": sorted(STALE_POLICY_SEEDS),
         },
+        "normative_interpreter_spec_commit": NORMATIVE_INTERPRETER_SPEC_COMMIT,
+        "normative_interpreter_spec_commit_exists": _R1._git_success(
+            "cat-file",
+            "-e",
+            f"{NORMATIVE_INTERPRETER_SPEC_COMMIT}^{{commit}}",
+        ),
+        "normative_interpreter_spec_changed_paths": (
+            [] if normative_changed == "" else normative_changed.splitlines()
+        ),
+        "frozen_contract_digest": engine.canonical_hash(contract),
     }
 
 
@@ -1802,6 +2022,19 @@ def validate_pre_run_provenance(
     expected_firewalls = {"stale_world_seeds": sorted(STALE_WORLD_SEEDS), "stale_policy_seeds": sorted(STALE_POLICY_SEEDS)}
     if document.get("firewalls") != expected_firewalls or observation.get("firewalls") != expected_firewalls:
         failures.append("firewalls")
+    if document.get("normative_interpreter_spec_commit") != NORMATIVE_INTERPRETER_SPEC_COMMIT:
+        failures.append("normative_interpreter_spec_commit")
+    if observation.get("normative_interpreter_spec_commit") != NORMATIVE_INTERPRETER_SPEC_COMMIT:
+        failures.append("observation.normative_interpreter_spec_commit")
+    if observation.get("normative_interpreter_spec_commit_exists") is not True:
+        failures.append("normative_interpreter_spec_commit_exists")
+    if observation.get("normative_interpreter_spec_changed_paths") != list(NORMATIVE_INTERPRETER_SPEC_PATHS):
+        failures.append("normative_interpreter_spec_changed_paths")
+    expected_contract_digest = engine.canonical_hash(build_frozen_contract())
+    if document.get("frozen_contract_digest") != expected_contract_digest:
+        failures.append("frozen_contract_digest")
+    if observation.get("frozen_contract_digest") != expected_contract_digest:
+        failures.append("observation.frozen_contract_digest")
     if observation.get("repository_root", "").replace("\\", "/").lower() != str(REPO_ROOT).replace("\\", "/").lower():
         failures.append("repository_root")
     if observation.get("head_changed_paths") != [R2_PROVENANCE_RELPATH]:
@@ -1858,6 +2091,7 @@ def dispatch_r2_verdict(
             report.get("complete_search") is not True
             or report.get("independently_verified") is not True
             or report.get("live_transition_verified") is not True
+            or report.get("duplicate_free") is not True
         )
         for report in witness_reports
     ):
@@ -1935,25 +2169,40 @@ def run_witness_stage(
             "warm_start": warm,
         }
     verified = {"verified": False, "failure_reasons": ["search_not_complete"]}
-    if search["status"] == "search_exhausted" and search["complete_search"]:
-        verified = independent_verify_witness_search(
-            root=build_live_witness_root(context_spec),
-            expand_fn=expand,
-            goal_fn=goal,
-            bound_fn=live_witness_lower_bound,
+    primary_duplicate_free = int(search.get("duplicate_nodes_skipped", 0)) == 0
+    if search["status"] == "search_exhausted" and search["complete_search"] and primary_duplicate_free:
+        verified = independent_verify_live_witness_search(
+            context_spec=context_spec,
             action_budget=action_budget,
             processed_node_cap=cap,
             expected_receipt_stream=search["receipt_stream"],
             contract_digest=engine.canonical_hash(contract),
             scratch_dir=scratch / "checker",
         )
+    elif search["status"] == "search_exhausted" and not primary_duplicate_free:
+        verified = {
+            "verified": False,
+            "failure_reasons": ["primary_duplicate_skip_has_no_named_parent_disposition"],
+            "duplicate_nodes_skipped": int(search.get("duplicate_nodes_skipped", 0)),
+        }
+    duplicate_free = primary_duplicate_free and int(verified.get("duplicate_nodes_skipped", 0)) == 0
+    refutation_valid = bool(
+        search["status"] == "search_exhausted"
+        and verified.get("verified")
+        and duplicate_free
+    )
     return {
         "status": "FROZEN_BENCHMARK_CAPACITY_REFUTED"
-        if search["status"] == "search_exhausted" and verified.get("verified")
-        else "WITNESS_SEARCH_INCONCLUSIVE",
+        if refutation_valid
+        else (
+            "SEARCH_IMPLEMENTATION_INVALID"
+            if search["status"] == "search_exhausted"
+            else "WITNESS_SEARCH_INCONCLUSIVE"
+        ),
         "complete_search": search["status"] == "search_exhausted",
-        "independently_verified": bool(verified.get("verified")),
-        "live_transition_verified": bool(search["status"] == "search_exhausted" and verified.get("verified")),
+        "independently_verified": bool(verified.get("verified") and duplicate_free),
+        "live_transition_verified": refutation_valid,
+        "duplicate_free": duplicate_free,
         "search_report": search,
         "checker_report": verified,
         **warm,
@@ -2215,6 +2464,16 @@ def verify_r2_formal_packet(packet_dir: Path | str) -> dict[str, Any]:
     panel_manifest = json.loads((packet / "panel_manifest.json").read_text(encoding="utf-8"))
     replay = json.loads((packet / "replay_report.json").read_text(encoding="utf-8"))
     leakage = json.loads((packet / "leakage_report.json").read_text(encoding="utf-8"))
+    recomputed_leakage = scan_r2_evidence_leakage(
+        {
+            "packet": {
+                "witness": {"rows": certificate_rows},
+                "panel": {"rows": panel_rows},
+            }
+        }
+    )
+    if recomputed_leakage.get("all_clean") is not True:
+        raise ValueError("r2 packet semantic leakage recompute")
     if result.get("certificate_row_count") != len(certificate_rows) or result.get("panel_row_count") != len(panel_rows):
         raise ValueError("r2 packet semantic row counts")
     if result.get("context_count") != len(panel_manifest.get("contexts", {})):
@@ -2407,6 +2666,8 @@ def run_formal(*, output_dir: Path | str, execute_search: bool) -> dict[str, Any
         witness_reports=witness_reports,
         panel_reports=panel_reports,
         scratch_dir=scratch / "tamper_controls",
+        provenance_document=document,
+        provenance_observation=observation,
     )
     independent_reports = {}
     independent_clean = True
