@@ -122,6 +122,10 @@
   - only if needed for lossless trace receipts,
     `labs/ego_life_playground_v0/engine.py`;
   - `tests/test_ego_life_playground_v0.py` and focused new tests under `tests/`;
+  - `tests/test_ego_v2_factored_predictive_control_boundary_gate_001c.py`,
+    limited to replacing implementation-coupled scalar-cache assertions with
+    exact prewarm/batch assertions and expanding the authenticated compact
+    candidate receipt before comparison to the unchanged frozen fixture;
   - one new checker and its tests under `scripts/codex/`;
   - `docs/codex/tasks/EGO-V2-P1-PREDICTIVE-REPLAY-KERNEL-REPAIR-001F/` reports;
   - new artifacts only under
@@ -146,3 +150,12 @@
   life claim.
 - **Auto-Remote-Anchor:** forbidden.
 
+## I1 scope clarification
+
+The first RED/green cycle established that the predecessor boundary test
+directly counted calls to the scalar `_prediction_for_pose` implementation and
+read the trace-only candidate projection as if it were the full planner object.
+Those assertions reject the selected exact prewarm mechanism by construction.
+The narrow predecessor-test path above is therefore admitted before the source
+implementation commit. This clarification does not change any fixture, metric,
+threshold, context, seed, runtime semantic, or acceptance condition.
