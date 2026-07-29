@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import importlib.util
+import json
 from pathlib import Path
+import sqlite3
 import sys
 
 import pytest
@@ -126,8 +128,9 @@ def test_budget_below_root_lower_bound_is_immediate_non_solution():
     }
 
 
-def test_duplicate_key_includes_full_rows_and_same_key_different_g_is_invalid():
+def test_duplicate_ledger_is_disk_backed_packs_prefix_and_duplicate_nodes_skip_expansion(tmp_path: Path):
     module = _load_module()
+    ledger = module.DuplicateLedger(tmp_path / "dup.sqlite3")
     node = module.make_search_node(
         evaluator_state={"clock": 1, "position": [0, 0]},
         g=3,
@@ -138,13 +141,13 @@ def test_duplicate_key_includes_full_rows_and_same_key_different_g_is_invalid():
         life_index=1,
         respawn_count=0,
     )
-    same_but_row_changed = module.make_search_node(
+    duplicate = module.make_search_node(
         evaluator_state={"clock": 1, "position": [0, 0]},
         g=3,
         prefix=(0, 2, 4),
         support_counts={"interact": 1},
         rank_rows={"interact": [[1.0, 0.0]]},
-        accepted_rows=[{"selected_action": "turn_left", "full_features": [0.0, 1.0]}],
+        accepted_rows=[{"selected_action": "turn_left", "full_features": [1.0, 0.0]}],
         life_index=1,
         respawn_count=0,
     )
@@ -159,18 +162,63 @@ def test_duplicate_key_includes_full_rows_and_same_key_different_g_is_invalid():
         respawn_count=0,
     )
 
-    digest = module.search_node_digest(node)
-    assert module.search_node_digest(same_but_row_changed) != digest
-
-    ledger = module.DuplicateLedger()
     first = ledger.observe(node)
+    second = ledger.observe(duplicate)
     assert first["status"] == "new"
-    assert ledger.observe(node)["status"] == "duplicate"
+    assert second["status"] == "duplicate"
+    assert ledger.path.exists()
+    with sqlite3.connect(ledger.path) as connection:
+        row = connection.execute("SELECT digest, g, prefix_bits FROM duplicate_ledger").fetchone()
+    assert row[1] == 3
+    assert len(row[0]) == 32
+    assert module.unpack_action_prefix(bytes(row[2]), length=3) == (0, 2, 4)
     with pytest.raises(ValueError, match="same digest with different g"):
-        ledger.observe(same_digest_different_g, digest_override=digest)
+        ledger.observe(same_digest_different_g, digest_override=first["digest"])
+
+    expansions = {"count": 0}
+    root = module.make_search_node(
+        evaluator_state={"id": "root"},
+        g=0,
+        prefix=(),
+        support_counts={},
+        rank_rows={},
+        accepted_rows=[],
+        life_index=1,
+        respawn_count=0,
+    )
+    child = module.make_search_node(
+        evaluator_state={"id": "dup-child"},
+        g=1,
+        prefix=(0,),
+        support_counts={},
+        rank_rows={},
+        accepted_rows=[],
+        life_index=1,
+        respawn_count=0,
+    )
+
+    def expand_fn(node):
+        if tuple(node["prefix"]) == ():
+            expansions["count"] += 1
+            return [child, child]
+        expansions["count"] += 1
+        return []
+
+    result = module.depth_first_branch_and_bound(
+        root=root,
+        expand_fn=expand_fn,
+        goal_fn=lambda _node: False,
+        bound_fn=lambda _node: 0,
+        action_budget=3,
+        processed_node_cap=10,
+        ledger_path=tmp_path / "search.sqlite3",
+        contract_digest="c" * 64,
+    )
+    assert result["status"] == "search_exhausted"
+    assert expansions["count"] == 2
 
 
-def test_dfs_receipts_respect_fixed_order_leaf_kinds_and_inconclusive_cap():
+def test_dfs_streams_digest_chain_samples_and_uses_authorized_leaf_receipts(tmp_path: Path):
     module = _load_module()
     root = module.make_search_node(
         evaluator_state={"id": "root"},
@@ -182,127 +230,225 @@ def test_dfs_receipts_respect_fixed_order_leaf_kinds_and_inconclusive_cap():
         life_index=1,
         respawn_count=0,
     )
-    expansions = {
-        (): [
-            module.make_search_node(
-                evaluator_state={"id": "goal"},
-                g=1,
-                prefix=(0,),
-                support_counts={},
-                rank_rows={},
-                accepted_rows=[],
-                life_index=1,
-                respawn_count=0,
-            )
-        ]
-    }
+    goal = module.make_search_node(
+        evaluator_state={"id": "goal"},
+        g=89,
+        prefix=tuple([0] * 89),
+        support_counts={},
+        rank_rows={},
+        accepted_rows=[],
+        life_index=1,
+        respawn_count=0,
+    )
 
     result = module.depth_first_branch_and_bound(
         root=root,
-        expand_fn=lambda node: expansions.get(tuple(node["prefix"]), []),
-        goal_fn=lambda node: tuple(node["prefix"]) == (0,),
-        bound_fn=lambda node: 0,
-        action_budget=1,
+        expand_fn=lambda node: [goal] if tuple(node["prefix"]) == () else [],
+        goal_fn=lambda node: tuple(node["prefix"]) == tuple([0] * 89),
+        bound_fn=lambda node: 0 if tuple(node["prefix"]) == () else 0,
+        action_budget=89,
         processed_node_cap=10,
+        ledger_path=tmp_path / "stream.sqlite3",
+        contract_digest="d" * 64,
     )
 
-    assert result["status"] == "goal_found"
-    assert result["processed_nodes"] == 2
-    assert result["receipts"][0]["dispositions"][0]["action"] == "turn_left"
-    assert result["receipts"][1]["node_disposition"] == "goal"
-
-    capped = module.depth_first_branch_and_bound(
-        root=root,
-        expand_fn=lambda node: [
-            module.make_search_node(
-                evaluator_state={"id": f"child-{index}"},
-                g=1,
-                prefix=(index,),
-                support_counts={},
-                rank_rows={},
-                accepted_rows=[],
-                life_index=1,
-                respawn_count=0,
-            )
-            for index in range(2)
-        ],
-        goal_fn=lambda _node: False,
-        bound_fn=lambda _node: 0,
-        action_budget=3,
-        processed_node_cap=1,
-    )
-    assert capped["status"] == "WITNESS_SEARCH_INCONCLUSIVE"
-    assert capped["complete_search"] is False
-    assert capped["unprocessed_legal_child"] is True
+    stream = result["receipt_stream"]
+    assert stream["processed_nodes"] == 2
+    assert stream["first_samples"][0]["processed_node_index"] == 1
+    assert stream["final_samples"][-1]["node_disposition"] == "goal"
+    assert all("missing_child" not in json.dumps(sample) for sample in stream["first_samples"])
+    assert isinstance(stream["digest_chain"], str) and len(stream["digest_chain"]) == 64
 
 
-def test_warm_start_prefers_best_scored_candidate_and_replay_valid_skip():
+def test_live_warm_start_and_replay_use_r1_callables_not_generic_callbacks(monkeypatch: pytest.MonkeyPatch):
     module = _load_module()
-    history: list[str] = []
+    calls = {"init": 0, "advance": 0, "respawn": 0, "checkpoint": 0, "shortest": 0}
 
-    def simulate(prefix, candidate):
-        history.append(candidate["name"])
+    def fake_initialize_evaluator_state(**kwargs):
+        calls["init"] += 1
+        return {"world": {"step": 0}, "organism": {}, "predictive_state": {}, "episode_index": 0, "life_index": 1, "respawn_count": 0, "awaiting_respawn": False}
+
+    def fake_build_public_checkpoint(**kwargs):
+        calls["checkpoint"] += 1
+        step = kwargs["world"]["step"]
+        feature = [float(step)] * 15
         return {
-            "node": module.make_search_node(
-                evaluator_state={"candidate": candidate["name"]},
-                g=len(candidate["actions"]),
-                prefix=tuple(candidate["actions"]),
-                support_counts={},
-                rank_rows={},
-                accepted_rows=[],
-                life_index=1,
-                respawn_count=0,
-            ),
-            "passed": candidate["passed"],
+            "front_token": "v0" if step == 0 else "empty",
+            "full_features": module.np.asarray(feature, dtype=module.np.float64),
         }
 
-    warm = module.run_warm_start(
+    def fake_private_shortest_front_path(world, target):
+        calls["shortest"] += 1
+        if target == "v0":
+            return {"actions": ["turn_left"]}
+        return {"actions": []}
+
+    def fake_advance_evaluator_action(state, action):
+        calls["advance"] += 1
+        next_step = state["world"]["step"] + 1
+        next_state = dict(state)
+        next_state["world"] = {"step": next_step}
+        next_state["awaiting_respawn"] = False
+        row = {
+            "selected_action": action,
+            "outcome_type": "interacted" if action == "interact" else "turned",
+            "learner_projection": {"front_token": "v0" if action == "interact" else "empty", "quotient_features": [float(next_step)] * 13},
+            "full_features": [float(next_step)] * 15,
+            "life_index": 1,
+            "respawn_count": 0,
+        }
+        return {"state": next_state, "row": row}
+
+    monkeypatch.setattr(module, "initialize_evaluator_state", fake_initialize_evaluator_state)
+    monkeypatch.setattr(module, "build_public_checkpoint", fake_build_public_checkpoint)
+    monkeypatch.setattr(module, "private_shortest_front_path", fake_private_shortest_front_path)
+    monkeypatch.setattr(module, "advance_evaluator_action", fake_advance_evaluator_action)
+    monkeypatch.setattr(module, "advance_evaluator_respawn", lambda state: state)
+    monkeypatch.setattr(module, "compute_support_counts", lambda rows: {"interact::v0::interacted": 4, "interact::v1::interacted": 4, "interact::v2::interacted": 4, "interact::v3::interacted": 4, "interact::v4::interacted": 4, "interact::no_object": 4, "move_forward::moved": 4, "move_forward::blocked": 4, "rest::rested": 4, "turn_left::turned": 4, "turn_right::turned": 4})
+    monkeypatch.setattr(module, "compute_rank_reports", lambda context_id, rows: {f"{context_id}::{action}": {"rank": 13} for action in module.ACTION_ORDER})
+
+    warm = module.run_live_warm_start(module.build_frozen_contract()["contexts"][0], action_budget=89)
+
+    assert warm["replay_valid"] is True
+    assert warm["certificate_found"] is True
+    assert calls["init"] == 1
+    assert calls["advance"] > 0
+    assert calls["checkpoint"] > 0
+    assert calls["shortest"] > 0
+
+
+def test_independent_checker_does_not_call_primary_dfs_and_requires_matching_edge_digest(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    module = _load_module()
+    root = module.make_search_node(
+        evaluator_state={"id": "root"},
+        g=0,
         prefix=(),
-        candidate_specs=[
-            {"name": "worse", "score": (5, -10, 3, 7, 1, (1, 2, 3)), "actions": (1, 2, 3), "passed": False},
-            {"name": "best", "score": (1, -13, 2, 0, 0, (0, 4)), "actions": (0, 4), "passed": True},
-        ],
-        simulate_candidate=simulate,
+        support_counts={},
+        rank_rows={},
+        accepted_rows=[],
+        life_index=1,
+        respawn_count=0,
+    )
+    child = module.make_search_node(
+        evaluator_state={"id": "child"},
+        g=89,
+        prefix=(0,),
+        support_counts={},
+        rank_rows={},
+        accepted_rows=[],
+        life_index=1,
+        respawn_count=0,
+    )
+    primary = module.depth_first_branch_and_bound(
+        root=root,
+        expand_fn=lambda node: [child] if tuple(node["prefix"]) == () else [],
+        goal_fn=lambda node: False,
+        bound_fn=lambda node: 0 if tuple(node["prefix"]) == () else 0,
+        action_budget=89,
+        processed_node_cap=10,
+        ledger_path=tmp_path / "primary.sqlite3",
+        contract_digest="e" * 64,
     )
 
-    assert history == ["best"]
-    assert warm["status"] == "warm_start_certificate"
-    assert warm["dfs_root_untouched"] is True
-    assert warm["candidate_name"] == "best"
+    def forbidden_primary(*args, **kwargs):
+        raise AssertionError("primary DFS must not be called by independent checker")
+
+    monkeypatch.setattr(module, "depth_first_branch_and_bound", forbidden_primary)
+    verified = module.independent_verify_witness_search(
+        root=root,
+        expand_fn=lambda node: [child] if tuple(node["prefix"]) == () else [],
+        bound_fn=lambda node: 0,
+        action_budget=89,
+        processed_node_cap=10,
+        expected_receipt_stream=primary["receipt_stream"],
+        contract_digest="e" * 64,
+    )
+    assert verified["verified"] is True
+    assert verified["edge_census_digest"] == primary["receipt_stream"]["digest_chain"]
+
+    mismatch = module.independent_verify_witness_search(
+        root=root,
+        expand_fn=lambda node: [],
+        bound_fn=lambda node: 0,
+        action_budget=89,
+        processed_node_cap=10,
+        expected_receipt_stream=primary["receipt_stream"],
+        contract_digest="e" * 64,
+    )
+    assert mismatch["verified"] is False
 
 
-def test_panel_bfs_can_reorder_targets_when_fixed_order_traps_but_legal_order_completes():
+def test_panel_search_uses_disk_backed_state_store_dedupe_and_live_five_action_truths(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     module = _load_module()
-    start = {"node": "start", "front_token": None}
-    graph = {
-        "start": {
-            "turn_left": {"node": "toward-v0", "front_token": "v0"},
-            "move_forward": {"node": "toward-empty", "front_token": "empty"},
-        },
-        "toward-v0": {
-            "move_forward": {"node": "dead-end", "front_token": None},
-        },
-        "toward-empty": {
-            "turn_right": {"node": "toward-v0-after-empty", "front_token": "v0"},
-        },
-    }
+    calls = {"checkpoint": 0, "truth": 0}
 
-    result = module.search_panel_certificate(
-        start_state=start,
+    def fake_initialize_panel_state(*, context_id, layout_id, world_seed, policy_seed, panel_rollout_id):
+        return {"node": f"r{panel_rollout_id}-start", "front_token": None, "panel_rollout_id": panel_rollout_id}
+
+    def fake_panel_expand(state):
+        token = state["front_token"]
+        if token is None:
+            return {
+                "move_forward": {"node": f"{state['panel_rollout_id']}-empty", "front_token": "empty", "panel_rollout_id": state["panel_rollout_id"]},
+                "turn_left": {"node": f"{state['panel_rollout_id']}-v0", "front_token": "v0", "panel_rollout_id": state["panel_rollout_id"]},
+            }
+        if token == "empty":
+            return {
+                "turn_right": {"node": f"{state['panel_rollout_id']}-v0", "front_token": "v0", "panel_rollout_id": state["panel_rollout_id"]},
+            }
+        return {}
+
+    def fake_build_public_checkpoint(**kwargs):
+        calls["checkpoint"] += 1
+        token = kwargs["world"]["front_token"]
+        full = module.np.asarray([1.0 if token == "v0" else 2.0] * 15, dtype=module.np.float64)
+        quotient = module.quotient_features(full)
+        checkpoint_hash = module.engine.canonical_hash({"front_token": token, "panel_rollout_id": kwargs["episode_index"] + 1})
+        return {
+            "checkpoint_hash": checkpoint_hash,
+            "front_token": token,
+            "observation": {"visual": [[None, None, None], [None, None, token], [None, None, None]]},
+            "predictor_input": {"organism": {}, "belief_summary": {}, "observation": {}},
+            "full_features": full,
+            "quotient_features": quotient,
+        }
+
+    def fake_truth(**kwargs):
+        calls["truth"] += 1
+        return {
+            "truth": {"outcome_type": f"{kwargs['action']}_ok", "actual_delta": {}, "terminal_receipt": None},
+            "callable_receipts": {
+                "transition_world": "labs.ego_life_playground_v0.microworld.transition_world",
+                "compute_actual_delta": "labs.ego_life_playground_v0.engine.compute_actual_delta",
+                "compute_metabolism_ledger": "labs.ego_life_playground_v0.engine.compute_metabolism_ledger",
+            },
+        }
+
+    monkeypatch.setattr(module, "initialize_panel_rollout_state", fake_initialize_panel_state)
+    monkeypatch.setattr(module, "panel_expand_navigation", fake_panel_expand)
+    monkeypatch.setattr(module, "build_public_checkpoint", fake_build_public_checkpoint)
+    monkeypatch.setattr(module, "evaluate_forced_action_truth", fake_truth)
+    monkeypatch.setattr(module, "compute_rank_reports", lambda context_id, rows: {f"{context_id}::{action}": {"rank": 13} for action in module.ACTION_ORDER})
+
+    report = module.run_panel_search(
+        context_spec=module.build_frozen_contract()["contexts"][0],
         target_multiset=["v0", "empty"],
-        expand_fn=lambda state: graph.get(state["node"], {}),
-        checkpoint_hash_fn=lambda state: state["node"],
-        processed_node_cap=20,
+        storage_dir=tmp_path,
+        processed_node_cap=200,
+        rollout_ids=(9, 10),
     )
 
-    assert result["status"] == "panel_certificate_found"
-    assert result["claimed_targets"] == ["empty", "v0"]
-    assert result["action_sequence"] == ["move_forward", "turn_right"]
+    assert report["status"] == "panel_certificate_found"
+    assert report["storage"]["state_store_path"].endswith("panel_state_store.sqlite3")
+    assert report["storage"]["queue_entry_mode"] == "parent_pointer"
+    assert calls["checkpoint"] > 0
+    assert calls["truth"] == len(report["retained_checkpoints"]) * 5
+    assert all(sorted(actions) == sorted(module.ACTION_ORDER) for actions in report["actions_by_checkpoint"].values())
 
 
-def test_leakage_scan_and_tamper_controls_fail_closed_on_positive_controls():
+def test_recursive_leakage_reuses_r1_scanner_and_formal_boundary_is_fail_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     module = _load_module()
-    clean = {"rows": [{"front_token": "empty", "quotient_features": [0.0, 1.0]}]}
+    clean = {"rows": [{"front_token": "empty", "quotient_features": [0.0] * 13}]}
     leaked = {
         "rows": [
             {"front_token": "v1", "private": "d29ybGRfNTI="},
@@ -311,16 +457,21 @@ def test_leakage_scan_and_tamper_controls_fail_closed_on_positive_controls():
         ]
     }
 
-    clean_report = module.scan_forbidden_leakage(clean)
-    leaked_report = module.scan_forbidden_leakage(leaked)
-
-    assert clean_report["clean"] is True
-    assert leaked_report["clean"] is False
+    clean_report = module.recursive_leakage_scan(clean)
+    leaked_report = module.recursive_leakage_scan(leaked)
+    assert clean_report["all_clean"] is True
+    assert leaked_report["all_clean"] is False
+    assert leaked_report["all_positive_controls_detected"] is True
     assert set(leaked_report["positive_controls_detected"]) == {"base64", "direct", "numeric_index"}
 
-    tamper = module.semantic_tamper_report(
-        baseline={"verdict": "EXISTENTIAL_CAPACITY_CERTIFICATE_FOUND", "search_digest": "a" * 64},
-        tampered={"verdict": "PANEL_CAPACITY_NOT_CERTIFIED", "search_digest": "b" * 64},
+    monkeypatch.setattr(module, "collect_runtime_boundary", lambda: {"output_absent": False, "runtime_receipt": module.runtime_receipt()})
+    with pytest.raises(ValueError, match="output directory must be absent or empty"):
+        module.run_formal(output_dir=tmp_path / "formal", execute_search=False)
+
+    verdict = module.dispatch_r2_verdict(
+        provenance_clean=True,
+        contract_valid=True,
+        witness_reports=[{"status": "WITNESS_SEARCH_INCONCLUSIVE", "complete_search": False}],
+        panel_reports=[],
     )
-    assert tamper["failed_closed"] is True
-    assert tamper["failure_reasons"] == ["search_digest", "verdict"]
+    assert verdict == "WITNESS_SEARCH_INCONCLUSIVE"
