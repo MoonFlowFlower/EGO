@@ -1,0 +1,214 @@
+{
+  "schema_version": "ego.v2.caot_bool_preflight_design.v1",
+  "task_id": "EGO-V2-P1-COMPOSITIONAL-CAUSAL-TRANSFER-PREFLIGHT-001E",
+  "surface_id": "CAOT-BOOL-v2",
+  "task_type": "docs_only_seed_world_free_exact_compositional_reference_design",
+  "base_commit": "bcc68b5cd617b0db44e0249e7635d36007240047",
+  "branch": "codex/ego-v2-compositional-causal-transfer-001e",
+  "science_weight": 0,
+  "lineage": {
+    "repairs_or_rescores_r5_r7_001d_x1": false,
+    "inherits_caot_v1_authority": false,
+    "fresh_surface_version": true,
+    "worlds_30_through_150_fresh_eligible": false
+  },
+  "post_observation_disclosure": {
+    "nonartifact_scout_ran_before_commit": true,
+    "formal_evidence": false,
+    "approximate_nonlocal_relative_regret_observed": 0.3118,
+    "drafted_nonlocal_relative_regret_bound": "1/20",
+    "threshold_or_grammar_changed_to_rescue": false,
+    "later_execution_role": "disclosed_deterministic_confirmation_or_falsification"
+  },
+  "authority_sha256": {
+    "product_axis_state": "1d3ea7dc5725b3046f4be043451def2d3abc8ce4201635c45ed2c5091b8d8fa6",
+    "product_axis_source_pin": "31de4a0b115ffc188532fe2f9b76b9ae4c8e920ced7ea0526ae4cf5e3a55980e",
+    "active_context": "23c74298f0716a733cd8553c9cdf5fde1854b13db2f4e6ce3f9d216b06a4fbb5",
+    "r5_card": "d9bef189de2d62f157fafcf44874940cdf41a1997c51d4ebbfe27e7d094fbc53",
+    "r6_result": "498225d48a3deb4dd484cbfbace5ef739470a969efbfe300a74b403e2a58477b",
+    "r7_result": "3087b66cf01e0809181483c1b96667fa50d6d25e4e72e9e8deb1328311909587",
+    "active_001d_card": "c9a7d71dcd92b0bc4571a4e5aa975e04fc97485d47b23b826894f13cac96072e",
+    "active_001d_design": "f54b998bf952f662b92f4734517cdb1405b63a4f75258eb6c5de917174970916",
+    "x1_result": "479c85332aa57ee924fdf51e3184874a80b902b73bb46cfe2ac46640294810c8",
+    "caot_v1_contract": "53ac3cc695f28db11b61b464738c031593f7133f4940f77723ddb786c4e2fdb4",
+    "caot_v1_invalid_closeout": "12743d46e232164d75753989b87e101e339eb2b11f45e3c80c4a7a902a0ef061"
+  },
+  "program_grammar": {
+    "input_bits": ["x1", "x2", "x3"],
+    "coefficient_order": ["b0", "b1", "b2", "b3", "b12", "b13", "b23"],
+    "program_count": 128,
+    "composition_count": 8,
+    "program_enumeration": "integer_0_through_127_most_significant_bit_first",
+    "composition_enumeration": "integer_0_through_7_most_significant_bit_first",
+    "outcome": "b0 XOR b1*x1 XOR b2*x2 XOR b3*x3 XOR b12*x1*x2 XOR b13*x1*x3 XOR b23*x2*x3 over GF(2)",
+    "source_table_rows": 8,
+    "source_table_contains_coefficients_or_program_id": false,
+    "program_trace_terms_required": 7
+  },
+  "scratch_prior": {
+    "intercept_probability_one": "1/2",
+    "each_nonintercept_probability_one": "1/4",
+    "program_mass": "3^(6-k_nonintercept)/8192",
+    "exact_normalization_required": true
+  },
+  "family_prior": {
+    "family_order": ["SCRATCH", "EXACT_SOURCE", "LOCAL_SHIFT"],
+    "family_mass_each": "1/3",
+    "local_neighbors": "same_intercept_and_exactly_one_of_six_nonintercept_coefficients_flipped",
+    "local_neighbor_count": 6,
+    "common_integer_denominator": 73728,
+    "program_weight": "3*3^(6-k)+24576*I[h=hs]+4096*I[h_in_N1(hs)]"
+  },
+  "public_history": {
+    "fixed_first_composition": "000",
+    "second_query_candidates": ["001", "010", "011", "100", "101", "110", "111"],
+    "remaining_budget_after_first": 1,
+    "terminal_common_unqueried_count": 6,
+    "legal_learner_inputs": [
+      "complete_source_truth_table",
+      "current_target_history",
+      "query_count_and_budget",
+      "registered_arm_semantics",
+      "own_serialized_state"
+    ],
+    "forbidden_inputs": [
+      "source_coefficients", "target_coefficients", "source_program_id",
+      "target_program_id", "relation", "stratum", "hamming_distance",
+      "future_outcome", "scorer", "world_id", "layout_id", "policy_id",
+      "run_id", "seed", "mapping", "cause", "objects_by_cause",
+      "private_state", "global_state", "raw_trace", "artifact_path",
+      "artifact_hash", "encoded_private_alias"
+    ]
+  },
+  "inference": {
+    "likelihood": "one_iff_all_public_history_rows_match_program_else_zero",
+    "posterior_arithmetic": "exact_nonnegative_integer_weights_and_Fraction",
+    "prediction": "posterior_weight_fraction_predicting_one",
+    "primary_loss": "Brier",
+    "query_score": "exact_expected_sum_of_p_times_one_minus_p_over_terminal_common_unqueried",
+    "query_tie_rule": "lexical_normative_plus_pointwise_optimistic_and_pessimistic_minimizer_endpoint_envelopes",
+    "mdl_role": "audit_only",
+    "hard_family_comparator": "greatest_exact_family_marginal_then_family_internal_posterior_predictive",
+    "hard_family_tie_rule": "frozen_order_SCRATCH_then_EXACT_SOURCE_then_LOCAL_SHIFT_plus_all_tied_branch_control_match_sensitivity",
+    "nearest_source_rule": "all_history_compatible_programs_at_minimum_seven_coefficient_Hamming_distance_equal_weight_predictive_and_own_Brier_query"
+  },
+  "population": {
+    "source_program_count": 128,
+    "target_program_count": 128,
+    "pair_count_per_arm": 16384,
+    "source_weight": "uniform_1_over_128",
+    "strata": {
+      "EXACT": "target_equals_source",
+      "LOCAL": "same_intercept_and_nonintercept_hamming_distance_one",
+      "NONLOCAL": "all_other_targets"
+    },
+    "exact_target_weight_within_source": "1",
+    "local_target_weight_within_source": "uniform_1_over_6",
+    "nonlocal_target_weight_within_source": "scratch_prior_conditioned_on_NONLOCAL",
+    "nominal_component_weights": {
+      "NONLOCAL": "1/3",
+      "EXACT": "1/3",
+      "LOCAL": "1/3"
+    },
+    "scratch_heavy_component_weights": {
+      "NONLOCAL": "1/2",
+      "EXACT": "1/4",
+      "LOCAL": "1/4"
+    }
+  },
+  "arms": {
+    "primary": "MIXTURE_BMA_ACTIVE_BRIER",
+    "primary_baseline": "SCRATCH_SPIKE_SLAB_ACTIVE_BAYES_receives_identical_source_bytes_but_does_not_read_them_for_inference_prediction_or_query",
+    "independent_invalidating_controls": [
+      "EXACT_SOURCE_ONLY_ACTIVE_WITH_SCRATCH_FALLBACK",
+      "LOCAL_ONLY_ACTIVE_WITH_SCRATCH_FALLBACK",
+      "SOURCE_CONSISTENCY_WITH_SCRATCH_FALLBACK",
+      "MARGINAL_MDL_MAP_HARD_FAMILY",
+      "MINIMUM_HAMMING_NEAREST_SOURCE",
+      "FIXED_QUERY_001", "FIXED_QUERY_010", "FIXED_QUERY_011",
+      "FIXED_QUERY_100", "FIXED_QUERY_101", "FIXED_QUERY_110",
+      "FIXED_QUERY_111", "PASSIVE_LEXICAL", "UNIFORM_FIXED_QUERY_MIXTURE",
+      "OBSERVATION_HISTORY_EXACT_LOOKUP_SOURCE_VALUE_FOR_UNSEEN",
+      "COUNT_TABLE_TARGET_MEAN", "GRAPH_LOOKUP_MIN_HAMMING_MEAN",
+      "EPISODIC_TRAVERSAL_LEXICAL_MIN_HAMMING_COPY"
+    ],
+    "ceiling_control": "CANDIDATE_RULE_AMORTIZED_LOOKUP",
+    "fail_closed_not_applicable": ["TRANSITION_TABLE", "SUCCESSOR_MAP", "FSM_PLANNER"]
+  },
+  "ablations": [
+    "SOURCE_DELETE", "LOCAL_DELETE", "FEEDBACK_MASK", "ACTIVE_DELETE",
+    "UNIFORM_SCRATCH_PRIOR", "SOURCE_TABLE_ROW_PERMUTE", "VARIABLE_RELABEL",
+    "SERIALIZED_STATE_RESET", "SERIALIZED_STATE_SWAP",
+    "HIDDEN_COEFFICIENT_POSITIVE_CONTROL", "HIDDEN_RELATION_POSITIVE_CONTROL"
+  ],
+  "ablation_semantics": {
+    "SOURCE_DELETE": "discard_exact_and_local_then_run_unchanged_scratch_active_and_require_baseline_byte_equality",
+    "LOCAL_DELETE": "delete_local_and_renormalize_scratch_exact_family_masses_to_one_half_each",
+    "FEEDBACK_MASK": "choose_same_H1_query_hide_second_outcome_and_predict_same_six_terminal_nodes_from_H1",
+    "ACTIVE_DELETE": "exact_uniform_mixture_of_all_seven_fixed_query_terminal_endpoints",
+    "UNIFORM_SCRATCH_PRIOR": "replace_only_p0_by_uniform_one_over_128"
+  },
+  "gates": {
+    "complete_pair_count_required": 16384,
+    "nominal_relative_gain_min": "1/20",
+    "exact_relative_gain_min": "1/20",
+    "local_relative_gain_min": "1/20",
+    "nonlocal_relative_regret_max": "1/20",
+    "scratch_heavy_relative_gain_min": "1/100",
+    "active_vs_best_fixed_relative_gain_min": "1/100",
+    "unique_nonlexical_query_with_positive_forward_gain_required": true,
+    "source_delete_removes_exact_and_nominal_gain": true,
+    "local_delete_makes_local_gate_fail": true,
+    "feedback_mask_makes_active_endpoint_gate_fail": true,
+    "active_delete_makes_active_necessity_gate_fail": true,
+    "non_tautological_control_pareto_match_allowed": false,
+    "fresh_replay_required": true,
+    "independent_recompute_required": true,
+    "leakage_positive_controls_all_rejected": true,
+    "query_tie_verdict_sensitivity_allowed": false
+  },
+  "tail_disclosures": [
+    "maximum_nonlocal_regret",
+    "nonlocal_negative_transfer_weighted_mass",
+    "worst_10_percent_mass_nonlocal_cvar"
+  ],
+  "verdict_priority": [
+    "CAOT_BOOL_V2_PRIVATE_TRUTH_LEAKAGE",
+    "CAOT_BOOL_V2_INSTRUMENT_INVALID",
+    "CAOT_BOOL_V2_QUERY_TIE_SENSITIVE",
+    "CAOT_BOOL_V2_EQUAL_ACCESS_CONTROL_MATCH",
+    "CAOT_BOOL_V2_NO_REFERENCE_HEADROOM",
+    "CAOT_BOOL_V2_REFERENCE_HEADROOM_ADMITTED"
+  ],
+  "future_artifacts": [
+    "result.json", "trace.jsonl", "baseline_comparison.json",
+    "ablation_report.json", "replay_report.json", "leakage_report.json",
+    "input_manifest.json", "independent_recompute_report.json",
+    "artifact_manifest.json", "failure_manifest.json", "claim_ceiling.txt"
+  ],
+  "product_firewall": {
+    "changes_environment_metabolism_or_action_semantics": false,
+    "changes_controller_engine_predictor_or_ui": false,
+    "world_or_policy_seed_consumed": false,
+    "future_product_world_id_must_be_greater_than": 150,
+    "sole_future_product_path": "PlaygroundController.dispatch -> engine.compute_step -> predictive_control.plan_action -> survival_learning.select_action -> transition_world -> compute_metabolism_ledger -> predictive_control.update_after_transition -> SQLite append/recover"
+  },
+  "authorization": {
+    "docs_only": true,
+    "producer": false,
+    "tests": false,
+    "formal_run": false,
+    "artifact_generation": false,
+    "neural_candidate": false,
+    "product_integration": false,
+    "world_or_seed_run": false,
+    "push": false,
+    "tag": false,
+    "auto_remote_anchor": "forbidden"
+  },
+  "independence": {
+    "same_model_internal_role_separation": true,
+    "external_independent_audit": false
+  },
+  "claim_ceiling": "Docs-only seed/world-free CAOT-BOOL-v2 algorithmic-reference design; no computed headroom, neural learning, meta-learning, non-memorization, online changepoint recovery, product effect, survival benefit, AGI, agency, consciousness, subjectivity, emotion, companion readiness, or electronic-life evidence."
+}
