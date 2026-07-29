@@ -374,6 +374,7 @@ def test_independent_checker_does_not_call_primary_dfs_and_requires_matching_edg
         processed_node_cap=10,
         expected_receipt_stream=primary["receipt_stream"],
         contract_digest="e" * 64,
+        scratch_dir=tmp_path / "checker-ok",
     )
     assert verified["verified"] is True
     assert verified["edge_census_digest"] == primary["receipt_stream"]["digest_chain"]
@@ -387,6 +388,7 @@ def test_independent_checker_does_not_call_primary_dfs_and_requires_matching_edg
         processed_node_cap=10,
         expected_receipt_stream=primary["receipt_stream"],
         contract_digest="e" * 64,
+        scratch_dir=tmp_path / "checker-mismatch",
     )
     assert mismatch["verified"] is False
 
@@ -581,17 +583,20 @@ def test_recursive_leakage_reuses_r1_scanner_and_formal_boundary_is_fail_closed(
 def test_formal_orchestrator_calls_provenance_witness_panel_packet_and_verifier(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
     module = _load_module()
     calls = {"observe": 0, "load": 0, "validate": 0, "witness": 0, "panel": 0, "write": 0, "verify": 0}
+    source_hashes = module.sha256_map(module.R2_REQUIRED_PROVENANCE_SOURCE_PATHS)
+    input_hashes = module.sha256_map(module.R2_REQUIRED_PROVENANCE_INPUT_PATHS)
+    dependency_hashes = module.sha256_map(module.R2_REQUIRED_PROVENANCE_DEPENDENCY_PATHS)
 
     monkeypatch.setattr(module, "collect_runtime_boundary", lambda: {"output_absent": True, "runtime_receipt": module.runtime_receipt()})
-    monkeypatch.setattr(module, "collect_r2_pre_run_observation", lambda **kwargs: calls.__setitem__("observe", calls["observe"] + 1) or {"head_parent": "impl", "head": "prov", "repository_root": "repo", "branch": "branch", "head_changed_paths": ["docs/codex/tasks/ego-v2-p1-acquisition-capacity-certificate-001h-r2/PRE_RUN_PROVENANCE.json"], "worktree_clean": True, "index_clean": True, "provenance_tracked_at_head": True, "runtime_receipt": module.runtime_receipt(), "engine_code_path_hash": "c" * 64, "source_hashes": {path: "a" * 64 for path in module.R2_REQUIRED_PROVENANCE_SOURCE_PATHS}, "input_hashes": {path: "b" * 64 for path in module.R2_REQUIRED_PROVENANCE_INPUT_PATHS}, "dependency_hashes": {path: "c" * 64 for path in module.R2_REQUIRED_PROVENANCE_DEPENDENCY_PATHS}, "output_dir": "tmp", "output_absent_or_empty": True})
-    monkeypatch.setattr(module, "load_pre_run_provenance", lambda path: calls.__setitem__("load", calls["load"] + 1) or {"schema_version": "ego.v2.001h_r2.pre_run_provenance.v1", "task_id": "EGO-V2-P1-ACQUISITION-CAPACITY-CERTIFICATE-001H-R2", "implementation_commit": "impl", "runtime_receipt": module.runtime_receipt(), "engine_code_path_hash": "c" * 64, "source_hashes": {path: "a" * 64 for path in module.R2_REQUIRED_PROVENANCE_SOURCE_PATHS}, "input_hashes": {path: "b" * 64 for path in module.R2_REQUIRED_PROVENANCE_INPUT_PATHS}, "dependency_hashes": {path: "c" * 64 for path in module.R2_REQUIRED_PROVENANCE_DEPENDENCY_PATHS}, "output_precondition": "absent_or_empty"})
+    monkeypatch.setattr(module, "collect_r2_pre_run_observation", lambda **kwargs: calls.__setitem__("observe", calls["observe"] + 1) or {"head_parent": "impl", "head": "prov", "repository_root": "repo", "branch": "branch", "head_changed_paths": ["docs/codex/tasks/ego-v2-p1-acquisition-capacity-certificate-001h-r2/PRE_RUN_PROVENANCE.json"], "worktree_clean": True, "index_clean": True, "provenance_tracked_at_head": True, "runtime_receipt": module.runtime_receipt(), "engine_code_path_hash": "c" * 64, "source_hashes": source_hashes, "input_hashes": input_hashes, "dependency_hashes": dependency_hashes, "output_dir": "tmp", "output_absent_or_empty": True})
+    monkeypatch.setattr(module, "load_pre_run_provenance", lambda path: calls.__setitem__("load", calls["load"] + 1) or {"schema_version": "ego.v2.001h_r2.pre_run_provenance.v1", "task_id": "EGO-V2-P1-ACQUISITION-CAPACITY-CERTIFICATE-001H-R2", "implementation_commit": "impl", "runtime_receipt": module.runtime_receipt(), "engine_code_path_hash": "c" * 64, "source_hashes": source_hashes, "input_hashes": input_hashes, "dependency_hashes": dependency_hashes, "output_precondition": "absent_or_empty"})
     monkeypatch.setattr(module, "validate_pre_run_provenance", lambda document, observation: calls.__setitem__("validate", calls["validate"] + 1) or {"passed": True, "provenance_commit": "prov"})
-    monkeypatch.setattr(module, "run_witness_stage", lambda context_spec: calls.__setitem__("witness", calls["witness"] + 1) or {"status": "witness_certificate_found", "certificate_found": True, "rows": [], "rank_reports": {}, "complete_search": False, "independently_verified": False})
+    monkeypatch.setattr(module, "run_witness_stage", lambda context_spec, **_kwargs: calls.__setitem__("witness", calls["witness"] + 1) or {"status": "witness_certificate_found", "certificate_found": True, "rows": [], "rank_reports": {}, "complete_search": False, "independently_verified": False})
     monkeypatch.setattr(module, "run_panel_search", lambda **kwargs: calls.__setitem__("panel", calls["panel"] + 1) or {"status": "PANEL_CAPACITY_NOT_CERTIFIED", "panel_rollout_ids": list(kwargs["rollout_ids"]), "target_order": list(module.PANEL_TARGET_MULTISET), "rollouts": [], "raw_checkpoints": [], "retained_checkpoints": [], "rows": [], "support_report": {"before_dedupe": {}, "after_dedupe": {}, "required_floors": module.PANEL_FLOORS, "passed": False}, "cell_support_report": {"cell_counts": {}, "required_floor_by_cell": {}, "passed": False}, "rank_reports": {}, "construction_complete": False, "panel_capacity_admitted": False, "panel_hash": "a" * 64})
-    monkeypatch.setattr(module, "recursive_leakage_scan", lambda payload: {"all_clean": True, "all_positive_controls_detected": True, "findings": []})
-    monkeypatch.setattr(module, "run_tamper_controls", lambda **kwargs: {"all_tamper_controls_rejected": True, "controls": {}})
+    monkeypatch.setattr(module, "scan_r2_evidence_leakage", lambda payload: {"all_clean": True, "all_positive_controls_detected": True, "findings": []})
+    monkeypatch.setattr(module, "run_r2_tamper_controls", lambda **kwargs: {"all_tamper_controls_rejected": True, "controls": {}})
     monkeypatch.setattr(module, "independent_reduce_context", lambda **kwargs: {"reported_values_match": True, "producer_receipts_valid": True, "hashes_valid": True, "check_map": {"control_envelope_comparable": True, "privileged_support_witness_found": False, "deterministic_panel_capacity_admitted": False}})
-    monkeypatch.setattr(module, "fresh_process_recompute", lambda bundle: {"equal": True, "contexts": {}})
+    monkeypatch.setattr(module, "fresh_process_recompute", lambda bundle, **_kwargs: {"equal": True, "contexts": {}})
     monkeypatch.setattr(module, "write_r2_formal_packet", lambda output, bundle: calls.__setitem__("write", calls["write"] + 1) or {"verdict": bundle["adjudication"]["verdict"]})
     monkeypatch.setattr(module, "verify_r2_formal_packet", lambda output: calls.__setitem__("verify", calls["verify"] + 1) or {"verified": True})
 
@@ -599,3 +604,324 @@ def test_formal_orchestrator_calls_provenance_witness_panel_packet_and_verifier(
 
     assert result["verdict"] == "PANEL_CAPACITY_NOT_CERTIFIED"
     assert calls == {"observe": 1, "load": 1, "validate": 1, "witness": 2, "panel": 2, "write": 1, "verify": 1}
+
+
+def _synthetic_node(module, name: str, g: int, prefix: tuple[int, ...]):
+    return module.make_search_node(
+        evaluator_state={"name": name, "clock": g},
+        g=g,
+        prefix=prefix,
+        support_counts={},
+        rank_rows={},
+        accepted_rows=[],
+        life_index=1,
+        respawn_count=0,
+    )
+
+
+def test_dfs_cap_is_checked_before_next_new_node_and_two_leaf_frontier_is_not_overrun(tmp_path: Path):
+    module = _load_module()
+    root = _synthetic_node(module, "root", 0, ())
+    left = _synthetic_node(module, "left", 89, (0,) * 89)
+    right = _synthetic_node(module, "right", 89, (1,) * 89)
+
+    result = module.depth_first_branch_and_bound(
+        root=root,
+        expand_fn=lambda node: [left, right] if node["evaluator_state"]["name"] == "root" else [],
+        goal_fn=lambda _node: False,
+        bound_fn=lambda _node: 0,
+        action_budget=89,
+        processed_node_cap=2,
+        ledger_path=tmp_path / "cap.sqlite3",
+        contract_digest="1" * 64,
+    )
+
+    assert result["status"] == "WITNESS_SEARCH_INCONCLUSIVE"
+    assert result["processed_nodes"] == 2
+    assert result["unprocessed_legal_child"] is True
+    assert result["receipt_stream"]["disposition_counts"]["horizon_non_goal"] == 1
+
+
+def test_independent_checker_rejects_sample_and_disposition_tamper_even_when_digest_field_is_unchanged(tmp_path: Path):
+    module = _load_module()
+    root = _synthetic_node(module, "root", 89, (0,) * 89)
+    primary = module.depth_first_branch_and_bound(
+        root=root,
+        expand_fn=lambda _node: [],
+        goal_fn=lambda _node: False,
+        bound_fn=lambda _node: 0,
+        action_budget=89,
+        processed_node_cap=2,
+        ledger_path=tmp_path / "primary.sqlite3",
+        contract_digest="2" * 64,
+    )
+    tampered = json.loads(json.dumps(primary["receipt_stream"]))
+    tampered["first_samples"][0]["node_disposition"] = "goal"
+
+    checked = module.independent_verify_witness_search(
+        root=root,
+        expand_fn=lambda _node: [],
+        goal_fn=lambda _node: False,
+        bound_fn=lambda _node: 0,
+        action_budget=89,
+        processed_node_cap=2,
+        expected_receipt_stream=tampered,
+        contract_digest="2" * 64,
+        scratch_dir=tmp_path / "checker-tamper",
+    )
+    assert checked["verified"] is False
+    assert "serialized_receipts" in checked["failure_reasons"]
+
+
+def test_live_witness_root_and_five_action_expansion_use_real_r1_callables_for_frozen_contexts(monkeypatch: pytest.MonkeyPatch):
+    module = _load_module()
+    original_init = module.initialize_evaluator_state
+    original_advance = module.advance_evaluator_action
+    calls = {"init": 0, "advance": 0}
+
+    def counted_init(**kwargs):
+        calls["init"] += 1
+        return original_init(**kwargs)
+
+    def counted_advance(state, action):
+        calls["advance"] += 1
+        return original_advance(state, action)
+
+    monkeypatch.setattr(module, "initialize_evaluator_state", counted_init)
+    monkeypatch.setattr(module, "advance_evaluator_action", counted_advance)
+    for context in module.build_frozen_contract()["contexts"]:
+        root = module.build_live_witness_root(context)
+        children = module.expand_live_witness_node(root, action_budget=89)
+        assert [item["action"] for item in children] == list(module.ACTION_ORDER)
+        assert all(item["node"]["g"] == 1 for item in children)
+        assert all(item["node"]["accepted_rows"][0]["selected_action"] == item["action"] for item in children)
+    assert calls == {"init": 2, "advance": 10}
+
+
+def test_warm_failure_cannot_refute_and_runs_real_dfs_from_untouched_live_root(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
+    module = _load_module()
+    context = module.build_frozen_contract()["contexts"][0]
+    monkeypatch.setattr(
+        module,
+        "run_live_warm_start",
+        lambda *_args, **_kwargs: {"certificate_found": False, "replay_valid": False, "actions": [], "rows": [], "support_counts": {}, "rank_reports": {}},
+    )
+    calls = {"advance": 0}
+    original_advance = module.advance_evaluator_action
+
+    def counted_advance(state, action):
+        calls["advance"] += 1
+        return original_advance(state, action)
+
+    monkeypatch.setattr(module, "advance_evaluator_action", counted_advance)
+    report = module.run_witness_stage(context, scratch_dir=tmp_path, processed_node_cap=1)
+    assert calls["advance"] == 5
+    assert report["status"] == "WITNESS_SEARCH_INCONCLUSIVE"
+    assert report["complete_search"] is False
+    assert report["independently_verified"] is False
+
+
+def _panel_fixture(monkeypatch: pytest.MonkeyPatch, module, graph, tokens, seen_rollouts, truth_calls):
+    def init(**kwargs):
+        rollout = kwargs["panel_rollout_id"]
+        seen_rollouts.append(rollout)
+        return {"node": f"r{rollout}:root", "world": {"node": f"r{rollout}:root"}, "organism": {}, "predictive_state": {}, "episode_index": rollout - 1, "life_index": 1, "respawn_count": 0, "awaiting_respawn": False}
+
+    def checkpoint(**kwargs):
+        node = kwargs["world"]["node"]
+        token = tokens.get(node)
+        full = module.np.asarray([float(sum(map(ord, node)) % 17)] * 15, dtype=module.np.float64)
+        return {"checkpoint_hash": module.engine.canonical_hash({"node": node}), "front_token": token, "observation": {"visual": node}, "predictor_input": {"organism": {}, "belief_summary": {}}, "full_features": full, "quotient_features": module.quotient_features(full)}
+
+    def expand(state):
+        children = {}
+        for action, target in graph.get(state["world"]["node"], {}).items():
+            children[action] = {**state, "node": target, "world": {"node": target}, "awaiting_respawn": target.endswith(":dead")}
+        return children
+
+    def truth(**kwargs):
+        assert set(seen_rollouts) == {9, 10}
+        truth_calls.append(kwargs["action"])
+        return {"truth": {"outcome_type": "ok", "actual_delta": {}, "terminal_receipt": None}, "callable_receipts": {"transition_world": "live", "compute_actual_delta": "live", "compute_metabolism_ledger": "live"}}
+
+    monkeypatch.setattr(module, "initialize_panel_rollout_state", init)
+    monkeypatch.setattr(module, "build_public_checkpoint", checkpoint)
+    monkeypatch.setattr(module, "panel_expand_navigation", expand)
+    monkeypatch.setattr(module, "evaluate_forced_action_truth", truth)
+    monkeypatch.setattr(module, "json_public_checkpoint", lambda cp, **kw: {**cp, **kw})
+    monkeypatch.setattr(module, "compute_rank_reports", lambda context_id, rows: {f"{context_id}::{action}": {"rank": 13} for action in module.ACTION_ORDER})
+
+
+def test_panel_bfs_dedupes_loops_prunes_terminal_before_count_uses_per_rollout_cap_and_defers_truths(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
+    module = _load_module()
+    seen_rollouts, truth_calls = [], []
+    graph, tokens = {}, {}
+    for rollout in (9, 10):
+        root, goal, dead = f"r{rollout}:root", f"r{rollout}:goal", f"r{rollout}:dead"
+        graph[root] = {"turn_left": root, "turn_right": dead, "move_forward": goal}
+        graph[goal] = {}
+        tokens[goal] = "v0"
+    _panel_fixture(monkeypatch, module, graph, tokens, seen_rollouts, truth_calls)
+
+    report = module.run_panel_search(
+        context_spec=module.build_frozen_contract()["contexts"][0],
+        target_multiset=["v0"],
+        storage_dir=tmp_path,
+        processed_node_cap=2,
+        rollout_ids=(9, 10),
+    )
+    assert [item["processed_nodes"] for item in report["rollouts"]] == [2, 2]
+    assert report["construction_complete"] is True
+    assert len(report["raw_checkpoints"]) == 2
+    assert truth_calls == list(module.ACTION_ORDER) * 2
+    assert report["storage"]["queue_contains_only_ids"] is True
+    with sqlite3.connect(report["storage"]["state_store_path"]) as connection:
+        assert connection.execute("SELECT COUNT(*) FROM search_keys").fetchone()[0] == 4
+
+
+def test_provenance_requires_exact_sets_authority_pins_paths_clean_git_and_caps():
+    module = _load_module()
+    contract = module.build_frozen_contract()
+    observation = {
+        "repository_root": str(module.REPO_ROOT).replace("\\", "/"),
+        "branch": "codex/test",
+        "head": "b" * 40,
+        "head_parent": "a" * 40,
+        "head_changed_paths": [module.R2_PROVENANCE_RELPATH],
+        "worktree_clean": True,
+        "index_clean": True,
+        "provenance_tracked_at_head": True,
+        "runtime_receipt": module.runtime_receipt(),
+        "engine_code_path_hash": "c" * 64,
+        "source_hashes": {path: "1" * 64 for path in module.R2_REQUIRED_PROVENANCE_SOURCE_PATHS},
+        "input_hashes": {path: "2" * 64 for path in module.R2_REQUIRED_PROVENANCE_INPUT_PATHS},
+        "dependency_hashes": {path: "3" * 64 for path in module.R2_REQUIRED_PROVENANCE_DEPENDENCY_PATHS},
+        "authority_pins": dict(module.FROZEN_SOURCE_PINS),
+        "output_dir": module.R2_OUTPUT_RELPATH,
+        "output_absent_or_empty": True,
+        "caps": {"witness_processed_node_cap": 2_000_000, "panel_processed_node_cap_per_rollout": 250_000},
+        "action_orders": {"witness": list(module.ACTION_ORDER), "panel_navigation": list(module.PANEL_NAV_ACTIONS)},
+        "firewalls": {"stale_world_seeds": sorted(module.STALE_WORLD_SEEDS), "stale_policy_seeds": sorted(module.STALE_POLICY_SEEDS)},
+    }
+    document = {
+        "schema_version": "ego.v2.001h_r2.pre_run_provenance.v1",
+        "task_id": contract["task_id"],
+        "implementation_commit": observation["head_parent"],
+        "runtime_receipt": observation["runtime_receipt"],
+        "engine_code_path_hash": observation["engine_code_path_hash"],
+        "source_hashes": dict(observation["source_hashes"]),
+        "input_hashes": dict(observation["input_hashes"]),
+        "dependency_hashes": dict(observation["dependency_hashes"]),
+        "authority_pins": dict(observation["authority_pins"]),
+        "output_dir": observation["output_dir"],
+        "output_precondition": "absent_or_empty",
+        "caps": dict(observation["caps"]),
+        "action_orders": dict(observation["action_orders"]),
+        "firewalls": dict(observation["firewalls"]),
+    }
+    assert module.validate_pre_run_provenance(document, observation)["passed"] is True
+
+    mutations = []
+    missing = json.loads(json.dumps(document)); missing["source_hashes"].pop(next(iter(missing["source_hashes"]))); mutations.append(missing)
+    extra = json.loads(json.dumps(document)); extra["source_hashes"]["extra.py"] = "0" * 64; mutations.append(extra)
+    path_tamper = json.loads(json.dumps(document)); path_tamper["output_dir"] = "artifacts/elsewhere"; mutations.append(path_tamper)
+    authority = json.loads(json.dumps(document)); authority["authority_pins"][next(iter(authority["authority_pins"]))] = "0" * 64; mutations.append(authority)
+    cap = json.loads(json.dumps(document)); cap["caps"]["witness_processed_node_cap"] -= 1; mutations.append(cap)
+    for tampered in mutations:
+        with pytest.raises(ValueError):
+            module.validate_pre_run_provenance(tampered, observation)
+
+
+def test_subprocess_recompute_uses_different_pid_and_rejects_reported_row_tamper():
+    module = _load_module()
+    rows = [{"selected_action": "turn_left", "learner_projection": {"quotient_features": [0.0] * 13}, "life_index": 1, "respawn_count": 0}]
+    receipt = module.spawn_independent_row_recompute("ctx", rows)
+    assert receipt["child_pid"] != receipt["parent_pid"]
+    assert receipt["row_count"] == 1
+    assert receipt["rows_digest"] == module.engine.canonical_hash(rows)
+    with pytest.raises(ValueError, match="row recompute mismatch"):
+        module.validate_independent_row_recompute(rows, {**receipt, "row_count": 2})
+
+
+def test_packet_clears_only_owned_scratch_has_exact_file_set_and_semantic_verifier_rejects_rebuilt_manifest_tamper(tmp_path: Path):
+    module = _load_module()
+    packet = tmp_path / "packet"
+    scratch = packet / "_scratch"
+    scratch.mkdir(parents=True)
+    (scratch / "ledger.sqlite3").write_bytes(b"scratch")
+    context_id = module.build_frozen_contract()["contexts"][0]["context_id"]
+    bundle = {
+        "contexts": {
+            context_id: {
+                "control": {"prefix": []},
+                "witness": {"rows": [], "rank_reports": {}, "replay_valid": False, "search_report": {}, "ablation_report": {}},
+                "panel": {"rows": [], "panel_rollout_ids": list(range(9, 17)), "target_order": list(module.PANEL_TARGET_MULTISET), "rollouts": [], "raw_checkpoints": [], "retained_checkpoints": [], "rank_reports": {}, "support_report": {"before_dedupe": {token: 0 for token in module.PANEL_FLOORS}, "after_dedupe": {token: 0 for token in module.PANEL_FLOORS}, "required_floors": dict(module.PANEL_FLOORS), "passed": False}, "cell_support_report": {"cell_counts": {}, "required_floor_by_cell": {}, "passed": False}, "construction_complete": False, "panel_capacity_admitted": False, "panel_hash": module.engine.canonical_hash({})},
+            }
+        },
+        "adjudication": {"verdict": "PANEL_CAPACITY_NOT_CERTIFIED"},
+        "source_hashes": {}, "input_hashes": {}, "dependency_hashes": {},
+        "provenance_document": {"runtime_receipt": module.runtime_receipt(), "implementation_commit": "a" * 40},
+        "leakage_report": {"all_clean": True, "all_positive_controls_detected": True, "findings": []},
+        "fresh_recompute_report": {"equal": True, "contexts": {}},
+    }
+    module.write_r2_formal_packet(packet, bundle)
+    assert not scratch.exists()
+    assert module.verify_r2_formal_packet(packet)["verified"] is True
+
+    result_path = packet / "result.json"
+    result = json.loads(result_path.read_text(encoding="utf-8"))
+    result["verdict"] = "EXISTENTIAL_CAPACITY_CERTIFICATE_FOUND"
+    result_path.write_text(json.dumps(result, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    (packet / "artifact_manifest.json").write_text(json.dumps(module.build_artifact_manifest(packet), sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="semantic"):
+        module.verify_r2_formal_packet(packet)
+
+
+@pytest.mark.parametrize("world_seed", [52, 54])
+def test_frozen_context_live_smoke_advances_few_steps_without_formal_run(world_seed: int):
+    module = _load_module()
+    context = next(item for item in module.build_frozen_contract()["contexts"] if item["world_seed"] == world_seed)
+    root = module.build_live_witness_root(context)
+    first = module.expand_live_witness_node(root, action_budget=89)[0]["node"]
+    second = module.expand_live_witness_node(first, action_budget=89)[2]["node"]
+    assert [row["selected_action"] for row in second["accepted_rows"]] == ["turn_left", "move_forward"]
+    assert second["g"] == 2
+
+
+def test_r2_tamper_controls_are_computed_and_dispatcher_fails_closed_on_unknown_or_missing(tmp_path: Path):
+    module = _load_module()
+    witness = [{"status": "witness_certificate_found", "certificate_found": True, "rows": []}]
+    panel = [{"status": "PANEL_CAPACITY_NOT_CERTIFIED", "panel_capacity_admitted": False, "rows": [], "retained_checkpoints": []}]
+    report = module.run_r2_tamper_controls(
+        contract=module.build_frozen_contract(),
+        source_hashes=dict(module.FROZEN_SOURCE_PINS),
+        witness_reports=witness,
+        panel_reports=panel,
+        scratch_dir=tmp_path,
+    )
+    assert report["all_tamper_controls_rejected"] is True
+    assert set(report["controls"]) >= {"contract_budget", "authority_hash", "row_recompute", "producer_receipt", "unknown_verdict"}
+    assert all(item["rejected"] is True for item in report["controls"].values())
+    assert module.dispatch_r2_verdict(provenance_clean=True, contract_valid=True, witness_reports=[{"status": "mystery"}], panel_reports=[]) == "SEARCH_IMPLEMENTATION_INVALID"
+    assert module.dispatch_r2_verdict(provenance_clean=True, contract_valid=True, witness_reports=[], panel_reports=[]) == "SEARCH_IMPLEMENTATION_INVALID"
+
+
+@pytest.mark.parametrize("world_seed", [52, 54])
+def test_panel_navigation_live_smoke_calls_r1_advance_for_three_legal_actions(monkeypatch: pytest.MonkeyPatch, world_seed: int):
+    module = _load_module()
+    context = next(item for item in module.build_frozen_contract()["contexts"] if item["world_seed"] == world_seed)
+    state = module.initialize_panel_rollout_state(
+        context_id=context["context_id"], layout_id=context["layout_id"], world_seed=world_seed,
+        policy_seed=context["policy_seed"], panel_rollout_id=9,
+    )
+    calls = []
+    original = module.advance_evaluator_action
+
+    def counted(current, action):
+        calls.append(action)
+        return original(current, action)
+
+    monkeypatch.setattr(module, "advance_evaluator_action", counted)
+    children = module.panel_expand_navigation(state)
+    assert calls == list(module.PANEL_NAV_ACTIONS)
+    assert set(children).issubset(set(module.PANEL_NAV_ACTIONS))
