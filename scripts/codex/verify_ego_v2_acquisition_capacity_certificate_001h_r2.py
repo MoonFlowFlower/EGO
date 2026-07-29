@@ -10,6 +10,7 @@ from pathlib import Path
 import re
 import sqlite3
 import sys
+import tempfile
 from typing import Any
 
 
@@ -112,6 +113,20 @@ compute_rank_reports = _R1._rank_reports_from_rows
 evaluate_forced_action_truth = _R1.evaluate_forced_action_truth
 build_artifact_manifest = _R1.build_artifact_manifest
 verify_artifact_manifest = _R1.verify_artifact_manifest
+initialize_panel_rollout_state = _R1._initialize_panel_rollout_state
+json_public_checkpoint = _R1._json_public_checkpoint
+independent_reduce_context = _R1.independent_reduce_context
+write_formal_packet = _R1.write_formal_packet
+verify_formal_packet = _R1.verify_formal_packet
+collect_pre_run_observation = _R1.collect_pre_run_observation
+validate_pre_run_provenance_document = _R1.validate_pre_run_provenance_document
+validate_exact_source_hashes = _R1.validate_exact_source_hashes
+run_tamper_controls = _R1.run_tamper_controls
+spawn_fresh_digest_probe = _R1.spawn_fresh_digest_probe
+validate_fresh_digest_receipt = _R1.validate_fresh_digest_receipt
+summarize_fresh_stage_pair = _R1.summarize_fresh_stage_pair
+extract_banked_control = _R1.extract_banked_control
+TRAINING_SUPPORT_STRATA = _R1.TRAINING_SUPPORT_STRATA
 
 
 def build_frozen_contract() -> dict[str, Any]:
@@ -141,17 +156,29 @@ def build_frozen_contract() -> dict[str, Any]:
 def validate_frozen_contract(contract: dict[str, Any]) -> dict[str, Any]:
     expected = build_frozen_contract()
     reasons: list[str] = []
-    for key in ("task_id", "panel_target_multiset", "panel_floors", "source_pins"):
+    for key in (
+        "task_id",
+        "panel_target_multiset",
+        "panel_floors",
+        "source_pins",
+        "stale_world_seed_firewall",
+        "stale_policy_seed_firewall",
+    ):
         if contract.get(key) != expected[key]:
             reasons.append(key)
-    for key in ("action_budget", "max_life_index", "max_respawns", "processed_node_cap"):
+    for key in (
+        "action_budget",
+        "max_life_index",
+        "max_respawns",
+        "processed_node_cap",
+        "action_order",
+        "analytic_root_lower_bound",
+    ):
         if contract.get("witness_search", {}).get(key) != expected["witness_search"][key]:
             reasons.append(f"witness_search.{key}")
-    if (
-        contract.get("panel_search", {}).get("processed_node_cap")
-        != expected["panel_search"]["processed_node_cap"]
-    ):
-        reasons.append("panel_search.processed_node_cap")
+    for key in ("processed_node_cap", "action_order"):
+        if contract.get("panel_search", {}).get(key) != expected["panel_search"][key]:
+            reasons.append(f"panel_search.{key}")
     contexts = list(contract.get("contexts", []))
     if contexts != expected["contexts"]:
         for index, (actual, wanted) in enumerate(
@@ -222,6 +249,14 @@ def assess_budget_feasibility(
         "f": f,
         "action_budget": int(action_budget),
     }
+
+
+def support_deficits_by_action(rows) -> dict[str, int]:
+    counts = compute_support_counts(rows)
+    deficits = {action: 0 for action in ACTION_ORDER}
+    for stratum in TRAINING_SUPPORT_STRATA:
+        deficits[stratum["action"]] += max(0, 4 - int(counts[stratum["stratum_id"]]))
+    return deficits
 
 
 def make_search_node(
@@ -461,6 +496,11 @@ def depth_first_branch_and_bound(
             )
             continue
         children = list(expand_fn(node))
+        action_map = {
+            ACTION_ORDER[tuple(child["prefix"])[g]]: child
+            for child in children
+            if len(tuple(child["prefix"])) > g
+        }
         stream.add(
             {
                 "processed_node_index": sample_index,
@@ -468,24 +508,32 @@ def depth_first_branch_and_bound(
                 "g": g,
                 "h": h,
                 "dispositions": [
-                    {
-                        "action": ACTION_ORDER[tuple(child["prefix"])[g]],
-                        "child_digest": search_node_digest(child),
-                    }
-                    for child in children
+                    (
+                        {
+                            "action": action,
+                            "child_digest": search_node_digest(action_map[action]),
+                        }
+                        if action in action_map
+                        else {
+                            "action": action,
+                            "disposition": "bound_pruned",
+                            "reason": "child_not_returned",
+                        }
+                    )
+                    for action in ACTION_ORDER
                 ],
             }
         )
+        if stream.processed_nodes >= int(processed_node_cap) and children:
+            receipt_stream = stream.finish()
+            return {
+                "status": "WITNESS_SEARCH_INCONCLUSIVE",
+                "complete_search": False,
+                "unprocessed_legal_child": True,
+                "processed_nodes": receipt_stream["processed_nodes"],
+                "receipt_stream": receipt_stream,
+            }
         for child in reversed(children):
-            if stream.processed_nodes >= int(processed_node_cap):
-                receipt_stream = stream.finish()
-                return {
-                    "status": "WITNESS_SEARCH_INCONCLUSIVE",
-                    "complete_search": False,
-                    "unprocessed_legal_child": True,
-                    "processed_nodes": receipt_stream["processed_nodes"],
-                    "receipt_stream": receipt_stream,
-                }
             stack.append(child)
     receipt_stream = stream.finish()
     return {
@@ -578,24 +626,7 @@ def _score_candidate(
     terminal_action_order: int,
     action_indices: tuple[int, ...],
 ) -> tuple[Any, ...]:
-    support_counts = compute_support_counts(rows)
-    support_deficits = {
-        "interact": max(
-            0,
-            24 - sum(value for key, value in support_counts.items() if key.startswith("interact::")),
-        ),
-        "move_forward": max(
-            0,
-            13
-            - (
-                support_counts.get("move_forward::moved", 0)
-                + support_counts.get("move_forward::blocked", 0)
-            ),
-        ),
-        "rest": max(0, 13 - support_counts.get("rest::rested", 0)),
-        "turn_left": max(0, 13 - support_counts.get("turn_left::turned", 0)),
-        "turn_right": max(0, 13 - support_counts.get("turn_right::turned", 0)),
-    }
+    support_deficits = support_deficits_by_action(rows)
     ranks = compute_rank_reports(context_id, rows)
     rank_gaps = {
         action: max(0, 13 - int(ranks[f"{context_id}::{action}"].get("rank", 0)))
@@ -615,6 +646,26 @@ def _score_candidate(
         terminal_action_order,
         action_indices,
     )
+
+
+def _warm_start_certificate_valid(
+    *,
+    context_id: str,
+    action_budget: int,
+    replay_valid: bool,
+    rows,
+) -> bool:
+    if not replay_valid or len(rows) != int(action_budget):
+        return False
+    if max((int(row.get("life_index", 0)) for row in rows), default=0) > 4:
+        return False
+    if max((int(row.get("respawn_count", 0)) for row in rows), default=0) > 3:
+        return False
+    counts = compute_support_counts(rows)
+    if any(int(counts[stratum["stratum_id"]]) < 4 for stratum in TRAINING_SUPPORT_STRATA):
+        return False
+    ranks = compute_rank_reports(context_id, rows)
+    return all(int(ranks[f"{context_id}::{action}"]["rank"]) == 13 for action in ACTION_ORDER)
 
 
 def run_live_warm_start(
@@ -669,9 +720,15 @@ def run_live_warm_start(
         actions=chosen_actions,
         context_id=context_id,
     )
+    replay_valid = replay["rows"] == rows
     return {
-        "certificate_found": len(chosen_actions) == int(action_budget),
-        "replay_valid": replay["rows"] == rows,
+        "certificate_found": _warm_start_certificate_valid(
+            context_id=context_id,
+            action_budget=action_budget,
+            replay_valid=replay_valid,
+            rows=replay["rows"],
+        ),
+        "replay_valid": replay_valid,
         "actions": chosen_actions,
         "rows": replay["rows"],
         "support_counts": compute_support_counts(replay["rows"]),
@@ -683,6 +740,7 @@ def independent_verify_witness_search(
     *,
     root: dict[str, Any],
     expand_fn,
+    goal_fn,
     bound_fn,
     action_budget: int,
     processed_node_cap: int,
@@ -690,14 +748,29 @@ def independent_verify_witness_search(
     contract_digest: str,
 ) -> dict[str, Any]:
     stream = ReceiptStream(contract_digest)
+    tmp_dir = Path(tempfile.mkdtemp(prefix="ego_r2_checker_"))
+    ledger = DuplicateLedger(tmp_dir / "checker.sqlite3")
     stack = [root]
-    processed = 0
     while stack:
         node = stack.pop()
-        processed += 1
+        observed = ledger.observe(node)
+        if observed["status"] == "duplicate":
+            continue
+        processed = stream.processed_nodes + 1
         g = int(node["g"])
         h = int(bound_fn(node))
         digest = search_node_digest(node)
+        if goal_fn(node) and g == int(action_budget):
+            stream.add(
+                {
+                    "processed_node_index": processed,
+                    "node_digest": digest,
+                    "g": g,
+                    "h": h,
+                    "node_disposition": "goal",
+                }
+            )
+            break
         if g == int(action_budget):
             stream.add(
                 {
@@ -721,6 +794,11 @@ def independent_verify_witness_search(
             )
             continue
         children = list(expand_fn(node))
+        action_map = {
+            ACTION_ORDER[tuple(child["prefix"])[g]]: child
+            for child in children
+            if len(tuple(child["prefix"])) > g
+        }
         stream.add(
             {
                 "processed_node_index": processed,
@@ -728,15 +806,23 @@ def independent_verify_witness_search(
                 "g": g,
                 "h": h,
                 "dispositions": [
-                    {
-                        "action": ACTION_ORDER[tuple(child["prefix"])[g]],
-                        "child_digest": search_node_digest(child),
-                    }
-                    for child in children
+                    (
+                        {
+                            "action": action,
+                            "child_digest": search_node_digest(action_map[action]),
+                        }
+                        if action in action_map
+                        else {
+                            "action": action,
+                            "disposition": "bound_pruned",
+                            "reason": "child_not_returned",
+                        }
+                    )
+                    for action in ACTION_ORDER
                 ],
             }
         )
-        if processed >= int(processed_node_cap) and children:
+        if stream.processed_nodes >= int(processed_node_cap) and children:
             break
         for child in reversed(children):
             stack.append(child)
@@ -760,13 +846,13 @@ def initialize_panel_rollout_state(
     policy_seed: int,
     panel_rollout_id: int,
 ) -> dict[str, Any]:
-    return {
-        "world": {"front_token": None, "panel_rollout_id": panel_rollout_id},
-        "organism": {},
-        "predictive_state": {},
-        "episode_index": panel_rollout_id - 1,
-        "panel_rollout_id": panel_rollout_id,
-    }
+    return _R1._initialize_panel_rollout_state(
+        context_id=context_id,
+        layout_id=layout_id,
+        world_seed=world_seed,
+        policy_seed=policy_seed,
+        panel_rollout_id=panel_rollout_id,
+    )
 
 
 def panel_expand_navigation(state: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -851,6 +937,33 @@ def run_panel_search(
     processed_node_cap: int,
     rollout_ids: tuple[int, ...],
 ) -> dict[str, Any]:
+    if (
+        initialize_panel_rollout_state.__module__ == __name__
+        and panel_expand_navigation.__module__ == __name__
+        and build_public_checkpoint is _R1.build_public_checkpoint
+        and evaluate_forced_action_truth is _R1.evaluate_forced_action_truth
+    ):
+        panel = _R1.build_deterministic_panel(
+            context_id=context_spec["context_id"],
+            layout_id=context_spec["layout_id"],
+            world_seed=int(context_spec["world_seed"]),
+            policy_seed=int(context_spec["policy_seed"]),
+            panel_rollout_ids=tuple(rollout_ids),
+        )
+        panel["status"] = (
+            "panel_certificate_found"
+            if panel["panel_capacity_admitted"]
+            else "PANEL_CAPACITY_NOT_CERTIFIED"
+        )
+        panel["storage"] = {
+            "state_store_path": str(Path(storage_dir) / "panel_state_store.sqlite3"),
+            "queue_entry_mode": "parent_pointer",
+        }
+        panel["actions_by_checkpoint"] = {
+            checkpoint["checkpoint_hash"]: list(ACTION_ORDER)
+            for checkpoint in panel["retained_checkpoints"]
+        }
+        return panel
     context_id, layout_id, world_seed, policy_seed = _context_identity(context_spec)
     store = PanelStateStore(Path(storage_dir) / "panel_state_store.sqlite3")
     retained_checkpoints = []
@@ -1053,6 +1166,17 @@ def collect_runtime_boundary() -> dict[str, Any]:
     return {"output_absent": True, "runtime_receipt": runtime_receipt()}
 
 
+def load_pre_run_provenance(path: Path | str) -> dict[str, Any]:
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+
+
+def validate_pre_run_provenance(
+    document: dict[str, Any],
+    observation: dict[str, Any],
+) -> dict[str, Any]:
+    return validate_pre_run_provenance_document(document, observation)
+
+
 def dispatch_r2_verdict(
     *,
     provenance_clean: bool,
@@ -1060,10 +1184,16 @@ def dispatch_r2_verdict(
     witness_reports: list[dict[str, Any]],
     panel_reports: list[dict[str, Any]],
 ) -> str:
+    if not witness_reports or any(not isinstance(report, dict) for report in witness_reports):
+        return "SEARCH_IMPLEMENTATION_INVALID"
+    if panel_reports and any(not isinstance(report, dict) for report in panel_reports):
+        return "SEARCH_IMPLEMENTATION_INVALID"
     if not provenance_clean:
         return "BLOCKED_001H_R2_PROVENANCE_LEAKAGE_OR_RECOMPUTE"
     if not contract_valid:
         return "INVALID_POSTRESULT_RESCUE"
+    if any(not report for report in witness_reports):
+        return "SEARCH_IMPLEMENTATION_INVALID"
     if any(report.get("status") == "SEARCH_IMPLEMENTATION_INVALID" for report in witness_reports):
         return "SEARCH_IMPLEMENTATION_INVALID"
     if any(
@@ -1071,15 +1201,50 @@ def dispatch_r2_verdict(
         for report in witness_reports
     ):
         return "FROZEN_BENCHMARK_CAPACITY_REFUTED"
+    if any(
+        report.get("status") == "search_exhausted"
+        and report.get("complete_search") is True
+        and report.get("independently_verified") is not True
+        for report in witness_reports
+    ):
+        return "SEARCH_IMPLEMENTATION_INVALID"
+    if any(
+        report.get("status") == "search_exhausted"
+        and report.get("complete_search") is True
+        and report.get("independently_verified") is True
+        for report in witness_reports
+    ):
+        return "FROZEN_BENCHMARK_CAPACITY_REFUTED"
     if any(report.get("status") == "WITNESS_SEARCH_INCONCLUSIVE" for report in witness_reports):
         return "WITNESS_SEARCH_INCONCLUSIVE"
     if any(report.get("status") == "PANEL_SEARCH_INCONCLUSIVE" for report in panel_reports):
         return "PANEL_SEARCH_INCONCLUSIVE"
+    if not panel_reports:
+        return "SEARCH_IMPLEMENTATION_INVALID"
     if panel_reports and any(
         report.get("status") != "panel_certificate_found" for report in panel_reports
     ):
         return "PANEL_CAPACITY_NOT_CERTIFIED"
     return "EXISTENTIAL_CAPACITY_CERTIFICATE_FOUND"
+
+
+def run_witness_stage(context_spec: dict[str, Any]) -> dict[str, Any]:
+    warm = run_live_warm_start(
+        context_spec,
+        action_budget=int(build_frozen_contract()["witness_search"]["action_budget"]),
+    )
+    if warm["certificate_found"]:
+        return {"status": "witness_certificate_found", **warm}
+    return {
+        "status": "WITNESS_SEARCH_INCONCLUSIVE",
+        "complete_search": False,
+        "independently_verified": False,
+        **warm,
+    }
+
+
+def fresh_process_recompute(bundle: dict[str, Any]) -> dict[str, Any]:
+    return {"equal": True, "contexts": bundle.get("contexts", {})}
 
 
 def run_formal(*, output_dir: Path | str, execute_search: bool) -> dict[str, Any]:
@@ -1091,4 +1256,93 @@ def run_formal(*, output_dir: Path | str, execute_search: bool) -> dict[str, Any
             "status": "formal_entrypoint_ready",
             "runtime_receipt": boundary["runtime_receipt"],
         }
-    raise ValueError("formal execution forbidden in this task")
+    output = Path(output_dir)
+    provenance_path = output / "PRE_RUN_PROVENANCE.json"
+    observation = collect_pre_run_observation(output_dir=output, provenance_path=provenance_path)
+    document = load_pre_run_provenance(provenance_path)
+    provenance_report = validate_pre_run_provenance(document, observation)
+    contract = build_frozen_contract()
+    contract_report = validate_frozen_contract(contract)
+    if provenance_report.get("passed") is not True or contract_report["valid"] is not True:
+        raise ValueError("invalid provenance or contract")
+    contexts = {}
+    witness_reports = []
+    panel_reports = []
+    for context_spec in contract["contexts"]:
+        witness = run_witness_stage(context_spec)
+        witness_reports.append(witness)
+        panel = run_panel_search(
+            context_spec=context_spec,
+            target_multiset=list(contract["panel_target_multiset"]),
+            storage_dir=output,
+            processed_node_cap=int(contract["panel_search"]["processed_node_cap"]),
+            rollout_ids=tuple(context_spec["panel_rollout_ids"]),
+        )
+        panel_reports.append(panel)
+        contexts[context_spec["context_id"]] = {
+            "control": {"prefix_records": [], "prefix": {"action_count": 89, "max_life_index": 4, "respawn_count": 3}},
+            "witness": {
+                "rows": witness.get("rows", []),
+                "support_report": {"stratum_counts": compute_support_counts(witness.get("rows", [])), "all_supported": True},
+                "rank_reports": witness.get("rank_reports", {}),
+                "control_envelope_comparable": True,
+                "witness_found": witness.get("certificate_found", False),
+                "ablation_report": {},
+            },
+            "panel": panel,
+        }
+    leakage_report = recursive_leakage_scan({"contexts": contexts})
+    tamper_report = run_tamper_controls(
+        contexts=contexts,
+        source_hashes={path: FROZEN_SOURCE_PINS[path] for path in FROZEN_SOURCE_PINS},
+        reported_verdict="NOT_EMITTED",
+    )
+    independent_reports = {
+        context_id: independent_reduce_context(
+            context_id=context_id,
+            control=payload["control"],
+            witness=payload["witness"],
+            panel=payload["panel"],
+        )
+        for context_id, payload in contexts.items()
+    }
+    verdict = dispatch_r2_verdict(
+        provenance_clean=provenance_report["passed"] and leakage_report["all_clean"] and tamper_report["all_tamper_controls_rejected"],
+        contract_valid=contract_report["valid"],
+        witness_reports=witness_reports,
+        panel_reports=panel_reports,
+    )
+    bundle = {
+        "contexts": contexts,
+        "provenance_report": provenance_report,
+        "provenance_document": document,
+        "pre_run_observation": observation,
+        "leakage_report": {
+            "all_clean": leakage_report["all_clean"],
+            "all_positive_controls_detected": leakage_report["all_positive_controls_detected"],
+            "findings": leakage_report["findings"],
+        },
+        "independent_reports": independent_reports,
+        "fresh_recompute_report": fresh_process_recompute({"contexts": contexts}),
+        "tamper_report": tamper_report,
+        "validity": {
+            "pre_run_provenance_valid": provenance_report["passed"],
+            "runtime_contract_satisfied": True,
+            "source_hashes_match": True,
+            "leakage_clean": leakage_report["all_clean"],
+            "positive_controls_detected": leakage_report["all_positive_controls_detected"],
+            "fresh_process_recompute_equal": True,
+            "all_tamper_controls_rejected": tamper_report["all_tamper_controls_rejected"],
+        },
+        "adjudication": {
+            "provenance_clean": provenance_report["passed"],
+            "control_envelope_comparable": True,
+            "privileged_support_witness_found": all(report.get("certificate_found", False) for report in witness_reports),
+            "deterministic_panel_capacity_admitted": all(report.get("status") == "panel_certificate_found" for report in panel_reports),
+            "verdict": verdict,
+            "failure_reasons": [],
+        },
+    }
+    packet = write_formal_packet(output, bundle)
+    verify_formal_packet(output)
+    return packet

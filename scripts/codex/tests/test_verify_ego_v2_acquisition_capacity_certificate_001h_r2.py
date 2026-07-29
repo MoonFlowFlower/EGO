@@ -39,8 +39,13 @@ def test_frozen_contract_matches_authority_and_root_lower_bound_is_76():
         "p2_vertical_v1:world=54:policy=711",
     ]
     assert contract["witness_search"]["action_budget"] == 89
+    assert contract["witness_search"]["action_order"] == list(module.ACTION_ORDER)
+    assert contract["witness_search"]["analytic_root_lower_bound"] == 76
     assert contract["witness_search"]["processed_node_cap"] == 2_000_000
     assert contract["panel_search"]["processed_node_cap"] == 250_000
+    assert contract["panel_search"]["action_order"] == list(module.PANEL_NAV_ACTIONS)
+    assert contract["stale_world_seed_firewall"] == [60, 61, 62, 63, 64, 65]
+    assert contract["stale_policy_seed_firewall"] == [721, 722]
     assert contract["panel_target_multiset"] == [
         "v0",
         "v1",
@@ -65,6 +70,12 @@ def test_contract_tamper_routes_to_invalid_postresult_rescue_before_adjudication
     assert report["valid"] is False
     assert report["verdict"] == "INVALID_POSTRESULT_RESCUE"
     assert any("contexts[0].world_seed" in reason for reason in report["failure_reasons"])
+
+    contract = module.build_frozen_contract()
+    contract["panel_search"]["action_order"] = ["move_forward"]
+    report = module.validate_frozen_contract(contract)
+    assert report["verdict"] == "INVALID_POSTRESULT_RESCUE"
+    assert "panel_search.action_order" in report["failure_reasons"]
 
 
 @pytest.mark.parametrize(
@@ -357,6 +368,7 @@ def test_independent_checker_does_not_call_primary_dfs_and_requires_matching_edg
     verified = module.independent_verify_witness_search(
         root=root,
         expand_fn=lambda node: [child] if tuple(node["prefix"]) == () else [],
+        goal_fn=lambda _node: False,
         bound_fn=lambda node: 0,
         action_budget=89,
         processed_node_cap=10,
@@ -369,6 +381,7 @@ def test_independent_checker_does_not_call_primary_dfs_and_requires_matching_edg
     mismatch = module.independent_verify_witness_search(
         root=root,
         expand_fn=lambda node: [],
+        goal_fn=lambda _node: False,
         bound_fn=lambda node: 0,
         action_budget=89,
         processed_node_cap=10,
@@ -446,6 +459,40 @@ def test_panel_search_uses_disk_backed_state_store_dedupe_and_live_five_action_t
     assert all(sorted(actions) == sorted(module.ACTION_ORDER) for actions in report["actions_by_checkpoint"].values())
 
 
+def test_default_panel_search_delegates_to_real_r1_panel_builder(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
+    module = _load_module()
+    calls = {"panel": 0}
+
+    def fake_panel(**kwargs):
+        calls["panel"] += 1
+        return {
+            "panel_rollout_ids": list(kwargs["panel_rollout_ids"]),
+            "target_order": list(module.PANEL_TARGET_MULTISET),
+            "rollouts": [{"panel_rollout_id": rollout_id, "complete": True} for rollout_id in kwargs["panel_rollout_ids"]],
+            "raw_checkpoints": [],
+            "retained_checkpoints": [],
+            "rows": [],
+            "support_report": {"before_dedupe": {}, "after_dedupe": {}, "required_floors": module.PANEL_FLOORS, "passed": False},
+            "cell_support_report": {"cell_counts": {}, "required_floor_by_cell": {}, "passed": False},
+            "rank_reports": {},
+            "construction_complete": True,
+            "panel_capacity_admitted": False,
+            "panel_hash": "a" * 64,
+        }
+
+    monkeypatch.setattr(module._R1, "build_deterministic_panel", fake_panel)
+    report = module.run_panel_search(
+        context_spec=module.build_frozen_contract()["contexts"][0],
+        target_multiset=list(module.PANEL_TARGET_MULTISET),
+        storage_dir=tmp_path,
+        processed_node_cap=250_000,
+        rollout_ids=tuple(range(9, 17)),
+    )
+    assert calls["panel"] == 1
+    assert report["status"] == "PANEL_CAPACITY_NOT_CERTIFIED"
+    assert report["storage"]["queue_entry_mode"] == "parent_pointer"
+
+
 def test_recursive_leakage_reuses_r1_scanner_and_formal_boundary_is_fail_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     module = _load_module()
     clean = {"rows": [{"front_token": "empty", "quotient_features": [0.0] * 13}]}
@@ -475,3 +522,34 @@ def test_recursive_leakage_reuses_r1_scanner_and_formal_boundary_is_fail_closed(
         panel_reports=[],
     )
     assert verdict == "WITNESS_SEARCH_INCONCLUSIVE"
+
+    fail_closed = module.dispatch_r2_verdict(
+        provenance_clean=True,
+        contract_valid=True,
+        witness_reports=[{"status": "search_exhausted", "complete_search": True, "independently_verified": False}],
+        panel_reports=[],
+    )
+    assert fail_closed == "SEARCH_IMPLEMENTATION_INVALID"
+
+
+def test_formal_orchestrator_calls_provenance_witness_panel_packet_and_verifier(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
+    module = _load_module()
+    calls = {"observe": 0, "load": 0, "validate": 0, "witness": 0, "panel": 0, "write": 0, "verify": 0}
+
+    monkeypatch.setattr(module, "collect_runtime_boundary", lambda: {"output_absent": True, "runtime_receipt": module.runtime_receipt()})
+    monkeypatch.setattr(module, "collect_pre_run_observation", lambda **kwargs: calls.__setitem__("observe", calls["observe"] + 1) or {"head_parent": "impl", "head": "prov", "repository_root": "repo", "branch": "branch", "head_changed_paths": ["PRE_RUN_PROVENANCE.json"], "worktree_clean": True, "index_clean": True, "provenance_tracked_at_head": True, "runtime_receipt": module.runtime_receipt(), "engine_code_path_hash": "c" * 64, "source_hashes": {}, "input_hashes": {}, "dependency_hashes": {}, "output_dir": "tmp", "output_absent_or_empty": True})
+    monkeypatch.setattr(module, "load_pre_run_provenance", lambda path: calls.__setitem__("load", calls["load"] + 1) or {"schema_version": "ego.v2.001h_r1.pre_run_provenance.v1"})
+    monkeypatch.setattr(module, "validate_pre_run_provenance", lambda document, observation: calls.__setitem__("validate", calls["validate"] + 1) or {"passed": True, "provenance_commit": "prov"})
+    monkeypatch.setattr(module, "run_witness_stage", lambda context_spec: calls.__setitem__("witness", calls["witness"] + 1) or {"status": "witness_certificate_found", "certificate_found": True, "rows": [], "rank_reports": {}, "complete_search": False, "independently_verified": False})
+    monkeypatch.setattr(module, "run_panel_search", lambda **kwargs: calls.__setitem__("panel", calls["panel"] + 1) or {"status": "PANEL_CAPACITY_NOT_CERTIFIED", "panel_rollout_ids": list(kwargs["rollout_ids"]), "target_order": list(module.PANEL_TARGET_MULTISET), "rollouts": [], "raw_checkpoints": [], "retained_checkpoints": [], "rows": [], "support_report": {"before_dedupe": {}, "after_dedupe": {}, "required_floors": module.PANEL_FLOORS, "passed": False}, "cell_support_report": {"cell_counts": {}, "required_floor_by_cell": {}, "passed": False}, "rank_reports": {}, "construction_complete": False, "panel_capacity_admitted": False, "panel_hash": "a" * 64})
+    monkeypatch.setattr(module, "recursive_leakage_scan", lambda payload: {"all_clean": True, "all_positive_controls_detected": True, "findings": []})
+    monkeypatch.setattr(module, "run_tamper_controls", lambda **kwargs: {"all_tamper_controls_rejected": True, "controls": {}})
+    monkeypatch.setattr(module, "independent_reduce_context", lambda **kwargs: {"reported_values_match": True, "producer_receipts_valid": True, "hashes_valid": True, "check_map": {"control_envelope_comparable": True, "privileged_support_witness_found": False, "deterministic_panel_capacity_admitted": False}})
+    monkeypatch.setattr(module, "fresh_process_recompute", lambda bundle: {"equal": True, "contexts": {}})
+    monkeypatch.setattr(module, "write_formal_packet", lambda output, bundle: calls.__setitem__("write", calls["write"] + 1) or {"verdict": bundle["adjudication"]["verdict"]})
+    monkeypatch.setattr(module, "verify_formal_packet", lambda output: calls.__setitem__("verify", calls["verify"] + 1) or {"verified": True})
+
+    result = module.run_formal(output_dir=tmp_path, execute_search=True)
+
+    assert result["verdict"] == "PANEL_CAPACITY_NOT_CERTIFIED"
+    assert calls == {"observe": 1, "load": 1, "validate": 1, "witness": 2, "panel": 2, "write": 1, "verify": 1}
