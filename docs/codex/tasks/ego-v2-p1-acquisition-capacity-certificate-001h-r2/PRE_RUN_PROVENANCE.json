@@ -1,0 +1,87 @@
+{
+  "action_orders": {
+    "panel_navigation": [
+      "turn_left",
+      "turn_right",
+      "move_forward"
+    ],
+    "witness": [
+      "turn_left",
+      "turn_right",
+      "move_forward",
+      "interact",
+      "rest"
+    ]
+  },
+  "authority_pins": {
+    "artifacts/EGO-V2-P1-ACQUISITION-BENCHMARK-ADMISSION-001H-R1/panel_manifest.json": "347eb90b55d0fabbdfe6ee5e3db0da1321fd584e6ffa3aa49d9fb03a117f1522",
+    "artifacts/EGO-V2-P1-ACQUISITION-BENCHMARK-ADMISSION-001H-R1/recompute_report.json": "62ab3413a379f45b2b8b055fba277aa791be0bbe31fb985cc190ac44469d64fd",
+    "artifacts/EGO-V2-P1-ACQUISITION-BENCHMARK-ADMISSION-001H-R1/result.json": "e6c7ef8aec16363e7888cf4f07de809b2e72a0c8d672806b2c206a985d77edcb",
+    "artifacts/EGO-V2-P1-ACQUISITION-BENCHMARK-ADMISSION-001H-R1/support_report.json": "969d92c1e4126ec6573b3586b0e93dde7935879888b34e07f9a115192cc2bf8a",
+    "docs/codex/tasks/EGO-V2-P1-ACQUISITION-BENCHMARK-ADMISSION-001H-R1.md": "915610ed949db8f670c7bba83f9fc0786b1130652185a3ead05c04e9c37295bb",
+    "docs/codex/tasks/EGO-V2-P1-BAYESIAN-ACTIVE-IDENTIFICATION-001H.md": "2f34b8c6e378f88a8cf66db957ec58c8e9adb44a3f8f712aea04ece797d2ddfc",
+    "docs/codex/tasks/ego-v2-p1-acquisition-benchmark-admission-001h-r1/COLLISION_RECORD.md": "76e0cb8c9687d20fe8df131b1b52bf359b62789736c9f6e42937f749fd89a73e",
+    "labs/ego_life_playground_v0/engine.py": "867ced15abc356daa0d5cae3f4c1cb1412a15766239ee82e9a8d280e5b214385",
+    "labs/ego_life_playground_v0/microworld.py": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923",
+    "labs/ego_life_playground_v0/predictive_control.py": "1763ee3e2b755529559311fb99f247b8bc1034d0cc89708dafdd4b15e8529aae",
+    "labs/ego_life_playground_v0/store.py": "3e399471c89ec5046ae3bffe1de3419e61f8b1e0f8d3bb55d216ef6578616b84",
+    "requirements-ego-v2.txt": "a23aaf94250a9f53031a592980142245a848e2372b6c6c3093e8260b129265b8",
+    "scripts/codex/verify_ego_v2_acquisition_benchmark_admission_001h_r1.py": "5495d1a69977bdf195bcc239d8e5424c4e89ea498810d797814978a342f0c01a"
+  },
+  "caps": {
+    "panel_processed_node_cap_per_rollout": 250000,
+    "witness_processed_node_cap": 2000000
+  },
+  "dependency_hashes": {
+    "requirements-ego-v2.txt": "a23aaf94250a9f53031a592980142245a848e2372b6c6c3093e8260b129265b8"
+  },
+  "engine_code_path_hash": "0e8285d88a5feacc918eec5e64180bed8ee9aa2da737459e09fa0e6e3a0a75a2",
+  "firewalls": {
+    "stale_policy_seeds": [
+      721,
+      722
+    ],
+    "stale_world_seeds": [
+      60,
+      61,
+      62,
+      63,
+      64,
+      65
+    ]
+  },
+  "frozen_contract_digest": "ad5e346ebdd0964d46de4b5107c37531bf5126da3932295532dcc62c68bdfe8d",
+  "implementation_commit": "89786748dd277247d59ce4d5254e4f0292147714",
+  "input_hashes": {
+    "artifacts/EGO-V2-P1-ACQUISITION-BENCHMARK-ADMISSION-001H-R1/panel_manifest.json": "347eb90b55d0fabbdfe6ee5e3db0da1321fd584e6ffa3aa49d9fb03a117f1522",
+    "artifacts/EGO-V2-P1-ACQUISITION-BENCHMARK-ADMISSION-001H-R1/recompute_report.json": "62ab3413a379f45b2b8b055fba277aa791be0bbe31fb985cc190ac44469d64fd",
+    "artifacts/EGO-V2-P1-ACQUISITION-BENCHMARK-ADMISSION-001H-R1/result.json": "e6c7ef8aec16363e7888cf4f07de809b2e72a0c8d672806b2c206a985d77edcb",
+    "artifacts/EGO-V2-P1-ACQUISITION-BENCHMARK-ADMISSION-001H-R1/support_report.json": "969d92c1e4126ec6573b3586b0e93dde7935879888b34e07f9a115192cc2bf8a",
+    "artifacts/EGO-V2-P1-PREDICTIVE-REPLAY-KERNEL-REPAIR-001F/smoke_p0_cross_v1.sqlite3": "d429cf03646a666d8e2727c946d2d7fd91d65d680139f8c5d57a73e02a960a21",
+    "artifacts/EGO-V2-P1-PREDICTIVE-REPLAY-KERNEL-REPAIR-001F/smoke_p2_vertical_v1.sqlite3": "b8cbf83530a7d20494bbc62629e14dd300f2b5226cf5700ef753977704e1f4c4"
+  },
+  "normative_interpreter_spec_commit": "c0f9d24c0e00d03b27e93fe35d73be1c021bb8b2",
+  "output_dir": "artifacts/EGO-V2-P1-ACQUISITION-CAPACITY-CERTIFICATE-001H-R2",
+  "output_precondition": "absent_or_empty",
+  "runtime_receipt": {
+    "contract_satisfied": true,
+    "float_dtype": "<f8",
+    "numpy_matrix_rank_tolerance": "numpy.linalg.matrix_rank_default",
+    "numpy_version": "2.2.6",
+    "python_version": "3.12.13"
+  },
+  "schema_version": "ego.v2.001h_r2.pre_run_provenance.v1",
+  "source_hashes": {
+    "docs/codex/tasks/EGO-V2-P1-ACQUISITION-CAPACITY-CERTIFICATE-001H-R2.md": "e61312aa5e74036b1cfaee71db00612baca4fa611a33b13e0ab8e37cca222620",
+    "docs/codex/tasks/ego-v2-p1-acquisition-capacity-certificate-001h-r2/COLLISION_RECORD.md": "cbc9a04c8f0500f559de8d4b86eb730597d4294e4e7552595e3309c827cc0a72",
+    "docs/codex/tasks/ego-v2-p1-acquisition-capacity-certificate-001h-r2/IMPLEMENTATION_PLAN.md": "f44399b3e28bd754a23a9849b2c8a2124e503be1118905e5419e8cb0d2492cb9",
+    "labs/ego_life_playground_v0/engine.py": "867ced15abc356daa0d5cae3f4c1cb1412a15766239ee82e9a8d280e5b214385",
+    "labs/ego_life_playground_v0/microworld.py": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923",
+    "labs/ego_life_playground_v0/predictive_control.py": "1763ee3e2b755529559311fb99f247b8bc1034d0cc89708dafdd4b15e8529aae",
+    "labs/ego_life_playground_v0/store.py": "3e399471c89ec5046ae3bffe1de3419e61f8b1e0f8d3bb55d216ef6578616b84",
+    "scripts/codex/tests/test_verify_ego_v2_acquisition_capacity_certificate_001h_r2.py": "6545226a417c7a7ee9258f455198a80663d1e2c12f0e2165ff674fac32f3a28b",
+    "scripts/codex/verify_ego_v2_acquisition_benchmark_admission_001h_r1.py": "5495d1a69977bdf195bcc239d8e5424c4e89ea498810d797814978a342f0c01a",
+    "scripts/codex/verify_ego_v2_acquisition_capacity_certificate_001h_r2.py": "6d1142d18e87c76b494b4e728573dd36801eb8a560028b3325920e302145d14b"
+  },
+  "task_id": "EGO-V2-P1-ACQUISITION-CAPACITY-CERTIFICATE-001H-R2"
+}
