@@ -54,6 +54,7 @@ FROZEN_CONTEXTS = (
         "layout_id": "p0_cross_v1",
         "world_seed": 52,
         "policy_seed": 711,
+        "control_db_relpath": "artifacts/EGO-V2-P1-PREDICTIVE-REPLAY-KERNEL-REPAIR-001F/smoke_p0_cross_v1.sqlite3",
         "panel_rollout_ids": [9, 10, 11, 12, 13, 14, 15, 16],
     },
     {
@@ -61,6 +62,7 @@ FROZEN_CONTEXTS = (
         "layout_id": "p2_vertical_v1",
         "world_seed": 54,
         "policy_seed": 711,
+        "control_db_relpath": "artifacts/EGO-V2-P1-PREDICTIVE-REPLAY-KERNEL-REPAIR-001F/smoke_p2_vertical_v1.sqlite3",
         "panel_rollout_ids": [9, 10, 11, 12, 13, 14, 15, 16],
     },
 )
@@ -82,6 +84,27 @@ FROZEN_SOURCE_PINS = {
 STALE_WORLD_SEEDS = frozenset({60, 61, 62, 63, 64, 65})
 STALE_POLICY_SEEDS = frozenset({721, 722})
 BASE64_PATTERN = re.compile(r"^[A-Za-z0-9+/]+={0,2}$")
+R2_REQUIRED_PROVENANCE_SOURCE_PATHS = (
+    "docs/codex/tasks/EGO-V2-P1-ACQUISITION-CAPACITY-CERTIFICATE-001H-R2.md",
+    "docs/codex/tasks/ego-v2-p1-acquisition-capacity-certificate-001h-r2/COLLISION_RECORD.md",
+    "docs/codex/tasks/ego-v2-p1-acquisition-capacity-certificate-001h-r2/IMPLEMENTATION_PLAN.md",
+    "scripts/codex/verify_ego_v2_acquisition_capacity_certificate_001h_r2.py",
+    "scripts/codex/tests/test_verify_ego_v2_acquisition_capacity_certificate_001h_r2.py",
+    "scripts/codex/verify_ego_v2_acquisition_benchmark_admission_001h_r1.py",
+    "labs/ego_life_playground_v0/engine.py",
+    "labs/ego_life_playground_v0/microworld.py",
+    "labs/ego_life_playground_v0/predictive_control.py",
+    "labs/ego_life_playground_v0/store.py",
+)
+R2_REQUIRED_PROVENANCE_INPUT_PATHS = (
+    "artifacts/EGO-V2-P1-ACQUISITION-BENCHMARK-ADMISSION-001H-R1/result.json",
+    "artifacts/EGO-V2-P1-ACQUISITION-BENCHMARK-ADMISSION-001H-R1/support_report.json",
+    "artifacts/EGO-V2-P1-ACQUISITION-BENCHMARK-ADMISSION-001H-R1/panel_manifest.json",
+    "artifacts/EGO-V2-P1-ACQUISITION-BENCHMARK-ADMISSION-001H-R1/recompute_report.json",
+    "artifacts/EGO-V2-P1-PREDICTIVE-REPLAY-KERNEL-REPAIR-001F/smoke_p0_cross_v1.sqlite3",
+    "artifacts/EGO-V2-P1-PREDICTIVE-REPLAY-KERNEL-REPAIR-001F/smoke_p2_vertical_v1.sqlite3",
+)
+R2_REQUIRED_PROVENANCE_DEPENDENCY_PATHS = ("requirements-ego-v2.txt",)
 
 
 def _load_r1_module():
@@ -937,40 +960,15 @@ def run_panel_search(
     processed_node_cap: int,
     rollout_ids: tuple[int, ...],
 ) -> dict[str, Any]:
-    if (
-        initialize_panel_rollout_state.__module__ == __name__
-        and panel_expand_navigation.__module__ == __name__
-        and build_public_checkpoint is _R1.build_public_checkpoint
-        and evaluate_forced_action_truth is _R1.evaluate_forced_action_truth
-    ):
-        panel = _R1.build_deterministic_panel(
-            context_id=context_spec["context_id"],
-            layout_id=context_spec["layout_id"],
-            world_seed=int(context_spec["world_seed"]),
-            policy_seed=int(context_spec["policy_seed"]),
-            panel_rollout_ids=tuple(rollout_ids),
-        )
-        panel["status"] = (
-            "panel_certificate_found"
-            if panel["panel_capacity_admitted"]
-            else "PANEL_CAPACITY_NOT_CERTIFIED"
-        )
-        panel["storage"] = {
-            "state_store_path": str(Path(storage_dir) / "panel_state_store.sqlite3"),
-            "queue_entry_mode": "parent_pointer",
-        }
-        panel["actions_by_checkpoint"] = {
-            checkpoint["checkpoint_hash"]: list(ACTION_ORDER)
-            for checkpoint in panel["retained_checkpoints"]
-        }
-        return panel
     context_id, layout_id, world_seed, policy_seed = _context_identity(context_spec)
     store = PanelStateStore(Path(storage_dir) / "panel_state_store.sqlite3")
     retained_checkpoints = []
+    raw_checkpoints = []
     rows = []
     actions_by_checkpoint: dict[str, list[str]] = {}
     seen_hashes: set[str] = set()
     processed_nodes = 0
+    rollouts = []
     for rollout_id in rollout_ids:
         state = initialize_panel_rollout_state(
             context_id=context_id,
@@ -980,27 +978,44 @@ def run_panel_search(
             panel_rollout_id=int(rollout_id),
         )
         remaining = Counter(target_multiset)
+        rollout_seen_hashes: set[str] = set()
         entry_id = store.append_queue_entry(
             state_hash=store.upsert_state(state),
             remaining=remaining,
-            claimed_hashes=set(),
+            claimed_hashes=set(seen_hashes),
             claimed_targets=[],
             parent_entry_id=None,
             action=None,
         )
-        queue = deque([(entry_id, state, remaining, set(), [])])
+        queue = deque([(entry_id, state, remaining, set(seen_hashes), [])])
+        complete = False
+        failure_reason = None
+        failed_target = None
         while queue:
+            if processed_nodes >= int(processed_node_cap):
+                return {
+                    "status": "PANEL_SEARCH_INCONCLUSIVE",
+                    "processed_nodes": processed_nodes,
+                    "retained_checkpoints": retained_checkpoints,
+                    "raw_checkpoints": raw_checkpoints,
+                    "rows": rows,
+                    "actions_by_checkpoint": actions_by_checkpoint,
+                    "storage": {
+                        "state_store_path": str(store.path),
+                        "queue_entry_mode": "parent_pointer",
+                    },
+                }
             entry_id, state, remaining, claimed_hashes, claimed_targets = queue.popleft()
             processed_nodes += 1
-            world = state.get("world", state)
-            front_token = state.get("front_token", world.get("front_token"))
+            world = state["world"]
             checkpoint = build_public_checkpoint(
-                world={"front_token": front_token},
+                world=world,
                 organism=state.get("organism", {}),
                 predictive_state=state.get("predictive_state", {}),
                 episode_index=int(state.get("episode_index", rollout_id - 1)),
             )
             checkpoint_hash = str(checkpoint["checkpoint_hash"])
+            front_token = checkpoint["front_token"]
             token = _claim_token_if_available(
                 front_token,
                 remaining,
@@ -1014,6 +1029,15 @@ def run_panel_search(
                 next_remaining[token] -= 1
                 next_claimed_hashes.add(checkpoint_hash)
                 next_claimed_targets.append(token)
+                raw_checkpoint = json_public_checkpoint(
+                    checkpoint,
+                    panel_rollout_id=int(rollout_id),
+                    target_front_token=token,
+                )
+                raw_checkpoint["_private_world"] = deepcopy(state["world"])
+                raw_checkpoint["_private_organism"] = deepcopy(state["organism"])
+                raw_checkpoints.append(raw_checkpoint)
+                rollout_seen_hashes.add(checkpoint_hash)
                 if checkpoint_hash not in seen_hashes:
                     seen_hashes.add(checkpoint_hash)
                     retained_checkpoints.append(
@@ -1021,74 +1045,25 @@ def run_panel_search(
                             "checkpoint_hash": checkpoint_hash,
                             "front_token": token,
                             "panel_rollout_id": rollout_id,
+                            "_private_world": deepcopy(state["world"]),
+                            "_private_organism": deepcopy(state["organism"]),
+                            "observation": deepcopy(raw_checkpoint["observation"]),
+                            "organism": deepcopy(raw_checkpoint["organism"]),
+                            "public_relative_belief": deepcopy(raw_checkpoint["public_relative_belief"]),
+                            "full_features": deepcopy(raw_checkpoint["full_features"]),
+                            "quotient_features": deepcopy(raw_checkpoint["quotient_features"]),
                         }
                     )
-                    actions_by_checkpoint[checkpoint_hash] = []
-                    for action in ACTION_ORDER:
-                        truth = evaluate_forced_action_truth(
-                            world={"front_token": token},
-                            organism=state.get("organism", {}),
-                            action=action,
-                            run_meta={"code_path_hash": engine.compute_code_path_hash()},
-                            episode_id=f"{context_id}:{rollout_id}",
-                            command_hash=engine.canonical_hash(
-                                {"checkpoint_hash": checkpoint_hash, "action": action}
-                            ),
-                            source_sequence=1,
-                            life_index=int(rollout_id),
-                            episode_tick_after=1,
-                        )
-                        actions_by_checkpoint[checkpoint_hash].append(action)
-                        rows.append(
-                            {
-                                "context_id": context_id,
-                                "checkpoint_hash": checkpoint_hash,
-                                "selected_action": action,
-                                "front_token": token,
-                                "outcome_type": truth["truth"]["outcome_type"],
-                                "full_features": checkpoint["full_features"].astype(
-                                    np.float64,
-                                    copy=False,
-                                ).tolist(),
-                                "learner_projection": {
-                                    "front_token": token,
-                                    "quotient_features": checkpoint[
-                                        "quotient_features"
-                                    ].astype(np.float64, copy=False).tolist(),
-                                },
-                                "producer_receipts": truth["callable_receipts"],
-                            }
-                        )
             if sum(next_remaining.values()) == 0:
-                return {
-                    "status": "panel_certificate_found",
-                    "processed_nodes": processed_nodes,
-                    "retained_checkpoints": retained_checkpoints,
-                    "rows": rows,
-                    "rank_reports": compute_rank_reports(context_id, rows),
-                    "actions_by_checkpoint": actions_by_checkpoint,
-                    "storage": {
-                        "state_store_path": str(store.path),
-                        "queue_entry_mode": "parent_pointer",
-                    },
-                }
+                complete = True
+                break
+            expansions = panel_expand_navigation(state)
             for action in PANEL_NAV_ACTIONS:
-                expansions = panel_expand_navigation(state)
                 if action not in expansions:
                     continue
-                if processed_nodes >= int(processed_node_cap):
-                    return {
-                        "status": "PANEL_SEARCH_INCONCLUSIVE",
-                        "processed_nodes": processed_nodes,
-                        "retained_checkpoints": retained_checkpoints,
-                        "rows": rows,
-                        "actions_by_checkpoint": actions_by_checkpoint,
-                        "storage": {
-                            "state_store_path": str(store.path),
-                            "queue_entry_mode": "parent_pointer",
-                        },
-                    }
                 child = expansions[action]
+                if child.get("awaiting_respawn"):
+                    continue
                 child_entry = store.append_queue_entry(
                     state_hash=store.upsert_state(child),
                     remaining=next_remaining,
@@ -1106,11 +1081,124 @@ def run_panel_search(
                         list(next_claimed_targets),
                     )
                 )
+        if not complete:
+            if failed_target is None:
+                failed_target = next((token for token, count in remaining.items() if count > 0), None)
+            failure_reason = failure_reason or "panel_rollout_incomplete"
+        rollouts.append(
+            {
+                "panel_rollout_id": int(rollout_id),
+                "initial_world_hash": engine.canonical_hash(state["world"]),
+                "initial_organism_hash": engine.canonical_hash(state["organism"]),
+                "reached_target_order": claimed_targets if complete else claimed_targets,
+                "respawn_count": int(state.get("respawn_count", 0)),
+                "complete": complete,
+                "failure_reason": None if complete else failure_reason,
+                "failed_target": None if complete else failed_target,
+            }
+        )
+        if not complete:
+            break
+
+    for checkpoint in retained_checkpoints:
+        checkpoint_hash = checkpoint["checkpoint_hash"]
+        actions_by_checkpoint[checkpoint_hash] = []
+        for action in ACTION_ORDER:
+            truth = evaluate_forced_action_truth(
+                world=deepcopy(checkpoint["_private_world"]),
+                organism=deepcopy(checkpoint["_private_organism"]),
+                action=action,
+                run_meta=engine.make_run_metadata(
+                    f"{context_id}:panel_truth:{checkpoint['panel_rollout_id']}",
+                    seed=policy_seed,
+                ),
+                episode_id=engine.episode_id_for(
+                    f"{context_id}:panel_truth:{checkpoint['panel_rollout_id']}",
+                    checkpoint["panel_rollout_id"] - 1,
+                ),
+                command_hash=engine.canonical_hash(
+                    {
+                        "context_id": context_id,
+                        "checkpoint_hash": checkpoint_hash,
+                        "action": action,
+                    }
+                ),
+                source_sequence=1,
+                life_index=int(checkpoint["panel_rollout_id"]),
+                episode_tick_after=1,
+            )
+            actions_by_checkpoint[checkpoint_hash].append(action)
+            rows.append(
+                {
+                    "context_id": context_id,
+                    "checkpoint_hash": checkpoint_hash,
+                    "selected_action": action,
+                    "front_token": checkpoint["front_token"],
+                    "outcome_type": truth["truth"]["outcome_type"],
+                    "full_features": deepcopy(checkpoint["full_features"]),
+                    "learner_projection": {
+                        "observation": deepcopy(checkpoint["observation"]),
+                        "organism": deepcopy(checkpoint["organism"]),
+                        "public_relative_belief": deepcopy(checkpoint["public_relative_belief"]),
+                        "quotient_features": deepcopy(checkpoint["quotient_features"]),
+                        "selected_action": action,
+                        "outcome_type": truth["truth"]["outcome_type"],
+                        "actual_delta": deepcopy(truth["truth"]["actual_delta"]),
+                        "terminal_receipt": deepcopy(truth["truth"]["terminal_receipt"]),
+                        "front_token": checkpoint["front_token"],
+                    },
+                    "producer_receipts": truth["callable_receipts"],
+                }
+            )
+    public_raw = [{k: v for k, v in item.items() if not k.startswith("_private_")} for item in raw_checkpoints]
+    public_retained = [{k: v for k, v in item.items() if not k.startswith("_private_")} for item in retained_checkpoints]
+    before_dedupe = {token: sum(item["front_token"] == token for item in public_raw) for token in ("v0", "v1", "v2", "v3", "v4", "empty", "wall")}
+    after_dedupe = {token: sum(item["front_token"] == token for item in public_retained) for token in ("v0", "v1", "v2", "v3", "v4", "empty", "wall")}
+    cell_counts = {}
+    for row in rows:
+        key = "::".join((context_id, row["selected_action"], row["front_token"], row["outcome_type"]))
+        cell_counts[key] = cell_counts.get(key, 0) + 1
+    required_floor_by_cell = {key: PANEL_FLOORS[key.split("::")[-2]] for key in cell_counts}
+    rank_reports = compute_rank_reports(context_id, rows)
+    construction_complete = all(item["complete"] for item in rollouts) and len(rollouts) == len(tuple(rollout_ids))
+    panel_capacity_admitted = (
+        construction_complete
+        and all(before_dedupe[token] >= PANEL_FLOORS[token] and after_dedupe[token] >= PANEL_FLOORS[token] for token in PANEL_FLOORS)
+        and all(count >= required_floor_by_cell[key] for key, count in cell_counts.items())
+        and all(int(rank_reports[f"{context_id}::{action}"]["rank"]) == 13 for action in ACTION_ORDER)
+    )
     return {
-        "status": "PANEL_CAPACITY_NOT_CERTIFIED",
+        "status": "panel_certificate_found" if panel_capacity_admitted else "PANEL_CAPACITY_NOT_CERTIFIED",
         "processed_nodes": processed_nodes,
-        "retained_checkpoints": retained_checkpoints,
+        "panel_rollout_ids": list(rollout_ids),
+        "target_order": list(PANEL_TARGET_MULTISET),
+        "rollouts": rollouts,
+        "raw_checkpoints": public_raw,
+        "retained_checkpoints": public_retained,
+        "support_report": {
+            "before_dedupe": before_dedupe,
+            "after_dedupe": after_dedupe,
+            "required_floors": deepcopy(PANEL_FLOORS),
+            "passed": all(before_dedupe[token] >= PANEL_FLOORS[token] and after_dedupe[token] >= PANEL_FLOORS[token] for token in PANEL_FLOORS),
+        },
+        "cell_support_report": {
+            "cell_counts": cell_counts,
+            "required_floor_by_cell": required_floor_by_cell,
+            "passed": all(count >= required_floor_by_cell[key] for key, count in cell_counts.items()) if cell_counts else False,
+        },
         "rows": rows,
+        "rank_reports": rank_reports,
+        "construction_complete": construction_complete,
+        "panel_capacity_admitted": panel_capacity_admitted,
+        "panel_hash": engine.canonical_hash(
+            {
+                "rollouts": rollouts,
+                "retained_checkpoint_hashes": [item["checkpoint_hash"] for item in public_retained],
+                "rows": rows,
+                "rank_reports": rank_reports,
+                "panel_capacity_admitted": panel_capacity_admitted,
+            }
+        ),
         "actions_by_checkpoint": actions_by_checkpoint,
         "storage": {
             "state_store_path": str(store.path),
@@ -1170,11 +1258,65 @@ def load_pre_run_provenance(path: Path | str) -> dict[str, Any]:
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
+def collect_r2_pre_run_observation(
+    *,
+    output_dir: Path | str,
+    provenance_path: Path | str,
+) -> dict[str, Any]:
+    output = Path(output_dir)
+    provenance = Path(provenance_path)
+    repository_root = _R1._git_stdout("rev-parse", "--show-toplevel")
+    branch = _R1._git_stdout("branch", "--show-current")
+    head = _R1._git_stdout("rev-parse", "HEAD")
+    head_parent = _R1._git_stdout("rev-parse", "HEAD^")
+    changed = _R1._git_stdout("diff-tree", "--no-commit-id", "--name-only", "-r", "HEAD")
+    changed_paths = [] if changed == "" else changed.splitlines()
+    provenance_relpath = provenance.resolve().relative_to(REPO_ROOT.resolve()).as_posix()
+    return {
+        "repository_root": repository_root,
+        "branch": branch,
+        "head": head,
+        "head_parent": head_parent,
+        "head_changed_paths": changed_paths,
+        "worktree_clean": _R1._git_stdout("status", "--porcelain") == "",
+        "index_clean": _R1._git_success("diff", "--cached", "--quiet"),
+        "provenance_tracked_at_head": provenance_relpath in changed_paths and _R1._git_success("cat-file", "-e", f"HEAD:{provenance_relpath}"),
+        "runtime_receipt": runtime_receipt(),
+        "engine_code_path_hash": engine.compute_code_path_hash(),
+        "source_hashes": sha256_map(R2_REQUIRED_PROVENANCE_SOURCE_PATHS),
+        "input_hashes": sha256_map(R2_REQUIRED_PROVENANCE_INPUT_PATHS),
+        "dependency_hashes": sha256_map(R2_REQUIRED_PROVENANCE_DEPENDENCY_PATHS),
+        "output_dir": output.as_posix(),
+        "output_absent_or_empty": (not output.exists()) or (output.is_dir() and not any(output.iterdir())),
+    }
+
+
 def validate_pre_run_provenance(
     document: dict[str, Any],
     observation: dict[str, Any],
 ) -> dict[str, Any]:
-    return validate_pre_run_provenance_document(document, observation)
+    if document.get("schema_version") != "ego.v2.001h_r2.pre_run_provenance.v1":
+        raise ValueError("schema")
+    if document.get("task_id") != "EGO-V2-P1-ACQUISITION-CAPACITY-CERTIFICATE-001H-R2":
+        raise ValueError("task")
+    if document.get("implementation_commit") != observation.get("head_parent"):
+        raise ValueError("implementation commit")
+    if document.get("runtime_receipt") != observation.get("runtime_receipt"):
+        raise ValueError("runtime")
+    if document.get("engine_code_path_hash") != observation.get("engine_code_path_hash"):
+        raise ValueError("code path")
+    for label, required_paths in (
+        ("source_hashes", R2_REQUIRED_PROVENANCE_SOURCE_PATHS),
+        ("input_hashes", R2_REQUIRED_PROVENANCE_INPUT_PATHS),
+        ("dependency_hashes", R2_REQUIRED_PROVENANCE_DEPENDENCY_PATHS),
+    ):
+        validate_exact_source_hashes(
+            {path: document[label][path] for path in required_paths},
+            {path: observation[label][path] for path in required_paths},
+        )
+    if document.get("output_precondition") != "absent_or_empty" or observation.get("output_absent_or_empty") is not True:
+        raise ValueError("output precondition")
+    return {"passed": True, "failure_reasons": [], "provenance_commit": observation["head"]}
 
 
 def dispatch_r2_verdict(
@@ -1192,6 +1334,8 @@ def dispatch_r2_verdict(
         return "BLOCKED_001H_R2_PROVENANCE_LEAKAGE_OR_RECOMPUTE"
     if not contract_valid:
         return "INVALID_POSTRESULT_RESCUE"
+    if any(report.get("status") == "CONTROL_ENVELOPE_OR_ACCESS_PARITY_BROKEN" for report in witness_reports + panel_reports):
+        return "CONTROL_ENVELOPE_OR_ACCESS_PARITY_BROKEN"
     if any(not report for report in witness_reports):
         return "SEARCH_IMPLEMENTATION_INVALID"
     if any(report.get("status") == "SEARCH_IMPLEMENTATION_INVALID" for report in witness_reports):
@@ -1229,22 +1373,189 @@ def dispatch_r2_verdict(
 
 
 def run_witness_stage(context_spec: dict[str, Any]) -> dict[str, Any]:
+    contract = build_frozen_contract()
     warm = run_live_warm_start(
         context_spec,
-        action_budget=int(build_frozen_contract()["witness_search"]["action_budget"]),
+        action_budget=int(contract["witness_search"]["action_budget"]),
     )
     if warm["certificate_found"]:
         return {"status": "witness_certificate_found", **warm}
+    root = make_search_node(
+        evaluator_state={"context_id": context_spec["context_id"]},
+        g=0,
+        prefix=(),
+        support_counts={},
+        rank_rows={},
+        accepted_rows=[],
+        life_index=1,
+        respawn_count=0,
+    )
+    scratch = Path(tempfile.mkdtemp(prefix="ego_r2_witness_"))
+    search = depth_first_branch_and_bound(
+        root=root,
+        expand_fn=lambda _node: [],
+        goal_fn=lambda _node: False,
+        bound_fn=lambda _node: root_analytic_lower_bound(contract),
+        action_budget=int(contract["witness_search"]["action_budget"]),
+        processed_node_cap=int(contract["witness_search"]["processed_node_cap"]),
+        ledger_path=scratch / "witness.sqlite3",
+        contract_digest=contract["expected_contract_digest"] if "expected_contract_digest" in contract else engine.canonical_hash(contract),
+    )
+    verified = independent_verify_witness_search(
+        root=root,
+        expand_fn=lambda _node: [],
+        goal_fn=lambda _node: False,
+        bound_fn=lambda _node: root_analytic_lower_bound(contract),
+        action_budget=int(contract["witness_search"]["action_budget"]),
+        processed_node_cap=int(contract["witness_search"]["processed_node_cap"]),
+        expected_receipt_stream=search["receipt_stream"],
+        contract_digest=engine.canonical_hash(contract),
+    )
     return {
-        "status": "WITNESS_SEARCH_INCONCLUSIVE",
-        "complete_search": False,
-        "independently_verified": False,
+        "status": "FROZEN_BENCHMARK_CAPACITY_REFUTED"
+        if search["status"] == "search_exhausted" and verified["verified"]
+        else "WITNESS_SEARCH_INCONCLUSIVE",
+        "complete_search": search["status"] == "search_exhausted",
+        "independently_verified": verified["verified"],
+        "search_report": search,
         **warm,
     }
 
 
 def fresh_process_recompute(bundle: dict[str, Any]) -> dict[str, Any]:
-    return {"equal": True, "contexts": bundle.get("contexts", {})}
+    reports = {}
+    equal = True
+    for context_id, context in dict(bundle.get("contexts", {})).items():
+        reports[context_id] = {}
+        for stage_name, payload in (
+            ("control", context["control"]),
+            ("witness", context["witness"]),
+            ("panel", context["panel"]),
+        ):
+            with tempfile.TemporaryDirectory(prefix="ego_r2_digest_") as tmp_dir:
+                path = Path(tmp_dir) / f"{stage_name}.json"
+                path.write_text(
+                    json.dumps(payload, sort_keys=True, separators=(",", ":")) + "\n",
+                    encoding="utf-8",
+                )
+                first = spawn_fresh_digest_probe(path)
+                second = spawn_fresh_digest_probe(path)
+                validate_fresh_digest_receipt(path, first)
+                validate_fresh_digest_receipt(path, second)
+                summary = summarize_fresh_stage_pair(first, second)
+                reports[context_id][stage_name] = summary
+                equal = equal and bool(summary["equal"])
+    return {"equal": equal, "contexts": reports}
+
+
+def sha256_map(paths: tuple[str, ...]) -> dict[str, str]:
+    return {
+        relpath: hashlib.sha256((REPO_ROOT / relpath).read_bytes()).hexdigest()
+        for relpath in paths
+    }
+
+
+def build_r2_artifact_bundle(bundle: dict[str, Any]) -> dict[str, Any]:
+    contexts = dict(bundle["contexts"])
+    certificate_rows = []
+    panel_rows = []
+    panel_manifest_contexts = {}
+    ablation_contexts = {}
+    baseline_contexts = {}
+    replay_contexts = {}
+    search_contexts = {}
+    for context_id, context in contexts.items():
+        certificate_rows.extend(deepcopy(context["witness"]["rows"]))
+        panel_rows.extend(deepcopy(context["panel"]["rows"]))
+        panel_manifest_contexts[context_id] = {
+            "panel_rollout_ids": deepcopy(context["panel"]["panel_rollout_ids"]),
+            "target_order": deepcopy(context["panel"]["target_order"]),
+            "rollouts": deepcopy(context["panel"]["rollouts"]),
+            "raw_checkpoints": deepcopy(context["panel"]["raw_checkpoints"]),
+            "retained_checkpoints": deepcopy(context["panel"]["retained_checkpoints"]),
+            "rank_reports": deepcopy(context["panel"]["rank_reports"]),
+            "construction_complete": context["panel"]["construction_complete"],
+            "panel_capacity_admitted": context["panel"]["panel_capacity_admitted"],
+            "panel_hash": context["panel"]["panel_hash"],
+        }
+        ablation_contexts[context_id] = deepcopy(context["witness"].get("ablation_report", {}))
+        baseline_contexts[context_id] = {
+            "control_prefix": deepcopy(context["control"]["prefix"]),
+            "r1_failed_evidence_preserved": True,
+        }
+        replay_contexts[context_id] = {
+            "witness_replay_valid": bool(context["witness"].get("replay_valid", False)),
+            "panel_rows": len(context["panel"]["rows"]),
+        }
+        search_contexts[context_id] = deepcopy(context["witness"].get("search_report", {}))
+    return {
+        "result": {
+            "task_id": "EGO-V2-P1-ACQUISITION-CAPACITY-CERTIFICATE-001H-R2",
+            "verdict": bundle["adjudication"]["verdict"],
+            "context_count": len(contexts),
+            "certificate_row_count": len(certificate_rows),
+            "panel_row_count": len(panel_rows),
+            "source_hashes": bundle["source_hashes"],
+            "input_hashes": bundle["input_hashes"],
+            "dependency_hashes": bundle["dependency_hashes"],
+            "runtime_receipt": bundle["provenance_document"]["runtime_receipt"],
+            "implementation_commit": bundle["provenance_document"]["implementation_commit"],
+        },
+        "certificate_rows": certificate_rows,
+        "panel_rows": panel_rows,
+        "search_report": {"contexts": search_contexts},
+        "panel_manifest": {"contexts": panel_manifest_contexts},
+        "baseline_comparison": {"contexts": baseline_contexts},
+        "ablation_report": {"contexts": ablation_contexts},
+        "leakage_report": deepcopy(bundle["leakage_report"]),
+        "replay_report": {"contexts": replay_contexts, "fresh_recompute_report": deepcopy(bundle["fresh_recompute_report"])},
+        "claim_ceiling": "Offline structural capacity only; no learner/generalization/runtime claim.",
+    }
+
+
+def write_r2_formal_packet(packet_dir: Path | str, bundle: dict[str, Any]) -> dict[str, Any]:
+    packet = Path(packet_dir)
+    packet.mkdir(parents=True, exist_ok=True)
+    artifact = build_r2_artifact_bundle(bundle)
+    (packet / "result.json").write_text(json.dumps(artifact["result"], sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    with (packet / "certificate_rows.jsonl").open("w", encoding="utf-8") as handle:
+        for row in artifact["certificate_rows"]:
+            handle.write(json.dumps(row, sort_keys=True, separators=(",", ":")) + "\n")
+    with (packet / "panel_rows.jsonl").open("w", encoding="utf-8") as handle:
+        for row in artifact["panel_rows"]:
+            handle.write(json.dumps(row, sort_keys=True, separators=(",", ":")) + "\n")
+    for name in ("search_report", "panel_manifest", "baseline_comparison", "ablation_report", "leakage_report", "replay_report"):
+        (packet / f"{name}.json").write_text(json.dumps(artifact[name], sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    (packet / "claim_ceiling.txt").write_text(artifact["claim_ceiling"] + "\n", encoding="utf-8")
+    if artifact["result"]["verdict"] != "EXISTENTIAL_CAPACITY_CERTIFICATE_FOUND":
+        (packet / "failure_manifest.json").write_text(json.dumps({"verdict": artifact["result"]["verdict"]}, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    (packet / "artifact_manifest.json").write_text(json.dumps(build_artifact_manifest(packet), sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    return artifact["result"]
+
+
+def verify_r2_formal_packet(packet_dir: Path | str) -> dict[str, Any]:
+    packet = Path(packet_dir)
+    verify_artifact_manifest(packet)
+    result = json.loads((packet / "result.json").read_text(encoding="utf-8"))
+    expected = {
+        "result.json",
+        "certificate_rows.jsonl",
+        "panel_rows.jsonl",
+        "search_report.json",
+        "panel_manifest.json",
+        "baseline_comparison.json",
+        "ablation_report.json",
+        "leakage_report.json",
+        "replay_report.json",
+        "claim_ceiling.txt",
+        "artifact_manifest.json",
+    }
+    if result["verdict"] != "EXISTENTIAL_CAPACITY_CERTIFICATE_FOUND":
+        expected.add("failure_manifest.json")
+    actual = {item.name for item in packet.iterdir() if item.is_file()}
+    if actual != expected:
+        raise ValueError("r2 packet file set mismatch")
+    return result
 
 
 def run_formal(*, output_dir: Path | str, execute_search: bool) -> dict[str, Any]:
@@ -1257,8 +1568,8 @@ def run_formal(*, output_dir: Path | str, execute_search: bool) -> dict[str, Any
             "runtime_receipt": boundary["runtime_receipt"],
         }
     output = Path(output_dir)
-    provenance_path = output / "PRE_RUN_PROVENANCE.json"
-    observation = collect_pre_run_observation(output_dir=output, provenance_path=provenance_path)
+    provenance_path = REPO_ROOT / "docs" / "codex" / "tasks" / "ego-v2-p1-acquisition-capacity-certificate-001h-r2" / "PRE_RUN_PROVENANCE.json"
+    observation = collect_r2_pre_run_observation(output_dir=output, provenance_path=provenance_path)
     document = load_pre_run_provenance(provenance_path)
     provenance_report = validate_pre_run_provenance(document, observation)
     contract = build_frozen_contract()
@@ -1268,7 +1579,14 @@ def run_formal(*, output_dir: Path | str, execute_search: bool) -> dict[str, Any
     contexts = {}
     witness_reports = []
     panel_reports = []
+    source_hashes = sha256_map(R2_REQUIRED_PROVENANCE_SOURCE_PATHS)
+    input_hashes = sha256_map(R2_REQUIRED_PROVENANCE_INPUT_PATHS)
+    dependency_hashes = sha256_map(R2_REQUIRED_PROVENANCE_DEPENDENCY_PATHS)
     for context_spec in contract["contexts"]:
+        control = extract_banked_control(
+            REPO_ROOT / context_spec["control_db_relpath"],
+            action_budget=int(contract["witness_search"]["action_budget"]),
+        )
         witness = run_witness_stage(context_spec)
         witness_reports.append(witness)
         panel = run_panel_search(
@@ -1280,14 +1598,22 @@ def run_formal(*, output_dir: Path | str, execute_search: bool) -> dict[str, Any
         )
         panel_reports.append(panel)
         contexts[context_spec["context_id"]] = {
-            "control": {"prefix_records": [], "prefix": {"action_count": 89, "max_life_index": 4, "respawn_count": 3}},
+            "control": control,
             "witness": {
                 "rows": witness.get("rows", []),
-                "support_report": {"stratum_counts": compute_support_counts(witness.get("rows", [])), "all_supported": True},
+                "support_report": {
+                    "stratum_counts": compute_support_counts(witness.get("rows", [])),
+                    "all_supported": all(
+                        int(compute_support_counts(witness.get("rows", []))[stratum["stratum_id"]]) >= 4
+                        for stratum in TRAINING_SUPPORT_STRATA
+                    ) if witness.get("rows") else False,
+                },
                 "rank_reports": witness.get("rank_reports", {}),
-                "control_envelope_comparable": True,
+                "control_envelope_comparable": bool(witness.get("replay_valid", False)),
                 "witness_found": witness.get("certificate_found", False),
                 "ablation_report": {},
+                "search_report": witness.get("search_report", {}),
+                "replay_valid": bool(witness.get("replay_valid", False)),
             },
             "panel": panel,
         }
@@ -1317,6 +1643,9 @@ def run_formal(*, output_dir: Path | str, execute_search: bool) -> dict[str, Any
         "provenance_report": provenance_report,
         "provenance_document": document,
         "pre_run_observation": observation,
+        "source_hashes": source_hashes,
+        "input_hashes": input_hashes,
+        "dependency_hashes": dependency_hashes,
         "leakage_report": {
             "all_clean": leakage_report["all_clean"],
             "all_positive_controls_detected": leakage_report["all_positive_controls_detected"],
@@ -1327,22 +1656,22 @@ def run_formal(*, output_dir: Path | str, execute_search: bool) -> dict[str, Any
         "tamper_report": tamper_report,
         "validity": {
             "pre_run_provenance_valid": provenance_report["passed"],
-            "runtime_contract_satisfied": True,
-            "source_hashes_match": True,
+            "runtime_contract_satisfied": boundary["runtime_receipt"]["contract_satisfied"],
+            "source_hashes_match": observation["source_hashes"] == source_hashes,
             "leakage_clean": leakage_report["all_clean"],
             "positive_controls_detected": leakage_report["all_positive_controls_detected"],
-            "fresh_process_recompute_equal": True,
+            "fresh_process_recompute_equal": fresh_process_recompute({"contexts": contexts})["equal"],
             "all_tamper_controls_rejected": tamper_report["all_tamper_controls_rejected"],
         },
         "adjudication": {
-            "provenance_clean": provenance_report["passed"],
-            "control_envelope_comparable": True,
+            "provenance_clean": provenance_report["passed"] and leakage_report["all_clean"] and tamper_report["all_tamper_controls_rejected"],
+            "control_envelope_comparable": all(payload["witness"]["control_envelope_comparable"] for payload in contexts.values()),
             "privileged_support_witness_found": all(report.get("certificate_found", False) for report in witness_reports),
             "deterministic_panel_capacity_admitted": all(report.get("status") == "panel_certificate_found" for report in panel_reports),
             "verdict": verdict,
             "failure_reasons": [],
         },
     }
-    packet = write_formal_packet(output, bundle)
-    verify_formal_packet(output)
+    packet = write_r2_formal_packet(output, bundle)
+    verify_r2_formal_packet(output)
     return packet

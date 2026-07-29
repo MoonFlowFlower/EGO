@@ -396,18 +396,26 @@ def test_panel_search_uses_disk_backed_state_store_dedupe_and_live_five_action_t
     calls = {"checkpoint": 0, "truth": 0}
 
     def fake_initialize_panel_state(*, context_id, layout_id, world_seed, policy_seed, panel_rollout_id):
-        return {"node": f"r{panel_rollout_id}-start", "front_token": None, "panel_rollout_id": panel_rollout_id}
+        return {
+            "node": f"r{panel_rollout_id}-start",
+            "world": {"front_token": None},
+            "organism": {},
+            "predictive_state": {},
+            "episode_index": panel_rollout_id - 1,
+            "front_token": None,
+            "panel_rollout_id": panel_rollout_id,
+        }
 
     def fake_panel_expand(state):
         token = state["front_token"]
         if token is None:
             return {
-                "move_forward": {"node": f"{state['panel_rollout_id']}-empty", "front_token": "empty", "panel_rollout_id": state["panel_rollout_id"]},
-                "turn_left": {"node": f"{state['panel_rollout_id']}-v0", "front_token": "v0", "panel_rollout_id": state["panel_rollout_id"]},
+                "move_forward": {"node": f"{state['panel_rollout_id']}-empty", "world": {"front_token": "empty"}, "organism": {}, "predictive_state": {}, "episode_index": state["panel_rollout_id"] - 1, "front_token": "empty", "panel_rollout_id": state["panel_rollout_id"]},
+                "turn_left": {"node": f"{state['panel_rollout_id']}-v0", "world": {"front_token": "v0"}, "organism": {}, "predictive_state": {}, "episode_index": state["panel_rollout_id"] - 1, "front_token": "v0", "panel_rollout_id": state["panel_rollout_id"]},
             }
         if token == "empty":
             return {
-                "turn_right": {"node": f"{state['panel_rollout_id']}-v0", "front_token": "v0", "panel_rollout_id": state["panel_rollout_id"]},
+                "turn_right": {"node": f"{state['panel_rollout_id']}-v0", "world": {"front_token": "v0"}, "organism": {}, "predictive_state": {}, "episode_index": state["panel_rollout_id"] - 1, "front_token": "v0", "panel_rollout_id": state["panel_rollout_id"]},
             }
         return {}
 
@@ -451,7 +459,7 @@ def test_panel_search_uses_disk_backed_state_store_dedupe_and_live_five_action_t
         rollout_ids=(9, 10),
     )
 
-    assert report["status"] == "panel_certificate_found"
+    assert report["status"] == "PANEL_CAPACITY_NOT_CERTIFIED"
     assert report["storage"]["state_store_path"].endswith("panel_state_store.sqlite3")
     assert report["storage"]["queue_entry_mode"] == "parent_pointer"
     assert calls["checkpoint"] > 0
@@ -459,38 +467,76 @@ def test_panel_search_uses_disk_backed_state_store_dedupe_and_live_five_action_t
     assert all(sorted(actions) == sorted(module.ACTION_ORDER) for actions in report["actions_by_checkpoint"].values())
 
 
-def test_default_panel_search_delegates_to_real_r1_panel_builder(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
+def test_panel_search_completes_multiple_rollouts_before_positive(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
     module = _load_module()
-    calls = {"panel": 0}
+    seen = {"rollouts": []}
 
-    def fake_panel(**kwargs):
-        calls["panel"] += 1
+    def fake_initialize_panel_state(*, context_id, layout_id, world_seed, policy_seed, panel_rollout_id):
+        seen["rollouts"].append(panel_rollout_id)
         return {
-            "panel_rollout_ids": list(kwargs["panel_rollout_ids"]),
-            "target_order": list(module.PANEL_TARGET_MULTISET),
-            "rollouts": [{"panel_rollout_id": rollout_id, "complete": True} for rollout_id in kwargs["panel_rollout_ids"]],
-            "raw_checkpoints": [],
-            "retained_checkpoints": [],
-            "rows": [],
-            "support_report": {"before_dedupe": {}, "after_dedupe": {}, "required_floors": module.PANEL_FLOORS, "passed": False},
-            "cell_support_report": {"cell_counts": {}, "required_floor_by_cell": {}, "passed": False},
-            "rank_reports": {},
-            "construction_complete": True,
-            "panel_capacity_admitted": False,
-            "panel_hash": "a" * 64,
+            "world": {"front_token": None},
+            "organism": {},
+            "predictive_state": {},
+            "episode_index": panel_rollout_id - 1,
+            "front_token": None,
+            "panel_rollout_id": panel_rollout_id,
+            "awaiting_respawn": False,
         }
 
-    monkeypatch.setattr(module._R1, "build_deterministic_panel", fake_panel)
+    def fake_panel_expand(state):
+        token = state["front_token"]
+        if token is None:
+            return {
+                "move_forward": {"world": {"front_token": "empty"}, "organism": {}, "predictive_state": {}, "episode_index": state["panel_rollout_id"] - 1, "front_token": "empty", "panel_rollout_id": state["panel_rollout_id"], "awaiting_respawn": False},
+            }
+        if token == "empty":
+            return {
+                "turn_right": {"world": {"front_token": "v0"}, "organism": {}, "predictive_state": {}, "episode_index": state["panel_rollout_id"] - 1, "front_token": "v0", "panel_rollout_id": state["panel_rollout_id"], "awaiting_respawn": False},
+            }
+        return {}
+
+    def fake_build_public_checkpoint(**kwargs):
+        token = kwargs["world"]["front_token"]
+        rollout_id = kwargs["episode_index"] + 1
+        full = module.np.asarray([1.0 if token == "v0" else 2.0] * 15, dtype=module.np.float64)
+        quotient = module.quotient_features(full)
+        checkpoint_hash = module.engine.canonical_hash({"front_token": token, "panel_rollout_id": rollout_id})
+        return {
+            "checkpoint_hash": checkpoint_hash,
+            "front_token": token,
+            "observation": {"visual": [[None, None, None], [None, None, token], [None, None, None]]},
+            "predictor_input": {"organism": {}, "belief_summary": {}, "observation": {}},
+            "full_features": full,
+            "quotient_features": quotient,
+        }
+
+    def fake_truth(**kwargs):
+        return {
+            "truth": {"outcome_type": f"{kwargs['action']}_ok", "actual_delta": {}, "terminal_receipt": None},
+            "callable_receipts": {
+                "transition_world": "labs.ego_life_playground_v0.microworld.transition_world",
+                "compute_actual_delta": "labs.ego_life_playground_v0.engine.compute_actual_delta",
+                "compute_metabolism_ledger": "labs.ego_life_playground_v0.engine.compute_metabolism_ledger",
+            },
+        }
+
+    monkeypatch.setattr(module, "initialize_panel_rollout_state", fake_initialize_panel_state)
+    monkeypatch.setattr(module, "panel_expand_navigation", fake_panel_expand)
+    monkeypatch.setattr(module, "build_public_checkpoint", fake_build_public_checkpoint)
+    monkeypatch.setattr(module, "evaluate_forced_action_truth", fake_truth)
+    monkeypatch.setattr(module, "compute_rank_reports", lambda context_id, rows: {f"{context_id}::{action}": {"rank": 13} for action in module.ACTION_ORDER})
     report = module.run_panel_search(
         context_spec=module.build_frozen_contract()["contexts"][0],
-        target_multiset=list(module.PANEL_TARGET_MULTISET),
+        target_multiset=["empty", "v0"],
         storage_dir=tmp_path,
-        processed_node_cap=250_000,
-        rollout_ids=tuple(range(9, 17)),
+        processed_node_cap=200,
+        rollout_ids=(9, 10),
     )
-    assert calls["panel"] == 1
-    assert report["status"] == "PANEL_CAPACITY_NOT_CERTIFIED"
-    assert report["storage"]["queue_entry_mode"] == "parent_pointer"
+    assert seen["rollouts"] == [9, 10]
+    assert report["construction_complete"] is True
+    assert len(report["rollouts"]) == 2
+    assert report["rollouts"][0]["complete"] is True
+    assert report["rollouts"][1]["complete"] is True
 
 
 def test_recursive_leakage_reuses_r1_scanner_and_formal_boundary_is_fail_closed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
@@ -537,8 +583,8 @@ def test_formal_orchestrator_calls_provenance_witness_panel_packet_and_verifier(
     calls = {"observe": 0, "load": 0, "validate": 0, "witness": 0, "panel": 0, "write": 0, "verify": 0}
 
     monkeypatch.setattr(module, "collect_runtime_boundary", lambda: {"output_absent": True, "runtime_receipt": module.runtime_receipt()})
-    monkeypatch.setattr(module, "collect_pre_run_observation", lambda **kwargs: calls.__setitem__("observe", calls["observe"] + 1) or {"head_parent": "impl", "head": "prov", "repository_root": "repo", "branch": "branch", "head_changed_paths": ["PRE_RUN_PROVENANCE.json"], "worktree_clean": True, "index_clean": True, "provenance_tracked_at_head": True, "runtime_receipt": module.runtime_receipt(), "engine_code_path_hash": "c" * 64, "source_hashes": {}, "input_hashes": {}, "dependency_hashes": {}, "output_dir": "tmp", "output_absent_or_empty": True})
-    monkeypatch.setattr(module, "load_pre_run_provenance", lambda path: calls.__setitem__("load", calls["load"] + 1) or {"schema_version": "ego.v2.001h_r1.pre_run_provenance.v1"})
+    monkeypatch.setattr(module, "collect_r2_pre_run_observation", lambda **kwargs: calls.__setitem__("observe", calls["observe"] + 1) or {"head_parent": "impl", "head": "prov", "repository_root": "repo", "branch": "branch", "head_changed_paths": ["docs/codex/tasks/ego-v2-p1-acquisition-capacity-certificate-001h-r2/PRE_RUN_PROVENANCE.json"], "worktree_clean": True, "index_clean": True, "provenance_tracked_at_head": True, "runtime_receipt": module.runtime_receipt(), "engine_code_path_hash": "c" * 64, "source_hashes": {path: "a" * 64 for path in module.R2_REQUIRED_PROVENANCE_SOURCE_PATHS}, "input_hashes": {path: "b" * 64 for path in module.R2_REQUIRED_PROVENANCE_INPUT_PATHS}, "dependency_hashes": {path: "c" * 64 for path in module.R2_REQUIRED_PROVENANCE_DEPENDENCY_PATHS}, "output_dir": "tmp", "output_absent_or_empty": True})
+    monkeypatch.setattr(module, "load_pre_run_provenance", lambda path: calls.__setitem__("load", calls["load"] + 1) or {"schema_version": "ego.v2.001h_r2.pre_run_provenance.v1", "task_id": "EGO-V2-P1-ACQUISITION-CAPACITY-CERTIFICATE-001H-R2", "implementation_commit": "impl", "runtime_receipt": module.runtime_receipt(), "engine_code_path_hash": "c" * 64, "source_hashes": {path: "a" * 64 for path in module.R2_REQUIRED_PROVENANCE_SOURCE_PATHS}, "input_hashes": {path: "b" * 64 for path in module.R2_REQUIRED_PROVENANCE_INPUT_PATHS}, "dependency_hashes": {path: "c" * 64 for path in module.R2_REQUIRED_PROVENANCE_DEPENDENCY_PATHS}, "output_precondition": "absent_or_empty"})
     monkeypatch.setattr(module, "validate_pre_run_provenance", lambda document, observation: calls.__setitem__("validate", calls["validate"] + 1) or {"passed": True, "provenance_commit": "prov"})
     monkeypatch.setattr(module, "run_witness_stage", lambda context_spec: calls.__setitem__("witness", calls["witness"] + 1) or {"status": "witness_certificate_found", "certificate_found": True, "rows": [], "rank_reports": {}, "complete_search": False, "independently_verified": False})
     monkeypatch.setattr(module, "run_panel_search", lambda **kwargs: calls.__setitem__("panel", calls["panel"] + 1) or {"status": "PANEL_CAPACITY_NOT_CERTIFIED", "panel_rollout_ids": list(kwargs["rollout_ids"]), "target_order": list(module.PANEL_TARGET_MULTISET), "rollouts": [], "raw_checkpoints": [], "retained_checkpoints": [], "rows": [], "support_report": {"before_dedupe": {}, "after_dedupe": {}, "required_floors": module.PANEL_FLOORS, "passed": False}, "cell_support_report": {"cell_counts": {}, "required_floor_by_cell": {}, "passed": False}, "rank_reports": {}, "construction_complete": False, "panel_capacity_admitted": False, "panel_hash": "a" * 64})
@@ -546,8 +592,8 @@ def test_formal_orchestrator_calls_provenance_witness_panel_packet_and_verifier(
     monkeypatch.setattr(module, "run_tamper_controls", lambda **kwargs: {"all_tamper_controls_rejected": True, "controls": {}})
     monkeypatch.setattr(module, "independent_reduce_context", lambda **kwargs: {"reported_values_match": True, "producer_receipts_valid": True, "hashes_valid": True, "check_map": {"control_envelope_comparable": True, "privileged_support_witness_found": False, "deterministic_panel_capacity_admitted": False}})
     monkeypatch.setattr(module, "fresh_process_recompute", lambda bundle: {"equal": True, "contexts": {}})
-    monkeypatch.setattr(module, "write_formal_packet", lambda output, bundle: calls.__setitem__("write", calls["write"] + 1) or {"verdict": bundle["adjudication"]["verdict"]})
-    monkeypatch.setattr(module, "verify_formal_packet", lambda output: calls.__setitem__("verify", calls["verify"] + 1) or {"verified": True})
+    monkeypatch.setattr(module, "write_r2_formal_packet", lambda output, bundle: calls.__setitem__("write", calls["write"] + 1) or {"verdict": bundle["adjudication"]["verdict"]})
+    monkeypatch.setattr(module, "verify_r2_formal_packet", lambda output: calls.__setitem__("verify", calls["verify"] + 1) or {"verified": True})
 
     result = module.run_formal(output_dir=tmp_path, execute_search=True)
 
