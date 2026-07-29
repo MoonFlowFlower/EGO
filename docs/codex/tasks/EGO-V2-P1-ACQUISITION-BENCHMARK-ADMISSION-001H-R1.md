@@ -89,13 +89,27 @@ The planner is an evaluator-only optimistic upper bound.
 - Every navigation, rotation, rest, collision, and interaction consumes one action.
 - It may not teleport, mutate layout/object/action/metabolism semantics, force a respawn, discard inconvenient rows, or call future panel truth.
 - Target choice is deterministic:
-  1. satisfy frozen outcome/token support deficits in the listed order below;
-  2. choose a currently reachable target with shortest exact private path;
-  3. tie by target order, then full action-sequence lexicographic order under turn_left, turn_right, move_forward, interact, rest;
-  4. after support, select public-feature rank-gain actions until each action
-     reaches quotient rank 13 in that context;
-  5. pad remaining budget by the same rank-gain then least-count order.
-- Private cause-aware survival priority may reorder only equal-deficit/equal-path object targets and must be logged.
+  1. visit the frozen support strata in the exact listed order below and keep
+     working on the first stratum whose count is below four; rows produced by
+     navigation still count toward every stratum they actually satisfy, but a
+     later stratum never preempts the first still-deficient stratum;
+  2. for token-bearing strata choose the currently reachable target with the
+     shortest exact private path; `interact::no_object` targets `empty` and
+     `move_forward::blocked` targets `wall`;
+  3. tie by full action-sequence lexicographic order under turn_left,
+     turn_right, move_forward, interact, rest;
+  4. after support, do not launch another target/path search. At the current
+     public checkpoint, select among actions whose quotient rank is below 13
+     and for which the current row increases rank; tie by current rank,
+     current action count, then the frozen action order;
+  5. if no current action gains rank, or after all ranks reach 13, select by
+     least current action count then frozen action order until the budget ends.
+- The admission path performs no cause-based target reorder because no exact
+  cause ordering was frozen before implementation. The no-cause-priority
+  disclosure is therefore intentionally inert; eligible equal-deficit/path
+  object ties, reorder count zero, and trajectory-hash equality must still be
+  reported. Adding a cause order or broader rank checkpoint search requires a
+  successor card and cannot rescue this verdict.
 
 Each learner-visible row projection contains only public observation, organism-before, selected action, visible pre-front token, public outcome type, actual organism delta, terminal receipt, and public quotient features. The admission task does not train a learner.
 
@@ -170,9 +184,10 @@ Private oracle fields may exist only in evaluator receipts. A recursive learner-
 All clean rows must pass. Positive controls must be detected.
 
 The no-cause-priority ablation is disclosure-only and never changes admission
-booleans or verdict routing. It reports the number of eligible equal-deficit,
-equal-path ties, whether any tie was reordered, and whether the resulting
-trajectory hash changed; zero eligible ties is an honest inert result.
+booleans or verdict routing. Because this frozen admission path performs no
+cause-based reorder, it reports the number of eligible equal-deficit,
+equal-path object ties, reorder count zero, and exact trajectory-hash equality.
+This inert result is intentional and is not survival-priority evidence.
 
 ## Validity and verdict
 

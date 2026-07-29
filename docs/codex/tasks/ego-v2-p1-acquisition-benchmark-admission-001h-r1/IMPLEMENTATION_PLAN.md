@@ -7,7 +7,10 @@
    context/action-local rank, and verdict priority; observe the intended
    failure.
 3. TDD GREEN for those pure/control-extraction contracts only.
-4. TDD RED/GREEN for exact private BFS, deterministic deficit/rank target order, reducer/metabolism receipts, natural death/respawn, no-reset guard, and support witness.
+4. TDD RED/GREEN for exact private BFS, strict listed-order support, the
+   current-checkpoint-only rank-gain/least-count rule, reducer/metabolism
+   receipts, natural death/respawn, no-reset guard, and support witness. Do not
+   add a cause ordering or a broader rank checkpoint search in this task.
 5. TDD RED/GREEN for explicit independent-reset panel rollout IDs 9..16,
    exact initial_world_state arguments, frozen target order, deep-copy forced
    truth, context-local checkpoint dedupe before action expansion, post-dedupe

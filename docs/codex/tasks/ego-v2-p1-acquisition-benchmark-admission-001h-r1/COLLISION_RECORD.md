@@ -27,9 +27,10 @@
   capacity failure, per-context/action 13-column quotient rank deficiency,
   leakage, or non-reproducibility.
 - Expected failure: navigation consumes the budget, context/action rank 13 is
-  unreachable, or fixed panel support collapses after dedupe.
+  unreachable under the frozen listed-order/current-checkpoint-only planner, or
+  fixed panel support collapses after dedupe.
 - Decision: selected as the smallest unknown that must pass before an evidence-value or selector task.
 
 ## Boundary
 
-The privileged planner may prove existence of one evaluator witness but never learner feasibility. Failure proves only that this frozen planner/budget did not find a witness. The fixed panel is committed before any model evaluation. No prediction, survival, transfer, held-out, neural, AGI, or electronic-life claim is available.
+The privileged planner may prove existence of one evaluator witness but never learner feasibility. Failure proves only that this frozen listed-order/current-checkpoint-only planner and budget did not find a witness; it is not an environmental or search-space impossibility theorem. The fixed panel is committed before any model evaluation. No prediction, survival, transfer, held-out, neural, AGI, or electronic-life claim is available.
