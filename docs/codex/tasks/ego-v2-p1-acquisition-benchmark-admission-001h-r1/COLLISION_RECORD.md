@@ -23,8 +23,11 @@
 - Evidence: exact first-89 control extraction, privileged same-budget support/rank witness, deterministic model-blind panel, leakage boundary, and recomputation.
 - Strongest cheap match: no learning candidate exists in this task; it is instrument admission only.
 - Risk: privileged witness is mislabeled public competence, or witness-not-found is mislabeled impossibility.
-- Smallest falsifier: budget/life mismatch, support or panel capacity failure, rank deficiency, leakage, or non-reproducibility.
-- Expected failure: navigation consumes the budget, rank 14 is unreachable, or fixed panel support collapses after dedupe.
+- Smallest falsifier: budget/life mismatch, support or post-dedupe panel
+  capacity failure, per-context/action 13-column quotient rank deficiency,
+  leakage, or non-reproducibility.
+- Expected failure: navigation consumes the budget, context/action rank 13 is
+  unreachable, or fixed panel support collapses after dedupe.
 - Decision: selected as the smallest unknown that must pass before an evidence-value or selector task.
 
 ## Boundary

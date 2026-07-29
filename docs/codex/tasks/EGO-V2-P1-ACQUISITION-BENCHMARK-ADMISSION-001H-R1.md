@@ -19,7 +19,11 @@
 ## Known facts used rather than re-tested
 
 1. R4 training support was insufficient and its old balanced panel had only fourteen forced interact::interacted truths aggregate.
-2. R5 established that raw feature rank 15 is impossible because bias equals the sum of exhaustive front-token indicators.
+2. R5 established that raw feature rank 15 is impossible. A subsequent
+   algebraic audit tightened the bound: the immediate front cell cannot be
+   occluded, so `front_occluded` is constant zero; among the seven remaining
+   reachable token indicators, bias equals their sum. A valid reference-coded
+   quotient must therefore drop both `front_occluded` and one reachable dummy.
 3. 001F banked 89 action rows for p0_cross_v1 and 115 for p2_vertical_v1; therefore 89 is the maximum equal action budget available in both banked runs.
 4. 001H's Jeffreys predictive-entropy selector and count deficit have identical ordering on the frozen deterministic outcome cells.
 5. Worlds 30..150 are contaminated. No 60..65, 721/722, or other fresh-effect execution is authorized.
@@ -88,7 +92,8 @@ The planner is an evaluator-only optimistic upper bound.
   1. satisfy frozen outcome/token support deficits in the listed order below;
   2. choose a currently reachable target with shortest exact private path;
   3. tie by target order, then full action-sequence lexicographic order under turn_left, turn_right, move_forward, interact, rest;
-  4. after support, select public-feature rank-gain actions until each action reaches quotient rank 14;
+  4. after support, select public-feature rank-gain actions until each action
+     reaches quotient rank 13 in that context;
   5. pad remaining budget by the same rank-gain then least-count order.
 - Private cause-aware survival priority may reorder only equal-deficit/equal-path object targets and must be logged.
 
@@ -105,7 +110,14 @@ Per context, within 89 action rows:
 - maximum life index and respawn count do not exceed that context's extracted
   first-89 control-prefix bounds.
 
-Across both contexts, each action's public 14-column quotient design matrix must have rank 14 under NumPy's documented matrix-rank tolerance. The quotient drops front_occluded and preserves every other frozen feature in order. Report singular values and condition number. Raw rank 15 is disclosure only.
+The public quotient has exactly 13 columns. From the frozen 15-column order it
+drops `front_occluded` because the adjacent front cell has no intermediate ray
+and is never occluded, and drops `front_wall` as the reachable reference dummy.
+It preserves all other features in their original order. For every
+`context x action` separately, the training design matrix must have rank 13
+under NumPy's documented matrix-rank tolerance. Report singular values and
+condition number for every matrix. Raw rank 15 and the intermediate 14-column
+rank upper bound 13 are structural disclosures.
 
 A failed planner, support floor, life boundary, or rank gate produces WITNESS_NOT_FOUND, not an impossibility theorem.
 
@@ -127,12 +139,17 @@ For each context and each `panel_rollout_id=k` in 9..16:
 6. advance the base panel world only by the frozen BFS navigation, never by a forced truth action;
 7. stop the life after the ninth target or fail closed.
 
-Panel rows are deduplicated by canonical public input hash while retaining
-target/rollout provenance. Required per context before dedupe: eight
-checkpoints for each v0..v4 and sixteen each for empty and wall. After dedupe,
-every declared action/outcome stratum must have at least 16 rows aggregate and
-at least one row per context. For each action, quotient rank across panel
-checkpoints must be 14; singular values and condition numbers are disclosed.
+Panel checkpoints are deduplicated within context before forced-action truth
+expansion. The checkpoint hash is exactly the canonical learner-visible public
+observation, organism, public relative belief, and 13-column quotient features;
+it excludes target, rollout, private path, truth, model, and verdict data.
+Required both before and after dedupe, per context: eight checkpoints for each
+v0..v4 and sixteen each for empty and wall. The five forced-action truths from
+one retained checkpoint are distinct evaluator rows and may not deduplicate one
+another. Every reachable `(context,action,front_token,outcome)` cell inherits
+the corresponding post-dedupe token floor. For every `context x action`
+separately, quotient rank across retained panel checkpoints must be 13;
+singular values and condition numbers are disclosed.
 
 Rollout IDs 9..16 are provenance- and constructor-disjoint from the training
 trajectory only. They do not establish statistical independence or freshness.
@@ -151,6 +168,11 @@ Private oracle fields may exist only in evaluator receipts. A recursive learner-
 - future observation, panel truth, loss, verdict, file path, or hash.
 
 All clean rows must pass. Positive controls must be detected.
+
+The no-cause-priority ablation is disclosure-only and never changes admission
+booleans or verdict routing. It reports the number of eligible equal-deficit,
+equal-path ties, whether any tie was reordered, and whether the resulting
+trajectory hash changed; zero eligible ties is an honest inert result.
 
 ## Validity and verdict
 
