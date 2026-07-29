@@ -585,7 +585,7 @@ def _respawn_trace(
             "update_count": int(next_state["survival_learner"]["update_count"]),
         },
         "predictive_control": {
-            "schema_version": "ego.life_playground.predictive_control_trace.v4",
+            "schema_version": "ego.life_playground.predictive_control_trace.v5",
             "mode": command["interventions"]["predictive_control_mode"],
             "belief_observation": {
                 "applied": True,
@@ -1431,7 +1431,7 @@ def compute_step(
             "update_count": int(next_state["survival_learner"]["update_count"]),
         },
         "predictive_control": {
-            "schema_version": "ego.life_playground.predictive_control_trace.v4",
+            "schema_version": "ego.life_playground.predictive_control_trace.v5",
             "mode": interventions["predictive_control_mode"],
             "belief_observation": predictive_belief_receipt,
             "belief_hash": canonical_hash(
@@ -3246,6 +3246,100 @@ def _compact_claim_update(report: Mapping[str, Any]) -> dict[str, Any]:
     }
 
 
+_CANDIDATE_BREAKDOWN_FIELDS = (
+    "total_deficit_change",
+    "intent_deficit_change",
+    "predicted_terminal_risk",
+    "expected_newly_observable_unknown_fraction",
+    "survival_value",
+    "homeostatic_value",
+    "map_information_value",
+)
+_CANDIDATE_COMPACT_FIELDS = (
+    "total",
+    "plan_actions",
+    "resource_interaction_probability",
+    "trajectory_hash",
+    "breakdown",
+)
+_DELTA_PROJECTION_FIELDS = (
+    "nlms_denominator",
+    "nlms_step",
+    "projection_mean",
+    "raw_conditionals_hash",
+    "projected_conditionals_hash",
+    "projection_max_abs_difference",
+    "projection_preserved_conditionals",
+)
+
+
+def _compact_candidate_values(values: Any) -> tuple[dict[str, Any], dict[str, Any]]:
+    if not isinstance(values, Mapping) or set(values) != set(ACTIONS):
+        raise EngineInvariantError("predictive candidate values are invalid")
+    compact: dict[str, Any] = {}
+    for action in ACTIONS:
+        value = values[action]
+        expected = {*_CANDIDATE_BREAKDOWN_FIELDS, *_CANDIDATE_COMPACT_FIELDS[:-1]}
+        if not isinstance(value, Mapping) or set(value) != expected:
+            raise EngineInvariantError("predictive candidate value schema mismatch")
+        compact[action] = {
+            "total": deepcopy(value["total"]),
+            "plan_actions": deepcopy(value["plan_actions"]),
+            "resource_interaction_probability": deepcopy(
+                value["resource_interaction_probability"]
+            ),
+            "trajectory_hash": deepcopy(value["trajectory_hash"]),
+            "breakdown": [
+                deepcopy(value[field]) for field in _CANDIDATE_BREAKDOWN_FIELDS
+            ],
+        }
+    return compact, {
+        "schema_version": "ego.life_playground.candidate_value_receipt.v1",
+        "source_hash": canonical_hash(values),
+    }
+
+
+def expand_compact_predictive_plan(plan: Mapping[str, Any]) -> dict[str, Any]:
+    """Expand and authenticate the compact trace-only candidate receipt."""
+
+    expanded = deepcopy(dict(plan))
+    receipt = expanded.pop("candidate_value_receipt", None)
+    if receipt is None:
+        return expanded
+    if (
+        not isinstance(receipt, Mapping)
+        or set(receipt)
+        != {"schema_version", "source_hash"}
+        or receipt.get("schema_version")
+        != "ego.life_playground.candidate_value_receipt.v1"
+    ):
+        raise EngineInvariantError("candidate receipt contract mismatch")
+    values = expanded.get("candidate_values")
+    if not isinstance(values, Mapping) or set(values) != set(ACTIONS):
+        raise EngineInvariantError("candidate receipt values mismatch")
+    restored: dict[str, Any] = {}
+    for action in ACTIONS:
+        value = values[action]
+        if (
+            not isinstance(value, Mapping)
+            or set(value) != set(_CANDIDATE_COMPACT_FIELDS)
+            or not isinstance(value.get("breakdown"), list)
+            or len(value["breakdown"]) != len(_CANDIDATE_BREAKDOWN_FIELDS)
+        ):
+            raise EngineInvariantError("candidate receipt row mismatch")
+        restored[action] = {
+            field: deepcopy(value["breakdown"][index])
+            for index, field in enumerate(_CANDIDATE_BREAKDOWN_FIELDS)
+        } | {
+            field: deepcopy(value[field])
+            for field in _CANDIDATE_COMPACT_FIELDS[:-1]
+        }
+    if canonical_hash(restored) != receipt.get("source_hash"):
+        raise EngineInvariantError("candidate receipt source hash mismatch")
+    expanded["candidate_values"] = restored
+    return expanded
+
+
 def _compact_predictive_plan(
     plan: Mapping[str, Any] | None,
 ) -> dict[str, Any] | None:
@@ -3281,7 +3375,9 @@ def _compact_predictive_plan(
             }
         )
     )
-    candidate_values = deepcopy(plan.get("candidate_values"))
+    candidate_values, candidate_value_receipt = _compact_candidate_values(
+        plan.get("candidate_values")
+    )
     beam = plan.get("beam_receipt") or {}
     root_actions_by_depth = beam.get("root_actions_by_depth") or []
     compact_beam = {
@@ -3323,6 +3419,7 @@ def _compact_predictive_plan(
         "predictor_context_hash": predictor_context_hash,
         "predictions_by_action": predictions,
         "candidate_values": candidate_values,
+        "candidate_value_receipt": candidate_value_receipt,
         "beam_receipt": compact_beam,
     }
 
@@ -3342,7 +3439,6 @@ def _compact_predictive_update(report: Mapping[str, Any]) -> dict[str, Any]:
             "outcome_nll",
             "delta_error",
             "delta_outcome_updated",
-            "delta_projection_by_state",
             "delta_base_hash_before",
             "delta_base_hash_after",
             "delta_outcome_offset_hash_before",
@@ -3361,10 +3457,103 @@ def _compact_predictive_update(report: Mapping[str, Any]) -> dict[str, Any]:
         )
         if key in report
     }
+    if "delta_projection_by_state" in report:
+        projection = report["delta_projection_by_state"]
+        if not isinstance(projection, Mapping):
+            raise EngineInvariantError("delta projection receipt source is invalid")
+        rows: list[list[Any]] = []
+        dictionary: list[Any] = []
+        dictionary_indexes: dict[str, int] = {}
+
+        def intern(value: Any) -> int:
+            key = canonical_json(value)
+            index = dictionary_indexes.get(key)
+            if index is None:
+                index = len(dictionary)
+                dictionary_indexes[key] = index
+                dictionary.append(deepcopy(value))
+            return index
+
+        if projection:
+            if set(projection) != set(STATE_KEYS):
+                raise EngineInvariantError("delta projection receipt state mismatch")
+            for state_key in STATE_KEYS:
+                row = projection[state_key]
+                if not isinstance(row, Mapping) or set(row) != set(
+                    _DELTA_PROJECTION_FIELDS
+                ):
+                    raise EngineInvariantError(
+                        "delta projection receipt row schema mismatch"
+                    )
+                rows.append(
+                    [intern(row[field]) for field in _DELTA_PROJECTION_FIELDS]
+                )
+        compact["delta_projection_receipt"] = {
+            "schema_version": "ego.life_playground.delta_projection_receipt.v1",
+            "source_hash": canonical_hash(projection),
+            "dictionary": dictionary,
+            "rows": rows,
+        }
     for field in ("prediction_before", "prediction_after"):
         if isinstance(report.get(field), Mapping):
             compact[f"{field}_hash"] = canonical_hash(report[field])
     return compact
+
+
+def expand_compact_predictive_update(report: Mapping[str, Any]) -> dict[str, Any]:
+    """Expand and authenticate the compact trace-only projection receipt."""
+
+    expanded = deepcopy(dict(report))
+    receipt = expanded.pop("delta_projection_receipt", None)
+    if receipt is None:
+        return expanded
+    if (
+        not isinstance(receipt, Mapping)
+        or set(receipt)
+        != {
+            "schema_version",
+            "source_hash",
+            "dictionary",
+            "rows",
+        }
+        or receipt.get("schema_version")
+        != "ego.life_playground.delta_projection_receipt.v1"
+        or not isinstance(receipt.get("dictionary"), list)
+        or not isinstance(receipt.get("rows"), list)
+    ):
+        raise EngineInvariantError("projection receipt contract mismatch")
+    rows = receipt["rows"]
+    if rows and len(rows) != len(STATE_KEYS):
+        raise EngineInvariantError("projection receipt row count mismatch")
+    if any(
+        not isinstance(row, list)
+        or len(row) != len(_DELTA_PROJECTION_FIELDS)
+        or any(
+            type(index) is not int
+            or index < 0
+            or index >= len(receipt["dictionary"])
+            for index in row
+        )
+        for row in rows
+    ):
+        raise EngineInvariantError("projection receipt row width mismatch")
+    projection = (
+        {}
+        if not rows
+        else {
+            state_key: {
+                field: deepcopy(
+                    receipt["dictionary"][rows[state_index][field_index]]
+                )
+                for field_index, field in enumerate(_DELTA_PROJECTION_FIELDS)
+            }
+            for state_index, state_key in enumerate(STATE_KEYS)
+        }
+    )
+    if canonical_hash(projection) != receipt.get("source_hash"):
+        raise EngineInvariantError("projection receipt source hash mismatch")
+    expanded["delta_projection_by_state"] = projection
+    return expanded
 
 
 def _shuffle_provenance_projection(

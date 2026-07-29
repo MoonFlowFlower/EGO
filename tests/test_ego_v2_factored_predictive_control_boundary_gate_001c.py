@@ -214,10 +214,14 @@ def test_plan_action_preserves_semantics_and_reuses_cached_feature_vectors(monke
     feature_calls = 0
     compiled_calls = 0
     pose_prediction_calls = 0
+    batch_prediction_calls = 0
     successor_distribution_calls = 0
     original_feature_vector = predictive_control._feature_vector_from_summary  # noqa: SLF001
     original_compiled = predictive_control._compiled_model_arrays  # noqa: SLF001
     original_prediction_for_pose = predictive_control._prediction_for_pose  # noqa: SLF001
+    original_batch_predictions = (  # noqa: SLF001
+        predictive_control._batch_planning_prediction_vectors
+    )
     original_expected_pose_distribution = (  # noqa: SLF001
         predictive_control._expected_pose_distribution
     )
@@ -237,6 +241,11 @@ def test_plan_action_preserves_semantics_and_reuses_cached_feature_vectors(monke
         pose_prediction_calls += 1
         return original_prediction_for_pose(*args, **kwargs)
 
+    def counting_batch_predictions(*args, **kwargs):
+        nonlocal batch_prediction_calls
+        batch_prediction_calls += 1
+        return original_batch_predictions(*args, **kwargs)
+
     def counting_expected_pose_distribution(*args, **kwargs):
         nonlocal successor_distribution_calls
         successor_distribution_calls += 1
@@ -252,6 +261,11 @@ def test_plan_action_preserves_semantics_and_reuses_cached_feature_vectors(monke
         predictive_control,
         "_prediction_for_pose",
         counting_prediction_for_pose,
+    )
+    monkeypatch.setattr(
+        predictive_control,
+        "_batch_planning_prediction_vectors",
+        counting_batch_predictions,
     )
     monkeypatch.setattr(
         predictive_control,
@@ -292,8 +306,8 @@ def test_plan_action_preserves_semantics_and_reuses_cached_feature_vectors(monke
         for prediction in first["predictions_by_action"].values()
     )
     assert compiled_calls == 2
-    assert pose_prediction_calls > feature_calls
-    assert pose_prediction_calls < 2_000
+    assert batch_prediction_calls > 0
+    assert pose_prediction_calls == 0
     assert successor_distribution_calls <= pose_prediction_calls
     assert feature_calls < 120
 
@@ -317,7 +331,9 @@ def test_public_predictions_match_prechange_fixture_within_boundary(tmp_path: Pa
         trace = controller.last_trace
 
     assert trace is not None
-    plan = trace["predictive_control"]["plan"]
+    plan = engine.expand_compact_predictive_plan(
+        trace["predictive_control"]["plan"]
+    )
     assert trace["selected_action"] == expected_step["selected_action"]
     for action in engine.ACTIONS:
         expected_prediction = expected_step["predictions_by_action"][action]

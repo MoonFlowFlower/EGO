@@ -904,6 +904,59 @@ def _planning_prediction_vector_from_packed(
     )
 
 
+def _batch_planning_prediction_vectors(
+    packed_rows: np.ndarray,
+    *,
+    delta_outcome_offsets: np.ndarray,
+    visit_counts: list[int],
+) -> list[tuple[float, ...]]:
+    """Apply the scalar prediction arithmetic to independent rows in bulk."""
+
+    rows = np.asarray(packed_rows, dtype=NUMERIC_DTYPE)
+    offsets = np.asarray(delta_outcome_offsets, dtype=NUMERIC_DTYPE)
+    expected_shape = (len(visit_counts), len(OUTCOMES) + len(STATE_KEYS) + 2)
+    if rows.shape != expected_shape:
+        raise PredictiveControlInvariantError("batched packed prediction shape mismatch")
+    if offsets.shape != (len(OUTCOMES), len(STATE_KEYS)):
+        raise PredictiveControlInvariantError("batched outcome offset shape mismatch")
+    if any(type(count) is not int or count < 0 for count in visit_counts):
+        raise PredictiveControlInvariantError("batched visit counts are invalid")
+    probabilities = [
+        _softmax_values(rows[index, : len(OUTCOMES)])
+        for index in range(len(visit_counts))
+    ]
+    probability_rows = np.asarray(probabilities, dtype=NUMERIC_DTYPE)
+    base_offset = len(OUTCOMES)
+    base_values = rows[:, base_offset : base_offset + len(STATE_KEYS)]
+    conditional_values = np.asarray(
+        base_values[:, np.newaxis, :] + offsets[np.newaxis, :, :],
+        dtype=NUMERIC_DTYPE,
+    )
+    conditional_values.clip(-0.35, 0.35, out=conditional_values)
+    expected_delta = (
+        probability_rows[:, 0, np.newaxis] * conditional_values[:, 0, :]
+        + probability_rows[:, 1, np.newaxis] * conditional_values[:, 1, :]
+        + probability_rows[:, 2, np.newaxis] * conditional_values[:, 2, :]
+        + probability_rows[:, 3, np.newaxis] * conditional_values[:, 3, :]
+        + probability_rows[:, 4, np.newaxis] * conditional_values[:, 4, :]
+        + probability_rows[:, 5, np.newaxis] * conditional_values[:, 5, :]
+    )
+    scalar_offset = base_offset + len(STATE_KEYS)
+    return [
+        probabilities[index]
+        + (
+            float(expected_delta[index, 0]),
+            float(expected_delta[index, 1]),
+            float(expected_delta[index, 2]),
+            float(expected_delta[index, 3]),
+            _sigmoid(float(rows[index, scalar_offset])),
+            _sigmoid(float(rows[index, scalar_offset + 1])),
+            1.0 / math.sqrt(1.0 + visit_counts[index]),
+        )
+        for index in range(len(visit_counts))
+    ]
+
+
 def _predict_from_payload(
     state: Mapping[str, Any],
     payload: Mapping[str, Any],
@@ -1396,6 +1449,124 @@ def _prediction_for_pose(
     return prediction
 
 
+def _prewarm_depth_prediction_caches(
+    state: Mapping[str, Any],
+    beam: list[Mapping[str, Any]],
+    *,
+    belief: Mapping[str, Any],
+    observation: Mapping[str, Any] | None,
+    compiled_model: dict[str, np.ndarray],
+    compiled_prediction_matrix: np.ndarray,
+    prediction_cache: dict[tuple[Any, ...], tuple[float, ...]],
+    pose_prediction_cache: dict[tuple[Any, ...], tuple[float, ...]],
+    summary_cache: dict[tuple[int, int, str, bool], dict[str, Any]],
+    visit_key_cache: dict[tuple[Any, ...], str],
+) -> tuple[int, int]:
+    """Fill one beam depth's exact reusable prediction misses.
+
+    The traversal order matches the scalar node/action/pose traversal.  Each
+    unique public feature request is still evaluated by the scalar producer;
+    only repeated calls are hoisted out of ``_expand_node``.  This deliberately
+    avoids matrix-matrix reductions whose floating-point association could
+    change a planner tie.
+    """
+
+    pending_by_action: dict[
+        str, dict[tuple[Any, ...], tuple[np.ndarray, int]]
+    ] = {action: {} for action in ACTIONS}
+    pose_bindings: dict[tuple[Any, ...], tuple[Any, ...]] = {}
+    request_count = 0
+    observation_present = observation is not None
+    for node in beam:
+        organism = node["organism"]
+        organism_tuple = node["organism_tuple"]
+        for action in ACTIONS:
+            action_index = ACTION_INDEX[action]
+            for pose_x, pose_y, facing in node["pose_distribution"]:
+                request_count += 1
+                pose_key = (
+                    organism_tuple,
+                    pose_x,
+                    pose_y,
+                    facing,
+                    observation_present,
+                    action_index,
+                )
+                if pose_key in pose_prediction_cache:
+                    continue
+                summary_key = (pose_x, pose_y, facing, observation_present)
+                summary = summary_cache.get(summary_key)
+                if summary is None:
+                    summary = _belief_summary_at(
+                        belief,
+                        pose=(pose_x, pose_y),
+                        facing=facing,
+                        observation=observation,
+                    )
+                    summary_cache[summary_key] = summary
+                cache_key = (
+                    action_index,
+                    organism_tuple,
+                    str(summary["front_token"]),
+                    int(summary["known_cell_count"]),
+                    int(summary["known_object_count"]),
+                )
+                pose_bindings[pose_key] = cache_key
+                cached = prediction_cache.get(cache_key)
+                if cached is not None:
+                    pose_prediction_cache[pose_key] = cached
+                    continue
+                pending = pending_by_action[action]
+                if cache_key not in pending:
+                    features = _feature_vector_from_summary(
+                        organism=organism,
+                        summary=summary,
+                    )
+                    packed_values = _prediction_dot_batch(
+                        compiled_prediction_matrix[action_index], features
+                    )
+                    visit_descriptor = (
+                        action,
+                        summary["front_token"],
+                        int(float(organism["energy"]) * 10),
+                        summary["known_object_count"],
+                    )
+                    visit_key = visit_key_cache.get(visit_descriptor)
+                    if visit_key is None:
+                        visit_key = _visit_key(
+                            action,
+                            {
+                            "observation": observation,
+                            "organism": organism,
+                            "belief_summary": summary,
+                            },
+                        )
+                        visit_key_cache[visit_descriptor] = visit_key
+                    pending[cache_key] = (
+                        packed_values,
+                        int(state["model"]["visit_counts"].get(visit_key, 0)),
+                    )
+    unique_miss_count = 0
+    for action in ACTIONS:
+        pending = pending_by_action[action]
+        if not pending:
+            continue
+        keys = list(pending)
+        vectors = _batch_planning_prediction_vectors(
+            np.stack([pending[key][0] for key in keys]),
+            delta_outcome_offsets=compiled_model["delta_outcome_offsets"][
+                ACTION_INDEX[action]
+            ],
+            visit_counts=[pending[key][1] for key in keys],
+        )
+        for cache_key, vector in zip(keys, vectors):
+            prediction_cache[cache_key] = vector
+        unique_miss_count += len(keys)
+    for pose_key, cache_key in pose_bindings.items():
+        pose_prediction_cache[pose_key] = prediction_cache[cache_key]
+    return request_count, unique_miss_count
+
+
 def _expand_node(
     state: Mapping[str, Any],
     node: Mapping[str, Any],
@@ -1624,6 +1795,7 @@ def plan_action(
     run_seed: int = 0,
     episode_index: int = 0,
     sequence: int = 1,
+    _prewarm_predictions: bool = True,
 ) -> dict[str, Any]:
     validate_state(state)
     _validate_observation(observation)
@@ -1652,6 +1824,8 @@ def plan_action(
         raise PredictiveControlInvariantError("planning episode_index is invalid")
     if type(sequence) is not int or sequence < 1:
         raise PredictiveControlInvariantError("planning sequence is invalid")
+    if type(_prewarm_predictions) is not bool:
+        raise PredictiveControlInvariantError("prediction kernel selector is invalid")
     current_payload = _predictor_input(
         state,
         observation=observation,
@@ -1707,6 +1881,19 @@ def plan_action(
     root_actions_by_depth: list[list[str]] = []
     probability_mass_normalized = True
     for depth in range(horizon):
+        if _prewarm_predictions:
+            _prewarm_depth_prediction_caches(
+                state,
+                beam,
+                belief=base_belief,
+                observation=observation if depth == 0 else None,
+                compiled_model=compiled_model,
+                compiled_prediction_matrix=compiled_prediction_matrix,
+                prediction_cache=prediction_cache,
+                pose_prediction_cache=pose_prediction_cache,
+                summary_cache=summary_cache,
+                visit_key_cache=visit_key_cache,
+            )
         expanded = [
             _expand_node(
                 state,
@@ -1854,6 +2041,16 @@ def plan_action(
         "model_hash": _canonical_hash(state["model"]),
         "belief_hash": _canonical_hash(state["belief"]),
     }
+
+
+def plan_action_scalar_reference(**kwargs: Any) -> dict[str, Any]:
+    """Callable exact scalar ablation for tests and old-context diagnostics."""
+
+    if "_prewarm_predictions" in kwargs:
+        raise PredictiveControlInvariantError(
+            "scalar reference owns the prediction kernel selector"
+        )
+    return plan_action(**kwargs, _prewarm_predictions=False)
 
 
 def _updated_vector(
