@@ -1,0 +1,1113 @@
+{
+  "contexts": {
+    "p0_cross_v1:world=52:policy=711": {
+      "check_map": {
+        "control_envelope_comparable": true,
+        "deterministic_panel_capacity_admitted": false,
+        "privileged_support_witness_found": false
+      },
+      "control": {
+        "action_count": 89,
+        "max_life_index": 4,
+        "respawn_count": 3
+      },
+      "hashes_valid": true,
+      "independence_boundary": "separate reducer implementation in the same verifier process and same Codex/model lineage; not external independent audit",
+      "panel": {
+        "action_ranks": {
+          "interact": 13,
+          "move_forward": 13,
+          "rest": 13,
+          "turn_left": 13,
+          "turn_right": 13
+        },
+        "after_dedupe": {
+          "empty": 10,
+          "v0": 8,
+          "v1": 8,
+          "v2": 8,
+          "v3": 8,
+          "v4": 7,
+          "wall": 8
+        },
+        "before_dedupe": {
+          "empty": 10,
+          "v0": 8,
+          "v1": 8,
+          "v2": 8,
+          "v3": 8,
+          "v4": 7,
+          "wall": 8
+        },
+        "cell_counts": {
+          "p0_cross_v1:world=52:policy=711::interact::empty::no_object": 10,
+          "p0_cross_v1:world=52:policy=711::interact::v0::interacted": 8,
+          "p0_cross_v1:world=52:policy=711::interact::v1::interacted": 8,
+          "p0_cross_v1:world=52:policy=711::interact::v2::interacted": 8,
+          "p0_cross_v1:world=52:policy=711::interact::v3::interacted": 8,
+          "p0_cross_v1:world=52:policy=711::interact::v4::interacted": 7,
+          "p0_cross_v1:world=52:policy=711::interact::wall::no_object": 8,
+          "p0_cross_v1:world=52:policy=711::move_forward::empty::moved": 10,
+          "p0_cross_v1:world=52:policy=711::move_forward::v0::blocked": 8,
+          "p0_cross_v1:world=52:policy=711::move_forward::v1::blocked": 8,
+          "p0_cross_v1:world=52:policy=711::move_forward::v2::blocked": 8,
+          "p0_cross_v1:world=52:policy=711::move_forward::v3::blocked": 8,
+          "p0_cross_v1:world=52:policy=711::move_forward::v4::blocked": 7,
+          "p0_cross_v1:world=52:policy=711::move_forward::wall::blocked": 8,
+          "p0_cross_v1:world=52:policy=711::rest::empty::rested": 10,
+          "p0_cross_v1:world=52:policy=711::rest::v0::rested": 8,
+          "p0_cross_v1:world=52:policy=711::rest::v1::rested": 8,
+          "p0_cross_v1:world=52:policy=711::rest::v2::rested": 8,
+          "p0_cross_v1:world=52:policy=711::rest::v3::rested": 8,
+          "p0_cross_v1:world=52:policy=711::rest::v4::rested": 7,
+          "p0_cross_v1:world=52:policy=711::rest::wall::rested": 8,
+          "p0_cross_v1:world=52:policy=711::turn_left::empty::turned": 10,
+          "p0_cross_v1:world=52:policy=711::turn_left::v0::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_left::v1::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_left::v2::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_left::v3::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_left::v4::turned": 7,
+          "p0_cross_v1:world=52:policy=711::turn_left::wall::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_right::empty::turned": 10,
+          "p0_cross_v1:world=52:policy=711::turn_right::v0::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_right::v1::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_right::v2::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_right::v3::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_right::v4::turned": 7,
+          "p0_cross_v1:world=52:policy=711::turn_right::wall::turned": 8
+        },
+        "complete_action_expansion": true,
+        "construction_complete": false,
+        "panel_capacity_admitted": false,
+        "required_floor_by_cell": {
+          "p0_cross_v1:world=52:policy=711::interact::empty::no_object": 16,
+          "p0_cross_v1:world=52:policy=711::interact::v0::interacted": 8,
+          "p0_cross_v1:world=52:policy=711::interact::v1::interacted": 8,
+          "p0_cross_v1:world=52:policy=711::interact::v2::interacted": 8,
+          "p0_cross_v1:world=52:policy=711::interact::v3::interacted": 8,
+          "p0_cross_v1:world=52:policy=711::interact::v4::interacted": 8,
+          "p0_cross_v1:world=52:policy=711::interact::wall::no_object": 16,
+          "p0_cross_v1:world=52:policy=711::move_forward::empty::moved": 16,
+          "p0_cross_v1:world=52:policy=711::move_forward::v0::blocked": 8,
+          "p0_cross_v1:world=52:policy=711::move_forward::v1::blocked": 8,
+          "p0_cross_v1:world=52:policy=711::move_forward::v2::blocked": 8,
+          "p0_cross_v1:world=52:policy=711::move_forward::v3::blocked": 8,
+          "p0_cross_v1:world=52:policy=711::move_forward::v4::blocked": 8,
+          "p0_cross_v1:world=52:policy=711::move_forward::wall::blocked": 16,
+          "p0_cross_v1:world=52:policy=711::rest::empty::rested": 16,
+          "p0_cross_v1:world=52:policy=711::rest::v0::rested": 8,
+          "p0_cross_v1:world=52:policy=711::rest::v1::rested": 8,
+          "p0_cross_v1:world=52:policy=711::rest::v2::rested": 8,
+          "p0_cross_v1:world=52:policy=711::rest::v3::rested": 8,
+          "p0_cross_v1:world=52:policy=711::rest::v4::rested": 8,
+          "p0_cross_v1:world=52:policy=711::rest::wall::rested": 16,
+          "p0_cross_v1:world=52:policy=711::turn_left::empty::turned": 16,
+          "p0_cross_v1:world=52:policy=711::turn_left::v0::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_left::v1::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_left::v2::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_left::v3::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_left::v4::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_left::wall::turned": 16,
+          "p0_cross_v1:world=52:policy=711::turn_right::empty::turned": 16,
+          "p0_cross_v1:world=52:policy=711::turn_right::v0::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_right::v1::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_right::v2::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_right::v3::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_right::v4::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_right::wall::turned": 16
+        },
+        "required_floors": {
+          "empty": 16,
+          "v0": 8,
+          "v1": 8,
+          "v2": 8,
+          "v3": 8,
+          "v4": 8,
+          "wall": 16
+        }
+      },
+      "producer_receipts_valid": true,
+      "reported_values_match": true,
+      "witness": {
+        "action_ranks": {
+          "interact": 11,
+          "move_forward": 7,
+          "rest": 0,
+          "turn_left": 10,
+          "turn_right": 8
+        },
+        "control_envelope_comparable": true,
+        "stratum_counts": {
+          "interact::no_object": 0,
+          "interact::v0::interacted": 5,
+          "interact::v1::interacted": 4,
+          "interact::v2::interacted": 4,
+          "interact::v3::interacted": 4,
+          "interact::v4::interacted": 2,
+          "move_forward::blocked": 0,
+          "move_forward::moved": 47,
+          "rest::rested": 0,
+          "turn_left::turned": 13,
+          "turn_right::turned": 10
+        },
+        "witness_found": false
+      }
+    },
+    "p2_vertical_v1:world=54:policy=711": {
+      "check_map": {
+        "control_envelope_comparable": true,
+        "deterministic_panel_capacity_admitted": false,
+        "privileged_support_witness_found": false
+      },
+      "control": {
+        "action_count": 89,
+        "max_life_index": 4,
+        "respawn_count": 3
+      },
+      "hashes_valid": true,
+      "independence_boundary": "separate reducer implementation in the same verifier process and same Codex/model lineage; not external independent audit",
+      "panel": {
+        "action_ranks": {
+          "interact": 13,
+          "move_forward": 13,
+          "rest": 13,
+          "turn_left": 13,
+          "turn_right": 13
+        },
+        "after_dedupe": {
+          "empty": 11,
+          "v0": 8,
+          "v1": 8,
+          "v2": 8,
+          "v3": 8,
+          "v4": 7,
+          "wall": 10
+        },
+        "before_dedupe": {
+          "empty": 11,
+          "v0": 8,
+          "v1": 8,
+          "v2": 8,
+          "v3": 8,
+          "v4": 7,
+          "wall": 10
+        },
+        "cell_counts": {
+          "p2_vertical_v1:world=54:policy=711::interact::empty::no_object": 11,
+          "p2_vertical_v1:world=54:policy=711::interact::v0::interacted": 8,
+          "p2_vertical_v1:world=54:policy=711::interact::v1::interacted": 8,
+          "p2_vertical_v1:world=54:policy=711::interact::v2::interacted": 8,
+          "p2_vertical_v1:world=54:policy=711::interact::v3::interacted": 8,
+          "p2_vertical_v1:world=54:policy=711::interact::v4::interacted": 7,
+          "p2_vertical_v1:world=54:policy=711::interact::wall::no_object": 10,
+          "p2_vertical_v1:world=54:policy=711::move_forward::empty::moved": 11,
+          "p2_vertical_v1:world=54:policy=711::move_forward::v0::blocked": 8,
+          "p2_vertical_v1:world=54:policy=711::move_forward::v1::blocked": 8,
+          "p2_vertical_v1:world=54:policy=711::move_forward::v2::blocked": 8,
+          "p2_vertical_v1:world=54:policy=711::move_forward::v3::blocked": 8,
+          "p2_vertical_v1:world=54:policy=711::move_forward::v4::blocked": 7,
+          "p2_vertical_v1:world=54:policy=711::move_forward::wall::blocked": 10,
+          "p2_vertical_v1:world=54:policy=711::rest::empty::rested": 11,
+          "p2_vertical_v1:world=54:policy=711::rest::v0::rested": 8,
+          "p2_vertical_v1:world=54:policy=711::rest::v1::rested": 8,
+          "p2_vertical_v1:world=54:policy=711::rest::v2::rested": 8,
+          "p2_vertical_v1:world=54:policy=711::rest::v3::rested": 8,
+          "p2_vertical_v1:world=54:policy=711::rest::v4::rested": 7,
+          "p2_vertical_v1:world=54:policy=711::rest::wall::rested": 10,
+          "p2_vertical_v1:world=54:policy=711::turn_left::empty::turned": 11,
+          "p2_vertical_v1:world=54:policy=711::turn_left::v0::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_left::v1::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_left::v2::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_left::v3::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_left::v4::turned": 7,
+          "p2_vertical_v1:world=54:policy=711::turn_left::wall::turned": 10,
+          "p2_vertical_v1:world=54:policy=711::turn_right::empty::turned": 11,
+          "p2_vertical_v1:world=54:policy=711::turn_right::v0::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_right::v1::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_right::v2::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_right::v3::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_right::v4::turned": 7,
+          "p2_vertical_v1:world=54:policy=711::turn_right::wall::turned": 10
+        },
+        "complete_action_expansion": true,
+        "construction_complete": false,
+        "panel_capacity_admitted": false,
+        "required_floor_by_cell": {
+          "p2_vertical_v1:world=54:policy=711::interact::empty::no_object": 16,
+          "p2_vertical_v1:world=54:policy=711::interact::v0::interacted": 8,
+          "p2_vertical_v1:world=54:policy=711::interact::v1::interacted": 8,
+          "p2_vertical_v1:world=54:policy=711::interact::v2::interacted": 8,
+          "p2_vertical_v1:world=54:policy=711::interact::v3::interacted": 8,
+          "p2_vertical_v1:world=54:policy=711::interact::v4::interacted": 8,
+          "p2_vertical_v1:world=54:policy=711::interact::wall::no_object": 16,
+          "p2_vertical_v1:world=54:policy=711::move_forward::empty::moved": 16,
+          "p2_vertical_v1:world=54:policy=711::move_forward::v0::blocked": 8,
+          "p2_vertical_v1:world=54:policy=711::move_forward::v1::blocked": 8,
+          "p2_vertical_v1:world=54:policy=711::move_forward::v2::blocked": 8,
+          "p2_vertical_v1:world=54:policy=711::move_forward::v3::blocked": 8,
+          "p2_vertical_v1:world=54:policy=711::move_forward::v4::blocked": 8,
+          "p2_vertical_v1:world=54:policy=711::move_forward::wall::blocked": 16,
+          "p2_vertical_v1:world=54:policy=711::rest::empty::rested": 16,
+          "p2_vertical_v1:world=54:policy=711::rest::v0::rested": 8,
+          "p2_vertical_v1:world=54:policy=711::rest::v1::rested": 8,
+          "p2_vertical_v1:world=54:policy=711::rest::v2::rested": 8,
+          "p2_vertical_v1:world=54:policy=711::rest::v3::rested": 8,
+          "p2_vertical_v1:world=54:policy=711::rest::v4::rested": 8,
+          "p2_vertical_v1:world=54:policy=711::rest::wall::rested": 16,
+          "p2_vertical_v1:world=54:policy=711::turn_left::empty::turned": 16,
+          "p2_vertical_v1:world=54:policy=711::turn_left::v0::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_left::v1::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_left::v2::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_left::v3::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_left::v4::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_left::wall::turned": 16,
+          "p2_vertical_v1:world=54:policy=711::turn_right::empty::turned": 16,
+          "p2_vertical_v1:world=54:policy=711::turn_right::v0::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_right::v1::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_right::v2::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_right::v3::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_right::v4::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_right::wall::turned": 16
+        },
+        "required_floors": {
+          "empty": 16,
+          "v0": 8,
+          "v1": 8,
+          "v2": 8,
+          "v3": 8,
+          "v4": 8,
+          "wall": 16
+        }
+      },
+      "producer_receipts_valid": true,
+      "reported_values_match": true,
+      "witness": {
+        "action_ranks": {
+          "interact": 10,
+          "move_forward": 7,
+          "rest": 0,
+          "turn_left": 10,
+          "turn_right": 11
+        },
+        "control_envelope_comparable": true,
+        "stratum_counts": {
+          "interact::no_object": 0,
+          "interact::v0::interacted": 4,
+          "interact::v1::interacted": 4,
+          "interact::v2::interacted": 4,
+          "interact::v3::interacted": 4,
+          "interact::v4::interacted": 0,
+          "move_forward::blocked": 0,
+          "move_forward::moved": 39,
+          "rest::rested": 0,
+          "turn_left::turned": 17,
+          "turn_right::turned": 17
+        },
+        "witness_found": false
+      }
+    }
+  },
+  "fresh_recompute_report": {
+    "contexts": {
+      "p0_cross_v1:world=52:policy=711": {
+        "control": {
+          "equal": true,
+          "first_child_pid": 36112,
+          "first_parent_pid": 42692,
+          "first_payload_digest": "78c5f9dfb6d06961a9b70398752b0d92f11438bedb3384771de2ba0ec401fb1d",
+          "first_python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpagwIiG\\Scripts\\python.exe",
+          "first_request_digest": "3f27d42c9c6f735e81dc28b77206dd7baa34b50c4e166e729158a69e2d5729a2",
+          "first_runtime_receipt": {
+            "contract_satisfied": true,
+            "float_dtype": "<f8",
+            "numpy_matrix_rank_tolerance": "numpy.linalg.matrix_rank_default",
+            "numpy_version": "2.2.6",
+            "python_version": "3.12.13"
+          },
+          "python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpagwIiG\\Scripts\\python.exe",
+          "runtime_receipt": {
+            "contract_satisfied": true,
+            "float_dtype": "<f8",
+            "numpy_matrix_rank_tolerance": "numpy.linalg.matrix_rank_default",
+            "numpy_version": "2.2.6",
+            "python_version": "3.12.13"
+          },
+          "second_child_pid": 49160,
+          "second_parent_pid": 42692,
+          "second_payload_digest": "78c5f9dfb6d06961a9b70398752b0d92f11438bedb3384771de2ba0ec401fb1d",
+          "second_python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpagwIiG\\Scripts\\python.exe",
+          "second_request_digest": "3f27d42c9c6f735e81dc28b77206dd7baa34b50c4e166e729158a69e2d5729a2",
+          "second_runtime_receipt": {
+            "contract_satisfied": true,
+            "float_dtype": "<f8",
+            "numpy_matrix_rank_tolerance": "numpy.linalg.matrix_rank_default",
+            "numpy_version": "2.2.6",
+            "python_version": "3.12.13"
+          }
+        },
+        "panel": {
+          "equal": true,
+          "first_child_pid": 46876,
+          "first_parent_pid": 42692,
+          "first_payload_digest": "5c65123f19489814bbbc36cb097a82f6f72bec4abfb8a44e237ea7ada956ec62",
+          "first_python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpagwIiG\\Scripts\\python.exe",
+          "first_request_digest": "3bd716b324879ff79bda0d8e0e3711125442f0bec614b58e4341daa1c64ac212",
+          "first_runtime_receipt": {
+            "contract_satisfied": true,
+            "float_dtype": "<f8",
+            "numpy_matrix_rank_tolerance": "numpy.linalg.matrix_rank_default",
+            "numpy_version": "2.2.6",
+            "python_version": "3.12.13"
+          },
+          "python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpagwIiG\\Scripts\\python.exe",
+          "runtime_receipt": {
+            "contract_satisfied": true,
+            "float_dtype": "<f8",
+            "numpy_matrix_rank_tolerance": "numpy.linalg.matrix_rank_default",
+            "numpy_version": "2.2.6",
+            "python_version": "3.12.13"
+          },
+          "second_child_pid": 49188,
+          "second_parent_pid": 42692,
+          "second_payload_digest": "5c65123f19489814bbbc36cb097a82f6f72bec4abfb8a44e237ea7ada956ec62",
+          "second_python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpagwIiG\\Scripts\\python.exe",
+          "second_request_digest": "3bd716b324879ff79bda0d8e0e3711125442f0bec614b58e4341daa1c64ac212",
+          "second_runtime_receipt": {
+            "contract_satisfied": true,
+            "float_dtype": "<f8",
+            "numpy_matrix_rank_tolerance": "numpy.linalg.matrix_rank_default",
+            "numpy_version": "2.2.6",
+            "python_version": "3.12.13"
+          }
+        },
+        "witness": {
+          "equal": true,
+          "first_child_pid": 36420,
+          "first_parent_pid": 42692,
+          "first_payload_digest": "05ad08ec0f32d48455c6a43b2da94070a5ebfab4f5fcebb57cd070c0a24403c8",
+          "first_python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpagwIiG\\Scripts\\python.exe",
+          "first_request_digest": "9c511fb526c5fed794312349cb5d1dcab7026ebb188090b4283164afab5319ab",
+          "first_runtime_receipt": {
+            "contract_satisfied": true,
+            "float_dtype": "<f8",
+            "numpy_matrix_rank_tolerance": "numpy.linalg.matrix_rank_default",
+            "numpy_version": "2.2.6",
+            "python_version": "3.12.13"
+          },
+          "python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpagwIiG\\Scripts\\python.exe",
+          "runtime_receipt": {
+            "contract_satisfied": true,
+            "float_dtype": "<f8",
+            "numpy_matrix_rank_tolerance": "numpy.linalg.matrix_rank_default",
+            "numpy_version": "2.2.6",
+            "python_version": "3.12.13"
+          },
+          "second_child_pid": 48404,
+          "second_parent_pid": 42692,
+          "second_payload_digest": "05ad08ec0f32d48455c6a43b2da94070a5ebfab4f5fcebb57cd070c0a24403c8",
+          "second_python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpagwIiG\\Scripts\\python.exe",
+          "second_request_digest": "9c511fb526c5fed794312349cb5d1dcab7026ebb188090b4283164afab5319ab",
+          "second_runtime_receipt": {
+            "contract_satisfied": true,
+            "float_dtype": "<f8",
+            "numpy_matrix_rank_tolerance": "numpy.linalg.matrix_rank_default",
+            "numpy_version": "2.2.6",
+            "python_version": "3.12.13"
+          }
+        }
+      },
+      "p2_vertical_v1:world=54:policy=711": {
+        "control": {
+          "equal": true,
+          "first_child_pid": 43128,
+          "first_parent_pid": 42692,
+          "first_payload_digest": "717ae3391419cd1024dc90555a0e94973b77e26eb473704fb670ec00b6a8924b",
+          "first_python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpagwIiG\\Scripts\\python.exe",
+          "first_request_digest": "d6329c49558c2e1f38b1d32908073c1644256e98d98df1fcd53e9768473938ae",
+          "first_runtime_receipt": {
+            "contract_satisfied": true,
+            "float_dtype": "<f8",
+            "numpy_matrix_rank_tolerance": "numpy.linalg.matrix_rank_default",
+            "numpy_version": "2.2.6",
+            "python_version": "3.12.13"
+          },
+          "python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpagwIiG\\Scripts\\python.exe",
+          "runtime_receipt": {
+            "contract_satisfied": true,
+            "float_dtype": "<f8",
+            "numpy_matrix_rank_tolerance": "numpy.linalg.matrix_rank_default",
+            "numpy_version": "2.2.6",
+            "python_version": "3.12.13"
+          },
+          "second_child_pid": 49224,
+          "second_parent_pid": 42692,
+          "second_payload_digest": "717ae3391419cd1024dc90555a0e94973b77e26eb473704fb670ec00b6a8924b",
+          "second_python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpagwIiG\\Scripts\\python.exe",
+          "second_request_digest": "d6329c49558c2e1f38b1d32908073c1644256e98d98df1fcd53e9768473938ae",
+          "second_runtime_receipt": {
+            "contract_satisfied": true,
+            "float_dtype": "<f8",
+            "numpy_matrix_rank_tolerance": "numpy.linalg.matrix_rank_default",
+            "numpy_version": "2.2.6",
+            "python_version": "3.12.13"
+          }
+        },
+        "panel": {
+          "equal": true,
+          "first_child_pid": 48332,
+          "first_parent_pid": 42692,
+          "first_payload_digest": "b38702cad89acbcd6549cb65644439646169eef9e12b760910a02f44f8de331a",
+          "first_python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpagwIiG\\Scripts\\python.exe",
+          "first_request_digest": "8752bb1688edc24707aa9a64862032bc6584e797bcc1b3648c293c5c050351bd",
+          "first_runtime_receipt": {
+            "contract_satisfied": true,
+            "float_dtype": "<f8",
+            "numpy_matrix_rank_tolerance": "numpy.linalg.matrix_rank_default",
+            "numpy_version": "2.2.6",
+            "python_version": "3.12.13"
+          },
+          "python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpagwIiG\\Scripts\\python.exe",
+          "runtime_receipt": {
+            "contract_satisfied": true,
+            "float_dtype": "<f8",
+            "numpy_matrix_rank_tolerance": "numpy.linalg.matrix_rank_default",
+            "numpy_version": "2.2.6",
+            "python_version": "3.12.13"
+          },
+          "second_child_pid": 38688,
+          "second_parent_pid": 42692,
+          "second_payload_digest": "b38702cad89acbcd6549cb65644439646169eef9e12b760910a02f44f8de331a",
+          "second_python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpagwIiG\\Scripts\\python.exe",
+          "second_request_digest": "8752bb1688edc24707aa9a64862032bc6584e797bcc1b3648c293c5c050351bd",
+          "second_runtime_receipt": {
+            "contract_satisfied": true,
+            "float_dtype": "<f8",
+            "numpy_matrix_rank_tolerance": "numpy.linalg.matrix_rank_default",
+            "numpy_version": "2.2.6",
+            "python_version": "3.12.13"
+          }
+        },
+        "witness": {
+          "equal": true,
+          "first_child_pid": 20936,
+          "first_parent_pid": 42692,
+          "first_payload_digest": "9bb402bb667be47e2ed0198c00bd9f2c5919e2cd95cadc69a6833bbd69982927",
+          "first_python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpagwIiG\\Scripts\\python.exe",
+          "first_request_digest": "b5e2d00d87714604f0b446f2312c603aacb217fb4644ece35557965866d4c610",
+          "first_runtime_receipt": {
+            "contract_satisfied": true,
+            "float_dtype": "<f8",
+            "numpy_matrix_rank_tolerance": "numpy.linalg.matrix_rank_default",
+            "numpy_version": "2.2.6",
+            "python_version": "3.12.13"
+          },
+          "python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpagwIiG\\Scripts\\python.exe",
+          "runtime_receipt": {
+            "contract_satisfied": true,
+            "float_dtype": "<f8",
+            "numpy_matrix_rank_tolerance": "numpy.linalg.matrix_rank_default",
+            "numpy_version": "2.2.6",
+            "python_version": "3.12.13"
+          },
+          "second_child_pid": 41592,
+          "second_parent_pid": 42692,
+          "second_payload_digest": "9bb402bb667be47e2ed0198c00bd9f2c5919e2cd95cadc69a6833bbd69982927",
+          "second_python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmpagwIiG\\Scripts\\python.exe",
+          "second_request_digest": "b5e2d00d87714604f0b446f2312c603aacb217fb4644ece35557965866d4c610",
+          "second_runtime_receipt": {
+            "contract_satisfied": true,
+            "float_dtype": "<f8",
+            "numpy_matrix_rank_tolerance": "numpy.linalg.matrix_rank_default",
+            "numpy_version": "2.2.6",
+            "python_version": "3.12.13"
+          }
+        }
+      }
+    },
+    "equal": true
+  },
+  "independent_reports": {
+    "p0_cross_v1:world=52:policy=711": {
+      "check_map": {
+        "control_envelope_comparable": true,
+        "deterministic_panel_capacity_admitted": false,
+        "privileged_support_witness_found": false
+      },
+      "control": {
+        "action_count": 89,
+        "max_life_index": 4,
+        "respawn_count": 3
+      },
+      "hashes_valid": true,
+      "independence_boundary": "separate reducer implementation in the same verifier process and same Codex/model lineage; not external independent audit",
+      "panel": {
+        "action_ranks": {
+          "interact": 13,
+          "move_forward": 13,
+          "rest": 13,
+          "turn_left": 13,
+          "turn_right": 13
+        },
+        "after_dedupe": {
+          "empty": 10,
+          "v0": 8,
+          "v1": 8,
+          "v2": 8,
+          "v3": 8,
+          "v4": 7,
+          "wall": 8
+        },
+        "before_dedupe": {
+          "empty": 10,
+          "v0": 8,
+          "v1": 8,
+          "v2": 8,
+          "v3": 8,
+          "v4": 7,
+          "wall": 8
+        },
+        "cell_counts": {
+          "p0_cross_v1:world=52:policy=711::interact::empty::no_object": 10,
+          "p0_cross_v1:world=52:policy=711::interact::v0::interacted": 8,
+          "p0_cross_v1:world=52:policy=711::interact::v1::interacted": 8,
+          "p0_cross_v1:world=52:policy=711::interact::v2::interacted": 8,
+          "p0_cross_v1:world=52:policy=711::interact::v3::interacted": 8,
+          "p0_cross_v1:world=52:policy=711::interact::v4::interacted": 7,
+          "p0_cross_v1:world=52:policy=711::interact::wall::no_object": 8,
+          "p0_cross_v1:world=52:policy=711::move_forward::empty::moved": 10,
+          "p0_cross_v1:world=52:policy=711::move_forward::v0::blocked": 8,
+          "p0_cross_v1:world=52:policy=711::move_forward::v1::blocked": 8,
+          "p0_cross_v1:world=52:policy=711::move_forward::v2::blocked": 8,
+          "p0_cross_v1:world=52:policy=711::move_forward::v3::blocked": 8,
+          "p0_cross_v1:world=52:policy=711::move_forward::v4::blocked": 7,
+          "p0_cross_v1:world=52:policy=711::move_forward::wall::blocked": 8,
+          "p0_cross_v1:world=52:policy=711::rest::empty::rested": 10,
+          "p0_cross_v1:world=52:policy=711::rest::v0::rested": 8,
+          "p0_cross_v1:world=52:policy=711::rest::v1::rested": 8,
+          "p0_cross_v1:world=52:policy=711::rest::v2::rested": 8,
+          "p0_cross_v1:world=52:policy=711::rest::v3::rested": 8,
+          "p0_cross_v1:world=52:policy=711::rest::v4::rested": 7,
+          "p0_cross_v1:world=52:policy=711::rest::wall::rested": 8,
+          "p0_cross_v1:world=52:policy=711::turn_left::empty::turned": 10,
+          "p0_cross_v1:world=52:policy=711::turn_left::v0::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_left::v1::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_left::v2::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_left::v3::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_left::v4::turned": 7,
+          "p0_cross_v1:world=52:policy=711::turn_left::wall::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_right::empty::turned": 10,
+          "p0_cross_v1:world=52:policy=711::turn_right::v0::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_right::v1::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_right::v2::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_right::v3::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_right::v4::turned": 7,
+          "p0_cross_v1:world=52:policy=711::turn_right::wall::turned": 8
+        },
+        "complete_action_expansion": true,
+        "construction_complete": false,
+        "panel_capacity_admitted": false,
+        "required_floor_by_cell": {
+          "p0_cross_v1:world=52:policy=711::interact::empty::no_object": 16,
+          "p0_cross_v1:world=52:policy=711::interact::v0::interacted": 8,
+          "p0_cross_v1:world=52:policy=711::interact::v1::interacted": 8,
+          "p0_cross_v1:world=52:policy=711::interact::v2::interacted": 8,
+          "p0_cross_v1:world=52:policy=711::interact::v3::interacted": 8,
+          "p0_cross_v1:world=52:policy=711::interact::v4::interacted": 8,
+          "p0_cross_v1:world=52:policy=711::interact::wall::no_object": 16,
+          "p0_cross_v1:world=52:policy=711::move_forward::empty::moved": 16,
+          "p0_cross_v1:world=52:policy=711::move_forward::v0::blocked": 8,
+          "p0_cross_v1:world=52:policy=711::move_forward::v1::blocked": 8,
+          "p0_cross_v1:world=52:policy=711::move_forward::v2::blocked": 8,
+          "p0_cross_v1:world=52:policy=711::move_forward::v3::blocked": 8,
+          "p0_cross_v1:world=52:policy=711::move_forward::v4::blocked": 8,
+          "p0_cross_v1:world=52:policy=711::move_forward::wall::blocked": 16,
+          "p0_cross_v1:world=52:policy=711::rest::empty::rested": 16,
+          "p0_cross_v1:world=52:policy=711::rest::v0::rested": 8,
+          "p0_cross_v1:world=52:policy=711::rest::v1::rested": 8,
+          "p0_cross_v1:world=52:policy=711::rest::v2::rested": 8,
+          "p0_cross_v1:world=52:policy=711::rest::v3::rested": 8,
+          "p0_cross_v1:world=52:policy=711::rest::v4::rested": 8,
+          "p0_cross_v1:world=52:policy=711::rest::wall::rested": 16,
+          "p0_cross_v1:world=52:policy=711::turn_left::empty::turned": 16,
+          "p0_cross_v1:world=52:policy=711::turn_left::v0::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_left::v1::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_left::v2::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_left::v3::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_left::v4::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_left::wall::turned": 16,
+          "p0_cross_v1:world=52:policy=711::turn_right::empty::turned": 16,
+          "p0_cross_v1:world=52:policy=711::turn_right::v0::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_right::v1::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_right::v2::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_right::v3::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_right::v4::turned": 8,
+          "p0_cross_v1:world=52:policy=711::turn_right::wall::turned": 16
+        },
+        "required_floors": {
+          "empty": 16,
+          "v0": 8,
+          "v1": 8,
+          "v2": 8,
+          "v3": 8,
+          "v4": 8,
+          "wall": 16
+        }
+      },
+      "producer_receipts_valid": true,
+      "reported_values_match": true,
+      "witness": {
+        "action_ranks": {
+          "interact": 11,
+          "move_forward": 7,
+          "rest": 0,
+          "turn_left": 10,
+          "turn_right": 8
+        },
+        "control_envelope_comparable": true,
+        "stratum_counts": {
+          "interact::no_object": 0,
+          "interact::v0::interacted": 5,
+          "interact::v1::interacted": 4,
+          "interact::v2::interacted": 4,
+          "interact::v3::interacted": 4,
+          "interact::v4::interacted": 2,
+          "move_forward::blocked": 0,
+          "move_forward::moved": 47,
+          "rest::rested": 0,
+          "turn_left::turned": 13,
+          "turn_right::turned": 10
+        },
+        "witness_found": false
+      }
+    },
+    "p2_vertical_v1:world=54:policy=711": {
+      "check_map": {
+        "control_envelope_comparable": true,
+        "deterministic_panel_capacity_admitted": false,
+        "privileged_support_witness_found": false
+      },
+      "control": {
+        "action_count": 89,
+        "max_life_index": 4,
+        "respawn_count": 3
+      },
+      "hashes_valid": true,
+      "independence_boundary": "separate reducer implementation in the same verifier process and same Codex/model lineage; not external independent audit",
+      "panel": {
+        "action_ranks": {
+          "interact": 13,
+          "move_forward": 13,
+          "rest": 13,
+          "turn_left": 13,
+          "turn_right": 13
+        },
+        "after_dedupe": {
+          "empty": 11,
+          "v0": 8,
+          "v1": 8,
+          "v2": 8,
+          "v3": 8,
+          "v4": 7,
+          "wall": 10
+        },
+        "before_dedupe": {
+          "empty": 11,
+          "v0": 8,
+          "v1": 8,
+          "v2": 8,
+          "v3": 8,
+          "v4": 7,
+          "wall": 10
+        },
+        "cell_counts": {
+          "p2_vertical_v1:world=54:policy=711::interact::empty::no_object": 11,
+          "p2_vertical_v1:world=54:policy=711::interact::v0::interacted": 8,
+          "p2_vertical_v1:world=54:policy=711::interact::v1::interacted": 8,
+          "p2_vertical_v1:world=54:policy=711::interact::v2::interacted": 8,
+          "p2_vertical_v1:world=54:policy=711::interact::v3::interacted": 8,
+          "p2_vertical_v1:world=54:policy=711::interact::v4::interacted": 7,
+          "p2_vertical_v1:world=54:policy=711::interact::wall::no_object": 10,
+          "p2_vertical_v1:world=54:policy=711::move_forward::empty::moved": 11,
+          "p2_vertical_v1:world=54:policy=711::move_forward::v0::blocked": 8,
+          "p2_vertical_v1:world=54:policy=711::move_forward::v1::blocked": 8,
+          "p2_vertical_v1:world=54:policy=711::move_forward::v2::blocked": 8,
+          "p2_vertical_v1:world=54:policy=711::move_forward::v3::blocked": 8,
+          "p2_vertical_v1:world=54:policy=711::move_forward::v4::blocked": 7,
+          "p2_vertical_v1:world=54:policy=711::move_forward::wall::blocked": 10,
+          "p2_vertical_v1:world=54:policy=711::rest::empty::rested": 11,
+          "p2_vertical_v1:world=54:policy=711::rest::v0::rested": 8,
+          "p2_vertical_v1:world=54:policy=711::rest::v1::rested": 8,
+          "p2_vertical_v1:world=54:policy=711::rest::v2::rested": 8,
+          "p2_vertical_v1:world=54:policy=711::rest::v3::rested": 8,
+          "p2_vertical_v1:world=54:policy=711::rest::v4::rested": 7,
+          "p2_vertical_v1:world=54:policy=711::rest::wall::rested": 10,
+          "p2_vertical_v1:world=54:policy=711::turn_left::empty::turned": 11,
+          "p2_vertical_v1:world=54:policy=711::turn_left::v0::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_left::v1::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_left::v2::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_left::v3::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_left::v4::turned": 7,
+          "p2_vertical_v1:world=54:policy=711::turn_left::wall::turned": 10,
+          "p2_vertical_v1:world=54:policy=711::turn_right::empty::turned": 11,
+          "p2_vertical_v1:world=54:policy=711::turn_right::v0::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_right::v1::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_right::v2::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_right::v3::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_right::v4::turned": 7,
+          "p2_vertical_v1:world=54:policy=711::turn_right::wall::turned": 10
+        },
+        "complete_action_expansion": true,
+        "construction_complete": false,
+        "panel_capacity_admitted": false,
+        "required_floor_by_cell": {
+          "p2_vertical_v1:world=54:policy=711::interact::empty::no_object": 16,
+          "p2_vertical_v1:world=54:policy=711::interact::v0::interacted": 8,
+          "p2_vertical_v1:world=54:policy=711::interact::v1::interacted": 8,
+          "p2_vertical_v1:world=54:policy=711::interact::v2::interacted": 8,
+          "p2_vertical_v1:world=54:policy=711::interact::v3::interacted": 8,
+          "p2_vertical_v1:world=54:policy=711::interact::v4::interacted": 8,
+          "p2_vertical_v1:world=54:policy=711::interact::wall::no_object": 16,
+          "p2_vertical_v1:world=54:policy=711::move_forward::empty::moved": 16,
+          "p2_vertical_v1:world=54:policy=711::move_forward::v0::blocked": 8,
+          "p2_vertical_v1:world=54:policy=711::move_forward::v1::blocked": 8,
+          "p2_vertical_v1:world=54:policy=711::move_forward::v2::blocked": 8,
+          "p2_vertical_v1:world=54:policy=711::move_forward::v3::blocked": 8,
+          "p2_vertical_v1:world=54:policy=711::move_forward::v4::blocked": 8,
+          "p2_vertical_v1:world=54:policy=711::move_forward::wall::blocked": 16,
+          "p2_vertical_v1:world=54:policy=711::rest::empty::rested": 16,
+          "p2_vertical_v1:world=54:policy=711::rest::v0::rested": 8,
+          "p2_vertical_v1:world=54:policy=711::rest::v1::rested": 8,
+          "p2_vertical_v1:world=54:policy=711::rest::v2::rested": 8,
+          "p2_vertical_v1:world=54:policy=711::rest::v3::rested": 8,
+          "p2_vertical_v1:world=54:policy=711::rest::v4::rested": 8,
+          "p2_vertical_v1:world=54:policy=711::rest::wall::rested": 16,
+          "p2_vertical_v1:world=54:policy=711::turn_left::empty::turned": 16,
+          "p2_vertical_v1:world=54:policy=711::turn_left::v0::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_left::v1::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_left::v2::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_left::v3::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_left::v4::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_left::wall::turned": 16,
+          "p2_vertical_v1:world=54:policy=711::turn_right::empty::turned": 16,
+          "p2_vertical_v1:world=54:policy=711::turn_right::v0::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_right::v1::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_right::v2::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_right::v3::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_right::v4::turned": 8,
+          "p2_vertical_v1:world=54:policy=711::turn_right::wall::turned": 16
+        },
+        "required_floors": {
+          "empty": 16,
+          "v0": 8,
+          "v1": 8,
+          "v2": 8,
+          "v3": 8,
+          "v4": 8,
+          "wall": 16
+        }
+      },
+      "producer_receipts_valid": true,
+      "reported_values_match": true,
+      "witness": {
+        "action_ranks": {
+          "interact": 10,
+          "move_forward": 7,
+          "rest": 0,
+          "turn_left": 10,
+          "turn_right": 11
+        },
+        "control_envelope_comparable": true,
+        "stratum_counts": {
+          "interact::no_object": 0,
+          "interact::v0::interacted": 4,
+          "interact::v1::interacted": 4,
+          "interact::v2::interacted": 4,
+          "interact::v3::interacted": 4,
+          "interact::v4::interacted": 0,
+          "move_forward::blocked": 0,
+          "move_forward::moved": 39,
+          "rest::rested": 0,
+          "turn_left::turned": 17,
+          "turn_right::turned": 17
+        },
+        "witness_found": false
+      }
+    }
+  },
+  "pre_run_observation": {
+    "branch": "codex/ego-v2-bayesian-active-identification-001h",
+    "dependency_hashes": {
+      "requirements-ego-v2.txt": "a23aaf94250a9f53031a592980142245a848e2372b6c6c3093e8260b129265b8"
+    },
+    "engine_code_path_hash": "0e8285d88a5feacc918eec5e64180bed8ee9aa2da737459e09fa0e6e3a0a75a2",
+    "head": "f48a6a5a5b8c896f74d3c8f137429811015ca738",
+    "head_changed_paths": [
+      "docs/codex/tasks/ego-v2-p1-acquisition-benchmark-admission-001h-r1/PRE_RUN_PROVENANCE.json"
+    ],
+    "head_parent": "7c027b1e6ae379081cc0b1b4afb9500a25239fda",
+    "index_clean": true,
+    "input_hashes": {
+      "artifacts/EGO-V2-P1-ADDITIVE-PREDICTION-HEADROOM-DIAGNOSTIC-001C-R4/result.json": "918d07ef7535ea64072ea3eb870b1334e0a5e9efd89e767d713f3902b601d40e",
+      "artifacts/EGO-V2-P1-PREDICTIVE-REPLAY-KERNEL-REPAIR-001F/result.json": "39585cc1bc39b776f90978154cb08f4475fc38d66cff069304a68cf9f1d968c4",
+      "artifacts/EGO-V2-P1-PREDICTIVE-REPLAY-KERNEL-REPAIR-001F/smoke_p0_cross_v1.sqlite3": "d429cf03646a666d8e2727c946d2d7fd91d65d680139f8c5d57a73e02a960a21",
+      "artifacts/EGO-V2-P1-PREDICTIVE-REPLAY-KERNEL-REPAIR-001F/smoke_p2_vertical_v1.sqlite3": "b8cbf83530a7d20494bbc62629e14dd300f2b5226cf5700ef753977704e1f4c4"
+    },
+    "output_absent_or_empty": true,
+    "output_dir": "artifacts/EGO-V2-P1-ACQUISITION-BENCHMARK-ADMISSION-001H-R1",
+    "provenance_tracked_at_head": true,
+    "repository_root": "D:/Project/AIProject/MyProject/Ego",
+    "runtime_receipt": {
+      "contract_satisfied": true,
+      "float_dtype": "<f8",
+      "numpy_matrix_rank_tolerance": "numpy.linalg.matrix_rank_default",
+      "numpy_version": "2.2.6",
+      "python_version": "3.12.13"
+    },
+    "source_hashes": {
+      "docs/codex/tasks/EGO-V2-P1-ACQUISITION-BENCHMARK-ADMISSION-001H-R1.md": "915610ed949db8f670c7bba83f9fc0786b1130652185a3ead05c04e9c37295bb",
+      "docs/codex/tasks/EGO-V2-P1-BAYESIAN-ACTIVE-IDENTIFICATION-001H.md": "2f34b8c6e378f88a8cf66db957ec58c8e9adb44a3f8f712aea04ece797d2ddfc",
+      "docs/codex/tasks/ego-v2-p1-acquisition-benchmark-admission-001h-r1/COLLISION_RECORD.md": "76e0cb8c9687d20fe8df131b1b52bf359b62789736c9f6e42937f749fd89a73e",
+      "docs/codex/tasks/ego-v2-p1-acquisition-benchmark-admission-001h-r1/IMPLEMENTATION_PLAN.md": "d1ebd24b253965dca309839f1390c6982365bed79716a45f15cd8bc6e8cf04a0",
+      "labs/ego_life_playground_v0/engine.py": "867ced15abc356daa0d5cae3f4c1cb1412a15766239ee82e9a8d280e5b214385",
+      "labs/ego_life_playground_v0/microworld.py": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923",
+      "labs/ego_life_playground_v0/predictive_control.py": "1763ee3e2b755529559311fb99f247b8bc1034d0cc89708dafdd4b15e8529aae",
+      "labs/ego_life_playground_v0/store.py": "3e399471c89ec5046ae3bffe1de3419e61f8b1e0f8d3bb55d216ef6578616b84",
+      "scripts/codex/tests/test_verify_ego_v2_acquisition_benchmark_admission_001h_r1.py": "da15a47ec10171da6a274f4cb2fae6a4d8b190b8c4e4dde1d2547e21d3ac379d",
+      "scripts/codex/verify_ego_v2_acquisition_benchmark_admission_001h_r1.py": "5495d1a69977bdf195bcc239d8e5424c4e89ea498810d797814978a342f0c01a"
+    },
+    "worktree_clean": true
+  },
+  "pre_run_provenance_document": {
+    "branch": "codex/ego-v2-bayesian-active-identification-001h",
+    "context_specs": [
+      {
+        "action_budget": 89,
+        "context_id": "p0_cross_v1:world=52:policy=711",
+        "control_db_relpath": "artifacts/EGO-V2-P1-PREDICTIVE-REPLAY-KERNEL-REPAIR-001F/smoke_p0_cross_v1.sqlite3",
+        "layout_id": "p0_cross_v1",
+        "panel_rollout_ids": [
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        "policy_seed": 711,
+        "world_seed": 52
+      },
+      {
+        "action_budget": 89,
+        "context_id": "p2_vertical_v1:world=54:policy=711",
+        "control_db_relpath": "artifacts/EGO-V2-P1-PREDICTIVE-REPLAY-KERNEL-REPAIR-001F/smoke_p2_vertical_v1.sqlite3",
+        "layout_id": "p2_vertical_v1",
+        "panel_rollout_ids": [
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        "policy_seed": 711,
+        "world_seed": 54
+      }
+    ],
+    "dependency_hashes": {
+      "requirements-ego-v2.txt": "a23aaf94250a9f53031a592980142245a848e2372b6c6c3093e8260b129265b8"
+    },
+    "engine_code_path_hash": "0e8285d88a5feacc918eec5e64180bed8ee9aa2da737459e09fa0e6e3a0a75a2",
+    "heldout_firewall": {
+      "contaminated_world_interval_inclusive": [
+        30,
+        150
+      ],
+      "forbidden_reuse_as_fresh_policy_seeds": [
+        721,
+        722
+      ],
+      "fresh_worlds_consumed": [],
+      "future_fresh_world_must_be_greater_than": 150,
+      "model_training_executed": false
+    },
+    "implementation_commit": "7c027b1e6ae379081cc0b1b4afb9500a25239fda",
+    "input_hashes": {
+      "artifacts/EGO-V2-P1-ADDITIVE-PREDICTION-HEADROOM-DIAGNOSTIC-001C-R4/result.json": "918d07ef7535ea64072ea3eb870b1334e0a5e9efd89e767d713f3902b601d40e",
+      "artifacts/EGO-V2-P1-PREDICTIVE-REPLAY-KERNEL-REPAIR-001F/result.json": "39585cc1bc39b776f90978154cb08f4475fc38d66cff069304a68cf9f1d968c4",
+      "artifacts/EGO-V2-P1-PREDICTIVE-REPLAY-KERNEL-REPAIR-001F/smoke_p0_cross_v1.sqlite3": "d429cf03646a666d8e2727c946d2d7fd91d65d680139f8c5d57a73e02a960a21",
+      "artifacts/EGO-V2-P1-PREDICTIVE-REPLAY-KERNEL-REPAIR-001F/smoke_p2_vertical_v1.sqlite3": "b8cbf83530a7d20494bbc62629e14dd300f2b5226cf5700ef753977704e1f4c4"
+    },
+    "output_dir": "artifacts/EGO-V2-P1-ACQUISITION-BENCHMARK-ADMISSION-001H-R1",
+    "output_precondition": "absent_or_empty",
+    "provenance_path": "docs/codex/tasks/ego-v2-p1-acquisition-benchmark-admission-001h-r1/PRE_RUN_PROVENANCE.json",
+    "repository_root": "D:/Project/AIProject/MyProject/Ego",
+    "runtime_receipt": {
+      "contract_satisfied": true,
+      "float_dtype": "<f8",
+      "numpy_matrix_rank_tolerance": "numpy.linalg.matrix_rank_default",
+      "numpy_version": "2.2.6",
+      "python_version": "3.12.13"
+    },
+    "schema_version": "ego.v2.001h_r1.pre_run_provenance.v1",
+    "source_hashes": {
+      "docs/codex/tasks/EGO-V2-P1-ACQUISITION-BENCHMARK-ADMISSION-001H-R1.md": "915610ed949db8f670c7bba83f9fc0786b1130652185a3ead05c04e9c37295bb",
+      "docs/codex/tasks/EGO-V2-P1-BAYESIAN-ACTIVE-IDENTIFICATION-001H.md": "2f34b8c6e378f88a8cf66db957ec58c8e9adb44a3f8f712aea04ece797d2ddfc",
+      "docs/codex/tasks/ego-v2-p1-acquisition-benchmark-admission-001h-r1/COLLISION_RECORD.md": "76e0cb8c9687d20fe8df131b1b52bf359b62789736c9f6e42937f749fd89a73e",
+      "docs/codex/tasks/ego-v2-p1-acquisition-benchmark-admission-001h-r1/IMPLEMENTATION_PLAN.md": "d1ebd24b253965dca309839f1390c6982365bed79716a45f15cd8bc6e8cf04a0",
+      "labs/ego_life_playground_v0/engine.py": "867ced15abc356daa0d5cae3f4c1cb1412a15766239ee82e9a8d280e5b214385",
+      "labs/ego_life_playground_v0/microworld.py": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923",
+      "labs/ego_life_playground_v0/predictive_control.py": "1763ee3e2b755529559311fb99f247b8bc1034d0cc89708dafdd4b15e8529aae",
+      "labs/ego_life_playground_v0/store.py": "3e399471c89ec5046ae3bffe1de3419e61f8b1e0f8d3bb55d216ef6578616b84",
+      "scripts/codex/tests/test_verify_ego_v2_acquisition_benchmark_admission_001h_r1.py": "da15a47ec10171da6a274f4cb2fae6a4d8b190b8c4e4dde1d2547e21d3ac379d",
+      "scripts/codex/verify_ego_v2_acquisition_benchmark_admission_001h_r1.py": "5495d1a69977bdf195bcc239d8e5424c4e89ea498810d797814978a342f0c01a"
+    },
+    "task_id": "EGO-V2-P1-ACQUISITION-BENCHMARK-ADMISSION-001H-R1"
+  },
+  "provenance_report": {
+    "failure_reasons": [],
+    "passed": true,
+    "provenance_commit": "f48a6a5a5b8c896f74d3c8f137429811015ca738"
+  },
+  "tamper_report": {
+    "all_tamper_controls_rejected": true,
+    "controls": {
+      "lifecycle": {
+        "baseline_digest": "7d9fbcd2d46480a86ba1449bfb4640ced0e12d1b9b1e74073c1f1e4fb25fdbc2",
+        "contexts": {
+          "p0_cross_v1:world=52:policy=711": {
+            "failed_closed": true,
+            "failure_reasons": [
+              "reported_values_match_false",
+              "control_envelope_incomparable"
+            ]
+          },
+          "p2_vertical_v1:world=54:policy=711": {
+            "failed_closed": true,
+            "failure_reasons": [
+              "reported_values_match_false",
+              "control_envelope_incomparable"
+            ]
+          }
+        },
+        "failed_closed": true,
+        "failure_reasons": [
+          "p0_cross_v1:world=52:policy=711:reported_values_match_false",
+          "p0_cross_v1:world=52:policy=711:control_envelope_incomparable",
+          "p2_vertical_v1:world=54:policy=711:reported_values_match_false",
+          "p2_vertical_v1:world=54:policy=711:control_envelope_incomparable"
+        ],
+        "tampered_digest": "3a6971c06b072281da09bc476d0ef736a4d6e028b768bd9d208d51f7ed0e9958"
+      },
+      "panel": {
+        "baseline_digest": "7d9fbcd2d46480a86ba1449bfb4640ced0e12d1b9b1e74073c1f1e4fb25fdbc2",
+        "contexts": {
+          "p0_cross_v1:world=52:policy=711": {
+            "failed_closed": true,
+            "failure_reasons": [
+              "reported_values_match_false",
+              "panel_action_expansion_invalid"
+            ]
+          },
+          "p2_vertical_v1:world=54:policy=711": {
+            "failed_closed": true,
+            "failure_reasons": [
+              "reported_values_match_false",
+              "panel_action_expansion_invalid"
+            ]
+          }
+        },
+        "failed_closed": true,
+        "failure_reasons": [
+          "p0_cross_v1:world=52:policy=711:reported_values_match_false",
+          "p0_cross_v1:world=52:policy=711:panel_action_expansion_invalid",
+          "p2_vertical_v1:world=54:policy=711:reported_values_match_false",
+          "p2_vertical_v1:world=54:policy=711:panel_action_expansion_invalid"
+        ],
+        "tampered_digest": "b14e71d0bd2f6974c6b6f3f3e4a16f9e6809746fe1605ddf8bd2d9393c748c45"
+      },
+      "producer": {
+        "baseline_digest": "7d9fbcd2d46480a86ba1449bfb4640ced0e12d1b9b1e74073c1f1e4fb25fdbc2",
+        "contexts": {
+          "p0_cross_v1:world=52:policy=711": {
+            "failed_closed": true,
+            "failure_reasons": [
+              "reported_values_match_false",
+              "producer_receipts_invalid"
+            ]
+          },
+          "p2_vertical_v1:world=54:policy=711": {
+            "failed_closed": true,
+            "failure_reasons": [
+              "reported_values_match_false",
+              "producer_receipts_invalid"
+            ]
+          }
+        },
+        "failed_closed": true,
+        "failure_reasons": [
+          "p0_cross_v1:world=52:policy=711:reported_values_match_false",
+          "p0_cross_v1:world=52:policy=711:producer_receipts_invalid",
+          "p2_vertical_v1:world=54:policy=711:reported_values_match_false",
+          "p2_vertical_v1:world=54:policy=711:producer_receipts_invalid"
+        ],
+        "tampered_digest": "b8c178c9fb331a8f01d23f8c3665aeb37bdb21dfe5f732240b10eb226ec038bb"
+      },
+      "row": {
+        "baseline_digest": "7d9fbcd2d46480a86ba1449bfb4640ced0e12d1b9b1e74073c1f1e4fb25fdbc2",
+        "contexts": {
+          "p0_cross_v1:world=52:policy=711": {
+            "failed_closed": true,
+            "failure_reasons": [
+              "reported_values_match_false",
+              "hashes_invalid"
+            ]
+          },
+          "p2_vertical_v1:world=54:policy=711": {
+            "failed_closed": true,
+            "failure_reasons": [
+              "reported_values_match_false",
+              "hashes_invalid"
+            ]
+          }
+        },
+        "failed_closed": true,
+        "failure_reasons": [
+          "p0_cross_v1:world=52:policy=711:reported_values_match_false",
+          "p0_cross_v1:world=52:policy=711:hashes_invalid",
+          "p2_vertical_v1:world=54:policy=711:reported_values_match_false",
+          "p2_vertical_v1:world=54:policy=711:hashes_invalid"
+        ],
+        "tampered_digest": "468f8bda5a95bda361d2ebd3338eadfed4f7772b0dd4090771cb424294d12654"
+      },
+      "source_hash": {
+        "baseline_digest": "7d9fbcd2d46480a86ba1449bfb4640ced0e12d1b9b1e74073c1f1e4fb25fdbc2",
+        "failed_closed": true,
+        "failure_reasons": [
+          "source hash mismatch"
+        ],
+        "tampered_digest": "6f76dace7fc3222bfb4ac6005104b6b09cbc5cad9b103953fe9d2c74834c5d08"
+      },
+      "verdict": {
+        "baseline_digest": "7d9fbcd2d46480a86ba1449bfb4640ced0e12d1b9b1e74073c1f1e4fb25fdbc2",
+        "failed_closed": true,
+        "failure_reasons": [
+          "reported verdict mismatch"
+        ],
+        "tampered_digest": "a0e46a333adb27b11dad273e43766eacde406e2b75df4190afe071a2f83f8b77"
+      }
+    }
+  },
+  "validity": {
+    "all_tamper_controls_rejected": true,
+    "fresh_process_recompute_equal": true,
+    "leakage_clean": true,
+    "positive_controls_detected": true,
+    "pre_run_provenance_valid": true,
+    "runtime_contract_satisfied": true,
+    "source_hashes_match": true
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "files": {
+    "ablation_report.json": {
+      "bytes": 668,
+      "sha256": "308da81d569c1bb00d6707d3a5f61f199af565a9abf2b1842c90a48e34b80afd"
+    },
+    "claim_ceiling.txt": {
+      "bytes": 240,
+      "sha256": "880518790dee6682b0d805d17f9014539a8fc9030a0c374fe1115a02529f35ea"
+    },
+    "control_rows.jsonl": {
+      "bytes": 25440,
+      "sha256": "926d57891f2d27334031d6321f1ab3d066e3ad0bd0928dfa8f3f227684a9266a"
+    },
+    "failure_manifest.json": {
+      "bytes": 152,
+      "sha256": "b219b127245da4a5883033de33cd0a84f465d736ddf8780ea371596830c16f36"
+    },
+    "leakage_report.json": {
+      "bytes": 155577,
+      "sha256": "8901d3ffd3f4085ec54a2d6415225c2a28d7d3d24e29c79301dbd561f9341d42"
+    },
+    "panel_manifest.json": {
+      "bytes": 593488,
+      "sha256": "347eb90b55d0fabbdfe6ee5e3db0da1321fd584e6ffa3aa49d9fb03a117f1522"
+    },
+    "panel_rows.jsonl": {
+      "bytes": 1787980,
+      "sha256": "ff8e19d9089b646338be7cc05b5f27d71ec24f648e15808440aa82d3b364d371"
+    },
+    "privileged_witness_rows.jsonl": {
+      "bytes": 1325688,
+      "sha256": "75155485c6c9397b9d64fac8f04a850332df17002ad62e1ca756edca3826262b"
+    },
+    "recompute_report.json": {
+      "bytes": 55102,
+      "sha256": "62ab3413a379f45b2b8b055fba277aa791be0bbe31fb985cc190ac44469d64fd"
+    },
+    "result.json": {
+      "bytes": 4759,
+      "sha256": "e6c7ef8aec16363e7888cf4f07de809b2e72a0c8d672806b2c206a985d77edcb"
+    },
+    "support_report.json": {
+      "bytes": 16440,
+      "sha256": "969d92c1e4126ec6573b3586b0e93dde7935879888b34e07f9a115192cc2bf8a"
+    }
+  }
+}
