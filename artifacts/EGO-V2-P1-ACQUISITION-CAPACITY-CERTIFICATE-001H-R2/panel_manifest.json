@@ -1,0 +1,102 @@
+{
+  "contexts": {
+    "p0_cross_v1:world=52:policy=711": {
+      "cell_support_report": {
+        "cell_counts": {},
+        "passed": false,
+        "required_floor_by_cell": {}
+      },
+      "construction_complete": false,
+      "panel_capacity_admitted": false,
+      "panel_hash": "4aa752af7417b8536d23c49b7983c3a88da4e3aad0850355f12eff0feaf9f6e6",
+      "panel_rollout_ids": [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "rank_reports": {},
+      "raw_checkpoints": [],
+      "retained_checkpoints": [],
+      "rollouts": [],
+      "support_report": {
+        "after_dedupe": {},
+        "before_dedupe": {},
+        "passed": false,
+        "required_floors": {
+          "empty": 16,
+          "v0": 8,
+          "v1": 8,
+          "v2": 8,
+          "v3": 8,
+          "v4": 8,
+          "wall": 16
+        }
+      },
+      "target_order": [
+        "v0",
+        "v1",
+        "v2",
+        "v3",
+        "v4",
+        "empty",
+        "wall",
+        "empty",
+        "wall"
+      ]
+    },
+    "p2_vertical_v1:world=54:policy=711": {
+      "cell_support_report": {
+        "cell_counts": {},
+        "passed": false,
+        "required_floor_by_cell": {}
+      },
+      "construction_complete": false,
+      "panel_capacity_admitted": false,
+      "panel_hash": "3f87797c58ef8620c60f654185f116bdb7703328a5580680c2dde4605aff1d64",
+      "panel_rollout_ids": [
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16
+      ],
+      "rank_reports": {},
+      "raw_checkpoints": [],
+      "retained_checkpoints": [],
+      "rollouts": [],
+      "support_report": {
+        "after_dedupe": {},
+        "before_dedupe": {},
+        "passed": false,
+        "required_floors": {
+          "empty": 16,
+          "v0": 8,
+          "v1": 8,
+          "v2": 8,
+          "v3": 8,
+          "v4": 8,
+          "wall": 16
+        }
+      },
+      "target_order": [
+        "v0",
+        "v1",
+        "v2",
+        "v3",
+        "v4",
+        "empty",
+        "wall",
+        "empty",
+        "wall"
+      ]
+    }
+  }
+}

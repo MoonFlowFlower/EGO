@@ -1,0 +1,183 @@
+{
+  "contexts": {
+    "p0_cross_v1:world=52:policy=711": {
+      "panel_rows": 0,
+      "witness_replay_valid": true
+    },
+    "p2_vertical_v1:world=54:policy=711": {
+      "panel_rows": 0,
+      "witness_replay_valid": true
+    }
+  },
+  "fresh_recompute_report": {
+    "contexts": {
+      "p0_cross_v1:world=52:policy=711": {
+        "control": {
+          "equal": true,
+          "first_child_pid": 51640,
+          "first_parent_pid": 39920,
+          "first_payload_digest": "78c5f9dfb6d06961a9b70398752b0d92f11438bedb3384771de2ba0ec401fb1d",
+          "first_python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmp8O0hVY\\Scripts\\python.exe",
+          "first_request_digest": null,
+          "first_runtime_receipt": null,
+          "python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmp8O0hVY\\Scripts\\python.exe",
+          "runtime_receipt": null,
+          "second_child_pid": 51340,
+          "second_parent_pid": 39920,
+          "second_payload_digest": "78c5f9dfb6d06961a9b70398752b0d92f11438bedb3384771de2ba0ec401fb1d",
+          "second_python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmp8O0hVY\\Scripts\\python.exe",
+          "second_request_digest": null,
+          "second_runtime_receipt": null
+        },
+        "panel": {
+          "equal": true,
+          "first_child_pid": 48340,
+          "first_parent_pid": 39920,
+          "first_payload_digest": "fcf4b0e20df5176d2a61c98be16ec65f77569ab842d5279c159834cb1995e1d6",
+          "first_python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmp8O0hVY\\Scripts\\python.exe",
+          "first_request_digest": null,
+          "first_runtime_receipt": null,
+          "python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmp8O0hVY\\Scripts\\python.exe",
+          "runtime_receipt": null,
+          "second_child_pid": 51984,
+          "second_parent_pid": 39920,
+          "second_payload_digest": "fcf4b0e20df5176d2a61c98be16ec65f77569ab842d5279c159834cb1995e1d6",
+          "second_python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmp8O0hVY\\Scripts\\python.exe",
+          "second_request_digest": null,
+          "second_runtime_receipt": null
+        },
+        "panel_row_recompute": {
+          "action_counts": {},
+          "child_pid": 8648,
+          "context_id": "p0_cross_v1:world=52:policy=711",
+          "max_life_index": 0,
+          "max_respawn_count": 0,
+          "parent_pid": 39920,
+          "row_count": 0,
+          "rows_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "witness": {
+          "equal": true,
+          "first_child_pid": 44824,
+          "first_parent_pid": 39920,
+          "first_payload_digest": "63a72d3195846fdbb9e781af730333c690da4aba7e6107afa39324130feb9c1f",
+          "first_python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmp8O0hVY\\Scripts\\python.exe",
+          "first_request_digest": null,
+          "first_runtime_receipt": null,
+          "python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmp8O0hVY\\Scripts\\python.exe",
+          "runtime_receipt": null,
+          "second_child_pid": 11052,
+          "second_parent_pid": 39920,
+          "second_payload_digest": "63a72d3195846fdbb9e781af730333c690da4aba7e6107afa39324130feb9c1f",
+          "second_python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmp8O0hVY\\Scripts\\python.exe",
+          "second_request_digest": null,
+          "second_runtime_receipt": null
+        },
+        "witness_row_recompute": {
+          "action_counts": {
+            "interact": 21,
+            "move_forward": 38,
+            "rest": 4,
+            "turn_left": 15,
+            "turn_right": 11
+          },
+          "child_pid": 19784,
+          "context_id": "p0_cross_v1:world=52:policy=711",
+          "max_life_index": 2,
+          "max_respawn_count": 0,
+          "parent_pid": 39920,
+          "row_count": 89,
+          "rows_digest": "d924953b054ab900806ba946f10005d7dffeb245057fa1377367b18868f3ae4d"
+        }
+      },
+      "p2_vertical_v1:world=54:policy=711": {
+        "control": {
+          "equal": true,
+          "first_child_pid": 12932,
+          "first_parent_pid": 39920,
+          "first_payload_digest": "717ae3391419cd1024dc90555a0e94973b77e26eb473704fb670ec00b6a8924b",
+          "first_python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmp8O0hVY\\Scripts\\python.exe",
+          "first_request_digest": null,
+          "first_runtime_receipt": null,
+          "python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmp8O0hVY\\Scripts\\python.exe",
+          "runtime_receipt": null,
+          "second_child_pid": 42760,
+          "second_parent_pid": 39920,
+          "second_payload_digest": "717ae3391419cd1024dc90555a0e94973b77e26eb473704fb670ec00b6a8924b",
+          "second_python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmp8O0hVY\\Scripts\\python.exe",
+          "second_request_digest": null,
+          "second_runtime_receipt": null
+        },
+        "panel": {
+          "equal": true,
+          "first_child_pid": 18672,
+          "first_parent_pid": 39920,
+          "first_payload_digest": "858df5001aa2abac7269124eb4c89d97b76855b368764c8d3ae8fbe7fb832152",
+          "first_python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmp8O0hVY\\Scripts\\python.exe",
+          "first_request_digest": null,
+          "first_runtime_receipt": null,
+          "python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmp8O0hVY\\Scripts\\python.exe",
+          "runtime_receipt": null,
+          "second_child_pid": 38676,
+          "second_parent_pid": 39920,
+          "second_payload_digest": "858df5001aa2abac7269124eb4c89d97b76855b368764c8d3ae8fbe7fb832152",
+          "second_python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmp8O0hVY\\Scripts\\python.exe",
+          "second_request_digest": null,
+          "second_runtime_receipt": null
+        },
+        "panel_row_recompute": {
+          "action_counts": {},
+          "child_pid": 2020,
+          "context_id": "p2_vertical_v1:world=54:policy=711",
+          "max_life_index": 0,
+          "max_respawn_count": 0,
+          "parent_pid": 39920,
+          "row_count": 0,
+          "rows_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        },
+        "witness": {
+          "equal": true,
+          "first_child_pid": 17144,
+          "first_parent_pid": 39920,
+          "first_payload_digest": "85daac153ed60ccf3a39af35f4c7c3a4ac11266153fff236a5b1600d6fb1f333",
+          "first_python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmp8O0hVY\\Scripts\\python.exe",
+          "first_request_digest": null,
+          "first_runtime_receipt": null,
+          "python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmp8O0hVY\\Scripts\\python.exe",
+          "runtime_receipt": null,
+          "second_child_pid": 45428,
+          "second_parent_pid": 39920,
+          "second_payload_digest": "85daac153ed60ccf3a39af35f4c7c3a4ac11266153fff236a5b1600d6fb1f333",
+          "second_python_executable": "C:\\Users\\LEO\\AppData\\Local\\uv\\cache\\builds-v0\\.tmp8O0hVY\\Scripts\\python.exe",
+          "second_request_digest": null,
+          "second_runtime_receipt": null
+        },
+        "witness_row_recompute": {
+          "action_counts": {
+            "interact": 21,
+            "move_forward": 33,
+            "rest": 8,
+            "turn_left": 16,
+            "turn_right": 11
+          },
+          "child_pid": 54752,
+          "context_id": "p2_vertical_v1:world=54:policy=711",
+          "max_life_index": 3,
+          "max_respawn_count": 0,
+          "parent_pid": 39920,
+          "row_count": 89,
+          "rows_digest": "e2ce9c679917a28419a1004388b5fcbf467852df84ab8634cdb73a4ac3d53f9c"
+        }
+      }
+    },
+    "equal": true
+  },
+  "independent_reports": {
+    "p0_cross_v1:world=52:policy=711": {
+      "not_run": "panel_not_executed"
+    },
+    "p2_vertical_v1:world=54:policy=711": {
+      "not_run": "panel_not_executed"
+    }
+  }
+}

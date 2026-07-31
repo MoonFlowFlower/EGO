@@ -1,0 +1,12 @@
+{
+  "contexts": {
+    "p0_cross_v1:world=52:policy=711": {
+      "r1_artifacts_immutable": true,
+      "r1_verdict": "PRIVILEGED_SUPPORT_WITNESS_NOT_FOUND"
+    },
+    "p2_vertical_v1:world=54:policy=711": {
+      "r1_artifacts_immutable": true,
+      "r1_verdict": "PRIVILEGED_SUPPORT_WITNESS_NOT_FOUND"
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "all_clean": true,
+  "all_positive_controls_detected": true,
+  "findings": [],
+  "positive_controls_detected": [
+    "base64",
+    "direct",
+    "numeric_index"
+  ],
+  "tamper_report": {
+    "all_tamper_controls_rejected": true,
+    "controls": {
+      "authority_hash": {
+        "rejected": true,
+        "validator": "validate_pre_run_provenance"
+      },
+      "contract_budget": {
+        "mutated_field": "witness_search.action_budget",
+        "rejected": true,
+        "validator": "validate_pre_run_provenance"
+      },
+      "producer_receipt": {
+        "rejected": true
+      },
+      "row_recompute": {
+        "child_pid": 51700,
+        "rejected": true
+      },
+      "search_receipt": {
+        "rejected": true
+      },
+      "unknown_verdict": {
+        "rejected": true,
+        "validator": "verify_r2_formal_packet"
+      }
+    }
+  }
+}

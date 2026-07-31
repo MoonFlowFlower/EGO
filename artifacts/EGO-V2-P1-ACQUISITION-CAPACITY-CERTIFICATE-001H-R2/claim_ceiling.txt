@@ -1,0 +1,1 @@
+Offline structural capacity only; no learner/generalization/runtime claim.
