@@ -49,10 +49,10 @@ REENTRY_THRESHOLD = 0.60
 CRITICAL_OVERRIDE_THRESHOLD = 0.15
 VISUAL_TRANSITION_MODEL_KEY = "__visual_transition_counts__"
 
-STATE_SCHEMA_VERSION = "ego.life_playground.state.v11"
-RUN_SCHEMA_VERSION = "ego.life_playground.run.v11"
-COMMAND_SCHEMA_VERSION = "ego.life_playground.command.v8"
-TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v16"
+STATE_SCHEMA_VERSION = "ego.life_playground.state.v12"
+RUN_SCHEMA_VERSION = "ego.life_playground.run.v12"
+COMMAND_SCHEMA_VERSION = "ego.life_playground.command.v9"
+TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v17"
 COMPONENT_HASH_SCHEMA_VERSION = "ego.life_playground.component_hashes.v3"
 
 TRIGGER_SOURCES = (
@@ -197,7 +197,7 @@ def compute_code_path_manifest() -> dict[str, Any]:
         Path(__file__).with_name("store.py"),
     )
     return {
-        "schema_version": "ego.life_playground.code_path.v12",
+        "schema_version": "ego.life_playground.code_path.v13",
         "files": [
             {"path": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
             for path in source_paths

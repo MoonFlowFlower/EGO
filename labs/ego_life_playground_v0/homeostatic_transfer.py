@@ -17,9 +17,9 @@ from typing import Any, Mapping
 from . import microworld
 
 
-STATE_SCHEMA_VERSION = "ego.life_playground.homeostatic_transfer.state.v1"
-PLAN_SCHEMA_VERSION = "ego.life_playground.homeostatic_transfer.plan.v1"
-UPDATE_SCHEMA_VERSION = "ego.life_playground.homeostatic_transfer.update.v1"
+STATE_SCHEMA_VERSION = "ego.life_playground.homeostatic_transfer.state.v2"
+PLAN_SCHEMA_VERSION = "ego.life_playground.homeostatic_transfer.plan.v2"
+UPDATE_SCHEMA_VERSION = "ego.life_playground.homeostatic_transfer.update.v2"
 MODES = ("off", "public_bayes")
 DRIVE_MODES = ("canonical", "off")
 POSTERIOR_MODES = ("canonical", "ablated")
@@ -60,26 +60,33 @@ def hyperparameters() -> dict[str, Any]:
 
 def _empty_fast_state(*, world_epoch: int = 0, respawn_count: int = 0) -> dict[str, Any]:
     return {
-        "schema_version": "ego.life_playground.homeostatic_transfer.fast.v1",
+        "schema_version": "ego.life_playground.homeostatic_transfer.fast.v2",
         "world_epoch": int(world_epoch),
         "respawn_count": int(respawn_count),
         "token_stats": {},
         "active_target": None,
         "short_history": [],
         "interaction_count": 0,
+        "escape_steps_remaining": 0,
+        "escape_trigger_count": 0,
+    }
+
+
+def _empty_slow_state() -> dict[str, Any]:
+    return {
+        "schema_version": "ego.life_playground.homeostatic_transfer.slow.v2",
+        "action_stats": {},
+        "effect_family_stats": {},
+        "effect_prototypes": {},
+        "update_count": 0,
+        "world_reset_count": 0,
     }
 
 
 def empty_state() -> dict[str, Any]:
     state = {
         "schema_version": STATE_SCHEMA_VERSION,
-        "slow_state": {
-            "schema_version": "ego.life_playground.homeostatic_transfer.slow.v1",
-            "action_stats": {},
-            "effect_family_stats": {},
-            "update_count": 0,
-            "world_reset_count": 0,
-        },
+        "slow_state": _empty_slow_state(),
         "fast_state": _empty_fast_state(),
         "rng_state": {
             "schema_version": "ego.life_playground.homeostatic_transfer.rng.v1",
@@ -154,11 +161,12 @@ def validate_state(state: Mapping[str, Any]) -> None:
         "schema_version",
         "action_stats",
         "effect_family_stats",
+        "effect_prototypes",
         "update_count",
         "world_reset_count",
     }:
         raise HomeostaticTransferInvariantError("slow state schema mismatch")
-    if slow["schema_version"] != "ego.life_playground.homeostatic_transfer.slow.v1":
+    if slow["schema_version"] != "ego.life_playground.homeostatic_transfer.slow.v2":
         raise HomeostaticTransferInvariantError("slow state version mismatch")
     if type(slow["update_count"]) is not int or slow["update_count"] < 0:
         raise HomeostaticTransferInvariantError("slow update_count is invalid")
@@ -175,6 +183,12 @@ def validate_state(state: Mapping[str, Any]) -> None:
     for signature, count in slow["effect_family_stats"].items():
         if type(signature) is not str or type(count) is not int or count <= 0:
             raise HomeostaticTransferInvariantError("effect family row is invalid")
+    if not isinstance(slow["effect_prototypes"], Mapping):
+        raise HomeostaticTransferInvariantError("effect_prototypes must be an object")
+    for signature, row in slow["effect_prototypes"].items():
+        if type(signature) is not str:
+            raise HomeostaticTransferInvariantError("effect prototype key is invalid")
+        _validate_stat_row(row, "slow effect prototype")
 
     fast = state["fast_state"]
     if not isinstance(fast, Mapping) or set(fast) != {
@@ -185,13 +199,23 @@ def validate_state(state: Mapping[str, Any]) -> None:
         "active_target",
         "short_history",
         "interaction_count",
+        "escape_steps_remaining",
+        "escape_trigger_count",
     }:
         raise HomeostaticTransferInvariantError("fast state schema mismatch")
-    if fast["schema_version"] != "ego.life_playground.homeostatic_transfer.fast.v1":
+    if fast["schema_version"] != "ego.life_playground.homeostatic_transfer.fast.v2":
         raise HomeostaticTransferInvariantError("fast state version mismatch")
-    for field in ("world_epoch", "respawn_count", "interaction_count"):
+    for field in (
+        "world_epoch",
+        "respawn_count",
+        "interaction_count",
+        "escape_steps_remaining",
+        "escape_trigger_count",
+    ):
         if type(fast[field]) is not int or fast[field] < 0:
             raise HomeostaticTransferInvariantError(f"fast {field} is invalid")
+    if fast["escape_steps_remaining"] > 3:
+        raise HomeostaticTransferInvariantError("escape_steps_remaining exceeds bound")
     if not isinstance(fast["token_stats"], Mapping):
         raise HomeostaticTransferInvariantError("fast token_stats must be an object")
     for token, row in fast["token_stats"].items():
@@ -339,13 +363,76 @@ def _prediction_from_row(row: Mapping[str, Any], source: str) -> dict[str, Any]:
             "energy": _round(row["energy_mean"]),
             "safety": _round(row["safety_mean"]),
         },
-        "terminal_risk": _round((float(row["terminal_count"]) + 1.0) / (count + 2.0)),
+        "terminal_risk": _round(float(row["terminal_count"]) / count),
         "uncertainty": _round(1.0 / math.sqrt(count + 1.0)),
         "outcome_probabilities": {
             str(outcome): _round(float(value) / count)
             for outcome, value in sorted(row["outcome_counts"].items())
         },
         "source": source,
+    }
+
+
+def _slow_effect_prior(state: Mapping[str, Any]) -> dict[str, Any]:
+    """Return a public-history mixture over reusable effect families.
+
+    Anonymous token identity never crosses worlds.  Only effect prototypes are
+    slow: their public delta/outcome statistics persist.  Signatures already
+    identified in the current world are excluded when alternatives exist,
+    which is the smallest compositional prior expressible without a world ID.
+    """
+
+    prototypes = state["slow_state"]["effect_prototypes"]
+    if not prototypes:
+        return _empty_prediction()
+    observed = {
+        _effect_signature(
+            {
+                "energy": float(row["energy_mean"]),
+                "safety": float(row["safety_mean"]),
+            }
+        )
+        for row in state["fast_state"]["token_stats"].values()
+    }
+    remaining = [
+        (signature, row)
+        for signature, row in sorted(prototypes.items())
+        if signature not in observed
+    ]
+    selected = remaining or list(sorted(prototypes.items()))
+    family_count = len(selected)
+    total_samples = sum(int(row["count"]) for _signature, row in selected)
+    outcome_totals: dict[str, float] = {}
+    for _signature, row in selected:
+        for outcome, count in row["outcome_counts"].items():
+            outcome_totals[str(outcome)] = outcome_totals.get(str(outcome), 0.0) + (
+                float(count) / float(row["count"])
+            )
+    return {
+        "count": total_samples,
+        "predicted_delta": {
+            key: _round(
+                sum(float(row[f"{key}_mean"]) for _signature, row in selected)
+                / family_count
+            )
+            for key in PUBLIC_ORGANISM_FIELDS
+        },
+        "terminal_risk": _round(
+            sum(
+                float(row["terminal_count"]) / float(row["count"])
+                for _signature, row in selected
+            )
+            / family_count
+        ),
+        "uncertainty": _round(
+            min(1.0, 1.0 / math.sqrt(total_samples + 1.0) + 0.10 * (family_count - 1))
+        ),
+        "outcome_probabilities": {
+            outcome: _round(value / family_count)
+            for outcome, value in sorted(outcome_totals.items())
+        },
+        "source": "slow_effect_family_prior",
+        "remaining_effect_signatures": [signature for signature, _row in selected],
     }
 
 
@@ -368,6 +455,8 @@ def _predictions(
             result["interact"] = _prediction_from_row(
                 token_row, "current_world_token_interaction"
             )
+        else:
+            result["interact"] = _slow_effect_prior(state)
     return result
 
 
@@ -388,7 +477,9 @@ def _token_prediction(
         if posterior_mode == "canonical"
         else None
     )
-    return _empty_prediction() if row is None else _prediction_from_row(row, "current_world_token_interaction")
+    if row is not None:
+        return _prediction_from_row(row, "current_world_token_interaction")
+    return _slow_effect_prior(state) if posterior_mode == "canonical" else _empty_prediction()
 
 
 def _token_value(
@@ -405,6 +496,12 @@ def _token_value(
     delta = prediction["predicted_delta"]
     deficit_reduction = sum(float(drive[key]) * float(delta[key]) for key in PUBLIC_ORGANISM_FIELDS)
     uncertainty_value = 0.05 * float(prediction["uncertainty"])
+    if prediction["source"] == "slow_effect_family_prior":
+        safe_margin = max(
+            0.0,
+            min(float(organism["energy"]), float(organism["safety"])) - 0.12,
+        )
+        uncertainty_value += 0.02 + min(0.03, safe_margin * 0.05)
     terminal_penalty = 0.50 * float(prediction["terminal_risk"])
     return _round(deficit_reduction + uncertainty_value - terminal_penalty - 0.004 * distance)
 
@@ -464,7 +561,11 @@ def plan_action(
                 "relative_x": relative_x,
                 "relative_y": relative_y,
                 "distance": distance,
-                "known": int(prediction["count"]) > 0,
+                "known": bool(
+                    posterior_mode == "canonical"
+                    and token in state["fast_state"]["token_stats"]
+                ),
+                "prediction_source": prediction["source"],
                 "predicted_delta": deepcopy(prediction["predicted_delta"]),
                 "terminal_risk": prediction["terminal_risk"],
                 "uncertainty": prediction["uncertainty"],
@@ -483,7 +584,11 @@ def plan_action(
     front = _front_token(observation)
     if front in microworld.TOKENS:
         front_row = next(row for row in ranked_tokens if row["token"] == front)
-        if not front_row["known"] or float(front_row["drive_value"]) > 0.0:
+        unobserved_without_prior = (
+            not front_row["known"]
+            and front_row["prediction_source"] == "unobserved_public_prior"
+        )
+        if unobserved_without_prior or float(front_row["drive_value"]) > 0.0:
             selected_action, reason = "interact", "front_token_probe_or_homeostatic_use"
             selected_target = front_row
         else:
@@ -510,6 +615,14 @@ def plan_action(
             selected_action, reason = "turn_right", "public_sweep_turn"
         else:
             selected_action, reason = "move_forward", "public_sweep_forward"
+
+    if int(state["fast_state"]["escape_steps_remaining"]) > 0:
+        front_cell = str(observation["visual"][1][2])
+        selected_action = (
+            "turn_right" if front_cell in {"wall", *microworld.TOKENS} else "move_forward"
+        )
+        selected_target = None
+        reason = "public_harm_escape_macro"
 
     base_values = {}
     for action in microworld.ACTIONS:
@@ -542,6 +655,16 @@ def plan_action(
         "drive_mode": drive_mode,
         "drive": drive,
         "posterior_mode": posterior_mode,
+        "slow_prior_applied": any(
+            prediction["source"] == "slow_effect_family_prior"
+            for prediction in predictions.values()
+        ),
+        "slow_effect_prototype_hash": canonical_hash(
+            state["slow_state"]["effect_prototypes"]
+        ),
+        "escape_steps_remaining": int(
+            state["fast_state"]["escape_steps_remaining"]
+        ),
         "ranked_tokens": ranked_tokens,
         "selected_target": None if selected_target is None else selected_target["token"],
         "selected_action": selected_action,
@@ -633,6 +756,14 @@ def update_after_transition(
             slow["effect_family_stats"].get(signature, 0)
         ) + 1
 
+        if selected_action == "interact" and observed_outcome_type == "interacted":
+            slow["effect_prototypes"][signature] = _updated_stat(
+                slow["effect_prototypes"].get(signature),
+                actual_delta=values,
+                terminal=terminal,
+                outcome_type=observed_outcome_type,
+            )
+
         if (
             selected_action == "interact"
             and observed_outcome_type == "interacted"
@@ -651,6 +782,31 @@ def update_after_transition(
             )
             fast["interaction_count"] = int(fast["interaction_count"]) + 1
             fast["active_target"] = None
+            fast["escape_steps_remaining"] = 0
+
+        fast = updated["fast_state"]
+        front_stats = fast["token_stats"].get(observed_token)
+        if (
+            selected_action in {"turn_left", "turn_right"}
+            and observed_token in microworld.TOKENS
+            and front_stats is not None
+        ):
+            drive = _drive(public_input["organism"], 0.72, "canonical")
+            prediction = _prediction_from_row(
+                front_stats, "current_world_token_interaction"
+            )
+            if _token_value(
+                prediction,
+                drive=drive,
+                organism=public_input["organism"],
+                distance=1,
+            ) <= 0.0:
+                fast["escape_steps_remaining"] = 3
+                fast["escape_trigger_count"] = int(fast["escape_trigger_count"]) + 1
+        elif int(fast["escape_steps_remaining"]) > 0:
+            fast["escape_steps_remaining"] = max(
+                0, int(fast["escape_steps_remaining"]) - 1
+            )
 
         history = list(updated["fast_state"]["short_history"])
         history.append(
@@ -686,6 +842,12 @@ def update_after_transition(
         "fast_state_hash_after": fast_state_hash(updated),
         "posterior_hash_after": posterior_hash(updated),
         "update_count_after": int(updated["slow_state"]["update_count"]),
+        "effect_prototype_hash_after": canonical_hash(
+            updated["slow_state"]["effect_prototypes"]
+        ),
+        "escape_steps_remaining_after": int(
+            updated["fast_state"]["escape_steps_remaining"]
+        ),
     }
 
 
@@ -695,6 +857,7 @@ def reset_for_respawn(state: Mapping[str, Any]) -> dict[str, Any]:
     fast = updated["fast_state"]
     fast["active_target"] = None
     fast["short_history"] = []
+    fast["escape_steps_remaining"] = 0
     fast["respawn_count"] = int(fast["respawn_count"]) + 1
     validate_state(updated)
     return updated
@@ -714,6 +877,22 @@ def reset_for_world(state: Mapping[str, Any]) -> dict[str, Any]:
     return updated
 
 
+def reset_fast_state(state: Mapping[str, Any]) -> dict[str, Any]:
+    """Ablation/reset alias with the same semantics as entering a new world."""
+
+    return reset_for_world(state)
+
+
+def reset_slow_state(state: Mapping[str, Any]) -> dict[str, Any]:
+    """Clear cross-world structure while preserving current-world evidence."""
+
+    validate_state(state)
+    updated = deepcopy(dict(state))
+    updated["slow_state"] = _empty_slow_state()
+    validate_state(updated)
+    return updated
+
+
 __all__ = [
     "DRIVE_MODES",
     "FEEDBACK_MODES",
@@ -727,6 +906,8 @@ __all__ = [
     "posterior_hash",
     "reset_for_respawn",
     "reset_for_world",
+    "reset_fast_state",
+    "reset_slow_state",
     "scan_public_input",
     "slow_state_hash",
     "state_hash",

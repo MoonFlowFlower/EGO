@@ -133,3 +133,24 @@ post-qualification tuning.
   `12/16` world gates. This authorizes only a minimal, interpretable
   two-timescale learner; it does not authorize a large neural learner or any
   broader capability claim.
+
+## P3 — minimal two-timescale candidate, before result reveal
+
+- Hypothesis: current-world token posteriors are the fast state; public effect
+  prototypes and generic action consequences are the slow state. Reusing only
+  effect families—not anonymous token identity—can improve early adaptation in
+  new mappings while remaining interpretable.
+- Strongest rebuttal: the slow mixture may be too symmetric to help select a
+  specific unknown token, or may suppress necessary probes and create negative
+  transfer.
+- Change: add a slow effect-family mixture, explicit slow/fast reset controls,
+  and the R-validated harmful-front escape to the same runtime planner. No new
+  controller, reward, observation, action or world grammar is added.
+- Failing-test readback: slow-prior source, reset controls and escape state
+  initially failed exactly at the missing interfaces; implementation then made
+  the focused suite pass (`13 passed` with the product evaluator tests).
+- Frozen evaluation design: eight public training worlds, eight search-dev
+  worlds and sixteen untouched qualification worlds; compare transfer,
+  scratch, no-update, feedback-shuffle, slow-reset, fast-reset,
+  posterior-ablation, explicit wrong-prior, random and private oracle arms.
+- Decision: commit candidate, evaluator and packets before running search-dev.

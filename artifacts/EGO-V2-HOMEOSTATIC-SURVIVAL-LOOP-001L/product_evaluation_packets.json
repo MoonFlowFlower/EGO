@@ -1,0 +1,430 @@
+{
+  "created_before_evaluation_results": true,
+  "original_001j_heldout": false,
+  "schema_version": "ego.v2.homeostatic_survival_loop.packet.v1",
+  "splits": {
+    "qualification": [
+      {
+        "dev_only": true,
+        "layout_id": "p0_cross_v1",
+        "mapping_commitment": {
+          "v0": "threat",
+          "v1": "social",
+          "v2": "novelty",
+          "v3": "shelter",
+          "v4": "resource"
+        },
+        "opaque_context_id": "001l-p-qualification-0001",
+        "world_seed": 95003
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_vertical_v1",
+        "mapping_commitment": {
+          "v0": "threat",
+          "v1": "novelty",
+          "v2": "shelter",
+          "v3": "social",
+          "v4": "resource"
+        },
+        "opaque_context_id": "001l-p-qualification-0002",
+        "world_seed": 95140
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_offset_v1",
+        "mapping_commitment": {
+          "v0": "novelty",
+          "v1": "social",
+          "v2": "resource",
+          "v3": "shelter",
+          "v4": "threat"
+        },
+        "opaque_context_id": "001l-p-qualification-0003",
+        "world_seed": 95277
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p0_cross_v1",
+        "mapping_commitment": {
+          "v0": "threat",
+          "v1": "shelter",
+          "v2": "novelty",
+          "v3": "resource",
+          "v4": "social"
+        },
+        "opaque_context_id": "001l-p-qualification-0004",
+        "world_seed": 95414
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_vertical_v1",
+        "mapping_commitment": {
+          "v0": "novelty",
+          "v1": "threat",
+          "v2": "resource",
+          "v3": "shelter",
+          "v4": "social"
+        },
+        "opaque_context_id": "001l-p-qualification-0005",
+        "world_seed": 95551
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_offset_v1",
+        "mapping_commitment": {
+          "v0": "novelty",
+          "v1": "shelter",
+          "v2": "social",
+          "v3": "resource",
+          "v4": "threat"
+        },
+        "opaque_context_id": "001l-p-qualification-0006",
+        "world_seed": 95688
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p0_cross_v1",
+        "mapping_commitment": {
+          "v0": "shelter",
+          "v1": "novelty",
+          "v2": "threat",
+          "v3": "social",
+          "v4": "resource"
+        },
+        "opaque_context_id": "001l-p-qualification-0007",
+        "world_seed": 95825
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_vertical_v1",
+        "mapping_commitment": {
+          "v0": "social",
+          "v1": "resource",
+          "v2": "threat",
+          "v3": "shelter",
+          "v4": "novelty"
+        },
+        "opaque_context_id": "001l-p-qualification-0008",
+        "world_seed": 95962
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_offset_v1",
+        "mapping_commitment": {
+          "v0": "threat",
+          "v1": "shelter",
+          "v2": "social",
+          "v3": "novelty",
+          "v4": "resource"
+        },
+        "opaque_context_id": "001l-p-qualification-0009",
+        "world_seed": 96099
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p0_cross_v1",
+        "mapping_commitment": {
+          "v0": "social",
+          "v1": "resource",
+          "v2": "threat",
+          "v3": "novelty",
+          "v4": "shelter"
+        },
+        "opaque_context_id": "001l-p-qualification-0010",
+        "world_seed": 96236
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_vertical_v1",
+        "mapping_commitment": {
+          "v0": "resource",
+          "v1": "shelter",
+          "v2": "social",
+          "v3": "novelty",
+          "v4": "threat"
+        },
+        "opaque_context_id": "001l-p-qualification-0011",
+        "world_seed": 96373
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_offset_v1",
+        "mapping_commitment": {
+          "v0": "social",
+          "v1": "novelty",
+          "v2": "shelter",
+          "v3": "threat",
+          "v4": "resource"
+        },
+        "opaque_context_id": "001l-p-qualification-0012",
+        "world_seed": 96510
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p0_cross_v1",
+        "mapping_commitment": {
+          "v0": "resource",
+          "v1": "novelty",
+          "v2": "social",
+          "v3": "shelter",
+          "v4": "threat"
+        },
+        "opaque_context_id": "001l-p-qualification-0013",
+        "world_seed": 96647
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_vertical_v1",
+        "mapping_commitment": {
+          "v0": "resource",
+          "v1": "novelty",
+          "v2": "shelter",
+          "v3": "social",
+          "v4": "threat"
+        },
+        "opaque_context_id": "001l-p-qualification-0014",
+        "world_seed": 96784
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_offset_v1",
+        "mapping_commitment": {
+          "v0": "novelty",
+          "v1": "social",
+          "v2": "shelter",
+          "v3": "resource",
+          "v4": "threat"
+        },
+        "opaque_context_id": "001l-p-qualification-0015",
+        "world_seed": 96921
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p0_cross_v1",
+        "mapping_commitment": {
+          "v0": "social",
+          "v1": "shelter",
+          "v2": "resource",
+          "v3": "threat",
+          "v4": "novelty"
+        },
+        "opaque_context_id": "001l-p-qualification-0016",
+        "world_seed": 97058
+      }
+    ],
+    "search_dev": [
+      {
+        "dev_only": true,
+        "layout_id": "p0_cross_v1",
+        "mapping_commitment": {
+          "v0": "novelty",
+          "v1": "shelter",
+          "v2": "threat",
+          "v3": "resource",
+          "v4": "social"
+        },
+        "opaque_context_id": "001l-p-search-0001",
+        "world_seed": 92003
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_vertical_v1",
+        "mapping_commitment": {
+          "v0": "shelter",
+          "v1": "social",
+          "v2": "resource",
+          "v3": "threat",
+          "v4": "novelty"
+        },
+        "opaque_context_id": "001l-p-search-0002",
+        "world_seed": 92140
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_offset_v1",
+        "mapping_commitment": {
+          "v0": "shelter",
+          "v1": "social",
+          "v2": "resource",
+          "v3": "novelty",
+          "v4": "threat"
+        },
+        "opaque_context_id": "001l-p-search-0003",
+        "world_seed": 92277
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p0_cross_v1",
+        "mapping_commitment": {
+          "v0": "social",
+          "v1": "resource",
+          "v2": "shelter",
+          "v3": "novelty",
+          "v4": "threat"
+        },
+        "opaque_context_id": "001l-p-search-0004",
+        "world_seed": 92414
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_vertical_v1",
+        "mapping_commitment": {
+          "v0": "novelty",
+          "v1": "resource",
+          "v2": "shelter",
+          "v3": "social",
+          "v4": "threat"
+        },
+        "opaque_context_id": "001l-p-search-0005",
+        "world_seed": 92551
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_offset_v1",
+        "mapping_commitment": {
+          "v0": "threat",
+          "v1": "social",
+          "v2": "resource",
+          "v3": "shelter",
+          "v4": "novelty"
+        },
+        "opaque_context_id": "001l-p-search-0006",
+        "world_seed": 92688
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p0_cross_v1",
+        "mapping_commitment": {
+          "v0": "threat",
+          "v1": "social",
+          "v2": "resource",
+          "v3": "shelter",
+          "v4": "novelty"
+        },
+        "opaque_context_id": "001l-p-search-0007",
+        "world_seed": 92825
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_vertical_v1",
+        "mapping_commitment": {
+          "v0": "resource",
+          "v1": "threat",
+          "v2": "shelter",
+          "v3": "social",
+          "v4": "novelty"
+        },
+        "opaque_context_id": "001l-p-search-0008",
+        "world_seed": 92962
+      }
+    ],
+    "structure_training": [
+      {
+        "dev_only": true,
+        "layout_id": "p0_cross_v1",
+        "mapping_commitment": {
+          "v0": "resource",
+          "v1": "threat",
+          "v2": "novelty",
+          "v3": "social",
+          "v4": "shelter"
+        },
+        "opaque_context_id": "001l-p-train-0001",
+        "world_seed": 90001
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_vertical_v1",
+        "mapping_commitment": {
+          "v0": "novelty",
+          "v1": "shelter",
+          "v2": "threat",
+          "v3": "social",
+          "v4": "resource"
+        },
+        "opaque_context_id": "001l-p-train-0002",
+        "world_seed": 90138
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_offset_v1",
+        "mapping_commitment": {
+          "v0": "resource",
+          "v1": "novelty",
+          "v2": "social",
+          "v3": "shelter",
+          "v4": "threat"
+        },
+        "opaque_context_id": "001l-p-train-0003",
+        "world_seed": 90275
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p0_cross_v1",
+        "mapping_commitment": {
+          "v0": "shelter",
+          "v1": "resource",
+          "v2": "social",
+          "v3": "novelty",
+          "v4": "threat"
+        },
+        "opaque_context_id": "001l-p-train-0004",
+        "world_seed": 90412
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_vertical_v1",
+        "mapping_commitment": {
+          "v0": "novelty",
+          "v1": "resource",
+          "v2": "shelter",
+          "v3": "threat",
+          "v4": "social"
+        },
+        "opaque_context_id": "001l-p-train-0005",
+        "world_seed": 90549
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_offset_v1",
+        "mapping_commitment": {
+          "v0": "novelty",
+          "v1": "threat",
+          "v2": "resource",
+          "v3": "shelter",
+          "v4": "social"
+        },
+        "opaque_context_id": "001l-p-train-0006",
+        "world_seed": 90686
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p0_cross_v1",
+        "mapping_commitment": {
+          "v0": "shelter",
+          "v1": "social",
+          "v2": "threat",
+          "v3": "novelty",
+          "v4": "resource"
+        },
+        "opaque_context_id": "001l-p-train-0007",
+        "world_seed": 90823
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_vertical_v1",
+        "mapping_commitment": {
+          "v0": "social",
+          "v1": "resource",
+          "v2": "novelty",
+          "v3": "threat",
+          "v4": "shelter"
+        },
+        "opaque_context_id": "001l-p-train-0008",
+        "world_seed": 90960
+      }
+    ]
+  },
+  "task_id": "EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L"
+}

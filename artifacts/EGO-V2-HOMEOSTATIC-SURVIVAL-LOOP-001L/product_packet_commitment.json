@@ -1,0 +1,14 @@
+{
+  "original_001j_heldout_executed": false,
+  "packet_path": "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/product_evaluation_packets.json",
+  "packet_sha256": "74711feccbc770397c2c14d97fe79741c88c312bd89ad9a46f5e40346413d1b3",
+  "qualification_executed": false,
+  "schema_version": "ego.v2.homeostatic_survival_loop.packet_commitment.v1",
+  "search_executed": false,
+  "split_counts": {
+    "qualification": 16,
+    "search_dev": 8,
+    "structure_training": 8
+  },
+  "task_id": "EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L"
+}

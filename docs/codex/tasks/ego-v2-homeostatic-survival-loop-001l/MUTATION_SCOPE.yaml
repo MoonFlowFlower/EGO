@@ -15,6 +15,7 @@
     "labs/ego_life_playground_v0/app.py",
     "labs/ego_life_playground_v0/__init__.py",
     "scripts/run_ego_life_playground_v0.py",
+    "scripts/codex/run_ego_v2_homeostatic_survival_loop_001l.py",
     "tests/test_ego_life_playground_homeostatic_transfer.py",
     "tests/test_ego_life_playground_v0.py",
     "tests/test_ego_life_playground_v2_microworld.py",
@@ -22,6 +23,7 @@
     "scripts/codex/verify_ego_v2_public_acquisition_robustness_001l.py",
     "scripts/codex/tests/test_run_ego_v2_public_acquisition_robustness_001l.py",
     "scripts/codex/tests/test_verify_ego_v2_public_acquisition_robustness_001l.py",
+    "scripts/codex/tests/test_run_ego_v2_homeostatic_survival_loop_001l.py",
     "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/",
     "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/"
   ],

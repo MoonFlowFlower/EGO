@@ -134,6 +134,133 @@ def test_respawn_and_world_reset_have_distinct_fast_slow_semantics() -> None:
     assert new_world["fast_state"]["world_epoch"] == 1
 
 
+def test_slow_effect_prior_is_used_after_world_reset_and_slow_reset_ablates_it() -> None:
+    learned = homeostatic_transfer.empty_state()
+    learned = _teach_token(learned, "v0", 0.24, 0.0)
+    learned = _teach_token(learned, "v1", -0.018, 0.18)
+    learned = _teach_token(learned, "v2", -0.018, -0.18)
+    transferred = homeostatic_transfer.reset_for_world(learned)
+    payload = _public_payload(
+        _observation(left="empty", right="empty", front="v3"),
+        energy=0.20,
+        safety=0.70,
+    )
+
+    transfer_plan = homeostatic_transfer.plan_action(
+        transferred,
+        public_input=payload,
+        sequence=1,
+        mode="public_bayes",
+        drive_mode="canonical",
+        action_costs=engine.ACTION_COSTS,
+        target_level=engine.TARGET_LEVEL,
+    )
+    assert transfer_plan["predictions_by_action"]["interact"]["source"] == (
+        "slow_effect_family_prior"
+    )
+    assert transfer_plan["slow_prior_applied"] is True
+    assert transferred["fast_state"]["token_stats"] == {}
+
+    slow_reset = homeostatic_transfer.reset_slow_state(transferred)
+    scratch_plan = homeostatic_transfer.plan_action(
+        slow_reset,
+        public_input=payload,
+        sequence=1,
+        mode="public_bayes",
+        drive_mode="canonical",
+        action_costs=engine.ACTION_COSTS,
+        target_level=engine.TARGET_LEVEL,
+    )
+    assert scratch_plan["predictions_by_action"]["interact"]["source"] == (
+        "unobserved_public_prior"
+    )
+    assert scratch_plan["slow_prior_applied"] is False
+    assert homeostatic_transfer.fast_state_hash(slow_reset) == (
+        homeostatic_transfer.fast_state_hash(transferred)
+    )
+
+
+def test_fast_reset_removes_world_token_belief_but_preserves_slow_structure() -> None:
+    learned = _teach_token(homeostatic_transfer.empty_state(), "v0", 0.24, 0.0)
+    known_plan = homeostatic_transfer.plan_action(
+        learned,
+        public_input=_public_payload(
+            _observation(left="empty", right="empty", front="v0"),
+            energy=0.20,
+            safety=0.70,
+        ),
+        sequence=2,
+        mode="public_bayes",
+        drive_mode="canonical",
+        action_costs=engine.ACTION_COSTS,
+        target_level=engine.TARGET_LEVEL,
+    )
+    reset = homeostatic_transfer.reset_fast_state(learned)
+    reset_plan = homeostatic_transfer.plan_action(
+        reset,
+        public_input=_public_payload(
+            _observation(left="empty", right="empty", front="v0"),
+            energy=0.20,
+            safety=0.70,
+        ),
+        sequence=2,
+        mode="public_bayes",
+        drive_mode="canonical",
+        action_costs=engine.ACTION_COSTS,
+        target_level=engine.TARGET_LEVEL,
+    )
+    assert known_plan["ranked_tokens"][0]["known"] is True
+    assert reset_plan["ranked_tokens"][0]["known"] is False
+    assert homeostatic_transfer.slow_state_hash(reset) == (
+        homeostatic_transfer.slow_state_hash(learned)
+    )
+
+
+def test_validated_harm_escape_is_connected_to_fast_planner_state() -> None:
+    state = _teach_token(homeostatic_transfer.empty_state(), "v0", -0.018, -0.18)
+    harmful_payload = _public_payload(
+        _observation(left="empty", right="empty", front="v0"),
+        energy=0.50,
+        safety=0.50,
+    )
+    trigger = homeostatic_transfer.plan_action(
+        state,
+        public_input=harmful_payload,
+        sequence=2,
+        mode="public_bayes",
+        drive_mode="canonical",
+        action_costs=engine.ACTION_COSTS,
+        target_level=engine.TARGET_LEVEL,
+    )
+    assert trigger["selection_reason"] == "front_token_predicted_risk_or_deficit_harm"
+    state, _receipt = homeostatic_transfer.update_after_transition(
+        state,
+        public_input=harmful_payload,
+        selected_action="turn_right",
+        observed_outcome_type="rotated",
+        actual_delta={"energy": -0.014, "safety": 0.0},
+        terminal=False,
+        updates_enabled=True,
+        feedback_mode="canonical",
+    )
+    assert state["fast_state"]["escape_steps_remaining"] == 3
+    escape = homeostatic_transfer.plan_action(
+        state,
+        public_input=_public_payload(
+            _observation(left="empty", right="empty", front="empty"),
+            energy=0.486,
+            safety=0.50,
+        ),
+        sequence=3,
+        mode="public_bayes",
+        drive_mode="canonical",
+        action_costs=engine.ACTION_COSTS,
+        target_level=engine.TARGET_LEVEL,
+    )
+    assert escape["selected_action"] == "move_forward"
+    assert escape["selection_reason"] == "public_harm_escape_macro"
+
+
 def test_engine_mode_is_default_off_and_mutually_exclusive() -> None:
     assert engine.DEFAULT_INTERVENTIONS["homeostatic_transfer_mode"] == "off"
     state = engine.initial_state(run_id="mode-test", seed=17)
