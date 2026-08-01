@@ -1,0 +1,248 @@
+{
+  "acceptance": {
+    "drive_predictions_invariant": true,
+    "drive_ranking_shifted": true,
+    "exact_behavior_replay": true,
+    "numeric_transfer_and_ablation_gates": false
+  },
+  "action_budget": 96,
+  "all_gates_pass": false,
+  "claim_ceiling": "Dev-only public-feedback learning and limited compositional transfer inside this microworld grammar only.",
+  "drive_intervention": {
+    "energy_deficit_target": "v0",
+    "predictions_unchanged": true,
+    "ranking_shifted": true,
+    "safety_deficit_target": "v1"
+  },
+  "evaluation_world_count": 8,
+  "replay": {
+    "exact": true,
+    "produced_hash": "8709f403dc9ac07be229d2406b08288f25ae960dfa1ba79afe9d57a5e8ea0ee5",
+    "replayed_hash": "8709f403dc9ac07be229d2406b08288f25ae960dfa1ba79afe9d57a5e8ea0ee5",
+    "stored_actions_used_as_replay_input": false
+  },
+  "rows_path": "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/product_search_rows.jsonl",
+  "rows_sha256": "614a36324ea8921830fd42f56ef1d4b1de86bafd66f616a9edee5b1373ecd157",
+  "schema_version": "ego.v2.homeostatic_survival_loop.result.v1",
+  "single_use": true,
+  "split": "search_dev",
+  "summary": {
+    "ablation_damage": {
+      "FEEDBACK_SHUFFLE": 15.952,
+      "NO_UPDATE": 2.74475,
+      "POSTERIOR_ABLATION": 2.74475
+    },
+    "all_gates_pass": false,
+    "arms": {
+      "FAST_RESET": {
+        "mean_early_deficit_auc": 17.765,
+        "mean_final_effect_sign_accuracy": 0.05,
+        "mean_late_deficit_auc": 20.1445,
+        "mean_total_deficit_auc": 37.9095,
+        "world_count": 8
+      },
+      "FEEDBACK_SHUFFLE": {
+        "mean_early_deficit_auc": 30.97225,
+        "mean_final_effect_sign_accuracy": 0.4125,
+        "mean_late_deficit_auc": 34.523,
+        "mean_total_deficit_auc": 65.49525,
+        "world_count": 8
+      },
+      "NO_UPDATE": {
+        "mean_early_deficit_auc": 17.765,
+        "mean_final_effect_sign_accuracy": 0.0,
+        "mean_late_deficit_auc": 20.1445,
+        "mean_total_deficit_auc": 37.9095,
+        "world_count": 8
+      },
+      "POSTERIOR_ABLATION": {
+        "mean_early_deficit_auc": 17.765,
+        "mean_final_effect_sign_accuracy": 1.0,
+        "mean_late_deficit_auc": 20.1445,
+        "mean_total_deficit_auc": 37.9095,
+        "world_count": 8
+      },
+      "PRIVATE_ORACLE_NAVIGATOR": {
+        "mean_early_deficit_auc": 3.74575,
+        "mean_final_effect_sign_accuracy": null,
+        "mean_late_deficit_auc": 0.0775,
+        "mean_total_deficit_auc": 3.82325,
+        "world_count": 8
+      },
+      "SCRATCH": {
+        "mean_early_deficit_auc": 13.648,
+        "mean_final_effect_sign_accuracy": 1.0,
+        "mean_late_deficit_auc": 12.55525,
+        "mean_total_deficit_auc": 26.20325,
+        "world_count": 8
+      },
+      "SLOW_RESET": {
+        "mean_early_deficit_auc": 13.648,
+        "mean_final_effect_sign_accuracy": 1.0,
+        "mean_late_deficit_auc": 12.55525,
+        "mean_total_deficit_auc": 26.20325,
+        "world_count": 8
+      },
+      "TRANSFER": {
+        "mean_early_deficit_auc": 15.02025,
+        "mean_final_effect_sign_accuracy": 1.0,
+        "mean_late_deficit_auc": 10.915,
+        "mean_total_deficit_auc": 25.93525,
+        "world_count": 8
+      },
+      "UNIFORM_RANDOM": {
+        "mean_early_deficit_auc": 24.7125,
+        "mean_final_effect_sign_accuracy": null,
+        "mean_late_deficit_auc": 28.74275,
+        "mean_total_deficit_auc": 53.45525,
+        "world_count": 8
+      },
+      "WRONG_PRIOR": {
+        "mean_early_deficit_auc": 14.631,
+        "mean_final_effect_sign_accuracy": 1.0,
+        "mean_late_deficit_auc": 10.3385,
+        "mean_total_deficit_auc": 24.9695,
+        "world_count": 8
+      }
+    },
+    "early_scratch_oracle_headroom": 9.90225,
+    "early_transfer_fraction": -0.138579615744,
+    "early_transfer_gain": -1.37225,
+    "gates": {
+      "early_transfer_fraction": false,
+      "early_transfer_gain": false,
+      "effect_sign_accuracy": true,
+      "fast_reset_worsens_majority": false,
+      "positive_world_majority": false,
+      "posterior_controls_damage": true,
+      "slow_reset_eliminates_half_gain": false,
+      "wrong_prior_late_recovery": true
+    },
+    "worlds": [
+      {
+        "early_scratch_oracle_headroom": 14.884,
+        "early_transfer_gain": -15.26,
+        "fast_reset_worse_than_transfer": false,
+        "opaque_context_id": "001l-p-search-0001",
+        "random_total_loss": 53.65,
+        "transfer_better_than_scratch": false,
+        "wrong_prior_late_excess_vs_scratch": -6.088
+      },
+      {
+        "early_scratch_oracle_headroom": 4.628,
+        "early_transfer_gain": 0.0,
+        "fast_reset_worse_than_transfer": true,
+        "opaque_context_id": "001l-p-search-0002",
+        "random_total_loss": 55.466,
+        "transfer_better_than_scratch": false,
+        "wrong_prior_late_excess_vs_scratch": 0.0
+      },
+      {
+        "early_scratch_oracle_headroom": 9.5,
+        "early_transfer_gain": 0.0,
+        "fast_reset_worse_than_transfer": true,
+        "opaque_context_id": "001l-p-search-0003",
+        "random_total_loss": 62.094,
+        "transfer_better_than_scratch": false,
+        "wrong_prior_late_excess_vs_scratch": 0.0
+      },
+      {
+        "early_scratch_oracle_headroom": 8.036,
+        "early_transfer_gain": -4.454,
+        "fast_reset_worse_than_transfer": false,
+        "opaque_context_id": "001l-p-search-0004",
+        "random_total_loss": 54.488,
+        "transfer_better_than_scratch": false,
+        "wrong_prior_late_excess_vs_scratch": -9.616
+      },
+      {
+        "early_scratch_oracle_headroom": 11.322,
+        "early_transfer_gain": 0.0,
+        "fast_reset_worse_than_transfer": false,
+        "opaque_context_id": "001l-p-search-0005",
+        "random_total_loss": 48.256,
+        "transfer_better_than_scratch": false,
+        "wrong_prior_late_excess_vs_scratch": -4.612
+      },
+      {
+        "early_scratch_oracle_headroom": 13.324,
+        "early_transfer_gain": 8.158,
+        "fast_reset_worse_than_transfer": true,
+        "opaque_context_id": "001l-p-search-0006",
+        "random_total_loss": 49.55,
+        "transfer_better_than_scratch": true,
+        "wrong_prior_late_excess_vs_scratch": 1.698
+      },
+      {
+        "early_scratch_oracle_headroom": 13.91,
+        "early_transfer_gain": 0.0,
+        "fast_reset_worse_than_transfer": true,
+        "opaque_context_id": "001l-p-search-0007",
+        "random_total_loss": 58.164,
+        "transfer_better_than_scratch": false,
+        "wrong_prior_late_excess_vs_scratch": 0.0
+      },
+      {
+        "early_scratch_oracle_headroom": 3.614,
+        "early_transfer_gain": 0.578,
+        "fast_reset_worse_than_transfer": true,
+        "opaque_context_id": "001l-p-search-0008",
+        "random_total_loss": 45.974,
+        "transfer_better_than_scratch": true,
+        "wrong_prior_late_excess_vs_scratch": 0.884
+      }
+    ],
+    "wrong_prior_late_tolerance": 2.4816
+  },
+  "task_id": "EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L",
+  "trained_effect_prototypes": {
+    "energy:+|safety:0": {
+      "count": 55,
+      "energy_mean": 0.242218181818,
+      "outcome_counts": {
+        "interacted": 55
+      },
+      "safety_mean": 0.0,
+      "terminal_count": 0
+    },
+    "energy:-|safety:+": {
+      "count": 48,
+      "energy_mean": -0.018,
+      "outcome_counts": {
+        "interacted": 48
+      },
+      "safety_mean": 0.12,
+      "terminal_count": 0
+    },
+    "energy:-|safety:-": {
+      "count": 54,
+      "energy_mean": -0.018,
+      "outcome_counts": {
+        "interacted": 54
+      },
+      "safety_mean": -0.097037037037,
+      "terminal_count": 0
+    },
+    "energy:-|safety:0": {
+      "count": 33,
+      "energy_mean": -0.018,
+      "outcome_counts": {
+        "interacted": 33
+      },
+      "safety_mean": 0.0,
+      "terminal_count": 0
+    },
+    "energy:0|safety:0": {
+      "count": 1,
+      "energy_mean": 0.0,
+      "outcome_counts": {
+        "interacted": 1
+      },
+      "safety_mean": 0.0,
+      "terminal_count": 0
+    }
+  },
+  "trained_slow_state_hash": "21312b81aeb282023662c77c0f1f43476ddb56874d58c20ced3b946dd24fe672",
+  "training_world_count": 8,
+  "verdict": "MINIMAL_TWO_TIMESCALE_DEV_GATE_FAIL"
+}

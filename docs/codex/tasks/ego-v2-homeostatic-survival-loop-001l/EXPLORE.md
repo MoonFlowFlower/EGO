@@ -154,3 +154,21 @@ post-qualification tuning.
   scratch, no-update, feedback-shuffle, slow-reset, fast-reset,
   posterior-ablation, explicit wrong-prior, random and private oracle arms.
 - Decision: commit candidate, evaluator and packets before running search-dev.
+
+## P3.1 — first search-dev negative result
+
+- Result: the learner reached final effect-sign accuracy `1.0`, drive
+  intervention and exact replay passed, and all three posterior/update controls
+  were worse. However early transfer was `-1.37225` deficit-AUC versus scratch
+  (`-13.86%` of scratch-oracle headroom), with only `2/8` worlds positive.
+- Failure is retained as evidence; qualification remains untouched.
+- Diagnostic: the slow prototype collapsed both novelty and threat into the
+  same negative/negative sign family, then removed that entire family after
+  one observation. That is a false one-family-one-token assumption. The
+  strongest counterexample is search world 0001, where transfer stalled at
+  `0.8` sign accuracy by step 48 while scratch reached `1.0`.
+- One bounded correction: count each effect family once per newly observed
+  token and learn its cross-world multiplicity ratio; subtract only the number
+  observed in the current fast state. No new signal, parameter sweep or grammar
+  change is allowed. Reuse search-dev once; if still negative, stop the minimal
+  learner claim rather than consume qualification.
