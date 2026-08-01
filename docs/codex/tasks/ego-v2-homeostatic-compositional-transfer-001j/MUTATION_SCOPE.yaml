@@ -1,0 +1,46 @@
+task_id: EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J
+base_head: 55b1e8622cd24c425b5fe6f334bc2bb3a5bb0016
+branch: codex/ego-v2-homeostatic-compositional-transfer-001j
+scope_kind: gated_homeostatic_compositional_transfer_successor
+allow:
+  - docs/codex/tasks/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J.md
+  - docs/codex/tasks/ego-v2-homeostatic-compositional-transfer-001j/COLLISION_RECORD.md
+  - docs/codex/tasks/ego-v2-homeostatic-compositional-transfer-001j/MUTATION_SCOPE.yaml
+  - docs/codex/tasks/ego-v2-homeostatic-compositional-transfer-001j/M0_TDD_REPORT.md
+  - docs/codex/tasks/ego-v2-homeostatic-compositional-transfer-001j/M1_M3_TDD_REPORT.md
+  - labs/ego_life_playground_v0/homeostatic_transfer.py
+  - labs/ego_life_playground_v0/engine.py
+  - labs/ego_life_playground_v0/controller.py
+  - labs/ego_life_playground_v0/__init__.py
+  - scripts/run_ego_homeostatic_transfer_demo.py
+  - scripts/codex/check_ego_v2_homeostatic_compositional_transfer_001j_capacity.py
+  - scripts/codex/verify_ego_v2_homeostatic_compositional_transfer_001j.py
+  - scripts/codex/tests/test_check_ego_v2_homeostatic_compositional_transfer_001j_capacity.py
+  - scripts/codex/tests/test_verify_ego_v2_homeostatic_compositional_transfer_001j.py
+  - tests/test_ego_v2_homeostatic_compositional_transfer_001j.py
+  - artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/**
+deny:
+  - D:/Project/AIProject/MyProject/intelligence-theory-lab/**
+  - D:/Project/AIProject/MyProject/joi-demo/**
+  - docs/codex/tasks/EGO-V2-CAUSAL-SPROUT-DEMO-001A.md
+  - docs/codex/tasks/*001C*
+  - docs/codex/tasks/*001D*
+  - docs/codex/tasks/*001E*
+  - docs/codex/tasks/*001F*
+  - docs/codex/tasks/*001G*
+  - docs/codex/tasks/*001H*
+  - docs/codex/tasks/*001I*
+  - artifacts/EGO-V2-CAUSAL-SPROUT-DEMO-001A/**
+  - artifacts/*001C*/**
+  - artifacts/*001D*/**
+  - artifacts/*001E*/**
+  - artifacts/*001F*/**
+  - artifacts/*001G*/**
+  - artifacts/*001H*/**
+  - artifacts/*001I*/**
+  - artifacts/ROUTE-STATE-MACHINE-001A/**
+publication:
+  commit_local: true
+  push: false
+  tag: false
+  remote_anchor: false
