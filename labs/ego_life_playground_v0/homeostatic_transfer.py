@@ -27,6 +27,7 @@ FEEDBACK_MODES = ("canonical", "shuffle")
 PUBLIC_INPUT_FIELDS = ("observation", "organism", "last_action", "last_delta")
 PUBLIC_ORGANISM_FIELDS = ("energy", "safety")
 SHORT_HISTORY_LIMIT = 16
+HOMEOSTATIC_TARGET_LEVEL = 0.72
 
 
 class HomeostaticTransferInvariantError(ValueError):
@@ -385,7 +386,7 @@ def _slow_effect_prior(state: Mapping[str, Any]) -> dict[str, Any]:
     prototypes = state["slow_state"]["effect_prototypes"]
     if not prototypes:
         return _empty_prediction()
-    observed = {
+    observed = [
         _effect_signature(
             {
                 "energy": float(row["energy_mean"]),
@@ -393,13 +394,24 @@ def _slow_effect_prior(state: Mapping[str, Any]) -> dict[str, Any]:
             }
         )
         for row in state["fast_state"]["token_stats"].values()
-    }
-    remaining = [
-        (signature, row)
-        for signature, row in sorted(prototypes.items())
-        if signature not in observed
     ]
-    selected = remaining or list(sorted(prototypes.items()))
+    # Counts are learned from the first public interaction with each token in a
+    # world.  Their ratios therefore estimate repeated family multiplicity
+    # (for example two distinct negative/negative effects) without seeing a
+    # mapping or world identifier.  Removing one observed occurrence avoids
+    # the earlier, false one-family-one-token assumption.
+    minimum_count = min(int(row["count"]) for row in prototypes.values())
+    observed_counts: dict[str, int] = {}
+    for signature in observed:
+        observed_counts[signature] = observed_counts.get(signature, 0) + 1
+    remaining: list[tuple[str, Mapping[str, Any]]] = []
+    all_weighted: list[tuple[str, Mapping[str, Any]]] = []
+    for signature, row in sorted(prototypes.items()):
+        multiplicity = max(1, round(int(row["count"]) / minimum_count))
+        all_weighted.extend((signature, row) for _ in range(multiplicity))
+        residual = max(0, multiplicity - observed_counts.get(signature, 0))
+        remaining.extend((signature, row) for _ in range(residual))
+    selected = remaining or all_weighted
     family_count = len(selected)
     total_samples = sum(int(row["count"]) for _signature, row in selected)
     outcome_totals: dict[str, float] = {}
@@ -756,7 +768,14 @@ def update_after_transition(
             slow["effect_family_stats"].get(signature, 0)
         ) + 1
 
-        if selected_action == "interact" and observed_outcome_type == "interacted":
+        token_was_known = bool(
+            observed_token in updated["fast_state"]["token_stats"]
+        )
+        if (
+            selected_action == "interact"
+            and observed_outcome_type == "interacted"
+            and not token_was_known
+        ):
             slow["effect_prototypes"][signature] = _updated_stat(
                 slow["effect_prototypes"].get(signature),
                 actual_delta=values,
@@ -791,7 +810,9 @@ def update_after_transition(
             and observed_token in microworld.TOKENS
             and front_stats is not None
         ):
-            drive = _drive(public_input["organism"], 0.72, "canonical")
+            drive = _drive(
+                public_input["organism"], HOMEOSTATIC_TARGET_LEVEL, "canonical"
+            )
             prediction = _prediction_from_row(
                 front_stats, "current_world_token_interaction"
             )

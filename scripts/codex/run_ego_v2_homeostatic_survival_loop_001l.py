@@ -651,7 +651,12 @@ def build_freeze(root: Path) -> dict[str, Any]:
     path = target / "product_candidate_freeze.json"
     if path.exists():
         raise RuntimeError("product candidate freeze is single-write")
-    search = json.loads((target / "product_search_result.json").read_text(encoding="utf-8"))
+    selected_search_path = (
+        target / "product_search_multiplicity_result.json"
+        if (target / "product_search_multiplicity_result.json").is_file()
+        else target / "product_search_result.json"
+    )
+    search = json.loads(selected_search_path.read_text(encoding="utf-8"))
     if not search["all_gates_pass"]:
         raise RuntimeError("search did not authorize product qualification")
     packet_commitment = json.loads(
@@ -670,7 +675,9 @@ def build_freeze(root: Path) -> dict[str, Any]:
             path.relative_to(root).as_posix(): sha256(path) for path in sources
         },
         "packet_sha256": packet_commitment["packet_sha256"],
-        "search_result_sha256": sha256(target / "product_search_result.json"),
+        "selected_search_path": selected_search_path.relative_to(root).as_posix(),
+        "selected_search_result_sha256": sha256(selected_search_path),
+        "failed_search_result_sha256": sha256(target / "product_search_result.json"),
         "budgets": {"training": TRAINING_BUDGET, "evaluation": EVALUATION_BUDGET},
         "thresholds": {
             "effect_sign_accuracy": 0.80,
@@ -784,12 +791,19 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--root", type=Path, default=ROOT)
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--search", action="store_true")
+    group.add_argument("--search-multiplicity", action="store_true")
     group.add_argument("--freeze", action="store_true")
     group.add_argument("--qualification", action="store_true")
     group.add_argument("--verify", choices=("product_search", "product_qualification"))
     args = parser.parse_args(argv)
     if args.search:
         report = execute_packet(args.root, "search_dev", output_prefix="product_search")
+    elif args.search_multiplicity:
+        report = execute_packet(
+            args.root,
+            "search_dev",
+            output_prefix="product_search_multiplicity",
+        )
     elif args.freeze:
         report = build_freeze(args.root)
     elif args.qualification:

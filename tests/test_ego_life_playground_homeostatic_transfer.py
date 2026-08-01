@@ -261,6 +261,37 @@ def test_validated_harm_escape_is_connected_to_fast_planner_state() -> None:
     assert escape["selection_reason"] == "public_harm_escape_macro"
 
 
+def test_slow_family_counts_once_per_token_and_preserves_learned_multiplicity() -> None:
+    state = homeostatic_transfer.empty_state()
+    state = _teach_token(state, "v0", -0.018, -0.18)
+    state = _teach_token(state, "v0", -0.018, -0.18)
+    signature = "energy:-|safety:-"
+    assert state["slow_state"]["effect_prototypes"][signature]["count"] == 1
+    assert state["fast_state"]["token_stats"]["v0"]["count"] == 2
+    state = _teach_token(state, "v1", -0.018, -0.02)
+    assert state["slow_state"]["effect_prototypes"][signature]["count"] == 2
+    state = _teach_token(state, "v2", 0.262, 0.0)
+
+    state = homeostatic_transfer.reset_for_world(state)
+    plan = homeostatic_transfer.plan_action(
+        state,
+        public_input=_public_payload(
+            _observation(left="empty", right="empty", front="v2"),
+            energy=0.5,
+            safety=0.5,
+        ),
+        sequence=1,
+        mode="public_bayes",
+        drive_mode="canonical",
+        action_costs=engine.ACTION_COSTS,
+        target_level=engine.TARGET_LEVEL,
+    )
+    remaining = plan["predictions_by_action"]["interact"][
+        "remaining_effect_signatures"
+    ]
+    assert remaining.count(signature) == 2
+
+
 def test_engine_mode_is_default_off_and_mutually_exclusive() -> None:
     assert engine.DEFAULT_INTERVENTIONS["homeostatic_transfer_mode"] == "off"
     state = engine.initial_state(run_id="mode-test", seed=17)
