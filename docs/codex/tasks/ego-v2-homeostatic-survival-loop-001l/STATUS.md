@@ -4,8 +4,10 @@
 - Base HEAD: `872901a9a1da3c534ee9293613596d5467f25713`
 - Branch: `codex/ego-v2-homeostatic-survival-loop-001l`
 - Current milestone: R1 single robustness successor
-- Next gate: freeze new packet bank, run no more than two substantive
-  search-dev candidates, then single-use qualification and replication.
+- Next gate: execute the already committed new search-dev packet with the
+  carry-over control and exactly two substantive candidates. Freeze source,
+  verifier, selected configuration and both formal packet hashes before the
+  single-use qualification and replication.
 - Product lane: runnable default-off Bayesian/reference vertical slice; final
   artifact and full regression closeout pending
 - Robustness qualification consumed: no
@@ -22,5 +24,5 @@
 
 ## Next action
 
-Precommit protected hashes and new 001L packets, then diagnose/run the bounded R
-campaign without touching the 001K formal packets or original heldout.
+Commit the tested producer/verifier, then execute the one bounded search-dev
+comparison without touching the 001K formal packets or original heldout.

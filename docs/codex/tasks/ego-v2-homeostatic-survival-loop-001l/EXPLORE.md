@@ -64,3 +64,28 @@ Packet denominator composition, unsafe acquisition scheduling, and navigation
 reacquisition are the three candidate variance mechanisms. Stored rows are
 analyzed before any new algorithm. Maximum two substantive candidates and no
 post-qualification tuning.
+
+## R0 — stored-row diagnosis and failing successor tests
+
+- Stored 001K evidence: late first beneficial interaction and high turn
+  fraction are negatively associated with public gain; the clearest witness is
+  `001k-replication-0013`, which eventually reaches sign accuracy 1.0 but
+  discovers beneficial effects late and oscillates around a known harmful
+  front token.
+- Strongest alternative: the recovery denominator alone changed. This is
+  incomplete because public loss and navigation traces also worsen on the same
+  slices.
+- Frozen candidates: stateful `S4_HARM_ESCAPE` and stateless
+  `S4_UNSEEN_FRONTIER_PRIORITY`, both generic public-history mechanisms; the
+  unchanged 001K candidate is only a carry-over control.
+- Failing tests: packet/protected-hash audit, two-candidate budget, public-only
+  escape and verifier positive controls fail at import because no 001L producer
+  or verifier exists yet.
+- Implementation readback: the producer now exposes only the unchanged control
+  plus the two preregistered mechanisms; focused tests prove packet commitments,
+  protected predecessor hashes, public-input rejection, and the known-harm
+  frontier action. The separately authored verifier imports no producer code
+  and declares row, aggregate, assignment, leakage, and protected-file positive
+  controls (`4 passed`).
+- Decision: commit the complete producer/verifier before any search result is
+  visible, then run the new search packet once for candidate selection.
