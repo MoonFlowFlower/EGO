@@ -1,0 +1,13 @@
+{
+  "current_best_evidence": [],
+  "current_iteration": 0,
+  "current_stage_goal": "Freeze task authority and three packet layers before candidate implementation.",
+  "next_decision_gate": "Proceed to call-chain audit only after packet commitments and predecessor hashes are frozen.",
+  "next_frontier": "",
+  "program_goal": "Recover reproducible legal public acquisition headroom without touching 001J formal evidence or heldout.",
+  "progress_checkpoint": "docs/codex/tasks/ego-v2-public-acquisition-capacity-recovery-001k/OVERALL_PROGRESS.md",
+  "reviewer_verdict": "not_started",
+  "stage_success_criteria": "Packet assignments committed before candidate source; all are new dev-only seeds with opaque IDs and original 001J heldout untouched.",
+  "status": "active",
+  "updated_at": "2026-08-01T08:21:02+00:00"
+}

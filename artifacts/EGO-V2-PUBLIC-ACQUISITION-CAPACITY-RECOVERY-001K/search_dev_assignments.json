@@ -1,0 +1,354 @@
+{
+  "assignments": [
+    {
+      "initial_homeostasis": {
+        "energy": 0.62,
+        "safety": 0.28
+      },
+      "layout_id": "p0_cross_v1",
+      "layout_index": 0,
+      "mapping_commitment": {
+        "v0": "social",
+        "v1": "shelter",
+        "v2": "threat",
+        "v3": "novelty",
+        "v4": "resource"
+      },
+      "mapping_index": 0,
+      "opaque_context_id": "001k-search-dev-0001",
+      "profile_index": 1,
+      "profile_name": "safety_low",
+      "world_seed": 30000
+    },
+    {
+      "initial_homeostasis": {
+        "energy": 0.28,
+        "safety": 0.62
+      },
+      "layout_id": "p0_cross_v1",
+      "layout_index": 0,
+      "mapping_commitment": {
+        "v0": "resource",
+        "v1": "novelty",
+        "v2": "shelter",
+        "v3": "threat",
+        "v4": "social"
+      },
+      "mapping_index": 1,
+      "opaque_context_id": "001k-search-dev-0002",
+      "profile_index": 0,
+      "profile_name": "energy_low",
+      "world_seed": 30001
+    },
+    {
+      "initial_homeostasis": {
+        "energy": 0.62,
+        "safety": 0.28
+      },
+      "layout_id": "p0_cross_v1",
+      "layout_index": 0,
+      "mapping_commitment": {
+        "v0": "resource",
+        "v1": "novelty",
+        "v2": "shelter",
+        "v3": "threat",
+        "v4": "social"
+      },
+      "mapping_index": 1,
+      "opaque_context_id": "001k-search-dev-0003",
+      "profile_index": 1,
+      "profile_name": "safety_low",
+      "world_seed": 30079
+    },
+    {
+      "initial_homeostasis": {
+        "energy": 0.28,
+        "safety": 0.62
+      },
+      "layout_id": "p0_cross_v1",
+      "layout_index": 0,
+      "mapping_commitment": {
+        "v0": "resource",
+        "v1": "social",
+        "v2": "threat",
+        "v3": "novelty",
+        "v4": "shelter"
+      },
+      "mapping_index": 2,
+      "opaque_context_id": "001k-search-dev-0004",
+      "profile_index": 0,
+      "profile_name": "energy_low",
+      "world_seed": 30002
+    },
+    {
+      "initial_homeostasis": {
+        "energy": 0.62,
+        "safety": 0.28
+      },
+      "layout_id": "p0_cross_v1",
+      "layout_index": 0,
+      "mapping_commitment": {
+        "v0": "social",
+        "v1": "novelty",
+        "v2": "threat",
+        "v3": "shelter",
+        "v4": "resource"
+      },
+      "mapping_index": 3,
+      "opaque_context_id": "001k-search-dev-0005",
+      "profile_index": 1,
+      "profile_name": "safety_low",
+      "world_seed": 30004
+    },
+    {
+      "initial_homeostasis": {
+        "energy": 0.28,
+        "safety": 0.62
+      },
+      "layout_id": "p2_vertical_v1",
+      "layout_index": 1,
+      "mapping_commitment": {
+        "v0": "social",
+        "v1": "shelter",
+        "v2": "threat",
+        "v3": "novelty",
+        "v4": "resource"
+      },
+      "mapping_index": 0,
+      "opaque_context_id": "001k-search-dev-0006",
+      "profile_index": 0,
+      "profile_name": "energy_low",
+      "world_seed": 30056
+    },
+    {
+      "initial_homeostasis": {
+        "energy": 0.62,
+        "safety": 0.28
+      },
+      "layout_id": "p2_vertical_v1",
+      "layout_index": 1,
+      "mapping_commitment": {
+        "v0": "social",
+        "v1": "shelter",
+        "v2": "threat",
+        "v3": "novelty",
+        "v4": "resource"
+      },
+      "mapping_index": 0,
+      "opaque_context_id": "001k-search-dev-0007",
+      "profile_index": 1,
+      "profile_name": "safety_low",
+      "world_seed": 30062
+    },
+    {
+      "initial_homeostasis": {
+        "energy": 0.28,
+        "safety": 0.62
+      },
+      "layout_id": "p2_vertical_v1",
+      "layout_index": 1,
+      "mapping_commitment": {
+        "v0": "resource",
+        "v1": "novelty",
+        "v2": "shelter",
+        "v3": "threat",
+        "v4": "social"
+      },
+      "mapping_index": 1,
+      "opaque_context_id": "001k-search-dev-0008",
+      "profile_index": 0,
+      "profile_name": "energy_low",
+      "world_seed": 30109
+    },
+    {
+      "initial_homeostasis": {
+        "energy": 0.62,
+        "safety": 0.28
+      },
+      "layout_id": "p2_vertical_v1",
+      "layout_index": 1,
+      "mapping_commitment": {
+        "v0": "resource",
+        "v1": "social",
+        "v2": "threat",
+        "v3": "novelty",
+        "v4": "shelter"
+      },
+      "mapping_index": 2,
+      "opaque_context_id": "001k-search-dev-0009",
+      "profile_index": 1,
+      "profile_name": "safety_low",
+      "world_seed": 30346
+    },
+    {
+      "initial_homeostasis": {
+        "energy": 0.28,
+        "safety": 0.62
+      },
+      "layout_id": "p2_vertical_v1",
+      "layout_index": 1,
+      "mapping_commitment": {
+        "v0": "social",
+        "v1": "novelty",
+        "v2": "threat",
+        "v3": "shelter",
+        "v4": "resource"
+      },
+      "mapping_index": 3,
+      "opaque_context_id": "001k-search-dev-0010",
+      "profile_index": 0,
+      "profile_name": "energy_low",
+      "world_seed": 30118
+    },
+    {
+      "initial_homeostasis": {
+        "energy": 0.62,
+        "safety": 0.28
+      },
+      "layout_id": "p2_vertical_v1",
+      "layout_index": 1,
+      "mapping_commitment": {
+        "v0": "social",
+        "v1": "novelty",
+        "v2": "threat",
+        "v3": "shelter",
+        "v4": "resource"
+      },
+      "mapping_index": 3,
+      "opaque_context_id": "001k-search-dev-0011",
+      "profile_index": 1,
+      "profile_name": "safety_low",
+      "world_seed": 30124
+    },
+    {
+      "initial_homeostasis": {
+        "energy": 0.28,
+        "safety": 0.62
+      },
+      "layout_id": "p2_offset_v1",
+      "layout_index": 2,
+      "mapping_commitment": {
+        "v0": "social",
+        "v1": "shelter",
+        "v2": "threat",
+        "v3": "novelty",
+        "v4": "resource"
+      },
+      "mapping_index": 0,
+      "opaque_context_id": "001k-search-dev-0012",
+      "profile_index": 0,
+      "profile_name": "energy_low",
+      "world_seed": 30081
+    },
+    {
+      "initial_homeostasis": {
+        "energy": 0.62,
+        "safety": 0.28
+      },
+      "layout_id": "p2_offset_v1",
+      "layout_index": 2,
+      "mapping_commitment": {
+        "v0": "resource",
+        "v1": "novelty",
+        "v2": "shelter",
+        "v3": "threat",
+        "v4": "social"
+      },
+      "mapping_index": 1,
+      "opaque_context_id": "001k-search-dev-0013",
+      "profile_index": 1,
+      "profile_name": "safety_low",
+      "world_seed": 30111
+    },
+    {
+      "initial_homeostasis": {
+        "energy": 0.28,
+        "safety": 0.62
+      },
+      "layout_id": "p2_offset_v1",
+      "layout_index": 2,
+      "mapping_commitment": {
+        "v0": "resource",
+        "v1": "social",
+        "v2": "threat",
+        "v3": "novelty",
+        "v4": "shelter"
+      },
+      "mapping_index": 2,
+      "opaque_context_id": "001k-search-dev-0014",
+      "profile_index": 0,
+      "profile_name": "energy_low",
+      "world_seed": 30645
+    },
+    {
+      "initial_homeostasis": {
+        "energy": 0.62,
+        "safety": 0.28
+      },
+      "layout_id": "p2_offset_v1",
+      "layout_index": 2,
+      "mapping_commitment": {
+        "v0": "resource",
+        "v1": "social",
+        "v2": "threat",
+        "v3": "novelty",
+        "v4": "shelter"
+      },
+      "mapping_index": 2,
+      "opaque_context_id": "001k-search-dev-0015",
+      "profile_index": 1,
+      "profile_name": "safety_low",
+      "world_seed": 30740
+    },
+    {
+      "initial_homeostasis": {
+        "energy": 0.28,
+        "safety": 0.62
+      },
+      "layout_id": "p2_offset_v1",
+      "layout_index": 2,
+      "mapping_commitment": {
+        "v0": "social",
+        "v1": "novelty",
+        "v2": "threat",
+        "v3": "shelter",
+        "v4": "resource"
+      },
+      "mapping_index": 3,
+      "opaque_context_id": "001k-search-dev-0016",
+      "profile_index": 0,
+      "profile_name": "energy_low",
+      "world_seed": 30984
+    }
+  ],
+  "candidate_visible_fields": [
+    "observation",
+    "organism",
+    "last_action",
+    "last_delta",
+    "public_history_state",
+    "public_rng"
+  ],
+  "dev_only": true,
+  "forbidden_candidate_fields": [
+    "packet_name",
+    "opaque_context_id",
+    "layout_index",
+    "layout_id",
+    "mapping_index",
+    "profile_index",
+    "profile_name",
+    "world_seed",
+    "mapping_commitment",
+    "private_pose",
+    "cause",
+    "oracle_action",
+    "future",
+    "verdict"
+  ],
+  "original_001j_assignment": false,
+  "packet_name": "search_dev",
+  "schema_version": "ego.v2.public_acquisition.private_packet.v1",
+  "single_use": false,
+  "task_id": "EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K"
+}
