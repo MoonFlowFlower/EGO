@@ -1,0 +1,34 @@
+{
+  "all_hashes_match": true,
+  "artifacts": [
+    {
+      "bytes": 17097,
+      "path": "capacity_replay_report.json",
+      "sha256": "282134d7f2b88a164f2c444d6e6b162fb69d330ecad4294bee82134cc3be4672"
+    },
+    {
+      "bytes": 1490,
+      "path": "capacity_result.json",
+      "sha256": "7f5079c69a0e42181fe44a9bc94c29e5cd41d9cd2dd25ac81990e01dfd8b44b3"
+    },
+    {
+      "bytes": 4049688,
+      "path": "capacity_rows.jsonl",
+      "sha256": "e4ec9760fd4892f8b9ea94cbfa77f557869209933813d6baf306bc01f85f3a38"
+    },
+    {
+      "bytes": 416,
+      "path": "failure_manifest.json",
+      "sha256": "13964d71578fc1908fcb3365bdf86250cdb8e0ea48bf47f7518180795b1d22ae"
+    },
+    {
+      "bytes": 251,
+      "path": "leakage_report.json",
+      "sha256": "5b7e594b057e413f88b8d7944c738244651ac1df98f9ed4e7af674cde6180109"
+    }
+  ],
+  "heldout_artifact_count": 0,
+  "protected_001a_artifacts_modified": false,
+  "schema_version": "ego.v2.homeostatic_capacity_manifest.v1",
+  "task_id": "EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J"
+}

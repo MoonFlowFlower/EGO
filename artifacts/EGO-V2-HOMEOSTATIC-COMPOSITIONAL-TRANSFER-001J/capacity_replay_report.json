@@ -1,0 +1,392 @@
+{
+  "all_match": true,
+  "independent_aggregate_recomputed": true,
+  "rows": [
+    {
+      "arm": "PRIVATE_ORACLE_NAVIGATOR",
+      "context_id": "001j-dev-l0-m0-p1",
+      "match": true,
+      "produced_hash": "d0204d9f584ae1fbfee62f503bc563a60dcd5b8f977f4c92fa980147a064821f",
+      "replayed_hash": "d0204d9f584ae1fbfee62f503bc563a60dcd5b8f977f4c92fa980147a064821f",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PUBLIC_FACTOR_BAYES",
+      "context_id": "001j-dev-l0-m0-p1",
+      "match": true,
+      "produced_hash": "1811bde2854da85cdcc84cfcd8565353895c266cb014736852ce9d245892c0d0",
+      "replayed_hash": "1811bde2854da85cdcc84cfcd8565353895c266cb014736852ce9d245892c0d0",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "UNIFORM_RANDOM",
+      "context_id": "001j-dev-l0-m0-p1",
+      "match": true,
+      "produced_hash": "5999ea8f1003ebe431d947bf956c786e786c92a251a41fad0c914e2a0ea36736",
+      "replayed_hash": "5999ea8f1003ebe431d947bf956c786e786c92a251a41fad0c914e2a0ea36736",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PRIVATE_ORACLE_NAVIGATOR",
+      "context_id": "001j-dev-l0-m1-p0",
+      "match": true,
+      "produced_hash": "058b590add29f2fa9ee16965f636d604fbf55e5b97c9f0ad76891dbc3a9e70ee",
+      "replayed_hash": "058b590add29f2fa9ee16965f636d604fbf55e5b97c9f0ad76891dbc3a9e70ee",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PUBLIC_FACTOR_BAYES",
+      "context_id": "001j-dev-l0-m1-p0",
+      "match": true,
+      "produced_hash": "6b1f329ea7cb4706a238faa109c0e6abc0cb7697375e779e4260ee1dfce71089",
+      "replayed_hash": "6b1f329ea7cb4706a238faa109c0e6abc0cb7697375e779e4260ee1dfce71089",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "UNIFORM_RANDOM",
+      "context_id": "001j-dev-l0-m1-p0",
+      "match": true,
+      "produced_hash": "624c2955e187a58169e8d4eec234eb7949a9cf1ba5b11644034d8a11a3a74eff",
+      "replayed_hash": "624c2955e187a58169e8d4eec234eb7949a9cf1ba5b11644034d8a11a3a74eff",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PRIVATE_ORACLE_NAVIGATOR",
+      "context_id": "001j-dev-l0-m1-p1",
+      "match": true,
+      "produced_hash": "2f00fb90900fdab644ded8eb68fb904a9f2207555dcdb1a03d4de6d34c5054f0",
+      "replayed_hash": "2f00fb90900fdab644ded8eb68fb904a9f2207555dcdb1a03d4de6d34c5054f0",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PUBLIC_FACTOR_BAYES",
+      "context_id": "001j-dev-l0-m1-p1",
+      "match": true,
+      "produced_hash": "c87e5e087ce81781f6c6b84b4202a37c755bfa0bb3aa631c6c4f23cb6760c057",
+      "replayed_hash": "c87e5e087ce81781f6c6b84b4202a37c755bfa0bb3aa631c6c4f23cb6760c057",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "UNIFORM_RANDOM",
+      "context_id": "001j-dev-l0-m1-p1",
+      "match": true,
+      "produced_hash": "b391051a8ded40b6b948fef30b9b3b7271ff4c719e6d4f0e31f5845b7e573f5d",
+      "replayed_hash": "b391051a8ded40b6b948fef30b9b3b7271ff4c719e6d4f0e31f5845b7e573f5d",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PRIVATE_ORACLE_NAVIGATOR",
+      "context_id": "001j-dev-l0-m2-p0",
+      "match": true,
+      "produced_hash": "94d29b75f2d35d500d3ee615d60cd0833f0e1e27eea89ada24a34995100046e4",
+      "replayed_hash": "94d29b75f2d35d500d3ee615d60cd0833f0e1e27eea89ada24a34995100046e4",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PUBLIC_FACTOR_BAYES",
+      "context_id": "001j-dev-l0-m2-p0",
+      "match": true,
+      "produced_hash": "63f695874e67a23c189bb3d82484920d031023139a9dca3c73a88276f6c68981",
+      "replayed_hash": "63f695874e67a23c189bb3d82484920d031023139a9dca3c73a88276f6c68981",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "UNIFORM_RANDOM",
+      "context_id": "001j-dev-l0-m2-p0",
+      "match": true,
+      "produced_hash": "11242a7956c73e466e25094f2bb5d7fb8a5922fe635d0ecc119dab66a56fcca4",
+      "replayed_hash": "11242a7956c73e466e25094f2bb5d7fb8a5922fe635d0ecc119dab66a56fcca4",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PRIVATE_ORACLE_NAVIGATOR",
+      "context_id": "001j-dev-l0-m3-p1",
+      "match": true,
+      "produced_hash": "3d82457fff8cfc909cd8dfa22bd63680f3aed8f8aa01cbb7fec5e3d21489abc0",
+      "replayed_hash": "3d82457fff8cfc909cd8dfa22bd63680f3aed8f8aa01cbb7fec5e3d21489abc0",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PUBLIC_FACTOR_BAYES",
+      "context_id": "001j-dev-l0-m3-p1",
+      "match": true,
+      "produced_hash": "1b1e3bf51178ebb5e1c014081aafad8447f2150aba633f6572ba5f2dda6b39dd",
+      "replayed_hash": "1b1e3bf51178ebb5e1c014081aafad8447f2150aba633f6572ba5f2dda6b39dd",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "UNIFORM_RANDOM",
+      "context_id": "001j-dev-l0-m3-p1",
+      "match": true,
+      "produced_hash": "abb5ce5af65b9670351277cbb433e0cad18960d33ee2f7b6571acf64473f8ecb",
+      "replayed_hash": "abb5ce5af65b9670351277cbb433e0cad18960d33ee2f7b6571acf64473f8ecb",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PRIVATE_ORACLE_NAVIGATOR",
+      "context_id": "001j-dev-l1-m0-p0",
+      "match": true,
+      "produced_hash": "feda1be826b5f757267484ee839aaa9562cf2864375153c999dedc8ef04f2eb7",
+      "replayed_hash": "feda1be826b5f757267484ee839aaa9562cf2864375153c999dedc8ef04f2eb7",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PUBLIC_FACTOR_BAYES",
+      "context_id": "001j-dev-l1-m0-p0",
+      "match": true,
+      "produced_hash": "6388608b35379b6994467a44cff75dcdf6838103f553d1d6a99437a4b3cee3cd",
+      "replayed_hash": "6388608b35379b6994467a44cff75dcdf6838103f553d1d6a99437a4b3cee3cd",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "UNIFORM_RANDOM",
+      "context_id": "001j-dev-l1-m0-p0",
+      "match": true,
+      "produced_hash": "0c6f66ff6dceb598ae39b633b1ed6a7f418aecda2e8a54c52eaa31e69773225d",
+      "replayed_hash": "0c6f66ff6dceb598ae39b633b1ed6a7f418aecda2e8a54c52eaa31e69773225d",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PRIVATE_ORACLE_NAVIGATOR",
+      "context_id": "001j-dev-l1-m0-p1",
+      "match": true,
+      "produced_hash": "46c457212c8a5c9a4c9c34a0e4b3661b3f5157fad479890bdbb986b49852c790",
+      "replayed_hash": "46c457212c8a5c9a4c9c34a0e4b3661b3f5157fad479890bdbb986b49852c790",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PUBLIC_FACTOR_BAYES",
+      "context_id": "001j-dev-l1-m0-p1",
+      "match": true,
+      "produced_hash": "1047c5c7ea346e4f651fb1c5fa62c7efb82df09a1d8875a68cb9062340e8efdc",
+      "replayed_hash": "1047c5c7ea346e4f651fb1c5fa62c7efb82df09a1d8875a68cb9062340e8efdc",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "UNIFORM_RANDOM",
+      "context_id": "001j-dev-l1-m0-p1",
+      "match": true,
+      "produced_hash": "040234a7523857efafb94de84e10917f377edef301af9fe787a4143ac37f7e68",
+      "replayed_hash": "040234a7523857efafb94de84e10917f377edef301af9fe787a4143ac37f7e68",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PRIVATE_ORACLE_NAVIGATOR",
+      "context_id": "001j-dev-l1-m1-p0",
+      "match": true,
+      "produced_hash": "f972361ef6548a5b82f172246fab814acd4b568d4adcb0307d918869ce27bfef",
+      "replayed_hash": "f972361ef6548a5b82f172246fab814acd4b568d4adcb0307d918869ce27bfef",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PUBLIC_FACTOR_BAYES",
+      "context_id": "001j-dev-l1-m1-p0",
+      "match": true,
+      "produced_hash": "aa0f015184ec8349316ea553520840062d99170ddffab58fb2f773c5c890e1c8",
+      "replayed_hash": "aa0f015184ec8349316ea553520840062d99170ddffab58fb2f773c5c890e1c8",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "UNIFORM_RANDOM",
+      "context_id": "001j-dev-l1-m1-p0",
+      "match": true,
+      "produced_hash": "085b99ccde26cd33981192da6634b588703418754df6c5a22daf945ed4d66e8f",
+      "replayed_hash": "085b99ccde26cd33981192da6634b588703418754df6c5a22daf945ed4d66e8f",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PRIVATE_ORACLE_NAVIGATOR",
+      "context_id": "001j-dev-l1-m2-p1",
+      "match": true,
+      "produced_hash": "48442b66a051c33992164860c62c59aa6b1ce86b58316cafa7459096ceb7454c",
+      "replayed_hash": "48442b66a051c33992164860c62c59aa6b1ce86b58316cafa7459096ceb7454c",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PUBLIC_FACTOR_BAYES",
+      "context_id": "001j-dev-l1-m2-p1",
+      "match": true,
+      "produced_hash": "5d0552618d529fbf1cd69820130b6983571615362a4a86bcc409cf2743de0a50",
+      "replayed_hash": "5d0552618d529fbf1cd69820130b6983571615362a4a86bcc409cf2743de0a50",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "UNIFORM_RANDOM",
+      "context_id": "001j-dev-l1-m2-p1",
+      "match": true,
+      "produced_hash": "4c518e7a5463b3013d23d17211a23e89818e564c9170a3455b79dba2c79941eb",
+      "replayed_hash": "4c518e7a5463b3013d23d17211a23e89818e564c9170a3455b79dba2c79941eb",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PRIVATE_ORACLE_NAVIGATOR",
+      "context_id": "001j-dev-l1-m3-p0",
+      "match": true,
+      "produced_hash": "fd3de4fdfa1f64a74a3a53c320b3307e1d7c069b77420b5d1efa73ce0620572c",
+      "replayed_hash": "fd3de4fdfa1f64a74a3a53c320b3307e1d7c069b77420b5d1efa73ce0620572c",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PUBLIC_FACTOR_BAYES",
+      "context_id": "001j-dev-l1-m3-p0",
+      "match": true,
+      "produced_hash": "2be57ff260bb53e4e5360fb2eb5443c782889e4c791632ea5f604a2405f3f340",
+      "replayed_hash": "2be57ff260bb53e4e5360fb2eb5443c782889e4c791632ea5f604a2405f3f340",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "UNIFORM_RANDOM",
+      "context_id": "001j-dev-l1-m3-p0",
+      "match": true,
+      "produced_hash": "c0440d7b0307f4e495a64abffc83806729f53ebff9f6f749a46f41c468b11c35",
+      "replayed_hash": "c0440d7b0307f4e495a64abffc83806729f53ebff9f6f749a46f41c468b11c35",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PRIVATE_ORACLE_NAVIGATOR",
+      "context_id": "001j-dev-l1-m3-p1",
+      "match": true,
+      "produced_hash": "a02942276f243b4bdd55f36794cc5665535ed6de67b5511e42bcf70507a05f67",
+      "replayed_hash": "a02942276f243b4bdd55f36794cc5665535ed6de67b5511e42bcf70507a05f67",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PUBLIC_FACTOR_BAYES",
+      "context_id": "001j-dev-l1-m3-p1",
+      "match": true,
+      "produced_hash": "4175c636f8de719f1d5c99d9a7d7d09ef9e592a98c7a366e332418540773dd2f",
+      "replayed_hash": "4175c636f8de719f1d5c99d9a7d7d09ef9e592a98c7a366e332418540773dd2f",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "UNIFORM_RANDOM",
+      "context_id": "001j-dev-l1-m3-p1",
+      "match": true,
+      "produced_hash": "f6b9d7d34a8624e6443f8312f21785fe925320da55168a4d11f7c4cd1c566956",
+      "replayed_hash": "f6b9d7d34a8624e6443f8312f21785fe925320da55168a4d11f7c4cd1c566956",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PRIVATE_ORACLE_NAVIGATOR",
+      "context_id": "001j-dev-l2-m0-p0",
+      "match": true,
+      "produced_hash": "f0f2adca692184784ee4888e2f29679523605d5d678d800a8325eeeb5a155e6b",
+      "replayed_hash": "f0f2adca692184784ee4888e2f29679523605d5d678d800a8325eeeb5a155e6b",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PUBLIC_FACTOR_BAYES",
+      "context_id": "001j-dev-l2-m0-p0",
+      "match": true,
+      "produced_hash": "d595d4f5d6ef9a1e010ab929ef91a884f44c766eb1bd394007866400073d027f",
+      "replayed_hash": "d595d4f5d6ef9a1e010ab929ef91a884f44c766eb1bd394007866400073d027f",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "UNIFORM_RANDOM",
+      "context_id": "001j-dev-l2-m0-p0",
+      "match": true,
+      "produced_hash": "f386e74f73b733fd940d4b02ed5c31d72c33648ea33d74638b4d96602a74c4fe",
+      "replayed_hash": "f386e74f73b733fd940d4b02ed5c31d72c33648ea33d74638b4d96602a74c4fe",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PRIVATE_ORACLE_NAVIGATOR",
+      "context_id": "001j-dev-l2-m1-p1",
+      "match": true,
+      "produced_hash": "19db0f115a4703fefd98ac58703dc6a9a816b7186d8378bca468286dde39bb5a",
+      "replayed_hash": "19db0f115a4703fefd98ac58703dc6a9a816b7186d8378bca468286dde39bb5a",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PUBLIC_FACTOR_BAYES",
+      "context_id": "001j-dev-l2-m1-p1",
+      "match": true,
+      "produced_hash": "35f5c59f77c137efd4bdcfd27143284838106dce74a8a2e944c2f43969079066",
+      "replayed_hash": "35f5c59f77c137efd4bdcfd27143284838106dce74a8a2e944c2f43969079066",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "UNIFORM_RANDOM",
+      "context_id": "001j-dev-l2-m1-p1",
+      "match": true,
+      "produced_hash": "ff719cbcc50d656103e491d29bec826ede02e982164342df8df2cfcc5f54e08f",
+      "replayed_hash": "ff719cbcc50d656103e491d29bec826ede02e982164342df8df2cfcc5f54e08f",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PRIVATE_ORACLE_NAVIGATOR",
+      "context_id": "001j-dev-l2-m2-p0",
+      "match": true,
+      "produced_hash": "42fa22ed088e760618536d3bc993cb2128cab017b5dc9882d99a54b6513f21c8",
+      "replayed_hash": "42fa22ed088e760618536d3bc993cb2128cab017b5dc9882d99a54b6513f21c8",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PUBLIC_FACTOR_BAYES",
+      "context_id": "001j-dev-l2-m2-p0",
+      "match": true,
+      "produced_hash": "9689f6b1ead4e104bd2b6f17682a045847fdfbeaffb030b7e7f640f6d984522c",
+      "replayed_hash": "9689f6b1ead4e104bd2b6f17682a045847fdfbeaffb030b7e7f640f6d984522c",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "UNIFORM_RANDOM",
+      "context_id": "001j-dev-l2-m2-p0",
+      "match": true,
+      "produced_hash": "bf0da5a01989b576b573ef35fa7bef8527a7967804021bf876b97c0d6e6b6ac3",
+      "replayed_hash": "bf0da5a01989b576b573ef35fa7bef8527a7967804021bf876b97c0d6e6b6ac3",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PRIVATE_ORACLE_NAVIGATOR",
+      "context_id": "001j-dev-l2-m2-p1",
+      "match": true,
+      "produced_hash": "3adeec88965d04185e8cb1e2b72e043cc8cc944cdb51509104eb6fc2d4ff7ec5",
+      "replayed_hash": "3adeec88965d04185e8cb1e2b72e043cc8cc944cdb51509104eb6fc2d4ff7ec5",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PUBLIC_FACTOR_BAYES",
+      "context_id": "001j-dev-l2-m2-p1",
+      "match": true,
+      "produced_hash": "7f1fe7f6a2b0b4e0c18b0c54c3319d04be07367907e325542bbff4204bdd97bc",
+      "replayed_hash": "7f1fe7f6a2b0b4e0c18b0c54c3319d04be07367907e325542bbff4204bdd97bc",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "UNIFORM_RANDOM",
+      "context_id": "001j-dev-l2-m2-p1",
+      "match": true,
+      "produced_hash": "0ce76b0085dd824b1efea01b1d488fdaf853132d89281d35a1fa4a7e7889d910",
+      "replayed_hash": "0ce76b0085dd824b1efea01b1d488fdaf853132d89281d35a1fa4a7e7889d910",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PRIVATE_ORACLE_NAVIGATOR",
+      "context_id": "001j-dev-l2-m3-p0",
+      "match": true,
+      "produced_hash": "c0599869b609b1fe589cb65df41b46fecab747375e6f35651b25ea2c521b6853",
+      "replayed_hash": "c0599869b609b1fe589cb65df41b46fecab747375e6f35651b25ea2c521b6853",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "PUBLIC_FACTOR_BAYES",
+      "context_id": "001j-dev-l2-m3-p0",
+      "match": true,
+      "produced_hash": "554525909cd1b62339512e27d2c195e6ab4662e0e72faae26c0a9812051f4db1",
+      "replayed_hash": "554525909cd1b62339512e27d2c195e6ab4662e0e72faae26c0a9812051f4db1",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "arm": "UNIFORM_RANDOM",
+      "context_id": "001j-dev-l2-m3-p0",
+      "match": true,
+      "produced_hash": "f854805dc51288dfae8f57eabb571e0fe1d078cdc7aadb561c1f596129a3fb63",
+      "replayed_hash": "f854805dc51288dfae8f57eabb571e0fe1d078cdc7aadb561c1f596129a3fb63",
+      "stored_actions_used_as_replay_input": false
+    }
+  ],
+  "schema_version": "ego.v2.homeostatic_capacity_replay.v1",
+  "stored_actions_used_as_replay_input": false
+}

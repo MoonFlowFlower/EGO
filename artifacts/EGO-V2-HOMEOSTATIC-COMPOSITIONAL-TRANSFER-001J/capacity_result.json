@@ -1,0 +1,36 @@
+{
+  "aggregate": {
+    "loss_by_arm": {
+      "PRIVATE_ORACLE_NAVIGATOR": 0.150569010417,
+      "PUBLIC_FACTOR_BAYES": 0.77919140625,
+      "UNIFORM_RANDOM": 0.74325
+    },
+    "public_reference_beats_random_count": 5,
+    "public_reference_gain": -0.03594140625,
+    "public_reference_recovery_fraction": -0.060642077073,
+    "random_oracle_headroom": 0.592680989583
+  },
+  "claim_ceiling": "Dev-only offline capacity evidence through unchanged transition/outcome/metabolism callables; not product learner or transfer evidence.",
+  "dev_world_count": 16,
+  "executed_dev_world_count": 16,
+  "execution_action_budget": 96,
+  "formal_action_budget": 96,
+  "gates": {
+    "complete_dev_population": true,
+    "fresh_replay_exact": true,
+    "public_reference_beats_random_12_of_16": false,
+    "public_reference_recovers_half_headroom": false,
+    "random_oracle_headroom_at_least_0_10": true,
+    "three_arms_and_real_callable_receipts": true
+  },
+  "heldout_executed": false,
+  "heldout_world_count": 8,
+  "layer": "dev_only_candidate_free_capacity_certificate",
+  "next_action": "stop_before_neural_candidate",
+  "producer_function": "check_ego_v2_homeostatic_compositional_transfer_001j_capacity.generate_capacity_evidence",
+  "schema_version": "ego.v2.homeostatic_capacity_result.v1",
+  "task_id": "EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J",
+  "test_only": false,
+  "verdict": "BENCHMARK_CAPACITY_NOT_ESTABLISHED",
+  "world_grammar_count": 24
+}

@@ -1,0 +1,14 @@
+{
+  "failed_gates": [
+    "public_reference_beats_random_12_of_16",
+    "public_reference_recovers_half_headroom"
+  ],
+  "schema_version": "ego.v2.homeostatic_capacity_failure.v1",
+  "stop_before": [
+    "homeostatic_transfer.py",
+    "engine_integration",
+    "heldout_commitment"
+  ],
+  "task_id": "EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J",
+  "verdict": "BENCHMARK_CAPACITY_NOT_ESTABLISHED"
+}

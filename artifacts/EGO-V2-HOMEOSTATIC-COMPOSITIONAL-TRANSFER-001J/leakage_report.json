@@ -1,0 +1,11 @@
+{
+  "ordinary_inputs_clean": true,
+  "positive_controls": {
+    "cause": true,
+    "oracle_action": true,
+    "seed": true,
+    "token_mapping": true,
+    "world_id": true
+  },
+  "schema_version": "ego.v2.homeostatic_capacity_leakage.v1"
+}
