@@ -3,12 +3,12 @@
 - Last updated: 2026-08-01
 - Program goal: identify and repair the legal public acquisition bottleneck
   without touching 001J formal evidence or its heldout assignments.
-- Current stage goal: freeze the best legal 96-action candidate and all gates,
-  then execute the precommitted qualification packet exactly once.
-- Stage success criteria: source/config/dependencies/packet hashes and
-  thresholds are frozen before execution; qualification rows independently
-  reproduce metrics; ablations damage any gain; no packet identity reaches the
-  candidate.
+- Current stage goal: execute the separately precommitted replication packet
+  once with the exact qualification candidate, source, parameters, thresholds,
+  action seeds, and ablations.
+- Stage success criteria: replication preserves positive gain and majority
+  paired directions; independent row recomputation matches; no post-
+  qualification retuning or source change occurs.
 - Reviewer verdict: `needs_more_exploration`
 - Validated evidence: 001J stored rows show 1,405/1,536 public actions were
   turns, only 64 were successful interactions, and no world identified all
@@ -39,7 +39,14 @@
   `gain=0.24011`, `recovery=45.58%`, and `15/16` positive directions. This is
   the best search candidate, but remains below the admission gate and is not a
   success claim.
+- Qualification evidence: after source/config/threshold freeze, the single-use
+  qualification packet produced `gain=0.28717`, `recovery=54.29%`, `47/48`
+  positive trajectory directions, and `16/16` positive world aggregates.
+  Effect-sign accuracy was `1.0`; no-update, feedback-shuffle, and posterior
+  ablation all exceeded the frozen material-damage threshold. Independent
+  recomputation of 27,648 rows returned no findings. Verdict remains
+  `QUALIFICATION_CAPACITY_ESTABLISHED_PENDING_REPLICATION`.
 - Current blocker: none.
-- Next frontier: freeze `S2_RISK_INFORMATION_GAIN` without further search-dev
-  tuning, commit the freeze, and run qualification once with three action RNG
-  seeds plus no-update, feedback-shuffle, and posterior-ranking ablations.
+- Next frontier: commit qualification evidence, verify the producer hash still
+  equals the candidate freeze, then execute replication once. Do not modify the
+  candidate even if replication is weaker.

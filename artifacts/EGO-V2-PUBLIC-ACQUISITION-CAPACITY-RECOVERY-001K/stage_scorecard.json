@@ -1,16 +1,17 @@
 {
   "current_best_evidence": [
-    "Risk information gain at 96 actions gain 0.240112 recovery 0.455789 and 15 of 16 directions",
-    "192 action baseline recovery 0.434606"
+    "Qualification gain 0.287170 recovery 0.542856 47 of 48 trajectories and 16 of 16 worlds",
+    "three material ablations",
+    "independent 27648-row recomputation passed"
   ],
-  "current_iteration": 4,
-  "current_stage_goal": "Single-use qualification of frozen S2_RISK_INFORMATION_GAIN.",
-  "next_decision_gate": "Run replication unchanged only after qualification.",
-  "next_frontier": "Freeze candidate and run qualification once.",
+  "current_iteration": 5,
+  "current_stage_goal": "Single-use replication of the exact qualification candidate.",
+  "next_decision_gate": "After replication, adjudicate recovered capacity versus positive signal only; never start M1 in this task.",
+  "next_frontier": "Commit qualification evidence then consume replication packet once.",
   "program_goal": "Recover reproducible legal public acquisition headroom without touching 001J formal evidence or heldout.",
   "progress_checkpoint": "docs/codex/tasks/ego-v2-public-acquisition-capacity-recovery-001k/OVERALL_PROGRESS.md",
   "reviewer_verdict": "pending_validation",
-  "stage_success_criteria": "Positive gain, majority directions, ablation damage, row recomputation, and leakage/tamper fail-closed; 50 percent and 12 of 16 remain M1 gate.",
+  "stage_success_criteria": "Positive gain and majority directions reproduce; independent verifier matches; source/freeze hashes stay exact.",
   "status": "pending_validation",
-  "updated_at": "2026-08-01T08:42:29+00:00"
+  "updated_at": "2026-08-01T08:52:18+00:00"
 }

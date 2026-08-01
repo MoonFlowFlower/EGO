@@ -1,0 +1,53 @@
+{
+  "claim_ceiling": "Stored dev-only row integrity and metric recomputation only.",
+  "findings": [],
+  "original_001j_packet_executed": false,
+  "packet_name": "qualification",
+  "passed": true,
+  "recomputed": {
+    "ablation_damage_threshold": 0.086150911458,
+    "ablation_rows": [
+      {
+        "ablation_gain": 0.065305121527,
+        "candidate_id": "FORMAL_NO_UPDATE",
+        "gain_damage": 0.221864583334,
+        "material": true
+      },
+      {
+        "ablation_gain": -0.099342013889,
+        "candidate_id": "FORMAL_FEEDBACK_SHUFFLE",
+        "gain_damage": 0.38651171875,
+        "material": true
+      },
+      {
+        "ablation_gain": 0.065305121527,
+        "candidate_id": "FORMAL_POSTERIOR_ABLATION",
+        "gain_damage": 0.221864583334,
+        "material": true
+      }
+    ],
+    "loss_by_candidate": {
+      "FORMAL_FEEDBACK_SHUFFLE": 0.817766927083,
+      "FORMAL_NO_UPDATE": 0.653119791667,
+      "FORMAL_POSTERIOR_ABLATION": 0.653119791667,
+      "PRIVATE_ORACLE_NAVIGATOR": 0.189427083333,
+      "S2_RISK_INFORMATION_GAIN": 0.431255208333,
+      "UNIFORM_RANDOM": 0.718424913194
+    },
+    "material_ablation_count": 3,
+    "mean_final_effect_sign_accuracy": 1.0,
+    "oracle_random_headroom": 0.528997829861,
+    "positive_trajectory_count": 47,
+    "positive_world_count": 16,
+    "public_reference_gain": 0.287169704861,
+    "recovery_fraction": 0.542856111407,
+    "trajectory_count": 48,
+    "world_count": 16
+  },
+  "result_path": "D:/Project/AIProject/MyProject/Ego/artifacts/EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K/qualification_result.json",
+  "row_count": 27648,
+  "rows_path": "D:/Project/AIProject/MyProject/Ego/artifacts/EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K/qualification_rows.jsonl",
+  "schema_version": "ego.v2.public_acquisition.row_verification.v1",
+  "stored_verdict": "QUALIFICATION_CAPACITY_ESTABLISHED_PENDING_REPLICATION",
+  "task_id": "EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K"
+}
