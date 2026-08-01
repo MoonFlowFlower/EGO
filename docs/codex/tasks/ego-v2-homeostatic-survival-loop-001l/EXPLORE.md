@@ -106,3 +106,14 @@ post-qualification tuning.
   independent verifier, selected config, NumPy `2.2.6`, action budget, seeds,
   thresholds and both formal packet hashes are frozen. Qualification has not
   yet been consumed.
+
+## R2 — single-use qualification readback
+
+- Frozen qualification was executed once: public gain `0.336896701389`,
+  oracle-random headroom `0.563134982639`, recovery `0.598252127421`, `16/16`
+  positive worlds (`48/48` paired trajectories), final sign accuracy `1.0`.
+- No-update, feedback-shuffle and posterior-ablation were all material; exact
+  candidate replay and public-input gates passed.
+- The frozen independent verifier recomputed all `27,648` rows with no finding.
+- Decision: qualification passes without tuning. Preserve this readback, then
+  run the already frozen replication once even if its result is negative.

@@ -3,13 +3,13 @@
 - Status: active
 - Base HEAD: `872901a9a1da3c534ee9293613596d5467f25713`
 - Branch: `codex/ego-v2-homeostatic-survival-loop-001l`
-- Current milestone: R2 frozen single-use qualification
-- Next gate: execute qualification exactly once for the frozen
-  `S4_HARM_ESCAPE`; read and preserve the result before running the unchanged
-  replication packet exactly once.
+- Current milestone: R3 frozen single-use replication
+- Next gate: execute replication exactly once for the unchanged
+  `S4_HARM_ESCAPE`, then run independent recomputation and all leakage/tamper
+  controls. No tuning is permitted.
 - Product lane: runnable default-off Bayesian/reference vertical slice; final
   artifact and full regression closeout pending
-- Robustness qualification consumed: no
+- Robustness qualification consumed: yes, pass, independently recomputed
 - Robustness replication consumed: no
 - Original 001J heldout consumed: no
 - Push/tag/remote anchor: forbidden
@@ -23,6 +23,5 @@
 
 ## Next action
 
-Commit the search readback and candidate freeze, then execute the precommitted
-qualification once without touching the 001K formal packets or original
-heldout.
+Commit the qualification readback, then execute the precommitted replication
+once without touching the 001K formal packets or original heldout.
