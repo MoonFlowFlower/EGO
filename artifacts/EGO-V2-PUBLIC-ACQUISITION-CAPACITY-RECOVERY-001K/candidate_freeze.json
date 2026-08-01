@@ -1,0 +1,58 @@
+{
+  "ablation_ids": [
+    "FORMAL_NO_UPDATE",
+    "FORMAL_FEEDBACK_SHUFFLE",
+    "FORMAL_POSTERIOR_ABLATION"
+  ],
+  "candidate_config": {
+    "budget": 96,
+    "candidate_id": "S2_RISK_INFORMATION_GAIN",
+    "evaluator_only": false,
+    "exploration_mode": "risk_constrained_information_gain",
+    "geometry_mode": "forward_first",
+    "posterior_mode": "public_update",
+    "preregistered_prediction": "Changing only safe-probe scheduling should improve early acquisition without changing learned effects or geometry.",
+    "scoring_mode": "legacy",
+    "stage_id": "S2_ACQUISITION_BUDGET",
+    "target_retention": false
+  },
+  "candidate_config_hash": "ab8fd7ac35e7389bfa7e6b1b3d074031e47b2d7c3bab22ad40a6527d41fb7b7f",
+  "candidate_id": "S2_RISK_INFORMATION_GAIN",
+  "claim_ceiling": "Frozen dev-only public acquisition candidate; no qualification, M1, transfer, agency, or real-world claim.",
+  "dependency_contract": {
+    "llm": false,
+    "network": false,
+    "numpy": "2.2.6",
+    "requirements_path": "requirements-ego-v2.txt"
+  },
+  "formal_action_budget": 96,
+  "formal_policy_seeds": [
+    2701,
+    2702,
+    2703
+  ],
+  "original_001j_packet_executed": false,
+  "packet_assignment_sha256": {
+    "qualification": "90e00db99d3e0850caa8e67b93af3be61f2d287f5f75eaa21d0064fac3d6fad2",
+    "replication": "7c74160d1f7917c0d8ecdc35f24ab4378fefee8cbc2de770ae67a189ac504905",
+    "search_dev": "ea4daf24346bb337384043f2532ec82beab3508e94340f6ab54253610e0865a5"
+  },
+  "producer_path": "scripts/codex/run_ego_v2_public_acquisition_capacity_recovery_001k.py",
+  "producer_sha256": "81f850ad7a03e05e330bd410d8b7463cd27368070c13e7747b9360618e0d8382",
+  "qualification_executed": false,
+  "replication_executed": false,
+  "schema_version": "ego.v2.public_acquisition.candidate_freeze.v1",
+  "search_results_sha256": "77aa36a77e6b39fee3677db085932c25396bf59c953997a0d9fa9d289ae3ae0f",
+  "task_id": "EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K",
+  "thresholds": {
+    "effect_sign_accuracy_minimum": 0.8,
+    "m1_recovery_fraction_minimum": 0.5,
+    "m1_world_directions_minimum": 12,
+    "majority_trajectory_directions_minimum": 25,
+    "majority_world_directions_minimum": 9,
+    "material_ablation_absolute_floor": 0.02,
+    "material_ablation_count_minimum": 2,
+    "material_ablation_relative_gain_fraction": 0.3,
+    "phase_public_reference_gain_strictly_positive": 0.0
+  }
+}
