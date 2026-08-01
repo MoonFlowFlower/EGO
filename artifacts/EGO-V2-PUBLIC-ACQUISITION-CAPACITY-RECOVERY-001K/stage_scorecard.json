@@ -1,13 +1,17 @@
 {
-  "current_best_evidence": [],
-  "current_iteration": 0,
-  "current_stage_goal": "Freeze task authority and three packet layers before candidate implementation.",
-  "next_decision_gate": "Proceed to call-chain audit only after packet commitments and predecessor hashes are frozen.",
-  "next_frontier": "",
+  "current_best_evidence": [
+    "001J wiring is connected",
+    "stored public arm is 91.47 percent turns",
+    "no world identifies all five tokens"
+  ],
+  "current_iteration": 1,
+  "current_stage_goal": "S1 public observability diagnosis with unchanged legacy navigation.",
+  "next_decision_gate": "Choose S3 geometry diagnostics if correct posterior remains turn-dominated; otherwise choose S2 acquisition.",
+  "next_frontier": "Run S1 search-dev candidates.",
   "program_goal": "Recover reproducible legal public acquisition headroom without touching 001J formal evidence or heldout.",
   "progress_checkpoint": "docs/codex/tasks/ego-v2-public-acquisition-capacity-recovery-001k/OVERALL_PROGRESS.md",
-  "reviewer_verdict": "not_started",
-  "stage_success_criteria": "Packet assignments committed before candidate source; all are new dev-only seeds with opaque IDs and original 001J heldout untouched.",
+  "reviewer_verdict": "needs_more_exploration",
+  "stage_success_criteria": "Four predeclared S1 arms localize learning versus planning and preserve every result.",
   "status": "active",
-  "updated_at": "2026-08-01T08:21:02+00:00"
+  "updated_at": "2026-08-01T08:28:34+00:00"
 }

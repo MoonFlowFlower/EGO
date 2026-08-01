@@ -1,0 +1,111 @@
+{
+  "ast_call_order": {
+    "plan_before_transition_before_update": true,
+    "selected_call_lines": {
+      "actual_delta": 481,
+      "metabolism": 483,
+      "plan": 456,
+      "transition": 473,
+      "update": 506
+    },
+    "source_path": "D:/Project/AIProject/MyProject/Ego/scripts/codex/check_ego_v2_homeostatic_compositional_transfer_001j_capacity.py",
+    "source_sha256": "b5b5f72d5056118eb414d5cc47780e5294c1c79d8b096006282f3412660bbf2d"
+  },
+  "audit_target": "EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J",
+  "checks": {
+    "plan_before_transition_before_update": true,
+    "planner_read_changed_action": true,
+    "planner_read_update_state": true,
+    "predecessor_hashes_match": true,
+    "state_changed_on_update": true,
+    "stored_rows_not_reexecuted": true
+  },
+  "claim_ceiling": "Call-chain wiring and stored-row diagnosis only; not public acquisition capacity or transfer evidence.",
+  "original_001j_heldout_reexecuted": false,
+  "passed": true,
+  "predecessor_hash_checks": {
+    "artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/artifact_manifest.json": true,
+    "artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/capacity_replay_report.json": true,
+    "artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/capacity_result.json": true,
+    "artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/capacity_rows.jsonl": true,
+    "artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/failure_manifest.json": true,
+    "artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/leakage_report.json": true,
+    "docs/codex/tasks/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J.md": true,
+    "docs/codex/tasks/ego-v2-homeostatic-compositional-transfer-001j/COLLISION_RECORD.md": true,
+    "docs/codex/tasks/ego-v2-homeostatic-compositional-transfer-001j/M0_TDD_REPORT.md": true,
+    "docs/codex/tasks/ego-v2-homeostatic-compositional-transfer-001j/MUTATION_SCOPE.yaml": true,
+    "scripts/codex/check_ego_v2_homeostatic_compositional_transfer_001j_capacity.py": true,
+    "scripts/codex/tests/test_check_ego_v2_homeostatic_compositional_transfer_001j_capacity.py": true,
+    "scripts/codex/tests/test_verify_ego_v2_homeostatic_compositional_transfer_001j.py": true,
+    "scripts/codex/verify_ego_v2_homeostatic_compositional_transfer_001j.py": true
+  },
+  "predecessor_hashes_match": true,
+  "producer_function": "run_ego_v2_public_acquisition_capacity_recovery_001k.audit_predecessor_call_chain",
+  "schema_version": "ego.v2.public_acquisition.call_chain_audit.v1",
+  "stored_row_diagnostics": {
+    "action_counts": {
+      "interact": 64,
+      "move_forward": 67,
+      "turn_left": 675,
+      "turn_right": 730
+    },
+    "public_rows": 1536,
+    "public_worlds": 16,
+    "rows_path": "D:/Project/AIProject/MyProject/Ego/artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/capacity_rows.jsonl",
+    "rows_sha256": "e4ec9760fd4892f8b9ea94cbfa77f557869209933813d6baf306bc01f85f3a38",
+    "selection_reason_counts": {
+      "approach_visible_token": 29,
+      "front_token_negative": 66,
+      "front_token_probe_or_use": 64,
+      "orient_visible_token": 1305,
+      "public_sweep_forward": 38,
+      "public_sweep_turn": 6,
+      "public_wall_follow_turn": 19,
+      "rotate_to_rear_token": 9
+    },
+    "stored_rows_only_no_trajectory_reexecution": true,
+    "successful_interactions": 64,
+    "turn_fraction": 0.914713541667,
+    "worlds_identifying_all_five_tokens": 0
+  },
+  "synthetic_state_intervention": {
+    "action_after_update": "turn_right",
+    "action_before_update": "interact",
+    "plan_after_update": {
+      "public_input_hash": "be5e433f760eab74b91ebc9d180818b553d3e2931214d738a33db212ed9906fe",
+      "schema_version": "ego.v2.public_factor_bayes.plan.v1",
+      "selected_action": "turn_right",
+      "selection_reason": "front_token_negative",
+      "state_hash_after": "e90a67771d62b5de3fe47bd038e81f48a37b9d48b41174c15591aabbb328871c",
+      "state_hash_before": "5de002e598beca63c3bd474e542797930530c2489a4d4065c2a09c73ff2b6da7",
+      "target_token": "v3"
+    },
+    "plan_before_update": {
+      "public_input_hash": "be5e433f760eab74b91ebc9d180818b553d3e2931214d738a33db212ed9906fe",
+      "schema_version": "ego.v2.public_factor_bayes.plan.v1",
+      "selected_action": "interact",
+      "selection_reason": "front_token_probe_or_use",
+      "state_hash_after": "9e3bbb819f0177f8a4e656e6241219902082fe2a2de113de6280f50c02ca6df3",
+      "state_hash_before": "1e289c30faaa6e4bade768eb0a3c77a835745ce5191a0d88e60b42ac906327b9",
+      "target_token": "v3"
+    },
+    "planner_read_changed_action": true,
+    "planner_read_update_state": true,
+    "public_payload_hash": "be5e433f760eab74b91ebc9d180818b553d3e2931214d738a33db212ed9906fe",
+    "state_changed_on_update": true,
+    "state_hash_after_update": "5de002e598beca63c3bd474e542797930530c2489a4d4065c2a09c73ff2b6da7",
+    "state_hash_before": "1e289c30faaa6e4bade768eb0a3c77a835745ce5191a0d88e60b42ac906327b9",
+    "update_receipt": {
+      "action": "interact",
+      "actual_delta": {
+        "energy": -0.018,
+        "safety": -0.18
+      },
+      "schema_version": "ego.v2.public_factor_bayes.update.v1",
+      "state_hash_after": "5de002e598beca63c3bd474e542797930530c2489a4d4065c2a09c73ff2b6da7",
+      "state_hash_before": "9e3bbb819f0177f8a4e656e6241219902082fe2a2de113de6280f50c02ca6df3",
+      "token": "v3"
+    }
+  },
+  "task_id": "EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K"
+}
