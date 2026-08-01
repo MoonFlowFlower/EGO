@@ -172,3 +172,20 @@ post-qualification tuning.
   observed in the current fast state. No new signal, parameter sweep or grammar
   change is allowed. Reuse search-dev once; if still negative, stop the minimal
   learner claim rather than consume qualification.
+
+## P3.2 — multiplicity correction negative; stop
+
+- The one correction improved mean early transfer from `-1.37225` to
+  `-0.99425` deficit-AUC and late/total transfer became better than scratch,
+  but the preregistered early gate still failed: `3/8` worlds positive and
+  transfer fraction `-10.04%` of headroom.
+- Effect-sign accuracy remained `1.0`; drive intervention, exact behavior
+  replay, posterior controls, wrong-prior late recovery and fast-reset damage
+  passed. The failure is specifically reliable early positive transfer, not
+  public consequence acquisition.
+- Independent-from-stored-action row recomputation matched all `7,680` rows;
+  row-value and private-input positive controls failed closed.
+- Stop decision: do not consume the sixteen-world product qualification and do
+  not call this M1 success. Keep the slow-prior candidate available only as
+  negative research evidence; restore the runtime's default experimental
+  planner to the bounded within-world public Bayesian reference.

@@ -1,0 +1,11 @@
+{
+  "candidate_private_input_detected": true,
+  "findings": [],
+  "passed": true,
+  "prefix": "product_search_multiplicity",
+  "row_count": 7680,
+  "row_recomputation_match": true,
+  "row_value_tamper_detected": true,
+  "schema_version": "ego.v2.homeostatic_survival_loop.verification.v1",
+  "task_id": "EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L"
+}
