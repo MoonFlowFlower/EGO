@@ -1,0 +1,290 @@
+{
+  "all_search_trials_retained": true,
+  "budget_exhausted": {
+    "candidates_per_stage": [
+      4,
+      4,
+      4
+    ],
+    "maximum_candidates_per_stage": 4,
+    "maximum_mechanism_stages": 3,
+    "mechanism_stages_used": 3
+  },
+  "claim_ceiling": "Reproducible positive public acquisition headroom in task-local dev-only packets; not M1 authorization or general capability evidence.",
+  "m1_m3_executed": false,
+  "neural_learner_implemented": false,
+  "original_001j_packet_executed": false,
+  "overall_verdict": "POSITIVE_SIGNAL_BUT_M1_NOT_AUTHORIZED",
+  "qualification": {
+    "gain": 0.287169704861,
+    "m1_numeric_gate": true,
+    "positive_trajectories": 47,
+    "positive_worlds": 16,
+    "recovery_fraction": 0.542856111407,
+    "verdict": "QUALIFICATION_CAPACITY_ESTABLISHED_PENDING_REPLICATION"
+  },
+  "replication": {
+    "failure_reason": "replication_recovery_fraction_below_0_50",
+    "gain": 0.242234375,
+    "m1_numeric_gate": false,
+    "positive_trajectories": 44,
+    "positive_worlds": 15,
+    "recovery_fraction": 0.409535487308,
+    "verdict": "POSITIVE_SIGNAL_BUT_M1_NOT_AUTHORIZED"
+  },
+  "schema_version": "ego.v2.public_acquisition.failure_manifest.v1",
+  "search_trial_count": 12,
+  "task_id": "EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K",
+  "trials": [
+    {
+      "candidate_id": "S1_FULL_HISTORY",
+      "direction_denominator": 16,
+      "evaluator_only": false,
+      "failure_or_disposition_reasons": [
+        "public_reference_gain_not_positive",
+        "recovery_fraction_below_0_50",
+        "positive_world_direction_count_below_12_of_16_search_gate"
+      ],
+      "loss_by_arm": {
+        "PRIVATE_ORACLE_NAVIGATOR": 0.183819010417,
+        "PUBLIC_REFERENCE": 0.75728515625,
+        "UNIFORM_RANDOM": 0.710623697917
+      },
+      "m1_numeric_gate": false,
+      "mean_final_effect_sign_accuracy": 0.5875,
+      "mean_turn_fraction": 0.929036458333,
+      "positive_direction_count": 4,
+      "public_reference_gain": -0.046661458333,
+      "recovery_fraction": -0.088574493432,
+      "stage_id": "S1_OBSERVABILITY"
+    },
+    {
+      "candidate_id": "S1_NO_UPDATE",
+      "direction_denominator": 16,
+      "evaluator_only": false,
+      "failure_or_disposition_reasons": [
+        "public_reference_gain_not_positive",
+        "recovery_fraction_below_0_50",
+        "positive_world_direction_count_below_12_of_16_search_gate"
+      ],
+      "loss_by_arm": {
+        "PRIVATE_ORACLE_NAVIGATOR": 0.183819010417,
+        "PUBLIC_REFERENCE": 0.736033854167,
+        "UNIFORM_RANDOM": 0.710623697917
+      },
+      "m1_numeric_gate": false,
+      "mean_final_effect_sign_accuracy": 0.0,
+      "mean_turn_fraction": 0.921223958333,
+      "positive_direction_count": 5,
+      "public_reference_gain": -0.02541015625,
+      "recovery_fraction": -0.048234491554,
+      "stage_id": "S1_OBSERVABILITY"
+    },
+    {
+      "candidate_id": "S1_FEEDBACK_SHUFFLE",
+      "direction_denominator": 16,
+      "evaluator_only": false,
+      "failure_or_disposition_reasons": [
+        "public_reference_gain_not_positive",
+        "recovery_fraction_below_0_50",
+        "positive_world_direction_count_below_12_of_16_search_gate"
+      ],
+      "loss_by_arm": {
+        "PRIVATE_ORACLE_NAVIGATOR": 0.183819010417,
+        "PUBLIC_REFERENCE": 0.746755208333,
+        "UNIFORM_RANDOM": 0.710623697917
+      },
+      "m1_numeric_gate": false,
+      "mean_final_effect_sign_accuracy": 0.24375,
+      "mean_turn_fraction": 0.921223958333,
+      "positive_direction_count": 4,
+      "public_reference_gain": -0.036131510416,
+      "recovery_fraction": -0.068586159678,
+      "stage_id": "S1_OBSERVABILITY"
+    },
+    {
+      "candidate_id": "S1_TRUE_POSTERIOR_DIAGNOSTIC",
+      "direction_denominator": 16,
+      "evaluator_only": true,
+      "failure_or_disposition_reasons": [
+        "evaluator_only_diagnostic_not_legal_for_qualification",
+        "recovery_fraction_below_0_50",
+        "positive_world_direction_count_below_12_of_16_search_gate"
+      ],
+      "loss_by_arm": {
+        "PRIVATE_ORACLE_NAVIGATOR": 0.183819010417,
+        "PUBLIC_REFERENCE": 0.702665364583,
+        "UNIFORM_RANDOM": 0.710623697917
+      },
+      "m1_numeric_gate": false,
+      "mean_final_effect_sign_accuracy": 1.0,
+      "mean_turn_fraction": 0.95703125,
+      "positive_direction_count": 6,
+      "public_reference_gain": 0.007958333334,
+      "recovery_fraction": 0.015106800533,
+      "stage_id": "S1_OBSERVABILITY"
+    },
+    {
+      "candidate_id": "S3_FORWARD_GEOMETRY",
+      "direction_denominator": 16,
+      "evaluator_only": false,
+      "failure_or_disposition_reasons": [
+        "recovery_fraction_below_0_50"
+      ],
+      "loss_by_arm": {
+        "PRIVATE_ORACLE_NAVIGATOR": 0.183819010417,
+        "PUBLIC_REFERENCE": 0.54685546875,
+        "UNIFORM_RANDOM": 0.710623697917
+      },
+      "m1_numeric_gate": false,
+      "mean_final_effect_sign_accuracy": 1.0,
+      "mean_turn_fraction": 0.483723958333,
+      "positive_direction_count": 14,
+      "public_reference_gain": 0.163768229167,
+      "recovery_fraction": 0.310870865527,
+      "stage_id": "S3_PLANNER_WIRING"
+    },
+    {
+      "candidate_id": "S3_TARGET_RETENTION",
+      "direction_denominator": 16,
+      "evaluator_only": false,
+      "failure_or_disposition_reasons": [
+        "recovery_fraction_below_0_50"
+      ],
+      "loss_by_arm": {
+        "PRIVATE_ORACLE_NAVIGATOR": 0.183819010417,
+        "PUBLIC_REFERENCE": 0.567716145833,
+        "UNIFORM_RANDOM": 0.710623697917
+      },
+      "m1_numeric_gate": false,
+      "mean_final_effect_sign_accuracy": 1.0,
+      "mean_turn_fraction": 0.510416666667,
+      "positive_direction_count": 13,
+      "public_reference_gain": 0.142907552084,
+      "recovery_fraction": 0.271272362367,
+      "stage_id": "S3_PLANNER_WIRING"
+    },
+    {
+      "candidate_id": "S3_DEFICIT_RANKING",
+      "direction_denominator": 16,
+      "evaluator_only": false,
+      "failure_or_disposition_reasons": [
+        "recovery_fraction_below_0_50"
+      ],
+      "loss_by_arm": {
+        "PRIVATE_ORACLE_NAVIGATOR": 0.183819010417,
+        "PUBLIC_REFERENCE": 0.5604921875,
+        "UNIFORM_RANDOM": 0.710623697917
+      },
+      "m1_numeric_gate": false,
+      "mean_final_effect_sign_accuracy": 0.9375,
+      "mean_turn_fraction": 0.774088541667,
+      "positive_direction_count": 12,
+      "public_reference_gain": 0.150131510417,
+      "recovery_fraction": 0.28498514531,
+      "stage_id": "S3_PLANNER_WIRING"
+    },
+    {
+      "candidate_id": "S3_POSTERIOR_RANKING_ABLATION",
+      "direction_denominator": 16,
+      "evaluator_only": false,
+      "failure_or_disposition_reasons": [
+        "recovery_fraction_below_0_50",
+        "positive_world_direction_count_below_12_of_16_search_gate"
+      ],
+      "loss_by_arm": {
+        "PRIVATE_ORACLE_NAVIGATOR": 0.183819010417,
+        "PUBLIC_REFERENCE": 0.651192708333,
+        "UNIFORM_RANDOM": 0.710623697917
+      },
+      "m1_numeric_gate": false,
+      "mean_final_effect_sign_accuracy": 0.0,
+      "mean_turn_fraction": 0.365885416667,
+      "positive_direction_count": 7,
+      "public_reference_gain": 0.059430989584,
+      "recovery_fraction": 0.1128140865,
+      "stage_id": "S3_PLANNER_WIRING"
+    },
+    {
+      "candidate_id": "S2_BUDGET_48",
+      "direction_denominator": 16,
+      "evaluator_only": false,
+      "failure_or_disposition_reasons": [
+        "recovery_fraction_below_0_50"
+      ],
+      "loss_by_arm": {
+        "PRIVATE_ORACLE_NAVIGATOR": 0.290692708333,
+        "PUBLIC_REFERENCE": 0.590934895833,
+        "UNIFORM_RANDOM": 0.691606770833
+      },
+      "m1_numeric_gate": false,
+      "mean_final_effect_sign_accuracy": 0.9875,
+      "mean_turn_fraction": 0.393229166667,
+      "positive_direction_count": 15,
+      "public_reference_gain": 0.100671875,
+      "recovery_fraction": 0.251105871349,
+      "stage_id": "S2_ACQUISITION_BUDGET"
+    },
+    {
+      "candidate_id": "S2_BUDGET_96",
+      "direction_denominator": 16,
+      "evaluator_only": false,
+      "failure_or_disposition_reasons": [
+        "recovery_fraction_below_0_50"
+      ],
+      "loss_by_arm": {
+        "PRIVATE_ORACLE_NAVIGATOR": 0.183819010417,
+        "PUBLIC_REFERENCE": 0.54685546875,
+        "UNIFORM_RANDOM": 0.710623697917
+      },
+      "m1_numeric_gate": false,
+      "mean_final_effect_sign_accuracy": 1.0,
+      "mean_turn_fraction": 0.483723958333,
+      "positive_direction_count": 14,
+      "public_reference_gain": 0.163768229167,
+      "recovery_fraction": 0.310870865527,
+      "stage_id": "S2_ACQUISITION_BUDGET"
+    },
+    {
+      "candidate_id": "S2_BUDGET_192",
+      "direction_denominator": 16,
+      "evaluator_only": false,
+      "failure_or_disposition_reasons": [
+        "recovery_fraction_below_0_50"
+      ],
+      "loss_by_arm": {
+        "PRIVATE_ORACLE_NAVIGATOR": 0.109065104167,
+        "PUBLIC_REFERENCE": 0.453139973958,
+        "UNIFORM_RANDOM": 0.717623046875
+      },
+      "m1_numeric_gate": false,
+      "mean_final_effect_sign_accuracy": 1.0,
+      "mean_turn_fraction": 0.468098958333,
+      "positive_direction_count": 16,
+      "public_reference_gain": 0.264483072917,
+      "recovery_fraction": 0.434606229507,
+      "stage_id": "S2_ACQUISITION_BUDGET"
+    },
+    {
+      "candidate_id": "S2_RISK_INFORMATION_GAIN",
+      "direction_denominator": 16,
+      "evaluator_only": false,
+      "failure_or_disposition_reasons": [
+        "recovery_fraction_below_0_50",
+        "selected_for_single_use_qualification_without_further_search_tuning"
+      ],
+      "loss_by_arm": {
+        "PRIVATE_ORACLE_NAVIGATOR": 0.183819010417,
+        "PUBLIC_REFERENCE": 0.47051171875,
+        "UNIFORM_RANDOM": 0.710623697917
+      },
+      "m1_numeric_gate": false,
+      "mean_final_effect_sign_accuracy": 1.0,
+      "mean_turn_fraction": 0.444010416667,
+      "positive_direction_count": 15,
+      "public_reference_gain": 0.240111979167,
+      "recovery_fraction": 0.455789374818,
+      "stage_id": "S2_ACQUISITION_BUDGET"
+    }
+  ]
+}

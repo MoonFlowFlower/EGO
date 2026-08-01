@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import argparse
 from collections import defaultdict
+from copy import deepcopy
 import hashlib
 import json
 from pathlib import Path
+import tempfile
 from typing import Any, Mapping
 
 
@@ -300,21 +302,181 @@ def verify_formal_packet(
     }
 
 
+def _write_jsonl(path: Path, rows: list[Mapping[str, Any]]) -> None:
+    path.write_text(
+        "".join(canonical_json(row) + "\n" for row in rows), encoding="utf-8"
+    )
+
+
+def _payload_has_forbidden_key(payload: Any) -> bool:
+    if isinstance(payload, Mapping):
+        return any(
+            str(key).lower() in FORBIDDEN_PUBLIC_FIELDS
+            or _payload_has_forbidden_key(value)
+            for key, value in payload.items()
+        )
+    if isinstance(payload, (list, tuple)):
+        return any(_payload_has_forbidden_key(value) for value in payload)
+    return False
+
+
+def run_positive_controls(root: Path) -> dict[str, Any]:
+    """Inject representative leakage and evidence tampering; every case must reject."""
+
+    root = Path(root).resolve()
+    artifact_root = root / "artifacts" / TASK_ID
+    baseline = verify_formal_packet(root, "qualification")
+    cases: dict[str, dict[str, Any]] = {}
+    with tempfile.TemporaryDirectory(prefix="001k-tamper-") as raw_tmp:
+        tmp = Path(raw_tmp)
+        original_rows = _load_rows(artifact_root / "qualification_rows.jsonl")
+        result_path = artifact_root / "qualification_result.json"
+
+        deficit_rows = deepcopy(original_rows)
+        deficit_rows[0]["deficit_loss"] = round(
+            float(deficit_rows[0]["deficit_loss"]) + 0.125, 12
+        )
+        deficit_path = tmp / "deficit_rows.jsonl"
+        _write_jsonl(deficit_path, deficit_rows)
+        deficit_report = verify_formal_packet(
+            root,
+            "qualification",
+            result_path=result_path,
+            rows_path=deficit_path,
+        )
+        cases["row_value_tamper"] = {
+            "detected": not deficit_report["passed"],
+            "finding_prefixes": sorted(deficit_report["findings"])[:8],
+        }
+
+        leak_rows = deepcopy(original_rows)
+        leak_index = next(
+            index
+            for index, row in enumerate(leak_rows)
+            if row["candidate_id"] == "S2_RISK_INFORMATION_GAIN"
+            and row["ranked_tokens"]
+        )
+        leak_rows[leak_index]["ranked_tokens"][0]["world_id"] = "private-leak"
+        leak_path = tmp / "leak_rows.jsonl"
+        _write_jsonl(leak_path, leak_rows)
+        leak_report = verify_formal_packet(
+            root,
+            "qualification",
+            result_path=result_path,
+            rows_path=leak_path,
+        )
+        cases["candidate_receipt_leak"] = {
+            "detected": (
+                not leak_report["passed"]
+                and any(
+                    finding.startswith("ranked_token_private_field")
+                    for finding in leak_report["findings"]
+                )
+            ),
+            "finding_prefixes": sorted(leak_report["findings"])[:8],
+        }
+
+        stored_result = json.loads(result_path.read_text(encoding="utf-8"))
+        aggregate_result = deepcopy(stored_result)
+        aggregate_result["candidate"]["public_reference_gain"] = round(
+            float(aggregate_result["candidate"]["public_reference_gain"]) + 0.1,
+            12,
+        )
+        aggregate_path = tmp / "aggregate_result.json"
+        aggregate_path.write_text(
+            json.dumps(aggregate_result, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+        aggregate_report = verify_formal_packet(
+            root,
+            "qualification",
+            result_path=aggregate_path,
+            rows_path=artifact_root / "qualification_rows.jsonl",
+        )
+        cases["stored_aggregate_tamper"] = {
+            "detected": (
+                not aggregate_report["passed"]
+                and "aggregate_mismatch:public_reference_gain"
+                in aggregate_report["findings"]
+            ),
+            "finding_prefixes": aggregate_report["findings"],
+        }
+
+        assignment_path = artifact_root / "qualification_assignments.json"
+        assignment_bytes = bytearray(assignment_path.read_bytes())
+        assignment_bytes[len(assignment_bytes) // 2] ^= 1
+        commitments = json.loads(
+            (artifact_root / "packet_commitments.json").read_text(encoding="utf-8")
+        )
+        tampered_assignment_hash = hashlib.sha256(assignment_bytes).hexdigest()
+        cases["assignment_tamper"] = {
+            "detected": (
+                tampered_assignment_hash
+                != commitments["packets"]["qualification"]["assignment_sha256"]
+            ),
+            "tampered_hash": tampered_assignment_hash,
+        }
+
+    clean_payload = {
+        "observation": {"visual": [["empty"] * 5 for _ in range(5)]},
+        "organism": {"energy": 0.4, "safety": 0.5},
+        "last_action": None,
+        "last_delta": {"energy": 0.0, "safety": 0.0},
+    }
+    leakage_cases = {}
+    for field in (
+        "seed",
+        "world_id",
+        "layout_id",
+        "mapping_commitment",
+        "private_pose",
+        "cause",
+        "oracle_action",
+        "split",
+        "future",
+    ):
+        payload = deepcopy(clean_payload)
+        payload[field] = "forbidden"
+        leakage_cases[field] = _payload_has_forbidden_key(payload)
+    cases["public_input_leakage_fields"] = {
+        "detected": all(leakage_cases.values()),
+        "cases": leakage_cases,
+    }
+    return {
+        "schema_version": "ego.v2.public_acquisition.leakage_tamper_controls.v1",
+        "task_id": TASK_ID,
+        "baseline_qualification_verifier_passed": baseline["passed"],
+        "cases": cases,
+        "all_positive_controls_detected": (
+            baseline["passed"] and all(case["detected"] for case in cases.values())
+        ),
+        "original_001j_packet_executed": False,
+        "claim_ceiling": "Integrity and leakage positive controls only.",
+    }
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[2])
-    parser.add_argument("--packet", choices=("qualification", "replication"), required=True)
+    parser.add_argument("--packet", choices=("qualification", "replication"))
+    parser.add_argument("--positive-controls", action="store_true")
     parser.add_argument("--result", type=Path)
     parser.add_argument("--rows", type=Path)
     parser.add_argument("--freeze", type=Path)
     parser.add_argument("--output", type=Path)
     args = parser.parse_args(argv)
-    report = verify_formal_packet(
-        args.root,
-        args.packet,
-        result_path=args.result,
-        rows_path=args.rows,
-        freeze_path=args.freeze,
+    if int(args.packet is not None) + int(args.positive_controls) != 1:
+        parser.error("select exactly one of --packet or --positive-controls")
+    report = (
+        run_positive_controls(args.root)
+        if args.positive_controls
+        else verify_formal_packet(
+            args.root,
+            str(args.packet),
+            result_path=args.result,
+            rows_path=args.rows,
+            freeze_path=args.freeze,
+        )
     )
     if args.output is not None:
         args.output.write_text(
@@ -322,7 +484,8 @@ def main(argv: list[str] | None = None) -> int:
             encoding="utf-8",
         )
     print(json.dumps(report, indent=2, sort_keys=True, ensure_ascii=False))
-    return 0 if report["passed"] else 2
+    passed = report.get("passed", report.get("all_positive_controls_detected", False))
+    return 0 if passed else 2
 
 
 if __name__ == "__main__":

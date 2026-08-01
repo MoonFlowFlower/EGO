@@ -1,0 +1,120 @@
+{
+  "artifact_count_excluding_manifest": 17,
+  "artifacts": {
+    "call_chain_audit.json": {
+      "bytes": 5549,
+      "sha256": "25cb988d30e40dca329babe988e099258579812869675e8ef0ae5667b8088cdf"
+    },
+    "candidate_freeze.json": {
+      "bytes": 2446,
+      "sha256": "038883d9746b7c6ab07406ccc90a0fdd14215fecf77cf782af7fd58d0d9986cf"
+    },
+    "experiment_log.jsonl": {
+      "bytes": 22509,
+      "sha256": "e662989eab2201ad33bb2c7a642f6cb7669b538d8dea0bd83432bbe6021c7e99"
+    },
+    "failure_manifest.json": {
+      "bytes": 10271,
+      "sha256": "04b74c96062a67481db2376657d264f9728ae64d451b97141015cc0fe0c11099"
+    },
+    "leakage_tamper_report.json": {
+      "bytes": 1730,
+      "sha256": "adfa45c625e375c17cbf7a9972e0bd0f089681e5b6a69ab506f647c1063ec9dd"
+    },
+    "packet_commitments.json": {
+      "bytes": 3858,
+      "sha256": "132adcc78e50e1139b320b2c35f0fd3c2ce3eae0c72acb579d30d77e2a20a4fc"
+    },
+    "qualification_assignments.json": {
+      "bytes": 8934,
+      "sha256": "90e00db99d3e0850caa8e67b93af3be61f2d287f5f75eaa21d0064fac3d6fad2"
+    },
+    "qualification_result.json": {
+      "bytes": 93236,
+      "sha256": "840257b2aeb3f4130decd5ecf92bc1e9dc3988aaf0bf706be0a1177cbb353df8"
+    },
+    "qualification_rows.jsonl": {
+      "bytes": 41063793,
+      "sha256": "f476b6f548257552900f1e468d472c85c585af4f67db4a47a273d9f9e7a7d4cb"
+    },
+    "replication_assignments.json": {
+      "bytes": 8900,
+      "sha256": "7c74160d1f7917c0d8ecdc35f24ab4378fefee8cbc2de770ae67a189ac504905"
+    },
+    "replication_result.json": {
+      "bytes": 92741,
+      "sha256": "6193dc8211e09a0afcf307d7fc1f8400c2cd05a3802966c2b1a715410565980a"
+    },
+    "replication_rows.jsonl": {
+      "bytes": 41071511,
+      "sha256": "5683fd262187324f625a8b1cfc6da23e1e9babb9c913deffe82a91efc8eb9ea9"
+    },
+    "row_recomputation_report.json": {
+      "bytes": 4614,
+      "sha256": "3ba7f822685174bddff8686999edb6bd358587a767b3a12a317dc4d256862b76"
+    },
+    "search_dev_assignments.json": {
+      "bytes": 8884,
+      "sha256": "ea4daf24346bb337384043f2532ec82beab3508e94340f6ab54253610e0865a5"
+    },
+    "search_results.json": {
+      "bytes": 102462,
+      "sha256": "77aa36a77e6b39fee3677db085932c25396bf59c953997a0d9fa9d289ae3ae0f"
+    },
+    "search_rows.jsonl": {
+      "bytes": 51845187,
+      "sha256": "2228956d510b43008dedea30c74e1ece86041c339f256d49067bb9fe03e2c483"
+    },
+    "stage_scorecard.json": {
+      "bytes": 1149,
+      "sha256": "dbc461a055f557472446f1d669eb5946d8217024784fb75a2157fea30871ed1a"
+    }
+  },
+  "candidate_source_matches_freeze": true,
+  "claim_ceiling": "Reproducible positive public acquisition headroom in two task-local dev-only packets; not M1 authorization or general transfer evidence.",
+  "formal_packets": {
+    "qualification": {
+      "rows_sha256": "f476b6f548257552900f1e468d472c85c585af4f67db4a47a273d9f9e7a7d4cb",
+      "single_use": true,
+      "verdict": "QUALIFICATION_CAPACITY_ESTABLISHED_PENDING_REPLICATION"
+    },
+    "replication": {
+      "rows_sha256": "5683fd262187324f625a8b1cfc6da23e1e9babb9c913deffe82a91efc8eb9ea9",
+      "single_use": true,
+      "verdict": "POSITIVE_SIGNAL_BUT_M1_NOT_AUTHORIZED"
+    }
+  },
+  "formal_row_count": 55296,
+  "independent_row_recomputation_passed": true,
+  "leakage_tamper_positive_controls_passed": true,
+  "m1_m3_executed": false,
+  "neural_learner_source_present": false,
+  "original_001j_heldout_artifact_count": 0,
+  "original_001j_packet_executed": false,
+  "overall_verdict": "POSITIVE_SIGNAL_BUT_M1_NOT_AUTHORIZED",
+  "protected_001j_hash_checks": {
+    "artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/artifact_manifest.json": true,
+    "artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/capacity_replay_report.json": true,
+    "artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/capacity_result.json": true,
+    "artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/capacity_rows.jsonl": true,
+    "artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/failure_manifest.json": true,
+    "artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/leakage_report.json": true,
+    "docs/codex/tasks/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J.md": true,
+    "docs/codex/tasks/ego-v2-homeostatic-compositional-transfer-001j/COLLISION_RECORD.md": true,
+    "docs/codex/tasks/ego-v2-homeostatic-compositional-transfer-001j/M0_TDD_REPORT.md": true,
+    "docs/codex/tasks/ego-v2-homeostatic-compositional-transfer-001j/MUTATION_SCOPE.yaml": true,
+    "scripts/codex/check_ego_v2_homeostatic_compositional_transfer_001j_capacity.py": true,
+    "scripts/codex/tests/test_check_ego_v2_homeostatic_compositional_transfer_001j_capacity.py": true,
+    "scripts/codex/tests/test_verify_ego_v2_homeostatic_compositional_transfer_001j.py": true,
+    "scripts/codex/verify_ego_v2_homeostatic_compositional_transfer_001j.py": true
+  },
+  "protected_001j_hashes_match": true,
+  "schema_version": "ego.v2.public_acquisition.artifact_manifest.v1",
+  "source_hashes": {
+    "scripts/codex/run_ego_v2_public_acquisition_capacity_recovery_001k.py": "81f850ad7a03e05e330bd410d8b7463cd27368070c13e7747b9360618e0d8382",
+    "scripts/codex/tests/test_run_ego_v2_public_acquisition_capacity_recovery_001k.py": "a4f437694db170bd152456a823448d79b789afdefeab27d3ef8c110a38caa5d8",
+    "scripts/codex/tests/test_verify_ego_v2_public_acquisition_capacity_recovery_001k.py": "1b10320974732aa3e5ccb80f2b37a1261b548e205c902a3cffde620d6cfb13b3",
+    "scripts/codex/verify_ego_v2_public_acquisition_capacity_recovery_001k.py": "b3729b2c40e4bd40c6c1cc5b7e160a84f8a6b03ccf70e7206c0343fad3449e4f"
+  },
+  "task_id": "EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K"
+}

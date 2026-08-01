@@ -1,17 +1,18 @@
 {
   "current_best_evidence": [
-    "Qualification gain 0.287170 recovery 0.542856 47 of 48 trajectories and 16 of 16 worlds",
-    "three material ablations",
-    "independent 27648-row recomputation passed"
+    "Qualification recovery 0.542856 and 16 of 16 worlds",
+    "replication recovery 0.409535 and 15 of 16 worlds",
+    "both positive with all three material ablations",
+    "55296 rows independently recomputed"
   ],
-  "current_iteration": 5,
-  "current_stage_goal": "Single-use replication of the exact qualification candidate.",
-  "next_decision_gate": "After replication, adjudicate recovered capacity versus positive signal only; never start M1 in this task.",
-  "next_frontier": "Commit qualification evidence then consume replication packet once.",
+  "current_iteration": 6,
+  "current_stage_goal": "Campaign closeout and bounded adjudication.",
+  "next_decision_gate": "Stop under this Task ID. Any observation/action/world-grammar change requires a new benchmark successor.",
+  "next_frontier": "No M1 authorization. A later successor may target replication variance without touching these packets.",
   "program_goal": "Recover reproducible legal public acquisition headroom without touching 001J formal evidence or heldout.",
   "progress_checkpoint": "docs/codex/tasks/ego-v2-public-acquisition-capacity-recovery-001k/OVERALL_PROGRESS.md",
-  "reviewer_verdict": "pending_validation",
-  "stage_success_criteria": "Positive gain and majority directions reproduce; independent verifier matches; source/freeze hashes stay exact.",
-  "status": "pending_validation",
-  "updated_at": "2026-08-01T08:52:18+00:00"
+  "reviewer_verdict": "success_reached",
+  "stage_success_criteria": "Trial registry complete; qualification and replication independently verified; leakage/tamper controls fail closed; claim ceiling explicit.",
+  "status": "stage_complete",
+  "updated_at": "2026-08-01T08:57:36+00:00"
 }

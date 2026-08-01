@@ -8,6 +8,7 @@ from scripts.codex.run_ego_v2_public_acquisition_capacity_recovery_001k import (
     run_formal_packet,
 )
 from scripts.codex.verify_ego_v2_public_acquisition_capacity_recovery_001k import (
+    run_positive_controls,
     verify_formal_packet,
 )
 
@@ -80,3 +81,12 @@ def test_row_and_candidate_receipt_tamper_fail_closed(tmp_path: Path) -> None:
     assert "rows_sha256_mismatch" in report["findings"]
     assert any(finding.startswith("trace_hash_mismatch") for finding in report["findings"])
     assert any(finding.startswith("ranked_token_private_field") for finding in report["findings"])
+
+
+def test_formal_leakage_and_tamper_positive_controls_all_detect() -> None:
+    report = run_positive_controls(ROOT)
+
+    assert report["baseline_qualification_verifier_passed"] is True
+    assert report["all_positive_controls_detected"] is True
+    assert all(case["detected"] for case in report["cases"].values())
+    assert report["original_001j_packet_executed"] is False

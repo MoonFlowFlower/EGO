@@ -3,13 +3,11 @@
 - Last updated: 2026-08-01
 - Program goal: identify and repair the legal public acquisition bottleneck
   without touching 001J formal evidence or its heldout assignments.
-- Current stage goal: execute the separately precommitted replication packet
-  once with the exact qualification candidate, source, parameters, thresholds,
-  action seeds, and ablations.
-- Stage success criteria: replication preserves positive gain and majority
-  paired directions; independent row recomputation matches; no post-
-  qualification retuning or source change occurs.
-- Reviewer verdict: `needs_more_exploration`
+- Current stage goal: campaign closed under the frozen three-stage budget.
+- Stage success criteria: trial registry, qualification, replication,
+  recomputation, leakage/tamper controls, failure manifest, and bounded verdict
+  are all complete and independently readable.
+- Reviewer verdict: `success_reached`
 - Validated evidence: 001J stored rows show 1,405/1,536 public actions were
   turns, only 64 were successful interactions, and no world identified all
   five tokens within 96 actions. This is diagnostic evidence, not yet a causal
@@ -46,7 +44,15 @@
   ablation all exceeded the frozen material-damage threshold. Independent
   recomputation of 27,648 rows returned no findings. Verdict remains
   `QUALIFICATION_CAPACITY_ESTABLISHED_PENDING_REPLICATION`.
-- Current blocker: none.
-- Next frontier: commit qualification evidence, verify the producer hash still
-  equals the candidate freeze, then execute replication once. Do not modify the
-  candidate even if replication is weaker.
+- Replication evidence: the unchanged candidate produced `gain=0.24223`,
+  `recovery=40.95%`, `44/48` positive trajectories, `15/16` positive world
+  aggregates, and `0.9625` effect-sign accuracy. All three ablations materially
+  damaged gain and independent recomputation found no mismatch. Positive gain
+  reproduced, but the 50% recovery gate did not.
+- Integrity evidence: 55,296 formal rows independently recomputed; row,
+  aggregate, assignment, and candidate-receipt tamper controls all rejected;
+  all declared private input fields rejected.
+- Current blocker: the unchanged M1 recovery gate was not reproduced.
+- Final verdict: `POSITIVE_SIGNAL_BUT_M1_NOT_AUTHORIZED`.
+- Next frontier: stop this Task ID. Use a new successor and new dev-only data to
+  study packet-to-packet recovery variance; do not rerun these formal packets.
