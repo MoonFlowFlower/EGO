@@ -1,0 +1,51 @@
+{
+  "all_positive_controls_detected": true,
+  "baseline_qualification_verifier_passed": true,
+  "cases": {
+    "assignment_byte_tamper": {
+      "detected": true
+    },
+    "candidate_private_field_injection": {
+      "detected": true,
+      "findings": [
+        "ranked_token_forbidden_field:192",
+        "ranked_token_private_field:192",
+        "rows_sha256_mismatch",
+        "trace_hash_mismatch:('001l-qualification-0001', 'S4_HARM_ESCAPE', 4701):1"
+      ]
+    },
+    "protected_predecessor_tamper": {
+      "detected": true,
+      "findings": [
+        "protected_predecessor_mismatch:artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/artifact_manifest.json"
+      ]
+    },
+    "row_value_tamper": {
+      "detected": true,
+      "findings": [
+        "aggregate_mismatch:oracle_random_headroom",
+        "aggregate_mismatch:recovery_fraction",
+        "loss_mismatch:PRIVATE_ORACLE_NAVIGATOR",
+        "rows_sha256_mismatch",
+        "trace_hash_mismatch:('001l-qualification-0001', 'PRIVATE_ORACLE_NAVIGATOR', 4701):1"
+      ]
+    },
+    "stored_aggregate_tamper": {
+      "detected": true,
+      "findings": [
+        "aggregate_mismatch:public_reference_gain"
+      ]
+    }
+  },
+  "claim_ceiling": "Leakage and stored-evidence tamper detection only.",
+  "declared_controls": [
+    "row_value_tamper",
+    "stored_aggregate_tamper",
+    "assignment_byte_tamper",
+    "candidate_private_field_injection",
+    "protected_predecessor_tamper"
+  ],
+  "original_001j_packet_executed": false,
+  "schema_version": "ego.v2.public_acquisition_robustness.controls.v1",
+  "task_id": "EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L"
+}

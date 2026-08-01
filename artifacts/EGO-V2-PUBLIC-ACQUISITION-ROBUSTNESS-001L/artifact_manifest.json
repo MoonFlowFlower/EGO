@@ -1,0 +1,103 @@
+{
+  "file_count": 19,
+  "files": [
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/campaign_report.json",
+      "sha256": "06e994d7747607e679f327b613eb5cb66aba20d44adc1d9893af766206aa7eb1",
+      "size": 1108
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/candidate_freeze.json",
+      "sha256": "3c39bae8e5467a9363f7c646c08469d9f2689d377ce838eae4fe8553c32d9218",
+      "size": 2433
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/failure_manifest.json",
+      "sha256": "07a77984c32a39f0a101c1ce55e7111a5f0a9441d3b0c83424c6ae1183d69b66",
+      "size": 426
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/leakage_tamper_report.json",
+      "sha256": "fa5e80ec956bcd9afcced10470fb0a73125e625dae4fe7bf5e6cbe5bad07c046",
+      "size": 1637
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/packet_commitments.json",
+      "sha256": "680319d96bba231c8af4944bff6649eed5ee8ea7944295c9cfff34157677b497",
+      "size": 1854
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/protected_predecessor_hashes.json",
+      "sha256": "19b18913b4e5bea8ce35e25a602963c57d320334ece27c602f5ea0baeaac98f0",
+      "size": 9247
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/qualification_assignments.json",
+      "sha256": "fefb9d53f5f53c10dffafc7651ba1631630c948701c8f6dc3d5f17ff28172f49",
+      "size": 8582
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/qualification_result.json",
+      "sha256": "67f8d0fd5640a71b233169d6eeb1d8d309035e4bd5ba4a31cd67fc42dafaf20f",
+      "size": 91227
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/qualification_rows.jsonl",
+      "sha256": "dcf70b030948ea5ea95d0bea9f0370aea6ffab9242c362893ea20d7d0b9339e7",
+      "size": 43785669
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/replication_assignments.json",
+      "sha256": "6796a48d1534772b8d0a038f9612bbbbbf831cce1f0cb8d227a04f39637f74d9",
+      "size": 8548
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/replication_result.json",
+      "sha256": "98f1816e8d8ea922f25d92fafb95aaae51a91bc4072850da2545b0389b1c0a1f",
+      "size": 90941
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/replication_rows.jsonl",
+      "sha256": "cf6c41c5af2532ff2880671483fbca9aaa6afb8d89cfe5297ee81c9ebbed5ceb",
+      "size": 43796908
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/row_recomputation_report.json",
+      "sha256": "cf06c3cc7ade4a0215dcd60692908e2e7cad72a299f157956b877a6b581f2429",
+      "size": 3723
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/search_dev_assignments.json",
+      "sha256": "451bb8a8a9b060e55e477a00ad1fee1eca5db3c7a3070bb7a2e0147d2d316a77",
+      "size": 8532
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/search_results.json",
+      "sha256": "265e233e797ab8bf0371af5553ae11ec3f18e62e1aebcb2ef4a1ad6579abcae4",
+      "size": 24979
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/search_rows.jsonl",
+      "sha256": "54ef60762777e78c902f28745ddee9427348a0be463e6f492eb9165912a489af",
+      "size": 12040861
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/search_trial_registry.jsonl",
+      "sha256": "691a2fddb25eb75e9585ee93d674f6cc7da74c80de824845fdefe0c95e555e43",
+      "size": 2618
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/stage_scorecard.json",
+      "sha256": "20f87b7d5bf53538a6154ca6ebdbfb9680d96f549bd0aa80b42417ae14b8bec0",
+      "size": 219346
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/trial_registry.jsonl",
+      "sha256": "90310dbdfad88a931eca1d870688781332b478954f8442db228e25b8022bccc8",
+      "size": 6941
+    }
+  ],
+  "schema_version": "ego.v2.public_acquisition_robustness.manifest.v1",
+  "task_id": "EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L",
+  "verdict": "ROBUSTNESS_ESTABLISHED_MINIMAL_TWO_TIMESCALE_LEARNER_AUTHORIZED"
+}

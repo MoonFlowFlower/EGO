@@ -1,0 +1,2587 @@
+{
+  "ablation_report": {
+    "candidate_gain": 0.320252170139,
+    "damage_threshold": 0.096075651042,
+    "material_count": 3,
+    "required_material_count": 2,
+    "rows": [
+      {
+        "ablation_gain": 0.106603732639,
+        "candidate_id": "FORMAL_NO_UPDATE",
+        "gain_damage": 0.2136484375,
+        "material": true
+      },
+      {
+        "ablation_gain": -0.011785590278,
+        "candidate_id": "FORMAL_FEEDBACK_SHUFFLE",
+        "gain_damage": 0.332037760417,
+        "material": true
+      },
+      {
+        "ablation_gain": 0.106603732639,
+        "candidate_id": "FORMAL_POSTERIOR_ABLATION",
+        "gain_damage": 0.2136484375,
+        "material": true
+      }
+    ]
+  },
+  "ablations": [
+    {
+      "acquisition_curve": [
+        {
+          "mean_cumulative_deficit_loss": 6.869875,
+          "mean_effect_sign_accuracy": 0.0,
+          "mean_known_token_count": 0.0,
+          "step": 12
+        },
+        {
+          "mean_cumulative_deficit_loss": 13.89425,
+          "mean_effect_sign_accuracy": 0.0,
+          "mean_known_token_count": 0.0,
+          "step": 24
+        },
+        {
+          "mean_cumulative_deficit_loss": 29.668625,
+          "mean_effect_sign_accuracy": 0.0,
+          "mean_known_token_count": 0.0,
+          "step": 48
+        },
+        {
+          "mean_cumulative_deficit_loss": 59.21075,
+          "mean_effect_sign_accuracy": 0.0,
+          "mean_known_token_count": 0.0,
+          "step": 96
+        }
+      ],
+      "budget": 96,
+      "candidate_id": "FORMAL_NO_UPDATE",
+      "config": {
+        "budget": 96,
+        "candidate_id": "FORMAL_NO_UPDATE",
+        "evaluator_only": false,
+        "exploration_mode": "risk_constrained_information_gain",
+        "geometry_mode": "forward_first",
+        "posterior_mode": "no_update",
+        "preregistered_prediction": "FORMAL_NO_UPDATE should materially damage posterior-mediated gain.",
+        "robustness_mode": "harm_escape",
+        "scoring_mode": "legacy",
+        "stage_id": "R1_ROBUSTNESS_SEARCH",
+        "target_retention": false
+      },
+      "direction_denominator": 48,
+      "evaluator_only": false,
+      "executed_world_count": 48,
+      "invocation_counts": {
+        "compute_actual_delta": 4608,
+        "compute_metabolism_ledger": 4608,
+        "transition_world": 4608
+      },
+      "loss_by_arm": {
+        "PRIVATE_ORACLE_NAVIGATOR": 0.146536458333,
+        "PUBLIC_REFERENCE": 0.616778645833,
+        "UNIFORM_RANDOM": 0.723382378472
+      },
+      "m1_numeric_gate": false,
+      "mean_final_effect_sign_accuracy": 0.0,
+      "mean_final_known_token_count": 0.0,
+      "mean_first_beneficial_interaction_step": 16.875,
+      "mean_harmful_front_loop_run_max": 1.125,
+      "mean_successful_interactions": 30.6875,
+      "mean_turn_fraction": 0.373697916667,
+      "oracle_random_headroom": 0.576845920139,
+      "per_world": [
+        {
+          "opaque_context_id": "001l-replication-0001",
+          "oracle_loss": 0.158416666667,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.1206875,
+          "public_loss": 0.661958333333,
+          "random_loss": 0.782645833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0001",
+          "oracle_loss": 0.158416666667,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.1104375,
+          "public_loss": 0.661958333333,
+          "random_loss": 0.772395833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0001",
+          "oracle_loss": 0.158416666667,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.1166875,
+          "public_loss": 0.661958333333,
+          "random_loss": 0.778645833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0002",
+          "oracle_loss": 0.094625,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.279145833333,
+          "public_loss": 0.432541666667,
+          "random_loss": 0.7116875
+        },
+        {
+          "opaque_context_id": "001l-replication-0002",
+          "oracle_loss": 0.094625,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.293333333333,
+          "public_loss": 0.432541666667,
+          "random_loss": 0.725875
+        },
+        {
+          "opaque_context_id": "001l-replication-0002",
+          "oracle_loss": 0.094625,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.237333333333,
+          "public_loss": 0.432541666667,
+          "random_loss": 0.669875
+        },
+        {
+          "opaque_context_id": "001l-replication-0003",
+          "oracle_loss": 0.301458333333,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.435166666667,
+          "public_loss": 0.363333333333,
+          "random_loss": 0.7985
+        },
+        {
+          "opaque_context_id": "001l-replication-0003",
+          "oracle_loss": 0.301458333333,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.425854166667,
+          "public_loss": 0.363333333333,
+          "random_loss": 0.7891875
+        },
+        {
+          "opaque_context_id": "001l-replication-0003",
+          "oracle_loss": 0.301458333333,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.267625,
+          "public_loss": 0.363333333333,
+          "random_loss": 0.630958333333
+        },
+        {
+          "opaque_context_id": "001l-replication-0004",
+          "oracle_loss": 0.025145833333,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.057958333333,
+          "public_loss": 0.654875,
+          "random_loss": 0.712833333333
+        },
+        {
+          "opaque_context_id": "001l-replication-0004",
+          "oracle_loss": 0.025145833333,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.043145833333,
+          "public_loss": 0.654875,
+          "random_loss": 0.698020833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0004",
+          "oracle_loss": 0.025145833333,
+          "policy_seed": 4703,
+          "public_better_than_random": false,
+          "public_gain": -0.026895833333,
+          "public_loss": 0.654875,
+          "random_loss": 0.627979166667
+        },
+        {
+          "opaque_context_id": "001l-replication-0005",
+          "oracle_loss": 0.187270833333,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.004583333334,
+          "public_loss": 0.705458333333,
+          "random_loss": 0.710041666667
+        },
+        {
+          "opaque_context_id": "001l-replication-0005",
+          "oracle_loss": 0.187270833333,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.076854166667,
+          "public_loss": 0.705458333333,
+          "random_loss": 0.7823125
+        },
+        {
+          "opaque_context_id": "001l-replication-0005",
+          "oracle_loss": 0.187270833333,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.046770833334,
+          "public_loss": 0.705458333333,
+          "random_loss": 0.752229166667
+        },
+        {
+          "opaque_context_id": "001l-replication-0006",
+          "oracle_loss": 0.040520833333,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.079583333333,
+          "public_loss": 0.595291666667,
+          "random_loss": 0.674875
+        },
+        {
+          "opaque_context_id": "001l-replication-0006",
+          "oracle_loss": 0.040520833333,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.114666666666,
+          "public_loss": 0.595291666667,
+          "random_loss": 0.709958333333
+        },
+        {
+          "opaque_context_id": "001l-replication-0006",
+          "oracle_loss": 0.040520833333,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.096,
+          "public_loss": 0.595291666667,
+          "random_loss": 0.691291666667
+        },
+        {
+          "opaque_context_id": "001l-replication-0007",
+          "oracle_loss": 0.189458333333,
+          "policy_seed": 4701,
+          "public_better_than_random": false,
+          "public_gain": -0.089041666666,
+          "public_loss": 0.877645833333,
+          "random_loss": 0.788604166667
+        },
+        {
+          "opaque_context_id": "001l-replication-0007",
+          "oracle_loss": 0.189458333333,
+          "policy_seed": 4702,
+          "public_better_than_random": false,
+          "public_gain": -0.125145833333,
+          "public_loss": 0.877645833333,
+          "random_loss": 0.7525
+        },
+        {
+          "opaque_context_id": "001l-replication-0007",
+          "oracle_loss": 0.189458333333,
+          "policy_seed": 4703,
+          "public_better_than_random": false,
+          "public_gain": -0.150604166666,
+          "public_loss": 0.877645833333,
+          "random_loss": 0.727041666667
+        },
+        {
+          "opaque_context_id": "001l-replication-0008",
+          "oracle_loss": 0.033125,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.245270833334,
+          "public_loss": 0.421895833333,
+          "random_loss": 0.667166666667
+        },
+        {
+          "opaque_context_id": "001l-replication-0008",
+          "oracle_loss": 0.033125,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.283375,
+          "public_loss": 0.421895833333,
+          "random_loss": 0.705270833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0008",
+          "oracle_loss": 0.033125,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.248875,
+          "public_loss": 0.421895833333,
+          "random_loss": 0.670770833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0009",
+          "oracle_loss": 0.170666666667,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.1630625,
+          "public_loss": 0.589791666667,
+          "random_loss": 0.752854166667
+        },
+        {
+          "opaque_context_id": "001l-replication-0009",
+          "oracle_loss": 0.170666666667,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.192729166666,
+          "public_loss": 0.589791666667,
+          "random_loss": 0.782520833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0009",
+          "oracle_loss": 0.170666666667,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.148104166666,
+          "public_loss": 0.589791666667,
+          "random_loss": 0.737895833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0010",
+          "oracle_loss": 0.102291666667,
+          "policy_seed": 4701,
+          "public_better_than_random": false,
+          "public_gain": -0.194479166667,
+          "public_loss": 0.895479166667,
+          "random_loss": 0.701
+        },
+        {
+          "opaque_context_id": "001l-replication-0010",
+          "oracle_loss": 0.102291666667,
+          "policy_seed": 4702,
+          "public_better_than_random": false,
+          "public_gain": -0.184458333334,
+          "public_loss": 0.895479166667,
+          "random_loss": 0.711020833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0010",
+          "oracle_loss": 0.102291666667,
+          "policy_seed": 4703,
+          "public_better_than_random": false,
+          "public_gain": -0.172645833334,
+          "public_loss": 0.895479166667,
+          "random_loss": 0.722833333333
+        },
+        {
+          "opaque_context_id": "001l-replication-0011",
+          "oracle_loss": 0.372833333333,
+          "policy_seed": 4701,
+          "public_better_than_random": false,
+          "public_gain": -0.117979166667,
+          "public_loss": 0.888625,
+          "random_loss": 0.770645833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0011",
+          "oracle_loss": 0.372833333333,
+          "policy_seed": 4702,
+          "public_better_than_random": false,
+          "public_gain": -0.207208333333,
+          "public_loss": 0.888625,
+          "random_loss": 0.681416666667
+        },
+        {
+          "opaque_context_id": "001l-replication-0011",
+          "oracle_loss": 0.372833333333,
+          "policy_seed": 4703,
+          "public_better_than_random": false,
+          "public_gain": -0.146729166667,
+          "public_loss": 0.888625,
+          "random_loss": 0.741895833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0012",
+          "oracle_loss": 0.058041666667,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.580166666667,
+          "public_loss": 0.117583333333,
+          "random_loss": 0.69775
+        },
+        {
+          "opaque_context_id": "001l-replication-0012",
+          "oracle_loss": 0.058041666667,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.513520833334,
+          "public_loss": 0.117583333333,
+          "random_loss": 0.631104166667
+        },
+        {
+          "opaque_context_id": "001l-replication-0012",
+          "oracle_loss": 0.058041666667,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.580145833334,
+          "public_loss": 0.117583333333,
+          "random_loss": 0.697729166667
+        },
+        {
+          "opaque_context_id": "001l-replication-0013",
+          "oracle_loss": 0.226083333333,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.032479166666,
+          "public_loss": 0.788416666667,
+          "random_loss": 0.820895833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0013",
+          "oracle_loss": 0.226083333333,
+          "policy_seed": 4702,
+          "public_better_than_random": false,
+          "public_gain": -0.014208333334,
+          "public_loss": 0.788416666667,
+          "random_loss": 0.774208333333
+        },
+        {
+          "opaque_context_id": "001l-replication-0013",
+          "oracle_loss": 0.226083333333,
+          "policy_seed": 4703,
+          "public_better_than_random": false,
+          "public_gain": -0.015208333334,
+          "public_loss": 0.788416666667,
+          "random_loss": 0.773208333333
+        },
+        {
+          "opaque_context_id": "001l-replication-0014",
+          "oracle_loss": 0.115125,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.1160625,
+          "public_loss": 0.6088125,
+          "random_loss": 0.724875
+        },
+        {
+          "opaque_context_id": "001l-replication-0014",
+          "oracle_loss": 0.115125,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.043125,
+          "public_loss": 0.6088125,
+          "random_loss": 0.6519375
+        },
+        {
+          "opaque_context_id": "001l-replication-0014",
+          "oracle_loss": 0.115125,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.0193125,
+          "public_loss": 0.6088125,
+          "random_loss": 0.628125
+        },
+        {
+          "opaque_context_id": "001l-replication-0015",
+          "oracle_loss": 0.238270833333,
+          "policy_seed": 4701,
+          "public_better_than_random": false,
+          "public_gain": -0.159625,
+          "public_loss": 0.943895833333,
+          "random_loss": 0.784270833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0015",
+          "oracle_loss": 0.238270833333,
+          "policy_seed": 4702,
+          "public_better_than_random": false,
+          "public_gain": -0.215645833333,
+          "public_loss": 0.943895833333,
+          "random_loss": 0.72825
+        },
+        {
+          "opaque_context_id": "001l-replication-0015",
+          "oracle_loss": 0.238270833333,
+          "policy_seed": 4703,
+          "public_better_than_random": false,
+          "public_gain": -0.137395833333,
+          "public_loss": 0.943895833333,
+          "random_loss": 0.8065
+        },
+        {
+          "opaque_context_id": "001l-replication-0016",
+          "oracle_loss": 0.03125,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.38225,
+          "public_loss": 0.322854166667,
+          "random_loss": 0.705104166667
+        },
+        {
+          "opaque_context_id": "001l-replication-0016",
+          "oracle_loss": 0.03125,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.369520833333,
+          "public_loss": 0.322854166667,
+          "random_loss": 0.692375
+        },
+        {
+          "opaque_context_id": "001l-replication-0016",
+          "oracle_loss": 0.03125,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.350416666666,
+          "public_loss": 0.322854166667,
+          "random_loss": 0.673270833333
+        }
+      ],
+      "phase_signal": true,
+      "positive_direction_count": 33,
+      "preregistered_prediction": "FORMAL_NO_UPDATE should materially damage posterior-mediated gain.",
+      "public_reference_gain": 0.106603732639,
+      "recovery_fraction": 0.184804518706,
+      "stage_id": "R1_ROBUSTNESS_SEARCH",
+      "unique_world_count": 16
+    },
+    {
+      "acquisition_curve": [
+        {
+          "mean_cumulative_deficit_loss": 6.5195,
+          "mean_effect_sign_accuracy": 0.25,
+          "mean_known_token_count": 2.6875,
+          "step": 12
+        },
+        {
+          "mean_cumulative_deficit_loss": 13.46025,
+          "mean_effect_sign_accuracy": 0.33125,
+          "mean_known_token_count": 3.6875,
+          "step": 24
+        },
+        {
+          "mean_cumulative_deficit_loss": 31.1065,
+          "mean_effect_sign_accuracy": 0.39375,
+          "mean_known_token_count": 4.375,
+          "step": 48
+        },
+        {
+          "mean_cumulative_deficit_loss": 70.576125,
+          "mean_effect_sign_accuracy": 0.4125,
+          "mean_known_token_count": 4.5625,
+          "step": 96
+        }
+      ],
+      "budget": 96,
+      "candidate_id": "FORMAL_FEEDBACK_SHUFFLE",
+      "config": {
+        "budget": 96,
+        "candidate_id": "FORMAL_FEEDBACK_SHUFFLE",
+        "evaluator_only": false,
+        "exploration_mode": "risk_constrained_information_gain",
+        "geometry_mode": "forward_first",
+        "posterior_mode": "feedback_shuffle",
+        "preregistered_prediction": "FORMAL_FEEDBACK_SHUFFLE should materially damage posterior-mediated gain.",
+        "robustness_mode": "harm_escape",
+        "scoring_mode": "legacy",
+        "stage_id": "R1_ROBUSTNESS_SEARCH",
+        "target_retention": false
+      },
+      "direction_denominator": 48,
+      "evaluator_only": false,
+      "executed_world_count": 48,
+      "invocation_counts": {
+        "compute_actual_delta": 4608,
+        "compute_metabolism_ledger": 4608,
+        "transition_world": 4608
+      },
+      "loss_by_arm": {
+        "PRIVATE_ORACLE_NAVIGATOR": 0.146536458333,
+        "PUBLIC_REFERENCE": 0.73516796875,
+        "UNIFORM_RANDOM": 0.723382378472
+      },
+      "m1_numeric_gate": false,
+      "mean_final_effect_sign_accuracy": 0.4125,
+      "mean_final_known_token_count": 4.5625,
+      "mean_first_beneficial_interaction_step": 21.0625,
+      "mean_harmful_front_loop_run_max": 4.25,
+      "mean_successful_interactions": 22.875,
+      "mean_turn_fraction": 0.361979166667,
+      "oracle_random_headroom": 0.576845920139,
+      "per_world": [
+        {
+          "opaque_context_id": "001l-replication-0001",
+          "oracle_loss": 0.158416666667,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.082583333333,
+          "public_loss": 0.7000625,
+          "random_loss": 0.782645833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0001",
+          "oracle_loss": 0.158416666667,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.072333333333,
+          "public_loss": 0.7000625,
+          "random_loss": 0.772395833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0001",
+          "oracle_loss": 0.158416666667,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.078583333333,
+          "public_loss": 0.7000625,
+          "random_loss": 0.778645833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0002",
+          "oracle_loss": 0.094625,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.122770833333,
+          "public_loss": 0.588916666667,
+          "random_loss": 0.7116875
+        },
+        {
+          "opaque_context_id": "001l-replication-0002",
+          "oracle_loss": 0.094625,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.136958333333,
+          "public_loss": 0.588916666667,
+          "random_loss": 0.725875
+        },
+        {
+          "opaque_context_id": "001l-replication-0002",
+          "oracle_loss": 0.094625,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.080958333333,
+          "public_loss": 0.588916666667,
+          "random_loss": 0.669875
+        },
+        {
+          "opaque_context_id": "001l-replication-0003",
+          "oracle_loss": 0.301458333333,
+          "policy_seed": 4701,
+          "public_better_than_random": false,
+          "public_gain": -0.034291666667,
+          "public_loss": 0.832791666667,
+          "random_loss": 0.7985
+        },
+        {
+          "opaque_context_id": "001l-replication-0003",
+          "oracle_loss": 0.301458333333,
+          "policy_seed": 4702,
+          "public_better_than_random": false,
+          "public_gain": -0.043604166667,
+          "public_loss": 0.832791666667,
+          "random_loss": 0.7891875
+        },
+        {
+          "opaque_context_id": "001l-replication-0003",
+          "oracle_loss": 0.301458333333,
+          "policy_seed": 4703,
+          "public_better_than_random": false,
+          "public_gain": -0.201833333334,
+          "public_loss": 0.832791666667,
+          "random_loss": 0.630958333333
+        },
+        {
+          "opaque_context_id": "001l-replication-0004",
+          "oracle_loss": 0.025145833333,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.190333333333,
+          "public_loss": 0.5225,
+          "random_loss": 0.712833333333
+        },
+        {
+          "opaque_context_id": "001l-replication-0004",
+          "oracle_loss": 0.025145833333,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.175520833333,
+          "public_loss": 0.5225,
+          "random_loss": 0.698020833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0004",
+          "oracle_loss": 0.025145833333,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.105479166667,
+          "public_loss": 0.5225,
+          "random_loss": 0.627979166667
+        },
+        {
+          "opaque_context_id": "001l-replication-0005",
+          "oracle_loss": 0.187270833333,
+          "policy_seed": 4701,
+          "public_better_than_random": false,
+          "public_gain": -0.009541666666,
+          "public_loss": 0.719583333333,
+          "random_loss": 0.710041666667
+        },
+        {
+          "opaque_context_id": "001l-replication-0005",
+          "oracle_loss": 0.187270833333,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.062729166667,
+          "public_loss": 0.719583333333,
+          "random_loss": 0.7823125
+        },
+        {
+          "opaque_context_id": "001l-replication-0005",
+          "oracle_loss": 0.187270833333,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.032645833334,
+          "public_loss": 0.719583333333,
+          "random_loss": 0.752229166667
+        },
+        {
+          "opaque_context_id": "001l-replication-0006",
+          "oracle_loss": 0.040520833333,
+          "policy_seed": 4701,
+          "public_better_than_random": false,
+          "public_gain": -0.2653125,
+          "public_loss": 0.9401875,
+          "random_loss": 0.674875
+        },
+        {
+          "opaque_context_id": "001l-replication-0006",
+          "oracle_loss": 0.040520833333,
+          "policy_seed": 4702,
+          "public_better_than_random": false,
+          "public_gain": -0.230229166667,
+          "public_loss": 0.9401875,
+          "random_loss": 0.709958333333
+        },
+        {
+          "opaque_context_id": "001l-replication-0006",
+          "oracle_loss": 0.040520833333,
+          "policy_seed": 4703,
+          "public_better_than_random": false,
+          "public_gain": -0.248895833333,
+          "public_loss": 0.9401875,
+          "random_loss": 0.691291666667
+        },
+        {
+          "opaque_context_id": "001l-replication-0007",
+          "oracle_loss": 0.189458333333,
+          "policy_seed": 4701,
+          "public_better_than_random": false,
+          "public_gain": -0.237604166666,
+          "public_loss": 1.026208333333,
+          "random_loss": 0.788604166667
+        },
+        {
+          "opaque_context_id": "001l-replication-0007",
+          "oracle_loss": 0.189458333333,
+          "policy_seed": 4702,
+          "public_better_than_random": false,
+          "public_gain": -0.273708333333,
+          "public_loss": 1.026208333333,
+          "random_loss": 0.7525
+        },
+        {
+          "opaque_context_id": "001l-replication-0007",
+          "oracle_loss": 0.189458333333,
+          "policy_seed": 4703,
+          "public_better_than_random": false,
+          "public_gain": -0.299166666666,
+          "public_loss": 1.026208333333,
+          "random_loss": 0.727041666667
+        },
+        {
+          "opaque_context_id": "001l-replication-0008",
+          "oracle_loss": 0.033125,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.094520833334,
+          "public_loss": 0.572645833333,
+          "random_loss": 0.667166666667
+        },
+        {
+          "opaque_context_id": "001l-replication-0008",
+          "oracle_loss": 0.033125,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.132625,
+          "public_loss": 0.572645833333,
+          "random_loss": 0.705270833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0008",
+          "oracle_loss": 0.033125,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.098125,
+          "public_loss": 0.572645833333,
+          "random_loss": 0.670770833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0009",
+          "oracle_loss": 0.170666666667,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.034895833334,
+          "public_loss": 0.717958333333,
+          "random_loss": 0.752854166667
+        },
+        {
+          "opaque_context_id": "001l-replication-0009",
+          "oracle_loss": 0.170666666667,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.0645625,
+          "public_loss": 0.717958333333,
+          "random_loss": 0.782520833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0009",
+          "oracle_loss": 0.170666666667,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.0199375,
+          "public_loss": 0.717958333333,
+          "random_loss": 0.737895833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0010",
+          "oracle_loss": 0.102291666667,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.020729166667,
+          "public_loss": 0.680270833333,
+          "random_loss": 0.701
+        },
+        {
+          "opaque_context_id": "001l-replication-0010",
+          "oracle_loss": 0.102291666667,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.03075,
+          "public_loss": 0.680270833333,
+          "random_loss": 0.711020833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0010",
+          "oracle_loss": 0.102291666667,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.0425625,
+          "public_loss": 0.680270833333,
+          "random_loss": 0.722833333333
+        },
+        {
+          "opaque_context_id": "001l-replication-0011",
+          "oracle_loss": 0.372833333333,
+          "policy_seed": 4701,
+          "public_better_than_random": false,
+          "public_gain": -0.202375,
+          "public_loss": 0.973020833333,
+          "random_loss": 0.770645833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0011",
+          "oracle_loss": 0.372833333333,
+          "policy_seed": 4702,
+          "public_better_than_random": false,
+          "public_gain": -0.291604166666,
+          "public_loss": 0.973020833333,
+          "random_loss": 0.681416666667
+        },
+        {
+          "opaque_context_id": "001l-replication-0011",
+          "oracle_loss": 0.372833333333,
+          "policy_seed": 4703,
+          "public_better_than_random": false,
+          "public_gain": -0.231125,
+          "public_loss": 0.973020833333,
+          "random_loss": 0.741895833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0012",
+          "oracle_loss": 0.058041666667,
+          "policy_seed": 4701,
+          "public_better_than_random": false,
+          "public_gain": -0.0325,
+          "public_loss": 0.73025,
+          "random_loss": 0.69775
+        },
+        {
+          "opaque_context_id": "001l-replication-0012",
+          "oracle_loss": 0.058041666667,
+          "policy_seed": 4702,
+          "public_better_than_random": false,
+          "public_gain": -0.099145833333,
+          "public_loss": 0.73025,
+          "random_loss": 0.631104166667
+        },
+        {
+          "opaque_context_id": "001l-replication-0012",
+          "oracle_loss": 0.058041666667,
+          "policy_seed": 4703,
+          "public_better_than_random": false,
+          "public_gain": -0.032520833333,
+          "public_loss": 0.73025,
+          "random_loss": 0.697729166667
+        },
+        {
+          "opaque_context_id": "001l-replication-0013",
+          "oracle_loss": 0.226083333333,
+          "policy_seed": 4701,
+          "public_better_than_random": false,
+          "public_gain": -0.132,
+          "public_loss": 0.952895833333,
+          "random_loss": 0.820895833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0013",
+          "oracle_loss": 0.226083333333,
+          "policy_seed": 4702,
+          "public_better_than_random": false,
+          "public_gain": -0.1786875,
+          "public_loss": 0.952895833333,
+          "random_loss": 0.774208333333
+        },
+        {
+          "opaque_context_id": "001l-replication-0013",
+          "oracle_loss": 0.226083333333,
+          "policy_seed": 4703,
+          "public_better_than_random": false,
+          "public_gain": -0.1796875,
+          "public_loss": 0.952895833333,
+          "random_loss": 0.773208333333
+        },
+        {
+          "opaque_context_id": "001l-replication-0014",
+          "oracle_loss": 0.115125,
+          "policy_seed": 4701,
+          "public_better_than_random": false,
+          "public_gain": -0.161,
+          "public_loss": 0.885875,
+          "random_loss": 0.724875
+        },
+        {
+          "opaque_context_id": "001l-replication-0014",
+          "oracle_loss": 0.115125,
+          "policy_seed": 4702,
+          "public_better_than_random": false,
+          "public_gain": -0.2339375,
+          "public_loss": 0.885875,
+          "random_loss": 0.6519375
+        },
+        {
+          "opaque_context_id": "001l-replication-0014",
+          "oracle_loss": 0.115125,
+          "policy_seed": 4703,
+          "public_better_than_random": false,
+          "public_gain": -0.25775,
+          "public_loss": 0.885875,
+          "random_loss": 0.628125
+        },
+        {
+          "opaque_context_id": "001l-replication-0015",
+          "oracle_loss": 0.238270833333,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.168833333333,
+          "public_loss": 0.6154375,
+          "random_loss": 0.784270833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0015",
+          "oracle_loss": 0.238270833333,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.1128125,
+          "public_loss": 0.6154375,
+          "random_loss": 0.72825
+        },
+        {
+          "opaque_context_id": "001l-replication-0015",
+          "oracle_loss": 0.238270833333,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.1910625,
+          "public_loss": 0.6154375,
+          "random_loss": 0.8065
+        },
+        {
+          "opaque_context_id": "001l-replication-0016",
+          "oracle_loss": 0.03125,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.401020833334,
+          "public_loss": 0.304083333333,
+          "random_loss": 0.705104166667
+        },
+        {
+          "opaque_context_id": "001l-replication-0016",
+          "oracle_loss": 0.03125,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.388291666667,
+          "public_loss": 0.304083333333,
+          "random_loss": 0.692375
+        },
+        {
+          "opaque_context_id": "001l-replication-0016",
+          "oracle_loss": 0.03125,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.3691875,
+          "public_loss": 0.304083333333,
+          "random_loss": 0.673270833333
+        }
+      ],
+      "phase_signal": false,
+      "positive_direction_count": 26,
+      "preregistered_prediction": "FORMAL_FEEDBACK_SHUFFLE should materially damage posterior-mediated gain.",
+      "public_reference_gain": -0.011785590278,
+      "recovery_fraction": -0.020431088904,
+      "stage_id": "R1_ROBUSTNESS_SEARCH",
+      "unique_world_count": 16
+    },
+    {
+      "acquisition_curve": [
+        {
+          "mean_cumulative_deficit_loss": 6.869875,
+          "mean_effect_sign_accuracy": 0.0,
+          "mean_known_token_count": 0.0,
+          "step": 12
+        },
+        {
+          "mean_cumulative_deficit_loss": 13.89425,
+          "mean_effect_sign_accuracy": 0.0,
+          "mean_known_token_count": 0.0,
+          "step": 24
+        },
+        {
+          "mean_cumulative_deficit_loss": 29.668625,
+          "mean_effect_sign_accuracy": 0.0,
+          "mean_known_token_count": 0.0,
+          "step": 48
+        },
+        {
+          "mean_cumulative_deficit_loss": 59.21075,
+          "mean_effect_sign_accuracy": 0.0,
+          "mean_known_token_count": 0.0,
+          "step": 96
+        }
+      ],
+      "budget": 96,
+      "candidate_id": "FORMAL_POSTERIOR_ABLATION",
+      "config": {
+        "budget": 96,
+        "candidate_id": "FORMAL_POSTERIOR_ABLATION",
+        "evaluator_only": false,
+        "exploration_mode": "risk_constrained_information_gain",
+        "geometry_mode": "forward_first",
+        "posterior_mode": "posterior_ablation",
+        "preregistered_prediction": "FORMAL_POSTERIOR_ABLATION should materially damage posterior-mediated gain.",
+        "robustness_mode": "harm_escape",
+        "scoring_mode": "legacy",
+        "stage_id": "R1_ROBUSTNESS_SEARCH",
+        "target_retention": false
+      },
+      "direction_denominator": 48,
+      "evaluator_only": false,
+      "executed_world_count": 48,
+      "invocation_counts": {
+        "compute_actual_delta": 4608,
+        "compute_metabolism_ledger": 4608,
+        "transition_world": 4608
+      },
+      "loss_by_arm": {
+        "PRIVATE_ORACLE_NAVIGATOR": 0.146536458333,
+        "PUBLIC_REFERENCE": 0.616778645833,
+        "UNIFORM_RANDOM": 0.723382378472
+      },
+      "m1_numeric_gate": false,
+      "mean_final_effect_sign_accuracy": 0.0,
+      "mean_final_known_token_count": 0.0,
+      "mean_first_beneficial_interaction_step": 16.875,
+      "mean_harmful_front_loop_run_max": 1.125,
+      "mean_successful_interactions": 30.6875,
+      "mean_turn_fraction": 0.373697916667,
+      "oracle_random_headroom": 0.576845920139,
+      "per_world": [
+        {
+          "opaque_context_id": "001l-replication-0001",
+          "oracle_loss": 0.158416666667,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.1206875,
+          "public_loss": 0.661958333333,
+          "random_loss": 0.782645833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0001",
+          "oracle_loss": 0.158416666667,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.1104375,
+          "public_loss": 0.661958333333,
+          "random_loss": 0.772395833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0001",
+          "oracle_loss": 0.158416666667,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.1166875,
+          "public_loss": 0.661958333333,
+          "random_loss": 0.778645833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0002",
+          "oracle_loss": 0.094625,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.279145833333,
+          "public_loss": 0.432541666667,
+          "random_loss": 0.7116875
+        },
+        {
+          "opaque_context_id": "001l-replication-0002",
+          "oracle_loss": 0.094625,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.293333333333,
+          "public_loss": 0.432541666667,
+          "random_loss": 0.725875
+        },
+        {
+          "opaque_context_id": "001l-replication-0002",
+          "oracle_loss": 0.094625,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.237333333333,
+          "public_loss": 0.432541666667,
+          "random_loss": 0.669875
+        },
+        {
+          "opaque_context_id": "001l-replication-0003",
+          "oracle_loss": 0.301458333333,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.435166666667,
+          "public_loss": 0.363333333333,
+          "random_loss": 0.7985
+        },
+        {
+          "opaque_context_id": "001l-replication-0003",
+          "oracle_loss": 0.301458333333,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.425854166667,
+          "public_loss": 0.363333333333,
+          "random_loss": 0.7891875
+        },
+        {
+          "opaque_context_id": "001l-replication-0003",
+          "oracle_loss": 0.301458333333,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.267625,
+          "public_loss": 0.363333333333,
+          "random_loss": 0.630958333333
+        },
+        {
+          "opaque_context_id": "001l-replication-0004",
+          "oracle_loss": 0.025145833333,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.057958333333,
+          "public_loss": 0.654875,
+          "random_loss": 0.712833333333
+        },
+        {
+          "opaque_context_id": "001l-replication-0004",
+          "oracle_loss": 0.025145833333,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.043145833333,
+          "public_loss": 0.654875,
+          "random_loss": 0.698020833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0004",
+          "oracle_loss": 0.025145833333,
+          "policy_seed": 4703,
+          "public_better_than_random": false,
+          "public_gain": -0.026895833333,
+          "public_loss": 0.654875,
+          "random_loss": 0.627979166667
+        },
+        {
+          "opaque_context_id": "001l-replication-0005",
+          "oracle_loss": 0.187270833333,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.004583333334,
+          "public_loss": 0.705458333333,
+          "random_loss": 0.710041666667
+        },
+        {
+          "opaque_context_id": "001l-replication-0005",
+          "oracle_loss": 0.187270833333,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.076854166667,
+          "public_loss": 0.705458333333,
+          "random_loss": 0.7823125
+        },
+        {
+          "opaque_context_id": "001l-replication-0005",
+          "oracle_loss": 0.187270833333,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.046770833334,
+          "public_loss": 0.705458333333,
+          "random_loss": 0.752229166667
+        },
+        {
+          "opaque_context_id": "001l-replication-0006",
+          "oracle_loss": 0.040520833333,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.079583333333,
+          "public_loss": 0.595291666667,
+          "random_loss": 0.674875
+        },
+        {
+          "opaque_context_id": "001l-replication-0006",
+          "oracle_loss": 0.040520833333,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.114666666666,
+          "public_loss": 0.595291666667,
+          "random_loss": 0.709958333333
+        },
+        {
+          "opaque_context_id": "001l-replication-0006",
+          "oracle_loss": 0.040520833333,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.096,
+          "public_loss": 0.595291666667,
+          "random_loss": 0.691291666667
+        },
+        {
+          "opaque_context_id": "001l-replication-0007",
+          "oracle_loss": 0.189458333333,
+          "policy_seed": 4701,
+          "public_better_than_random": false,
+          "public_gain": -0.089041666666,
+          "public_loss": 0.877645833333,
+          "random_loss": 0.788604166667
+        },
+        {
+          "opaque_context_id": "001l-replication-0007",
+          "oracle_loss": 0.189458333333,
+          "policy_seed": 4702,
+          "public_better_than_random": false,
+          "public_gain": -0.125145833333,
+          "public_loss": 0.877645833333,
+          "random_loss": 0.7525
+        },
+        {
+          "opaque_context_id": "001l-replication-0007",
+          "oracle_loss": 0.189458333333,
+          "policy_seed": 4703,
+          "public_better_than_random": false,
+          "public_gain": -0.150604166666,
+          "public_loss": 0.877645833333,
+          "random_loss": 0.727041666667
+        },
+        {
+          "opaque_context_id": "001l-replication-0008",
+          "oracle_loss": 0.033125,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.245270833334,
+          "public_loss": 0.421895833333,
+          "random_loss": 0.667166666667
+        },
+        {
+          "opaque_context_id": "001l-replication-0008",
+          "oracle_loss": 0.033125,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.283375,
+          "public_loss": 0.421895833333,
+          "random_loss": 0.705270833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0008",
+          "oracle_loss": 0.033125,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.248875,
+          "public_loss": 0.421895833333,
+          "random_loss": 0.670770833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0009",
+          "oracle_loss": 0.170666666667,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.1630625,
+          "public_loss": 0.589791666667,
+          "random_loss": 0.752854166667
+        },
+        {
+          "opaque_context_id": "001l-replication-0009",
+          "oracle_loss": 0.170666666667,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.192729166666,
+          "public_loss": 0.589791666667,
+          "random_loss": 0.782520833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0009",
+          "oracle_loss": 0.170666666667,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.148104166666,
+          "public_loss": 0.589791666667,
+          "random_loss": 0.737895833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0010",
+          "oracle_loss": 0.102291666667,
+          "policy_seed": 4701,
+          "public_better_than_random": false,
+          "public_gain": -0.194479166667,
+          "public_loss": 0.895479166667,
+          "random_loss": 0.701
+        },
+        {
+          "opaque_context_id": "001l-replication-0010",
+          "oracle_loss": 0.102291666667,
+          "policy_seed": 4702,
+          "public_better_than_random": false,
+          "public_gain": -0.184458333334,
+          "public_loss": 0.895479166667,
+          "random_loss": 0.711020833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0010",
+          "oracle_loss": 0.102291666667,
+          "policy_seed": 4703,
+          "public_better_than_random": false,
+          "public_gain": -0.172645833334,
+          "public_loss": 0.895479166667,
+          "random_loss": 0.722833333333
+        },
+        {
+          "opaque_context_id": "001l-replication-0011",
+          "oracle_loss": 0.372833333333,
+          "policy_seed": 4701,
+          "public_better_than_random": false,
+          "public_gain": -0.117979166667,
+          "public_loss": 0.888625,
+          "random_loss": 0.770645833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0011",
+          "oracle_loss": 0.372833333333,
+          "policy_seed": 4702,
+          "public_better_than_random": false,
+          "public_gain": -0.207208333333,
+          "public_loss": 0.888625,
+          "random_loss": 0.681416666667
+        },
+        {
+          "opaque_context_id": "001l-replication-0011",
+          "oracle_loss": 0.372833333333,
+          "policy_seed": 4703,
+          "public_better_than_random": false,
+          "public_gain": -0.146729166667,
+          "public_loss": 0.888625,
+          "random_loss": 0.741895833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0012",
+          "oracle_loss": 0.058041666667,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.580166666667,
+          "public_loss": 0.117583333333,
+          "random_loss": 0.69775
+        },
+        {
+          "opaque_context_id": "001l-replication-0012",
+          "oracle_loss": 0.058041666667,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.513520833334,
+          "public_loss": 0.117583333333,
+          "random_loss": 0.631104166667
+        },
+        {
+          "opaque_context_id": "001l-replication-0012",
+          "oracle_loss": 0.058041666667,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.580145833334,
+          "public_loss": 0.117583333333,
+          "random_loss": 0.697729166667
+        },
+        {
+          "opaque_context_id": "001l-replication-0013",
+          "oracle_loss": 0.226083333333,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.032479166666,
+          "public_loss": 0.788416666667,
+          "random_loss": 0.820895833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0013",
+          "oracle_loss": 0.226083333333,
+          "policy_seed": 4702,
+          "public_better_than_random": false,
+          "public_gain": -0.014208333334,
+          "public_loss": 0.788416666667,
+          "random_loss": 0.774208333333
+        },
+        {
+          "opaque_context_id": "001l-replication-0013",
+          "oracle_loss": 0.226083333333,
+          "policy_seed": 4703,
+          "public_better_than_random": false,
+          "public_gain": -0.015208333334,
+          "public_loss": 0.788416666667,
+          "random_loss": 0.773208333333
+        },
+        {
+          "opaque_context_id": "001l-replication-0014",
+          "oracle_loss": 0.115125,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.1160625,
+          "public_loss": 0.6088125,
+          "random_loss": 0.724875
+        },
+        {
+          "opaque_context_id": "001l-replication-0014",
+          "oracle_loss": 0.115125,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.043125,
+          "public_loss": 0.6088125,
+          "random_loss": 0.6519375
+        },
+        {
+          "opaque_context_id": "001l-replication-0014",
+          "oracle_loss": 0.115125,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.0193125,
+          "public_loss": 0.6088125,
+          "random_loss": 0.628125
+        },
+        {
+          "opaque_context_id": "001l-replication-0015",
+          "oracle_loss": 0.238270833333,
+          "policy_seed": 4701,
+          "public_better_than_random": false,
+          "public_gain": -0.159625,
+          "public_loss": 0.943895833333,
+          "random_loss": 0.784270833333
+        },
+        {
+          "opaque_context_id": "001l-replication-0015",
+          "oracle_loss": 0.238270833333,
+          "policy_seed": 4702,
+          "public_better_than_random": false,
+          "public_gain": -0.215645833333,
+          "public_loss": 0.943895833333,
+          "random_loss": 0.72825
+        },
+        {
+          "opaque_context_id": "001l-replication-0015",
+          "oracle_loss": 0.238270833333,
+          "policy_seed": 4703,
+          "public_better_than_random": false,
+          "public_gain": -0.137395833333,
+          "public_loss": 0.943895833333,
+          "random_loss": 0.8065
+        },
+        {
+          "opaque_context_id": "001l-replication-0016",
+          "oracle_loss": 0.03125,
+          "policy_seed": 4701,
+          "public_better_than_random": true,
+          "public_gain": 0.38225,
+          "public_loss": 0.322854166667,
+          "random_loss": 0.705104166667
+        },
+        {
+          "opaque_context_id": "001l-replication-0016",
+          "oracle_loss": 0.03125,
+          "policy_seed": 4702,
+          "public_better_than_random": true,
+          "public_gain": 0.369520833333,
+          "public_loss": 0.322854166667,
+          "random_loss": 0.692375
+        },
+        {
+          "opaque_context_id": "001l-replication-0016",
+          "oracle_loss": 0.03125,
+          "policy_seed": 4703,
+          "public_better_than_random": true,
+          "public_gain": 0.350416666666,
+          "public_loss": 0.322854166667,
+          "random_loss": 0.673270833333
+        }
+      ],
+      "phase_signal": true,
+      "positive_direction_count": 33,
+      "preregistered_prediction": "FORMAL_POSTERIOR_ABLATION should materially damage posterior-mediated gain.",
+      "public_reference_gain": 0.106603732639,
+      "recovery_fraction": 0.184804518706,
+      "stage_id": "R1_ROBUSTNESS_SEARCH",
+      "unique_world_count": 16
+    }
+  ],
+  "action_budget": 96,
+  "all_gates_pass": true,
+  "assignment_sha256": "6796a48d1534772b8d0a038f9612bbbbbf831cce1f0cb8d227a04f39637f74d9",
+  "candidate": {
+    "acquisition_curve": [
+      {
+        "mean_cumulative_deficit_loss": 6.522875,
+        "mean_effect_sign_accuracy": 0.55,
+        "mean_known_token_count": 2.75,
+        "step": 12
+      },
+      {
+        "mean_cumulative_deficit_loss": 13.246875,
+        "mean_effect_sign_accuracy": 0.825,
+        "mean_known_token_count": 4.125,
+        "step": 24
+      },
+      {
+        "mean_cumulative_deficit_loss": 23.503875,
+        "mean_effect_sign_accuracy": 0.9625,
+        "mean_known_token_count": 4.8125,
+        "step": 48
+      },
+      {
+        "mean_cumulative_deficit_loss": 38.7005,
+        "mean_effect_sign_accuracy": 1.0,
+        "mean_known_token_count": 5.0,
+        "step": 96
+      }
+    ],
+    "budget": 96,
+    "candidate_id": "PUBLIC_REFERENCE",
+    "config": {
+      "budget": 96,
+      "candidate_id": "S4_HARM_ESCAPE",
+      "evaluator_only": false,
+      "exploration_mode": "risk_constrained_information_gain",
+      "geometry_mode": "forward_first",
+      "posterior_mode": "public_update",
+      "preregistered_prediction": "A public-history escape macro should shorten repeated harmful-front loops and improve recovery without changing posterior updates or token scoring.",
+      "robustness_mode": "harm_escape",
+      "scoring_mode": "legacy",
+      "stage_id": "R1_ROBUSTNESS_SEARCH",
+      "target_retention": false
+    },
+    "direction_denominator": 48,
+    "evaluator_only": false,
+    "executed_world_count": 48,
+    "invocation_counts": {
+      "compute_actual_delta": 4608,
+      "compute_metabolism_ledger": 4608,
+      "transition_world": 4608
+    },
+    "loss_by_arm": {
+      "PRIVATE_ORACLE_NAVIGATOR": 0.146536458333,
+      "PUBLIC_REFERENCE": 0.403130208333,
+      "UNIFORM_RANDOM": 0.723382378472
+    },
+    "m1_numeric_gate": true,
+    "mean_final_effect_sign_accuracy": 1.0,
+    "mean_final_known_token_count": 5.0,
+    "mean_first_beneficial_interaction_step": 17.1875,
+    "mean_harmful_front_loop_run_max": 2.875,
+    "mean_successful_interactions": 26.5625,
+    "mean_turn_fraction": 0.317708333333,
+    "oracle_random_headroom": 0.576845920139,
+    "per_world": [
+      {
+        "opaque_context_id": "001l-replication-0001",
+        "oracle_loss": 0.158416666667,
+        "policy_seed": 4701,
+        "public_better_than_random": true,
+        "public_gain": 0.012708333333,
+        "public_loss": 0.7699375,
+        "random_loss": 0.782645833333
+      },
+      {
+        "opaque_context_id": "001l-replication-0001",
+        "oracle_loss": 0.158416666667,
+        "policy_seed": 4702,
+        "public_better_than_random": true,
+        "public_gain": 0.002458333333,
+        "public_loss": 0.7699375,
+        "random_loss": 0.772395833333
+      },
+      {
+        "opaque_context_id": "001l-replication-0001",
+        "oracle_loss": 0.158416666667,
+        "policy_seed": 4703,
+        "public_better_than_random": true,
+        "public_gain": 0.008708333333,
+        "public_loss": 0.7699375,
+        "random_loss": 0.778645833333
+      },
+      {
+        "opaque_context_id": "001l-replication-0002",
+        "oracle_loss": 0.094625,
+        "policy_seed": 4701,
+        "public_better_than_random": true,
+        "public_gain": 0.433479166667,
+        "public_loss": 0.278208333333,
+        "random_loss": 0.7116875
+      },
+      {
+        "opaque_context_id": "001l-replication-0002",
+        "oracle_loss": 0.094625,
+        "policy_seed": 4702,
+        "public_better_than_random": true,
+        "public_gain": 0.447666666667,
+        "public_loss": 0.278208333333,
+        "random_loss": 0.725875
+      },
+      {
+        "opaque_context_id": "001l-replication-0002",
+        "oracle_loss": 0.094625,
+        "policy_seed": 4703,
+        "public_better_than_random": true,
+        "public_gain": 0.391666666667,
+        "public_loss": 0.278208333333,
+        "random_loss": 0.669875
+      },
+      {
+        "opaque_context_id": "001l-replication-0003",
+        "oracle_loss": 0.301458333333,
+        "policy_seed": 4701,
+        "public_better_than_random": true,
+        "public_gain": 0.274479166667,
+        "public_loss": 0.524020833333,
+        "random_loss": 0.7985
+      },
+      {
+        "opaque_context_id": "001l-replication-0003",
+        "oracle_loss": 0.301458333333,
+        "policy_seed": 4702,
+        "public_better_than_random": true,
+        "public_gain": 0.265166666667,
+        "public_loss": 0.524020833333,
+        "random_loss": 0.7891875
+      },
+      {
+        "opaque_context_id": "001l-replication-0003",
+        "oracle_loss": 0.301458333333,
+        "policy_seed": 4703,
+        "public_better_than_random": true,
+        "public_gain": 0.1069375,
+        "public_loss": 0.524020833333,
+        "random_loss": 0.630958333333
+      },
+      {
+        "opaque_context_id": "001l-replication-0004",
+        "oracle_loss": 0.025145833333,
+        "policy_seed": 4701,
+        "public_better_than_random": true,
+        "public_gain": 0.568291666666,
+        "public_loss": 0.144541666667,
+        "random_loss": 0.712833333333
+      },
+      {
+        "opaque_context_id": "001l-replication-0004",
+        "oracle_loss": 0.025145833333,
+        "policy_seed": 4702,
+        "public_better_than_random": true,
+        "public_gain": 0.553479166666,
+        "public_loss": 0.144541666667,
+        "random_loss": 0.698020833333
+      },
+      {
+        "opaque_context_id": "001l-replication-0004",
+        "oracle_loss": 0.025145833333,
+        "policy_seed": 4703,
+        "public_better_than_random": true,
+        "public_gain": 0.4834375,
+        "public_loss": 0.144541666667,
+        "random_loss": 0.627979166667
+      },
+      {
+        "opaque_context_id": "001l-replication-0005",
+        "oracle_loss": 0.187270833333,
+        "policy_seed": 4701,
+        "public_better_than_random": true,
+        "public_gain": 0.095104166667,
+        "public_loss": 0.6149375,
+        "random_loss": 0.710041666667
+      },
+      {
+        "opaque_context_id": "001l-replication-0005",
+        "oracle_loss": 0.187270833333,
+        "policy_seed": 4702,
+        "public_better_than_random": true,
+        "public_gain": 0.167375,
+        "public_loss": 0.6149375,
+        "random_loss": 0.7823125
+      },
+      {
+        "opaque_context_id": "001l-replication-0005",
+        "oracle_loss": 0.187270833333,
+        "policy_seed": 4703,
+        "public_better_than_random": true,
+        "public_gain": 0.137291666667,
+        "public_loss": 0.6149375,
+        "random_loss": 0.752229166667
+      },
+      {
+        "opaque_context_id": "001l-replication-0006",
+        "oracle_loss": 0.040520833333,
+        "policy_seed": 4701,
+        "public_better_than_random": true,
+        "public_gain": 0.399854166667,
+        "public_loss": 0.275020833333,
+        "random_loss": 0.674875
+      },
+      {
+        "opaque_context_id": "001l-replication-0006",
+        "oracle_loss": 0.040520833333,
+        "policy_seed": 4702,
+        "public_better_than_random": true,
+        "public_gain": 0.4349375,
+        "public_loss": 0.275020833333,
+        "random_loss": 0.709958333333
+      },
+      {
+        "opaque_context_id": "001l-replication-0006",
+        "oracle_loss": 0.040520833333,
+        "policy_seed": 4703,
+        "public_better_than_random": true,
+        "public_gain": 0.416270833334,
+        "public_loss": 0.275020833333,
+        "random_loss": 0.691291666667
+      },
+      {
+        "opaque_context_id": "001l-replication-0007",
+        "oracle_loss": 0.189458333333,
+        "policy_seed": 4701,
+        "public_better_than_random": true,
+        "public_gain": 0.1116875,
+        "public_loss": 0.676916666667,
+        "random_loss": 0.788604166667
+      },
+      {
+        "opaque_context_id": "001l-replication-0007",
+        "oracle_loss": 0.189458333333,
+        "policy_seed": 4702,
+        "public_better_than_random": true,
+        "public_gain": 0.075583333333,
+        "public_loss": 0.676916666667,
+        "random_loss": 0.7525
+      },
+      {
+        "opaque_context_id": "001l-replication-0007",
+        "oracle_loss": 0.189458333333,
+        "policy_seed": 4703,
+        "public_better_than_random": true,
+        "public_gain": 0.050125,
+        "public_loss": 0.676916666667,
+        "random_loss": 0.727041666667
+      },
+      {
+        "opaque_context_id": "001l-replication-0008",
+        "oracle_loss": 0.033125,
+        "policy_seed": 4701,
+        "public_better_than_random": true,
+        "public_gain": 0.413833333334,
+        "public_loss": 0.253333333333,
+        "random_loss": 0.667166666667
+      },
+      {
+        "opaque_context_id": "001l-replication-0008",
+        "oracle_loss": 0.033125,
+        "policy_seed": 4702,
+        "public_better_than_random": true,
+        "public_gain": 0.4519375,
+        "public_loss": 0.253333333333,
+        "random_loss": 0.705270833333
+      },
+      {
+        "opaque_context_id": "001l-replication-0008",
+        "oracle_loss": 0.033125,
+        "policy_seed": 4703,
+        "public_better_than_random": true,
+        "public_gain": 0.4174375,
+        "public_loss": 0.253333333333,
+        "random_loss": 0.670770833333
+      },
+      {
+        "opaque_context_id": "001l-replication-0009",
+        "oracle_loss": 0.170666666667,
+        "policy_seed": 4701,
+        "public_better_than_random": true,
+        "public_gain": 0.357729166667,
+        "public_loss": 0.395125,
+        "random_loss": 0.752854166667
+      },
+      {
+        "opaque_context_id": "001l-replication-0009",
+        "oracle_loss": 0.170666666667,
+        "policy_seed": 4702,
+        "public_better_than_random": true,
+        "public_gain": 0.387395833333,
+        "public_loss": 0.395125,
+        "random_loss": 0.782520833333
+      },
+      {
+        "opaque_context_id": "001l-replication-0009",
+        "oracle_loss": 0.170666666667,
+        "policy_seed": 4703,
+        "public_better_than_random": true,
+        "public_gain": 0.342770833333,
+        "public_loss": 0.395125,
+        "random_loss": 0.737895833333
+      },
+      {
+        "opaque_context_id": "001l-replication-0010",
+        "oracle_loss": 0.102291666667,
+        "policy_seed": 4701,
+        "public_better_than_random": true,
+        "public_gain": 0.415791666667,
+        "public_loss": 0.285208333333,
+        "random_loss": 0.701
+      },
+      {
+        "opaque_context_id": "001l-replication-0010",
+        "oracle_loss": 0.102291666667,
+        "policy_seed": 4702,
+        "public_better_than_random": true,
+        "public_gain": 0.4258125,
+        "public_loss": 0.285208333333,
+        "random_loss": 0.711020833333
+      },
+      {
+        "opaque_context_id": "001l-replication-0010",
+        "oracle_loss": 0.102291666667,
+        "policy_seed": 4703,
+        "public_better_than_random": true,
+        "public_gain": 0.437625,
+        "public_loss": 0.285208333333,
+        "random_loss": 0.722833333333
+      },
+      {
+        "opaque_context_id": "001l-replication-0011",
+        "oracle_loss": 0.372833333333,
+        "policy_seed": 4701,
+        "public_better_than_random": true,
+        "public_gain": 0.036625,
+        "public_loss": 0.734020833333,
+        "random_loss": 0.770645833333
+      },
+      {
+        "opaque_context_id": "001l-replication-0011",
+        "oracle_loss": 0.372833333333,
+        "policy_seed": 4702,
+        "public_better_than_random": false,
+        "public_gain": -0.052604166666,
+        "public_loss": 0.734020833333,
+        "random_loss": 0.681416666667
+      },
+      {
+        "opaque_context_id": "001l-replication-0011",
+        "oracle_loss": 0.372833333333,
+        "policy_seed": 4703,
+        "public_better_than_random": true,
+        "public_gain": 0.007875,
+        "public_loss": 0.734020833333,
+        "random_loss": 0.741895833333
+      },
+      {
+        "opaque_context_id": "001l-replication-0012",
+        "oracle_loss": 0.058041666667,
+        "policy_seed": 4701,
+        "public_better_than_random": true,
+        "public_gain": 0.513145833333,
+        "public_loss": 0.184604166667,
+        "random_loss": 0.69775
+      },
+      {
+        "opaque_context_id": "001l-replication-0012",
+        "oracle_loss": 0.058041666667,
+        "policy_seed": 4702,
+        "public_better_than_random": true,
+        "public_gain": 0.4465,
+        "public_loss": 0.184604166667,
+        "random_loss": 0.631104166667
+      },
+      {
+        "opaque_context_id": "001l-replication-0012",
+        "oracle_loss": 0.058041666667,
+        "policy_seed": 4703,
+        "public_better_than_random": true,
+        "public_gain": 0.513125,
+        "public_loss": 0.184604166667,
+        "random_loss": 0.697729166667
+      },
+      {
+        "opaque_context_id": "001l-replication-0013",
+        "oracle_loss": 0.226083333333,
+        "policy_seed": 4701,
+        "public_better_than_random": true,
+        "public_gain": 0.436208333333,
+        "public_loss": 0.3846875,
+        "random_loss": 0.820895833333
+      },
+      {
+        "opaque_context_id": "001l-replication-0013",
+        "oracle_loss": 0.226083333333,
+        "policy_seed": 4702,
+        "public_better_than_random": true,
+        "public_gain": 0.389520833333,
+        "public_loss": 0.3846875,
+        "random_loss": 0.774208333333
+      },
+      {
+        "opaque_context_id": "001l-replication-0013",
+        "oracle_loss": 0.226083333333,
+        "policy_seed": 4703,
+        "public_better_than_random": true,
+        "public_gain": 0.388520833333,
+        "public_loss": 0.3846875,
+        "random_loss": 0.773208333333
+      },
+      {
+        "opaque_context_id": "001l-replication-0014",
+        "oracle_loss": 0.115125,
+        "policy_seed": 4701,
+        "public_better_than_random": true,
+        "public_gain": 0.425354166667,
+        "public_loss": 0.299520833333,
+        "random_loss": 0.724875
+      },
+      {
+        "opaque_context_id": "001l-replication-0014",
+        "oracle_loss": 0.115125,
+        "policy_seed": 4702,
+        "public_better_than_random": true,
+        "public_gain": 0.352416666667,
+        "public_loss": 0.299520833333,
+        "random_loss": 0.6519375
+      },
+      {
+        "opaque_context_id": "001l-replication-0014",
+        "oracle_loss": 0.115125,
+        "policy_seed": 4703,
+        "public_better_than_random": true,
+        "public_gain": 0.328604166667,
+        "public_loss": 0.299520833333,
+        "random_loss": 0.628125
+      },
+      {
+        "opaque_context_id": "001l-replication-0015",
+        "oracle_loss": 0.238270833333,
+        "policy_seed": 4701,
+        "public_better_than_random": true,
+        "public_gain": 0.260875,
+        "public_loss": 0.523395833333,
+        "random_loss": 0.784270833333
+      },
+      {
+        "opaque_context_id": "001l-replication-0015",
+        "oracle_loss": 0.238270833333,
+        "policy_seed": 4702,
+        "public_better_than_random": true,
+        "public_gain": 0.204854166667,
+        "public_loss": 0.523395833333,
+        "random_loss": 0.72825
+      },
+      {
+        "opaque_context_id": "001l-replication-0015",
+        "oracle_loss": 0.238270833333,
+        "policy_seed": 4703,
+        "public_better_than_random": true,
+        "public_gain": 0.283104166667,
+        "public_loss": 0.523395833333,
+        "random_loss": 0.8065
+      },
+      {
+        "opaque_context_id": "001l-replication-0016",
+        "oracle_loss": 0.03125,
+        "policy_seed": 4701,
+        "public_better_than_random": true,
+        "public_gain": 0.5985,
+        "public_loss": 0.106604166667,
+        "random_loss": 0.705104166667
+      },
+      {
+        "opaque_context_id": "001l-replication-0016",
+        "oracle_loss": 0.03125,
+        "policy_seed": 4702,
+        "public_better_than_random": true,
+        "public_gain": 0.585770833333,
+        "public_loss": 0.106604166667,
+        "random_loss": 0.692375
+      },
+      {
+        "opaque_context_id": "001l-replication-0016",
+        "oracle_loss": 0.03125,
+        "policy_seed": 4703,
+        "public_better_than_random": true,
+        "public_gain": 0.566666666666,
+        "public_loss": 0.106604166667,
+        "random_loss": 0.673270833333
+      }
+    ],
+    "phase_signal": true,
+    "positive_direction_count": 47,
+    "preregistered_prediction": "A public-history escape macro should shorten repeated harmful-front loops and improve recovery without changing posterior updates or token scoring.",
+    "public_reference_gain": 0.320252170139,
+    "recovery_fraction": 0.555178010207,
+    "stage_id": "R1_ROBUSTNESS_SEARCH",
+    "unique_world_count": 16
+  },
+  "candidate_freeze_hash": "ca72034d1cf7a45ba8825098d77778d2cafeffbff2bac478f69fa224aa18817c",
+  "candidate_id": "S4_HARM_ESCAPE",
+  "executed_world_count": 16,
+  "frozen_001k_formal_packets_rerun": false,
+  "gates": {
+    "candidate_inputs_clean": true,
+    "candidate_replay_exact": true,
+    "effect_sign_accuracy": true,
+    "material_ablation_count": true,
+    "positive_world_count": true,
+    "protected_predecessors_unchanged": true,
+    "public_reference_gain_positive": true,
+    "recovery_fraction": true
+  },
+  "original_001j_heldout_executed": false,
+  "packet_name": "replication",
+  "policy_seeds": [
+    4701,
+    4702,
+    4703
+  ],
+  "producer_sha256": "f0c06ebd29c4ccc1b4a2a95317114e5cc1dfcd7b1f4d9d91653e21c00ed42ab3",
+  "public_policy_seed_independence_note": "Public policy is deterministic; unique-world aggregates are primary. Policy seeds create paired random baselines, not independent public policies.",
+  "replay_checks": [
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0001",
+      "policy_seed": 4701,
+      "produced_hash": "54585b3597fac83dd2dc76df6c5ca2eddfcec301e10d63894c3d5da912d6ef19",
+      "replayed_hash": "54585b3597fac83dd2dc76df6c5ca2eddfcec301e10d63894c3d5da912d6ef19",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0001",
+      "policy_seed": 4702,
+      "produced_hash": "8a407ce4f26b7e9865150cee4335b7fc499e7ca1daa79a9fe0a2d057887749d4",
+      "replayed_hash": "8a407ce4f26b7e9865150cee4335b7fc499e7ca1daa79a9fe0a2d057887749d4",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0001",
+      "policy_seed": 4703,
+      "produced_hash": "fa09c481286c90a3855b0adcc255720b433290447394b3fb06d450032ba33442",
+      "replayed_hash": "fa09c481286c90a3855b0adcc255720b433290447394b3fb06d450032ba33442",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0002",
+      "policy_seed": 4701,
+      "produced_hash": "ad1e77dbe28fd7c48f18cbd43237b47fbec5c2bf06ac08c45dd7661c5658cd89",
+      "replayed_hash": "ad1e77dbe28fd7c48f18cbd43237b47fbec5c2bf06ac08c45dd7661c5658cd89",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0002",
+      "policy_seed": 4702,
+      "produced_hash": "ca9db52a3157b06902cedeba3e45c9c61efd6457c4007b8821b30b738113cccc",
+      "replayed_hash": "ca9db52a3157b06902cedeba3e45c9c61efd6457c4007b8821b30b738113cccc",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0002",
+      "policy_seed": 4703,
+      "produced_hash": "b64986192a9d33f4485c7b8daaf3aaf90c902d4b7124906ee0beeb1d155c352b",
+      "replayed_hash": "b64986192a9d33f4485c7b8daaf3aaf90c902d4b7124906ee0beeb1d155c352b",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0003",
+      "policy_seed": 4701,
+      "produced_hash": "ff23b56341301e99ff1f20b537f0ebff300c63b0310690d63b064c004708b2e5",
+      "replayed_hash": "ff23b56341301e99ff1f20b537f0ebff300c63b0310690d63b064c004708b2e5",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0003",
+      "policy_seed": 4702,
+      "produced_hash": "dd0517563771a3f3d83adde967bd21bad87b758f8a09ad4cb79e667763952841",
+      "replayed_hash": "dd0517563771a3f3d83adde967bd21bad87b758f8a09ad4cb79e667763952841",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0003",
+      "policy_seed": 4703,
+      "produced_hash": "31f9ceba168d0c4d45bfcd4e4953a214bc348c54387732239d643f2b04b95005",
+      "replayed_hash": "31f9ceba168d0c4d45bfcd4e4953a214bc348c54387732239d643f2b04b95005",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0004",
+      "policy_seed": 4701,
+      "produced_hash": "943da031eee0dd5d3846cd6912704ddfeab7229171d805722cf6225b1583bb87",
+      "replayed_hash": "943da031eee0dd5d3846cd6912704ddfeab7229171d805722cf6225b1583bb87",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0004",
+      "policy_seed": 4702,
+      "produced_hash": "49d657ee5b9d5e8bffeaf655b1a405e7983db0aa54e8fe067d083ae06352685a",
+      "replayed_hash": "49d657ee5b9d5e8bffeaf655b1a405e7983db0aa54e8fe067d083ae06352685a",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0004",
+      "policy_seed": 4703,
+      "produced_hash": "74282f30351dfa8048dc752e2099b998a1e5b34de4d95cec27a74557309d70bc",
+      "replayed_hash": "74282f30351dfa8048dc752e2099b998a1e5b34de4d95cec27a74557309d70bc",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0005",
+      "policy_seed": 4701,
+      "produced_hash": "06a549e12c5d29b775c0754f9fd632fb5cbe82838ce369dbbeae03b7a9016ee6",
+      "replayed_hash": "06a549e12c5d29b775c0754f9fd632fb5cbe82838ce369dbbeae03b7a9016ee6",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0005",
+      "policy_seed": 4702,
+      "produced_hash": "65640b1a5bfeb77905687ecff89e36d12ef43c0e7b9f658a8d4c6c911bd1a956",
+      "replayed_hash": "65640b1a5bfeb77905687ecff89e36d12ef43c0e7b9f658a8d4c6c911bd1a956",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0005",
+      "policy_seed": 4703,
+      "produced_hash": "8c7a723a5c29c2f545a8807f48cf20fab328312fd4a7e49125ae31bb7936ea2c",
+      "replayed_hash": "8c7a723a5c29c2f545a8807f48cf20fab328312fd4a7e49125ae31bb7936ea2c",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0006",
+      "policy_seed": 4701,
+      "produced_hash": "df9db3aa253057d928dc06a14fa9072c7379f00d0b4958d16efa061b2fa4ff5b",
+      "replayed_hash": "df9db3aa253057d928dc06a14fa9072c7379f00d0b4958d16efa061b2fa4ff5b",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0006",
+      "policy_seed": 4702,
+      "produced_hash": "09243edb5aff2dc67e88e8b4d2e53da19c39f97073ff3d3b5f624ac9c0a26b4d",
+      "replayed_hash": "09243edb5aff2dc67e88e8b4d2e53da19c39f97073ff3d3b5f624ac9c0a26b4d",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0006",
+      "policy_seed": 4703,
+      "produced_hash": "1803c9228a691f303c6300756107897550231ae58fddcb0b97f33ba9573c8e54",
+      "replayed_hash": "1803c9228a691f303c6300756107897550231ae58fddcb0b97f33ba9573c8e54",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0007",
+      "policy_seed": 4701,
+      "produced_hash": "83e7bbcda23e21334ba06dfc7d98245119a340ba6910dcb49164e3c343891ae9",
+      "replayed_hash": "83e7bbcda23e21334ba06dfc7d98245119a340ba6910dcb49164e3c343891ae9",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0007",
+      "policy_seed": 4702,
+      "produced_hash": "887b2bb69ef159c3ec647dfce07c0c5064e429bffae5faf7a0548ab43fe6c203",
+      "replayed_hash": "887b2bb69ef159c3ec647dfce07c0c5064e429bffae5faf7a0548ab43fe6c203",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0007",
+      "policy_seed": 4703,
+      "produced_hash": "d09842267c8dfb018b9b00365dee421c80f244fe216426320e6c81c77bca937f",
+      "replayed_hash": "d09842267c8dfb018b9b00365dee421c80f244fe216426320e6c81c77bca937f",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0008",
+      "policy_seed": 4701,
+      "produced_hash": "159921a15f545ef97e564532a83f08bd5ecc730f764e98020648a49f41a56d88",
+      "replayed_hash": "159921a15f545ef97e564532a83f08bd5ecc730f764e98020648a49f41a56d88",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0008",
+      "policy_seed": 4702,
+      "produced_hash": "da97a64ee0223124c39fc697a7f06cb4576bfba0d363c70a5c2267afdfcb83b8",
+      "replayed_hash": "da97a64ee0223124c39fc697a7f06cb4576bfba0d363c70a5c2267afdfcb83b8",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0008",
+      "policy_seed": 4703,
+      "produced_hash": "01d1067a0a4cabdb30b020793f71afb0e3e6dd8f0df0ace7895a738085715670",
+      "replayed_hash": "01d1067a0a4cabdb30b020793f71afb0e3e6dd8f0df0ace7895a738085715670",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0009",
+      "policy_seed": 4701,
+      "produced_hash": "276260c7e77f41a6edfc76ebf70a338e5d7faea095f17f92218149870288dfa9",
+      "replayed_hash": "276260c7e77f41a6edfc76ebf70a338e5d7faea095f17f92218149870288dfa9",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0009",
+      "policy_seed": 4702,
+      "produced_hash": "9c1551ac4c1eaca21f0363b4bd0527fcaa97e507b139f286510e4c6e73542877",
+      "replayed_hash": "9c1551ac4c1eaca21f0363b4bd0527fcaa97e507b139f286510e4c6e73542877",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0009",
+      "policy_seed": 4703,
+      "produced_hash": "805f440e00878da55df54de258cf7b5b2ed3c50112fb9e6ea191bb7d9bb5d004",
+      "replayed_hash": "805f440e00878da55df54de258cf7b5b2ed3c50112fb9e6ea191bb7d9bb5d004",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0010",
+      "policy_seed": 4701,
+      "produced_hash": "e6996e0a8745205d177fa84e871ba833105eac982ebac6a58fa09f1f79b5d0d4",
+      "replayed_hash": "e6996e0a8745205d177fa84e871ba833105eac982ebac6a58fa09f1f79b5d0d4",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0010",
+      "policy_seed": 4702,
+      "produced_hash": "ba4168410388d047e986a079d24d92ba9fe1a60a188a46f59771708d3ba8ea79",
+      "replayed_hash": "ba4168410388d047e986a079d24d92ba9fe1a60a188a46f59771708d3ba8ea79",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0010",
+      "policy_seed": 4703,
+      "produced_hash": "28aa5fd6aad854211ad0bb3a94a9cc98879abd891873907791e881306b547eca",
+      "replayed_hash": "28aa5fd6aad854211ad0bb3a94a9cc98879abd891873907791e881306b547eca",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0011",
+      "policy_seed": 4701,
+      "produced_hash": "0baba457cd2c2df38593073eb7dd05dc459c542267fa28731c93b0f751c927a2",
+      "replayed_hash": "0baba457cd2c2df38593073eb7dd05dc459c542267fa28731c93b0f751c927a2",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0011",
+      "policy_seed": 4702,
+      "produced_hash": "0309bb6cb53dba234391e324352cb98a19ee0a4c0cf46c190d9113537c6ebe22",
+      "replayed_hash": "0309bb6cb53dba234391e324352cb98a19ee0a4c0cf46c190d9113537c6ebe22",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0011",
+      "policy_seed": 4703,
+      "produced_hash": "4c010b8474e343bd02cb53419dd206ee3b861e3c4866d215196c2db912ad125d",
+      "replayed_hash": "4c010b8474e343bd02cb53419dd206ee3b861e3c4866d215196c2db912ad125d",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0012",
+      "policy_seed": 4701,
+      "produced_hash": "4c7ebb17a9f33f6e8acc808d104e5b21f5d40082bf19f1c18dc931ffee44463b",
+      "replayed_hash": "4c7ebb17a9f33f6e8acc808d104e5b21f5d40082bf19f1c18dc931ffee44463b",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0012",
+      "policy_seed": 4702,
+      "produced_hash": "108280d7bff8537c97c6bf8fa1dc2b6e57ab62151aaa6f43fad2f108d04b5abb",
+      "replayed_hash": "108280d7bff8537c97c6bf8fa1dc2b6e57ab62151aaa6f43fad2f108d04b5abb",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0012",
+      "policy_seed": 4703,
+      "produced_hash": "bb11362cd0ec124ae75599721b29ee3fbf8ccf8dc146e19db7fe46ff2dfc438f",
+      "replayed_hash": "bb11362cd0ec124ae75599721b29ee3fbf8ccf8dc146e19db7fe46ff2dfc438f",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0013",
+      "policy_seed": 4701,
+      "produced_hash": "eea5ce3785e5e780be6f99e75b3be4c55c6fe93772d64fb8ccb2540b168b0a50",
+      "replayed_hash": "eea5ce3785e5e780be6f99e75b3be4c55c6fe93772d64fb8ccb2540b168b0a50",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0013",
+      "policy_seed": 4702,
+      "produced_hash": "65fe7cfee1cca61283821c8ee773bdb7b0af007251af68cea66e231d7845bf55",
+      "replayed_hash": "65fe7cfee1cca61283821c8ee773bdb7b0af007251af68cea66e231d7845bf55",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0013",
+      "policy_seed": 4703,
+      "produced_hash": "d840f015a407cf15beca59b4e27fbb6874f6c40a76348861b0108719fa59b2f8",
+      "replayed_hash": "d840f015a407cf15beca59b4e27fbb6874f6c40a76348861b0108719fa59b2f8",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0014",
+      "policy_seed": 4701,
+      "produced_hash": "26335709348e0b8a047c1e16ae48556fa38cd142a5a0a5bb22d9e056aeab8485",
+      "replayed_hash": "26335709348e0b8a047c1e16ae48556fa38cd142a5a0a5bb22d9e056aeab8485",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0014",
+      "policy_seed": 4702,
+      "produced_hash": "da6ecfc89cc53b7d54b80ccce70f8747474e4216e82820867528dfc714cafd3a",
+      "replayed_hash": "da6ecfc89cc53b7d54b80ccce70f8747474e4216e82820867528dfc714cafd3a",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0014",
+      "policy_seed": 4703,
+      "produced_hash": "10602e0ac4ce05781f9ee55dec0ad863ae33e25974728d163a1aa7eac4b6459d",
+      "replayed_hash": "10602e0ac4ce05781f9ee55dec0ad863ae33e25974728d163a1aa7eac4b6459d",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0015",
+      "policy_seed": 4701,
+      "produced_hash": "901269fc7c1f9784cdb74d2bbf3326088d644c54356e681c1c1779da04eaff70",
+      "replayed_hash": "901269fc7c1f9784cdb74d2bbf3326088d644c54356e681c1c1779da04eaff70",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0015",
+      "policy_seed": 4702,
+      "produced_hash": "34aed42ba7a447e30966600c2fc8952d1f1097b501aee2be4821c3f5ed790dee",
+      "replayed_hash": "34aed42ba7a447e30966600c2fc8952d1f1097b501aee2be4821c3f5ed790dee",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0015",
+      "policy_seed": 4703,
+      "produced_hash": "efbdbd869e895bfe608202b9b20588ab8da10903969452c26668552fcb85f8c4",
+      "replayed_hash": "efbdbd869e895bfe608202b9b20588ab8da10903969452c26668552fcb85f8c4",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0016",
+      "policy_seed": 4701,
+      "produced_hash": "f649cb6e2becc6cdb92065728e9084404391cadd8cf5a65a3393d8c00cbb288a",
+      "replayed_hash": "f649cb6e2becc6cdb92065728e9084404391cadd8cf5a65a3393d8c00cbb288a",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0016",
+      "policy_seed": 4702,
+      "produced_hash": "1a6b50e430834b56f9ea0eb6fc06631fe6d83d598a882afcf5231b019c7df687",
+      "replayed_hash": "1a6b50e430834b56f9ea0eb6fc06631fe6d83d598a882afcf5231b019c7df687",
+      "stored_actions_used_as_replay_input": false
+    },
+    {
+      "match": true,
+      "opaque_context_id": "001l-replication-0016",
+      "policy_seed": 4703,
+      "produced_hash": "4a806da1538f973fdb7836d9f341e3eee54bb1579e266db7b4715d8026d57663",
+      "replayed_hash": "4a806da1538f973fdb7836d9f341e3eee54bb1579e266db7b4715d8026d57663",
+      "stored_actions_used_as_replay_input": false
+    }
+  ],
+  "rows_path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/replication_rows.jsonl",
+  "rows_sha256": "cf6c41c5af2532ff2880671483fbca9aaa6afb8d89cfe5297ee81c9ebbed5ceb",
+  "schema_version": "ego.v2.public_acquisition_robustness.formal.v1",
+  "single_use": true,
+  "task_id": "EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L",
+  "trajectory_count_by_arm": 48,
+  "verdict": "REPLICATION_ROBUSTNESS_GATE_PASS",
+  "world_directions": {
+    "positive_world_count": 15,
+    "rows": [
+      {
+        "gain": 0.007958333333,
+        "opaque_context_id": "001l-replication-0001",
+        "positive": true,
+        "public_loss": 0.7699375,
+        "random_loss": 0.777895833333
+      },
+      {
+        "gain": 0.424270833334,
+        "opaque_context_id": "001l-replication-0002",
+        "positive": true,
+        "public_loss": 0.278208333333,
+        "random_loss": 0.702479166667
+      },
+      {
+        "gain": 0.215527777778,
+        "opaque_context_id": "001l-replication-0003",
+        "positive": true,
+        "public_loss": 0.524020833333,
+        "random_loss": 0.739548611111
+      },
+      {
+        "gain": 0.535069444444,
+        "opaque_context_id": "001l-replication-0004",
+        "positive": true,
+        "public_loss": 0.144541666667,
+        "random_loss": 0.679611111111
+      },
+      {
+        "gain": 0.133256944445,
+        "opaque_context_id": "001l-replication-0005",
+        "positive": true,
+        "public_loss": 0.6149375,
+        "random_loss": 0.748194444445
+      },
+      {
+        "gain": 0.417020833334,
+        "opaque_context_id": "001l-replication-0006",
+        "positive": true,
+        "public_loss": 0.275020833333,
+        "random_loss": 0.692041666667
+      },
+      {
+        "gain": 0.079131944444,
+        "opaque_context_id": "001l-replication-0007",
+        "positive": true,
+        "public_loss": 0.676916666667,
+        "random_loss": 0.756048611111
+      },
+      {
+        "gain": 0.427736111111,
+        "opaque_context_id": "001l-replication-0008",
+        "positive": true,
+        "public_loss": 0.253333333333,
+        "random_loss": 0.681069444444
+      },
+      {
+        "gain": 0.362631944444,
+        "opaque_context_id": "001l-replication-0009",
+        "positive": true,
+        "public_loss": 0.395125,
+        "random_loss": 0.757756944444
+      },
+      {
+        "gain": 0.426409722222,
+        "opaque_context_id": "001l-replication-0010",
+        "positive": true,
+        "public_loss": 0.285208333333,
+        "random_loss": 0.711618055555
+      },
+      {
+        "gain": -0.002701388889,
+        "opaque_context_id": "001l-replication-0011",
+        "positive": false,
+        "public_loss": 0.734020833333,
+        "random_loss": 0.731319444444
+      },
+      {
+        "gain": 0.490923611111,
+        "opaque_context_id": "001l-replication-0012",
+        "positive": true,
+        "public_loss": 0.184604166667,
+        "random_loss": 0.675527777778
+      },
+      {
+        "gain": 0.40475,
+        "opaque_context_id": "001l-replication-0013",
+        "positive": true,
+        "public_loss": 0.3846875,
+        "random_loss": 0.7894375
+      },
+      {
+        "gain": 0.368791666667,
+        "opaque_context_id": "001l-replication-0014",
+        "positive": true,
+        "public_loss": 0.299520833333,
+        "random_loss": 0.6683125
+      },
+      {
+        "gain": 0.249611111111,
+        "opaque_context_id": "001l-replication-0015",
+        "positive": true,
+        "public_loss": 0.523395833333,
+        "random_loss": 0.773006944444
+      },
+      {
+        "gain": 0.583645833333,
+        "opaque_context_id": "001l-replication-0016",
+        "positive": true,
+        "public_loss": 0.106604166667,
+        "random_loss": 0.69025
+      }
+    ],
+    "world_count": 16
+  }
+}

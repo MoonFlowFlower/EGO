@@ -117,3 +117,19 @@ post-qualification tuning.
 - The frozen independent verifier recomputed all `27,648` rows with no finding.
 - Decision: qualification passes without tuning. Preserve this readback, then
   run the already frozen replication once even if its result is negative.
+
+## R3 — single-use replication and independent closeout
+
+- Frozen replication was executed once without source/config changes: public
+  gain `0.320252170139`, oracle-random headroom `0.576845920139`, recovery
+  `0.555178010207`, `15/16` positive worlds (`47/48` paired trajectories),
+  final sign accuracy `1.0`.
+- All three posterior ablations remained material; exact replay and clean-input
+  gates passed. The independent verifier recomputed all `27,648` replication
+  rows with no finding.
+- Row-value, stored-aggregate, assignment-byte, candidate-private-field and
+  protected-predecessor positive controls all failed closed.
+- Decision: both formal packets exceed the unchanged `0.50` recovery and
+  `12/16` world gates. This authorizes only a minimal, interpretable
+  two-timescale learner; it does not authorize a large neural learner or any
+  broader capability claim.

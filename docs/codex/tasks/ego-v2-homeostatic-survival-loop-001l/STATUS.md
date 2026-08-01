@@ -3,14 +3,13 @@
 - Status: active
 - Base HEAD: `872901a9a1da3c534ee9293613596d5467f25713`
 - Branch: `codex/ego-v2-homeostatic-survival-loop-001l`
-- Current milestone: R3 frozen single-use replication
-- Next gate: execute replication exactly once for the unchanged
-  `S4_HARM_ESCAPE`, then run independent recomputation and all leakage/tamper
-  controls. No tuning is permitted.
+- Current milestone: P3 minimal interpretable two-timescale learner
+- Next gate: implement and ablate a small slow-structure/fast-world learner on
+  new dev-only worlds. Do not replace it with a large neural model.
 - Product lane: runnable default-off Bayesian/reference vertical slice; final
   artifact and full regression closeout pending
 - Robustness qualification consumed: yes, pass, independently recomputed
-- Robustness replication consumed: no
+- Robustness replication consumed: yes, pass, independently recomputed
 - Original 001J heldout consumed: no
 - Push/tag/remote anchor: forbidden
 
@@ -23,5 +22,6 @@
 
 ## Next action
 
-Commit the qualification readback, then execute the precommitted replication
-once without touching the 001K formal packets or original heldout.
+Preserve the completed R campaign, then implement the smallest explainable
+slow/fast learner and compare scratch, no-update, feedback-shuffle, slow-reset,
+fast-reset and random controls on new dev-only worlds.

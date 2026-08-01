@@ -1,0 +1,107 @@
+{
+  "all_packets_recomputed": true,
+  "qualification": {
+    "claim_ceiling": "Independent dev-only row integrity and metric recomputation only.",
+    "findings": [],
+    "original_001j_packet_executed": false,
+    "packet_name": "qualification",
+    "passed": true,
+    "recomputed": {
+      "ablation_damage_threshold": 0.101069010417,
+      "ablation_rows": [
+        {
+          "ablation_gain": -0.028486111111,
+          "candidate_id": "FORMAL_FEEDBACK_SHUFFLE",
+          "gain_damage": 0.3653828125,
+          "material": true
+        },
+        {
+          "ablation_gain": 0.023711805556,
+          "candidate_id": "FORMAL_NO_UPDATE",
+          "gain_damage": 0.313184895833,
+          "material": true
+        },
+        {
+          "ablation_gain": 0.023711805556,
+          "candidate_id": "FORMAL_POSTERIOR_ABLATION",
+          "gain_damage": 0.313184895833,
+          "material": true
+        }
+      ],
+      "loss_by_candidate": {
+        "FORMAL_FEEDBACK_SHUFFLE": 0.748197916667,
+        "FORMAL_NO_UPDATE": 0.696,
+        "FORMAL_POSTERIOR_ABLATION": 0.696,
+        "PRIVATE_ORACLE_NAVIGATOR": 0.156576822917,
+        "S4_HARM_ESCAPE": 0.382815104167,
+        "UNIFORM_RANDOM": 0.719711805556
+      },
+      "material_ablation_count": 3,
+      "mean_final_effect_sign_accuracy": 1.0,
+      "oracle_random_headroom": 0.563134982639,
+      "positive_trajectory_count": 48,
+      "positive_world_count": 16,
+      "public_reference_gain": 0.336896701389,
+      "recovery_fraction": 0.598252127421,
+      "trajectory_count": 48,
+      "world_count": 16
+    },
+    "row_count": 27648,
+    "schema_version": "ego.v2.public_acquisition_robustness.row_verification.v1",
+    "stored_verdict": "QUALIFICATION_ROBUSTNESS_GATE_PASS",
+    "task_id": "EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L"
+  },
+  "replication": {
+    "claim_ceiling": "Independent dev-only row integrity and metric recomputation only.",
+    "findings": [],
+    "original_001j_packet_executed": false,
+    "packet_name": "replication",
+    "passed": true,
+    "recomputed": {
+      "ablation_damage_threshold": 0.096075651042,
+      "ablation_rows": [
+        {
+          "ablation_gain": -0.011785590278,
+          "candidate_id": "FORMAL_FEEDBACK_SHUFFLE",
+          "gain_damage": 0.332037760417,
+          "material": true
+        },
+        {
+          "ablation_gain": 0.106603732639,
+          "candidate_id": "FORMAL_NO_UPDATE",
+          "gain_damage": 0.2136484375,
+          "material": true
+        },
+        {
+          "ablation_gain": 0.106603732639,
+          "candidate_id": "FORMAL_POSTERIOR_ABLATION",
+          "gain_damage": 0.2136484375,
+          "material": true
+        }
+      ],
+      "loss_by_candidate": {
+        "FORMAL_FEEDBACK_SHUFFLE": 0.73516796875,
+        "FORMAL_NO_UPDATE": 0.616778645833,
+        "FORMAL_POSTERIOR_ABLATION": 0.616778645833,
+        "PRIVATE_ORACLE_NAVIGATOR": 0.146536458333,
+        "S4_HARM_ESCAPE": 0.403130208333,
+        "UNIFORM_RANDOM": 0.723382378472
+      },
+      "material_ablation_count": 3,
+      "mean_final_effect_sign_accuracy": 1.0,
+      "oracle_random_headroom": 0.576845920139,
+      "positive_trajectory_count": 47,
+      "positive_world_count": 15,
+      "public_reference_gain": 0.320252170139,
+      "recovery_fraction": 0.555178010207,
+      "trajectory_count": 48,
+      "world_count": 16
+    },
+    "row_count": 27648,
+    "schema_version": "ego.v2.public_acquisition_robustness.row_verification.v1",
+    "stored_verdict": "REPLICATION_ROBUSTNESS_GATE_PASS",
+    "task_id": "EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L"
+  },
+  "schema_version": "ego.v2.public_acquisition_robustness.recomputation.v1",
+  "task_id": "EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L"
+}

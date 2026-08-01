@@ -1,0 +1,21 @@
+{
+  "both_formal_packets_passed": true,
+  "claim_ceiling": "Dev-only robustness of legal-public acquisition inside the frozen microworld grammar only; not general transfer, agency, consciousness, electronic life, or real-world survival.",
+  "frozen_001k_formal_packets_rerun": false,
+  "independent_recomputation_passed": true,
+  "leakage_tamper_controls_passed": true,
+  "minimal_two_timescale_learner_authorized": true,
+  "original_001j_heldout_executed": false,
+  "qualification_positive_worlds": 16,
+  "qualification_recovery_fraction": 0.598252127421,
+  "qualification_verdict": "QUALIFICATION_ROBUSTNESS_GATE_PASS",
+  "replication_positive_worlds": 15,
+  "replication_recovery_fraction": 0.555178010207,
+  "replication_verdict": "REPLICATION_ROBUSTNESS_GATE_PASS",
+  "schema_version": "ego.v2.public_acquisition_robustness.campaign.v1",
+  "search_verdict": "SEARCH_CANDIDATE_FROZEN_READY",
+  "selected_candidate": "S4_HARM_ESCAPE",
+  "task_id": "EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L",
+  "thresholds_lowered": false,
+  "verdict": "ROBUSTNESS_ESTABLISHED_MINIMAL_TWO_TIMESCALE_LEARNER_AUTHORIZED"
+}

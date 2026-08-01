@@ -1,0 +1,11 @@
+{
+  "failed_trials": [],
+  "independent_recomputation_passed": true,
+  "positive_controls_passed": true,
+  "qualification_failed_gates": [],
+  "replication_failed_gates": [],
+  "schema_version": "ego.v2.public_acquisition_robustness.failures.v1",
+  "task_id": "EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L",
+  "terminal_verdict": "ROBUSTNESS_ESTABLISHED_MINIMAL_TWO_TIMESCALE_LEARNER_AUTHORIZED",
+  "thresholds_lowered": false
+}
