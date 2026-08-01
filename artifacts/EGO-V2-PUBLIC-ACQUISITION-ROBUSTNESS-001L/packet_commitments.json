@@ -1,0 +1,45 @@
+{
+  "created_before_candidate_source": true,
+  "frozen_001k_qualification_rerun": false,
+  "frozen_001k_replication_rerun": false,
+  "original_001j_heldout_executed": false,
+  "packets": {
+    "qualification": {
+      "assignment_count": 16,
+      "assignment_path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/qualification_assignments.json",
+      "assignment_sha256": "fefb9d53f5f53c10dffafc7651ba1631630c948701c8f6dc3d5f17ff28172f49",
+      "executed": false,
+      "mapping_signatures_disjoint_from_001j_001k_and_other_001l_packets": true,
+      "seed_range": [
+        70000,
+        79999
+      ]
+    },
+    "replication": {
+      "assignment_count": 16,
+      "assignment_path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/replication_assignments.json",
+      "assignment_sha256": "6796a48d1534772b8d0a038f9612bbbbbf831cce1f0cb8d227a04f39637f74d9",
+      "executed": false,
+      "mapping_signatures_disjoint_from_001j_001k_and_other_001l_packets": true,
+      "seed_range": [
+        80000,
+        89999
+      ]
+    },
+    "search_dev": {
+      "assignment_count": 16,
+      "assignment_path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/search_dev_assignments.json",
+      "assignment_sha256": "451bb8a8a9b060e55e477a00ad1fee1eca5db3c7a3070bb7a2e0147d2d316a77",
+      "executed": false,
+      "mapping_signatures_disjoint_from_001j_001k_and_other_001l_packets": true,
+      "seed_range": [
+        60000,
+        69999
+      ]
+    }
+  },
+  "protected_predecessor_hashes_path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/protected_predecessor_hashes.json",
+  "protected_predecessor_hashes_sha256": "19b18913b4e5bea8ce35e25a602963c57d320334ece27c602f5ea0baeaac98f0",
+  "schema_version": "ego.v2.public_acquisition_robustness.packet_commitments.v1",
+  "task_id": "EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L"
+}

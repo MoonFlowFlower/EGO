@@ -1,0 +1,38 @@
+{
+  "task_id": "EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L",
+  "base_head": "872901a9a1da3c534ee9293613596d5467f25713",
+  "branch": "codex/ego-v2-homeostatic-survival-loop-001l",
+  "scope_kind": "default_off_product_vertical_slice_and_single_dev_only_robustness_successor",
+  "allowed_path_prefixes": [
+    "docs/codex/tasks/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L.md",
+    "docs/codex/tasks/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L.md",
+    "docs/codex/tasks/ego-v2-homeostatic-survival-loop-001l/",
+    "labs/ego_life_playground_v0/homeostatic_transfer.py",
+    "labs/ego_life_playground_v0/engine.py",
+    "labs/ego_life_playground_v0/controller.py",
+    "labs/ego_life_playground_v0/terminal.py",
+    "labs/ego_life_playground_v0/visual_console.py",
+    "labs/ego_life_playground_v0/app.py",
+    "labs/ego_life_playground_v0/__init__.py",
+    "scripts/run_ego_life_playground_v0.py",
+    "tests/test_ego_life_playground_homeostatic_transfer.py",
+    "tests/test_ego_life_playground_v0.py",
+    "tests/test_ego_life_playground_v2_microworld.py",
+    "scripts/codex/run_ego_v2_public_acquisition_robustness_001l.py",
+    "scripts/codex/verify_ego_v2_public_acquisition_robustness_001l.py",
+    "scripts/codex/tests/test_run_ego_v2_public_acquisition_robustness_001l.py",
+    "scripts/codex/tests/test_verify_ego_v2_public_acquisition_robustness_001l.py",
+    "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/",
+    "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/"
+  ],
+  "forbidden_surfaces": [
+    "artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/**",
+    "artifacts/EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K/**",
+    "docs/codex/tasks/ego-v2-public-acquisition-capacity-recovery-001k/**",
+    "scripts/codex/run_ego_v2_public_acquisition_capacity_recovery_001k.py",
+    "artifacts/ROUTE-STATE-MACHINE-001A/**",
+    "D:/Project/AIProject/MyProject/intelligence-theory-lab/**",
+    "D:/Project/AIProject/MyProject/joi-demo/**"
+  ],
+  "publication": {"commit_local": true, "push": false, "tag": false, "remote_anchor": false}
+}

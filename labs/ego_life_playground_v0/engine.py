@@ -18,6 +18,7 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from . import claims as claim_memory
+from . import homeostatic_transfer
 from . import predictive_control
 from . import survival_learning
 from .microworld import (
@@ -48,11 +49,11 @@ REENTRY_THRESHOLD = 0.60
 CRITICAL_OVERRIDE_THRESHOLD = 0.15
 VISUAL_TRANSITION_MODEL_KEY = "__visual_transition_counts__"
 
-STATE_SCHEMA_VERSION = "ego.life_playground.state.v10"
-RUN_SCHEMA_VERSION = "ego.life_playground.run.v10"
-COMMAND_SCHEMA_VERSION = "ego.life_playground.command.v7"
-TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v15"
-COMPONENT_HASH_SCHEMA_VERSION = "ego.life_playground.component_hashes.v2"
+STATE_SCHEMA_VERSION = "ego.life_playground.state.v11"
+RUN_SCHEMA_VERSION = "ego.life_playground.run.v11"
+COMMAND_SCHEMA_VERSION = "ego.life_playground.command.v8"
+TRACE_SCHEMA_VERSION = "ego.life_playground.trace.v16"
+COMPONENT_HASH_SCHEMA_VERSION = "ego.life_playground.component_hashes.v3"
 
 TRIGGER_SOURCES = (
     "ui_step_button",
@@ -73,6 +74,10 @@ NOVELTY_MODES = ("canonical", "no_novelty")
 OVERRIDE_MODES = ("canonical", "no_override")
 SURVIVAL_LEARNING_MODES = survival_learning.POLICY_MODES
 PREDICTIVE_CONTROL_MODES = ("off", "factored_mpc")
+HOMEOSTATIC_TRANSFER_MODES = homeostatic_transfer.MODES
+HOMEOSTATIC_DRIVE_MODES = homeostatic_transfer.DRIVE_MODES
+HOMEOSTATIC_POSTERIOR_MODES = homeostatic_transfer.POSTERIOR_MODES
+HOMEOSTATIC_FEEDBACK_MODES = homeostatic_transfer.FEEDBACK_MODES
 PREDICTIVE_HORIZON_MODES = ("h12", "h1")
 RELATIVE_MAP_MODES = predictive_control.RELATIVE_MAP_MODES
 GOAL_VALUE_MODES = predictive_control.GOAL_VALUE_MODES
@@ -114,6 +119,10 @@ DEFAULT_INTERVENTIONS = {
     "override_mode": "canonical",
     "survival_learning_mode": "off",
     "predictive_control_mode": "off",
+    "homeostatic_transfer_mode": "off",
+    "homeostatic_drive_mode": "canonical",
+    "homeostatic_posterior_mode": "canonical",
+    "homeostatic_feedback_mode": "canonical",
     "predictive_horizon_mode": "h12",
     "relative_map_mode": "relative",
     "goal_value_mode": "contextual",
@@ -182,12 +191,13 @@ def compute_code_path_manifest() -> dict[str, Any]:
         Path(__file__),
         Path(__file__).with_name("microworld.py"),
         Path(__file__).with_name("claims.py"),
+        Path(__file__).with_name("homeostatic_transfer.py"),
         Path(__file__).with_name("predictive_control.py"),
         Path(__file__).with_name("survival_learning.py"),
         Path(__file__).with_name("store.py"),
     )
     return {
-        "schema_version": "ego.life_playground.code_path.v11",
+        "schema_version": "ego.life_playground.code_path.v12",
         "files": [
             {"path": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
             for path in source_paths
@@ -237,6 +247,10 @@ def make_run_metadata(
         "default_predictive_control_mode": DEFAULT_INTERVENTIONS[
             "predictive_control_mode"
         ],
+        "homeostatic_transfer": homeostatic_transfer.hyperparameters(),
+        "default_homeostatic_transfer_mode": DEFAULT_INTERVENTIONS[
+            "homeostatic_transfer_mode"
+        ],
         "producer_function": RUN_PRODUCER_FUNCTION,
         "aggregation_rule": RUN_AGGREGATION_RULE,
         "code_path_hash": compute_code_path_hash(),
@@ -284,9 +298,11 @@ def initial_state(
             "model": canonical_hash(model),
             "memory": canonical_hash(memory),
             "predictive_control": canonical_hash(predictive_control.empty_state()),
+            "homeostatic_transfer": canonical_hash(homeostatic_transfer.empty_state()),
         },
         "survival_learner": survival_learning.empty_survival_learner(),
         "predictive_control": predictive_control.empty_state(),
+        "homeostatic_transfer": homeostatic_transfer.empty_state(),
         "lifecycle": {
             "trial_status": "active",
             "life_index": 1,
@@ -295,6 +311,7 @@ def initial_state(
             "terminal_life_result": None,
         },
         "last_action": None,
+        "last_observed_delta": {"energy": 0.0, "safety": 0.0},
         "last_command_hash": None,
         "last_trace_hash": None,
     }
@@ -419,6 +436,20 @@ def state_hash(state: Mapping[str, Any]) -> str:
             else None
         ),
     }
+    homeostatic = state.get("homeostatic_transfer", {})
+    causal_state["homeostatic_transfer"] = {
+        "component_hash": component_hashes.get("homeostatic_transfer"),
+        "slow_update_count": (
+            homeostatic.get("slow_state", {}).get("update_count")
+            if isinstance(homeostatic, Mapping)
+            else None
+        ),
+        "current_world_token_count": (
+            len(homeostatic.get("fast_state", {}).get("token_stats", {}))
+            if isinstance(homeostatic, Mapping)
+            else None
+        ),
+    }
     return canonical_hash(causal_state)
 
 
@@ -497,6 +528,17 @@ def _respawn_trace(
             "eligibility"
         ]
         == {},
+        "homeostatic_slow_state_unchanged": (
+            homeostatic_transfer.slow_state_hash(before["homeostatic_transfer"])
+            == homeostatic_transfer.slow_state_hash(next_state["homeostatic_transfer"])
+        ),
+        "homeostatic_token_posterior_unchanged": (
+            homeostatic_transfer.posterior_hash(before["homeostatic_transfer"])
+            == homeostatic_transfer.posterior_hash(next_state["homeostatic_transfer"])
+        ),
+        "homeostatic_short_history_cleared": (
+            next_state["homeostatic_transfer"]["fast_state"]["short_history"] == []
+        ),
         "current_goal_reset_applied": canonical_json(before["current_goal"])
         != canonical_json(next_state["current_goal"]),
         "world_reset_applied": canonical_json(before["world"]) != canonical_json(next_state["world"]),
@@ -609,6 +651,27 @@ def _respawn_trace(
                 "reason": "pure_respawn",
             },
         },
+        "homeostatic_transfer": {
+            "schema_version": "ego.life_playground.homeostatic_transfer_trace.v1",
+            "mode": command["interventions"]["homeostatic_transfer_mode"],
+            "plan": None,
+            "update": {"applied": False, "reason": "pure_respawn"},
+            "state_hash": homeostatic_transfer.state_hash(
+                next_state["homeostatic_transfer"]
+            ),
+            "slow_state_hash": homeostatic_transfer.slow_state_hash(
+                next_state["homeostatic_transfer"]
+            ),
+            "fast_state_hash": homeostatic_transfer.fast_state_hash(
+                next_state["homeostatic_transfer"]
+            ),
+            "posterior_hash": homeostatic_transfer.posterior_hash(
+                next_state["homeostatic_transfer"]
+            ),
+            "update_count": int(
+                next_state["homeostatic_transfer"]["slow_state"]["update_count"]
+            ),
+        },
         "model_bytes": {
             "before_hash": canonical_hash(before["model"]),
             "after_hash": canonical_hash(next_state["model"]),
@@ -703,9 +766,15 @@ def compute_step(
         next_state["predictive_control"] = predictive_control.reset_for_respawn(
             before["predictive_control"], episode_index=next_life_index - 1
         )
+        next_state["homeostatic_transfer"] = homeostatic_transfer.reset_for_respawn(
+            before["homeostatic_transfer"]
+        )
         component_hashes = dict(before["component_hashes"])
         component_hashes["predictive_control"] = canonical_hash(
             next_state["predictive_control"]
+        )
+        component_hashes["homeostatic_transfer"] = canonical_hash(
+            next_state["homeostatic_transfer"]
         )
         next_state["component_hashes"] = component_hashes
         next_state["lifecycle"] = {
@@ -718,6 +787,7 @@ def compute_step(
             ),
         }
         next_state["last_action"] = None
+        next_state["last_observed_delta"] = {"energy": 0.0, "safety": 0.0}
         next_state["last_command_hash"] = command["command_hash"]
         carry_reset_receipt = {
             "model": _component_receipt(before["model"], next_state["model"], before["model"]),
@@ -776,6 +846,21 @@ def compute_step(
                 next_state["predictive_control"]["belief"],
                 predictive_control.empty_state()["belief"]
                 | {"episode_index": next_life_index - 1},
+            ),
+            "homeostatic_slow_state": _component_receipt(
+                before["homeostatic_transfer"]["slow_state"],
+                next_state["homeostatic_transfer"]["slow_state"],
+                before["homeostatic_transfer"]["slow_state"],
+            ),
+            "homeostatic_token_posterior": _component_receipt(
+                before["homeostatic_transfer"]["fast_state"]["token_stats"],
+                next_state["homeostatic_transfer"]["fast_state"]["token_stats"],
+                before["homeostatic_transfer"]["fast_state"]["token_stats"],
+            ),
+            "homeostatic_short_history": _component_receipt(
+                before["homeostatic_transfer"]["fast_state"]["short_history"],
+                next_state["homeostatic_transfer"]["fast_state"]["short_history"],
+                [],
             ),
             "token_mapping": _component_receipt(
                 before["world"]["trial"]["token_mapping"],
@@ -1044,6 +1129,16 @@ def compute_step(
         for candidate in candidates
     }
     predictive_plan: dict[str, Any] | None = None
+    homeostatic_plan: dict[str, Any] | None = None
+    homeostatic_public_input = {
+        "observation": deepcopy(world_observation),
+        "organism": {
+            "energy": float(decision_state["organism"]["energy"]),
+            "safety": float(decision_state["organism"]["safety"]),
+        },
+        "last_action": decision_state["last_action"],
+        "last_delta": deepcopy(decision_state["last_observed_delta"]),
+    }
     selection_scores = candidate_scores
     selection_learning_mode = interventions["survival_learning_mode"]
     if interventions["predictive_control_mode"] == "factored_mpc":
@@ -1080,6 +1175,25 @@ def compute_step(
             selection_learning_mode = "off"
         except predictive_control.PredictiveControlInvariantError as exc:
             raise EngineInvariantError(str(exc)) from exc
+    elif interventions["homeostatic_transfer_mode"] == "public_bayes":
+        try:
+            homeostatic_plan = homeostatic_transfer.plan_action(
+                decision_state["homeostatic_transfer"],
+                public_input=homeostatic_public_input,
+                sequence=sequence,
+                mode=interventions["homeostatic_transfer_mode"],
+                drive_mode=interventions["homeostatic_drive_mode"],
+                posterior_mode=interventions["homeostatic_posterior_mode"],
+                action_costs=ACTION_COSTS,
+                target_level=TARGET_LEVEL,
+            )
+            selection_scores = {
+                action: 1.0 if action == homeostatic_plan["selected_action"] else 0.0
+                for action in ACTIONS
+            }
+            selection_learning_mode = "off"
+        except homeostatic_transfer.HomeostaticTransferInvariantError as exc:
+            raise EngineInvariantError(str(exc)) from exc
     try:
         selected_action, survival_selection = survival_learning.select_action(
             decision_state["survival_learner"],
@@ -1099,6 +1213,12 @@ def compute_step(
                 "predictive plan and deterministic selection receipt differ"
             )
         survival_selection["selection_mode"] = "delegated_factored_mpc"
+    if homeostatic_plan is not None:
+        if selected_action != str(homeostatic_plan["selected_action"]):
+            raise EngineInvariantError(
+                "homeostatic plan and deterministic selection receipt differ"
+            )
+        survival_selection["selection_mode"] = "delegated_homeostatic_transfer"
     selected = next(
         candidate for candidate in candidates if candidate["action"] == selected_action
     )
@@ -1106,8 +1226,27 @@ def compute_step(
         candidate["survival_q"] = survival_selection["q_by_action"][
             candidate["action"]
         ]
+        candidate["selection_score"] = _round(
+            float(selection_scores[candidate["action"]])
+        )
+        candidate["homeostatic_value"] = (
+            None
+            if homeostatic_plan is None
+            else homeostatic_plan["action_values"][candidate["action"]]
+        )
         candidate["selected"] = candidate["action"] == selected_action
     predicted_delta = deepcopy(selected["predicted_delta"])
+    if homeostatic_plan is not None:
+        homeostatic_prediction = homeostatic_plan["predictions_by_action"][selected_action][
+            "predicted_delta"
+        ]
+        predicted_delta = {
+            "energy": _round(float(homeostatic_prediction["energy"])),
+            "safety": _round(float(homeostatic_prediction["safety"])),
+            "connection": 0.0,
+            "stimulation": 0.0,
+        }
+        selected["predicted_delta"] = deepcopy(predicted_delta)
 
     next_state = dict(decision_state)
     try:
@@ -1144,6 +1283,10 @@ def compute_step(
     if next_state["organism"]["energy"] != metabolism["energy_after"]:
         raise EngineInvariantError("metabolism ledger differs from applied organism energy")
     next_state["last_action"] = selected_action
+    next_state["last_observed_delta"] = {
+        "energy": _round(float(actual_delta["energy"])),
+        "safety": _round(float(actual_delta["safety"])),
+    }
     next_state["last_command_hash"] = command["command_hash"]
     next_observation = policy_observation(
         next_state["world"],
@@ -1220,6 +1363,58 @@ def compute_step(
         component_hashes = dict(next_state["component_hashes"])
         component_hashes["predictive_control"] = canonical_hash(
             next_state["predictive_control"]
+        )
+        next_state["component_hashes"] = component_hashes
+
+    homeostatic_update: dict[str, Any] = {
+        "schema_version": homeostatic_transfer.UPDATE_SCHEMA_VERSION,
+        "producer_function": (
+            "ego_life_playground_v0.homeostatic_transfer.update_after_transition"
+        ),
+        "applied": False,
+        "reason": "homeostatic_transfer_off",
+        "state_hash_before": homeostatic_transfer.state_hash(
+            decision_state["homeostatic_transfer"]
+        ),
+        "state_hash_after": homeostatic_transfer.state_hash(
+            decision_state["homeostatic_transfer"]
+        ),
+        "slow_state_hash_after": homeostatic_transfer.slow_state_hash(
+            decision_state["homeostatic_transfer"]
+        ),
+        "fast_state_hash_after": homeostatic_transfer.fast_state_hash(
+            decision_state["homeostatic_transfer"]
+        ),
+        "posterior_hash_after": homeostatic_transfer.posterior_hash(
+            decision_state["homeostatic_transfer"]
+        ),
+        "update_count_after": int(
+            decision_state["homeostatic_transfer"]["slow_state"]["update_count"]
+        ),
+    }
+    if interventions["homeostatic_transfer_mode"] == "public_bayes":
+        try:
+            (
+                next_state["homeostatic_transfer"],
+                homeostatic_update,
+            ) = homeostatic_transfer.update_after_transition(
+                decision_state["homeostatic_transfer"],
+                public_input=homeostatic_public_input,
+                selected_action=selected_action,
+                observed_outcome_type=str(world_transition["outcome_type"]),
+                actual_delta={
+                    "energy": float(actual_delta["energy"]),
+                    "safety": float(actual_delta["safety"]),
+                },
+                terminal=life_termination is not None,
+                updates_enabled=interventions["update_mode"] == "canonical",
+                feedback_mode=interventions["homeostatic_feedback_mode"],
+            )
+        except homeostatic_transfer.HomeostaticTransferInvariantError as exc:
+            raise EngineInvariantError(str(exc)) from exc
+        component_hashes = dict(next_state["component_hashes"])
+        component_hashes["homeostatic_transfer"] = canonical_hash(
+            next_state["homeostatic_transfer"]
         )
         next_state["component_hashes"] = component_hashes
 
@@ -1449,6 +1644,30 @@ def compute_step(
             "plan": _compact_predictive_plan(predictive_plan),
             "update": _compact_predictive_update(predictive_update),
         },
+        "homeostatic_transfer": {
+            "schema_version": "ego.life_playground.homeostatic_transfer_trace.v1",
+            "mode": interventions["homeostatic_transfer_mode"],
+            "drive_mode": interventions["homeostatic_drive_mode"],
+            "posterior_mode": interventions["homeostatic_posterior_mode"],
+            "feedback_mode": interventions["homeostatic_feedback_mode"],
+            "plan": deepcopy(homeostatic_plan),
+            "update": deepcopy(homeostatic_update),
+            "state_hash": homeostatic_transfer.state_hash(
+                next_state["homeostatic_transfer"]
+            ),
+            "slow_state_hash": homeostatic_transfer.slow_state_hash(
+                next_state["homeostatic_transfer"]
+            ),
+            "fast_state_hash": homeostatic_transfer.fast_state_hash(
+                next_state["homeostatic_transfer"]
+            ),
+            "posterior_hash": homeostatic_transfer.posterior_hash(
+                next_state["homeostatic_transfer"]
+            ),
+            "update_count": int(
+                next_state["homeostatic_transfer"]["slow_state"]["update_count"]
+            ),
+        },
         "model_bytes": {
             "before_hash": model_before_hash,
             "after_hash": model_after_hash,
@@ -1615,6 +1834,8 @@ def _verify_run_metadata(run_meta: Mapping[str, Any], current_code_hash: str) ->
         "default_survival_learning_mode",
         "predictive_control",
         "default_predictive_control_mode",
+        "homeostatic_transfer",
+        "default_homeostatic_transfer_mode",
         "producer_function",
         "aggregation_rule",
         "code_path_hash",
@@ -1646,6 +1867,12 @@ def _verify_run_metadata(run_meta: Mapping[str, Any], current_code_hash: str) ->
         raise EngineInvariantError("predictive control metadata mismatch")
     if run_meta["default_predictive_control_mode"] != "off":
         raise EngineInvariantError("predictive control default must remain off")
+    if canonical_json(run_meta["homeostatic_transfer"]) != canonical_json(
+        homeostatic_transfer.hyperparameters()
+    ):
+        raise EngineInvariantError("homeostatic transfer metadata mismatch")
+    if run_meta["default_homeostatic_transfer_mode"] != "off":
+        raise EngineInvariantError("homeostatic transfer default must remain off")
     if run_meta["producer_function"] != RUN_PRODUCER_FUNCTION:
         raise EngineInvariantError("producer_function is not canonical")
     if run_meta["aggregation_rule"] != RUN_AGGREGATION_RULE:
@@ -1670,8 +1897,10 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
         "component_hashes",
         "survival_learner",
         "predictive_control",
+        "homeostatic_transfer",
         "lifecycle",
         "last_action",
+        "last_observed_delta",
         "last_command_hash",
         "last_trace_hash",
     }
@@ -1698,11 +1927,18 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
     if (
         not isinstance(component_hashes, Mapping)
         or set(component_hashes)
-        != {"schema_version", "model", "memory", "predictive_control"}
+        != {
+            "schema_version",
+            "model",
+            "memory",
+            "predictive_control",
+            "homeostatic_transfer",
+        }
         or component_hashes.get("schema_version") != COMPONENT_HASH_SCHEMA_VERSION
         or not _is_sha256(component_hashes.get("model"))
         or not _is_sha256(component_hashes.get("memory"))
         or not _is_sha256(component_hashes.get("predictive_control"))
+        or not _is_sha256(component_hashes.get("homeostatic_transfer"))
     ):
         raise EngineInvariantError("component hash schema mismatch")
     if tick == 0 and (
@@ -1710,6 +1946,8 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
         or component_hashes["memory"] != canonical_hash(state["memory"])
         or component_hashes["predictive_control"]
         != canonical_hash(state["predictive_control"])
+        or component_hashes["homeostatic_transfer"]
+        != canonical_hash(state["homeostatic_transfer"])
     ):
         raise EngineInvariantError("initial component hash mismatch")
     lifecycle = state["lifecycle"]
@@ -1772,12 +2010,17 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
         predictive_control.validate_state(state["predictive_control"])
     except predictive_control.PredictiveControlInvariantError as exc:
         raise EngineInvariantError(str(exc)) from exc
+    try:
+        homeostatic_transfer.validate_state(state["homeostatic_transfer"])
+    except homeostatic_transfer.HomeostaticTransferInvariantError as exc:
+        raise EngineInvariantError(str(exc)) from exc
     if tick == 0 and canonical_json(state["survival_learner"]) != canonical_json(
         survival_learning.empty_survival_learner()
     ):
         raise EngineInvariantError("initial survival learner must be empty")
 
     last_action = state["last_action"]
+    last_observed_delta = state["last_observed_delta"]
     last_command_hash = state["last_command_hash"]
     last_trace_hash = state["last_trace_hash"]
     if tick == 0:
@@ -1787,6 +2030,8 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
             raise EngineInvariantError("last_command_hash must be null at the initial clock")
         if last_trace_hash is not None:
             raise EngineInvariantError("last_trace_hash must be null at the initial clock")
+        if last_observed_delta != {"energy": 0.0, "safety": 0.0}:
+            raise EngineInvariantError("initial last_observed_delta must be zero")
     else:
         if last_action is None:
             if lifecycle["trial_status"] != "active" or int(clock["episode_tick"]) != 0:
@@ -1803,6 +2048,15 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
             raise EngineInvariantError("last_trace_hash must be sha256")
     if last_action is None and episode_tick != 0:
         raise EngineInvariantError("episode_tick must be zero when last_action is null")
+    if not isinstance(last_observed_delta, Mapping) or set(last_observed_delta) != {
+        "energy",
+        "safety",
+    }:
+        raise EngineInvariantError("last_observed_delta schema mismatch")
+    for key in ("energy", "safety"):
+        value = last_observed_delta[key]
+        if type(value) is not float or not math.isfinite(value):
+            raise EngineInvariantError("last_observed_delta must contain finite floats")
     if last_action is not None:
         max_episode_tick = EPISODE_SPAN_TICKS - 1 if lifecycle["trial_status"] == "active" else EPISODE_SPAN_TICKS
         if not 1 <= episode_tick <= max_episode_tick:
@@ -3845,6 +4099,10 @@ def _normalize_interventions(interventions: Mapping[str, str]) -> dict[str, str]
         or normalized["override_mode"] not in OVERRIDE_MODES
         or normalized["survival_learning_mode"] not in SURVIVAL_LEARNING_MODES
         or normalized["predictive_control_mode"] not in PREDICTIVE_CONTROL_MODES
+        or normalized["homeostatic_transfer_mode"] not in HOMEOSTATIC_TRANSFER_MODES
+        or normalized["homeostatic_drive_mode"] not in HOMEOSTATIC_DRIVE_MODES
+        or normalized["homeostatic_posterior_mode"] not in HOMEOSTATIC_POSTERIOR_MODES
+        or normalized["homeostatic_feedback_mode"] not in HOMEOSTATIC_FEEDBACK_MODES
         or normalized["predictive_horizon_mode"] not in PREDICTIVE_HORIZON_MODES
         or normalized["relative_map_mode"] not in RELATIVE_MAP_MODES
         or normalized["goal_value_mode"] not in GOAL_VALUE_MODES
@@ -3856,6 +4114,13 @@ def _normalize_interventions(interventions: Mapping[str, str]) -> dict[str, str]
     ):
         raise EngineInvariantError(
             "predictive control and Expected SARSA cannot both select actions"
+        )
+    if normalized["homeostatic_transfer_mode"] != "off" and (
+        normalized["predictive_control_mode"] != "off"
+        or normalized["survival_learning_mode"] != "off"
+    ):
+        raise EngineInvariantError(
+            "homeostatic transfer, predictive control, and Expected SARSA are mutually exclusive"
         )
     try:
         shuffle_seed = int(normalized["provenance_shuffle_seed"])

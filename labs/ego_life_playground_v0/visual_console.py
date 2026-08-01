@@ -141,6 +141,7 @@ def build_tk_trace_payload(
             "goal_after": deepcopy(trace.get("goal_after")),
             "survival_learning": deepcopy(trace.get("survival_learning")),
             "predictive_control": deepcopy(trace.get("predictive_control")),
+            "homeostatic_transfer": deepcopy(trace.get("homeostatic_transfer")),
         }
     )
     return payload
@@ -228,6 +229,9 @@ def build_chinese_causal_view(
     predictive_trace = _copy_mapping(trace.get("predictive_control"))
     predictive_plan = _copy_mapping(predictive_trace.get("plan"))
     predictive_update = _copy_mapping(predictive_trace.get("update"))
+    homeostatic_trace = _copy_mapping(trace.get("homeostatic_transfer"))
+    homeostatic_plan = _copy_mapping(homeostatic_trace.get("plan"))
+    homeostatic_update = _copy_mapping(homeostatic_trace.get("update"))
     return {
         "观察者全局视图": {
             "位置": str(observer_world["agent"]["position"]),
@@ -296,6 +300,26 @@ def build_chinese_causal_view(
             "outcome_Brier": predictive_update.get("outcome_brier"),
             "outcome_NLL": predictive_update.get("outcome_nll"),
         },
+        "稳态因果获取": {
+            "模式": homeostatic_trace.get("mode"),
+            "能量": frame.state["organism"]["energy"],
+            "安全": frame.state["organism"]["safety"],
+            "当前缺口": deepcopy(homeostatic_plan.get("drive", {})),
+            "动作后果预测": deepcopy(
+                homeostatic_plan.get("predictions_by_action", {})
+            ),
+            "动作排序": deepcopy(homeostatic_plan.get("action_values", {})),
+            "选择理由": homeostatic_plan.get("selection_reason"),
+            "选择目标": homeostatic_plan.get("selected_target"),
+            "实际结果": world_transition.get("outcome_type"),
+            "实际变化": deepcopy(trace.get("actual_delta")),
+            "更新应用": homeostatic_update.get("applied"),
+            "更新理由": homeostatic_update.get("reason"),
+            "慢状态哈希": homeostatic_trace.get("slow_state_hash"),
+            "快状态哈希": homeostatic_trace.get("fast_state_hash"),
+            "posterior哈希": homeostatic_trace.get("posterior_hash"),
+            "更新次数": homeostatic_trace.get("update_count"),
+        },
         "结果与变化": {
             "世界结果": world_transition.get("outcome_type"),
             "命令注入": trace["command"].get("injected_event"),
@@ -336,6 +360,7 @@ def build_advanced_details(
         "carry_reset_receipt": deepcopy(payload.get("carry_reset_receipt")),
         "survival_learning": deepcopy(trace.get("survival_learning")),
         "predictive_control": deepcopy(trace.get("predictive_control")),
+        "homeostatic_transfer": deepcopy(trace.get("homeostatic_transfer")),
         "successful_resource_interactions": _resource_success_count(
             controller, through_sequence=frame.sequence
         ),
@@ -438,6 +463,7 @@ class PlaygroundWindow:
         self.inject_event_var = tk.StringVar(value="")
         self.survival_learning_mode_var = tk.StringVar(value="off")
         self.predictive_control_mode_var = tk.StringVar(value="off")
+        self.homeostatic_transfer_mode_var = tk.StringVar(value="off")
         self.sequence_var = tk.StringVar(value="")
         self.status_var = tk.StringVar(value="")
 
@@ -498,6 +524,18 @@ class PlaygroundWindow:
         self.predictive_control_mode_box.pack(side=tk.LEFT, padx=(0, 12))
         self.predictive_control_mode_box.bind(
             "<<ComboboxSelected>>", self._on_predictive_mode_selected
+        )
+        ttk.Label(controls, text="Homeostatic").pack(side=tk.LEFT, padx=(0, 4))
+        self.homeostatic_transfer_mode_box = ttk.Combobox(
+            controls,
+            textvariable=self.homeostatic_transfer_mode_var,
+            values=("off", "public_bayes"),
+            width=14,
+            state="readonly",
+        )
+        self.homeostatic_transfer_mode_box.pack(side=tk.LEFT, padx=(0, 12))
+        self.homeostatic_transfer_mode_box.bind(
+            "<<ComboboxSelected>>", self._on_homeostatic_mode_selected
         )
         ttk.Button(controls, text="Inspect", command=self._inspect_latest).pack(
             side=tk.LEFT, padx=(0, 6)
@@ -628,15 +666,23 @@ class PlaygroundWindow:
             DEFAULT_INTERVENTIONS,
             survival_learning_mode=self.survival_learning_mode_var.get(),
             predictive_control_mode=self.predictive_control_mode_var.get(),
+            homeostatic_transfer_mode=self.homeostatic_transfer_mode_var.get(),
         )
 
     def _on_survival_mode_selected(self, _event: object = None) -> None:
         if self.survival_learning_mode_var.get() != "off":
             self.predictive_control_mode_var.set("off")
+            self.homeostatic_transfer_mode_var.set("off")
 
     def _on_predictive_mode_selected(self, _event: object = None) -> None:
         if self.predictive_control_mode_var.get() != "off":
             self.survival_learning_mode_var.set("off")
+            self.homeostatic_transfer_mode_var.set("off")
+
+    def _on_homeostatic_mode_selected(self, _event: object = None) -> None:
+        if self.homeostatic_transfer_mode_var.get() != "off":
+            self.survival_learning_mode_var.set("off")
+            self.predictive_control_mode_var.set("off")
 
     def _dispatch(self, *, trigger_source: str, injected_event: str | None = None) -> bool:
         if self._closed or self._animating or self._is_historical() or self._is_terminal():
@@ -1088,6 +1134,11 @@ class PlaygroundWindow:
             state="disabled" if blocked or terminal or self.running or self._animating else "readonly"
         )
         self.predictive_control_mode_box.configure(
+            state="disabled"
+            if blocked or terminal or self.running or self._animating
+            else "readonly"
+        )
+        self.homeostatic_transfer_mode_box.configure(
             state="disabled"
             if blocked or terminal or self.running or self._animating
             else "readonly"

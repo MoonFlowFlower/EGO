@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from html import escape
+import json
+from pathlib import Path
 from typing import Any, Mapping
 
 from .controller import DispatchResult, PlaygroundController, public_state_hash
@@ -68,6 +71,7 @@ def _timeline_from_recovery(recovery: RecoveryResult) -> list[dict[str, Any]]:
             "carry_reset_receipt": deepcopy(trace_mapping.get("carry_reset_receipt")),
             "survival_learning": deepcopy(trace_mapping.get("survival_learning")),
             "predictive_control": deepcopy(trace_mapping.get("predictive_control")),
+            "homeostatic_transfer": deepcopy(trace_mapping.get("homeostatic_transfer")),
             "public_state_hash": public_state_hash(frame.state),
         }
         entry.update(_lifecycle_summary(frame.state))
@@ -188,6 +192,38 @@ def build_terminal_snapshot(controller: PlaygroundController) -> dict[str, Any]:
         "carry_reset_receipt": deepcopy(trace_mapping.get("carry_reset_receipt")),
         "survival_learning": deepcopy(trace_mapping.get("survival_learning")),
         "predictive_control": deepcopy(trace_mapping.get("predictive_control")),
+        "homeostatic_transfer": deepcopy(trace_mapping.get("homeostatic_transfer")),
+        "homeostatic_summary": {
+            "energy": float(state["organism"]["energy"]),
+            "safety": float(state["organism"]["safety"]),
+            "deficits": deepcopy(
+                ((trace_mapping.get("homeostatic_transfer") or {}).get("plan") or {}).get(
+                    "drive", {}
+                )
+            ),
+            "predictions_by_action": deepcopy(
+                ((trace_mapping.get("homeostatic_transfer") or {}).get("plan") or {}).get(
+                    "predictions_by_action", {}
+                )
+            ),
+            "selection_reason": (
+                ((trace_mapping.get("homeostatic_transfer") or {}).get("plan") or {}).get(
+                    "selection_reason"
+                )
+            ),
+            "slow_state_hash": (
+                (trace_mapping.get("homeostatic_transfer") or {}).get("slow_state_hash")
+            ),
+            "fast_state_hash": (
+                (trace_mapping.get("homeostatic_transfer") or {}).get("fast_state_hash")
+            ),
+            "posterior_hash": (
+                (trace_mapping.get("homeostatic_transfer") or {}).get("posterior_hash")
+            ),
+            "update_count": (
+                (trace_mapping.get("homeostatic_transfer") or {}).get("update_count")
+            ),
+        },
         "survival_learning_summary": {
             "max_lives": MAX_LIVES,
             "lives_1_4_mean": None if len(early) < 4 else round(sum(early) / 4.0, 3),
@@ -198,6 +234,80 @@ def build_terminal_snapshot(controller: PlaygroundController) -> dict[str, Any]:
     }
 
 
+def render_homeostatic_trace_html(
+    recovery: RecoveryResult, output_path: str | Path
+) -> Path:
+    """Render recovered trace evidence without owning behavior logic."""
+
+    rows: list[dict[str, Any]] = []
+    for frame in recovery.frames:
+        trace = _trace_mapping(frame.trace)
+        homeostatic = _trace_mapping(trace.get("homeostatic_transfer"))
+        plan = _trace_mapping(homeostatic.get("plan"))
+        update = _trace_mapping(homeostatic.get("update"))
+        rows.append(
+            {
+                "sequence": frame.sequence,
+                "energy": frame.state["organism"]["energy"],
+                "safety": frame.state["organism"]["safety"],
+                "deficits": deepcopy(plan.get("drive", {})),
+                "predictions_by_action": deepcopy(
+                    plan.get("predictions_by_action", {})
+                ),
+                "action_values": deepcopy(plan.get("action_values", {})),
+                "selected_action": trace.get("selected_action"),
+                "selection_reason": plan.get("selection_reason"),
+                "actual_outcome": _trace_mapping(
+                    trace.get("world_transition")
+                ).get("outcome_type"),
+                "actual_delta": deepcopy(trace.get("actual_delta")),
+                "update_applied": update.get("applied"),
+                "posterior_hash": homeostatic.get("posterior_hash"),
+                "slow_state_hash": homeostatic.get("slow_state_hash"),
+                "fast_state_hash": homeostatic.get("fast_state_hash"),
+                "update_count": homeostatic.get("update_count"),
+                "trace_hash": trace.get("trace_hash"),
+            }
+        )
+    fields = (
+        "sequence",
+        "energy",
+        "safety",
+        "deficits",
+        "predictions_by_action",
+        "selected_action",
+        "selection_reason",
+        "actual_outcome",
+        "actual_delta",
+        "posterior_hash",
+        "slow_state_hash",
+        "fast_state_hash",
+        "update_count",
+    )
+    table_rows = [
+        "<tr>"
+        + "".join(
+            f"<td><pre>{escape(json.dumps(row[field], ensure_ascii=False, sort_keys=True))}</pre></td>"
+            for field in fields
+        )
+        + "</tr>"
+        for row in rows
+    ]
+    headers = "".join(f"<th>{escape(field)}</th>" for field in fields)
+    document = f"""<!doctype html>
+<html><head><meta charset="utf-8"><title>EGO V2 homeostatic trace</title>
+<style>body{{font-family:system-ui;background:#0b1118;color:#dce7f3}}table{{border-collapse:collapse}}th,td{{border:1px solid #405267;padding:4px;vertical-align:top}}pre{{white-space:pre-wrap;max-width:420px}}</style>
+</head><body><h1>EGO V2 homeostatic trace</h1>
+<p>Data source: recovered trace rows. This renderer owns no action or update logic.</p>
+<table><thead><tr>{headers}</tr></thead><tbody>{''.join(table_rows)}</tbody></table>
+<script type="application/json" id="trace-data">{escape(json.dumps(rows, ensure_ascii=False, sort_keys=True))}</script>
+</body></html>"""
+    path = Path(output_path).expanduser().resolve()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(document, encoding="utf-8")
+    return path
+
+
 class TerminalPlayground:
     """Synchronous, paused-by-default P0 operator surface.
 
@@ -206,7 +316,7 @@ class TerminalPlayground:
     """
 
     HELP = (
-        "step | run N | learning {on|off} | predictive {on|off} | pause | inspect | inject EVENT | save PATH | "
+        "step | run N | learning {on|off} | predictive {on|off} | homeostatic {on|off} | pause | inspect | inject EVENT | save PATH | "
         "load RUN_ID | reset [RUN_ID] | replay | help | quit"
     )
 
@@ -215,12 +325,14 @@ class TerminalPlayground:
         self.paused = True
         self.survival_learning_mode = "off"
         self.predictive_control_mode = "off"
+        self.homeostatic_transfer_mode = "off"
 
     def _interventions(self) -> dict[str, str]:
         return dict(
             DEFAULT_INTERVENTIONS,
             survival_learning_mode=self.survival_learning_mode,
             predictive_control_mode=self.predictive_control_mode,
+            homeostatic_transfer_mode=self.homeostatic_transfer_mode,
         )
 
     def _dispatch_event(self, event: str, trigger_source: str) -> DispatchResult:
@@ -266,6 +378,7 @@ class TerminalPlayground:
                 )
                 if self.survival_learning_mode != "off":
                     self.predictive_control_mode = "off"
+                    self.homeostatic_transfer_mode = "off"
                 return {
                     "command": "learning",
                     "status": "ok",
@@ -279,10 +392,25 @@ class TerminalPlayground:
                 )
                 if self.predictive_control_mode != "off":
                     self.survival_learning_mode = "off"
+                    self.homeostatic_transfer_mode = "off"
                 return {
                     "command": "predictive",
                     "status": "ok",
                     "predictive_control_mode": self.predictive_control_mode,
+                }
+            if operation == "homeostatic":
+                if len(parts) != 2 or parts[1].lower() not in {"on", "off"}:
+                    raise ValueError("usage: homeostatic {on|off}")
+                self.homeostatic_transfer_mode = (
+                    "public_bayes" if parts[1].lower() == "on" else "off"
+                )
+                if self.homeostatic_transfer_mode != "off":
+                    self.survival_learning_mode = "off"
+                    self.predictive_control_mode = "off"
+                return {
+                    "command": "homeostatic",
+                    "status": "ok",
+                    "homeostatic_transfer_mode": self.homeostatic_transfer_mode,
                 }
             if operation == "step":
                 if len(parts) != 1:

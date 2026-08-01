@@ -1,0 +1,218 @@
+{
+  "base_head": "872901a9a1da3c534ee9293613596d5467f25713",
+  "file_count": 42,
+  "files": [
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/artifact_manifest.json",
+      "sha256": "dfdf616ba1bd4bb0a8e00f7f93d3cfc1ee194bc182ce357270478c136e857a3f",
+      "size": 1072
+    },
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/capacity_replay_report.json",
+      "sha256": "282134d7f2b88a164f2c444d6e6b162fb69d330ecad4294bee82134cc3be4672",
+      "size": 17097
+    },
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/capacity_result.json",
+      "sha256": "7f5079c69a0e42181fe44a9bc94c29e5cd41d9cd2dd25ac81990e01dfd8b44b3",
+      "size": 1490
+    },
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/capacity_rows.jsonl",
+      "sha256": "e4ec9760fd4892f8b9ea94cbfa77f557869209933813d6baf306bc01f85f3a38",
+      "size": 4049688
+    },
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/failure_manifest.json",
+      "sha256": "13964d71578fc1908fcb3365bdf86250cdb8e0ea48bf47f7518180795b1d22ae",
+      "size": 416
+    },
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/leakage_report.json",
+      "sha256": "5b7e594b057e413f88b8d7944c738244651ac1df98f9ed4e7af674cde6180109",
+      "size": 251
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K/artifact_manifest.json",
+      "sha256": "8c45d9c9af194b3b2014379154f12bff0eca485be72df12f2af9351b4ae5a06f",
+      "size": 5792
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K/call_chain_audit.json",
+      "sha256": "25cb988d30e40dca329babe988e099258579812869675e8ef0ae5667b8088cdf",
+      "size": 5549
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K/candidate_freeze.json",
+      "sha256": "038883d9746b7c6ab07406ccc90a0fdd14215fecf77cf782af7fd58d0d9986cf",
+      "size": 2446
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K/experiment_log.jsonl",
+      "sha256": "e662989eab2201ad33bb2c7a642f6cb7669b538d8dea0bd83432bbe6021c7e99",
+      "size": 22509
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K/failure_manifest.json",
+      "sha256": "04b74c96062a67481db2376657d264f9728ae64d451b97141015cc0fe0c11099",
+      "size": 10271
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K/leakage_tamper_report.json",
+      "sha256": "adfa45c625e375c17cbf7a9972e0bd0f089681e5b6a69ab506f647c1063ec9dd",
+      "size": 1730
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K/packet_commitments.json",
+      "sha256": "132adcc78e50e1139b320b2c35f0fd3c2ce3eae0c72acb579d30d77e2a20a4fc",
+      "size": 3858
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K/qualification_assignments.json",
+      "sha256": "90e00db99d3e0850caa8e67b93af3be61f2d287f5f75eaa21d0064fac3d6fad2",
+      "size": 8934
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K/qualification_result.json",
+      "sha256": "840257b2aeb3f4130decd5ecf92bc1e9dc3988aaf0bf706be0a1177cbb353df8",
+      "size": 93236
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K/qualification_rows.jsonl",
+      "sha256": "f476b6f548257552900f1e468d472c85c585af4f67db4a47a273d9f9e7a7d4cb",
+      "size": 41063793
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K/replication_assignments.json",
+      "sha256": "7c74160d1f7917c0d8ecdc35f24ab4378fefee8cbc2de770ae67a189ac504905",
+      "size": 8900
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K/replication_result.json",
+      "sha256": "6193dc8211e09a0afcf307d7fc1f8400c2cd05a3802966c2b1a715410565980a",
+      "size": 92741
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K/replication_rows.jsonl",
+      "sha256": "5683fd262187324f625a8b1cfc6da23e1e9babb9c913deffe82a91efc8eb9ea9",
+      "size": 41071511
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K/row_recomputation_report.json",
+      "sha256": "3ba7f822685174bddff8686999edb6bd358587a767b3a12a317dc4d256862b76",
+      "size": 4614
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K/search_dev_assignments.json",
+      "sha256": "ea4daf24346bb337384043f2532ec82beab3508e94340f6ab54253610e0865a5",
+      "size": 8884
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K/search_results.json",
+      "sha256": "77aa36a77e6b39fee3677db085932c25396bf59c953997a0d9fa9d289ae3ae0f",
+      "size": 102462
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K/search_rows.jsonl",
+      "sha256": "2228956d510b43008dedea30c74e1ece86041c339f256d49067bb9fe03e2c483",
+      "size": 51845187
+    },
+    {
+      "path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K/stage_scorecard.json",
+      "sha256": "dbc461a055f557472446f1d669eb5946d8217024784fb75a2157fea30871ed1a",
+      "size": 1149
+    },
+    {
+      "path": "docs/codex/tasks/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J.md",
+      "sha256": "e46cf03123449d67be537844b6517572c011aa57ac566db8b489e314a29b4bdf",
+      "size": 8707
+    },
+    {
+      "path": "docs/codex/tasks/EGO-V2-PUBLIC-ACQUISITION-CAPACITY-RECOVERY-001K.md",
+      "sha256": "58c96215b93aeabf0ed5da64a35d117007a44dc90219c8986feb233bfecb9e21",
+      "size": 6749
+    },
+    {
+      "path": "docs/codex/tasks/ego-v2-homeostatic-compositional-transfer-001j/COLLISION_RECORD.md",
+      "sha256": "1902ae6a6381f8df7ddad1120e5650b18bb58b884bdd3185082e1926490a158f",
+      "size": 3103
+    },
+    {
+      "path": "docs/codex/tasks/ego-v2-homeostatic-compositional-transfer-001j/M0_TDD_REPORT.md",
+      "sha256": "d8248625a6db838094c833a26027a29692da1c08525cc8dab7a25929b0c451e2",
+      "size": 4237
+    },
+    {
+      "path": "docs/codex/tasks/ego-v2-homeostatic-compositional-transfer-001j/MUTATION_SCOPE.yaml",
+      "sha256": "83b975a4b13aa838dbf0124ef928b730886fc7fbcf00da83b3b2bb8738c263ed",
+      "size": 2085
+    },
+    {
+      "path": "docs/codex/tasks/ego-v2-public-acquisition-capacity-recovery-001k/CALL_CHAIN_AUDIT.md",
+      "sha256": "1738f21f580d924402d99f6e98149cb79a74a26ac7d8452ce9d3f285419c3d66",
+      "size": 2629
+    },
+    {
+      "path": "docs/codex/tasks/ego-v2-public-acquisition-capacity-recovery-001k/CAMPAIGN_REPORT.md",
+      "sha256": "7fa43ebff372d05f82fecf94f61e64077dd7002c732ac0db58402b5c6f6c4b18",
+      "size": 8118
+    },
+    {
+      "path": "docs/codex/tasks/ego-v2-public-acquisition-capacity-recovery-001k/COLLISION_RECORD.md",
+      "sha256": "214b2d799a162161e5ae3c1f3016c3c76d70a7f09c715d1da0cdf44f2a263d95",
+      "size": 1230
+    },
+    {
+      "path": "docs/codex/tasks/ego-v2-public-acquisition-capacity-recovery-001k/MUTATION_SCOPE.yaml",
+      "sha256": "545184d8b95cbcbc73428edc4fad0bfbbc6a6a49041247dc50874a3b782db316",
+      "size": 3794
+    },
+    {
+      "path": "docs/codex/tasks/ego-v2-public-acquisition-capacity-recovery-001k/OVERALL_PROGRESS.md",
+      "sha256": "2cf45a5b726694be5f6316dbffa46c3bd5f248c737e0d25ebd91db91a948683b",
+      "size": 3817
+    },
+    {
+      "path": "scripts/codex/check_ego_v2_homeostatic_compositional_transfer_001j_capacity.py",
+      "sha256": "b5b5f72d5056118eb414d5cc47780e5294c1c79d8b096006282f3412660bbf2d",
+      "size": 30677
+    },
+    {
+      "path": "scripts/codex/run_ego_v2_public_acquisition_capacity_recovery_001k.py",
+      "sha256": "81f850ad7a03e05e330bd410d8b7463cd27368070c13e7747b9360618e0d8382",
+      "size": 71549
+    },
+    {
+      "path": "scripts/codex/tests/test_check_ego_v2_homeostatic_compositional_transfer_001j_capacity.py",
+      "sha256": "ceb93a1edd649e003c63e49ea4e3f7bc1686b7bd260618475f90ca5d7ccfbc8f",
+      "size": 5608
+    },
+    {
+      "path": "scripts/codex/tests/test_run_ego_v2_public_acquisition_capacity_recovery_001k.py",
+      "sha256": "a4f437694db170bd152456a823448d79b789afdefeab27d3ef8c110a38caa5d8",
+      "size": 7531
+    },
+    {
+      "path": "scripts/codex/tests/test_verify_ego_v2_homeostatic_compositional_transfer_001j.py",
+      "sha256": "d023b68ef2c64af69b0986dfc2a67596ec8235699613148fac89d4e18bd725ba",
+      "size": 2427
+    },
+    {
+      "path": "scripts/codex/tests/test_verify_ego_v2_public_acquisition_capacity_recovery_001k.py",
+      "sha256": "1b10320974732aa3e5ccb80f2b37a1261b548e205c902a3cffde620d6cfb13b3",
+      "size": 3061
+    },
+    {
+      "path": "scripts/codex/verify_ego_v2_homeostatic_compositional_transfer_001j.py",
+      "sha256": "59f27967b034ff307686b9d5c29d7e9323ce9707187e6415519822f984e63805",
+      "size": 10825
+    },
+    {
+      "path": "scripts/codex/verify_ego_v2_public_acquisition_capacity_recovery_001k.py",
+      "sha256": "b3729b2c40e4bd40c6c1cc5b7e160a84f8a6b03ccf70e7206c0343fad3449e4f",
+      "size": 18658
+    }
+  ],
+  "schema_version": "ego.v2.protected_predecessor_hashes.v1",
+  "task_id": "EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L"
+}

@@ -30,7 +30,11 @@ from .microworld import (
     transition_world,
     world_hash,
 )
-from .terminal import TerminalPlayground, build_terminal_snapshot
+from .terminal import (
+    TerminalPlayground,
+    build_terminal_snapshot,
+    render_homeostatic_trace_html,
+)
 
 __all__ = [
     "DISCLOSURE",
@@ -55,6 +59,7 @@ __all__ = [
     "make_public_frame",
     "observe_world_event",
     "build_terminal_snapshot",
+    "render_homeostatic_trace_html",
     "public_state_hash",
     "public_state_projection",
     "transition_world",

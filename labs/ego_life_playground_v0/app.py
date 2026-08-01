@@ -7,7 +7,11 @@ from .controller import (
     public_state_hash,
     public_state_projection,
 )
-from .terminal import TerminalPlayground, build_terminal_snapshot
+from .terminal import (
+    TerminalPlayground,
+    build_terminal_snapshot,
+    render_homeostatic_trace_html,
+)
 from .visual_console import (
     PlaygroundWindow,
     build_advanced_details,
@@ -32,6 +36,7 @@ __all__ = [
     "build_advanced_details",
     "build_chinese_causal_view",
     "build_terminal_snapshot",
+    "render_homeostatic_trace_html",
     "build_tk_trace_payload",
     "public_state_hash",
     "public_state_projection",
