@@ -1,0 +1,10 @@
+{
+  "energy_deficit_target": "v0",
+  "interpretation": "Fixed deficits alter ranking while learned consequence predictions remain byte-identical.",
+  "passed": true,
+  "predictions_unchanged": true,
+  "ranking_shifted": true,
+  "safety_deficit_target": "v1",
+  "schema_version": "ego.v2.homeostatic_survival_loop.drive_intervention.v1",
+  "task_id": "EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L"
+}

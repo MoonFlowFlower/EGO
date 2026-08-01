@@ -1,0 +1,110 @@
+{
+  "file_count": 20,
+  "files": [
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/acceptance_report.json",
+      "sha256": "e3d4e6996de33cfed9ffa3fd10aa7faccc192ef1249ca680ea4e788567eb8e7c",
+      "size": 1837
+    },
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/drive_intervention_report.json",
+      "sha256": "b9e9c8163e8f6d0e26597dee26cebe6e44839708bc565ee378be3100d87b9717",
+      "size": 392
+    },
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/failure_manifest.json",
+      "sha256": "30309855e33bfde8fe4c9bd284f2c156577c8f95811439c14d23d6913a3beb59",
+      "size": 2246
+    },
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/product_demo.sqlite3",
+      "sha256": "90333d088df35de2c22b939c50ee10514d23e46754583b541340babc2f412f95",
+      "size": 1503232
+    },
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/product_demo_replay_report.json",
+      "sha256": "69b5748fd6e33ad897e848f076cad734e74c3e971082f83042217bde150e9320",
+      "size": 407
+    },
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/product_demo_summary.json",
+      "sha256": "07863e9be2f68272a4ee6d51959e2574d413fba62e0ccb1fa3b468aea59067f6",
+      "size": 4769
+    },
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/product_demo_trace.html",
+      "sha256": "3a3c025a4ec2e750f1043e9126ff7cfeaaf20d12ba899454b10a42b8d11295a9",
+      "size": 246884
+    },
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/product_demo_trace.jsonl",
+      "sha256": "068edcf5ea4e458bbbd48332a3c0be2e36d9caf9eb85177d5a8b5c2423863590",
+      "size": 1379419
+    },
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/product_evaluation_packets.json",
+      "sha256": "74711feccbc770397c2c14d97fe79741c88c312bd89ad9a46f5e40346413d1b3",
+      "size": 11143
+    },
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/product_packet_commitment.json",
+      "sha256": "369bd8607808261bdd38b0c74eed76746add1ddd2df0fd3bf75ca3c61a0dc079",
+      "size": 526
+    },
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/product_search_multiplicity_result.json",
+      "sha256": "339b34d4f5466596d408023e7fedf5e529fc3c7efdad8719422bd01ab8693b81",
+      "size": 7953
+    },
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/product_search_multiplicity_rows.jsonl",
+      "sha256": "77a188841c53a532754e8da9ff2da62a5b5e1c7a73564743f9199a3030b6c732",
+      "size": 8079284
+    },
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/product_search_multiplicity_verification.json",
+      "sha256": "63e5bde4fd5eb8581f33ea61b8a232f80af56e34db57f6702951ac72410e88d1",
+      "size": 345
+    },
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/product_search_result.json",
+      "sha256": "70d8359c36adc11e56807f0ba3c1776c1503c25ae8451157b3cfb3fe9c797cee",
+      "size": 8158
+    },
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/product_search_rows.jsonl",
+      "sha256": "614a36324ea8921830fd42f56ef1d4b1de86bafd66f616a9edee5b1373ecd157",
+      "size": 8079652
+    },
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/product_search_verification.json",
+      "sha256": "53d13cf54748fe89b60102e41cffebfac586d7c993564dac81a0095d36ed9800",
+      "size": 346
+    },
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/route_validation_report.json",
+      "sha256": "87626c4be1b256b57536d0f87f4739bf2d45c4f5e01f11acdc200c655a169a49",
+      "size": 9142
+    },
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/scope_guard_report.json",
+      "sha256": "b13aa9a6c56aad686c6d6221437a60b8f2e2b2d9bda91c197af67576f3efe33c",
+      "size": 1027
+    },
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/trial_registry.jsonl",
+      "sha256": "f1c325ac1e4cf7e4bfdf240d08c814d5e128d7a6a196968715bd413196bf78a2",
+      "size": 1496
+    },
+    {
+      "path": "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/verification_report.json",
+      "sha256": "4fc346a5f4e4f472b20589b3c4918782e9f3dcaa2aba7a7b3c42595192e0671d",
+      "size": 1286
+    }
+  ],
+  "original_001j_heldout_consumed": false,
+  "product_qualification_consumed": false,
+  "schema_version": "ego.v2.homeostatic_survival_loop.manifest.v1",
+  "task_id": "EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L",
+  "verdict": "RUNNABLE_PUBLIC_HOMEOSTATIC_LOOP_TRANSFER_NOT_ESTABLISHED"
+}

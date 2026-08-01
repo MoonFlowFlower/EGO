@@ -24,3 +24,21 @@ Research changes are task-local scripts, verifier, docs, and new artifacts.
 Focused unit tests, current V2 microworld/playground tests, 001K frozen tests,
 route-state validation, `git diff --check`, task-local scope guard, direct
 terminal command, SQLite recovery, verifier, and artifact-manifest readback.
+
+## Closeout readback
+
+- Sole live path remains `launcher -> controller.dispatch -> engine.compute_step
+  -> store.append_step`; recovery recomputes the same reducer.
+- Default-off `public_bayes` learns legal-public current-world token/action
+  consequences and exposes deficits, predictions, uncertainty, action reason,
+  actual delta, update receipts and fast/slow/posterior hashes.
+- A 48-step direct terminal run learned all five anonymous token effect signs
+  (`1.0` evaluator accuracy) and was fully replayed from SQLite; trace JSONL and
+  trace-derived HTML are task artifacts.
+- The R successor passed both unchanged formal gates (`59.83%` and `55.52%`
+  recovery), independent row recomputation and all tamper/leakage controls.
+- The minimal slow-prior learner failed both bounded search attempts, so its
+  `two_timescale` posterior is non-default and product qualification was not
+  consumed. The default experimental posterior remains `canonical`.
+- Regression readback: `62 passed`; route convergence: `pass`; scope guard:
+  no unexpected path; protected 001J/001K bytes unchanged.

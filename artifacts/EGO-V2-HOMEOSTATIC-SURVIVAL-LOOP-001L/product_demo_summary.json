@@ -1,0 +1,193 @@
+{
+  "action_counts": {
+    "interact": 12,
+    "move_forward": 20,
+    "turn_left": 4,
+    "turn_right": 12
+  },
+  "claim_ceiling": "Runnable within-world public Bayesian learning and replay evidence only.",
+  "command_count": 48,
+  "current_world_token_stats": {
+    "v0": {
+      "count": 2,
+      "energy_mean": -0.018,
+      "outcome_counts": {
+        "interacted": 2
+      },
+      "safety_mean": 0.12,
+      "terminal_count": 0
+    },
+    "v1": {
+      "count": 4,
+      "energy_mean": -0.018,
+      "outcome_counts": {
+        "interacted": 4
+      },
+      "safety_mean": -0.02,
+      "terminal_count": 0
+    },
+    "v2": {
+      "count": 1,
+      "energy_mean": -0.018,
+      "outcome_counts": {
+        "interacted": 1
+      },
+      "safety_mean": -0.18,
+      "terminal_count": 0
+    },
+    "v3": {
+      "count": 3,
+      "energy_mean": 0.262,
+      "outcome_counts": {
+        "interacted": 3
+      },
+      "safety_mean": 0.0,
+      "terminal_count": 0
+    },
+    "v4": {
+      "count": 2,
+      "energy_mean": -0.018,
+      "outcome_counts": {
+        "interacted": 2
+      },
+      "safety_mean": 0.0,
+      "terminal_count": 0
+    }
+  },
+  "default_off": true,
+  "evaluator_final_action_conditioned_effect_sign_accuracy": 1.0,
+  "evaluator_private_mapping_passed_to_learner": false,
+  "fast_state_hash": "b2eaa721e45b271fd1561efce057556a05a1ef066f6228c5f89dc8e4f2dd4d6d",
+  "final_deficits": {
+    "energy": 0.288,
+    "safety": 0.12
+  },
+  "final_organism": {
+    "energy": 0.41,
+    "safety": 0.6
+  },
+  "last_full_replay_sequence": 48,
+  "last_predictions_by_action": {
+    "interact": {
+      "count": 12,
+      "outcome_probabilities": {
+        "interacted": 1.0
+      },
+      "predicted_delta": {
+        "energy": 0.052,
+        "safety": -0.001666666667
+      },
+      "source": "slow_action_consequence",
+      "terminal_risk": 0.0,
+      "uncertainty": 0.277350098113
+    },
+    "move_forward": {
+      "count": 19,
+      "outcome_probabilities": {
+        "moved": 1.0
+      },
+      "predicted_delta": {
+        "energy": -0.022,
+        "safety": 0.0
+      },
+      "source": "slow_action_consequence",
+      "terminal_risk": 0.0,
+      "uncertainty": 0.22360679775
+    },
+    "rest": {
+      "count": 0,
+      "outcome_probabilities": {},
+      "predicted_delta": {
+        "energy": 0.0,
+        "safety": 0.0
+      },
+      "source": "unobserved_public_prior",
+      "terminal_risk": 0.0,
+      "uncertainty": 1.0
+    },
+    "turn_left": {
+      "count": 4,
+      "outcome_probabilities": {
+        "turned": 1.0
+      },
+      "predicted_delta": {
+        "energy": -0.014,
+        "safety": 0.0
+      },
+      "source": "slow_action_consequence",
+      "terminal_risk": 0.0,
+      "uncertainty": 0.4472135955
+    },
+    "turn_right": {
+      "count": 12,
+      "outcome_probabilities": {
+        "turned": 1.0
+      },
+      "predicted_delta": {
+        "energy": -0.014,
+        "safety": 0.0
+      },
+      "source": "slow_action_consequence",
+      "terminal_risk": 0.0,
+      "uncertainty": 0.277350098113
+    }
+  },
+  "last_selected_action": "move_forward",
+  "last_selection_reason": "approach_front_half_homeostatic_target",
+  "last_trace_hash": "802dcc19ad17d3d08bc658c16510ef5c3a46c9a920e749106bb453564d3d36ea",
+  "learned_current_world_token_count": 5,
+  "outcome_counts": {
+    "interacted": 12,
+    "moved": 20,
+    "turned": 16
+  },
+  "posterior_hash": "8e9e2e72017b0a8a59faf1127dd274071ba1645f79bb91f41b7d3010045b8c8a",
+  "posterior_mode": "canonical",
+  "recovered": true,
+  "run_id": "ego-001l-final-demo",
+  "schema_version": "ego.v2.homeostatic_survival_loop.demo.v1",
+  "slow_effect_prototypes": {
+    "energy:+|safety:0": {
+      "count": 1,
+      "energy_mean": 0.262,
+      "outcome_counts": {
+        "interacted": 1
+      },
+      "safety_mean": 0.0,
+      "terminal_count": 0
+    },
+    "energy:-|safety:+": {
+      "count": 1,
+      "energy_mean": -0.018,
+      "outcome_counts": {
+        "interacted": 1
+      },
+      "safety_mean": 0.12,
+      "terminal_count": 0
+    },
+    "energy:-|safety:-": {
+      "count": 2,
+      "energy_mean": -0.018,
+      "outcome_counts": {
+        "interacted": 2
+      },
+      "safety_mean": -0.1,
+      "terminal_count": 0
+    },
+    "energy:-|safety:0": {
+      "count": 1,
+      "energy_mean": -0.018,
+      "outcome_counts": {
+        "interacted": 1
+      },
+      "safety_mean": 0.0,
+      "terminal_count": 0
+    }
+  },
+  "slow_state_hash": "501a797c1f5b801482903ae10014d36f39610436b44926927de18581d2114c87",
+  "slow_update_count": 48,
+  "state_hash": "262b0f78763547a82184feeb3100dca7ab4f9dbe6311136ae41e2e7436d32614",
+  "task_id": "EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L",
+  "two_timescale_transfer_gate_passed": false,
+  "verification_mode": "full_replay"
+}

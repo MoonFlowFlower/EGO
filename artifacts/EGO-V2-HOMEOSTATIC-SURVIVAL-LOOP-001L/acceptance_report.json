@@ -1,0 +1,33 @@
+{
+  "claim_ceiling": "Proves only a runnable bounded microworld loop, within-world public rule acquisition, drive-sensitive planning, persistence/replay, and robustness of the separate dev-only reference packets. It does not prove reliable early compositional transfer, general learning, agency, consciousness, electronic life, or real-world survival.",
+  "gates": {
+    "deficit_drive_ranking_intervention": true,
+    "independent_r_row_recomputation": true,
+    "leakage_tamper_fail_closed": true,
+    "legal_public_action_effect_learning": true,
+    "limited_early_compositional_transfer": false,
+    "posterior_update_necessity_in_robustness_packets": true,
+    "runnable_default_off_runtime": true,
+    "sqlite_full_replay": true,
+    "visible_trace_and_html": true,
+    "wrong_prior_late_recovery_search_signal": true
+  },
+  "robustness_successor": {
+    "qualification_positive_worlds": 16,
+    "qualification_recovery_fraction": 0.598252127421,
+    "replication_positive_worlds": 15,
+    "replication_recovery_fraction": 0.555178010207,
+    "verdict": "ROBUSTNESS_ESTABLISHED_MINIMAL_TWO_TIMESCALE_LEARNER_AUTHORIZED"
+  },
+  "runnable_command": "C:\\Users\\LEO\\.codex\\envs\\ego-v2-numpy-2.2.6\\Scripts\\python.exe scripts\\run_ego_life_playground_v0.py --terminal --homeostatic-transfer --db <path> --run-id demo --world-seed 1701 --command \\\"run 48\\\" --command inspect --html-report <path>",
+  "schema_version": "ego.v2.homeostatic_survival_loop.acceptance.v1",
+  "task_id": "EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L",
+  "two_timescale_search": {
+    "first_early_transfer_gain": -1.37225,
+    "multiplicity_early_transfer_gain": -0.99425,
+    "multiplicity_positive_worlds": 3,
+    "product_qualification_consumed": false,
+    "world_count": 8
+  },
+  "verdict": "RUNNABLE_PUBLIC_HOMEOSTATIC_LOOP_TRANSFER_NOT_ESTABLISHED"
+}

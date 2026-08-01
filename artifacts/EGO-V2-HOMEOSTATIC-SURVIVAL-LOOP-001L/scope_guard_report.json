@@ -1,0 +1,26 @@
+{
+  "base_head": "872901a9a1da3c534ee9293613596d5467f25713",
+  "branch": "codex/ego-v2-homeostatic-survival-loop-001l",
+  "changed_path_count": 68,
+  "original_001j_heldout_consumed": false,
+  "pre_closeout_head": "819e7d068a6440bd70fd26c32447694185b91d77",
+  "product_qualification_consumed": false,
+  "protected_predecessor_audit": {
+    "candidate_source_created_after_packet_commitment": true,
+    "frozen_001k_qualification_rerun": false,
+    "frozen_001k_replication_rerun": false,
+    "original_001j_heldout_executed": false,
+    "packet_hashes_match": true,
+    "protected_file_count": 42,
+    "protected_findings": [],
+    "protected_predecessors_unchanged": true,
+    "schema_version": "ego.v2.public_acquisition_robustness.boundary_audit.v1",
+    "task_id": "EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L"
+  },
+  "push": false,
+  "schema_version": "ego.v2.homeostatic_survival_loop.scope_guard.v1",
+  "scope_passed": true,
+  "tag": false,
+  "task_id": "EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L",
+  "unexpected_paths": []
+}

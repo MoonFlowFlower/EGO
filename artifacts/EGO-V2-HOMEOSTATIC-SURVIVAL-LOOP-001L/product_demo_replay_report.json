@@ -1,0 +1,10 @@
+{
+  "code_path_hash": "ce6d3b63b1eefda8b6b4beebbe3c42ec4661509f6220a2a27e46fef8a9a2465e",
+  "command_count": 48,
+  "last_trace_hash": "802dcc19ad17d3d08bc658c16510ef5c3a46c9a920e749106bb453564d3d36ea",
+  "recovered": true,
+  "run_id": "ego-001l-final-demo",
+  "schema_version": "ego.v2.homeostatic_survival_loop.replay.v1",
+  "stored_vs_recomputed_trace_match": true,
+  "verification_mode": "full_replay"
+}

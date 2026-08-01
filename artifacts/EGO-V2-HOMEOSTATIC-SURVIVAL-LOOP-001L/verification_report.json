@@ -1,0 +1,25 @@
+{
+  "environment": {
+    "numpy": "2.2.6",
+    "python": "3.13.7"
+  },
+  "git_diff_check": "pass",
+  "original_001j_heldout_consumed": false,
+  "product_qualification_consumed": false,
+  "product_search_row_recomputation": [
+    "pass",
+    "pass"
+  ],
+  "robustness_independent_recomputation": "pass",
+  "robustness_positive_controls": "pass",
+  "route_convergence": "pass",
+  "schema_version": "ego.v2.homeostatic_survival_loop.verification_closeout.v1",
+  "scope_guard": "pass",
+  "sqlite_full_replay": "pass",
+  "task_id": "EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L",
+  "tests": {
+    "command": "python -m pytest tests/test_ego_life_playground_homeostatic_transfer.py tests/test_ego_life_playground_v0.py tests/test_ego_life_playground_v2_microworld.py scripts/codex/tests/test_run_ego_v2_homeostatic_survival_loop_001l.py scripts/codex/tests/test_run_ego_v2_public_acquisition_robustness_001l.py scripts/codex/tests/test_verify_ego_v2_public_acquisition_robustness_001l.py scripts/codex/tests/test_run_ego_v2_public_acquisition_capacity_recovery_001k.py scripts/codex/tests/test_verify_ego_v2_public_acquisition_capacity_recovery_001k.py scripts/codex/tests/test_verify_ego_v2_causal_sprout_demo_001a.py scripts/tests/test_product_axis.py -q",
+    "failed": 0,
+    "passed": 62
+  }
+}

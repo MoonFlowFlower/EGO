@@ -189,3 +189,18 @@ post-qualification tuning.
   not call this M1 success. Keep the slow-prior candidate available only as
   negative research evidence; restore the runtime's default experimental
   planner to the bounded within-world public Bayesian reference.
+
+## P4 — runnable evidence and closeout
+
+- Direct default-posterior run: 48 committed commands, 48 public updates, all
+  five token effects acquired with evaluator sign accuracy `1.0`; final state,
+  predictions, actual results, deficits, reasons and hashes are present in the
+  recovered trace/HTML.
+- SQLite recovery performed full behavioral recomputation through the same
+  reducer and matched every stored row; no stored action was behavior input.
+- Regression: `62 passed` across new P/R tests, main playground/microworld,
+  frozen 001K, causal-sprout 001A and product-axis tests. Route convergence and
+  scoped-path checks passed.
+- Bounded verdict: `RUNNABLE_PUBLIC_HOMEOSTATIC_LOOP_TRANSFER_NOT_ESTABLISHED`.
+  This is a real executable within-world survival-learning loop, not evidence
+  of reliable early compositional transfer or electronic life.

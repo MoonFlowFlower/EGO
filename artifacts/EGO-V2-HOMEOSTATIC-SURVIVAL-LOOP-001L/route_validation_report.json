@@ -1,0 +1,212 @@
+{
+  "aggregation_rule": "pass iff pinned mirror, generated views, positive controls, caller scan, retirement recovery, and one controller/reducer/store/replay structure pass; requested runtime and visual checks must also pass",
+  "causal_producer_hashes": {
+    "labs/ego_life_playground_v0/claims.py": "0a72951078ab61ebf61414c73b41ff4ad13ad1a587477a4cbda81b09a38049c8",
+    "labs/ego_life_playground_v0/engine.py": "ecd520725953facf2bf45daa36fd0454ff5b79be550e3b187a4351598e5a127a",
+    "labs/ego_life_playground_v0/microworld.py": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923",
+    "labs/ego_life_playground_v0/store.py": "e92ec2228090085273620344bc1b33ff0313e90e3015d4ff692b6aecb1472b7b"
+  },
+  "checks": {
+    "generated_views": "pass",
+    "legacy_callers_zero": "pass",
+    "pinned_mirror": "pass",
+    "retirement_recovery": "pass",
+    "single_execution_path": "pass",
+    "stale_scanner_positive_controls": "pass"
+  },
+  "claim_ceiling": "local V2 product routing and evidence hygiene only",
+  "code_path_hash": "f961a2f3fa3f05362ba0a86efc492c85e0aa3527590fb40ca75533564f88e5d9",
+  "controller_definition_count": 1,
+  "input_artifacts": [
+    "AGENTS.md",
+    "D:\\Project\\AIProject\\MyProject\\intelligence-theory-lab@d0d392dc18cb9f0fcfff8874714edf543a476feb:artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json",
+    "README.md",
+    "artifacts/ROUTE-STATE-MACHINE-001A/product_axis_source_pin.json",
+    "artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json",
+    "artifacts/reports/program_state_summary.md",
+    "docs/ACTIVE_CONTEXT_PACK.md",
+    "docs/MAINLINE_QUICKSTART.md",
+    "docs/PROGRAM_STATE_UNIFIED.yaml",
+    "docs/REPO_SURFACE_MAP.md",
+    "docs/STATUS.md",
+    "docs/codex/tasks/TASK_LANE_INDEX.md",
+    "labs/ego_life_playground_v0/claims.py",
+    "labs/ego_life_playground_v0/engine.py",
+    "labs/ego_life_playground_v0/microworld.py",
+    "labs/ego_life_playground_v0/store.py"
+  ],
+  "legacy_callers": [],
+  "mirror": {
+    "aggregation_rule": "pass iff pinned commit:path resolves to the pinned blob/hash and its raw bytes and parsed object exactly equal the Ego mirror",
+    "code_path_hash": "d6f6006d62dd818ce5583848921b69680e8633ba8f86c12218f43dd613c35e4f",
+    "errors": [],
+    "input_artifacts": [
+      "artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json",
+      "artifacts/ROUTE-STATE-MACHINE-001A/product_axis_source_pin.json",
+      "D:\\Project\\AIProject\\MyProject\\intelligence-theory-lab@d0d392dc18cb9f0fcfff8874714edf543a476feb:artifacts/ROUTE-STATE-MACHINE-001A/product_axis_state.json"
+    ],
+    "mirror_sha256": "1d3ea7dc5725b3046f4be043451def2d3abc8ce4201635c45ed2c5091b8d8fa6",
+    "producer_function": "verify_pinned_itl_mirror",
+    "run_id": "product-axis-mirror-e8f14501b42841a9bb68f2fb0aa1210a",
+    "source_blob_oid": "bcd6ce6dc0c04e5e97efd61b48e164ace71ee687",
+    "source_commit": "d0d392dc18cb9f0fcfff8874714edf543a476feb",
+    "source_sha256": "1d3ea7dc5725b3046f4be043451def2d3abc8ce4201635c45ed2c5091b8d8fa6",
+    "verdict": "pass"
+  },
+  "positive_controls": {
+    "aggregation_rule": "pass iff every injected defect is rejected by scan_active_views",
+    "cases": {
+      "enablement_drift": {
+        "detected": true,
+        "finding_codes": [
+          "generated_view_drift"
+        ],
+        "scanner_producer": "scan_active_views"
+      },
+      "entrypoint_drift": {
+        "detected": true,
+        "finding_codes": [
+          "generated_view_drift"
+        ],
+        "scanner_producer": "scan_active_views"
+      },
+      "old_active_owner": {
+        "detected": true,
+        "finding_codes": [
+          "generated_view_drift",
+          "retired_active_owner_claim"
+        ],
+        "scanner_producer": "scan_active_views"
+      },
+      "source_pin_drift": {
+        "detected": true,
+        "finding_codes": [
+          "generated_view_drift"
+        ],
+        "scanner_producer": "scan_active_views"
+      }
+    },
+    "code_path_hash": "2aa3bc273a8febd6ceacf79500adfe4c35062c8cdabfa4a27a0ea90fa46ad95b",
+    "input_artifacts": [
+      "AGENTS.md",
+      "README.md",
+      "artifacts/reports/program_state_summary.md",
+      "docs/ACTIVE_CONTEXT_PACK.md",
+      "docs/MAINLINE_QUICKSTART.md",
+      "docs/PROGRAM_STATE_UNIFIED.yaml",
+      "docs/REPO_SURFACE_MAP.md",
+      "docs/STATUS.md",
+      "docs/codex/tasks/TASK_LANE_INDEX.md"
+    ],
+    "producer_function": "run_positive_controls",
+    "run_id": "stale-positive-control-cc48bff876454726bc9f7d97fc1fc003",
+    "verdict": "pass"
+  },
+  "producer_function": "build_report",
+  "retirement_evidence": {
+    "active_retired_roots": [],
+    "aggregation_rule": "pass iff every tracked retired blob is recoverable from the rollback tag and active retired roots are absent; when full local retirement recovery is requested, every preserved untracked byte must also be recoverable from the external quarantine",
+    "code_path_hash": "f961a2f3fa3f05362ba0a86efc492c85e0aa3527590fb40ca75533564f88e5d9",
+    "errors": [],
+    "full_local_recovery_requested": false,
+    "input_artifacts": [
+      "artifacts/archive/pre_v2_runtime_retirement_manifest.json",
+      "ego-pre-v2-only-mainline-20260718-d1b72a3f"
+    ],
+    "producer_function": "build_retirement_evidence",
+    "removed_path_count": 184,
+    "rollback_commit": "d1b72a3f39564c2f1c4fe474974017ed3d5b17e9",
+    "rollback_tag": "ego-pre-v2-only-mainline-20260718-d1b72a3f",
+    "run_id": "retirement-evidence-fede81ed5ef14106953b6a3e07a04bcf",
+    "tracked_recovery": {
+      "aggregation_rule": "pass iff tag commit and every recorded blob OID/SHA are independently recoverable",
+      "code_path_hash": "43bf887180b237d3d86cada3fee06efca0352df078786a45f0d9a8c859a4f111",
+      "errors": [],
+      "input_artifacts": [
+        "ego-pre-v2-only-mainline-20260718-d1b72a3f",
+        "artifacts/archive/pre_v2_runtime_retirement_manifest.json"
+      ],
+      "producer_function": "verify_manifest_recoverable",
+      "run_id": "retired-runtime-recovery-19fcd8c3c264497fa1704172422e7070",
+      "verdict": "pass"
+    },
+    "untracked_recovery": null,
+    "verdict": "pass"
+  },
+  "run_id": "ego-v2-only-convergence-e5fe3f739b1e4451b71d909789908e1c",
+  "runtime_evidence": null,
+  "single_execution_path": {
+    "aggregation_rule": "pass iff the active source AST contains exactly one canonical controller, reducer, store, dispatch, and replay/recompute definition at the frozen paths",
+    "code_path_hash": "f961a2f3fa3f05362ba0a86efc492c85e0aa3527590fb40ca75533564f88e5d9",
+    "errors": [],
+    "expected": {
+      "class:PlaygroundController": [
+        "labs/ego_life_playground_v0/controller.py"
+      ],
+      "class:SQLiteEventStore": [
+        "labs/ego_life_playground_v0/store.py"
+      ],
+      "function:compute_step": [
+        "labs/ego_life_playground_v0/engine.py"
+      ],
+      "function:dispatch": [
+        "labs/ego_life_playground_v0/controller.py"
+      ],
+      "function:recover_run": [
+        "labs/ego_life_playground_v0/store.py"
+      ]
+    },
+    "found": {
+      "class:PlaygroundController": [
+        "labs/ego_life_playground_v0/controller.py"
+      ],
+      "class:SQLiteEventStore": [
+        "labs/ego_life_playground_v0/store.py"
+      ],
+      "function:compute_step": [
+        "labs/ego_life_playground_v0/engine.py"
+      ],
+      "function:dispatch": [
+        "labs/ego_life_playground_v0/controller.py"
+      ],
+      "function:recover_run": [
+        "labs/ego_life_playground_v0/store.py"
+      ]
+    },
+    "input_artifacts": [
+      "labs/ego_life_playground_v0/app.py",
+      "labs/ego_life_playground_v0/controller.py",
+      "labs/ego_life_playground_v0/engine.py",
+      "labs/ego_life_playground_v0/store.py",
+      "labs/ego_life_playground_v0/terminal.py",
+      "labs/ego_life_playground_v0/visual_console.py",
+      "scripts/run_ego_life_playground_v0.py"
+    ],
+    "producer_function": "scan_single_execution_path",
+    "run_id": "single-v2-path-d25bc2780924466ea040f4437459a015",
+    "verdict": "pass"
+  },
+  "stale_context": {
+    "aggregation_rule": "pass iff active path set and bytes equal the production renderer and no retired project is described with active/default/runtime-owner/successor semantics",
+    "code_path_hash": "2aa3bc273a8febd6ceacf79500adfe4c35062c8cdabfa4a27a0ea90fa46ad95b",
+    "findings": [],
+    "input_artifacts": [
+      "AGENTS.md",
+      "README.md",
+      "artifacts/reports/program_state_summary.md",
+      "docs/ACTIVE_CONTEXT_PACK.md",
+      "docs/MAINLINE_QUICKSTART.md",
+      "docs/PROGRAM_STATE_UNIFIED.yaml",
+      "docs/REPO_SURFACE_MAP.md",
+      "docs/STATUS.md",
+      "docs/codex/tasks/TASK_LANE_INDEX.md"
+    ],
+    "producer_function": "scan_active_views",
+    "run_id": "stale-context-e1ecb3b14439408a9f462967161314c9",
+    "verdict": "pass"
+  },
+  "task_id": "EGO-ITL-V2-ONLY-SIMPLIFICATION-001A",
+  "validation_errors": [],
+  "verdict": "pass",
+  "visual_smoke": null
+}
