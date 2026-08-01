@@ -72,14 +72,21 @@ public arm.
    only from its own observed actions and organism deltas.
 3. `UNIFORM_RANDOM`: deterministic seeded uniform legal action control.
 
-Each dev combination is run for 96 committed action transitions.  Respawn is a
-real reducer transition and does not reset the public reference's learned token
-posterior.  Primary loss is mean per-step
+Each dev combination is run for 96 evaluator-forced legal action transitions.
+M0 is an offline admission harness, not a product action path: every transition
+must invoke the unchanged `microworld.transition_world`,
+`engine.compute_actual_delta`, and `engine.compute_metabolism_ledger` callables
+and independently check their receipts.  It may not copy their world or
+metabolism rules, mutate engine source, create a controller/store, or claim
+runtime integration.  Natural death/respawn uses the unchanged world reset
+callable and does not reset the public reference's learned token posterior.
+Primary loss is mean per-step
 `max(0,0.72-energy)+max(0,0.72-safety)` plus `1.0` for an uncensored death.
 
 M0 passes only if all of the following are true without threshold changes:
 
-- all 16 dev combinations and three arms execute through `engine.compute_step`;
+- all 16 dev combinations and three arms execute through the unchanged
+  transition/outcome/metabolism callables with invocation receipts;
 - mean random-minus-oracle deficit loss is at least `0.10`;
 - `PUBLIC_FACTOR_BAYES` recovers at least `0.50` of the positive
   random-to-oracle headroom;
@@ -165,4 +172,3 @@ The exact allowed paths are frozen in the sibling `MUTATION_SCOPE.yaml`.
   any equal-access/reference contradiction.
 - Rollback removes only uncommitted 001J paths or returns to the last local
   001J phase commit.  Never reset, rewrite, or regenerate predecessor evidence.
-

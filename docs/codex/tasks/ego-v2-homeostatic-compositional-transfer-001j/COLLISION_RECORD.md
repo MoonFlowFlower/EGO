@@ -49,3 +49,13 @@ The strongest cheap counterexample is that even a legal public factorized
 reference cannot obtain half the oracle/random headroom.  That result closes
 the current benchmark before neural code rather than being tuned away.
 
+## M0 evaluator boundary correction
+
+Review found that `engine.compute_step` has no legal evaluator-selected-action
+input; forcing oracle/public/random arms through it would require product
+mutation before the capacity gate or a monkeypatch that fresh replay could not
+honestly reproduce.  M0 therefore calls the unchanged world-transition,
+actual-delta, and metabolism functions directly and records invocation
+receipts.  This is offline capacity evidence only, not a second product runtime
+or proof of controller/store integration.  M1 remains responsible for the sole
+real engine action path if and only if M0 passes.
