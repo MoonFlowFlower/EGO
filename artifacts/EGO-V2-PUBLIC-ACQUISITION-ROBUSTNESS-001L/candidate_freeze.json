@@ -1,0 +1,59 @@
+{
+  "ablation_ids": [
+    "FORMAL_NO_UPDATE",
+    "FORMAL_FEEDBACK_SHUFFLE",
+    "FORMAL_POSTERIOR_ABLATION"
+  ],
+  "candidate_config": {
+    "budget": 96,
+    "candidate_id": "S4_HARM_ESCAPE",
+    "evaluator_only": false,
+    "exploration_mode": "risk_constrained_information_gain",
+    "geometry_mode": "forward_first",
+    "posterior_mode": "public_update",
+    "preregistered_prediction": "A public-history escape macro should shorten repeated harmful-front loops and improve recovery without changing posterior updates or token scoring.",
+    "robustness_mode": "harm_escape",
+    "scoring_mode": "legacy",
+    "stage_id": "R1_ROBUSTNESS_SEARCH",
+    "target_retention": false
+  },
+  "candidate_config_hash": "fb266d3017bc740b3d435127e55e5171a76255e5e082ff67a206f8a61642a7f9",
+  "candidate_id": "S4_HARM_ESCAPE",
+  "dependency_contract": {
+    "llm": false,
+    "network": false,
+    "numpy": "2.2.6"
+  },
+  "formal_action_budget": 96,
+  "formal_policy_seeds": [
+    4701,
+    4702,
+    4703
+  ],
+  "frozen_001k_formal_packets_rerun": false,
+  "original_001j_heldout_executed": false,
+  "packet_assignment_sha256": {
+    "qualification": "fefb9d53f5f53c10dffafc7651ba1631630c948701c8f6dc3d5f17ff28172f49",
+    "replication": "6796a48d1534772b8d0a038f9612bbbbbf831cce1f0cb8d227a04f39637f74d9",
+    "search_dev": "451bb8a8a9b060e55e477a00ad1fee1eca5db3c7a3070bb7a2e0147d2d316a77"
+  },
+  "producer_path": "scripts/codex/run_ego_v2_public_acquisition_robustness_001l.py",
+  "producer_sha256": "f0c06ebd29c4ccc1b4a2a95317114e5cc1dfcd7b1f4d9d91653e21c00ed42ab3",
+  "qualification_single_use": true,
+  "replication_runs_unchanged_even_if_qualification_fails": true,
+  "replication_single_use": true,
+  "schema_version": "ego.v2.public_acquisition_robustness.freeze.v1",
+  "search_results_sha256": "265e233e797ab8bf0371af5553ae11ec3f18e62e1aebcb2ef4a1ad6579abcae4",
+  "task_id": "EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L",
+  "thresholds": {
+    "effect_sign_accuracy_minimum": 0.8,
+    "material_ablation_absolute_floor": 0.02,
+    "material_ablation_count_minimum": 2,
+    "material_ablation_relative_gain_fraction": 0.3,
+    "positive_world_count_minimum": 12,
+    "public_reference_gain_strictly_positive": 0.0,
+    "recovery_fraction_minimum": 0.5
+  },
+  "verifier_path": "scripts/codex/verify_ego_v2_public_acquisition_robustness_001l.py",
+  "verifier_sha256": "d4bde1dc5e3747b7008617fceb892a2e900135037d83cc5cfe4eabe1776d4fc3"
+}

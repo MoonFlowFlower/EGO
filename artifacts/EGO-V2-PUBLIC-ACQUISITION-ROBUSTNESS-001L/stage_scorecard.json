@@ -1,0 +1,719 @@
+{
+  "original_001j_heldout_executed": false,
+  "qualification": "NOT_RUN",
+  "replication": "NOT_RUN",
+  "schema_version": "ego.v2.public_acquisition_robustness.scorecard.v1",
+  "search": {
+    "action_budget": 96,
+    "boundary_audit": {
+      "candidate_source_created_after_packet_commitment": true,
+      "frozen_001k_qualification_rerun": false,
+      "frozen_001k_replication_rerun": false,
+      "original_001j_heldout_executed": false,
+      "packet_hashes_match": true,
+      "protected_file_count": 42,
+      "protected_findings": [],
+      "protected_predecessors_unchanged": true,
+      "schema_version": "ego.v2.public_acquisition_robustness.boundary_audit.v1",
+      "task_id": "EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L"
+    },
+    "candidate_budget": 2,
+    "candidates": [
+      {
+        "acquisition_curve": [
+          {
+            "mean_cumulative_deficit_loss": 5.883875,
+            "mean_effect_sign_accuracy": 0.5375,
+            "mean_known_token_count": 2.6875,
+            "step": 12
+          },
+          {
+            "mean_cumulative_deficit_loss": 11.87,
+            "mean_effect_sign_accuracy": 0.7875,
+            "mean_known_token_count": 3.9375,
+            "step": 24
+          },
+          {
+            "mean_cumulative_deficit_loss": 23.7655,
+            "mean_effect_sign_accuracy": 0.9375,
+            "mean_known_token_count": 4.6875,
+            "step": 48
+          },
+          {
+            "mean_cumulative_deficit_loss": 39.482125,
+            "mean_effect_sign_accuracy": 0.9875,
+            "mean_known_token_count": 4.9375,
+            "step": 96
+          }
+        ],
+        "budget": 96,
+        "candidate_id": "S2_RISK_INFORMATION_GAIN_CARRYOVER",
+        "config": {
+          "budget": 96,
+          "candidate_id": "S2_RISK_INFORMATION_GAIN_CARRYOVER",
+          "evaluator_only": false,
+          "exploration_mode": "risk_constrained_information_gain",
+          "geometry_mode": "forward_first",
+          "posterior_mode": "public_update",
+          "preregistered_prediction": "The unchanged 001K candidate estimates packet variance on new search-dev worlds.",
+          "robustness_mode": "carryover",
+          "scoring_mode": "legacy",
+          "stage_id": "R0_CARRYOVER_CONTROL",
+          "target_retention": false
+        },
+        "direction_denominator": 16,
+        "evaluator_only": false,
+        "executed_world_count": 16,
+        "invocation_counts": {
+          "compute_actual_delta": 1536,
+          "compute_metabolism_ledger": 1536,
+          "transition_world": 1536
+        },
+        "loss_by_arm": {
+          "PRIVATE_ORACLE_NAVIGATOR": 0.154377604167,
+          "PUBLIC_REFERENCE": 0.411272135416,
+          "UNIFORM_RANDOM": 0.70910546875
+        },
+        "m1_numeric_gate": true,
+        "mean_final_effect_sign_accuracy": 0.9875,
+        "mean_final_known_token_count": 4.9375,
+        "mean_first_beneficial_interaction_step": 15.9375,
+        "mean_harmful_front_loop_run_max": 10.875,
+        "mean_successful_interactions": 24.875,
+        "mean_turn_fraction": 0.37109375,
+        "oracle_random_headroom": 0.554727864583,
+        "per_world": [
+          {
+            "opaque_context_id": "001l-search-dev-0001",
+            "oracle_loss": 0.093041666667,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.140541666667,
+            "public_loss": 0.59775,
+            "random_loss": 0.738291666667
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0002",
+            "oracle_loss": 0.205395833333,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.096354166667,
+            "public_loss": 0.568333333333,
+            "random_loss": 0.6646875
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0003",
+            "oracle_loss": 0.0988125,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.426791666667,
+            "public_loss": 0.232895833333,
+            "random_loss": 0.6596875
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0004",
+            "oracle_loss": 0.180354166667,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.478708333334,
+            "public_loss": 0.231708333333,
+            "random_loss": 0.710416666667
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0005",
+            "oracle_loss": 0.222583333333,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.514229166667,
+            "public_loss": 0.275583333333,
+            "random_loss": 0.7898125
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0006",
+            "oracle_loss": 0.038041666667,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.386145833333,
+            "public_loss": 0.2396875,
+            "random_loss": 0.625833333333
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0007",
+            "oracle_loss": 0.206291666667,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.1561875,
+            "public_loss": 0.6683125,
+            "random_loss": 0.8245
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0008",
+            "oracle_loss": 0.039583333333,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.122770833334,
+            "public_loss": 0.531770833333,
+            "random_loss": 0.654541666667
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0009",
+            "oracle_loss": 0.086520833333,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.451458333334,
+            "public_loss": 0.288583333333,
+            "random_loss": 0.740041666667
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0010",
+            "oracle_loss": 0.096583333333,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.290958333334,
+            "public_loss": 0.405083333333,
+            "random_loss": 0.696041666667
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0011",
+            "oracle_loss": 0.233458333333,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.205479166667,
+            "public_loss": 0.515375,
+            "random_loss": 0.720854166667
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0012",
+            "oracle_loss": 0.319270833333,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.623458333334,
+            "public_loss": 0.075645833333,
+            "random_loss": 0.699104166667
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0013",
+            "oracle_loss": 0.348791666667,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.102416666666,
+            "public_loss": 0.645166666667,
+            "random_loss": 0.747583333333
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0014",
+            "oracle_loss": 0.077916666667,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.3401875,
+            "public_loss": 0.3558125,
+            "random_loss": 0.696
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0015",
+            "oracle_loss": 0.148729166667,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.382833333334,
+            "public_loss": 0.371770833333,
+            "random_loss": 0.754604166667
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0016",
+            "oracle_loss": 0.074666666667,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.0468125,
+            "public_loss": 0.576875,
+            "random_loss": 0.6236875
+          }
+        ],
+        "phase_signal": true,
+        "positive_direction_count": 16,
+        "preregistered_prediction": "The unchanged 001K candidate estimates packet variance on new search-dev worlds.",
+        "public_reference_gain": 0.297833333334,
+        "recovery_fraction": 0.536899896957,
+        "stage_id": "R0_CARRYOVER_CONTROL",
+        "unique_world_count": 16
+      },
+      {
+        "acquisition_curve": [
+          {
+            "mean_cumulative_deficit_loss": 5.883875,
+            "mean_effect_sign_accuracy": 0.5375,
+            "mean_known_token_count": 2.6875,
+            "step": 12
+          },
+          {
+            "mean_cumulative_deficit_loss": 11.87,
+            "mean_effect_sign_accuracy": 0.7875,
+            "mean_known_token_count": 3.9375,
+            "step": 24
+          },
+          {
+            "mean_cumulative_deficit_loss": 23.231125,
+            "mean_effect_sign_accuracy": 0.95,
+            "mean_known_token_count": 4.75,
+            "step": 48
+          },
+          {
+            "mean_cumulative_deficit_loss": 36.6695,
+            "mean_effect_sign_accuracy": 0.9875,
+            "mean_known_token_count": 4.9375,
+            "step": 96
+          }
+        ],
+        "budget": 96,
+        "candidate_id": "S4_HARM_ESCAPE",
+        "config": {
+          "budget": 96,
+          "candidate_id": "S4_HARM_ESCAPE",
+          "evaluator_only": false,
+          "exploration_mode": "risk_constrained_information_gain",
+          "geometry_mode": "forward_first",
+          "posterior_mode": "public_update",
+          "preregistered_prediction": "A public-history escape macro should shorten repeated harmful-front loops and improve recovery without changing posterior updates or token scoring.",
+          "robustness_mode": "harm_escape",
+          "scoring_mode": "legacy",
+          "stage_id": "R1_ROBUSTNESS_SEARCH",
+          "target_retention": false
+        },
+        "direction_denominator": 16,
+        "evaluator_only": false,
+        "executed_world_count": 16,
+        "invocation_counts": {
+          "compute_actual_delta": 1536,
+          "compute_metabolism_ledger": 1536,
+          "transition_world": 1536
+        },
+        "loss_by_arm": {
+          "PRIVATE_ORACLE_NAVIGATOR": 0.154377604167,
+          "PUBLIC_REFERENCE": 0.381973958333,
+          "UNIFORM_RANDOM": 0.70910546875
+        },
+        "m1_numeric_gate": true,
+        "mean_final_effect_sign_accuracy": 0.9875,
+        "mean_final_known_token_count": 4.9375,
+        "mean_first_beneficial_interaction_step": 14.6875,
+        "mean_harmful_front_loop_run_max": 2.75,
+        "mean_successful_interactions": 26.625,
+        "mean_turn_fraction": 0.301432291667,
+        "oracle_random_headroom": 0.554727864583,
+        "per_world": [
+          {
+            "opaque_context_id": "001l-search-dev-0001",
+            "oracle_loss": 0.093041666667,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.133895833334,
+            "public_loss": 0.604395833333,
+            "random_loss": 0.738291666667
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0002",
+            "oracle_loss": 0.205395833333,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.095479166667,
+            "public_loss": 0.569208333333,
+            "random_loss": 0.6646875
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0003",
+            "oracle_loss": 0.0988125,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.426791666667,
+            "public_loss": 0.232895833333,
+            "random_loss": 0.6596875
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0004",
+            "oracle_loss": 0.180354166667,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.478708333334,
+            "public_loss": 0.231708333333,
+            "random_loss": 0.710416666667
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0005",
+            "oracle_loss": 0.222583333333,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.514229166667,
+            "public_loss": 0.275583333333,
+            "random_loss": 0.7898125
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0006",
+            "oracle_loss": 0.038041666667,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.381666666666,
+            "public_loss": 0.244166666667,
+            "random_loss": 0.625833333333
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0007",
+            "oracle_loss": 0.206291666667,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.461895833333,
+            "public_loss": 0.362604166667,
+            "random_loss": 0.8245
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0008",
+            "oracle_loss": 0.039583333333,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.122770833334,
+            "public_loss": 0.531770833333,
+            "random_loss": 0.654541666667
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0009",
+            "oracle_loss": 0.086520833333,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.451458333334,
+            "public_loss": 0.288583333333,
+            "random_loss": 0.740041666667
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0010",
+            "oracle_loss": 0.096583333333,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.3644375,
+            "public_loss": 0.331604166667,
+            "random_loss": 0.696041666667
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0011",
+            "oracle_loss": 0.233458333333,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.212020833334,
+            "public_loss": 0.508833333333,
+            "random_loss": 0.720854166667
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0012",
+            "oracle_loss": 0.319270833333,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.623458333334,
+            "public_loss": 0.075645833333,
+            "random_loss": 0.699104166667
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0013",
+            "oracle_loss": 0.348791666667,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.197458333333,
+            "public_loss": 0.550125,
+            "random_loss": 0.747583333333
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0014",
+            "oracle_loss": 0.077916666667,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.3401875,
+            "public_loss": 0.3558125,
+            "random_loss": 0.696
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0015",
+            "oracle_loss": 0.148729166667,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.382833333334,
+            "public_loss": 0.371770833333,
+            "random_loss": 0.754604166667
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0016",
+            "oracle_loss": 0.074666666667,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.0468125,
+            "public_loss": 0.576875,
+            "random_loss": 0.6236875
+          }
+        ],
+        "phase_signal": true,
+        "positive_direction_count": 16,
+        "preregistered_prediction": "A public-history escape macro should shorten repeated harmful-front loops and improve recovery without changing posterior updates or token scoring.",
+        "public_reference_gain": 0.327131510417,
+        "recovery_fraction": 0.589715302409,
+        "stage_id": "R1_ROBUSTNESS_SEARCH",
+        "unique_world_count": 16
+      },
+      {
+        "acquisition_curve": [
+          {
+            "mean_cumulative_deficit_loss": 5.980125,
+            "mean_effect_sign_accuracy": 0.5625,
+            "mean_known_token_count": 2.8125,
+            "step": 12
+          },
+          {
+            "mean_cumulative_deficit_loss": 12.268875,
+            "mean_effect_sign_accuracy": 0.8,
+            "mean_known_token_count": 4.0,
+            "step": 24
+          },
+          {
+            "mean_cumulative_deficit_loss": 22.598125,
+            "mean_effect_sign_accuracy": 0.9875,
+            "mean_known_token_count": 4.9375,
+            "step": 48
+          },
+          {
+            "mean_cumulative_deficit_loss": 37.855125,
+            "mean_effect_sign_accuracy": 1.0,
+            "mean_known_token_count": 5.0,
+            "step": 96
+          }
+        ],
+        "budget": 96,
+        "candidate_id": "S4_UNSEEN_FRONTIER_PRIORITY",
+        "config": {
+          "budget": 96,
+          "candidate_id": "S4_UNSEEN_FRONTIER_PRIORITY",
+          "evaluator_only": false,
+          "exploration_mode": "risk_constrained_information_gain",
+          "geometry_mode": "forward_first",
+          "posterior_mode": "public_update",
+          "preregistered_prediction": "When every visible learned token is harmful, a stateless public sweep should avoid reorienting toward known harm and discover a beneficial token earlier.",
+          "robustness_mode": "unseen_frontier_priority",
+          "scoring_mode": "legacy",
+          "stage_id": "R1_ROBUSTNESS_SEARCH",
+          "target_retention": false
+        },
+        "direction_denominator": 16,
+        "evaluator_only": false,
+        "executed_world_count": 16,
+        "invocation_counts": {
+          "compute_actual_delta": 1536,
+          "compute_metabolism_ledger": 1536,
+          "transition_world": 1536
+        },
+        "loss_by_arm": {
+          "PRIVATE_ORACLE_NAVIGATOR": 0.154377604167,
+          "PUBLIC_REFERENCE": 0.39432421875,
+          "UNIFORM_RANDOM": 0.70910546875
+        },
+        "m1_numeric_gate": true,
+        "mean_final_effect_sign_accuracy": 1.0,
+        "mean_final_known_token_count": 5.0,
+        "mean_first_beneficial_interaction_step": 12.4375,
+        "mean_harmful_front_loop_run_max": 23.25,
+        "mean_successful_interactions": 16.6875,
+        "mean_turn_fraction": 0.345052083333,
+        "oracle_random_headroom": 0.554727864583,
+        "per_world": [
+          {
+            "opaque_context_id": "001l-search-dev-0001",
+            "oracle_loss": 0.093041666667,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.104458333334,
+            "public_loss": 0.633833333333,
+            "random_loss": 0.738291666667
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0002",
+            "oracle_loss": 0.205395833333,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.354770833333,
+            "public_loss": 0.309916666667,
+            "random_loss": 0.6646875
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0003",
+            "oracle_loss": 0.0988125,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.3551875,
+            "public_loss": 0.3045,
+            "random_loss": 0.6596875
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0004",
+            "oracle_loss": 0.180354166667,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.324708333334,
+            "public_loss": 0.385708333333,
+            "random_loss": 0.710416666667
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0005",
+            "oracle_loss": 0.222583333333,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.2389375,
+            "public_loss": 0.550875,
+            "random_loss": 0.7898125
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0006",
+            "oracle_loss": 0.038041666667,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.388104166666,
+            "public_loss": 0.237729166667,
+            "random_loss": 0.625833333333
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0007",
+            "oracle_loss": 0.206291666667,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.21,
+            "public_loss": 0.6145,
+            "random_loss": 0.8245
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0008",
+            "oracle_loss": 0.039583333333,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.1275,
+            "public_loss": 0.527041666667,
+            "random_loss": 0.654541666667
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0009",
+            "oracle_loss": 0.086520833333,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.464791666667,
+            "public_loss": 0.27525,
+            "random_loss": 0.740041666667
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0010",
+            "oracle_loss": 0.096583333333,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.432979166667,
+            "public_loss": 0.2630625,
+            "random_loss": 0.696041666667
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0011",
+            "oracle_loss": 0.233458333333,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.155604166667,
+            "public_loss": 0.56525,
+            "random_loss": 0.720854166667
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0012",
+            "oracle_loss": 0.319270833333,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.528979166667,
+            "public_loss": 0.170125,
+            "random_loss": 0.699104166667
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0013",
+            "oracle_loss": 0.348791666667,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.245083333333,
+            "public_loss": 0.5025,
+            "random_loss": 0.747583333333
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0014",
+            "oracle_loss": 0.077916666667,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.476104166667,
+            "public_loss": 0.219895833333,
+            "random_loss": 0.696
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0015",
+            "oracle_loss": 0.148729166667,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.432020833334,
+            "public_loss": 0.322583333333,
+            "random_loss": 0.754604166667
+          },
+          {
+            "opaque_context_id": "001l-search-dev-0016",
+            "oracle_loss": 0.074666666667,
+            "policy_seed": 3701,
+            "public_better_than_random": true,
+            "public_gain": 0.197270833333,
+            "public_loss": 0.426416666667,
+            "random_loss": 0.6236875
+          }
+        ],
+        "phase_signal": true,
+        "positive_direction_count": 16,
+        "preregistered_prediction": "When every visible learned token is harmful, a stateless public sweep should avoid reorienting toward known harm and discover a beneficial token earlier.",
+        "public_reference_gain": 0.31478125,
+        "recovery_fraction": 0.567451664316,
+        "stage_id": "R1_ROBUSTNESS_SEARCH",
+        "unique_world_count": 16
+      }
+    ],
+    "carryover_control_executed": "S2_RISK_INFORMATION_GAIN_CARRYOVER",
+    "packet_name": "search_dev",
+    "policy_seed": 3701,
+    "rows_path": "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/search_rows.jsonl",
+    "rows_sha256": "54ef60762777e78c902f28745ddee9427348a0be463e6f492eb9165912a489af",
+    "schema_version": "ego.v2.public_acquisition_robustness.search.v1",
+    "selection": {
+      "comparisons": [
+        {
+          "candidate_id": "S4_HARM_ESCAPE",
+          "first_beneficial_step_improved": true,
+          "formal_eligible": true,
+          "harm_loop_improved": true,
+          "recovery_improved": true,
+          "targeted_diagnostic_improved": true
+        },
+        {
+          "candidate_id": "S4_UNSEEN_FRONTIER_PRIORITY",
+          "first_beneficial_step_improved": true,
+          "formal_eligible": true,
+          "harm_loop_improved": false,
+          "recovery_improved": true,
+          "targeted_diagnostic_improved": true
+        }
+      ],
+      "control_candidate": "S2_RISK_INFORMATION_GAIN_CARRYOVER",
+      "formal_authorized": true,
+      "preregistered_order": [
+        "highest_unique_world_mean_recovery",
+        "highest_positive_world_count",
+        "earliest_first_beneficial_interaction",
+        "shortest_harmful_front_loop"
+      ],
+      "schema_version": "ego.v2.public_acquisition_robustness.selection.v1",
+      "selected_candidate": "S4_HARM_ESCAPE"
+    },
+    "substantive_candidates_executed": [
+      "S4_HARM_ESCAPE",
+      "S4_UNSEEN_FRONTIER_PRIORITY"
+    ],
+    "task_id": "EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L",
+    "verdict": "SEARCH_CANDIDATE_FROZEN_READY"
+  },
+  "task_id": "EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L",
+  "thresholds_lowered": false
+}

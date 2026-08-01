@@ -89,3 +89,20 @@ post-qualification tuning.
   controls (`4 passed`).
 - Decision: commit the complete producer/verifier before any search result is
   visible, then run the new search packet once for candidate selection.
+
+## R1 — search-dev readback and freeze
+
+- Single changed layer: navigation behavior after a harmful token has been
+  learned; posterior update, effect scoring, world grammar, observations,
+  actions and budgets remained unchanged.
+- Carry-over control: gain `0.297833333334`, recovery `0.536899896957`, `16/16`
+  positive worlds, mean harmful-loop maximum `10.875`.
+- `S4_HARM_ESCAPE`: gain `0.327131510417`, recovery `0.589715302409`, `16/16`
+  worlds, harmful-loop maximum `2.75`; both preregistered improvements held.
+- `S4_UNSEEN_FRONTIER_PRIORITY`: gain `0.31478125`, recovery
+  `0.567451664316`, `16/16` worlds and earlier beneficial discovery, but its
+  harmful-loop diagnostic worsened to `23.25`.
+- Decision: the preregistered ranking selects `S4_HARM_ESCAPE`. Producer,
+  independent verifier, selected config, NumPy `2.2.6`, action budget, seeds,
+  thresholds and both formal packet hashes are frozen. Qualification has not
+  yet been consumed.
