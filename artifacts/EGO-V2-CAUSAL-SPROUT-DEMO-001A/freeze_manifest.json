@@ -1,0 +1,106 @@
+{
+  "baselines": [
+    "no_update_neural",
+    "feed_forward_no_history",
+    "feature_action_lookup",
+    "nearest_neighbour",
+    "surface_only",
+    "shuffled_feedback",
+    "random_policy",
+    "bayesian_causal_reference",
+    "constant_zero"
+  ],
+  "dev_config": {
+    "bptt_steps": 16,
+    "context_count": 64,
+    "correlation_probability": 0.9,
+    "exploration_rate": 0.6,
+    "hidden_size": 24,
+    "learning_rate": 0.02,
+    "momentum": 0.85,
+    "namespace_prefix": "causal_sprout_dev_frozen_001a",
+    "seed": 918273,
+    "split": "dev",
+    "steps_per_context": 16
+  },
+  "dev_final_model_hash": "5ce6fb93a591afb84580a6cfc21b7272f9b61d1b8bb720eb3904927bf0726eea",
+  "dev_replay_exact": true,
+  "dev_run_trace_hash": "a9a38f0c8fb84981d938063ce345069f94551bccb320f9380f7e34afb194fa9b",
+  "development_completed_before_freeze": true,
+  "freeze_hash": "dc9d97e2f69c8d6c46c77820ef8ab317358d689bc74a5c48d79ec0046c49684d",
+  "heldout_config": {
+    "bptt_steps": 16,
+    "context_count": 16,
+    "correlation_probability": 0.1,
+    "exploration_rate": 0.3,
+    "hidden_size": 24,
+    "learning_rate": 0.02,
+    "momentum": 0.85,
+    "namespace_prefix": "causal_sprout_heldout_frozen_001a",
+    "seed": 271828,
+    "split": "heldout",
+    "steps_per_context": 16
+  },
+  "invalidating_baselines": [
+    "no_update_neural",
+    "feed_forward_no_history",
+    "feature_action_lookup",
+    "nearest_neighbour",
+    "surface_only",
+    "shuffled_feedback",
+    "constant_zero"
+  ],
+  "sample_count": {
+    "dev_rows": 1024,
+    "heldout_rows_per_arm": 256
+  },
+  "schema_version": "ego.causal_sprout.freeze.v1",
+  "source_files": [
+    {
+      "path": "labs/ego_life_playground_v0/causal_sprout.py",
+      "sha256": "e050ccc599e660d62d07ed0adaa40098adafa2ebffbcb2802eeb752c5330f121",
+      "size": 64133
+    },
+    {
+      "path": "labs/ego_life_playground_v0/controller.py",
+      "sha256": "4298ca806b388984a17600ae22918ae905fd7d125c42320d6a53e88a1c966529",
+      "size": 11953
+    },
+    {
+      "path": "labs/ego_life_playground_v0/store.py",
+      "sha256": "e92ec2228090085273620344bc1b33ff0313e90e3015d4ff692b6aecb1472b7b",
+      "size": 17087
+    },
+    {
+      "path": "scripts/run_ego_causal_sprout_demo.py",
+      "sha256": "a805a1aea7a91cb7ff2b3c4c29c3f48f5b739002707ae4ecb67daccf185b138c",
+      "size": 4031
+    },
+    {
+      "path": "scripts/codex/verify_ego_v2_causal_sprout_demo_001a.py",
+      "sha256": "e49f78014335f6191b68d81aa693b3c2dfde6834b93a4ed3d699fd616e2e3157",
+      "size": 35141
+    },
+    {
+      "path": "tests/test_ego_v2_causal_sprout_demo_001a.py",
+      "sha256": "1465e88c22c065397a20206c635dbd5572e4ce0a3599b8d309d53aea787b73a6",
+      "size": 15204
+    },
+    {
+      "path": "scripts/codex/tests/test_verify_ego_v2_causal_sprout_demo_001a.py",
+      "sha256": "7541220a9f4ff4fcf6500302d48b9dff12d1c83f531146b024505957094f115e",
+      "size": 3824
+    }
+  ],
+  "stopping_rule": "one committed heldout packet; no retune or rerun after reveal",
+  "task_id": "EGO-V2-CAUSAL-SPROUT-DEMO-001A",
+  "test_only": false,
+  "thresholds": {
+    "candidate_loss_ratio_max": 0.75,
+    "freeze_update_gain_destruction_min": 0.5,
+    "history_reset_relative_damage_min": 0.2,
+    "mechanism_effect_sign_accuracy_min": 0.8,
+    "nuisance_change_effect_range_ratio_max": 0.2,
+    "recompute_absolute_tolerance": 1e-10
+  }
+}

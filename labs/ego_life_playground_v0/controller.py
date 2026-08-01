@@ -70,10 +70,18 @@ class PlaygroundController:
         seed: int = 17,
         world_seed: int = DEFAULT_PRIVATE_WORLD_SEED,
         layout_id: str | None = None,
+        runtime: Any | None = None,
         on_committed: Callable[[dict[str, Any], dict[str, Any]], None] | None = None,
         on_recovered: Callable[[RecoveryResult], None] | None = None,
     ) -> None:
         self.store = store
+        self.runtime = runtime
+        if runtime is not None and store.runtime is not runtime:
+            raise EngineInvariantError(
+                "controller/store runtime adapters must be the same object"
+            )
+        if runtime is None and store.runtime is not None:
+            raise EngineInvariantError("controller omitted the store runtime adapter")
         if type(world_seed) is not int:
             raise EngineInvariantError("world_seed must be an integer")
         self.world_seed = world_seed
@@ -86,8 +94,12 @@ class PlaygroundController:
 
         if selected_run_id is not None and store.run_exists(selected_run_id):
             recovered = store.recover_run(selected_run_id)
-            recovered_layout = recovered.state["world"]["layout"]["layout_id"]
-            if layout_id is not None and recovered_layout != layout_id:
+            recovered_layout = (
+                recovered.state["world"]["layout"]["layout_id"]
+                if runtime is None
+                else None
+            )
+            if runtime is None and layout_id is not None and recovered_layout != layout_id:
                 if run_id is not None:
                     raise EngineInvariantError(
                         f"stored run layout {recovered_layout!r} does not match requested {layout_id!r}"
@@ -102,13 +114,19 @@ class PlaygroundController:
                 return
 
         self.run_id = selected_run_id or f"local-{uuid.uuid4().hex[:16]}"
-        self.run_meta = make_run_metadata(self.run_id, seed)
-        selected_layout = layout_id or "p0_cross_v1"
-        if selected_layout not in LAYOUTS:
-            raise EngineInvariantError(f"unknown microworld layout: {selected_layout!r}")
-        state = initial_state(
-            run_id=self.run_id, seed=self.world_seed, layout_id=selected_layout
-        )
+        if runtime is None:
+            self.run_meta = make_run_metadata(self.run_id, seed)
+            selected_layout = layout_id or "p0_cross_v1"
+            if selected_layout not in LAYOUTS:
+                raise EngineInvariantError(f"unknown microworld layout: {selected_layout!r}")
+            state = initial_state(
+                run_id=self.run_id, seed=self.world_seed, layout_id=selected_layout
+            )
+        else:
+            if layout_id is not None:
+                raise EngineInvariantError("bounded runtime adapter does not accept microworld layout")
+            self.run_meta = runtime.make_run_metadata(self.run_id, seed)
+            state = runtime.initial_state(run_id=self.run_id, seed=seed)
         store.create_run(self.run_meta, state)
         recovered = store.recover_run(self.run_id)
         self._adopt_recovery(recovered)
@@ -163,14 +181,26 @@ class PlaygroundController:
         lifecycle = self.state.get("lifecycle", {})
         if isinstance(lifecycle, Mapping) and lifecycle.get("trial_status") == "terminal":
             raise EngineInvariantError("trial is terminal")
-        command = make_command(
+        command_factory = make_command if self.runtime is None else self.runtime.make_command
+        default_interventions = (
+            DEFAULT_INTERVENTIONS
+            if self.runtime is None
+            else self.runtime.default_interventions
+        )
+        command = command_factory(
             sequence=int(self.state["clock"]["global_tick"]) + 1,
             trigger_source=trigger_source,
-            interventions=DEFAULT_INTERVENTIONS if interventions is None else interventions,
+            interventions=default_interventions if interventions is None else interventions,
             prev_command_hash=self.state.get("last_command_hash"),
             injected_event=injected_event,
         )
-        computed = compute_step(self.state, command, self.run_meta)
+        computed = (
+            compute_step(self.state, command, self.run_meta)
+            if self.runtime is None
+            else getattr(self.runtime, "compute_step")(
+                self.state, command, self.run_meta
+            )
+        )
         receipt = self.store.append_step(command, computed.trace)
         self.last_commit_receipt = receipt
         if not receipt.committed:
@@ -234,11 +264,15 @@ class PlaygroundController:
         if self.store.run_exists(selected):
             raise EngineInvariantError(f"run already exists: {selected}")
         seed = int(self.run_meta["seed"])
-        layout_id = str(self.state["world"]["layout"]["layout_id"])
-        run_meta = make_run_metadata(selected, seed)
-        state = initial_state(
-            run_id=selected, seed=self.world_seed, layout_id=layout_id
-        )
+        if self.runtime is None:
+            layout_id = str(self.state["world"]["layout"]["layout_id"])
+            run_meta = make_run_metadata(selected, seed)
+            state = initial_state(
+                run_id=selected, seed=self.world_seed, layout_id=layout_id
+            )
+        else:
+            run_meta = self.runtime.make_run_metadata(selected, seed)
+            state = self.runtime.initial_state(run_id=selected, seed=seed)
         self.store.create_run(run_meta, state)
         recovered = self.store.recover_run(selected)
         self.run_id = selected

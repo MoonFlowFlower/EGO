@@ -1,0 +1,21 @@
+{
+  "authorized_arms": [
+    "canonical",
+    "freeze_updates",
+    "reset_history",
+    "shuffle_feedback",
+    "delete_weights",
+    "nuisance_permutation",
+    "mechanism_intervention"
+  ],
+  "commitment_hash": "04b4ff83f7f6178f836e4ea5664f2ecdef8bc15f09706714d279667e19189891",
+  "context_commitment": "711259e0f7d1f1e428181bc404beafbb4bb74df45c1f6d1ad5e82cd10753d66c",
+  "context_count": 16,
+  "freeze_hash": "dc9d97e2f69c8d6c46c77820ef8ab317358d689bc74a5c48d79ec0046c49684d",
+  "namespace_commitment": "dea960f1afbaa99eed512d6d8ef16fff9d13373cae7b68aa2a2ea7e01a4467e6",
+  "pre_reveal": true,
+  "rows_per_context": 16,
+  "schema_version": "ego.causal_sprout.heldout_commitment.v1",
+  "task_id": "EGO-V2-CAUSAL-SPROUT-DEMO-001A",
+  "test_only": false
+}

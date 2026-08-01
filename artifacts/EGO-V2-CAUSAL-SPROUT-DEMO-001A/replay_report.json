@@ -1,0 +1,28 @@
+{
+  "command_fields": [
+    "command_hash",
+    "interventions",
+    "prev_command_hash",
+    "schema_version",
+    "sequence",
+    "trigger_source"
+  ],
+  "exact_recompute": true,
+  "persisted_fields": [
+    "weights",
+    "hidden_state",
+    "optimizer_state",
+    "rng_state",
+    "update_count",
+    "trace_chain_hash"
+  ],
+  "row_count": 256,
+  "run_id": "heldout-canonical-d60ebcc44126",
+  "schema_version": "ego.causal_sprout.replay.v1",
+  "state_hash": "495f4ca71abcec4020204823d1c6ad70d95ca690c375d4d9a9fb1efa9465e0d3",
+  "stored_action_used_as_input": false,
+  "stored_outcome_used_as_input": false,
+  "stored_prediction_used_as_input": false,
+  "tamper_tests_covered_by": "tests/test_ego_v2_causal_sprout_demo_001a.py",
+  "trace_hash": "a4b20542346bad737c27aca71192add3d9365149eb02a83638b7e6e481de5671"
+}

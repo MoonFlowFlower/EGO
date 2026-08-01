@@ -1,0 +1,8 @@
+{
+  "all_rows_match": true,
+  "inputs": "serialized pre-state plus command; observation/outcome/action recomputed",
+  "mismatches": [],
+  "row_count": 256,
+  "schema_version": "ego.causal_sprout.row_recompute.v1",
+  "stored_action_used_as_input": false
+}

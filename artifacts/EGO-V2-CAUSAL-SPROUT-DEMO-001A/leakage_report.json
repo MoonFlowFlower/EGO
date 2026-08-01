@@ -1,0 +1,75 @@
+{
+  "command_contains_stored_action_prediction_or_outcome": false,
+  "context_namespace_entered_learner": false,
+  "learner_fields_exact": true,
+  "oracle_entered_learner": false,
+  "positive_control_count": 9,
+  "positive_control_reports": [
+    {
+      "accepted": false,
+      "forbidden_paths": [
+        "hidden_mapping"
+      ],
+      "positive_control": true
+    },
+    {
+      "accepted": false,
+      "forbidden_paths": [
+        "hidden_causal_channel"
+      ],
+      "positive_control": true
+    },
+    {
+      "accepted": false,
+      "forbidden_paths": [
+        "context_id"
+      ],
+      "positive_control": true
+    },
+    {
+      "accepted": false,
+      "forbidden_paths": [
+        "world_seed"
+      ],
+      "positive_control": true
+    },
+    {
+      "accepted": false,
+      "forbidden_paths": [
+        "split"
+      ],
+      "positive_control": true
+    },
+    {
+      "accepted": false,
+      "forbidden_paths": [
+        "oracle_outcome"
+      ],
+      "positive_control": true
+    },
+    {
+      "accepted": false,
+      "forbidden_paths": [
+        "future_observation"
+      ],
+      "positive_control": true
+    },
+    {
+      "accepted": false,
+      "forbidden_paths": [
+        "verdict"
+      ],
+      "positive_control": true
+    },
+    {
+      "accepted": false,
+      "forbidden_paths": [
+        "fixture_hash"
+      ],
+      "positive_control": true
+    }
+  ],
+  "positive_controls_rejected": true,
+  "public_rows_accepted": true,
+  "schema_version": "ego.causal_sprout.leakage.v1"
+}

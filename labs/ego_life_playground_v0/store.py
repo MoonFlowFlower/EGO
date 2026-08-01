@@ -83,13 +83,45 @@ def default_db_path() -> Path:
 class SQLiteEventStore:
     """A run store whose only replay inputs are metadata and commands."""
 
-    def __init__(self, path: str | os.PathLike[str]) -> None:
+    def __init__(self, path: str | os.PathLike[str], *, runtime: Any | None = None) -> None:
         self.path = Path(path).expanduser().resolve()
+        # ``None`` preserves the ordinary V2 reducer byte-for-byte at the call
+        # boundary.  A bounded runtime adapter must provide the same pure
+        # live/replay functions; recovery never selects an adapter from stored
+        # trace content.
+        self.runtime = runtime
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self._connection = sqlite3.connect(str(self.path), isolation_level=None)
         self._connection.row_factory = sqlite3.Row
         self._connection.execute("PRAGMA foreign_keys = ON")
         self._create_schema()
+
+    def _code_path_hash(self) -> str:
+        if self.runtime is None:
+            return compute_code_path_hash()
+        return str(self.runtime.compute_code_path_hash())
+
+    def _verify_replay_boundary(
+        self, state: dict[str, Any], run_meta: dict[str, Any]
+    ) -> None:
+        if self.runtime is None:
+            verify_replay_boundary(state, run_meta)
+        else:
+            if run_meta.get("runtime_profile") != self.runtime.runtime_profile:
+                raise EngineInvariantError("store runtime adapter/profile mismatch")
+            self.runtime.verify_replay_boundary(state, run_meta)
+
+    def _compute_step(
+        self, state: dict[str, Any], command: dict[str, Any], run_meta: dict[str, Any]
+    ) -> Any:
+        if self.runtime is None:
+            return compute_step(state, command, run_meta)
+        return self.runtime.compute_step(state, command, run_meta)
+
+    def _compute_trace_hash(self, trace: dict[str, Any]) -> str:
+        if self.runtime is None:
+            return compute_trace_hash(trace)
+        return str(self.runtime.compute_trace_hash(trace))
 
     @property
     def connection(self) -> sqlite3.Connection:
@@ -140,9 +172,9 @@ class SQLiteEventStore:
         )
 
     def create_run(self, run_meta: dict[str, Any], state: dict[str, Any]) -> None:
-        if run_meta.get("code_path_hash") != compute_code_path_hash():
+        if run_meta.get("code_path_hash") != self._code_path_hash():
             raise EngineInvariantError("new run metadata does not match current engine bytes")
-        verify_replay_boundary(state, run_meta)
+        self._verify_replay_boundary(state, run_meta)
         self._connection.execute(
             "INSERT INTO runs(run_id, run_meta_json, initial_state_json, initial_state_hash, code_path_hash) "
             "VALUES(?, ?, ?, ?, ?)",
@@ -174,7 +206,7 @@ class SQLiteEventStore:
         run still enters ``recover_run`` and fails closed on any drift.
         """
 
-        current = compute_code_path_hash()
+        current = self._code_path_hash()
         rows = self._connection.execute(
             "SELECT run_id, run_meta_json FROM runs WHERE code_path_hash = ? ORDER BY rowid DESC",
             (current,),
@@ -197,7 +229,7 @@ class SQLiteEventStore:
                 raise EngineInvariantError("command/trace sequence mismatch")
             if trace.get("command") != command:
                 raise EngineInvariantError("trace does not embed the exact command")
-            if trace_hash != compute_trace_hash(trace):
+            if trace_hash != self._compute_trace_hash(trace):
                 raise EngineInvariantError("trace hash mismatch before persistence")
             self._connection.execute("BEGIN IMMEDIATE")
             self._connection.execute(
@@ -251,11 +283,11 @@ class SQLiteEventStore:
         initial = _decode_json(row["initial_state_json"], "initial state")
         if canonical_hash(initial) != row["initial_state_hash"]:
             raise RecoveryError("initial state hash mismatch")
-        current_code_hash = compute_code_path_hash()
+        current_code_hash = self._code_path_hash()
         if row["code_path_hash"] != current_code_hash or run_meta.get("code_path_hash") != current_code_hash:
             raise RecoveryError("engine code-path drift detected")
         try:
-            verify_replay_boundary(initial, run_meta)
+            self._verify_replay_boundary(initial, run_meta)
         except (EngineInvariantError, KeyError, TypeError, ValueError) as exc:
             raise RecoveryError(f"initial replay boundary invalid: {exc}") from exc
 
@@ -285,7 +317,7 @@ class SQLiteEventStore:
             # Crucial ordering: recompute before reading the stored trace row.  The
             # stored selected_action is therefore never an input to behavior.
             try:
-                recomputed = compute_step(state, command, run_meta)
+                recomputed = self._compute_step(state, command, run_meta)
             except (EngineInvariantError, KeyError, TypeError, ValueError) as exc:
                 raise RecoveryError(f"command recomputation failed: {exc}") from exc
 
@@ -307,7 +339,7 @@ class SQLiteEventStore:
             stored_trace = _decode_json(trace_row["trace_json"], "trace")
             if stored_trace.get("trace_hash") != trace_row["trace_hash"]:
                 raise RecoveryError("stored trace column/payload hash mismatch")
-            if compute_trace_hash(stored_trace) != trace_row["trace_hash"]:
+            if self._compute_trace_hash(stored_trace) != trace_row["trace_hash"]:
                 raise RecoveryError("stored trace content hash mismatch")
             if canonical_json(stored_trace) != canonical_json(recomputed.trace):
                 raise RecoveryError("stored trace differs from independent recomputation")

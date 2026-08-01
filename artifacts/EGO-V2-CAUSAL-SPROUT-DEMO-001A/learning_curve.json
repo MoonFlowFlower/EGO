@@ -1,0 +1,65 @@
+{
+  "early_window_loss": 0.0699028085806056,
+  "late_to_early_ratio": 1.0142181516853028,
+  "late_window_loss": 0.07089669731623334,
+  "points": [
+    {
+      "candidate_mse": 0.0699028085806056,
+      "end_sequence": 128,
+      "lookup_mse": 0.08778602430554847,
+      "no_update_mse": 0.07034364200626034,
+      "start_sequence": 1
+    },
+    {
+      "candidate_mse": 0.07870351372760045,
+      "end_sequence": 256,
+      "lookup_mse": 0.09181652853255645,
+      "no_update_mse": 0.07062203875930437,
+      "start_sequence": 129
+    },
+    {
+      "candidate_mse": 0.0725465085533064,
+      "end_sequence": 384,
+      "lookup_mse": 0.07981533818193928,
+      "no_update_mse": 0.07529561922339358,
+      "start_sequence": 257
+    },
+    {
+      "candidate_mse": 0.07393376569366696,
+      "end_sequence": 512,
+      "lookup_mse": 0.07775822589707226,
+      "no_update_mse": 0.06502079233223654,
+      "start_sequence": 385
+    },
+    {
+      "candidate_mse": 0.0767796634318659,
+      "end_sequence": 640,
+      "lookup_mse": 0.07785262349000491,
+      "no_update_mse": 0.07752579130420723,
+      "start_sequence": 513
+    },
+    {
+      "candidate_mse": 0.07914110807440006,
+      "end_sequence": 768,
+      "lookup_mse": 0.07971299082536591,
+      "no_update_mse": 0.0832073752919266,
+      "start_sequence": 641
+    },
+    {
+      "candidate_mse": 0.08890305373768262,
+      "end_sequence": 896,
+      "lookup_mse": 0.07687270312940563,
+      "no_update_mse": 0.07273184188135151,
+      "start_sequence": 769
+    },
+    {
+      "candidate_mse": 0.07089669731623334,
+      "end_sequence": 1024,
+      "lookup_mse": 0.07155590943118985,
+      "no_update_mse": 0.07360417405730037,
+      "start_sequence": 897
+    }
+  ],
+  "schema_version": "ego.causal_sprout.learning_curve.v1",
+  "window_size": 128
+}

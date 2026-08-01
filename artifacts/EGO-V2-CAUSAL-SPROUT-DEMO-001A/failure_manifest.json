@@ -1,0 +1,14 @@
+{
+  "failure_count": 6,
+  "failures": [
+    "loss_ratio",
+    "mechanism_sensitivity",
+    "correlation_reversal",
+    "feature_glyph_permutation",
+    "update_ablation",
+    "history_ablation"
+  ],
+  "negative_results_preserved": true,
+  "schema_version": "ego.causal_sprout.failure_manifest.v1",
+  "verdict": "SURFACE_FIT_BASELINE_EQUIVALENCE"
+}

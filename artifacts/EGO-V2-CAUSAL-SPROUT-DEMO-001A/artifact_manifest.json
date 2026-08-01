@@ -1,0 +1,86 @@
+{
+  "artifacts": [
+    {
+      "path": "ablation_report.json",
+      "sha256": "1bc35af2dc441163432c71372bdd6f7925438c65cc999837fa82e5fc009b0a14",
+      "size": 2158
+    },
+    {
+      "path": "baseline_comparison.json",
+      "sha256": "a580b01f8024e25ba6c8ee79ba71ee66793c058d5fe56111727e924b06d9e466",
+      "size": 1010
+    },
+    {
+      "path": "claim_ceiling.txt",
+      "sha256": "efc247be170c8db79fbae22e3a33127d860ad29d2d55aaff0523998c8e007937",
+      "size": 628
+    },
+    {
+      "path": "demo.html",
+      "sha256": "bd0b52adadb52d7083f0ee85208a0bd843933c201a3d18e31b89d64662291887",
+      "size": 243195
+    },
+    {
+      "path": "failure_manifest.json",
+      "sha256": "f4c0e56fb7d56db7339f447a0e09a1285ed40843a29fdd88f286c15ca5e06bae",
+      "size": 362
+    },
+    {
+      "path": "freeze_manifest.json",
+      "sha256": "8d577465bb535d70f5283e45164c69d0bb6ea7f2a2883bcacdd5b2d5427a4530",
+      "size": 3455
+    },
+    {
+      "path": "gradient_check.json",
+      "sha256": "89f9c0bee95b1f88babdbbf2876ce3154755af29d1ae63b0cd218f8fb8f320e8",
+      "size": 186
+    },
+    {
+      "path": "heldout_commitment.json",
+      "sha256": "65c42f1ec1fb88d51ec8949fe966017a2ffee0b7def5a1ccff485c7c1b9a930b",
+      "size": 778
+    },
+    {
+      "path": "intervention_report.json",
+      "sha256": "19b9301503bd1fa23a8b0720944275a0eeaff7e46720d33f7a54286828a2da47",
+      "size": 856
+    },
+    {
+      "path": "leakage_report.json",
+      "sha256": "f526efe1f5c6e75cf7c763729ddeb4d0020667e2598c76fbe3284a655ae49645",
+      "size": 1600
+    },
+    {
+      "path": "learner_state.json",
+      "sha256": "7719534763c88d5de0cffefba9a2bc2d739c1031cfd4cb5fc5fd8d36e52ab176",
+      "size": 74292
+    },
+    {
+      "path": "learning_curve.json",
+      "sha256": "ac777f9a18d40c86327fc05174ea7630123480f58c4ed778251b97b5966fe69b",
+      "size": 1869
+    },
+    {
+      "path": "replay_report.json",
+      "sha256": "ea6ad79f6f11567dff0600314716620d36757a7996b0b267e6191862c7477b9f",
+      "size": 844
+    },
+    {
+      "path": "result.json",
+      "sha256": "0f67ce21df28a4919f3b66a0e4d73f1b4416d50616c8620742f584c2e06c8783",
+      "size": 1496
+    },
+    {
+      "path": "row_recompute_report.json",
+      "sha256": "db24a65fe31277b677360997f8888b5a62c45887477262de4ca5129f0632ff37",
+      "size": 263
+    },
+    {
+      "path": "trace.jsonl",
+      "sha256": "2a50b88f60425efb9b41f30fb3a9c2660d8272c12819d6271de5554930948246",
+      "size": 1428079
+    }
+  ],
+  "schema_version": "ego.causal_sprout.artifact_manifest.v1",
+  "task_id": "EGO-V2-CAUSAL-SPROUT-DEMO-001A"
+}

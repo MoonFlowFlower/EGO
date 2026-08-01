@@ -1,0 +1,49 @@
+{
+  "arm_candidate_mse": {
+    "delete_weights": 0.06258451553481703,
+    "freeze_updates": 0.06358894824064465,
+    "mechanism_intervention": 0.06571096237791083,
+    "nuisance_permutation": 0.06550391473353787,
+    "reset_history": 0.05936522305478696,
+    "shuffle_feedback": 0.06388408962755418
+  },
+  "arms": {
+    "delete_weights": {
+      "db_sha256": "e9d6e40c279efe1a9d0481d03fb3cbdf93dd1109538d57056bbb87b3027270ad",
+      "fresh_recovery_match": true,
+      "trace_hash": "683719e36ed334757046a17ffc71e0cd862cdcf59aa920128d7920cc1d17ee3f"
+    },
+    "freeze_updates": {
+      "db_sha256": "d861c74a30f770257b9871a76427bd162e4c2ae3bcd3c7958f3f2b98b520c221",
+      "fresh_recovery_match": true,
+      "trace_hash": "553671738c8135ec7cf6644d542e5cc6ee622581c017556db82f71da956faffb"
+    },
+    "mechanism_intervention": {
+      "db_sha256": "a39d973eebbe4bc968574dd07afcf30ed907cf3e558f7abe18c91aee76b4fb6f",
+      "fresh_recovery_match": true,
+      "trace_hash": "89b41e8798e3a9d2e1ad1206509700ac1f87b5abc7e57c3635929590280637e7"
+    },
+    "nuisance_permutation": {
+      "db_sha256": "0aedc1b2c5a5da890404830dfea43ebb3b03110ffadf8f382df12515f41dff10",
+      "fresh_recovery_match": true,
+      "trace_hash": "4fcfd546066739c46ae256749d6bafbbf6a3e3128bf65f3234d7cc7deaaa6cff"
+    },
+    "reset_history": {
+      "db_sha256": "6b0cbf20764a8e1a6dc14e89a61649adcb7fb1a3d1e99b2e83903f446dda3deb",
+      "fresh_recovery_match": true,
+      "trace_hash": "7bd683c0a0d74695904ee00ff8d76af71f935847ed2f3d2ec2bc772c4101a1b7"
+    },
+    "shuffle_feedback": {
+      "db_sha256": "735820c43c9a0081a415e54a6f2cf8b4ce857052d4c9c80a442e19884a135622",
+      "fresh_recovery_match": true,
+      "trace_hash": "1cc7c2bbd2e7e3833e661e2e9fe7ed6196387de27e9f1a61ec90458818814ac3"
+    }
+  },
+  "candidate_gain": -0.005557119923812637,
+  "canonical_candidate_mse": 0.06179930582177606,
+  "freeze_update_gain_destruction": 0.0,
+  "history_reset_relative_damage": -0.0393868949597717,
+  "real_rerun": true,
+  "schema_version": "ego.causal_sprout.ablation.v1",
+  "strongest_invalidating_control_mse": 0.056242185897963426
+}

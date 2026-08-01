@@ -1,0 +1,28 @@
+{
+  "correlation_reversal": {
+    "effect_sign_accuracy": 0.5600961538461539,
+    "heldout_correlation_probability": 0.1
+  },
+  "feature_and_glyph_permutation": {
+    "comparison_count": 208,
+    "effect_sign_accuracy": 0.5384615384615384,
+    "glyph_commitments_present": true
+  },
+  "learner_received_hidden_truth": false,
+  "local_mechanism_shift": {
+    "comparison_count": 64,
+    "effect_sign_accuracy": 0.484375
+  },
+  "mechanism_intervention": {
+    "comparison_count": 416,
+    "effect_sign_accuracy": 0.5600961538461539,
+    "paired_nuisance_held_equal": true
+  },
+  "nuisance_only": {
+    "change_to_effect_range_ratio": 0.0751081990929928,
+    "mean_absolute_prediction_change": 0.045064919455795674,
+    "paired_other_state_held_equal": true,
+    "true_causal_effect_range": 0.6
+  },
+  "paired_context_rows": 208
+}

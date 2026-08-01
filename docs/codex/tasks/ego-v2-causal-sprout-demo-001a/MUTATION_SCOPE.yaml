@@ -1,0 +1,40 @@
+task_id: EGO-V2-CAUSAL-SPROUT-DEMO-001A
+base_head: 144782376baf74c4e01519b9cf019d949e3d7f2c
+branch: codex/ego-v2-causal-sprout-demo-001a
+scope_kind: bounded_local_v2_product_demo
+allow:
+  - docs/codex/tasks/EGO-V2-CAUSAL-SPROUT-DEMO-001A.md
+  - docs/codex/tasks/ego-v2-causal-sprout-demo-001a/COLLISION_RECORD.md
+  - docs/codex/tasks/ego-v2-causal-sprout-demo-001a/MUTATION_SCOPE.yaml
+  - labs/ego_life_playground_v0/causal_sprout.py
+  - labs/ego_life_playground_v0/controller.py
+  - labs/ego_life_playground_v0/store.py
+  - labs/ego_life_playground_v0/__init__.py
+  - scripts/run_ego_causal_sprout_demo.py
+  - scripts/codex/verify_ego_v2_causal_sprout_demo_001a.py
+  - scripts/codex/tests/test_verify_ego_v2_causal_sprout_demo_001a.py
+  - tests/test_ego_v2_causal_sprout_demo_001a.py
+  - artifacts/EGO-V2-CAUSAL-SPROUT-DEMO-001A/**
+deny:
+  - D:/Project/AIProject/MyProject/intelligence-theory-lab/**
+  - D:/Project/AIProject/MyProject/joi-demo/**
+  - docs/codex/tasks/*001C*
+  - docs/codex/tasks/*001D*
+  - docs/codex/tasks/*001E*
+  - docs/codex/tasks/*001F*
+  - docs/codex/tasks/*001G*
+  - docs/codex/tasks/*001H*
+  - docs/codex/tasks/*001I*
+  - artifacts/*001C*/**
+  - artifacts/*001D*/**
+  - artifacts/*001E*/**
+  - artifacts/*001F*/**
+  - artifacts/*001G*/**
+  - artifacts/*001H*/**
+  - artifacts/*001I*/**
+  - artifacts/ROUTE-STATE-MACHINE-001A/**
+publication:
+  commit_local: true
+  push: false
+  tag: false
+  remote_anchor: false

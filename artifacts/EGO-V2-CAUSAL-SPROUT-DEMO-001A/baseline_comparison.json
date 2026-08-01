@@ -1,0 +1,24 @@
+{
+  "action_prediction_count": 624,
+  "baseline_interventional_mse": {
+    "bayesian_causal_reference": 0.028839277044516602,
+    "constant_zero": 0.060208333333333336,
+    "feature_action_lookup": 0.07508798023097012,
+    "feed_forward_no_history": 0.0936560829588935,
+    "nearest_neighbour": 0.0957822516025641,
+    "no_update_neural": 0.061211666015629974,
+    "random_policy": 0.060208333333333336,
+    "shuffled_feedback": 0.0718240777541072,
+    "surface_only": 0.056242185897963426
+  },
+  "bayesian_reference_is_upper_bound_only": true,
+  "candidate_interventional_mse": 0.06179930582177606,
+  "candidate_selected_action_mse": 0.07684950297097518,
+  "candidate_to_strongest_ratio": 1.098806969094241,
+  "equal_public_rows": true,
+  "ground_truth_oracle_is_evaluator_only": true,
+  "row_count": 208,
+  "schema_version": "ego.causal_sprout.baseline_comparison.v1",
+  "strongest_invalidating_control": "surface_only",
+  "strongest_invalidating_control_mse": 0.056242185897963426
+}
