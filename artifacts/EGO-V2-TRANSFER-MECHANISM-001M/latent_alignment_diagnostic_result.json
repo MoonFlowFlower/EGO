@@ -1,0 +1,124 @@
+{
+  "action_budget": 96,
+  "candidate_id": "M1_PERMUTATION_INVARIANT_GRAMMAR",
+  "candidate_planner_called": false,
+  "candidate_state_used": false,
+  "early_gain_vs_scratch": -4.73525,
+  "evaluator_only": true,
+  "invalidated_in_row_diagnostic_note": "The LATENT_ALIGNMENT_UPPER_BOUND arms embedded in both search runs injected alignment into candidate state and are invalid. This standalone rerun is the only valid alignment upper bound.",
+  "mean_early_deficit_auc": 21.074875,
+  "mean_late_deficit_auc": 19.37325,
+  "mean_total_deficit_auc": 40.448125,
+  "per_world": [
+    {
+      "early_deficit_auc": 19.994,
+      "late_deficit_auc": 5.222,
+      "opaque_context_id": "001m-search-0001",
+      "total_deficit_auc": 25.216
+    },
+    {
+      "early_deficit_auc": 22.712,
+      "late_deficit_auc": 23.984,
+      "opaque_context_id": "001m-search-0002",
+      "total_deficit_auc": 46.696
+    },
+    {
+      "early_deficit_auc": 28.188,
+      "late_deficit_auc": 29.484,
+      "opaque_context_id": "001m-search-0003",
+      "total_deficit_auc": 57.672
+    },
+    {
+      "early_deficit_auc": 18.136,
+      "late_deficit_auc": 9.918,
+      "opaque_context_id": "001m-search-0004",
+      "total_deficit_auc": 28.054
+    },
+    {
+      "early_deficit_auc": 22.122,
+      "late_deficit_auc": 0.128,
+      "opaque_context_id": "001m-search-0005",
+      "total_deficit_auc": 22.25
+    },
+    {
+      "early_deficit_auc": 19.408,
+      "late_deficit_auc": 12.728,
+      "opaque_context_id": "001m-search-0006",
+      "total_deficit_auc": 32.136
+    },
+    {
+      "early_deficit_auc": 23.788,
+      "late_deficit_auc": 12.46,
+      "opaque_context_id": "001m-search-0007",
+      "total_deficit_auc": 36.248
+    },
+    {
+      "early_deficit_auc": 24.748,
+      "late_deficit_auc": 24.54,
+      "opaque_context_id": "001m-search-0008",
+      "total_deficit_auc": 49.288
+    },
+    {
+      "early_deficit_auc": 23.928,
+      "late_deficit_auc": 27.72,
+      "opaque_context_id": "001m-search-0009",
+      "total_deficit_auc": 51.648
+    },
+    {
+      "early_deficit_auc": 25.076,
+      "late_deficit_auc": 27.268,
+      "opaque_context_id": "001m-search-0010",
+      "total_deficit_auc": 52.344
+    },
+    {
+      "early_deficit_auc": 8.644,
+      "late_deficit_auc": 28.212,
+      "opaque_context_id": "001m-search-0011",
+      "total_deficit_auc": 36.856
+    },
+    {
+      "early_deficit_auc": 18.876,
+      "late_deficit_auc": 22.118,
+      "opaque_context_id": "001m-search-0012",
+      "total_deficit_auc": 40.994
+    },
+    {
+      "early_deficit_auc": 22.86,
+      "late_deficit_auc": 8.65,
+      "opaque_context_id": "001m-search-0013",
+      "total_deficit_auc": 31.51
+    },
+    {
+      "early_deficit_auc": 8.078,
+      "late_deficit_auc": 16.684,
+      "opaque_context_id": "001m-search-0014",
+      "total_deficit_auc": 24.762
+    },
+    {
+      "early_deficit_auc": 28.368,
+      "late_deficit_auc": 32.338,
+      "opaque_context_id": "001m-search-0015",
+      "total_deficit_auc": 60.706
+    },
+    {
+      "early_deficit_auc": 22.272,
+      "late_deficit_auc": 28.518,
+      "opaque_context_id": "001m-search-0016",
+      "total_deficit_auc": 50.79
+    }
+  ],
+  "public_capability_gate_input": false,
+  "row_recomputation_target": {
+    "arms": {},
+    "private_diagnostic_row_count": 1536,
+    "public_row_count": 0,
+    "row_count": 1536,
+    "trajectories": []
+  },
+  "rows_path": "artifacts/EGO-V2-TRANSFER-MECHANISM-001M/latent_alignment_diagnostic_rows.jsonl",
+  "rows_sha256": "0f9d0e108706ee8b26b577b7ce3ad3a69101ce315d247af54abb74ac04ac8d5b",
+  "schema_version": "ego.v2.transfer_mechanism.latent_alignment_diagnostic.v1",
+  "split": "evaluator_only_diagnostic",
+  "task_id": "EGO-V2-TRANSFER-MECHANISM-001M",
+  "world_count": 16
+}

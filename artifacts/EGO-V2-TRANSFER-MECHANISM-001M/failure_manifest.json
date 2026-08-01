@@ -1,0 +1,131 @@
+{
+  "candidate_count": 3,
+  "execution_incidents": [
+    {
+      "incident_id": "001M-EXECUTION-INCIDENT-001",
+      "resolution": "paired result/rows resume audit",
+      "scientific_rows_invalidated": false
+    },
+    {
+      "incident_id": "001M-WIRING-AUDIT-001",
+      "resolution": "TDD wiring fix and rerun of same three candidates under new output IDs",
+      "scientific_rows_invalidated": true
+    }
+  ],
+  "failed_candidates": [
+    {
+      "candidate_id": "M1_PERMUTATION_INVARIANT_GRAMMAR",
+      "early_transfer_fraction": -0.084769587296,
+      "early_transfer_gain": -0.83675,
+      "failed_gates": [
+        "early_headroom_fraction",
+        "early_transfer_positive",
+        "no_transfer_removes_half_gain",
+        "positive_worlds",
+        "prior_contradiction_recovers",
+        "slow_reset_removes_half_gain"
+      ],
+      "failure_explanation": "Preregistered search gate failed after history-shuffle wiring fix; no qualification consumed.",
+      "gap_curve": {
+        "16": 0.207375,
+        "24": 0.149375,
+        "32": -0.032375,
+        "48": -0.83675,
+        "64": -1.650875,
+        "8": 0.0015,
+        "80": -2.550625,
+        "96": -3.906
+      },
+      "positive_world_count": 7,
+      "run_id": "history_shuffle_wiringfix"
+    },
+    {
+      "candidate_id": "M2_CONCENTRATION_ONLY",
+      "early_transfer_fraction": -0.179619334659,
+      "early_transfer_gain": -1.773,
+      "failed_gates": [
+        "early_headroom_fraction",
+        "early_transfer_positive",
+        "no_transfer_removes_half_gain",
+        "positive_worlds",
+        "prior_contradiction_recovers",
+        "slow_reset_removes_half_gain"
+      ],
+      "failure_explanation": "Preregistered search gate failed after history-shuffle wiring fix; no qualification consumed.",
+      "gap_curve": {
+        "16": 0.24525,
+        "24": -0.050375,
+        "32": -0.42675,
+        "48": -1.773,
+        "64": -2.677,
+        "8": 0.06125,
+        "80": -3.854375,
+        "96": -5.579875
+      },
+      "positive_world_count": 3,
+      "run_id": "history_shuffle_wiringfix"
+    },
+    {
+      "candidate_id": "M3_ACQUISITION_POLICY_ONLY",
+      "early_transfer_fraction": -0.177529854243,
+      "early_transfer_gain": -1.752375,
+      "failed_gates": [
+        "early_headroom_fraction",
+        "early_transfer_positive",
+        "no_transfer_removes_half_gain",
+        "positive_worlds",
+        "prior_contradiction_recovers",
+        "slow_reset_removes_half_gain"
+      ],
+      "failure_explanation": "Preregistered search gate failed after history-shuffle wiring fix; no qualification consumed.",
+      "gap_curve": {
+        "16": 0.111,
+        "24": -0.062875,
+        "32": -0.169875,
+        "48": -1.752375,
+        "64": -3.336,
+        "8": 0.0015,
+        "80": -4.289875,
+        "96": -5.577875
+      },
+      "positive_world_count": 3,
+      "run_id": "history_shuffle_wiringfix"
+    }
+  ],
+  "invalidated_attempts_preserved": [
+    {
+      "candidate_id": "M1_PERMUTATION_INVARIANT_GRAMMAR",
+      "invalidated_reason": "HISTORY_SHUFFLE_FAST_META_PAIRING_BYPASS",
+      "rows_path": "artifacts/EGO-V2-TRANSFER-MECHANISM-001M/search_dev_m1_permutation_invariant_grammar_rows.jsonl",
+      "run_id": "pre_wiringfix"
+    },
+    {
+      "candidate_id": "M2_CONCENTRATION_ONLY",
+      "invalidated_reason": "HISTORY_SHUFFLE_FAST_META_PAIRING_BYPASS",
+      "rows_path": "artifacts/EGO-V2-TRANSFER-MECHANISM-001M/search_dev_m2_concentration_only_rows.jsonl",
+      "run_id": "pre_wiringfix"
+    },
+    {
+      "candidate_id": "M3_ACQUISITION_POLICY_ONLY",
+      "invalidated_reason": "HISTORY_SHUFFLE_FAST_META_PAIRING_BYPASS",
+      "rows_path": "artifacts/EGO-V2-TRANSFER-MECHANISM-001M/search_dev_m3_acquisition_policy_only_rows.jsonl",
+      "run_id": "pre_wiringfix"
+    }
+  ],
+  "invalidated_diagnostics": [
+    {
+      "diagnostic": "embedded LATENT_ALIGNMENT_UPPER_BOUND arms in both search runs",
+      "reason": "alignment was injected into candidate state; excluded from gates and superseded by evaluator-owned reference"
+    },
+    {
+      "diagnostic": "latent_alignment_diagnostic_result.json",
+      "reason": "candidate-free external geometry planner was a poor upper-bound implementation; preserved as a failed diagnostic attempt"
+    }
+  ],
+  "qualification_consumed": false,
+  "schema_version": "ego.v2.transfer_mechanism.failures.v2",
+  "task_id": "EGO-V2-TRANSFER-MECHANISM-001M",
+  "terminal_verdict": "WITHIN_WORLD_LEARNING_ESTABLISHED_COMPOSITIONAL_TRANSFER_STILL_ABSENT",
+  "thresholds_lowered": false,
+  "valid_evaluator_only_reference": "latent_alignment_reference_result.json"
+}

@@ -1,0 +1,52 @@
+{
+  "evaluator_only_diagnostic_result_reports": [
+    "artifacts/EGO-V2-TRANSFER-MECHANISM-001M/latent_alignment_diagnostic_result.json",
+    "artifacts/EGO-V2-TRANSFER-MECHANISM-001M/latent_alignment_reference_result.json"
+  ],
+  "independent_verifier_passed": true,
+  "latent_alignment_excluded_from_public_recomputation": true,
+  "leakage_positive_controls": {
+    "future": true,
+    "future_outcome": true,
+    "layout_id": true,
+    "mapping": true,
+    "oracle_action": true,
+    "packet": true,
+    "pose": true,
+    "private_pose": true,
+    "seed": true,
+    "split": true,
+    "token_mapping": true,
+    "verdict": true,
+    "world_id": true,
+    "world_seed": true
+  },
+  "packet_commitment": {
+    "packet_sha256_match": true,
+    "passed": true
+  },
+  "producer_imported_by_verifier": false,
+  "protected_predecessors": {
+    "checked_file_count": 41,
+    "findings": [],
+    "passed": true
+  },
+  "schema_version": "ego.v2.transfer_mechanism.leakage_tamper.v2",
+  "scientific_result_reports": [
+    "artifacts/EGO-V2-TRANSFER-MECHANISM-001M/search_dev_history_shuffle_wiringfix_m1_permutation_invariant_grammar_result.json",
+    "artifacts/EGO-V2-TRANSFER-MECHANISM-001M/search_dev_history_shuffle_wiringfix_m2_concentration_only_result.json",
+    "artifacts/EGO-V2-TRANSFER-MECHANISM-001M/search_dev_history_shuffle_wiringfix_m3_acquisition_policy_only_result.json"
+  ],
+  "superseded_diagnostic_result_reports": [
+    "artifacts/EGO-V2-TRANSFER-MECHANISM-001M/search_dev_m1_permutation_invariant_grammar_result.json",
+    "artifacts/EGO-V2-TRANSFER-MECHANISM-001M/search_dev_m2_concentration_only_result.json",
+    "artifacts/EGO-V2-TRANSFER-MECHANISM-001M/search_dev_m3_acquisition_policy_only_result.json"
+  ],
+  "tamper_positive_controls": {
+    "row_value_tamper_detected": true,
+    "state_hash_tamper_detected": true,
+    "summary_tamper_detected": true
+  },
+  "task_id": "EGO-V2-TRANSFER-MECHANISM-001M",
+  "valid_latent_alignment_reference_report": "artifacts/EGO-V2-TRANSFER-MECHANISM-001M/latent_alignment_reference_result.json"
+}

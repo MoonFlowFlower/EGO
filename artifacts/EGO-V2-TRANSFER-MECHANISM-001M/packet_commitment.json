@@ -1,0 +1,8 @@
+{
+  "created_before_search_results": true,
+  "packet_path": "artifacts/EGO-V2-TRANSFER-MECHANISM-001M/packet_assignments.json",
+  "packet_sha256": "589131e17b36a2a75145235d31a535d28fcd2fade093a594c9ea102bd6308c08",
+  "qualification_consumed": false,
+  "schema_version": "ego.v2.transfer_mechanism.packet_commitment.v1",
+  "task_id": "EGO-V2-TRANSFER-MECHANISM-001M"
+}

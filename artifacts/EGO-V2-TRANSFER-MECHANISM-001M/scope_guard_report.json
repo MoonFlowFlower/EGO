@@ -1,0 +1,17 @@
+{
+  "base_head": "b94c61b6f74be9f2f86a67e74437e0850d82be39",
+  "changed_status_paths": [
+    "artifacts/EGO-V2-TRANSFER-MECHANISM-001M/",
+    "docs/codex/tasks/EGO-V2-TRANSFER-MECHANISM-001M.md",
+    "docs/codex/tasks/ego-v2-transfer-mechanism-001m/",
+    "scripts/codex/run_ego_v2_transfer_mechanism_001m.py",
+    "scripts/codex/tests/test_run_ego_v2_transfer_mechanism_001m.py",
+    "scripts/codex/tests/test_verify_ego_v2_transfer_mechanism_001m.py",
+    "scripts/codex/verify_ego_v2_transfer_mechanism_001m.py"
+  ],
+  "passed": true,
+  "protected_tracked_paths_unchanged": true,
+  "schema_version": "ego.v2.transfer_mechanism.scope_guard.v2",
+  "task_id": "EGO-V2-TRANSFER-MECHANISM-001M",
+  "unexpected_paths": []
+}

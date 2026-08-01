@@ -1,0 +1,10 @@
+{
+  "candidate_freeze_exists": false,
+  "original_001j_heldout_consumed": false,
+  "product_001l_qualification_consumed": false,
+  "qualification_consumed": false,
+  "qualification_result_exists": false,
+  "schema_version": "ego.v2.transfer_mechanism.qualification_status.v1",
+  "search_authorized_qualification": false,
+  "task_id": "EGO-V2-TRANSFER-MECHANISM-001M"
+}

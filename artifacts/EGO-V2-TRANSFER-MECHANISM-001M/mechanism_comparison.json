@@ -1,0 +1,152 @@
+{
+  "candidate_count": 3,
+  "comparisons": [
+    {
+      "candidate_id": "M1_PERMUTATION_INVARIANT_GRAMMAR",
+      "capped_vs_uncapped": {
+        "cap_made_transfer_positive": false,
+        "early_deficit_auc_improvement_from_cap": 1.179625,
+        "late_deficit_auc_improvement_from_cap": 1.164
+      },
+      "early_transfer_fraction": -0.084769587296,
+      "early_transfer_gain": -0.83675,
+      "embedded_search_latent_arm_valid": false,
+      "gap_curve": {
+        "16": 0.207375,
+        "24": 0.149375,
+        "32": -0.032375,
+        "48": -0.83675,
+        "64": -1.650875,
+        "8": 0.0015,
+        "80": -2.550625,
+        "96": -3.906
+      },
+      "gap_patterns": {
+        "initially_negative_then_recovered": 0,
+        "nonnegative_terminal": 8,
+        "persistent_negative": 8
+      },
+      "gates": {
+        "cross_world_mean_never_applied": true,
+        "early_headroom_fraction": false,
+        "early_transfer_positive": false,
+        "history_shuffle_damages_learning": true,
+        "no_transfer_removes_half_gain": false,
+        "positive_worlds": false,
+        "prior_contradiction_recovers": false,
+        "slow_reset_removes_half_gain": false,
+        "within_world_effect_learning": true
+      },
+      "latent_alignment_early_gain_vs_scratch": 1.498375,
+      "latent_alignment_evaluator_only": true,
+      "latent_alignment_reference_path": "artifacts/EGO-V2-TRANSFER-MECHANISM-001M/latent_alignment_reference_result.json",
+      "mechanism": "permutation_invariant_effect_grammar",
+      "passed": false,
+      "positive_world_count": 7,
+      "scratch_early_deficit_auc": 16.339625,
+      "scratch_late_deficit_auc": 8.69025,
+      "transfer_early_deficit_auc": 17.176375,
+      "transfer_late_deficit_auc": 11.7595
+    },
+    {
+      "candidate_id": "M2_CONCENTRATION_ONLY",
+      "capped_vs_uncapped": {
+        "cap_made_transfer_positive": false,
+        "early_deficit_auc_improvement_from_cap": 10.053375,
+        "late_deficit_auc_improvement_from_cap": 19.2495
+      },
+      "early_transfer_fraction": -0.179619334659,
+      "early_transfer_gain": -1.773,
+      "embedded_search_latent_arm_valid": false,
+      "gap_curve": {
+        "16": 0.24525,
+        "24": -0.050375,
+        "32": -0.42675,
+        "48": -1.773,
+        "64": -2.677,
+        "8": 0.06125,
+        "80": -3.854375,
+        "96": -5.579875
+      },
+      "gap_patterns": {
+        "initially_negative_then_recovered": 1,
+        "nonnegative_terminal": 7,
+        "persistent_negative": 8
+      },
+      "gates": {
+        "cross_world_mean_never_applied": true,
+        "early_headroom_fraction": false,
+        "early_transfer_positive": false,
+        "history_shuffle_damages_learning": true,
+        "no_transfer_removes_half_gain": false,
+        "positive_worlds": false,
+        "prior_contradiction_recovers": false,
+        "slow_reset_removes_half_gain": false,
+        "within_world_effect_learning": true
+      },
+      "latent_alignment_early_gain_vs_scratch": 1.498375,
+      "latent_alignment_evaluator_only": true,
+      "latent_alignment_reference_path": "artifacts/EGO-V2-TRANSFER-MECHANISM-001M/latent_alignment_reference_result.json",
+      "mechanism": "neutral_concentration_only",
+      "passed": false,
+      "positive_world_count": 3,
+      "scratch_early_deficit_auc": 16.339625,
+      "scratch_late_deficit_auc": 8.69025,
+      "transfer_early_deficit_auc": 18.112625,
+      "transfer_late_deficit_auc": 12.497125
+    },
+    {
+      "candidate_id": "M3_ACQUISITION_POLICY_ONLY",
+      "capped_vs_uncapped": {
+        "cap_made_transfer_positive": false,
+        "early_deficit_auc_improvement_from_cap": -0.517125,
+        "late_deficit_auc_improvement_from_cap": 1.302
+      },
+      "early_transfer_fraction": -0.177529854243,
+      "early_transfer_gain": -1.752375,
+      "embedded_search_latent_arm_valid": false,
+      "gap_curve": {
+        "16": 0.111,
+        "24": -0.062875,
+        "32": -0.169875,
+        "48": -1.752375,
+        "64": -3.336,
+        "8": 0.0015,
+        "80": -4.289875,
+        "96": -5.577875
+      },
+      "gap_patterns": {
+        "initially_negative_then_recovered": 1,
+        "nonnegative_terminal": 5,
+        "persistent_negative": 10
+      },
+      "gates": {
+        "cross_world_mean_never_applied": true,
+        "early_headroom_fraction": false,
+        "early_transfer_positive": false,
+        "history_shuffle_damages_learning": true,
+        "no_transfer_removes_half_gain": false,
+        "positive_worlds": false,
+        "prior_contradiction_recovers": false,
+        "slow_reset_removes_half_gain": false,
+        "within_world_effect_learning": true
+      },
+      "latent_alignment_early_gain_vs_scratch": 1.498375,
+      "latent_alignment_evaluator_only": true,
+      "latent_alignment_reference_path": "artifacts/EGO-V2-TRANSFER-MECHANISM-001M/latent_alignment_reference_result.json",
+      "mechanism": "safe_acquisition_policy_only",
+      "passed": false,
+      "positive_world_count": 3,
+      "scratch_early_deficit_auc": 16.339625,
+      "scratch_late_deficit_auc": 8.69025,
+      "transfer_early_deficit_auc": 18.092,
+      "transfer_late_deficit_auc": 12.51575
+    }
+  ],
+  "conclusion": "No legal-public transferable statistic produced stable positive transfer. Confidence capping reduced harm for M1/M2 but did not cross zero. The corrected evaluator-owned latent-alignment reference gained 1.498375 early AUC versus scratch; it never entered candidate state and remains excluded from learner/product claims.",
+  "schema_version": "ego.v2.transfer_mechanism.comparison.v2",
+  "scientific_search_run_id": "history_shuffle_wiringfix",
+  "superseded_run_preserved": "search_results.json",
+  "task_id": "EGO-V2-TRANSFER-MECHANISM-001M",
+  "terminal_verdict": "WITHIN_WORLD_LEARNING_ESTABLISHED_COMPOSITIONAL_TRANSFER_STILL_ABSENT"
+}

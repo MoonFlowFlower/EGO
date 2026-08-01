@@ -1,0 +1,25 @@
+task_id: EGO-V2-TRANSFER-MECHANISM-001M
+base_head: b94c61b6f74be9f2f86a67e74437e0850d82be39
+allowed_paths:
+  - docs/codex/tasks/EGO-V2-TRANSFER-MECHANISM-001M.md
+  - docs/codex/tasks/ego-v2-transfer-mechanism-001m/
+  - scripts/codex/run_ego_v2_transfer_mechanism_001m.py
+  - scripts/codex/verify_ego_v2_transfer_mechanism_001m.py
+  - scripts/codex/tests/test_run_ego_v2_transfer_mechanism_001m.py
+  - scripts/codex/tests/test_verify_ego_v2_transfer_mechanism_001m.py
+  - artifacts/EGO-V2-TRANSFER-MECHANISM-001M/
+protected_paths:
+  - artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/
+  - artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/
+  - labs/ego_life_playground_v0/homeostatic_transfer.py
+  - labs/ego_life_playground_v0/engine.py
+  - labs/ego_life_playground_v0/microworld.py
+  - artifacts/ROUTE-STATE-MACHINE-001A/
+  - docs/ACTIVE_CONTEXT_PACK.md
+forbidden_operations:
+  - consume_001l_product_qualification_without_search_gate
+  - consume_original_001j_heldout
+  - change_observation_or_action_or_world_grammar
+  - enable_llm_network_autostart_background_dispatch
+  - push
+  - tag

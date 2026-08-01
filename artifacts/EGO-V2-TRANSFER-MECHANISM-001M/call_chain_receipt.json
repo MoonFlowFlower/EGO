@@ -1,0 +1,32 @@
+{
+  "all_public_rows_clean": true,
+  "candidate_public_input_fields": [
+    "observation",
+    "organism",
+    "last_action",
+    "last_delta"
+  ],
+  "canonical_product_source_modified": false,
+  "cross_world_effect_mean_applied": false,
+  "default_product_mechanism": "within_world_public_bayesian_posterior",
+  "embedded_search_latent_arms_valid": false,
+  "history_shuffle_fast_meta_pairing": "uses canonical core update receipt updated_token",
+  "invalidated_diagnostic_search_preserved": "search_results.json",
+  "ordered_calls": [
+    "homeostatic_transfer.plan_action",
+    "microworld.transition_world",
+    "engine.compute_actual_delta",
+    "engine.compute_metabolism_ledger",
+    "terminal decision from organism energy",
+    "homeostatic_transfer.update_after_transition"
+  ],
+  "schema_version": "ego.v2.transfer_mechanism.call_chain_receipt.v1",
+  "scientific_search_run_id": "history_shuffle_wiringfix",
+  "task_id": "EGO-V2-TRANSFER-MECHANISM-001M",
+  "valid_latent_alignment_reference": {
+    "candidate_state_used": false,
+    "candidate_wrapper_called": false,
+    "early_gain_vs_scratch": 1.498375,
+    "path": "latent_alignment_reference_result.json"
+  }
+}

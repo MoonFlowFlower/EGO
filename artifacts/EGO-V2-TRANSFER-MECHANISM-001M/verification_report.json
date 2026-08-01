@@ -1,0 +1,28 @@
+{
+  "environment": {
+    "numpy": "2.2.6",
+    "python": "3.13.7"
+  },
+  "git_diff_check": "pass",
+  "history_shuffle_wiring_positive_control": "pass",
+  "independent_row_recomputation": true,
+  "latent_alignment_candidate_isolation_positive_control": "pass",
+  "leakage_tamper_positive_controls": true,
+  "original_001j_heldout_consumed": false,
+  "product_001l_qualification_consumed": false,
+  "protected_predecessor_audit": true,
+  "py_compile": "pass",
+  "qualification_consumed": false,
+  "route_convergence": "pass",
+  "schema_version": "ego.v2.transfer_mechanism.verification_closeout.v2",
+  "scientific_result_report_count": 3,
+  "scope_guard": true,
+  "task_id": "EGO-V2-TRANSFER-MECHANISM-001M",
+  "tests": {
+    "command": "python -m pytest [homeostatic runtime, microworld, 001L, 001M, product-axis targeted suites] -q",
+    "failed": 0,
+    "passed": 63
+  },
+  "valid_latent_alignment_reference_report": "artifacts/EGO-V2-TRANSFER-MECHANISM-001M/latent_alignment_reference_result.json",
+  "verdict": "pass"
+}

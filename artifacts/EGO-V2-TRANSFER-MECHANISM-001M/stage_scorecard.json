@@ -1,0 +1,38 @@
+{
+  "candidate_results": {
+    "M1_PERMUTATION_INVARIANT_GRAMMAR": {
+      "early_transfer_gain": -0.83675,
+      "passed": false,
+      "positive_world_count": 7
+    },
+    "M2_CONCENTRATION_ONLY": {
+      "early_transfer_gain": -1.773,
+      "passed": false,
+      "positive_world_count": 3
+    },
+    "M3_ACQUISITION_POLICY_ONLY": {
+      "early_transfer_gain": -1.752375,
+      "passed": false,
+      "positive_world_count": 3
+    }
+  },
+  "current_stage_goal": "identify which public-history statistic is transferable",
+  "decision_gate": "search pass authorizes exactly one new qualification",
+  "independent_verification_passed": true,
+  "original_001j_heldout_consumed": false,
+  "product_001l_qualification_consumed": false,
+  "qualification_consumed": false,
+  "schema_version": "ego.v2.transfer_mechanism.scorecard.v1",
+  "search_run_id": "history_shuffle_wiringfix",
+  "selected_candidate": null,
+  "stage_success_criteria": {
+    "early_headroom_recovery_fraction": 0.05,
+    "effect_sign_accuracy": 0.8,
+    "positive_worlds": 12,
+    "slow_reset_gain_elimination_fraction": 0.5,
+    "world_count": 16
+  },
+  "status": "completed_bounded_negative_after_wiring_audit",
+  "task_id": "EGO-V2-TRANSFER-MECHANISM-001M",
+  "terminal_verdict": "WITHIN_WORLD_LEARNING_ESTABLISHED_COMPOSITIONAL_TRANSFER_STILL_ABSENT"
+}

@@ -1,0 +1,16 @@
+{
+  "claim_ceiling": "Benchmark-local dev-only transfer mechanism evidence only; not general transfer or electronic life.",
+  "dialogue_or_llm_enabled": false,
+  "invalidated_diagnostic_search_preserved": "search_results.json",
+  "original_001j_heldout_consumed": false,
+  "product_001l_qualification_consumed": false,
+  "product_default": "within_world_public_bayesian_posterior",
+  "qualification_consumed": false,
+  "qualification_passed": false,
+  "schema_version": "ego.v2.transfer_mechanism.campaign.v1",
+  "search_authorized_qualification": false,
+  "search_run_id": "history_shuffle_wiringfix",
+  "selected_candidate": null,
+  "task_id": "EGO-V2-TRANSFER-MECHANISM-001M",
+  "verdict": "WITHIN_WORLD_LEARNING_ESTABLISHED_COMPOSITIONAL_TRANSFER_STILL_ABSENT"
+}

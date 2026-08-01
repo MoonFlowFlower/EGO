@@ -1,0 +1,33 @@
+{
+  "private_fields_received": false,
+  "receipt_chain_hashes": [
+    "d7a83a759ed8cd621a192bb3d91b422819c438976d38cd1e56dc8c7f036be550",
+    "caf783fad6b249b1a32193f867a8d62af89e6dd893e3b85079f7571f0f78c95f",
+    "bc2b1876dbcfb50fd558eedd93d7dfa518dda3ae9daa4a0dac4c029b0a957d86",
+    "ccfa904cc1dcda7bd79ce3a7c03137ac915554136b6da0fca217940a2b0b7142",
+    "630d0221ab2d9ff9e9d70579c9ffa4040a158795efd1500214059100bc07e782",
+    "c075215d39614585b46b2d064f21eb33c43e9d63a7b72eafb34e1cb8e9292255",
+    "c0bf6902583749fda58fa43018ed032e563f4f837c54f5e699041d9444df4ee5",
+    "02dc674569b6c39e6182c4034f151818facfbdc3207f09e66d74df93d5499e31",
+    "59123d40cf338087402624f30587a87377eeaefcf9c9c068f65dfa2965e33db0",
+    "7f5cbd5caa492f1bf2b22c272d82ecd4a796caae1b8b1685fd88f33829f55f66",
+    "a31a66806af22d8e7c7656793c4898f16462e05f5435ab1038dab815ad443840",
+    "a11a453184f92ddac062f69dfe205a9e424b71d25bab29079f9f2917b38e6f42"
+  ],
+  "receipt_counts": [
+    96,
+    96,
+    96,
+    96,
+    96,
+    96,
+    96,
+    96,
+    96,
+    96,
+    96,
+    96
+  ],
+  "schema_version": "ego.v2.transfer_mechanism.training_receipts.v1",
+  "world_count": 12
+}
