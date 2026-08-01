@@ -22,7 +22,7 @@ PLAN_SCHEMA_VERSION = "ego.life_playground.homeostatic_transfer.plan.v2"
 UPDATE_SCHEMA_VERSION = "ego.life_playground.homeostatic_transfer.update.v2"
 MODES = ("off", "public_bayes")
 DRIVE_MODES = ("canonical", "off")
-POSTERIOR_MODES = ("canonical", "ablated")
+POSTERIOR_MODES = ("canonical", "two_timescale", "ablated")
 FEEDBACK_MODES = ("canonical", "shuffle")
 PUBLIC_INPUT_FIELDS = ("observation", "organism", "last_action", "last_delta")
 PUBLIC_ORGANISM_FIELDS = ("energy", "safety")
@@ -55,6 +55,9 @@ def hyperparameters() -> dict[str, Any]:
         "known_uncertainty_scale": 0.05,
         "terminal_risk_scale": 0.50,
         "default_mode": "off",
+        "default_posterior_mode": "canonical",
+        "two_timescale_qualification_consumed": False,
+        "two_timescale_transfer_gate_passed": False,
         "neural": False,
     }
 
@@ -461,14 +464,16 @@ def _predictions(
             if row is None
             else _prediction_from_row(row, "slow_action_consequence")
         )
-    if posterior_mode == "canonical" and front in microworld.TOKENS:
+    if posterior_mode in {"canonical", "two_timescale"} and front in microworld.TOKENS:
         token_row = state["fast_state"]["token_stats"].get(front)
         if token_row is not None:
             result["interact"] = _prediction_from_row(
                 token_row, "current_world_token_interaction"
             )
-        else:
+        elif posterior_mode == "two_timescale":
             result["interact"] = _slow_effect_prior(state)
+        else:
+            result["interact"] = _empty_prediction()
     return result
 
 
@@ -486,12 +491,16 @@ def _token_prediction(
 ) -> dict[str, Any]:
     row = (
         state["fast_state"]["token_stats"].get(token)
-        if posterior_mode == "canonical"
+        if posterior_mode in {"canonical", "two_timescale"}
         else None
     )
     if row is not None:
         return _prediction_from_row(row, "current_world_token_interaction")
-    return _slow_effect_prior(state) if posterior_mode == "canonical" else _empty_prediction()
+    return (
+        _slow_effect_prior(state)
+        if posterior_mode == "two_timescale"
+        else _empty_prediction()
+    )
 
 
 def _token_value(
@@ -574,7 +583,7 @@ def plan_action(
                 "relative_y": relative_y,
                 "distance": distance,
                 "known": bool(
-                    posterior_mode == "canonical"
+                    posterior_mode in {"canonical", "two_timescale"}
                     and token in state["fast_state"]["token_stats"]
                 ),
                 "prediction_source": prediction["source"],

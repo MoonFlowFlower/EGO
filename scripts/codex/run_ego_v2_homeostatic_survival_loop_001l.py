@@ -249,7 +249,7 @@ def run_trajectory(
                 mode="public_bayes",
                 drive_mode="canonical",
                 posterior_mode=(
-                    "ablated" if arm == "POSTERIOR_ABLATION" else "canonical"
+                    "ablated" if arm == "POSTERIOR_ABLATION" else "two_timescale"
                 ),
                 action_costs=engine.ACTION_COSTS,
                 target_level=engine.TARGET_LEVEL,
@@ -794,7 +794,14 @@ def main(argv: list[str] | None = None) -> int:
     group.add_argument("--search-multiplicity", action="store_true")
     group.add_argument("--freeze", action="store_true")
     group.add_argument("--qualification", action="store_true")
-    group.add_argument("--verify", choices=("product_search", "product_qualification"))
+    group.add_argument(
+        "--verify",
+        choices=(
+            "product_search",
+            "product_search_multiplicity",
+            "product_qualification",
+        ),
+    )
     args = parser.parse_args(argv)
     if args.search:
         report = execute_packet(args.root, "search_dev", output_prefix="product_search")

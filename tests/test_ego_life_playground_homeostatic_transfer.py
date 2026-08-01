@@ -154,12 +154,28 @@ def test_slow_effect_prior_is_used_after_world_reset_and_slow_reset_ablates_it()
         drive_mode="canonical",
         action_costs=engine.ACTION_COSTS,
         target_level=engine.TARGET_LEVEL,
+        posterior_mode="two_timescale",
     )
     assert transfer_plan["predictions_by_action"]["interact"]["source"] == (
         "slow_effect_family_prior"
     )
     assert transfer_plan["slow_prior_applied"] is True
     assert transferred["fast_state"]["token_stats"] == {}
+
+    bounded_default = homeostatic_transfer.plan_action(
+        transferred,
+        public_input=payload,
+        sequence=1,
+        mode="public_bayes",
+        drive_mode="canonical",
+        action_costs=engine.ACTION_COSTS,
+        target_level=engine.TARGET_LEVEL,
+        posterior_mode="canonical",
+    )
+    assert bounded_default["predictions_by_action"]["interact"]["source"] == (
+        "unobserved_public_prior"
+    )
+    assert bounded_default["slow_prior_applied"] is False
 
     slow_reset = homeostatic_transfer.reset_slow_state(transferred)
     scratch_plan = homeostatic_transfer.plan_action(
@@ -170,6 +186,7 @@ def test_slow_effect_prior_is_used_after_world_reset_and_slow_reset_ablates_it()
         drive_mode="canonical",
         action_costs=engine.ACTION_COSTS,
         target_level=engine.TARGET_LEVEL,
+        posterior_mode="two_timescale",
     )
     assert scratch_plan["predictions_by_action"]["interact"]["source"] == (
         "unobserved_public_prior"
@@ -285,6 +302,7 @@ def test_slow_family_counts_once_per_token_and_preserves_learned_multiplicity() 
         drive_mode="canonical",
         action_costs=engine.ACTION_COSTS,
         target_level=engine.TARGET_LEVEL,
+        posterior_mode="two_timescale",
     )
     remaining = plan["predictions_by_action"]["interact"][
         "remaining_effect_signatures"
