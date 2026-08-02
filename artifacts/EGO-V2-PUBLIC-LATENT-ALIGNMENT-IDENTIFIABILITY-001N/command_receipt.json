@@ -1,0 +1,12 @@
+{
+  "commands": {
+    "freeze": "C:\\Users\\LEO\\.codex\\venvs\\ego-v2-numpy-2.2.6\\Scripts\\python.exe scripts/codex/run_ego_v2_public_latent_alignment_identifiability_001n.py --root . --freeze",
+    "frozen_full_run": "C:\\Users\\LEO\\.codex\\venvs\\ego-v2-numpy-2.2.6\\Scripts\\python.exe scripts/codex/run_ego_v2_public_latent_alignment_identifiability_001n.py --root . --run",
+    "independent_verify": "C:\\Users\\LEO\\.codex\\venvs\\ego-v2-numpy-2.2.6\\Scripts\\python.exe scripts/codex/verify_ego_v2_public_latent_alignment_identifiability_001n.py --root .",
+    "symbolic": "C:\\Users\\LEO\\.codex\\venvs\\ego-v2-numpy-2.2.6\\Scripts\\python.exe scripts/codex/run_ego_v2_public_latent_alignment_identifiability_001n.py --root . --symbolic-only"
+  },
+  "no_result_dependent_mutation_between_packets": true,
+  "schema_version": "ego.v2.public_latent_alignment.commands.v1",
+  "single_exact_candidate": true,
+  "task_id": "EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N"
+}

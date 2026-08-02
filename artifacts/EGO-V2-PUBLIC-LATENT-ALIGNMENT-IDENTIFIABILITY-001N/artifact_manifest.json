@@ -1,0 +1,165 @@
+{
+  "file_count_excluding_manifest": 31,
+  "files": [
+    {
+      "bytes": 930,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/call_chain_receipt.json",
+      "sha256": "f31661e218ca29036be7be3f8a9c1c0af0027bb31b8761a6860d353813e12646"
+    },
+    {
+      "bytes": 12774,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/campaign_report.json",
+      "sha256": "b126126b3995a930fd16d57f771a370f345e09035f346c76aa91c3537886afe1"
+    },
+    {
+      "bytes": 12763,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/campaign_report_preverification.json",
+      "sha256": "d81862723294baa245ebc45b32933d56992b9faa97978fbfe3e394ac05e0d665"
+    },
+    {
+      "bytes": 2483,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/candidate_freeze.json",
+      "sha256": "e9fb884e382acdefe05b5136c662e059a9d16e9c97b6689fa8ee20dcfb7de431"
+    },
+    {
+      "bytes": 233,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/claim_ceiling.txt",
+      "sha256": "da0b7d586e5b6459f9a7047416b8cd8e41329520c7ccf781f007147ed54e2c5a"
+    },
+    {
+      "bytes": 996,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/command_receipt.json",
+      "sha256": "2e22c5132bf9df0f51b9159a3a0dfa0898a1728dbb0d6e618a084f4b8a39ecb4"
+    },
+    {
+      "bytes": 2432,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/counterexample_report.json",
+      "sha256": "600e1d09660f2500aa076f01ff4f33c6a5678061ec57c93eaf0cd83494d3dafc"
+    },
+    {
+      "bytes": 3551,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/deficit_auc_curves.json",
+      "sha256": "ddb3b84badb89027f156fed8fa6f68253ebadda1319347de0944d68df0b8bb49"
+    },
+    {
+      "bytes": 2551,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/failure_manifest.json",
+      "sha256": "914ae3a70e00445612d65e078b18e47039ca5b03b612a95d8aba28c0bf5d19cd"
+    },
+    {
+      "bytes": 15457,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/identifiability_certificate.json",
+      "sha256": "6ef245d6efc38e91d998c8cccf86509b74eadbfbf5daa9884686a2f32a7214f1"
+    },
+    {
+      "bytes": 12432,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/independent_row_recomputation_report.json",
+      "sha256": "c0deb9e51b0514e8b7e049b53f62d930c1f49f492880cf637852a7f6101cf317"
+    },
+    {
+      "bytes": 408,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/leakage_tamper_report.json",
+      "sha256": "748679e5f4374a6c7836f931c174808bf360384ecc6ecb00941b95c35325ab94"
+    },
+    {
+      "bytes": 11258,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/packet_assignments.json",
+      "sha256": "0bf7b65738a7786fb07b989146e45f3551dad6301a9e93722427e8f979be54ce"
+    },
+    {
+      "bytes": 367,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/packet_commitment.json",
+      "sha256": "e727a7b00e1ba1f63e5247a47305afb74f8c58505296fbebb8364e972a799f39"
+    },
+    {
+      "bytes": 6626985,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/posterior_certificate_rows.jsonl",
+      "sha256": "782a24174e3fba166d1930bb6d5b8a1f3f7eab2624f03a045d433d20ee17eada"
+    },
+    {
+      "bytes": 579,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/protected_predecessor_trees.json",
+      "sha256": "37873cc33b089fd114268bc036d2a2718979bc33189534f098f4a447683b356f"
+    },
+    {
+      "bytes": 361,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/qualification_status.json",
+      "sha256": "7e6ddfacf8a5e708bfbe0e8405187ea9105c1c2544b36759fdfc24d197239d3c"
+    },
+    {
+      "bytes": 86219,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/replication_dev_result.json",
+      "sha256": "eced316b8cb539fbbc751b9423cc78554aadfbbf66995bc0c81a2291d97fcdc3"
+    },
+    {
+      "bytes": 35402245,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/replication_dev_rows.jsonl",
+      "sha256": "5547d32834f30d2e6209401d1b0e4980aa96e5fa4691bd64a33ed4552c7a85d8"
+    },
+    {
+      "bytes": 1321,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/result.json",
+      "sha256": "f5fb4ebbc0830d19b5a3836696c136a4a287f5e2c6b33eeb8920cb6045804816"
+    },
+    {
+      "bytes": 9142,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/route_validation_report.json",
+      "sha256": "0e719b4a42c65caa4e63f2d657b2223197b0b47ba3a185ddd1692e11c47a381d"
+    },
+    {
+      "bytes": 263,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/runtime_provenance.json",
+      "sha256": "13d94d7db29814b3838e58c952017f364d559c752ee523a3fa31ee2d50895772"
+    },
+    {
+      "bytes": 5022,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/scope_guard_report.json",
+      "sha256": "31e60d4d0e6e371149b34ad0b6751d9e2a2143aa7a93266037d9ae7aa354d599"
+    },
+    {
+      "bytes": 85421,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/search_dev_result.json",
+      "sha256": "96466d63dc44dd6800b7b55a044a595b755bdad18017b8dfeef4b07cbcd2f4e8"
+    },
+    {
+      "bytes": 35311758,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/search_dev_rows.jsonl",
+      "sha256": "264e05549a02112068fdc612105ac59ef1b147635ab4b87abc9cdc9a92e856ee"
+    },
+    {
+      "bytes": 1550,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/static_candidate_boundary_audit.json",
+      "sha256": "a4a58df1d450d91d0d14a55be940751d8002700a2657fb450d5a9862f2247f50"
+    },
+    {
+      "bytes": 2864,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/symbolic_identifiability_audit.json",
+      "sha256": "623e04d675c214b0eea3afb18023831d6bc12c9f132b64cced6cff37aacf3d87"
+    },
+    {
+      "bytes": 309,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/symbolic_stage_decision.json",
+      "sha256": "06d7f828ca1597f7dffebc7d4ee288577383fec6b4df75e3b6abdd683c3b9e70"
+    },
+    {
+      "bytes": 722,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/test_report.json",
+      "sha256": "0ac64c1cf3b098f9de7dfc0f231655dc303fd29772ddd91f8a3a4d2aad6995d4"
+    },
+    {
+      "bytes": 9006,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/trial_registry.jsonl",
+      "sha256": "ceca59ce8601feb6902d949c8dfffcf006bfca32cff9639f46f50fb805c7460a"
+    },
+    {
+      "bytes": 14317,
+      "path": "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/verification_report.json",
+      "sha256": "e69699f38132e07b37c402c1c7beb21ac94250a13f49f95e6e8f10bbf53628f1"
+    }
+  ],
+  "original_001j_heldout_consumed": false,
+  "qualification_consumed": false,
+  "schema_version": "ego.v2.public_latent_alignment.artifact_manifest.v1",
+  "task_id": "EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N",
+  "verdict": "PUBLIC_LATENT_ALIGNMENT_NOT_IDENTIFIABLE_OR_NOT_ECONOMIC_UNDER_CURRENT_GRAMMAR"
+}

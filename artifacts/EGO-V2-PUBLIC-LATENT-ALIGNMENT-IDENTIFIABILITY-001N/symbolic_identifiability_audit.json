@@ -1,0 +1,100 @@
+{
+  "classification": "DIRECT_INTERVENTION_IDENTIFIABLE",
+  "distinct_public_effect_count": 5,
+  "full_reference_run_economically_warranted": true,
+  "initial_entropy_bits": 6.906890595609,
+  "legal_mapping_count": 120,
+  "max_passive_equivalence_class_size": 120,
+  "minimum_distinct_direct_interactions": 4,
+  "optimistic_probe_cost_lower_bound": {
+    "assumptions": [
+      "all four probed tokens are already adjacent",
+      "no navigation actions",
+      "no death reset",
+      "deficit is measured after each direct interaction"
+    ],
+    "best_case_cumulative_deficit": 0.24,
+    "cannot_prove_actual_navigation_cost": true,
+    "interaction_count": 4,
+    "mean_over_orderings_cumulative_deficit": 1.27,
+    "worst_case_cumulative_deficit": 2.32
+  },
+  "original_001j_heldout_consumed": false,
+  "passive_counterexample": {
+    "classification": "PASSIVELY_UNIDENTIFIABLE",
+    "history_kind": "arbitrary_visual_navigation_without_interaction_feedback",
+    "likelihood_ratio_under_exchangeable_public_nuisance_family": 1.0,
+    "mapping_a": {
+      "v0": "resource",
+      "v1": "social",
+      "v2": "novelty",
+      "v3": "threat",
+      "v4": "shelter"
+    },
+    "mapping_b": {
+      "v0": "shelter",
+      "v1": "threat",
+      "v2": "novelty",
+      "v3": "social",
+      "v4": "resource"
+    },
+    "note": "SHA-derived seed/placement correlations are marginalized nuisance; seed lookup is forbidden.",
+    "posterior_survivors": 120
+  },
+  "passive_observation_information_gain_bits": 0.0,
+  "permanent_public_equivalence_classes": [],
+  "public_effect_deltas": {
+    "novelty": {
+      "energy": -0.018,
+      "safety": -0.02
+    },
+    "resource": {
+      "energy": 0.262,
+      "safety": 0.0
+    },
+    "shelter": {
+      "energy": -0.018,
+      "safety": 0.12
+    },
+    "social": {
+      "energy": -0.018,
+      "safety": 0.0
+    },
+    "threat": {
+      "energy": -0.018,
+      "safety": -0.18
+    }
+  },
+  "qualification_consumed": false,
+  "schema_version": "ego.v2.public_latent_alignment.symbolic_audit.v1",
+  "survivor_count_by_distinct_interactions": [
+    {
+      "distinct_interactions": 1,
+      "equivalent_mapping_count": 24,
+      "posterior_entropy_bits": 4.584962500721
+    },
+    {
+      "distinct_interactions": 2,
+      "equivalent_mapping_count": 6,
+      "posterior_entropy_bits": 2.584962500721
+    },
+    {
+      "distinct_interactions": 3,
+      "equivalent_mapping_count": 2,
+      "posterior_entropy_bits": 1.0
+    },
+    {
+      "distinct_interactions": 4,
+      "equivalent_mapping_count": 1,
+      "posterior_entropy_bits": 0.0
+    },
+    {
+      "distinct_interactions": 5,
+      "equivalent_mapping_count": 1,
+      "posterior_entropy_bits": 0.0
+    }
+  ],
+  "task_id": "EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N",
+  "world_grammar_changed": false,
+  "worst_case_distinct_direct_interactions": 4
+}

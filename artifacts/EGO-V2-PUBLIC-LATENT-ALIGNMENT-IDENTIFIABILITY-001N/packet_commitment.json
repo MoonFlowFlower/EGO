@@ -1,0 +1,8 @@
+{
+  "committed_before_results": true,
+  "original_001j_heldout_consumed": false,
+  "packet_assignments_sha256": "0bf7b65738a7786fb07b989146e45f3551dad6301a9e93722427e8f979be54ce",
+  "qualification_consumed": false,
+  "schema_version": "ego.v2.public_latent_alignment.packet_commitment.v1",
+  "task_id": "EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N"
+}

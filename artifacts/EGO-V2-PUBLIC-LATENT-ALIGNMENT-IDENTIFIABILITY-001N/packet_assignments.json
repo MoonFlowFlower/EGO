@@ -1,0 +1,430 @@
+{
+  "created_before_any_result": true,
+  "original_001j_heldout": false,
+  "qualification_split_exists": false,
+  "schema_version": "ego.v2.public_latent_alignment.packet.v1",
+  "splits": {
+    "replication_dev": [
+      {
+        "dev_only": true,
+        "layout_id": "p0_cross_v1",
+        "mapping_commitment": {
+          "v0": "resource",
+          "v1": "threat",
+          "v2": "novelty",
+          "v3": "shelter",
+          "v4": "social"
+        },
+        "opaque_context_id": "001n-replication-dev-0001",
+        "world_seed": 480003
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_vertical_v1",
+        "mapping_commitment": {
+          "v0": "social",
+          "v1": "threat",
+          "v2": "shelter",
+          "v3": "resource",
+          "v4": "novelty"
+        },
+        "opaque_context_id": "001n-replication-dev-0002",
+        "world_seed": 480176
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_offset_v1",
+        "mapping_commitment": {
+          "v0": "novelty",
+          "v1": "resource",
+          "v2": "shelter",
+          "v3": "social",
+          "v4": "threat"
+        },
+        "opaque_context_id": "001n-replication-dev-0003",
+        "world_seed": 480349
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p0_cross_v1",
+        "mapping_commitment": {
+          "v0": "resource",
+          "v1": "social",
+          "v2": "novelty",
+          "v3": "shelter",
+          "v4": "threat"
+        },
+        "opaque_context_id": "001n-replication-dev-0004",
+        "world_seed": 480522
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_vertical_v1",
+        "mapping_commitment": {
+          "v0": "novelty",
+          "v1": "resource",
+          "v2": "threat",
+          "v3": "social",
+          "v4": "shelter"
+        },
+        "opaque_context_id": "001n-replication-dev-0005",
+        "world_seed": 480695
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_offset_v1",
+        "mapping_commitment": {
+          "v0": "resource",
+          "v1": "shelter",
+          "v2": "social",
+          "v3": "threat",
+          "v4": "novelty"
+        },
+        "opaque_context_id": "001n-replication-dev-0006",
+        "world_seed": 480868
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p0_cross_v1",
+        "mapping_commitment": {
+          "v0": "threat",
+          "v1": "novelty",
+          "v2": "shelter",
+          "v3": "social",
+          "v4": "resource"
+        },
+        "opaque_context_id": "001n-replication-dev-0007",
+        "world_seed": 481041
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_vertical_v1",
+        "mapping_commitment": {
+          "v0": "social",
+          "v1": "shelter",
+          "v2": "threat",
+          "v3": "resource",
+          "v4": "novelty"
+        },
+        "opaque_context_id": "001n-replication-dev-0008",
+        "world_seed": 481214
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_offset_v1",
+        "mapping_commitment": {
+          "v0": "novelty",
+          "v1": "threat",
+          "v2": "shelter",
+          "v3": "resource",
+          "v4": "social"
+        },
+        "opaque_context_id": "001n-replication-dev-0009",
+        "world_seed": 481387
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p0_cross_v1",
+        "mapping_commitment": {
+          "v0": "threat",
+          "v1": "shelter",
+          "v2": "novelty",
+          "v3": "social",
+          "v4": "resource"
+        },
+        "opaque_context_id": "001n-replication-dev-0010",
+        "world_seed": 481560
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_vertical_v1",
+        "mapping_commitment": {
+          "v0": "threat",
+          "v1": "novelty",
+          "v2": "shelter",
+          "v3": "resource",
+          "v4": "social"
+        },
+        "opaque_context_id": "001n-replication-dev-0011",
+        "world_seed": 481733
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_offset_v1",
+        "mapping_commitment": {
+          "v0": "resource",
+          "v1": "threat",
+          "v2": "novelty",
+          "v3": "social",
+          "v4": "shelter"
+        },
+        "opaque_context_id": "001n-replication-dev-0012",
+        "world_seed": 481906
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p0_cross_v1",
+        "mapping_commitment": {
+          "v0": "resource",
+          "v1": "novelty",
+          "v2": "social",
+          "v3": "shelter",
+          "v4": "threat"
+        },
+        "opaque_context_id": "001n-replication-dev-0013",
+        "world_seed": 482079
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_vertical_v1",
+        "mapping_commitment": {
+          "v0": "social",
+          "v1": "shelter",
+          "v2": "novelty",
+          "v3": "threat",
+          "v4": "resource"
+        },
+        "opaque_context_id": "001n-replication-dev-0014",
+        "world_seed": 482252
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_offset_v1",
+        "mapping_commitment": {
+          "v0": "novelty",
+          "v1": "resource",
+          "v2": "social",
+          "v3": "shelter",
+          "v4": "threat"
+        },
+        "opaque_context_id": "001n-replication-dev-0015",
+        "world_seed": 482425
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p0_cross_v1",
+        "mapping_commitment": {
+          "v0": "shelter",
+          "v1": "threat",
+          "v2": "social",
+          "v3": "novelty",
+          "v4": "resource"
+        },
+        "opaque_context_id": "001n-replication-dev-0016",
+        "world_seed": 482598
+      }
+    ],
+    "search_dev": [
+      {
+        "dev_only": true,
+        "layout_id": "p0_cross_v1",
+        "mapping_commitment": {
+          "v0": "novelty",
+          "v1": "threat",
+          "v2": "shelter",
+          "v3": "social",
+          "v4": "resource"
+        },
+        "opaque_context_id": "001n-search-dev-0001",
+        "world_seed": 470003
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_vertical_v1",
+        "mapping_commitment": {
+          "v0": "threat",
+          "v1": "resource",
+          "v2": "novelty",
+          "v3": "social",
+          "v4": "shelter"
+        },
+        "opaque_context_id": "001n-search-dev-0002",
+        "world_seed": 470176
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_offset_v1",
+        "mapping_commitment": {
+          "v0": "threat",
+          "v1": "social",
+          "v2": "shelter",
+          "v3": "resource",
+          "v4": "novelty"
+        },
+        "opaque_context_id": "001n-search-dev-0003",
+        "world_seed": 470349
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p0_cross_v1",
+        "mapping_commitment": {
+          "v0": "social",
+          "v1": "novelty",
+          "v2": "resource",
+          "v3": "shelter",
+          "v4": "threat"
+        },
+        "opaque_context_id": "001n-search-dev-0004",
+        "world_seed": 470522
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_vertical_v1",
+        "mapping_commitment": {
+          "v0": "social",
+          "v1": "resource",
+          "v2": "novelty",
+          "v3": "threat",
+          "v4": "shelter"
+        },
+        "opaque_context_id": "001n-search-dev-0005",
+        "world_seed": 470695
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_offset_v1",
+        "mapping_commitment": {
+          "v0": "resource",
+          "v1": "social",
+          "v2": "threat",
+          "v3": "novelty",
+          "v4": "shelter"
+        },
+        "opaque_context_id": "001n-search-dev-0006",
+        "world_seed": 470868
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p0_cross_v1",
+        "mapping_commitment": {
+          "v0": "novelty",
+          "v1": "threat",
+          "v2": "social",
+          "v3": "shelter",
+          "v4": "resource"
+        },
+        "opaque_context_id": "001n-search-dev-0007",
+        "world_seed": 471041
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_vertical_v1",
+        "mapping_commitment": {
+          "v0": "threat",
+          "v1": "shelter",
+          "v2": "resource",
+          "v3": "novelty",
+          "v4": "social"
+        },
+        "opaque_context_id": "001n-search-dev-0008",
+        "world_seed": 471214
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_offset_v1",
+        "mapping_commitment": {
+          "v0": "shelter",
+          "v1": "threat",
+          "v2": "social",
+          "v3": "resource",
+          "v4": "novelty"
+        },
+        "opaque_context_id": "001n-search-dev-0009",
+        "world_seed": 471387
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p0_cross_v1",
+        "mapping_commitment": {
+          "v0": "resource",
+          "v1": "novelty",
+          "v2": "shelter",
+          "v3": "threat",
+          "v4": "social"
+        },
+        "opaque_context_id": "001n-search-dev-0010",
+        "world_seed": 471560
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_vertical_v1",
+        "mapping_commitment": {
+          "v0": "resource",
+          "v1": "threat",
+          "v2": "novelty",
+          "v3": "shelter",
+          "v4": "social"
+        },
+        "opaque_context_id": "001n-search-dev-0011",
+        "world_seed": 471733
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_offset_v1",
+        "mapping_commitment": {
+          "v0": "shelter",
+          "v1": "social",
+          "v2": "threat",
+          "v3": "novelty",
+          "v4": "resource"
+        },
+        "opaque_context_id": "001n-search-dev-0012",
+        "world_seed": 471906
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p0_cross_v1",
+        "mapping_commitment": {
+          "v0": "resource",
+          "v1": "social",
+          "v2": "threat",
+          "v3": "shelter",
+          "v4": "novelty"
+        },
+        "opaque_context_id": "001n-search-dev-0013",
+        "world_seed": 472079
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_vertical_v1",
+        "mapping_commitment": {
+          "v0": "resource",
+          "v1": "novelty",
+          "v2": "shelter",
+          "v3": "threat",
+          "v4": "social"
+        },
+        "opaque_context_id": "001n-search-dev-0014",
+        "world_seed": 472252
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p2_offset_v1",
+        "mapping_commitment": {
+          "v0": "threat",
+          "v1": "social",
+          "v2": "novelty",
+          "v3": "resource",
+          "v4": "shelter"
+        },
+        "opaque_context_id": "001n-search-dev-0015",
+        "world_seed": 472425
+      },
+      {
+        "dev_only": true,
+        "layout_id": "p0_cross_v1",
+        "mapping_commitment": {
+          "v0": "social",
+          "v1": "novelty",
+          "v2": "threat",
+          "v3": "resource",
+          "v4": "shelter"
+        },
+        "opaque_context_id": "001n-search-dev-0016",
+        "world_seed": 472598
+      }
+    ]
+  },
+  "task_id": "EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N",
+  "world_grammar_changed": false
+}

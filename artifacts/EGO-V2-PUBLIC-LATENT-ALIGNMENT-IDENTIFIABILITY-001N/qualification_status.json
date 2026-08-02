@@ -1,0 +1,8 @@
+{
+  "original_001j_heldout_consumed": false,
+  "qualification_consumed": false,
+  "qualification_split_exists": false,
+  "schema_version": "ego.v2.public_latent_alignment.qualification_status.v1",
+  "task_id": "EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N",
+  "verdict": "PUBLIC_LATENT_ALIGNMENT_NOT_IDENTIFIABLE_OR_NOT_ECONOMIC_UNDER_CURRENT_GRAMMAR"
+}

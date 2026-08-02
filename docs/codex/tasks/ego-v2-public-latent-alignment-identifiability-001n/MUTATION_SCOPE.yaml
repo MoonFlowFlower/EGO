@@ -1,0 +1,28 @@
+task_id: EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N
+base_head: 325496a1a2f43a0bbc00f757b174c514267c2059
+allowed_paths:
+  - docs/codex/tasks/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N.md
+  - docs/codex/tasks/ego-v2-public-latent-alignment-identifiability-001n/
+  - scripts/codex/run_ego_v2_public_latent_alignment_identifiability_001n.py
+  - scripts/codex/verify_ego_v2_public_latent_alignment_identifiability_001n.py
+  - scripts/codex/tests/test_run_ego_v2_public_latent_alignment_identifiability_001n.py
+  - scripts/codex/tests/test_verify_ego_v2_public_latent_alignment_identifiability_001n.py
+  - artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/
+protected_paths:
+  - artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/
+  - artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/
+  - artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/
+  - artifacts/EGO-V2-TRANSFER-MECHANISM-001M/
+  - labs/ego_life_playground_v0/homeostatic_transfer.py
+  - labs/ego_life_playground_v0/engine.py
+  - labs/ego_life_playground_v0/microworld.py
+  - artifacts/ROUTE-STATE-MACHINE-001A/
+  - docs/ACTIVE_CONTEXT_PACK.md
+forbidden_operations:
+  - consume_qualification
+  - consume_original_001j_heldout
+  - change_observation_action_or_world_grammar
+  - modify_product_default
+  - enable_llm_network_autostart_background_dispatch
+  - push
+  - tag

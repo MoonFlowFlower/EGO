@@ -1,0 +1,1469 @@
+"""Dev-only public latent-alignment identifiability certificate for Ego V2.
+
+The posterior is exact over the frozen 5! anonymous-token mappings.  Candidate
+functions accept only the four legal public fields; evaluator assignments are
+kept outside candidate state and action calls.
+"""
+
+from __future__ import annotations
+
+import argparse
+from copy import deepcopy
+import hashlib
+import itertools
+import json
+import math
+from pathlib import Path
+import sys
+from typing import Any, Iterable, Mapping
+
+
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from labs.ego_life_playground_v0 import engine, homeostatic_transfer, microworld
+from scripts.codex import run_ego_v2_public_acquisition_capacity_recovery_001k as capacity
+from scripts.codex import run_ego_v2_transfer_mechanism_001m as transfer_mechanism
+
+
+TASK_ID = "EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N"
+ARTIFACT_NAME = TASK_ID
+PUBLIC_INPUT_FIELDS = tuple(homeostatic_transfer.PUBLIC_INPUT_FIELDS)
+PRIVATE_FIELD_NAMES = frozenset(
+    {
+        "world_id",
+        "world_seed",
+        "seed",
+        "layout_id",
+        "token_mapping",
+        "mapping",
+        "private_pose",
+        "pose",
+        "oracle_action",
+        "split",
+        "packet",
+        "verdict",
+        "future_outcome",
+        "future",
+        "true_mapping",
+        "opaque_context_id",
+    }
+)
+STATE_SCHEMA_VERSION = "ego.v2.public_latent_alignment.exact_state.v1"
+ROW_SCHEMA_VERSION = "ego.v2.public_latent_alignment.row.v1"
+TARGET_LEVEL = float(engine.TARGET_LEVEL)
+INFORMATION_VALUE_SCALE = 0.05
+TERMINAL_RISK_PENALTY = 0.50
+NAVIGATION_COST_PER_CELL = 0.004
+RELIABLE_BEHAVIORAL_ERROR = 0.05
+EVALUATION_BUDGET = 96
+EARLY_CUTOFF = 48
+GAP_CHECKPOINTS = (8, 16, 24, 32, 48, 64, 80, 96)
+PUBLIC_ARMS = (
+    "EXACT_BAYES_ADAPTIVE",
+    "SCRATCH",
+    "EXISTING_PUBLIC_BAYES",
+    "NO_POSTERIOR_UPDATE",
+    "FEEDBACK_SHUFFLE",
+    "NO_INFORMATION_GAIN",
+)
+DIAGNOSTIC_ARMS = (
+    "PRIVATE_ALIGNED_REFERENCE",
+    "UNIFORM_RANDOM",
+    "PRIVATE_ORACLE_NAVIGATOR",
+)
+ALL_ARMS = (*PUBLIC_ARMS, *DIAGNOSTIC_ARMS)
+EXACT_STATE_ARMS = (
+    "EXACT_BAYES_ADAPTIVE",
+    "NO_POSTERIOR_UPDATE",
+    "FEEDBACK_SHUFFLE",
+    "NO_INFORMATION_GAIN",
+)
+
+
+def canonical_json(value: Any) -> str:
+    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+
+
+def canonical_hash(value: Any) -> str:
+    return hashlib.sha256(canonical_json(value).encode("utf-8")).hexdigest()
+
+
+def sha256(path: Path) -> str:
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def write_json(path: Path, value: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        json.dumps(value, sort_keys=True, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+
+
+def write_jsonl(path: Path, rows: Iterable[Mapping[str, Any]]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8", newline="\n") as handle:
+        for row in rows:
+            handle.write(canonical_json(row) + "\n")
+
+
+def artifact_root(root: Path) -> Path:
+    return Path(root).resolve() / "artifacts" / ARTIFACT_NAME
+
+
+def all_legal_mappings() -> list[dict[str, str]]:
+    return [
+        {token: cause for token, cause in zip(microworld.TOKENS, permutation)}
+        for permutation in itertools.permutations(microworld.CAUSES)
+    ]
+
+
+_ALL_MAPPINGS = all_legal_mappings()
+_ALL_MAPPING_HASHES = frozenset(canonical_hash(row) for row in _ALL_MAPPINGS)
+
+
+def _clamp01(value: float) -> float:
+    return max(0.0, min(1.0, float(value)))
+
+
+def expected_interaction_delta(
+    cause: str, *, energy_before: float = float(engine.INITIAL_ORGANISM["energy"])
+) -> dict[str, float]:
+    if cause not in microworld.CAUSES:
+        raise ValueError("unknown public grammar cause")
+    cause_delta = engine.CAUSE_DELTAS[cause]
+    energy_after = _clamp01(
+        float(energy_before)
+        - float(engine.PASSIVE_ENERGY_DECAY_PER_TICK)
+        - float(engine.ACTION_COSTS["interact"])
+        + (float(cause_delta["energy"]) if cause == "resource" else 0.0)
+    )
+    return {
+        "energy": round(energy_after - float(energy_before), 12),
+        "safety": round(float(cause_delta["safety"]), 12),
+    }
+
+
+def _cause_for_public_delta(actual_delta: Mapping[str, Any], energy_before: float) -> str:
+    values = {key: round(float(actual_delta[key]), 12) for key in ("energy", "safety")}
+    matches = [
+        cause
+        for cause in microworld.CAUSES
+        if all(
+            abs(values[key] - expected_interaction_delta(cause, energy_before=energy_before)[key])
+            <= 1e-9
+            for key in values
+        )
+    ]
+    if len(matches) != 1:
+        raise ValueError("public interaction delta is not uniquely generated by frozen grammar")
+    return matches[0]
+
+
+def scan_public_input(payload: Any) -> dict[str, Any]:
+    findings: list[str] = []
+    if not isinstance(payload, Mapping) or set(payload) != set(PUBLIC_INPUT_FIELDS):
+        findings.append("public_schema_mismatch")
+
+    def visit(value: Any, path: str) -> None:
+        if isinstance(value, Mapping):
+            for key, nested in value.items():
+                normalized = str(key).lower()
+                if normalized in PRIVATE_FIELD_NAMES:
+                    findings.append(f"private_field:{path}.{key}")
+                visit(nested, f"{path}.{key}")
+        elif isinstance(value, (list, tuple)):
+            for index, nested in enumerate(value):
+                visit(nested, f"{path}[{index}]")
+
+    visit(payload, "$")
+    if not findings:
+        try:
+            homeostatic_transfer.scan_public_input(payload)
+        except (TypeError, ValueError, homeostatic_transfer.HomeostaticTransferInvariantError) as exc:
+            findings.append(f"canonical_public_scan:{exc}")
+    return {
+        "clean": not findings,
+        "findings": sorted(set(findings)),
+        "input_hash": canonical_hash(payload),
+    }
+
+
+def empty_exact_state() -> dict[str, Any]:
+    state = {
+        "schema_version": STATE_SCHEMA_VERSION,
+        "mapping_hypotheses": deepcopy(_ALL_MAPPINGS),
+        "public_interaction_history": [],
+        "update_count": 0,
+        "contradiction_count": 0,
+    }
+    validate_exact_state(state)
+    return state
+
+
+def validate_exact_state(state: Any) -> None:
+    required = {
+        "schema_version",
+        "mapping_hypotheses",
+        "public_interaction_history",
+        "update_count",
+        "contradiction_count",
+    }
+    if not isinstance(state, Mapping) or set(state) != required:
+        raise ValueError("exact state schema mismatch")
+    if state["schema_version"] != STATE_SCHEMA_VERSION:
+        raise ValueError("exact state version mismatch")
+    hypotheses = state["mapping_hypotheses"]
+    if not isinstance(hypotheses, list) or not hypotheses:
+        raise ValueError("exact posterior must retain at least one hypothesis")
+    hashes = [canonical_hash(row) for row in hypotheses]
+    if len(hashes) != len(set(hashes)) or any(value not in _ALL_MAPPING_HASHES for value in hashes):
+        raise ValueError("exact posterior contains illegal mapping hypothesis")
+    if type(state["update_count"]) is not int or int(state["update_count"]) < 0:
+        raise ValueError("exact update count is invalid")
+    if type(state["contradiction_count"]) is not int or int(state["contradiction_count"]) < 0:
+        raise ValueError("exact contradiction count is invalid")
+    history = state["public_interaction_history"]
+    if not isinstance(history, list):
+        raise ValueError("public interaction history must be a list")
+    for row in history:
+        if not isinstance(row, Mapping) or set(row) != {
+            "token",
+            "inferred_cause",
+            "actual_delta",
+            "public_input_hash",
+            "feedback_mode",
+        }:
+            raise ValueError("public interaction history schema mismatch")
+        if row["token"] not in microworld.TOKENS or row["inferred_cause"] not in microworld.CAUSES:
+            raise ValueError("public interaction history value is invalid")
+
+
+def exact_state_hash(state: Mapping[str, Any]) -> str:
+    validate_exact_state(state)
+    return canonical_hash(state)
+
+
+def _posterior_marginals(state: Mapping[str, Any]) -> dict[str, dict[str, float]]:
+    validate_exact_state(state)
+    hypotheses = state["mapping_hypotheses"]
+    count = len(hypotheses)
+    return {
+        token: {
+            cause: round(
+                sum(1 for mapping in hypotheses if mapping[token] == cause) / count,
+                12,
+            )
+            for cause in microworld.CAUSES
+        }
+        for token in microworld.TOKENS
+    }
+
+
+def posterior_metrics(state: Mapping[str, Any]) -> dict[str, Any]:
+    validate_exact_state(state)
+    count = len(state["mapping_hypotheses"])
+    marginals = _posterior_marginals(state)
+    behavioral_error = sum(
+        1.0 - max(marginals[token].values()) for token in microworld.TOKENS
+    ) / len(microworld.TOKENS)
+    return {
+        "posterior_entropy_bits": round(math.log2(count), 12),
+        "equivalent_mapping_count": count,
+        "exact_alignment_bayes_error": round(1.0 - 1.0 / count, 12),
+        "behavioral_alignment_bayes_error": round(behavioral_error, 12),
+        "reliable_behavioral_alignment": behavioral_error <= RELIABLE_BEHAVIORAL_ERROR,
+        "marginals": marginals,
+    }
+
+
+def update_exact_posterior(
+    state: Mapping[str, Any],
+    *,
+    public_input: Mapping[str, Any],
+    selected_action: str,
+    outcome_type: str,
+    actual_delta: Mapping[str, Any],
+    terminal: bool,
+    updates_enabled: bool,
+    feedback_mode: str,
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    validate_exact_state(state)
+    scan = scan_public_input(public_input)
+    if not scan["clean"]:
+        raise ValueError("public input rejected")
+    if selected_action not in microworld.ACTIONS or type(outcome_type) is not str:
+        raise ValueError("public transition receipt is invalid")
+    if set(actual_delta) != {"energy", "safety"} or type(terminal) is not bool:
+        raise ValueError("public transition delta is invalid")
+    if type(updates_enabled) is not bool or feedback_mode not in {"canonical", "shuffle"}:
+        raise ValueError("exact update controls are invalid")
+    before_hash = exact_state_hash(state)
+    before_metrics = posterior_metrics(state)
+    updated = deepcopy(dict(state))
+    observed_token = str(public_input["observation"]["visual"][1][2])
+    updated_token: str | None = None
+    inferred_cause: str | None = None
+    applied = False
+    if (
+        updates_enabled
+        and selected_action == "interact"
+        and outcome_type == "interacted"
+        and observed_token in microworld.TOKENS
+    ):
+        updated_token = observed_token
+        if feedback_mode == "shuffle":
+            index = microworld.TOKENS.index(observed_token)
+            updated_token = microworld.TOKENS[(index + 1) % len(microworld.TOKENS)]
+        inferred_cause = _cause_for_public_delta(
+            actual_delta, float(public_input["organism"]["energy"])
+        )
+        survivors = [
+            mapping
+            for mapping in updated["mapping_hypotheses"]
+            if mapping[updated_token] == inferred_cause
+        ]
+        if not survivors:
+            # A deterministic grammar contradiction must fail closed rather than
+            # silently selecting the evaluator mapping or renormalizing garbage.
+            raise ValueError("public feedback contradicts every legal mapping hypothesis")
+        updated["mapping_hypotheses"] = survivors
+        updated["public_interaction_history"].append(
+            {
+                "token": updated_token,
+                "inferred_cause": inferred_cause,
+                "actual_delta": {
+                    "energy": round(float(actual_delta["energy"]), 12),
+                    "safety": round(float(actual_delta["safety"]), 12),
+                },
+                "public_input_hash": scan["input_hash"],
+                "feedback_mode": feedback_mode,
+            }
+        )
+        updated["update_count"] = int(updated["update_count"]) + 1
+        applied = True
+    validate_exact_state(updated)
+    after_metrics = posterior_metrics(updated)
+    return updated, {
+        "schema_version": "ego.v2.public_latent_alignment.update_receipt.v1",
+        "applied": applied,
+        "public_input_clean": True,
+        "public_input_hash": scan["input_hash"],
+        "selected_action": selected_action,
+        "outcome_type": outcome_type,
+        "observed_token": observed_token if observed_token in microworld.TOKENS else None,
+        "updated_token": updated_token,
+        "inferred_cause": inferred_cause,
+        "feedback_mode": feedback_mode,
+        "updates_enabled": updates_enabled,
+        "state_hash_before": before_hash,
+        "state_hash_after": exact_state_hash(updated),
+        "metrics_before": before_metrics,
+        "metrics_after": after_metrics,
+    }
+
+
+def _deficit(organism: Mapping[str, Any]) -> float:
+    return sum(max(0.0, TARGET_LEVEL - float(organism[key])) for key in ("energy", "safety"))
+
+
+def _after_public_delta(organism: Mapping[str, Any], delta: Mapping[str, Any]) -> dict[str, float]:
+    return {
+        key: _clamp01(float(organism[key]) + float(delta[key]))
+        for key in ("energy", "safety")
+    }
+
+
+def _information_gain_for_token(state: Mapping[str, Any], token: str) -> float:
+    validate_exact_state(state)
+    if token not in microworld.TOKENS:
+        return 0.0
+    hypotheses = state["mapping_hypotheses"]
+    before = math.log2(len(hypotheses))
+    group_counts = [
+        sum(1 for mapping in hypotheses if mapping[token] == cause)
+        for cause in microworld.CAUSES
+    ]
+    expected_after = sum(
+        (count / len(hypotheses)) * math.log2(count)
+        for count in group_counts
+        if count
+    )
+    return round(before - expected_after, 12)
+
+
+def _action_diagnostics(
+    state: Mapping[str, Any], public_input: Mapping[str, Any]
+) -> dict[str, dict[str, Any]]:
+    organism = public_input["organism"]
+    current_deficit = _deficit(organism)
+    front = str(public_input["observation"]["visual"][1][2])
+    result: dict[str, dict[str, Any]] = {}
+    for action in microworld.ACTIONS:
+        if action == "interact" and front in microworld.TOKENS:
+            marginals = _posterior_marginals(state)[front]
+            outcomes = []
+            for cause, probability in marginals.items():
+                if probability <= 0.0:
+                    continue
+                delta = expected_interaction_delta(
+                    cause, energy_before=float(organism["energy"])
+                )
+                after = _after_public_delta(organism, delta)
+                outcomes.append((float(probability), cause, delta, after, _deficit(after)))
+            expected_delta = {
+                key: round(sum(p * float(delta[key]) for p, _, delta, _, _ in outcomes), 12)
+                for key in ("energy", "safety")
+            }
+            expected_deficit = sum(p * deficit for p, _, _, _, deficit in outcomes)
+            terminal_risk = sum(p for p, _, _, after, _ in outcomes if after["energy"] <= 0.0)
+            worst_energy = min(after["energy"] for _, _, _, after, _ in outcomes)
+            worst_safety = min(after["safety"] for _, _, _, after, _ in outcomes)
+            info = _information_gain_for_token(state, front)
+            outcome_probabilities = {
+                cause: round(probability, 12)
+                for cause, probability in marginals.items()
+                if probability > 0.0
+            }
+        else:
+            cause_delta = engine.REST_DELTA if action == "rest" else {"safety": 0.0}
+            energy_after = _clamp01(
+                float(organism["energy"])
+                - float(engine.PASSIVE_ENERGY_DECAY_PER_TICK)
+                - float(engine.ACTION_COSTS[action])
+            )
+            delta = {
+                "energy": round(energy_after - float(organism["energy"]), 12),
+                "safety": round(float(cause_delta["safety"]), 12),
+            }
+            after = _after_public_delta(organism, delta)
+            expected_delta = delta
+            expected_deficit = _deficit(after)
+            terminal_risk = 1.0 if after["energy"] <= 0.0 else 0.0
+            worst_energy, worst_safety = after["energy"], after["safety"]
+            info = 0.0
+            outcome_probabilities = {}
+        result[action] = {
+            "expected_delta": expected_delta,
+            "expected_deficit_after": round(expected_deficit, 12),
+            "expected_deficit_reduction": round(current_deficit - expected_deficit, 12),
+            "expected_survival_cost": round(max(0.0, expected_deficit - current_deficit), 12),
+            "terminal_risk": round(terminal_risk, 12),
+            "information_gain_bits": info,
+            "worst_case_energy_after": round(worst_energy, 12),
+            "worst_case_safety_after": round(worst_safety, 12),
+            "outcome_probabilities": outcome_probabilities,
+        }
+    return result
+
+
+def _visible_tokens(observation: Mapping[str, Any]) -> list[dict[str, Any]]:
+    visible = []
+    for row_index, row in enumerate(observation["visual"]):
+        for column_index, token in enumerate(row):
+            if token in microworld.TOKENS:
+                rx, ry = column_index - 2, row_index - 2
+                visible.append(
+                    {
+                        "token": str(token),
+                        "relative_x": rx,
+                        "relative_y": ry,
+                        "distance": abs(rx) + abs(ry),
+                    }
+                )
+    return visible
+
+
+def _token_diagnostics(
+    state: Mapping[str, Any], public_input: Mapping[str, Any], token: str, distance: int
+) -> dict[str, Any]:
+    organism = public_input["organism"]
+    marginals = _posterior_marginals(state)[token]
+    current_deficit = _deficit(organism)
+    outcomes = []
+    for cause, probability in marginals.items():
+        if probability <= 0:
+            continue
+        delta = expected_interaction_delta(cause, energy_before=float(organism["energy"]))
+        after = _after_public_delta(organism, delta)
+        outcomes.append((probability, cause, delta, after, _deficit(after)))
+    expected_deficit = sum(p * deficit for p, _, _, _, deficit in outcomes)
+    information_gain = _information_gain_for_token(state, token)
+    normalized_information = information_gain / math.log2(len(microworld.CAUSES))
+    risk = sum(p for p, _, _, after, _ in outcomes if after["energy"] <= 0.0)
+    worst_energy = min(after["energy"] for _, _, _, after, _ in outcomes)
+    worst_safety = min(after["safety"] for _, _, _, after, _ in outcomes)
+    safe_probe = worst_energy > 0.0 and worst_safety >= 0.05
+    benefit = current_deficit - expected_deficit
+    score = (
+        benefit
+        + INFORMATION_VALUE_SCALE * normalized_information
+        - TERMINAL_RISK_PENALTY * risk
+        - NAVIGATION_COST_PER_CELL * distance
+    )
+    return {
+        "posterior_cause_probabilities": marginals,
+        "expected_deficit_reduction": round(benefit, 12),
+        "information_gain_bits": information_gain,
+        "normalized_information_gain": round(normalized_information, 12),
+        "terminal_risk": round(risk, 12),
+        "worst_case_energy_after": round(worst_energy, 12),
+        "worst_case_safety_after": round(worst_safety, 12),
+        "safe_probe": safe_probe,
+        "distance": distance,
+        "score_with_information": round(score, 12),
+        "score_without_information": round(
+            benefit - TERMINAL_RISK_PENALTY * risk - NAVIGATION_COST_PER_CELL * distance,
+            12,
+        ),
+    }
+
+
+def _navigation_action(target: Mapping[str, Any], observation: Mapping[str, Any]) -> tuple[str, str]:
+    relative_x = int(target["relative_x"])
+    relative_y = int(target["relative_y"])
+    front = str(observation["visual"][1][2])
+    if relative_y == -1 and relative_x == 0:
+        return "interact", "exact_target_front"
+    if relative_y < 0 and relative_x == 0 and front == "empty":
+        return "move_forward", "approach_exact_posterior_target"
+    if relative_x < 0:
+        return "turn_left", "orient_exact_posterior_target"
+    if relative_x > 0:
+        return "turn_right", "orient_exact_posterior_target"
+    return "turn_right", "rotate_to_exact_posterior_target"
+
+
+def plan_exact_action(
+    state: Mapping[str, Any],
+    *,
+    public_input: Mapping[str, Any],
+    sequence: int,
+    information_gain_enabled: bool,
+) -> dict[str, Any]:
+    validate_exact_state(state)
+    scan = scan_public_input(public_input)
+    if not scan["clean"]:
+        raise ValueError("public input rejected")
+    if type(sequence) is not int or sequence <= 0 or type(information_gain_enabled) is not bool:
+        raise ValueError("exact planner controls are invalid")
+    observation = public_input["observation"]
+    action_diagnostics = _action_diagnostics(state, public_input)
+    ranked = []
+    for row in _visible_tokens(observation):
+        diagnostics = _token_diagnostics(
+            state, public_input, str(row["token"]), int(row["distance"])
+        )
+        score_key = (
+            "score_with_information" if information_gain_enabled else "score_without_information"
+        )
+        ranked.append({**row, **diagnostics, "planner_score": diagnostics[score_key]})
+    ranked.sort(key=lambda row: (-float(row["planner_score"]), int(row["distance"]), str(row["token"])))
+    selected_target = ranked[0] if ranked else None
+    front = str(observation["visual"][1][2])
+    front_row = next((row for row in ranked if row["token"] == front), None)
+    if front_row is not None and selected_target is not None and selected_target["token"] == front:
+        information_probe = information_gain_enabled and float(front_row["information_gain_bits"]) > 0.0
+        if bool(front_row["safe_probe"]) and (
+            float(front_row["planner_score"]) > 0.0 or information_probe
+        ):
+            selected_action, reason = "interact", "safe_exact_posterior_probe_or_use"
+        else:
+            selected_action, reason = "turn_right", "exact_posterior_risk_or_deficit_rejects_front"
+    elif selected_target is not None:
+        selected_action, reason = _navigation_action(selected_target, observation)
+    else:
+        front_cell = str(observation["visual"][1][2])
+        if front_cell == "wall":
+            selected_action, reason = "turn_right", "public_wall_follow_turn"
+        elif sequence % 5 == 0:
+            selected_action, reason = "turn_right", "public_sweep_turn"
+        else:
+            selected_action, reason = "move_forward", "public_sweep_forward"
+    base_values = {
+        action: round(
+            float(row["expected_deficit_reduction"])
+            + (
+                INFORMATION_VALUE_SCALE
+                * float(row["information_gain_bits"])
+                / math.log2(len(microworld.CAUSES))
+                if information_gain_enabled
+                else 0.0
+            )
+            - TERMINAL_RISK_PENALTY * float(row["terminal_risk"]),
+            12,
+        )
+        for action, row in action_diagnostics.items()
+    }
+    action_values = {
+        action: round(value + (1.0 if action == selected_action else 0.0), 12)
+        for action, value in base_values.items()
+    }
+    metrics = posterior_metrics(state)
+    # Plan output deliberately excludes the hypothesis list. Only aggregate
+    # posterior diagnostics and marginals derived from legal public history exit.
+    return {
+        "schema_version": "ego.v2.public_latent_alignment.plan.v1",
+        "public_input_clean": True,
+        "public_input_hash": scan["input_hash"],
+        "public_input_fields": list(PUBLIC_INPUT_FIELDS),
+        "state_hash_before": exact_state_hash(state),
+        "posterior_entropy_bits": metrics["posterior_entropy_bits"],
+        "equivalent_hypothesis_count": metrics["equivalent_mapping_count"],
+        "exact_alignment_bayes_error": metrics["exact_alignment_bayes_error"],
+        "behavioral_alignment_bayes_error": metrics["behavioral_alignment_bayes_error"],
+        "information_gain_enabled": information_gain_enabled,
+        "action_diagnostics": action_diagnostics,
+        "ranked_tokens": ranked,
+        "selected_target": None if selected_target is None else selected_target["token"],
+        "selected_action": selected_action,
+        "selection_reason": reason,
+        "action_values": action_values,
+    }
+
+
+def run_symbolic_identifiability_audit() -> dict[str, Any]:
+    initial = empty_exact_state()
+    initial_metrics = posterior_metrics(initial)
+    deltas = {
+        cause: expected_interaction_delta(cause) for cause in microworld.CAUSES
+    }
+    signatures = {cause: canonical_hash(delta) for cause, delta in deltas.items()}
+    distinct = len(set(signatures.values()))
+    survivor_counts = []
+    state = initial
+    for index, (token, cause) in enumerate(
+        zip(microworld.TOKENS, microworld.CAUSES), start=1
+    ):
+        state, _ = update_exact_posterior(
+            state,
+            public_input=_synthetic_public_input(token),
+            selected_action="interact",
+            outcome_type="interacted",
+            actual_delta=expected_interaction_delta(cause),
+            terminal=False,
+            updates_enabled=True,
+            feedback_mode="canonical",
+        )
+        survivor_counts.append(
+            {
+                "distinct_interactions": index,
+                "equivalent_mapping_count": len(state["mapping_hypotheses"]),
+                "posterior_entropy_bits": posterior_metrics(state)["posterior_entropy_bits"],
+            }
+        )
+    minimum = next(
+        row["distinct_interactions"]
+        for row in survivor_counts
+        if row["equivalent_mapping_count"] == 1
+    )
+    passive_counterexample = {
+        "history_kind": "arbitrary_visual_navigation_without_interaction_feedback",
+        "mapping_a": _ALL_MAPPINGS[0],
+        "mapping_b": _ALL_MAPPINGS[-1],
+        "likelihood_ratio_under_exchangeable_public_nuisance_family": 1.0,
+        "posterior_survivors": 120,
+        "classification": "PASSIVELY_UNIDENTIFIABLE",
+        "note": "SHA-derived seed/placement correlations are marginalized nuisance; seed lookup is forbidden.",
+    }
+    unavoidable = _symbolic_probe_deficit_lower_bound()
+    return {
+        "schema_version": "ego.v2.public_latent_alignment.symbolic_audit.v1",
+        "task_id": TASK_ID,
+        "legal_mapping_count": len(_ALL_MAPPINGS),
+        "public_effect_deltas": deltas,
+        "distinct_public_effect_count": distinct,
+        "initial_entropy_bits": initial_metrics["posterior_entropy_bits"],
+        "passive_observation_information_gain_bits": 0.0,
+        "max_passive_equivalence_class_size": len(_ALL_MAPPINGS),
+        "passive_counterexample": passive_counterexample,
+        "survivor_count_by_distinct_interactions": survivor_counts,
+        "minimum_distinct_direct_interactions": minimum,
+        "worst_case_distinct_direct_interactions": minimum,
+        "permanent_public_equivalence_classes": [] if distinct == 5 else [
+            sorted([cause for cause, signature in signatures.items() if signature == target])
+            for target in sorted(set(signatures.values()))
+            if sum(signature == target for signature in signatures.values()) > 1
+        ],
+        "classification": (
+            "DIRECT_INTERVENTION_IDENTIFIABLE"
+            if distinct == len(microworld.CAUSES)
+            else "PERMANENTLY_NON_IDENTIFIABLE"
+        ),
+        "full_reference_run_economically_warranted": distinct == len(microworld.CAUSES),
+        "optimistic_probe_cost_lower_bound": unavoidable,
+        "world_grammar_changed": False,
+        "qualification_consumed": False,
+        "original_001j_heldout_consumed": False,
+    }
+
+
+def _symbolic_probe_deficit_lower_bound() -> dict[str, Any]:
+    """Optimistic lower bound: four adjacent distinct tokens, no navigation."""
+
+    initial = {
+        "energy": float(engine.INITIAL_ORGANISM["energy"]),
+        "safety": float(engine.INITIAL_ORGANISM["safety"]),
+    }
+    totals = []
+    for causes in itertools.permutations(microworld.CAUSES, 4):
+        organism = dict(initial)
+        cumulative = 0.0
+        for cause in causes:
+            delta = expected_interaction_delta(cause, energy_before=organism["energy"])
+            organism = _after_public_delta(organism, delta)
+            cumulative += _deficit(organism)
+        totals.append(round(cumulative, 12))
+    return {
+        "interaction_count": 4,
+        "assumptions": [
+            "all four probed tokens are already adjacent",
+            "no navigation actions",
+            "no death reset",
+            "deficit is measured after each direct interaction",
+        ],
+        "best_case_cumulative_deficit": min(totals),
+        "mean_over_orderings_cumulative_deficit": round(sum(totals) / len(totals), 12),
+        "worst_case_cumulative_deficit": max(totals),
+        "cannot_prove_actual_navigation_cost": True,
+    }
+
+
+def _synthetic_public_input(token: str) -> dict[str, Any]:
+    visual = [["empty"] * 5 for _ in range(5)]
+    visual[2][2] = "self"
+    visual[1][2] = token
+    return {
+        "observation": {
+            "schema_version": microworld.PUBLIC_OBSERVATION_SCHEMA_VERSION,
+            "visual": visual,
+        },
+        "organism": {"energy": 0.45, "safety": 0.62},
+        "last_action": None,
+        "last_delta": {"energy": 0.0, "safety": 0.0},
+    }
+
+
+def synthetic_recomputation_fixture_rows() -> list[dict[str, Any]]:
+    state = empty_exact_state()
+    public_input = _synthetic_public_input("v0")
+    plan = plan_exact_action(
+        state, public_input=public_input, sequence=1, information_gain_enabled=True
+    )
+    before = posterior_metrics(state)
+    state, _ = update_exact_posterior(
+        state,
+        public_input=public_input,
+        selected_action="interact",
+        outcome_type="interacted",
+        actual_delta=expected_interaction_delta("resource"),
+        terminal=False,
+        updates_enabled=True,
+        feedback_mode="canonical",
+    )
+    after = posterior_metrics(state)
+    organism_after = _after_public_delta(
+        public_input["organism"], expected_interaction_delta("resource")
+    )
+    row_without_hash = {
+        "schema_version": ROW_SCHEMA_VERSION,
+        "task_id": TASK_ID,
+        "opaque_context_id": "fixture-public-context",
+        "arm": "EXACT_BAYES_ADAPTIVE",
+        "sequence": 1,
+        "evaluator_private": False,
+        "public_input_clean": True,
+        "public_input_fields": list(PUBLIC_INPUT_FIELDS),
+        "public_input_receipt": public_input,
+        "public_input_hash": canonical_hash(public_input),
+        "selected_action": "interact",
+        "action_diagnostics": plan["action_diagnostics"],
+        "outcome_type": "interacted",
+        "actual_delta": expected_interaction_delta("resource"),
+        "energy_after": organism_after["energy"],
+        "safety_after": organism_after["safety"],
+        "terminal": False,
+        "died": False,
+        "deficit_loss": _deficit_loss(organism_after, False),
+        "posterior_entropy_bits_before": before["posterior_entropy_bits"],
+        "posterior_entropy_bits": after["posterior_entropy_bits"],
+        "equivalent_mapping_count_before": before["equivalent_mapping_count"],
+        "equivalent_mapping_count": after["equivalent_mapping_count"],
+        "exact_alignment_bayes_error": after["exact_alignment_bayes_error"],
+        "behavioral_alignment_bayes_error": after["behavioral_alignment_bayes_error"],
+        "prev_trace_hash": None,
+    }
+    return [{**row_without_hash, "trace_hash": canonical_hash(row_without_hash)}]
+
+
+def run_symbolic_only(root: Path) -> dict[str, Any]:
+    out = artifact_root(root)
+    audit = run_symbolic_identifiability_audit()
+    write_json(out / "symbolic_identifiability_audit.json", audit)
+    decision = {
+        "schema_version": "ego.v2.public_latent_alignment.symbolic_decision.v1",
+        "task_id": TASK_ID,
+        "full_reference_authorized": bool(audit["full_reference_run_economically_warranted"]),
+        "reason": audit["classification"],
+        "qualification_consumed": False,
+        "original_001j_heldout_consumed": False,
+    }
+    write_json(out / "symbolic_stage_decision.json", decision)
+    return decision
+
+
+def _load_packets(root: Path) -> dict[str, list[dict[str, Any]]]:
+    out = artifact_root(root)
+    assignment_path = out / "packet_assignments.json"
+    commitment_path = out / "packet_commitment.json"
+    payload = json.loads(assignment_path.read_text(encoding="utf-8"))
+    commitment = json.loads(commitment_path.read_text(encoding="utf-8"))
+    if sha256(assignment_path) != commitment["packet_assignments_sha256"]:
+        raise RuntimeError("packet assignment commitment mismatch")
+    if payload.get("qualification_split_exists") is not False or set(payload["splits"]) != {
+        "search_dev",
+        "replication_dev",
+    }:
+        raise RuntimeError("001N packet split contract mismatch")
+    for packet, specs in payload["splits"].items():
+        if len(specs) != 16:
+            raise RuntimeError(f"{packet} must contain 16 worlds")
+        for spec in specs:
+            if spec.get("dev_only") is not True:
+                raise RuntimeError("001N packet is not dev-only")
+            world = microworld.initial_world_state(
+                seed=int(spec["world_seed"]), layout_id=str(spec["layout_id"])
+            )
+            if dict(world["trial"]["token_mapping"]) != dict(spec["mapping_commitment"]):
+                raise RuntimeError("packet evaluator mapping commitment mismatch")
+    return {key: list(value) for key, value in payload["splits"].items()}
+
+
+def _public_payload(
+    world: Mapping[str, Any],
+    organism: Mapping[str, float],
+    last_action: str | None,
+    last_delta: Mapping[str, float],
+) -> dict[str, Any]:
+    payload = {
+        "observation": microworld.policy_observation(world),
+        "organism": {
+            "energy": round(float(organism["energy"]), 12),
+            "safety": round(float(organism["safety"]), 12),
+        },
+        "last_action": last_action,
+        "last_delta": {
+            "energy": round(float(last_delta["energy"]), 12),
+            "safety": round(float(last_delta["safety"]), 12),
+        },
+    }
+    scan = scan_public_input(payload)
+    if not scan["clean"]:
+        raise RuntimeError("producer built an invalid public payload")
+    return payload
+
+
+def _initial_organism() -> dict[str, float]:
+    return {
+        "energy": float(engine.INITIAL_ORGANISM["energy"]),
+        "safety": float(engine.INITIAL_ORGANISM["safety"]),
+    }
+
+
+def _deficit_loss(organism: Mapping[str, Any], died: bool) -> float:
+    return round(_deficit(organism) + (0.75 if died else 0.0), 12)
+
+
+def _random_action(context: str, sequence: int) -> str:
+    digest = hashlib.sha256(
+        f"{TASK_ID}:{context}:{sequence}:uniform-random".encode("utf-8")
+    ).digest()
+    return microworld.ACTIONS[int.from_bytes(digest[:4], "big") % len(microworld.ACTIONS)]
+
+
+def _canonical_plan(
+    state: Mapping[str, Any], public_input: Mapping[str, Any], sequence: int
+) -> dict[str, Any]:
+    return homeostatic_transfer.plan_action(
+        state,
+        public_input=public_input,
+        sequence=sequence,
+        mode="public_bayes",
+        drive_mode="canonical",
+        posterior_mode="canonical",
+        action_costs=engine.ACTION_COSTS,
+        target_level=engine.TARGET_LEVEL,
+    )
+
+
+def _private_aligned_state(spec: Mapping[str, Any]) -> dict[str, Any]:
+    # The mapping commitment stays in the evaluator-owned diagnostic path. The
+    # returned canonical reference is never serialized as or passed to candidate
+    # state and is excluded from public gates.
+    return transfer_mechanism._evaluator_aligned_reference_state(spec)
+
+
+def _trace_row_hash(row_without_hash: Mapping[str, Any]) -> str:
+    return canonical_hash(row_without_hash)
+
+
+def run_trajectory(
+    spec: Mapping[str, Any], *, arm: str, budget: int = EVALUATION_BUDGET
+) -> dict[str, Any]:
+    if arm not in ALL_ARMS or type(budget) is not int or budget <= 0:
+        raise ValueError("unknown 001N trajectory")
+    world = microworld.initial_world_state(
+        seed=int(spec["world_seed"]), layout_id=str(spec["layout_id"])
+    )
+    if dict(world["trial"]["token_mapping"]) != dict(spec["mapping_commitment"]):
+        raise RuntimeError("trajectory evaluator mapping commitment mismatch")
+    exact_state = empty_exact_state() if arm in EXACT_STATE_ARMS else None
+    canonical_state = (
+        homeostatic_transfer.empty_state()
+        if arm in {"SCRATCH", "EXISTING_PUBLIC_BAYES"}
+        else None
+    )
+    aligned_state = _private_aligned_state(spec) if arm == "PRIVATE_ALIGNED_REFERENCE" else None
+    organism = _initial_organism()
+    last_action: str | None = None
+    last_delta = {"energy": 0.0, "safety": 0.0}
+    previous_hash: str | None = None
+    rows: list[dict[str, Any]] = []
+    life_index = 1
+    run_meta = {
+        "run_id": f"{TASK_ID}:{spec['opaque_context_id']}:{arm}",
+        "seed": int(spec["world_seed"]),
+    }
+    code_hash = engine.compute_code_path_hash()
+    reliable_step: int | None = None
+    reliable_cumulative: float | None = None
+    cumulative_deficit = 0.0
+    for sequence in range(1, budget + 1):
+        public_input = _public_payload(world, organism, last_action, last_delta)
+        public_scan = scan_public_input(public_input)
+        exact_before = None if exact_state is None else posterior_metrics(exact_state)
+        plan: dict[str, Any] | None = None
+        candidate_wrapper_called = False
+        if arm in EXACT_STATE_ARMS:
+            assert exact_state is not None
+            candidate_wrapper_called = True
+            plan = plan_exact_action(
+                exact_state,
+                public_input=public_input,
+                sequence=sequence,
+                information_gain_enabled=arm != "NO_INFORMATION_GAIN",
+            )
+            action = str(plan["selected_action"])
+        elif arm in {"SCRATCH", "EXISTING_PUBLIC_BAYES"}:
+            assert canonical_state is not None
+            plan = _canonical_plan(canonical_state, public_input, sequence)
+            action = str(plan["selected_action"])
+        elif arm == "PRIVATE_ALIGNED_REFERENCE":
+            assert aligned_state is not None
+            plan = _canonical_plan(aligned_state, public_input, sequence)
+            action = str(plan["selected_action"])
+        elif arm == "PRIVATE_ORACLE_NAVIGATOR":
+            action = str(capacity._oracle_action(world, organism))
+        else:
+            action = _random_action(str(spec["opaque_context_id"]), sequence)
+
+        command_hash = canonical_hash(
+            {
+                "task_id": TASK_ID,
+                "opaque_context_id": spec["opaque_context_id"],
+                "arm": arm,
+                "sequence": sequence,
+                "selected_action": action,
+                "previous_trace_hash": previous_hash,
+            }
+        )
+        world_before = deepcopy(world)
+        world, transition = microworld.transition_world(
+            world_before,
+            action,
+            source_sequence=sequence,
+            source_episode_id=f"001n-life-{life_index}",
+            source_command_hash=command_hash,
+        )
+        actual = engine.compute_actual_delta(transition, selected_action=action)
+        metabolism = engine.compute_metabolism_ledger(
+            energy_before=float(organism["energy"]),
+            selected_action=action,
+            world_before=world_before,
+            world_after=world,
+            world_transition=transition,
+            run_meta=run_meta,
+            episode_id=f"001n-life-{life_index}",
+            command_hash=command_hash,
+            code_path_hash=code_hash,
+        )
+        actual_delta = {
+            "energy": round(float(metabolism["energy_delta"]), 12),
+            "safety": round(float(actual["safety"]), 12),
+        }
+        organism = _after_public_delta(organism, actual_delta)
+        organism = {key: round(value, 12) for key, value in organism.items()}
+        died = organism["energy"] == 0.0
+        update_receipt: dict[str, Any] | None = None
+        if exact_state is not None:
+            exact_state, update_receipt = update_exact_posterior(
+                exact_state,
+                public_input=public_input,
+                selected_action=action,
+                outcome_type=str(transition["outcome_type"]),
+                actual_delta=actual_delta,
+                terminal=died,
+                updates_enabled=arm != "NO_POSTERIOR_UPDATE",
+                feedback_mode="shuffle" if arm == "FEEDBACK_SHUFFLE" else "canonical",
+            )
+        elif canonical_state is not None:
+            canonical_state, update_receipt = homeostatic_transfer.update_after_transition(
+                canonical_state,
+                public_input=public_input,
+                selected_action=action,
+                observed_outcome_type=str(transition["outcome_type"]),
+                actual_delta=actual_delta,
+                terminal=died,
+                updates_enabled=True,
+                feedback_mode="canonical",
+            )
+        exact_after = None if exact_state is None else posterior_metrics(exact_state)
+        deficit_loss = _deficit_loss(organism, died)
+        cumulative_deficit = round(cumulative_deficit + deficit_loss, 12)
+        if (
+            reliable_step is None
+            and exact_after is not None
+            and bool(exact_after["reliable_behavioral_alignment"])
+        ):
+            reliable_step = sequence
+            reliable_cumulative = cumulative_deficit
+        row_without_hash = {
+            "schema_version": ROW_SCHEMA_VERSION,
+            "task_id": TASK_ID,
+            "opaque_context_id": spec["opaque_context_id"],
+            "arm": arm,
+            "sequence": sequence,
+            "evaluator_private": arm in DIAGNOSTIC_ARMS,
+            "candidate_wrapper_called": candidate_wrapper_called,
+            "public_input_clean": public_scan["clean"],
+            "public_input_fields": list(PUBLIC_INPUT_FIELDS),
+            "public_input_receipt": public_input,
+            "public_input_hash": public_scan["input_hash"],
+            "selected_action": action,
+            "selection_reason": None if plan is None else plan.get("selection_reason"),
+            "action_diagnostics": (
+                None if plan is None else deepcopy(plan.get("action_diagnostics"))
+            ),
+            "outcome_type": transition["outcome_type"],
+            "actual_delta": actual_delta,
+            "energy_after": organism["energy"],
+            "safety_after": organism["safety"],
+            "terminal": died,
+            "died": died,
+            "deficit_loss": deficit_loss,
+            "posterior_entropy_bits_before": (
+                None if exact_before is None else exact_before["posterior_entropy_bits"]
+            ),
+            "posterior_entropy_bits": (
+                None if exact_after is None else exact_after["posterior_entropy_bits"]
+            ),
+            "equivalent_mapping_count_before": (
+                None if exact_before is None else exact_before["equivalent_mapping_count"]
+            ),
+            "equivalent_mapping_count": (
+                None if exact_after is None else exact_after["equivalent_mapping_count"]
+            ),
+            "exact_alignment_bayes_error": (
+                None if exact_after is None else exact_after["exact_alignment_bayes_error"]
+            ),
+            "behavioral_alignment_bayes_error": (
+                None
+                if exact_after is None
+                else exact_after["behavioral_alignment_bayes_error"]
+            ),
+            "exact_state_hash_after": (
+                None if exact_state is None else exact_state_hash(exact_state)
+            ),
+            "update_receipt_hash": (
+                None if update_receipt is None else canonical_hash(update_receipt)
+            ),
+            "call_chain": [
+                "microworld.policy_observation",
+                (
+                    "plan_exact_action"
+                    if arm in EXACT_STATE_ARMS
+                    else "homeostatic_transfer.plan_action"
+                    if plan is not None
+                    else "evaluator_diagnostic_action"
+                ),
+                "microworld.transition_world",
+                "engine.compute_actual_delta",
+                "engine.compute_metabolism_ledger",
+                "terminal_energy_check",
+                (
+                    "update_exact_posterior"
+                    if exact_state is not None
+                    else "homeostatic_transfer.update_after_transition"
+                    if canonical_state is not None
+                    else "no_candidate_update"
+                ),
+            ],
+            "prev_trace_hash": previous_hash,
+        }
+        row = {**row_without_hash, "trace_hash": _trace_row_hash(row_without_hash)}
+        rows.append(row)
+        previous_hash = row["trace_hash"]
+        last_action, last_delta = action, actual_delta
+        if died:
+            life_index += 1
+            world = microworld.reset_world_for_life(world, life_index)
+            organism = _initial_organism()
+            if canonical_state is not None:
+                canonical_state = homeostatic_transfer.reset_for_respawn(canonical_state)
+    early = rows[: min(EARLY_CUTOFF, len(rows))]
+    late = rows[min(EARLY_CUTOFF, len(rows)) :]
+    return {
+        "opaque_context_id": spec["opaque_context_id"],
+        "arm": arm,
+        "budget": budget,
+        "early_deficit_auc": round(sum(float(row["deficit_loss"]) for row in early), 12),
+        "late_deficit_auc": round(sum(float(row["deficit_loss"]) for row in late), 12),
+        "total_deficit_auc": round(sum(float(row["deficit_loss"]) for row in rows), 12),
+        "cumulative_deficit_auc": {
+            str(checkpoint): round(
+                sum(float(row["deficit_loss"]) for row in rows[:checkpoint]), 12
+            )
+            for checkpoint in GAP_CHECKPOINTS
+            if checkpoint <= budget
+        },
+        "death_count": sum(bool(row["died"]) for row in rows),
+        "first_reliable_alignment_step": reliable_step,
+        "cumulative_deficit_at_reliable_alignment": reliable_cumulative,
+        "final_equivalent_mapping_count": (
+            None if exact_state is None else len(exact_state["mapping_hypotheses"])
+        ),
+        "final_behavioral_alignment_bayes_error": (
+            None
+            if exact_state is None
+            else posterior_metrics(exact_state)["behavioral_alignment_bayes_error"]
+        ),
+        "trace_chain_hash": previous_hash,
+        "rows": rows,
+    }
+
+
+def _mean(values: Iterable[float]) -> float:
+    values = list(values)
+    if not values:
+        raise ValueError("mean requires at least one value")
+    return round(sum(values) / len(values), 12)
+
+
+def _trajectory_target(trajectory: Mapping[str, Any]) -> dict[str, Any]:
+    return {
+        "opaque_context_id": trajectory["opaque_context_id"],
+        "arm": trajectory["arm"],
+        "row_count": len(trajectory["rows"]),
+        "early_deficit_auc": trajectory["early_deficit_auc"],
+        "late_deficit_auc": trajectory["late_deficit_auc"],
+        "total_deficit_auc": trajectory["total_deficit_auc"],
+        "final_equivalent_mapping_count": trajectory["final_equivalent_mapping_count"],
+        "final_posterior_entropy_bits": (
+            None
+            if trajectory["final_equivalent_mapping_count"] is None
+            else round(math.log2(int(trajectory["final_equivalent_mapping_count"])), 12)
+        ),
+        "first_reliable_alignment_step": trajectory["first_reliable_alignment_step"],
+        "cumulative_deficit_at_reliable_alignment": trajectory[
+            "cumulative_deficit_at_reliable_alignment"
+        ],
+        "trace_chain_hash": trajectory["trace_chain_hash"],
+    }
+
+
+def row_recomputation_target(trajectories: list[Mapping[str, Any]]) -> dict[str, Any]:
+    targets = [_trajectory_target(row) for row in trajectories]
+    by_arm: dict[str, list[dict[str, Any]]] = {
+        arm: [row for row in targets if row["arm"] == arm] for arm in ALL_ARMS
+    }
+    arms = {
+        arm: {
+            "world_count": len(values),
+            "mean_early_deficit_auc": _mean(
+                float(value["early_deficit_auc"]) for value in values
+            ),
+            "mean_late_deficit_auc": _mean(
+                float(value["late_deficit_auc"]) for value in values
+            ),
+            "mean_total_deficit_auc": _mean(
+                float(value["total_deficit_auc"]) for value in values
+            ),
+        }
+        for arm, values in by_arm.items()
+    }
+    return {
+        "row_count": sum(len(trajectory["rows"]) for trajectory in trajectories),
+        "trajectory_count": len(targets),
+        "trajectories": sorted(
+            targets, key=lambda row: (str(row["opaque_context_id"]), str(row["arm"]))
+        ),
+        "arms": arms,
+    }
+
+
+def summarize_packet(trajectories: list[Mapping[str, Any]]) -> dict[str, Any]:
+    target = row_recomputation_target(trajectories)
+    arms = target["arms"]
+    scratch = float(arms["SCRATCH"]["mean_early_deficit_auc"])
+    exact = float(arms["EXACT_BAYES_ADAPTIVE"]["mean_early_deficit_auc"])
+    aligned = float(arms["PRIVATE_ALIGNED_REFERENCE"]["mean_early_deficit_auc"])
+    gain = scratch - exact
+    headroom = scratch - aligned
+    recovery = gain / headroom if headroom > 1e-12 else None
+    by_context = {
+        (str(row["opaque_context_id"]), str(row["arm"])): row
+        for row in target["trajectories"]
+    }
+    contexts = sorted(
+        str(row["opaque_context_id"])
+        for row in target["trajectories"]
+        if row["arm"] == "EXACT_BAYES_ADAPTIVE"
+    )
+    paired = [
+        {
+            "opaque_context_id": context,
+            "scratch_early_deficit_auc": by_context[(context, "SCRATCH")][
+                "early_deficit_auc"
+            ],
+            "exact_early_deficit_auc": by_context[(context, "EXACT_BAYES_ADAPTIVE")][
+                "early_deficit_auc"
+            ],
+            "gain": round(
+                float(by_context[(context, "SCRATCH")]["early_deficit_auc"])
+                - float(
+                    by_context[(context, "EXACT_BAYES_ADAPTIVE")][
+                        "early_deficit_auc"
+                    ]
+                ),
+                12,
+            ),
+        }
+        for context in contexts
+    ]
+    ablation_gains = {
+        arm: round(scratch - float(arms[arm]["mean_early_deficit_auc"]), 12)
+        for arm in ("NO_POSTERIOR_UPDATE", "FEEDBACK_SHUFFLE", "NO_INFORMATION_GAIN")
+    }
+    removal_fractions = {
+        arm: (round((gain - arm_gain) / gain, 12) if gain > 1e-12 else None)
+        for arm, arm_gain in ablation_gains.items()
+    }
+    exact_trajectories = [
+        row for row in target["trajectories"] if row["arm"] == "EXACT_BAYES_ADAPTIVE"
+    ]
+    positive_worlds = sum(float(row["gain"]) > 0.0 for row in paired)
+    ablation_breaks = any(
+        value is not None and float(value) >= 0.50 for value in removal_fractions.values()
+    )
+    gates = {
+        "public_reference_gain_positive": gain > 0.0,
+        "recovery_at_least_5pct": recovery is not None and recovery >= 0.05,
+        "positive_worlds_at_least_12_of_16": positive_worlds >= 12,
+        "relevant_ablation_removes_half_gain": ablation_breaks,
+        "reliable_alignment_in_majority": sum(
+            row["first_reliable_alignment_step"] is not None for row in exact_trajectories
+        )
+        >= 12,
+    }
+    return {
+        "arms": arms,
+        "public_reference_gain": round(gain, 12),
+        "scratch_private_aligned_headroom": round(headroom, 12),
+        "headroom_recovery_fraction": None if recovery is None else round(recovery, 12),
+        "positive_world_count": positive_worlds,
+        "paired_world_directions": paired,
+        "ablation_gains": ablation_gains,
+        "ablation_removal_fractions": removal_fractions,
+        "first_reliable_alignment_step_mean": _mean(
+            float(row["first_reliable_alignment_step"])
+            for row in exact_trajectories
+            if row["first_reliable_alignment_step"] is not None
+        )
+        if any(row["first_reliable_alignment_step"] is not None for row in exact_trajectories)
+        else None,
+        "cumulative_deficit_at_reliable_alignment_mean": _mean(
+            float(row["cumulative_deficit_at_reliable_alignment"])
+            for row in exact_trajectories
+            if row["cumulative_deficit_at_reliable_alignment"] is not None
+        )
+        if any(
+            row["cumulative_deficit_at_reliable_alignment"] is not None
+            for row in exact_trajectories
+        )
+        else None,
+        "gates": gates,
+        "passed": all(gates.values()),
+    }
+
+
+def _candidate_freeze_inputs(root: Path) -> list[Path]:
+    return [
+        root / "scripts/codex/run_ego_v2_public_latent_alignment_identifiability_001n.py",
+        root / "scripts/codex/verify_ego_v2_public_latent_alignment_identifiability_001n.py",
+        root / "scripts/codex/tests/test_run_ego_v2_public_latent_alignment_identifiability_001n.py",
+        root / "scripts/codex/tests/test_verify_ego_v2_public_latent_alignment_identifiability_001n.py",
+        root / "docs/codex/tasks/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N.md",
+        root / "docs/codex/tasks/ego-v2-public-latent-alignment-identifiability-001n/PREREGISTRATION.md",
+        artifact_root(root) / "packet_assignments.json",
+        artifact_root(root) / "packet_commitment.json",
+        root / "labs/ego_life_playground_v0/engine.py",
+        root / "labs/ego_life_playground_v0/homeostatic_transfer.py",
+        root / "labs/ego_life_playground_v0/microworld.py",
+        root / "requirements-ego-v2.txt",
+    ]
+
+
+def build_candidate_freeze(root: Path) -> dict[str, Any]:
+    root = Path(root).resolve()
+    symbolic = json.loads(
+        (artifact_root(root) / "symbolic_stage_decision.json").read_text(encoding="utf-8")
+    )
+    if symbolic.get("full_reference_authorized") is not True:
+        raise RuntimeError("symbolic audit did not authorize the exact reference")
+    hashes = {
+        path.relative_to(root).as_posix(): sha256(path)
+        for path in _candidate_freeze_inputs(root)
+    }
+    freeze = {
+        "schema_version": "ego.v2.public_latent_alignment.candidate_freeze.v1",
+        "task_id": TASK_ID,
+        "candidate_id": "EXACT_PUBLIC_MAPPING_POSTERIOR_BAYES_ADAPTIVE",
+        "frozen_before_packet_results": True,
+        "source_and_packet_hashes": hashes,
+        "parameters": {
+            "evaluation_budget": EVALUATION_BUDGET,
+            "early_cutoff": EARLY_CUTOFF,
+            "gap_checkpoints": list(GAP_CHECKPOINTS),
+            "information_value_scale": INFORMATION_VALUE_SCALE,
+            "terminal_risk_penalty": TERMINAL_RISK_PENALTY,
+            "navigation_cost_per_cell": NAVIGATION_COST_PER_CELL,
+            "reliable_behavioral_error": RELIABLE_BEHAVIORAL_ERROR,
+            "required_positive_worlds": 12,
+            "required_recovery_fraction": 0.05,
+        },
+        "qualification_consumed": False,
+        "original_001j_heldout_consumed": False,
+    }
+    write_json(artifact_root(root) / "candidate_freeze.json", freeze)
+    return freeze
+
+
+def _verify_candidate_freeze(root: Path) -> dict[str, Any]:
+    root = Path(root).resolve()
+    freeze_path = artifact_root(root) / "candidate_freeze.json"
+    freeze = json.loads(freeze_path.read_text(encoding="utf-8"))
+    findings = []
+    for relative, expected in freeze["source_and_packet_hashes"].items():
+        path = root / relative
+        if not path.is_file() or sha256(path) != expected:
+            findings.append(f"freeze_hash_mismatch:{relative}")
+    if findings:
+        raise RuntimeError(";".join(findings))
+    return freeze
+
+
+def run_packet(root: Path, packet_name: str, specs: list[Mapping[str, Any]]) -> dict[str, Any]:
+    trajectories = [
+        run_trajectory(spec, arm=arm)
+        for spec in specs
+        for arm in ALL_ARMS
+    ]
+    rows = [row for trajectory in trajectories for row in trajectory["rows"]]
+    out = artifact_root(root)
+    rows_path = out / f"{packet_name}_rows.jsonl"
+    write_jsonl(rows_path, rows)
+    summary = summarize_packet(trajectories)
+    target = row_recomputation_target(trajectories)
+    result = {
+        "schema_version": "ego.v2.public_latent_alignment.packet_result.v1",
+        "task_id": TASK_ID,
+        "packet_name": packet_name,
+        "candidate_id": "EXACT_PUBLIC_MAPPING_POSTERIOR_BAYES_ADAPTIVE",
+        "world_count": len(specs),
+        "trajectory_count": len(trajectories),
+        "rows_path": rows_path.relative_to(root).as_posix(),
+        "rows_sha256": sha256(rows_path),
+        "summary": summary,
+        "row_recomputation_target": target,
+        "candidate_received_private_alignment": False,
+        "private_aligned_evaluator_only": True,
+        "qualification_consumed": False,
+        "original_001j_heldout_consumed": False,
+    }
+    write_json(out / f"{packet_name}_result.json", result)
+    return result
+
+
+def run_full_campaign(root: Path) -> dict[str, Any]:
+    root = Path(root).resolve()
+    _verify_candidate_freeze(root)
+    packets = _load_packets(root)
+    # Single invocation runs both frozen dev-only packets. No result-dependent
+    # source or threshold mutation occurs between search and replication.
+    results = {
+        packet: run_packet(root, packet, packets[packet])
+        for packet in ("search_dev", "replication_dev")
+    }
+    stable_pass = all(result["summary"]["passed"] for result in results.values())
+    verdict = (
+        "PUBLIC_LATENT_ALIGNMENT_LEARNER_IMPLEMENTATION_GAP"
+        if stable_pass
+        else "PUBLIC_LATENT_ALIGNMENT_NOT_IDENTIFIABLE_OR_NOT_ECONOMIC_UNDER_CURRENT_GRAMMAR"
+    )
+    report = {
+        "schema_version": "ego.v2.public_latent_alignment.campaign_report.v1",
+        "task_id": TASK_ID,
+        "symbolic_classification": "DIRECT_INTERVENTION_IDENTIFIABLE",
+        "exact_reference_candidate_count": 1,
+        "packet_results": {
+            packet: result["summary"] for packet, result in results.items()
+        },
+        "stable_public_headroom": stable_pass,
+        "verdict_before_independent_verification": verdict,
+        "qualification_consumed": False,
+        "original_001j_heldout_consumed": False,
+        "product_default": "within_world_public_bayesian_posterior",
+        "world_grammar_changed": False,
+        "observation_or_action_semantics_changed": False,
+        "llm_network_background_enabled": False,
+        "claim_ceiling": "Benchmark-local public latent-alignment identifiability and acquisition cost only.",
+    }
+    write_json(artifact_root(root) / "campaign_report_preverification.json", report)
+    return report
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--root", type=Path, default=ROOT)
+    parser.add_argument("--symbolic-only", action="store_true")
+    parser.add_argument("--freeze", action="store_true")
+    parser.add_argument("--run", action="store_true")
+    args = parser.parse_args(argv)
+    selected = sum((args.symbolic_only, args.freeze, args.run))
+    if selected != 1:
+        raise SystemExit("select exactly one of --symbolic-only, --freeze, --run")
+    if args.symbolic_only:
+        result = run_symbolic_only(args.root)
+    elif args.freeze:
+        result = build_candidate_freeze(args.root)
+    else:
+        result = run_full_campaign(args.root)
+    print(json.dumps(result, sort_keys=True, indent=2))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

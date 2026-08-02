@@ -1,0 +1,85 @@
+{
+  "failures": [
+    {
+      "id": "SEARCH_NEGATIVE_HEADROOM",
+      "positive_worlds": 4,
+      "public_reference_gain": -6.579875,
+      "required_positive_worlds": 12
+    },
+    {
+      "id": "REPLICATION_NEGATIVE_HEADROOM",
+      "positive_worlds": 2,
+      "public_reference_gain": -7.13425,
+      "required_positive_worlds": 12
+    },
+    {
+      "id": "ALIGNMENT_TOO_LATE_OR_INCOMPLETE",
+      "replication": {
+        "final_equivalent_mapping_count_distribution": {
+          "1": 1,
+          "2": 6,
+          "24": 2,
+          "6": 7
+        },
+        "first_reliable_alignment_steps": [
+          {
+            "cumulative_deficit": 47.162,
+            "opaque_context_id": "001n-replication-dev-0002",
+            "step": 66
+          }
+        ],
+        "reliable_alignment_world_count": 1,
+        "world_count": 16
+      },
+      "search": {
+        "final_equivalent_mapping_count_distribution": {
+          "1": 4,
+          "2": 7,
+          "6": 5
+        },
+        "first_reliable_alignment_steps": [
+          {
+            "cumulative_deficit": 22.268,
+            "opaque_context_id": "001n-search-dev-0002",
+            "step": 32
+          },
+          {
+            "cumulative_deficit": 23.44,
+            "opaque_context_id": "001n-search-dev-0007",
+            "step": 75
+          },
+          {
+            "cumulative_deficit": 4.564,
+            "opaque_context_id": "001n-search-dev-0010",
+            "step": 9
+          },
+          {
+            "cumulative_deficit": 37.336,
+            "opaque_context_id": "001n-search-dev-0015",
+            "step": 52
+          }
+        ],
+        "reliable_alignment_world_count": 4,
+        "world_count": 16
+      }
+    },
+    {
+      "id": "ABLATIONS_DO_NOT_VALIDATE_POSITIVE_GAIN",
+      "replication": {
+        "FEEDBACK_SHUFFLE": null,
+        "NO_INFORMATION_GAIN": null,
+        "NO_POSTERIOR_UPDATE": null
+      },
+      "search": {
+        "FEEDBACK_SHUFFLE": null,
+        "NO_INFORMATION_GAIN": null,
+        "NO_POSTERIOR_UPDATE": null
+      }
+    }
+  ],
+  "schema_version": "ego.v2.public_latent_alignment.failure_manifest.v1",
+  "stop_condition": "One exact-reference candidate budget consumed; no parameter pursuit, qualification, grammar change, or learner campaign authorized.",
+  "task_id": "EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N",
+  "terminal": true,
+  "verdict": "PUBLIC_LATENT_ALIGNMENT_NOT_IDENTIFIABLE_OR_NOT_ECONOMIC_UNDER_CURRENT_GRAMMAR"
+}

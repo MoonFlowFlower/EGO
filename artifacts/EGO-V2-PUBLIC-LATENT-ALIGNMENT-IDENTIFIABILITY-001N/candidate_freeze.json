@@ -1,0 +1,42 @@
+{
+  "candidate_id": "EXACT_PUBLIC_MAPPING_POSTERIOR_BAYES_ADAPTIVE",
+  "frozen_before_packet_results": true,
+  "original_001j_heldout_consumed": false,
+  "parameters": {
+    "early_cutoff": 48,
+    "evaluation_budget": 96,
+    "gap_checkpoints": [
+      8,
+      16,
+      24,
+      32,
+      48,
+      64,
+      80,
+      96
+    ],
+    "information_value_scale": 0.05,
+    "navigation_cost_per_cell": 0.004,
+    "reliable_behavioral_error": 0.05,
+    "required_positive_worlds": 12,
+    "required_recovery_fraction": 0.05,
+    "terminal_risk_penalty": 0.5
+  },
+  "qualification_consumed": false,
+  "schema_version": "ego.v2.public_latent_alignment.candidate_freeze.v1",
+  "source_and_packet_hashes": {
+    "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/packet_assignments.json": "0bf7b65738a7786fb07b989146e45f3551dad6301a9e93722427e8f979be54ce",
+    "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/packet_commitment.json": "e727a7b00e1ba1f63e5247a47305afb74f8c58505296fbebb8364e972a799f39",
+    "docs/codex/tasks/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N.md": "aca408dd128a2f1aed6c2e00a3b6f73cac3ec79af6781c6caad8b54ce708ebdf",
+    "docs/codex/tasks/ego-v2-public-latent-alignment-identifiability-001n/PREREGISTRATION.md": "246c7dfe5e8173416482aaf8a9895636b77c848c16e8565895385fb244b16ba9",
+    "labs/ego_life_playground_v0/engine.py": "ecd520725953facf2bf45daa36fd0454ff5b79be550e3b187a4351598e5a127a",
+    "labs/ego_life_playground_v0/homeostatic_transfer.py": "0b12d4de14329a7f55bd9336957a8a4a08b57648308a10ce480f4705963c99d0",
+    "labs/ego_life_playground_v0/microworld.py": "d87ba9530d32d2b504c75a132ae1163dfe8e8cd0a8879e6cbdd09807a9daa923",
+    "requirements-ego-v2.txt": "a23aaf94250a9f53031a592980142245a848e2372b6c6c3093e8260b129265b8",
+    "scripts/codex/run_ego_v2_public_latent_alignment_identifiability_001n.py": "edf1047537c83730ddedc774547ffb66119dab00b33073fd5d3abf06d195e139",
+    "scripts/codex/tests/test_run_ego_v2_public_latent_alignment_identifiability_001n.py": "8fb714241fa57fd77c3e52a0c6337e03c78d8f3aa2f63451a913f68b5ebbc151",
+    "scripts/codex/tests/test_verify_ego_v2_public_latent_alignment_identifiability_001n.py": "f6d4c247470ea5bf7b9f84a51a0fa5dc911cf197b4ce78861def8fe09f7c2433",
+    "scripts/codex/verify_ego_v2_public_latent_alignment_identifiability_001n.py": "72778d1dd17a190bb188d4c882464ae10940a160334b7b409d439bd1afd14cdd"
+  },
+  "task_id": "EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N"
+}

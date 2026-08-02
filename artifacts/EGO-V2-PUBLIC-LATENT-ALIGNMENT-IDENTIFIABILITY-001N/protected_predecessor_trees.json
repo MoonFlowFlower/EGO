@@ -1,0 +1,10 @@
+{
+  "base_head": "325496a1a2f43a0bbc00f757b174c514267c2059",
+  "git_tree_oids": {
+    "artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J": "6ed0d6f80e7c9e9c7219e7e91b6cb35786db2261",
+    "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L": "1661c93d21f9479905aca8ae380af97b5e220d39",
+    "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L": "7a0013c96fed6ec3300444608bafdc04027c72cc",
+    "artifacts/EGO-V2-TRANSFER-MECHANISM-001M": "b145109e4d955375ada1b6d2fd4c73c9d68a491a"
+  },
+  "schema_version": "ego.v2.public_latent_alignment.protected_predecessors.v1"
+}

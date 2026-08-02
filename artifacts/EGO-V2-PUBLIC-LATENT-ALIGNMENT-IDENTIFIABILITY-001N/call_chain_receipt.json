@@ -1,0 +1,30 @@
+{
+  "exact_reference_order": [
+    "microworld.policy_observation",
+    "plan_exact_action",
+    "microworld.transition_world",
+    "engine.compute_actual_delta",
+    "engine.compute_metabolism_ledger",
+    "terminal_energy_check",
+    "update_exact_posterior"
+  ],
+  "independent_recomputation_passed": true,
+  "private_aligned_candidate_wrapper_called": false,
+  "public_candidate_fields": [
+    "observation",
+    "organism",
+    "last_action",
+    "last_delta"
+  ],
+  "schema_version": "ego.v2.public_latent_alignment.call_chain.v1",
+  "scratch_order": [
+    "microworld.policy_observation",
+    "homeostatic_transfer.plan_action",
+    "microworld.transition_world",
+    "engine.compute_actual_delta",
+    "engine.compute_metabolism_ledger",
+    "terminal_energy_check",
+    "homeostatic_transfer.update_after_transition"
+  ],
+  "task_id": "EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N"
+}

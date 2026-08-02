@@ -1,0 +1,8 @@
+{
+  "full_reference_authorized": true,
+  "original_001j_heldout_consumed": false,
+  "qualification_consumed": false,
+  "reason": "DIRECT_INTERVENTION_IDENTIFIABLE",
+  "schema_version": "ego.v2.public_latent_alignment.symbolic_decision.v1",
+  "task_id": "EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N"
+}

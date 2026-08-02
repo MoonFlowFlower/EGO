@@ -1,0 +1,66 @@
+{
+  "candidate_calls": [
+    {
+      "function": "plan_exact_action",
+      "keyword_arguments": [
+        "information_gain_enabled",
+        "public_input",
+        "sequence"
+      ],
+      "line": 753
+    },
+    {
+      "function": "update_exact_posterior",
+      "keyword_arguments": [
+        "actual_delta",
+        "feedback_mode",
+        "outcome_type",
+        "public_input",
+        "selected_action",
+        "terminal",
+        "updates_enabled"
+      ],
+      "line": 757
+    },
+    {
+      "function": "update_exact_posterior",
+      "keyword_arguments": [
+        "actual_delta",
+        "feedback_mode",
+        "outcome_type",
+        "public_input",
+        "selected_action",
+        "terminal",
+        "updates_enabled"
+      ],
+      "line": 641
+    },
+    {
+      "function": "plan_exact_action",
+      "keyword_arguments": [
+        "information_gain_enabled",
+        "public_input",
+        "sequence"
+      ],
+      "line": 953
+    },
+    {
+      "function": "update_exact_posterior",
+      "keyword_arguments": [
+        "actual_delta",
+        "feedback_mode",
+        "outcome_type",
+        "public_input",
+        "selected_action",
+        "terminal",
+        "updates_enabled"
+      ],
+      "line": 1012
+    }
+  ],
+  "candidate_receives_mapping_or_seed": false,
+  "findings": [],
+  "passed": true,
+  "schema_version": "ego.v2.public_latent_alignment.static_boundary_audit.v1",
+  "task_id": "EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N"
+}

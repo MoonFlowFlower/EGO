@@ -1,0 +1,380 @@
+{
+  "replication_dev": {
+    "passed": true,
+    "recomputation_findings": [],
+    "recomputed_summary": {
+      "ablation_gains": {
+        "FEEDBACK_SHUFFLE": -7.77325,
+        "NO_INFORMATION_GAIN": -7.13075,
+        "NO_POSTERIOR_UPDATE": -7.63125
+      },
+      "ablation_removal_fractions": {
+        "FEEDBACK_SHUFFLE": null,
+        "NO_INFORMATION_GAIN": null,
+        "NO_POSTERIOR_UPDATE": null
+      },
+      "arms": {
+        "EXACT_BAYES_ADAPTIVE": {
+          "mean_early_deficit_auc": 26.943,
+          "mean_late_deficit_auc": 27.53275,
+          "mean_total_deficit_auc": 54.47575,
+          "world_count": 16
+        },
+        "EXISTING_PUBLIC_BAYES": {
+          "mean_early_deficit_auc": 19.80875,
+          "mean_late_deficit_auc": 14.381625,
+          "mean_total_deficit_auc": 34.190375,
+          "world_count": 16
+        },
+        "FEEDBACK_SHUFFLE": {
+          "mean_early_deficit_auc": 27.582,
+          "mean_late_deficit_auc": 32.38875,
+          "mean_total_deficit_auc": 59.97075,
+          "world_count": 16
+        },
+        "NO_INFORMATION_GAIN": {
+          "mean_early_deficit_auc": 26.9395,
+          "mean_late_deficit_auc": 27.212625,
+          "mean_total_deficit_auc": 54.152125,
+          "world_count": 16
+        },
+        "NO_POSTERIOR_UPDATE": {
+          "mean_early_deficit_auc": 27.44,
+          "mean_late_deficit_auc": 28.16,
+          "mean_total_deficit_auc": 55.6,
+          "world_count": 16
+        },
+        "PRIVATE_ALIGNED_REFERENCE": {
+          "mean_early_deficit_auc": 13.286875,
+          "mean_late_deficit_auc": 9.2295,
+          "mean_total_deficit_auc": 22.516375,
+          "world_count": 16
+        },
+        "PRIVATE_ORACLE_NAVIGATOR": {
+          "mean_early_deficit_auc": 5.491625,
+          "mean_late_deficit_auc": 0.0,
+          "mean_total_deficit_auc": 5.491625,
+          "world_count": 16
+        },
+        "SCRATCH": {
+          "mean_early_deficit_auc": 19.80875,
+          "mean_late_deficit_auc": 14.381625,
+          "mean_total_deficit_auc": 34.190375,
+          "world_count": 16
+        },
+        "UNIFORM_RANDOM": {
+          "mean_early_deficit_auc": 25.78825,
+          "mean_late_deficit_auc": 26.642,
+          "mean_total_deficit_auc": 52.43025,
+          "world_count": 16
+        }
+      },
+      "cumulative_deficit_at_reliable_alignment_mean": 47.162,
+      "first_reliable_alignment_step_mean": 66.0,
+      "gates": {
+        "positive_worlds_at_least_12_of_16": false,
+        "public_reference_gain_positive": false,
+        "recovery_at_least_5pct": false,
+        "relevant_ablation_removes_half_gain": false,
+        "reliable_alignment_in_majority": false
+      },
+      "headroom_recovery_fraction": -1.093895543843,
+      "paired_world_directions": [
+        {
+          "exact_early_deficit_auc": 24.188,
+          "gain": -6.428,
+          "opaque_context_id": "001n-replication-dev-0001",
+          "scratch_early_deficit_auc": 17.76
+        },
+        {
+          "exact_early_deficit_auc": 30.996,
+          "gain": -6.584,
+          "opaque_context_id": "001n-replication-dev-0002",
+          "scratch_early_deficit_auc": 24.412
+        },
+        {
+          "exact_early_deficit_auc": 29.092,
+          "gain": 0.304,
+          "opaque_context_id": "001n-replication-dev-0003",
+          "scratch_early_deficit_auc": 29.396
+        },
+        {
+          "exact_early_deficit_auc": 24.168,
+          "gain": 2.712,
+          "opaque_context_id": "001n-replication-dev-0004",
+          "scratch_early_deficit_auc": 26.88
+        },
+        {
+          "exact_early_deficit_auc": 28.548,
+          "gain": -7.004,
+          "opaque_context_id": "001n-replication-dev-0005",
+          "scratch_early_deficit_auc": 21.544
+        },
+        {
+          "exact_early_deficit_auc": 23.688,
+          "gain": -18.458,
+          "opaque_context_id": "001n-replication-dev-0006",
+          "scratch_early_deficit_auc": 5.23
+        },
+        {
+          "exact_early_deficit_auc": 26.784,
+          "gain": -4.942,
+          "opaque_context_id": "001n-replication-dev-0007",
+          "scratch_early_deficit_auc": 21.842
+        },
+        {
+          "exact_early_deficit_auc": 33.372,
+          "gain": -2.108,
+          "opaque_context_id": "001n-replication-dev-0008",
+          "scratch_early_deficit_auc": 31.264
+        },
+        {
+          "exact_early_deficit_auc": 28.288,
+          "gain": -9.352,
+          "opaque_context_id": "001n-replication-dev-0009",
+          "scratch_early_deficit_auc": 18.936
+        },
+        {
+          "exact_early_deficit_auc": 24.632,
+          "gain": -2.588,
+          "opaque_context_id": "001n-replication-dev-0010",
+          "scratch_early_deficit_auc": 22.044
+        },
+        {
+          "exact_early_deficit_auc": 27.408,
+          "gain": -6.396,
+          "opaque_context_id": "001n-replication-dev-0011",
+          "scratch_early_deficit_auc": 21.012
+        },
+        {
+          "exact_early_deficit_auc": 28.232,
+          "gain": -13.414,
+          "opaque_context_id": "001n-replication-dev-0012",
+          "scratch_early_deficit_auc": 14.818
+        },
+        {
+          "exact_early_deficit_auc": 33.748,
+          "gain": -12.45,
+          "opaque_context_id": "001n-replication-dev-0013",
+          "scratch_early_deficit_auc": 21.298
+        },
+        {
+          "exact_early_deficit_auc": 32.392,
+          "gain": -17.956,
+          "opaque_context_id": "001n-replication-dev-0014",
+          "scratch_early_deficit_auc": 14.436
+        },
+        {
+          "exact_early_deficit_auc": 28.088,
+          "gain": -8.31,
+          "opaque_context_id": "001n-replication-dev-0015",
+          "scratch_early_deficit_auc": 19.778
+        },
+        {
+          "exact_early_deficit_auc": 7.464,
+          "gain": -1.174,
+          "opaque_context_id": "001n-replication-dev-0016",
+          "scratch_early_deficit_auc": 6.29
+        }
+      ],
+      "passed": false,
+      "positive_world_count": 2,
+      "public_reference_gain": -7.13425,
+      "scratch_private_aligned_headroom": 6.521875
+    },
+    "row_count": 13824,
+    "row_recomputation_target_match": true,
+    "rows_sha256_match": true,
+    "summary_match": true,
+    "trajectory_count": 144
+  },
+  "search_dev": {
+    "passed": true,
+    "recomputation_findings": [],
+    "recomputed_summary": {
+      "ablation_gains": {
+        "FEEDBACK_SHUFFLE": -9.767375,
+        "NO_INFORMATION_GAIN": -6.534875,
+        "NO_POSTERIOR_UPDATE": -6.869625
+      },
+      "ablation_removal_fractions": {
+        "FEEDBACK_SHUFFLE": null,
+        "NO_INFORMATION_GAIN": null,
+        "NO_POSTERIOR_UPDATE": null
+      },
+      "arms": {
+        "EXACT_BAYES_ADAPTIVE": {
+          "mean_early_deficit_auc": 24.30175,
+          "mean_late_deficit_auc": 26.5265,
+          "mean_total_deficit_auc": 50.82825,
+          "world_count": 16
+        },
+        "EXISTING_PUBLIC_BAYES": {
+          "mean_early_deficit_auc": 17.721875,
+          "mean_late_deficit_auc": 18.83425,
+          "mean_total_deficit_auc": 36.556125,
+          "world_count": 16
+        },
+        "FEEDBACK_SHUFFLE": {
+          "mean_early_deficit_auc": 27.48925,
+          "mean_late_deficit_auc": 31.18575,
+          "mean_total_deficit_auc": 58.675,
+          "world_count": 16
+        },
+        "NO_INFORMATION_GAIN": {
+          "mean_early_deficit_auc": 24.25675,
+          "mean_late_deficit_auc": 24.959375,
+          "mean_total_deficit_auc": 49.216125,
+          "world_count": 16
+        },
+        "NO_POSTERIOR_UPDATE": {
+          "mean_early_deficit_auc": 24.5915,
+          "mean_late_deficit_auc": 26.759875,
+          "mean_total_deficit_auc": 51.351375,
+          "world_count": 16
+        },
+        "PRIVATE_ALIGNED_REFERENCE": {
+          "mean_early_deficit_auc": 15.426875,
+          "mean_late_deficit_auc": 16.5075,
+          "mean_total_deficit_auc": 31.934375,
+          "world_count": 16
+        },
+        "PRIVATE_ORACLE_NAVIGATOR": {
+          "mean_early_deficit_auc": 6.01475,
+          "mean_late_deficit_auc": 2.153625,
+          "mean_total_deficit_auc": 8.168375,
+          "world_count": 16
+        },
+        "SCRATCH": {
+          "mean_early_deficit_auc": 17.721875,
+          "mean_late_deficit_auc": 18.83425,
+          "mean_total_deficit_auc": 36.556125,
+          "world_count": 16
+        },
+        "UNIFORM_RANDOM": {
+          "mean_early_deficit_auc": 26.014625,
+          "mean_late_deficit_auc": 25.76675,
+          "mean_total_deficit_auc": 51.781375,
+          "world_count": 16
+        }
+      },
+      "cumulative_deficit_at_reliable_alignment_mean": 21.902,
+      "first_reliable_alignment_step_mean": 42.0,
+      "gates": {
+        "positive_worlds_at_least_12_of_16": false,
+        "public_reference_gain_positive": false,
+        "recovery_at_least_5pct": false,
+        "relevant_ablation_removes_half_gain": false,
+        "reliable_alignment_in_majority": false
+      },
+      "headroom_recovery_fraction": -2.867047930283,
+      "paired_world_directions": [
+        {
+          "exact_early_deficit_auc": 27.368,
+          "gain": -7.96,
+          "opaque_context_id": "001n-search-dev-0001",
+          "scratch_early_deficit_auc": 19.408
+        },
+        {
+          "exact_early_deficit_auc": 24.324,
+          "gain": 9.996,
+          "opaque_context_id": "001n-search-dev-0002",
+          "scratch_early_deficit_auc": 34.32
+        },
+        {
+          "exact_early_deficit_auc": 21.252,
+          "gain": -7.212,
+          "opaque_context_id": "001n-search-dev-0003",
+          "scratch_early_deficit_auc": 14.04
+        },
+        {
+          "exact_early_deficit_auc": 18.292,
+          "gain": -9.656,
+          "opaque_context_id": "001n-search-dev-0004",
+          "scratch_early_deficit_auc": 8.636
+        },
+        {
+          "exact_early_deficit_auc": 28.368,
+          "gain": -20.27,
+          "opaque_context_id": "001n-search-dev-0005",
+          "scratch_early_deficit_auc": 8.098
+        },
+        {
+          "exact_early_deficit_auc": 25.452,
+          "gain": -4.168,
+          "opaque_context_id": "001n-search-dev-0006",
+          "scratch_early_deficit_auc": 21.284
+        },
+        {
+          "exact_early_deficit_auc": 7.676,
+          "gain": 8.89,
+          "opaque_context_id": "001n-search-dev-0007",
+          "scratch_early_deficit_auc": 16.566
+        },
+        {
+          "exact_early_deficit_auc": 30.728,
+          "gain": -14.726,
+          "opaque_context_id": "001n-search-dev-0008",
+          "scratch_early_deficit_auc": 16.002
+        },
+        {
+          "exact_early_deficit_auc": 25.224,
+          "gain": 1.42,
+          "opaque_context_id": "001n-search-dev-0009",
+          "scratch_early_deficit_auc": 26.644
+        },
+        {
+          "exact_early_deficit_auc": 28.12,
+          "gain": 0.904,
+          "opaque_context_id": "001n-search-dev-0010",
+          "scratch_early_deficit_auc": 29.024
+        },
+        {
+          "exact_early_deficit_auc": 26.44,
+          "gain": -15.73,
+          "opaque_context_id": "001n-search-dev-0011",
+          "scratch_early_deficit_auc": 10.71
+        },
+        {
+          "exact_early_deficit_auc": 23.892,
+          "gain": -5.688,
+          "opaque_context_id": "001n-search-dev-0012",
+          "scratch_early_deficit_auc": 18.204
+        },
+        {
+          "exact_early_deficit_auc": 20.976,
+          "gain": -11.206,
+          "opaque_context_id": "001n-search-dev-0013",
+          "scratch_early_deficit_auc": 9.77
+        },
+        {
+          "exact_early_deficit_auc": 21.252,
+          "gain": -3.324,
+          "opaque_context_id": "001n-search-dev-0014",
+          "scratch_early_deficit_auc": 17.928
+        },
+        {
+          "exact_early_deficit_auc": 33.256,
+          "gain": -17.07,
+          "opaque_context_id": "001n-search-dev-0015",
+          "scratch_early_deficit_auc": 16.186
+        },
+        {
+          "exact_early_deficit_auc": 26.208,
+          "gain": -9.478,
+          "opaque_context_id": "001n-search-dev-0016",
+          "scratch_early_deficit_auc": 16.73
+        }
+      ],
+      "passed": false,
+      "positive_world_count": 4,
+      "public_reference_gain": -6.579875,
+      "scratch_private_aligned_headroom": 2.295
+    },
+    "row_count": 13824,
+    "row_recomputation_target_match": true,
+    "rows_sha256_match": true,
+    "summary_match": true,
+    "trajectory_count": 144
+  }
+}

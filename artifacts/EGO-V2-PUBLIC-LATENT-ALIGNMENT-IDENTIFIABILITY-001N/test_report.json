@@ -1,0 +1,22 @@
+{
+  "commands": [
+    {
+      "command": "python -m pytest -q [001N producer/verifier + playground/homeostatic/001L/001M targeted suites]",
+      "failed_count": 0,
+      "passed": true,
+      "passed_count": 72
+    },
+    {
+      "command": "python scripts/codex/verify_route_convergence.py --root . --output <001N>/route_validation_report.json",
+      "passed": true
+    },
+    {
+      "command": "git diff --check",
+      "passed": true
+    }
+  ],
+  "numpy": "2.2.6",
+  "python_executable": "C:\\Users\\LEO\\.codex\\venvs\\ego-v2-numpy-2.2.6\\Scripts\\python.exe",
+  "schema_version": "ego.v2.public_latent_alignment.tests.v1",
+  "task_id": "EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N"
+}

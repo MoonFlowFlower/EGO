@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "positive_controls": {
+    "packet_assignment_tamper_caught": true,
+    "rehashed_entropy_tamper_caught": true,
+    "rehashed_private_field_leakage_caught": true,
+    "row_hash_tamper_caught": true,
+    "untampered_single_row_passes": true
+  },
+  "schema_version": "ego.v2.public_latent_alignment.leakage_tamper.v1",
+  "task_id": "EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N"
+}

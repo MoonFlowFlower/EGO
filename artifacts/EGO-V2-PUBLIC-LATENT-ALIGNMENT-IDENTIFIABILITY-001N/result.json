@@ -1,0 +1,30 @@
+{
+  "claim_ceiling": "Benchmark-local public latent-alignment identifiability and acquisition-cost evidence only.",
+  "independent_verification_passed": true,
+  "more_specific_interpretation": "DIRECT_INTERVENTION_IDENTIFIABLE_BUT_NOT_ECONOMIC_FOR_THIS_FROZEN_REFERENCE",
+  "original_001j_heldout_consumed": false,
+  "product_default": "within_world_public_bayesian_posterior",
+  "qualification_consumed": false,
+  "replication_dev": {
+    "positive_world_count": 2,
+    "public_reference_gain": -7.13425,
+    "recovery_fraction": -1.093895543843,
+    "reliable_alignment_world_count": 1
+  },
+  "route_validation": "pass",
+  "schema_version": "ego.v2.public_latent_alignment.result.v1",
+  "search_dev": {
+    "positive_world_count": 4,
+    "public_reference_gain": -6.579875,
+    "recovery_fraction": -2.867047930283,
+    "reliable_alignment_world_count": 4
+  },
+  "stop_condition": "one exact-reference candidate budget exhausted; stop compositional transfer pursuit on current benchmark",
+  "symbolic": {
+    "legal_mappings": 120,
+    "minimum_distinct_direct_interactions": 4,
+    "passive_information_gain_bits": 0.0
+  },
+  "task_id": "EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N",
+  "verdict": "PUBLIC_LATENT_ALIGNMENT_NOT_IDENTIFIABLE_OR_NOT_ECONOMIC_UNDER_CURRENT_GRAMMAR"
+}

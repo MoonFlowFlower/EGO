@@ -1,0 +1,72 @@
+{
+  "direct_intervention": {
+    "classification": "IDENTIFIABLE_AFTER_DIRECT_INTERVENTION",
+    "minimum_distinct_interactions": 4,
+    "survivor_counts": [
+      {
+        "distinct_interactions": 1,
+        "equivalent_mapping_count": 24,
+        "posterior_entropy_bits": 4.584962500721
+      },
+      {
+        "distinct_interactions": 2,
+        "equivalent_mapping_count": 6,
+        "posterior_entropy_bits": 2.584962500721
+      },
+      {
+        "distinct_interactions": 3,
+        "equivalent_mapping_count": 2,
+        "posterior_entropy_bits": 1.0
+      },
+      {
+        "distinct_interactions": 4,
+        "equivalent_mapping_count": 1,
+        "posterior_entropy_bits": 0.0
+      },
+      {
+        "distinct_interactions": 5,
+        "equivalent_mapping_count": 1,
+        "posterior_entropy_bits": 0.0
+      }
+    ]
+  },
+  "economic_counterexample": {
+    "classification": "IDENTIFIABLE_BUT_NOT_ECONOMIC_FOR_FROZEN_REFERENCE",
+    "replication_positive_worlds": 2,
+    "replication_public_gain": -7.13425,
+    "search_positive_worlds": 4,
+    "search_public_gain": -6.579875
+  },
+  "nuisance_boundary": "Seed-derived SHA placement correlations are marginalized as exchangeable nuisance. Exploiting seed inversion or packet lookup is forbidden and is not treated as public latent-alignment evidence.",
+  "passive_observation": {
+    "classification": "PASSIVELY_UNIDENTIFIABLE",
+    "counterexample": {
+      "classification": "PASSIVELY_UNIDENTIFIABLE",
+      "history_kind": "arbitrary_visual_navigation_without_interaction_feedback",
+      "likelihood_ratio_under_exchangeable_public_nuisance_family": 1.0,
+      "mapping_a": {
+        "v0": "resource",
+        "v1": "social",
+        "v2": "novelty",
+        "v3": "threat",
+        "v4": "shelter"
+      },
+      "mapping_b": {
+        "v0": "shelter",
+        "v1": "threat",
+        "v2": "novelty",
+        "v3": "social",
+        "v4": "resource"
+      },
+      "note": "SHA-derived seed/placement correlations are marginalized nuisance; seed lookup is forbidden.",
+      "posterior_survivors": 120
+    },
+    "equivalent_mapping_count": 120
+  },
+  "permanent_nonidentifiability": {
+    "equivalence_classes": [],
+    "found": false
+  },
+  "schema_version": "ego.v2.public_latent_alignment.counterexamples.v1",
+  "task_id": "EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N"
+}
