@@ -1,0 +1,12 @@
+{
+  "action_count": 257,
+  "failures": [],
+  "passed": true,
+  "respawn_count": 1,
+  "row_count": 258,
+  "schema_version": "ego.v2.public_featured_product_row_verifier.001q.v1",
+  "subprocess_returncode": 0,
+  "subprocess_stderr": "",
+  "subprocess_stdout": "{\"action_count\": 257, \"failures\": [], \"passed\": true, \"respawn_count\": 1, \"row_count\": 258, \"schema_version\": \"ego.v2.public_featured_product_row_verifier.001q.v1\", \"verifier\": \"frozen_001o_public_reference_public_rows_only\"}",
+  "verifier": "frozen_001o_public_reference_public_rows_only"
+}

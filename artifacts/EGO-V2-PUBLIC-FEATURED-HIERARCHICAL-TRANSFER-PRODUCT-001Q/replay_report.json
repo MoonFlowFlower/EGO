@@ -1,0 +1,9 @@
+{
+  "command_count": 258,
+  "fast_world_update_count": 1,
+  "last_trace_hash": "616b9a9bf1df563d00f493552a6372514dd7e94f31a7fe690dadf1918a6862f6",
+  "passed": true,
+  "slow_update_count": 257,
+  "verification_mode": "full_replay",
+  "world_switch_count": 1
+}

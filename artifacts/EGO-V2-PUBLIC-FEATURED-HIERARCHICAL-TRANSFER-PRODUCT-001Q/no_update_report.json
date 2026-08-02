@@ -1,0 +1,15 @@
+{
+  "learner_hash_after": "7db0f05ba4eda9645cde06e37bd6134a9328aeac6e0cf1c691dc31e0e9ac8b52",
+  "learner_hash_before": "7db0f05ba4eda9645cde06e37bd6134a9328aeac6e0cf1c691dc31e0e9ac8b52",
+  "passed": true,
+  "update": {
+    "applied": false,
+    "fast_state_hash_after": "a9e5ce08724315dff87b4da36e495c1dc2a0bc6efe798a56ffd6437db83a3051",
+    "posterior_entropy_bits": 6.133206219346495,
+    "public_input_receipt": "8623224ce402648a82553597e1ebf403cd879ffb243a0aa6d634b95fc4970953",
+    "reason": "updates_frozen",
+    "slow_state_hash_after": "3a452b5b6e90eaac97f0d1d66f8cb87ea92aa09621566c71139780af3d3d6b2a",
+    "state_hash_after": "7db0f05ba4eda9645cde06e37bd6134a9328aeac6e0cf1c691dc31e0e9ac8b52",
+    "state_hash_before": "7db0f05ba4eda9645cde06e37bd6134a9328aeac6e0cf1c691dc31e0e9ac8b52"
+  }
+}

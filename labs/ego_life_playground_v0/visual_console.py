@@ -9,7 +9,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox, simpledialog, ttk
 from typing import Any, Mapping
 
-from .controller import PlaygroundController, public_state_hash
+from .controller import PlaygroundController, public_state_hash, public_state_projection
 from .engine import DEFAULT_INTERVENTIONS, DEFAULT_PRIVATE_WORLD_SEED, EngineInvariantError, MAX_LIVES
 from .microworld import ALLOWED_WORLD_EVENTS, FACING_DELTAS, make_public_frame
 from .store import RecoveryFrame, SQLiteEventStore, default_db_path
@@ -100,9 +100,14 @@ def build_tk_trace_payload(
     """Build a renderer-only payload from recovered state and recovered trace."""
 
     observer_frame = make_public_frame(state, trace)
-    policy_visual = (
+    policy_observation = (
         deepcopy(trace["observation"])
         if isinstance(trace, Mapping) and isinstance(trace.get("observation"), Mapping)
+        else deepcopy(observer_frame["observation"])
+    )
+    policy_visual = (
+        policy_observation
+        if "visual" in policy_observation
         else deepcopy(observer_frame["observation"])
     )
     payload = {
@@ -110,6 +115,15 @@ def build_tk_trace_payload(
         "current_goal": deepcopy(state["current_goal"]),
         "observer_frame": observer_frame,
         "policy_visual": policy_visual,
+        "public_featured_observation": (
+            deepcopy(policy_observation)
+            if "slots" in policy_observation
+            else deepcopy(
+                public_state_projection(state)
+                .get("public_featured_transfer", {})
+                .get("observation")
+            )
+        ),
         "public_state_hash": public_state_hash(state),
         "observer_public_world_hash": observer_frame["public_world_hash"],
         "observer_observation_hash": observer_frame["observation_hash"],
@@ -142,6 +156,9 @@ def build_tk_trace_payload(
             "survival_learning": deepcopy(trace.get("survival_learning")),
             "predictive_control": deepcopy(trace.get("predictive_control")),
             "homeostatic_transfer": deepcopy(trace.get("homeostatic_transfer")),
+            "public_featured_transfer": deepcopy(
+                trace.get("public_featured_transfer")
+            ),
         }
     )
     return payload
@@ -232,6 +249,9 @@ def build_chinese_causal_view(
     homeostatic_trace = _copy_mapping(trace.get("homeostatic_transfer"))
     homeostatic_plan = _copy_mapping(homeostatic_trace.get("plan"))
     homeostatic_update = _copy_mapping(homeostatic_trace.get("update"))
+    featured_trace = _copy_mapping(trace.get("public_featured_transfer"))
+    featured_plan = _copy_mapping(featured_trace.get("plan"))
+    featured_update = _copy_mapping(featured_trace.get("update"))
     return {
         "观察者全局视图": {
             "位置": str(observer_world["agent"]["position"]),
@@ -320,6 +340,25 @@ def build_chinese_causal_view(
             "posterior哈希": homeostatic_trace.get("posterior_hash"),
             "更新次数": homeostatic_trace.get("update_count"),
         },
+        "公开特征分层迁移": {
+            "模式": featured_trace.get("mode"),
+            "能量": frame.state["organism"]["energy"],
+            "安全": frame.state["organism"]["safety"],
+            "公开特征槽": deepcopy(
+                (featured_trace.get("observation") or {}).get("slots", [])
+            ),
+            "当前缺口与不确定度": deepcopy(featured_plan.get("reason", {})),
+            "动作后果预测": deepcopy(featured_plan.get("predictions", {})),
+            "动作排序": deepcopy(featured_plan.get("ranking", [])),
+            "选择动作": featured_plan.get("action"),
+            "实际反馈": deepcopy(featured_trace.get("actual_feedback")),
+            "更新应用": featured_update.get("applied"),
+            "慢状态哈希": featured_trace.get("slow_state_hash"),
+            "快状态哈希": featured_trace.get("fast_state_hash"),
+            "posterior熵": featured_trace.get("posterior_entropy_bits"),
+            "更新次数": featured_trace.get("update_count"),
+            "世界切换次数": featured_trace.get("world_switch_count"),
+        },
         "结果与变化": {
             "世界结果": world_transition.get("outcome_type"),
             "命令注入": trace["command"].get("injected_event"),
@@ -361,6 +400,9 @@ def build_advanced_details(
         "survival_learning": deepcopy(trace.get("survival_learning")),
         "predictive_control": deepcopy(trace.get("predictive_control")),
         "homeostatic_transfer": deepcopy(trace.get("homeostatic_transfer")),
+        "public_featured_transfer": deepcopy(
+            trace.get("public_featured_transfer")
+        ),
         "successful_resource_interactions": _resource_success_count(
             controller, through_sequence=frame.sequence
         ),
@@ -464,6 +506,12 @@ class PlaygroundWindow:
         self.survival_learning_mode_var = tk.StringVar(value="off")
         self.predictive_control_mode_var = tk.StringVar(value="off")
         self.homeostatic_transfer_mode_var = tk.StringVar(value="off")
+        self.public_featured_transfer_mode = (
+            "hierarchical_bayes"
+            if getattr(controller, "product_profile", "standard")
+            == "public_featured_hierarchical_transfer"
+            else "off"
+        )
         self.sequence_var = tk.StringVar(value="")
         self.status_var = tk.StringVar(value="")
 
@@ -537,6 +585,11 @@ class PlaygroundWindow:
         self.homeostatic_transfer_mode_box.bind(
             "<<ComboboxSelected>>", self._on_homeostatic_mode_selected
         )
+        if self.public_featured_transfer_mode != "off":
+            self.survival_learning_mode_box.configure(state="disabled")
+            self.predictive_control_mode_box.configure(state="disabled")
+            self.homeostatic_transfer_mode_box.configure(state="disabled")
+            self.inject_button.configure(state="disabled")
         ttk.Button(controls, text="Inspect", command=self._inspect_latest).pack(
             side=tk.LEFT, padx=(0, 6)
         )
@@ -667,6 +720,7 @@ class PlaygroundWindow:
             survival_learning_mode=self.survival_learning_mode_var.get(),
             predictive_control_mode=self.predictive_control_mode_var.get(),
             homeostatic_transfer_mode=self.homeostatic_transfer_mode_var.get(),
+            public_featured_transfer_mode=self.public_featured_transfer_mode,
         )
 
     def _on_survival_mode_selected(self, _event: object = None) -> None:
@@ -1128,19 +1182,30 @@ class PlaygroundWindow:
         )
         self.pause_button.state(["!disabled"] if self.running or self._animating else ["disabled"])
         self.inject_button.state(
-            ["disabled"] if blocked or terminal or self.running or self._animating else ["!disabled"]
+            ["disabled"]
+            if (
+                blocked
+                or terminal
+                or self.running
+                or self._animating
+                or self.public_featured_transfer_mode != "off"
+            )
+            else ["!disabled"]
         )
+        policy_mode_locked = self.public_featured_transfer_mode != "off"
         self.survival_learning_mode_box.configure(
-            state="disabled" if blocked or terminal or self.running or self._animating else "readonly"
+            state="disabled"
+            if blocked or terminal or self.running or self._animating or policy_mode_locked
+            else "readonly"
         )
         self.predictive_control_mode_box.configure(
             state="disabled"
-            if blocked or terminal or self.running or self._animating
+            if blocked or terminal or self.running or self._animating or policy_mode_locked
             else "readonly"
         )
         self.homeostatic_transfer_mode_box.configure(
             state="disabled"
-            if blocked or terminal or self.running or self._animating
+            if blocked or terminal or self.running or self._animating or policy_mode_locked
             else "readonly"
         )
 
@@ -1233,6 +1298,7 @@ def run_app(
     world_seed: int = DEFAULT_PRIVATE_WORLD_SEED,
     layout_id: str | None = None,
     run_id: str | None = None,
+    public_featured_transfer: bool = False,
 ) -> None:
     store = SQLiteEventStore(db_path or default_db_path())
     try:
@@ -1242,6 +1308,7 @@ def run_app(
             seed=seed,
             world_seed=world_seed,
             layout_id=layout_id,
+            public_featured_transfer=public_featured_transfer,
         )
         root = tk.Tk()
         window = PlaygroundWindow(root, controller)

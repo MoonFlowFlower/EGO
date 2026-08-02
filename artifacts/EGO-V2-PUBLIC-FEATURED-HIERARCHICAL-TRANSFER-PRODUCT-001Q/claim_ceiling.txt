@@ -1,0 +1,1 @@
+This proves only that the frozen finite-family public model-based learner runs, updates, persists across one product world switch, and replays through the sole local reducer/store path. It does not prove general transfer, learning outside the hypothesis family, agency, consciousness, or real-world survival ability.

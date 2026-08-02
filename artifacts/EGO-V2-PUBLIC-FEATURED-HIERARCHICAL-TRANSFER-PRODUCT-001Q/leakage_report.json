@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "positive_controls": 5,
+  "rejected": [
+    "seed",
+    "world_id",
+    "mapping",
+    "oracle_action",
+    "future"
+  ]
+}

@@ -72,6 +72,9 @@ def _timeline_from_recovery(recovery: RecoveryResult) -> list[dict[str, Any]]:
             "survival_learning": deepcopy(trace_mapping.get("survival_learning")),
             "predictive_control": deepcopy(trace_mapping.get("predictive_control")),
             "homeostatic_transfer": deepcopy(trace_mapping.get("homeostatic_transfer")),
+            "public_featured_transfer": deepcopy(
+                trace_mapping.get("public_featured_transfer")
+            ),
             "public_state_hash": public_state_hash(frame.state),
         }
         entry.update(_lifecycle_summary(frame.state))
@@ -133,7 +136,9 @@ def build_terminal_snapshot(controller: PlaygroundController) -> dict[str, Any]:
         if trace is None
         else deepcopy(trace_mapping.get("candidate_actions", [])),
         "selected_action": None if trace is None else trace_mapping.get("selected_action"),
-        "selected_score": None if selected_candidate is None else selected_candidate["total_score"],
+        "selected_score": None
+        if selected_candidate is None
+        else selected_candidate.get("total_score", selected_candidate.get("score")),
         "prediction": None if trace is None else deepcopy(trace_mapping.get("prediction")),
         "actual_delta": None if trace is None else deepcopy(trace_mapping.get("actual_delta")),
         "prediction_error": None if trace is None else deepcopy(trace_mapping.get("prediction_error")),
@@ -193,6 +198,52 @@ def build_terminal_snapshot(controller: PlaygroundController) -> dict[str, Any]:
         "survival_learning": deepcopy(trace_mapping.get("survival_learning")),
         "predictive_control": deepcopy(trace_mapping.get("predictive_control")),
         "homeostatic_transfer": deepcopy(trace_mapping.get("homeostatic_transfer")),
+        "public_featured_transfer": deepcopy(
+            trace_mapping.get("public_featured_transfer")
+        ),
+        "public_featured_summary": {
+            "energy": float(state["organism"]["energy"]),
+            "safety": float(state["organism"]["safety"]),
+            "deficits": deepcopy(
+                (((trace_mapping.get("public_featured_transfer") or {}).get("plan") or {}).get("reason", {}))
+            ),
+            "predictions": deepcopy(
+                (((trace_mapping.get("public_featured_transfer") or {}).get("plan") or {}).get("predictions", {}))
+            ),
+            "ranking": deepcopy(
+                (((trace_mapping.get("public_featured_transfer") or {}).get("plan") or {}).get("ranking", []))
+            ),
+            "actual_feedback": deepcopy(
+                (trace_mapping.get("public_featured_transfer") or {}).get(
+                    "actual_feedback"
+                )
+            ),
+            "slow_state_hash": (
+                (trace_mapping.get("public_featured_transfer") or {}).get(
+                    "slow_state_hash"
+                )
+            ),
+            "fast_state_hash": (
+                (trace_mapping.get("public_featured_transfer") or {}).get(
+                    "fast_state_hash"
+                )
+            ),
+            "posterior_entropy_bits": (
+                (trace_mapping.get("public_featured_transfer") or {}).get(
+                    "posterior_entropy_bits"
+                )
+            ),
+            "update_count": (
+                (trace_mapping.get("public_featured_transfer") or {}).get(
+                    "update_count"
+                )
+            ),
+            "world_switch_count": (
+                (trace_mapping.get("public_featured_transfer") or {}).get(
+                    "world_switch_count"
+                )
+            ),
+        },
         "homeostatic_summary": {
             "energy": float(state["organism"]["energy"]),
             "safety": float(state["organism"]["safety"]),
@@ -245,32 +296,57 @@ def render_homeostatic_trace_html(
         homeostatic = _trace_mapping(trace.get("homeostatic_transfer"))
         plan = _trace_mapping(homeostatic.get("plan"))
         update = _trace_mapping(homeostatic.get("update"))
+        featured = _trace_mapping(trace.get("public_featured_transfer"))
+        featured_plan = _trace_mapping(featured.get("plan"))
+        if featured.get("mode") == "hierarchical_bayes":
+            mode = "public_featured_hierarchical_transfer"
+            deficits = deepcopy(featured_plan.get("reason", {}))
+            predictions = deepcopy(featured_plan.get("predictions", {}))
+            action_values = deepcopy(featured_plan.get("ranking", []))
+            selection_reason = deepcopy(featured_plan.get("reason", {}))
+            actual_outcome = deepcopy(featured.get("actual_feedback"))
+            update = _trace_mapping(featured.get("update"))
+            posterior_hash = featured.get("state_hash")
+            slow_hash = featured.get("slow_state_hash")
+            fast_hash = featured.get("fast_state_hash")
+            update_count = featured.get("update_count")
+        else:
+            mode = "within_world_homeostatic"
+            deficits = deepcopy(plan.get("drive", {}))
+            predictions = deepcopy(plan.get("predictions_by_action", {}))
+            action_values = deepcopy(plan.get("action_values", {}))
+            selection_reason = plan.get("selection_reason")
+            actual_outcome = _trace_mapping(
+                trace.get("world_transition")
+            ).get("outcome_type")
+            posterior_hash = homeostatic.get("posterior_hash")
+            slow_hash = homeostatic.get("slow_state_hash")
+            fast_hash = homeostatic.get("fast_state_hash")
+            update_count = homeostatic.get("update_count")
         rows.append(
             {
                 "sequence": frame.sequence,
+                "mode": mode,
                 "energy": frame.state["organism"]["energy"],
                 "safety": frame.state["organism"]["safety"],
-                "deficits": deepcopy(plan.get("drive", {})),
-                "predictions_by_action": deepcopy(
-                    plan.get("predictions_by_action", {})
-                ),
-                "action_values": deepcopy(plan.get("action_values", {})),
+                "deficits": deficits,
+                "predictions_by_action": predictions,
+                "action_values": action_values,
                 "selected_action": trace.get("selected_action"),
-                "selection_reason": plan.get("selection_reason"),
-                "actual_outcome": _trace_mapping(
-                    trace.get("world_transition")
-                ).get("outcome_type"),
+                "selection_reason": selection_reason,
+                "actual_outcome": actual_outcome,
                 "actual_delta": deepcopy(trace.get("actual_delta")),
                 "update_applied": update.get("applied"),
-                "posterior_hash": homeostatic.get("posterior_hash"),
-                "slow_state_hash": homeostatic.get("slow_state_hash"),
-                "fast_state_hash": homeostatic.get("fast_state_hash"),
-                "update_count": homeostatic.get("update_count"),
+                "posterior_hash": posterior_hash,
+                "slow_state_hash": slow_hash,
+                "fast_state_hash": fast_hash,
+                "update_count": update_count,
                 "trace_hash": trace.get("trace_hash"),
             }
         )
     fields = (
         "sequence",
+        "mode",
         "energy",
         "safety",
         "deficits",
@@ -295,9 +371,9 @@ def render_homeostatic_trace_html(
     ]
     headers = "".join(f"<th>{escape(field)}</th>" for field in fields)
     document = f"""<!doctype html>
-<html><head><meta charset="utf-8"><title>EGO V2 homeostatic trace</title>
+<html><head><meta charset="utf-8"><title>EGO V2 homeostatic learning trace</title>
 <style>body{{font-family:system-ui;background:#0b1118;color:#dce7f3}}table{{border-collapse:collapse}}th,td{{border:1px solid #405267;padding:4px;vertical-align:top}}pre{{white-space:pre-wrap;max-width:420px}}</style>
-</head><body><h1>EGO V2 homeostatic trace</h1>
+</head><body><h1>EGO V2 homeostatic learning trace</h1>
 <p>Data source: recovered trace rows. This renderer owns no action or update logic.</p>
 <table><thead><tr>{headers}</tr></thead><tbody>{''.join(table_rows)}</tbody></table>
 <script type="application/json" id="trace-data">{escape(json.dumps(rows, ensure_ascii=False, sort_keys=True))}</script>
@@ -326,6 +402,12 @@ class TerminalPlayground:
         self.survival_learning_mode = "off"
         self.predictive_control_mode = "off"
         self.homeostatic_transfer_mode = "off"
+        self.public_featured_transfer_mode = (
+            "hierarchical_bayes"
+            if getattr(controller, "product_profile", "standard")
+            == "public_featured_hierarchical_transfer"
+            else "off"
+        )
 
     def _interventions(self) -> dict[str, str]:
         return dict(
@@ -333,6 +415,7 @@ class TerminalPlayground:
             survival_learning_mode=self.survival_learning_mode,
             predictive_control_mode=self.predictive_control_mode,
             homeostatic_transfer_mode=self.homeostatic_transfer_mode,
+            public_featured_transfer_mode=self.public_featured_transfer_mode,
         )
 
     def _dispatch_event(self, event: str, trigger_source: str) -> DispatchResult:

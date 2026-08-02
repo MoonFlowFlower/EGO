@@ -1,0 +1,11 @@
+{
+  "featured_code_path_tamper": {
+    "error": "public featured learner/world code-path hash differs from run metadata",
+    "passed": true
+  },
+  "passed": true,
+  "trace_tamper": {
+    "error": "stored trace content hash mismatch",
+    "passed": true
+  }
+}

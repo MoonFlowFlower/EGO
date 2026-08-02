@@ -1,0 +1,36 @@
+task_id: EGO-V2-PUBLIC-FEATURED-HIERARCHICAL-TRANSFER-PRODUCT-001Q
+base_head: c5df39522c5649ad1cbee1d1a7097f33b6abcfa1
+allowed_paths:
+  - docs/codex/tasks/EGO-V2-PUBLIC-FEATURED-HIERARCHICAL-TRANSFER-PRODUCT-001Q.md
+  - docs/codex/tasks/ego-v2-public-featured-hierarchical-transfer-product-001q/
+  - labs/ego_life_playground_v0/public_featured_hierarchical.py
+  - labs/ego_life_playground_v0/public_featured_product_world.py
+  - labs/ego_life_playground_v0/engine.py
+  - labs/ego_life_playground_v0/controller.py
+  - labs/ego_life_playground_v0/terminal.py
+  - labs/ego_life_playground_v0/visual_console.py
+  - labs/ego_life_playground_v0/app.py
+  - scripts/run_ego_life_playground_v0.py
+  - scripts/codex/run_ego_v2_public_featured_product_qualification_001q.py
+  - scripts/codex/verify_ego_v2_public_featured_product_qualification_001q.py
+  - scripts/codex/tests/test_run_ego_v2_public_featured_product_qualification_001q.py
+  - scripts/codex/tests/test_verify_ego_v2_public_featured_product_qualification_001q.py
+  - tests/test_ego_life_playground_public_featured_product.py
+  - artifacts/EGO-V2-PUBLIC-FEATURED-HIERARCHICAL-TRANSFER-PRODUCT-001Q/
+protected_paths:
+  - artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/
+  - artifacts/EGO-V2-REFERENCE-TO-PRODUCT-ADMISSIBILITY-001P/
+  - artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/
+  - artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/
+  - labs/ego_life_playground_v0/public_featured_transfer.py
+  - scripts/codex/run_ego_v2_public_featured_compositional_transfer_001o.py
+  - scripts/codex/verify_ego_v2_public_featured_compositional_transfer_001o.py
+  - artifacts/ROUTE-STATE-MACHINE-001A/
+forbidden_operations:
+  - rerun_or_modify_001o_packets
+  - consume_001j_heldout
+  - import_evaluator_into_product
+  - create_second_controller_store_or_replay
+  - enable_llm_network_autostart_background_dispatch
+  - push
+  - tag

@@ -1,0 +1,56 @@
+{
+  "created_utc": "2026-08-02T13:06:06.117508+00:00",
+  "interventions": {
+    "consolidation_mode": "canonical",
+    "goal_value_mode": "contextual",
+    "homeostatic_drive_mode": "canonical",
+    "homeostatic_feedback_mode": "canonical",
+    "homeostatic_posterior_mode": "canonical",
+    "homeostatic_transfer_mode": "off",
+    "hysteresis_mode": "canonical",
+    "memory_mode": "canonical",
+    "novelty_mode": "canonical",
+    "override_mode": "canonical",
+    "predictive_control_mode": "off",
+    "predictive_horizon_mode": "h12",
+    "provenance_mode": "canonical",
+    "provenance_shuffle_seed": "17",
+    "public_featured_transfer_mode": "hierarchical_bayes",
+    "relative_map_mode": "relative",
+    "survival_learning_mode": "off",
+    "update_mode": "canonical",
+    "vision_mode": "canonical"
+  },
+  "learner_hyperparameters": {
+    "actions": [
+      "interact_0",
+      "interact_1",
+      "interact_2",
+      "rest"
+    ],
+    "feature_count": 5,
+    "hypothesis_count": 40,
+    "information_value_per_bit": 0.08,
+    "local_prior": [
+      0.75,
+      0.25
+    ],
+    "schema_version": "ego.life_playground.public_featured_learner_hparams.v1",
+    "slot_count": 3,
+    "target": 0.72,
+    "terminal_penalty": 2.0
+  },
+  "qualification_seed": 104729,
+  "run_id": "ego-v2-public-featured-product-001q-qualification",
+  "schema_version": "ego.v2.public_featured_product_freeze.001q.v1",
+  "source_hashes": {
+    "labs/ego_life_playground_v0/controller.py": "d87c9bb25cb07737ebf3064266c565001c5139c3552163fc5ff28d6bb4d01851",
+    "labs/ego_life_playground_v0/engine.py": "a2ae070b543ba4b61b77b1125eddbce9883b521886dd1d116e1f889a7847c8ce",
+    "labs/ego_life_playground_v0/public_featured_hierarchical.py": "606bfbafe24b6e804bd8e43861235397f8e5e888b3e09e054cb69b63530fffe6",
+    "labs/ego_life_playground_v0/public_featured_product_world.py": "993c6e516ecf8c2fc535dd085049d8dcca8fbc89d1f4e4e760fae6d993340fe0",
+    "labs/ego_life_playground_v0/store.py": "e92ec2228090085273620344bc1b33ff0313e90e3015d4ff692b6aecb1472b7b",
+    "scripts/codex/verify_ego_v2_public_featured_product_qualification_001q.py": "f42a93b769972d6d9d8d4f98ef328929f03acd4bafa16ab930286cd70ca45055"
+  },
+  "stop_rule": "first action after first existing-lifecycle respawn",
+  "task_id": "EGO-V2-PUBLIC-FEATURED-HIERARCHICAL-TRANSFER-PRODUCT-001Q"
+}

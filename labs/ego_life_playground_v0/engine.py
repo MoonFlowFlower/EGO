@@ -20,6 +20,8 @@ from typing import Any, Mapping
 from . import claims as claim_memory
 from . import homeostatic_transfer
 from . import predictive_control
+from . import public_featured_hierarchical
+from . import public_featured_product_world
 from . import survival_learning
 from .microworld import (
     ACTIONS as WORLD_ACTIONS,
@@ -78,6 +80,8 @@ HOMEOSTATIC_TRANSFER_MODES = homeostatic_transfer.MODES
 HOMEOSTATIC_DRIVE_MODES = homeostatic_transfer.DRIVE_MODES
 HOMEOSTATIC_POSTERIOR_MODES = homeostatic_transfer.POSTERIOR_MODES
 HOMEOSTATIC_FEEDBACK_MODES = homeostatic_transfer.FEEDBACK_MODES
+PRODUCT_PROFILES = ("standard", "public_featured_hierarchical_transfer")
+PUBLIC_FEATURED_TRANSFER_MODES = ("off", "hierarchical_bayes")
 PREDICTIVE_HORIZON_MODES = ("h12", "h1")
 RELATIVE_MAP_MODES = predictive_control.RELATIVE_MAP_MODES
 GOAL_VALUE_MODES = predictive_control.GOAL_VALUE_MODES
@@ -123,6 +127,7 @@ DEFAULT_INTERVENTIONS = {
     "homeostatic_drive_mode": "canonical",
     "homeostatic_posterior_mode": "canonical",
     "homeostatic_feedback_mode": "canonical",
+    "public_featured_transfer_mode": "off",
     "predictive_horizon_mode": "h12",
     "relative_map_mode": "relative",
     "goal_value_mode": "contextual",
@@ -211,6 +216,26 @@ def compute_code_path_hash() -> str:
     return canonical_hash(compute_code_path_manifest())
 
 
+def compute_public_featured_code_path_manifest() -> dict[str, Any]:
+    """Bind the default-off successor's clean learner and world primitive bytes."""
+
+    source_paths = (
+        Path(__file__).with_name("public_featured_hierarchical.py"),
+        Path(__file__).with_name("public_featured_product_world.py"),
+    )
+    return {
+        "schema_version": "ego.life_playground.public_featured_code_path.v1",
+        "files": [
+            {"path": path.name, "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+            for path in source_paths
+        ],
+    }
+
+
+def compute_public_featured_code_path_hash() -> str:
+    return canonical_hash(compute_public_featured_code_path_manifest())
+
+
 def episode_id_for(run_id: str, episode_index: int) -> str:
     if type(run_id) is not str or not run_id:
         raise EngineInvariantError("run_id must be a non-empty string")
@@ -223,7 +248,11 @@ def episode_id_for(run_id: str, episode_index: int) -> str:
 
 
 def make_run_metadata(
-    run_id: str, seed: int, episode_span_ticks: int = EPISODE_SPAN_TICKS
+    run_id: str,
+    seed: int,
+    episode_span_ticks: int = EPISODE_SPAN_TICKS,
+    *,
+    product_profile: str = "standard",
 ) -> dict[str, Any]:
     if type(run_id) is not str or not run_id:
         raise EngineInvariantError("run_id must be a non-empty string")
@@ -233,6 +262,8 @@ def make_run_metadata(
         raise EngineInvariantError("episode_span_ticks must be an integer")
     if episode_span_ticks != EPISODE_SPAN_TICKS:
         raise EngineInvariantError("episode_span_ticks is frozen at 256")
+    if product_profile not in PRODUCT_PROFILES:
+        raise EngineInvariantError("unknown product profile")
     return {
         "schema_version": RUN_SCHEMA_VERSION,
         "run_id": run_id,
@@ -251,6 +282,16 @@ def make_run_metadata(
         "default_homeostatic_transfer_mode": DEFAULT_INTERVENTIONS[
             "homeostatic_transfer_mode"
         ],
+        "product_profile": product_profile,
+        "public_featured_transfer": public_featured_product_world.hyperparameters(),
+        "default_public_featured_transfer_mode": DEFAULT_INTERVENTIONS[
+            "public_featured_transfer_mode"
+        ],
+        "public_featured_code_path_hash": (
+            compute_public_featured_code_path_hash()
+            if product_profile == "public_featured_hierarchical_transfer"
+            else None
+        ),
         "producer_function": RUN_PRODUCER_FUNCTION,
         "aggregation_rule": RUN_AGGREGATION_RULE,
         "code_path_hash": compute_code_path_hash(),
@@ -264,8 +305,19 @@ def initial_state(
     run_id: str = "manual-local",
     seed: int = 17,
     layout_id: str = "p0_cross_v1",
+    product_profile: str = "standard",
 ) -> dict[str, Any]:
+    if product_profile not in PRODUCT_PROFILES:
+        raise EngineInvariantError("unknown product profile")
+    featured_active = product_profile == "public_featured_hierarchical_transfer"
     values = dict(INITIAL_ORGANISM)
+    if featured_active:
+        values.update(
+            {
+                "energy": public_featured_product_world.INITIAL_ENERGY,
+                "safety": public_featured_product_world.INITIAL_SAFETY,
+            }
+        )
     if organism is not None:
         values.update({key: float(value) for key, value in organism.items()})
     if set(values) != set(STATE_KEYS):
@@ -277,6 +329,10 @@ def initial_state(
         "consolidated": [],
         **claim_memory.empty_claim_memory(),
     }
+    featured_state = public_featured_product_world.new_product_state(
+        active=featured_active,
+        private_entropy={"run_id": run_id, "seed": seed, "namespace": "001q-product"},
+    )
     return {
         "schema_version": STATE_SCHEMA_VERSION,
         "clock": {
@@ -299,10 +355,12 @@ def initial_state(
             "memory": canonical_hash(memory),
             "predictive_control": canonical_hash(predictive_control.empty_state()),
             "homeostatic_transfer": canonical_hash(homeostatic_transfer.empty_state()),
+            "public_featured_transfer": canonical_hash(featured_state),
         },
         "survival_learner": survival_learning.empty_survival_learner(),
         "predictive_control": predictive_control.empty_state(),
         "homeostatic_transfer": homeostatic_transfer.empty_state(),
+        "public_featured_transfer": featured_state,
         "lifecycle": {
             "trial_status": "active",
             "life_index": 1,
@@ -450,6 +508,29 @@ def state_hash(state: Mapping[str, Any]) -> str:
             else None
         ),
     }
+    featured = state.get("public_featured_transfer", {})
+    featured_learner = (
+        featured.get("learner", {}) if isinstance(featured, Mapping) else {}
+    )
+    causal_state["public_featured_transfer"] = {
+        "component_hash": component_hashes.get("public_featured_transfer"),
+        "active": featured.get("active") if isinstance(featured, Mapping) else None,
+        "update_count": (
+            featured_learner.get("update_count")
+            if isinstance(featured_learner, Mapping)
+            else None
+        ),
+        "world_update_count": (
+            featured_learner.get("world_update_count")
+            if isinstance(featured_learner, Mapping)
+            else None
+        ),
+        "world_switch_count": (
+            featured.get("world_switch_count")
+            if isinstance(featured, Mapping)
+            else None
+        ),
+    }
     return canonical_hash(causal_state)
 
 
@@ -467,8 +548,14 @@ def verify_replay_boundary(
     _verify_state(state, run_id=str(run_meta["run_id"]))
 
 
-def _initial_organism() -> dict[str, float]:
-    return {key: float(value) for key, value in INITIAL_ORGANISM.items()}
+def _initial_organism(product_profile: str = "standard") -> dict[str, float]:
+    values = {key: float(value) for key, value in INITIAL_ORGANISM.items()}
+    if product_profile == "public_featured_hierarchical_transfer":
+        values["energy"] = float(public_featured_product_world.INITIAL_ENERGY)
+        values["safety"] = float(public_featured_product_world.INITIAL_SAFETY)
+    elif product_profile != "standard":
+        raise EngineInvariantError("unknown product profile")
+    return values
 
 
 def _life_result(*, life_index: int, survival_ticks: int, censored: bool, termination: str) -> dict[str, Any]:
@@ -538,6 +625,23 @@ def _respawn_trace(
         ),
         "homeostatic_short_history_cleared": (
             next_state["homeostatic_transfer"]["fast_state"]["short_history"] == []
+        ),
+        "public_featured_slow_state_unchanged": (
+            public_featured_hierarchical.slow_state_hash(
+                before["public_featured_transfer"]["learner"]
+            )
+            == public_featured_hierarchical.slow_state_hash(
+                next_state["public_featured_transfer"]["learner"]
+            )
+        ),
+        "public_featured_fast_state_reset": (
+            not bool(next_state["public_featured_transfer"]["active"])
+            or int(
+                next_state["public_featured_transfer"]["learner"][
+                    "world_update_count"
+                ]
+            )
+            == 0
         ),
         "current_goal_reset_applied": canonical_json(before["current_goal"])
         != canonical_json(next_state["current_goal"]),
@@ -672,6 +776,40 @@ def _respawn_trace(
                 next_state["homeostatic_transfer"]["slow_state"]["update_count"]
             ),
         },
+        "public_featured_transfer": {
+            "schema_version": "ego.life_playground.public_featured_trace.v1",
+            "mode": command["interventions"]["public_featured_transfer_mode"],
+            "observation": None,
+            "plan": None,
+            "actual_feedback": None,
+            "public_transition": None,
+            "update": {"applied": False, "reason": "pure_respawn"},
+            "state_hash": public_featured_product_world.product_state_hash(
+                next_state["public_featured_transfer"]
+            ),
+            "slow_state_hash": public_featured_hierarchical.slow_state_hash(
+                next_state["public_featured_transfer"]["learner"]
+            ),
+            "fast_state_hash": public_featured_hierarchical.fast_state_hash(
+                next_state["public_featured_transfer"]["learner"]
+            ),
+            "posterior_entropy_bits": (
+                public_featured_hierarchical.posterior_entropy(
+                    next_state["public_featured_transfer"]["learner"]
+                )
+            ),
+            "update_count": int(
+                next_state["public_featured_transfer"]["learner"]["update_count"]
+            ),
+            "world_update_count": int(
+                next_state["public_featured_transfer"]["learner"][
+                    "world_update_count"
+                ]
+            ),
+            "world_switch_count": int(
+                next_state["public_featured_transfer"]["world_switch_count"]
+            ),
+        },
         "model_bytes": {
             "before_hash": canonical_hash(before["model"]),
             "after_hash": canonical_hash(next_state["model"]),
@@ -717,6 +855,335 @@ def _respawn_trace(
     return trace
 
 
+def _compute_public_featured_action_step(
+    before: Mapping[str, Any],
+    command: Mapping[str, Any],
+    run_meta: Mapping[str, Any],
+    *,
+    current_code_hash: str,
+    before_hash: str,
+    interventions: Mapping[str, str],
+) -> StepResult:
+    """Reduce one featured-product action inside the sole live/replay engine."""
+
+    if command["injected_event"] is not None:
+        raise EngineInvariantError(
+            "public featured product rejects legacy microworld injected_event"
+        )
+    sequence = int(command["sequence"])
+    lifecycle_before = deepcopy(before["lifecycle"])
+    featured_before = deepcopy(before["public_featured_transfer"])
+    learner_state = deepcopy(featured_before["learner"])
+    environment_before = deepcopy(featured_before["environment"])
+    observation = public_featured_product_world.public_observation(
+        environment_before,
+        {
+            "energy": float(before["organism"]["energy"]),
+            "safety": float(before["organism"]["safety"]),
+            "target": public_featured_hierarchical.TARGET,
+        },
+        previous=featured_before["previous"],
+    )
+    try:
+        plan = public_featured_hierarchical.plan_action(learner_state, observation)
+        selected_action = str(plan["action"])
+        environment_after, feedback, public_transition = (
+            public_featured_product_world.apply_action(
+                environment_before,
+                observation,
+                selected_action,
+                private_step_entropy=command["command_hash"],
+            )
+        )
+    except ValueError as exc:
+        raise EngineInvariantError(str(exc)) from exc
+
+    update_enabled = interventions["update_mode"] == "canonical"
+    learner_hash_before = public_featured_hierarchical.state_hash(learner_state)
+    if update_enabled:
+        try:
+            update = public_featured_hierarchical.update_after_transition(
+                learner_state, observation, selected_action, feedback
+            )
+        except ValueError as exc:
+            raise EngineInvariantError(str(exc)) from exc
+    else:
+        update = {
+            "applied": False,
+            "reason": "updates_frozen",
+            "state_hash_before": learner_hash_before,
+            "state_hash_after": learner_hash_before,
+            "slow_state_hash_after": public_featured_hierarchical.slow_state_hash(
+                learner_state
+            ),
+            "fast_state_hash_after": public_featured_hierarchical.fast_state_hash(
+                learner_state
+            ),
+            "posterior_entropy_bits": (
+                public_featured_hierarchical.posterior_entropy(learner_state)
+            ),
+            "public_input_receipt": canonical_hash(
+                {
+                    "observation": observation,
+                    "action": selected_action,
+                    "feedback": feedback,
+                }
+            ),
+        }
+
+    next_featured = deepcopy(featured_before)
+    next_featured["learner"] = learner_state
+    next_featured["environment"] = environment_after
+    next_featured["previous"] = deepcopy(public_transition)
+    try:
+        public_featured_product_world.validate_product_state(next_featured)
+    except ValueError as exc:
+        raise EngineInvariantError(str(exc)) from exc
+
+    next_state = deepcopy(before)
+    next_episode_tick = int(before["clock"]["episode_tick"]) + 1
+    next_state["clock"] = {
+        "global_tick": sequence,
+        "episode_index": int(before["clock"]["episode_index"]),
+        "episode_id": str(before["clock"]["episode_id"]),
+        "episode_tick": next_episode_tick,
+    }
+    next_state["organism"] = {
+        **deepcopy(before["organism"]),
+        "energy": float(feedback["energy_after"]),
+        "safety": float(feedback["safety_after"]),
+    }
+    next_state["current_goal"] = _select_initial_goal(
+        next_state["organism"], global_tick=sequence
+    )
+    next_state["public_featured_transfer"] = next_featured
+    component_hashes = dict(before["component_hashes"])
+    component_hashes["public_featured_transfer"] = canonical_hash(next_featured)
+    next_state["component_hashes"] = component_hashes
+    next_state["last_action"] = selected_action
+    actual_delta = {
+        "energy": float(feedback["energy_after"]) - float(feedback["energy_before"]),
+        "safety": float(feedback["safety_after"]) - float(feedback["safety_before"]),
+        "connection": 0.0,
+        "stimulation": 0.0,
+    }
+    next_state["last_observed_delta"] = {
+        "energy": _round(actual_delta["energy"]),
+        "safety": _round(actual_delta["safety"]),
+    }
+    next_state["last_command_hash"] = command["command_hash"]
+
+    life_termination = None
+    if bool(feedback["died"]):
+        life_termination = _life_result(
+            life_index=int(lifecycle_before["life_index"]),
+            survival_ticks=next_episode_tick,
+            censored=False,
+            termination="death",
+        )
+    elif next_episode_tick == EPISODE_SPAN_TICKS:
+        life_termination = _life_result(
+            life_index=int(lifecycle_before["life_index"]),
+            survival_ticks=EPISODE_SPAN_TICKS,
+            censored=True,
+            termination="censored",
+        )
+    if life_termination is None:
+        next_state["lifecycle"] = lifecycle_before
+    else:
+        life_results = deepcopy(lifecycle_before["life_results"])
+        life_results.append(life_termination)
+        if int(lifecycle_before["life_index"]) < MAX_LIVES:
+            next_state["lifecycle"] = {
+                "trial_status": "awaiting_respawn",
+                "life_index": int(lifecycle_before["life_index"]),
+                "awaiting_respawn": True,
+                "life_results": life_results,
+                "terminal_life_result": None,
+            }
+        else:
+            next_state["lifecycle"] = {
+                "trial_status": "terminal",
+                "life_index": MAX_LIVES,
+                "awaiting_respawn": False,
+                "life_results": life_results,
+                "terminal_life_result": {
+                    "survival_ticks": min(next_episode_tick, EPISODE_SPAN_TICKS),
+                    "censored": bool(life_termination["censored"]),
+                },
+            }
+
+    metabolism = {
+        "schema_version": "ego.life_playground.public_featured_metabolism.v1",
+        "producer_function": RUN_PRODUCER_FUNCTION,
+        "aggregation_rule": "frozen_001o_energy_safety_transition_contract",
+        "energy_before": float(feedback["energy_before"]),
+        "safety_before": float(feedback["safety_before"]),
+        "energy_after": float(feedback["energy_after"]),
+        "safety_after": float(feedback["safety_after"]),
+        "actual_delta": deepcopy(actual_delta),
+        "terminal": bool(feedback["died"]),
+        "public_transition_receipt": deepcopy(public_transition),
+    }
+    selected_prediction = deepcopy(plan["predictions"][selected_action])
+    prediction = {
+        "energy": _round(
+            float(selected_prediction["expected_energy"])
+            - float(feedback["energy_before"])
+        ),
+        "safety": _round(
+            float(selected_prediction["expected_safety"])
+            - float(feedback["safety_before"])
+        ),
+        "connection": 0.0,
+        "stimulation": 0.0,
+    }
+    prediction_error = {
+        key: _round(float(actual_delta[key]) - float(prediction[key]))
+        for key in STATE_KEYS
+    }
+    after_hash = state_hash(next_state)
+    trace: dict[str, Any] = {
+        "schema_version": TRACE_SCHEMA_VERSION,
+        "producer_function": RUN_PRODUCER_FUNCTION,
+        "input_artifacts": [
+            f"run:{run_meta['run_id']}",
+            f"command:{command['command_hash']}",
+        ],
+        "run_id": run_meta["run_id"],
+        "seed": int(run_meta["seed"]),
+        "episode_id": before["clock"]["episode_id"],
+        "aggregation_rule": run_meta["aggregation_rule"],
+        "sequence": sequence,
+        "trigger_source": command["trigger_source"],
+        "injected_event": None,
+        "interventions": deepcopy(dict(interventions)),
+        "command": deepcopy(dict(command)),
+        "command_hash": command["command_hash"],
+        "prev_command_hash": command["prev_command_hash"],
+        "state_before_hash": before_hash,
+        "decision_state_hash": before_hash,
+        "state_after_hash": after_hash,
+        "world_before_hash": world_hash(before["world"]),
+        "world_decision_hash": world_hash(before["world"]),
+        "world_after_hash": world_hash(next_state["world"]),
+        "world_observation": deepcopy(observation),
+        "observation": deepcopy(observation),
+        "observation_hash": canonical_hash(observation),
+        "policy_projection": deepcopy(observation),
+        "policy_projection_hash": canonical_hash(observation),
+        "policy_decision_input_hash": canonical_hash(
+            {"learner": learner_hash_before, "observation": observation}
+        ),
+        "candidate_actions": list(public_featured_hierarchical.ACTIONS),
+        "world_transition": deepcopy(public_transition),
+        "episode_transition": {"applied": False},
+        "action_episode": deepcopy(before["clock"]),
+        "goal_before": deepcopy(before["current_goal"]),
+        "goal_progress": None,
+        "goal_transition": None,
+        "goal_after": deepcopy(next_state["current_goal"]),
+        "context_key": "public_featured_hierarchical_transfer",
+        "candidates": [
+            {"action": action, **deepcopy(plan["predictions"][action])}
+            for action in public_featured_hierarchical.ACTIONS
+        ],
+        "selected_action": selected_action,
+        "prediction": prediction,
+        "model_ref": None,
+        "memory_refs": [],
+        "claim_retrieval": None,
+        "actual_delta": actual_delta,
+        "energy_before": float(feedback["energy_before"]),
+        "passive_decay": public_featured_hierarchical.PASSIVE_ENERGY_DECAY,
+        "action_cost": (
+            public_featured_hierarchical.REST_ENERGY_COST
+            if selected_action == "rest"
+            else public_featured_hierarchical.INTERACTION_ENERGY_COST
+        ),
+        "food_gain": 0.0,
+        "energy_after": float(feedback["energy_after"]),
+        "downstream_effect": {
+            "producer_function": RUN_PRODUCER_FUNCTION,
+            "effect": "featured_energy_safety_transition_applied",
+        },
+        "metabolism": metabolism,
+        "prediction_error": prediction_error,
+        "model_update": {"applied": False, "reason": "featured_profile_isolated"},
+        "memory_update": {"applied": False, "reason": "featured_profile_isolated", "consolidation_refs": []},
+        "claim_update": {"applied": False, "reason": "featured_profile_isolated"},
+        "survival_learning": {
+            "selection": None,
+            "update": {"applied": False, "reason": "mutually_exclusive_featured_profile"},
+            "learner_hash_after": survival_learning.learner_state_hash(
+                next_state["survival_learner"]
+            ),
+            "q_table_size": survival_learning.q_table_size(
+                next_state["survival_learner"]
+            ),
+            "update_count": int(next_state["survival_learner"]["update_count"]),
+        },
+        "predictive_control": {
+            "mode": "off",
+            "plan": None,
+            "update": {"applied": False, "reason": "mutually_exclusive_featured_profile"},
+        },
+        "homeostatic_transfer": {
+            "mode": "off",
+            "plan": None,
+            "update": {"applied": False, "reason": "mutually_exclusive_featured_profile"},
+        },
+        "public_featured_transfer": {
+            "schema_version": "ego.life_playground.public_featured_trace.v1",
+            "mode": interventions["public_featured_transfer_mode"],
+            "observation": deepcopy(observation),
+            "plan": deepcopy(plan),
+            "actual_feedback": deepcopy(feedback),
+            "public_transition": deepcopy(public_transition),
+            "update": deepcopy(update),
+            "state_hash": public_featured_product_world.product_state_hash(
+                next_featured
+            ),
+            "slow_state_hash": public_featured_hierarchical.slow_state_hash(
+                learner_state
+            ),
+            "fast_state_hash": public_featured_hierarchical.fast_state_hash(
+                learner_state
+            ),
+            "posterior_entropy_bits": (
+                public_featured_hierarchical.posterior_entropy(learner_state)
+            ),
+            "update_count": int(learner_state["update_count"]),
+            "world_update_count": int(learner_state["world_update_count"]),
+            "world_switch_count": int(next_featured["world_switch_count"]),
+        },
+        "model_bytes": {
+            "before_hash": canonical_hash(before["model"]),
+            "after_hash": canonical_hash(next_state["model"]),
+            "changed": False,
+        },
+        "memory_bytes": {
+            "before_hash": canonical_hash(before["memory"]),
+            "after_hash": canonical_hash(next_state["memory"]),
+            "changed": False,
+        },
+        "consolidation_refs": [],
+        "provenance_projection": None,
+        "vision_ablation": {"mode": interventions["vision_mode"], "applied": False},
+        "code_path_hash": current_code_hash,
+        "prev_trace_hash": before.get("last_trace_hash"),
+        "transition_kind": "action",
+        "policy_invoked": True,
+        "lifecycle_before": lifecycle_before,
+        "lifecycle_after": deepcopy(next_state["lifecycle"]),
+        "life_termination": life_termination,
+        "carry_reset_receipt": None,
+    }
+    trace["trace_hash"] = compute_trace_hash(trace)
+    next_state["last_trace_hash"] = trace["trace_hash"]
+    return StepResult(next_state=next_state, trace=trace)
+
+
 def compute_step(
     state: Mapping[str, Any], command: Mapping[str, Any], run_meta: Mapping[str, Any]
 ) -> StepResult:
@@ -735,6 +1202,30 @@ def compute_step(
     sequence = int(command["sequence"])
     interventions = _normalize_interventions(command["interventions"])
     lifecycle_before = deepcopy(before["lifecycle"])
+    featured_active = bool(before["public_featured_transfer"]["active"])
+    expected_featured_active = (
+        run_meta["product_profile"] == "public_featured_hierarchical_transfer"
+    )
+    if featured_active != expected_featured_active:
+        raise EngineInvariantError("product profile does not match serialized state")
+    featured_mode = interventions["public_featured_transfer_mode"]
+    if featured_mode != "off" and (
+        interventions["homeostatic_transfer_mode"] != "off"
+        or interventions["predictive_control_mode"] != "off"
+        or interventions["survival_learning_mode"] != "off"
+    ):
+        raise EngineInvariantError(
+            "public featured transfer, homeostatic transfer, predictive control, "
+            "and Expected SARSA are mutually exclusive"
+        )
+    if featured_active and featured_mode != "hierarchical_bayes":
+        raise EngineInvariantError(
+            "featured product profile requires hierarchical_bayes mode"
+        )
+    if not featured_active and featured_mode != "off":
+        raise EngineInvariantError(
+            "public featured transfer mode requires featured product profile"
+        )
 
     if lifecycle_before["trial_status"] == "terminal":
         raise EngineInvariantError("trial is terminal")
@@ -752,7 +1243,8 @@ def compute_step(
             "episode_id": episode_id_for(str(run_meta["run_id"]), next_life_index - 1),
             "episode_tick": 0,
         }
-        next_state["organism"] = _initial_organism()
+        reset_organism = _initial_organism(str(run_meta["product_profile"]))
+        next_state["organism"] = reset_organism
         next_state["world"] = deepcopy(expected_world_after)
         next_state["current_goal"] = _select_initial_goal(
             next_state["organism"],
@@ -769,12 +1261,31 @@ def compute_step(
         next_state["homeostatic_transfer"] = homeostatic_transfer.reset_for_respawn(
             before["homeostatic_transfer"]
         )
+        featured_reset_receipt: dict[str, Any]
+        if featured_active:
+            (
+                next_state["public_featured_transfer"],
+                featured_reset_receipt,
+            ) = public_featured_product_world.reset_product_for_world(
+                before["public_featured_transfer"]
+            )
+        else:
+            next_state["public_featured_transfer"] = deepcopy(
+                before["public_featured_transfer"]
+            )
+            featured_reset_receipt = {
+                "applied": False,
+                "reason": "standard_product_profile",
+            }
         component_hashes = dict(before["component_hashes"])
         component_hashes["predictive_control"] = canonical_hash(
             next_state["predictive_control"]
         )
         component_hashes["homeostatic_transfer"] = canonical_hash(
             next_state["homeostatic_transfer"]
+        )
+        component_hashes["public_featured_transfer"] = canonical_hash(
+            next_state["public_featured_transfer"]
         )
         next_state["component_hashes"] = component_hashes
         next_state["lifecycle"] = {
@@ -862,12 +1373,20 @@ def compute_step(
                 next_state["homeostatic_transfer"]["fast_state"]["short_history"],
                 [],
             ),
+            "public_featured_transfer": _component_receipt(
+                before["public_featured_transfer"],
+                next_state["public_featured_transfer"],
+                next_state["public_featured_transfer"],
+            ),
+            "public_featured_reset": deepcopy(featured_reset_receipt),
             "token_mapping": _component_receipt(
                 before["world"]["trial"]["token_mapping"],
                 next_state["world"]["trial"]["token_mapping"],
                 before["world"]["trial"]["token_mapping"],
             ),
-            "organism": _component_receipt(before["organism"], next_state["organism"], _initial_organism()),
+            "organism": _component_receipt(
+                before["organism"], next_state["organism"], reset_organism
+            ),
             "world": _component_receipt(
                 before["world"],
                 next_state["world"],
@@ -928,12 +1447,12 @@ def compute_step(
             "current_goal": _component_receipt(
                 before["current_goal"],
                 next_state["current_goal"],
-                _select_initial_goal(_initial_organism(), global_tick=sequence),
+                _select_initial_goal(reset_organism, global_tick=sequence),
             ),
             "goal_completed_latches": _component_receipt(
                 before["current_goal"]["completed_latches"],
                 next_state["current_goal"]["completed_latches"],
-                _select_initial_goal(_initial_organism(), global_tick=sequence)[
+                _select_initial_goal(reset_organism, global_tick=sequence)[
                     "completed_latches"
                 ],
             ),
@@ -963,6 +1482,16 @@ def compute_step(
         )
         next_state["last_trace_hash"] = trace["trace_hash"]
         return StepResult(next_state=next_state, trace=trace)
+
+    if featured_active:
+        return _compute_public_featured_action_step(
+            before,
+            command,
+            run_meta,
+            current_code_hash=current_code_hash,
+            before_hash=before_hash,
+            interventions=interventions,
+        )
 
     decision_state, episode_transition = _decision_state_for_tick(
         before, run_id=str(run_meta["run_id"]), sequence=sequence
@@ -1836,6 +2365,10 @@ def _verify_run_metadata(run_meta: Mapping[str, Any], current_code_hash: str) ->
         "default_predictive_control_mode",
         "homeostatic_transfer",
         "default_homeostatic_transfer_mode",
+        "product_profile",
+        "public_featured_transfer",
+        "default_public_featured_transfer_mode",
+        "public_featured_code_path_hash",
         "producer_function",
         "aggregation_rule",
         "code_path_hash",
@@ -1873,6 +2406,23 @@ def _verify_run_metadata(run_meta: Mapping[str, Any], current_code_hash: str) ->
         raise EngineInvariantError("homeostatic transfer metadata mismatch")
     if run_meta["default_homeostatic_transfer_mode"] != "off":
         raise EngineInvariantError("homeostatic transfer default must remain off")
+    if run_meta["product_profile"] not in PRODUCT_PROFILES:
+        raise EngineInvariantError("product profile is not canonical")
+    if canonical_json(run_meta["public_featured_transfer"]) != canonical_json(
+        public_featured_product_world.hyperparameters()
+    ):
+        raise EngineInvariantError("public featured transfer metadata mismatch")
+    if run_meta["default_public_featured_transfer_mode"] != "off":
+        raise EngineInvariantError("public featured transfer default must remain off")
+    expected_featured_path_hash = (
+        compute_public_featured_code_path_hash()
+        if run_meta["product_profile"] == "public_featured_hierarchical_transfer"
+        else None
+    )
+    if run_meta["public_featured_code_path_hash"] != expected_featured_path_hash:
+        raise EngineInvariantError(
+            "public featured learner/world code-path hash differs from run metadata"
+        )
     if run_meta["producer_function"] != RUN_PRODUCER_FUNCTION:
         raise EngineInvariantError("producer_function is not canonical")
     if run_meta["aggregation_rule"] != RUN_AGGREGATION_RULE:
@@ -1898,6 +2448,7 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
         "survival_learner",
         "predictive_control",
         "homeostatic_transfer",
+        "public_featured_transfer",
         "lifecycle",
         "last_action",
         "last_observed_delta",
@@ -1933,12 +2484,14 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
             "memory",
             "predictive_control",
             "homeostatic_transfer",
+            "public_featured_transfer",
         }
         or component_hashes.get("schema_version") != COMPONENT_HASH_SCHEMA_VERSION
         or not _is_sha256(component_hashes.get("model"))
         or not _is_sha256(component_hashes.get("memory"))
         or not _is_sha256(component_hashes.get("predictive_control"))
         or not _is_sha256(component_hashes.get("homeostatic_transfer"))
+        or not _is_sha256(component_hashes.get("public_featured_transfer"))
     ):
         raise EngineInvariantError("component hash schema mismatch")
     if tick == 0 and (
@@ -1948,6 +2501,8 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
         != canonical_hash(state["predictive_control"])
         or component_hashes["homeostatic_transfer"]
         != canonical_hash(state["homeostatic_transfer"])
+        or component_hashes["public_featured_transfer"]
+        != canonical_hash(state["public_featured_transfer"])
     ):
         raise EngineInvariantError("initial component hash mismatch")
     lifecycle = state["lifecycle"]
@@ -1985,14 +2540,24 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
             raise EngineInvariantError(f"organism {key} must be finite")
         if not 0.0 <= value <= 1.0:
             raise EngineInvariantError(f"organism {key} is outside the canonical range")
-    if lifecycle["trial_status"] == "active" and organism["energy"] <= 0.0:
-        raise EngineInvariantError("active lifecycle requires positive energy")
+    featured_active = bool(state["public_featured_transfer"]["active"])
+    if lifecycle["trial_status"] == "active" and (
+        organism["energy"] <= 0.0
+        or (featured_active and organism["safety"] <= 0.0)
+    ):
+        raise EngineInvariantError("active lifecycle requires positive viability state")
     if lifecycle["trial_status"] != "active":
         latest_termination = lifecycle["life_results"][-1]["termination"]
-        if latest_termination == "death" and organism["energy"] != 0.0:
-            raise EngineInvariantError("death terminal/awaiting lifecycle requires zero energy")
-        if latest_termination == "censored" and organism["energy"] <= 0.0:
-            raise EngineInvariantError("censored terminal/awaiting lifecycle requires positive energy")
+        if latest_termination == "death" and (
+            organism["energy"] != 0.0
+            and (not featured_active or organism["safety"] != 0.0)
+        ):
+            raise EngineInvariantError("death terminal/awaiting lifecycle requires zero viability state")
+        if latest_termination == "censored" and (
+            organism["energy"] <= 0.0
+            or (featured_active and organism["safety"] <= 0.0)
+        ):
+            raise EngineInvariantError("censored lifecycle requires positive viability state")
 
     try:
         verify_world_state(state["world"])
@@ -2013,6 +2578,12 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
     try:
         homeostatic_transfer.validate_state(state["homeostatic_transfer"])
     except homeostatic_transfer.HomeostaticTransferInvariantError as exc:
+        raise EngineInvariantError(str(exc)) from exc
+    try:
+        public_featured_product_world.validate_product_state(
+            state["public_featured_transfer"]
+        )
+    except ValueError as exc:
         raise EngineInvariantError(str(exc)) from exc
     if tick == 0 and canonical_json(state["survival_learner"]) != canonical_json(
         survival_learning.empty_survival_learner()
@@ -2036,7 +2607,9 @@ def _verify_state(state: Mapping[str, Any], *, run_id: str) -> None:
         if last_action is None:
             if lifecycle["trial_status"] != "active" or int(clock["episode_tick"]) != 0:
                 raise EngineInvariantError("last_action may be null only for active life start/respawn")
-        elif type(last_action) is not str or last_action not in ACTIONS:
+        elif type(last_action) is not str or last_action not in (
+            public_featured_hierarchical.ACTIONS if featured_active else ACTIONS
+        ):
             raise EngineInvariantError("last_action is not canonical")
         if last_command_hash is None:
             raise EngineInvariantError("last_command_hash must be non-null after the initial clock")
@@ -4103,6 +4676,8 @@ def _normalize_interventions(interventions: Mapping[str, str]) -> dict[str, str]
         or normalized["homeostatic_drive_mode"] not in HOMEOSTATIC_DRIVE_MODES
         or normalized["homeostatic_posterior_mode"] not in HOMEOSTATIC_POSTERIOR_MODES
         or normalized["homeostatic_feedback_mode"] not in HOMEOSTATIC_FEEDBACK_MODES
+        or normalized["public_featured_transfer_mode"]
+        not in PUBLIC_FEATURED_TRANSFER_MODES
         or normalized["predictive_horizon_mode"] not in PREDICTIVE_HORIZON_MODES
         or normalized["relative_map_mode"] not in RELATIVE_MAP_MODES
         or normalized["goal_value_mode"] not in GOAL_VALUE_MODES

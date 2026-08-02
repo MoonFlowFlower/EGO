@@ -1,0 +1,12 @@
+{
+  "amendment_type": "provenance_label_clarification_no_behavior_change",
+  "behavior_or_result_changed": false,
+  "environment_entropy_inputs": {
+    "namespace": "001q-product",
+    "private_world_seed": 1701,
+    "run_id": "ego-v2-public-featured-product-001q-qualification"
+  },
+  "qualification_seed_field_meaning": "run metadata seed, not the separate private-world seed",
+  "run_metadata_seed": 104729,
+  "task_id": "EGO-V2-PUBLIC-FEATURED-HIERARCHICAL-TRANSFER-PRODUCT-001Q"
+}

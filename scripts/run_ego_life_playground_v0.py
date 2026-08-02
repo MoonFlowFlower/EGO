@@ -76,6 +76,14 @@ def build_parser() -> argparse.ArgumentParser:
         help="enable the default-off legal-public homeostatic Bayesian mode for terminal/headless execution",
     )
     parser.add_argument(
+        "--public-featured-transfer",
+        action="store_true",
+        help=(
+            "enable the default-off public-featured exact hierarchical learner "
+            "product successor for terminal/headless execution"
+        ),
+    )
+    parser.add_argument(
         "--html-report",
         type=Path,
         help="write a recovered-trace-only HTML report after terminal/headless execution",
@@ -116,6 +124,10 @@ def main(argv: list[str] | None = None) -> int:
         args.terminal or args.headless_smoke or args.quick_check
     ):
         raise SystemExit("--homeostatic-transfer requires --terminal or a headless check")
+    if args.homeostatic_transfer and args.public_featured_transfer:
+        raise SystemExit(
+            "--homeostatic-transfer and --public-featured-transfer are mutually exclusive"
+        )
     if args.html_report is not None and not (
         args.terminal or args.headless_smoke or args.quick_check
     ):
@@ -129,6 +141,7 @@ def main(argv: list[str] | None = None) -> int:
                     seed=args.seed,
                     world_seed=args.world_seed,
                     layout_id=args.layout,
+                    public_featured_transfer=args.public_featured_transfer,
                 )
             except EngineInvariantError as exc:
                 _print_controller_construction_error(args, exc)
@@ -138,6 +151,11 @@ def main(argv: list[str] | None = None) -> int:
                     DEFAULT_INTERVENTIONS,
                     homeostatic_transfer_mode=(
                         "public_bayes" if args.homeostatic_transfer else "off"
+                    ),
+                    public_featured_transfer_mode=(
+                        "hierarchical_bayes"
+                        if args.public_featured_transfer
+                        else "off"
                     ),
                 ),
                 trigger_source="headless_acceptance",
@@ -167,6 +185,9 @@ def main(argv: list[str] | None = None) -> int:
                         "trigger_source": trace["trigger_source"],
                         "interventions": trace["interventions"],
                         "homeostatic_transfer": trace.get("homeostatic_transfer"),
+                        "public_featured_transfer": trace.get(
+                            "public_featured_transfer"
+                        ),
                         "science_weight": 0,
                         "html_report": html_report,
                     },
@@ -183,6 +204,7 @@ def main(argv: list[str] | None = None) -> int:
                     seed=args.seed,
                     world_seed=args.world_seed,
                     layout_id=args.layout,
+                    public_featured_transfer=args.public_featured_transfer,
                 )
             except EngineInvariantError as exc:
                 _print_controller_construction_error(args, exc)
@@ -190,6 +212,8 @@ def main(argv: list[str] | None = None) -> int:
             terminal = TerminalPlayground(controller)
             if args.homeostatic_transfer:
                 terminal.homeostatic_transfer_mode = "public_bayes"
+            if args.public_featured_transfer:
+                terminal.public_featured_transfer_mode = "hierarchical_bayes"
             if args.command:
                 exit_code = 0
                 for command in args.command:
@@ -228,6 +252,7 @@ def main(argv: list[str] | None = None) -> int:
             world_seed=args.world_seed,
             layout_id=args.layout,
             run_id=args.run_id,
+            public_featured_transfer=args.public_featured_transfer,
         )
     except EngineInvariantError as exc:
         _print_controller_construction_error(args, exc)

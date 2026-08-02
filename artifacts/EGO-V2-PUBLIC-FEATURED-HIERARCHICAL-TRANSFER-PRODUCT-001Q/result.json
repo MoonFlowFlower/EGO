@@ -1,0 +1,21 @@
+{
+  "action_row_count": 257,
+  "checks": {
+    "default_off": true,
+    "drive_intervention": true,
+    "leakage": true,
+    "no_update": true,
+    "reference_row_parity": true,
+    "replay": true,
+    "tamper": true,
+    "world_switch_slow_persistence": true
+  },
+  "claim_ceiling": "Bounded runtime integration and exact public-row parity with the frozen 001O reference only.",
+  "command_count": 258,
+  "passed": true,
+  "qualification_seed": 104729,
+  "respawn_row_count": 1,
+  "schema_version": "ego.v2.public_featured_product_qualification.001q.v1",
+  "task_id": "EGO-V2-PUBLIC-FEATURED-HIERARCHICAL-TRANSFER-PRODUCT-001Q",
+  "verdict": "PRODUCT_RUNTIME_INTEGRATION_QUALIFIED_AGAINST_FROZEN_REFERENCE"
+}

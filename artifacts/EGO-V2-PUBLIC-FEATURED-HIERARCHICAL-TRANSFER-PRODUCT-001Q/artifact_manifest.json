@@ -1,0 +1,77 @@
+{
+  "entries": [
+    {
+      "bytes": 318,
+      "path": "claim_ceiling.txt",
+      "sha256": "ea50c27c9e2dc83ecc1edbb8b030b32fed38c79404942817b69aea4b1adccd3b"
+    },
+    {
+      "bytes": 62,
+      "path": "default_off_report.json",
+      "sha256": "077a52f0cf9f851a5a1170cd8ac196608b0e63b8345639c82d968c16789ed67f"
+    },
+    {
+      "bytes": 2986,
+      "path": "drive_intervention_report.json",
+      "sha256": "a9f5020e4d9e0dee1b2a7aafb28e6f4df2f4ff2a79197711dc4257e3df905a5d"
+    },
+    {
+      "bytes": 50,
+      "path": "failure_manifest.json",
+      "sha256": "0c112525ab91ab3093e1369f5ab3d1a9f0c40219ce20e908dbb3abecbbb88553"
+    },
+    {
+      "bytes": 581,
+      "path": "independent_row_recomputation.json",
+      "sha256": "ed7873b64f3a46b75c6466eb437b4fe44f1d15bd9bafbd9b8f078f8fa28dae95"
+    },
+    {
+      "bytes": 156,
+      "path": "leakage_report.json",
+      "sha256": "9d392535e42b17459b5d0de16c24f231673178dc3455306f038673db60f11d07"
+    },
+    {
+      "bytes": 817,
+      "path": "no_update_report.json",
+      "sha256": "dd64e41c146d763a7fcc150fb9dc1dbebff378afe2147ca4ee97dfa87eb918de"
+    },
+    {
+      "bytes": 486,
+      "path": "post_qualification_provenance_amendment.json",
+      "sha256": "cb31b90aaef31ec0ff5fd70aeb56793032ad942b5def328b470ae753c84b2856"
+    },
+    {
+      "bytes": 2391,
+      "path": "qualification_freeze.json",
+      "sha256": "b1c7be579a61c3d39feeea18af6d912790c4e410736b291fc75c7f278c43f45c"
+    },
+    {
+      "bytes": 563794,
+      "path": "qualification_public_rows.jsonl",
+      "sha256": "0e5a41de48ccbda13cafbbbb7e10a06347de2aeee0c9c38dddac4021efc5d506"
+    },
+    {
+      "bytes": 1309450,
+      "path": "qualification_trace.html",
+      "sha256": "f5c4ef465fe8fd0210b4275afa6bc263277a3c1da84f5a5b43b1ca2e4dfee10f"
+    },
+    {
+      "bytes": 268,
+      "path": "replay_report.json",
+      "sha256": "eef0bb537131629c83a751eec9ac8426b91ad924adfb4e2d54f47971ce01898e"
+    },
+    {
+      "bytes": 731,
+      "path": "result.json",
+      "sha256": "efe0a9af628e0ae79de2bf243aa0070d296cfc65d05b6a57ee13aaff058978c1"
+    },
+    {
+      "bytes": 271,
+      "path": "tamper_report.json",
+      "sha256": "0dd4e4bc771b950e5c6bb305af6fc0f8fc79ff8615392cae6ce32def5b649919"
+    }
+  ],
+  "post_qualification_amendment_present": true,
+  "schema_version": "ego.v2.public_featured_product_manifest.001q.v1",
+  "task_id": "EGO-V2-PUBLIC-FEATURED-HIERARCHICAL-TRANSFER-PRODUCT-001Q"
+}
