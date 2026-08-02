@@ -1,0 +1,56 @@
+{
+  "action_contract_match": false,
+  "blocker": "EXPLICIT_PRODUCT_OBSERVATION_ACTION_SEMANTICS_AUTHORIZATION_REQUIRED",
+  "controller_store_replay_pattern_compatible": true,
+  "current_main_chain": {
+    "controller_dispatches_engine_then_store": true,
+    "engine_runs_metabolism_then_terminal": true,
+    "path": "controller.dispatch -> engine.compute_step -> compute_metabolism_ledger -> inline terminal check -> store.append_step/recover_run",
+    "store_recomputes_before_trace_read": true
+  },
+  "current_product_actions": [
+    "turn_left",
+    "turn_right",
+    "move_forward",
+    "interact",
+    "rest"
+  ],
+  "current_product_feature_source": "anonymous visual token identity only; no legal five-bit public factor vector",
+  "current_product_observation_contract": {
+    "fields": [
+      "schema_version",
+      "visual"
+    ],
+    "schema": "ego.life_playground.microworld.observation.v4",
+    "visual_shape": "3x5 token grid"
+  },
+  "currently_product_admissible": false,
+  "evaluator_wrapper_currently_required": true,
+  "frozen_reference_actions": [
+    "interact_0",
+    "interact_1",
+    "interact_2",
+    "rest"
+  ],
+  "frozen_reference_observation_contract": {
+    "feature_count": 5,
+    "fields": [
+      "organism",
+      "slots",
+      "previous"
+    ],
+    "slot_count": 3,
+    "slot_fields": [
+      "features"
+    ]
+  },
+  "metabolism_terminal_contract_match": false,
+  "metabolism_terminal_mismatch": "Frozen 001O applies featured stochastic energy/safety deltas and terminates when either reaches zero; the current product reducer uses its visual-grid metabolism and terminates a life on energy zero.",
+  "minimum_authorized_successor": "A new default-off product mode that reuses the frozen 001O feature-slot and positional-interaction contract, extracts a clean runtime-only learner without diagnostic truth, and wires it into the sole reducer/metabolism/terminal/store replay path.",
+  "observation_contract_match": false,
+  "product_files_modified_by_audit": false,
+  "public_featured_module_in_engine_code_path": false,
+  "stored_trace_is_behavior_input": false,
+  "task_id": "EGO-V2-REFERENCE-TO-PRODUCT-ADMISSIBILITY-001P",
+  "unsafe_adapter_rejected": "Deriving featured factors from token identity or packet/private assignment would violate the frozen candidate-input contract and manufacture a second truth source."
+}

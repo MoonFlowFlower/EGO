@@ -1,0 +1,12 @@
+{
+  "autostart": false,
+  "background_dispatch": false,
+  "command": "C:\\Users\\LEO\\.codex\\venvs\\ego-v2-numpy-2.2.6\\Scripts\\python.exe scripts\\codex\\render_active_views.py --check",
+  "exit_code": 0,
+  "llm": false,
+  "network": false,
+  "pass": true,
+  "product_default_changed": false,
+  "stdout": "active views exact",
+  "task_id": "EGO-V2-REFERENCE-TO-PRODUCT-ADMISSIBILITY-001P"
+}

@@ -1,0 +1,28 @@
+task_id: EGO-V2-REFERENCE-TO-PRODUCT-ADMISSIBILITY-001P
+base_head: ce5a30e8f50bad758977b7db3da1102150414f8f
+allowed_paths:
+  - docs/codex/tasks/EGO-V2-REFERENCE-TO-PRODUCT-ADMISSIBILITY-001P.md
+  - docs/codex/tasks/ego-v2-reference-to-product-admissibility-001p/
+  - scripts/codex/audit_ego_v2_reference_to_product_admissibility_001p.py
+  - scripts/codex/tests/test_audit_ego_v2_reference_to_product_admissibility_001p.py
+  - artifacts/EGO-V2-REFERENCE-TO-PRODUCT-ADMISSIBILITY-001P/
+protected_paths:
+  - artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/
+  - labs/ego_life_playground_v0/public_featured_transfer.py
+  - scripts/codex/run_ego_v2_public_featured_compositional_transfer_001o.py
+  - scripts/codex/verify_ego_v2_public_featured_compositional_transfer_001o.py
+  - artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/
+  - artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/
+  - labs/ego_life_playground_v0/engine.py
+  - labs/ego_life_playground_v0/microworld.py
+  - labs/ego_life_playground_v0/homeostatic_transfer.py
+  - labs/ego_life_playground_v0/controller.py
+  - labs/ego_life_playground_v0/store.py
+forbidden_operations:
+  - rerun_or_modify_001o_packets
+  - consume_001j_heldout
+  - modify_product_observation_or_action_semantics
+  - add_runtime_mode_before_admissibility_result
+  - enable_llm_network_autostart_background_dispatch
+  - push
+  - tag

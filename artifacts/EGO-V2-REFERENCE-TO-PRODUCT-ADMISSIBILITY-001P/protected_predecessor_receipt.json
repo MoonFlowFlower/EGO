@@ -1,0 +1,19 @@
+{
+  "candidate_freeze_hash": "d063bce869909a8265b7a50f0a71122bffc82d7f2d367b033e1e229191b01fc9",
+  "checks": {
+    "candidate_freeze_files_match": true,
+    "predecessor_artifact_tracked": true,
+    "predecessor_artifact_worktree_clean": true,
+    "qualification_consumed_once": true,
+    "replication_consumed_once": true,
+    "verdict_frozen": true
+  },
+  "frozen_file_mismatches": [],
+  "pass": true,
+  "predecessor_artifact_tree_oid": "9ef94e4ebb26186d5e2f71aa6c8e05f7287c190f",
+  "predecessor_task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O",
+  "qualification_consumed_once": true,
+  "replication_consumed_once": true,
+  "task_id": "EGO-V2-REFERENCE-TO-PRODUCT-ADMISSIBILITY-001P",
+  "verdict": "PUBLIC_FEATURED_EXACT_HIERARCHICAL_TRANSFER_CAPACITY_ESTABLISHED"
+}

@@ -1,0 +1,357 @@
+{
+  "all_serialized_state_fields_classified": true,
+  "candidate_state_contains_private_assignment": false,
+  "fields": [
+    {
+      "candidate_access": true,
+      "candidate_representation": "marginal over the 40 rows of joint[g][current_nuisance]",
+      "decision_role": "posterior predictive action effects",
+      "evidence": [
+        {
+          "line_end": 224,
+          "line_start": 208,
+          "parameters": [
+            "global_prior"
+          ],
+          "path": "labs/ego_life_playground_v0/public_featured_transfer.py",
+          "source_sha256": "d0f87093b15cef726d9d4eec955ad360d149ae63cc64ceb3db3d6a64a8e16f07"
+        },
+        {
+          "line_end": 422,
+          "line_start": 361,
+          "parameters": [
+            "state",
+            "observation",
+            "action",
+            "feedback"
+          ],
+          "path": "labs/ego_life_playground_v0/public_featured_transfer.py",
+          "source_sha256": "2c4f781e4350e77bdee6781ade0f9f7b1f2085ffe3e4ae3b35c01fff3ddf0335"
+        },
+        {
+          "line_end": 303,
+          "line_start": 301,
+          "parameters": [
+            "state"
+          ],
+          "path": "labs/ego_life_playground_v0/public_featured_transfer.py",
+          "source_sha256": "961418c677901485a47f2ef44a5005a78094528eb0fbc854804f9c349ce9763a"
+        }
+      ],
+      "field": "shared_mechanism_posterior",
+      "formed_from_public_history": true,
+      "initial_value": "uniform 1/40",
+      "persistence_scope": "slow_cross_world",
+      "serialized_state_field": "joint",
+      "source_class": "public_cross_world_training_history",
+      "trained_evaluator_diagnostic_probability": 0.999847607436757
+    },
+    {
+      "candidate_access": true,
+      "candidate_representation": "conditional mass across the two columns of joint",
+      "decision_role": "posterior predictive action effects",
+      "evidence": [
+        {
+          "line_end": 224,
+          "line_start": 208,
+          "parameters": [
+            "global_prior"
+          ],
+          "path": "labs/ego_life_playground_v0/public_featured_transfer.py",
+          "source_sha256": "d0f87093b15cef726d9d4eec955ad360d149ae63cc64ceb3db3d6a64a8e16f07"
+        },
+        {
+          "line_end": 311,
+          "line_start": 306,
+          "parameters": [
+            "state",
+            "preserve_shared"
+          ],
+          "path": "labs/ego_life_playground_v0/public_featured_transfer.py",
+          "source_sha256": "9ea04e99799994a35996d4afec9e41816019bd6284e4c1ac1da1e63b5a783542"
+        },
+        {
+          "line_end": 422,
+          "line_start": 361,
+          "parameters": [
+            "state",
+            "observation",
+            "action",
+            "feedback"
+          ],
+          "path": "labs/ego_life_playground_v0/public_featured_transfer.py",
+          "source_sha256": "2c4f781e4350e77bdee6781ade0f9f7b1f2085ffe3e4ae3b35c01fff3ddf0335"
+        }
+      ],
+      "field": "current_world_nuisance_posterior",
+      "formed_from_public_history": true,
+      "initial_value": {
+        "full_reverse": 0.25,
+        "normal": 0.75
+      },
+      "persistence_scope": "fast_current_world",
+      "serialized_state_field": "joint",
+      "source_class": "current_world_public_feedback_plus_benchmark_local_prior"
+    },
+    {
+      "candidate_access": true,
+      "candidate_representation": "integer in JSON state",
+      "decision_role": "receipt_only_not_planner_input",
+      "evidence": [
+        {
+          "line_end": 224,
+          "line_start": 208,
+          "parameters": [
+            "global_prior"
+          ],
+          "path": "labs/ego_life_playground_v0/public_featured_transfer.py",
+          "source_sha256": "d0f87093b15cef726d9d4eec955ad360d149ae63cc64ceb3db3d6a64a8e16f07"
+        },
+        {
+          "line_end": 422,
+          "line_start": 361,
+          "parameters": [
+            "state",
+            "observation",
+            "action",
+            "feedback"
+          ],
+          "path": "labs/ego_life_playground_v0/public_featured_transfer.py",
+          "source_sha256": "2c4f781e4350e77bdee6781ade0f9f7b1f2085ffe3e4ae3b35c01fff3ddf0335"
+        }
+      ],
+      "field": "update_count",
+      "formed_from_public_history": true,
+      "initial_value": 0,
+      "persistence_scope": "slow_cross_world_metadata",
+      "serialized_state_field": "update_count",
+      "source_class": "public_feedback_event_count",
+      "trained_value": 768
+    },
+    {
+      "candidate_access": true,
+      "candidate_representation": "integer in JSON state",
+      "decision_role": "receipt_only_not_planner_input",
+      "evidence": [
+        {
+          "line_end": 224,
+          "line_start": 208,
+          "parameters": [
+            "global_prior"
+          ],
+          "path": "labs/ego_life_playground_v0/public_featured_transfer.py",
+          "source_sha256": "d0f87093b15cef726d9d4eec955ad360d149ae63cc64ceb3db3d6a64a8e16f07"
+        },
+        {
+          "line_end": 311,
+          "line_start": 306,
+          "parameters": [
+            "state",
+            "preserve_shared"
+          ],
+          "path": "labs/ego_life_playground_v0/public_featured_transfer.py",
+          "source_sha256": "9ea04e99799994a35996d4afec9e41816019bd6284e4c1ac1da1e63b5a783542"
+        },
+        {
+          "line_end": 422,
+          "line_start": 361,
+          "parameters": [
+            "state",
+            "observation",
+            "action",
+            "feedback"
+          ],
+          "path": "labs/ego_life_playground_v0/public_featured_transfer.py",
+          "source_sha256": "2c4f781e4350e77bdee6781ade0f9f7b1f2085ffe3e4ae3b35c01fff3ddf0335"
+        }
+      ],
+      "field": "world_update_count",
+      "formed_from_public_history": true,
+      "initial_value": 0,
+      "persistence_scope": "fast_current_world_metadata",
+      "reset_value": 0,
+      "serialized_state_field": "world_update_count",
+      "source_class": "current_world_public_feedback_event_count"
+    },
+    {
+      "candidate_access": true,
+      "candidate_representation": "hash chain over public action/features/feedback",
+      "decision_role": "receipt_only_not_planner_input",
+      "evidence": [
+        {
+          "line_end": 224,
+          "line_start": 208,
+          "parameters": [
+            "global_prior"
+          ],
+          "path": "labs/ego_life_playground_v0/public_featured_transfer.py",
+          "source_sha256": "d0f87093b15cef726d9d4eec955ad360d149ae63cc64ceb3db3d6a64a8e16f07"
+        },
+        {
+          "line_end": 311,
+          "line_start": 306,
+          "parameters": [
+            "state",
+            "preserve_shared"
+          ],
+          "path": "labs/ego_life_playground_v0/public_featured_transfer.py",
+          "source_sha256": "9ea04e99799994a35996d4afec9e41816019bd6284e4c1ac1da1e63b5a783542"
+        },
+        {
+          "line_end": 422,
+          "line_start": 361,
+          "parameters": [
+            "state",
+            "observation",
+            "action",
+            "feedback"
+          ],
+          "path": "labs/ego_life_playground_v0/public_featured_transfer.py",
+          "source_sha256": "2c4f781e4350e77bdee6781ade0f9f7b1f2085ffe3e4ae3b35c01fff3ddf0335"
+        }
+      ],
+      "field": "public_history_hash",
+      "formed_from_public_history": true,
+      "persistence_scope": "fast_current_world_metadata",
+      "reset_value": "canonical hash of empty history",
+      "serialized_state_field": "public_history_hash",
+      "source_class": "current_world_public_history_receipt"
+    },
+    {
+      "candidate_access": true,
+      "candidate_representation": "uniform probability over all 40 public-family hypotheses",
+      "contains_realized_answer": false,
+      "decision_role": "uninformative starting mass",
+      "evidence": {
+        "line_end": 224,
+        "line_start": 208,
+        "parameters": [
+          "global_prior"
+        ],
+        "path": "labs/ego_life_playground_v0/public_featured_transfer.py",
+        "source_sha256": "d0f87093b15cef726d9d4eec955ad360d149ae63cc64ceb3db3d6a64a8e16f07"
+      },
+      "field": "shared_prior_initialization",
+      "formed_from_public_history": false,
+      "persistence_scope": "initialization_only",
+      "source_class": "fixed_generic_prior"
+    },
+    {
+      "candidate_access": true,
+      "candidate_representation": "40 fixed weight-pair hypotheses",
+      "contains_realized_answer": false,
+      "decision_role": "defines exact posterior support",
+      "evidence": {
+        "file_sha256": "5ff9e8b2cdbb0f238a09c4cdec44424eba733cbbf92e1516ecc3db9c87ac2337",
+        "hypothesis_count": 40,
+        "path": "labs/ego_life_playground_v0/public_featured_transfer.py"
+      },
+      "field": "shared_mechanism_hypothesis_family",
+      "formed_from_public_history": false,
+      "guarantees_realized_answer_is_in_support": true,
+      "persistence_scope": "fixed_model_class",
+      "source_class": "benchmark_grammar_hardcoded"
+    },
+    {
+      "candidate_access": true,
+      "candidate_representation": "fixed exact model and homeostatic planning constants",
+      "contains_realized_answer": false,
+      "decision_role": "exact likelihood and fixed homeostatic action ranking",
+      "evidence": {
+        "effect_model": {
+          "centered_feature": "2*x-1",
+          "clamp": [
+            0.0,
+            1.0
+          ],
+          "energy_noise_values": [
+            -0.14,
+            -0.07,
+            0.0,
+            0.07,
+            0.14
+          ],
+          "energy_scale": 0.035,
+          "interaction_energy_cost": 0.004,
+          "noise_probabilities": [
+            0.1,
+            0.2,
+            0.4,
+            0.2,
+            0.1
+          ],
+          "passive_energy_decay": 0.008,
+          "rest_energy_cost": 0.002,
+          "rest_safety_gain": 0.015,
+          "safety_noise_values": [
+            -0.12,
+            -0.06,
+            0.0,
+            0.06,
+            0.12
+          ],
+          "safety_scale": 0.03,
+          "terminal": "energy <= 0 or safety <= 0"
+        },
+        "organism": {
+          "initial_energy": 0.5,
+          "initial_safety": 0.5,
+          "target": 0.72
+        },
+        "planner": {
+          "future_observations": false,
+          "information_value_per_bit": 0.08,
+          "kind": "one_step_exact_posterior_predictive",
+          "terminal_penalty": 2.0,
+          "tie_break": "lexicographic_action"
+        }
+      },
+      "field": "likelihood_noise_effect_scales_and_planner_constants",
+      "formed_from_public_history": false,
+      "persistence_scope": "fixed_model_and_planner",
+      "source_class": "benchmark_grammar_hardcoded"
+    },
+    {
+      "candidate_access": false,
+      "candidate_representation": null,
+      "decision_role": "diagnostic_scoring_only",
+      "evaluator_value": 17,
+      "evidence": {
+        "path": "scripts/codex/run_ego_v2_public_featured_compositional_transfer_001o.py",
+        "runner_file_sha256": "aa074448f67c60adaac67ea37ad91e56748f2de639a1d20b1fb07e6c65f8045b"
+      },
+      "field": "realized_shared_mechanism_index",
+      "formed_from_public_history": false,
+      "persistence_scope": "evaluator_only",
+      "source_class": "evaluator_private_assignment"
+    },
+    {
+      "candidate_access": false,
+      "candidate_representation": null,
+      "decision_role": "packet_execution_and_scoring_only",
+      "evidence": {
+        "packet_assignment_sha256": "d1f0ba58b6c6be88eb2ef88d45ad54df79ad4313fa96199ecd5d5a5b97023201",
+        "private_field_positive_controls_rejected": 12
+      },
+      "field": "world_seed_local_mode_packet_split_and_opaque_world",
+      "formed_from_public_history": false,
+      "persistence_scope": "evaluator_only",
+      "source_class": "evaluator_private_assignment"
+    }
+  ],
+  "pass": true,
+  "serialized_reference_state_fields": [
+    "joint",
+    "public_history_hash",
+    "update_count",
+    "world_update_count"
+  ],
+  "serialized_state_field_coverage": [
+    "joint",
+    "public_history_hash",
+    "update_count",
+    "world_update_count"
+  ],
+  "slow_information_summary": "Only the shared marginal of joint is transferable decision information, and it is learned from public cross-world histories. The nuisance conditional and its counters/receipt are current-world state. The exact finite family, likelihood, local-mode prior, effect scales, and planner are fixed benchmark grammar. The uniform shared prior is generic. The realized mechanism and packet/world assignments remain evaluator-only.",
+  "task_id": "EGO-V2-REFERENCE-TO-PRODUCT-ADMISSIBILITY-001P"
+}

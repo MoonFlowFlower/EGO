@@ -1,0 +1,12 @@
+{
+  "command": "C:\\Users\\LEO\\.codex\\venvs\\ego-v2-numpy-2.2.6\\Scripts\\python.exe -m pytest scripts/codex/tests/test_audit_ego_v2_reference_to_product_admissibility_001p.py scripts/codex/tests/test_run_ego_v2_public_featured_compositional_transfer_001o.py scripts/codex/tests/test_verify_ego_v2_public_featured_compositional_transfer_001o.py tests/test_ego_life_playground_public_featured_transfer.py tests/test_ego_life_playground_v0.py -q",
+  "exit_code": 0,
+  "git_diff_check": "pass",
+  "numpy_required": "2.2.6",
+  "packet_note": "001O tests used bounded synthetic unit fixtures only; no frozen qualification or replication packet was rerun or consumed.",
+  "pass": true,
+  "python": "C:\\Users\\LEO\\.codex\\venvs\\ego-v2-numpy-2.2.6\\Scripts\\python.exe",
+  "result": "38 passed in 4.35s",
+  "route_check": "active views exact",
+  "task_id": "EGO-V2-REFERENCE-TO-PRODUCT-ADMISSIBILITY-001P"
+}

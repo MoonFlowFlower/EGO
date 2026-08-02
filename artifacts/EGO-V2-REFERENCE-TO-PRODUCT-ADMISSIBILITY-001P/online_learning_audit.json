@@ -1,0 +1,53 @@
+{
+  "checks": {
+    "generic_initialization": true,
+    "history_shuffle_blocks_slow_knowledge": true,
+    "public_feedback_updates_applied": true,
+    "shared_entropy_reduced": true,
+    "shared_truth_probability_moved_from_generic": true,
+    "slow_reset_breaks_transfer": true,
+    "world_reset_preserves_shared_marginal": true
+  },
+  "feedback_attribution_shuffle_operationalization": "Frozen HISTORY_SHUFFLE feeds the previous public observation/features with the current action and feedback, breaking feature-to-feedback attribution. It is not a separate arbitrary permutation of feedback rows.",
+  "history_shuffle_blocks_slow_knowledge": true,
+  "history_shuffle_shared_truth_probability": 0.0,
+  "initial_shared_truth_probability": 0.025,
+  "literal_feedback_row_permutation_run_by_001p": false,
+  "pass": true,
+  "public_feedback_update_count": 768,
+  "public_training_events": 768,
+  "qualification_history_shuffle_gain_removal_fraction": 24.64852236888214,
+  "qualification_transfer_gain": 0.5350625,
+  "replication_history_shuffle_gain_removal_fraction": 3.6598473087637964,
+  "replication_transfer_gain": 2.9389375000000006,
+  "slow_reset_breaks_transfer": true,
+  "slow_reset_operationalization": "SCRATCH_EXACT_BAYES starts the same exact architecture at uniform shared mass",
+  "slow_reset_packet_effects": {
+    "qualification": {
+      "damage": 0.5350625,
+      "recovery_fraction_lost": 0.5654930972983684,
+      "slow_reset_early_deficit_auc": 1.3910624999999999,
+      "transfer_early_deficit_auc": 0.8559999999999999
+    },
+    "replication": {
+      "damage": 2.9389375000000006,
+      "recovery_fraction_lost": 0.8518196474829267,
+      "slow_reset_early_deficit_auc": 5.910562500000001,
+      "transfer_early_deficit_auc": 2.9716250000000004
+    }
+  },
+  "task_id": "EGO-V2-REFERENCE-TO-PRODUCT-ADMISSIBILITY-001P",
+  "trained_shared_entropy_bits": 0.002152164734200791,
+  "trained_shared_truth_probability": 0.999847607436757,
+  "world_reset_evidence": {
+    "line_end": 311,
+    "line_start": 306,
+    "parameters": [
+      "state",
+      "preserve_shared"
+    ],
+    "path": "labs/ego_life_playground_v0/public_featured_transfer.py",
+    "source_sha256": "9ea04e99799994a35996d4afec9e41816019bd6284e4c1ac1da1e63b5a783542"
+  },
+  "world_reset_preserves_shared_marginal": true
+}

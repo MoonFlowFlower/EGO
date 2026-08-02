@@ -1,0 +1,5 @@
+Frozen 001O is a legal public model-based learner within a known exact finite
+hypothesis family and is also a structured capacity upper bound under that
+modeling assumption. This audit does not establish product-main-chain transfer,
+learning outside the frozen family, general compositional transfer, neural
+learning, consciousness, agency, or real-world survival ability.

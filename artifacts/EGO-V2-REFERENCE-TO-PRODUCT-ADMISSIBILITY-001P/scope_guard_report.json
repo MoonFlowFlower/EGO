@@ -1,0 +1,32 @@
+{
+  "all_protected_paths_clean": true,
+  "base_head": "ce5a30e8f50bad758977b7db3da1102150414f8f",
+  "branch": "codex/ego-v2-reference-product-admissibility-001p",
+  "old_heldout_consumed": false,
+  "old_packet_rerun": false,
+  "pass": true,
+  "product_runtime_modified": false,
+  "protected_path_status": {
+    "artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/": "",
+    "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/": "",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/": "",
+    "labs/ego_life_playground_v0/controller.py": "",
+    "labs/ego_life_playground_v0/engine.py": "",
+    "labs/ego_life_playground_v0/microworld.py": "",
+    "labs/ego_life_playground_v0/public_featured_transfer.py": "",
+    "labs/ego_life_playground_v0/store.py": "",
+    "scripts/codex/run_ego_v2_public_featured_compositional_transfer_001o.py": "",
+    "scripts/codex/verify_ego_v2_public_featured_compositional_transfer_001o.py": ""
+  },
+  "push": false,
+  "status_paths": [
+    "artifacts/EGO-V2-REFERENCE-TO-PRODUCT-ADMISSIBILITY-001P/",
+    "docs/codex/tasks/EGO-V2-REFERENCE-TO-PRODUCT-ADMISSIBILITY-001P.md",
+    "docs/codex/tasks/ego-v2-reference-to-product-admissibility-001p/",
+    "scripts/codex/audit_ego_v2_reference_to_product_admissibility_001p.py",
+    "scripts/codex/tests/test_audit_ego_v2_reference_to_product_admissibility_001p.py"
+  ],
+  "tag": false,
+  "task_id": "EGO-V2-REFERENCE-TO-PRODUCT-ADMISSIBILITY-001P",
+  "unexpected_paths": []
+}

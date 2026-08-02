@@ -1,0 +1,60 @@
+{
+  "combined_hash": "3e5e5c908fedf425f535ebd67f42b36fe829273ed159f2c0ac4f8de8969a4c3c",
+  "file_count_excluding_manifest": 13,
+  "files": {
+    "audit_preregistration.json": {
+      "bytes": 1266,
+      "sha256": "c5b2aec5d707eff3af8216456d76aa777380611693176e8aca3c6e0e74adf107"
+    },
+    "audit_report.json": {
+      "bytes": 2826,
+      "sha256": "a3d1406a2a72b00e5aac2aceab14bec7a6851e3d0cff87d9ebc24f7019fe1dc6"
+    },
+    "claim_ceiling.txt": {
+      "bytes": 373,
+      "sha256": "b1236430681b0185b2e4c812178cd8941cb27edd1ad3bc320b8e19477099a5cb"
+    },
+    "command_receipt.json": {
+      "bytes": 1424,
+      "sha256": "694c456d0bc5366c90cb96dfe5ea4aaf35ba0aad258bcbc452abae7f38eb989a"
+    },
+    "critic_review.json": {
+      "bytes": 1492,
+      "sha256": "f2b851c75c8686661142128362fd156aa482a33b129f2a8dc3c4edd6dbdb99cd"
+    },
+    "function_knowledge_audit.json": {
+      "bytes": 4960,
+      "sha256": "7c646a03695ccde2d8b696fe58db09b0036f15954de6ef6e47704339f7c96cf4"
+    },
+    "online_learning_audit.json": {
+      "bytes": 2360,
+      "sha256": "9a1ec630b79de1767243a55d4f62b1380febded74372adc6d232a3d1177227e5"
+    },
+    "protected_predecessor_receipt.json": {
+      "bytes": 809,
+      "sha256": "8659754cb4fd8a09c70a1b8a1844a6e6f6a606be6d5ea4fba1450cf30be5cc0f"
+    },
+    "route_validation_report.json": {
+      "bytes": 406,
+      "sha256": "a3c12e70f4b6cdaf9395e57b0e5c64311bde244f0926e33d0a0169f7e17c963f"
+    },
+    "runtime_admissibility_audit.json": {
+      "bytes": 2414,
+      "sha256": "61f7f62812b9e1cb4e8a1c9ca0fb0d122e4711392d4d7e1a63fca2805b9c3f8e"
+    },
+    "scope_guard_report.json": {
+      "bytes": 1514,
+      "sha256": "a578f4eddc39a15ca2f738f2e33aa4baf9d113b2faaf74d6dd84b9e0648787c4"
+    },
+    "slow_information_provenance.json": {
+      "bytes": 12949,
+      "sha256": "1f6a4a5ab0169fb5ea74d4e6ed47f7f5c39d78772ecf5b0b65c9029b13addc65"
+    },
+    "test_report.json": {
+      "bytes": 917,
+      "sha256": "d2f870cee311c2f0a59a0812ab05f226560f3f8e185f971cfe4763ef944890c3"
+    }
+  },
+  "manifest_excludes_self": true,
+  "task_id": "EGO-V2-REFERENCE-TO-PRODUCT-ADMISSIBILITY-001P"
+}

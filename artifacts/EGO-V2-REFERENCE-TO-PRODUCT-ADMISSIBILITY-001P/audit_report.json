@@ -1,0 +1,47 @@
+{
+  "claim_ceiling": "Frozen 001O is a legal public model-based learner within a known exact finite family, while also serving as a structured capacity upper bound. It is not currently a product-main-chain capability.",
+  "decision": "ROUTE_A_LEARNER_PRODUCT_SEMANTICS_AUTHORIZATION_REQUIRED",
+  "frozen_predecessor": {
+    "candidate_freeze_hash": "d063bce869909a8265b7a50f0a71122bffc82d7f2d367b033e1e229191b01fc9",
+    "checks": {
+      "candidate_freeze_files_match": true,
+      "predecessor_artifact_tracked": true,
+      "predecessor_artifact_worktree_clean": true,
+      "qualification_consumed_once": true,
+      "replication_consumed_once": true,
+      "verdict_frozen": true
+    },
+    "frozen_file_mismatches": [],
+    "pass": true,
+    "predecessor_artifact_tree_oid": "9ef94e4ebb26186d5e2f71aa6c8e05f7287c190f",
+    "predecessor_task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O",
+    "qualification_consumed_once": true,
+    "replication_consumed_once": true,
+    "task_id": "EGO-V2-REFERENCE-TO-PRODUCT-ADMISSIBILITY-001P",
+    "verdict": "PUBLIC_FEATURED_EXACT_HIERARCHICAL_TRANSFER_CAPACITY_ESTABLISHED"
+  },
+  "next_action": "A new default-off product mode that reuses the frozen 001O feature-slot and positional-interaction contract, extracts a clean runtime-only learner without diagnostic truth, and wires it into the sole reducer/metabolism/terminal/store replay path.",
+  "product_admissible_current_chain": false,
+  "product_implementation_started": false,
+  "reference_classification": "LEGAL_PUBLIC_MODEL_BASED_LEARNER_AND_STRUCTURED_CAPACITY_UPPER_BOUND",
+  "reference_is_learner": true,
+  "reference_is_structured_upper_bound": true,
+  "reference_route": "A",
+  "task_id": "EGO-V2-REFERENCE-TO-PRODUCT-ADMISSIBILITY-001P",
+  "what_this_does_not_prove": [
+    "product runtime transfer",
+    "learning outside the frozen hypothesis family",
+    "general compositional transfer",
+    "neural learning",
+    "consciousness",
+    "agency",
+    "real-world survival ability"
+  ],
+  "why": [
+    "The shared posterior starts uniform and public feedback moves evaluator-diagnostic truth mass from 0.025 to above 0.999.",
+    "World reset preserves only the learned shared marginal and restores the fixed benchmark current-world nuisance prior.",
+    "Scratch exact Bayes and shuffled history remove the transfer benefit; the realized assignment is not reachable from candidate plan/update.",
+    "The correct finite family and exact likelihood are hardcoded, so the learner remains a structured capacity upper bound outside that modeling assumption.",
+    "The existing product observation/action/metabolism/terminal contract does not match frozen 001O feature slots, positional interactions, and energy-safety transition contract."
+  ]
+}

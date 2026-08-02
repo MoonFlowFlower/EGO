@@ -1,0 +1,21 @@
+{
+  "task_id": "EGO-V2-REFERENCE-TO-PRODUCT-ADMISSIBILITY-001P",
+  "base_head": "ce5a30e8f50bad758977b7db3da1102150414f8f",
+  "frozen_predecessor_verdict": "PUBLIC_FEATURED_EXACT_HIERARCHICAL_TRANSFER_CAPACITY_ESTABLISHED",
+  "packet_reruns_allowed": false,
+  "questions": [
+    "What is the provenance of every transferable state field and fixed constant?",
+    "Does the shared posterior start generic, update online from public feedback, persist across worlds, and fail under slow reset or feedback shuffle?",
+    "Does the candidate know the realized feature-effect mechanism or only a public finite family?",
+    "Can the exact public contract run through the existing product reducer and replay chain without evaluator or semantic adaptation?"
+  ],
+  "route_a_rule": "legal public family plus online posterior learning and no realized assignment in candidate",
+  "route_b_rule": "realized function, mapping, alignment, assignment, or equivalent answer table prefilled in candidate",
+  "product_stop_rule": "stop for explicit authorization if current product observation/action semantics cannot express the frozen 001O public contract",
+  "llm": false,
+  "network": false,
+  "autostart": false,
+  "background_dispatch": false,
+  "push": false,
+  "tag": false
+}
