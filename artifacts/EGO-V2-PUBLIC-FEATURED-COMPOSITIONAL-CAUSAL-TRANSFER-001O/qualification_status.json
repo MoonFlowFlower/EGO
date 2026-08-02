@@ -1,0 +1,15 @@
+{
+  "candidate_freeze_unchanged": true,
+  "minimal_two_timescale_learner_status": "AUTHORIZED_NOT_IMPLEMENTED",
+  "product_default": "WITHIN_WORLD_PUBLIC_BAYESIAN_POSTERIOR_UNCHANGED",
+  "qualification": {
+    "consumed_once": true,
+    "gate_pass": true
+  },
+  "replication": {
+    "consumed_once": true,
+    "gate_pass": true
+  },
+  "search_dev": "PASS_CANDIDATE_2",
+  "task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O"
+}

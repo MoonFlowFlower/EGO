@@ -1,0 +1,32 @@
+task_id: EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O
+base_head: 827f2ac56fb0844fb51b2b854cf8ecd7dade094c
+allowed_paths:
+  - docs/codex/tasks/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O.md
+  - docs/codex/tasks/ego-v2-public-featured-compositional-causal-transfer-001o/
+  - labs/ego_life_playground_v0/public_featured_transfer.py
+  - scripts/codex/run_ego_v2_public_featured_compositional_transfer_001o.py
+  - scripts/codex/verify_ego_v2_public_featured_compositional_transfer_001o.py
+  - scripts/codex/tests/test_run_ego_v2_public_featured_compositional_transfer_001o.py
+  - scripts/codex/tests/test_verify_ego_v2_public_featured_compositional_transfer_001o.py
+  - tests/test_ego_life_playground_public_featured_transfer.py
+  - artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/
+protected_paths:
+  - artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J/
+  - artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L/
+  - artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L/
+  - artifacts/EGO-V2-TRANSFER-MECHANISM-001M/
+  - artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N/
+  - labs/ego_life_playground_v0/engine.py
+  - labs/ego_life_playground_v0/homeostatic_transfer.py
+  - labs/ego_life_playground_v0/microworld.py
+  - artifacts/ROUTE-STATE-MACHINE-001A/
+  - docs/ACTIVE_CONTEXT_PACK.md
+forbidden_operations:
+  - modify_or_rerun_001n
+  - consume_001l_product_qualification
+  - consume_original_001j_heldout
+  - integrate_new_benchmark_into_product_default
+  - implement_dual_timescale_learner_before_reference_gate
+  - enable_llm_network_autostart_background_dispatch
+  - push
+  - tag

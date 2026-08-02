@@ -1,0 +1,14 @@
+{
+  "anonymous_permutation_negative_control_retained": true,
+  "claim_ceiling": "exact finite benchmark reference capacity under the 001O public featured grammar only",
+  "learner_implementation_authorized": true,
+  "product_default_changed": false,
+  "qualification_consumed": true,
+  "qualification_gate_pass": true,
+  "replication_consumed": true,
+  "replication_gate_pass": true,
+  "search_gate_pass": true,
+  "symbolic_pass": true,
+  "task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O",
+  "verdict": "PUBLIC_FEATURED_EXACT_HIERARCHICAL_TRANSFER_CAPACITY_ESTABLISHED"
+}

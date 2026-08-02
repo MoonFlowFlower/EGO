@@ -1,0 +1,15 @@
+{
+  "accidental_duplicate_search_execution_preserved": true,
+  "commands": {
+    "independent_verify": "C:\\Users\\LEO\\.codex\\venvs\\ego-v2-numpy-2.2.6\\Scripts\\python.exe scripts/codex/verify_ego_v2_public_featured_compositional_transfer_001o.py",
+    "route_validation": "C:\\Users\\LEO\\.codex\\venvs\\ego-v2-numpy-2.2.6\\Scripts\\python.exe scripts/codex/verify_route_convergence.py --root . --output artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/route_validation_report.json",
+    "search_candidate_2": "C:\\Users\\LEO\\.codex\\venvs\\ego-v2-numpy-2.2.6\\Scripts\\python.exe scripts/codex/run_ego_v2_public_featured_compositional_transfer_001o.py --stage search",
+    "single_use_qualification_and_replication": "C:\\Users\\LEO\\.codex\\venvs\\ego-v2-numpy-2.2.6\\Scripts\\python.exe scripts/codex/run_ego_v2_public_featured_compositional_transfer_001o.py --stage full",
+    "symbolic": "C:\\Users\\LEO\\.codex\\venvs\\ego-v2-numpy-2.2.6\\Scripts\\python.exe scripts/codex/run_ego_v2_public_featured_compositional_transfer_001o.py --stage symbolic"
+  },
+  "push": false,
+  "qualification_runs": 1,
+  "replication_runs": 1,
+  "tag": false,
+  "task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O"
+}

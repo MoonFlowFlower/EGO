@@ -1,0 +1,22 @@
+{
+  "task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O",
+  "candidate": "CANDIDATE_2_OVERLAPPING_FEEDBACK_NOISE",
+  "status": "FROZEN_BEFORE_SECOND_AND_FINAL_SEARCH_DEV_RUN",
+  "single_changed_mechanism_variable": "feedback noise support overlap",
+  "candidate_1_diagnosis": {
+    "scratch_effect_sign_accuracy": 0.9778645833333333,
+    "transfer_effect_sign_accuracy": 0.9943576388888888,
+    "scratch_oracle_early_auc_headroom": 0.49506249999999963,
+    "transfer_gain": 0.017625000000000002,
+    "recovery_fraction": 0.035601565458906734,
+    "positive_worlds": 9,
+    "finding": "exact three-point feedback made the shared mechanism nearly identifiable after very few scratch interventions, leaving insufficient economic transfer headroom"
+  },
+  "strongest_counterargument": "larger overlap noise may merely increase harm for every arm rather than create transferable structure",
+  "preregistered_prediction": "scratch shared-mechanism identification becomes slower while trained hierarchical prior retains useful predictions; transfer recovery exceeds 10 percent, is positive in at least 12 of 16 worlds, and current-world reversal remains recoverable",
+  "energy_noise_values": [-0.14, -0.07, 0.0, 0.07, 0.14],
+  "safety_noise_values": [-0.12, -0.06, 0.0, 0.06, 0.12],
+  "noise_probabilities": [0.10, 0.20, 0.40, 0.20, 0.10],
+  "qualification_consumed": false,
+  "replication_consumed": false
+}

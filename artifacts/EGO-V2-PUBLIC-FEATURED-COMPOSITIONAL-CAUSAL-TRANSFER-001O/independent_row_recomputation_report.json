@@ -1,0 +1,52 @@
+{
+  "commitment_checks": {
+    "candidate_1_grammar_preserved": true,
+    "candidate_2_amendment_hash": true,
+    "candidate_2_grammar_hash": true,
+    "packet_assignments_hash": true
+  },
+  "packet_reports": [
+    {
+      "all_feedback_within_frozen_support": true,
+      "all_row_hashes_and_public_receipts_valid": true,
+      "auc_trajectories_recomputed": 160,
+      "packet": "search_dev",
+      "pass": true,
+      "posterior_receipts_recomputed": 7680,
+      "rows": 7680,
+      "trajectories": 160
+    },
+    {
+      "all_feedback_within_frozen_support": true,
+      "all_row_hashes_and_public_receipts_valid": true,
+      "auc_trajectories_recomputed": 160,
+      "packet": "qualification",
+      "pass": true,
+      "posterior_receipts_recomputed": 7680,
+      "rows": 7680,
+      "trajectories": 160
+    },
+    {
+      "all_feedback_within_frozen_support": true,
+      "all_row_hashes_and_public_receipts_valid": true,
+      "auc_trajectories_recomputed": 160,
+      "packet": "replication",
+      "pass": true,
+      "posterior_receipts_recomputed": 7680,
+      "rows": 7680,
+      "trajectories": 160
+    }
+  ],
+  "pass": true,
+  "positive_controls": {
+    "private_field_with_rehash_rejected": true,
+    "row_tamper_rejected": true
+  },
+  "task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O",
+  "training_recomputation_checks": {
+    "candidate_state_receipt": true,
+    "private_fields_rejected": true,
+    "public_history_hash": true
+  },
+  "verifier_independence": "standard_library_only_no_producer_import"
+}

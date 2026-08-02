@@ -1,0 +1,41 @@
+{
+  "candidate_api_forbidden_parameter_intersection": {
+    "action_predictions": [],
+    "new_reference_state": [],
+    "plan_action": [],
+    "reset_for_world": [],
+    "update_after_transition": []
+  },
+  "candidate_api_parameters": {
+    "action_predictions": [
+      "state",
+      "observation"
+    ],
+    "new_reference_state": [
+      "global_prior"
+    ],
+    "plan_action": [
+      "state",
+      "observation"
+    ],
+    "reset_for_world": [
+      "state",
+      "preserve_shared"
+    ],
+    "update_after_transition": [
+      "state",
+      "observation",
+      "action",
+      "feedback"
+    ]
+  },
+  "candidate_input_receipts_verified_for_all_23040_rows": true,
+  "candidate_state_hypotheses_are_unlabelled_probability_rows": true,
+  "candidate_state_public_receipt_has_no_private_identity": true,
+  "evaluator_only_diagnostic_constructors_not_called_by_transfer_arm": true,
+  "module": "labs/ego_life_playground_v0/public_featured_transfer.py",
+  "module_sha256": "5ff9e8b2cdbb0f238a09c4cdec44424eba733cbbf92e1516ecc3db9c87ac2337",
+  "pass": true,
+  "public_input_positive_controls_rejected": 12,
+  "task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O"
+}

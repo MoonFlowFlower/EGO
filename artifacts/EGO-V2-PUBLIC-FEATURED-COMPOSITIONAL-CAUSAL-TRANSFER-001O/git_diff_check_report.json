@@ -1,0 +1,11 @@
+{
+  "artifact_findings": 0,
+  "candidate_freeze_validation_pass": true,
+  "causal_source_findings": 0,
+  "command": "git diff --cached --check",
+  "decision": "FROZEN_BYTES_PRESERVED_OVER_POST_PACKET_STYLE_EDIT",
+  "finding_count": 3,
+  "finding_type": "blank_line_at_eof",
+  "pass": false,
+  "task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O"
+}

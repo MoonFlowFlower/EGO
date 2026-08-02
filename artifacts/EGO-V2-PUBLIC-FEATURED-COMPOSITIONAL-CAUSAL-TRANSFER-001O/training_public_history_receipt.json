@@ -1,0 +1,16 @@
+{
+  "candidate_private_field_rejections": 12,
+  "candidate_state_receipt": {
+    "entropy_bits": 0.8134302891933335,
+    "joint_hypotheses": 80,
+    "state_hash": "f8414d1ff7242e43cfce86be513d830d4d666ab9fd39c218da799a3abb31f853",
+    "support_hypotheses": 4,
+    "update_count": 768,
+    "world_update_count": 0
+  },
+  "history_shuffle_shared_probability_at_evaluator_truth": 0.0,
+  "public_events": 768,
+  "public_history_receipt": "e3daabb26eae0dbbef55fc596027d0a3a4c60c8960099b4e73ba9c8cc180086a",
+  "shared_entropy_bits": 0.002152164734200791,
+  "shared_probability_at_evaluator_truth": 0.999847607436757
+}

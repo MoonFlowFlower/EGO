@@ -1,0 +1,92 @@
+{
+  "base_head": "827f2ac56fb0844fb51b2b854cf8ecd7dade094c",
+  "branch": "codex/ego-v2-public-featured-compositional-transfer-001o",
+  "changed_or_untracked_paths": [
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/anonymous_negative_control_receipt.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/call_chain_receipt.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/campaign_progress.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/campaign_report.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/candidate_2_amendment.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/candidate_freeze.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/failure_manifest.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/grammar_candidate_1.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/grammar_preregistration.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/independent_row_recomputation_report.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/leakage_tamper_report.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/packet_assignments.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/packet_commitment.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/preregistration_conflict_resolution.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/protected_predecessor_trees.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/qualification_consumption.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/qualification_result.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/qualification_rows.jsonl",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/replication_consumption.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/replication_result.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/replication_rows.jsonl",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/result.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/route_validation_report.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/runtime_provenance.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/scorecard.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/search_dev_candidate_1_result.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/search_dev_candidate_1_rows.jsonl",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/search_dev_result.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/search_dev_rows.jsonl",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/static_candidate_boundary_audit.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/symbolic_capacity_audit.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/training_public_history_receipt.json",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/training_public_history_rows.jsonl",
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/trial_registry.jsonl",
+    "docs/codex/tasks/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O.md",
+    "docs/codex/tasks/ego-v2-public-featured-compositional-causal-transfer-001o/CALL_CHAIN_AUDIT.md",
+    "docs/codex/tasks/ego-v2-public-featured-compositional-causal-transfer-001o/COLLISION_RECORD.md",
+    "docs/codex/tasks/ego-v2-public-featured-compositional-causal-transfer-001o/MUTATION_SCOPE.yaml",
+    "docs/codex/tasks/ego-v2-public-featured-compositional-causal-transfer-001o/PREREGISTRATION.md",
+    "docs/codex/tasks/ego-v2-public-featured-compositional-causal-transfer-001o/STATUS.md",
+    "labs/ego_life_playground_v0/public_featured_transfer.py",
+    "scripts/codex/run_ego_v2_public_featured_compositional_transfer_001o.py",
+    "scripts/codex/tests/test_run_ego_v2_public_featured_compositional_transfer_001o.py",
+    "scripts/codex/tests/test_verify_ego_v2_public_featured_compositional_transfer_001o.py",
+    "scripts/codex/verify_ego_v2_public_featured_compositional_transfer_001o.py",
+    "tests/test_ego_life_playground_public_featured_transfer.py"
+  ],
+  "heldout_001j_touched": false,
+  "outside_allowlist": [],
+  "pass": true,
+  "predecessor_001n_touched": false,
+  "product_default_changed": false,
+  "product_runtime_files_modified": false,
+  "protected_paths": {
+    "artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J": {
+      "expected_tree_oid": "6ed0d6f80e7c9e9c7219e7e91b6cb35786db2261",
+      "head_tree_oid": "6ed0d6f80e7c9e9c7219e7e91b6cb35786db2261",
+      "oid_match": true,
+      "worktree_clean": true
+    },
+    "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L": {
+      "expected_tree_oid": "1661c93d21f9479905aca8ae380af97b5e220d39",
+      "head_tree_oid": "1661c93d21f9479905aca8ae380af97b5e220d39",
+      "oid_match": true,
+      "worktree_clean": true
+    },
+    "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L": {
+      "expected_tree_oid": "7a0013c96fed6ec3300444608bafdc04027c72cc",
+      "head_tree_oid": "7a0013c96fed6ec3300444608bafdc04027c72cc",
+      "oid_match": true,
+      "worktree_clean": true
+    },
+    "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N": {
+      "expected_tree_oid": "ff106efc7cafc75ce7011c904399ce99a47cc2d6",
+      "head_tree_oid": "ff106efc7cafc75ce7011c904399ce99a47cc2d6",
+      "oid_match": true,
+      "worktree_clean": true
+    },
+    "artifacts/EGO-V2-TRANSFER-MECHANISM-001M": {
+      "expected_tree_oid": "b145109e4d955375ada1b6d2fd4c73c9d68a491a",
+      "head_tree_oid": "b145109e4d955375ada1b6d2fd4c73c9d68a491a",
+      "oid_match": true,
+      "worktree_clean": true
+    }
+  },
+  "qualification_001l_touched": false,
+  "task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O"
+}

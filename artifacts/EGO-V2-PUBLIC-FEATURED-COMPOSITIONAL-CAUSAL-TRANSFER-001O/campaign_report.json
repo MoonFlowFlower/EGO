@@ -1,0 +1,222 @@
+{
+  "claim_ceiling": "Exact finite hierarchical Bayes reference capacity is established only inside the frozen 001O public-featured benchmark grammar. This authorizes designing a minimal two-timescale learner; it is not learner success.",
+  "decision": {
+    "implementation_in_this_task": false,
+    "large_neural_learner_authorized": false,
+    "minimal_two_timescale_learner_design_authorized": true,
+    "within_world_public_bayesian_product_default_retained": true
+  },
+  "independent_verification": {
+    "commitment_checks": {
+      "candidate_1_grammar_preserved": true,
+      "candidate_2_amendment_hash": true,
+      "candidate_2_grammar_hash": true,
+      "packet_assignments_hash": true
+    },
+    "packet_reports": [
+      {
+        "all_feedback_within_frozen_support": true,
+        "all_row_hashes_and_public_receipts_valid": true,
+        "auc_trajectories_recomputed": 160,
+        "packet": "search_dev",
+        "pass": true,
+        "posterior_receipts_recomputed": 7680,
+        "rows": 7680,
+        "trajectories": 160
+      },
+      {
+        "all_feedback_within_frozen_support": true,
+        "all_row_hashes_and_public_receipts_valid": true,
+        "auc_trajectories_recomputed": 160,
+        "packet": "qualification",
+        "pass": true,
+        "posterior_receipts_recomputed": 7680,
+        "rows": 7680,
+        "trajectories": 160
+      },
+      {
+        "all_feedback_within_frozen_support": true,
+        "all_row_hashes_and_public_receipts_valid": true,
+        "auc_trajectories_recomputed": 160,
+        "packet": "replication",
+        "pass": true,
+        "posterior_receipts_recomputed": 7680,
+        "rows": 7680,
+        "trajectories": 160
+      }
+    ],
+    "pass": true,
+    "positive_controls": {
+      "private_field_with_rehash_rejected": true,
+      "row_tamper_rejected": true
+    },
+    "task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O",
+    "training_recomputation_checks": {
+      "candidate_state_receipt": true,
+      "private_fields_rejected": true,
+      "public_history_hash": true
+    },
+    "verifier_independence": "standard_library_only_no_producer_import"
+  },
+  "packet_discipline": {
+    "candidate_freeze_hash": "d063bce869909a8265b7a50f0a71122bffc82d7f2d367b033e1e229191b01fc9",
+    "qualification_after_search_gate": true,
+    "qualification_consumed_once": true,
+    "replication_after_qualification_gate": true,
+    "replication_consumed_once": true
+  },
+  "packets": {
+    "qualification": {
+      "control_gain_removal_fraction": {
+        "CUE_SHUFFLE": 13.566522602499708,
+        "FEATURE_ABLATION": 16.687770120313047,
+        "HISTORY_SHUFFLE": 24.64852236888214,
+        "NO_UPDATE": 8.86216563485574
+      },
+      "gate_checks": {
+        "each_control_removes_half_gain": true,
+        "misleading_subset_late_recovers": true,
+        "positive_transfer_gain": true,
+        "positive_worlds_at_least_threshold": true,
+        "recovery_fraction_at_least_0_10": true,
+        "surface_lookup_does_not_match_transfer": true,
+        "unseen_effect_sign_accuracy_at_least_0_80": true
+      },
+      "gate_pass": true,
+      "misleading_subset_late_auc": {
+        "SCRATCH_EXACT_BAYES": 0.0,
+        "TRANSFER_EXACT_HIERARCHICAL_BAYES": 0.0
+      },
+      "oracle_early_deficit_auc": 0.4448749999999998,
+      "positive_worlds": 12,
+      "recovery_fraction": 0.5654930972983684,
+      "scratch_early_deficit_auc": 1.3910624999999999,
+      "scratch_oracle_headroom": 0.9461875000000001,
+      "surface_lookup_early_deficit_auc": 9.785,
+      "transfer_early_deficit_auc": 0.8559999999999999,
+      "transfer_effect_sign_accuracy": 0.9881278366821692,
+      "transfer_gain": 0.5350625,
+      "worlds_total": 16
+    },
+    "replication": {
+      "control_gain_removal_fraction": {
+        "CUE_SHUFFLE": 3.0129936414095226,
+        "FEATURE_ABLATION": 2.3183123152499836,
+        "HISTORY_SHUFFLE": 3.6598473087637964,
+        "NO_UPDATE": 1.8345703166535523
+      },
+      "gate_checks": {
+        "each_control_removes_half_gain": true,
+        "misleading_subset_late_recovers": true,
+        "positive_transfer_gain": true,
+        "positive_worlds_at_least_threshold": true,
+        "recovery_fraction_at_least_0_10": true,
+        "surface_lookup_does_not_match_transfer": true,
+        "unseen_effect_sign_accuracy_at_least_0_80": true
+      },
+      "gate_pass": true,
+      "misleading_subset_late_auc": {
+        "SCRATCH_EXACT_BAYES": 2.431250000000001,
+        "TRANSFER_EXACT_HIERARCHICAL_BAYES": 0.016000000000000347
+      },
+      "oracle_early_deficit_auc": 2.4603750000000004,
+      "positive_worlds": 14,
+      "recovery_fraction": 0.8518196474829267,
+      "scratch_early_deficit_auc": 5.910562500000001,
+      "scratch_oracle_headroom": 3.4501875000000006,
+      "surface_lookup_early_deficit_auc": 9.785,
+      "transfer_early_deficit_auc": 2.9716250000000004,
+      "transfer_effect_sign_accuracy": 0.9812756059657208,
+      "transfer_gain": 2.9389375000000006,
+      "worlds_total": 16
+    },
+    "search_dev": {
+      "control_gain_removal_fraction": {
+        "CUE_SHUFFLE": 10.94655065257923,
+        "FEATURE_ABLATION": 19.3960534493474,
+        "HISTORY_SHUFFLE": 29.998756991920416,
+        "NO_UPDATE": 10.59493474207581
+      },
+      "gate_checks": {
+        "each_control_removes_half_gain": true,
+        "misleading_subset_late_recovers": true,
+        "positive_transfer_gain": true,
+        "positive_worlds_at_least_threshold": true,
+        "recovery_fraction_at_least_0_10": true,
+        "surface_lookup_does_not_match_transfer": true,
+        "unseen_effect_sign_accuracy_at_least_0_80": true
+      },
+      "gate_pass": true,
+      "misleading_subset_late_auc": {
+        "SCRATCH_EXACT_BAYES": 0.17799999999999971,
+        "TRANSFER_EXACT_HIERARCHICAL_BAYES": 0.17374999999999965
+      },
+      "oracle_early_deficit_auc": 0.9403125000000001,
+      "positive_worlds": 12,
+      "recovery_fraction": 0.27839778527554315,
+      "scratch_early_deficit_auc": 2.3851875000000002,
+      "scratch_oracle_headroom": 1.4448750000000001,
+      "surface_lookup_early_deficit_auc": 9.785,
+      "transfer_early_deficit_auc": 1.9829374999999998,
+      "transfer_effect_sign_accuracy": 0.9704248934805118,
+      "transfer_gain": 0.40225000000000044,
+      "worlds_total": 16
+    }
+  },
+  "predecessor_frozen_verdict": "PUBLIC_LATENT_ALIGNMENT_NOT_IDENTIFIABLE_OR_NOT_ECONOMIC_UNDER_CURRENT_GRAMMAR",
+  "probe_cost_certificate": {
+    "all_packets_have_reliable_probe_below_headroom": true,
+    "artifact": "probe_cost_certificate.json",
+    "limitation": "This is an achievable one-step certificate when the listed public combination is offered; it is not a lower-bound proof for arbitrary observation schedules.",
+    "reliable_alignment_bayes_error_max": 0.1
+  },
+  "search_attempts": [
+    {
+      "candidate": "CANDIDATE_1_DISCRETE_PUBLIC_LINEAR_HIERARCHY",
+      "failure": "scratch exact Bayes nearly saturated shared-mechanism identification after very few interventions because feedback support was insufficiently overlapping",
+      "positive_worlds": 9,
+      "recovery_fraction": 0.035601565458906734,
+      "status": "FAILED_PRESERVED",
+      "transfer_gain": 0.017625000000000002
+    },
+    {
+      "accidental_duplicate_search_execution_preserved": true,
+      "candidate": "CANDIDATE_2_OVERLAPPING_FEEDBACK_NOISE",
+      "single_changed_mechanism_variable": "feedback noise support overlap",
+      "status": "PASSED"
+    }
+  ],
+  "successor_boundary": {
+    "001j_heldout_touched": false,
+    "001l_product_qualification_touched": false,
+    "anonymous_grammar_role": "negative_control",
+    "autostart": false,
+    "background_dispatch": false,
+    "llm": false,
+    "network": false,
+    "new_observation_action_world_grammar_registered": true,
+    "old_anonymous_grammar_overwritten": false,
+    "product_default_changed": false
+  },
+  "symbolic_capacity": {
+    "current_world_interaction_required": true,
+    "pass": true,
+    "private_aligned_headroom": 0.3126093750000001,
+    "probe_excess_deficit": 0.15852500000000005,
+    "public_cue_effect_mutual_information_bits": 1.155842310834203,
+    "shared_mechanism_entropy_bits": 5.321928094887363
+  },
+  "task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O",
+  "verdict": "PUBLIC_FEATURED_EXACT_HIERARCHICAL_TRANSFER_CAPACITY_ESTABLISHED",
+  "what_this_does_not_prove": [
+    "general compositional transfer",
+    "transfer outside the frozen feature family",
+    "neural learning",
+    "subjectivity",
+    "consciousness",
+    "agency",
+    "free will",
+    "real-world survival ability",
+    "that public features never leak in other benchmark designs"
+  ]
+}

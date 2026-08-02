@@ -1,0 +1,83 @@
+{
+  "task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O",
+  "status": "FROZEN_BEFORE_SEARCH_DEV",
+  "successor_boundary": {
+    "observation_grammar_changed": true,
+    "action_semantics_changed": true,
+    "world_grammar_changed": true,
+    "predecessor_overwritten": false,
+    "product_default_changed": false,
+    "anonymous_permutation_control_retained": true
+  },
+  "public_observation": {
+    "slots": 3,
+    "feature_count": 5,
+    "feature_values": [0, 1],
+    "feature_names_have_no_semantics": true,
+    "forbidden_candidate_fields": [
+      "token_id", "combo_id", "permutation", "mapping", "world_id",
+      "layout_id", "seed", "split", "global_mechanism", "local_mode",
+      "oracle_action", "future"
+    ]
+  },
+  "actions": ["interact_0", "interact_1", "interact_2", "rest"],
+  "shared_mechanism_family": {
+    "construction": "two base weight vectors times swap, cyclic rotation, and independent axis signs",
+    "base_energy": [2, 1, -1, -2, 1],
+    "base_safety": [-1, 2, 1, -1, -2],
+    "hypothesis_count": 40,
+    "evaluator_actual_index": 17
+  },
+  "local_nuisance": {
+    "modes": {"normal": 1, "full_reverse": -1},
+    "public_prior": {"normal": 0.75, "full_reverse": 0.25},
+    "requires_current_world_feedback": true
+  },
+  "effect_model": {
+    "centered_feature": "2*x-1",
+    "energy_scale": 0.035,
+    "safety_scale": 0.03,
+    "passive_energy_decay": 0.008,
+    "interaction_energy_cost": 0.004,
+    "rest_energy_cost": 0.002,
+    "rest_safety_gain": 0.015,
+    "noise_values": [-0.01, 0.0, 0.01],
+    "noise_probabilities": [0.25, 0.5, 0.25],
+    "clamp": [0.0, 1.0],
+    "terminal": "energy <= 0 or safety <= 0"
+  },
+  "organism": {"initial_energy": 0.5, "initial_safety": 0.5, "target": 0.72},
+  "budget": {"steps": 48, "early_steps": [1, 24], "late_steps": [25, 48]},
+  "planner": {
+    "kind": "one_step_exact_posterior_predictive",
+    "terminal_penalty": 2.0,
+    "information_value_per_bit": 0.08,
+    "tie_break": "lexicographic_action",
+    "future_observations": false
+  },
+  "feature_combo_splits": {
+    "training_dev": [0, 1, 2, 3, 4, 5, 8, 9, 16, 17, 30, 31],
+    "search_dev": [6, 10, 18, 29],
+    "qualification": [7, 12, 14, 19, 21, 24, 26, 28],
+    "replication": [11, 13, 15, 20, 22, 23, 25, 27]
+  },
+  "admission_gates": {
+    "mutual_information_strictly_positive": true,
+    "mutual_information_below_shared_mechanism_entropy": true,
+    "probe_cost_below_private_aligned_headroom": true,
+    "transfer_early_auc_below_scratch": true,
+    "recovery_fraction_min": 0.10,
+    "positive_worlds_min": 12,
+    "worlds_total": 16,
+    "unseen_effect_sign_accuracy_min": 0.80,
+    "controls_must_remove_at_least_fraction_of_gain": 0.50,
+    "misleading_subset_late_auc_not_worse_than_scratch": true,
+    "surface_lookup_must_not_match_transfer": true
+  },
+  "campaign_budget": {
+    "search_dev_grammar_candidates_max": 2,
+    "qualification_runs_max": 1,
+    "replication_runs_max": 1,
+    "qualification_after_search_gate_only": true
+  }
+}

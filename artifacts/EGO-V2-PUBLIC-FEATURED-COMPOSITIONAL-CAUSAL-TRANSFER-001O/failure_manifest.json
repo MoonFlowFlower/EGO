@@ -1,0 +1,25 @@
+{
+  "preserved_failures": [
+    {
+      "artifacts": [
+        "grammar_candidate_1.json",
+        "search_dev_candidate_1_result.json",
+        "search_dev_candidate_1_rows.jsonl"
+      ],
+      "candidate": "CANDIDATE_1_DISCRETE_PUBLIC_LINEAR_HIERARCHY",
+      "failed_gates": [
+        "recovery_fraction_at_least_0_10",
+        "positive_worlds_at_least_12"
+      ],
+      "root_cause_inference": "feedback outcomes were too discriminative for scratch exact Bayes; this is a benchmark economic-headroom defect, not proof that hierarchical transfer is absent"
+    },
+    {
+      "event": "ACCIDENTAL_DUPLICATE_SEARCH_EXECUTION",
+      "impact": "same deterministic candidate and packet; no qualification or replication was consumed",
+      "preserved_in": "trial_registry.jsonl"
+    }
+  ],
+  "qualification_failures": [],
+  "replication_failures": [],
+  "task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O"
+}

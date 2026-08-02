@@ -1,0 +1,44 @@
+{
+  "all_packets_have_reliable_probe_below_headroom": true,
+  "local_mode_prior_entropy_bits": 0.8112781244591328,
+  "method": "exact enumeration of both local nuisance hypotheses and all 25 public feedback-noise pairs at the frozen initial organism state",
+  "packet_best_reliable_public_probe": {
+    "qualification": {
+      "expected_information_gain_bits": 0.8112781244591328,
+      "expected_local_mode_bayes_error_after_one_probe": 0.0,
+      "expected_post_probe_deficit": 0.30142500000000005,
+      "feature_combination_evaluator_only": 24,
+      "probe_excess_below_private_aligned_headroom": true,
+      "probe_excess_deficit_over_private_aligned": 0.15852500000000005
+    },
+    "replication": {
+      "expected_information_gain_bits": 0.8112781244591328,
+      "expected_local_mode_bayes_error_after_one_probe": 0.0,
+      "expected_post_probe_deficit": 0.34525000000000006,
+      "feature_combination_evaluator_only": 25,
+      "probe_excess_below_private_aligned_headroom": true,
+      "probe_excess_deficit_over_private_aligned": 0.20235000000000006
+    },
+    "search_dev": {
+      "expected_information_gain_bits": 0.7488700912822173,
+      "expected_local_mode_bayes_error_after_one_probe": 0.020000000000000004,
+      "expected_post_probe_deficit": 0.35547500000000004,
+      "feature_combination_evaluator_only": 29,
+      "probe_excess_below_private_aligned_headroom": true,
+      "probe_excess_deficit_over_private_aligned": 0.21257500000000004
+    },
+    "training_dev": {
+      "expected_information_gain_bits": 0.6240540249283862,
+      "expected_local_mode_bayes_error_after_one_probe": 0.06000000000000001,
+      "expected_post_probe_deficit": 0.385475,
+      "feature_combination_evaluator_only": 8,
+      "probe_excess_below_private_aligned_headroom": true,
+      "probe_excess_deficit_over_private_aligned": 0.242575
+    }
+  },
+  "private_aligned_best_expected_deficit": 0.1429,
+  "reliable_alignment_definition": "expected Bayes classification error <= 0.10 after one direct public-feature intervention",
+  "scope_note": "This is an achievable one-step certificate when the listed public combination is offered; it is not a lower-bound proof for arbitrary observation schedules.",
+  "task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O",
+  "uniform_probe_private_aligned_headroom": 0.3126093750000001
+}

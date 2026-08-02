@@ -1,0 +1,10 @@
+{
+  "candidate_1_grammar_sha256": "3d5ba851360dfc762c04fe81013fa187485d464c680c54679e2ae9c9246d9395",
+  "candidate_2_amendment_sha256": "c77b9913b549f9b8010366581d4b2fc15976c4e74397606bee276050548a3761",
+  "candidate_2_grammar_sha256": "20e1ba00eb0e994a4887ee09a52502fab9a8e097635e0edd3cc1d3fdd67a2b8b",
+  "packet_assignments_sha256": "d1f0ba58b6c6be88eb2ef88d45ad54df79ad4313fa96199ecd5d5a5b97023201",
+  "qualification_consumed": false,
+  "replication_consumed": false,
+  "status": "CANDIDATE_2_FROZEN_BEFORE_FINAL_SEARCH_DEV",
+  "task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O"
+}

@@ -1,0 +1,12 @@
+{
+  "accidental_duplicate_search_execution_preserved": true,
+  "large_neural_learner_authorized": false,
+  "learner_implementation_authorized": true,
+  "phase": "CAPACITY_CERTIFICATE_COMPLETE",
+  "product_default_changed": false,
+  "qualification_consumed": true,
+  "replication_consumed": true,
+  "search_candidates_consumed": 2,
+  "search_executions_recorded": 3,
+  "task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O"
+}

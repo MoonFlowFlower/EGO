@@ -1,0 +1,26 @@
+{
+  "paths": {
+    "artifacts/EGO-V2-HOMEOSTATIC-COMPOSITIONAL-TRANSFER-001J": {
+      "exists_at_head": true,
+      "tree_oid": "6ed0d6f80e7c9e9c7219e7e91b6cb35786db2261"
+    },
+    "artifacts/EGO-V2-HOMEOSTATIC-SURVIVAL-LOOP-001L": {
+      "exists_at_head": true,
+      "tree_oid": "1661c93d21f9479905aca8ae380af97b5e220d39"
+    },
+    "artifacts/EGO-V2-PUBLIC-ACQUISITION-ROBUSTNESS-001L": {
+      "exists_at_head": true,
+      "tree_oid": "7a0013c96fed6ec3300444608bafdc04027c72cc"
+    },
+    "artifacts/EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N": {
+      "exists_at_head": true,
+      "tree_oid": "ff106efc7cafc75ce7011c904399ce99a47cc2d6"
+    },
+    "artifacts/EGO-V2-TRANSFER-MECHANISM-001M": {
+      "exists_at_head": true,
+      "tree_oid": "b145109e4d955375ada1b6d2fd4c73c9d68a491a"
+    }
+  },
+  "protected_head": "827f2ac56fb0844fb51b2b854cf8ecd7dade094c",
+  "task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O"
+}

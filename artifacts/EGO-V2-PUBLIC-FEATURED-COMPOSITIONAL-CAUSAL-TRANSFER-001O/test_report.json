@@ -1,0 +1,35 @@
+{
+  "commands": [
+    {
+      "command": "python -m pytest -q [001O module, runner, independent verifier, main playground, microworld, homeostatic transfer, 001L, 001M, 001N targeted suites]",
+      "failed_count": 0,
+      "passed": true,
+      "passed_count": 88
+    },
+    {
+      "command": "python scripts/codex/verify_route_convergence.py --root . --output <001O>/route_validation_report.json",
+      "passed": true
+    },
+    {
+      "command": "python scripts/codex/verify_ego_v2_public_featured_compositional_transfer_001o.py",
+      "passed": true,
+      "posterior_receipts_recomputed": 23040,
+      "rows_recomputed": 23040,
+      "trajectory_aucs_recomputed": 480
+    },
+    {
+      "command": "git diff --cached --check",
+      "decision": "preserve the exact post-search frozen test bytes; warnings are non-semantic and are not changed after qualification/replication",
+      "finding_count": 3,
+      "findings": [
+        "scripts/codex/tests/test_run_ego_v2_public_featured_compositional_transfer_001o.py: new blank line at EOF",
+        "scripts/codex/tests/test_verify_ego_v2_public_featured_compositional_transfer_001o.py: new blank line at EOF",
+        "tests/test_ego_life_playground_public_featured_transfer.py: new blank line at EOF"
+      ],
+      "passed": false
+    }
+  ],
+  "numpy": "2.2.6",
+  "python_executable": "C:\\Users\\LEO\\.codex\\venvs\\ego-v2-numpy-2.2.6\\Scripts\\python.exe",
+  "task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O"
+}

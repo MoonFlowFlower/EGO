@@ -1,0 +1,14 @@
+{
+  "commitment_checks": {
+    "candidate_1_grammar_preserved": true,
+    "candidate_2_amendment_hash": true,
+    "candidate_2_grammar_hash": true,
+    "packet_assignments_hash": true
+  },
+  "fail_closed": true,
+  "positive_controls": {
+    "private_field_with_rehash_rejected": true,
+    "row_tamper_rejected": true
+  },
+  "task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O"
+}

@@ -1,0 +1,53 @@
+{
+  "candidate_freeze_hash": "d063bce869909a8265b7a50f0a71122bffc82d7f2d367b033e1e229191b01fc9",
+  "checked_after_qualification_and_replication": true,
+  "files": {
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/grammar_preregistration.json": {
+      "actual": "20e1ba00eb0e994a4887ee09a52502fab9a8e097635e0edd3cc1d3fdd67a2b8b",
+      "expected": "20e1ba00eb0e994a4887ee09a52502fab9a8e097635e0edd3cc1d3fdd67a2b8b",
+      "match": true
+    },
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/packet_assignments.json": {
+      "actual": "d1f0ba58b6c6be88eb2ef88d45ad54df79ad4313fa96199ecd5d5a5b97023201",
+      "expected": "d1f0ba58b6c6be88eb2ef88d45ad54df79ad4313fa96199ecd5d5a5b97023201",
+      "match": true
+    },
+    "artifacts/EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O/packet_commitment.json": {
+      "actual": "3d9723de1d0a1acb8415c44efefd43d689745896581f6ac3c6ab8f5aefef872c",
+      "expected": "3d9723de1d0a1acb8415c44efefd43d689745896581f6ac3c6ab8f5aefef872c",
+      "match": true
+    },
+    "labs/ego_life_playground_v0/public_featured_transfer.py": {
+      "actual": "5ff9e8b2cdbb0f238a09c4cdec44424eba733cbbf92e1516ecc3db9c87ac2337",
+      "expected": "5ff9e8b2cdbb0f238a09c4cdec44424eba733cbbf92e1516ecc3db9c87ac2337",
+      "match": true
+    },
+    "scripts/codex/run_ego_v2_public_featured_compositional_transfer_001o.py": {
+      "actual": "aa074448f67c60adaac67ea37ad91e56748f2de639a1d20b1fb07e6c65f8045b",
+      "expected": "aa074448f67c60adaac67ea37ad91e56748f2de639a1d20b1fb07e6c65f8045b",
+      "match": true
+    },
+    "scripts/codex/tests/test_run_ego_v2_public_featured_compositional_transfer_001o.py": {
+      "actual": "421f79d83ec1a3cbd6ecee6fd00d7aa94685c9de03f45ae2763eb0350aa8a668",
+      "expected": "421f79d83ec1a3cbd6ecee6fd00d7aa94685c9de03f45ae2763eb0350aa8a668",
+      "match": true
+    },
+    "scripts/codex/tests/test_verify_ego_v2_public_featured_compositional_transfer_001o.py": {
+      "actual": "09cc157d853d9e3dae49ca9a287344fff034d5fd9b6b6c3d9bcfdf2cd8cc0a02",
+      "expected": "09cc157d853d9e3dae49ca9a287344fff034d5fd9b6b6c3d9bcfdf2cd8cc0a02",
+      "match": true
+    },
+    "scripts/codex/verify_ego_v2_public_featured_compositional_transfer_001o.py": {
+      "actual": "3f116acea6383af81e298ee9387b2d897fb3cab8b3dee33c7d8bdfa36d80592f",
+      "expected": "3f116acea6383af81e298ee9387b2d897fb3cab8b3dee33c7d8bdfa36d80592f",
+      "match": true
+    },
+    "tests/test_ego_life_playground_public_featured_transfer.py": {
+      "actual": "496643b8381f7a8c1bf228edf5e912f2369ab0360034248594de05dcfa495a68",
+      "expected": "496643b8381f7a8c1bf228edf5e912f2369ab0360034248594de05dcfa495a68",
+      "match": true
+    }
+  },
+  "pass": true,
+  "task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O"
+}

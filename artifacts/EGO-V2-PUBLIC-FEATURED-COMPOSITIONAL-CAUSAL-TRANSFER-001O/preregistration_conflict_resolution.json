@@ -1,0 +1,13 @@
+{
+  "task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O",
+  "conflict": "The initial prose task card said probe excess cost must be below half of private-aligned headroom, while the frozen machine-readable grammar, executable symbolic gate, and operator instruction required only that probing not consume all private-aligned headroom.",
+  "resolution": "Use the frozen machine-readable gate: probe_excess_deficit < private_aligned_headroom.",
+  "evidence_this_was_not_result_dependent": {
+    "candidate_1_frozen_grammar_sha256": "3d5ba851360dfc762c04fe81013fa187485d464c680c54679e2ae9c9246d9395",
+    "candidate_1_gate_name": "probe_cost_below_private_aligned_headroom",
+    "operator_requirement": "minimal necessary probe cost must not consume all private-aligned headroom"
+  },
+  "observed_candidate_2_probe_excess_deficit": 0.15852500000000005,
+  "observed_candidate_2_private_aligned_headroom": 0.3126093750000001,
+  "qualification_or_replication_threshold_changed": false
+}

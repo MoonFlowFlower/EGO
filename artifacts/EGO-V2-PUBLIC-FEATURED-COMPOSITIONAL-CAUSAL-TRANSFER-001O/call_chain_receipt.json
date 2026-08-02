@@ -1,0 +1,18 @@
+{
+  "candidate_chain": [
+    "public feature slots + organism deficits + prior public training history + current public feedback",
+    "exact joint posterior over 40 shared mechanisms x 2 current-world nuisance modes",
+    "posterior-predictive energy/safety delta, terminal risk, and information gain",
+    "fixed deficit-sensitive exact planner ranking",
+    "selected public interact slot or rest",
+    "evaluator transition",
+    "public feedback update"
+  ],
+  "candidate_receipts_in_every_row": true,
+  "independent_posterior_receipts_recomputed": 23040,
+  "posterior_before_after_receipts_in_every_row": true,
+  "private_fields_rejected": true,
+  "product_runtime_integration": false,
+  "task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O",
+  "world_seed_mapping_private_to_evaluator": true
+}

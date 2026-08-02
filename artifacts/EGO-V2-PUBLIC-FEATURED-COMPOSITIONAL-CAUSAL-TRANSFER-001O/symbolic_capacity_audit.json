@@ -1,0 +1,24 @@
+{
+  "best_informative_probe_combo_evaluator_only": 24,
+  "best_probe_expected_deficit": 0.30142500000000005,
+  "checks": {
+    "all_factor_levels_covered_in_training": true,
+    "cue_mutual_information_incomplete": true,
+    "cue_mutual_information_positive": true,
+    "current_world_feedback_required": true,
+    "evaluation_combinations_unseen_in_training": true,
+    "probe_cost_below_private_aligned_headroom": true
+  },
+  "current_world_interaction_required": true,
+  "feature_combinations": 32,
+  "local_modes_share_same_public_features": true,
+  "mutual_information_strictly_partial": true,
+  "pass": true,
+  "private_aligned_expected_deficit": 0.1429,
+  "private_aligned_headroom": 0.3126093750000001,
+  "probe_excess_deficit": 0.15852500000000005,
+  "public_cue_effect_mutual_information_bits": 1.155842310834203,
+  "shared_hypotheses": 40,
+  "shared_mechanism_entropy_bits": 5.321928094887363,
+  "uniform_probe_expected_deficit": 0.45550937500000005
+}

@@ -1,0 +1,15 @@
+{
+  "exact_claim_ceiling": [
+    "passive public observation gives 0 bit about mapping under preregistered nuisance model",
+    "mapping identifiable after direct interventions on at least four token types",
+    "frozen legal risk-constrained myopic planner could not economically complete alignment",
+    "failure of every legal globally Bayes-optimal planner was not proven"
+  ],
+  "frozen_verdict": "PUBLIC_LATENT_ALIGNMENT_NOT_IDENTIFIABLE_OR_NOT_ECONOMIC_UNDER_CURRENT_GRAMMAR",
+  "modified": false,
+  "negative_control_task": "EGO-V2-PUBLIC-LATENT-ALIGNMENT-IDENTIFIABILITY-001N",
+  "rerun": false,
+  "role": "anonymous_permutation_negative_control",
+  "task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O",
+  "tree_oid": "ff106efc7cafc75ce7011c904399ce99a47cc2d6"
+}

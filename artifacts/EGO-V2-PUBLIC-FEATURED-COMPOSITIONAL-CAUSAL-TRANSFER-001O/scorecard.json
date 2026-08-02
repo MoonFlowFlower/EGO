@@ -1,0 +1,11 @@
+{
+  "current_verdict": "PUBLIC_FEATURED_EXACT_HIERARCHICAL_TRANSFER_CAPACITY_ESTABLISHED",
+  "independent_verifier": "PASS",
+  "minimal_learner_design_authorized": true,
+  "minimal_learner_implemented": false,
+  "qualification": "PASS_CONSUMED_ONCE",
+  "replication": "PASS_CONSUMED_ONCE",
+  "search_dev": "PASS_CANDIDATE_2",
+  "symbolic_admission": "PASS",
+  "task_id": "EGO-V2-PUBLIC-FEATURED-COMPOSITIONAL-CAUSAL-TRANSFER-001O"
+}
