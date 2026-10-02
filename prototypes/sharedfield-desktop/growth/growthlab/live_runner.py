@@ -34,7 +34,8 @@ class Runtime:
 
     def step(self,action,source):
         obs=self.host.act(action)
-        self.events.append({'type':'step','source':source,'action':action,'tick':obs['tick']})
+        self.events.append({'type':'step','source':source,'action':action,'tick':obs['tick'],'change':self.host.last_event})
+        if 'health_lost' in self.host.last_event['events']: self.pending.clear()
         if action.startswith('move_') and obs['displacement']==[0,0]:self.pending.clear()
         self.publish()
 

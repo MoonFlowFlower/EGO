@@ -1,0 +1,183 @@
+{
+  "component": "c1",
+  "passed": true,
+  "checks": {
+    "stone": {
+      "action": "move_left",
+      "tick": 1,
+      "effects": {
+        "inventory": {},
+        "displacement": [
+          0,
+          0
+        ],
+        "front": null,
+        "entered_sleep": false,
+        "consumption": {}
+      },
+      "other_needs": {},
+      "events": [
+        "no_visible_effect",
+        "blocked"
+      ]
+    },
+    "no_table": {
+      "action": "make_wood_pickaxe",
+      "tick": 2,
+      "effects": {
+        "inventory": {},
+        "displacement": [
+          0,
+          0
+        ],
+        "front": null,
+        "entered_sleep": false,
+        "consumption": {}
+      },
+      "other_needs": {},
+      "events": [
+        "no_visible_effect"
+      ]
+    },
+    "cow": [
+      {
+        "action": "do",
+        "tick": 1,
+        "effects": {
+          "inventory": {},
+          "displacement": [
+            0,
+            0
+          ],
+          "front": null,
+          "entered_sleep": false,
+          "consumption": {}
+        },
+        "other_needs": {},
+        "events": [
+          "no_visible_effect"
+        ]
+      },
+      {
+        "action": "do",
+        "tick": 2,
+        "effects": {
+          "inventory": {},
+          "displacement": [
+            0,
+            0
+          ],
+          "front": null,
+          "entered_sleep": false,
+          "consumption": {}
+        },
+        "other_needs": {},
+        "events": [
+          "no_visible_effect"
+        ]
+      },
+      {
+        "action": "do",
+        "tick": 3,
+        "effects": {
+          "inventory": {},
+          "displacement": [
+            0,
+            0
+          ],
+          "front": {
+            "before": {
+              "material": "grass",
+              "entity": "cow",
+              "visible_state": null
+            },
+            "after": {
+              "material": "grass",
+              "entity": null,
+              "visible_state": null
+            }
+          },
+          "entered_sleep": false,
+          "consumption": {
+            "food": 6
+          }
+        },
+        "other_needs": {},
+        "events": []
+      }
+    ],
+    "repeat_hurt": {
+      "status": "injured",
+      "steps": 1,
+      "events": [
+        {
+          "action": "do",
+          "tick": 1,
+          "effects": {
+            "inventory": {},
+            "displacement": [
+              0,
+              0
+            ],
+            "front": null,
+            "entered_sleep": false,
+            "consumption": {}
+          },
+          "other_needs": {
+            "health": -2
+          },
+          "events": [
+            "no_visible_effect",
+            "health_lost"
+          ]
+        }
+      ]
+    },
+    "skill_hurt": {
+      "source_sha256": "97f4958bb6a50d8bc08dae93d6af789a5e0822de223f55b31bfc4e4dec42f567",
+      "steps": 1,
+      "status": "injured",
+      "reason": "health_lost",
+      "seconds": 0.4439526000060141
+    },
+    "need_drift": {
+      "action": "do",
+      "tick": 0,
+      "effects": {
+        "inventory": {},
+        "displacement": [
+          0,
+          0
+        ],
+        "front": null,
+        "entered_sleep": false,
+        "consumption": {}
+      },
+      "other_needs": {
+        "health": -1,
+        "food": -1,
+        "drink": -1,
+        "energy": -1
+      },
+      "events": [
+        "no_visible_effect",
+        "health_lost"
+      ]
+    }
+  },
+  "seconds": 8.60173080000095,
+  "telemetry": [
+    {
+      "unix_s": 1790980488.2479706,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "84, 1875, 4098, 72.46",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790980496.8539238,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "85, 2100, 4097, 79.70",
+      "gpu_returncode": 0
+    }
+  ]
+}

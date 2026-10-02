@@ -1,0 +1,189 @@
+{
+  "arm": "A",
+  "prompt_version": "phase1.prompt.v2",
+  "steps": 10,
+  "success": false,
+  "achievement_steps": null,
+  "capped_steps": 10,
+  "step_limit": 10,
+  "censored": true,
+  "failure_attempts": 0,
+  "decisions": 10,
+  "cloud_calls": 11,
+  "reported_cost_usd": 0.00060067404,
+  "missing_receipts": 0,
+  "seconds": 56.73437709998689,
+  "stop": null,
+  "events": {
+    "no_visible_effect": 1
+  },
+  "prediction_eligible_actions": 1,
+  "predicted_actions": 0,
+  "prediction_coverage": 0.0,
+  "prediction_count": 0,
+  "prediction_matches": 0,
+  "prediction_accuracy": null,
+  "calls": [
+    {
+      "latency_s": 4.01297660000273,
+      "input_tokens": 2118,
+      "output_tokens": 53,
+      "cost_usd": 3.4407597e-05,
+      "provider": "OpenInference",
+      "charge_id": "cb178ae2997b443798045c074d1309bf",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.0554525999
+    },
+    {
+      "latency_s": 4.357164999993984,
+      "input_tokens": 2468,
+      "output_tokens": 72,
+      "cost_usd": 4.6259328e-05,
+      "provider": "OpenInference",
+      "charge_id": "c9079f1f8dab4205ac7072ab3cdc3fc9",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.055498859228000005
+    },
+    {
+      "latency_s": 4.971983300012653,
+      "input_tokens": 2878,
+      "output_tokens": 72,
+      "cost_usd": 4.6736928e-05,
+      "provider": "OpenInference",
+      "charge_id": "08ddf81556ca4663816946af1e001ed7",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.055545596156
+    },
+    {
+      "latency_s": 4.776063700002851,
+      "input_tokens": 3283,
+      "output_tokens": 73,
+      "cost_usd": 5.3228352e-05,
+      "provider": "OpenInference",
+      "charge_id": "46edcf1cfd5743389da6ef219547d5c9",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.055598824508
+    },
+    {
+      "latency_s": 5.131957500008866,
+      "input_tokens": 3374,
+      "output_tokens": 73,
+      "cost_usd": 5.1498777e-05,
+      "provider": "OpenInference",
+      "charge_id": "8a49be2383ac4d8eb8a784b56d1cff8d",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.055650323285000004
+    },
+    {
+      "latency_s": 4.158013400010532,
+      "input_tokens": 3542,
+      "output_tokens": 73,
+      "cost_usd": 4.8119127e-05,
+      "provider": "OpenInference",
+      "charge_id": "48527e0110a846f8a64e2dc491f8435d",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.055698442412000004
+    },
+    {
+      "latency_s": 5.405077099989285,
+      "input_tokens": 3624,
+      "output_tokens": 73,
+      "cost_usd": 4.8217002e-05,
+      "provider": "OpenInference",
+      "charge_id": "2ade260fd6db4091b08bc8e69274a6b0",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.055746659414000005
+    },
+    {
+      "latency_s": 5.933072700005141,
+      "input_tokens": 3703,
+      "output_tokens": 73,
+      "cost_usd": 5.4411177e-05,
+      "provider": "OpenInference",
+      "charge_id": "69fb26f467e643858c386d01f242f42c",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.055801070591
+    },
+    {
+      "latency_s": 4.382404600008158,
+      "input_tokens": 3782,
+      "output_tokens": 53,
+      "cost_usd": 4.2583947e-05,
+      "provider": "OpenInference",
+      "charge_id": "f07916abf5904cf7a068e68331347a13",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.055843654538000005
+    },
+    {
+      "latency_s": 7.150174399997923,
+      "input_tokens": 3814,
+      "output_tokens": 150,
+      "cost_usd": 9.573315e-05,
+      "provider": "OpenInference",
+      "charge_id": "5c5bfed4510a4729bd62d1694da41f19",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.055939387688000004
+    },
+    {
+      "latency_s": 5.947232199992868,
+      "input_tokens": 2780,
+      "output_tokens": 120,
+      "cost_usd": 7.9478655e-05,
+      "provider": "OpenInference",
+      "charge_id": "7567c3b16c914a7c969d809d745ce26f",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.056018866343000004,
+      "purpose": "consolidation"
+    }
+  ],
+  "skill_executions": [],
+  "claim_ceiling": "descriptive pilot only; not E1; no learning or superiority claim",
+  "sleep": {
+    "status": "returned",
+    "results": [
+      {
+        "type": "reflection",
+        "accepted": true,
+        "id": "f243ecdd6cbe4c868a3a14568d8ce504"
+      }
+    ],
+    "output": "{\"reflection\": \"I repeatedly moved up without gathering wood or crafting, and the 'do' action produced no visible effect. The goal requires wood_pickaxe, but I never attempted make_wood_pickaxe or collected planks. I should stop moving and try crafting directly, or explore to find trees and use 'do' on them to collect wood. The inventory stayed empty, so my actions were ineffective. Next step: attempt make_wood_pickaxe to see if it fails due to missing materials, or move toward a tree and use 'do' to harvest.\"}",
+    "meta": {
+      "latency_s": 5.947232199992868,
+      "input_tokens": 2780,
+      "output_tokens": 120,
+      "cost_usd": 7.9478655e-05,
+      "provider": "OpenInference",
+      "charge_id": "7567c3b16c914a7c969d809d745ce26f",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.056018866343000004
+    },
+    "supplied_experiences": [
+      "93938697a12c4119a482b5efcf846b65",
+      "b239a666ec354d1c9737f356895988c1",
+      "b761dd1224d84f8f93c5859d03036503",
+      "221c952eb47e4b09ba8b86831f1c5c33",
+      "02790c856fce462a8cc9dabfc7d7a8e0",
+      "a13c8b996feb4519be195591970efc22",
+      "72547378d059494b86441487d65b80f0",
+      "3a16f0712cbe42e09079f7615eaf4a6b",
+      "1cf1bb27879b403199eaf050fdf6b3b3",
+      "01143a98b1b34d188f5e725ecf23dbf6"
+    ]
+  },
+  "telemetry": [
+    {
+      "unix_s": 1790982428.4593349,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "74, 1507, 3277, 49.23",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790982487.4072986,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "75, 1830, 3303, 61.24",
+      "gpu_returncode": 0
+    }
+  ],
+  "seed": 909011
+}

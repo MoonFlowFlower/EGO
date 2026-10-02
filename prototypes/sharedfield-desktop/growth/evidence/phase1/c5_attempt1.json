@@ -1,0 +1,73 @@
+{
+  "component": "c5",
+  "passed": true,
+  "checks": {
+    "insertion_changes_prompt_and_prediction": true,
+    "removal_restores_both": true,
+    "fake_sleep_reference_rejected": [
+      {
+        "type": "skills",
+        "accepted": false,
+        "reason": "invalid_proposal_or_provenance",
+        "proposal": {
+          "name": "fiction",
+          "description": "x",
+          "source": "act('noop')",
+          "completion": "False",
+          "experiences": [
+            "2b44a9bcfe344db79ff3b481b5c785fb"
+          ]
+        }
+      }
+    ],
+    "valid_sleep_proposal_accepted": [
+      {
+        "type": "skills",
+        "accepted": true,
+        "id": "b57ab8a1b307460bb48c1e4c03cae1a7"
+      }
+    ],
+    "program_computed_profile": {
+      "fiction@1": {
+        "attempts": 1,
+        "success": 0,
+        "unsuccessful": 1,
+        "not_needed": 0,
+        "independent_success_worlds": [],
+        "worlds": [
+          "b446b3c0ed274c51994029d3307010ca"
+        ],
+        "taught_runs": 0,
+        "takeovers": 0,
+        "execution_status": {
+          "completed": 1
+        },
+        "dependency_versions": [
+          [
+            [
+              "fiction",
+              1
+            ]
+          ]
+        ],
+        "certification": null
+      }
+    },
+    "memory_token_upper_bound": 3000
+  },
+  "seconds": 1.9962063999992097,
+  "telemetry": [
+    {
+      "unix_s": 1790981827.44311,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "77, 1837, 3294, 68.41",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790981829.433799,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "77, 1822, 3280, 70.36",
+      "gpu_returncode": 0
+    }
+  ]
+}

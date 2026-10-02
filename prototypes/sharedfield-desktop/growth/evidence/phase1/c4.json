@@ -1,0 +1,60 @@
+{
+  "component": "c4",
+  "passed": true,
+  "checks": {
+    "strict_protocol": true,
+    "p2_invalid_policy": {
+      "arm": "B",
+      "prompt_version": "phase1.prompt.v2",
+      "steps": 0,
+      "success": false,
+      "achievement_steps": null,
+      "capped_steps": 500,
+      "step_limit": 500,
+      "censored": true,
+      "failure_attempts": 0,
+      "decisions": 2,
+      "cloud_calls": 2,
+      "reported_cost_usd": 0,
+      "missing_receipts": 0,
+      "seconds": 0.02527399999962654,
+      "stop": "two_consecutive_invalid_outputs",
+      "events": {},
+      "prediction_eligible_actions": 0,
+      "predicted_actions": 0,
+      "prediction_coverage": null,
+      "prediction_count": 0,
+      "prediction_matches": 0,
+      "prediction_accuracy": null,
+      "calls": [
+        {
+          "cost_usd": 0,
+          "latency_s": 0
+        },
+        {
+          "cost_usd": 0,
+          "latency_s": 0
+        }
+      ],
+      "skill_executions": [],
+      "claim_ceiling": "descriptive pilot only; not E1; no learning or superiority claim"
+    },
+    "f2_only_ten_actions": true,
+    "alias_order_not_leaked": true
+  },
+  "seconds": 13.837055399999372,
+  "telemetry": [
+    {
+      "unix_s": 1790982379.5868251,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "77, 1987, 3304, 74.59",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790982393.4161682,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "74, 2092, 3304, 65.95",
+      "gpu_returncode": 0
+    }
+  ]
+}

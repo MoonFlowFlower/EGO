@@ -1,0 +1,41 @@
+{
+  "passed": true,
+  "seconds": 55.97509359999094,
+  "fork_delete_isolated": true,
+  "fresh_process_readback": true,
+  "pairs": [
+    {
+      "seed": 909013,
+      "steps": 2000,
+      "equal": true,
+      "trajectory_sha256": "94cb14485ad125df5c3ddb0c2de4e1ac3d7e5e9711b709a5a81f66563b8a3682"
+    },
+    {
+      "seed": 909017,
+      "steps": 2000,
+      "equal": true,
+      "trajectory_sha256": "dd9c75e8d6e1ccaeacabc045fbb87e9f4aac5842e2e6c1601ad399a44cf76540"
+    }
+  ],
+  "telemetry": [
+    {
+      "unix_s": 1790982013.4715953,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "78, 1777, 3298, 60.89",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790982040.269194,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "79, 1890, 3299, 75.37",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790982069.3784559,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "77, 1852, 3272, 73.45",
+      "gpu_returncode": 0
+    }
+  ],
+  "scope": "Evaluator health refill/terminal override; reproducibility diagnostics only, not pilot trajectories."
+}

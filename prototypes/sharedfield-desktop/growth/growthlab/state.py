@@ -7,8 +7,8 @@ import json
 import sqlite3
 import uuid
 
-KINDS={'experience','skill','general_rule','map','fact','self','preference','project','summary','index','cache','profile'}
-GLOBAL_KINDS={'skill','general_rule','self','preference'}
+KINDS={'experience','skill','general_rule','map','fact','self','preference','project','summary','index','cache','profile','reflection'}
+GLOBAL_KINDS={'skill','general_rule','self','preference','reflection'}
 
 
 class Store:

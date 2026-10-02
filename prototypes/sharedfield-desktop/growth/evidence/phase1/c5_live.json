@@ -1,0 +1,239 @@
+{
+  "arm": "B",
+  "prompt_version": "phase1.prompt.v2",
+  "steps": 15,
+  "success": false,
+  "achievement_steps": null,
+  "capped_steps": 15,
+  "step_limit": 15,
+  "censored": true,
+  "failure_attempts": 0,
+  "decisions": 15,
+  "cloud_calls": 16,
+  "reported_cost_usd": 0.001054987812,
+  "missing_receipts": 0,
+  "seconds": 93.25191000000632,
+  "stop": null,
+  "events": {
+    "no_visible_effect": 5,
+    "blocked": 4
+  },
+  "prediction_eligible_actions": 1,
+  "predicted_actions": 0,
+  "prediction_coverage": 0.0,
+  "prediction_count": 0,
+  "prediction_matches": 0,
+  "prediction_accuracy": null,
+  "calls": [
+    {
+      "latency_s": 6.950914599990938,
+      "input_tokens": 2076,
+      "output_tokens": 86,
+      "cost_usd": 5.4731214e-05,
+      "provider": "OpenInference",
+      "charge_id": "9146cfb049494fe890eddbe3e1bdc9cf",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.054417935705
+    },
+    {
+      "latency_s": 4.134211500000674,
+      "input_tokens": 2211,
+      "output_tokens": 76,
+      "cost_usd": 4.8376224e-05,
+      "provider": "OpenInference",
+      "charge_id": "6d43c2d88fcd456190ae63839e476d11",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.054466311929000005
+    },
+    {
+      "latency_s": 5.046801899996353,
+      "input_tokens": 2360,
+      "output_tokens": 76,
+      "cost_usd": 5.2441974e-05,
+      "provider": "OpenInference",
+      "charge_id": "2e0be123204846d89a6fd7df958130eb",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.054518753903000004
+    },
+    {
+      "latency_s": 5.325423699992825,
+      "input_tokens": 2509,
+      "output_tokens": 76,
+      "cost_usd": 5.2268724e-05,
+      "provider": "OpenInference",
+      "charge_id": "fafa8c2618f048a8b0e9f2779b77ef8f",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.054571022627000004
+    },
+    {
+      "latency_s": 4.742114299995592,
+      "input_tokens": 2658,
+      "output_tokens": 76,
+      "cost_usd": 5.3272974e-05,
+      "provider": "OpenInference",
+      "charge_id": "600a30140911413fbf6f0e7b100b337c",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.054624295601
+    },
+    {
+      "latency_s": 5.772925199999008,
+      "input_tokens": 2730,
+      "output_tokens": 89,
+      "cost_usd": 6.0346011e-05,
+      "provider": "OpenInference",
+      "charge_id": "2fa642bc3a6b4f43bb5db067834e8d8a",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.054684641612000005
+    },
+    {
+      "latency_s": 7.3612808999896515,
+      "input_tokens": 2809,
+      "output_tokens": 138,
+      "cost_usd": 8.6434362e-05,
+      "provider": "OpenInference",
+      "charge_id": "56e8e39f54d641cb8bd1cb5163336b8d",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.054771075974
+    },
+    {
+      "latency_s": 6.110121899997466,
+      "input_tokens": 2926,
+      "output_tokens": 127,
+      "cost_usd": 8.1659823e-05,
+      "provider": "OpenInference",
+      "charge_id": "ed10793379a54c48bbc297823d0fcc21",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.054852735797
+    },
+    {
+      "latency_s": 5.874735799996415,
+      "input_tokens": 3057,
+      "output_tokens": 112,
+      "cost_usd": 0.000120511938,
+      "provider": "OpenInference",
+      "charge_id": "c39c261b81554e828474ba5cadb5ca73",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.054973247735
+    },
+    {
+      "latency_s": 6.12081570000737,
+      "input_tokens": 3098,
+      "output_tokens": 101,
+      "cost_usd": 6.9576474e-05,
+      "provider": "OpenInference",
+      "charge_id": "cfc737c7875042259c8156f42ad47f6a",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.055042824209
+    },
+    {
+      "latency_s": 6.300067300006049,
+      "input_tokens": 3129,
+      "output_tokens": 101,
+      "cost_usd": 6.4510449e-05,
+      "provider": "OpenInference",
+      "charge_id": "da90ec03dcca47879c8e16dff48d7c6b",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.055107334658
+    },
+    {
+      "latency_s": 5.8812582999962615,
+      "input_tokens": 3097,
+      "output_tokens": 95,
+      "cost_usd": 6.522993e-05,
+      "provider": "OpenInference",
+      "charge_id": "f50169358ba9415bb090f969f3d154da",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.055172564588
+    },
+    {
+      "latency_s": 6.375987899999018,
+      "input_tokens": 3065,
+      "output_tokens": 114,
+      "cost_usd": 7.7316411e-05,
+      "provider": "OpenInference",
+      "charge_id": "a76c73e58ec84d87ae94fba3a121448c",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.055249880999
+    },
+    {
+      "latency_s": 6.7227909000066575,
+      "input_tokens": 3046,
+      "output_tokens": 114,
+      "cost_usd": 7.7261136e-05,
+      "provider": "OpenInference",
+      "charge_id": "3b73202fdad24a22bc2194b66ff8dbaf",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.055327142135
+    },
+    {
+      "latency_s": 6.2931046999874525,
+      "input_tokens": 3044,
+      "output_tokens": 119,
+      "cost_usd": 7.5255756e-05,
+      "provider": "OpenInference",
+      "charge_id": "4713da6815614de4aa06a6867cdf941c",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.055402397891
+    },
+    {
+      "latency_s": 3.3209725999913644,
+      "input_tokens": 2827,
+      "output_tokens": 13,
+      "cost_usd": 1.5794412e-05,
+      "provider": "OpenInference",
+      "charge_id": "c1beae7c9c8b4cf8a750db3fd2efcef3",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.055418192303000005,
+      "purpose": "consolidation"
+    }
+  ],
+  "skill_executions": [],
+  "claim_ceiling": "descriptive pilot only; not E1; no learning or superiority claim",
+  "sleep": {
+    "status": "returned",
+    "results": [],
+    "output": " {\n  \"rules\": [],\n  \"skills\": []\n}",
+    "meta": {
+      "latency_s": 3.3209725999913644,
+      "input_tokens": 2827,
+      "output_tokens": 13,
+      "cost_usd": 1.5794412e-05,
+      "provider": "OpenInference",
+      "charge_id": "c1beae7c9c8b4cf8a750db3fd2efcef3",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.055418192303000005
+    },
+    "supplied_experiences": [
+      "c64b7a65f2c04982bbe5b354a61ce9a0",
+      "bf795d1b584343a99036993cfb862fc0",
+      "9d92a03fed45414e950ea21e30a4680b",
+      "50ca8efc22374ea79b24bc6d19e24147",
+      "e433d7a550354604ba2e478ac760b4b6",
+      "77c2250aaa3e4227a10588bec48a15de",
+      "f3b5233f440f4856a9e5a6de6634cdc0",
+      "5f3ae987e596414dbbde1d079529db58",
+      "629c2a574cae42359abd78dccd143c15",
+      "b4487aa46c8b4fc8b2ecd882df45d042",
+      "38d8dcf651334d009cf4cc7f91625e7d",
+      "2040b5cda4994eccafeef593b5761154",
+      "677f632ae4fd440cad08bc3f583e1234",
+      "119b84f1a817493eaa88bfc8bf2e707e",
+      "5d623e88eade4df2a6890ecd9a860375"
+    ]
+  },
+  "telemetry": [
+    {
+      "unix_s": 1790982013.5665038,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "78, 1777, 3299, 60.89",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790982109.1847441,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "75, 1935, 3271, 62.58",
+      "gpu_returncode": 0
+    }
+  ],
+  "seed": 909011
+}

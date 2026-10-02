@@ -6,6 +6,7 @@ position (for local sampling and displacement). No full semantic map is used.
 import uuid
 from .runtime import GrowthEnv
 from .contract import ACTIONS, ITEMS, MATERIALS, ENTITIES, NEEDS, validate, public_action
+from .changes import changes
 
 
 class Host:
@@ -16,11 +17,14 @@ class Host:
         self.aliases = aliases or {}
         self.actions = [self.aliases.get(x,x) for x in ACTIONS]
         if len(set(self.actions)) != len(ACTIONS): raise ValueError('action_alias_collision')
+        self.action_indices = {public: i for i, public in enumerate(self.actions)}
+        if aliases: self.actions.sort()  # Do not leak the original action order.
         self.done = False
         self.world = uuid.uuid4().hex  # opaque; no seed or rule identity
         self.last_frame = self.env.reset().copy()
         self.previous = self.env._player.pos.copy()
         self.delta = [0,0]
+        self.last_event = None
 
     def observe(self):
         p = self.env._player
@@ -48,11 +52,14 @@ class Host:
     def act(self, action):
         public_action(action,self.actions)
         if self.done: raise ValueError('episode_finished')
+        observation_before = self.observe()
         before = self.env._player.pos.copy()
-        frame, _, self.done, _ = self.env.step(self.actions.index(action))
+        frame, _, self.done, _ = self.env.step(self.action_indices[action])
         self.last_frame=frame.copy()
         self.delta = [int(v) for v in self.env._player.pos - before]
-        return self.observe()
+        observation_after = self.observe()
+        self.last_event = changes(observation_before, observation_after, action)
+        return observation_after
 
     def render(self):
         return self.env.render((512,512))  # owner-only; callers serialize access
@@ -67,5 +74,5 @@ def walk_until(host, direction, material, max_steps=8):
         obs = host.observe()
         if obs['done'] or any(c['material'] == material for c in obs['cells']): break
         obs = host.act(direction); used += 1
-        if obs['displacement'] == [0,0]: break
+        if obs['displacement'] == [0,0] or 'health_lost' in host.last_event['events']: break
     return used
