@@ -1,0 +1,86 @@
+{
+  "backend": "cloud",
+  "model": "deepseek/deepseek-v4-flash-0731",
+  "route": "open-inference/fp8",
+  "seed": 11,
+  "episode_length_limit_steps": 180,
+  "environment_steps": 9,
+  "done": false,
+  "decisions": 13,
+  "seconds": 51.21030510000128,
+  "failure_or_stop": "two_consecutive_invalid_outputs",
+  "latency_median_s": 2.9399777999933576,
+  "latency_max_s": 6.224201799996081,
+  "input_tokens": 22976,
+  "output_tokens": 936,
+  "reported_cost_usd": 0.000606244014,
+  "missing_cost_receipts": 0,
+  "budget_reserved_or_reported_usd": 0.100606244014,
+  "achievements_owner_only": {
+    "collect_wood": 1
+  },
+  "telemetry": [
+    {
+      "unix_s": 1790974854.4070551,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "66, 870, 3933, 28.60",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790974858.2860632,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "78, 2317, 4130, 120.09",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790974860.9483304,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "71, 862, 4203, 93.22",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790974863.7121367,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "74, 2025, 4208, 77.24",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790974866.745012,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "78, 2392, 4207, 109.92",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790974869.7069626,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "70, 915, 4233, 44.36",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790974878.087936,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "70, 772, 3071, 35.21",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790974880.947282,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "69, 607, 3151, 32.44",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790974890.590092,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "68, 1455, 3172, 29.85",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790974893.5972564,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "67, 532, 3222, 25.20",
+      "gpu_returncode": 0
+    }
+  ],
+  "claim_ceiling": "engineering baseline only; no ability or learning evidence",
+  "raw_retention_days": 7
+}

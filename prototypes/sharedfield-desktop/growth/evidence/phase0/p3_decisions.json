@@ -1,0 +1,215 @@
+{
+  "run": "p3_lmstudio",
+  "decisions": [
+    {
+      "latency_s": 4.330549799997243,
+      "input_tokens": 1430,
+      "output_tokens": 30,
+      "cost_usd": 0,
+      "decision_index": 1
+    },
+    {
+      "latency_s": 4.9970146999985445,
+      "input_tokens": 1541,
+      "output_tokens": 30,
+      "cost_usd": 0,
+      "decision_index": 2
+    },
+    {
+      "latency_s": 5.106149400002323,
+      "input_tokens": 1653,
+      "output_tokens": 32,
+      "cost_usd": 0,
+      "decision_index": 3
+    },
+    {
+      "latency_s": 5.318509599994286,
+      "input_tokens": 1767,
+      "output_tokens": 33,
+      "cost_usd": 0,
+      "decision_index": 4
+    },
+    {
+      "latency_s": 5.651967099998728,
+      "input_tokens": 1881,
+      "output_tokens": 38,
+      "cost_usd": 0,
+      "decision_index": 5
+    },
+    {
+      "latency_s": 5.801835499994922,
+      "input_tokens": 1889,
+      "output_tokens": 38,
+      "cost_usd": 0,
+      "decision_index": 6
+    },
+    {
+      "latency_s": 5.678978299998562,
+      "input_tokens": 1898,
+      "output_tokens": 39,
+      "cost_usd": 0,
+      "decision_index": 7
+    },
+    {
+      "latency_s": 5.817919399996754,
+      "input_tokens": 1905,
+      "output_tokens": 40,
+      "cost_usd": 0,
+      "decision_index": 8
+    },
+    {
+      "latency_s": 5.545430600002874,
+      "input_tokens": 1911,
+      "output_tokens": 39,
+      "cost_usd": 0,
+      "decision_index": 9
+    },
+    {
+      "latency_s": 6.236452199998894,
+      "input_tokens": 1913,
+      "output_tokens": 44,
+      "cost_usd": 0,
+      "decision_index": 10
+    },
+    {
+      "latency_s": 9.003247199987527,
+      "input_tokens": 1915,
+      "output_tokens": 79,
+      "cost_usd": 0,
+      "decision_index": 11
+    },
+    {
+      "latency_s": 7.206274500000291,
+      "input_tokens": 1946,
+      "output_tokens": 56,
+      "cost_usd": 0,
+      "decision_index": 12
+    },
+    {
+      "latency_s": 6.923213899994153,
+      "input_tokens": 1960,
+      "output_tokens": 56,
+      "cost_usd": 0,
+      "decision_index": 13
+    },
+    {
+      "latency_s": 7.1197963999875356,
+      "input_tokens": 1976,
+      "output_tokens": 56,
+      "cost_usd": 0,
+      "decision_index": 14
+    },
+    {
+      "latency_s": 5.471501499996521,
+      "input_tokens": 1992,
+      "output_tokens": 38,
+      "cost_usd": 0,
+      "decision_index": 15
+    },
+    {
+      "latency_s": 5.9999124000023585,
+      "input_tokens": 1961,
+      "output_tokens": 41,
+      "cost_usd": 0,
+      "decision_index": 16
+    },
+    {
+      "latency_s": 7.229067099993699,
+      "input_tokens": 1946,
+      "output_tokens": 55,
+      "cost_usd": 0,
+      "decision_index": 17
+    },
+    {
+      "latency_s": 6.175157399993623,
+      "input_tokens": 1947,
+      "output_tokens": 40,
+      "cost_usd": 0,
+      "decision_index": 18
+    },
+    {
+      "latency_s": 7.427704100002302,
+      "input_tokens": 1931,
+      "output_tokens": 56,
+      "cost_usd": 0,
+      "decision_index": 19
+    },
+    {
+      "latency_s": 7.177803200000199,
+      "input_tokens": 1949,
+      "output_tokens": 56,
+      "cost_usd": 0,
+      "decision_index": 20
+    },
+    {
+      "latency_s": 6.99593650001043,
+      "input_tokens": 1964,
+      "output_tokens": 56,
+      "cost_usd": 0,
+      "decision_index": 21
+    },
+    {
+      "latency_s": 6.884339000011096,
+      "input_tokens": 1965,
+      "output_tokens": 56,
+      "cost_usd": 0,
+      "decision_index": 22
+    },
+    {
+      "latency_s": 6.958681799995247,
+      "input_tokens": 1980,
+      "output_tokens": 57,
+      "cost_usd": 0,
+      "decision_index": 23
+    },
+    {
+      "latency_s": 6.437816799996654,
+      "input_tokens": 1980,
+      "output_tokens": 50,
+      "cost_usd": 0,
+      "decision_index": 24
+    },
+    {
+      "latency_s": 6.282812099991133,
+      "input_tokens": 1974,
+      "output_tokens": 49,
+      "cost_usd": 0,
+      "decision_index": 25
+    },
+    {
+      "latency_s": 6.455640999993193,
+      "input_tokens": 1966,
+      "output_tokens": 49,
+      "cost_usd": 0,
+      "decision_index": 26
+    },
+    {
+      "latency_s": 6.288214999993215,
+      "input_tokens": 1960,
+      "output_tokens": 48,
+      "cost_usd": 0,
+      "decision_index": 27
+    },
+    {
+      "latency_s": 6.900762599994778,
+      "input_tokens": 1952,
+      "output_tokens": 52,
+      "cost_usd": 0,
+      "decision_index": 28
+    },
+    {
+      "latency_s": 7.22857340000337,
+      "input_tokens": 1951,
+      "output_tokens": 57,
+      "cost_usd": 0,
+      "decision_index": 29
+    },
+    {
+      "latency_s": 7.421404699998675,
+      "input_tokens": 1960,
+      "output_tokens": 58,
+      "cost_usd": 0,
+      "decision_index": 30
+    }
+  ]
+}

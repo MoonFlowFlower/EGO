@@ -1,0 +1,1372 @@
+[
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "Decart",
+    "tag": "decart/fp4",
+    "pricing": {
+      "prompt": "0.00000009",
+      "completion": "0.00000018",
+      "input_cache_read": "0.000000018",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "temperature",
+      "top_p",
+      "top_k",
+      "min_p",
+      "frequency_penalty",
+      "presence_penalty",
+      "repetition_penalty",
+      "stop",
+      "seed",
+      "max_tokens",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "Fireworks",
+    "tag": "fireworks/us",
+    "pricing": {
+      "prompt": "0.00000045",
+      "completion": "0.0000018",
+      "input_cache_read": "0.000000009",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "stop",
+      "frequency_penalty",
+      "presence_penalty",
+      "top_k",
+      "repetition_penalty",
+      "logit_bias",
+      "logprobs",
+      "top_logprobs",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "BaseTen",
+    "tag": "baseten/fast",
+    "pricing": {
+      "prompt": "0.0000006",
+      "completion": "0.0000024",
+      "input_cache_read": "0.00000014",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "stop",
+      "frequency_penalty",
+      "presence_penalty",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "Ionstream",
+    "tag": "ionstream",
+    "pricing": {
+      "prompt": "0.0000001",
+      "completion": "0.00000115",
+      "input_cache_read": "0.0000000055",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "frequency_penalty",
+      "presence_penalty",
+      "stop",
+      "seed",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "logprobs",
+      "top_logprobs",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "InferenceNet",
+    "tag": "inference-net",
+    "pricing": {
+      "prompt": "0.00000004",
+      "completion": "0.0000006",
+      "input_cache_read": "0.00000002",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "stop",
+      "frequency_penalty",
+      "presence_penalty",
+      "seed",
+      "top_k",
+      "min_p",
+      "logit_bias",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "repetition_penalty",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "NextBit",
+    "tag": "nextbit/fp8",
+    "pricing": {
+      "prompt": "0.00000021",
+      "completion": "0.00000084",
+      "input_cache_read": "0.000000004",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "stop",
+      "frequency_penalty",
+      "presence_penalty",
+      "response_format",
+      "structured_outputs",
+      "seed",
+      "tools",
+      "tool_choice",
+      "logprobs",
+      "top_logprobs",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "DekaLLM",
+    "tag": "dekallm",
+    "pricing": {
+      "prompt": "0.00000012",
+      "completion": "0.0000004",
+      "input_cache_read": "0.000000005",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "frequency_penalty",
+      "logit_bias",
+      "max_tokens",
+      "presence_penalty",
+      "seed",
+      "stop",
+      "temperature",
+      "top_p",
+      "response_format",
+      "structured_outputs",
+      "logprobs",
+      "top_logprobs",
+      "tools",
+      "tool_choice",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "CoreWeave",
+    "tag": "coreweave/fp8",
+    "pricing": {
+      "prompt": "0.0000002",
+      "completion": "0.00000065",
+      "input_cache_read": "0.00000003",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "top_k",
+      "repetition_penalty",
+      "frequency_penalty",
+      "presence_penalty",
+      "stop",
+      "seed",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "logprobs",
+      "top_logprobs",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "Sail Research",
+    "tag": "sail-research/fp4",
+    "pricing": {
+      "prompt": "0.00000008",
+      "completion": "0.0000004",
+      "input_cache_read": "0.00000001",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "frequency_penalty",
+      "max_tokens",
+      "presence_penalty",
+      "seed",
+      "stop",
+      "temperature",
+      "top_k",
+      "top_p",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "logprobs",
+      "top_logprobs",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "BaseTen",
+    "tag": "baseten/fp8",
+    "pricing": {
+      "prompt": "0.0000003",
+      "completion": "0.0000012",
+      "input_cache_read": "0.000000007",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "stop",
+      "frequency_penalty",
+      "presence_penalty",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4-flash-0731",
+    "provider_name": "Cohere",
+    "tag": "cohere",
+    "pricing": {
+      "prompt": "0.00000014",
+      "completion": "0.00000028",
+      "input_cache_read": "0.00000007",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "stop",
+      "frequency_penalty",
+      "presence_penalty",
+      "top_k",
+      "seed",
+      "structured_outputs",
+      "response_format",
+      "tools",
+      "tool_choice",
+      "parallel_tool_calls",
+      "logprobs",
+      "top_logprobs",
+      "repetition_penalty",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "Makora",
+    "tag": "makora/fp8",
+    "pricing": {
+      "prompt": "0.0000002",
+      "completion": "0.00000099",
+      "input_cache_read": "0.000000006",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "temperature",
+      "top_p",
+      "top_k",
+      "frequency_penalty",
+      "presence_penalty",
+      "repetition_penalty",
+      "stop",
+      "max_tokens",
+      "seed",
+      "min_p",
+      "logit_bias",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "logprobs",
+      "top_logprobs",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "DigitalOcean",
+    "tag": "digitalocean",
+    "pricing": {
+      "prompt": "0.00000018",
+      "completion": "0.00000072",
+      "input_cache_read": "0.0000000036",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "temperature",
+      "top_p",
+      "max_tokens",
+      "response_format",
+      "logprobs",
+      "top_logprobs",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "Phala",
+    "tag": "phala",
+    "pricing": {
+      "prompt": "0.00000021",
+      "completion": "0.00000084",
+      "input_cache_read": "0.0000000042",
+      "discount": 0.3
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "stop",
+      "frequency_penalty",
+      "presence_penalty",
+      "seed",
+      "top_k",
+      "min_p",
+      "repetition_penalty",
+      "response_format",
+      "tools",
+      "tool_choice",
+      "logprobs",
+      "top_logprobs",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "Together",
+    "tag": "together",
+    "pricing": {
+      "prompt": "0.0000003",
+      "completion": "0.0000012",
+      "input_cache_read": "0.000000006",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "stop",
+      "frequency_penalty",
+      "presence_penalty",
+      "top_k",
+      "repetition_penalty",
+      "logit_bias",
+      "min_p",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "logprobs",
+      "top_logprobs",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "Relace",
+    "tag": "relace",
+    "pricing": {
+      "prompt": "0.00000002",
+      "completion": "0.0000006",
+      "input_cache_read": "0.00000002",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "temperature",
+      "top_p",
+      "top_k",
+      "min_p",
+      "stop",
+      "max_tokens",
+      "logit_bias",
+      "frequency_penalty",
+      "presence_penalty",
+      "repetition_penalty",
+      "tools",
+      "tool_choice",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "SiliconFlow",
+    "tag": "siliconflow/fp8",
+    "pricing": {
+      "prompt": "0.0000003",
+      "completion": "0.0000012",
+      "input_cache_read": "0.000000006",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "temperature",
+      "top_p",
+      "top_k",
+      "frequency_penalty",
+      "max_tokens",
+      "response_format",
+      "tools",
+      "tool_choice",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4-flash-0731",
+    "provider_name": "Sail Research",
+    "tag": "sail-research/us",
+    "pricing": {
+      "prompt": "0.000000019",
+      "completion": "0.00000042",
+      "input_cache_read": "0.000000012",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "frequency_penalty",
+      "max_tokens",
+      "presence_penalty",
+      "seed",
+      "stop",
+      "temperature",
+      "top_k",
+      "top_p",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "logprobs",
+      "top_logprobs",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "Modal",
+    "tag": "modal",
+    "pricing": {
+      "prompt": "0.0000003",
+      "completion": "0.0000012",
+      "input_cache_read": "0.00000003",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "temperature",
+      "top_p",
+      "stop",
+      "max_tokens",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "Wafer",
+    "tag": "wafer",
+    "pricing": {
+      "prompt": "0.00000005",
+      "completion": "0.0000006",
+      "input_cache_read": "0.00000004",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "temperature",
+      "top_p",
+      "top_k",
+      "min_p",
+      "frequency_penalty",
+      "presence_penalty",
+      "repetition_penalty",
+      "stop",
+      "seed",
+      "max_tokens",
+      "logit_bias",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "logprobs",
+      "top_logprobs",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "BaseTen",
+    "tag": "baseten/fp8",
+    "pricing": {
+      "prompt": "0.0000003",
+      "completion": "0.0000012",
+      "input_cache_read": "0.000000007",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "stop",
+      "frequency_penalty",
+      "presence_penalty",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "Parasail",
+    "tag": "parasail/fp8",
+    "pricing": {
+      "prompt": "0.0000003",
+      "completion": "0.0000012",
+      "input_cache_read": "0.000000006",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "frequency_penalty",
+      "presence_penalty",
+      "repetition_penalty",
+      "seed",
+      "stop",
+      "top_k",
+      "logit_bias",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "Fireworks",
+    "tag": "fireworks",
+    "pricing": {
+      "prompt": "0.0000003",
+      "completion": "0.0000012",
+      "input_cache_read": "0.000000006",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "stop",
+      "frequency_penalty",
+      "presence_penalty",
+      "top_k",
+      "repetition_penalty",
+      "logit_bias",
+      "logprobs",
+      "top_logprobs",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "Morph",
+    "tag": "morph/fp8",
+    "pricing": {
+      "prompt": "0.000000021",
+      "completion": "0.000000383",
+      "input_cache_read": "0.000000008",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "stop",
+      "top_p",
+      "top_k",
+      "min_p",
+      "frequency_penalty",
+      "presence_penalty",
+      "repetition_penalty",
+      "seed",
+      "logit_bias",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "Venice",
+    "tag": "venice/fp8",
+    "pricing": {
+      "prompt": "0.000000375",
+      "completion": "0.0000015",
+      "input_cache_read": "0.0000000075",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "stop",
+      "frequency_penalty",
+      "presence_penalty",
+      "top_k",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "Novita",
+    "tag": "novita/fp8",
+    "pricing": {
+      "prompt": "0.00000024",
+      "completion": "0.00000096",
+      "input_cache_read": "0.0000000048",
+      "discount": 0.2
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "stop",
+      "frequency_penalty",
+      "presence_penalty",
+      "seed",
+      "top_k",
+      "repetition_penalty",
+      "response_format",
+      "tools",
+      "tool_choice",
+      "logprobs",
+      "top_logprobs",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4.1-flash",
+    "provider_name": "DeepInfra",
+    "tag": "deepinfra/fp8",
+    "pricing": {
+      "prompt": "0.00000014",
+      "completion": "0.00000042",
+      "input_cache_read": "0.0000000042",
+      "discount": 0.3
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "stop",
+      "frequency_penalty",
+      "presence_penalty",
+      "repetition_penalty",
+      "top_k",
+      "seed",
+      "min_p",
+      "logit_bias",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "response_format",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4-flash-0731",
+    "provider_name": "BaseTen",
+    "tag": "baseten/fp8",
+    "pricing": {
+      "prompt": "0.00000013",
+      "completion": "0.00000026",
+      "input_cache_read": "0.000000028",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "stop",
+      "frequency_penalty",
+      "presence_penalty",
+      "tools",
+      "tool_choice",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4-flash-0731",
+    "provider_name": "Reka",
+    "tag": "reka",
+    "pricing": {
+      "prompt": "0.000000021",
+      "completion": "0.000000528",
+      "input_cache_read": "0.0000000056",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "logprobs",
+      "top_logprobs",
+      "temperature",
+      "top_p",
+      "max_tokens",
+      "stop",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4-flash-0731",
+    "provider_name": "NextBit",
+    "tag": "nextbit/fp8",
+    "pricing": {
+      "prompt": "0.000000352",
+      "completion": "0.000001056",
+      "input_cache_read": "0.000000012",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "stop",
+      "frequency_penalty",
+      "presence_penalty",
+      "response_format",
+      "structured_outputs",
+      "repetition_penalty",
+      "seed",
+      "tools",
+      "tool_choice",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4-flash-0731",
+    "provider_name": "Relace",
+    "tag": "relace/fp4",
+    "pricing": {
+      "prompt": "0.0000000171",
+      "completion": "0.00000128",
+      "input_cache_read": "0.0000000171",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "tools",
+      "tool_choice",
+      "temperature",
+      "top_p",
+      "top_k",
+      "min_p",
+      "stop",
+      "max_tokens",
+      "logit_bias",
+      "frequency_penalty",
+      "presence_penalty",
+      "repetition_penalty",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4-flash-0731",
+    "provider_name": "OpenInference",
+    "tag": "open-inference/fp8",
+    "pricing": {
+      "prompt": "0.000000012825",
+      "completion": "0.000000602574",
+      "input_cache_read": "0.00000000105",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "temperature",
+      "max_tokens",
+      "stop",
+      "seed",
+      "response_format",
+      "top_p",
+      "frequency_penalty",
+      "presence_penalty",
+      "top_k",
+      "min_p",
+      "logit_bias",
+      "repetition_penalty",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4-flash-0731",
+    "provider_name": "Inceptron",
+    "tag": "inceptron/fp4",
+    "pricing": {
+      "prompt": "0.00000005",
+      "completion": "0.00000065",
+      "input_cache_read": "0.000000027",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "temperature",
+      "max_tokens",
+      "top_p",
+      "stop",
+      "frequency_penalty",
+      "logit_bias",
+      "parallel_tool_calls",
+      "presence_penalty",
+      "seed",
+      "response_format",
+      "tools",
+      "tool_choice",
+      "logprobs",
+      "top_logprobs",
+      "structured_outputs",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4-flash-0731",
+    "provider_name": "Wafer",
+    "tag": "wafer/fast",
+    "pricing": {
+      "prompt": "0.00000012",
+      "completion": "0.0000007",
+      "input_cache_read": "0.00000005",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "temperature",
+      "top_p",
+      "top_k",
+      "min_p",
+      "frequency_penalty",
+      "presence_penalty",
+      "repetition_penalty",
+      "stop",
+      "seed",
+      "max_tokens",
+      "logit_bias",
+      "response_format",
+      "structured_outputs",
+      "logprobs",
+      "top_logprobs",
+      "tools",
+      "tool_choice",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4-flash-0731",
+    "provider_name": "DigitalOcean",
+    "tag": "digitalocean",
+    "pricing": {
+      "prompt": "0.000000119",
+      "completion": "0.000000238",
+      "input_cache_read": "0.0000000238",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "temperature",
+      "top_p",
+      "max_tokens",
+      "response_format",
+      "tools",
+      "tool_choice",
+      "logprobs",
+      "top_logprobs",
+      "structured_outputs",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4-flash-0731",
+    "provider_name": "Sail Research",
+    "tag": "sail-research/fp4",
+    "pricing": {
+      "prompt": "0.000000019",
+      "completion": "0.0000003",
+      "input_cache_read": "0.000000014",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "response_format",
+      "tools",
+      "tool_choice",
+      "structured_outputs",
+      "logprobs",
+      "top_logprobs",
+      "temperature",
+      "top_p",
+      "top_k",
+      "frequency_penalty",
+      "presence_penalty",
+      "stop",
+      "seed",
+      "max_tokens",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4-flash-0731",
+    "provider_name": "CoreWeave",
+    "tag": "coreweave/fp8",
+    "pricing": {
+      "prompt": "0.00000013",
+      "completion": "0.00000028",
+      "input_cache_read": "0.00000007",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "top_k",
+      "repetition_penalty",
+      "frequency_penalty",
+      "presence_penalty",
+      "stop",
+      "seed",
+      "tools",
+      "tool_choice",
+      "logprobs",
+      "top_logprobs",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4-flash-0731",
+    "provider_name": "Phala",
+    "tag": "phala",
+    "pricing": {
+      "prompt": "0.000000308",
+      "completion": "0.000000924",
+      "input_cache_read": "0.0000000196",
+      "discount": 0.3
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "stop",
+      "frequency_penalty",
+      "presence_penalty",
+      "seed",
+      "top_k",
+      "min_p",
+      "repetition_penalty",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4-flash-0731",
+    "provider_name": "Together",
+    "tag": "together",
+    "pricing": {
+      "prompt": "0.00000014",
+      "completion": "0.00000028",
+      "input_cache_read": "0.00000003",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "stop",
+      "frequency_penalty",
+      "presence_penalty",
+      "top_k",
+      "repetition_penalty",
+      "logit_bias",
+      "min_p",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4-flash-0731",
+    "provider_name": "Morph",
+    "tag": "morph/bf16",
+    "pricing": {
+      "prompt": "0.000000142",
+      "completion": "0.0000004",
+      "input_cache_read": "0.000000036",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "stop",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "logprobs",
+      "top_logprobs",
+      "top_p",
+      "top_k",
+      "min_p",
+      "frequency_penalty",
+      "presence_penalty",
+      "repetition_penalty",
+      "seed",
+      "logit_bias",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4-flash-0731",
+    "provider_name": "Mancer 2",
+    "tag": "mancer/fp8",
+    "pricing": {
+      "prompt": "0.0000002",
+      "completion": "0.0000006",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "stop",
+      "frequency_penalty",
+      "presence_penalty",
+      "repetition_penalty",
+      "logit_bias",
+      "top_k",
+      "min_p",
+      "seed",
+      "top_a",
+      "response_format",
+      "logprobs",
+      "top_logprobs",
+      "tools",
+      "tool_choice",
+      "structured_outputs",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4-flash-0731",
+    "provider_name": "Novita",
+    "tag": "novita/fp8",
+    "pricing": {
+      "prompt": "0.0000004092",
+      "completion": "0.0000012276",
+      "input_cache_read": "0.00000002604",
+      "discount": 0.07
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "stop",
+      "frequency_penalty",
+      "presence_penalty",
+      "seed",
+      "top_k",
+      "repetition_penalty",
+      "tools",
+      "response_format",
+      "tool_choice",
+      "logprobs",
+      "top_logprobs",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4-flash-0731",
+    "provider_name": "BaseTen",
+    "tag": "baseten/fp8",
+    "pricing": {
+      "prompt": "0.00000013",
+      "completion": "0.00000026",
+      "input_cache_read": "0.000000028",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "stop",
+      "frequency_penalty",
+      "presence_penalty",
+      "tools",
+      "tool_choice",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4-flash-0731",
+    "provider_name": "Venice",
+    "tag": "venice",
+    "pricing": {
+      "prompt": "0.000000175",
+      "completion": "0.00000035",
+      "input_cache_read": "0.000000035",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "stop",
+      "frequency_penalty",
+      "presence_penalty",
+      "top_k",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4-flash-0731",
+    "provider_name": "DeepInfra",
+    "tag": "deepinfra/fp8",
+    "pricing": {
+      "prompt": "0.00000006",
+      "completion": "0.00000018",
+      "input_cache_read": "0.000000015",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "stop",
+      "frequency_penalty",
+      "presence_penalty",
+      "repetition_penalty",
+      "top_k",
+      "seed",
+      "min_p",
+      "tools",
+      "tool_choice",
+      "structured_outputs",
+      "logit_bias",
+      "response_format",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4-flash-0731",
+    "provider_name": "Parasail",
+    "tag": "parasail/fp8",
+    "pricing": {
+      "prompt": "0.00000014",
+      "completion": "0.00000028",
+      "input_cache_read": "0.00000005",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "max_tokens",
+      "temperature",
+      "top_p",
+      "frequency_penalty",
+      "presence_penalty",
+      "repetition_penalty",
+      "seed",
+      "stop",
+      "top_k",
+      "logit_bias",
+      "structured_outputs",
+      "response_format",
+      "tools",
+      "tool_choice",
+      "logprobs",
+      "top_logprobs",
+      "reasoning_effort"
+    ]
+  },
+  {
+    "model_id": "deepseek/deepseek-v4-flash-0731",
+    "provider_name": "SiliconFlow",
+    "tag": "siliconflow/fp8",
+    "pricing": {
+      "prompt": "0.00000022",
+      "completion": "0.00000066",
+      "input_cache_read": "0.000000028",
+      "discount": 0
+    },
+    "supported_parameters": [
+      "reasoning",
+      "include_reasoning",
+      "temperature",
+      "top_p",
+      "top_k",
+      "frequency_penalty",
+      "max_tokens",
+      "response_format",
+      "structured_outputs",
+      "tools",
+      "tool_choice",
+      "reasoning_effort"
+    ]
+  }
+]

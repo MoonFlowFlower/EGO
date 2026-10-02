@@ -1,0 +1,11 @@
+{
+  "seconds": 0.7622448000038275,
+  "checks": {
+    "extra_top": true,
+    "extra_cell": true,
+    "inventory_payload": true,
+    "material_payload": true,
+    "world_payload": true,
+    "malformed_for_denied": true
+  }
+}

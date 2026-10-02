@@ -1,0 +1,26 @@
+{
+  "sample_count": 78,
+  "coverage": "partial late episode only; not full-run continuous monitoring",
+  "first_unix_s": 1790975094.5386233,
+  "last_unix_s": 1790975178.0004764,
+  "all_ac_online": true,
+  "ranges": {
+    "gpu_C": {
+      "min": 69.0,
+      "max": 80.0
+    },
+    "graphics_MHz": {
+      "min": 682.0,
+      "max": 2295.0
+    },
+    "gpu_memory_MiB": {
+      "min": 8611.0,
+      "max": 9035.0
+    },
+    "gpu_W": {
+      "min": 28.48,
+      "max": 133.37
+    }
+  },
+  "raw_local": "runs/phase0/p3_lmstudio_thermal.json"
+}

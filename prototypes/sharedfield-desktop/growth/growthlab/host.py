@@ -18,7 +18,7 @@ class Host:
         if len(set(self.actions)) != len(ACTIONS): raise ValueError('action_alias_collision')
         self.done = False
         self.world = uuid.uuid4().hex  # opaque; no seed or rule identity
-        self.env.reset()
+        self.last_frame = self.env.reset().copy()
         self.previous = self.env._player.pos.copy()
         self.delta = [0,0]
 
@@ -33,9 +33,12 @@ class Host:
                 material = material if material in MATERIALS else 'unknown'
                 entity = type(obj).__name__.lower() if obj else None
                 if entity not in ENTITIES: entity = None
+                visible_state=None
+                if entity=='plant':visible_state={'plant_ripe':obj.texture=='plant-ripe'}
+                if entity=='arrow':visible_state={'arrow_direction':obj.texture.removeprefix('arrow-')}
                 cells.append({'dx':dx,'dy':dy,'material':self.aliases.get(material,material),
-                              'entity':self.aliases.get(entity,entity)})
-        return validate({'schema':'growth.obs.v1','tick':int(self.env._step),'world':self.world,
+                              'entity':self.aliases.get(entity,entity),'visible_state':visible_state})
+        return validate({'schema':'growth.obs.v1.1','tick':int(self.env._step),'world':self.world,
             'needs':{k:int(p.inventory[k]) for k in NEEDS},
             'inventory':{self.aliases.get(k,k):int(p.inventory[k]) for k in ITEMS},
             'light':round(light,4),'radius':radius,'cells':cells,
@@ -46,7 +49,8 @@ class Host:
         public_action(action,self.actions)
         if self.done: raise ValueError('episode_finished')
         before = self.env._player.pos.copy()
-        _, _, self.done, _ = self.env.step(self.actions.index(action))
+        frame, _, self.done, _ = self.env.step(self.actions.index(action))
+        self.last_frame=frame.copy()
         self.delta = [int(v) for v in self.env._player.pos - before]
         return self.observe()
 

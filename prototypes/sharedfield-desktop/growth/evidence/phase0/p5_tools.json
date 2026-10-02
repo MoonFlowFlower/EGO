@@ -1,0 +1,74 @@
+{
+  "seconds": 1.174138899994432,
+  "checks": {
+    "privileged_keys_removed": true,
+    "synthetic_not_human": true,
+    "aligned_complete_5_steps": true,
+    "incomplete_rejected": true
+  },
+  "conversion": {
+    "steps": 5,
+    "dropped_raw_fields": [
+      "image",
+      "reward",
+      "discount",
+      "semantic",
+      "player_pos",
+      "achievement_collect_coal",
+      "achievement_collect_diamond",
+      "achievement_collect_drink",
+      "achievement_collect_iron",
+      "achievement_collect_sapling",
+      "achievement_collect_stone",
+      "achievement_collect_wood",
+      "achievement_defeat_skeleton",
+      "achievement_defeat_zombie",
+      "achievement_eat_cow",
+      "achievement_eat_plant",
+      "achievement_make_iron_pickaxe",
+      "achievement_make_iron_sword",
+      "achievement_make_stone_pickaxe",
+      "achievement_make_stone_sword",
+      "achievement_make_wood_pickaxe",
+      "achievement_make_wood_sword",
+      "achievement_place_furnace",
+      "achievement_place_plant",
+      "achievement_place_stone",
+      "achievement_place_table",
+      "achievement_wake_up",
+      "ainventory_health",
+      "ainventory_food",
+      "ainventory_drink",
+      "ainventory_energy",
+      "ainventory_sapling",
+      "ainventory_wood",
+      "ainventory_stone",
+      "ainventory_coal",
+      "ainventory_iron",
+      "ainventory_diamond",
+      "ainventory_wood_pickaxe",
+      "ainventory_stone_pickaxe",
+      "ainventory_iron_pickaxe",
+      "ainventory_wood_sword",
+      "ainventory_stone_sword",
+      "ainventory_iron_sword"
+    ],
+    "complete": true,
+    "source": "synthetic_tool_smoke"
+  },
+  "owner_demonstration": "未验证; pending owner play",
+  "telemetry": [
+    {
+      "unix_s": 1790975571.4101715,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "59, 435, 9118, 21.08",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975572.5282145,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "59, 480, 9122, 20.71",
+      "gpu_returncode": 0
+    }
+  ]
+}

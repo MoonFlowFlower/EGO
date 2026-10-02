@@ -81,7 +81,7 @@ def worker(pipe,source):
     finally: pipe.close()
 
 
-def run(source, observe, act, *, max_steps=32, timeout_s=2.):
+def run(source, observe, act, *, max_steps=32, timeout_s=2., cancel=None):
     start=time.perf_counter(); steps=0
     record={'source_sha256':hashlib.sha256(source.encode()).hexdigest(),'steps':0}
     try: parse(source)
@@ -92,6 +92,7 @@ def run(source, observe, act, *, max_steps=32, timeout_s=2.):
     status='timeout'; reason='wall_clock_limit'
     try:
         while time.perf_counter()-start < timeout_s:
+            if cancel is not None and cancel.is_set():status,reason='cancelled','owner_takeover';break
             if not parent.poll(min(.02,max(0,timeout_s-(time.perf_counter()-start)))):
                 if not p.is_alive(): status,reason='denied','worker_exit'; break
                 continue

@@ -1,0 +1,30 @@
+{
+  "backend": "cloud",
+  "model": "deepseek/deepseek-v4-flash-0731",
+  "route": "deepinfra/fp8",
+  "seed": 11,
+  "episode_length_limit_steps": 180,
+  "environment_steps": 0,
+  "done": false,
+  "decisions": 0,
+  "seconds": 1.6173068000061903,
+  "failure_or_stop": "http_429",
+  "latency_median_s": null,
+  "latency_max_s": null,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "reported_cost_usd": 0,
+  "missing_cost_receipts": 0,
+  "budget_reserved_or_reported_usd": 0.05,
+  "achievements_owner_only": {},
+  "telemetry": [
+    {
+      "unix_s": 1790974700.59367,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "79, 2040, 4104, 108.43",
+      "gpu_returncode": 0
+    }
+  ],
+  "claim_ceiling": "engineering baseline only; no ability or learning evidence",
+  "raw_retention_days": 7
+}

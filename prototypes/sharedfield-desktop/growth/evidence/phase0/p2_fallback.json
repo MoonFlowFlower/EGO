@@ -1,0 +1,30 @@
+{
+  "backend": "cloud",
+  "model": "qwen/qwen3.5-flash-02-23",
+  "route": "alibaba",
+  "seed": 11,
+  "episode_length_limit_steps": 180,
+  "environment_steps": 0,
+  "done": false,
+  "decisions": 0,
+  "seconds": 0.9897772999975132,
+  "failure_or_stop": "http_404",
+  "latency_median_s": null,
+  "latency_max_s": null,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "reported_cost_usd": 0,
+  "missing_cost_receipts": 0,
+  "budget_reserved_or_reported_usd": 0.1,
+  "achievements_owner_only": {},
+  "telemetry": [
+    {
+      "unix_s": 1790974760.1339583,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "66, 1672, 2961, 45.58",
+      "gpu_returncode": 0
+    }
+  ],
+  "claim_ceiling": "engineering baseline only; no ability or learning evidence",
+  "raw_retention_days": 7
+}

@@ -7,7 +7,8 @@ import json
 import sqlite3
 import uuid
 
-KINDS={'experience','skill','map','fact','self','preference','project','summary','index','cache','profile'}
+KINDS={'experience','skill','general_rule','map','fact','self','preference','project','summary','index','cache','profile'}
+GLOBAL_KINDS={'skill','general_rule','self','preference'}
 
 
 class Store:
@@ -24,30 +25,38 @@ class Store:
         CREATE TABLE IF NOT EXISTS deps(
           child TEXT REFERENCES records(id) ON DELETE CASCADE,
           parent TEXT REFERENCES records(id) ON DELETE CASCADE,
+          relation TEXT NOT NULL CHECK(relation IN ('derived','correction')),
           PRIMARY KEY(child,parent));
         CREATE TABLE IF NOT EXISTS models(id TEXT PRIMARY KEY);
         ''')
 
-    def put(self,kind,body,source,*,world=None,personal=False,parents=()):
+        columns={r[1] for r in self.db.execute('PRAGMA table_info(deps)')}
+        if 'relation' not in columns:
+            # Old probe DBs do not distinguish edges; do not guess a migration.
+            self.db.close();raise ValueError('legacy_relationship_schema_requires_explicit_migration')
+
+    def put(self,kind,body,source,*,world=None,personal=False,parents=(),relation='derived'):
         if kind not in KINDS or not source: raise ValueError('metadata_required')
-        if kind=='map' and world is None: raise ValueError('world_required')
+        if relation not in ('derived','correction'):raise ValueError('relation_required')
+        if kind in ('map','fact') and world is None: raise ValueError('world_required')
         if kind=='project' and body.get('type')=='world' and world is None: raise ValueError('world_required')
         with self.db:
             for parent in parents:
                 row=self.db.execute('SELECT personal,world FROM records WHERE id=?',(parent,)).fetchone()
                 if not row: raise ValueError('missing_parent')
                 personal=personal or bool(row[0])
-                if row[1] is not None and world!=row[1]: raise ValueError('scope_leak')
+                can_generalize=world is None and (kind in GLOBAL_KINDS or (kind=='project' and body.get('type')=='skill'))
+                if row[1] is not None and world!=row[1] and not can_generalize: raise ValueError('scope_leak')
             identity=uuid.uuid4().hex
             self.db.execute('INSERT INTO records VALUES (?,?,?,?,?,?,?,?)',
                 (identity,kind,'world' if world else 'global',world,'active',int(personal),json.dumps(body,ensure_ascii=False),source))
-            self.db.executemany('INSERT INTO deps VALUES (?,?)',[(identity,p) for p in parents])
+            self.db.executemany('INSERT INTO deps VALUES (?,?,?)',[(identity,p,relation) for p in parents])
         return identity
 
     def correct(self,old,body,source):
         row=self.db.execute('SELECT kind,world,personal FROM records WHERE id=?',(old,)).fetchone()
         if row is None: raise ValueError('missing_record')
-        new=self.put(row[0],body,source,world=row[1],personal=bool(row[2]),parents=[old])
+        new=self.put(row[0],body,source,world=row[1],personal=bool(row[2]),parents=[old],relation='correction')
         with self.db: self.db.execute("UPDATE records SET status='superseded' WHERE id=?",(old,))
         return new
 
@@ -59,7 +68,12 @@ class Store:
     def delete_private(self,identity):
         row=self.db.execute('SELECT personal FROM records WHERE id=?',(identity,)).fetchone()
         if not row or not row[0]: raise ValueError('not_private')
-        ids={identity}
+        heads={identity}
+        while True:
+            found={r[1] for r in self.db.execute("SELECT child,parent FROM deps WHERE relation='correction'") if r[0] in heads}
+            if found<=heads:break
+            heads|=found
+        ids=set(heads)
         while True:
             found={r[0] for r in self.db.execute('SELECT child,parent FROM deps') if r[1] in ids}
             if found<=ids: break

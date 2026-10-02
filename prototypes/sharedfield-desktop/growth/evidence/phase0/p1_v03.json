@@ -1,0 +1,14 @@
+{
+  "seconds": 0.7188410000089789,
+  "checks": {
+    "unripe_texture_state": true,
+    "ripe_texture_state": true,
+    "arrow_right": true,
+    "arrow_left": true,
+    "arrow_down": true,
+    "arrow_up": true,
+    "night_hidden_plant_not_emitted": true,
+    "hud_counters_not_added": true
+  },
+  "schema": "growth.obs.v1.1"
+}

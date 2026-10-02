@@ -1,0 +1,63 @@
+{
+  "seconds": 4.313226799989934,
+  "rows": [
+    {
+      "world_evaluator_only": "A",
+      "strategy": "direct",
+      "steps": 1,
+      "wood_pickaxe": 1
+    },
+    {
+      "world_evaluator_only": "A",
+      "strategy": "universal",
+      "steps": 2,
+      "wood_pickaxe": 1
+    },
+    {
+      "world_evaluator_only": "A",
+      "strategy": "diagnose_then_gather",
+      "steps": 3,
+      "wood_pickaxe": 2
+    },
+    {
+      "world_evaluator_only": "B",
+      "strategy": "direct",
+      "steps": 1,
+      "wood_pickaxe": 0
+    },
+    {
+      "world_evaluator_only": "B",
+      "strategy": "universal",
+      "steps": 2,
+      "wood_pickaxe": 1
+    },
+    {
+      "world_evaluator_only": "B",
+      "strategy": "diagnose_then_gather",
+      "steps": 3,
+      "wood_pickaxe": 1
+    }
+  ],
+  "checks": {
+    "A_optimal_1_step": true,
+    "B_direct_fails": true,
+    "universal_2_steps_both_succeed": true,
+    "world_ids_random_v4": true
+  },
+  "information_channel": "P1 inventory delta after make_wood_pickaxe",
+  "diagnostic_cost_steps": 1,
+  "optimal_steps": {
+    "A": 1,
+    "B": 2
+  },
+  "universal_steps": {
+    "A": 2,
+    "B": 2
+  },
+  "universal_excess_steps": {
+    "A": 1,
+    "B": 0
+  },
+  "suitability": "not suitable for success-only rule-recognition test; only 1 step overhead in A, zero in B",
+  "lower_bound": "A needs at least a make action; B starts with 2 wood and requires 3, so at least one collection plus one make. Facing tree permits do immediately."
+}

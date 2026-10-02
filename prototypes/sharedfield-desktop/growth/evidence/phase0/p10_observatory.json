@@ -1,0 +1,32 @@
+{
+  "seconds": 6.9686936000071,
+  "checks": {
+    "takeover_action": true,
+    "handoff_resumes": true,
+    "owner_payload_denied": true,
+    "formal_control_denied": true,
+    "owner_render_world_unchanged": true,
+    "inflight_action_discarded": true,
+    "owner_canary_not_in_model": true,
+    "complete_episode_replay": true
+  },
+  "replay": {
+    "frames": 30,
+    "observation_mismatches": 0,
+    "done": true
+  },
+  "telemetry": [
+    {
+      "unix_s": 1790975358.3282566,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "63, 1417, 8715, 41.10",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975365.2396135,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "64, 1327, 8715, 40.23",
+      "gpu_returncode": 0
+    }
+  ]
+}

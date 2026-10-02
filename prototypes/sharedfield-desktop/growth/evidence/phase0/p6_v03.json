@@ -1,0 +1,14 @@
+{
+  "seconds": 0.12778229999821633,
+  "checks": {
+    "world_a_experience_to_global_skill_in_b": true,
+    "world_a_map_not_in_b": true,
+    "provenance_link_retained": true,
+    "cross_world_map_denied": true,
+    "delete_new_version_removes_all_six": true,
+    "old_versions_absent": true,
+    "unrelated_skill_survives": true,
+    "private_marker_absent_database_bytes": true
+  },
+  "deleted_records": 6
+}

@@ -1,0 +1,212 @@
+{
+  "backend": "lmstudio",
+  "model": "growth-p3",
+  "route": null,
+  "seed": 11,
+  "episode_length_limit_steps": 180,
+  "environment_steps": 30,
+  "done": true,
+  "decisions": 30,
+  "seconds": 195.81476159999147,
+  "failure_or_stop": null,
+  "latency_median_s": 6.363015899994934,
+  "latency_max_s": 9.003247199987527,
+  "input_tokens": 56963,
+  "output_tokens": 1428,
+  "reported_cost_usd": 0,
+  "missing_cost_receipts": 0,
+  "budget_reserved_or_reported_usd": 0,
+  "achievements_owner_only": {
+    "collect_wood": 1
+  },
+  "telemetry": [
+    {
+      "unix_s": 1790974982.1286254,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "69, 1522, 9216, 47.38",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790974987.2679214,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "72, 1672, 9205, 66.12",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790974992.3587012,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "70, 1672, 9209, 67.26",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790974997.570343,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "74, 1462, 9177, 61.51",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975002.9910653,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "72, 1845, 9184, 72.08",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975008.7201092,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "75, 1612, 9177, 65.50",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975014.6102853,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "71, 1417, 9162, 39.19",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975020.381919,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "73, 1372, 8816, 59.15",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975026.2945585,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "72, 1125, 8709, 51.93",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975031.9444287,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "70, 1095, 8710, 52.62",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975038.2756796,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "71, 907, 8724, 51.62",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975047.3647623,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "73, 960, 8690, 49.19",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975054.6499956,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "71, 1170, 8704, 51.51",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975061.6748004,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "70, 1237, 8710, 55.83",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975068.901977,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "74, 1432, 8700, 55.90",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975074.4758632,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "72, 1125, 8700, 50.87",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975080.5793579,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "70, 1020, 8623, 53.13",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975087.9202502,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "70, 1102, 8628, 55.31",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975094.202368,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "71, 1530, 8925, 55.89",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975101.738535,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "72, 1110, 8772, 53.94",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975109.0040367,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "71, 1132, 8611, 48.95",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975116.0946555,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "72, 1110, 8613, 49.01",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975123.065785,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "71, 1057, 8624, 52.51",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975130.1220121,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "71, 1117, 8614, 52.25",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975136.6527617,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "72, 1065, 8614, 54.43",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975143.030931,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "74, 1095, 8614, 54.17",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975149.5834117,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "71, 832, 8616, 48.17",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975155.9832256,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "73, 1560, 8744, 53.89",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975163.0092192,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "72, 1740, 8621, 38.60",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975170.3304777,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "73, 1507, 8613, 61.70",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790975177.8609192,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "73, 1590, 8622, 62.62",
+      "gpu_returncode": 0
+    }
+  ],
+  "claim_ceiling": "engineering baseline only; no ability or learning evidence",
+  "raw_retention_days": 7
+}

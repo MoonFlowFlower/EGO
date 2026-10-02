@@ -1,0 +1,40 @@
+{
+  "seconds": 2.7826209999911953,
+  "checks": {
+    "publish_never_renders": true,
+    "publish_does_not_change_world_or_rng": true,
+    "snapshot_copy_not_live": true,
+    "backpressure_drops_frames": true,
+    "takeover_clears_macro": true,
+    "takeover_cancels_skill": true,
+    "stale_response_zero_actions": true,
+    "handoff_fresh_observation": true,
+    "owner_canary_absent_policy": true,
+    "bad_origin_rejected": true,
+    "bad_token_rejected": true,
+    "valid_control_queued": true,
+    "unknown_channel_denied": true,
+    "loopback_binding_False": true,
+    "formal_server_rejects_control": true,
+    "formal_queue_empty": true,
+    "loopback_binding_True": true
+  },
+  "copy_publish_mean_ms": 0.5287115389084927,
+  "copy_publish_max_ms": 0.7362000033026561,
+  "dropped_frames": 102,
+  "telemetry": [
+    {
+      "unix_s": 1790976570.9871948,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "60, 952, 2831, 28.17",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790976573.7165508,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "60, 735, 2891, 27.63",
+      "gpu_returncode": 0
+    }
+  ],
+  "scope": "copied step frames; closed-language skill cancellation; delayed transport fixture, not a real cancelled cloud request"
+}
