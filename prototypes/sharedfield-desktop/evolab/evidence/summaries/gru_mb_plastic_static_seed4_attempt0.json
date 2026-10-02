@@ -1,0 +1,195 @@
+{
+  "label": "gru_mb_plastic_static_seed4_attempt0",
+  "arm": "gru_mb_plastic",
+  "regime": "static",
+  "seed": 4,
+  "attempt": 0,
+  "config_sha256": "134d90c1d7e935be720d73445784b488818c16744c8d29f98f177c97493e14a8",
+  "prereg_sha256": "B0B8E3939A3CF22B1FB7071E576CAE8AA9EC71D93CC25D33635D131FCC15E082",
+  "status": "COMPLETE",
+  "source_commit": "7d6454863dd92e3aa11685735b1986487ae884f1",
+  "generation": 400,
+  "wall_seconds": 85.94977189999918,
+  "training_final": {
+    "mean": 0.10007487127586501,
+    "ci95": [
+      0.0998359389777761,
+      0.1004635431454517
+    ],
+    "episodes": 1024
+  },
+  "random_baseline": {
+    "mean": 0.07881966041895794,
+    "ci95": [
+      0.07784306537823796,
+      0.07990299363445956
+    ],
+    "episodes": 1024
+  },
+  "validity_pass": true,
+  "curve": [
+    {
+      "generation": 20,
+      "population_mean": 0.10480078309774399,
+      "population_max": 0.1339999884366989,
+      "seconds": 0.6280792000034126,
+      "development_mean": 0.09609895944595337,
+      "gpu_telemetry_csv": "87, 2287, 11001, 96.92"
+    },
+    {
+      "generation": 40,
+      "population_mean": 0.09877116978168488,
+      "population_max": 0.09883333742618561,
+      "seconds": 0.16949680000107037,
+      "development_mean": 0.10071353614330292,
+      "gpu_telemetry_csv": "87, 2310, 11001, 94.01"
+    },
+    {
+      "generation": 60,
+      "population_mean": 0.10000000149011612,
+      "population_max": 0.10000000149011612,
+      "seconds": 0.171430499998678,
+      "development_mean": 0.09997916221618652,
+      "gpu_telemetry_csv": "86, 2272, 11001, 93.11"
+    },
+    {
+      "generation": 80,
+      "population_mean": 0.10000000149011612,
+      "population_max": 0.10000000149011612,
+      "seconds": 0.1732782999970368,
+      "development_mean": 0.10116666555404663,
+      "gpu_telemetry_csv": "86, 2227, 11001, 90.24"
+    },
+    {
+      "generation": 100,
+      "population_mean": 0.10000000149011612,
+      "population_max": 0.10000000149011612,
+      "seconds": 0.17066409999824828,
+      "development_mean": 0.10116666555404663,
+      "gpu_telemetry_csv": "87, 2295, 11001, 94.02"
+    },
+    {
+      "generation": 120,
+      "population_mean": 0.09869401901960373,
+      "population_max": 0.10000000149011612,
+      "seconds": 0.17223299999750452,
+      "development_mean": 0.10116666555404663,
+      "gpu_telemetry_csv": "87, 2332, 11001, 96.76"
+    },
+    {
+      "generation": 140,
+      "population_mean": 0.10000000149011612,
+      "population_max": 0.10000000149011612,
+      "seconds": 0.15976319999754196,
+      "development_mean": 0.10116666555404663,
+      "gpu_telemetry_csv": "87, 2272, 14001, 93.50"
+    },
+    {
+      "generation": 160,
+      "population_mean": 0.10000000149011612,
+      "population_max": 0.10000000149011612,
+      "seconds": 0.17243529999541352,
+      "development_mean": 0.10149478912353516,
+      "gpu_telemetry_csv": "83, 2272, 11001, 87.88"
+    },
+    {
+      "generation": 180,
+      "population_mean": 0.12232909351587296,
+      "population_max": 0.1224166601896286,
+      "seconds": 0.48217960000329185,
+      "development_mean": 0.10116666555404663,
+      "gpu_telemetry_csv": "87, 2347, 11001, 97.38"
+    },
+    {
+      "generation": 200,
+      "population_mean": 0.10000000149011612,
+      "population_max": 0.10000000149011612,
+      "seconds": 0.17216099999495782,
+      "development_mean": 0.099671870470047,
+      "gpu_telemetry_csv": "87, 2295, 11001, 94.04"
+    },
+    {
+      "generation": 220,
+      "population_mean": 0.10000000149011612,
+      "population_max": 0.10000000149011612,
+      "seconds": 0.16877970000496134,
+      "development_mean": 0.099671870470047,
+      "gpu_telemetry_csv": "87, 2340, 11001, 98.57"
+    },
+    {
+      "generation": 240,
+      "population_mean": 0.10000000149011612,
+      "population_max": 0.10000000149011612,
+      "seconds": 0.1699229000005289,
+      "development_mean": 0.099671870470047,
+      "gpu_telemetry_csv": "87, 2310, 11001, 96.71"
+    },
+    {
+      "generation": 260,
+      "population_mean": 0.10000000149011612,
+      "population_max": 0.10000000149011612,
+      "seconds": 0.16997459999402054,
+      "development_mean": 0.10000000149011612,
+      "gpu_telemetry_csv": "87, 2332, 11001, 96.59"
+    },
+    {
+      "generation": 280,
+      "population_mean": 0.10000000149011612,
+      "population_max": 0.10000000149011612,
+      "seconds": 0.1717726000060793,
+      "development_mean": 0.099671870470047,
+      "gpu_telemetry_csv": "87, 2332, 11001, 95.80"
+    },
+    {
+      "generation": 300,
+      "population_mean": 0.10000000149011612,
+      "population_max": 0.10000000149011612,
+      "seconds": 0.17229560000123456,
+      "development_mean": 0.099671870470047,
+      "gpu_telemetry_csv": "87, 2325, 11001, 95.67"
+    },
+    {
+      "generation": 320,
+      "population_mean": 0.10000000149011612,
+      "population_max": 0.10000000149011612,
+      "seconds": 0.1719742999994196,
+      "development_mean": 0.099671870470047,
+      "gpu_telemetry_csv": "86, 2302, 11001, 94.71"
+    },
+    {
+      "generation": 340,
+      "population_mean": 0.10000000149011612,
+      "population_max": 0.10000000149011612,
+      "seconds": 0.1726870000056806,
+      "development_mean": 0.099671870470047,
+      "gpu_telemetry_csv": "86, 2272, 11001, 93.27"
+    },
+    {
+      "generation": 360,
+      "population_mean": 0.10000000149011612,
+      "population_max": 0.10000000149011612,
+      "seconds": 0.17278449999867007,
+      "development_mean": 0.10000000149011612,
+      "gpu_telemetry_csv": "87, 2295, 11001, 93.79"
+    },
+    {
+      "generation": 380,
+      "population_mean": 0.10000000149011612,
+      "population_max": 0.10000000149011612,
+      "seconds": 0.1735874000005424,
+      "development_mean": 0.10000000149011612,
+      "gpu_telemetry_csv": "86, 2242, 11001, 91.06"
+    },
+    {
+      "generation": 400,
+      "population_mean": 0.10000000149011612,
+      "population_max": 0.10000000149011612,
+      "seconds": 0.16972090000490425,
+      "development_mean": 0.10000000149011612,
+      "gpu_telemetry_csv": "86, 2317, 11001, 94.51"
+    }
+  ],
+  "raw_status": "runs/gru_mb_plastic_static_seed4_attempt0/status.json",
+  "raw_generations": "runs/gru_mb_plastic_static_seed4_attempt0/generations.jsonl",
+  "curve_sampling": "fixed every 20 generations; full raw curve retained in runs"
+}

@@ -1,0 +1,234 @@
+{
+  "scope": "post-run descriptive audit of recorded development outcomes; no new experiments",
+  "rows": [
+    {
+      "arm": "gru_fixed",
+      "regime": "drift",
+      "seed": 0,
+      "minimum_lifetime_steps": 150,
+      "maximum_lifetime_steps": 150,
+      "mean_lifetime_steps": 150.0,
+      "fraction_below_200_steps": 1.0,
+      "fraction_exactly_150_steps": 1.0,
+      "wall_seconds": 60.89044360000116
+    },
+    {
+      "arm": "gru_fixed",
+      "regime": "drift",
+      "seed": 1,
+      "minimum_lifetime_steps": 150,
+      "maximum_lifetime_steps": 150,
+      "mean_lifetime_steps": 150.0,
+      "fraction_below_200_steps": 1.0,
+      "fraction_exactly_150_steps": 1.0,
+      "wall_seconds": 43.086228300002404
+    },
+    {
+      "arm": "gru_fixed",
+      "regime": "drift",
+      "seed": 2,
+      "minimum_lifetime_steps": 87,
+      "maximum_lifetime_steps": 406,
+      "mean_lifetime_steps": 150.6328125,
+      "fraction_below_200_steps": 0.9970703125,
+      "fraction_exactly_150_steps": 0.9921875,
+      "wall_seconds": 53.94227229999524
+    },
+    {
+      "arm": "gru_fixed",
+      "regime": "drift",
+      "seed": 3,
+      "minimum_lifetime_steps": 150,
+      "maximum_lifetime_steps": 150,
+      "mean_lifetime_steps": 150.0,
+      "fraction_below_200_steps": 1.0,
+      "fraction_exactly_150_steps": 1.0,
+      "wall_seconds": 51.0492196999985
+    },
+    {
+      "arm": "gru_fixed",
+      "regime": "drift",
+      "seed": 4,
+      "minimum_lifetime_steps": 87,
+      "maximum_lifetime_steps": 511,
+      "mean_lifetime_steps": 150.44921875,
+      "fraction_below_200_steps": 0.998046875,
+      "fraction_exactly_150_steps": 0.9951171875,
+      "wall_seconds": 49.47057800000039
+    },
+    {
+      "arm": "gru_fixed",
+      "regime": "static",
+      "seed": 0,
+      "minimum_lifetime_steps": 150,
+      "maximum_lifetime_steps": 150,
+      "mean_lifetime_steps": 150.0,
+      "fraction_below_200_steps": 1.0,
+      "fraction_exactly_150_steps": 1.0,
+      "wall_seconds": 101.46740259999933
+    },
+    {
+      "arm": "gru_fixed",
+      "regime": "static",
+      "seed": 1,
+      "minimum_lifetime_steps": 150,
+      "maximum_lifetime_steps": 150,
+      "mean_lifetime_steps": 150.0,
+      "fraction_below_200_steps": 1.0,
+      "fraction_exactly_150_steps": 1.0,
+      "wall_seconds": 89.82733739999821
+    },
+    {
+      "arm": "gru_fixed",
+      "regime": "static",
+      "seed": 2,
+      "minimum_lifetime_steps": 87,
+      "maximum_lifetime_steps": 724,
+      "mean_lifetime_steps": 151.0126953125,
+      "fraction_below_200_steps": 0.9970703125,
+      "fraction_exactly_150_steps": 0.9921875,
+      "wall_seconds": 115.34735899999941
+    },
+    {
+      "arm": "gru_fixed",
+      "regime": "static",
+      "seed": 3,
+      "minimum_lifetime_steps": 87,
+      "maximum_lifetime_steps": 150,
+      "mean_lifetime_steps": 149.9140625,
+      "fraction_below_200_steps": 1.0,
+      "fraction_exactly_150_steps": 0.998046875,
+      "wall_seconds": 99.92381929999829
+    },
+    {
+      "arm": "gru_fixed",
+      "regime": "static",
+      "seed": 4,
+      "minimum_lifetime_steps": 87,
+      "maximum_lifetime_steps": 504,
+      "mean_lifetime_steps": 150.5185546875,
+      "fraction_below_200_steps": 0.998046875,
+      "fraction_exactly_150_steps": 0.99609375,
+      "wall_seconds": 91.07722820000345
+    },
+    {
+      "arm": "gru_mb_plastic",
+      "regime": "drift",
+      "seed": 0,
+      "minimum_lifetime_steps": 150,
+      "maximum_lifetime_steps": 150,
+      "mean_lifetime_steps": 150.0,
+      "fraction_below_200_steps": 1.0,
+      "fraction_exactly_150_steps": 1.0,
+      "wall_seconds": 75.28672050000023
+    },
+    {
+      "arm": "gru_mb_plastic",
+      "regime": "drift",
+      "seed": 1,
+      "minimum_lifetime_steps": 150,
+      "maximum_lifetime_steps": 150,
+      "mean_lifetime_steps": 150.0,
+      "fraction_below_200_steps": 1.0,
+      "fraction_exactly_150_steps": 1.0,
+      "wall_seconds": 79.24240100000316
+    },
+    {
+      "arm": "gru_mb_plastic",
+      "regime": "drift",
+      "seed": 2,
+      "minimum_lifetime_steps": 87,
+      "maximum_lifetime_steps": 488,
+      "mean_lifetime_steps": 150.265625,
+      "fraction_below_200_steps": 0.9990234375,
+      "fraction_exactly_150_steps": 0.9951171875,
+      "wall_seconds": 87.19841789999919
+    },
+    {
+      "arm": "gru_mb_plastic",
+      "regime": "drift",
+      "seed": 3,
+      "minimum_lifetime_steps": 149,
+      "maximum_lifetime_steps": 150,
+      "mean_lifetime_steps": 149.9990234375,
+      "fraction_below_200_steps": 1.0,
+      "fraction_exactly_150_steps": 0.9990234375,
+      "wall_seconds": 80.57956410000043
+    },
+    {
+      "arm": "gru_mb_plastic",
+      "regime": "drift",
+      "seed": 4,
+      "minimum_lifetime_steps": 87,
+      "maximum_lifetime_steps": 376,
+      "mean_lifetime_steps": 150.099609375,
+      "fraction_below_200_steps": 0.9990234375,
+      "fraction_exactly_150_steps": 0.9970703125,
+      "wall_seconds": 83.62893739999708
+    },
+    {
+      "arm": "gru_mb_plastic",
+      "regime": "static",
+      "seed": 0,
+      "minimum_lifetime_steps": 150,
+      "maximum_lifetime_steps": 150,
+      "mean_lifetime_steps": 150.0,
+      "fraction_below_200_steps": 1.0,
+      "fraction_exactly_150_steps": 1.0,
+      "wall_seconds": 88.76179940000293
+    },
+    {
+      "arm": "gru_mb_plastic",
+      "regime": "static",
+      "seed": 1,
+      "minimum_lifetime_steps": 150,
+      "maximum_lifetime_steps": 150,
+      "mean_lifetime_steps": 150.0,
+      "fraction_below_200_steps": 1.0,
+      "fraction_exactly_150_steps": 1.0,
+      "wall_seconds": 91.46530579999671
+    },
+    {
+      "arm": "gru_mb_plastic",
+      "regime": "static",
+      "seed": 2,
+      "minimum_lifetime_steps": 87,
+      "maximum_lifetime_steps": 525,
+      "mean_lifetime_steps": 150.3017578125,
+      "fraction_below_200_steps": 0.9990234375,
+      "fraction_exactly_150_steps": 0.9951171875,
+      "wall_seconds": 95.66924619999918
+    },
+    {
+      "arm": "gru_mb_plastic",
+      "regime": "static",
+      "seed": 3,
+      "minimum_lifetime_steps": 150,
+      "maximum_lifetime_steps": 150,
+      "mean_lifetime_steps": 150.0,
+      "fraction_below_200_steps": 1.0,
+      "fraction_exactly_150_steps": 1.0,
+      "wall_seconds": 82.90582469999936
+    },
+    {
+      "arm": "gru_mb_plastic",
+      "regime": "static",
+      "seed": 4,
+      "minimum_lifetime_steps": 87,
+      "maximum_lifetime_steps": 391,
+      "mean_lifetime_steps": 150.1123046875,
+      "fraction_below_200_steps": 0.9990234375,
+      "fraction_exactly_150_steps": 0.9970703125,
+      "wall_seconds": 85.94977189999918
+    }
+  ],
+  "temperature_C_range": [
+    68.0,
+    90.0
+  ],
+  "graphics_clock_MHz_range": [
+    1830.0,
+    2692.0
+  ],
+  "warning": "Training drift first switches at 200..400. A lifetime below 200 proves no drift exposure; >=200 alone does not prove exposure."
+}

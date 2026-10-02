@@ -1,0 +1,8 @@
+{
+  "pilot_seconds": 75.28672050000023,
+  "twenty_run_hours": 0.4182595583333346,
+  "evaluation_reserve_hours": 1.0,
+  "estimated_total_hours": 1.4182595583333346,
+  "cap_hours": 24,
+  "config_sha256": "134d90c1d7e935be720d73445784b488818c16744c8d29f98f177c97493e14a8"
+}

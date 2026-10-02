@@ -1,0 +1,94 @@
+[
+  {
+    "arm": "gru_fixed",
+    "regime": "static",
+    "final": {
+      "difference": 0.10019270981574664,
+      "ci95": [
+        0.09996731919818558,
+        0.10058190577401546
+      ],
+      "bootstrap_replicates": 10000,
+      "seed_pairs_positive": 5
+    },
+    "random": {
+      "difference": 0.0787404937800602,
+      "ci95": [
+        0.07827484266370448,
+        0.07922401261861522
+      ],
+      "bootstrap_replicates": 10000,
+      "seed_pairs_positive": 5
+    },
+    "pass": true
+  },
+  {
+    "arm": "gru_mb_plastic",
+    "regime": "static",
+    "final": {
+      "difference": 0.10005520981794688,
+      "ci95": [
+        0.09996614731498994,
+        0.10022500148043037
+      ],
+      "bootstrap_replicates": 10000,
+      "seed_pairs_positive": 5
+    },
+    "random": {
+      "difference": 0.0787404937800602,
+      "ci95": [
+        0.07826744037183744,
+        0.07922803938814468
+      ],
+      "bootstrap_replicates": 10000,
+      "seed_pairs_positive": 5
+    },
+    "pass": true
+  },
+  {
+    "arm": "gru_fixed",
+    "regime": "drift",
+    "final": {
+      "difference": 0.1001442723107175,
+      "ci95": [
+        0.099995177266901,
+        0.10040299625430635
+      ],
+      "bootstrap_replicates": 10000,
+      "seed_pairs_positive": 5
+    },
+    "random": {
+      "difference": 0.07906887918288703,
+      "ci95": [
+        0.0785413921340296,
+        0.07962697814313287
+      ],
+      "bootstrap_replicates": 10000,
+      "seed_pairs_positive": 5
+    },
+    "pass": true
+  },
+  {
+    "arm": "gru_mb_plastic",
+    "regime": "drift",
+    "final": {
+      "difference": 0.10004856919404119,
+      "ci95": [
+        0.0999660138506806,
+        0.10020221828413924
+      ],
+      "bootstrap_replicates": 10000,
+      "seed_pairs_positive": 5
+    },
+    "random": {
+      "difference": 0.07906887918288703,
+      "ci95": [
+        0.07854374896753143,
+        0.07964192929395722
+      ],
+      "bootstrap_replicates": 10000,
+      "seed_pairs_positive": 5
+    },
+    "pass": true
+  }
+]

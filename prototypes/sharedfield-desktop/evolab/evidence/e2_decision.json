@@ -1,0 +1,1481 @@
+{
+  "H1": false,
+  "H2": null,
+  "H3": true,
+  "outcome": "negative",
+  "delta": 0.010001940252695933,
+  "delta_static": 0.01000442723176093,
+  "drift_B_minus_A": {
+    "difference": -2.7734371542464942e-05,
+    "ci95": [
+      -0.00011419270376791246,
+      1.5494797844439744e-05
+    ],
+    "bootstrap_replicates": 10000,
+    "seed_pairs_positive": 2
+  },
+  "drift_B_minus_B0": {
+    "difference": -4.388016532175243e-05,
+    "ci95": [
+      -0.00019805008847470162,
+      2.910160515966709e-05
+    ],
+    "bootstrap_replicates": 10000,
+    "seed_pairs_positive": 4
+  },
+  "static_B_minus_A": {
+    "difference": -2.057291130768135e-05,
+    "ci95": [
+      -0.00019115559683996252,
+      0.00017305014327575913
+    ],
+    "bootstrap_replicates": 10000,
+    "seed_pairs_positive": 3
+  },
+  "status": "VALID",
+  "config_sha256": "134d90c1d7e935be720d73445784b488818c16744c8d29f98f177c97493e14a8",
+  "rows": [
+    {
+      "trained_regime": "static",
+      "arm": "gru_fixed",
+      "seed": 0,
+      "condition": "static_holdout",
+      "mean": 0.09999153794342419,
+      "ci95": [
+        0.09997461085004034,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_fixed",
+      "seed": 0,
+      "condition": "drift_fast",
+      "mean": 0.09999153794342419,
+      "ci95": [
+        0.09997461085004034,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_fixed",
+      "seed": 0,
+      "condition": "drift_slow",
+      "mean": 0.09999153794342419,
+      "ci95": [
+        0.09997461085004034,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_fixed",
+      "seed": 1,
+      "condition": "static_holdout",
+      "mean": 0.09999153794342419,
+      "ci95": [
+        0.09997461085004034,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_fixed",
+      "seed": 1,
+      "condition": "drift_fast",
+      "mean": 0.09999153794342419,
+      "ci95": [
+        0.09997461085004034,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_fixed",
+      "seed": 1,
+      "condition": "drift_slow",
+      "mean": 0.09999153794342419,
+      "ci95": [
+        0.09997461085004034,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_fixed",
+      "seed": 2,
+      "condition": "static_holdout",
+      "mean": 0.0999986993992934,
+      "ci95": [
+        0.09999674626305932,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_fixed",
+      "seed": 2,
+      "condition": "drift_fast",
+      "mean": 0.0999986993992934,
+      "ci95": [
+        0.09999674626305932,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_fixed",
+      "seed": 2,
+      "condition": "drift_slow",
+      "mean": 0.0999986993992934,
+      "ci95": [
+        0.09999674626305932,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_fixed",
+      "seed": 3,
+      "condition": "static_holdout",
+      "mean": 0.10015169419784797,
+      "ci95": [
+        0.10000000149011612,
+        0.10045507961331168
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_fixed",
+      "seed": 3,
+      "condition": "drift_fast",
+      "mean": 0.09995898586203111,
+      "ci95": [
+        0.0998769546058611,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_fixed",
+      "seed": 3,
+      "condition": "drift_slow",
+      "mean": 0.09995898586203111,
+      "ci95": [
+        0.0998769546058611,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_fixed",
+      "seed": 4,
+      "condition": "static_holdout",
+      "mean": 0.10008789210405666,
+      "ci95": [
+        0.0998437514717807,
+        0.1004856785730226
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_fixed",
+      "seed": 4,
+      "condition": "drift_fast",
+      "mean": 0.10004036605823785,
+      "ci95": [
+        0.0998437514717807,
+        0.10034244937560288
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_fixed",
+      "seed": 4,
+      "condition": "drift_slow",
+      "mean": 0.10005989730416331,
+      "ci95": [
+        0.0998437514717807,
+        0.10040104312793119
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_plastic",
+      "seed": 0,
+      "condition": "static_holdout",
+      "mean": 0.10000000149011612,
+      "ci95": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_plastic",
+      "seed": 0,
+      "condition": "drift_fast",
+      "mean": 0.10000000149011612,
+      "ci95": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_plastic",
+      "seed": 0,
+      "condition": "drift_slow",
+      "mean": 0.10000000149011612,
+      "ci95": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_frozen",
+      "seed": 0,
+      "condition": "static_holdout",
+      "mean": 0.09997981916967547,
+      "ci95": [
+        0.09995377748418832,
+        0.09999804835388204
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_frozen",
+      "seed": 0,
+      "condition": "drift_fast",
+      "mean": 0.09997981916967547,
+      "ci95": [
+        0.09995377748418832,
+        0.09999804835388204
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_frozen",
+      "seed": 0,
+      "condition": "drift_slow",
+      "mean": 0.09997981916967547,
+      "ci95": [
+        0.09995377748418832,
+        0.09999804835388204
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_plastic",
+      "seed": 1,
+      "condition": "static_holdout",
+      "mean": 0.10000000149011612,
+      "ci95": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_plastic",
+      "seed": 1,
+      "condition": "drift_fast",
+      "mean": 0.10000000149011612,
+      "ci95": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_plastic",
+      "seed": 1,
+      "condition": "drift_slow",
+      "mean": 0.10000000149011612,
+      "ci95": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_frozen",
+      "seed": 1,
+      "condition": "static_holdout",
+      "mean": 0.10019856919097947,
+      "ci95": [
+        0.09999739730847068,
+        0.10059961086517433
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_frozen",
+      "seed": 1,
+      "condition": "drift_fast",
+      "mean": 0.10016276190435747,
+      "ci95": [
+        0.09999739730847068,
+        0.10049218900530832
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_frozen",
+      "seed": 1,
+      "condition": "drift_slow",
+      "mean": 0.10019856919097947,
+      "ci95": [
+        0.09999739730847068,
+        0.10059961086517433
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_plastic",
+      "seed": 2,
+      "condition": "static_holdout",
+      "mean": 0.10020052232721355,
+      "ci95": [
+        0.0998769546058611,
+        0.10072461088566342
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_plastic",
+      "seed": 2,
+      "condition": "drift_fast",
+      "mean": 0.10034570460265968,
+      "ci95": [
+        0.10000000149011612,
+        0.10088606917270226
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_plastic",
+      "seed": 2,
+      "condition": "drift_slow",
+      "mean": 0.10039257961034309,
+      "ci95": [
+        0.10000000149011612,
+        0.1010266941957525
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_frozen",
+      "seed": 2,
+      "condition": "static_holdout",
+      "mean": 0.10049479309236631,
+      "ci95": [
+        0.0999192559696894,
+        0.10125918116445973
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_frozen",
+      "seed": 2,
+      "condition": "drift_fast",
+      "mean": 0.10045963682932779,
+      "ci95": [
+        0.09998372539848788,
+        0.10107422011151357
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_frozen",
+      "seed": 2,
+      "condition": "drift_slow",
+      "mean": 0.1005065118370112,
+      "ci95": [
+        0.09998372539848788,
+        0.10120118957966043
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_plastic",
+      "seed": 3,
+      "condition": "static_holdout",
+      "mean": 0.10000000149011612,
+      "ci95": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_plastic",
+      "seed": 3,
+      "condition": "drift_fast",
+      "mean": 0.10000000149011612,
+      "ci95": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_plastic",
+      "seed": 3,
+      "condition": "drift_slow",
+      "mean": 0.10000000149011612,
+      "ci95": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_frozen",
+      "seed": 3,
+      "condition": "static_holdout",
+      "mean": 0.10004752752138302,
+      "ci95": [
+        0.09999804835388204,
+        0.10014453272015089
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_frozen",
+      "seed": 3,
+      "condition": "drift_fast",
+      "mean": 0.09999088689801283,
+      "ci95": [
+        0.09997330875921762,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_frozen",
+      "seed": 3,
+      "condition": "drift_slow",
+      "mean": 0.09999088689801283,
+      "ci95": [
+        0.09997330875921762,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_plastic",
+      "seed": 4,
+      "condition": "static_holdout",
+      "mean": 0.09991797023394611,
+      "ci95": [
+        0.09979492334969109,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_plastic",
+      "seed": 4,
+      "condition": "drift_fast",
+      "mean": 0.10007356919231825,
+      "ci95": [
+        0.0998769546058611,
+        0.10034375148097752
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_plastic",
+      "seed": 4,
+      "condition": "drift_slow",
+      "mean": 0.10009310043824371,
+      "ci95": [
+        0.0998769546058611,
+        0.10040234521875391
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_frozen",
+      "seed": 4,
+      "condition": "static_holdout",
+      "mean": 0.09988476709986571,
+      "ci95": [
+        0.09973763166635763,
+        0.09999935044470476
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_frozen",
+      "seed": 4,
+      "condition": "drift_fast",
+      "mean": 0.10004036605823785,
+      "ci95": [
+        0.0998437514717807,
+        0.10031119939230848
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "static",
+      "arm": "gru_mb_frozen",
+      "seed": 4,
+      "condition": "drift_slow",
+      "mean": 0.10005989730416331,
+      "ci95": [
+        0.0998437514717807,
+        0.1003732273429705
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_fixed",
+      "seed": 0,
+      "condition": "static_holdout",
+      "mean": 0.10000000149011612,
+      "ci95": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_fixed",
+      "seed": 0,
+      "condition": "drift_fast",
+      "mean": 0.10000000149011612,
+      "ci95": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_fixed",
+      "seed": 0,
+      "condition": "drift_slow",
+      "mean": 0.10000000149011612,
+      "ci95": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_fixed",
+      "seed": 1,
+      "condition": "static_holdout",
+      "mean": 0.10000000149011612,
+      "ci95": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_fixed",
+      "seed": 1,
+      "condition": "drift_fast",
+      "mean": 0.10000000149011612,
+      "ci95": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_fixed",
+      "seed": 1,
+      "condition": "drift_slow",
+      "mean": 0.10000000149011612,
+      "ci95": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_fixed",
+      "seed": 2,
+      "condition": "static_holdout",
+      "mean": 0.09999804835388204,
+      "ci95": [
+        0.0999954441722366,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_fixed",
+      "seed": 2,
+      "condition": "drift_fast",
+      "mean": 0.09999804835388204,
+      "ci95": [
+        0.0999954441722366,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_fixed",
+      "seed": 2,
+      "condition": "drift_slow",
+      "mean": 0.09999804835388204,
+      "ci95": [
+        0.0999954441722366,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_fixed",
+      "seed": 3,
+      "condition": "static_holdout",
+      "mean": 0.10014648586366093,
+      "ci95": [
+        0.10000000149011612,
+        0.10043945461075054
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_fixed",
+      "seed": 3,
+      "condition": "drift_fast",
+      "mean": 0.09997526190272765,
+      "ci95": [
+        0.09992578272795072,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_fixed",
+      "seed": 3,
+      "condition": "drift_slow",
+      "mean": 0.09997526190272765,
+      "ci95": [
+        0.09992578272795072,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_fixed",
+      "seed": 4,
+      "condition": "static_holdout",
+      "mean": 0.09995833481661975,
+      "ci95": [
+        0.09987565251503838,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_fixed",
+      "seed": 4,
+      "condition": "drift_fast",
+      "mean": 0.10011393377499189,
+      "ci95": [
+        0.09999804835388204,
+        0.10034375148097752
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_fixed",
+      "seed": 4,
+      "condition": "drift_slow",
+      "mean": 0.10013346502091736,
+      "ci95": [
+        0.09999804835388204,
+        0.10040234521875391
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_plastic",
+      "seed": 0,
+      "condition": "static_holdout",
+      "mean": 0.10000000149011612,
+      "ci95": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_plastic",
+      "seed": 0,
+      "condition": "drift_fast",
+      "mean": 0.10000000149011612,
+      "ci95": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_plastic",
+      "seed": 0,
+      "condition": "drift_slow",
+      "mean": 0.10000000149011612,
+      "ci95": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_frozen",
+      "seed": 0,
+      "condition": "static_holdout",
+      "mean": 0.09998698058188893,
+      "ci95": [
+        0.0999811211731867,
+        0.0999921889451798
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_frozen",
+      "seed": 0,
+      "condition": "drift_fast",
+      "mean": 0.09998698058188893,
+      "ci95": [
+        0.0999811211731867,
+        0.0999921889451798
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_frozen",
+      "seed": 0,
+      "condition": "drift_slow",
+      "mean": 0.09998698058188893,
+      "ci95": [
+        0.0999811211731867,
+        0.0999921889451798
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_plastic",
+      "seed": 1,
+      "condition": "static_holdout",
+      "mean": 0.10000000149011612,
+      "ci95": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_plastic",
+      "seed": 1,
+      "condition": "drift_fast",
+      "mean": 0.10000000149011612,
+      "ci95": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_plastic",
+      "seed": 1,
+      "condition": "drift_slow",
+      "mean": 0.10000000149011612,
+      "ci95": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_frozen",
+      "seed": 1,
+      "condition": "static_holdout",
+      "mean": 0.0999986993992934,
+      "ci95": [
+        0.09999674626305932,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_frozen",
+      "seed": 1,
+      "condition": "drift_fast",
+      "mean": 0.0999986993992934,
+      "ci95": [
+        0.09999674626305932,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_frozen",
+      "seed": 1,
+      "condition": "drift_slow",
+      "mean": 0.0999986993992934,
+      "ci95": [
+        0.09999674626305932,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_plastic",
+      "seed": 2,
+      "condition": "static_holdout",
+      "mean": 0.09999935044470476,
+      "ci95": [
+        0.09999804835388204,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_plastic",
+      "seed": 2,
+      "condition": "drift_fast",
+      "mean": 0.09999935044470476,
+      "ci95": [
+        0.09999804835388204,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_plastic",
+      "seed": 2,
+      "condition": "drift_slow",
+      "mean": 0.09999935044470476,
+      "ci95": [
+        0.09999804835388204,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_frozen",
+      "seed": 2,
+      "condition": "static_holdout",
+      "mean": 0.10013802228786517,
+      "ci95": [
+        0.09992187643365469,
+        0.10052669419383164
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_frozen",
+      "seed": 2,
+      "condition": "drift_fast",
+      "mean": 0.10022005352948327,
+      "ci95": [
+        0.09994661602831911,
+        0.10061849102930864
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_frozen",
+      "seed": 2,
+      "condition": "drift_slow",
+      "mean": 0.10035677228006534,
+      "ci95": [
+        0.09994661602831911,
+        0.10102799623564351
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_plastic",
+      "seed": 3,
+      "condition": "static_holdout",
+      "mean": 0.10000000149011612,
+      "ci95": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_plastic",
+      "seed": 3,
+      "condition": "drift_fast",
+      "mean": 0.10000000149011612,
+      "ci95": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_plastic",
+      "seed": 3,
+      "condition": "drift_slow",
+      "mean": 0.10000000149011612,
+      "ci95": [
+        0.10000000149011612,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_frozen",
+      "seed": 3,
+      "condition": "static_holdout",
+      "mean": 0.09997786598978564,
+      "ci95": [
+        0.09995703266758937,
+        0.09999088685435709
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_frozen",
+      "seed": 3,
+      "condition": "drift_fast",
+      "mean": 0.09997786598978564,
+      "ci95": [
+        0.09995703266758937,
+        0.09999088685435709
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_frozen",
+      "seed": 3,
+      "condition": "drift_slow",
+      "mean": 0.09997786598978564,
+      "ci95": [
+        0.09995703266758937,
+        0.09999088685435709
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_plastic",
+      "seed": 4,
+      "condition": "static_holdout",
+      "mean": 0.09995898586203111,
+      "ci95": [
+        0.0998769546058611,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_plastic",
+      "seed": 4,
+      "condition": "drift_fast",
+      "mean": 0.09995898586203111,
+      "ci95": [
+        0.0998769546058611,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_plastic",
+      "seed": 4,
+      "condition": "drift_slow",
+      "mean": 0.09995898586203111,
+      "ci95": [
+        0.0998769546058611,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_frozen",
+      "seed": 4,
+      "condition": "static_holdout",
+      "mean": 0.09992578272795072,
+      "ci95": [
+        0.09981119938311167,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_frozen",
+      "seed": 4,
+      "condition": "drift_fast",
+      "mean": 0.09992578272795072,
+      "ci95": [
+        0.09981119938311167,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "drift",
+      "arm": "gru_mb_frozen",
+      "seed": 4,
+      "condition": "drift_slow",
+      "mean": 0.09992578272795072,
+      "ci95": [
+        0.09981119938311167,
+        0.10000000149011612
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "R",
+      "seed": 0,
+      "condition": "static_holdout",
+      "mean": 0.07872721251260373,
+      "ci95": [
+        0.07782420144685602,
+        0.0796979318232843
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "R",
+      "seed": 0,
+      "condition": "drift_fast",
+      "mean": 0.0792701813406893,
+      "ci95": [
+        0.07826430562017776,
+        0.08029887598477217
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "R",
+      "seed": 0,
+      "condition": "drift_slow",
+      "mean": 0.07942838447343092,
+      "ci95": [
+        0.078391926241693,
+        0.08050652581978283
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "R",
+      "seed": 1,
+      "condition": "static_holdout",
+      "mean": 0.07881900957363541,
+      "ci95": [
+        0.0779400219078525,
+        0.07973178626198205
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "R",
+      "seed": 1,
+      "condition": "drift_fast",
+      "mean": 0.07888867099245545,
+      "ci95": [
+        0.07794269115765928,
+        0.0798912750717136
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "R",
+      "seed": 1,
+      "condition": "drift_slow",
+      "mean": 0.07894466059224214,
+      "ci95": [
+        0.07799088459669293,
+        0.07994728097619372
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "R",
+      "seed": 2,
+      "condition": "static_holdout",
+      "mean": 0.0782636709518556,
+      "ci95": [
+        0.07743554606158795,
+        0.07915038967039437
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "R",
+      "seed": 2,
+      "condition": "drift_fast",
+      "mean": 0.07841406158695463,
+      "ci95": [
+        0.07754423736796526,
+        0.07932617086953542
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "R",
+      "seed": 2,
+      "condition": "drift_slow",
+      "mean": 0.07846354075445561,
+      "ci95": [
+        0.07756640535080805,
+        0.0794140778531073
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "R",
+      "seed": 3,
+      "condition": "static_holdout",
+      "mean": 0.07958658756979275,
+      "ci95": [
+        0.07853253487110123,
+        0.08069210518578984
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "R",
+      "seed": 3,
+      "condition": "drift_fast",
+      "mean": 0.07866796779126162,
+      "ci95": [
+        0.07769205641498048,
+        0.07969799704487741
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "R",
+      "seed": 3,
+      "condition": "drift_slow",
+      "mean": 0.07875325423810864,
+      "ci95": [
+        0.07777402250003433,
+        0.07978063057198596
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "R",
+      "seed": 4,
+      "condition": "static_holdout",
+      "mean": 0.07850195220453315,
+      "ci95": [
+        0.07748497636275715,
+        0.07953517155383452
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "R",
+      "seed": 4,
+      "condition": "drift_fast",
+      "mean": 0.07870963446839596,
+      "ci95": [
+        0.07782161370532777,
+        0.07966536354633717
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "R",
+      "seed": 4,
+      "condition": "drift_slow",
+      "mean": 0.07904231674547191,
+      "ci95": [
+        0.07806638900920007,
+        0.08008141189320668
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "H",
+      "seed": 0,
+      "condition": "static_holdout",
+      "mean": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "H",
+      "seed": 0,
+      "condition": "drift_fast",
+      "mean": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "H",
+      "seed": 0,
+      "condition": "drift_slow",
+      "mean": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "H",
+      "seed": 1,
+      "condition": "static_holdout",
+      "mean": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "H",
+      "seed": 1,
+      "condition": "drift_fast",
+      "mean": 0.9999746093526483,
+      "ci95": [
+        0.9999238280579448,
+        1.0
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "H",
+      "seed": 1,
+      "condition": "drift_slow",
+      "mean": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "H",
+      "seed": 2,
+      "condition": "static_holdout",
+      "mean": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "H",
+      "seed": 2,
+      "condition": "drift_fast",
+      "mean": 0.9996171874809079,
+      "ci95": [
+        0.9988515624427237,
+        1.0
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "H",
+      "seed": 2,
+      "condition": "drift_slow",
+      "mean": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "H",
+      "seed": 3,
+      "condition": "static_holdout",
+      "mean": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "H",
+      "seed": 3,
+      "condition": "drift_fast",
+      "mean": 0.9988841145532206,
+      "ci95": [
+        0.9970084634842351,
+        1.0
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "H",
+      "seed": 3,
+      "condition": "drift_slow",
+      "mean": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "H",
+      "seed": 4,
+      "condition": "static_holdout",
+      "mean": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "H",
+      "seed": 4,
+      "condition": "drift_fast",
+      "mean": 0.999786458327435,
+      "ci95": [
+        0.9993593749823049,
+        1.0
+      ],
+      "episodes": 1024
+    },
+    {
+      "trained_regime": "reference",
+      "arm": "H",
+      "seed": 4,
+      "condition": "drift_slow",
+      "mean": 1.0,
+      "ci95": [
+        1.0,
+        1.0
+      ],
+      "episodes": 1024
+    }
+  ],
+  "training_task_wall_hours": 0.44632496591666493,
+  "evaluation_wall_hours": 0.027243373194445062
+}
