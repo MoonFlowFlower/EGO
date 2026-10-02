@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "checks": {
+    "frozen_source": 21,
+    "independent_source_unchanged": 1,
+    "allowed_decision_inputs": 133,
+    "whitelisted_steps_and_noncausal_changes": 133,
+    "bounded_consolidation_inputs": 1
+  },
+  "errors": [],
+  "scope": "Actual allowlisted packet shapes, byte limits, action/change derivation, fixed teaching schedule, source hashes and independent snapshot integrity. Semantic absence of arbitrary private information in model text is not proven by keyword scanning; pilot stores only game data."
+}

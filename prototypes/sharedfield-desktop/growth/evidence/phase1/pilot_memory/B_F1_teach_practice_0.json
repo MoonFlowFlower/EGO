@@ -1,0 +1,103 @@
+{
+  "arm": "B",
+  "records": [
+    {
+      "id": "d483453f58284e0d93eca436a0361803",
+      "kind": "fact",
+      "world": "c9075dbdc0914418a3f0751ac232475f",
+      "body": {
+        "action": "place_table",
+        "scope": "world",
+        "experiences": [
+          "a96e8e4cdecb488f81a6dcd971bfb60d"
+        ],
+        "preconditions": {
+          "inventory_min": {
+            "wood": 2
+          },
+          "nearby": [
+            "grass"
+          ],
+          "front_materials": [
+            "grass"
+          ],
+          "front_entity": "none"
+        },
+        "expected": {
+          "inventory": {
+            "wood": -2
+          },
+          "needs": {},
+          "front": {
+            "material": "table",
+            "entity": null
+          }
+        },
+        "format": "rule.v1",
+        "support": 0,
+        "counterexamples": 0,
+        "checked": []
+      },
+      "source": "model_proposal"
+    },
+    {
+      "id": "9c032cffe1954e44920fe5e7141e81c3",
+      "kind": "fact",
+      "world": "c9075dbdc0914418a3f0751ac232475f",
+      "body": {
+        "action": "make_wood_pickaxe",
+        "scope": "world",
+        "experiences": [
+          "2219e003c7da448ab718ba6a7ed3fca3"
+        ],
+        "preconditions": {
+          "inventory_min": {
+            "wood": 1
+          },
+          "nearby": [
+            "table"
+          ],
+          "front_materials": [
+            "table"
+          ],
+          "front_entity": "none"
+        },
+        "expected": {
+          "inventory": {
+            "wood": -1,
+            "wood_pickaxe": 1
+          },
+          "needs": {},
+          "front": {
+            "material": "table",
+            "entity": null
+          }
+        },
+        "format": "rule.v1",
+        "support": 0,
+        "counterexamples": 0,
+        "checked": []
+      },
+      "source": "model_proposal"
+    }
+  ],
+  "profiles": {},
+  "self": {
+    "type": "self_statistics",
+    "observed_actions": {
+      "move_right": 19,
+      "do": 46,
+      "move_left": 49,
+      "move_up": 17,
+      "place_table": 1,
+      "make_wood_pickaxe": 1
+    },
+    "events": {
+      "no_visible_effect": 47,
+      "blocked": 6
+    },
+    "skill_attempts": 0,
+    "skill_successes": 0,
+    "scope": "descriptive counts; no capability certification; no inferred emotion"
+  }
+}
