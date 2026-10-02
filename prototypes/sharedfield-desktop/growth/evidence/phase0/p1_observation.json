@@ -1,0 +1,34 @@
+{
+  "seconds": 2.3339512000093237,
+  "checks": {
+    "visibility_1.0": true,
+    "visibility_0.49": true,
+    "visibility_0.19": true,
+    "blocked_displacement_zero": true,
+    "host_does_not_construct_semantic_map": true,
+    "invalid_action_no_step": true,
+    "bounded_macro": true,
+    "renamed_action_inventory_cells": true,
+    "no_privileged_keys": true,
+    "fresh_world_identity": true
+  },
+  "visible_cell_counts_day_dusk_night": [
+    63,
+    25,
+    9
+  ],
+  "telemetry": [
+    {
+      "unix_s": 1790973874.7032228,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "60, 765, 2963, 26.51",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790973876.2497454,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "60, 787, 2963, 26.63",
+      "gpu_returncode": 0
+    }
+  ]
+}

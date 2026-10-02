@@ -1,0 +1,151 @@
+{
+  "seconds": 2.7637976999976672,
+  "rows": [
+    {
+      "name": "allowed",
+      "expected": "completed",
+      "actual": {
+        "source_sha256": "462303c00fed743d6d3ab7c0d771690512a8f93122fc42715b1173b10ae9f158",
+        "steps": 1,
+        "status": "completed",
+        "reason": null,
+        "seconds": 0.299198399996385
+      },
+      "environment_steps": 1
+    },
+    {
+      "name": "file",
+      "expected": "denied",
+      "actual": {
+        "source_sha256": "2b76ba4607c5636e48ae0a12fcd364172c449bc8769291b7f92509f2dd28a39d",
+        "steps": 0,
+        "status": "denied",
+        "reason": "call_denied",
+        "seconds": 6.729998858645558e-05
+      },
+      "environment_steps": 0
+    },
+    {
+      "name": "network",
+      "expected": "denied",
+      "actual": {
+        "source_sha256": "7773c884b8cd524d37b6b377f43cb5f05899db17d58442afb8508841ccc88991",
+        "steps": 0,
+        "status": "denied",
+        "reason": "syntax_denied",
+        "seconds": 1.6699996194802225e-05
+      },
+      "environment_steps": 0
+    },
+    {
+      "name": "internal",
+      "expected": "denied",
+      "actual": {
+        "source_sha256": "10b1448066e9224bf93812467ccf155f381349ce85aab47a54a8f5e1af96d296",
+        "steps": 0,
+        "status": "denied",
+        "reason": "syntax_denied",
+        "seconds": 1.790000533219427e-05
+      },
+      "environment_steps": 0
+    },
+    {
+      "name": "environment",
+      "expected": "denied",
+      "actual": {
+        "source_sha256": "2637775788822f481ca3fffc40348c6e7e43d2147df6f4c78b22984400d106d7",
+        "steps": 0,
+        "status": "denied",
+        "reason": "syntax_denied",
+        "seconds": 1.5700003132224083e-05
+      },
+      "environment_steps": 0
+    },
+    {
+      "name": "subclasses",
+      "expected": "denied",
+      "actual": {
+        "source_sha256": "ba79dc184a4e2b12ef976445e43ec38e4de43475fb107edd6d2403afc450d7a8",
+        "steps": 0,
+        "status": "denied",
+        "reason": "syntax_denied",
+        "seconds": 1.4000004739500582e-05
+      },
+      "environment_steps": 0
+    },
+    {
+      "name": "invalid_action",
+      "expected": "denied",
+      "actual": {
+        "source_sha256": "59bc83db9dc21f0cbbf732d88f54472e80a98d4020e8ba233646f4b1bf25fbae",
+        "steps": 0,
+        "status": "denied",
+        "reason": "action_denied_or_episode_finished",
+        "seconds": 0.21000289999938104
+      },
+      "environment_steps": 0
+    },
+    {
+      "name": "injection",
+      "expected": "denied",
+      "actual": {
+        "source_sha256": "ae113e2253794d42c6258d462bb6ecafb4f7f61e679025878b72b2313a56ad30",
+        "steps": 0,
+        "status": "denied",
+        "reason": "action_denied_or_episode_finished",
+        "seconds": 0.19696190000104252
+      },
+      "environment_steps": 0
+    },
+    {
+      "name": "step_limit",
+      "expected": "step_limit",
+      "actual": {
+        "source_sha256": "5217fa6dbb958bb8313d87a86ed174d1caa9758b0516f8f26b1aa4cf70019900",
+        "steps": 3,
+        "status": "step_limit",
+        "reason": "environment_step_limit",
+        "seconds": 0.22438200000033248
+      },
+      "environment_steps": 3
+    },
+    {
+      "name": "timeout",
+      "expected": "timeout",
+      "actual": {
+        "source_sha256": "0748fb3dee8d98a5ac19c1efb70d30b5ed5640177ac9d89e7c4d17eb4ae30369",
+        "steps": 0,
+        "status": "timeout",
+        "reason": "wall_clock_limit",
+        "seconds": 0.7600567000044975
+      },
+      "environment_steps": 0
+    },
+    {
+      "name": "oversize",
+      "expected": "denied",
+      "actual": {
+        "source_sha256": "e5c8309afda18ec4ec225ada92dab2d5768f7d845d8cebf2b9968392a6bfd6de",
+        "steps": 0,
+        "status": "denied",
+        "reason": "source_size",
+        "seconds": 2.710000262595713e-05
+      },
+      "environment_steps": 0
+    }
+  ],
+  "telemetry": [
+    {
+      "unix_s": 1790973992.4198372,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "69, 630, 4116, 25.50",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790973994.1612027,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "76, 1680, 4116, 84.91",
+      "gpu_returncode": 0
+    }
+  ]
+}
