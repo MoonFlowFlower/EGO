@@ -102,9 +102,13 @@ def run(source, observe, act, *, max_steps=32, timeout_s=2., cancel=None):
             if op=='observe': parent.send(('ok',observe()))
             elif op=='act':
                 if steps>=max_steps: status,reason='step_limit','environment_step_limit'; break
+                before=observe()
                 try: result=act(arg)
                 except ValueError: status,reason='denied','action_denied_or_episode_finished'; break
-                steps+=1; parent.send(('ok',result))
+                steps+=1
+                if result['needs']['health']<before['needs']['health']:
+                    status,reason='injured','health_lost'; break
+                parent.send(('ok',result))
             else: status,reason='denied','protocol_denied'; break
     except (EOFError,BrokenPipeError): status,reason='denied','worker_disconnected'
     finally:
