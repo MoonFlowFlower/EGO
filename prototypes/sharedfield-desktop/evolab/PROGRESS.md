@@ -2,6 +2,17 @@
 
 按时间倒序追加。每条写明：做了什么、证据在哪、失败或偏离、下一步。没测的写"未测"。旧条目不改。
 
+## 2026-10-02 — E2 运行中：统计种子披露与热限频
+
+- 在保留集标记尚不存在时，将原实现的统计种子材料、派生公式和实际整数写入 configs/statistics_seeds.json，SHA-256 `a4b38ae4b5ac2bb48461a53f3cb64eb9712a221a4de0ae5ba6f121978c2d710e`。这是已有固定分析规则的补充复现清单；没有改变种子、置信区间算法、阈值、世界、训练、选择规则或 e2_frozen.yaml。统计源与训练源独立，均为显式Generator。
+- 长负载已确认SW Thermal Slowdown Active；单次快照86°C、2197MHz，证据 evidence/e2_thermal.json、E0_ENV.md追加小节及runs原始快照。未修改系统时钟或功耗设置，预算按实际耗时继续核算。
+- 当前尚无训练失败/NaN、无保留集访问；矩阵继续。所有中途分数仅作开发记录，不替代400代均值。
+
+## 2026-10-02 — E2 完整预算预跑通过，继续正式矩阵
+
+- B/drift/seed0完成400代，实测75.29秒；20次外推0.418小时，加评估预留1小时，未超24小时。
+- 配置134d90c1d7e935be720d73445784b488818c16744c8d29f98f177c97493e14a8。原始runs/gru_mb_plastic_drift_seed0_attempt0/，摘要evidence/summaries/gru_mb_plastic_drift_seed0_attempt0.json；不选中途最佳。继续其余19次，最终先检查训练工程有效性，再保留集。
+
 ## 2026-10-02 — E1 工程通过、配置冻结（Codex）
 
 - 完成Room-v0、R/H、两臂、OpenES与测试；世界参数未改。参数量18246/18254。证据 evidence/E1_WORLD.md、e1_world.json、e1_graph_benchmark.json、e1_tests.json、e1_hand_static.gif。

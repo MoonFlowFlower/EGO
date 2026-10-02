@@ -1,0 +1,89 @@
+{
+  "scope": "Disclosure of already implemented analysis seeds, before any holdout access; no seed or computation changed",
+  "derivation": "little-endian first 8 SHA256 bytes of repr(tuple(parts)), modulo 2**63-1",
+  "per_run_mean_ci": {
+    "parts": [
+      "e1_bootstrap"
+    ],
+    "seed": 5673588934108237184
+  },
+  "hierarchical": {
+    "B-A drift": {
+      "parts": [
+        "hierarchical-bootstrap",
+        "B-A drift"
+      ],
+      "seed": 1221155927501615140
+    },
+    "B-B0 drift": {
+      "parts": [
+        "hierarchical-bootstrap",
+        "B-B0 drift"
+      ],
+      "seed": 1131349823221891689
+    },
+    "B-A static": {
+      "parts": [
+        "hierarchical-bootstrap",
+        "B-A static"
+      ],
+      "seed": 3859052696144949038
+    },
+    "validity static gru_fixed": {
+      "parts": [
+        "hierarchical-bootstrap",
+        "validity static gru_fixed"
+      ],
+      "seed": 8925551503431653294
+    },
+    "validity static gru_mb_plastic": {
+      "parts": [
+        "hierarchical-bootstrap",
+        "validity static gru_mb_plastic"
+      ],
+      "seed": 7246491923277020361
+    },
+    "validity drift gru_fixed": {
+      "parts": [
+        "hierarchical-bootstrap",
+        "validity drift gru_fixed"
+      ],
+      "seed": 4206240822449138770
+    },
+    "validity drift gru_mb_plastic": {
+      "parts": [
+        "hierarchical-bootstrap",
+        "validity drift gru_mb_plastic"
+      ],
+      "seed": 7510187345306180414
+    },
+    "validity R static gru_fixed": {
+      "parts": [
+        "hierarchical-bootstrap",
+        "validity R static gru_fixed"
+      ],
+      "seed": 2461700968551497834
+    },
+    "validity R static gru_mb_plastic": {
+      "parts": [
+        "hierarchical-bootstrap",
+        "validity R static gru_mb_plastic"
+      ],
+      "seed": 521118483445668482
+    },
+    "validity R drift gru_fixed": {
+      "parts": [
+        "hierarchical-bootstrap",
+        "validity R drift gru_fixed"
+      ],
+      "seed": 3305680632214722150
+    },
+    "validity R drift gru_mb_plastic": {
+      "parts": [
+        "hierarchical-bootstrap",
+        "validity R drift gru_mb_plastic"
+      ],
+      "seed": 5838957716406670212
+    }
+  }
+}

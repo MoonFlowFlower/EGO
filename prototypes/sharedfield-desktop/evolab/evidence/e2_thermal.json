@@ -1,0 +1,12 @@
+{
+  "date_client_timezone": "2026-10-02 America/Winnipeg",
+  "source_command": "nvidia-smi -q -d PERFORMANCE,TEMPERATURE,CLOCK,POWER",
+  "raw_snapshot": "runs/e2_thermal_snapshot.txt",
+  "sw_thermal_slowdown": "Active",
+  "hw_thermal_slowdown": "Not Active",
+  "temperature_C": 86,
+  "graphics_clock_MHz": 2197,
+  "instantaneous_power_W": 94.51,
+  "reported_target_temperature_C": 87,
+  "scope": "single long-load snapshot, not a time-integrated throttling fraction"
+}
