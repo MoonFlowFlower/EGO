@@ -8,13 +8,13 @@
 - 仓库：`MoonFlowFlower/EGO`
 - 分支：`codex/desktop-pet-memory-lab-20261001`。如果分支里还没有 `prototypes/sharedfield-desktop/evolab/` 目录，说明文档 PR 尚未合并，请改从 `ccr-3d0efea2-b4lya7` 分支开始。
 - 工作目录：`prototypes/sharedfield-desktop/evolab/`
-- 机器：Windows + RTX 5070 Ti（16GB，Blackwell，sm_120）。JAX GPU 只能在 WSL2 中运行，请把仓库 clone 到 WSL 自己的文件系统（如 `~/EGO`），不要放在 `/mnt/d`。
+- 机器：Windows + RTX 5070 Ti Laptop（12GB，Blackwell，sm_120）。主路径为 **Windows 原生 + PyTorch（cu128 及以上）**，不需要 WSL；直接在 Windows 的 git checkout 中工作。
 
 **开工前先按顺序读完**
 1. `evolab/STAGE_CARD.md`：约束，包括边界、证据契约、停止条件、声明上限
 2. `evolab/PREREG_E2.md`：冻结的假设与判定，任何时候都不能改
 3. `evolab/DESIGN.md`：推荐实现
-4. `evolab/ENVIRONMENT.md`：WSL2 / JAX GPU 环境步骤
+4. `evolab/ENVIRONMENT.md`：Windows 原生 PyTorch 环境步骤与实现约定
 5. `evolab/RESEARCH_BACKGROUND.md`、`evolab/JAXLIFE_ASSESSMENT.md`：背景
 
 **任务契约**
@@ -25,7 +25,7 @@
 - 权威来源：`STAGE_CARD.md` 和 `PREREG_E2.md`。两者与 `DESIGN.md` 冲突时，以前两者为准
 
 **执行顺序与检查点**
-1. **E0**：按 `ENVIRONMENT.md` 搭建环境并做冒烟测试，结果写入 `evidence/E0_ENV.md`，内容包括驱动、CUDA、JAX 版本，`jax.devices()` 的输出，矩阵乘吞吐，确定性检查。GPU 不可用时，停下来向我报告具体错误和版本组合。不要退回 CPU 跑正式规模，也不要靠猜测反复降级。
+1. **E0**：按 `ENVIRONMENT.md` 搭建环境并做冒烟测试，结果写入 `evidence/E0_ENV.md`，内容包括驱动、CUDA、PyTorch 版本，设备名与计算能力，矩阵乘吞吐，确定性检查。GPU 不可用时，停下来向我报告具体错误和版本组合。不要退回 CPU 跑正式规模，也不要靠猜测反复降级。
 2. **E1**：实现 Room-v0 世界、两种大脑（`gru_fixed`、`gru_mb_plastic`）、基线 R 和 H、OpenES，以及 `DESIGN.md` 第 8 节列出的全部测试。实测吞吐，渲染一段 GIF。世界参数只允许在这个阶段调整，每次调整都写进 `PROGRESS.md`。完成后冻结 `configs/e2_frozen.yaml`，把 SHA-256 记入 `PROGRESS.md`。
 3. **E2 预跑**：先完整跑 1 次正式运行，记录实际耗时，按 20 次核算总时长。预计 ≤24 GPU 小时就直接继续。超出时停下来，把"缩小规模的方案"写进 `PROGRESS.md` 并问我，在我确认前不要开跑。
 4. **E2 正式**：跑完 20 次运行，在保留集上评估，做消融，按 `PREREG_E2.md` 判定，写出 `evidence/E2_REPORT.md`。
