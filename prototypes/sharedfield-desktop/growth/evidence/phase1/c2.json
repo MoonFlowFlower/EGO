@@ -1,0 +1,316 @@
+{
+  "component": "c2",
+  "passed": true,
+  "checks": {
+    "direct": "recursive_skill",
+    "indirect": "recursive_skill",
+    "depth": "depth_limit",
+    "success": {
+      "source_sha256": "a494f557fef9c6a76a865631ab2927c1ac48b8802e023245e4fad12ba33ff961",
+      "steps": 1,
+      "status": "completed",
+      "reason": null,
+      "calls": [
+        {
+          "name": "outer",
+          "version": 1,
+          "record_id": "3a0a9f9f896f429f96b7bb0895a34e91",
+          "depth": 1,
+          "start_step": 0,
+          "start_s": 0.0010618999949656427,
+          "completion": "count('wood') >= 1",
+          "outcome": "success",
+          "execution_status": "completed",
+          "steps": 1,
+          "seconds": 0.44764430000213906
+        },
+        {
+          "name": "parent",
+          "version": 1,
+          "record_id": "2c280f32d8f74aa5bc0c49f980d7b48c",
+          "depth": 2,
+          "start_step": 0,
+          "start_s": 0.4242298000026494,
+          "completion": "count('wood') >= 1",
+          "outcome": "success",
+          "execution_status": "completed",
+          "steps": 1,
+          "seconds": 0.008489299987559207
+        },
+        {
+          "name": "child",
+          "version": 1,
+          "record_id": "c778c53d08264e578d7fd0351467232f",
+          "depth": 3,
+          "start_step": 0,
+          "start_s": 0.42544209999323357,
+          "completion": "count('wood') >= 1",
+          "outcome": "success",
+          "execution_status": "completed",
+          "steps": 1,
+          "seconds": 0.006253500003367662
+        }
+      ],
+      "seconds": 0.44870999999693595
+    },
+    "not_needed": {
+      "source_sha256": "a494f557fef9c6a76a865631ab2927c1ac48b8802e023245e4fad12ba33ff961",
+      "steps": 0,
+      "status": "not_needed",
+      "reason": null,
+      "calls": [
+        {
+          "name": "outer",
+          "version": 1,
+          "record_id": "3a0a9f9f896f429f96b7bb0895a34e91",
+          "depth": 1,
+          "start_step": 0,
+          "start_s": 0.0012067999923601747,
+          "completion": "count('wood') >= 1",
+          "outcome": "not_needed",
+          "steps": 0,
+          "seconds": 0.0
+        }
+      ],
+      "seconds": 0.001210500005981885
+    },
+    "budget_version_unsuccessful": {
+      "source_sha256": "0dcfbae7434185085fecadd6056b9cd1596f25279d73cecbed6de1a55db6fe6b",
+      "steps": 3,
+      "status": "step_limit",
+      "reason": "environment_step_limit",
+      "calls": [
+        {
+          "name": "parent",
+          "version": 2,
+          "record_id": "5d5d0cea649b4e918dc28dbd74f36920",
+          "depth": 1,
+          "start_step": 0,
+          "start_s": 0.0010245000012218952,
+          "completion": "False",
+          "outcome": "unsuccessful",
+          "execution_status": "step_limit",
+          "steps": 3,
+          "seconds": 0.38780699999188073
+        },
+        {
+          "name": "child",
+          "version": 2,
+          "record_id": "804015e861c84ef5859ee69318b85b76",
+          "depth": 2,
+          "start_step": 1,
+          "start_s": 0.3733347999950638,
+          "completion": "False",
+          "outcome": "unsuccessful",
+          "execution_status": "step_limit",
+          "steps": 2,
+          "seconds": 0.014883399999234825
+        }
+      ],
+      "seconds": 0.3888336999953026
+    },
+    "shared_time": {
+      "source_sha256": "0dcfbae7434185085fecadd6056b9cd1596f25279d73cecbed6de1a55db6fe6b",
+      "steps": 1,
+      "status": "timeout",
+      "reason": "wall_clock_limit",
+      "calls": [
+        {
+          "name": "parent",
+          "version": 2,
+          "record_id": "5d5d0cea649b4e918dc28dbd74f36920",
+          "depth": 1,
+          "start_step": 0,
+          "start_s": 0.0010195999930147082,
+          "completion": "False",
+          "outcome": "unsuccessful",
+          "execution_status": "timeout",
+          "steps": 1,
+          "seconds": 0.8181426999944961
+        },
+        {
+          "name": "child",
+          "version": 3,
+          "record_id": "317115e78137406a9f64224da0a875f2",
+          "depth": 2,
+          "start_step": 1,
+          "start_s": 0.3572276999911992,
+          "completion": "False",
+          "outcome": "unsuccessful",
+          "execution_status": "timeout",
+          "steps": 0,
+          "seconds": 0.46133890000055544
+        }
+      ],
+      "seconds": 0.8191640000004554
+    },
+    "runtime_cycle": {
+      "source_sha256": "0e81407bb67c724739a58494aec053db12f3a93601b921cbb2491f1355115f00",
+      "steps": 0,
+      "status": "denied",
+      "reason": "recursive_skill",
+      "calls": [
+        {
+          "name": "a",
+          "version": 1,
+          "record_id": null,
+          "depth": 1,
+          "start_step": 0,
+          "start_s": 0.0006884000031277537,
+          "completion": "False",
+          "outcome": "unsuccessful",
+          "execution_status": "denied",
+          "steps": 0,
+          "seconds": 0.34049139999842737
+        },
+        {
+          "name": "b",
+          "version": 1,
+          "record_id": null,
+          "depth": 2,
+          "start_step": 0,
+          "start_s": 0.33365620000404306,
+          "completion": "False",
+          "outcome": "unsuccessful",
+          "execution_status": "denied",
+          "steps": 0,
+          "seconds": 0.006941599989659153
+        }
+      ],
+      "seconds": 0.3411811999976635
+    },
+    "runtime_depth": {
+      "source_sha256": "25ced9789ff0da54365d47516ee8c150c8b21f74c57fe882ccf14df19267420d",
+      "steps": 0,
+      "status": "denied",
+      "reason": "depth_limit",
+      "calls": [
+        {
+          "name": "0",
+          "version": 1,
+          "record_id": null,
+          "depth": 1,
+          "start_step": 0,
+          "start_s": 0.0006413999944925308,
+          "completion": "False",
+          "outcome": "unsuccessful",
+          "execution_status": "denied",
+          "steps": 0,
+          "seconds": 0.33851460000732914
+        },
+        {
+          "name": "1",
+          "version": 1,
+          "record_id": null,
+          "depth": 2,
+          "start_step": 0,
+          "start_s": 0.3299576999997953,
+          "completion": "False",
+          "outcome": "unsuccessful",
+          "execution_status": "denied",
+          "steps": 0,
+          "seconds": 0.008623899993835948
+        },
+        {
+          "name": "2",
+          "version": 1,
+          "record_id": null,
+          "depth": 3,
+          "start_step": 0,
+          "start_s": 0.3307926999987103,
+          "completion": "False",
+          "outcome": "unsuccessful",
+          "execution_status": "denied",
+          "steps": 0,
+          "seconds": 0.0071629000012762845
+        }
+      ],
+      "seconds": 0.33915719999640714
+    },
+    "nested_injury": {
+      "source_sha256": "33377694a9ea4c869ce022399d6470156ac4cb703c22afc3f88dd6e468d85a4e",
+      "steps": 1,
+      "status": "injured",
+      "reason": "health_lost",
+      "calls": [
+        {
+          "name": "parent",
+          "version": 3,
+          "record_id": "c195c2b182bf4f3191c52c8eddff2985",
+          "depth": 1,
+          "start_step": 0,
+          "start_s": 0.0009289999870816246,
+          "completion": "False",
+          "outcome": "unsuccessful",
+          "execution_status": "injured",
+          "steps": 1,
+          "seconds": 0.3464729000115767
+        },
+        {
+          "name": "child",
+          "version": 4,
+          "record_id": "5b744a2f0d92428abf9e96b8af00741f",
+          "depth": 2,
+          "start_step": 0,
+          "start_s": 0.3349621999950614,
+          "completion": "False",
+          "outcome": "unsuccessful",
+          "execution_status": "injured",
+          "steps": 1,
+          "seconds": 0.011852600000565872
+        }
+      ],
+      "seconds": 0.3474032999947667
+    },
+    "nested_takeover": {
+      "source_sha256": "33377694a9ea4c869ce022399d6470156ac4cb703c22afc3f88dd6e468d85a4e",
+      "steps": 1,
+      "status": "cancelled",
+      "reason": "owner_takeover",
+      "calls": [
+        {
+          "name": "parent",
+          "version": 3,
+          "record_id": "c195c2b182bf4f3191c52c8eddff2985",
+          "depth": 1,
+          "start_step": 0,
+          "start_s": 0.0009093000116990879,
+          "completion": "False",
+          "outcome": "unsuccessful",
+          "execution_status": "cancelled",
+          "steps": 1,
+          "seconds": 0.3537911999883363
+        },
+        {
+          "name": "child",
+          "version": 4,
+          "record_id": "5b744a2f0d92428abf9e96b8af00741f",
+          "depth": 2,
+          "start_step": 0,
+          "start_s": 0.34238590000313707,
+          "completion": "False",
+          "outcome": "unsuccessful",
+          "execution_status": "cancelled",
+          "steps": 1,
+          "seconds": 0.011678499999106862
+        }
+      ],
+      "seconds": 0.3547019000106957
+    }
+  },
+  "seconds": 4.775216399997589,
+  "telemetry": [
+    {
+      "unix_s": 1790980946.593774,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "80, 1732, 3239, 68.37",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790980951.3674512,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "80, 1860, 3232, 75.01",
+      "gpu_returncode": 0
+    }
+  ]
+}

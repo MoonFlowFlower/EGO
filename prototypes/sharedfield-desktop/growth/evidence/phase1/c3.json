@@ -1,0 +1,94 @@
+{
+  "component": "c3",
+  "passed": true,
+  "checks": {
+    "counts": [
+      {
+        "action": "make_wood_pickaxe",
+        "preconditions": {
+          "inventory_min": {
+            "wood": 1
+          },
+          "nearby": [
+            "table"
+          ],
+          "front_materials": [],
+          "front_entity": null
+        },
+        "expected": {
+          "inventory": {
+            "wood_pickaxe": 1,
+            "wood": -1
+          },
+          "needs": {},
+          "front": {}
+        },
+        "scope": "global",
+        "experiences": [
+          "f8a10592a86343bcb40f6c2bac09a06c"
+        ],
+        "format": "rule.v1",
+        "support": 1,
+        "counterexamples": 1,
+        "checked": [
+          "fcf9c09268cf40a7a7ae750ffe63d057",
+          "a8a6385d7ad14fbaa6d81998c4671e05"
+        ],
+        "id": "60061ffb64c440acb45c6fc14c88f3a6"
+      },
+      {
+        "action": "make_wood_pickaxe",
+        "preconditions": {
+          "inventory_min": {
+            "wood": 1
+          },
+          "nearby": [
+            "table"
+          ],
+          "front_materials": [],
+          "front_entity": null
+        },
+        "expected": {
+          "inventory": {
+            "wood_pickaxe": 1,
+            "wood": -1
+          },
+          "needs": {},
+          "front": {}
+        },
+        "scope": "world",
+        "experiences": [
+          "f8a10592a86343bcb40f6c2bac09a06c"
+        ],
+        "format": "rule.v1",
+        "support": 1,
+        "counterexamples": 1,
+        "checked": [
+          "fcf9c09268cf40a7a7ae750ffe63d057",
+          "a8a6385d7ad14fbaa6d81998c4671e05"
+        ],
+        "id": "e602ea93c6dc41acac855cc7c52a9462"
+      }
+    ],
+    "false_preconditions_not_counted": true,
+    "duplicate_not_counted": true,
+    "fake_id_rejected": true,
+    "scope_enforced": true,
+    "truth_judge": "program_only"
+  },
+  "seconds": 1.751931999999215,
+  "telemetry": [
+    {
+      "unix_s": 1790981105.0484154,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "81, 2115, 3243, 69.60",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790981106.7881663,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "81, 2017, 3242, 79.87",
+      "gpu_returncode": 0
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "component": "c3",
+  "passed": false,
+  "error": "Traceback (most recent call last):\n  File \"D:\\Project\\AIProject\\MyProject\\Ego_proejct_restart\\.publish\\EGO\\prototypes\\sharedfield-desktop\\growth\\scripts\\accept_phase1.py\", line 175, in c3\n    assert all(not x['match'] for x in step()[1])\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"D:\\Project\\AIProject\\MyProject\\Ego_proejct_restart\\.publish\\EGO\\prototypes\\sharedfield-desktop\\growth\\runs\\python\\cpython-3.12-windows-x86_64-none\\Lib\\shutil.py\", line 633, in _rmtree_unsafe\n    os.unlink(fullname)\nPermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\\\Users\\\\LEO\\\\AppData\\\\Local\\\\Temp\\\\tmpl6583hs_\\\\state.sqlite'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"D:\\Project\\AIProject\\MyProject\\Ego_proejct_restart\\.publish\\EGO\\prototypes\\sharedfield-desktop\\growth\\scripts\\accept_phase1.py\", line 78, in main\n    result['checks'] = globals()[args.component](); result['passed'] = True\n                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Project\\AIProject\\MyProject\\Ego_proejct_restart\\.publish\\EGO\\prototypes\\sharedfield-desktop\\growth\\scripts\\accept_phase1.py\", line 159, in c3\n    with tempfile.TemporaryDirectory() as folder:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Project\\AIProject\\MyProject\\Ego_proejct_restart\\.publish\\EGO\\prototypes\\sharedfield-desktop\\growth\\runs\\python\\cpython-3.12-windows-x86_64-none\\Lib\\tempfile.py\", line 950, in __exit__\n    self.cleanup()\n  File \"D:\\Project\\AIProject\\MyProject\\Ego_proejct_restart\\.publish\\EGO\\prototypes\\sharedfield-desktop\\growth\\runs\\python\\cpython-3.12-windows-x86_64-none\\Lib\\tempfile.py\", line 954, in cleanup\n    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)\n  File \"D:\\Project\\AIProject\\MyProject\\Ego_proejct_restart\\.publish\\EGO\\prototypes\\sharedfield-desktop\\growth\\runs\\python\\cpython-3.12-windows-x86_64-none\\Lib\\tempfile.py\", line 934, in _rmtree\n    _shutil.rmtree(name, onexc=onexc)\n  File \"D:\\Project\\AIProject\\MyProject\\Ego_proejct_restart\\.publish\\EGO\\prototypes\\sharedfield-desktop\\growth\\runs\\python\\cpython-3.12-windows-x86_64-none\\Lib\\shutil.py\", line 781, in rmtree\n    return _rmtree_unsafe(path, onexc)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Project\\AIProject\\MyProject\\Ego_proejct_restart\\.publish\\EGO\\prototypes\\sharedfield-desktop\\growth\\runs\\python\\cpython-3.12-windows-x86_64-none\\Lib\\shutil.py\", line 635, in _rmtree_unsafe\n    onexc(os.unlink, fullname, err)\n  File \"D:\\Project\\AIProject\\MyProject\\Ego_proejct_restart\\.publish\\EGO\\prototypes\\sharedfield-desktop\\growth\\runs\\python\\cpython-3.12-windows-x86_64-none\\Lib\\tempfile.py\", line 909, in onexc\n    _os.unlink(path)\nPermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\\\Users\\\\LEO\\\\AppData\\\\Local\\\\Temp\\\\tmpl6583hs_\\\\state.sqlite'\n",
+  "seconds": 1.8334368000068935,
+  "telemetry": [
+    {
+      "unix_s": 1790981079.3607929,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "80, 1905, 3252, 69.69",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790981081.1937058,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "82, 2145, 3240, 82.48",
+      "gpu_returncode": 0
+    }
+  ]
+}
