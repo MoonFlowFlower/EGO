@@ -1,0 +1,8 @@
+crafter @ git+https://github.com/danijar/crafter.git@e04542a2159f1aad3d4c5ad52e8185717380ee3a
+imageio==2.38.0
+imageio-ffmpeg==0.6.0
+numpy==1.26.4
+opensimplex==0.4.5.1
+pillow==12.3.0
+pygame==2.6.1
+ruamel-yaml==0.17.21
