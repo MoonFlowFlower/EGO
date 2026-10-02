@@ -2,6 +2,11 @@
 
 按时间倒序追加。每条写明：做了什么、证据在哪、失败或偏离、下一步。没测的写"未测"。旧条目不改。
 
+## 2026-10-02 — 权限修订：实施方可维护 TASK_BOARD（Claude，按用户要求）
+
+- 用户明确要求允许实施方自己规划任务。卡片第 4、8 节、`CODEX_KICKOFF.md`、`README.md` 已改为：实施方可以编辑 `../TASK_BOARD.md` 中与 EVOLAB 相关的进展和任务规划，北极星、用户已确认的需求、桌宠和 memory_lab 的既有记录不得改动。
+- 这一条取代上一条修订中"TASK_BOARD 不由实施方更新"的说法。`PREREG_E2.md` 未改。
+
 ## 2026-10-02 — 环境路线修订（Claude，经用户同意改走 Windows 原生）
 
 - 原因：E0 显示 WSL2 无法启动（hypervisor 未运行），用户倾向不依赖 WSL。JAX 的 CUDA 版只有 Linux 轮子，而 PyTorch 2.7 及以后的 cu128 轮子在 Windows 原生支持 sm_120。
