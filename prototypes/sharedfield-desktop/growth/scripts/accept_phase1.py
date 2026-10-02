@@ -71,7 +71,7 @@ def c1():
 
 
 def main():
-    parser = argparse.ArgumentParser(); parser.add_argument('component', choices=['c1','c2','c3']); args = parser.parse_args()
+    parser = argparse.ArgumentParser(); parser.add_argument('component', choices=['c1','c2','c3','c4','c5','c6']); args = parser.parse_args()
     started = time.perf_counter(); samples = [telemetry()]
     result = {'component': args.component, 'passed': False}
     try:
@@ -185,6 +185,85 @@ def c3():
         store.close()
     return {'counts':cards,'false_preconditions_not_counted':True,'duplicate_not_counted':True,
             'fake_id_rejected':True,'scope_enforced':True,'truth_judge':'program_only'}
+
+
+def c4():
+    import tempfile
+    from growthlab.agent import Episode
+    from growthlab.decision import decode, messages, MEMORY_TOKENS
+    from growthlab.state import Store
+    from growthlab.variants import generate
+    base={'kind':'action','action':'noop','repeat':1,'name':'','description':'','source':'','completion':'','reason':'engineering'}
+    assert decode(json.dumps(base),Host().actions)==base
+    for wrong in [dict(base,action='reveal'),dict(base,repeat=True),dict(base,kind='anything'),dict(base,extra=True)]:
+        try:decode(json.dumps(wrong),Host().actions)
+        except ValueError:pass
+        else:raise AssertionError('protocol allowed')
+    class BadClient:
+        def decide(self,*args,**kwargs):return '{}',{'cost_usd':0,'latency_s':0}
+    with tempfile.TemporaryDirectory() as folder:
+        store=Store(Path(folder)/'state.sqlite');h=fixture();ep=Episode(h,store,folder,BadClient())
+        result=ep.play();ep.close();store.close()
+        assert result['stop']=='two_consecutive_invalid_outputs' and result['steps']==0 and result['decisions']==2
+    rules=generate('rename_actions',90);h=Host(aliases=rules['aliases'])
+    assert len(rules['aliases'])==10 and set(rules['aliases'])=={a for a in Host().actions if a.startswith(('make_','place_'))}
+    assert h.actions==sorted(h.actions)
+    p=h.env._player;p.inventory['wood']=1;h.env._world[p.pos+(-1,0)]='table'
+    h.act(rules['aliases']['make_wood_pickaxe'])
+    assert h.observe()['inventory']['wood_pickaxe']==1
+    return {'strict_protocol':True,'p2_invalid_policy':result,'f2_only_ten_actions':True,'alias_order_not_leaked':True}
+
+
+def c5():
+    import tempfile
+    from growthlab.memory import Memory,compact
+    from growthlab.state import Store
+    from growthlab.decision import messages,MEMORY_TOKENS
+    from growthlab.consolidation import apply_proposals
+    with tempfile.TemporaryDirectory() as folder:
+        store=Store(Path(folder)/'state.sqlite');h=fixture();memory=Memory(store,h.world,h.actions,'B')
+        p=h.env._player;p.inventory['wood']=2;h.env._world[p.pos+(-1,0)]='table';obs=h.observe()
+        exp=store.put('experience',{'type':'observation','observation':obs},'experienced',world=h.world)
+        before=messages(obs,'做出木镐 wood_pickaxe',memory.retrieve(obs,'wood_pickaxe'),[],[])
+        assert memory.rules.predict(obs,'make_wood_pickaxe')==[]
+        rule=memory.rules.register(known_rule('make_wood_pickaxe',exp))
+        after=messages(obs,'做出木镐 wood_pickaxe',memory.retrieve(obs,'wood_pickaxe'),[],[])
+        assert before!=after and rule in json.dumps(after)
+        assert memory.rules.predict(obs,'make_wood_pickaxe')[0]['expected']['inventory']['wood_pickaxe']==1
+        assert len(compact(memory.retrieve(obs,'wood_pickaxe')).encode())<=MEMORY_TOKENS
+        with store.db:store.db.execute('DELETE FROM records WHERE id=?',(rule,))
+        removed=messages(obs,'做出木镐 wood_pickaxe',memory.retrieve(obs,'wood_pickaxe'),[],[])
+        assert removed==before and memory.rules.predict(obs,'make_wood_pickaxe')==[]
+        proposals={'rules':[],'skills':[{'name':'fiction','description':'x','source':"act('noop')",'completion':'False','experiences':['invented']}]}
+        rejected=apply_proposals(memory,proposals,[exp]);assert rejected[0]['accepted'] is False and not memory.library.current()
+        proposals['skills'][0]['experiences']=[exp]
+        accepted=apply_proposals(memory,proposals,[exp]);assert accepted[0]['accepted']
+        result=run('',h.observe,h.act,library=memory.library,name='fiction',timeout_s=5)
+        store.put('experience',{'type':'skill_result','result':result,'taught':False,'takeover':False},'experienced',world=h.world)
+        profile=memory.profiles();assert profile['fiction@1']['attempts']==1 and profile['fiction@1']['success']==0
+        store.close()
+    return {'insertion_changes_prompt_and_prediction':True,'removal_restores_both':True,
+            'fake_sleep_reference_rejected':rejected,'valid_sleep_proposal_accepted':accepted,
+            'program_computed_profile':profile,'memory_token_upper_bound':MEMORY_TOKENS}
+
+
+def c6():
+    import tempfile
+    from growthlab.memory import Memory,compact
+    from growthlab.state import Store
+    from growthlab.decision import MEMORY_TOKENS
+    with tempfile.TemporaryDirectory() as folder:
+        store=Store(Path(folder)/'state.sqlite');h=fixture();memory=Memory(store,h.world,h.actions,'A')
+        exp=store.put('experience',{'type':'observation','observation':h.observe()},'experienced',world=h.world)
+        identity=memory.reflect('做木镐 wood_pickaxe 要站在工作台 table 旁边；有木头 wood 还不够。',[exp])
+        recalled=memory.retrieve(h.observe(),'做出木镐 wood_pickaxe')
+        assert identity in compact(recalled) and '工作台' in compact(recalled)
+        assert all(x['type'] not in ('rule_card','self_statistics') for x in recalled)
+        skill=memory.library.register('remembered','wood_pickaxe program',"act('noop')",'False',parents=[exp])
+        assert 'remembered' in compact(memory.retrieve(h.observe(),'wood_pickaxe'))
+        assert len(compact(recalled).encode())<=MEMORY_TOKENS
+        store.close()
+    return {'bm25_reflection_retrieved':recalled,'saved_program_retrievable':True,'same_memory_upper_bound':MEMORY_TOKENS}
 
 
 if __name__ == '__main__': main()

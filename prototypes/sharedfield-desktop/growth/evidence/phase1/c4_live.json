@@ -1,0 +1,105 @@
+{
+  "arm": "B",
+  "prompt_version": "phase1.prompt.v1",
+  "steps": 6,
+  "success": false,
+  "achievement_steps": null,
+  "capped_steps": 30,
+  "step_limit": 30,
+  "censored": true,
+  "failure_attempts": 0,
+  "decisions": 6,
+  "reported_cost_usd": 0.000636252081,
+  "missing_receipts": 0,
+  "seconds": 33.73806770000374,
+  "stop": "http_502",
+  "events": {
+    "no_visible_effect": 1,
+    "blocked": 1
+  },
+  "prediction_eligible_actions": 0,
+  "predicted_actions": 0,
+  "prediction_coverage": null,
+  "prediction_count": 0,
+  "prediction_matches": 0,
+  "prediction_accuracy": null,
+  "calls": [
+    {
+      "latency_s": 5.320940300007351,
+      "input_tokens": 2003,
+      "output_tokens": 81,
+      "cost_usd": 8.6910144e-05,
+      "provider": "OpenInference",
+      "charge_id": "b61d802021c74859ac431471b5d13589",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 8.6910144e-05
+    },
+    {
+      "latency_s": 4.741984799999045,
+      "input_tokens": 2129,
+      "output_tokens": 70,
+      "cost_usd": 7.557978e-05,
+      "provider": "OpenInference",
+      "charge_id": "e246cf2690af4c6fb8ed7f8c3a8d2959",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.000162489924
+    },
+    {
+      "latency_s": 5.800902800008771,
+      "input_tokens": 2292,
+      "output_tokens": 102,
+      "cost_usd": 0.000109358973,
+      "provider": "OpenInference",
+      "charge_id": "5dbe7ec4e5c044ba979a52c5806f6fba",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.000271848897
+    },
+    {
+      "latency_s": 5.390978900002665,
+      "input_tokens": 2467,
+      "output_tokens": 106,
+      "cost_usd": 0.000113345169,
+      "provider": "OpenInference",
+      "charge_id": "c76b7a1b850c475580518f465bb85b5c",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.000385194066
+    },
+    {
+      "latency_s": 6.044076399994083,
+      "input_tokens": 2646,
+      "output_tokens": 108,
+      "cost_usd": 0.000115556442,
+      "provider": "OpenInference",
+      "charge_id": "380194fb26f1442591a7127bef6e44cd",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.000500750508
+    },
+    {
+      "latency_s": 5.951012500008801,
+      "input_tokens": 2755,
+      "output_tokens": 127,
+      "cost_usd": 0.000135501573,
+      "provider": "OpenInference",
+      "charge_id": "b55531bc7f7a4aaabb9f962a8fb6b4ef",
+      "reserved_usd": 0.05,
+      "budget_reserved_or_reported_usd": 0.000636252081
+    }
+  ],
+  "skill_executions": [],
+  "claim_ceiling": "descriptive pilot only; not E1; no learning or superiority claim",
+  "telemetry": [
+    {
+      "unix_s": 1790981467.796945,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "80, 1942, 3286, 73.42",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790981503.6731882,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "79, 1807, 3257, 64.35",
+      "gpu_returncode": 0
+    }
+  ],
+  "seed": 909011
+}

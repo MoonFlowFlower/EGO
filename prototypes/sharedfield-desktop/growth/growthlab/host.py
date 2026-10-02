@@ -17,6 +17,8 @@ class Host:
         self.aliases = aliases or {}
         self.actions = [self.aliases.get(x,x) for x in ACTIONS]
         if len(set(self.actions)) != len(ACTIONS): raise ValueError('action_alias_collision')
+        self.action_indices = {public: i for i, public in enumerate(self.actions)}
+        if aliases: self.actions.sort()  # Do not leak the original action order.
         self.done = False
         self.world = uuid.uuid4().hex  # opaque; no seed or rule identity
         self.last_frame = self.env.reset().copy()
@@ -52,7 +54,7 @@ class Host:
         if self.done: raise ValueError('episode_finished')
         observation_before = self.observe()
         before = self.env._player.pos.copy()
-        frame, _, self.done, _ = self.env.step(self.actions.index(action))
+        frame, _, self.done, _ = self.env.step(self.action_indices[action])
         self.last_frame=frame.copy()
         self.delta = [int(v) for v in self.env._player.pos - before]
         observation_after = self.observe()

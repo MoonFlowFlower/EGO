@@ -9,7 +9,11 @@ from .host import Host
 def generate(kind,seed):
     rng=random.Random(seed)
     rules={'make':copy.deepcopy(constants.make),'collect':copy.deepcopy(constants.collect),'aliases':{}}
-    if kind=='rename':
+    if kind=='rename_actions':
+        names=[x for x in ACTIONS if x.startswith(('place_','make_'))]
+        ids=list(range(10));rng.shuffle(ids)
+        rules['aliases']={k:f's{v:03}' for k,v in zip(names,ids)}
+    elif kind=='rename':
         names=sorted(set(ACTIONS+ITEMS+MATERIALS+ENTITIES)); ids=list(range(len(names)));rng.shuffle(ids)
         rules['aliases']={k:f's{v:03}' for k,v in zip(names,ids)}
     elif kind=='recipe':
