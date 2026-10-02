@@ -2,6 +2,27 @@
 
 按时间倒序追加。每条写明：做了什么、证据在哪、失败或偏离、下一步。没测的写"未测"。旧条目不改。
 
+## 2026-10-02 — EVOLAB-002A F2 L0 完整证据检查点
+
+- L0完整12次记录已汇总 evidence/002A/F2_LEARNABILITY.md、f2_learnability.json、pilot_summaries；四组绝对指标均不通过。累计2773.134秒（46.22分钟），温度采样70–91°C，图形时钟1702–2670MHz。
+- 只读审计12次PASS：配置SHA、逐代连续性、最终均值/坍缩选择、保存开发张量重算指标、原001A字节及TASK_BOARD其他内容保持。F2闸门额外测试2/2通过（0.14秒）。
+- 记录为进行中检查点，不是F2完成。当前依固定阶梯进入L1，仅视野改为7×7；脚本不读取局部视野，W轨迹不变，沿用F1。尚未触发停止条件。
+
+## 2026-10-02 — EVOLAB-002A F2 L0 试跑闸门
+
+- {"groups": [{"arm": "gru_fixed", "regime": "static", "mean": {"survival": 0.14070225694444446, "ate_good_fraction": 0.240234375, "survived_first_fraction": 0.0}, "checks": {"complete": true, "ate_good": false, "survival": false}, "passed": false}, {"arm": "gru_fixed", "regime": "drift", "mean": {"survival": 0.10111675347222222, "ate_good_fraction": 0.02734375, "survived_first_fraction": 0.013020833333333334}, "checks": {"complete": true, "ate_good": false, "survived_first": false}, "passed": false}, {"arm": "gru_mb_plastic", "regime": "static", "mean": {"survival": 0.13882855902777777, "ate_good_fraction": 0.287109375, "survived_first_fraction": 0.0}, "checks": {"complete": true, "ate_good": false, "survival": false}, "passed": false}, {"arm": "gru_mb_plastic", "regime": "drift", "mean": {"survival": 0.10243272569444445, "ate_good_fraction": 0.05078125, "survived_first_fraction": 0.018880208333333332}, "checks": {"complete": true, "ate_good": false, "survived_first": false}, "passed": false}], "passed": false}
+- 完整12次结果 evidence/002A/f2_learnability.json、pilot_summaries；累计2773.1秒。未访问保留集。
+
+## 2026-10-02 — EVOLAB-002A F2 预指定示例GIF与并发耗时说明
+
+- evidence/002A/pilot_L0_B_drift_seed0.gif 使用首轮L0 B/drift/seed0第400代均值、pilot_dev标签1的第0回合；未按效果挑选。512回合重放分数与保存张量逐位一致。示例寿命300步，300采样帧压缩为61个GIF帧，布局/文字可读已检查，用户目检未验证。
+- 证据 pilot_gif.json；重放和渲染91.215秒，与L0 B/static/seed2后段并发，影响该次运行墙钟。该次耗时含渲染干扰，不作为独立吞吐量。附加GPU任务包含在F2累计墙钟中，完整预跑285.397秒在渲染开始前独立完成，不受此干扰。后续额外GPU工作串行。
+
+## 2026-10-02 — EVOLAB-002A F2 热降频实测
+
+- L0 B/static/seed2约第240代，nvidia-smi实测87°C、1800MHz，SW Thermal Slowdown=Active（HW Thermal Slowdown=Not Active）。证据 evidence/002A/f2_thermal_snapshot.json，原始快照 runs/002A/f2-thermal-snapshot.txt。驱动累计计数不当成本次实验时长。
+- 未调整系统或GPU设置，仍按实测墙钟和6小时累计上限运行；温度时钟继续逐20代采样。
+
 ## 2026-10-02 — EVOLAB-002A F1 闸门W通过
 
 - 首个通过毒性0.15：drift H=1.000000、N=0.204499、F=0.112719；static H=1.000000。此前0.05/0.10因N=0.999346/0.569022未达≤0.5H而失败，完整结果均保留；未继续0.20/0.30。

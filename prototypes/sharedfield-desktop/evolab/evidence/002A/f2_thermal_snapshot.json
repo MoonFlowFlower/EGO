@@ -1,0 +1,10 @@
+{
+  "source": "runs/002A/f2-thermal-snapshot.txt",
+  "phase": "F2 L0 B/static/seed2 around generation240",
+  "temperature_c": 87,
+  "graphics_mhz": 1800,
+  "SW_Thermal_Slowdown": "Active",
+  "HW_Thermal_Slowdown": "Not Active",
+  "counters": "Driver lifetime counters, not attributed to this experiment",
+  "system_settings_changed": false
+}

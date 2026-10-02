@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "protected_001a": true,
+  "original_progress_preserved": true,
+  "task_board_other_lines_unchanged": true,
+  "pilot_runs_checked": [
+    "L0_gru_mb_plastic_drift_seed0",
+    "L0_gru_fixed_static_seed0",
+    "L0_gru_fixed_static_seed1",
+    "L0_gru_fixed_static_seed2",
+    "L0_gru_fixed_drift_seed0",
+    "L0_gru_fixed_drift_seed1",
+    "L0_gru_fixed_drift_seed2",
+    "L0_gru_mb_plastic_static_seed0",
+    "L0_gru_mb_plastic_static_seed1",
+    "L0_gru_mb_plastic_static_seed2",
+    "L0_gru_mb_plastic_drift_seed1",
+    "L0_gru_mb_plastic_drift_seed2"
+  ],
+  "holdout_002a_artifacts_absent": true,
+  "limitation": "Absence of files alone is not proof of non-access; rollout also rejects all holdout domains/regimes."
+}

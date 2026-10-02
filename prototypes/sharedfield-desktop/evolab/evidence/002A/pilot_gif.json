@@ -1,0 +1,15 @@
+{
+  "source": "runs\\002A\\F2\\L0_gru_mb_plastic_drift_seed0",
+  "generation": 400,
+  "domain": "pilot_dev",
+  "domain_id": 430000,
+  "episode_index": 0,
+  "episodes": 512,
+  "selection": "First full-scale probe, fixed before results; no best selection",
+  "replay_bitwise_equal": true,
+  "episode_survival": 0.20000000298023224,
+  "seconds": 91.2153238000028,
+  "frames": 300,
+  "timing_note": "Rendered concurrently with pilot; auxiliary GPU work included within F2 wall budget",
+  "human_visual_acceptance": "未验证"
+}
