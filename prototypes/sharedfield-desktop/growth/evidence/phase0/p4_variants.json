@@ -1,0 +1,82 @@
+{
+  "seconds": 4.717187400005059,
+  "rows": [
+    {
+      "kind": "rename",
+      "structural_check": {
+        "accepted": true,
+        "reasons": [],
+        "scope": "dependency/capacity; arena witness separately required"
+      },
+      "witness_steps": 8,
+      "wood_pickaxe_achievement": 1,
+      "wood_sword_achievement": 1
+    },
+    {
+      "kind": "recipe",
+      "structural_check": {
+        "accepted": true,
+        "reasons": [],
+        "scope": "dependency/capacity; arena witness separately required"
+      },
+      "witness_steps": 8,
+      "wood_pickaxe_achievement": 1,
+      "wood_sword_achievement": 1
+    },
+    {
+      "kind": "consequence",
+      "structural_check": {
+        "accepted": true,
+        "reasons": [],
+        "scope": "dependency/capacity; arena witness separately required"
+      },
+      "witness_steps": 8,
+      "wood_pickaxe_achievement": 1,
+      "wood_sword_achievement": 1
+    },
+    {
+      "kind": "composition",
+      "structural_check": {
+        "accepted": true,
+        "reasons": [],
+        "scope": "dependency/capacity; arena witness separately required"
+      },
+      "witness_steps": 8,
+      "wood_pickaxe_achievement": 1,
+      "wood_sword_achievement": 1
+    }
+  ],
+  "checks": {
+    "paired_pixels_equal_before_actions": true,
+    "paired_public_observation_equal": true,
+    "same_action_different_consequence": true,
+    "second_world_alternative_witness": true,
+    "over_cap_rejected": true,
+    "circular_dependency_rejected": true,
+    "all_four_actual_witnesses": true
+  },
+  "paired_actions": {
+    "world_a": [
+      "make_wood_pickaxe"
+    ],
+    "world_b": [
+      "move_right",
+      "do",
+      "make_wood_pickaxe"
+    ]
+  },
+  "telemetry": [
+    {
+      "unix_s": 1790974384.8581696,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "67, 997, 4183, 31.45",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790974389.521641,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "66, 832, 4181, 30.01",
+      "gpu_returncode": 0
+    }
+  ]
+}
