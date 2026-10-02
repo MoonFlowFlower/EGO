@@ -90,3 +90,19 @@ E2 完成数 **0/20**；本任务训练消耗 **0 GPU 小时**（没有训练进
 3. 在 Linux venv 安装并锁定实测依赖，补齐 E0；通过后才进入 E1。按实际 Laptop GPU 性能重新测量预算，不沿用 16GB 桌面卡估算。
 
 本报告仅证明环境启动阻断及上述 Windows 观测，不证明 GPU/JAX 可用性、世界有效性或任何研究结论。
+
+
+## E0 第二次尝试（Windows 原生 PyTorch）
+
+2026-10-02（America/Winnipeg），文档基点 `ac8d3cf`（PR #131、#132 已合并）。**E0 PASS（GPU、矩阵乘、确定性及空状态吞吐）**。Room-v0 与大脑真实吞吐留到 E1，空状态数字不用于 E2 预算外推。上一节首次失败记录原样保留。
+
+- 预注册 SHA-256 开工前核对一致：`B0B8E3939A3CF22B1FB7071E576CAE8AA9EC71D93CC25D33635D131FCC15E082`。
+- Python **3.12.13**，虚拟环境 `.venv`；torch **2.11.0+cu128**，`torch.version.cuda=12.8`，CUDA available=True，设备 RTX 5070 Ti Laptop，`torch.cuda.get_device_capability(0)=(12, 0)`。Windows 驱动 616.56。
+- 安装依据 [PyTorch 官方安装入口](https://pytorch.org/get-started/locally/)，使用官方 cu128 索引，无独立 CUDA Toolkit 或系统驱动修改。实际依赖已锁定于 `requirements-evolab.txt`。Python runtime/cache 也位于忽略的 `runs/` 内。
+- 可复现命令：`.venv/Scripts/python.exe scripts/e0_smoke.py`。摘要/逐批测量/温度时钟采样见 `evidence/e0_torch.json`，控制台日志见不提交的 `runs/e0_smoke.log`。
+- 4096×4096 FP32 GEMM，每种模式预热 10 次，随后 10 批 × 50 次，CUDA events 计时并同步：TF32 **关 12807.76 GFLOP/s**，TF32 **开 25336.17 GFLOP/s**。TF32 开仅作对照，脚本随后恢复关闭；研究正式运行关闭。
+- 确定性：`CUBLAS_WORKSPACE_CONFIG=:4096:8` + `torch.use_deterministic_algorithms(True)`。同进程两次矩阵乘逐位相等，最大绝对差 **0.0**；两个新 Python 进程与父进程输出 SHA-256 一致：`5041cd899e2f1ab1aa78b78864abb26d8a1d19b5100148275b998f3a493e8be2`。这尚不证明 E1 适应度曲线重放。
+- 空状态探针：仅批量位置/能量张量更新，1500 步，2048/4096/8192 批分别 **23.18M / 58.90M / 117.54M** 个体步/秒。随机输入预生成且不含网络、观测、真实世界规则；不能宣称为 Room-v0 或 ES 吞吐。
+- 脚本计时 **39.91 秒**（不含首次 import/安装）。1 秒间隔采样覆盖负载及空闲过渡：温度 **59–74°C**，核心时钟 **277–2407 MHz**，显存时钟 **405–14001 MHz**，功耗 **18.14–124.26 W**。短时钟波动不证明热降频；长时热稳定性未验证。当前电源方案显示“游戏”；未擅自修改系统电源设置，AC 状态原始值见 JSON（1 表示接电）。
+- 此次安装与 GPU 测试未出现失败，无版本降级，无 CPU 替代运行。PyTorch 提示旧 TF32 控制 API 将来弃用（如控制台记录）；本次测量使用的是可读回的现行布尔设置。
+- 停止条件：未触发。下一步 E1：Room-v0、R/H、两臂、OpenES、不变量/可塑性/预算/重放测试、真实吞吐与 GIF，再冻结配置。E2 仍为 0/20，研究结论未验证。
