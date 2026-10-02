@@ -30,6 +30,7 @@
 ## 4. 范围与边界
 
 - 在 `prototypes/sharedfield-desktop/evolab/` 内自包含，不修改 `desktop_pet/`、`memory_lab/`、`SharedField/` 与仓库根目录主线。
+- 例外：允许编辑 `prototypes/sharedfield-desktop/TASK_BOARD.md`，用于记录 EVOLAB 的进展和规划任务（新增、拆分、调整 EVOLAB 任务及其顺序）。北极星、用户已确认的产品需求，以及桌宠和 memory_lab 的既有记录，都不得改动；涉及产品方向或用户决定的变化，先问用户。编辑时保留文件原有的换行符（这个文件 CRLF 与 LF 混用）。
 - 不 fork、不复制 JaxLife 代码（该仓库无许可证）；只借鉴思路，自行实现。
 - 不运行完整果蝇连接组；只采用"稀疏扩展 + 神经调质门控的三因子可塑性"这一原理的小型实现。
 - 不接 LLM、不联网调用模型、不读用户数据。
@@ -61,4 +62,4 @@
 - `evolab/configs/`：E1/E2 冻结配置。
 - `evolab/evidence/E0_ENV.md`、`E1_WORLD.md`、`E2_REPORT.md` 及摘要 JSON、一段示例 GIF。
 - `evolab/PROGRESS.md`：执行账本（做了什么、证据在哪、失败与偏离）。
-- `TASK_BOARD.md` 由用户或 Claude 在阶段结束后更新，实施方不修改 evolab 以外的文件。
+- 实施方负责维护 `../TASK_BOARD.md` 中与 EVOLAB 相关的内容：每个阶段结束时更新状态，也可以自行拆分和规划后续任务。规则见第 4 节。

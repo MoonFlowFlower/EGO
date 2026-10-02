@@ -16,4 +16,4 @@
 
 ## 边界
 
-只在本目录内工作。不修改 `../desktop_pet/`、`../memory_lab/`、`../SharedField/` 和仓库根目录主线。大文件放 `runs/`（已忽略），证据摘要放 `evidence/`。
+只在本目录内工作；唯一例外是可以在 `../TASK_BOARD.md` 中记录 EVOLAB 进展和规划任务（见卡片第 4 节）。不修改 `../desktop_pet/`、`../memory_lab/`、`../SharedField/` 和仓库根目录主线。大文件放 `runs/`（已忽略），证据摘要放 `evidence/`。
