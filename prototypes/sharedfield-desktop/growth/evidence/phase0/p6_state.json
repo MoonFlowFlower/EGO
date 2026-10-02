@@ -1,0 +1,32 @@
+{
+  "seconds": 0.41515529999742284,
+  "checks": {
+    "superseded_retained": true,
+    "active_revision_only": true,
+    "new_world_excludes_old_map_project_fact": true,
+    "personal_not_in_game_context": true,
+    "deleted_transitive_records": true,
+    "marker_absent_sql": true,
+    "model_switch_state_equal": true,
+    "marker_absent_database_bytes": true,
+    "new_process_reload_equal": true
+  },
+  "deleted_records": 6,
+  "retained_active_records": 6,
+  "before_after_digest": "d1630100b4b75616101c6b6d2381b80da7936882f5cd89af861f03bdabb1b46c",
+  "model_switch_scope": "two provider labels; no real model behavior comparison",
+  "telemetry": [
+    {
+      "unix_s": 1790974177.8962696,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "80, 2175, 4109, 119.39",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790974178.2538006,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "80, 2175, 4109, 119.39",
+      "gpu_returncode": 0
+    }
+  ]
+}
