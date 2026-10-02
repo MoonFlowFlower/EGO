@@ -1,6 +1,6 @@
 # 给 Codex 的开场白：阶段 1——搭建"她 v0"、强基线 A 与预实验（可直接粘贴）
 
-使用方法：本文件与设计文档 v0.4 已合并到 `codex/desktop-pet-memory-lab-20261001`。把下面分隔线之间的全部内容发给 Codex。
+使用方法：本文件与设计文档 v0.4 已合并到 `codex/desktop-pet-memory-lab-20261001`。建议开一个新的 Codex 会话，把下面分隔线之间的全部内容发过去；内容是自足的，发在旧会话里也能用。
 
 ---
 
@@ -16,9 +16,16 @@
 
 **这一阶段的目标**：搭出"她 v0"（B）和强基线 A，用工程验收证明学习回路真的接上并且生效；然后做一个只描述、不下结论的预实验，为 E1 预注册提供数据。**这一阶段仍然不是 E1**，不下"学会了""有效""B 比 A 好"之类的结论。
 
-**开工前读**：设计文档 `growth/GROWTH_DESIGN_v0.md`（v0.4）的第 1 节（D6–D8）、3.1–3.3、第 4 节（技能语言 v2、A 与 B 的区别）、9.2、10.0。
+**开工前**
+1. 拉取最新代码，分支 `codex/desktop-pet-memory-lab-20261001`。拉取后确认 `growth/GROWTH_DESIGN_v0.md` 的标题是 v0.4。
+2. 按顺序读：
+   - `growth/CODEX_KICKOFF_PHASE0.md`：阶段 0 的权限、硬性规则和 Git 规则，包括文末的补充说明。本文凡是写"与阶段 0 相同""沿用阶段 0"的地方，都以它为准。
+   - `growth/PROGRESS.md` 最上面几条，以及 `growth/evidence/phase0/REPORT.md`：阶段 0 做到了哪里。
+   - 设计文档 `growth/GROWTH_DESIGN_v0.md`（v0.4）的第 1 节（D6–D8）、3.1–3.3、第 4 节（技能语言 v2、A 与 B 的区别）、9.1、9.2、10.0。
+   - `growth/OBSERVATION_SPEC.md`：观察规格 v1.1。
+   - 要复用的现有代码：`growthlab/` 下的 `host.py`、`runtime.py`、`contract.py`、`sandbox.py`、`state.py`、`variants.py`、`models.py`（P2 的路由和预留记账）、`live_runner.py`、`observatory.py`。
 
-**权限**：与阶段 0 相同。
+**权限**：与阶段 0 相同，见 `CODEX_KICKOFF_PHASE0.md`。
 
 ## 第一部分：搭建（按顺序）
 
