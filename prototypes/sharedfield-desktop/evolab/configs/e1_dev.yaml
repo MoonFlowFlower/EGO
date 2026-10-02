@@ -1,0 +1,74 @@
+adam:
+  beta1: 0.9
+  beta2: 0.999
+  eps: 1.0e-08
+arms:
+- gru_fixed
+- gru_mb_plastic
+bootstrap_replicates: 10000
+es_rank_ties: average rank
+execution: one-step CUDA Graph; all-dead check each 32 steps
+final_selection: generation_400_mean
+gru_convention: PyTorch reset-after; z retains old hidden
+holdout_episodes: 1024
+kc_ties: stable descending, lower index first
+kc_top_k: 26
+regimes:
+  drift:
+  - 200
+  - 400
+  drift_fast:
+  - 120
+  - 180
+  drift_slow:
+  - 500
+  - 600
+  static: &id001
+  - 0
+  - 0
+  static_holdout: *id001
+seed_domains:
+  dev: 200000
+  e1: 300000
+  holdout: 900000
+  train: 100000
+seeds:
+- 0
+- 1
+- 2
+- 3
+- 4
+semantics:
+  budget_probe: B/drift/seed0 counts among the 20 runs
+  drift_switch: step start when age >= next_switch
+  food_refractory: 20 subsequent steps ineligible; available on 21st
+  holdout_gate: all 20 runs complete and engineering validity before accessing holdout
+  initial_previous_action: all zeros
+  movement_cost: directional command, including wall attempts
+  plastic_action_trace: selected command; observation contains executed command
+  random_draws: stable SHA256-derived separate CUDA generators; full horizon pre-generated
+  survival_steps: count step begun alive, including lethal step
+  training_validity: aggregate five seeds per arm/world; hierarchical CI must not
+    overlap R
+  validation: fixed 128 dev episodes every 20 generations; final 1024 different dev
+    episodes
+tf32: false
+world_and_es:
+  energy_cost: 0.004
+  episodes: 8
+  fatigue_rate: 0.002
+  food_gain: 0.3
+  generations: 400
+  hidden: 32
+  horizon: 1500
+  learning_rate: 0.01
+  master_seed: 20261002
+  move_cost: 0.002
+  poison_cost: 0.05
+  population: 256
+  projection_seed: 8101
+  regrow: 20
+  rest_rate: 0.03
+  sigma: 0.02
+  validation_episodes: 128
+  validation_every: 20

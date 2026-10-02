@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "passed": 22,
+  "seconds": 17.92,
+  "command": ".venv/Scripts/python.exe -m pytest tests -q --basetemp=runs/pytest-e1-release",
+  "log": "runs/e1_tests_release.log",
+  "config_sha256": "134d90c1d7e935be720d73445784b488818c16744c8d29f98f177c97493e14a8",
+  "prereg_sha256": "B0B8E3939A3CF22B1FB7071E576CAE8AA9EC71D93CC25D33635D131FCC15E082",
+  "first_attempt": {
+    "passed": 8,
+    "failed": 6,
+    "reason": "argsort stable requires keyword dim",
+    "repair_attempts": 1
+  },
+  "replay": "both arms, five generations, two fresh processes per arm, bitwise equal",
+  "graph": "eager and graph full world and brain states bitwise equal"
+}

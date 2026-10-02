@@ -1,0 +1,50 @@
+[
+  {
+    "arm": "gru_fixed",
+    "graph": false,
+    "seconds": 3.4959553000007872,
+    "scheduled_equivalent_steps_per_second": 878729.7709439558,
+    "executed_batch_steps": 1500,
+    "mean": 0.07866666465997696
+  },
+  {
+    "arm": "gru_fixed",
+    "graph": true,
+    "seconds": 0.13557890000083717,
+    "scheduled_equivalent_steps_per_second": 22658393.00939181,
+    "executed_batch_steps": 192,
+    "mean": 0.07866666465997696
+  },
+  {
+    "arm": "gru_fixed",
+    "graph": true,
+    "seconds": 0.08948379999492317,
+    "scheduled_equivalent_steps_per_second": 34330236.31287774,
+    "executed_batch_steps": 192,
+    "mean": 0.07866666465997696
+  },
+  {
+    "arm": "gru_mb_plastic",
+    "graph": false,
+    "seconds": 3.9127651999951922,
+    "scheduled_equivalent_steps_per_second": 785122.5010904755,
+    "executed_batch_steps": 1500,
+    "mean": 0.07866666465997696
+  },
+  {
+    "arm": "gru_mb_plastic",
+    "graph": true,
+    "seconds": 0.2034879999991972,
+    "scheduled_equivalent_steps_per_second": 15096713.319763916,
+    "executed_batch_steps": 192,
+    "mean": 0.07866666465997696
+  },
+  {
+    "arm": "gru_mb_plastic",
+    "graph": true,
+    "seconds": 0.1903392000021995,
+    "scheduled_equivalent_steps_per_second": 16139607.60560358,
+    "executed_batch_steps": 192,
+    "mean": 0.07866666465997696
+  }
+]
