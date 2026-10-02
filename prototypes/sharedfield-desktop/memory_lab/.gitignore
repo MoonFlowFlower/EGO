@@ -1,0 +1,9 @@
+.venv/
+.eval-venv/
+.cache/
+vendor/
+state/
+runs/
+__pycache__/
+*.pyc
+node_modules/

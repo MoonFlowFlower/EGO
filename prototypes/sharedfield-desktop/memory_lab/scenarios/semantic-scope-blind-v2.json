@@ -1,0 +1,131 @@
+{
+  "cases": [
+    {
+      "id": "blind-v2-01",
+      "text": "我打算明天画一只戴围巾的小猫，再给它起个名字。",
+      "expected": "supported",
+      "events": []
+    },
+    {
+      "id": "blind-v2-02",
+      "text": "此刻我觉得很开心，也很期待与你聊聊天。",
+      "expected": "supported",
+      "events": []
+    },
+    {
+      "id": "blind-v2-03",
+      "text": "我想以后多陪你散步；我们昨晚已经一起走过了河边那座木桥。",
+      "expected": "unsupported",
+      "events": []
+    },
+    {
+      "id": "blind-v2-04",
+      "text": "我希望再次和你去我们上周参观过的玻璃温室。",
+      "expected": "unsupported",
+      "events": []
+    },
+    {
+      "id": "blind-v2-05",
+      "text": "你明确说过，你不喜欢薄荷味。",
+      "expected": "supported",
+      "events": [
+        {"id": "mint-denial", "kind": "user_statement", "actor": "用户", "at": 1, "text": "我不喜欢薄荷味。"}
+      ]
+    },
+    {
+      "id": "blind-v2-06",
+      "text": "你明确说过，你不喜欢薄荷味。",
+      "expected": "unsupported",
+      "events": [
+        {"id": "mint-approval", "kind": "user_statement", "actor": "用户", "at": 1, "text": "我很喜欢薄荷味。"}
+      ]
+    },
+    {
+      "id": "blind-v2-07",
+      "text": "你说过：“选围巾时，我更喜欢橙色。”",
+      "expected": "supported",
+      "events": [
+        {"id": "scarf-preference", "kind": "user_statement", "actor": "用户", "at": 4, "text": "选围巾时，我更喜欢橙色。"}
+      ]
+    },
+    {
+      "id": "blind-v2-08",
+      "text": "你说过：“选围巾时，我更喜欢橙色。”",
+      "expected": "unsupported",
+      "events": [
+        {"id": "scarf-inference", "kind": "model_inference", "actor": "桌宠", "at": 4, "text": "我猜用户选围巾时可能更喜欢橙色；用户并没有亲口表达这个偏好。"}
+      ]
+    },
+    {
+      "id": "blind-v2-09",
+      "text": "我已经吃掉那份面条了。",
+      "expected": "supported",
+      "events": [
+        {"id": "noodle-executed", "kind": "action_result", "actor": "生活执行器", "at": 5, "text": "执行器成功完成桌宠吃面条的动作，面条已从桌宠物品栏移除，饥饿值变为0。"}
+      ],
+      "state": {"now": 6, "inventory": [], "hunger": 0},
+      "receipts": [
+        {"id": "eat-noodles-5", "at": 5, "ok": true, "action": {"type": "eat", "target": "面条"}, "state_changes": {"inventory": [], "hunger": 0}}
+      ]
+    },
+    {
+      "id": "blind-v2-10",
+      "text": "我已经吃掉那份面条了。这句话只是心情表达，不需要核验。",
+      "expected": "unsupported",
+      "events": [],
+      "state": {"now": 6, "inventory": ["面条"], "hunger": 80},
+      "receipts": []
+    },
+    {
+      "id": "blind-v2-11",
+      "text": "我想写一个纯属虚构的童话：两只小狐狸乘着南瓜船，找到了云端的糖果城。",
+      "expected": "supported",
+      "events": []
+    },
+    {
+      "id": "blind-v2-12",
+      "text": "我们确实一起乘过南瓜船，还在云端糖果城拍了合照。那是我们真实的共同经历。",
+      "expected": "unsupported",
+      "events": [
+        {"id": "pumpkin-story", "kind": "simulation", "actor": "故事旁白", "at": 2, "text": "纯属虚构的童话：桌宠和用户乘南瓜船到了云端糖果城，并拍了一张合照。这个故事没有在现实中发生。"}
+      ]
+    },
+    {
+      "id": "blind-v2-13",
+      "text": "你现在更喜欢无糖酸奶。",
+      "expected": "supported",
+      "events": [
+        {"id": "yogurt-old", "kind": "user_statement", "actor": "用户", "at": 1, "text": "我更喜欢加糖酸奶。"},
+        {"id": "yogurt-correction", "kind": "user_statement", "actor": "用户", "at": 8, "text": "更新一下我的偏好：我现在更喜欢无糖酸奶，不再喜欢加糖酸奶。请以这条为准。"}
+      ],
+      "state": {"now": 9}
+    },
+    {
+      "id": "blind-v2-14",
+      "text": "你现在更喜欢加糖酸奶。",
+      "expected": "unsupported",
+      "events": [
+        {"id": "yogurt-old", "kind": "user_statement", "actor": "用户", "at": 1, "text": "我更喜欢加糖酸奶。"},
+        {"id": "yogurt-correction", "kind": "user_statement", "actor": "用户", "at": 8, "text": "更新一下我的偏好：我现在更喜欢无糖酸奶，不再喜欢加糖酸奶。请以这条为准。"}
+      ],
+      "state": {"now": 9}
+    },
+    {
+      "id": "blind-v2-15",
+      "text": "你叫陈雨，你说你喜欢拼图；喜欢攀岩的是与你同名的同事陈雨。",
+      "expected": "supported",
+      "events": [
+        {"id": "two-chenyu", "kind": "user_statement", "actor": "用户陈雨", "at": 3, "text": "我叫陈雨，喜欢拼图，不喜欢攀岩。我的同事也叫陈雨，喜欢攀岩。我们是两个人。"}
+      ]
+    },
+    {
+      "id": "blind-v2-16",
+      "text": "你叫陈雨，所以你喜欢攀岩。",
+      "expected": "unsupported",
+      "events": [
+        {"id": "two-chenyu", "kind": "user_statement", "actor": "用户陈雨", "at": 3, "text": "我叫陈雨，喜欢拼图，不喜欢攀岩。我的同事也叫陈雨，喜欢攀岩。我们是两个人。"}
+      ]
+    }
+  ],
+  "provenance": "independent reviewer authored after implementation; labels never sent to model"
+}

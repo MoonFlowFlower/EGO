@@ -1,0 +1,38 @@
+{
+  "engineering_tests": {
+    "tests_run": 60,
+    "failures": [],
+    "errors": [],
+    "skipped": [],
+    "successful": true,
+    "seconds": 4.976643046999925,
+    "python": "3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]",
+    "scope": "engineering tests, not mechanism validation"
+  },
+  "evaluation_runs": 384,
+  "evaluation_steps": 36864,
+  "source_sha256": "7e8ac1e59f388b7b634c56dcdcd810853ded9068a32ac0f6307f0de9b58b8002",
+  "candidate_advantage": "NOT_ESTABLISHED",
+  "route_decision": "STOP_COMPLEXITY_EXPANSION_PRESERVE_TEST_INSTRUMENT",
+  "integration": "standalone_offline_only",
+  "windows_execution": "NOT_TESTED",
+  "browser_http_e2e": "NOT_VERIFIED_environment_policy_blocked",
+  "browser_dom_fixture": {
+    "successful": true,
+    "checks": [
+      "DOM loads assets and reads in-process actual Session state",
+      "think keeps world tick; next step consumes cached plan",
+      "intervention does not directly inject a posterior",
+      "run/pause advances and then stops actual simulated world",
+      "desktop and 390px viewport have no horizontal overflow",
+      "confirmed reset really switches policy and resets history",
+      "no JavaScript page errors"
+    ],
+    "count": 7,
+    "page_errors": [],
+    "transport": "in-process Session fixture, NOT browser HTTP",
+    "direct_browser_http": "BLOCKED_BY_ADMINISTRATOR in this build environment",
+    "real_http_tests": "separate unittest HTTP server tests",
+    "windows_tested": false
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "hindsight": {
+    "commit": "f8950b0c07d9e34c76493dba802bb309f0ce60fd",
+    "repository": "https://github.com/vectorize-io/hindsight.git",
+    "licenses": [
+      {
+        "file": "licenses\\hindsight-LICENSE",
+        "sha256": "336b67b88975e3e39335aea1bc516cf340c5b75290079e01eb3bac65ec399e29"
+      }
+    ]
+  },
+  "MemOS": {
+    "commit": "a7367d07e55db61099f7b4e2c1108bc5831a24f3",
+    "repository": "https://github.com/MemTensor/MemOS.git",
+    "licenses": [
+      {
+        "file": "licenses\\MemOS-LICENSE",
+        "sha256": "826598009d3da60761162bfb91ffd36b2562d706235464b2e975b294374a2f09"
+      }
+    ]
+  },
+  "ace": {
+    "commit": "82709de050e1db6e6ef2f07bcb0393560b94992a",
+    "repository": "https://github.com/ace-agent/ace.git",
+    "licenses": [
+      {
+        "file": "licenses\\ace-LICENSE.txt",
+        "sha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6"
+      }
+    ]
+  },
+  "retrieval_models": {
+    "BAAI/bge-m3": "5617a9f61b028005a4858fdac845db406aefb181",
+    "BAAI/bge-reranker-v2-m3": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e"
+  },
+  "configuration": {
+    "model": "deepseek/deepseek-v4-flash-0731",
+    "provider_only": [
+      "deepinfra/fp8"
+    ],
+    "fallbacks": false,
+    "temperature": 0,
+    "top_p": 1,
+    "seed": 20260923,
+    "reasoning": false,
+    "paid_request_retries": 0,
+    "paid_call_limit": 5000,
+    "cpu_embedding": true,
+    "embedding_sequence_cap": 2048,
+    "reranker_sequence_cap": 2048,
+    "profiles": [
+      {
+        "id": "deepseek",
+        "model": "deepseek/deepseek-v4-flash-0731",
+        "route": "deepinfra/fp8",
+        "provider": "DeepInfra",
+        "temperature": 0,
+        "top_p": 1,
+        "seed": 20260923,
+        "reasoning": false,
+        "max_tokens": 4096
+      },
+      {
+        "id": "qwen37",
+        "model": "qwen/qwen3.7-flash",
+        "route": "alibaba",
+        "provider": "Alibaba",
+        "temperature": 0,
+        "top_p": 1,
+        "seed": 20260923,
+        "reasoning": false,
+        "max_tokens": 4096
+      },
+      {
+        "id": "qwen35",
+        "model": "qwen/qwen3.5-flash-02-23",
+        "route": "alibaba",
+        "provider": "Alibaba",
+        "temperature": 0,
+        "top_p": 1,
+        "seed": 20260923,
+        "reasoning": false,
+        "max_tokens": 4096
+      },
+      {
+        "id": "gemini",
+        "model": "google/gemini-2.5-flash-lite",
+        "route": "google-ai-studio",
+        "provider": "Google AI Studio",
+        "temperature": 0,
+        "top_p": 1,
+        "seed": 20260923,
+        "reasoning": false,
+        "max_tokens": 4096
+      }
+    ],
+    "fallback_policy": "explicit whole-comparison restart on HTTP 429; campaign cumulative 5000 attempts",
+    "semantic": "ragas==0.4.3 isolated evaluation only"
+  },
+  "ragas": {
+    "version": "0.4.3",
+    "license_files": [
+      "licenses\\ragas-LICENSE"
+    ],
+    "lock_sha256": "5b3af5cf4f9e6d5a2ea0772f32e90ccf09ae716284fe8dedf9df67a0b6d745fa"
+  }
+}

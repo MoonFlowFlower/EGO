@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="studio-token" content="__TOKEN__">
+<title>SwitchLab Studio · 持续认知工作台</title>
+<link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script>
+</head>
+<body>
+<header class="topbar"><div class="brand"><span class="mark">S</span><div><strong>SwitchLab <span>Studio</span></strong><small>经历 → 预测 → 选择 → 行动 → 更新</small></div></div>
+<div class="top-actions"><span id="connectionBadge" class="badge">手动交换</span><button id="settingsBtn">模型连接</button><button id="exportBtn">导出实验</button><button id="newBtn" class="quiet">新实验</button></div></header>
+<main class="layout">
+<section class="conversation panel">
+<div class="section-head"><div><div class="eyebrow">PERSISTENT ADAPTIVE SYSTEM / v0.3</div><h1>持续认知工作台</h1></div><span id="saveBadge" class="subtle">本地自动保存</span></div>
+<div class="runtime-strip"><div><span id="activityDot" class="dot"></span><strong id="runtimeState">休眠</strong><span id="remaining" class="subtle"></span></div><div class="run-buttons"><button id="onceBtn">推进一步</button><button id="autoBtn" class="primary">允许 6 步后台推进</button><button id="pauseBtn" class="stop">暂停</button></div></div>
+<p id="runtimeDetail" class="runtime-detail">发送消息以开始。没有可执行工作时，程序会休眠。</p>
+<div id="errorBox" class="error" role="alert" hidden></div>
+<div id="manualBanner" class="manual-banner" hidden><div><strong>有一份待交给语言模型的请求</strong><small>一轮对话包含 analyse / express 两次交换。每次只贴回当前阶段的 JSON。</small></div><button id="openManualBtn" class="primary">打开语言交换</button></div>
+<div id="chatLog" class="chat-log" aria-live="polite"><div id="welcome" class="welcome"><div class="welcome-icon">↗</div><h2>从一段真实经历开始。</h2><p>可以先聊天，不必交任务。对话进入同一个可塑控制回路；有来源的未决问题可以形成目标。模型提出候选，本地控制器选择，再由语言表达。</p><div class="examples"><button data-example="我想设计一个4人合作探索游戏，动作资源很少。先比较两条机制不同的路线，不要急着同意我的第一反应。">讨论一个模糊选择</button><button data-example="请检查实验世界里工具目前可能处于什么状态。必要时自己决定做什么小实验，先看实际观测，再写一份短报告。">让它调查实验世界</button><button data-example="我今天只是想聊聊，不要自动把这句话变成任务。你现在能做什么，不能做什么？">只聊，不建任务</button></div><p class="welcome-foot">没有 API key？默认的手动交换模式可用。需要连续自动运行时，再连接兼容 API 或本地模型。</p></div></div>
+<form id="chatForm" class="composer"><label class="sr-only" for="messageInput">输入消息</label><textarea id="messageInput" rows="3" maxlength="6000" placeholder="说说你的问题、约束，或者对上次结果的新发现……"></textarea><div class="composer-foot"><small>Enter 发送 · Shift+Enter 换行。发送消息不等于允许外部电脑操作。</small><button type="submit" id="sendBtn" class="primary">发送 ↗</button></div></form>
+</section>
+<aside class="side panel">
+<div class="side-head"><h2>正在发生什么</h2><span id="eventCount" class="subtle">0 个事件</span></div>
+<nav class="tabs" aria-label="内部状态视图"><button class="tab active" data-tab="cognition">认知</button><button class="tab" data-tab="goals">目标</button><button class="tab" data-tab="memory">记忆</button><button class="tab" data-tab="claims">信念</button><button class="tab" data-tab="world">实验</button><button class="tab" data-tab="trace">轨迹</button></nav>
+<div id="cognitionPanel" class="tab-panel">
+<div class="loop-label">同一个回路 · 对话也会留下可测的变化</div>
+<div id="cognitiveStats" class="stats-grid"></div>
+<div class="focus-card"><div class="eyebrow">CURRENT FOCUS</div><p id="currentFocus">等待第一段真实输入。没有预填人格或训练经历。</p></div>
+<div class="inline"><button id="thinkBtn">内部处理一步</button><button id="replayBtn">重放 8 次梯度</button></div>
+<label class="check"><input id="learningToggle" type="checkbox" checked> 开启数值学习（可做冻结消融）</label>
+<label class="compact-label">候选选择方式<select id="selectionMode"><option value="adaptive">按实际预测误差选择学习器</option><option value="similarity">只用经验匹配预测器</option><option value="neural">只用神经预测器 · 实验</option><option value="language_order">保留语言候选顺序 · 对照</option></select></label>
+<p id="learningDetail" class="subtle"></p>
+<div class="subhead"><h3>选择与事前预测</h3><button id="openOutcomeBtn" class="small">记录实际结果</button></div>
+<div id="decisionList" class="card-list"></div>
+<details><summary>学习与运行边界</summary><p class="subtle">梯度更新的是本地小网络，不是远程 LLM。预测未来观测使用粗粒度词汇特征，不等于完整语言世界模型。任务、约束、理解的评价权重是工程指定的；记录结果不是点赞。冻结会停止数值预测器更新，但对话记忆仍在积累。</p><div id="predictorScores"></div></details>
+</div>
+<div id="claimsPanel" class="tab-panel" hidden><div class="notice">“他认为”与“世界如何”分开。每条解释必须指向真实原文；模型抽取未认证，重复陈述不会投票成为真值。不同内容也可能是情境变化。</div><div id="claimConflictCount" class="subtle"></div><div id="claimsList" class="card-list"></div></div>
+<div id="goalsPanel" class="tab-panel" hidden><div class="subhead"><h3>持续目标</h3><span id="goalCount"></span></div><div id="goalList" class="card-list"></div><div class="subhead"><h3>实际产出</h3><span id="artifactCount"></span></div><div id="artifactList" class="card-list"></div></div>
+<div id="memoryPanel" class="tab-panel" hidden><div class="notice">语义条目保留来源，不自动当作事实。冲突条目并存；真正的物理概率由实验观测更新。</div><div class="subhead"><h3>经历与偏好</h3><button id="consolidateBtn" class="small">实际梯度重放</button></div><div id="memoryList" class="card-list"></div><h3>任务策略估计</h3><p class="subtle">只来自你的验收反馈，不是独立测量的智力或真实性。</p><div id="strategyList"></div><label class="check"><input id="adaptationToggle" type="checkbox" checked> 开启数值学习（语言上下文仍保留）</label></div>
+<div id="worldPanel" class="tab-panel" hidden><div class="notice">这是独立实验的物理时钟，不是聊天计数器。实际实验结果会进入认知学习器；聊天不会凭空消耗玩具能源。语言看不到隐藏答案。</div><div id="worldStats" class="stats-grid"></div><h3>系统当前估计</h3><div id="beliefList"></div><div class="world-buttons"><button data-lab="auto">控制器走一步</button><button data-lab="think">只做内部规划</button><button data-lab="calibrate">校准工具</button><button data-lab="probe_e">探测能量源</button></div><details><summary>测试者干预（不直接告知系统）</summary><div class="world-buttons"><button data-intervene="damage_tool">破坏工具</button><button data-intervene="flip_energy">交换能量源</button><button data-intervene="flip_coolant">交换冷却源</button></div></details><p class="subtle">有信息价值的意外观测可以产生一次语言检查机会；独立噪声不会因为“很意外”就成为学习证据。开启有限推进后才处理这些机会。</p></div>
+<div id="tracePanel" class="tab-panel" hidden><div class="notice">这里显示的是实际操作与结果，不是模型的私有思维链。语言发言本身不证明行动已执行。</div><div id="traceList" class="card-list"></div></div>
+<div class="budget"><div><span>本生命周期模型请求</span><strong id="callBudget">0 / 48</strong></div><div><span>供应商报告的输入 / 输出 tokens</span><span id="usage">0 / 0</span></div><small>一轮对话通常 2 次请求；内部梯度重放不调用 API。不是金额封顶；失败不自动重试。</small></div>
+</aside>
+</main>
+<footer>本地研究系统 · 实际梯度不等于现实能力提升 · 运行可暂停 · 无真实电脑操作权限 · 密钥不写入导出</footer>
+<dialog id="settingsDialog"><div class="dialog-head"><div><div class="eyebrow">LANGUAGE TRANSPORT</div><h2>连接你的语言模型</h2></div><button data-close="settingsDialog" aria-label="关闭">×</button></div><form id="settingsForm"><label>接入方式<select id="preset"><option value="manual">手动交换 · 使用现有聊天模型</option><option value="openrouter">OpenRouter · API</option><option value="ollama">Ollama · 本地兼容接口</option><option value="lmstudio">LM Studio · 本地兼容接口</option><option value="custom">其他 OpenAI 兼容接口</option></select></label><p id="manualHelp" class="notice">把程序生成的请求复制给一个真实语言模型，然后贴回 JSON。内核、记忆和工具执行与 API 模式相同；只有语言传输由你手动完成，因此不能无人值守地继续语言步骤。</p><div id="apiFields" hidden><label>Base URL<input id="baseUrl" type="url" placeholder="https://openrouter.ai/api/v1" autocomplete="off"></label><label>模型 ID<input id="modelId" list="modelOptions" placeholder="填供应商提供的实际模型 ID" autocomplete="off"><datalist id="modelOptions"></datalist></label><div class="inline"><button type="button" id="modelsBtn">读取可用模型</button><small>先确认连接地址与凭据；不自动下载模型。</small></div><label>API key（仅本次进程保存）<input id="apiKey" type="password" autocomplete="new-password" placeholder="本地接口通常可留空"></label><label class="check"><input id="clearKey" type="checkbox"> 清除当前进程中的旧密钥</label><label class="check"><input id="networkConsent" type="checkbox"> 我确认此地址；使用远程接口时，允许将对话与选定工作上下文发送给它。</label><p class="notice">ChatGPT 订阅不自动提供 API 额度。远程 API 可能收费；不想使用付费接口时，使用手动交换或你已部署的本地模型。</p></div><details><summary>预算与兼容性设置</summary><div class="settings-grid"><label>生命周期请求上限<input id="maxCalls" type="number" min="1" max="500" value="48"></label><label>每次最大输出 tokens<input id="maxTokens" type="number" min="256" max="8192" value="2400"></label><label>HTTP 超时（秒）<input id="timeout" type="number" min="5" max="180" value="90"></label><label>token 参数<select id="tokenParameter"><option value="max_tokens">max_tokens</option><option value="max_completion_tokens">max_completion_tokens</option></select></label></div><label class="check"><input id="jsonMode" type="checkbox" checked> 请求 JSON mode（不支持时关闭；仍严格验证返回 JSON）</label></details><div id="settingsStatus" class="status-line" role="status"></div><div class="dialog-actions"><button type="button" id="checkBtn">最小连接测试 · 1 次</button><button type="button" id="protocolCheckBtn">两阶段协议自检 · 2 次</button><button type="submit" class="primary">保存设置</button></div></form></dialog>
+<dialog id="manualDialog" class="wide"><div class="dialog-head"><div><div class="eyebrow">MANUAL MODEL EXCHANGE</div><h2>把语言模块接回闭环</h2></div><button data-close="manualDialog" aria-label="关闭">×</button></div><p>复制第一栏到你选择的语言模型，让它按要求返回 JSON；将完整结果粘贴到第二栏。不要把请求正文当成模型回复。</p><label>1 · 当前状态与任务请求<textarea id="manualPrompt" rows="9" readonly></textarea></label><button id="copyPromptBtn">复制模型请求</button><label>2 · 真实模型返回的 JSON<textarea id="manualResponse" rows="9" placeholder='粘贴当前阶段返回的完整 JSON；不是普通聊天文本'></textarea></label><div id="manualStatus" class="status-line"></div><div class="dialog-actions"><button id="applyManualBtn" class="primary">校验并接入闭环</button></div></dialog>
+<dialog id="artifactDialog" class="wide"><div class="dialog-head"><div><div class="eyebrow">ACTUAL LOCAL ARTIFACT</div><h2 id="artifactTitle">工作区草稿</h2></div><button data-close="artifactDialog" aria-label="关闭">×</button></div><div id="artifactMeta" class="subtle"></div><article id="artifactContent" class="artifact-content"></article><div class="inline"><button id="downloadArtifactBtn">导出 Markdown</button><button id="copyArtifactBtn">复制正文</button></div><section class="feedback"><h3>这次产出满足了目标吗？</h3><textarea id="feedbackText" rows="3" maxlength="3000" placeholder="例如：遗漏了一个关键约束；或只是希望语气更自然。两种反馈走不同通道。"></textarea><div class="feedback-buttons"><button data-feedback="criteria_met" class="primary">符合验收</button><button data-feedback="criteria_failed">未达验收，继续修订</button><button data-feedback="style">仅表达偏好</button></div><p id="evaluationStatus" class="subtle"></p></section></dialog>
+<dialog id="outcomeDialog"><div class="dialog-head"><div><div class="eyebrow">OBSERVED OUTCOME · NOT APPROVAL</div><h2>记录这次选择的实际结果</h2></div><button data-close="outcomeDialog" aria-label="关闭">×</button></div>
+<p id="outcomeDecision" class="notice"></p><p class="subtle">只评价已观察到的结果；未知留空。它不会把“你赞同我”当作事实，也不能独立认证你的评价。</p>
+<form id="outcomeForm"><div class="settings-grid">
+<label>任务是否推进<select id="outcomeTask"><option value="">尚未知 / 不适用</option><option value="1">达成</option><option value="0.5">部分达成</option><option value="0">未达成</option></select></label>
+<label>是否保留关键约束<select id="outcomeConstraint"><option value="">尚未知 / 不适用</option><option value="1">保留</option><option value="0.5">部分保留</option><option value="0">遗漏</option></select></label>
+<label>是否理解了问题<select id="outcomeUnderstanding"><option value="">尚未知</option><option value="1">理解准确</option><option value="0.5">部分理解</option><option value="0">理解错误</option></select></label></div>
+<label>依据或反例<textarea id="outcomeNote" rows="3" maxlength="3000" placeholder="发生了什么，让你做出这个评价？表达偏好请直接在聊天里说。"></textarea></label>
+<div id="outcomeStatus" class="subtle"></div><div class="dialog-actions"><button type="button" id="withdrawOutcomeBtn">撤回该标签并重建</button><button type="submit" id="saveOutcomeBtn" class="primary">确认实际结果</button></div></form></dialog>
+<div id="toast" class="toast" role="status" hidden></div>
+</body></html>

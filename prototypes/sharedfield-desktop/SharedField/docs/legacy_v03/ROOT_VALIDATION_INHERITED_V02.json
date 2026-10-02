@@ -1,0 +1,76 @@
+{
+  "version": "0.2.0",
+  "date": "2026-09-21",
+  "layer": "engineering implementation + bounded experimental prototype",
+  "source_sha256": "ebd1f5e267cca1aac0e57811a8a0946081eda1da64c9cd088636db9017770f1b",
+  "tests": {
+    "tests_run": 120,
+    "failures": [],
+    "errors": [],
+    "skipped": [],
+    "successful": true,
+    "seconds": 17.538561742000184,
+    "python": "3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]",
+    "scope": "engineering tests, not mechanism validation"
+  },
+  "browser": {
+    "successful": true,
+    "count": 11,
+    "checks": [
+      "initial DOM, JS and actual HTTP-backed state render",
+      "settings preset and actual persisted manual config",
+      "chat -> manual language packet -> actual persistent goal and memory",
+      "real draft stored and readable in artifact dialog",
+      "criterion feedback updates strategy, revision context and actual second artifact; repeated rating disabled",
+      "memory view, adaptation ablation and reconstruction commands mutate actual state",
+      "intervention is hidden; actual calibration produces learned belief update",
+      "pause stops authorized work and clears outstanding manual exchange",
+      "untrusted message markup does not execute",
+      "1440px and 390px layouts have no horizontal overflow",
+      "no JavaScript page errors"
+    ],
+    "page_errors": [],
+    "transport": "browser fetch fixture -> Python HTTP client -> actual local server",
+    "native_browser_http": "blocked by administrator; NOT verified",
+    "csp_in_browser": "NOT verified by this fixture; response headers tested separately",
+    "language_outputs": "authored test fixtures, not live provider",
+    "windows_tested": false
+  },
+  "example": {
+    "successful": true,
+    "events": 9,
+    "artifacts": 2,
+    "head": "c7a297c41c193fcfddbdef541fe0f803995f92393e9bcb12a0a5e7aa947b1a2c",
+    "source_sha256": "ebd1f5e267cca1aac0e57811a8a0946081eda1da64c9cd088636db9017770f1b",
+    "actual_numerical_steps": 1,
+    "restart_paused": true,
+    "learning_statistics_changed": true,
+    "recorded_input_replay": true,
+    "remote_model_rerun": false,
+    "language_source": "authored fixture packets; no live model evaluation"
+  },
+  "verified": {
+    "full_python_suite": true,
+    "actual_app_http": true,
+    "actual_provider_http_with_model_fixture": true,
+    "two_http_seam_pipeline": true,
+    "autosave_restore_paused": true,
+    "recorded_input_replay": true,
+    "rehashed_result_tamper_rejected": true,
+    "late_connection_write_after_close_fixed": true,
+    "windows_launchers_included": true
+  },
+  "not_verified": {
+    "real_remote_model_semantic_quality": true,
+    "live_vendor_api": true,
+    "windows_runtime": true,
+    "python310_runtime": true,
+    "native_chromium_loopback_http": true,
+    "anti_sycophancy_language_efficacy": true,
+    "mechanism_superiority": true,
+    "ego_mainline_integration": true
+  },
+  "baseline_status": "v0.1 negative results retained, not retuned; no language quality superiority benchmark",
+  "permissions": "isolated local sandbox only; no shell, external computer actions or live repo mutation",
+  "claim_ceiling": "bounded offline engineering / mechanism-proxy evidence under specified recorded-input contracts; no subjectivity/autonomy/readiness claim"
+}

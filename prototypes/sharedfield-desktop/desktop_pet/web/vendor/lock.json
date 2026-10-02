@@ -1,0 +1,14 @@
+{
+  "pixi.min.js": {
+    "url": "https://registry.npmjs.org/pixi.js/-/pixi.js-6.5.10.tgz",
+    "sha256": "403f2f2ee8145fa17f60c5c89403056efe2680e5096ec2762036486914ed19c5"
+  },
+  "cubism4.min.js": {
+    "url": "https://registry.npmjs.org/pixi-live2d-display/-/pixi-live2d-display-0.4.0.tgz",
+    "sha256": "af1267e6d52759b245766c578d905bfa025b532d5c3cc727c370957c4409e21b"
+  },
+  "live2dcubismcore.min.js": {
+    "url": "https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js",
+    "sha256": "25ae938cb4fe282ce189b357bcc97e603d1e1f7ec78bf04150d401c23cdc792f"
+  }
+}

@@ -1,0 +1,1725 @@
+{
+  "kind": "source-only snapshot",
+  "files": [
+    {
+      "path": "desktop_pet/DESIGN.md",
+      "sha256": "73e202e1fd390ef9c203216fd3b1727a225ba73bd310bed9a8c174ceaf6be84e",
+      "bytes": 1776
+    },
+    {
+      "path": "desktop_pet/dialogue.py",
+      "sha256": "13aa9b53f2010dda415f98a122ab71cd22a379a7f4099e5ced24207d5f2d175f",
+      "bytes": 9924
+    },
+    {
+      "path": "desktop_pet/launch.py",
+      "sha256": "17c45a21b7dd079e67312f8bb2bd6be1307e23a84ea0a24986ee45de02dc596f",
+      "bytes": 1455
+    },
+    {
+      "path": "desktop_pet/letter_content.py",
+      "sha256": "5c2908b41815c91840556dadb9755530a944ec248ee31725b50717121f7ae707",
+      "bytes": 2093
+    },
+    {
+      "path": "desktop_pet/life.py",
+      "sha256": "52c288648497fb08a9bf6b550751dfb27174f264dca0e8572cdff7bd07353edf",
+      "bytes": 22165
+    },
+    {
+      "path": "desktop_pet/README.md",
+      "sha256": "dca24703256c8555c4da5df2b0757d505c0e6a5993ab20226d5a26289cb8dac9",
+      "bytes": 4508
+    },
+    {
+      "path": "desktop_pet/server.py",
+      "sha256": "a31413c7af4e1944aa5a3bf96f98844bbafe1bd9232c60a1864bb8977f52cf8b",
+      "bytes": 7611
+    },
+    {
+      "path": "desktop_pet/verify_life_v3.py",
+      "sha256": "61ba0d90f2bf5e51b91de0f078d473a0ffc5b5e54fcae9323a23675094f8f744",
+      "bytes": 2626
+    },
+    {
+      "path": "desktop_pet/__init__.py",
+      "sha256": "aa8e12a711659dc95447838b67009ef76eba82653656f8e5881d9fd34435ff84",
+      "bytes": 54
+    },
+    {
+      "path": "desktop_pet/evidence/life-sharing-20260925.md",
+      "sha256": "3a7e4c9f2ec3a791ea9a8760854491427437ed370aadbfd47df92c951fba1242",
+      "bytes": 3642
+    },
+    {
+      "path": "desktop_pet/evidence/life-sharing-actor-v2-plan.md",
+      "sha256": "5e07a460fe14f3c9c9caf0809d859e57888665cc98312e39140a28754a59b873",
+      "bytes": 1292
+    },
+    {
+      "path": "desktop_pet/evidence/life-sharing-v3-plan.md",
+      "sha256": "6b95a39ebb14f116d89362e657de14702254c191da77629c2005ce49fdeeb4b2",
+      "bytes": 1995
+    },
+    {
+      "path": "desktop_pet/evidence/note-letter-fix-20260924.md",
+      "sha256": "2818495b665710140c13c61b9d8412fd8b84f60b24653f0ec1e48d5ff86e75ee",
+      "bytes": 2775
+    },
+    {
+      "path": "desktop_pet/evidence/life-sharing-v3-20260926/REPORT.md",
+      "sha256": "28f6ab017c532de90b8a4ac99f5efee26b894c75a3e86c6909a298a7ee467b1f",
+      "bytes": 2891
+    },
+    {
+      "path": "desktop_pet/tests/test_letter_content.py",
+      "sha256": "f40b85d47577a9659f721a9b52cafd481eb8d6e507c1b2d56354774475d3816d",
+      "bytes": 2996
+    },
+    {
+      "path": "desktop_pet/tests/test_life.py",
+      "sha256": "4acac60f853b33a38125cc2c59e765461353406509fe007eacbceed4289517fc",
+      "bytes": 4385
+    },
+    {
+      "path": "desktop_pet/tests/test_life_sharing.py",
+      "sha256": "62ceef159cece2136d660747e6185f4f58e188bbb313bfbb0386dfb10dd76990",
+      "bytes": 6833
+    },
+    {
+      "path": "desktop_pet/tests/test_notes.py",
+      "sha256": "81c7d8f0eaf34fea000caeb0f5691b73d31b9eff3d67c132bf9f398413efcfd8",
+      "bytes": 5193
+    },
+    {
+      "path": "desktop_pet/web/app.js",
+      "sha256": "0218112ddd1c4fefedd7c8c0c126953e96224f3e66f6a8a743a8b653a42ff385",
+      "bytes": 17004
+    },
+    {
+      "path": "desktop_pet/web/index.html",
+      "sha256": "1290a13e650cbe379c6c8b45f4ba1ff1b0c607a5a42f81eb3d6b9cfbe184f976",
+      "bytes": 7263
+    },
+    {
+      "path": "desktop_pet/web/room.svg",
+      "sha256": "97923811b9c3a4421fcdf854ff7307962002d23be429adea8d6a5d3ad3f6abc1",
+      "bytes": 7361
+    },
+    {
+      "path": "desktop_pet/web/style.css",
+      "sha256": "004bec1058ac9392d9c4a4e3d35a32753ed49ee21b6795cc3e7610f424ce9acc",
+      "bytes": 13926
+    },
+    {
+      "path": "desktop_pet/web/vendor/cubism4.min.js",
+      "sha256": "af1267e6d52759b245766c578d905bfa025b532d5c3cc727c370957c4409e21b",
+      "bytes": 119922
+    },
+    {
+      "path": "desktop_pet/web/vendor/cubism4.min.js.LICENSE",
+      "sha256": "8ccace668a041e78ed525d091b0b5daf8b623ff447f912616de535415e4f302f",
+      "bytes": 1061
+    },
+    {
+      "path": "desktop_pet/web/vendor/lock.json",
+      "sha256": "612afc63a62264f04f48df3814512e2ebc16eede6771a46a30b54d9b191c95f1",
+      "bytes": 591
+    },
+    {
+      "path": "desktop_pet/web/vendor/pixi.min.js",
+      "sha256": "403f2f2ee8145fa17f60c5c89403056efe2680e5096ec2762036486914ed19c5",
+      "bytes": 460333
+    },
+    {
+      "path": "desktop_pet/web/vendor/pixi.min.js.LICENSE",
+      "sha256": "536a16e090f0b6c1454a7c0b47ee8414a39a2f1724a154f10ca1edc750a2dcfd",
+      "bytes": 1092
+    },
+    {
+      "path": "desktop_pet_assets/v1/original_companion_atlas.png",
+      "sha256": "b09cc28ff0c53e71b1298f49ddb019ac46f979bd366edbd4dcedab43b99b3139",
+      "bytes": 1225351
+    },
+    {
+      "path": "desktop_pet_assets/v1/README.md",
+      "sha256": "62342648a6b1e46843cc7fe51531b6159181242e625f737d2efa517bc36bdfac",
+      "bytes": 2741
+    },
+    {
+      "path": "memory_lab/.gitignore",
+      "sha256": "41ad07b81de2dcc7abf4ccb2c2bc0c68f2163d779e22e55cf2daf0f4b058f910",
+      "bytes": 81
+    },
+    {
+      "path": "memory_lab/ACCEPTANCE_PROTOCOL_REVIEW.md",
+      "sha256": "0d175dfe3cd696285cc378abbc541cf99bd673a15f3ac8dc969d0a0145f9477c",
+      "bytes": 10453
+    },
+    {
+      "path": "memory_lab/action_diagnostic.py",
+      "sha256": "ef72e59ec12cad45aa8898ec5c8456f0cb390ae41d136633e534620bafef0690",
+      "bytes": 30676
+    },
+    {
+      "path": "memory_lab/ACTION_LOOP_REVISION.md",
+      "sha256": "8f0165bc664f89a9753e39c5f0ad86dfc493f69a7fd5c428bfee173b7452c558",
+      "bytes": 4123
+    },
+    {
+      "path": "memory_lab/activity.py",
+      "sha256": "77be5eada597e0ddb631580f1f0f2ee89066f8bd3ba41baa7182ba2cacd421e1",
+      "bytes": 9222
+    },
+    {
+      "path": "memory_lab/ACTIVITY_BOARD.md",
+      "sha256": "d83d9b53e7d23767d90caf927d0c4d03e15696c851344200fe47a62ad1623c49",
+      "bytes": 3410
+    },
+    {
+      "path": "memory_lab/ACTIVITY_DELIVERY_ADAPTER.md",
+      "sha256": "70cb9c86949db4608442dbfc1e9b693d4d4fe1a4ccf38229b631a80e8e7532b8",
+      "bytes": 1707
+    },
+    {
+      "path": "memory_lab/adapters.py",
+      "sha256": "2d997f3410668f51f9c19609edc72c24ccb413e51d1115631b47d2344683842e",
+      "bytes": 16536
+    },
+    {
+      "path": "memory_lab/BINDING_V5.md",
+      "sha256": "d7ac1aee5cf80627f2af0e3664c3e1431be50fed755c724c1c0e936ce99246ad",
+      "bytes": 2345
+    },
+    {
+      "path": "memory_lab/campaign.py",
+      "sha256": "b807ec2ba0ca5c35cf6ee2d8f8e0fe629e68a4222f30d929e0c18409dcee172f",
+      "bytes": 12418
+    },
+    {
+      "path": "memory_lab/core.py",
+      "sha256": "75388b840f6884b078dbb88e6e6fd7bd0723604e438e8d22e34263e324af662b",
+      "bytes": 28237
+    },
+    {
+      "path": "memory_lab/evaluation.py",
+      "sha256": "151a083211d80872ce1d0c20ffffe9603dba1201624aa7cb89b3827fdf242b4e",
+      "bytes": 3782
+    },
+    {
+      "path": "memory_lab/exploration.py",
+      "sha256": "9619b8b398c9a6b952c44f753710be3b37e08b38d21bb3f905fc948d3f21eea6",
+      "bytes": 15511
+    },
+    {
+      "path": "memory_lab/EXPLORATION_PLAN.md",
+      "sha256": "97c102c5776b21dad354e24e7756e37a7fadea92a1296db2f0412b539dfa907d",
+      "bytes": 5814
+    },
+    {
+      "path": "memory_lab/gateway.py",
+      "sha256": "66410c09746ec0c5744e1a31ea2359b24600a42b22f83654c820352662a3be9c",
+      "bytes": 5718
+    },
+    {
+      "path": "memory_lab/growth.py",
+      "sha256": "d24c9f5c053acf56efc34a1c8821d7fb3145d3e0524c205f6c49252aa6f0579e",
+      "bytes": 13579
+    },
+    {
+      "path": "memory_lab/IMAGINATION_AND_WAITING.md",
+      "sha256": "393eb846bbeafaf17adc229c9bc766a7fcce6cefc532de193031369f3a96d2fa",
+      "bytes": 4293
+    },
+    {
+      "path": "memory_lab/infra.py",
+      "sha256": "7cedfbeca0e0036993ea5362e89a2f8b2900812a42cbf9c11135c82591232b7e",
+      "bytes": 4102
+    },
+    {
+      "path": "memory_lab/manage.py",
+      "sha256": "5cc16f306face90333e3e8f891098f6396d452e82fff76081ec8c501b38ad3d3",
+      "bytes": 6247
+    },
+    {
+      "path": "memory_lab/memos-package-lock.json",
+      "sha256": "dc92b68cafd3cddbf6e4d214374742c74582a8dd6638d7c6a82d3212f9989559",
+      "bytes": 161591
+    },
+    {
+      "path": "memory_lab/memos-package.json",
+      "sha256": "423e889eb0edeeaddfc064fcb21e6bdac9c53fca19884b79d8ba2285746e9189",
+      "bytes": 1703
+    },
+    {
+      "path": "memory_lab/memos-tsconfig.json",
+      "sha256": "2b353706a245352f86a0c782f67945c7cbe201ed62a1b1c43c4faac20cdc465c",
+      "bytes": 205
+    },
+    {
+      "path": "memory_lab/memos_bridge.cjs",
+      "sha256": "1e0203404056d97c997a419498de7f8110f894d8195bd8696c52647e4cd8e19f",
+      "bytes": 2448
+    },
+    {
+      "path": "memory_lab/model-revisions.json",
+      "sha256": "de2e59c0873ea0c5dbe336f8c50e01167ca89783f9b775c36558e33ce3479005",
+      "bytes": 139
+    },
+    {
+      "path": "memory_lab/PLAN.md",
+      "sha256": "84d09a33c8a2a9c98526f30343e46b2089e3cc030e192e143d67b4603eeb2d8f",
+      "bytes": 3040
+    },
+    {
+      "path": "memory_lab/PROGRESS.md",
+      "sha256": "446986e3735cbb1eac85573ca1bfdafaf7e4578ff50cdf418fdf95e5cb78347e",
+      "bytes": 35460
+    },
+    {
+      "path": "memory_lab/provenance.py",
+      "sha256": "3294bafdb63c87072bb37663f019bb483a3e4b0c39defd0a95496ab7a8c20d33",
+      "bytes": 2886
+    },
+    {
+      "path": "memory_lab/provider.py",
+      "sha256": "d0226ad6f5b5dcacec831db9666379ce50e9c317c18b74b3b887ab9424e6d33f",
+      "bytes": 15603
+    },
+    {
+      "path": "memory_lab/READINESS_V7.md",
+      "sha256": "54cc812bf22c0abd19320723b56f845584b1226d4c7398e995cd59406f13eb0a",
+      "bytes": 3050
+    },
+    {
+      "path": "memory_lab/README.md",
+      "sha256": "c53b197ea24b389393b1b1b033439ef8f0d28f8c7dd993ef57dca058e441f0a1",
+      "bytes": 8978
+    },
+    {
+      "path": "memory_lab/receipt_diagnostic.py",
+      "sha256": "fdbd5149536c86dffa4df7dcc1eca62fbd1c4c3fba6bfa1eb17c007a136c3542",
+      "bytes": 9787
+    },
+    {
+      "path": "memory_lab/RECEIPT_REVISION.md",
+      "sha256": "a5feb4313575d7e90c5e2777b3aab824ec85b9c51b7a7d18c2b5570018fcc7ac",
+      "bytes": 4002
+    },
+    {
+      "path": "memory_lab/RELIABILITY_PLAN.md",
+      "sha256": "38f0a04387e3c3f0b7977ff91f5a31c08b334b236eea309468ffa1de4b682fad",
+      "bytes": 14100
+    },
+    {
+      "path": "memory_lab/REPORT.md",
+      "sha256": "217bf82ec423961922b60fc73f49b6e5402db1c3d31c7703e75af687b8112408",
+      "bytes": 14318
+    },
+    {
+      "path": "memory_lab/report.py",
+      "sha256": "d7d11b5d960f6f807738f6e07b421f7c5ebbd5a7358c1226290fcbc55d9e7768",
+      "bytes": 10318
+    },
+    {
+      "path": "memory_lab/reproducibility.py",
+      "sha256": "54474312fe2ed7811910cf1abce849e3cd98d55a7bea1ba91d321ee73276d7c7",
+      "bytes": 1369
+    },
+    {
+      "path": "memory_lab/requirements-eval.in",
+      "sha256": "f2f6e34246c8dea59293c9e072ed1387cd4a80dc7ed374a521b81b399100bb85",
+      "bytes": 107
+    },
+    {
+      "path": "memory_lab/requirements-eval.lock.txt",
+      "sha256": "5b3af5cf4f9e6d5a2ea0772f32e90ccf09ae716284fe8dedf9df67a0b6d745fa",
+      "bytes": 225140
+    },
+    {
+      "path": "memory_lab/requirements-linux.lock.txt",
+      "sha256": "09a5bef3cc866112a5262cbc4a8721207c2ee27b777815f53403f157bf44c677",
+      "bytes": 856
+    },
+    {
+      "path": "memory_lab/requirements.lock.txt",
+      "sha256": "c7b579e2f333a8a7756d7d1c276a2d8b481a5c6e824044f54e1d33ffc2318cd9",
+      "bytes": 879
+    },
+    {
+      "path": "memory_lab/resources.py",
+      "sha256": "03f4aafa2138b5844f9f4eddac81e00958b9c00f970d178788056d1829257976",
+      "bytes": 1675
+    },
+    {
+      "path": "memory_lab/run.ps1",
+      "sha256": "04cec314c32d78f9c4dbbf561ddc2eda22808f31412bed564dade12401095fc2",
+      "bytes": 1746
+    },
+    {
+      "path": "memory_lab/runner.py",
+      "sha256": "c000c8cb453de0f1891d27fa06915cce1a715daabb0c41d3504ab16bcea332da",
+      "bytes": 19843
+    },
+    {
+      "path": "memory_lab/scenarios.py",
+      "sha256": "899f40d89729ac9457d9168063b4ae33b0f9026248f9fec8f59c402532af73c5",
+      "bytes": 10405
+    },
+    {
+      "path": "memory_lab/semantic.py",
+      "sha256": "376d0518122b09493789697ffe6860e98576432c93ff5d1086d88974e5579753",
+      "bytes": 18674
+    },
+    {
+      "path": "memory_lab/smoke.py",
+      "sha256": "5180f8345002db6e5a40df898e721d94387d665d7e52bfb3c3fc2429ac23b117",
+      "bytes": 2078
+    },
+    {
+      "path": "memory_lab/STATE_FEEDBACK_V6.md",
+      "sha256": "dc4a348718380ae0c5619b470a42036e4c28ad8e976e55805aa1034afb116f0e",
+      "bytes": 2802
+    },
+    {
+      "path": "memory_lab/status_report.py",
+      "sha256": "eda2a73e4a64936e6ddce93c8a9b5b20277f0ac5fd721b5fe946a5ce4bb711c9",
+      "bytes": 21561
+    },
+    {
+      "path": "memory_lab/upstream-lock.json",
+      "sha256": "bf4b9394ee0d1f9059c5f700f73116e2d88103adedfc920d197a59da3c07c1d2",
+      "bytes": 3091
+    },
+    {
+      "path": "memory_lab/WORKS_AND_ENTITIES.md",
+      "sha256": "3a08d0ee816286719ca8f2e1c42393c58a19ffbcbab2699109970adb351b15aa",
+      "bytes": 4926
+    },
+    {
+      "path": "memory_lab/__init__.py",
+      "sha256": "3e3d992384fc91a77f4ff3142134c985044d940e38f722c654ac7cdc4b60d247",
+      "bytes": 88
+    },
+    {
+      "path": "memory_lab/evidence/fragment-v4-adjudication.md",
+      "sha256": "96b62152355f5b1113fd58fd330aacfc493ee7dc099cc16ce1625ac2aa049697",
+      "bytes": 2064
+    },
+    {
+      "path": "memory_lab/evidence/receipt-v5-adjudication.md",
+      "sha256": "6181c04e6924f617d5830d8dc6f30806e666d6d6a6432a9131c502eb3c3ff8f0",
+      "bytes": 3251
+    },
+    {
+      "path": "memory_lab/evidence/report-before-fragment-v4.md",
+      "sha256": "c5d8c741ed51a4cd419bffcec93418fef0288f13ba849242084c5065a891ce22",
+      "bytes": 4627
+    },
+    {
+      "path": "memory_lab/evidence/report-before-frame-v3.md",
+      "sha256": "aab32ee5aef7d66bff0427c3ce9d5ec0bdd6bb0f1d2ddd900ee23fa26a3c0fd3",
+      "bytes": 4882
+    },
+    {
+      "path": "memory_lab/evidence/report-before-reliability.md",
+      "sha256": "a4710e2ab7f334f2b4c3343dcecfbeecf010101245ef63d8fed82156684130fd",
+      "bytes": 3838
+    },
+    {
+      "path": "memory_lab/evidence/report-before-scope-v2.md",
+      "sha256": "61360ef065c7b148ba00d0b65684ab3942f42e428ba7009186f75745b69bb424",
+      "bytes": 6467
+    },
+    {
+      "path": "memory_lab/licenses/ace-LICENSE.txt",
+      "sha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6",
+      "bytes": 11558
+    },
+    {
+      "path": "memory_lab/licenses/bge-m3-MODEL_CARD.md",
+      "sha256": "0b81ccf9134e5874d620a86e6905062ea999e779c34eb1a7e65eaeb7fe00e450",
+      "bytes": 15822
+    },
+    {
+      "path": "memory_lab/licenses/bge-reranker-v2-m3-MODEL_CARD.md",
+      "sha256": "c887aa6dd2598f908bf0582ca7068cc816585c7a1b6a07df305b631ede0cb174",
+      "bytes": 17229
+    },
+    {
+      "path": "memory_lab/licenses/hindsight-LICENSE",
+      "sha256": "336b67b88975e3e39335aea1bc516cf340c5b75290079e01eb3bac65ec399e29",
+      "bytes": 1096
+    },
+    {
+      "path": "memory_lab/licenses/MemOS-LICENSE",
+      "sha256": "826598009d3da60761162bfb91ffd36b2562d706235464b2e975b294374a2f09",
+      "bytes": 11559
+    },
+    {
+      "path": "memory_lab/licenses/ragas-LICENSE",
+      "sha256": "664b930830f291c2936ab30bcd6ef9ca6c9c7384cc475ae0c526156a27d5a6c6",
+      "bytes": 11346
+    },
+    {
+      "path": "memory_lab/scenarios/development.json",
+      "sha256": "01cdc24d0c9f4b8c8599769778f3087eb435016f04cf56963a2da9d461439a0f",
+      "bytes": 81189
+    },
+    {
+      "path": "memory_lab/scenarios/heldout.json",
+      "sha256": "9cb9f92f7bbab86bbad0eac1d0550309e580016fcfa13f38c63716b5834a419e",
+      "bytes": 161929
+    },
+    {
+      "path": "memory_lab/scenarios/manifest.json",
+      "sha256": "31729ad8d95ce8930f9fd623d17544c4919e6aaa086bce723e99c54a78d1c1b2",
+      "bytes": 747
+    },
+    {
+      "path": "memory_lab/scenarios/semantic-fragment-blind-v4.json",
+      "sha256": "eb89b52324d4adcd01bd0e59960de6bd4717c670b22f93034e1ac30c7f9ae787",
+      "bytes": 6529
+    },
+    {
+      "path": "memory_lab/scenarios/semantic-fragment-v4-combined.json",
+      "sha256": "c509ddb3dc87a5f9e0c153f7917ac9730081b33ec4f5767d6dd9b53aef32fe06",
+      "bytes": 21735
+    },
+    {
+      "path": "memory_lab/scenarios/semantic-frame-blind-v3.json",
+      "sha256": "57aea8c73a79ecd9bd7791dc42b5e18edc9eeac3621a669fac20af3f5e7db1bf",
+      "bytes": 5391
+    },
+    {
+      "path": "memory_lab/scenarios/semantic-frame-v3-combined.json",
+      "sha256": "f83a81f7941486fee064def0968afb77e62814febe5259c147efa8258ec829a0",
+      "bytes": 13138
+    },
+    {
+      "path": "memory_lab/scenarios/semantic-scope-blind-v2.json",
+      "sha256": "04a44410a224c135f86f49c4a86c22dc18c61795ac235caec26bc91d3eb7452e",
+      "bytes": 5399
+    },
+    {
+      "path": "memory_lab/tests/test_action_diagnostic.py",
+      "sha256": "e75360bb2aba9176212033c7d084e21f2e171e783c58da4c79754e4e1108a734",
+      "bytes": 20269
+    },
+    {
+      "path": "memory_lab/tests/test_action_loop.py",
+      "sha256": "42f3a2518d2eb87e07b6b8219be78bdd0a4c207a8f8b93f095052dc37bb050dd",
+      "bytes": 9214
+    },
+    {
+      "path": "memory_lab/tests/test_activity.py",
+      "sha256": "ed3f3c181e00f6e41ef643c6994473ba89103e622084f47087e2a8884be32116",
+      "bytes": 13080
+    },
+    {
+      "path": "memory_lab/tests/test_adapters.py",
+      "sha256": "59b8e4b36151af9362609844f032cab9e2d35efe621649f38c203d66288d1fe4",
+      "bytes": 1492
+    },
+    {
+      "path": "memory_lab/tests/test_campaign_revision.py",
+      "sha256": "5157baffa80cd1480e1cc096576f0a2848783f29846f6114fd6f813769a93141",
+      "bytes": 3047
+    },
+    {
+      "path": "memory_lab/tests/test_core.py",
+      "sha256": "8389eae36188daa5860b87108dc09bba9c9f3c06e6e3a1960d8730625e3aee82",
+      "bytes": 4920
+    },
+    {
+      "path": "memory_lab/tests/test_exploration.py",
+      "sha256": "91539f3073c84985284d028f83eecdfade46a3fd372aeec75fd7fba8129404d2",
+      "bytes": 11265
+    },
+    {
+      "path": "memory_lab/tests/test_growth.py",
+      "sha256": "6740ea7e0d0cbf01e6cc00648b34144437e7afd7221a8c78d938871001ab9bb1",
+      "bytes": 3896
+    },
+    {
+      "path": "memory_lab/tests/test_profiles.py",
+      "sha256": "76bbab2dbad4b58f7f3be6a842373599a8424a192f4314e968f5a9b378de9fb0",
+      "bytes": 7272
+    },
+    {
+      "path": "memory_lab/tests/test_provider.py",
+      "sha256": "64a5c685edd218c93961bf61c90e178c5813b0f7f9d0653fecc48b97b47f629c",
+      "bytes": 2482
+    },
+    {
+      "path": "memory_lab/tests/test_ragas_integration.py",
+      "sha256": "0bc766addd708ba4cfb543cdf665df69c79c1636479f228bdc50946ec63e0337",
+      "bytes": 6735
+    },
+    {
+      "path": "memory_lab/tests/test_readiness.py",
+      "sha256": "ace2dc7222258c73b25713b09e32d4b0d97b7eb8321311e5b4b86662e48a91aa",
+      "bytes": 7391
+    },
+    {
+      "path": "memory_lab/tests/test_receipt_diagnostic.py",
+      "sha256": "baca945507f327af28bed7e544ce5c2300e5650a73a56eab037c3a86d9b281ef",
+      "bytes": 4506
+    },
+    {
+      "path": "memory_lab/tests/test_receipt_evidence.py",
+      "sha256": "eda29035acfd4c6d60b9fcb295f917f54f0872fdd4546bdeec3df86506172f48",
+      "bytes": 3347
+    },
+    {
+      "path": "memory_lab/tests/test_reliability.py",
+      "sha256": "3681c4a534bdfcd898cb4158753b81c2e9989941cdfa22ed88d3cdd5be165ed4",
+      "bytes": 8930
+    },
+    {
+      "path": "memory_lab/tests/test_report.py",
+      "sha256": "920f35574aa4614dbf7e9fa7ac0cc3caf20b9e645e0d4ff97258fb33916e3161",
+      "bytes": 1160
+    },
+    {
+      "path": "memory_lab/tests/test_review_regressions.py",
+      "sha256": "2b2c7300c1921adb1c1f0fd6534c5a006090f4b7c0fe2b744cc1bf7a01a469f0",
+      "bytes": 3416
+    },
+    {
+      "path": "memory_lab/tests/test_runner.py",
+      "sha256": "ce1930a791261180b25f3e2e1c01b2eb17732feda963397364efb0a8e56e18a7",
+      "bytes": 2520
+    },
+    {
+      "path": "memory_lab/tests/test_scenarios.py",
+      "sha256": "d7200d2217b52dc73d0e71525831d66361eb11f180cc24cd3ba27af76b40c2af",
+      "bytes": 3213
+    },
+    {
+      "path": "memory_lab/tests/test_semantic.py",
+      "sha256": "968898fdd9930e4206f41a695e6d53ab6299d44101e5612a72e473d7e0823f9d",
+      "bytes": 1899
+    },
+    {
+      "path": "memory_lab/tests/test_status_report.py",
+      "sha256": "722bf68bacce7e57783a2e28b81788e80943f6de419e287948df0b68f7216aed",
+      "bytes": 1417
+    },
+    {
+      "path": "memory_lab/tests/test_waiting.py",
+      "sha256": "cf65a120feaf4b42fe598a3231e64506b6ccce76d94c99ff646082b4682d74a1",
+      "bytes": 4812
+    },
+    {
+      "path": "memory_lab/tests/test_works_entities.py",
+      "sha256": "7129aa886416207bb45b44a1c7d93dc0fd409db24ca72c2a5677891bfdd5894a",
+      "bytes": 5874
+    },
+    {
+      "path": "SharedField/.gitignore",
+      "sha256": "5b7e5f5442193143132795be7015638485cdaff7420ab63b9ff0b16cc2c0b2ef",
+      "bytes": 53
+    },
+    {
+      "path": "SharedField/AGENTS.md",
+      "sha256": "08097152953bfed519f9edb2f0bc6300a9e0d316bec7b159eab0acca28a200cb",
+      "bytes": 2227
+    },
+    {
+      "path": "SharedField/CHANGELOG_v03.md",
+      "sha256": "310aa76e1b305c6ec42e2bb0b5121c24ebf2f23ac4796a7c62e9326759c506da",
+      "bytes": 1011
+    },
+    {
+      "path": "SharedField/LAB_WINDOWS.bat",
+      "sha256": "4ce222457ae314cf1feb89840ab5b53bc890221db25fe9861d4d54f09fdfa1ff",
+      "bytes": 250
+    },
+    {
+      "path": "SharedField/LICENSE",
+      "sha256": "233803f080c98da9ced3a7e27c6b54c3f55edf7a3405bf34e6527a60d8a21c0a",
+      "bytes": 1079
+    },
+    {
+      "path": "SharedField/MANIFEST.sha256",
+      "sha256": "37e47c1bf30f89b8cb3728b6ce217b905faaee1a488feef06a420ac4c4ed8703",
+      "bytes": 55135
+    },
+    {
+      "path": "SharedField/PROJECT.md",
+      "sha256": "20f27f182182dbab7e84a8fc8dffeca0a651f5ddec7e1578496a031dd4aaa841",
+      "bytes": 1760
+    },
+    {
+      "path": "SharedField/README.md",
+      "sha256": "920082d6317c34dc38ff041a0a84fd015d0b6ebde68931a28ad5b68856a245c0",
+      "bytes": 3219
+    },
+    {
+      "path": "SharedField/requirements.txt",
+      "sha256": "3e15f1a678638d3921e64c9a097ff8a8a82e8035ab97e6fe2b662e5cb1b52b54",
+      "bytes": 194
+    },
+    {
+      "path": "SharedField/run.py",
+      "sha256": "4ad4c10fd6447de701450b5d7039e1491fd667417333464896cc3a32954d382f",
+      "bytes": 14500
+    },
+    {
+      "path": "SharedField/START_LINUX_MAC.sh",
+      "sha256": "a546bd07b98cda6290a9ce02f0093649d08b4d51d6426ad22e29d96385ceb278",
+      "bytes": 255
+    },
+    {
+      "path": "SharedField/START_READING_WINDOWS.bat",
+      "sha256": "8c86c55a544dfe0f137095322654a0beff2eb13ae5c80e123f764b2c01a89bbc",
+      "bytes": 378
+    },
+    {
+      "path": "SharedField/START_WINDOWS.bat",
+      "sha256": "cd71e096b834cad32e1d42c90fa2d830227b0fb1b42262174d97643b2002be30",
+      "bytes": 242
+    },
+    {
+      "path": "SharedField/TEST_WINDOWS.bat",
+      "sha256": "c25d23f1ee237aed3b0b4ea7ddb9a49380c6332191a98bdce8b0a8b08c152cc8",
+      "bytes": 138
+    },
+    {
+      "path": "SharedField/VALIDATION.json",
+      "sha256": "b5d6272d956a9c18a43bc578321594256342bcc394157b1a4d88b57b0f287515",
+      "bytes": 1333
+    },
+    {
+      "path": "SharedField/VALIDATION.md",
+      "sha256": "867836fd6780b292c957667e5217443103d1aa2adce00ac808225e70657ed6a5",
+      "bytes": 3738
+    },
+    {
+      "path": "SharedField/_windows_python.bat",
+      "sha256": "80dbf7efd8fb2170a06075318dfa30834880b27c6cdac586b1618627e83e5e28",
+      "bytes": 680
+    },
+    {
+      "path": "SharedField/docs/BUILD_LOG.md",
+      "sha256": "521b9217faecbc75d1a973e04ccbcb3ed3a23eb72103da986412622d6e88a961",
+      "bytes": 2834
+    },
+    {
+      "path": "SharedField/docs/DESIGN.md",
+      "sha256": "1fea36b742fad0e60c18ba27d7dd10c2aee648c5cddd6c08d9aea258127922e3",
+      "bytes": 3805
+    },
+    {
+      "path": "SharedField/docs/FINAL_SELF_REVIEW.md",
+      "sha256": "5a0480746776076154ad924706be62debc1ee234b641aebd6320ecc7e5cb17df",
+      "bytes": 2957
+    },
+    {
+      "path": "SharedField/docs/IMPLEMENTATION_PLAN.md",
+      "sha256": "af32be7a7fee9689ca28f5fd5307ccbac8aef1d2a7ee71595f0a1f36cb10c756",
+      "bytes": 1814
+    },
+    {
+      "path": "SharedField/docs/MECHANISMS_AND_LIMITS.md",
+      "sha256": "c5cc1f8494ce1bc54c85204c521b9c9895fb373ca2e476ca678f4f96fbd2a7a0",
+      "bytes": 5915
+    },
+    {
+      "path": "SharedField/docs/reading_v07.md",
+      "sha256": "c2401209051854171fe32b28cfdd6f1a29f13c88386f87c5a4f8cb91f6f12374",
+      "bytes": 5051
+    },
+    {
+      "path": "SharedField/docs/SECURITY_AND_REPLAY.md",
+      "sha256": "22f36bb0f23efe0b0ff4c5bba7afcc697773810633114f04b9afda5ff08ad10d",
+      "bytes": 2024
+    },
+    {
+      "path": "SharedField/docs/adaptive/ACCEPTANCE.md",
+      "sha256": "08e7b148280afcc53e2f4876bf66b9994d4ed400cbda2356be12da3306d2e532",
+      "bytes": 3460
+    },
+    {
+      "path": "SharedField/docs/adaptive/CONTINUATION.md",
+      "sha256": "1fb90dd158a11b177183a23cf99e3f9f4ae5390475070add3494b64528080af2",
+      "bytes": 5600
+    },
+    {
+      "path": "SharedField/docs/adaptive/DESIGN.md",
+      "sha256": "474fb59cfe8851e53072d0540f71c6cda3e496433897b6502dd5a1c02de61f2a",
+      "bytes": 3024
+    },
+    {
+      "path": "SharedField/docs/continuity/DESIGN.md",
+      "sha256": "2a301ade00b54f02db68c9915b530870f5d4a941b1dd18776ccf80dab32eac37",
+      "bytes": 3808
+    },
+    {
+      "path": "SharedField/docs/continuity/PLAN.md",
+      "sha256": "4efcb7be7fa4a72ebaba873712699d199e66a1018a2daed52682566b4d27624a",
+      "bytes": 3737
+    },
+    {
+      "path": "SharedField/docs/history_v06/PROJECT.md",
+      "sha256": "5a8b82fe03ba73bbb63f4feada9e3d21edb2ba27330e36a0ca451626e4ef5fbb",
+      "bytes": 2149
+    },
+    {
+      "path": "SharedField/docs/history_v06/README.md",
+      "sha256": "274dbf0efe14f69f8218282c064e25064a5a1e6137ff2ab67bcfb55dabedd66a",
+      "bytes": 11086
+    },
+    {
+      "path": "SharedField/docs/history_v06/VALIDATION.json",
+      "sha256": "5896278a9b30dfaf6e78311557ee52145e0fbb06676de55045964fde4cf4e939",
+      "bytes": 5487
+    },
+    {
+      "path": "SharedField/docs/history_v06/VALIDATION.md",
+      "sha256": "c6ce20413c7d7962c003d1dc90042f5cc319bd9d8d79f00ae9bc77728c887a3d",
+      "bytes": 6225
+    },
+    {
+      "path": "SharedField/docs/history_v07/AGENTS_reading_2026-09-23.md",
+      "sha256": "0efb3fe81889882ecf1f512e13028f2d55a972cf108b65d2bde71a85f6d136b3",
+      "bytes": 1646
+    },
+    {
+      "path": "SharedField/docs/history_v07/PROJECT_reading_2026-09-23.md",
+      "sha256": "2388c271bec7df1b071e747d881b6612d63153a23c8abbe88cf15528dbac1c8d",
+      "bytes": 2611
+    },
+    {
+      "path": "SharedField/docs/legacy_v02/README.md",
+      "sha256": "9a689b8b6864d532f8ee989999d143b4a7eee7a3769d7e066e923fe9d896cae7",
+      "bytes": 9036
+    },
+    {
+      "path": "SharedField/docs/legacy_v02/VALIDATION.md",
+      "sha256": "6679044a7679d3c2af9dc23743581fceaa90b28dd0d61b7fe6072d0e9db93498",
+      "bytes": 4892
+    },
+    {
+      "path": "SharedField/docs/legacy_v03/README.md",
+      "sha256": "6db2e0f6bc177e225bdddec1abb62d1bc1d70e2d6fb1bfc66c9ee8e07679a525",
+      "bytes": 11990
+    },
+    {
+      "path": "SharedField/docs/legacy_v03/ROOT_VALIDATION_INHERITED_V02.json",
+      "sha256": "fb369eaf88c0e1fd93309a0c0584dd1e81ed39a2e86e1285d248c963a5ae5208",
+      "bytes": 3288
+    },
+    {
+      "path": "SharedField/docs/legacy_v03/VALIDATION.md",
+      "sha256": "fbb6a427ad35fd618cf97f2442d17e60cc80c18a39b24f33f57f0ace5278b1d4",
+      "bytes": 8494
+    },
+    {
+      "path": "SharedField/docs/legacy_v04/PROJECT.md",
+      "sha256": "47d20e752a4a2749648ab416123cdc2b21c3f799cee31fe23075b5bf625db8cc",
+      "bytes": 3210
+    },
+    {
+      "path": "SharedField/docs/legacy_v04/README.md",
+      "sha256": "6c90e45b92258724994279609a07ccca26eb0961e2db14eb07b769e9949425a8",
+      "bytes": 8136
+    },
+    {
+      "path": "SharedField/docs/legacy_v04/VALIDATION.json",
+      "sha256": "65a75e166d5488c315b819d9d5f17575765b00b86454bfbc400440297599ddf1",
+      "bytes": 3185
+    },
+    {
+      "path": "SharedField/docs/legacy_v04/VALIDATION.md",
+      "sha256": "9542844a7e885797f66e1e1e3455fd847e8b27ee698979eaa65e95b9303e7671",
+      "bytes": 6658
+    },
+    {
+      "path": "SharedField/docs/legacy_v05/PROJECT.md",
+      "sha256": "c53e272cfe176a418d91564c29bf52f649cc08633929582a7de9f28e82e4677f",
+      "bytes": 2809
+    },
+    {
+      "path": "SharedField/docs/legacy_v05/README.md",
+      "sha256": "5a029c4809c49b7e97e5c4909282f7411193ee065342e7cfed78d23c3cfd37c4",
+      "bytes": 7440
+    },
+    {
+      "path": "SharedField/docs/legacy_v05/VALIDATION.json",
+      "sha256": "5f6d0c1e36e595ca04551950ac48e6ec95ea2ae032141c87d984a73eb69ae2b9",
+      "bytes": 5465
+    },
+    {
+      "path": "SharedField/docs/legacy_v05/VALIDATION.md",
+      "sha256": "00a41e020ff818d78dcc025ab0c3f6f125c3cb58f7b9c9a87e31777ddc2bc0d9",
+      "bytes": 5323
+    },
+    {
+      "path": "SharedField/docs/memory/EGO_Memory_Architecture_v1.md",
+      "sha256": "e42717f7871d321b6d4dd2f6894a1c314ae86ce32d5d2cac06e8b1adbb1a10d2",
+      "bytes": 23680
+    },
+    {
+      "path": "SharedField/docs/memory/EGO_SharedField_Requirements_v2.md",
+      "sha256": "3ef3c71f19bb4e0a919528c921e9685f4fd99e7b8afcaace9dbe7b0d6d3b0c5e",
+      "bytes": 17007
+    },
+    {
+      "path": "SharedField/docs/memory/HANDOFF.md",
+      "sha256": "dad3b2743061e55ed3b8d51bae7580790581e3b90f6d5d7efbee1c5b17e67d5e",
+      "bytes": 1946
+    },
+    {
+      "path": "SharedField/docs/memory/IMPLEMENTATION.md",
+      "sha256": "0cd42dfd82cedfe1543b606f091ad8f091d472ba0099e00794faf5f1b85a93a2",
+      "bytes": 3512
+    },
+    {
+      "path": "SharedField/docs/memory/PLAN.md",
+      "sha256": "628c05f1399f5cfab3c1fdfd589a4e5ff2376aaa7b4028f9b482e4521e831fa2",
+      "bytes": 2113
+    },
+    {
+      "path": "SharedField/docs/memory/PROGRESS.md",
+      "sha256": "887b62f4c46d881786375e33049262eb71ef73b4077abafdce07c2db9cf89904",
+      "bytes": 3576
+    },
+    {
+      "path": "SharedField/docs/shared/DESIGN.md",
+      "sha256": "87b83c894b9f00282cd4334874a2edcdf32d6e77af2cf9dfdd8db582e10e476c",
+      "bytes": 2940
+    },
+    {
+      "path": "SharedField/docs/shared/HANDOFF.md",
+      "sha256": "3c252d6890fbb966760ef1753fec59af29f079a32fb64dc0fbae4dc294ca686e",
+      "bytes": 1925
+    },
+    {
+      "path": "SharedField/docs/shared/PLAN.md",
+      "sha256": "434a38013b3532d813705bab637afb156e0799d953f3595cf03bfb85a66f9fc4",
+      "bytes": 4366
+    },
+    {
+      "path": "SharedField/docs/shared/SELF_REVIEW.md",
+      "sha256": "988ea5c9d2b31262847f57a70ef496754bb25dbb2f6c227108f7e38bd58d1495",
+      "bytes": 1764
+    },
+    {
+      "path": "SharedField/docs/studio/BOUNDARIES.md",
+      "sha256": "deef35f8462c0fe82a25c9997f03d03246012ca0b435b0eb343fa1ddd361b83e",
+      "bytes": 2039
+    },
+    {
+      "path": "SharedField/docs/studio/BUILD_LOG.md",
+      "sha256": "4ac191907ef9f3269f6db1b3a91169d69e6e435d74ba2e5b53947765a7fb88e6",
+      "bytes": 1544
+    },
+    {
+      "path": "SharedField/docs/studio/DESIGN.md",
+      "sha256": "214a3d5f317e17f6f460ac27b20fd83a1c095876e69c397618c820c9039b5cf9",
+      "bytes": 3182
+    },
+    {
+      "path": "SharedField/docs/studio/PLAN.md",
+      "sha256": "0fbdea1231ef176fed600cd54b99fe8f1118784b02b49ddebbdbf2c485a6fe4e",
+      "bytes": 1835
+    },
+    {
+      "path": "SharedField/docs/studio/USER_TEST.md",
+      "sha256": "9128bc93495903f939a54043e5a2da59e883fb2206ab90e9d38f815445db4d2e",
+      "bytes": 2691
+    },
+    {
+      "path": "SharedField/docs/superpowers/plans/2026-09-23-reading-loop.md",
+      "sha256": "3f1fd3bb0613a57d7e95cb8634693d5b01b99368b78254db9f68289b65e6f666",
+      "bytes": 3152
+    },
+    {
+      "path": "SharedField/docs/superpowers/specs/2026-09-23-reading-loop.md",
+      "sha256": "08e4272b8a45fb7257429860ab1ae7950b1f3452d3f076da0682ebe3102277af",
+      "bytes": 2289
+    },
+    {
+      "path": "SharedField/evidence_v03/current/benchmark/BENCHMARK.md",
+      "sha256": "dd0d27f69232c8feb09c5427f30a74f07a59eec74b893b5842782b0109acf6fe",
+      "bytes": 3099
+    },
+    {
+      "path": "SharedField/evidence_v03/previous_turn/BENCHMARK_narrative.md",
+      "sha256": "c3a754e4e892468e1245baf1514c17d8a404a0fed5d29b001b013af81f43bcd8",
+      "bytes": 1346
+    },
+    {
+      "path": "SharedField/evidence_v04/benchmark/BENCHMARK.md",
+      "sha256": "6a3720698f94248665ab417bda057888df6dda184d8af45b78f10f4f1cc4ae06",
+      "bytes": 1420
+    },
+    {
+      "path": "SharedField/evidence_v05/benchmark/BENCHMARK.md",
+      "sha256": "8ec2c49a721aa00e3ebfd92ba47090bfa0907d8bcfa54988991e6b232536a5b5",
+      "bytes": 1419
+    },
+    {
+      "path": "SharedField/evidence_v06/README.md",
+      "sha256": "bed6561df6272bd9c58e15886e6987356816e3b78b088523bd7aeebd01691e02",
+      "bytes": 665
+    },
+    {
+      "path": "SharedField/evidence_v06/benchmark/BENCHMARK.md",
+      "sha256": "276166ad7e9dd8d45ed078b21b27144bf2f2db9ece6c0fddc6e765e8ec9147c5",
+      "bytes": 1475
+    },
+    {
+      "path": "SharedField/evidence_v06/final2_scale_100k/BENCHMARK.md",
+      "sha256": "8a2602efbc691728f95283d3fb67235248b9989bd16a2dbd7461015238be685d",
+      "bytes": 1480
+    },
+    {
+      "path": "SharedField/evidence_v06/final_scale_100k/BENCHMARK.md",
+      "sha256": "f3280e00d856cef2f829ae4cf8a096954387bc96444ebfd2bbe31aba71d8a2f7",
+      "bytes": 1480
+    },
+    {
+      "path": "SharedField/evidence_v06/release_scale_100k/BENCHMARK.md",
+      "sha256": "7adcba467618abe29ed32c9b036f8dc34c380136cc80ea64b2736dfb26f36916",
+      "bytes": 1480
+    },
+    {
+      "path": "SharedField/evidence_v06/scale_100k_completed/BENCHMARK.md",
+      "sha256": "6663441692956214ad9a856659d612da7833370ddee3c74abaa026c68790dac6",
+      "bytes": 1480
+    },
+    {
+      "path": "SharedField/examples/adaptive_sample.json",
+      "sha256": "eff542dd622b92aaec7978b0fa538f2fa15fdad3f6d70fde4d20cbe9cdfd38a1",
+      "bytes": 151237
+    },
+    {
+      "path": "SharedField/examples/memory_sample.json",
+      "sha256": "d26274db32a1b23617e595a5f17deabda43875a836f17d0aaf836e72ec52ddd4",
+      "bytes": 21404
+    },
+    {
+      "path": "SharedField/examples/MEMORY_SAMPLE.md",
+      "sha256": "9663becef929e06b3e3231db639ef7e52f2568aab9182a9fb0f40da887d25bd8",
+      "bytes": 371
+    },
+    {
+      "path": "SharedField/examples/README.md",
+      "sha256": "935adf15c99e13176bca6b15222d42cd6648f6ca8ab099db5d7caae1920b8414",
+      "bytes": 1057
+    },
+    {
+      "path": "SharedField/examples/shared_offline.json",
+      "sha256": "c66fa97d331075263bc407557cd97b9c37602d2ccc95d6eead568f423b2f0c4e",
+      "bytes": 542071
+    },
+    {
+      "path": "SharedField/examples/shared_v05_offline.json",
+      "sha256": "9b89bc1e4483b74e57263401dc429c8a3579d71b108aa7c8675966f1d1946097",
+      "bytes": 97341
+    },
+    {
+      "path": "SharedField/examples/legacy_v02/studio_sample.json",
+      "sha256": "a216b8144f673140eccd768499c39c7915fb11346f84850df9b4a375dd6ef857",
+      "bytes": 21123
+    },
+    {
+      "path": "SharedField/legacy_v01/README.md",
+      "sha256": "400b23d124aa8354bd800490b65324668b16719db7be7534c0be2cefd3d2dc90",
+      "bytes": 524
+    },
+    {
+      "path": "SharedField/legacy_v01/README_V01.md",
+      "sha256": "67fbee0e0990d0ed329a3006c2d5d714618142a42429affb4f8f24129545d8f6",
+      "bytes": 7571
+    },
+    {
+      "path": "SharedField/legacy_v01/VALIDATION.json",
+      "sha256": "a269627a6cb5ce66823419f4f01c763f7de71b086ba7ce5d04bf12c486e6047d",
+      "bytes": 1477
+    },
+    {
+      "path": "SharedField/legacy_v01/VALIDATION.md",
+      "sha256": "20baaf106ceb1e100b65d14496cd662ae2e70f8ebbfb3436217bd85121953c6e",
+      "bytes": 5435
+    },
+    {
+      "path": "SharedField/switchlab/agent.py",
+      "sha256": "e275c55205cc507ca126fe690f7955bfc96c3b399e6588881e74f1b3298e747d",
+      "bytes": 10367
+    },
+    {
+      "path": "SharedField/switchlab/cache.py",
+      "sha256": "13362e5effb125f88d2e49e829e2d9109df5e574136bab253d8ece2540b0d183",
+      "bytes": 1286
+    },
+    {
+      "path": "SharedField/switchlab/experiments.py",
+      "sha256": "c6ebaadec5e53a4903645978a6bb1d63f0db24d6a0922c91d688f6500db726fa",
+      "bytes": 9260
+    },
+    {
+      "path": "SharedField/switchlab/http_util.py",
+      "sha256": "56f943bcb636e1043494958a201316d35364a5a943046288f4bc15418f75c317",
+      "bytes": 732
+    },
+    {
+      "path": "SharedField/switchlab/model.py",
+      "sha256": "94d5cb5115e3e0e68b4e3de16511897b3c7e30b8604347c88bd58046fb79bd84",
+      "bytes": 6316
+    },
+    {
+      "path": "SharedField/switchlab/planner.py",
+      "sha256": "1abc4c005b5705a048ed80a17348935d155f3b5b88ea7ad73d225432339f2692",
+      "bytes": 3949
+    },
+    {
+      "path": "SharedField/switchlab/reports.py",
+      "sha256": "81a50bf612981045ad2aba87272daa8b60c6435b8e0a86e938bfc587583b2ba3",
+      "bytes": 4407
+    },
+    {
+      "path": "SharedField/switchlab/rollout.py",
+      "sha256": "371179e04a657b06aaaedeb3a846d19b3fac6b9a3bfbb52abfc80d5970700ac1",
+      "bytes": 4971
+    },
+    {
+      "path": "SharedField/switchlab/runtime.py",
+      "sha256": "4c37900f709e61361f5a07dd676a70e873fc97d94eef36d7e6e78e81640fb0fa",
+      "bytes": 10973
+    },
+    {
+      "path": "SharedField/switchlab/server.py",
+      "sha256": "96254babedbf47598a06a883cfd1f3dbe649546fc4c0fe4eb1de3a6d19d3eb43",
+      "bytes": 6069
+    },
+    {
+      "path": "SharedField/switchlab/world.py",
+      "sha256": "cc39934ab2e12ea4f05df0289e374272ef2e5904639116b161388305bc71fff7",
+      "bytes": 7801
+    },
+    {
+      "path": "SharedField/switchlab/__init__.py",
+      "sha256": "e897c420f87a50bc8ce0091e395873ac45cfd0d11cafe5253ff4eef3409033b4",
+      "bytes": 112
+    },
+    {
+      "path": "SharedField/switchlab/memory/http.py",
+      "sha256": "98a1e3dd6f37497d11548325cf86169d3783e7a40ac418f8459de7c30c39a831",
+      "bytes": 6595
+    },
+    {
+      "path": "SharedField/switchlab/memory/learning.py",
+      "sha256": "4b6a4977453e54b9f97d70cfdddb382086054807c975ee7e06cd1475c1f85c73",
+      "bytes": 1297
+    },
+    {
+      "path": "SharedField/switchlab/memory/migration.py",
+      "sha256": "5fc9bc086364a6d400ebc560ccecf8a26890c634051433fb0ea989d160456b7d",
+      "bytes": 4086
+    },
+    {
+      "path": "SharedField/switchlab/memory/migration_v06.py",
+      "sha256": "59d5921341f7a19e74e2d15f9abacd6e62e51c110709bb64c114894c3c0b691d",
+      "bytes": 4816
+    },
+    {
+      "path": "SharedField/switchlab/memory/protocol.py",
+      "sha256": "3cb35dc17f8b177e3859f972b625ac5c2eba902fcad2a0edb3e6889951c2ba5c",
+      "bytes": 6338
+    },
+    {
+      "path": "SharedField/switchlab/memory/reading.py",
+      "sha256": "de611ba098309fe77d3239da755ea766d1994f5b1ebcbe7f5fc2ffaf01cc1053",
+      "bytes": 16705
+    },
+    {
+      "path": "SharedField/switchlab/memory/reading_service.py",
+      "sha256": "94d77b774af931b6ddee2c36a82d3ffa2a7b9580e67510f57dfd59babe87bea4",
+      "bytes": 5181
+    },
+    {
+      "path": "SharedField/switchlab/memory/service.py",
+      "sha256": "40018c757c6303f8e642e0ed66f1b6fc2c0cc37b02b79c800b65f4048398ed16",
+      "bytes": 27116
+    },
+    {
+      "path": "SharedField/switchlab/memory/store.py",
+      "sha256": "eb4346cbc542bc4dd3f34fcfc6cb5da27c8f36f55156817d0acfda42b1645b2b",
+      "bytes": 51796
+    },
+    {
+      "path": "SharedField/switchlab/memory/timeutil.py",
+      "sha256": "ff19dd61abb47c21c0669604f7a6d77e5e678bd563eeae3c6ff9abc26a61241b",
+      "bytes": 4466
+    },
+    {
+      "path": "SharedField/switchlab/memory/__init__.py",
+      "sha256": "1518865c78b192fa1a9cbc33f7c7676b16b8ff7b79a33e5b0954e43fee7aab80",
+      "bytes": 99
+    },
+    {
+      "path": "SharedField/switchlab/memory/web/app.js",
+      "sha256": "2a7404d8c617820740879de23886e893f3f3d9fdab0e228dbf7fe1724ec7a572",
+      "bytes": 17209
+    },
+    {
+      "path": "SharedField/switchlab/memory/web/index.html",
+      "sha256": "a7495f6dae31187e31d3dd0fdc6ecc998512a805bd69a328a1413d3f1ef34d5e",
+      "bytes": 9690
+    },
+    {
+      "path": "SharedField/switchlab/memory/web/reading.css",
+      "sha256": "edd0eebf93543fc470fb37e6d05d9a39283f8d9bf8e54bf21fff86bc20e925f9",
+      "bytes": 2485
+    },
+    {
+      "path": "SharedField/switchlab/memory/web/reading.html",
+      "sha256": "3b461669eb13e250a773c130e31fd5d755ede1a7b44194eed509a8de5382af73",
+      "bytes": 2873
+    },
+    {
+      "path": "SharedField/switchlab/memory/web/reading.js",
+      "sha256": "f272b630a667d4adbec8f3a101c83100ce9c4cf67d82d50db65cf5e9f21dd53e",
+      "bytes": 9133
+    },
+    {
+      "path": "SharedField/switchlab/memory/web/style.css",
+      "sha256": "a59c724b1d21222758fdaf613fe7e6dbfe3b24a1b3d490877648a00d62827ec5",
+      "bytes": 7095
+    },
+    {
+      "path": "SharedField/switchlab/shared/continuity.py",
+      "sha256": "e84cbf40b84b81ab717ea1d2a9263f1759e298d2e811f30f55052f8c823b1a84",
+      "bytes": 9487
+    },
+    {
+      "path": "SharedField/switchlab/shared/core.py",
+      "sha256": "4568791cdf8d827ef3f727ed0230fd2e25d21f688325a10b79a1ae7f42874abe",
+      "bytes": 21695
+    },
+    {
+      "path": "SharedField/switchlab/shared/experiments.py",
+      "sha256": "621ca3766eee34bb302667ed80168d26d897eb83ae13a1d4e36fd3871141a285",
+      "bytes": 5930
+    },
+    {
+      "path": "SharedField/switchlab/shared/grounding.py",
+      "sha256": "b76a8fbef2f87326b99cbecf3088d8715a843ae5bc166d1e51770984a209608e",
+      "bytes": 4343
+    },
+    {
+      "path": "SharedField/switchlab/shared/http.py",
+      "sha256": "454d13d58dda2f46b547101fb2d0ff9ee49c8345460548f7f85c021fc02f2cf2",
+      "bytes": 4878
+    },
+    {
+      "path": "SharedField/switchlab/shared/migration.py",
+      "sha256": "f5af06c820857a601f9d0cc064578a880ac78b2bbab10c66dff483233181c84e",
+      "bytes": 4041
+    },
+    {
+      "path": "SharedField/switchlab/shared/mind.py",
+      "sha256": "9ea9c66587146c058db32e12e393c3bf3f2a46083921d19d1b75911b810a8eac",
+      "bytes": 18013
+    },
+    {
+      "path": "SharedField/switchlab/shared/protocol.py",
+      "sha256": "59935b8af08a76c9f2f7c46fdf6930176e0232283621b65dd1935d0a64b64a92",
+      "bytes": 5179
+    },
+    {
+      "path": "SharedField/switchlab/shared/service.py",
+      "sha256": "61535f257691ede7f82566bd1c9ca189d678ca2e525537660f57603c555d10ae",
+      "bytes": 14904
+    },
+    {
+      "path": "SharedField/switchlab/shared/world.py",
+      "sha256": "72a59442e3f058990220b2519d4f7b7579418c78f59423281a069afbe67c3391",
+      "bytes": 7058
+    },
+    {
+      "path": "SharedField/switchlab/shared/__init__.py",
+      "sha256": "7291e5ab6d7845ac510fc024e0838d5086722f3c38cde34edb4a5e8064405b63",
+      "bytes": 92
+    },
+    {
+      "path": "SharedField/switchlab/shared/web/app.js",
+      "sha256": "e694ccf1d90b92b55816ef568ba0b30adbde8e8e49af342d84b75d3e373dfd3a",
+      "bytes": 19555
+    },
+    {
+      "path": "SharedField/switchlab/shared/web/index.html",
+      "sha256": "cb3d7f3864a038a3477488474aadd1daad904cd852fd6106feb959b45db2e430",
+      "bytes": 12496
+    },
+    {
+      "path": "SharedField/switchlab/shared/web/style.css",
+      "sha256": "ab80c6732ad69f2f57089c22297e65d8bf0c824262c5f2306ab47c8f5dd1782d",
+      "bytes": 13800
+    },
+    {
+      "path": "SharedField/switchlab/studio/adaptive_core.py",
+      "sha256": "9b880f5753f29ef293cff754c77ef7ed1651355819949d3d5b738e03a9994d05",
+      "bytes": 22368
+    },
+    {
+      "path": "SharedField/switchlab/studio/adaptive_protocol.py",
+      "sha256": "994b770ba8243867a4b54ab3bdc7e50b13dbdf6f9efd9021abe646bf40038bb9",
+      "bytes": 6410
+    },
+    {
+      "path": "SharedField/switchlab/studio/adaptive_service.py",
+      "sha256": "16126cf7785ec63c8fa0ad3b803ade5312c0b5e10d20ef6ef25cc8b341211e1d",
+      "bytes": 11544
+    },
+    {
+      "path": "SharedField/switchlab/studio/beliefs.py",
+      "sha256": "fabf90bc707aa1b33dd2b94250fcf4326b0df76f0322abac4a4e10642e279451",
+      "bytes": 3796
+    },
+    {
+      "path": "SharedField/switchlab/studio/core.py",
+      "sha256": "c2924a1dc2157c98128b66b7d9fcd4c775c7b2dbf581843a82221091d42548a8",
+      "bytes": 23957
+    },
+    {
+      "path": "SharedField/switchlab/studio/experiments.py",
+      "sha256": "88a8eda71a8498f96e03e75482260df45f0573acdbc874e08c2f66b30bf628bb",
+      "bytes": 8899
+    },
+    {
+      "path": "SharedField/switchlab/studio/http.py",
+      "sha256": "852f193690afd30f979d5e2d41d6a453d11ad82bd384dbea3e8f6fc1f6f3ad82",
+      "bytes": 6313
+    },
+    {
+      "path": "SharedField/switchlab/studio/learning.py",
+      "sha256": "30848971986fb405215928dc7b1f3a564f55b5a5e242a3154f9c99f4146ff9bb",
+      "bytes": 9296
+    },
+    {
+      "path": "SharedField/switchlab/studio/migration.py",
+      "sha256": "d1565b63feae1fefa161ec14c97e409335eaea5e2b573d5fbd7dd4b41ba1ba5e",
+      "bytes": 2970
+    },
+    {
+      "path": "SharedField/switchlab/studio/neural.py",
+      "sha256": "e6c16203d2bd7d2391271aa9beb2e6b212ca1e1b82f262b5dc06e0de5c41fab4",
+      "bytes": 5516
+    },
+    {
+      "path": "SharedField/switchlab/studio/protocol.py",
+      "sha256": "cd1bf8b29f19a1336f6e531c66ba93a7e782a5bb71161d790a3b35d489f3b9d2",
+      "bytes": 8560
+    },
+    {
+      "path": "SharedField/switchlab/studio/provider.py",
+      "sha256": "c8d20487343490e9c2a03e6e50a259c7a250171c6e3fcf39bac331f44b5508fe",
+      "bytes": 6495
+    },
+    {
+      "path": "SharedField/switchlab/studio/service.py",
+      "sha256": "deb3954a288deaabaaceb2747a1842c763f5c32de93000de4c72f009bfbe6413",
+      "bytes": 15640
+    },
+    {
+      "path": "SharedField/switchlab/studio/__init__.py",
+      "sha256": "b083e489c211c53407ca937965cb248f2d145fb19b469655fb7603833d690570",
+      "bytes": 96
+    },
+    {
+      "path": "SharedField/switchlab/studio/web/app.js",
+      "sha256": "0afa4df2d934d145a0d33ec7a1308dcc03cd72dba3efa732e98340d23c0cecae",
+      "bytes": 23981
+    },
+    {
+      "path": "SharedField/switchlab/studio/web/index.html",
+      "sha256": "f2c63a92ce30c830e02d0e5b891d4c6057d40dbc9399b0166a7e31bc8051899f",
+      "bytes": 15337
+    },
+    {
+      "path": "SharedField/switchlab/studio/web/style.css",
+      "sha256": "89039f9aa7720107511a9b2ffce99e526f72125c58a51a42ca5246544eb87ef5",
+      "bytes": 12128
+    },
+    {
+      "path": "SharedField/switchlab/web/app.js",
+      "sha256": "be4cfa09e8d3b19e9eae04d9fdded0bdf3d5ccaafb7fe3e711a58e24e158cb32",
+      "bytes": 9361
+    },
+    {
+      "path": "SharedField/switchlab/web/index.html",
+      "sha256": "31d6a9c0c5fd1cc919ef270c3711890c1063f08f17092b873852a6321e06cf2f",
+      "bytes": 8355
+    },
+    {
+      "path": "SharedField/switchlab/web/style.css",
+      "sha256": "306539ff0d0ee9bfcc43e8e5461ffdf898523d53bb27b9913f6cd54947d02501",
+      "bytes": 8498
+    },
+    {
+      "path": "SharedField/tests/adaptive_fixtures.py",
+      "sha256": "f9d08ff67d8257a1204438493ef3b2fe191d1ef58459031ff0b5637c24129ef9",
+      "bytes": 954
+    },
+    {
+      "path": "SharedField/tests/test_adaptive_beliefs.py",
+      "sha256": "abb62944751fe714471ee3921e3c251faf2daf014679573f598d5a62ddf3cf52",
+      "bytes": 2140
+    },
+    {
+      "path": "SharedField/tests/test_adaptive_core.py",
+      "sha256": "e69d4e5cd3cdbd3567de7c30cc0fccbbb193a834dc9e9c96f7c8bdcffc291666",
+      "bytes": 9201
+    },
+    {
+      "path": "SharedField/tests/test_adaptive_experiments.py",
+      "sha256": "e8b4c239fa4f611d4f5060f8cd38fa3180c6c13c7367a0c49ceb312d996ff87c",
+      "bytes": 1222
+    },
+    {
+      "path": "SharedField/tests/test_adaptive_http.py",
+      "sha256": "5f9399187de9e4467b6f3102d749c9feddfb83b88527e4a96d46abadcfc511e1",
+      "bytes": 4149
+    },
+    {
+      "path": "SharedField/tests/test_adaptive_learning.py",
+      "sha256": "5a5560dea0cd8a701da19f5e39011724a29f066b7c47dddbf1c2d3bf80ada488",
+      "bytes": 4520
+    },
+    {
+      "path": "SharedField/tests/test_adaptive_migration.py",
+      "sha256": "c100adba39cb8469b69b31644b098002d122261b0fde7a20725c07b1011d9565",
+      "bytes": 2472
+    },
+    {
+      "path": "SharedField/tests/test_adaptive_pipeline.py",
+      "sha256": "5ab8823af5c7424f65fe53a69e12209ba09787b67fbfecb53d665969ea4520af",
+      "bytes": 4454
+    },
+    {
+      "path": "SharedField/tests/test_adaptive_service.py",
+      "sha256": "6d26f334ffae347929156ca201af38e2a6abf299ae4510d944a453e4b2c9f28b",
+      "bytes": 6149
+    },
+    {
+      "path": "SharedField/tests/test_agent.py",
+      "sha256": "a3bf9400a929eb151b52a36fd4e8de73f885edb7f1b48aa07edc3793d57e0e13",
+      "bytes": 6466
+    },
+    {
+      "path": "SharedField/tests/test_core.py",
+      "sha256": "2176a8c883b3dc145d158f8ee944b2ee70a2700ae7d60750f1afec523303b2b6",
+      "bytes": 4752
+    },
+    {
+      "path": "SharedField/tests/test_delivery.py",
+      "sha256": "fd6b00daff2297ace362d74d6c6fdd6306da07ff8b828bf116b79fec04838a1d",
+      "bytes": 6462
+    },
+    {
+      "path": "SharedField/tests/test_memory_cli.py",
+      "sha256": "4e498cc8ca0854f8de039f038e0b4ae99cc2f4dcf79f92d3d34f06ec8b226b26",
+      "bytes": 1146
+    },
+    {
+      "path": "SharedField/tests/test_memory_edges.py",
+      "sha256": "ae4bb2e52179df95fa2a45b7d0ae8e9e855b92db32a8689cee7a01b7a1e99804",
+      "bytes": 2088
+    },
+    {
+      "path": "SharedField/tests/test_memory_http.py",
+      "sha256": "298c9a4d211b474ef9748fae42f5af8e490f2308117e3817949f19a14b1cc7b6",
+      "bytes": 4254
+    },
+    {
+      "path": "SharedField/tests/test_memory_import_sanity.py",
+      "sha256": "b4d84496a22ecd9d3b4574b3d502ac33a2d66e53a7bf0f52df3368b2e7bcb168",
+      "bytes": 1201
+    },
+    {
+      "path": "SharedField/tests/test_memory_json_numbers.py",
+      "sha256": "c62b6aa7cac9c35eda4f653c7058a20b409142b0bb602c88015bb970e33c79f2",
+      "bytes": 1697
+    },
+    {
+      "path": "SharedField/tests/test_memory_last_mile.py",
+      "sha256": "09b5cacc2488a4b6eef5db923ae85e66b26cfc3f803b741b9b2e62d8b1aeb422",
+      "bytes": 1415
+    },
+    {
+      "path": "SharedField/tests/test_memory_migration.py",
+      "sha256": "979ccb195a0e9ff52f4d292c92a948d0c7f20404e1006cc85a073823d683ea94",
+      "bytes": 2507
+    },
+    {
+      "path": "SharedField/tests/test_memory_pipeline.py",
+      "sha256": "a341e3719aaaa043b401d42787b9dcf3beba3986103c2925cd80c977302cf511",
+      "bytes": 3584
+    },
+    {
+      "path": "SharedField/tests/test_memory_privacy.py",
+      "sha256": "38add285e128b596f47247abff7714e35365ec3d094ade76f1ec033ec1ad243a",
+      "bytes": 2861
+    },
+    {
+      "path": "SharedField/tests/test_memory_prospective.py",
+      "sha256": "2397eb671ffcc3f5d762c5f175ed4197b427bdab0d60663a546ef8ff7d34cc60",
+      "bytes": 4646
+    },
+    {
+      "path": "SharedField/tests/test_memory_regressions.py",
+      "sha256": "af85250285c413dbe49b46d0f6de4b8a76125fa734359a45a5eb8b828c08252b",
+      "bytes": 3994
+    },
+    {
+      "path": "SharedField/tests/test_memory_restore.py",
+      "sha256": "1483eeb2ca2216fe5c8a06339d5ab27cff1e32743fb61c9e35eab0e0501d7cf3",
+      "bytes": 1218
+    },
+    {
+      "path": "SharedField/tests/test_memory_roundtrip_order.py",
+      "sha256": "6a7b02c657f67e89b5195af9da80c716e06b973973474ef430bc3884f43bd430",
+      "bytes": 1444
+    },
+    {
+      "path": "SharedField/tests/test_memory_runtime_edges.py",
+      "sha256": "90e4a04ff1873eb6277ed531d65c8e7c31db6b98e19a4074dd013a17a34c383a",
+      "bytes": 2096
+    },
+    {
+      "path": "SharedField/tests/test_memory_service.py",
+      "sha256": "3d41acb26f14ba510e717d4f2692bf7adf836b023bfbbbb679bc99c7c5b10f32",
+      "bytes": 6786
+    },
+    {
+      "path": "SharedField/tests/test_memory_store.py",
+      "sha256": "f35dc7b35f5bd9d571d930e5d81c234337ed3a0dccd8529b08a83a8197062552",
+      "bytes": 6537
+    },
+    {
+      "path": "SharedField/tests/test_memory_time_display.py",
+      "sha256": "f871db33ea5148bb8c938d48f6f86f8b836e86c75cdb2a7c8fd458a8764bfacf",
+      "bytes": 765
+    },
+    {
+      "path": "SharedField/tests/test_memory_wallclock.py",
+      "sha256": "594a7b81e5581662a0b7ea816e2e33f7165657567b84c336390a06839564f1f4",
+      "bytes": 1038
+    },
+    {
+      "path": "SharedField/tests/test_reading.py",
+      "sha256": "8007765cc7fce781a0001bedc1b49414ed756222b5ddbb4ed8df2ce8eaf6c961",
+      "bytes": 8909
+    },
+    {
+      "path": "SharedField/tests/test_reading_budget.py",
+      "sha256": "3f259239597082c47640e8dbd93dc100d1ba4936989657f4a1f26bce6a4018b0",
+      "bytes": 1725
+    },
+    {
+      "path": "SharedField/tests/test_reading_migration.py",
+      "sha256": "7085806523162d9ca020e88276e582bed4f9d9e0132174f8c15392f972986052",
+      "bytes": 2278
+    },
+    {
+      "path": "SharedField/tests/test_reading_service.py",
+      "sha256": "f68982c19f2b5ceef5252695bc527b58b4b907b3129274dae20e8ee6dd58cf4e",
+      "bytes": 5743
+    },
+    {
+      "path": "SharedField/tests/test_rollout.py",
+      "sha256": "cea2bd704c60b40c3ac54abf7fcb395ba4c4ab1a8d990d3c11c55bdd8936279f",
+      "bytes": 1333
+    },
+    {
+      "path": "SharedField/tests/test_runtime.py",
+      "sha256": "ac23670fcf82cf056fe91fb8dd815113acd43b7c60eb6678530ab6e878b5c81b",
+      "bytes": 3489
+    },
+    {
+      "path": "SharedField/tests/test_shared_cli.py",
+      "sha256": "2e6ef0c26a53bf87dc4439c61dce005daec38e1c9bb0659f3d68ecd19a9a6396",
+      "bytes": 1997
+    },
+    {
+      "path": "SharedField/tests/test_shared_continuity_http.py",
+      "sha256": "b2d325e0a703398b40c490aac2a5ddc0554739998d914e1a7781366b41489d54",
+      "bytes": 2517
+    },
+    {
+      "path": "SharedField/tests/test_shared_continuity_io.py",
+      "sha256": "618a8f6dc62f96d7c77e1fd47a36ab7a5e39135d7a1287c7fc1bb5710553597e",
+      "bytes": 1993
+    },
+    {
+      "path": "SharedField/tests/test_shared_continuity_replay.py",
+      "sha256": "c65fdbaf04fec2d688044cbf633173e94043108078c2b38276a881590d2e3b13",
+      "bytes": 2712
+    },
+    {
+      "path": "SharedField/tests/test_shared_core.py",
+      "sha256": "c4cfafbd476e1bb500310bc0a34ec2b9dd6e564c91e89b238b081856d1a397c0",
+      "bytes": 4391
+    },
+    {
+      "path": "SharedField/tests/test_shared_experiments.py",
+      "sha256": "3121a431b539561959ff0e9a194da638687fdb2b446eb8dd4e8a9d7bc38bfe34",
+      "bytes": 676
+    },
+    {
+      "path": "SharedField/tests/test_shared_http.py",
+      "sha256": "30ddd120c34534b6462d116a34d5c17f67aef25ea091b76c3c1f88ce2d61ffcd",
+      "bytes": 3463
+    },
+    {
+      "path": "SharedField/tests/test_shared_intention.py",
+      "sha256": "e39b0d07d2e483e9c8885c25c0c9b9f64b96fc95e0244a2311b888092861ab52",
+      "bytes": 7048
+    },
+    {
+      "path": "SharedField/tests/test_shared_joint.py",
+      "sha256": "2bf177359bf0ab35dc8717b2f56801d900a6413f6d239e39a487ab25f2969af1",
+      "bytes": 6904
+    },
+    {
+      "path": "SharedField/tests/test_shared_mind.py",
+      "sha256": "f44e7c87a84a39f0d7ceb7f28083dc1f0ce29d7266387eeb352c5bb319778da1",
+      "bytes": 4104
+    },
+    {
+      "path": "SharedField/tests/test_shared_partner_learning.py",
+      "sha256": "7ac397b9ff9344bff6a9093b0efdcec192c92f1e8145ef23748b4b634169d7b3",
+      "bytes": 2124
+    },
+    {
+      "path": "SharedField/tests/test_shared_pipeline.py",
+      "sha256": "7a7f48d9ef92cf9ae8214f568a2ff47916e83d85888e95824e2df0cdbdebcaea",
+      "bytes": 3435
+    },
+    {
+      "path": "SharedField/tests/test_shared_service.py",
+      "sha256": "81e03331b20c5b1d1da27a9f7c08a99920bfa0a09aed6ec2925323e87c538aa4",
+      "bytes": 6947
+    },
+    {
+      "path": "SharedField/tests/test_shared_world.py",
+      "sha256": "2bea665216e4567983e70b7cdd9653873ee2b871531a29deffb1645694ccd772",
+      "bytes": 2321
+    },
+    {
+      "path": "SharedField/tests/test_studio_cli.py",
+      "sha256": "8682b5c403ad8b772bbfe3003fb6681e6e76d5d9adf756422cb56ba5cfdedbd2",
+      "bytes": 1767
+    },
+    {
+      "path": "SharedField/tests/test_studio_core.py",
+      "sha256": "9b61c6eba49cb865269c6e7bfa545471ee90256e46ea2880c989019cbcef91f6",
+      "bytes": 8126
+    },
+    {
+      "path": "SharedField/tests/test_studio_edges.py",
+      "sha256": "822fc4a441f637aa8ae0110a0a76f3f919f7408a6909fc916d5c8324d714ec16",
+      "bytes": 4925
+    },
+    {
+      "path": "SharedField/tests/test_studio_http.py",
+      "sha256": "574807e1e46fcd077e2f729998cc98073d0c5cd937bc38de3d7ff70ce9cf7246",
+      "bytes": 3791
+    },
+    {
+      "path": "SharedField/tests/test_studio_pipeline.py",
+      "sha256": "d739d92b16abf3954635cc78df0819944a4d160c0dd86e3e74135ccb8c46c5a7",
+      "bytes": 4080
+    },
+    {
+      "path": "SharedField/tests/test_studio_provider.py",
+      "sha256": "ed14274ed8203b9117365d8740e40d2d136a2c1d10ab7dd2acd7dab6762c6fd5",
+      "bytes": 4394
+    },
+    {
+      "path": "SharedField/tests/test_studio_service.py",
+      "sha256": "3764aa20e1e7b4a8200471417d28554ccf8525242cd28500c82372cdcad72d37",
+      "bytes": 6280
+    },
+    {
+      "path": "SharedField/tests/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "SharedField/tools/browser_fixture.py",
+      "sha256": "11e86d4fadd9be12f8715c88c10687d5ad1734b4480cd83affd9f826e73d6856",
+      "bytes": 5609
+    },
+    {
+      "path": "SharedField/tools/browser_probe.py",
+      "sha256": "a354d7bd07e8eb2faee71d2c259200b46a194453a84fa36ff091158a98b720b2",
+      "bytes": 10676
+    },
+    {
+      "path": "SharedField/tools/continuity_probe.py",
+      "sha256": "03c1e3099fbc4e4756518fbe6b74bedcb03b7d74eb2adda8eed1705a8458e155",
+      "bytes": 2564
+    },
+    {
+      "path": "SharedField/tools/evaluate_recorded.py",
+      "sha256": "380c9d17d262ad3ebe0ab4c2cd5afee3e4d2b90aae02ec28f6783c020865c859",
+      "bytes": 878
+    },
+    {
+      "path": "SharedField/tools/make_studio_example.py",
+      "sha256": "bdf873622831e056a63f27392f051871d7d0a301555bf3ae282acd90a138cd97",
+      "bytes": 4297
+    },
+    {
+      "path": "SharedField/tools/memory_benchmark.py",
+      "sha256": "59382a89a6a3a5ee542868e6fdf539629224eb5a5b85f341424e779667aebb48",
+      "bytes": 7501
+    },
+    {
+      "path": "SharedField/tools/memory_browser_probe.py",
+      "sha256": "0b00f35a43f4d8c16e41bb1ef28457c89a0f2bda0219a9457e103cb2dcfa2faf",
+      "bytes": 11248
+    },
+    {
+      "path": "SharedField/tools/package_reading.py",
+      "sha256": "f3a66a23a238f53fec36bda687a274943d80a88c39ea2689ce171d320948ea2f",
+      "bytes": 2484
+    },
+    {
+      "path": "SharedField/tools/shared_benchmark.py",
+      "sha256": "4e84662ebc76b3b86e25f92c82b17bdab19dac55efb10411e25d43d4e02c9d78",
+      "bytes": 689
+    },
+    {
+      "path": "SharedField/tools/shared_browser_probe.py",
+      "sha256": "da0799bf542c54cece3019073758ede8cce7521f65c175d0bff8337152f1dedc",
+      "bytes": 12269
+    },
+    {
+      "path": "SharedField/tools/start_reading.py",
+      "sha256": "7cf0b6d0a66081df91e9a678ea05d1c13db38d018bf2bffa4db29eede63fcd07",
+      "bytes": 5832
+    },
+    {
+      "path": "SharedField/tools/studio_browser_fixture.py",
+      "sha256": "f0d994767005c58a8e8337e0987296cadaf910672041825b28f4fc2825ae5126",
+      "bytes": 11290
+    },
+    {
+      "path": "TASK_BOARD.md",
+      "sha256": "0e950cc8cc143d4040a91edb8869825d5b7e4f7ba3b9b2579ce63be6178a0480",
+      "bytes": 30884
+    },
+    {
+      "path": "SharedField_路线评估_2026-09-23.md",
+      "sha256": "f9acc1adb7d0c40f6b8dad3ca7db258b50b6eecbdd95e59aea9fe9e1f7df3848",
+      "bytes": 11637
+    }
+  ]
+}

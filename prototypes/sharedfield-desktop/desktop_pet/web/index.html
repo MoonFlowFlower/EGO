@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="pet-token" content="__TOKEN__"><title>悠小喵的小屋 · EGO</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<div class="app-shell">
+ <header><a class="brand" href="/" aria-label="悠小喵的小屋"><span class="brand-cat">ᓚᘏᗢ</span><span>EGO <small>一起，把日子过慢一点。</small></span></a><div class="header-right"><span id="save-status" class="saved"><i></i> 已在小屋安顿好</span><button class="icon-button" id="settings-button" title="小屋设置" aria-label="小屋设置">⚙</button></div></header>
+ <main>
+  <section class="home">
+   <div class="home-heading"><div><div class="eyebrow">OUR LITTLE CORNER</div><h1>有你的小日子<span>。</span></h1><p id="welcome-line">你有你的事情，我也有我的小世界。</p></div><span class="day-tag" id="day-tag">☀ 今天，也在一起</span></div>
+   <div class="scene-card">
+    <div class="scene-toolbar"><div class="room-name"><span class="dot"></span>悠小喵的小屋 <span id="life-mode">自在生活中</span></div><div class="view-switch"><button id="room-mode" class="selected">小房间</button><button id="face-mode">面对面</button></div></div>
+    <div class="scene" id="scene">
+     <div id="room-view"><img class="room-art" src="/room.svg" alt="一间有床、餐桌、书桌和阳光的温暖小屋">
+      <button class="hotspot bed" data-action="rest" aria-label="邀请她休息"><span>躺一会儿</span></button>
+      <button class="hotspot table" data-action="eat" aria-label="邀请她吃饭"><span>吃点东西</span></button>
+      <button class="hotspot desk" data-action="write" aria-label="邀请她写信"><span>写一封信</span></button>
+      <button class="pet" id="pet" aria-label="和悠小喵说话"><span class="pet-shadow"></span><span class="sprite" id="pet-sprite"></span><span class="pet-name">悠小喵</span></button>
+      <div class="thought" id="thought">刚搬进来，有点期待。</div>
+     </div>
+     <div id="face-view" hidden><div class="portrait-halo"></div><canvas id="live2d"></canvas><div id="model-loading">正在请悠小喵过来…</div><div class="model-credit">Live2D · 悠小喵免费版 / 本地导入</div></div>
+     <div class="scene-bottom"><span id="activity-label">在窗边发呆</span><span class="scene-hint" id="scene-hint">点点她，或邀请她做点什么</span></div>
+    </div>
+    <div class="needs"><div><span>◔</span><label>肚子<small id="hunger-label">有点饿了</small></label><div class="meter"><i id="hunger-bar"></i></div></div><div><span>☼</span><label>精神<small id="energy-label">还不错</small></label><div class="meter gold"><i id="energy-bar"></i></div></div><button id="food-button" title="补充5份食物">餐桌 <b id="food-count">5</b> 份 <span>＋</span></button></div>
+   </div>
+   <div class="together-actions"><button id="busy-button"><span>☕</span><strong>我先忙一会儿</strong><small id="busy-caption">把想说的话留成信</small></button><button id="teach-button"><span>♧</span><strong>教她照顾自己</strong><small id="teach-caption">饿了吃饭，累了休息</small></button><button id="read-button"><span>▤</span><strong>写张便签</strong><small>写点具体的事，读完给你回信</small></button></div>
+   <div class="bottom-note"><span>✧</span><p id="bottom-note">相处不用着急。那些小小的约定，会慢慢留在生活里。</p><span class="prototype">体验版 0.1</span></div>
+  </section>
+  <aside>
+   <div class="companion-profile"><div class="avatar"><span class="sprite"></span></div><div><h2>悠小喵 <span>在家</span></h2><p id="personality-label">热情开朗 · 初次见面</p></div><button class="icon-button" id="profile-settings" aria-label="调整初始性格">⌄</button></div>
+   <nav class="tabs" aria-label="相处内容"><button data-tab="chat" class="active">聊一会儿</button><button data-tab="letters">信箱 <b id="letter-count" hidden>0</b></button><button data-tab="diary">日记</button><button data-tab="memory">记住的事</button></nav>
+   <div id="panel" class="panel" aria-live="polite"></div>
+   <div class="chat-footer" id="chat-footer"><div class="quick-prompts"><button data-prompt="你好呀，介绍一下你自己吧。">初次见面</button><button data-prompt="你现在在做什么呀？">在做什么？</button></div><form id="chat-form"><textarea id="chat-input" rows="2" maxlength="2000" placeholder="今天有什么想和她说的？" aria-label="和悠小喵聊天"></textarea><button type="submit" id="send-button" aria-label="发送消息">↑</button></form><div class="connection"><i id="model-dot"></i><span id="model-status">按需连接 · Qwen 3.5</span><span>Enter 发送</span></div></div>
+  </aside>
+ </main>
+</div>
+<dialog id="settings"><form method="dialog"><div class="dialog-head"><div><span class="eyebrow">MAKE YOURSELF AT HOME</span><h2>慢慢认识彼此</h2></div><button class="icon-button" aria-label="关闭设置">×</button></div><p class="muted">选一个初次见面的性格。先相处看看，以后也能调整。</p><div class="personality-options" id="personality-options"></div><label class="setting-row">忙碌时长 <select id="busy-minutes"><option value="1">1 分钟 · 快速体验</option><option value="5" selected>5 分钟</option><option value="25">25 分钟</option><option value="60">1 小时</option></select></label><label class="setting-row">分享方式 <select id="sharing-mode"><option value="quiet">先留信，等我来找她</option><option value="open">空闲时可以主动找我</option></select></label><div class="permissions"><strong>她的小世界</strong><p>便签只保存在下方文件夹。请她读完后，正文会发送给模型生成回信。没有读取屏幕、观察软件或控制电脑。</p><code id="workspace-path"></code></div><div class="settings-bottom"><button type="button" id="export-button" class="secondary">导出相处记录</button><button class="primary">回到小屋</button></div></form></dialog>
+<div id="toast" role="status" hidden></div>
+<dialog id="note-editor" aria-labelledby="note-heading">
+ <div class="dialog-head"><h2 id="note-heading">留给悠小喵的便签</h2><button id="note-close" class="icon-button" aria-label="关闭便签">×</button></div>
+ <div class="note-picker"><label>打开便签<select id="note-select"></select></label><button id="note-new" class="secondary">新建便签</button></div>
+ <label class="note-field">文件名<input id="note-name" maxlength="100" placeholder="今天的小事.txt"></label>
+ <label class="note-field">想告诉她的事<textarea id="note-text" maxlength="6000" rows="10" placeholder="今天发生了什么？你在琢磨什么？都可以写在这里。"></textarea></label>
+ <p class="muted" id="note-status">保存到小屋的便签文件夹。请她读完后，会连接模型写一封回信。</p>
+ <div class="settings-bottom"><button id="note-save" class="secondary">只保存</button><button id="note-share" class="primary">保存并请她读</button></div>
+</dialog>
+<script src="/app.js"></script>
+</body></html>

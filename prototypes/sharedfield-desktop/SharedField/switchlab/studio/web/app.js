@@ -1,0 +1,109 @@
+'use strict';
+const $=id=>document.getElementById(id);
+const token=document.querySelector('meta[name="studio-token"]').content;
+let state=null,lastHead='',manualId=null,selectedArtifact=null,selectedDecision=null,toastTimer=null,polling=false;
+const statuses={active:'可继续',awaiting_feedback:'等待验收',waiting_user:'等待回答',paused:'已暂停',cancelled:'已取消',completed:'已结束'};
+const strategyNames={outline:'先列结构',compare:'比较替代',direct:'直接产出'};
+function node(tag,text,cls){const e=document.createElement(tag);if(text!==undefined)e.textContent=String(text);if(cls)e.className=cls;return e;}
+function toast(text){$('toast').textContent=text;$('toast').hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').hidden=true,4500);}
+async function api(path,body){const opt={headers:{'X-SwitchLab-Token':token},cache:'no-store'};if(body!==undefined){opt.method='POST';opt.headers['Content-Type']='application/json';opt.body=JSON.stringify(body);}const r=await fetch(path,opt);const data=await r.json();if(!r.ok)throw new Error(data.error||`HTTP ${r.status}`);return data;}
+async function action(path,body={}){try{const r=await api(path,body);await refresh();return r;}catch(e){toast(e.message);lastHead='';await refresh();throw e;}}
+function rich(parent,text){parent.replaceChildren();parent.classList.add('rich');let code=false,lines=[];for(const line of String(text).split('\n')){if(line.trim().startsWith('```')){if(code){parent.append(node('pre',lines.join('\n')));lines=[];}code=!code;continue;}if(code){lines.push(line);continue;}if(/^#{1,4}\s/.test(line))parent.append(node('h3',line.replace(/^#{1,4}\s+/,'')));else if(line.trim())parent.append(node('p',line));}if(lines.length)parent.append(node('pre',lines.join('\n')));}
+function button(text,fn,cls='small'){const b=node('button',text,cls);b.type='button';b.addEventListener('click',()=>Promise.resolve(fn()).catch(()=>{}));return b;}
+function metric(parent,label,value){const r=node('div',undefined,'metric');r.append(node('span',label),node('strong',value));parent.append(r);}
+function showTab(name){for(const n of ['cognition','goals','memory','claims','world','trace'])$(n+'Panel').hidden=n!==name;document.querySelectorAll('[data-tab]').forEach(b=>{b.classList.toggle('active',b.dataset.tab===name);b.setAttribute('aria-selected',String(b.dataset.tab===name));});}
+function renderChat(){const log=$('chatLog');const stick=log.scrollHeight-log.scrollTop-log.clientHeight<110;const welcome=$('welcome');if(!state.messages.length){if(!welcome){log.replaceChildren(node('p','这是一个新的实验。发送消息以开始。','empty'));}return;}log.replaceChildren();for(const m of state.messages){const box=node('div',undefined,'message '+m.role+' '+m.kind);box.append(node('div',(m.role==='user'?'你':m.kind==='actual_result'?'内核 · 实际结果':'系统')+' · '+m.id,'label'));const content=node('div');rich(content,m.text);box.append(content);log.append(box);}if(stick||state.messages.at(-1)?.role==='user')log.scrollTop=log.scrollHeight;}
+function renderGoals(){const list=$('goalList');list.replaceChildren();const active=state.goals.filter(g=>!['completed','cancelled'].includes(g.status));$('goalCount').textContent=active.length+' 个未结束';if(!state.goals.length)list.append(node('div','还没有持久目标。普通聊天不必创建任务。','empty'));for(const g of state.goals.slice(-25).reverse()){const c=node('div',undefined,'card');const meta=node('div',undefined,'meta');meta.append(node('span',g.id+' · 修订 '+g.revision),node('span',statuses[g.status]||g.status,'status'+(g.status==='awaiting_feedback'?' warn':'')));c.append(meta,node('h4',g.title),node('p',g.reason),node('p','验收：'+g.success));if(g.cursor<g.steps.length)c.append(node('p',`下一步 ${g.cursor+1}/${g.steps.length} · ${g.steps[g.cursor].tool}：${g.steps[g.cursor].instruction}`));const controls=node('div',undefined,'controls');const control=a=>action('/api/command',{kind:'goal_control',payload:{goal_id:g.id,action:a}});if(g.status==='active')controls.append(button('暂停目标',()=>control('pause')));else if(['paused','waiting_user','cancelled'].includes(g.status))controls.append(button('恢复目标',()=>control('resume')));if(!['cancelled','completed'].includes(g.status))controls.append(button('取消',()=>control('cancel')));if(g.status==='awaiting_feedback'&&!g.last_artifact)controls.append(button('我确认结束',()=>control('complete')));c.append(controls);list.append(c);}
+const arts=$('artifactList');arts.replaceChildren();$('artifactCount').textContent=state.artifacts.length+' 份';if(!state.artifacts.length)arts.append(node('div','执行 draft 后，实际产出会出现在这里；提案本身不算已完成。','empty'));for(const a of state.artifacts.slice(-20).reverse()){const c=node('div',undefined,'card');const meta=node('div',undefined,'meta');meta.append(node('span',a.id+(a.parent?' ← '+a.parent:'')),node('span',a.evaluation?'已收到验收反馈':'待你检查','status'));c.append(meta,node('h4',a.title),node('p',a.content.slice(0,100)+(a.content.length>100?'…':'')));c.append(button('阅读与反馈',()=>openArtifact(a.id)));arts.append(c);}}
+function renderMemory(){const list=$('memoryList');list.replaceChildren();if(!state.memories.length)list.append(node('div','没有提取的语义条目。原始对话仍会保存。','empty'));for(const m of state.memories.slice(-35).reverse()){const c=node('div',undefined,'card');c.append(node('div',m.id+' · '+m.kind+(m.disputed?' · 待澄清冲突':''),'subtle'),node('h4',m.key),node('p',m.text),node('div','来源 '+m.basis.join(' / '),'subtle'));list.append(c);}$('strategyList').replaceChildren();for(const [k,v]of Object.entries(state.strategy_stats)){metric($('strategyList'),strategyNames[k]||k,`${Math.round(state.strategy_scores[k]*100)}% · ${v.evaluations} 次验收`);}$('adaptationToggle').checked=state.adaptation;}
+function renderWorld(){const o=state.lab.observation;$('worldStats').replaceChildren();for(const[k,v]of[['世界步数',o.tick],['能源',o.energy.toFixed(1)],['冷却',o.coolant.toFixed(1)]]){const c=node('div',undefined,'stat');c.append(node('span',k),node('strong',v));$('worldStats').append(c);}$('beliefList').replaceChildren();const b=state.lab.belief;metric($('beliefList'),'工具有效概率',(100*b.tool_healthy).toFixed(1)+'%');metric($('beliefList'),'能量源 1 为优选的概率',(100*b.energy_mode_1).toFixed(1)+'%');metric($('beliefList'),'冷却源 1 为优选的概率',(100*b.coolant_mode_1).toFixed(1)+'%');metric($('beliefList'),'信念熵',state.lab.entropy_bits.toFixed(3)+' bits');if(state.lab.last_learning)metric($('beliefList'),'上次意外程度',state.lab.last_learning.surprise_nats.toFixed(3)+' nats');document.querySelectorAll('[data-lab],[data-intervene]').forEach(b=>b.disabled=state.lab.world_done);}
+function renderTrace(){const list=$('traceList');list.replaceChildren();for(const e of state.events.slice().reverse()){const c=node('div',undefined,'card');c.append(node('div',e.id+' · '+e.kind,'subtle'),node('pre',JSON.stringify(e.result,null,2),'trace-content'));list.append(c);}if(!state.events.length)list.append(node('div','还没有实际事件。','empty'));}
+function renderRuntime(){const r=state.runtime;$('connectionBadge').textContent=r.provider.mode==='manual'?'手动语言交换':(r.provider.local_endpoint?'本地模型':'远程 API');$('callBudget').textContent=`${state.calls} / ${r.provider.max_calls}`;$('usage').textContent=`${state.usage.input_tokens} / ${state.usage.output_tokens}`;$('eventCount').textContent=state.event_count+' 个事件';$('saveBadge').textContent=r.session_saved?'已自动保存到本地':'新实验 · 尚无变更';$('runtimeDetail').textContent=r.error?r.status:r.status;$('errorBox').hidden=!r.error;$('errorBox').textContent=r.error;$('onceBtn').disabled=r.busy||!!r.manual_request;$('activityDot').classList.toggle('on',r.busy);$('runtimeState').textContent=r.busy?'语言计算':r.manual_request?'等待模型输出':r.error?'已停止':r.auto_remaining>0&&r.status.includes('休眠')?'休眠':r.auto_remaining>0?'有限推进已开启':'待命';$('remaining').textContent=r.auto_remaining>0?` · 剩余 ${r.auto_remaining} 步`:'';$('manualBanner').hidden=!r.manual_request;if(r.manual_request){if(manualId!==r.manual_request.id){manualId=r.manual_request.id;$('manualPrompt').value=r.manual_request.prompt;$('manualResponse').value='';$('manualStatus').textContent='';}}else{manualId=null;}}
+async function refresh(){if(polling)return;polling=true;try{state=await api('/api/state');renderRuntime();if(state.head!==lastHead){lastHead=state.head;renderChat();renderGoals();renderMemory();renderWorld();renderTrace();renderCognition();renderClaims();if(selectedArtifact&&$('artifactDialog').open)updateEvaluation();}}catch(e){$('errorBox').hidden=false;$('errorBox').textContent='本地服务暂不可达：'+e.message;}finally{polling=false;}}
+function openSettings(){const c=state.runtime.provider;const preset=c.mode==='manual'?'manual':c.base_url.includes('openrouter.ai')?'openrouter':c.base_url.includes(':11434')?'ollama':c.base_url.includes(':1234')?'lmstudio':'custom';$('preset').value=preset;$('baseUrl').value=c.base_url;$('modelId').value=c.model||'';$('apiKey').value='';$('apiKey').placeholder=c.key_present?'当前进程已设置；留空保持，不会回显':'本地接口通常可留空';$('clearKey').checked=false;$('networkConsent').checked=c.network_consent||false;$('maxCalls').value=c.max_calls;$('maxTokens').value=c.max_output_tokens;$('timeout').value=c.timeout;$('tokenParameter').value=c.token_parameter;$('jsonMode').checked=c.json_mode;$('settingsStatus').textContent='';presetChanged(false);$('settingsDialog').showModal();}
+function presetChanged(fill){const p=$('preset').value;$('apiFields').hidden=p==='manual';$('manualHelp').hidden=p!=='manual';$('checkBtn').hidden=p==='manual';$('protocolCheckBtn').hidden=p==='manual';if(fill){const urls={manual:'https://openrouter.ai/api/v1',openrouter:'https://openrouter.ai/api/v1',ollama:'http://127.0.0.1:11434/v1',lmstudio:'http://127.0.0.1:1234/v1'};if(urls[p])$('baseUrl').value=urls[p];$('modelId').value='';$('apiKey').value='';$('networkConsent').checked=false;}}
+function readConfig(){return {mode:$('preset').value==='manual'?'manual':'api',base_url:$('baseUrl').value.trim(),model:$('modelId').value.trim(),json_mode:$('jsonMode').checked,max_output_tokens:Number($('maxTokens').value),timeout:Number($('timeout').value),token_parameter:$('tokenParameter').value,network_consent:$('networkConsent').checked,max_calls:Number($('maxCalls').value)};}
+async function saveSettings(close=true){if(!$('settingsForm').reportValidity())throw new Error('检查设置中的输入');const result=await api('/api/config',{config:readConfig(),key:$('apiKey').value,clear_key:$('clearKey').checked});$('apiKey').value='';$('clearKey').checked=false;$('settingsStatus').textContent='设置已保存。密钥只留在进程内。';if(close)$('settingsDialog').close();await refresh();return result;}
+async function copy(text){try{await navigator.clipboard.writeText(text);toast('已复制');}catch(e){toast('浏览器未允许剪贴板，请选中文本手动复制。');}}
+async function download(path,name){const r=await fetch(path,{headers:{'X-SwitchLab-Token':token}});if(!r.ok)throw new Error('导出失败');const blob=await r.blob(),url=URL.createObjectURL(blob),a=node('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000);}
+function openArtifact(id){selectedArtifact=id;const a=state.artifacts.find(x=>x.id===id);if(!a)return;$('artifactTitle').textContent=a.title;$('artifactMeta').textContent=a.id+' · '+a.goal_id+' · '+(strategyNames[a.strategy]||a.strategy)+' · 已实际写入，现实效果待验收';rich($('artifactContent'),a.content);$('feedbackText').value='';updateEvaluation();$('artifactDialog').showModal();}
+function updateEvaluation(){const a=state.artifacts.find(x=>x.id===selectedArtifact);if(!a)return;const f=a.evaluation;document.querySelectorAll('[data-feedback]').forEach(b=>b.disabled=!!f&&b.dataset.feedback!=='style');$('evaluationStatus').textContent=f?`这份草稿已有一次验收：${f.kind==='criteria_met'?'符合条件':'未满足条件'}。重复点击不会累计奖励。`:'请按任务验收判断；仅改变语气请选择“表达偏好”。';}
+$('chatForm').addEventListener('submit',async e=>{e.preventDefault();const content=$('messageInput').value.trim();if(!content)return;$('sendBtn').disabled=true;try{await action('/api/chat',{text:content});$('messageInput').value='';}catch{}finally{$('sendBtn').disabled=false;}});
+$('messageInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();$('chatForm').requestSubmit();}});
+document.querySelectorAll('[data-example]').forEach(b=>b.addEventListener('click',()=>{$('messageInput').value=b.dataset.example;$('messageInput').focus();}));
+document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
+document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>$(b.dataset.close).close()));
+$('settingsBtn').addEventListener('click',()=>{if(state)openSettings();});$('preset').addEventListener('change',()=>presetChanged(true));
+$('settingsForm').addEventListener('submit',async e=>{e.preventDefault();try{await saveSettings();toast('模型设置已保存');}catch(e){$('settingsStatus').textContent=e.message;}});
+$('modelsBtn').addEventListener('click',async()=>{try{await saveSettings(false);$('settingsStatus').textContent='读取模型列表…';const r=await api('/api/models',{});$('modelOptions').replaceChildren();for(const id of r.models){const o=node('option');o.value=id;$('modelOptions').append(o);}$('settingsStatus').textContent=`已读取 ${r.models.length} 个模型。点击模型 ID 输入框选择，选好后再保存。`;}catch(e){$('settingsStatus').textContent=e.message;}});
+$('checkBtn').addEventListener('click',async()=>{try{await saveSettings(false);$('settingsStatus').textContent='正在发送一个小型真实模型请求…';const r=await api('/api/check',{});$('settingsStatus').textContent='HTTP + JSON 测试成功；返回模型：'+r.model+'。这不是机制能力测试。';await refresh();}catch(e){$('settingsStatus').textContent=e.message;}});
+$('onceBtn').addEventListener('click',()=>action('/api/advance',{}).catch(()=>{}));$('autoBtn').addEventListener('click',()=>action('/api/auto',{steps:6}).catch(()=>{}));$('pauseBtn').addEventListener('click',()=>action('/api/pause',{}).catch(()=>{}));
+$('exportBtn').addEventListener('click',()=>download('/api/export','SwitchLab_Studio_checkpoint.json').catch(e=>toast(e.message)));
+$('newBtn').addEventListener('click',()=>{if(confirm('开始新的实验？当前完整状态会先归档，不会删除。新的实验不会自动恢复后台推进。'))action('/api/new',{}).then(()=>location.reload()).catch(()=>{});});
+$('openManualBtn').addEventListener('click',()=>{if(manualId)$('manualDialog').showModal();});$('copyPromptBtn').addEventListener('click',()=>copy($('manualPrompt').value));
+$('applyManualBtn').addEventListener('click',async()=>{try{if(!manualId)throw new Error('此请求已过期，请关闭后重新获取。');const id=manualId;await api('/api/manual',{request_id:id,text:$('manualResponse').value});$('manualDialog').close();await refresh();toast('模型输出已校验，实际状态已保存。');}catch(e){$('manualStatus').textContent=e.message;}});
+$('consolidateBtn').addEventListener('click',()=>action('/api/command',{kind:'consolidate',payload:{}}).catch(()=>{}));$('adaptationToggle').addEventListener('change',()=>action('/api/command',{kind:'adaptation',payload:{enabled:$('adaptationToggle').checked}}).catch(()=>{}));
+document.querySelectorAll('[data-lab]').forEach(b=>b.addEventListener('click',()=>action('/api/command',{kind:'lab',payload:{action:b.dataset.lab}}).catch(()=>{})));
+document.querySelectorAll('[data-intervene]').forEach(b=>b.addEventListener('click',()=>action('/api/command',{kind:'intervene',payload:{kind:b.dataset.intervene}}).catch(()=>{})));
+$('downloadArtifactBtn').addEventListener('click',()=>download('/api/artifact?id='+encodeURIComponent(selectedArtifact),selectedArtifact+'.md').catch(e=>toast(e.message)));
+$('copyArtifactBtn').addEventListener('click',()=>{const a=state.artifacts.find(x=>x.id===selectedArtifact);if(a)copy(a.content);});
+document.querySelectorAll('[data-feedback]').forEach(b=>b.addEventListener('click',async()=>{try{await action('/api/command',{kind:'feedback',payload:{artifact_id:selectedArtifact,kind:b.dataset.feedback,text:$('feedbackText').value}});$('feedbackText').value='';updateEvaluation();toast(b.dataset.feedback==='criteria_failed'?'反馈已进入目标；允许推进后会修订。':'反馈已保存。');}catch{}}));
+
+function renderCognition(){
+ const c=state.cognition;if(!c)return;
+ const l=c.learner;$('cognitiveStats').replaceChildren();
+ for(const [name,value] of [['真实事件',c.observations],['内部处理',c.internal_steps],['梯度更新',l.updates]]){const x=node('div',undefined,'stat');x.append(node('span',name),node('strong',value));$('cognitiveStats').append(x);}
+ const ds=c.decisions.slice().reverse(),last=ds.find(d=>d.status==='expressed')||ds[0];
+ $('currentFocus').textContent=last?last.selected.candidate.intent:'等待第一段真实输入；没有预填训练经历。';
+ $('learningToggle').checked=l.enabled;$('selectionMode').value=c.mode;
+ $('learningDetail').textContent=`${l.parameters.toLocaleString()} 个本地神经参数 · ${l.retained_samples}/${l.capacity} 个训练样本 · ${l.replay_updates} 次重放梯度 · ${l.withdrawn} 个撤回标签`;
+ $('thinkBtn').disabled=!state.internal_ready;$('replayBtn').disabled=!l.enabled||!l.retained_samples;
+ $('openOutcomeBtn').disabled=!ds.some(d=>d.status==='expressed');
+ $('decisionList').replaceChildren();
+ if(!ds.length)$('decisionList').append(node('div','首次收到候选后，这里显示实际选择与事前预测，不显示模型自述的“内心”。','empty'));
+ for(const d of ds.slice(0,5)){
+  const card=node('div',undefined,'card');const s=d.selected,kind={expressed:'已表达',proposed:'待表达',discarded:'已丢弃'}[d.status]||d.status;
+  card.append(node('div',`${d.id} · ${kind} · 来源 ${d.source}`,'subtle'),node('h4',s.candidate.intent));
+  if(s.candidate.expected)card.append(node('p','预期：'+s.candidate.expected));
+  const p=s.prediction;card.append(node('p',p.utility_labels?`结果预测 ${(100*p.utility).toFixed(1)}% · ${p.utility_labels} 个标签 · 不是能力分数`:'尚无任务标签：未知结果，不冒充已学习偏好。','subtle'));
+  const detail=node('details');detail.append(node('summary','比较候选与预测器'));
+  for(const row of d.ranked){const r=node('div',undefined,'candidate-row');r.append(node('span',row.candidate.id===s.candidate.id?'● '+row.candidate.intent:row.candidate.intent),node('strong',row.score.toFixed(3)));detail.append(r);}
+  detail.append(node('p','采用的结果预测器：'+p.heads.slice(0,3).join(' / '),'subtle'));card.append(detail);
+  if(d.status==='expressed')card.append(button(d.outcome&&!d.outcome.withdrawn?'查看 / 撤回结果标签':'记录实际结果',()=>openOutcome(d.id)));
+  $('decisionList').append(card);
+ }
+ $('predictorScores').replaceChildren();
+ for(const name of ['neural','similarity']){const m=l.prequential_utility_mse[name];metric($('predictorScores'),name==='neural'?'神经预测事前 MSE':'经验匹配事前 MSE',m===null?'尚无评价':m.toFixed(4));}
+ metric($('predictorScores'),'当前权重摘要',l.weight_sha256.slice(0,14)+'…');
+}
+function renderClaims(){
+ if(!state.beliefs)return;const box=$('claimsList');box.replaceChildren();
+ $('claimConflictCount').textContent=`${state.belief_conflicts.length} 组待区分的冲突或变化`;
+ if(!state.beliefs.claims.length)box.append(node('div','尚无带原文的信念抽取。没有条目不等于系统没有记住对话。','empty'));
+ const holder={user:'用户报告',self:'自身报告',world:'对世界的报告'};
+ for(const c of state.beliefs.claims.slice(-30).reverse()){
+  const card=node('div',undefined,'card');card.append(node('div',`${c.id} · ${holder[c.holder]||c.holder} · ${c.status}`,'subtle'),node('h4',`${c.subject} / ${c.relation}`),node('p',c.value));
+  for(const s of c.sources.slice(-3))card.append(node('blockquote',`${s.source}：“${s.quote}”`));
+  if(c.status!=='withdrawn'){const controls=node('div',undefined,'controls');for(const [a,label] of [['confirm','确认这是我的报告'],['withdraw','撤回错误抽取']])controls.append(button(label,()=>action('/api/command',{kind:'belief_control',payload:{claim_id:c.id,action:a}})));card.append(controls);}
+  box.append(card);
+ }
+}
+function openOutcome(id){
+ const d=state.cognition.decisions.find(d=>d.id===id);if(!d)return;selectedDecision=id;
+ $('outcomeDecision').textContent=d.id+' · '+d.selected.candidate.intent;
+ const f=d.outcome&&!d.outcome.withdrawn?d.outcome:null;
+ for(const [i,name] of ['Task','Constraint','Understanding'].entries())$('outcome'+name).value=f&&f.mask[i]?String(f.values[i]):'';
+ $('outcomeNote').value=f?.note||'';$('saveOutcomeBtn').disabled=!!f;$('withdrawOutcomeBtn').hidden=!f;
+ $('outcomeStatus').textContent=f?'已有一个结果标签。错误标签可撤回并从保留样本重建；不会累积重复奖励。':'这是带来源的用户报告，不是独立实验真值。';
+ $('outcomeDialog').showModal();
+}
+$('thinkBtn').addEventListener('click',()=>action('/api/command',{kind:'deliberate',payload:{}}).catch(()=>{}));
+$('replayBtn').addEventListener('click',()=>action('/api/command',{kind:'consolidate',payload:{}}).catch(()=>{}));
+$('learningToggle').addEventListener('change',()=>action('/api/command',{kind:'adaptation',payload:{enabled:$('learningToggle').checked}}).catch(()=>{}));
+$('selectionMode').addEventListener('change',()=>action('/api/command',{kind:'selection_mode',payload:{mode:$('selectionMode').value}}).catch(()=>{}));
+$('openOutcomeBtn').addEventListener('click',()=>{const d=state?.cognition?.decisions.slice().reverse().find(d=>d.status==='expressed');if(d)openOutcome(d.id);});
+$('outcomeForm').addEventListener('submit',async e=>{e.preventDefault();const v=name=>$('outcome'+name).value===''?null:Number($('outcome'+name).value);try{await action('/api/command',{kind:'outcome',payload:{decision_id:selectedDecision,task:v('Task'),constraint:v('Constraint'),understanding:v('Understanding'),note:$('outcomeNote').value}});$('outcomeDialog').close();toast('结果已记录并进入本地学习；未把它当作世界真值。');}catch(e){$('outcomeStatus').textContent=e.message;}});
+$('withdrawOutcomeBtn').addEventListener('click',async()=>{if(!confirm('撤回此结果标签并从保留样本重建学习器？已被容量淘汰的旧样本影响也会清除。'))return;try{await action('/api/command',{kind:'withdraw_outcome',payload:{decision_id:selectedDecision}});$('outcomeDialog').close();toast('已撤回并重建。');}catch(e){$('outcomeStatus').textContent=e.message;}});
+
+$('protocolCheckBtn').addEventListener('click',async()=>{if(!confirm('会使用当前服务商发出最多2次真实模型请求，可能计费。只用临时检查情境，不训练你的会话。继续？'))return;try{await saveSettings(false);$('settingsStatus').textContent='正在检查提案 → 本地选择 → 表达…';const r=await api('/api/protocol-check',{});$('settingsStatus').textContent='两阶段协议已接通；返回模型：'+r.models.join(' / ')+'。这不验证真实语言能力。';await refresh();}catch(e){$('settingsStatus').textContent=e.message;}});
+refresh();setInterval(refresh,1100);

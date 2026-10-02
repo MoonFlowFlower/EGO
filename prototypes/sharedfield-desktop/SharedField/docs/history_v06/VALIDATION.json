@@ -1,0 +1,172 @@
+{
+  "version": "0.6.0",
+  "runtime_sha256": "e99b570901f0de78848140d375a04fbd092137bdd7db85bd666fbfc9c5b62cbf",
+  "tests": {
+    "tests_run": 332,
+    "failures": [],
+    "errors": [],
+    "skipped": [],
+    "successful": true,
+    "seconds": 49.85456427700001,
+    "python": "3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]",
+    "scope": "engineering tests, not mechanism validation"
+  },
+  "browser": {
+    "checks": 27,
+    "passed": true,
+    "js_errors": [],
+    "transport": "explicit in-process UI fixture; native networking and CSP NOT tested",
+    "model": "TEST FIXTURE; no real-model semantic claim"
+  },
+  "history_scale": {
+    "source_sha256": "e99b570901f0de78848140d375a04fbd092137bdd7db85bd666fbfc9c5b62cbf",
+    "writes": {
+      "synthetic_distractors": 100000,
+      "seconds": 16.507709874000284,
+      "independent_roots": 100003
+    },
+    "retrieval": {
+      "checks": [
+        {
+          "query": "星之海AZ009",
+          "raw_source_found": true,
+          "effective_revision_present": true,
+          "context_bytes": 4708
+        },
+        {
+          "query": "雾中庭院BK037",
+          "raw_source_found": true,
+          "effective_revision_present": true,
+          "context_bytes": 3947
+        },
+        {
+          "query": "蓝羽协议XY519",
+          "raw_source_found": true,
+          "effective_revision_present": true,
+          "context_bytes": 3947
+        }
+      ],
+      "seconds": 0.03678670199997214,
+      "semantic_paraphrases_tested": false
+    },
+    "recent_16_baseline": {
+      "original_sources_visible": 0,
+      "total": 3
+    },
+    "future_memory": {
+      "due_count": 2,
+      "cancelled_present": false,
+      "history_reloaded": true,
+      "simple_structured_ledger_baseline": "same due selection by indexed current status; no unique cognitive claim"
+    },
+    "replay": {
+      "events": 100008,
+      "seconds": 19.912345420999827,
+      "equal": true
+    },
+    "backup": {
+      "equal": true,
+      "seconds": 2.6173007190000135,
+      "db_bytes": 104845312
+    },
+    "predictor": {
+      "synthetic_lives": [
+        {
+          "seed": 0,
+          "online_logistic_brier": 0.18526603696356023,
+          "category_count_brier": 0.16722536540239216,
+          "frozen_half_brier": 0.25
+        },
+        {
+          "seed": 1,
+          "online_logistic_brier": 0.2428112005165387,
+          "category_count_brier": 0.254038650633869,
+          "frozen_half_brier": 0.25
+        },
+        {
+          "seed": 2,
+          "online_logistic_brier": 0.16568841771986614,
+          "category_count_brier": 0.1501234387047148,
+          "frozen_half_brier": 0.25
+        },
+        {
+          "seed": 3,
+          "online_logistic_brier": 0.22284775434312498,
+          "category_count_brier": 0.21857022046285832,
+          "frozen_half_brier": 0.25
+        },
+        {
+          "seed": 4,
+          "online_logistic_brier": 0.16428959432797874,
+          "category_count_brier": 0.14725032854813197,
+          "frozen_half_brier": 0.25
+        },
+        {
+          "seed": 5,
+          "online_logistic_brier": 0.13995479978504485,
+          "category_count_brier": 0.12195045416186419,
+          "frozen_half_brier": 0.25
+        },
+        {
+          "seed": 6,
+          "online_logistic_brier": 0.12565811830933124,
+          "category_count_brier": 0.114757556663758,
+          "frozen_half_brier": 0.25
+        },
+        {
+          "seed": 7,
+          "online_logistic_brier": 0.2037412337524529,
+          "category_count_brier": 0.19163901525453444,
+          "frozen_half_brier": 0.25
+        },
+        {
+          "seed": 8,
+          "online_logistic_brier": 0.14856232303978129,
+          "category_count_brier": 0.14665275977513728,
+          "frozen_half_brier": 0.25
+        },
+        {
+          "seed": 9,
+          "online_logistic_brier": 0.1696559973423992,
+          "category_count_brier": 0.15325925269698648,
+          "frozen_half_brier": 0.25
+        },
+        {
+          "seed": 10,
+          "online_logistic_brier": 0.15061448972942093,
+          "category_count_brier": 0.12650930346730674,
+          "frozen_half_brier": 0.25
+        },
+        {
+          "seed": 11,
+          "online_logistic_brier": 0.10439935076386932,
+          "category_count_brier": 0.084741782780542,
+          "frozen_half_brier": 0.25
+        }
+      ],
+      "mean_online_brier": 0.16862410971611405,
+      "mean_frequency_brier": 0.15639317737934127,
+      "frozen_brier": 0.25,
+      "meaning": "prediction in an engineered 2-category synthetic process, not human preferences/semantics"
+    },
+    "seconds_total": 42.828771394999876,
+    "contract": "Bounded synthetic engineering/proxy evidence. No real-model semantics, perpetual memory, world understanding, or EGO readiness claim."
+  },
+  "user_checkpoint_check": {
+    "original_v04_events": 108,
+    "stored_world_tick": 26,
+    "test_copy_before": 26,
+    "test_copy_after": 27,
+    "private_data_not_in_generic_archive": true
+  },
+  "limits": [
+    "no real language model semantics tested",
+    "no Windows machine run",
+    "native managed Chromium loopback access blocked",
+    "no perpetual recall or general lifelong learning guarantee",
+    "recorded model outputs exogenous, not regenerated",
+    "self-review only, not independent hostile audit",
+    "user EGO/ITL repo not touched"
+  ],
+  "clean_extraction_record": "External SharedField_v0.6_delivery_verification.json is generated after packaging."
+}

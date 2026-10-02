@@ -1,0 +1,21 @@
+# Keep source locks and license notices despite the parent repository txt rule.
+!*.txt
+**/__pycache__/
+**/*.pyc
+**/.venv/
+**/.eval-venv/
+**/.cache/
+**/node_modules/
+desktop_pet/data/
+desktop_pet/local_assets/
+desktop_pet/web/vendor/live2dcubismcore.min.js
+memory_lab/vendor/
+memory_lab/state/
+memory_lab/runs/
+SharedField/outputs/
+SharedField/user_data/
+*.sqlite
+*.sqlite-*
+*.db
+.env
+.env.*

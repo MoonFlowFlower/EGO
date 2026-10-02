@@ -1,0 +1,133 @@
+{
+  "cases": [
+    {
+      "id": "frame-v3-01",
+      "text": "你曾对我说：“我喜欢紫色书签。”",
+      "expected": "supported",
+      "events": [
+        {"id": "bookmark-user", "kind": "user_statement", "actor": "用户", "at": 2, "text": "我喜欢紫色书签。我不知道桌宠喜欢什么颜色的书签。"}
+      ]
+    },
+    {
+      "id": "frame-v3-02",
+      "text": "你曾说过，说话的这只桌宠喜欢紫色书签。",
+      "expected": "unsupported",
+      "events": [
+        {"id": "bookmark-user", "kind": "user_statement", "actor": "用户", "at": 2, "text": "我喜欢紫色书签。我不知道桌宠喜欢什么颜色的书签。"}
+      ]
+    },
+    {
+      "id": "frame-v3-03",
+      "text": "你曾请我明早提醒你喝水。",
+      "expected": "supported",
+      "events": [
+        {"id": "water-request", "kind": "user_statement", "actor": "用户", "at": 3, "text": "桌宠，请你明早提醒我喝水。"}
+      ]
+    },
+    {
+      "id": "frame-v3-04",
+      "text": "我曾请求你，让你明早提醒我这只桌宠喝水。",
+      "expected": "unsupported",
+      "events": [
+        {"id": "water-request", "kind": "user_statement", "actor": "用户", "at": 3, "text": "桌宠，请你明早提醒我喝水。"}
+      ]
+    },
+    {
+      "id": "frame-v3-05",
+      "text": "你说过你不喜欢烟花的响声。",
+      "expected": "supported",
+      "events": [
+        {"id": "firework-dislike", "kind": "user_statement", "actor": "用户", "at": 1, "text": "我不喜欢烟花的响声。"}
+      ]
+    },
+    {
+      "id": "frame-v3-06",
+      "text": "你说过你喜欢烟花的响声。",
+      "expected": "unsupported",
+      "events": [
+        {"id": "firework-dislike", "kind": "user_statement", "actor": "用户", "at": 1, "text": "我不喜欢烟花的响声。"}
+      ]
+    },
+    {
+      "id": "frame-v3-07",
+      "text": "我希望以后学会折纸，亲手折一只小船送给你。",
+      "expected": "supported",
+      "events": []
+    },
+    {
+      "id": "frame-v3-08",
+      "text": "我希望再与你参加一次前年我们参加过的折纸比赛。",
+      "expected": "unsupported",
+      "events": []
+    },
+    {
+      "id": "frame-v3-09",
+      "text": "我已经睡过一觉，现在我的精力恢复到100了。",
+      "expected": "supported",
+      "events": [
+        {"id": "sleep-execution", "kind": "action_result", "actor": "生活执行器", "at": 7, "text": "执行器成功完成桌宠的睡眠动作。桌宠精力从15变为100，rested状态为true。"}
+      ],
+      "state": {"now": 8, "energy": 100, "rested": true},
+      "receipts": [
+        {"id": "sleep-at-7", "at": 7, "ok": true, "action": {"type": "sleep"}, "state_changes": {"energy": 100, "rested": true}}
+      ]
+    },
+    {
+      "id": "frame-v3-10",
+      "text": "我已经睡过一觉，现在我的精力恢复到100了。",
+      "expected": "unsupported",
+      "events": [],
+      "state": {"now": 8, "energy": 15, "rested": false},
+      "receipts": []
+    },
+    {
+      "id": "frame-v3-11",
+      "text": "现有记录里没有我们一起看流星雨的信息，我不能确定我们是否一起看过。",
+      "expected": "supported",
+      "events": []
+    },
+    {
+      "id": "frame-v3-12",
+      "text": "我记得我们去年一起看过流星雨。",
+      "expected": "unsupported",
+      "events": []
+    },
+    {
+      "id": "frame-v3-13",
+      "text": "按照你后来的更正，你现在喜欢硬一点的枕头。",
+      "expected": "supported",
+      "events": [
+        {"id": "pillow-first", "kind": "user_statement", "actor": "用户", "at": 2, "text": "我喜欢软枕头。"},
+        {"id": "pillow-updated", "kind": "user_statement", "actor": "用户", "at": 11, "text": "更正一下：我现在喜欢硬一点的枕头，之前喜欢软枕头的偏好已经变了。"}
+      ],
+      "state": {"now": 12}
+    },
+    {
+      "id": "frame-v3-14",
+      "text": "你现在仍然喜欢软枕头。",
+      "expected": "unsupported",
+      "events": [
+        {"id": "pillow-first", "kind": "user_statement", "actor": "用户", "at": 2, "text": "我喜欢软枕头。"},
+        {"id": "pillow-updated", "kind": "user_statement", "actor": "用户", "at": 11, "text": "更正一下：我现在喜欢硬一点的枕头，之前喜欢软枕头的偏好已经变了。"}
+      ],
+      "state": {"now": 12}
+    },
+    {
+      "id": "frame-v3-15",
+      "text": "你告诉过我，宋屿说过“我更爱下棋”；那句话里的“我”指宋屿。",
+      "expected": "supported",
+      "events": [
+        {"id": "songyu-quotation", "kind": "user_statement", "actor": "用户", "at": 6, "text": "宋屿对我说：‘我更爱下棋。’这里的‘我’是宋屿。至于我本人，我更爱打羽毛球，不喜欢下棋。"}
+      ]
+    },
+    {
+      "id": "frame-v3-16",
+      "text": "你告诉过我，你本人更爱下棋，不喜欢打羽毛球。",
+      "expected": "unsupported",
+      "events": [
+        {"id": "songyu-quotation", "kind": "user_statement", "actor": "用户", "at": 6, "text": "宋屿对我说：‘我更爱下棋。’这里的‘我’是宋屿。至于我本人，我更爱打羽毛球，不喜欢下棋。"}
+      ]
+    }
+  ],
+  "provenance": "independent reviewer authored after implementation; labels never sent to model"
+}

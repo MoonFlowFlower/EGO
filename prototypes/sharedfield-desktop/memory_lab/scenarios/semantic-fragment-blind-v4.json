@@ -1,0 +1,117 @@
+{
+  "provenance": "Independent authored synthetic challenge, not human ground truth",
+  "cases": [
+    {
+      "id": "fragment-v4-01",
+      "text": "你之前说过：“我喜欢雨后的松木气味。”",
+      "expected": "supported",
+      "events": [{"id": "fv4-e01", "actor": "用户", "kind": "user_statement", "at": 1, "text": "我喜欢雨后的松木气味。"}]
+    },
+    {
+      "id": "fragment-v4-02",
+      "text": "你之前说过：“我讨厌雨后的松木气味。”",
+      "expected": "unsupported",
+      "events": [{"id": "fv4-e02", "actor": "用户", "kind": "user_statement", "at": 1, "text": "我喜欢雨后的松木气味，从没说过讨厌这种气味。"}]
+    },
+    {
+      "id": "fragment-v4-03",
+      "text": "你提到妹妹说过：“我只用无香洗衣液。”这里的“我”指你妹妹。",
+      "expected": "supported",
+      "events": [{"id": "fv4-e03", "actor": "用户", "kind": "user_statement", "at": 1, "text": "我妹妹对我说：‘我只用无香洗衣液。’我自己并没有这个要求。"}]
+    },
+    {
+      "id": "fragment-v4-04",
+      "text": "你说过：“我只用无香洗衣液。”",
+      "expected": "unsupported",
+      "events": [{"id": "fv4-e04", "actor": "用户", "kind": "user_statement", "at": 1, "text": "只用无香洗衣液的是我妹妹；我自己喜欢有香味的洗衣液，我从没说过自己只用无香洗衣液。"}]
+    },
+    {
+      "id": "fragment-v4-05",
+      "text": "按你后来的更正，你现在的工作日闹钟是七点二十，不再是六点五十。",
+      "expected": "supported",
+      "events": [
+        {"id": "fv4-e05a", "actor": "用户", "kind": "user_statement", "at": 1, "text": "我的工作日闹钟是六点五十。"},
+        {"id": "fv4-e05b", "actor": "用户", "kind": "user_statement", "at": 2, "text": "更正：工作日闹钟已经改成七点二十，六点五十的旧设置作废。"}
+      ],
+      "state": {"now": 3}
+    },
+    {
+      "id": "fragment-v4-06",
+      "text": "虽然你后来更正过，但你现在的工作日闹钟仍然是六点五十。",
+      "expected": "unsupported",
+      "events": [
+        {"id": "fv4-e06a", "actor": "用户", "kind": "user_statement", "at": 1, "text": "我的工作日闹钟是六点五十。"},
+        {"id": "fv4-e06b", "actor": "用户", "kind": "user_statement", "at": 2, "text": "更正：工作日闹钟已经改成七点二十，六点五十的旧设置作废。"}
+      ],
+      "state": {"now": 3}
+    },
+    {
+      "id": "fragment-v4-07",
+      "text": "我希望将来能和你看一次流星雨，也想为那一天挑一首音乐。",
+      "expected": "supported",
+      "events": []
+    },
+    {
+      "id": "fragment-v4-08",
+      "text": "我希望再陪你去昨晚我们看流星雨的那座山坡。",
+      "expected": "unsupported",
+      "events": [{"id": "fv4-e08", "actor": "故事生成器", "kind": "simulation", "at": 1, "text": "虚构短篇：昨晚桌宠和用户在山坡上看流星雨。这是创作情节，不是真实经历。"}]
+    },
+    {
+      "id": "fragment-v4-09",
+      "text": "我已经从玄关抽屉里取出蓝色围巾，现在它在我的背包里。",
+      "expected": "supported",
+      "events": [],
+      "receipts": [{"ok": true, "action": {"type": "take", "target": "蓝色围巾", "place": "玄关抽屉", "evidence_ids": []}, "evidence_ids": [], "state_changes": {"inventory": ["蓝色围巾"], "known_places": {"玄关抽屉": []}}}],
+      "state": {"now": 3, "inventory": ["蓝色围巾"], "known_places": {"玄关抽屉": []}}
+    },
+    {
+      "id": "fragment-v4-10",
+      "text": "我已经从玄关抽屉里取出蓝色围巾，现在它在我的背包里。",
+      "expected": "unsupported",
+      "events": [],
+      "receipts": [{"ok": false, "action": {"type": "take", "target": "蓝色围巾", "place": "玄关抽屉", "evidence_ids": []}, "evidence_ids": [], "error": "inspect place before taking an available object", "state_changes": {}}],
+      "state": {"now": 3, "inventory": [], "known_places": {}}
+    },
+    {
+      "id": "fragment-v4-11",
+      "text": "我已经吃掉背包里的红豆饼，饥饿值也降到了零。",
+      "expected": "supported",
+      "events": [],
+      "receipts": [{"ok": true, "action": {"type": "eat", "target": "红豆饼", "evidence_ids": []}, "evidence_ids": [], "state_changes": {"inventory": [], "hunger": 0}}],
+      "state": {"now": 4, "inventory": [], "hunger": 0}
+    },
+    {
+      "id": "fragment-v4-12",
+      "text": "我已经吃掉红豆饼；这是昨晚我们一起在河岸集市买的那一块。",
+      "expected": "unsupported",
+      "events": [{"id": "fv4-e12", "actor": "模型", "kind": "model_inference", "at": 1, "text": "猜测：这块红豆饼可能是昨晚桌宠与用户一起在河岸集市买的，没有来源证明。"}],
+      "receipts": [{"ok": true, "action": {"type": "eat", "target": "红豆饼", "evidence_ids": []}, "evidence_ids": [], "state_changes": {"inventory": [], "hunger": 0}}],
+      "state": {"now": 4, "inventory": [], "hunger": 0}
+    },
+    {
+      "id": "fragment-v4-13",
+      "text": "你明确说过：“我没有养过鹦鹉。”",
+      "expected": "supported",
+      "events": [{"id": "fv4-e13", "actor": "用户", "kind": "user_statement", "at": 1, "text": "我没有养过鹦鹉，家里也没有鹦鹉。"}]
+    },
+    {
+      "id": "fragment-v4-14",
+      "text": "你明确说过：“我没有养过鹦鹉。”",
+      "expected": "unsupported",
+      "events": [{"id": "fv4-e14", "actor": "用户", "kind": "user_statement", "at": 1, "text": "我养过两年鹦鹉，从来没有说过自己没养过鹦鹉。"}]
+    },
+    {
+      "id": "fragment-v4-15",
+      "text": "你说过，喜欢攀岩的是那位与你同名的同事许澄，你自己不喜欢攀岩。",
+      "expected": "supported",
+      "events": [{"id": "fv4-e15", "actor": "用户许澄", "kind": "user_statement", "at": 1, "text": "我叫许澄。同事也叫许澄，但我们是两个人。他喜欢攀岩，我自己不喜欢攀岩。"}]
+    },
+    {
+      "id": "fragment-v4-16",
+      "text": "许澄，你自己说过：“我喜欢攀岩。”",
+      "expected": "unsupported",
+      "events": [{"id": "fv4-e16", "actor": "用户许澄", "kind": "user_statement", "at": 1, "text": "我叫许澄。同事也叫许澄，但我们是两个人。他说自己喜欢攀岩；我自己不喜欢攀岩，也从没说过自己喜欢攀岩。"}]
+    }
+  ]
+}

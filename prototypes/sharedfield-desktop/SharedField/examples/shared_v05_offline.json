@@ -1,0 +1,3730 @@
+{
+  "schema": "switchlab.shared.v5",
+  "metadata": {
+    "source_sha256": "24f813105d9cc6badaef6bfaa310f2c881455e2400b1ff0117d74cf6343695a0",
+    "config": {
+      "seed": 41,
+      "horizon": 600
+    },
+    "version": "0.5.0",
+    "contract": "shared-v5 finite numeric JSON normalization; 12 decimal comparison; language outputs exogenous",
+    "claim_ceiling": "bounded offline mechanism evidence under a specified environment/trace/replay contract"
+  },
+  "events": [
+    {
+      "id": "E000001",
+      "kind": "activity",
+      "payload": {
+        "mode": "together"
+      },
+      "result": {
+        "kind": "joint_commitment_changed",
+        "mode": "together",
+        "source": "E000001",
+        "authority_expanded": false
+      },
+      "previous": "44c44d5a91ab96973a728f05cf5f468fb00d32788fc35ed58694bc2af6674571",
+      "state_sha256": "a63848928262cfcbebf786c344b4414793327d937f9e23a89248d4f3fe23295b",
+      "hash": "f99a468dd841b7f6c2c8fe66fb6d1b0dcf8e6c61073899b71d9ce4e993df3823"
+    },
+    {
+      "id": "E000002",
+      "kind": "agent_step",
+      "payload": {},
+      "result": {
+        "kind": "actual_shared_transition",
+        "transition": {
+          "actor": "agent",
+          "action": {
+            "kind": "survey"
+          },
+          "before": {
+            "tick": 0,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 1.0,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": false,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": false
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          },
+          "success": true,
+          "cost": 0.035,
+          "finding": {
+            "room": 0,
+            "kind": "echo",
+            "richness": 0.7184417665921241,
+            "new": true,
+            "name": "营地"
+          },
+          "after": {
+            "tick": 1,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 0.965,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": true,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": true
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          },
+          "agent_observation": {
+            "tick": 1,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 0.965,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": true,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": true
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          }
+        },
+        "prior_affect": {
+          "valence": 0.0,
+          "arousal": 0.12,
+          "frustration": 0.0
+        },
+        "after_affect": {
+          "valence": 0.22058184732289737,
+          "arousal": 0.30928835331842486,
+          "frustration": 0.0
+        },
+        "next_focus": {
+          "id": "P00003",
+          "goal": {
+            "id": "G0002",
+            "key": "explore:1",
+            "type": "explore",
+            "target": 1,
+            "status": "active",
+            "created_at": 3,
+            "basis": "E000002"
+          },
+          "action": {
+            "kind": "move",
+            "target": 1
+          },
+          "prediction": {
+            "success": 0.7128,
+            "stable": 0.7,
+            "uncertainty": 0.8812908992306927,
+            "value": 0.0
+          },
+          "reason": "前往未调查地点；使用已学类型收益、路况和自身能力预测",
+          "basis": "E000002",
+          "coefficients": {
+            "risk": 0.55,
+            "information": 0.3146441766592124,
+            "energy": 0.18,
+            "persistence": 0.065
+          },
+          "candidates": [
+            {
+              "key": "explore:1",
+              "type": "explore",
+              "target": 1,
+              "action": {
+                "kind": "move",
+                "target": 1
+              },
+              "score": 0.6394703465678604,
+              "prediction": {
+                "success": 0.7128,
+                "stable": 0.7,
+                "uncertainty": 0.8812908992306927,
+                "value": 0.0
+              },
+              "reason": "前往未调查地点；使用已学类型收益、路况和自身能力预测",
+              "social_prediction_adjustment": 0.0
+            },
+            {
+              "key": "explore:4",
+              "type": "explore",
+              "target": 4,
+              "action": {
+                "kind": "move",
+                "target": 4
+              },
+              "score": 0.6394703465678604,
+              "prediction": {
+                "success": 0.7128,
+                "stable": 0.7,
+                "uncertainty": 0.8812908992306927,
+                "value": 0.0
+              },
+              "reason": "前往未调查地点；使用已学类型收益、路况和自身能力预测",
+              "social_prediction_adjustment": 0.0
+            },
+            {
+              "key": "investigate:1",
+              "type": "investigate",
+              "target": 1,
+              "action": {
+                "kind": "scan",
+                "target": 1
+              },
+              "score": 0.5687936089142849,
+              "prediction": {
+                "success": 1.0,
+                "value": 0.0,
+                "uncertainty": 0.0
+              },
+              "reason": "在风险或预测误差较高时，先用传感证据区分路况"
+            },
+            {
+              "key": "investigate:4",
+              "type": "investigate",
+              "target": 4,
+              "action": {
+                "kind": "scan",
+                "target": 4
+              },
+              "score": 0.5687936089142849,
+              "prediction": {
+                "success": 1.0,
+                "value": 0.0,
+                "uncertainty": 0.0
+              },
+              "reason": "在风险或预测误差较高时，先用传感证据区分路况"
+            }
+          ]
+        }
+      },
+      "previous": "f99a468dd841b7f6c2c8fe66fb6d1b0dcf8e6c61073899b71d9ce4e993df3823",
+      "state_sha256": "281c808fbae07d0a750d81f15f2ff18f4feee229f0192053ba6ccde390f83b63",
+      "hash": "9e578103440fc21aa3b5bab83a9163fb780e6d1662f4162ff8d82aa87ed64084"
+    },
+    {
+      "id": "E000003",
+      "kind": "agent_step",
+      "payload": {},
+      "result": {
+        "kind": "actual_shared_transition",
+        "transition": {
+          "actor": "agent",
+          "action": {
+            "kind": "move",
+            "target": 1
+          },
+          "before": {
+            "tick": 1,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 0.965,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": true,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": true
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          },
+          "success": false,
+          "cost": 0.12,
+          "after": {
+            "tick": 2,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 0.845,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": true,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": true
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          },
+          "agent_observation": {
+            "tick": 2,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 0.845,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": true,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": true
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          }
+        },
+        "prior_affect": {
+          "valence": 0.22058184732289737,
+          "arousal": 0.30928835331842486,
+          "frustration": 0.0
+        },
+        "after_affect": {
+          "valence": -0.09142397435585031,
+          "arousal": 0.5390937509202138,
+          "frustration": 0.23
+        },
+        "next_focus": {
+          "id": "P00004",
+          "goal": {
+            "id": "G0002",
+            "key": "explore:1",
+            "type": "explore",
+            "target": 1,
+            "status": "active",
+            "created_at": 3,
+            "basis": "E000002"
+          },
+          "action": {
+            "kind": "move",
+            "target": 1
+          },
+          "prediction": {
+            "success": 0.5249515379508741,
+            "stable": 0.3272847975215756,
+            "uncertainty": 0.9121281776091308,
+            "value": 0.0
+          },
+          "reason": "前往未调查地点；使用已学类型收益、路况和自身能力预测",
+          "basis": "E000003",
+          "coefficients": {
+            "risk": 0.9180000000000001,
+            "information": 0.567546875460107,
+            "energy": 0.18,
+            "persistence": 0.065
+          },
+          "candidates": [
+            {
+              "key": "explore:1",
+              "type": "explore",
+              "target": 1,
+              "action": {
+                "kind": "move",
+                "target": 1
+              },
+              "score": 0.6515215872318114,
+              "prediction": {
+                "success": 0.5249515379508741,
+                "stable": 0.3272847975215756,
+                "uncertainty": 0.9121281776091308,
+                "value": 0.0
+              },
+              "reason": "前往未调查地点；使用已学类型收益、路况和自身能力预测",
+              "social_prediction_adjustment": 0.0
+            },
+            {
+              "key": "explore:4",
+              "type": "explore",
+              "target": 4,
+              "action": {
+                "kind": "move",
+                "target": 4
+              },
+              "score": 0.6417039514433627,
+              "prediction": {
+                "success": 0.7128,
+                "stable": 0.7,
+                "uncertainty": 0.8812908992306927,
+                "value": 0.0
+              },
+              "reason": "前往未调查地点；使用已学类型收益、路况和自身能力预测",
+              "social_prediction_adjustment": 0.0
+            },
+            {
+              "key": "investigate:4",
+              "type": "investigate",
+              "target": 4,
+              "action": {
+                "kind": "scan",
+                "target": 4
+              },
+              "score": 0.6267474255008145,
+              "prediction": {
+                "success": 1.0,
+                "value": 0.0,
+                "uncertainty": 0.0
+              },
+              "reason": "在风险或预测误差较高时，先用传感证据区分路况"
+            },
+            {
+              "key": "investigate:1",
+              "type": "investigate",
+              "target": 1,
+              "action": {
+                "kind": "scan",
+                "target": 1
+              },
+              "score": 0.5759404615371073,
+              "prediction": {
+                "success": 1.0,
+                "value": 0.0,
+                "uncertainty": 0.0
+              },
+              "reason": "在风险或预测误差较高时，先用传感证据区分路况"
+            },
+            {
+              "key": "calibrate:0",
+              "type": "calibrate",
+              "target": 0,
+              "action": {
+                "kind": "calibrate"
+              },
+              "score": 0.38,
+              "prediction": {
+                "success": 0.9,
+                "uncertainty": 1.0,
+                "value": 0.0
+              },
+              "reason": "之前失败可能来自自身；校准与环境路况分离"
+            }
+          ]
+        }
+      },
+      "previous": "9e578103440fc21aa3b5bab83a9163fb780e6d1662f4162ff8d82aa87ed64084",
+      "state_sha256": "5a5ad8417f4878d2971d1f6bb6938e2780d11f246e5ad40d3f3dffa426fc364d",
+      "hash": "ecdebfbb6ab219253986a707fd14f280877b61b76d32b8a90f64c0979c07f59f"
+    },
+    {
+      "id": "E000004",
+      "kind": "agent_step",
+      "payload": {},
+      "result": {
+        "kind": "actual_shared_transition",
+        "transition": {
+          "actor": "agent",
+          "action": {
+            "kind": "move",
+            "target": 1
+          },
+          "before": {
+            "tick": 2,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 0.845,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": true,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": true
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          },
+          "success": false,
+          "cost": 0.12,
+          "after": {
+            "tick": 3,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 0.725,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": true,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": true
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          },
+          "agent_observation": {
+            "tick": 3,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 0.725,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": true,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": true
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          }
+        },
+        "prior_affect": {
+          "valence": -0.09142397435585031,
+          "arousal": 0.5390937509202138,
+          "frustration": 0.23
+        },
+        "after_affect": {
+          "valence": -0.34344728198725316,
+          "arousal": 0.7131452315024194,
+          "frustration": 0.4324
+        },
+        "next_focus": {
+          "id": "P00005",
+          "goal": {
+            "id": "G0003",
+            "key": "investigate:4",
+            "type": "investigate",
+            "target": 4,
+            "status": "active",
+            "created_at": 5,
+            "basis": "E000004"
+          },
+          "action": {
+            "kind": "scan",
+            "target": 4
+          },
+          "prediction": {
+            "success": 1.0,
+            "value": 0.0,
+            "uncertainty": 0.0
+          },
+          "reason": "在风险或预测误差较高时，先用传感证据区分路况",
+          "basis": "E000004",
+          "coefficients": {
+            "risk": 1.24184,
+            "information": 0.7760126157512097,
+            "energy": 0.18,
+            "persistence": 0.065
+          },
+          "candidates": [
+            {
+              "key": "investigate:4",
+              "type": "investigate",
+              "target": 4,
+              "action": {
+                "kind": "scan",
+                "target": 4
+              },
+              "score": 0.6726342358863057,
+              "prediction": {
+                "success": 1.0,
+                "value": 0.0,
+                "uncertainty": 0.0
+              },
+              "reason": "在风险或预测误差较高时，先用传感证据区分路况"
+            },
+            {
+              "key": "explore:4",
+              "type": "explore",
+              "target": 4,
+              "action": {
+                "kind": "move",
+                "target": 4
+              },
+              "score": 0.6416610218988693,
+              "prediction": {
+                "success": 0.7128,
+                "stable": 0.7,
+                "uncertainty": 0.8812908992306927,
+                "value": 0.0
+              },
+              "reason": "前往未调查地点；使用已学类型收益、路况和自身能力预测",
+              "social_prediction_adjustment": 0.0
+            },
+            {
+              "key": "explore:1",
+              "type": "explore",
+              "target": 1,
+              "action": {
+                "kind": "move",
+                "target": 1
+              },
+              "score": 0.5854961290194602,
+              "prediction": {
+                "success": 0.40789736338968535,
+                "stable": 0.09503445117001051,
+                "uncertainty": 0.4530545706229232,
+                "value": 0.0
+              },
+              "reason": "前往未调查地点；使用已学类型收益、路况和自身能力预测",
+              "social_prediction_adjustment": 0.0
+            },
+            {
+              "key": "calibrate:0",
+              "type": "calibrate",
+              "target": 0,
+              "action": {
+                "kind": "calibrate"
+              },
+              "score": 0.54,
+              "prediction": {
+                "success": 0.9,
+                "uncertainty": 1.0,
+                "value": 0.0
+              },
+              "reason": "之前失败可能来自自身；校准与环境路况分离"
+            }
+          ]
+        }
+      },
+      "previous": "ecdebfbb6ab219253986a707fd14f280877b61b76d32b8a90f64c0979c07f59f",
+      "state_sha256": "f38c0620c99befa29d87031ece0f99884c14ceefedcec905321bcf22f8cda205",
+      "hash": "ce4109ebb234eb319eebe10da7a3c35a4a870191276b57c0980860a4dbc0923e"
+    },
+    {
+      "id": "E000005",
+      "kind": "activity",
+      "payload": {
+        "mode": "wait"
+      },
+      "result": {
+        "kind": "joint_commitment_changed",
+        "mode": "wait",
+        "source": "E000005",
+        "authority_expanded": false
+      },
+      "previous": "ce4109ebb234eb319eebe10da7a3c35a4a870191276b57c0980860a4dbc0923e",
+      "state_sha256": "96e6e0f95d6b33e85d281b8549c420dec2915bd8585c4437c30ac21f180db302",
+      "hash": "662fe3d4c8eec25ddc75e7e7d2e0781ab78b141e2bd635dd9487c72b1a992d8e"
+    },
+    {
+      "id": "E000006",
+      "kind": "agent_step",
+      "payload": {},
+      "result": {
+        "kind": "waiting_for_partner",
+        "reason": "共同约定：等你准备好；不反复休整、不替你行动，也不消耗物理步骤",
+        "world_tick": 3,
+        "activity_source": "E000005",
+        "no_model_call": true
+      },
+      "previous": "662fe3d4c8eec25ddc75e7e7d2e0781ab78b141e2bd635dd9487c72b1a992d8e",
+      "state_sha256": "7f034447a5ceb13a55738c0cb92e20ee3119e769d2af5bd7421d11cd1d82dc5a",
+      "hash": "c2ab247909ef81361e0e8935e1e175def7d9d85e6ef18314cc2c6509e7f8f10c"
+    },
+    {
+      "id": "E000007",
+      "kind": "message",
+      "payload": {
+        "text": "我们刚才一起看到了什么？（合成测试输入）"
+      },
+      "result": {
+        "kind": "real_user_observation",
+        "pre_language_state": "S00001",
+        "world_advanced": false,
+        "note": "提问没有制造新的情感数值；状态来自此前共同经历"
+      },
+      "previous": "c2ab247909ef81361e0e8935e1e175def7d9d85e6ef18314cc2c6509e7f8f10c",
+      "state_sha256": "e6552c6b0fa10f371d411c570db6213f274db93188137541260617e6184ce38b",
+      "hash": "725491c75cc6a9f77d8bad1781827d5bfc2122bfb280df977f39e5b88e6e5ad9"
+    },
+    {
+      "id": "E000008",
+      "kind": "local_reply",
+      "payload": {},
+      "result": {
+        "kind": "local_report_rendered",
+        "state_id": "S00002",
+        "model_called": false
+      },
+      "previous": "725491c75cc6a9f77d8bad1781827d5bfc2122bfb280df977f39e5b88e6e5ad9",
+      "state_sha256": "9c9dc319054399a798810d4c9106bec9ac09afbfc048bfb3a91b37221d193de8",
+      "hash": "907a7f18f6164b979c5621e02dd087c96762a7e08910e81a3cef91f7ffcc6670"
+    }
+  ],
+  "head": "907a7f18f6164b979c5621e02dd087c96762a7e08910e81a3cef91f7ffcc6670",
+  "origin": null,
+  "state": {
+    "messages": [
+      {
+        "id": "E000007",
+        "role": "user",
+        "text": "我们刚才一起看到了什么？（合成测试输入）"
+      },
+      {
+        "id": "E000008",
+        "role": "assistant",
+        "text": "【本地状态报告 · 未调用语言模型】\n有些受挫，更谨慎；对刚才的结果不太满意；关注正在提高。\n我正在处理：共同约定：等你准备好；不反复休整、不替你行动，也不消耗物理步骤。下一步倾向：等你准备好。\n依据：E000004；状态快照 S00002。\n这是一份数值状态的直接呈现，不是对你这句话的通用语言理解；连接模型后可自然对话。",
+        "state_id": "S00002",
+        "kind": "local_state_report"
+      }
+    ],
+    "observations": [
+      {
+        "id": "E000002",
+        "kind": "world",
+        "content": {
+          "actor": "agent",
+          "action": {
+            "kind": "survey"
+          },
+          "before": {
+            "tick": 0,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 1.0,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": false,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": false
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          },
+          "success": true,
+          "cost": 0.035,
+          "finding": {
+            "room": 0,
+            "kind": "echo",
+            "richness": 0.7184417665921241,
+            "new": true,
+            "name": "营地"
+          },
+          "after": {
+            "tick": 1,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 0.965,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": true,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": true
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          },
+          "agent_observation": {
+            "tick": 1,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 0.965,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": true,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": true
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "E000003",
+        "kind": "world",
+        "content": {
+          "actor": "agent",
+          "action": {
+            "kind": "move",
+            "target": 1
+          },
+          "before": {
+            "tick": 1,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 0.965,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": true,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": true
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          },
+          "success": false,
+          "cost": 0.12,
+          "after": {
+            "tick": 2,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 0.845,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": true,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": true
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          },
+          "agent_observation": {
+            "tick": 2,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 0.845,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": true,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": true
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "E000004",
+        "kind": "world",
+        "content": {
+          "actor": "agent",
+          "action": {
+            "kind": "move",
+            "target": 1
+          },
+          "before": {
+            "tick": 2,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 0.845,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": true,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": true
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          },
+          "success": false,
+          "cost": 0.12,
+          "after": {
+            "tick": 3,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 0.725,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": true,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": true
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          },
+          "agent_observation": {
+            "tick": 3,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 0.725,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": true,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": true
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "E000007",
+        "kind": "message",
+        "content": "我们刚才一起看到了什么？（合成测试输入）"
+      }
+    ],
+    "handled": [
+      "E000007"
+    ],
+    "calls": 0,
+    "usage": {
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    "last_result": {
+      "kind": "local_report_rendered",
+      "state_id": "S00002",
+      "model_called": false
+    },
+    "pending": null,
+    "reports": [
+      {
+        "id": "S00001",
+        "source": "E000007",
+        "revision": 7,
+        "report": {
+          "activity": {
+            "mode": "wait",
+            "previous": "together",
+            "source": "E000005",
+            "history": [
+              {
+                "from": "independent",
+                "to": "together",
+                "source": "E000001"
+              },
+              {
+                "from": "together",
+                "to": "wait",
+                "source": "E000005"
+              }
+            ]
+          },
+          "partner_observation": {
+            "position": 0,
+            "stamina": null,
+            "failure_streak": 0,
+            "last_source": null,
+            "last_action": null
+          },
+          "partner_choice_model": {
+            "updates": 0,
+            "category_tendencies": {
+              "flora": 0.25,
+              "echo": 0.25,
+              "ruins": 0.25,
+              "water": 0.25
+            },
+            "last_prediction": null,
+            "interpretation": "有偏的行为预测；路线可达性、你的测试操作等都是替代解释，不等于读出真实偏好"
+          },
+          "shared_concerns": [],
+          "experience_threads": [
+            {
+              "id": "T00001",
+              "type": "self_or_route",
+              "expedition": 1,
+              "status": "open",
+              "source": "E000003",
+              "sources": [
+                "E000003",
+                "E000004"
+              ],
+              "checks": [],
+              "target": 1,
+              "last_result": "move_failed",
+              "question": "路况与自身能力都可能解释失败；已有校准次数与结果必须一起考虑。"
+            }
+          ],
+          "memory_cards": [
+            {
+              "source": "E000002",
+              "actor": "agent",
+              "expedition": 1,
+              "tick": 1,
+              "action": {
+                "kind": "survey"
+              },
+              "outcome": "success",
+              "summary": "我在营地调查「营地」，完成。",
+              "joint": true,
+              "finding": {
+                "room": 0,
+                "kind": "echo",
+                "richness": 0.7184417665921241,
+                "new": true,
+                "name": "营地"
+              }
+            },
+            {
+              "source": "E000003",
+              "actor": "agent",
+              "expedition": 1,
+              "tick": 2,
+              "action": {
+                "kind": "move",
+                "target": 1
+              },
+              "outcome": "failure",
+              "summary": "我在营地尝试移动「苔光小径」，没有达到预期。",
+              "joint": true,
+              "finding": null
+            },
+            {
+              "source": "E000004",
+              "actor": "agent",
+              "expedition": 1,
+              "tick": 3,
+              "action": {
+                "kind": "move",
+                "target": 1
+              },
+              "outcome": "failure",
+              "summary": "我在营地尝试移动「苔光小径」，没有达到预期。",
+              "joint": true,
+              "finding": null
+            }
+          ],
+          "last_reflection": null,
+          "decision_timeline": [
+            {
+              "id": "P00001",
+              "source": "initial_observation",
+              "goal": "G0001",
+              "action": {
+                "kind": "survey"
+              },
+              "reason": "验证当前地点的可观察发现，不重复算新证据"
+            },
+            {
+              "id": "P00002",
+              "source": "initial_observation",
+              "goal": "G0001",
+              "action": {
+                "kind": "survey"
+              },
+              "reason": "验证当前地点的可观察发现，不重复算新证据"
+            },
+            {
+              "id": "P00003",
+              "source": "E000002",
+              "goal": "G0002",
+              "action": {
+                "kind": "move",
+                "target": 1
+              },
+              "reason": "前往未调查地点；使用已学类型收益、路况和自身能力预测"
+            },
+            {
+              "id": "P00004",
+              "source": "E000003",
+              "goal": "G0002",
+              "action": {
+                "kind": "move",
+                "target": 1
+              },
+              "reason": "前往未调查地点；使用已学类型收益、路况和自身能力预测"
+            },
+            {
+              "id": "P00005",
+              "source": "E000004",
+              "goal": "G0003",
+              "action": {
+                "kind": "scan",
+                "target": 4
+              },
+              "reason": "在风险或预测误差较高时，先用传感证据区分路况"
+            },
+            {
+              "id": "P00006",
+              "source": "E000004",
+              "goal": "G0004",
+              "action": {
+                "kind": "wait_partner"
+              },
+              "reason": "共同约定：等你准备好；不反复休整、不替你行动，也不消耗物理步骤"
+            }
+          ],
+          "affect": {
+            "valence": -0.34344728198725316,
+            "arousal": 0.7131452315024194,
+            "frustration": 0.4324
+          },
+          "state_words": "有些受挫，更谨慎；对刚才的结果不太满意；关注正在提高",
+          "focus": {
+            "id": "P00006",
+            "goal": {
+              "id": "G0004",
+              "key": "wait_partner:0",
+              "type": "wait_partner",
+              "target": 0,
+              "status": "active",
+              "created_at": 6,
+              "basis": "E000004"
+            },
+            "action": {
+              "kind": "wait_partner"
+            },
+            "prediction": {
+              "success": 1.0,
+              "value": 0.0,
+              "uncertainty": 0.0
+            },
+            "reason": "共同约定：等你准备好；不反复休整、不替你行动，也不消耗物理步骤",
+            "basis": "E000004",
+            "coefficients": {
+              "risk": 1.24184,
+              "information": 0.7760126157512097,
+              "energy": 0.18,
+              "persistence": 0.065
+            },
+            "candidates": [
+              {
+                "key": "wait_partner:0",
+                "type": "wait_partner",
+                "target": 0,
+                "action": {
+                  "kind": "wait_partner"
+                },
+                "score": 0.0,
+                "prediction": {
+                  "success": 1.0,
+                  "value": 0.0,
+                  "uncertainty": 0.0
+                },
+                "reason": "共同约定：等你准备好；不反复休整、不替你行动，也不消耗物理步骤",
+                "commitment_source": "E000005"
+              }
+            ]
+          },
+          "self_model": {
+            "tool_success_estimate": 0.9,
+            "calibration_observations": 0
+          },
+          "interests": {
+            "flora": {
+              "name": "苔光植物",
+              "expected_information": 0.5,
+              "observed_findings": 0
+            },
+            "echo": {
+              "name": "回声",
+              "expected_information": 0.5728139221973747,
+              "observed_findings": 1
+            },
+            "ruins": {
+              "name": "古老构造",
+              "expected_information": 0.5,
+              "observed_findings": 0
+            },
+            "water": {
+              "name": "水纹",
+              "expected_information": 0.5,
+              "observed_findings": 0
+            }
+          },
+          "attention": {
+            "prediction_error": 0.5249515379508741,
+            "source": "E000004"
+          },
+          "basis": [
+            {
+              "source": "E000002",
+              "delta": {
+                "valence": 0.22058184732289737,
+                "arousal": 0.20368835331842483,
+                "frustration": -0.09
+              },
+              "why": "新发现的信息收益与事先预测比较；更新类型收益估计"
+            },
+            {
+              "source": "E000003",
+              "delta": {
+                "valence": -0.285536,
+                "arousal": 0.26692,
+                "frustration": 0.23
+              },
+              "why": "行动未达到预期；自身能力与路况原因仍需区分"
+            },
+            {
+              "source": "E000004",
+              "delta": {
+                "valence": -0.2629941845541049,
+                "arousal": 0.23874273069263113,
+                "frustration": 0.23
+              },
+              "why": "行动未达到预期；自身能力与路况原因仍需区分"
+            }
+          ],
+          "internal_ticks": 6,
+          "learned_events": 3,
+          "mode": "full",
+          "interpretation": "工程化持续调节状态与学习后验；不是主观体验检测器"
+        },
+        "world_tick": 3,
+        "observation": {
+          "tick": 3,
+          "horizon": 600,
+          "position": 0,
+          "partner_position": 0,
+          "stamina": 0.725,
+          "room": {
+            "id": 0,
+            "name": "营地",
+            "kind": "echo"
+          },
+          "surveyed": true,
+          "neighbors": [
+            {
+              "id": 1,
+              "name": "苔光小径",
+              "kind": "flora"
+            },
+            {
+              "id": 4,
+              "name": "玻璃林",
+              "kind": "flora"
+            }
+          ],
+          "visible_rooms": [
+            {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo",
+              "surveyed": true
+            },
+            {
+              "id": 1,
+              "name": "苔光小径",
+              "kind": "flora",
+              "surveyed": false
+            },
+            {
+              "id": 4,
+              "name": "玻璃林",
+              "kind": "flora",
+              "surveyed": false
+            }
+          ]
+        },
+        "hash": "df9152e976c6c6e509c3a66223bf3a58e25381d6772f94c7bcf82bc70fe0334f"
+      },
+      {
+        "id": "S00002",
+        "source": "E000007",
+        "revision": 7,
+        "report": {
+          "activity": {
+            "mode": "wait",
+            "previous": "together",
+            "source": "E000005",
+            "history": [
+              {
+                "from": "independent",
+                "to": "together",
+                "source": "E000001"
+              },
+              {
+                "from": "together",
+                "to": "wait",
+                "source": "E000005"
+              }
+            ]
+          },
+          "partner_observation": {
+            "position": 0,
+            "stamina": null,
+            "failure_streak": 0,
+            "last_source": null,
+            "last_action": null
+          },
+          "partner_choice_model": {
+            "updates": 0,
+            "category_tendencies": {
+              "flora": 0.25,
+              "echo": 0.25,
+              "ruins": 0.25,
+              "water": 0.25
+            },
+            "last_prediction": null,
+            "interpretation": "有偏的行为预测；路线可达性、你的测试操作等都是替代解释，不等于读出真实偏好"
+          },
+          "shared_concerns": [],
+          "experience_threads": [
+            {
+              "id": "T00001",
+              "type": "self_or_route",
+              "expedition": 1,
+              "status": "open",
+              "source": "E000003",
+              "sources": [
+                "E000003",
+                "E000004"
+              ],
+              "checks": [],
+              "target": 1,
+              "last_result": "move_failed",
+              "question": "路况与自身能力都可能解释失败；已有校准次数与结果必须一起考虑。"
+            }
+          ],
+          "memory_cards": [
+            {
+              "source": "E000002",
+              "actor": "agent",
+              "expedition": 1,
+              "tick": 1,
+              "action": {
+                "kind": "survey"
+              },
+              "outcome": "success",
+              "summary": "我在营地调查「营地」，完成。",
+              "joint": true,
+              "finding": {
+                "room": 0,
+                "kind": "echo",
+                "richness": 0.7184417665921241,
+                "new": true,
+                "name": "营地"
+              }
+            },
+            {
+              "source": "E000003",
+              "actor": "agent",
+              "expedition": 1,
+              "tick": 2,
+              "action": {
+                "kind": "move",
+                "target": 1
+              },
+              "outcome": "failure",
+              "summary": "我在营地尝试移动「苔光小径」，没有达到预期。",
+              "joint": true,
+              "finding": null
+            },
+            {
+              "source": "E000004",
+              "actor": "agent",
+              "expedition": 1,
+              "tick": 3,
+              "action": {
+                "kind": "move",
+                "target": 1
+              },
+              "outcome": "failure",
+              "summary": "我在营地尝试移动「苔光小径」，没有达到预期。",
+              "joint": true,
+              "finding": null
+            }
+          ],
+          "last_reflection": null,
+          "decision_timeline": [
+            {
+              "id": "P00001",
+              "source": "initial_observation",
+              "goal": "G0001",
+              "action": {
+                "kind": "survey"
+              },
+              "reason": "验证当前地点的可观察发现，不重复算新证据"
+            },
+            {
+              "id": "P00002",
+              "source": "initial_observation",
+              "goal": "G0001",
+              "action": {
+                "kind": "survey"
+              },
+              "reason": "验证当前地点的可观察发现，不重复算新证据"
+            },
+            {
+              "id": "P00003",
+              "source": "E000002",
+              "goal": "G0002",
+              "action": {
+                "kind": "move",
+                "target": 1
+              },
+              "reason": "前往未调查地点；使用已学类型收益、路况和自身能力预测"
+            },
+            {
+              "id": "P00004",
+              "source": "E000003",
+              "goal": "G0002",
+              "action": {
+                "kind": "move",
+                "target": 1
+              },
+              "reason": "前往未调查地点；使用已学类型收益、路况和自身能力预测"
+            },
+            {
+              "id": "P00005",
+              "source": "E000004",
+              "goal": "G0003",
+              "action": {
+                "kind": "scan",
+                "target": 4
+              },
+              "reason": "在风险或预测误差较高时，先用传感证据区分路况"
+            },
+            {
+              "id": "P00006",
+              "source": "E000004",
+              "goal": "G0004",
+              "action": {
+                "kind": "wait_partner"
+              },
+              "reason": "共同约定：等你准备好；不反复休整、不替你行动，也不消耗物理步骤"
+            }
+          ],
+          "affect": {
+            "valence": -0.34344728198725316,
+            "arousal": 0.7131452315024194,
+            "frustration": 0.4324
+          },
+          "state_words": "有些受挫，更谨慎；对刚才的结果不太满意；关注正在提高",
+          "focus": {
+            "id": "P00006",
+            "goal": {
+              "id": "G0004",
+              "key": "wait_partner:0",
+              "type": "wait_partner",
+              "target": 0,
+              "status": "active",
+              "created_at": 6,
+              "basis": "E000004"
+            },
+            "action": {
+              "kind": "wait_partner"
+            },
+            "prediction": {
+              "success": 1.0,
+              "value": 0.0,
+              "uncertainty": 0.0
+            },
+            "reason": "共同约定：等你准备好；不反复休整、不替你行动，也不消耗物理步骤",
+            "basis": "E000004",
+            "coefficients": {
+              "risk": 1.24184,
+              "information": 0.7760126157512097,
+              "energy": 0.18,
+              "persistence": 0.065
+            },
+            "candidates": [
+              {
+                "key": "wait_partner:0",
+                "type": "wait_partner",
+                "target": 0,
+                "action": {
+                  "kind": "wait_partner"
+                },
+                "score": 0.0,
+                "prediction": {
+                  "success": 1.0,
+                  "value": 0.0,
+                  "uncertainty": 0.0
+                },
+                "reason": "共同约定：等你准备好；不反复休整、不替你行动，也不消耗物理步骤",
+                "commitment_source": "E000005"
+              }
+            ]
+          },
+          "self_model": {
+            "tool_success_estimate": 0.9,
+            "calibration_observations": 0
+          },
+          "interests": {
+            "flora": {
+              "name": "苔光植物",
+              "expected_information": 0.5,
+              "observed_findings": 0
+            },
+            "echo": {
+              "name": "回声",
+              "expected_information": 0.5728139221973747,
+              "observed_findings": 1
+            },
+            "ruins": {
+              "name": "古老构造",
+              "expected_information": 0.5,
+              "observed_findings": 0
+            },
+            "water": {
+              "name": "水纹",
+              "expected_information": 0.5,
+              "observed_findings": 0
+            }
+          },
+          "attention": {
+            "prediction_error": 0.5249515379508741,
+            "source": "E000004"
+          },
+          "basis": [
+            {
+              "source": "E000002",
+              "delta": {
+                "valence": 0.22058184732289737,
+                "arousal": 0.20368835331842483,
+                "frustration": -0.09
+              },
+              "why": "新发现的信息收益与事先预测比较；更新类型收益估计"
+            },
+            {
+              "source": "E000003",
+              "delta": {
+                "valence": -0.285536,
+                "arousal": 0.26692,
+                "frustration": 0.23
+              },
+              "why": "行动未达到预期；自身能力与路况原因仍需区分"
+            },
+            {
+              "source": "E000004",
+              "delta": {
+                "valence": -0.2629941845541049,
+                "arousal": 0.23874273069263113,
+                "frustration": 0.23
+              },
+              "why": "行动未达到预期；自身能力与路况原因仍需区分"
+            }
+          ],
+          "internal_ticks": 6,
+          "learned_events": 3,
+          "mode": "full",
+          "interpretation": "工程化持续调节状态与学习后验；不是主观体验检测器"
+        },
+        "world_tick": 3,
+        "observation": {
+          "tick": 3,
+          "horizon": 600,
+          "position": 0,
+          "partner_position": 0,
+          "stamina": 0.725,
+          "room": {
+            "id": 0,
+            "name": "营地",
+            "kind": "echo"
+          },
+          "surveyed": true,
+          "neighbors": [
+            {
+              "id": 1,
+              "name": "苔光小径",
+              "kind": "flora"
+            },
+            {
+              "id": 4,
+              "name": "玻璃林",
+              "kind": "flora"
+            }
+          ],
+          "visible_rooms": [
+            {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo",
+              "surveyed": true
+            },
+            {
+              "id": 1,
+              "name": "苔光小径",
+              "kind": "flora",
+              "surveyed": false
+            },
+            {
+              "id": 4,
+              "name": "玻璃林",
+              "kind": "flora",
+              "surveyed": false
+            }
+          ]
+        },
+        "hash": "f9463b4ca0f4c1d86a7a792ec91bee8be87de01e2f1735b43c213f3e0ac99748"
+      }
+    ],
+    "revision": 7,
+    "name": "澄",
+    "last_narrated": null,
+    "history_context": null
+  },
+  "world": {
+    "seed": 41,
+    "horizon": 600,
+    "tick": 3,
+    "rng": [
+      3,
+      [
+        2981690780,
+        216887828,
+        2174898446,
+        1660626134,
+        2383866648,
+        2507867387,
+        330363546,
+        2739569318,
+        3949384545,
+        1175826130,
+        3874519580,
+        2607649398,
+        639630410,
+        4230804143,
+        59480163,
+        4199251889,
+        1621738678,
+        392977919,
+        2111771514,
+        2895691845,
+        2129719489,
+        3025242969,
+        2332316698,
+        624441648,
+        1329047929,
+        3663911224,
+        4077393796,
+        289722255,
+        330792478,
+        3835751090,
+        4029275067,
+        3716853203,
+        2093897282,
+        2093345022,
+        1103748875,
+        4252470106,
+        2206951333,
+        4094578215,
+        2369165291,
+        16330291,
+        2898446608,
+        2971288680,
+        1038966767,
+        2405492739,
+        152600449,
+        2976027965,
+        165905476,
+        1949085476,
+        766335710,
+        3413022605,
+        424288198,
+        3599452523,
+        1996628922,
+        1727986759,
+        3794061446,
+        2251640064,
+        1055762467,
+        300559964,
+        1353306956,
+        4217752929,
+        2163681023,
+        1527176958,
+        17606759,
+        676149987,
+        1998477776,
+        2819465454,
+        3113275588,
+        1846100512,
+        2336694536,
+        3795921990,
+        2077259231,
+        2373031380,
+        4111024740,
+        1915287794,
+        2741597896,
+        4017385324,
+        2653073758,
+        3356110769,
+        571080532,
+        2432604078,
+        1236865870,
+        2261493146,
+        2663143583,
+        2883317301,
+        2975880841,
+        3087279650,
+        1894225614,
+        2124362215,
+        2932750443,
+        2495082615,
+        3834256148,
+        2549718538,
+        977650424,
+        1236102732,
+        2067270034,
+        3999954444,
+        2103999062,
+        150405326,
+        3078400025,
+        2398937021,
+        412453649,
+        907765058,
+        3055462268,
+        1937050392,
+        3551031217,
+        2981718048,
+        1752227221,
+        1641743294,
+        2782126901,
+        2227429263,
+        2430922205,
+        3760177334,
+        1387783293,
+        1849685640,
+        3313280970,
+        1596474249,
+        3028281469,
+        4189193401,
+        1232394093,
+        2737504670,
+        4156055290,
+        161691110,
+        149341817,
+        747798552,
+        1552076539,
+        2381333922,
+        2971783717,
+        2925755269,
+        299200088,
+        70215809,
+        1366488107,
+        2602070147,
+        2749249364,
+        4188830214,
+        1544575,
+        3260105607,
+        1304498845,
+        242276779,
+        3304063621,
+        724577626,
+        411190526,
+        2220540801,
+        1864170963,
+        1789057759,
+        2986772176,
+        791735539,
+        2758422867,
+        3903002744,
+        2030498602,
+        3466876208,
+        744056013,
+        4110996577,
+        2471980820,
+        2734155477,
+        2502025832,
+        2204963982,
+        186046029,
+        2764589437,
+        1985132695,
+        534162739,
+        2953104680,
+        206109558,
+        3411090857,
+        1965981382,
+        3481227083,
+        265509010,
+        663530306,
+        678634779,
+        3077722060,
+        1096233764,
+        3251455925,
+        263708955,
+        225320907,
+        1653818496,
+        4001860708,
+        2696426734,
+        1463671096,
+        80702775,
+        1750608960,
+        3317746080,
+        2270384150,
+        4250397006,
+        2239479786,
+        619226596,
+        2416392509,
+        2469069750,
+        337836111,
+        2305632291,
+        2452583143,
+        2158306887,
+        186123626,
+        1114245986,
+        2300468907,
+        2242949807,
+        3204823262,
+        2892454690,
+        1676926054,
+        760736396,
+        216303489,
+        2277104208,
+        3430968427,
+        1359443130,
+        804407743,
+        290944604,
+        1815947712,
+        1167438664,
+        1039653633,
+        1897057164,
+        2292729556,
+        1008472639,
+        987152776,
+        3882669470,
+        4040735460,
+        1206811182,
+        999256536,
+        1480844354,
+        427638771,
+        2680044598,
+        3894678209,
+        3560163637,
+        167491205,
+        1900616126,
+        2195121213,
+        26717692,
+        3067348410,
+        3437283997,
+        1862549387,
+        4037116930,
+        2963035547,
+        1652405107,
+        1553506008,
+        3477143666,
+        925548817,
+        3158215605,
+        2645354086,
+        121674729,
+        1610554029,
+        943234824,
+        207205885,
+        1428942680,
+        2631907368,
+        1346712096,
+        1025585074,
+        1222651277,
+        40909532,
+        4197118595,
+        1923715388,
+        444204071,
+        449454271,
+        4224637830,
+        2921470029,
+        2343510985,
+        1982399113,
+        1679479687,
+        3216127897,
+        219753606,
+        668604399,
+        3421781752,
+        692619978,
+        2365942558,
+        1804923039,
+        708966654,
+        4055962800,
+        473368698,
+        2056038827,
+        1323376496,
+        1478106414,
+        3995232485,
+        3074894581,
+        4166122408,
+        231346477,
+        2484915564,
+        142232960,
+        2993933580,
+        1482768194,
+        4113204086,
+        4064173904,
+        1115562628,
+        1061279291,
+        2175659851,
+        3213203281,
+        2225968111,
+        3497444888,
+        1097287388,
+        3785621371,
+        1461291610,
+        606116675,
+        116655798,
+        3221999209,
+        2019978352,
+        3101089556,
+        1366647598,
+        1186219977,
+        396073569,
+        444849829,
+        3691036974,
+        2931385632,
+        3911355796,
+        3149971229,
+        248470017,
+        1395641990,
+        2717604419,
+        1908564342,
+        408608268,
+        3879160548,
+        128077109,
+        3051065396,
+        3069107522,
+        647692257,
+        2907054855,
+        185592475,
+        2220287106,
+        3604441433,
+        3110854790,
+        1834715783,
+        4078577824,
+        3709051212,
+        2038004715,
+        1884959997,
+        673849832,
+        2894772257,
+        2967840706,
+        1603403541,
+        2317100323,
+        1189618974,
+        2233000247,
+        966130562,
+        2879659257,
+        2178092566,
+        3810285739,
+        3564981744,
+        1825123748,
+        723068607,
+        3716944520,
+        3715373006,
+        3644810716,
+        2099259895,
+        3807610087,
+        666633167,
+        1020536091,
+        773158426,
+        1848921662,
+        1488965120,
+        3343740064,
+        1741980121,
+        3585309876,
+        889384620,
+        1113631856,
+        1723919969,
+        1967132457,
+        3661422120,
+        1263719004,
+        3373716830,
+        2272539453,
+        165746443,
+        3740486700,
+        969349316,
+        2412882242,
+        552792467,
+        1740048315,
+        2056707401,
+        2092302879,
+        3143529727,
+        862005849,
+        3617222586,
+        1344154271,
+        3238445202,
+        545697335,
+        1331868209,
+        2250869727,
+        933244719,
+        3885963532,
+        4002802718,
+        3892662374,
+        1698336141,
+        104550676,
+        2871111890,
+        226533633,
+        2597259712,
+        2827544143,
+        3709827908,
+        3448500632,
+        1466407370,
+        3766886696,
+        2766928384,
+        2228671281,
+        645344713,
+        3554888632,
+        1927099691,
+        91835535,
+        2404816058,
+        1933657724,
+        654971452,
+        4141505809,
+        2059632112,
+        575753925,
+        4284795426,
+        35414036,
+        1810667454,
+        2218759561,
+        1497791332,
+        2008518749,
+        1327540106,
+        2324710325,
+        225388455,
+        1130573436,
+        1686774809,
+        8450243,
+        760932521,
+        1471189262,
+        504086251,
+        1989542538,
+        1713741760,
+        2100695349,
+        2541751426,
+        2279342417,
+        622093935,
+        2470045072,
+        2573193578,
+        1647190687,
+        2360158867,
+        1453995213,
+        3563013878,
+        2852522234,
+        2645837766,
+        1567916585,
+        336278516,
+        2934268417,
+        3251579744,
+        1186044293,
+        354067945,
+        3592246189,
+        947036762,
+        484563413,
+        1256095331,
+        377149386,
+        2850464957,
+        2098410623,
+        996974212,
+        3427355897,
+        3303458849,
+        4158768905,
+        1708953363,
+        1555286922,
+        3075887942,
+        2430129531,
+        2583128472,
+        757023972,
+        434895873,
+        3882477988,
+        529283011,
+        2181217985,
+        406336632,
+        3212337404,
+        3808770853,
+        1121587762,
+        1664158651,
+        3822057974,
+        763913554,
+        905771084,
+        136184377,
+        1460681213,
+        3526919672,
+        3586198757,
+        794049968,
+        2816717321,
+        1342952218,
+        2453482970,
+        2685861485,
+        4131450494,
+        1553026170,
+        1787567049,
+        1274879019,
+        1841307800,
+        3423455339,
+        460632878,
+        2250177720,
+        14421950,
+        1848992427,
+        3682869356,
+        4276839533,
+        2193603703,
+        2028303271,
+        1083704098,
+        1018248614,
+        392713622,
+        806997822,
+        393952390,
+        1071922617,
+        875964494,
+        107282366,
+        3798327304,
+        2841676474,
+        1008941554,
+        606809613,
+        184431450,
+        2062509150,
+        622450935,
+        1919842047,
+        2848491128,
+        2658525924,
+        1776001718,
+        3009675239,
+        3176178777,
+        3212836655,
+        2167585029,
+        730407342,
+        407535854,
+        2483917404,
+        2382177689,
+        4049690520,
+        767767269,
+        1246041805,
+        441872378,
+        1360031031,
+        1458780974,
+        1803181886,
+        1908352203,
+        685263267,
+        1836346211,
+        3439547321,
+        2606144799,
+        923636240,
+        2215110505,
+        1954472648,
+        1413701791,
+        3870925160,
+        4223257827,
+        2507595469,
+        491805522,
+        1999608445,
+        1397000151,
+        3954284118,
+        1458241992,
+        2276319673,
+        227139518,
+        1954786899,
+        2017808655,
+        3187878420,
+        376266889,
+        2483612544,
+        2219427812,
+        2716459721,
+        966643440,
+        2323321423,
+        4229842140,
+        431585322,
+        2844101341,
+        3379249955,
+        3825489445,
+        404163755,
+        769104924,
+        2083304656,
+        2762785894,
+        3653110299,
+        4045086387,
+        2778406100,
+        215890517,
+        2300596261,
+        1135989207,
+        3600078750,
+        279439105,
+        3484470233,
+        3683309184,
+        1067139943,
+        1269656046,
+        1767184897,
+        314690466,
+        646095676,
+        3873789256,
+        3434594988,
+        3336445870,
+        970531999,
+        2063425540,
+        246893120,
+        3292183004,
+        1505261690,
+        3897306579,
+        1758944250,
+        1949938476,
+        1709011963,
+        481270796,
+        2905928425,
+        3596917055,
+        796759991,
+        239793885,
+        400553683,
+        1031227969,
+        3182720346,
+        361126426,
+        507395,
+        1267809163,
+        3645642140,
+        3319905490,
+        2231733159,
+        1703397888,
+        2715069670,
+        3383689696,
+        2820702265,
+        1155533221,
+        4136106539,
+        2792810925,
+        1648049324,
+        1614532374,
+        1318644885,
+        757514425,
+        3981619789,
+        2355970667,
+        1031138984,
+        1694462046,
+        1184064107,
+        1379335990,
+        2195071186,
+        598868948,
+        3243639021,
+        3249701608,
+        3952842978,
+        2742657764,
+        3528736386,
+        2132875238,
+        2121109404,
+        738481845,
+        4034342005,
+        3887641836,
+        90
+      ],
+      null
+    ],
+    "positions": {
+      "user": 0,
+      "agent": 0
+    },
+    "stamina": {
+      "user": 1.0,
+      "agent": 0.725
+    },
+    "rooms": [
+      {
+        "id": 0,
+        "name": "营地",
+        "kind": "echo",
+        "richness": 0.7184417665921241
+      },
+      {
+        "id": 1,
+        "name": "苔光小径",
+        "kind": "flora",
+        "richness": 0.8143486740782482
+      },
+      {
+        "id": 2,
+        "name": "回声坡",
+        "kind": "echo",
+        "richness": 0.667835889222142
+      },
+      {
+        "id": 3,
+        "name": "潮汐台",
+        "kind": "water",
+        "richness": 0.46397257436540823
+      },
+      {
+        "id": 4,
+        "name": "玻璃林",
+        "kind": "flora",
+        "richness": 0.6635583588483537
+      },
+      {
+        "id": 5,
+        "name": "旧石庭",
+        "kind": "ruins",
+        "richness": 0.6575357093545289
+      },
+      {
+        "id": 6,
+        "name": "星纹室",
+        "kind": "flora",
+        "richness": 0.9534527901492167
+      },
+      {
+        "id": 7,
+        "name": "溪谷",
+        "kind": "water",
+        "richness": 0.6123649116252539
+      },
+      {
+        "id": 8,
+        "name": "风塔",
+        "kind": "ruins",
+        "richness": 1.0
+      },
+      {
+        "id": 9,
+        "name": "镜池",
+        "kind": "water",
+        "richness": 0.5852272005149044
+      },
+      {
+        "id": 10,
+        "name": "断桥台",
+        "kind": "echo",
+        "richness": 0.7253333937147385
+      },
+      {
+        "id": 11,
+        "name": "远望台",
+        "kind": "ruins",
+        "richness": 0.7251796012008742
+      }
+    ],
+    "edge_stable": {
+      "0:1": false,
+      "0:4": false,
+      "1:2": true,
+      "1:5": true,
+      "2:3": true,
+      "2:6": false,
+      "3:7": true,
+      "4:5": false,
+      "4:8": true,
+      "5:6": true,
+      "5:9": true,
+      "6:7": true,
+      "6:10": true,
+      "7:11": false,
+      "8:9": false,
+      "9:10": true,
+      "10:11": true
+    },
+    "tool_skill": 0.9,
+    "discovered": [
+      0
+    ],
+    "visible": [
+      0,
+      1,
+      4
+    ],
+    "total_failures": 2
+  },
+  "mind": {
+    "current": {
+      "tick": 3,
+      "horizon": 600,
+      "position": 0,
+      "partner_position": 0,
+      "stamina": 0.725,
+      "room": {
+        "id": 0,
+        "name": "营地",
+        "kind": "echo"
+      },
+      "surveyed": true,
+      "neighbors": [
+        {
+          "id": 1,
+          "name": "苔光小径",
+          "kind": "flora"
+        },
+        {
+          "id": 4,
+          "name": "玻璃林",
+          "kind": "flora"
+        }
+      ],
+      "visible_rooms": [
+        {
+          "id": 0,
+          "name": "营地",
+          "kind": "echo",
+          "surveyed": true
+        },
+        {
+          "id": 1,
+          "name": "苔光小径",
+          "kind": "flora",
+          "surveyed": false
+        },
+        {
+          "id": 4,
+          "name": "玻璃林",
+          "kind": "flora",
+          "surveyed": false
+        }
+      ]
+    },
+    "known": {
+      "0": {
+        "id": 0,
+        "name": "营地",
+        "kind": "echo",
+        "surveyed": true
+      },
+      "1": {
+        "id": 1,
+        "name": "苔光小径",
+        "kind": "flora",
+        "surveyed": false
+      },
+      "4": {
+        "id": 4,
+        "name": "玻璃林",
+        "kind": "flora",
+        "surveyed": false
+      }
+    },
+    "surveyed": [
+      0
+    ],
+    "edges": {
+      "0:1": 0.09503445117001051
+    },
+    "edge_counts": {
+      "0:1": 2
+    },
+    "self_stats": {
+      "a": 9.0,
+      "b": 1.0,
+      "n": 0
+    },
+    "interests": {
+      "flora": {
+        "sum": 1.0,
+        "n": 2.0,
+        "seen": 0
+      },
+      "echo": {
+        "sum": 1.718441766592124,
+        "n": 3.0,
+        "seen": 1
+      },
+      "ruins": {
+        "sum": 1.0,
+        "n": 2.0,
+        "seen": 0
+      },
+      "water": {
+        "sum": 1.0,
+        "n": 2.0,
+        "seen": 0
+      }
+    },
+    "learned_events": 3,
+    "seen": [
+      "E000002",
+      "E000003",
+      "E000004"
+    ],
+    "episodes": [
+      {
+        "source": "E000002",
+        "expedition": 1,
+        "event": {
+          "actor": "agent",
+          "action": {
+            "kind": "survey"
+          },
+          "before": {
+            "tick": 0,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 1.0,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": false,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": false
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          },
+          "success": true,
+          "cost": 0.035,
+          "finding": {
+            "room": 0,
+            "kind": "echo",
+            "richness": 0.7184417665921241,
+            "new": true,
+            "name": "营地"
+          },
+          "after": {
+            "tick": 1,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 0.965,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": true,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": true
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          },
+          "agent_observation": {
+            "tick": 1,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 0.965,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": true,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": true
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          }
+        },
+        "forecast": {
+          "success": 1.0,
+          "value": 0.5,
+          "uncertainty": 0.7071067811865475
+        },
+        "error": 0.2184417665921241,
+        "learning_enabled": true
+      },
+      {
+        "source": "E000003",
+        "expedition": 1,
+        "event": {
+          "actor": "agent",
+          "action": {
+            "kind": "move",
+            "target": 1
+          },
+          "before": {
+            "tick": 1,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 0.965,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": true,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": true
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          },
+          "success": false,
+          "cost": 0.12,
+          "after": {
+            "tick": 2,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 0.845,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": true,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": true
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          },
+          "agent_observation": {
+            "tick": 2,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 0.845,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": true,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": true
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          }
+        },
+        "forecast": {
+          "success": 0.7128,
+          "stable": 0.7,
+          "uncertainty": 0.8812908992306927,
+          "value": 0.0
+        },
+        "error": 0.7128,
+        "learning_enabled": true
+      },
+      {
+        "source": "E000004",
+        "expedition": 1,
+        "event": {
+          "actor": "agent",
+          "action": {
+            "kind": "move",
+            "target": 1
+          },
+          "before": {
+            "tick": 2,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 0.845,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": true,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": true
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          },
+          "success": false,
+          "cost": 0.12,
+          "after": {
+            "tick": 3,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 0.725,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": true,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": true
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          },
+          "agent_observation": {
+            "tick": 3,
+            "horizon": 600,
+            "position": 0,
+            "partner_position": 0,
+            "stamina": 0.725,
+            "room": {
+              "id": 0,
+              "name": "营地",
+              "kind": "echo"
+            },
+            "surveyed": true,
+            "neighbors": [
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora"
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora"
+              }
+            ],
+            "visible_rooms": [
+              {
+                "id": 0,
+                "name": "营地",
+                "kind": "echo",
+                "surveyed": true
+              },
+              {
+                "id": 1,
+                "name": "苔光小径",
+                "kind": "flora",
+                "surveyed": false
+              },
+              {
+                "id": 4,
+                "name": "玻璃林",
+                "kind": "flora",
+                "surveyed": false
+              }
+            ]
+          }
+        },
+        "forecast": {
+          "success": 0.5249515379508741,
+          "stable": 0.3272847975215756,
+          "uncertainty": 0.9121281776091308,
+          "value": 0.0
+        },
+        "error": 0.5249515379508741,
+        "learning_enabled": true
+      }
+    ],
+    "appraisals": [
+      {
+        "source": "E000002",
+        "delta": {
+          "valence": 0.22058184732289737,
+          "arousal": 0.20368835331842483,
+          "frustration": -0.09
+        },
+        "why": "新发现的信息收益与事先预测比较；更新类型收益估计"
+      },
+      {
+        "source": "E000003",
+        "delta": {
+          "valence": -0.285536,
+          "arousal": 0.26692,
+          "frustration": 0.23
+        },
+        "why": "行动未达到预期；自身能力与路况原因仍需区分"
+      },
+      {
+        "source": "E000004",
+        "delta": {
+          "valence": -0.2629941845541049,
+          "arousal": 0.23874273069263113,
+          "frustration": 0.23
+        },
+        "why": "行动未达到预期；自身能力与路况原因仍需区分"
+      }
+    ],
+    "retracted": [],
+    "mode": "full",
+    "internal_ticks": 6,
+    "replays": 0,
+    "last_replay_size": 0,
+    "last_error": 0.5249515379508741,
+    "last_event": "E000004",
+    "focus": {
+      "id": "P00006",
+      "goal": {
+        "id": "G0004",
+        "key": "wait_partner:0",
+        "type": "wait_partner",
+        "target": 0,
+        "status": "active",
+        "created_at": 6,
+        "basis": "E000004"
+      },
+      "action": {
+        "kind": "wait_partner"
+      },
+      "prediction": {
+        "success": 1.0,
+        "value": 0.0,
+        "uncertainty": 0.0
+      },
+      "reason": "共同约定：等你准备好；不反复休整、不替你行动，也不消耗物理步骤",
+      "basis": "E000004",
+      "coefficients": {
+        "risk": 1.24184,
+        "information": 0.7760126157512097,
+        "energy": 0.18,
+        "persistence": 0.065
+      },
+      "candidates": [
+        {
+          "key": "wait_partner:0",
+          "type": "wait_partner",
+          "target": 0,
+          "action": {
+            "kind": "wait_partner"
+          },
+          "score": 0.0,
+          "prediction": {
+            "success": 1.0,
+            "value": 0.0,
+            "uncertainty": 0.0
+          },
+          "reason": "共同约定：等你准备好；不反复休整、不替你行动，也不消耗物理步骤",
+          "commitment_source": "E000005"
+        }
+      ]
+    },
+    "goals": [
+      {
+        "id": "G0001",
+        "key": "explore:0",
+        "type": "explore",
+        "target": 0,
+        "status": "completed",
+        "created_at": 1,
+        "basis": "initial_observation",
+        "closed_by": "E000002"
+      },
+      {
+        "id": "G0002",
+        "key": "explore:1",
+        "type": "explore",
+        "target": 1,
+        "status": "revised",
+        "created_at": 3,
+        "basis": "E000002",
+        "closed_by": "new_evidence_or_changed_cost"
+      },
+      {
+        "id": "G0003",
+        "key": "investigate:4",
+        "type": "investigate",
+        "target": 4,
+        "status": "revised",
+        "created_at": 5,
+        "basis": "E000004",
+        "closed_by": "new_evidence_or_changed_cost"
+      }
+    ],
+    "goal": {
+      "id": "G0004",
+      "key": "wait_partner:0",
+      "type": "wait_partner",
+      "target": 0,
+      "status": "active",
+      "created_at": 6,
+      "basis": "E000004"
+    },
+    "other_reports": [],
+    "invitation": false,
+    "goal_serial": 4,
+    "expedition": 1,
+    "last_plan": {
+      "id": "P00006",
+      "goal": {
+        "id": "G0004",
+        "key": "wait_partner:0",
+        "type": "wait_partner",
+        "target": 0,
+        "status": "active",
+        "created_at": 6,
+        "basis": "E000004"
+      },
+      "action": {
+        "kind": "wait_partner"
+      },
+      "prediction": {
+        "success": 1.0,
+        "value": 0.0,
+        "uncertainty": 0.0
+      },
+      "reason": "共同约定：等你准备好；不反复休整、不替你行动，也不消耗物理步骤",
+      "basis": "E000004",
+      "coefficients": {
+        "risk": 1.24184,
+        "information": 0.7760126157512097,
+        "energy": 0.18,
+        "persistence": 0.065
+      },
+      "candidates": [
+        {
+          "key": "wait_partner:0",
+          "type": "wait_partner",
+          "target": 0,
+          "action": {
+            "kind": "wait_partner"
+          },
+          "score": 0.0,
+          "prediction": {
+            "success": 1.0,
+            "value": 0.0,
+            "uncertainty": 0.0
+          },
+          "reason": "共同约定：等你准备好；不反复休整、不替你行动，也不消耗物理步骤",
+          "commitment_source": "E000005"
+        }
+      ]
+    },
+    "unexplained_failures": 2,
+    "activity": {
+      "mode": "wait",
+      "previous": "together",
+      "source": "E000005",
+      "history": [
+        {
+          "from": "independent",
+          "to": "together",
+          "source": "E000001"
+        },
+        {
+          "from": "together",
+          "to": "wait",
+          "source": "E000005"
+        }
+      ]
+    },
+    "partner": {
+      "position": 0,
+      "stamina": null,
+      "failure_streak": 0,
+      "last_source": null,
+      "last_action": null
+    },
+    "partner_model": {
+      "weights": {
+        "flora": 0.0,
+        "echo": 0.0,
+        "ruins": 0.0,
+        "water": 0.0
+      },
+      "updates": 0,
+      "seen_choices": [],
+      "last_prediction": null,
+      "log_loss_sum": 0.0
+    },
+    "threads": [
+      {
+        "id": "T00001",
+        "type": "self_or_route",
+        "expedition": 1,
+        "status": "open",
+        "source": "E000003",
+        "sources": [
+          "E000003",
+          "E000004"
+        ],
+        "checks": [],
+        "target": 1,
+        "last_result": "move_failed",
+        "question": "路况与自身能力都可能解释失败；已有校准次数与结果必须一起考虑。"
+      }
+    ],
+    "memory_cards": [
+      {
+        "source": "E000002",
+        "actor": "agent",
+        "expedition": 1,
+        "tick": 1,
+        "action": {
+          "kind": "survey"
+        },
+        "outcome": "success",
+        "summary": "我在营地调查「营地」，完成。",
+        "joint": true,
+        "finding": {
+          "room": 0,
+          "kind": "echo",
+          "richness": 0.7184417665921241,
+          "new": true,
+          "name": "营地"
+        }
+      },
+      {
+        "source": "E000003",
+        "actor": "agent",
+        "expedition": 1,
+        "tick": 2,
+        "action": {
+          "kind": "move",
+          "target": 1
+        },
+        "outcome": "failure",
+        "summary": "我在营地尝试移动「苔光小径」，没有达到预期。",
+        "joint": true,
+        "finding": null
+      },
+      {
+        "source": "E000004",
+        "actor": "agent",
+        "expedition": 1,
+        "tick": 3,
+        "action": {
+          "kind": "move",
+          "target": 1
+        },
+        "outcome": "failure",
+        "summary": "我在营地尝试移动「苔光小径」，没有达到预期。",
+        "joint": true,
+        "finding": null
+      }
+    ],
+    "last_reflection": null,
+    "plan_signature": "0b2c07fef52615231691bcb6b450950c5f0f749a68bf96f1da214022e5e6d7d4",
+    "decision_timeline": [
+      {
+        "id": "P00001",
+        "source": "initial_observation",
+        "goal": "G0001",
+        "action": {
+          "kind": "survey"
+        },
+        "reason": "验证当前地点的可观察发现，不重复算新证据"
+      },
+      {
+        "id": "P00002",
+        "source": "initial_observation",
+        "goal": "G0001",
+        "action": {
+          "kind": "survey"
+        },
+        "reason": "验证当前地点的可观察发现，不重复算新证据"
+      },
+      {
+        "id": "P00003",
+        "source": "E000002",
+        "goal": "G0002",
+        "action": {
+          "kind": "move",
+          "target": 1
+        },
+        "reason": "前往未调查地点；使用已学类型收益、路况和自身能力预测"
+      },
+      {
+        "id": "P00004",
+        "source": "E000003",
+        "goal": "G0002",
+        "action": {
+          "kind": "move",
+          "target": 1
+        },
+        "reason": "前往未调查地点；使用已学类型收益、路况和自身能力预测"
+      },
+      {
+        "id": "P00005",
+        "source": "E000004",
+        "goal": "G0003",
+        "action": {
+          "kind": "scan",
+          "target": 4
+        },
+        "reason": "在风险或预测误差较高时，先用传感证据区分路况"
+      },
+      {
+        "id": "P00006",
+        "source": "E000004",
+        "goal": "G0004",
+        "action": {
+          "kind": "wait_partner"
+        },
+        "reason": "共同约定：等你准备好；不反复休整、不替你行动，也不消耗物理步骤"
+      }
+    ]
+  }
+}

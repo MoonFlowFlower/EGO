@@ -1,0 +1,11 @@
+# Build log
+- Read original mounted archive; extracted to an isolated /mnt/data build directory, not the user's repo.
+- Actually reran v0.1: 60 tests, all passed, 8.423s in this container.
+- User explicitly requested implementation of the previously designed closed-loop form, including language. Proceeding inline with bounded design above; no additional project authority inferred.
+- Core / provider / service / reflection / HTTP / CLI tests were added and exercised before or with implementation; red and green logs are retained under evidence_v02.
+- Reproduced and fixed lost original goal constraints, observation-vs-drift information routing, malformed fenced JSON error, and late connection-check write after shutdown.
+- Added atomic-save rollback, endpoint-secret separation, stale draft cancellation, source-linked outcome/statistic reconstruction and import refusal tests.
+- 120-test full suite passed in the build workspace. Full real HTTP seams were tested with a clearly labeled local model fixture, not a cloud model.
+- Native managed-browser localhost navigation was blocked by administrator. Kept policy intact; 11 UI tests use an explicit browser-fetch fixture plus real Python-to-HTTP backend, with separate security HTTP tests. Both screenshots inspected.
+- No real model weights or vendor credentials were available/used. No semantic superiority, learned motivation or anti-sycophancy efficacy is asserted.
+- No independent reviewer agent was available; checks are this session's tests and review, not an independent audit.

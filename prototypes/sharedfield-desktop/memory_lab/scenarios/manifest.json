@@ -1,0 +1,24 @@
+{
+  "development_sha256": "6b34101446ad1b49975eef8b6c912151c5323408de47258094fda4c8e8a0d0bf",
+  "heldout_sha256": "a787285dc15b859cefa676018cf63a08cf305d34c5d4b1053a9e5b777732c692",
+  "counts": [
+    12,
+    24
+  ],
+  "heldout_repeats": 3,
+  "memory_context_tokens": 2500,
+  "action_steps_per_phase": 6,
+  "tokenizer": "cl100k_base",
+  "tokenizer_note": "Shared proxy token budget, not claimed to match DeepSeek tokenizer",
+  "model_seed": 20260923,
+  "simulation": true,
+  "frozen_after_adapter_smoke": true,
+  "selection": {
+    "margin": 0.05,
+    "confidence": 0.95,
+    "bootstrap_seed": 230923,
+    "hard_gates_block_product": true,
+    "fallback": "baseline",
+    "ace_requires_paired_lower_bound_gt_zero": true
+  }
+}

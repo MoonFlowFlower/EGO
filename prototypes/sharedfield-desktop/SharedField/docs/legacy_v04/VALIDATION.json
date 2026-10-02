@@ -1,0 +1,108 @@
+{
+  "version": "0.4.0",
+  "layer": "engineering implementation + bounded mechanism hypothesis",
+  "source_sha256": "113f4d0e3e181a546de418207139652f36a940aaa9e520ef9c5c2914e0695967",
+  "tests": {
+    "tests_run": 225,
+    "failures": [],
+    "errors": [],
+    "skipped": [],
+    "successful": true,
+    "seconds": 32.08858879400009,
+    "python": "3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]",
+    "scope": "engineering tests, not mechanism validation"
+  },
+  "browser": {
+    "checks": [
+      {
+        "name": "playable map and no fabricated initial experience",
+        "passed": true
+      },
+      {
+        "name": "feeling question reads preexisting state, no physics",
+        "passed": true
+      },
+      {
+        "name": "player click executes physical move attempt",
+        "passed": true
+      },
+      {
+        "name": "shared discovery is observed by both",
+        "passed": true
+      },
+      {
+        "name": "finite autonomous exploration without LLM calls",
+        "passed": true
+      },
+      {
+        "name": "post-experience self report linked to actual state",
+        "passed": true
+      },
+      {
+        "name": "immutable report inspection",
+        "passed": true
+      },
+      {
+        "name": "causal decision-path ablation selectable",
+        "passed": true
+      },
+      {
+        "name": "hidden intervention not injected into capability belief",
+        "passed": true
+      },
+      {
+        "name": "manual two-stage exchange completes",
+        "passed": true
+      },
+      {
+        "name": "UI through actual Provider to explicit HTTP model fixture",
+        "passed": true
+      },
+      {
+        "name": "pause prevents additional physical actions",
+        "passed": true
+      },
+      {
+        "name": "new expedition preserves learning but not old map",
+        "passed": true
+      },
+      {
+        "name": "390px layout no horizontal overflow",
+        "passed": true
+      },
+      {
+        "name": "no browser JavaScript exceptions",
+        "passed": true
+      }
+    ],
+    "count": 15,
+    "errors": [],
+    "native_browser_http": false,
+    "transport": "explicit in-process UI test bridge; separate real HTTP tests",
+    "native_limit": "ERR_BLOCKED_BY_ADMINISTRATOR; no policy bypass",
+    "real_language_model_tested": false,
+    "desktop_preview": "real local state reports; no LLM"
+  },
+  "example_replay": {
+    "source_sha256": "113f4d0e3e181a546de418207139652f36a940aaa9e520ef9c5c2914e0695967",
+    "events": 30,
+    "world_tick": 25,
+    "learned_events": 25,
+    "report_ids": [
+      "S00001",
+      "S00002",
+      "S00003",
+      "S00004"
+    ],
+    "recorded_input_replay": true,
+    "remote_model_calls": 0,
+    "scope": "Real local simulator actions and numerical self reports. Not real LLM/subjectivity evidence."
+  },
+  "mechanism_superiority": "NOT_ESTABLISHED",
+  "real_language_model_tested": false,
+  "windows_tested": false,
+  "independent_audit": false,
+  "ego_itl_integration": false,
+  "delivery_verification": "external SharedField_v0.4_delivery_verification.json",
+  "claim_ceiling": "bounded offline mechanism evidence under a specified environment/trace/replay contract"
+}

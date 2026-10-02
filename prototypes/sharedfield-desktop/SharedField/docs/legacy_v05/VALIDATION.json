@@ -1,0 +1,193 @@
+{
+  "version": "0.5.0",
+  "source_sha256": "24f813105d9cc6badaef6bfaa310f2c881455e2400b1ff0117d74cf6343695a0",
+  "tests": {
+    "tests_run": 266,
+    "failures": [],
+    "errors": [],
+    "skipped": [],
+    "successful": true,
+    "seconds": 47.91202232699993,
+    "python": "3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]",
+    "scope": "engineering tests, not mechanism validation"
+  },
+  "browser": {
+    "checks": [
+      {
+        "name": "playable map and no fabricated initial experience",
+        "passed": true
+      },
+      {
+        "name": "feeling question reads preexisting state, no physics",
+        "passed": true
+      },
+      {
+        "name": "player click executes physical move attempt",
+        "passed": true
+      },
+      {
+        "name": "shared discovery is observed by both",
+        "passed": true
+      },
+      {
+        "name": "finite autonomous exploration without LLM calls",
+        "passed": true
+      },
+      {
+        "name": "post-experience self report linked to actual state",
+        "passed": true
+      },
+      {
+        "name": "immutable report inspection",
+        "passed": true
+      },
+      {
+        "name": "adopted joint commitment changes actual kernel",
+        "passed": true
+      },
+      {
+        "name": "wait commitment persists",
+        "passed": true
+      },
+      {
+        "name": "waiting preserves steps and spends no world action",
+        "passed": true
+      },
+      {
+        "name": "resume restores joint mode without granting steps",
+        "passed": true
+      },
+      {
+        "name": "independence actually changes constraints",
+        "passed": true
+      },
+      {
+        "name": "source-grounded shared memory visible",
+        "passed": true
+      },
+      {
+        "name": "causal decision-path ablation selectable",
+        "passed": true
+      },
+      {
+        "name": "hidden intervention not injected into capability belief",
+        "passed": true
+      },
+      {
+        "name": "manual two-stage exchange completes",
+        "passed": true
+      },
+      {
+        "name": "UI through actual Provider to explicit HTTP model fixture",
+        "passed": true
+      },
+      {
+        "name": "chosen action receipt visible before action",
+        "passed": true
+      },
+      {
+        "name": "browser export survives JSON numeric normalization and replays",
+        "passed": true
+      },
+      {
+        "name": "import archives active life and restores paused",
+        "passed": true
+      },
+      {
+        "name": "import preserves real world position and history",
+        "passed": true
+      },
+      {
+        "name": "pause prevents additional physical actions",
+        "passed": true
+      },
+      {
+        "name": "new expedition preserves learning but not old map",
+        "passed": true
+      },
+      {
+        "name": "390px layout no horizontal overflow",
+        "passed": true
+      },
+      {
+        "name": "no browser JavaScript exceptions",
+        "passed": true
+      }
+    ],
+    "count": 25,
+    "errors": [],
+    "native_browser_http": false,
+    "transport": "explicit in-process UI test bridge; separate real HTTP tests",
+    "native_limit": "ERR_BLOCKED_BY_ADMINISTRATOR; no policy bypass",
+    "real_language_model_tested": false,
+    "desktop_preview": "real local state reports; no LLM"
+  },
+  "user_trace": {
+    "events": 108,
+    "head": "11fee623da75a76106849fbc7f8b501ab8b799d00c871f89f7c7c027c1252a92",
+    "original_hashes_match": true,
+    "source_checked": true,
+    "comparison": "12 decimals; integer-valued float JSON equivalence; boolean distinct",
+    "strict_original_reader_used": false,
+    "language_rerun": false,
+    "source_file_sha256": "d8800edac15835bd7ee1b630e49bda558ff45e3ae92bdbc257d8332de48567ca",
+    "physical_tick": 26,
+    "speech_regressions": [
+      {
+        "source_event": "E000017",
+        "original_selected_action": {
+          "kind": "move",
+          "target": 1
+        },
+        "next_recorded_action": {
+          "kind": "move",
+          "target": 1
+        },
+        "recognized_contradictions": [
+          "unselected_action_announced"
+        ],
+        "scope": "finite-action near-term phrasing only; NOT full semantic fidelity verification"
+      },
+      {
+        "source_event": "E000065",
+        "original_selected_action": {
+          "kind": "move",
+          "target": 0
+        },
+        "next_recorded_action": {
+          "kind": "move",
+          "target": 0
+        },
+        "recognized_contradictions": [
+          "unselected_action_announced"
+        ],
+        "scope": "finite-action near-term phrasing only; NOT full semantic fidelity verification"
+      }
+    ],
+    "real_provider_called_this_round": false
+  },
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "windows_tested": false,
+  "real_model_called_this_update": false,
+  "independent_auditor": false,
+  "benchmark_full_minus_flat": {
+    "mean": -1.6879477452195495,
+    "approx_95_interval": [
+      -3.319721214184922,
+      -0.056174276254176814
+    ],
+    "paired_differences": [
+      -3.5500000000000007,
+      -2.5609686363833903,
+      -1.8215626767794548,
+      -4.4,
+      2.5500000000000007,
+      0.5499999999999998,
+      -3.5216887460575386,
+      -0.7493619025360116
+    ],
+    "small_sample_caution": true
+  },
+  "mechanism_superiority": "NOT_ESTABLISHED",
+  "release_reextract_record": "external SharedField_v0.5_delivery_verification.json"
+}

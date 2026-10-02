@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="studio-token" content="__TOKEN__"><title>澄 · Shared Field</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script></head>
+<body>
+<header><div class="brand"><span class="brandmark">◌</span><div><strong>SHARED FIELD</strong><span>共同经历 · 持续状态 · 实际行动</span></div><small>v0.5</small></div><nav><span id="connectionBadge" class="pill">本地状态报告</span><button id="connectBtn">模型连接</button><button id="importBtn">接着旧探索</button><input id="importFile" type="file" accept=".json,application/json" hidden><button id="exportBtn">保存实验副本</button><button id="helpBtn" class="iconBtn" aria-label="使用说明">?</button></nav></header>
+<main>
+<section class="sceneColumn">
+<div class="sectionHeading"><div><p class="eyebrow">AN EXPEDITION TOGETHER</p><h1>一起经历，再问她。</h1></div><button id="nextIslandBtn" class="quiet">新探索，保留经历 ↗</button></div>
+<div class="worldCard">
+<div class="worldTop"><div><strong id="locationText">营地</strong><span id="expeditionText">第 1 次探索</span></div><div class="clockSet"><span>世界 <b id="worldTick">0</b></span><span>认知 <b id="mindTick">1</b></span><span>观测 <b id="obsTick">0</b></span></div></div>
+<div id="worldMap" aria-label="共享探索地图"></div>
+<div class="mapLegend"><span><i class="youDot"></i> 你</span><span><i class="herDot"></i> <span class="agentName">澄</span></span><span>点选邻接地点；再走过去或观察</span></div>
+<div class="resourceRow"><label>你的体力 <progress id="yourEnergy" max="1" value="1"></progress></label><label><span class="agentName">澄</span>的体力 <progress id="herEnergy" max="1" value="1"></progress></label><span id="discoveries">0 / 12 处发现</span></div>
+<div class="actionRow"><span class="actionLabel">你的行动</span><button id="moveBtn" disabled>走过去</button><button id="surveyBtn">调查这里</button><button id="restBtn">休整</button><button id="inviteBtn">邀请她会合</button><button id="scanBtn" title="选中邻接地点后检查路况">观察选中路况</button></div>
+<div id="selectedPlace" class="fine">点选与你邻接的地点，再点击“走过去”；你们共享真实观察，不共享隐藏答案。</div>
+</div>
+<div class="jointCard">
+<div class="jointTitle"><strong>我们怎么一起走</strong><span id="activityMode" class="pill">各自探索</span></div>
+<p id="activityStatus" class="fine">同行是一项持续约定，不是让她替你操作。</p>
+<div class="actionRow"><button id="togetherBtn">一起走</button><button id="waitBtn">等我一下</button><button id="resumeJointBtn">我准备好了</button><button id="independentBtn" class="quiet">各自探索</button></div>
+<div id="sharedConcern" class="sharedConcern" hidden></div><p id="migrationNotice" class="fine" hidden></p>
+</div>
+<div class="presenceCard">
+<div class="presenceHeader"><div class="avatar" id="avatar">澄</div><div><h2><span class="agentName">澄</span>正在关注</h2><p id="feelingWords">平稳，正在观察</p></div><span id="runBadge" class="pill">已暂停</span></div>
+<p id="focusText" class="focusText"></p><div id="nextAction" class="nextAction"></div>
+<div class="actionRow"><button id="stepBtn">让她行动一步</button><button id="autoBtn" class="primary">让她探索</button><select id="autoSteps" aria-label="探索授权步数"><option value="8">8 步</option><option value="32">32 步</option><option value="600">到本图结束 · 最多600步</option></select><button id="pauseBtn" class="danger">暂停</button><button id="reflectBtn" class="quiet">回看经历</button></div>
+<p id="runtimeStatus" role="status" class="fine"></p><div id="errorBox" role="alert" hidden></div>
+</div>
+<details class="inspector" id="inspector"><summary>看见状态如何影响行动 <span>不是情绪贴纸，也不是意识检测</span></summary><div class="inspectorContent">
+<div class="inspectorGrid"><div><h3>持续调节状态</h3><div id="affectBars"></div><p class="fine">由事件评价更新，参与风险与调查权衡；不是主观感受量表。</p></div><div><h3>从经历更新</h3><p id="learningText"></p><div id="interestList"></div></div></div>
+<h3>当前候选与实际分数</h3><div id="candidateList"></div><h3>状态的来源</h3><div id="basisList"></div>
+<h3>从选择学习的对方模型</h3><div id="partnerPrediction"></div><h3>她对你的理解（可纠正）</h3><div id="otherList"></div>
+<h3>实验对照</h3><div class="actionRow"><select id="ablationSelect" aria-label="实验对照"><option value="full">完整候选</option><option value="affect_off">去掉情感样状态的决策影响</option><option value="self_off">固定自身能力估计</option><option value="learning_frozen">冻结后续模型学习</option><option value="flat_baseline">同模型的平坦基线</option></select><button id="stormBtn">改变隐藏路况</button><button id="faultBtn">工具故障</button><button id="repairBtn">研究者修复工具</button></div><p class="fine">研究者干预不直接通知她。消融会改变实验，不表示已经证明哪条路线更好。</p>
+<h3>目标的继续与修订</h3><div id="goalHistory"></div>
+</div></details>
+</section>
+<section class="dialogueColumn">
+<div class="conversation"><div class="conversationTop"><div><p class="eyebrow">A SHARED MOMENT</p><h2>和<span class="agentName">澄</span>说话</h2></div><span id="saveStatus" class="fine">未开始</span></div>
+<div id="chatLog" aria-live="polite"><div class="welcome"><span>◌</span><h3>感觉、想法、想做的事，都可以问。</h3><p>先一起探索几步，再看看经历怎样改变她的关注与选择。连接模型后可以自然对话；未连接时，只呈现真实状态报告。</p></div></div>
+<div class="quickQuestions"><button id="askFeeling" data-question="你现在有什么感觉？">现在什么感觉？</button><button data-question="你刚才在想什么？">在想什么？</button><button data-question="你自己想做什么，为什么？">你想做什么？</button></div>
+<form id="chatForm"><textarea id="messageInput" rows="3" maxlength="6000" placeholder="可以直接问她，也可以告诉她你的想法……" aria-label="消息"></textarea><div class="composerBottom"><span id="callCount" class="fine">不调用模型</span><button class="primary" id="sendBtn" type="submit">发送 ↗</button></div></form>
+<div id="manualBanner" hidden><strong>手动语言交换</strong><span id="manualPhase"></span><button id="manualBtn">打开本阶段请求</button></div>
+</div>
+<details class="memoryPanel" open><summary>留下来的共同经历 <span>有实际来源，不是编出的回忆</span></summary><div id="memoryTimeline"></div><div id="experienceThreads"></div></details>
+<details class="eventPanel"><summary>共同经历的记录 <span id="eventCount"></span></summary><div id="eventLog"></div></details>
+<p class="boundary">内部状态是可干预的工程机制，不是已经证实的主观体验。只在内置环境行动，不操作真实电脑；没有离开惩罚或强留用户的奖励。</p>
+</section>
+</main>
+<dialog id="settingsDialog"><div class="dialogHeader"><h2>模型连接与节奏</h2><button data-close="settingsDialog" aria-label="关闭">×</button></div><div class="dialogBody">
+<label>称呼<input id="agentNameInput" maxlength="24" value="澄"></label>
+<label>语言模式<select id="languageMode"><option value="local">本地状态报告 · 无模型 / 无费用</option><option value="api">连接已有 API / 本地模型服务</option><option value="manual">手动与外部语言模型交换 JSON</option></select></label>
+<p class="fine">本地模式不是通用聊天模型。API 对话通常两次请求；可选的事件讲述一次请求。模型错误会停止，不自动收费重试。</p>
+<div id="providerFields"><label>兼容 API 基础地址<input id="baseURL" value="https://openrouter.ai/api/v1" spellcheck="false"></label><label>模型 ID<input id="modelID" placeholder="服务商上的真实模型 ID" spellcheck="false"></label><label>API key（仅当前进程内）<input id="apiKey" type="password" autocomplete="new-password" placeholder="留空保留当前进程已有密钥"></label><label class="check"><input id="clearKey" type="checkbox">清除当前进程保存的密钥</label>
+<div class="twoCols"><label>生命周期请求上限<input id="maxCalls" type="number" min="1" max="500" value="48"></label><label>单次输出 token 上限<input id="maxTokens" type="number" min="256" max="8192" value="2400"></label></div>
+<div class="twoCols"><label>超时秒数<input id="timeout" type="number" min="5" max="180" value="90"></label><label>token 参数<select id="tokenParameter"><option value="max_tokens">max_tokens</option><option value="max_completion_tokens">max_completion_tokens</option></select></label></div>
+<label class="check"><input id="jsonMode" type="checkbox" checked>请求 JSON mode（不支持时可关闭）</label><label class="check"><input id="networkConsent" type="checkbox">同意将选定对话、状态与经历发给这个端点</label></div>
+<label class="check"><input id="narrate" type="checkbox">授权探索中对实际发现 / 失败作简短讲述（会增加语言请求）</label><label>后台行动间隔（秒）<input id="interval" type="number" min="0.2" max="10" step="0.2" value="1.4"></label>
+<div class="actionRow"><button id="saveSettingsBtn" class="primary">保存并暂停</button><button id="checkProtocolBtn">两阶段协议自检</button></div><p id="settingsResult" class="fine"></p>
+<details><summary>个体重置与数据</summary><p>新探索保留经历；新个体会把旧生命周期完整归档并开始空白状态。导出包含你的对话，不要公开分享未经检查的文件。</p><button id="newLifeBtn" class="danger">归档并建立新个体</button></details>
+</div></dialog>
+<dialog id="manualDialog"><div class="dialogHeader"><h2>手动语言交换</h2><button data-close="manualDialog">×</button></div><div class="dialogBody"><p>复制请求给你选择的模型，再贴回完整 JSON。解释和表达分两阶段。你操作地图不会吞掉回答；旧快照会标注。暂停、新问题或改变共同约定会取消旧请求。</p><textarea id="manualPrompt" readonly rows="10"></textarea><button id="copyPromptBtn">复制请求</button><label>模型返回的 JSON<textarea id="manualResult" rows="8"></textarea></label><button id="submitManualBtn" class="primary">提交本阶段</button></div></dialog>
+<dialog id="reportDialog"><div class="dialogHeader"><h2>说话之前的状态快照</h2><button data-close="reportDialog">×</button></div><pre id="reportContent"></pre></dialog>
+<dialog id="helpDialog"><div class="dialogHeader"><h2>怎么测试这一版</h2><button data-close="helpDialog">×</button></div><div class="dialogBody"><p>0. 可以点“接着旧探索”导入v0.4/v0.5导出；已有个体先归档。迁移后暂停，未完成请求不会自动重发。</p><p>1. 点“一起走”后让她探索 8 步，或点选邻接地点后亲自移动、调查。你们有各自的位置，分享同一环境的观察。</p><p>2. 直接问感觉、思考与意愿。未连接模型时是数值状态报告；连接模型后是受状态约束的自然语言。</p><p>3. 点“等我一下”测试真实等待，再点“我准备好了”。已授予的剩余步数保留，暂停后仍需重新授权。点回答下的快照，检查说法是否来自此前经历。展开状态面板，观察预测误差、能力估计、候选选择和来源。</p><p>4. 在实验对照中制造工具故障或路况变化，观察她是否调查、校准、维护或修订目标。目标是能发现失败，不是保证每次都聪明。</p><p>5. 可开始新探索保留跨场景统计，也可导出。关闭后恢复会暂停；密钥重启后重填。</p><p>尚未实现：真实电脑操作、语音、Jev、完整社会因果模型、开放式价值形成与终身神经学习。窗口中有可运行的机制，不等于这些问题已经解决。</p></div></dialog>
+<div id="toast" role="status" hidden></div>
+<footer>SHARED FIELD / EGO EXPERIMENT <span>同一份经历，通向下一次不同的选择。</span></footer>
+</body></html>

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="switchlab-token" content="__TOKEN__">
+<title>SwitchLab · 持续自适应控制实验</title>
+<link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script>
+</head>
+<body>
+<header><div class="brand"><span class="logo">S<span>↻</span></span><div><h1>SwitchLab</h1><p>持续状态 · 经验更新 · 目标竞争 · 后果规划</p></div></div><div class="badge">LOCAL / OFFLINE <i></i></div></header>
+<main>
+<section class="intro"><div><p class="eyebrow">BOUNDED ADAPTIVE CONTROL · v0.1</p><h2>看它怎样根据经历，改变下一步。</h2><p>没有聊天人格。动作来自内部模型与价值比较；你可以改变环境，观察预测、目标与行动怎样变化。</p></div><div class="scope">有限模型族实验<br><strong>不等于真实自主或机制优越性</strong></div></section>
+<section class="toolbar" aria-label="运行控制">
+<button id="play" class="primary">▶ 运行</button><button id="step">前进一步</button><button id="batch">推进 12 步</button>
+<button id="think">只思考，不推进世界</button><button id="replay">重放记忆</button>
+<label>节奏 <select id="speed"><option value="500">常速</option><option value="120">快速</option><option value="1200">慢速</option></select></label>
+<span id="status" role="status">准备连接</span>
+</section>
+<div id="error" class="error" role="alert" hidden></div>
+<section class="metrics">
+<div><span>世界时间</span><strong id="tick">0 / 96</strong></div><div><span>真实环境回报</span><strong id="reward">0.00</strong></div>
+<div><span>交付完成 / 错过</span><strong id="contracts">0 / 0</strong></div><div><span>真实经历</span><strong id="memory">0</strong></div>
+<div><span>已采纳目标</span><strong id="goals">0</strong></div><div><span>模型内想象节点</span><strong id="nodes">0</strong></div>
+</section>
+<div class="grid">
+<section class="panel workshop"><div class="section-head"><h3>01 / 工作环境</h3><span>候选可见的状态</span></div>
+<div class="resources"><div><label>能量 <b id="energy-text">7.00</b></label><progress id="energy" max="12" value="7"></progress></div><div><label>冷却资源 <b id="coolant-text">5.00</b></label><progress id="coolant" max="10" value="5"></progress></div></div>
+<div class="stations"><div><span class="station-icon">↯</span><b>能量源 E0 / E1</b><small>哪一源可靠？需要经历与调查。</small></div><div><span class="station-icon">≈</span><b>冷却源 C0 / C1</b><small>产出依赖资源源与自身工具。</small></div></div>
+<div class="contract"><span>当前承诺</span><b id="contract-detail">交付 0：0 / 3</b><small id="pending">没有待发生的故障成本</small></div>
+<canvas id="chart" height="150" aria-label="最近可见的能量和冷却资源轨迹"></canvas>
+<p class="caption"><span class="dot energy-dot"></span>能量 <span class="dot coolant-dot"></span>冷却 · 只画实际观测点，不补造缺失历史。</p>
+</section>
+<section class="panel cognition"><div class="section-head"><h3>02 / 持续信念</h3><span>从反馈更新，不读取真值</span></div>
+<div class="belief-row"><div><span>E1 是可靠源的概率</span><strong id="belief-e">50%</strong></div><progress id="be" max="1" value=".5"></progress></div>
+<div class="belief-row"><div><span>C1 是可靠源的概率</span><strong id="belief-c">50%</strong></div><progress id="bc" max="1" value=".5"></progress></div>
+<div class="belief-row"><div><span>自身工具正常的概率</span><strong id="belief-self">80%</strong></div><progress id="bs" max="1" value=".8"></progress></div>
+<div class="model-meta"><span>联合不确定性 <b id="entropy">—</b></span><span>本次意外程度 <b id="surprise">—</b></span></div>
+<div class="explain" id="learning-detail">尚无新经历。已知的是模型类别与先验，不是隐藏环境的答案。</div>
+<div class="workspace" id="workspace">内部工作区：尚无待使用的计算。</div>
+<details><summary>只读评测视角：查看隐藏真值</summary><p id="truth"></p><p class="caption">此字段只用于人类检查；没有传入候选的决策与更新接口。</p></details>
+</section>
+<section class="panel decisions"><div class="section-head"><h3>03 / 目标与下一步</h3><span id="planner-label">有限预算规划</span></div>
+<div class="goal-card"><span>已承诺的结果目标</span><h4 id="goal-title">等待第一次决策</h4><p id="goal-detail">目标来自可选后果的价值比较，而不是空闲时长。</p></div>
+<div class="chosen"><span>选择的动作</span><strong id="action">—</strong><span id="goal-event"></span></div>
+<div class="table-wrap"><table><thead><tr><th>候选目标</th><th>首动作</th><th>估计净价值</th></tr></thead><tbody id="candidate-rows"><tr><td colspan="3">执行一步或先进行内部计算。</td></tr></tbody></table></div>
+<p class="caption">数值是有限粒子与固定续行策略下的模型估计，不是现实收益或最优性证明。</p>
+<div id="branches" class="branches"></div>
+</section>
+<section class="panel interventions"><div class="section-head"><h3>04 / 可证伪干预</h3><span>改变环境，不直接改写信念</span></div>
+<p>先运行若干步，再施加故障。观察系统是否通过结果修正自身／环境模型，并改变行动。</p>
+<button class="intervention" data-kind="damage_tool"><b>破坏自身工具</b><span>测试能力估计与维修决策。</span></button>
+<button class="intervention" data-kind="flip_energy"><b>交换可靠能量源</b><span>当前观测不宣布变化；需要重新学习。</span></button>
+<button class="intervention" data-kind="flip_coolant"><b>交换可靠冷却源</b><span>检查旧知识与新反馈的冲突。</span></button>
+<div class="note">纯噪声装置也在动作空间中。系统没有“多探索”“多提目标”或“显得独立”的额外奖励。</div>
+<div class="exports"><a href="/api/export/trace">导出完整轨迹</a><a href="/api/export/checkpoint">导出可恢复状态</a></div>
+</section>
+</div>
+<section class="panel timeline"><div class="section-head"><h3>05 / 实际执行轨迹</h3><span>先记录预测，再执行，再学习</span></div><div class="table-wrap"><table><thead><tr><th>步</th><th>目标变化</th><th>实际动作</th><th>真实结果</th><th>反馈／意外</th></tr></thead><tbody id="timeline-rows"><tr><td colspan="5">尚未执行。</td></tr></tbody></table></div></section>
+<section class="panel setup"><div class="section-head"><h3>实验配置</h3><span>重开会清空未导出的当前运行</span></div><div class="settings">
+<label>种子<input id="seed" type="number" min="0" max="2147483647" value="41"></label>
+<label>世界步数<input id="horizon" type="number" min="1" max="2000" value="96"></label>
+<label>情境<select id="scenario"><option value="standard">标准：有隐藏变化</option><option value="quiet">无预设冲击，仍有漂移</option><option value="stress">模型参数失配</option></select></label>
+<label>策略<select id="policy"><option value="candidate">候选：持续目标 + Bayes</option><option value="flat_bayes">直接 Bayes 规划基线</option><option value="reactive_bayes">Bayes 反应策略</option><option value="obs_only">仅当前观测的安全规则</option><option value="graph_cache">经验图缓存基线</option><option value="scripted">固定规则 / 调度</option><option value="random">随机行动</option></select></label>
+<label>规划器<select id="planner"><option value="rollout">10 步粒子后果评估</option><option value="two_step">原始两步规划</option></select></label>
+<button id="reset">重新开始</button></div>
+</section>
+<footer><p><strong>边界：</strong>在线更新的是有限模型族中的信念；目标模式、价值函数和续行启发式是工程先验。精确重放不创造新证据，也不代表学会了技能。缺少神经元学习器与长期真实场景对照，不能宣称机制优越或 Joi 已实现。</p><p>无需 API、显卡或联网。关闭网页会停止自动推进；彻底退出请关闭终端或按 Ctrl+C。</p><p id="digest" class="hash"></p></footer>
+</main>
+</body></html>

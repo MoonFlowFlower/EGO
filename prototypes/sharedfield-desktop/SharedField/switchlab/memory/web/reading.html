@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="session-token" content="__TOKEN__"><title>一起读 · SharedField</title><link rel="stylesheet" href="/reading.css"></head>
+<body><header><a href="/">澄 · SharedField</a><nav><a href="/">回到聊天 / 模型连接</a><button id="pause">暂停</button><button id="resume">继续未完成的阅读</button></nav></header>
+<main><div class="intro"><span class="eyebrow">共同经历，从一页开始</span><h1>一起读，慢慢学会。</h1><p>读过什么，哪里理解错了，下一次有什么变化，都留下来。</p></div>
+<p id="status" role="status"></p><p id="error" role="alert" hidden></p>
+<section class="card"><h2>我们读什么？</h2><form id="materialForm"><label>标题<input id="title" maxlength="240" required></label><label class="file">选择文本文件 <input id="file" type="file" accept=".txt,.md,text/plain,text/markdown"></label><label>材料原文<textarea id="text" rows="7" maxlength="24000" required placeholder="贴一段你想一起读的文字，或选择 UTF-8 的 txt / md 文件。一次最多 24000 字符。"></textarea></label><button class="primary" type="submit">留下这份材料</button></form></section>
+<section class="card"><h2>带着一个问题开始</h2><form id="startForm"><label>材料<select id="material" required></select></label><label>这次想一起弄清楚什么？<textarea id="question" rows="2" maxlength="1800" required></textarea></label><label>阅读方向<input id="goal" maxlength="160" value="理解论证与边界" required></label><small>同一阅读方向会延续你采纳的方法；新方向可另起一个名字。</small><button class="primary" type="submit">一起读这段</button></form></section>
+<section><h2>正在延续的阅读</h2><div id="activities"></div></section>
+<section><h2>留下来的方法</h2><div id="methods"></div></section>
+<section><h2>换一份材料，看看变化</h2><p>两份答案都能看到相同的原始阅读经历与纠正，其中一份还会使用采纳的方法。先评价，再揭示方案；单次变化不能代表普遍成长。</p><div id="comparisons"></div></section>
+<section class="card" id="manual" hidden><h2>手动模型交换</h2><p>复制请求给真实模型，贴回完整 JSON。此处不会自动生成替身答案。</p><textarea id="manualPrompt" rows="7" readonly></textarea><button id="copy">复制请求</button><label>模型返回<textarea id="manualReply" rows="5"></textarea></label><button id="sendManual">提交并继续</button></section>
+<footer>原文和学习过程保存在本机。关闭程序后不继续工作；重新打开后由你决定何时继续。<a href="/">备份、导出与来源删除</a></footer></main><script src="/reading.js"></script></body></html>

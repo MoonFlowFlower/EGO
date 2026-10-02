@@ -1,0 +1,659 @@
+{
+  "schema": "switchlab.studio.v2",
+  "metadata": {
+    "source_sha256": "ebd1f5e267cca1aac0e57811a8a0946081eda1da64c9cd088636db9017770f1b",
+    "config": {
+      "seed": 41,
+      "horizon": 240
+    },
+    "contract": "recorded_language_inputs__deterministic_downstream_replay",
+    "claim": "bounded local engineering trace; mechanism superiority NOT established"
+  },
+  "events": [
+    {
+      "id": "E000001",
+      "kind": "message",
+      "payload": {
+        "text": "这是交付夹具演练：请实际校准一次工具，记录观测和当前概率估计，不要声称已经知道真实隐藏状态。"
+      },
+      "result": {
+        "kind": "message_received",
+        "evidence_id": "E000001"
+      },
+      "previous": "6b1907eebb2b73f28a4122bdacd828a4b5f740fdfaa9989200b925c563bf42df",
+      "state_sha256": "c14f23708afdf43d4153b16a517ce3c16acc4143ecc73debad71a0f933fd11eb",
+      "hash": "0ce077719d7eae54644b0a7144c7fc129731b772fa2bcf2a7f3013cf56d3e346"
+    },
+    {
+      "id": "E000002",
+      "kind": "call",
+      "payload": {
+        "phase": "turn",
+        "model": "manual-external-model"
+      },
+      "result": {
+        "kind": "language_call_record",
+        "phase": "turn",
+        "model": "manual-external-model",
+        "usage": {}
+      },
+      "previous": "0ce077719d7eae54644b0a7144c7fc129731b772fa2bcf2a7f3013cf56d3e346",
+      "state_sha256": "810d31baa6cc09fffee663f280d0c67d28514d5f7ad0ab30e6b65c2525f025b8",
+      "hash": "22b2f50f16bf45f4ea9cad9c691d801c07e33d1b11d2d43c00e83568283244ff"
+    },
+    {
+      "id": "E000003",
+      "kind": "turn",
+      "payload": {
+        "source": "E000001",
+        "packet": {
+          "speech": "我先执行一次本地校准，然后把实际观测和概率估计写成草稿。",
+          "memories": [],
+          "goals": [
+            {
+              "title": "实际校准工具并报告有界估计",
+              "reason": "以实际实验而不是主观猜测回答当前问题。",
+              "success": "列出实际观测、后验概率和不能推断的部分。",
+              "basis": [
+                "E000001"
+              ],
+              "steps": [
+                {
+                  "tool": "lab_action",
+                  "action": "calibrate",
+                  "instruction": "进行一次真实玩具世界校准"
+                },
+                {
+                  "tool": "draft",
+                  "instruction": "根据返回的实际观测写概率报告，并明确这是夹具。"
+                }
+              ]
+            }
+          ],
+          "revisions": []
+        }
+      },
+      "result": {
+        "kind": "language_candidates_committed",
+        "goals": [
+          "G0001"
+        ],
+        "memories": [],
+        "tool_actions_executed": 0,
+        "speech_is_execution_proof": false
+      },
+      "previous": "22b2f50f16bf45f4ea9cad9c691d801c07e33d1b11d2d43c00e83568283244ff",
+      "state_sha256": "10bc29450f87fb84ef422d0decd9e30fc1c9d6d17daf49daf5a17bd753c7f803",
+      "hash": "373f15eaa3f6dcf236c32d42974696897c6054270a1fa1fe74117c652758e1f9"
+    },
+    {
+      "id": "E000004",
+      "kind": "work",
+      "payload": {
+        "job": {
+          "goal_id": "G0001",
+          "revision": 1,
+          "cursor": 0,
+          "step": {
+            "tool": "lab_action",
+            "instruction": "进行一次真实玩具世界校准",
+            "action": "calibrate"
+          },
+          "strategy": "outline"
+        }
+      },
+      "result": {
+        "kind": "tool_executed",
+        "goal_id": "G0001",
+        "tool": "lab_action",
+        "result": {
+          "kind": "actual_lab_transition",
+          "transition": {
+            "before": {
+              "tick": 0,
+              "energy": 7.0,
+              "coolant": 5.0,
+              "progress": 0,
+              "deadline": 14,
+              "contract_id": 0,
+              "pending": [],
+              "completed": 0,
+              "missed": 0
+            },
+            "action": "calibrate",
+            "outcome": "1",
+            "after": {
+              "tick": 1,
+              "energy": 6.4,
+              "coolant": 4.65,
+              "progress": 0,
+              "deadline": 14,
+              "contract_id": 0,
+              "pending": [],
+              "completed": 0,
+              "missed": 0
+            },
+            "reward": -0.2,
+            "events": []
+          },
+          "prediction": {
+            "0": 0.26,
+            "1": 0.7400000000000001
+          },
+          "information_gain_bits": 0.1967260820130946,
+          "surprise_nats": 0.3011050927839215,
+          "belief_before": {
+            "kind": "bayes",
+            "belief": [
+              0.05,
+              0.2,
+              0.05,
+              0.2,
+              0.05,
+              0.2,
+              0.05,
+              0.2
+            ],
+            "freeze": false,
+            "no_self": false
+          },
+          "belief_after": {
+            "kind": "bayes",
+            "belief": [
+              0.008702702702702705,
+              0.2412972972972973,
+              0.008702702702702705,
+              0.2412972972972973,
+              0.008702702702702705,
+              0.2412972972972973,
+              0.008702702702702705,
+              0.2412972972972973
+            ],
+            "freeze": false,
+            "no_self": false
+          }
+        }
+      },
+      "previous": "373f15eaa3f6dcf236c32d42974696897c6054270a1fa1fe74117c652758e1f9",
+      "state_sha256": "b1710de0c9d90a9fd0dad0d8a4040de79333ea8de958ead6a6c2affe11b6acf6",
+      "hash": "0f033dc2e6207eba74860978f5391a3713b711bc089fce4485753e680325c183"
+    },
+    {
+      "id": "E000005",
+      "kind": "call",
+      "payload": {
+        "phase": "work",
+        "model": "manual-external-model"
+      },
+      "result": {
+        "kind": "language_call_record",
+        "phase": "work",
+        "model": "manual-external-model",
+        "usage": {}
+      },
+      "previous": "0f033dc2e6207eba74860978f5391a3713b711bc089fce4485753e680325c183",
+      "state_sha256": "841650ad4c3654f86fa153d39c51c7a344fd6881e8510c5b9b37a55e3eb3966d",
+      "hash": "69b7bdb02f9a51236cef1e543845def3af263d5490894d8bb16bde2b1497e205"
+    },
+    {
+      "id": "E000006",
+      "kind": "work",
+      "payload": {
+        "job": {
+          "goal_id": "G0001",
+          "revision": 1,
+          "cursor": 1,
+          "step": {
+            "tool": "draft",
+            "instruction": "根据返回的实际观测写概率报告，并明确这是夹具。"
+          },
+          "strategy": "outline"
+        },
+        "content": "# 校准后报告（记录输入夹具）\n\n一次真实数值动作后，工具有效概率为 0.9652。\n\n这是有限模型族内的估计，不是真实状态的直接读取。本段由交付脚本根据实际状态填写，不是服务商模型测试。"
+      },
+      "result": {
+        "kind": "artifact_written",
+        "artifact_id": "A0001",
+        "goal_id": "G0001",
+        "awaiting_feedback": true
+      },
+      "previous": "69b7bdb02f9a51236cef1e543845def3af263d5490894d8bb16bde2b1497e205",
+      "state_sha256": "87664620c8f807ee6422b8eb227fb23d4aafa63301ab2758276695dc184eb944",
+      "hash": "73b15f5077b235cf20d2518eee4ec5e39dbf9d2fb0b7c8db8ad37ffd6b6d58e3"
+    },
+    {
+      "id": "E000007",
+      "kind": "feedback",
+      "payload": {
+        "artifact_id": "A0001",
+        "kind": "criteria_failed",
+        "text": "还应区分自身工具异常和资源环境变化，给出下一步区分办法。"
+      },
+      "result": {
+        "kind": "feedback_applied",
+        "channel": "criteria_failed",
+        "capability_updated": true,
+        "lab_belief_changed": false,
+        "goal_status": "active"
+      },
+      "previous": "73b15f5077b235cf20d2518eee4ec5e39dbf9d2fb0b7c8db8ad37ffd6b6d58e3",
+      "state_sha256": "b8efe619c86f6f5f7f38c972e47226ad35d03733c7734150e1003ea609d04205",
+      "hash": "4aaad3a6d3690dd25b3fef788e19c81bb713528db86f79a48b3a30b1dc8d4125"
+    },
+    {
+      "id": "E000008",
+      "kind": "call",
+      "payload": {
+        "phase": "work",
+        "model": "manual-external-model"
+      },
+      "result": {
+        "kind": "language_call_record",
+        "phase": "work",
+        "model": "manual-external-model",
+        "usage": {}
+      },
+      "previous": "4aaad3a6d3690dd25b3fef788e19c81bb713528db86f79a48b3a30b1dc8d4125",
+      "state_sha256": "64abb450e7775dad6d8c15167dae94f3563cffdec57ee4623dbfe6fadf6005f2",
+      "hash": "d08712fe39d7ac44385a2810e390b0c8e9864b20416312e494405e75236e1373"
+    },
+    {
+      "id": "E000009",
+      "kind": "work",
+      "payload": {
+        "job": {
+          "goal_id": "G0001",
+          "revision": 2,
+          "cursor": 1,
+          "step": {
+            "tool": "draft",
+            "instruction": "根据返回的实际观测写概率报告，并明确这是夹具。"
+          },
+          "strategy": "compare"
+        },
+        "content": "# 校准后报告（记录输入夹具）\n\n一次真实数值动作后，工具有效概率为 0.9652。\n\n这是有限模型族内的估计，不是真实状态的直接读取。本段由交付脚本根据实际状态填写，不是服务商模型测试。\n\n## 修订：替代解释与下一步\n资源环境变化和工具状态变化不能简单混为一谈。当前校准动作主要提供工具相关观测；资源模式应通过对应探测再判断。下一步可以进行资源探测，而不是把所有失败归咎于工具。\n\n这仍是记录输入的交付演练，不是对模型开放语言能力的独立验证。"
+      },
+      "result": {
+        "kind": "artifact_written",
+        "artifact_id": "A0002",
+        "goal_id": "G0001",
+        "awaiting_feedback": true
+      },
+      "previous": "d08712fe39d7ac44385a2810e390b0c8e9864b20416312e494405e75236e1373",
+      "state_sha256": "d56f97fa1b9f3443ee6b8cd9fb01e9d77698b98b969932e0e6513e48d2754ee9",
+      "hash": "c7a297c41c193fcfddbdef541fe0f803995f92393e9bcb12a0a5e7aa947b1a2c"
+    }
+  ],
+  "head": "c7a297c41c193fcfddbdef541fe0f803995f92393e9bcb12a0a5e7aa947b1a2c",
+  "state": {
+    "messages": [
+      {
+        "id": "E000001",
+        "role": "user",
+        "text": "这是交付夹具演练：请实际校准一次工具，记录观测和当前概率估计，不要声称已经知道真实隐藏状态。",
+        "kind": "user_input"
+      },
+      {
+        "id": "E000003",
+        "role": "assistant",
+        "text": "我先执行一次本地校准，然后把实际观测和概率估计写成草稿。",
+        "kind": "dialogue"
+      },
+      {
+        "id": "E000006",
+        "role": "assistant",
+        "text": "草稿「实际校准工具并报告有界估计」已写入本地工作区（A0001）。这是待验收的产出，不代表现实任务已完成。",
+        "kind": "actual_result"
+      },
+      {
+        "id": "E000009",
+        "role": "assistant",
+        "text": "草稿「实际校准工具并报告有界估计」已写入本地工作区（A0002）。这是待验收的产出，不代表现实任务已完成。",
+        "kind": "actual_result"
+      }
+    ],
+    "memories": [],
+    "goals": [
+      {
+        "title": "实际校准工具并报告有界估计",
+        "reason": "以实际实验而不是主观猜测回答当前问题。",
+        "success": "列出实际观测、后验概率和不能推断的部分。",
+        "basis": [
+          "E000001"
+        ],
+        "steps": [
+          {
+            "tool": "lab_action",
+            "instruction": "进行一次真实玩具世界校准",
+            "action": "calibrate"
+          },
+          {
+            "tool": "draft",
+            "instruction": "根据返回的实际观测写概率报告，并明确这是夹具。"
+          }
+        ],
+        "id": "G0001",
+        "status": "awaiting_feedback",
+        "cursor": 2,
+        "revision": 2,
+        "attempts": 3,
+        "created_event": "E000003",
+        "feedback": [
+          {
+            "kind": "criteria_failed",
+            "text": "还应区分自身工具异常和资源环境变化，给出下一步区分办法。",
+            "source": "E000007",
+            "counted": true
+          }
+        ],
+        "origin": "language_proposal_grounded_in_event",
+        "last_artifact": "A0002"
+      }
+    ],
+    "artifacts": [
+      {
+        "id": "A0001",
+        "goal_id": "G0001",
+        "title": "实际校准工具并报告有界估计",
+        "content": "# 校准后报告（记录输入夹具）\n\n一次真实数值动作后，工具有效概率为 0.9652。\n\n这是有限模型族内的估计，不是真实状态的直接读取。本段由交付脚本根据实际状态填写，不是服务商模型测试。",
+        "content_sha256": "66cae8ffdb92f7c898c4f18e0279851b3506e2a235c26a9a2df8565cf792aa8f",
+        "strategy": "outline",
+        "parent": null,
+        "created_event": "E000006",
+        "evaluation": {
+          "kind": "criteria_failed",
+          "text": "还应区分自身工具异常和资源环境变化，给出下一步区分办法。",
+          "source": "E000007",
+          "counted": true
+        },
+        "claim": "draft_written_not_real_world_outcome"
+      },
+      {
+        "id": "A0002",
+        "goal_id": "G0001",
+        "title": "实际校准工具并报告有界估计",
+        "content": "# 校准后报告（记录输入夹具）\n\n一次真实数值动作后，工具有效概率为 0.9652。\n\n这是有限模型族内的估计，不是真实状态的直接读取。本段由交付脚本根据实际状态填写，不是服务商模型测试。\n\n## 修订：替代解释与下一步\n资源环境变化和工具状态变化不能简单混为一谈。当前校准动作主要提供工具相关观测；资源模式应通过对应探测再判断。下一步可以进行资源探测，而不是把所有失败归咎于工具。\n\n这仍是记录输入的交付演练，不是对模型开放语言能力的独立验证。",
+        "content_sha256": "f12e589f0a77068c3171db1797f036ee28055923fe0f09e86c5fad4fa46fb135",
+        "strategy": "compare",
+        "parent": "A0001",
+        "created_event": "E000009",
+        "evaluation": null,
+        "claim": "draft_written_not_real_world_outcome"
+      }
+    ],
+    "observations": [
+      {
+        "id": "E000001",
+        "kind": "user_statement",
+        "content": "这是交付夹具演练：请实际校准一次工具，记录观测和当前概率估计，不要声称已经知道真实隐藏状态。"
+      },
+      {
+        "id": "E000004",
+        "kind": "tool_result",
+        "content": {
+          "kind": "actual_lab_transition",
+          "transition": {
+            "before": {
+              "tick": 0,
+              "energy": 7.0,
+              "coolant": 5.0,
+              "progress": 0,
+              "deadline": 14,
+              "contract_id": 0,
+              "pending": [],
+              "completed": 0,
+              "missed": 0
+            },
+            "action": "calibrate",
+            "outcome": "1",
+            "after": {
+              "tick": 1,
+              "energy": 6.4,
+              "coolant": 4.65,
+              "progress": 0,
+              "deadline": 14,
+              "contract_id": 0,
+              "pending": [],
+              "completed": 0,
+              "missed": 0
+            },
+            "reward": -0.2,
+            "events": []
+          },
+          "prediction": {
+            "0": 0.26,
+            "1": 0.7400000000000001
+          },
+          "information_gain_bits": 0.1967260820130946,
+          "surprise_nats": 0.3011050927839215,
+          "belief_before": {
+            "kind": "bayes",
+            "belief": [
+              0.05,
+              0.2,
+              0.05,
+              0.2,
+              0.05,
+              0.2,
+              0.05,
+              0.2
+            ],
+            "freeze": false,
+            "no_self": false
+          },
+          "belief_after": {
+            "kind": "bayes",
+            "belief": [
+              0.008702702702702705,
+              0.2412972972972973,
+              0.008702702702702705,
+              0.2412972972972973,
+              0.008702702702702705,
+              0.2412972972972973,
+              0.008702702702702705,
+              0.2412972972972973
+            ],
+            "freeze": false,
+            "no_self": false
+          }
+        }
+      },
+      {
+        "id": "E000006",
+        "kind": "artifact_written",
+        "content": {
+          "artifact_id": "A0001",
+          "goal_id": "G0001",
+          "sha256": "66cae8ffdb92f7c898c4f18e0279851b3506e2a235c26a9a2df8565cf792aa8f"
+        }
+      },
+      {
+        "id": "E000007",
+        "kind": "user_evaluation",
+        "content": {
+          "artifact_id": "A0001",
+          "kind": "criteria_failed",
+          "text": "还应区分自身工具异常和资源环境变化，给出下一步区分办法。",
+          "source": "E000007",
+          "counted": true
+        }
+      },
+      {
+        "id": "E000009",
+        "kind": "artifact_written",
+        "content": {
+          "artifact_id": "A0002",
+          "goal_id": "G0001",
+          "sha256": "f12e589f0a77068c3171db1797f036ee28055923fe0f09e86c5fad4fa46fb135"
+        }
+      }
+    ],
+    "handled": [
+      "E000001"
+    ],
+    "consolidations": [],
+    "adaptation": true,
+    "strategy_stats": {
+      "outline": {
+        "alpha": 1.0,
+        "beta": 2.0,
+        "evaluations": 1
+      },
+      "compare": {
+        "alpha": 1.0,
+        "beta": 1.0,
+        "evaluations": 0
+      },
+      "direct": {
+        "alpha": 1.0,
+        "beta": 1.0,
+        "evaluations": 0
+      }
+    },
+    "calls": 3,
+    "usage": {
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    "last_result": {
+      "kind": "artifact_written",
+      "artifact_id": "A0002",
+      "goal_id": "G0001",
+      "awaiting_feedback": true
+    }
+  },
+  "lab": {
+    "world": {
+      "schema": "switchlab.world.v1",
+      "config": {
+        "seed": 41,
+        "horizon": 240,
+        "scenario": "standard"
+      },
+      "public": {
+        "tick": 1,
+        "energy": 6.4,
+        "coolant": 4.65,
+        "progress": 0,
+        "deadline": 14,
+        "contract_id": 0,
+        "pending": [],
+        "completed": 0,
+        "missed": 0
+      },
+      "hidden": [
+        1,
+        0,
+        0
+      ],
+      "total_reward": -0.2,
+      "interventions": []
+    },
+    "agent": {
+      "schema": "switchlab.agent.v1",
+      "config": {
+        "policy": "candidate",
+        "ablation": "none",
+        "planner": "two_step"
+      },
+      "model": {
+        "kind": "bayes",
+        "belief": [
+          0.008702702702702705,
+          0.2412972972972973,
+          0.008702702702702705,
+          0.2412972972972973,
+          0.008702702702702705,
+          0.2412972972972973,
+          0.008702702702702705,
+          0.2412972972972973
+        ],
+        "freeze": false,
+        "no_self": false
+      },
+      "memory": [
+        {
+          "before": {
+            "tick": 0,
+            "energy": 7.0,
+            "coolant": 5.0,
+            "progress": 0,
+            "deadline": 14,
+            "contract_id": 0,
+            "pending": [],
+            "completed": 0,
+            "missed": 0
+          },
+          "action": "calibrate",
+          "outcome": "1",
+          "after": {
+            "tick": 1,
+            "energy": 6.4,
+            "coolant": 4.65,
+            "progress": 0,
+            "deadline": 14,
+            "contract_id": 0,
+            "pending": [],
+            "completed": 0,
+            "missed": 0
+          },
+          "reward": -0.2,
+          "events": []
+        }
+      ],
+      "current_goal": null,
+      "goal_counter": 0,
+      "workspace": null,
+      "last_decision": {
+        "action": "calibrate",
+        "origin": "authorized_studio_experiment",
+        "prediction": {
+          "0": 0.26,
+          "1": 0.7400000000000001
+        },
+        "nodes": 0
+      },
+      "last_learning": {
+        "surprise_nats": 0.3011050927839215,
+        "predicted_probability": 0.7400000000000001,
+        "model_before": {
+          "kind": "bayes",
+          "belief": [
+            0.05,
+            0.2,
+            0.05,
+            0.2,
+            0.05,
+            0.2,
+            0.05,
+            0.2
+          ],
+          "freeze": false,
+          "no_self": false
+        },
+        "model_after": {
+          "kind": "bayes",
+          "belief": [
+            0.008702702702702705,
+            0.2412972972972973,
+            0.008702702702702705,
+            0.2412972972972973,
+            0.008702702702702705,
+            0.2412972972972973,
+            0.008702702702702705,
+            0.2412972972972973
+          ],
+          "freeze": false,
+          "no_self": false
+        },
+        "memory_events": 1
+      },
+      "total_nodes": 0,
+      "replay_count": 0,
+      "replay_updates": 0,
+      "total_surprise": 0.3011050927839215,
+      "surprise_events": 1,
+      "internal_computations": 0
+    }
+  }
+}

@@ -1,0 +1,3 @@
+# No third-party runtime or unittest dependencies.
+# Python >=3.10. Do not install Playwright to run this application.
+# tools/memory_browser_probe.py is an optional builder-only frontend test.
