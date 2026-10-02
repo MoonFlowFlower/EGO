@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "tests": 33,
+  "seconds": 42.09,
+  "first_attempt": {
+    "passed": 10,
+    "failed": 1,
+    "seconds": 23.48,
+    "reason": "Concurrent external fast-forward merged PR134 README update; no simulation mismatch"
+  },
+  "parameters": {
+    "5": {
+      "gru_fixed": 18246,
+      "gru_mb_plastic": 18254
+    },
+    "7": {
+      "gru_fixed": 25926,
+      "gru_mb_plastic": 25934
+    }
+  },
+  "torch": "2.11.0+cu128",
+  "cuda": "12.8",
+  "capability": [
+    12,
+    0
+  ],
+  "temperature_samples_c": [
+    59,
+    64
+  ],
+  "graphics_samples_mhz": [
+    802,
+    1875
+  ],
+  "prereg_sha256": "4d378b0c224550ee3a982f134a313edd341d40da1303e4f88a69cd102fe58a68"
+}
