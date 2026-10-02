@@ -261,9 +261,12 @@ def c6():
         assert all(x['type'] not in ('rule_card','self_statistics') for x in recalled)
         skill=memory.library.register('remembered','wood_pickaxe program',"act('noop')",'False',parents=[exp])
         assert 'remembered' in compact(memory.retrieve(h.observe(),'wood_pickaxe'))
+        execution=run('',h.observe,h.act,library=memory.library,name='remembered',timeout_s=5)
+        store.put('experience',{'type':'skill_result','result':execution},'experienced',world=h.world)
+        assert any(d.get('content',{}).get('type')=='skill_result' for d in memory.retrieve(h.observe(),'remembered'))
         assert len(compact(recalled).encode())<=MEMORY_TOKENS
         store.close()
-    return {'bm25_reflection_retrieved':recalled,'saved_program_retrievable':True,'same_memory_upper_bound':MEMORY_TOKENS}
+    return {'bm25_reflection_retrieved':recalled,'saved_program_retrievable':True,'raw_skill_result_retrievable':True,'same_memory_upper_bound':MEMORY_TOKENS}
 
 
 if __name__ == '__main__': main()

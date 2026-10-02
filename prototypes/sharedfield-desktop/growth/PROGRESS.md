@@ -2,6 +2,12 @@
 
 按时间倒序追加。每条写明：做了什么、证据在哪、失败或偏离、下一步。没测的写"未测"。旧条目不改。
 
+## 2026-10-02 — 预实验启动与测试前检索审计（Codex）
+
+- 种子、日程、固定教学、prompt.v2 已登记 `evidence/phase1/PILOT_MANIFEST.json`，B 首轮练习以 2 并发运行；测试尚未开始。
+- 审计补齐 A 对技能执行原始经历的 BM25 检索；1.119 秒针对性验收通过，旧结果保留。此时无 A 回合或测试回合；B 路径与提示词不变，源码哈希修订登记为 implementation_revision=2。
+- 原始 trace 与费用预留持续写入 runs/phase1；结果由 PILOT.md 和 pilot_summary.json 汇总。没有 E1 判决。
+
 ## 2026-10-02 — 阶段 1 C4–C7（Codex）
 
 - 共用严格决策、B 结构化记忆、A BM25 反思与复制/日程工具完成工程验收，见 `evidence/phase1/C4_decisions.md` 至 `C7_forks.md`。已知卡插入/移除同时改变/恢复提示词与预测；虚构来源拒绝。

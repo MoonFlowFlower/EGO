@@ -126,7 +126,6 @@ class Memory:
         docs=[]
         for row in all_records(self.store):
             if row['kind']=='experience':
-                if row['body'].get('type')=='skill_result':continue
                 body=short_experience(row['id'],row['body'])
             elif row['kind'] in ('reflection','skill'):body=dict(row['body'],id=row['id'])
             else:continue

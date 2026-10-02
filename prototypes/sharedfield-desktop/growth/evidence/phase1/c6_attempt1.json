@@ -10,7 +10,7 @@
       {
         "type": "experience",
         "content": {
-          "id": "34c9bc9a53b0451183d27227712ddbaf",
+          "id": "78066a0adac74b2783d21fbae621c8b2",
           "type": "observation",
           "observation": {
             "inventory": {},
@@ -37,26 +37,25 @@
         "type": "reflection",
         "content": {
           "text": "做木镐 wood_pickaxe 要站在工作台 table 旁边；有木头 wood 还不够。",
-          "id": "0db3a8fc1e5c4677b2d2ced104f0d649"
+          "id": "f634239529a94c09822f25db3ea3f03f"
         }
       }
     ],
     "saved_program_retrievable": true,
-    "raw_skill_result_retrievable": true,
     "same_memory_upper_bound": 3000
   },
-  "seconds": 1.1187028999993345,
+  "seconds": 1.7078529999998864,
   "telemetry": [
     {
-      "unix_s": 1790983161.3642626,
+      "unix_s": 1790981829.8805847,
       "ac_online": true,
-      "gpu_csv_C_MHz_MiB_W": "69, 1455, 2887, 45.86",
+      "gpu_csv_C_MHz_MiB_W": "78, 2032, 3296, 71.18",
       "gpu_returncode": 0
     },
     {
-      "unix_s": 1790983162.478915,
+      "unix_s": 1790981831.6052566,
       "ac_online": true,
-      "gpu_csv_C_MHz_MiB_W": "67, 960, 2887, 36.78",
+      "gpu_csv_C_MHz_MiB_W": "77, 1912, 3286, 76.88",
       "gpu_returncode": 0
     }
   ]

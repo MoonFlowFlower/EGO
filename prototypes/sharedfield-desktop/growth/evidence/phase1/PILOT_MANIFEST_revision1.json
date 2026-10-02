@@ -74,7 +74,7 @@
     "growthlab\\forks.py": "98f695ce21957e0bb5146cbea02ed0434aaaee19da7a4d756211ccf6e1e350fb",
     "growthlab\\host.py": "f8aa377560d6b3b163200d081ed2b11f2050739e36f29fa02ec90bd0dcfdc526",
     "growthlab\\live_runner.py": "f5f8ecfac1917ebd4200ee05dfd43f28b1865277316f08298461017e3c77d2ba",
-    "growthlab\\memory.py": "d881de80c27e4d2934253768c4fd47a3d8ddd12b35680ca6167dbbcaa0c39a12",
+    "growthlab\\memory.py": "e2adc4e227ac152c304965df2841889a064214139b29ccf555565682e264d6ae",
     "growthlab\\models.py": "baead0907cd31e89482e6ed75d9682733f4f9fe68b0516d77c810c3d0b5382b2",
     "growthlab\\observatory.py": "85600210c5feed868e0aa623c6adcdaa2c4f6c272aed5f2cdbaed20e56feb653",
     "growthlab\\records.py": "ad3573c3c7c16700d9e36ef13eabd8286088e09e078796588d827c38e49b395a",
@@ -89,35 +89,5 @@
   "network_retry_policy": "At most 2 attempts per episode, fresh copy each attempt; HTTP 429 reduces new concurrency to 2; retry after 30s. All attempts and charges retained.",
   "protocol_policy": "Two consecutive invalid outputs stops episode and entire batch for analysis.",
   "test_learning": "May update within isolated episode; post-episode consolidation once; never transfer between tests.",
-  "schedule": "All B practice (three chains x three episodes), then all B tests; then same A schedule. Unrelated-experience arm omitted as requested.",
-  "implementation_revision": 2,
-  "pretest_amendments": [
-    {
-      "utc": "2026-10-02T23:19:22.755438+00:00",
-      "change": "Include raw skill_result experiences in A BM25; no prompt/model/seed/schedule changes; no A or test episode has run. Existing B practice path is unchanged.",
-      "previous_source_sha256": {
-        "growthlab\\__init__.py": "75928d734fd00b31888b130043a35eac5733696f34950daa889a2150cd840c96",
-        "growthlab\\agent.py": "ddb2412396f7631e3fa1126874105906e0102e0632de764f91851737d8d9b384",
-        "growthlab\\changes.py": "2f8b445c28216749a49f44796baaf7eece8109c5cf581514a28cbe065efa7330",
-        "growthlab\\consolidation.py": "2c061c2fa3829deab351be24d97afb7b560856c77eeda406c1519d066073f571",
-        "growthlab\\contract.py": "a6d69c086ba7e55780e873e34350089756865b5994944bbb68af07e8cf8de571",
-        "growthlab\\decision.py": "930e2e042e7ef385ef36fb460ac0656032249fa35c7265d367b68e0356b673e9",
-        "growthlab\\demonstration.py": "a2fed6bbdb07c1f7b9e276655589ebca3d3bbee96eb3418221bdb652a6309094",
-        "growthlab\\forks.py": "98f695ce21957e0bb5146cbea02ed0434aaaee19da7a4d756211ccf6e1e350fb",
-        "growthlab\\host.py": "f8aa377560d6b3b163200d081ed2b11f2050739e36f29fa02ec90bd0dcfdc526",
-        "growthlab\\live_runner.py": "f5f8ecfac1917ebd4200ee05dfd43f28b1865277316f08298461017e3c77d2ba",
-        "growthlab\\memory.py": "e2adc4e227ac152c304965df2841889a064214139b29ccf555565682e264d6ae",
-        "growthlab\\models.py": "baead0907cd31e89482e6ed75d9682733f4f9fe68b0516d77c810c3d0b5382b2",
-        "growthlab\\observatory.py": "85600210c5feed868e0aa623c6adcdaa2c4f6c272aed5f2cdbaed20e56feb653",
-        "growthlab\\records.py": "ad3573c3c7c16700d9e36ef13eabd8286088e09e078796588d827c38e49b395a",
-        "growthlab\\rules.py": "0203606ce882bada7e554b0ab8eaba216c5996741aaf0f73b0b15998556279f3",
-        "growthlab\\runtime.py": "28ec2737277c712b7d9331e605a38ef6f6bd97107af3826a1fce3629ea91dadd",
-        "growthlab\\sandbox.py": "c5e9e7c9683d1fba66480c90d8ad825bd52cd6349508e21ed184edde78091680",
-        "growthlab\\skills.py": "4dfbecee1cf1ce1feae1ad1aba1a5e8d1188bdc040b3668fdd380eaff858ca92",
-        "growthlab\\state.py": "cae6cd8990191e0757eee3eb71242471c4a0cf2ccb3394f53c14d68267514f64",
-        "growthlab\\variants.py": "d1ea9d1d7ac096f21a1412be15c781483de0b2ff64deb71c9c30732cdcbc2e49",
-        "scripts\\pilot_phase1.py": "d544323f068699a5ce8adc86f9e38131b4d489068ea04e3aa650bfa73740fe7f"
-      }
-    }
-  ]
+  "schedule": "All B practice (three chains x three episodes), then all B tests; then same A schedule. Unrelated-experience arm omitted as requested."
 }
