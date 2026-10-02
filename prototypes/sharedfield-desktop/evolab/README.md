@@ -9,7 +9,7 @@
 1. `STAGE_CARD.md`：目标、阶段、边界、证据契约、停止条件、声明上限（约束）
 2. `PREREG_E2.md`：E2 的假设、阈值与判定规则（冻结，不可改）
 3. `DESIGN.md`：推荐实现，包括世界、两种大脑、ES、评估、测试、目录
-4. `ENVIRONMENT.md`：Windows + RTX 5070 Ti 的 WSL2 / JAX GPU 环境
+4. `ENVIRONMENT.md`：Windows 原生 + PyTorch 的 GPU 环境与实现约定（WSL2 + JAX 为备选）
 5. `RESEARCH_BACKGROUND.md`：为什么走这条路
 6. `JAXLIFE_ASSESSMENT.md`：参考项目评估与 CPU 实测
 7. `CODEX_KICKOFF.md`：交给实施代理的开场白

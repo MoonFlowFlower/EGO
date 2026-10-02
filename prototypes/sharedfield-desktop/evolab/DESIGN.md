@@ -4,7 +4,7 @@
 
 ## 1. 世界 Room-v0（单个体回合）
 
-E2 中每个个体在独立回合里生活，个体之间不互动。这样适应度干净，也便于对种群 × 回合做 `vmap`。
+E2 中每个个体在独立回合里生活，个体之间不互动。这样适应度干净，也便于把种群 × 回合放进同一个批张量并行计算。
 
 **地图**：12×12 网格，外圈是墙，内部 10×10。每个回合随机布置：
 - 3 个食物点，各有固定"颜色"（颜色 0/1/2）；
@@ -43,12 +43,12 @@ E2 中每个个体在独立回合里生活，个体之间不互动。这样适�
 
 **实现要求**：
 - 纯函数式 `reset(key, regime_params) -> state`、`step(state, action, key) -> (state, obs, alive)`；
-- 整个回合用 `lax.scan`；
+- 所有回合放在一个批张量里同步推进（PyTorch 的具体约定见 `ENVIRONMENT.md`「实现约定」；若走 JAX 备选，可用 `vmap` 加 `lax.scan`）；
 - 只更新个体自身和所在格子，不生成整个世界的差量（这是 JaxLife 慢的原因之一）。
 
 ## 2. 大脑（两个实验臂，参数预算匹配）
 
-两个臂都用纯 JAX 写，不必用 Flax；要求参数能展平成一个向量，方便 ES 操作。
+两个臂都用框架原生张量运算手写（PyTorch 主路径，不必用 `nn.Module` 层级），参数按 [种群, 参数维数] 存储；要求参数能展平成一个向量，方便 ES 操作。
 
 **A：固定权重循环网络 `gru_fixed`**
 - 结构：观测 → Dense(64, tanh) → GRU(h_A) → Dense(6) 得到 logits，按分类分布采样动作。
@@ -91,7 +91,7 @@ E2 中每个个体在独立回合里生活，个体之间不互动。这样适�
 具体设置：
 - 对偶采样（antithetic），种群 256（128 对），σ=0.02；
 - 适应度做中心化秩变换（centered rank）；
-- 用 Adam 更新均值，学习率 0.01（可以用 optax 并锁定版本）；
+- 用 Adam 更新均值，学习率 0.01（自己实现或用框架自带的 Adam，锁定版本）；
 - 每个候选评估 8 个回合；同一代内所有候选用同一组回合种子（共同随机数）；
 - 代数 400；
 - 每 20 代用 128 个开发验证回合评估当前均值基因组，写入日志；
@@ -110,8 +110,8 @@ E2 中每个个体在独立回合里生活，个体之间不互动。这样适�
 
 ## 6. 确定性与重放
 
-- 所有随机性来自配置中的 JAX PRNG key。
-- 设置 `XLA_FLAGS=--xla_gpu_deterministic_ops=true`。
+- 所有随机性来自配置种子派生的独立随机源（见 `ENVIRONMENT.md`）。
+- PyTorch：`CUBLAS_WORKSPACE_CONFIG=:4096:8`、`torch.use_deterministic_algorithms(True)`、关闭 TF32。JAX 备选：`XLA_FLAGS=--xla_gpu_deterministic_ops=true`。
 - 测试 `test_replay_fresh_process`：用子进程把同一配置的短运行（例如 5 代）跑两次，逐代适应度必须一致。不能逐位一致时，记录最大偏差，并在 `E0_ENV.md` 中说明。
 
 ## 7. 建议目录
@@ -119,7 +119,7 @@ E2 中每个个体在独立回合里生活，个体之间不互动。这样适�
 ```
 evolab/
   README.md  STAGE_CARD.md  PREREG_E2.md  DESIGN.md  ENVIRONMENT.md  PROGRESS.md
-  requirements-evolab.txt        # 锁定 jax[cuda12]、optax、numpy、imageio、pytest 的版本
+  requirements-evolab.txt        # 锁定 torch（cu128+）、numpy、imageio、pytest 的实际版本
   evolab/
     config.py   world.py   brains.py   baselines.py   es.py   evaluate.py   render.py
   scripts/

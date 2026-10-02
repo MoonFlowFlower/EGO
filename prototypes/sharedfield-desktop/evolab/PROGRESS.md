@@ -2,6 +2,14 @@
 
 按时间倒序追加。每条写明：做了什么、证据在哪、失败或偏离、下一步。没测的写"未测"。旧条目不改。
 
+## 2026-10-02 — 环境路线修订（Claude，经用户同意改走 Windows 原生）
+
+- 原因：E0 显示 WSL2 无法启动（hypervisor 未运行），用户倾向不依赖 WSL。JAX 的 CUDA 版只有 Linux 轮子，而 PyTorch 2.7 及以后的 cu128 轮子在 Windows 原生支持 sm_120。
+- 改动：`ENVIRONMENT.md` 主路径改为 Windows 原生 + PyTorch，WSL2 + JAX 降为备选（附修复命令，由用户执行）。`DESIGN.md`、`STAGE_CARD.md`、`CODEX_KICKOFF.md`、`README.md` 中的 JAX 专有表述改为与框架无关，或改为 PyTorch 约定。硬件改为实测的 RTX 5070 Ti Laptop 12GB。卡片第 8 节改为：TASK_BOARD 不由实施方更新（消除与"只改 evolab"之间的冲突）。
+- 未改：`PREREG_E2.md`（假设、指标、阈值、种子规则全部不变）。
+- 未测：PyTorch 在用户机器上的可用性与吞吐，待重新执行 E0。
+- 下一步：实施方按新的 `ENVIRONMENT.md` 重新执行 E0。
+
 ## 2026-10-02 — E0 环境阻断（Codex）
 
 - 状态：**BLOCKED / E0 未通过 / E1、E2 未开始**。E2 运行数 0/20，训练启动数 0，训练 GPU 时间 0 小时；性能、确定性与存活率均未验证。

@@ -1,35 +1,52 @@
-# EVOLAB 运行环境（RTX 5070 Ti / Windows）
+# EVOLAB 运行环境（RTX 5070 Ti Laptop / Windows 原生）
 
-本文的事实来自 2026-10-02 的资料检索，**未在用户机器上验证**。E0 阶段要把每一项的实测结果写进 `evidence/E0_ENV.md`。
+修订：2026-10-02。E0 第一次尝试时 WSL2 无法启动，原因是 Windows 没有运行 hypervisor，详见 `evidence/E0_ENV.md`。因此主路径改为 **Windows 原生 + PyTorch**，WSL2 + JAX 保留为备选。框架变化不影响 `PREREG_E2.md`，预注册的假设、指标和阈值与框架无关。
 
-## 已知约束
+## 实机（E0 实测）
 
-- JAX 的 CUDA 版 pip 包只提供 Linux 版本。Windows 原生环境没有 JAX GPU 支持，必须在 **WSL2** 里运行。
-- RTX 5070 Ti 是 Blackwell 架构，计算能力 sm_120，至少需要 CUDA 12.8（推荐 12.9 及以上）。JAX 的 `jax[cuda12]` 包会自带 CUDA 运行库，但 JAX 版本必须足够新，才包含或能即时编译 sm_120 的内核。
-- 显存 16GB。Room-v0 规模很小，显存预计不是瓶颈；先按 E0 实测为准。
+- GPU：NVIDIA GeForce RTX 5070 Ti **Laptop**，显存 12227 MiB（不是 16GB）
+- 驱动：616.56，CUDA UMD 13.4
+- 系统：Windows 10.0.26100
 
-## 建议步骤（E0 执行并记录）
+Room-v0 规模很小，12GB 显存预计足够。笔记本 GPU 长时间满载会降频，正式运行时要插电源，并打开高性能电源模式；GPU 时钟和温度变化记录在 `E0_ENV.md` 或运行日志里。
 
-1. Windows 侧：把 NVIDIA 驱动更新到支持 CUDA 12.8 以上的版本，然后在 PowerShell 里运行 `nvidia-smi` 并记录输出。
-2. 安装 WSL2，发行版选 Ubuntu 24.04。**不要**在 WSL 里面再装 Linux 版 NVIDIA 驱动，WSL 会直接使用 Windows 驱动。在 WSL 内运行 `nvidia-smi`，应能看到 GPU。
-3. 代码放在 WSL 自己的文件系统里，例如 `~/EGO`。不要放在 `/mnt/d/...` 下，否则文件读写会很慢。
-4. 建 Python 3.11 或 3.12 的虚拟环境，执行 `pip install -U "jax[cuda12]"`，再装 `requirements-evolab.txt` 里的其余依赖，并锁定版本。
-5. 冒烟测试：
-   - `python -c "import jax; print(jax.__version__, jax.devices())"` 的输出应包含 CUDA 设备；
-   - 跑一个 4096×4096 的 float32 矩阵乘，记录 GFLOP/s；
-   - 设置 `XLA_FLAGS=--xla_gpu_deterministic_ops=true` 后，确认同一计算两次结果一致。
-6. 如果出现 `no kernel image is available` 或 sm_120 相关错误：先升级 jax 和 jaxlib，并查 JAX 官方安装文档里 Blackwell 的说明。**不要**猜测性地降级或改用 CPU 跑正式规模。仍然失败就停止，并在报告里写清楚当时的版本组合。
+## 主路径：Windows 原生 + PyTorch（CUDA 12.8 及以上）
 
-## 吞吐基准（E0 必测）
+已查明的事实：
+- PyTorch 2.7 及以后的稳定版，凡是基于 CUDA 12.8 及以上构建的轮子（cu128 等），都带 Blackwell sm_120 内核。
+- Windows 上可以直接 pip 安装，不需要 WSL，也不需要单独安装 CUDA Toolkit，运行库已经打包在轮子里。
 
-用 Room-v0 世界加随机动作，测量每秒个体步数，测三档：
-- 种群 256 × 8 回合，同时 `vmap` 的回合数为 2048；
-- 种群 512 × 8；
-- 种群 1024 × 8。
+步骤（E0 执行并把实际输出记下来）：
 
-用测得的数字核算 `DESIGN.md` 第 4 节的预算。
+1. 建 Python 3.11 或 3.12 的虚拟环境，放在 `evolab/.venv`（已被 gitignore）。
+2. 用 PyTorch 官网当前推荐的 cu128 或更新的索引安装，例如 `pip install torch --index-url https://download.pytorch.org/whl/cu128`。具体命令以 https://pytorch.org/get-started/locally/ 为准。然后锁定实际安装的版本，写入 `requirements-evolab.txt`。
+3. 冒烟测试，每项记录输出：
+   - 打印 `torch.__version__`、`torch.version.cuda`、`torch.cuda.is_available()`、`torch.cuda.get_device_name(0)`、`torch.cuda.get_device_capability(0)`，最后一项应为 (12, 0)；
+   - 跑 4096×4096 float32 矩阵乘，记录 GFLOP/s；同时用 TF32 关和开各测一次，正式运行一律关掉 TF32；
+   - 确定性检查：设置环境变量 `CUBLAS_WORKSPACE_CONFIG=:4096:8`，调用 `torch.use_deterministic_algorithms(True)`，同一计算跑两次，结果必须逐位一致。
+4. 出现 `no kernel image is available`、`sm_120 is not compatible` 之类错误时，先确认装的是 cu128 及以上的轮子，不是 cpu 版或 cu126 版。不要靠猜测降级。仍然失败就停下报告。
+
+## 实现约定（替代 DESIGN 中 JAX 专有的部分）
+
+- **批量**：所有回合放在一个批张量里。形状为 [种群 × 每候选回合数]，例如 256×8=2048，再加状态维度。每一步对整个批做一次张量运算。不要按个体或回合写 Python 循环。
+- **时间循环**：回合内的 1500 步可以用 Python 循环。每步的 kernel 启动开销要实测；太慢时再考虑 `torch.compile` 或 CUDA Graphs，并在 `PROGRESS.md` 记录用了哪个。
+- **随机性**：每一代、每个用途分别用独立的 `torch.Generator`（放在 CUDA 设备上），种子由配置派生，例如 `hash(配置种子, 代号, 用途)`。不要依赖全局 RNG 状态。
+- **参数**：每个候选的网络参数存成形状为 [种群, 参数维数] 的展平张量，前向时用批量矩阵乘（`torch.bmm` 或 `einsum`），相当于对种群做 vmap。
+- **ES 的 Adam**：自己实现，或用 `torch.optim.Adam` 作用在均值向量上，二选一并记录。
+
+## 备选：WSL2 + JAX
+
+只有用户决定修复 WSL 时才走这条路。E0 观测到 `HypervisorPresent=False`，并且找不到 vmcompute 服务，这与"虚拟机平台功能未启用或 hypervisor 没有启动"相符，但具体根因未验证。修复需要管理员权限和重启，由用户自己执行，实施代理不得擅自改系统配置：
+
+- 管理员 PowerShell：`dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart`
+- 如有必要：`bcdedit /set hypervisorlaunchtype auto`
+- 重启后再执行 `wsl -d Ubuntu`
+
+注意：开启 hypervisor 可能影响部分游戏反作弊程序和其他虚拟化软件。恢复后按本文件上一版的 JAX 步骤操作，参见 git 历史，提交 `92c439c`。
 
 ## 参考
 
-- JAX 安装文档：https://docs.jax.dev/en/latest/installation.html
-- 社区关于 RTX 5070 Ti、WSL2 与 Blackwell 的配置经验（主要讲 PyTorch，CUDA 和 sm_120 的要求相同）：https://fahimkabir2213.medium.com/setting-up-a-local-ai-workstation-on-an-rtx-5070-ti-blackwell-with-wsl2-every-step-and-every-41fb7f553673
+- PyTorch 安装：https://pytorch.org/get-started/locally/
+- PyTorch 论坛关于 sm_120 的讨论（cu128 构建支持 Blackwell）：https://discuss.pytorch.org/t/pytorch-support-for-sm120/216099
+- JAX 安装文档（CUDA 版只有 Linux 轮子）：https://docs.jax.dev/en/latest/installation.html
+- WSL 手动安装与虚拟机平台：https://learn.microsoft.com/en-us/windows/wsl/install-manual
