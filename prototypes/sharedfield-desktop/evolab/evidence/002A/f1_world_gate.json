@@ -1,0 +1,308 @@
+{
+  "domain": "f1",
+  "domain_id": 410000,
+  "master_seed": 20261002,
+  "run_seed": 0,
+  "episodes": 1024,
+  "selection": "first passing fixed step",
+  "initial_thermal": {
+    "utc": "2026-10-02T12:49:14.057844+00:00",
+    "temperature_c": 58.0,
+    "graphics_mhz": 382.0,
+    "memory_mhz": 405.0,
+    "power_w": 18.65
+  },
+  "levels": [
+    {
+      "rows": [
+        {
+          "regime": "drift",
+          "arm": "H",
+          "episodes": 1024,
+          "survival": 1.0,
+          "good_food_mean": 22.5078125,
+          "bad_food_mean": 7.818359375,
+          "ate_good_fraction": 1.0,
+          "survived_first_fraction": 1.0,
+          "switches": 4627,
+          "censored": 132,
+          "recovered_only_median": 49.0,
+          "seconds": 5.472011600002588,
+          "thermal": {
+            "utc": "2026-10-02T12:49:19.585374+00:00",
+            "temperature_c": 71.0,
+            "graphics_mhz": 2692.0,
+            "memory_mhz": 9001.0,
+            "power_w": 96.45
+          }
+        },
+        {
+          "regime": "drift",
+          "arm": "N",
+          "episodes": 1024,
+          "survival": 0.999345703125,
+          "good_food_mean": 23.3740234375,
+          "bad_food_mean": 13.3798828125,
+          "ate_good_fraction": 1.0,
+          "survived_first_fraction": 1.0,
+          "switches": 4623,
+          "censored": 107,
+          "recovered_only_median": 41.0,
+          "seconds": 5.012884099996882,
+          "thermal": {
+            "utc": "2026-10-02T12:49:24.644454+00:00",
+            "temperature_c": 71.0,
+            "graphics_mhz": 2707.0,
+            "memory_mhz": 9001.0,
+            "power_w": 95.66
+          }
+        },
+        {
+          "regime": "drift",
+          "arm": "F",
+          "episodes": 1024,
+          "survival": 0.14182682291666668,
+          "good_food_mean": 1.6826171875,
+          "bad_food_mean": 5.2119140625,
+          "ate_good_fraction": 0.33984375,
+          "survived_first_fraction": 0.33984375,
+          "switches": 348,
+          "censored": 346,
+          "recovered_only_median": 28.0,
+          "seconds": 4.723393700005545,
+          "thermal": {
+            "utc": "2026-10-02T12:49:29.410479+00:00",
+            "temperature_c": 76.0,
+            "graphics_mhz": 2722.0,
+            "memory_mhz": 9001.0,
+            "power_w": 98.2
+          }
+        },
+        {
+          "regime": "static",
+          "arm": "H",
+          "episodes": 1024,
+          "survival": 1.0,
+          "good_food_mean": 21.462890625,
+          "bad_food_mean": 0.189453125,
+          "ate_good_fraction": 1.0,
+          "survived_first_fraction": 0.0,
+          "switches": 0,
+          "censored": 0,
+          "recovered_only_median": null,
+          "seconds": 5.127777800000331,
+          "thermal": {
+            "utc": "2026-10-02T12:49:34.584370+00:00",
+            "temperature_c": 76.0,
+            "graphics_mhz": 2670.0,
+            "memory_mhz": 9001.0,
+            "power_w": 98.07
+          }
+        }
+      ],
+      "checks": {
+        "drift_h": true,
+        "drift_n": false,
+        "drift_f": true,
+        "static_h": true
+      },
+      "passed": false,
+      "poison_cost": 0.05
+    },
+    {
+      "rows": [
+        {
+          "regime": "drift",
+          "arm": "H",
+          "episodes": 1024,
+          "survival": 1.0,
+          "good_food_mean": 23.7548828125,
+          "bad_food_mean": 7.802734375,
+          "ate_good_fraction": 1.0,
+          "survived_first_fraction": 1.0,
+          "switches": 4627,
+          "censored": 145,
+          "recovered_only_median": 49.0,
+          "seconds": 5.263156900000467,
+          "thermal": {
+            "utc": "2026-10-02T12:49:39.901893+00:00",
+            "temperature_c": 78.0,
+            "graphics_mhz": 2707.0,
+            "memory_mhz": 9001.0,
+            "power_w": 97.12
+          }
+        },
+        {
+          "regime": "drift",
+          "arm": "N",
+          "episodes": 1024,
+          "survival": 0.5690221354166667,
+          "good_food_mean": 19.4189453125,
+          "bad_food_mean": 28.83203125,
+          "ate_good_fraction": 1.0,
+          "survived_first_fraction": 0.88671875,
+          "switches": 2453,
+          "censored": 276,
+          "recovered_only_median": 26.0,
+          "seconds": 5.706172300000617,
+          "thermal": {
+            "utc": "2026-10-02T12:49:45.648609+00:00",
+            "temperature_c": 79.0,
+            "graphics_mhz": 2692.0,
+            "memory_mhz": 9001.0,
+            "power_w": 98.87
+          }
+        },
+        {
+          "regime": "drift",
+          "arm": "F",
+          "episodes": 1024,
+          "survival": 0.12491796875,
+          "good_food_mean": 1.6845703125,
+          "bad_food_mean": 3.9482421875,
+          "ate_good_fraction": 0.33984375,
+          "survived_first_fraction": 0.33984375,
+          "switches": 348,
+          "censored": 346,
+          "recovered_only_median": 28.0,
+          "seconds": 5.006788999999117,
+          "thermal": {
+            "utc": "2026-10-02T12:49:50.698063+00:00",
+            "temperature_c": 80.0,
+            "graphics_mhz": 2700.0,
+            "memory_mhz": 9001.0,
+            "power_w": 98.28
+          }
+        },
+        {
+          "regime": "static",
+          "arm": "H",
+          "episodes": 1024,
+          "survival": 1.0,
+          "good_food_mean": 21.4921875,
+          "bad_food_mean": 0.1865234375,
+          "ate_good_fraction": 1.0,
+          "survived_first_fraction": 0.0,
+          "switches": 0,
+          "censored": 0,
+          "recovered_only_median": null,
+          "seconds": 5.31006029999844,
+          "thermal": {
+            "utc": "2026-10-02T12:49:56.057194+00:00",
+            "temperature_c": 77.0,
+            "graphics_mhz": 2677.0,
+            "memory_mhz": 9001.0,
+            "power_w": 97.62
+          }
+        }
+      ],
+      "checks": {
+        "drift_h": true,
+        "drift_n": false,
+        "drift_f": true,
+        "static_h": true
+      },
+      "passed": false,
+      "poison_cost": 0.1
+    },
+    {
+      "rows": [
+        {
+          "regime": "drift",
+          "arm": "H",
+          "episodes": 1024,
+          "survival": 1.0,
+          "good_food_mean": 25.025390625,
+          "bad_food_mean": 7.7783203125,
+          "ate_good_fraction": 1.0,
+          "survived_first_fraction": 1.0,
+          "switches": 4627,
+          "censored": 145,
+          "recovered_only_median": 49.0,
+          "seconds": 5.186791699998139,
+          "thermal": {
+            "utc": "2026-10-02T12:50:01.289455+00:00",
+            "temperature_c": 77.0,
+            "graphics_mhz": 2692.0,
+            "memory_mhz": 9001.0,
+            "power_w": 97.31
+          }
+        },
+        {
+          "regime": "drift",
+          "arm": "N",
+          "episodes": 1024,
+          "survival": 0.20449869791666667,
+          "good_food_mean": 6.267578125,
+          "bad_food_mean": 8.384765625,
+          "ate_good_fraction": 0.9990234375,
+          "survived_first_fraction": 0.388671875,
+          "switches": 672,
+          "censored": 34,
+          "recovered_only_median": 40.0,
+          "seconds": 5.070736800000304,
+          "thermal": {
+            "utc": "2026-10-02T12:50:06.414189+00:00",
+            "temperature_c": 81.0,
+            "graphics_mhz": 2685.0,
+            "memory_mhz": 9001.0,
+            "power_w": 97.2
+          }
+        },
+        {
+          "regime": "drift",
+          "arm": "F",
+          "episodes": 1024,
+          "survival": 0.11271940104166667,
+          "good_food_mean": 1.6865234375,
+          "bad_food_mean": 3.015625,
+          "ate_good_fraction": 0.33984375,
+          "survived_first_fraction": 0.33984375,
+          "switches": 348,
+          "censored": 346,
+          "recovered_only_median": 28.0,
+          "seconds": 5.3345811999970465,
+          "thermal": {
+            "utc": "2026-10-02T12:50:11.794210+00:00",
+            "temperature_c": 80.0,
+            "graphics_mhz": 2692.0,
+            "memory_mhz": 9001.0,
+            "power_w": 97.46
+          }
+        },
+        {
+          "regime": "static",
+          "arm": "H",
+          "episodes": 1024,
+          "survival": 1.0,
+          "good_food_mean": 21.529296875,
+          "bad_food_mean": 0.1845703125,
+          "ate_good_fraction": 1.0,
+          "survived_first_fraction": 0.0,
+          "switches": 0,
+          "censored": 0,
+          "recovered_only_median": null,
+          "seconds": 5.493957200000295,
+          "thermal": {
+            "utc": "2026-10-02T12:50:17.358950+00:00",
+            "temperature_c": 83.0,
+            "graphics_mhz": 2677.0,
+            "memory_mhz": 9001.0,
+            "power_w": 98.0
+          }
+        }
+      ],
+      "checks": {
+        "drift_h": true,
+        "drift_n": true,
+        "drift_f": true,
+        "static_h": true
+      },
+      "passed": true,
+      "poison_cost": 0.15
+    }
+  ],
+  "selected_poison": 0.15,
+  "seconds": 63.34377510000195,
+  "status": "PASS"
+}

@@ -1,0 +1,35 @@
+seed_domains:
+  dev: 200000
+  e1: 300000
+  f0: 460000
+  f1: 410000
+  formal_dev: 450000
+  formal_train: 440000
+  holdout: 900000
+  holdout_002a: 940000
+  pilot_dev: 430000
+  pilot_train: 420000
+  train: 100000
+selected_poison: 0.15
+stage: F1 developmental, not formal frozen config
+world_and_es:
+  energy_cost: 0.004
+  episodes: 8
+  fatigue_rate: 0.002
+  food_gain: 0.3
+  generations: 400
+  hidden: 32
+  horizon: 1500
+  initial_energy: 0.6
+  learning_rate: 0.01
+  master_seed: 20261002
+  move_cost: 0.0
+  poison_cost: 0.15
+  population: 256
+  projection_seed: 8101
+  regrow: 20
+  rest_rate: 0.03
+  sigma: 0.02
+  validation_episodes: 128
+  validation_every: 20
+  view_size: 5
