@@ -1,0 +1,12 @@
+{
+  "temperature.gpu": 86.0,
+  "clocks.current.graphics": 1980.0,
+  "clocks.current.memory": 11001.0,
+  "utilization.gpu": 99.0,
+  "memory.used": 8402.0,
+  "memory.total": 12227.0,
+  "power.draw": 89.07,
+  "utc": "2026-10-02T15:27:26.775282+00:00",
+  "context": "L2 B/static/seed0",
+  "cause_of_wall_time_change": "未单独剖析；不凭一次快照断言原因"
+}

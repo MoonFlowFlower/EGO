@@ -2,6 +2,52 @@
 
 按时间倒序追加。每条写明：做了什么、证据在哪、失败或偏离、下一步。没测的写"未测"。旧条目不改。
 
+## 2026-10-02 — EVOLAB-002A F2 收口：固定阶梯耗尽，未进入正式实验
+
+- F0回归与W通过；L0、L1、L2、L3全部未通过。48次试跑全部有最终开发评估，其中45次满400代，3次按连续20代零方差规则提前结束；共19044代。没有NaN或运行崩溃，失败的闸门和种子全部保留。
+- GPU任务墙钟20744.725秒（5.762424小时），未超6小时。温度采样[70.0, 92.0]°C，图形时钟[1177.0, 2670.0]MHz；有已记录的软件热降频。
+- L3 static A：S=0.3799752604、好食物覆盖0.3255208333；static B：S=0.6676727431、覆盖0.7994791667，严格低于0.8，不四舍五入过关。drift A/B覆盖分别0.0110677083/0.0123697917，首次漂移存活均0.224609375。
+- 触发停止条件：L3仍未通过。本卡无效（开发可学性失败），V未测，不作H1–H3科学判定，不作为X1负证据。未冻结正式配置、未跑F3/F4、未访问保留集或做消融。
+- 完整证据 evidence/002A/F2_LEARNABILITY.md、REPORT.md、closure_summary.json、pilot_summaries/、PILOT_SECONDARY.md；48次最终均值和逐回合指标审计通过。001A文件与预注册受保护，TASK_BOARD非EVOLAB行不变。
+- 计时偏离：固定GIF的91.215秒GPU重放与L0 B/static/seed2末段并行，已计入F2墙钟，后者不作独立吞吐基准。F0首轮README哈希失败来自外部PR134快进，记录保留。
+- 下一步：停止本卡实验，仅整理报告和提交；任何阶梯外改动须用户决定新卡。
+
+## 2026-10-02 — EVOLAB-002A F2 L3 试跑闸门
+
+- {"groups": [{"arm": "gru_fixed", "regime": "static", "mean": {"survival": 0.3799752604166666, "ate_good_fraction": 0.3255208333333333, "survived_first_fraction": 0.0}, "checks": {"complete": true, "ate_good": false, "survival": false}, "passed": false}, {"arm": "gru_fixed", "regime": "drift", "mean": {"survival": 0.16700520833333332, "ate_good_fraction": 0.011067708333333334, "survived_first_fraction": 0.224609375}, "checks": {"complete": true, "ate_good": false, "survived_first": false}, "passed": false}, {"arm": "gru_mb_plastic", "regime": "static", "mean": {"survival": 0.6676727430555555, "ate_good_fraction": 0.7994791666666666, "survived_first_fraction": 0.0}, "checks": {"complete": true, "ate_good": false, "survival": true}, "passed": false}, {"arm": "gru_mb_plastic", "regime": "drift", "mean": {"survival": 0.1668667534722222, "ate_good_fraction": 0.012369791666666666, "survived_first_fraction": 0.224609375}, "checks": {"complete": true, "ate_good": false, "survived_first": false}, "passed": false}], "passed": false}
+- 完整12次结果 evidence/002A/f2_learnability.json、pilot_summaries；累计20744.7秒。未访问保留集。
+
+## 2026-10-02 — EVOLAB-002A F2 L3 首轮与绝对闸门上界
+
+- B/drift/seed0 最终512回合好食物覆盖率0.009765625，首次漂移存活0.25；完整400代426.327秒。
+- 即便其余两个种子覆盖率均为1，本组均值上界也只有0.669921875，小于既定0.8。该上界仅用绝对指标，不是B−A比较。
+- 仍按卡片执行本级完整12次矩阵，受F2六小时预算限制；不因此跳过剩余试跑，也不进入正式实验。
+
+## 2026-10-02 — EVOLAB-002A F2 L2 试跑闸门
+
+- {"groups": [{"arm": "gru_fixed", "regime": "static", "mean": {"survival": 0.5362677951388889, "ate_good_fraction": 0.63671875, "survived_first_fraction": 0.0}, "checks": {"complete": true, "ate_good": false, "survival": true}, "passed": false}, {"arm": "gru_fixed", "regime": "drift", "mean": {"survival": 0.09993576388888888, "ate_good_fraction": 0.0, "survived_first_fraction": 0.0}, "checks": {"complete": true, "ate_good": false, "survived_first": false}, "passed": false}, {"arm": "gru_mb_plastic", "regime": "static", "mean": {"survival": 0.76173828125, "ate_good_fraction": 0.923828125, "survived_first_fraction": 0.0}, "checks": {"complete": true, "ate_good": true, "survival": true}, "passed": true}, {"arm": "gru_mb_plastic", "regime": "drift", "mean": {"survival": 0.10174609375, "ate_good_fraction": 0.026041666666666668, "survived_first_fraction": 0.018229166666666668}, "checks": {"complete": true, "ate_good": false, "survived_first": false}, "passed": false}], "passed": false}
+- 完整12次结果 evidence/002A/f2_learnability.json、pilot_summaries；累计14698.9秒。未访问保留集。
+
+## 2026-10-02 — EVOLAB-002A F2 GIF 示例边界补充
+
+- 用已保存开发张量核对预指定GIF第0回合：好食物2次、坏食物0次、实际漂移切换0次、未活过首次漂移；寿命300步。pilot_gif.json已补充这些原始计数。
+- 该GIF只展示运行过程，不能展示漂移适应；没有重新评估或更换示例，没有新增GPU回合。
+
+## 2026-10-02 — EVOLAB-002A F2 L2 资源与耗时核查
+
+- L2 A/static/seed0完整400代加评估1035.514秒，最终S=0.757301、至少一次好食物=96.4844%；同级B/drift/seed0为339.376秒。时间随世界和运行变化，首次单运行外推不是时间保证。
+- 当前B/static/seed0首20代约117秒；资源快照 evidence/002A/f2_resource_snapshot.json，GPU利用率高、显存仍有余量，无OOM或数值异常。更细的耗时原因未验证；已实测的热降频事实保留。未改规模或训练方法，仍执行6小时硬上限。
+
+## 2026-10-02 — EVOLAB-002A F2 次要截尾统计实现
+
+- 已保存pilot回合的恢复事件使用种子内Kaplan–Meier中位数，死亡/时限/后续切换右截尾；同刻恢复先计事件再移除截尾样本。未经历切换与中位数未达到分别标记，截尾比例单列。信息性截尾可能存在，只作描述，不推断死亡后的反事实恢复，也不参与W/L/V或H1–H3。
+- 配置 configs/002a_secondary_analysis.yaml，SHA256 45cc5037fb7eaae1f4afbce1ccd749953571bb187081f656ae9a73f9bd546c9f；4个CPU测试通过，含NIST原始数例、同刻事件/截尾、无切换、全部截尾；证据 secondary_tests.json、PILOT_SECONDARY.md、pilot_secondary.json。仅处理保存张量，没有新增GPU回合。PREREG_002A未修改，未访问保留集。
+
+## 2026-10-02 — EVOLAB-002A F2 L1 试跑闸门
+
+- {"groups": [{"arm": "gru_fixed", "regime": "static", "mean": {"survival": 0.12689192708333333, "ate_good_fraction": 0.1953125, "survived_first_fraction": 0.0}, "checks": {"complete": true, "ate_good": false, "survival": false}, "passed": false}, {"arm": "gru_fixed", "regime": "drift", "mean": {"survival": 0.10141493055555556, "ate_good_fraction": 0.046875, "survived_first_fraction": 0.017578125}, "checks": {"complete": true, "ate_good": false, "survived_first": false}, "passed": false}, {"arm": "gru_mb_plastic", "regime": "static", "mean": {"survival": 0.14516579861111112, "ate_good_fraction": 0.3053385416666667, "survived_first_fraction": 0.0}, "checks": {"complete": true, "ate_good": false, "survival": false}, "passed": false}, {"arm": "gru_mb_plastic", "regime": "drift", "mean": {"survival": 0.1008537326388889, "ate_good_fraction": 0.020833333333333332, "survived_first_fraction": 0.009114583333333334}, "checks": {"complete": true, "ate_good": false, "survived_first": false}, "passed": false}], "passed": false}
+- 完整12次结果 evidence/002A/f2_learnability.json、pilot_summaries；累计5381.7秒。未访问保留集。
+
 ## 2026-10-02 — EVOLAB-002A F2 L0 完整证据检查点
 
 - L0完整12次记录已汇总 evidence/002A/F2_LEARNABILITY.md、f2_learnability.json、pilot_summaries；四组绝对指标均不通过。累计2773.134秒（46.22分钟），温度采样70–91°C，图形时钟1702–2670MHz。

@@ -26,6 +26,9 @@ write_json('evidence/002A/pilot_gif.json', dict(source=str(directory), generatio
     domain='pilot_dev', domain_id=430000, episode_index=0, episodes=512,
     selection='First full-scale probe, fixed before results; no best selection',
     replay_bitwise_equal=True, episode_survival=float(scores[0, 0]),
+    example_good_food=int(saved['good'][0]), example_bad_food=int(saved['bad'][0]),
+    example_drift_switches=int((saved['start'][0] >= 0).sum()),
+    example_survived_first=bool(saved['survived_first'][0]),
     seconds=time.perf_counter()-start, frames=len(result['frames']),
     timing_note='Rendered concurrently with pilot; auxiliary GPU work included within F2 wall budget',
     human_visual_acceptance='未验证'))

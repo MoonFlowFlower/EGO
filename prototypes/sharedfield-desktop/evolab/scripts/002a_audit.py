@@ -47,6 +47,14 @@ if path.exists():
             assert abs(dev['scores'].mean().item()-m['survival']) < 1e-7
             assert (dev['good'] > 0).float().mean().item() == m['ate_good_fraction']
             assert dev['survived_first'].float().mean().item() == m['survived_first_fraction']
+            assert dev['good'].double().mean().item() == m['good_food_mean']
+            assert dev['bad'].double().mean().item() == m['bad_food_mean']
+            assert dev['scores'].numel() == 512
+            assert torch.isfinite(dev['scores']).all()
+            actual_switches = dev['start'] >= 0
+            assert actual_switches.sum().item() == m['switches']
+            assert (actual_switches & ~dev['observed']).sum().item() == m['censored']
+            assert (dev['duration'][actual_switches] >= 0).all()
             checked.append(run['label'])
 assert not list(Path('runs/002A').glob('**/*holdout*'))
 write_json('evidence/002A/integrity_audit.json', dict(status='PASS', protected_001a=True,

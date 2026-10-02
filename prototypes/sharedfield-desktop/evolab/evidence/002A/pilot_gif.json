@@ -11,5 +11,9 @@
   "seconds": 91.2153238000028,
   "frames": 300,
   "timing_note": "Rendered concurrently with pilot; auxiliary GPU work included within F2 wall budget",
-  "human_visual_acceptance": "未验证"
+  "human_visual_acceptance": "未验证",
+  "example_good_food": 2,
+  "example_bad_food": 0,
+  "example_drift_switches": 0,
+  "example_survived_first": false
 }

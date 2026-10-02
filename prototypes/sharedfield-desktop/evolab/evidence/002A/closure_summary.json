@@ -1,0 +1,55 @@
+{
+  "status": "INVALID_PRE_FORMAL_LEARNABILITY",
+  "stop_reason": "STOP_L_EXHAUSTED",
+  "pilot_runs": 48,
+  "full_400_runs": 45,
+  "early_collapse_runs": [
+    {
+      "label": "L0_gru_fixed_static_seed0",
+      "generation": 341,
+      "collapsed_at": 341
+    },
+    {
+      "label": "L1_gru_mb_plastic_drift_seed0",
+      "generation": 330,
+      "collapsed_at": 330
+    },
+    {
+      "label": "L1_gru_mb_plastic_drift_seed1",
+      "generation": 373,
+      "collapsed_at": 373
+    }
+  ],
+  "generations": 19044,
+  "seconds": 20744.7246982,
+  "hours": 5.762423527277778,
+  "budget_seconds": 21600,
+  "temperature_c": [
+    70.0,
+    92.0
+  ],
+  "graphics_mhz": [
+    1177.0,
+    2670.0
+  ],
+  "level_run_seconds": {
+    "L0": 2772.2911412999892,
+    "L1": 2607.5756122000093,
+    "L2": 9315.69377670002,
+    "L3": 6007.27184099998
+  },
+  "pilot_crashes_or_nan": 0,
+  "formal_runs": 0,
+  "gate_V": "NOT_EVALUATED",
+  "holdout_002a": "NOT_ACCESSED",
+  "ablation": "NOT_EVALUATED",
+  "hypotheses_H1_H2_H3": "NOT_EVALUATED",
+  "configs_sha256": {
+    "configs\\002a_f1_selected.yaml": "de9733ae0e6d0d1291385596006dc55442f8cfef0b8eb3c6fd2de11d76a4fbe7",
+    "configs\\002a_pilot_L0.yaml": "0fcd5646dddf8a5d6a76a7864e1fe5dfe00fb4e40a8581ba4c48264d7c7b0bbc",
+    "configs\\002a_pilot_L1.yaml": "def9dcbe8f3f0311bde4d8c776c085e9ae7d566fdfd4c0ba8805e4f02bc74bfe",
+    "configs\\002a_pilot_L2.yaml": "618cdadc4b1bedbc67d69aaaa9b5ccc5d821f24839e92f135e26e7a541a9ccf0",
+    "configs\\002a_pilot_L3.yaml": "f7352887949e830c60e7e0eab958909b8573274bf8b2930a78d7360c61c705af",
+    "configs\\002a_secondary_analysis.yaml": "45cc5037fb7eaae1f4afbce1ccd749953571bb187081f656ae9a73f9bd546c9f"
+  }
+}

@@ -1,0 +1,13 @@
+scope: descriptive secondary analysis only; never a W/L/V or H1-H3 criterion
+recovery_unit: actual drift switch within each evaluation seed
+recovery_event: first good-food consumption under the new colour before the next switch
+time_origin: switch transition age before world step; same-transition recovery is zero
+right_censoring: death, horizon, or superseding switch
+median_estimator: ordinary Kaplan-Meier product limit; first time non-recovery survival is <= 0.5
+arithmetic: exact rational products for threshold comparison
+tied_times: events counted before censors leave risk set
+no_switches: no_switches; median not applicable
+median_not_crossed: not_reached; not replaced by zero or a recovered-only median
+censor_fraction: censored switches divided by all observed switches; no switches is not applicable
+interpretation: censoring may be informative; no counterfactual post-mortem recovery claim
+reference: https://itl.nist.gov/div898/handbook/apr/section2/apr215.htm

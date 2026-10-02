@@ -1,0 +1,363 @@
+{
+  "label": "L1_gru_fixed_static_seed1",
+  "level": 1,
+  "arm": "gru_fixed",
+  "regime": "static",
+  "seed": 1,
+  "status": "COMPLETE",
+  "config_sha256": "def9dcbe8f3f0311bde4d8c776c085e9ae7d566fdfd4c0ba8805e4f02bc74bfe",
+  "thermal": [
+    {
+      "utc": "2026-10-02T13:46:23.414988+00:00",
+      "temperature_c": 86.0,
+      "graphics_mhz": 2535.0,
+      "memory_mhz": 9001.0,
+      "power_w": 78.42
+    },
+    {
+      "utc": "2026-10-02T13:46:31.064577+00:00",
+      "temperature_c": 86.0,
+      "graphics_mhz": 2010.0,
+      "memory_mhz": 9001.0,
+      "power_w": 79.37
+    },
+    {
+      "utc": "2026-10-02T13:46:46.908774+00:00",
+      "temperature_c": 87.0,
+      "graphics_mhz": 2415.0,
+      "memory_mhz": 11001.0,
+      "power_w": 87.24
+    },
+    {
+      "utc": "2026-10-02T13:46:54.416660+00:00",
+      "temperature_c": 86.0,
+      "graphics_mhz": 2347.0,
+      "memory_mhz": 11001.0,
+      "power_w": 89.57
+    },
+    {
+      "utc": "2026-10-02T13:47:01.988546+00:00",
+      "temperature_c": 87.0,
+      "graphics_mhz": 2392.0,
+      "memory_mhz": 11001.0,
+      "power_w": 91.5
+    },
+    {
+      "utc": "2026-10-02T13:47:10.467440+00:00",
+      "temperature_c": 87.0,
+      "graphics_mhz": 2377.0,
+      "memory_mhz": 11001.0,
+      "power_w": 91.29
+    },
+    {
+      "utc": "2026-10-02T13:47:21.654351+00:00",
+      "temperature_c": 87.0,
+      "graphics_mhz": 2347.0,
+      "memory_mhz": 11001.0,
+      "power_w": 86.73
+    },
+    {
+      "utc": "2026-10-02T13:47:30.949691+00:00",
+      "temperature_c": 87.0,
+      "graphics_mhz": 2400.0,
+      "memory_mhz": 11001.0,
+      "power_w": 80.47
+    },
+    {
+      "utc": "2026-10-02T13:47:40.703713+00:00",
+      "temperature_c": 87.0,
+      "graphics_mhz": 2362.0,
+      "memory_mhz": 11001.0,
+      "power_w": 90.43
+    },
+    {
+      "utc": "2026-10-02T13:47:51.222421+00:00",
+      "temperature_c": 90.0,
+      "graphics_mhz": 2535.0,
+      "memory_mhz": 11001.0,
+      "power_w": 81.37
+    },
+    {
+      "utc": "2026-10-02T13:48:00.964345+00:00",
+      "temperature_c": 88.0,
+      "graphics_mhz": 2325.0,
+      "memory_mhz": 11001.0,
+      "power_w": 82.67
+    },
+    {
+      "utc": "2026-10-02T13:48:06.316822+00:00",
+      "temperature_c": 89.0,
+      "graphics_mhz": 2475.0,
+      "memory_mhz": 11001.0,
+      "power_w": 84.64
+    },
+    {
+      "utc": "2026-10-02T13:48:12.254313+00:00",
+      "temperature_c": 86.0,
+      "graphics_mhz": 2347.0,
+      "memory_mhz": 11001.0,
+      "power_w": 83.3
+    },
+    {
+      "utc": "2026-10-02T13:48:16.914805+00:00",
+      "temperature_c": 86.0,
+      "graphics_mhz": 2325.0,
+      "memory_mhz": 11001.0,
+      "power_w": 87.7
+    },
+    {
+      "utc": "2026-10-02T13:48:23.013380+00:00",
+      "temperature_c": 89.0,
+      "graphics_mhz": 2355.0,
+      "memory_mhz": 11001.0,
+      "power_w": 85.59
+    },
+    {
+      "utc": "2026-10-02T13:48:27.717309+00:00",
+      "temperature_c": 84.0,
+      "graphics_mhz": 2490.0,
+      "memory_mhz": 11001.0,
+      "power_w": 75.13
+    },
+    {
+      "utc": "2026-10-02T13:48:34.996722+00:00",
+      "temperature_c": 87.0,
+      "graphics_mhz": 2047.0,
+      "memory_mhz": 9001.0,
+      "power_w": 83.39
+    },
+    {
+      "utc": "2026-10-02T13:48:45.677422+00:00",
+      "temperature_c": 87.0,
+      "graphics_mhz": 2062.0,
+      "memory_mhz": 11001.0,
+      "power_w": 86.74
+    },
+    {
+      "utc": "2026-10-02T13:49:03.158406+00:00",
+      "temperature_c": 88.0,
+      "graphics_mhz": 2310.0,
+      "memory_mhz": 11001.0,
+      "power_w": 92.56
+    },
+    {
+      "utc": "2026-10-02T13:49:23.075879+00:00",
+      "temperature_c": 87.0,
+      "graphics_mhz": 2325.0,
+      "memory_mhz": 11001.0,
+      "power_w": 83.67
+    },
+    {
+      "utc": "2026-10-02T13:49:37.788138+00:00",
+      "temperature_c": 87.0,
+      "graphics_mhz": 2490.0,
+      "memory_mhz": 11001.0,
+      "power_w": 88.12
+    },
+    {
+      "utc": "2026-10-02T13:49:47.289734+00:00",
+      "temperature_c": 85.0,
+      "graphics_mhz": 2565.0,
+      "memory_mhz": 810.0,
+      "power_w": 80.55
+    }
+  ],
+  "curve": [
+    {
+      "generation": 20,
+      "population_mean": 0.10317546129226685,
+      "population_max": 0.15033333003520966,
+      "population_std": 0.009474482930127799,
+      "seconds": 0.8706966999961878,
+      "collapsed_at": null,
+      "development_mean": 0.1027812510728836
+    },
+    {
+      "generation": 40,
+      "population_mean": 0.11072786152362823,
+      "population_max": 0.15433332324028015,
+      "population_std": 0.01064251252967801,
+      "seconds": 0.48161919999984093,
+      "collapsed_at": null,
+      "development_mean": 0.10435417294502258
+    },
+    {
+      "generation": 60,
+      "population_mean": 0.13088735938072205,
+      "population_max": 0.19258332252502441,
+      "population_std": 0.017890983126223933,
+      "seconds": 0.42237430000386667,
+      "collapsed_at": null,
+      "development_mean": 0.10323958843946457
+    },
+    {
+      "generation": 80,
+      "population_mean": 0.10600553452968597,
+      "population_max": 0.15141665935516357,
+      "population_std": 0.016875408739829362,
+      "seconds": 0.5139531999957399,
+      "collapsed_at": null,
+      "development_mean": 0.10491666197776794
+    },
+    {
+      "generation": 100,
+      "population_mean": 0.09773926436901093,
+      "population_max": 0.125,
+      "population_std": 0.005611767418762937,
+      "seconds": 0.3296307999989949,
+      "collapsed_at": null,
+      "development_mean": 0.11435937881469727
+    },
+    {
+      "generation": 120,
+      "population_mean": 0.09238573908805847,
+      "population_max": 0.10008333623409271,
+      "population_std": 0.0031013768857140714,
+      "seconds": 0.20920720000140136,
+      "collapsed_at": null,
+      "development_mean": 0.11742708086967468
+    },
+    {
+      "generation": 140,
+      "population_mean": 0.09789974242448807,
+      "population_max": 0.11174999922513962,
+      "population_std": 0.003943665941824455,
+      "seconds": 0.23685320000367938,
+      "collapsed_at": null,
+      "development_mean": 0.11585937440395355
+    },
+    {
+      "generation": 160,
+      "population_mean": 0.10806608200073242,
+      "population_max": 0.15000000596046448,
+      "population_std": 0.006279875558364118,
+      "seconds": 0.4138775000028545,
+      "collapsed_at": null,
+      "development_mean": 0.11708333343267441
+    },
+    {
+      "generation": 180,
+      "population_mean": 0.08536816388368607,
+      "population_max": 0.10450000315904617,
+      "population_std": 0.0044841550216601,
+      "seconds": 0.22803450000355951,
+      "collapsed_at": null,
+      "development_mean": 0.12007291615009308
+    },
+    {
+      "generation": 200,
+      "population_mean": 0.09795540571212769,
+      "population_max": 0.10625000298023224,
+      "population_std": 0.002323171699627659,
+      "seconds": 0.1565753999966546,
+      "collapsed_at": null,
+      "development_mean": 0.12389062345027924
+    },
+    {
+      "generation": 220,
+      "population_mean": 0.1003199890255928,
+      "population_max": 0.11875000596046448,
+      "population_std": 0.005189823216895657,
+      "seconds": 0.19332489999942482,
+      "collapsed_at": null,
+      "development_mean": 0.11361457407474518
+    },
+    {
+      "generation": 240,
+      "population_mean": 0.13691699504852295,
+      "population_max": 0.22500000894069672,
+      "population_std": 0.036570066410731406,
+      "seconds": 1.1141132000047946,
+      "collapsed_at": null,
+      "development_mean": 0.10586458444595337
+    },
+    {
+      "generation": 260,
+      "population_mean": 0.11685319244861603,
+      "population_max": 0.20941667258739471,
+      "population_std": 0.04333016028623289,
+      "seconds": 0.923232300003292,
+      "collapsed_at": null,
+      "development_mean": 0.10039062798023224
+    },
+    {
+      "generation": 280,
+      "population_mean": 0.0998317077755928,
+      "population_max": 0.10625000298023224,
+      "population_std": 0.0008476137363241573,
+      "seconds": 0.1546844999975292,
+      "collapsed_at": null,
+      "development_mean": 0.10656771063804626
+    },
+    {
+      "generation": 300,
+      "population_mean": 0.10134276747703552,
+      "population_max": 0.11249999701976776,
+      "population_std": 0.0026257326404782637,
+      "seconds": 0.19380419999652077,
+      "collapsed_at": null,
+      "development_mean": 0.10713541507720947
+    },
+    {
+      "generation": 320,
+      "population_mean": 0.10000000149011612,
+      "population_max": 0.10000000149011612,
+      "population_std": 0.0,
+      "seconds": 0.24088430000119843,
+      "collapsed_at": null,
+      "development_mean": 0.10177083313465118
+    },
+    {
+      "generation": 340,
+      "population_mean": 0.17944173514842987,
+      "population_max": 0.23125000298023224,
+      "population_std": 0.04801494833102496,
+      "seconds": 1.591586800001096,
+      "collapsed_at": null,
+      "development_mean": 0.10461458563804626
+    },
+    {
+      "generation": 360,
+      "population_mean": 0.11845475435256958,
+      "population_max": 0.18408332765102386,
+      "population_std": 0.018256634726773243,
+      "seconds": 1.152668700000504,
+      "collapsed_at": null,
+      "development_mean": 0.11731249839067459
+    },
+    {
+      "generation": 380,
+      "population_mean": 0.20892547070980072,
+      "population_max": 0.34066665172576904,
+      "population_std": 0.0641776265651359,
+      "seconds": 1.688343800000439,
+      "collapsed_at": null,
+      "development_mean": 0.1223749965429306
+    },
+    {
+      "generation": 400,
+      "population_mean": 0.12637728452682495,
+      "population_max": 0.23000000417232513,
+      "population_std": 0.022451026671530476,
+      "seconds": 0.7037465999965207,
+      "collapsed_at": null,
+      "development_mean": 0.1497395932674408
+    }
+  ],
+  "full_scale_probe": false,
+  "generation": 400,
+  "collapsed_at": null,
+  "selection": "generation_400_mean",
+  "development": {
+    "survival": 0.12063802083333333,
+    "good_food_mean": 0.68359375,
+    "bad_food_mean": 0.36328125,
+    "ate_good_fraction": 0.1796875,
+    "survived_first_fraction": 0.0,
+    "switches": 0,
+    "censored": 0,
+    "recovered_only_median": null
+  },
+  "episodes": 512,
+  "seconds": 203.85843860000023
+}
