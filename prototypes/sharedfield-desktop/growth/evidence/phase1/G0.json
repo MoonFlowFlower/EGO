@@ -1,92 +1,56 @@
 {
-  "implementation_revision": 3,
-  "state": "stopped_at_G0p",
-  "G0p": {
-    "selected_candidate": "map",
-    "passed": false,
-    "formats": [
-      {
-        "format": "cells",
-        "n": 30,
-        "front_exact": 7,
-        "tree_direction": 19,
-        "tree_exact": 15,
-        "invalid": 0
-      },
-      {
-        "format": "assisted",
-        "n": 30,
-        "front_exact": 24,
-        "tree_direction": 30,
-        "tree_exact": 30,
-        "invalid": 0
-      },
-      {
-        "format": "map",
-        "n": 30,
-        "front_exact": 25,
-        "tree_direction": 30,
-        "tree_exact": 30,
-        "invalid": 0
-      }
-    ],
-    "report": "revision3/G0p.json"
-  },
-  "G0a": {
-    "state": "not_run",
-    "reason": "G0p_not_passed"
-  },
-  "G0b": {
-    "state": "not_run",
-    "reason": "G0p_not_passed"
-  },
-  "G0c": {
-    "state": "not_run",
-    "reason": "G0p_not_passed"
-  },
-  "pilot_revision3": {
-    "state": "not_started",
-    "manifest": "not_frozen"
-  },
+  "implementation_revision": "3 round 2",
+  "G0p2_status": "unverified",
+  "stop": "two_consecutive_invalid_outputs",
+  "selected_format": "K1",
+  "QA_passed": true,
+  "main_front_correct": 32,
+  "main_decisions": 42,
+  "invalid_outputs": 6,
+  "reasoning_arm": "not started: whole-batch protocol stop",
+  "G0a": "not started",
+  "G0b": "not started",
+  "G0c": "not started",
+  "pilot": "not started",
   "resources": {
     "cost": {
-      "requests": 91,
-      "reported_usd": 0.005510780487,
-      "unknown_reserved_usd": 0.05,
-      "occupied_usd": 0.055510780487000005
+      "requests": 222,
+      "reported_usd": 0.012885095496,
+      "unknown_reserved_usd": 0,
+      "occupied_usd": 0.012885095496
     },
     "phase1_all_cost": {
-      "requests": 1175,
-      "reported_usd": 0.107850329931,
+      "requests": 1397,
+      "reported_usd": 0.120735425427,
       "unknown_reserved_usd": 0.4,
-      "occupied_usd": 0.507850329931
+      "occupied_usd": 0.520735425427
     },
-    "returned_calls": 90,
-    "requests_including_retries": 91,
+    "returned_calls": 222,
+    "requests_including_retries": 222,
     "latency_s": {
-      "median": 3.08703410000453,
-      "max": 4.126729499999783
+      "median": 2.8800598999951035,
+      "max": 7.505908599996474
     },
-    "elapsed_seconds": 315.6061327457428,
+    "elapsed_seconds": 742.9426052570343,
     "concurrency": 1,
     "telemetry": {
-      "samples": 10,
+      "samples": 24,
       "all_ac": true,
       "gpu_min_C_MHz_MiB_W": [
-        51.0,
-        442.0,
-        2782.0,
-        20.48
+        53.0,
+        405.0,
+        2523.0,
+        19.76
       ],
       "gpu_max_C_MHz_MiB_W": [
-        76.0,
-        2617.0,
-        3221.0,
-        97.86
+        62.0,
+        2070.0,
+        2756.0,
+        52.15
       ]
     }
   },
-  "audit": "revision3/BOUNDARY_AUDIT.json",
-  "historical_revision2": "G0_revision2.json",
-  "claim_ceiling": "Engineering/perception gate only; no learning or superiority claim"
+  "evidence": "revision3_round2/G0p2.json",
+  "audit": "revision3_round2/BOUNDARY_AUDIT.json",
+  "historical_data": "revision2 and revision3 G0p remain separate and unchanged"
 }

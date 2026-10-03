@@ -1,0 +1,614 @@
+{
+  "state": "unverified; stopped on two consecutive invalid outputs",
+  "main_decisions": 42,
+  "scored_front_correct": 32,
+  "invalid_outputs": 6,
+  "raw_front_only_correct": 37,
+  "front_seen_first_in_all_outputs": 42,
+  "qa_selected_errors": [
+    {
+      "case": "p2_11",
+      "expected": {
+        "material": "sand",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "sand",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": "left"
+      }
+    },
+    {
+      "case": "p2_53",
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": "right"
+      }
+    },
+    {
+      "case": "p2_56",
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": "left"
+      }
+    },
+    {
+      "case": "p2_57",
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": "left"
+      }
+    }
+  ],
+  "protocol_errors": [
+    {
+      "episode": "main_0",
+      "tick": 2,
+      "code": "run_format",
+      "output": {
+        "front_seen": {
+          "material": "grass",
+          "entity": "none"
+        },
+        "kind": "goto",
+        "action": "move_up",
+        "repeat": 1,
+        "name": "",
+        "description": "",
+        "source": "",
+        "completion": "",
+        "reason": "Goal is to craft wood_pickaxe, which requires wood. No trees visible in current radius; moving up to explore for trees. Front is grass, safe to move."
+      }
+    },
+    {
+      "episode": "main_0",
+      "tick": 3,
+      "code": "run_format",
+      "output": {
+        "front_seen": {
+          "material": "grass",
+          "entity": "none"
+        },
+        "kind": "goto",
+        "action": "move_up",
+        "repeat": 1,
+        "name": "tree",
+        "description": "",
+        "source": "",
+        "completion": "",
+        "reason": "Need wood to craft wood_pickaxe; tree is 3 steps up, so move toward it."
+      }
+    },
+    {
+      "episode": "main_0",
+      "tick": 10,
+      "code": "run_format",
+      "output": {
+        "front_seen": {
+          "material": "grass",
+          "entity": "none"
+        },
+        "kind": "goto",
+        "action": "move_up",
+        "repeat": 1,
+        "name": "",
+        "description": "",
+        "source": "",
+        "completion": "",
+        "reason": "Need wood to craft wood_pickaxe. I have 2 wood, need 3. Nearest tree is directly ahead (0,-3) but I need to approach it. I'll move up one step toward the tree."
+      }
+    },
+    {
+      "episode": "main_0",
+      "tick": 15,
+      "code": "action_format",
+      "output": {
+        "front_seen": {
+          "material": "grass",
+          "entity": "none"
+        },
+        "kind": "action",
+        "action": "do",
+        "repeat": 1,
+        "name": "",
+        "description": "",
+        "source": "",
+        "completion": "count('wood') >= 3",
+        "reason": "Need 3 wood to craft wood_pickaxe. Currently have 3 wood, so goal already satisfied. But since goal is to make wood_pickaxe, and we have 3 wood, we can craft it now. However, the action list includes make_wood_pickaxe. Since we have 3 wood, we should craft it. But the front is grass, not relevant. The action 'make_wood_pickaxe' is available. So I will use that action. But the JSON requires kind: '"
+      }
+    },
+    {
+      "episode": "main_1",
+      "tick": 0,
+      "code": "run_format",
+      "output": {
+        "front_seen": {
+          "material": "grass",
+          "entity": "none"
+        },
+        "kind": "goto",
+        "action": "move_down",
+        "repeat": 1,
+        "name": "tree",
+        "description": "",
+        "source": "",
+        "completion": "",
+        "reason": "Need wood to craft wood_pickaxe; nearest tree is at (3,3), so move toward it."
+      }
+    },
+    {
+      "episode": "main_1",
+      "tick": 0,
+      "code": "run_format",
+      "output": {
+        "front_seen": {
+          "material": "grass",
+          "entity": "none"
+        },
+        "kind": "goto",
+        "action": "move_down",
+        "repeat": 1,
+        "name": "tree",
+        "description": "",
+        "source": "",
+        "completion": "",
+        "reason": "Need wood to craft wood_pickaxe. Nearest tree is at (3,3) relative, so move toward it."
+      }
+    }
+  ],
+  "valid_protocol_front_errors": [
+    {
+      "episode": "main_0",
+      "tick": 12,
+      "expected": {
+        "material": "tree",
+        "entity": "none"
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "none"
+      }
+    },
+    {
+      "episode": "main_0",
+      "tick": 15,
+      "expected": {
+        "material": "tree",
+        "entity": "none"
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "none"
+      }
+    },
+    {
+      "episode": "main_0",
+      "tick": 24,
+      "expected": {
+        "material": "tree",
+        "entity": "none"
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "none"
+      }
+    },
+    {
+      "episode": "main_0",
+      "tick": 25,
+      "expected": {
+        "material": "tree",
+        "entity": "none"
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "none"
+      }
+    }
+  ],
+  "raw_front_note": "Descriptive decomposition only; never substitutes for the frozen score, which counts any invalid decision as incorrect.",
+  "all_returned_reason_audit_post_run_descriptive": [
+    {
+      "episode": "main_0",
+      "n": 40,
+      "tree_claims": 14,
+      "tree_claims_wrong": 9,
+      "tree_claim_records": [
+        {
+          "decision_index": 7,
+          "reason": "Facing a tree; chopping it should yield wood, which is needed to craft a wood_pickaxe.",
+          "actual_front": {
+            "material": "tree",
+            "entity": "none"
+          },
+          "wrong": false
+        },
+        {
+          "decision_index": 9,
+          "reason": "Facing a tree; need wood to craft wood_pickaxe. Already have 1 wood, need 1 more. Chop the tree in front.",
+          "actual_front": {
+            "material": "tree",
+            "entity": "none"
+          },
+          "wrong": false
+        },
+        {
+          "decision_index": 10,
+          "reason": "Facing grass, no tree in front. Need wood to craft wood_pickaxe. Move to a tree and chop it. Current position has trees nearby; first move toward a tree then do.",
+          "actual_front": {
+            "material": "grass",
+            "entity": "none"
+          },
+          "wrong": true
+        },
+        {
+          "decision_index": 11,
+          "reason": "Facing grass with no tree; need wood for wood_pickaxe. Current wood=2, need 3? Actually recipe likely 3 wood. I have 2, so need one more. There is a tree at (0,-3) relative, but I am at (0,-1) facing up. I can move up to (0,-2) then do to chop that tree. But front is grass, so do would no-op. Better move_up first to approach tree. However action must be one of listed; move_up is valid. I'll move 1",
+          "actual_front": {
+            "material": "grass",
+            "entity": "none"
+          },
+          "wrong": true
+        },
+        {
+          "decision_index": 15,
+          "reason": "Facing a tree at (0,-1) and need wood to craft a wood_pickaxe. Current wood is 2, need 3. The previous do action on a tree gave wood, so repeat do to chop the tree in front.",
+          "actual_front": {
+            "material": "tree",
+            "entity": "none"
+          },
+          "wrong": false
+        },
+        {
+          "decision_index": 16,
+          "reason": "Facing grass, no tree in front; need wood to craft wood_pickaxe. Move to a tree and chop it.",
+          "actual_front": {
+            "material": "grass",
+            "entity": "none"
+          },
+          "wrong": true
+        },
+        {
+          "decision_index": 19,
+          "reason": "Facing grass, no tree to chop. Need wood for pickaxe; but front is grass, so do is likely no_visible_effect. Better to move to a tree. However, current front is grass, so do would be wasted. I should move to a tree. But the goal is to make wood_pickaxe; I already have 3 wood, need 3 more? Actually wood_pickaxe requires 3 wood? In this schema, make_wood_pickaxe likely consumes 3 wood. I have 3 wood",
+          "actual_front": {
+            "material": "tree",
+            "entity": "none"
+          },
+          "wrong": false
+        },
+        {
+          "decision_index": 20,
+          "reason": "Facing grass, no tree in front. Need wood to craft wood_pickaxe. Current wood is 4, need 5? Actually recipe likely 5 wood. I have 4, so need one more. Nearest tree is at (-1,-1) relative, but I am at (0,-1) after moving up. I can move left to face tree and do. But front is grass, so do would no-op. Better move left to approach tree, then do. However action must be one of listed; move_left is valid",
+          "actual_front": {
+            "material": "grass",
+            "entity": "none"
+          },
+          "wrong": true
+        },
+        {
+          "decision_index": 22,
+          "reason": "Facing grass with no tree; need wood to craft wood_pickaxe. There is a tree at dx=-1,dy=0 (left). I will move left to face it, then chop. But current action is do on grass, which may be no_visible_effect. Better to move_left to face tree and then do. However the goal is to make wood_pickaxe; I already have 4 wood, enough? Wood pickaxe requires 3 wood? I have 4 wood, so I can craft directly. But no",
+          "actual_front": {
+            "material": "grass",
+            "entity": "none"
+          },
+          "wrong": true
+        },
+        {
+          "decision_index": 30,
+          "reason": "Facing a tree with 4 wood already in inventory. Need to gather more wood to craft wood_pickaxe (requires 5 wood? Actually recipe needs 5 wood? Standard: 3 planks + 2 sticks = 5 wood total). Current wood=4, so need one more. 'do' on tree should chop it.",
+          "actual_front": {
+            "material": "tree",
+            "entity": "none"
+          },
+          "wrong": false
+        },
+        {
+          "decision_index": 32,
+          "reason": "Need wood for wood_pickaxe; front is grass, but adjacent tree at (-1,2) and (1,2) are reachable. However, current facing is up (grass). To gather wood, must move to a tree and do. Since front is grass, do would likely no-op. Better to move toward a tree. Nearest tree is at (-1,2) or (1,2), both 3 steps away. I'll move right to (1,0) then down to (1,1) then down to (1,2) to face tree? Actually tree",
+          "actual_front": {
+            "material": "grass",
+            "entity": "none"
+          },
+          "wrong": true
+        },
+        {
+          "decision_index": 33,
+          "reason": "Facing grass with no entity; doing may harvest or interact. Since goal is to craft wood_pickaxe, need wood; but front is grass, so do may not help. However, recent do on tree gave wood; now facing grass, so do likely no effect. Better to move to a tree or iron? But goal is wood_pickaxe, need wood. I have 5 wood already, but no crafting table? Actually make_wood_pickaxe is available; need wood only",
+          "actual_front": {
+            "material": "grass",
+            "entity": "none"
+          },
+          "wrong": true
+        },
+        {
+          "decision_index": 35,
+          "reason": "Need wood to craft wood_pickaxe; currently have 5 wood, but need to gather more. Facing grass, no tree in front, so 'do' on grass may yield nothing. Better to move to a tree or use existing wood. Since goal is wood_pickaxe and we have 5 wood, check if we can craft now? No, need 5 wood and 0 sticks? Actually wood_pickaxe requires 3 planks and 2 sticks, but here we have raw wood. Need to craft plank",
+          "actual_front": {
+            "material": "grass",
+            "entity": "none"
+          },
+          "wrong": true
+        },
+        {
+          "decision_index": 38,
+          "reason": "Facing grass with no tree; need wood to craft wood_pickaxe. Since no tree in front, 'do' may be ineffective. Better to move to a tree. But current front is grass, so 'do' would likely no-op. I should move to a tree instead. However, the goal is to make wood_pickaxe, which requires wood. I have 5 wood already, so I can craft it. The action list includes make_wood_pickaxe. So I should use that. But ",
+          "actual_front": {
+            "material": "grass",
+            "entity": "none"
+          },
+          "wrong": true
+        }
+      ],
+      "explicit_position_decisions": 2,
+      "nonzero_position_decisions": 2,
+      "position_records": [
+        {
+          "decision_index": 11,
+          "position": [
+            0,
+            -1
+          ],
+          "nonzero": true,
+          "reason": "Facing grass with no tree; need wood for wood_pickaxe. Current wood=2, need 3? Actually recipe likely 3 wood. I have 2, so need one more. There is a tree at (0,-3) relative, but I am at (0,-1) facing up. I can move up to (0,-2) then do to chop that tree. But front is grass, so do would no-op. Better move_up first to approach tree. However action must be one of listed; move_up is valid. I'll move 1"
+        },
+        {
+          "decision_index": 20,
+          "position": [
+            0,
+            -1
+          ],
+          "nonzero": true,
+          "reason": "Facing grass, no tree in front. Need wood to craft wood_pickaxe. Current wood is 4, need 5? Actually recipe likely 5 wood. I have 4, so need one more. Nearest tree is at (-1,-1) relative, but I am at (0,-1) after moving up. I can move left to face tree and do. But front is grass, so do would no-op. Better move left to approach tree, then do. However action must be one of listed; move_left is valid"
+        }
+      ],
+      "adjacent_pairs": 39,
+      "similar_adjacent_pairs": 0,
+      "similarity_records": [
+        {
+          "decision_index": 1,
+          "ratio": 0.0,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 2,
+          "ratio": 0.7120743034055728,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 3,
+          "ratio": 0.8910256410256411,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 4,
+          "ratio": 0.39316239316239315,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 5,
+          "ratio": 0.4186046511627907,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 6,
+          "ratio": 0.4024024024024024,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 7,
+          "ratio": 0.27586206896551724,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 8,
+          "ratio": 0.18848167539267016,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 9,
+          "ratio": 0.4095238095238095,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 10,
+          "ratio": 0.556390977443609,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 11,
+          "ratio": 0.10695187165775401,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 12,
+          "ratio": 0.35062611806797855,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 13,
+          "ratio": 0.474025974025974,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 14,
+          "ratio": 0.794425087108014,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 15,
+          "ratio": 0.42443729903536975,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 16,
+          "ratio": 0.5433962264150943,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 17,
+          "ratio": 0.45161290322580644,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 18,
+          "ratio": 0.11336032388663968,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 19,
+          "ratio": 0.105,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 20,
+          "ratio": 0.065,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 21,
+          "ratio": 0.38181818181818183,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 22,
+          "ratio": 0.12727272727272726,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 23,
+          "ratio": 0.28,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 24,
+          "ratio": 0.184,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 25,
+          "ratio": 0.2396694214876033,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 26,
+          "ratio": 0.041407867494824016,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 27,
+          "ratio": 0.2260596546310832,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 28,
+          "ratio": 0.19435736677115986,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 29,
+          "ratio": 0.2002503128911139,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 30,
+          "ratio": 0.08294930875576037,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 31,
+          "ratio": 0.3173076923076923,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 32,
+          "ratio": 0.04964539007092199,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 33,
+          "ratio": 0.11,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 34,
+          "ratio": 0.336283185840708,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 35,
+          "ratio": 0.18761061946902655,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 36,
+          "ratio": 0.16182572614107885,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 37,
+          "ratio": 0.009280742459396751,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 38,
+          "ratio": 0.12032085561497326,
+          "at_least_0_9": false
+        },
+        {
+          "decision_index": 39,
+          "ratio": 0.27586206896551724,
+          "at_least_0_9": false
+        }
+      ]
+    },
+    {
+      "episode": "main_1",
+      "n": 2,
+      "tree_claims": 0,
+      "tree_claims_wrong": 0,
+      "tree_claim_records": [],
+      "explicit_position_decisions": 0,
+      "nonzero_position_decisions": 0,
+      "position_records": [],
+      "adjacent_pairs": 1,
+      "similar_adjacent_pairs": 1,
+      "similarity_records": [
+        {
+          "decision_index": 1,
+          "ratio": 0.9325153374233128,
+          "at_least_0_9": true
+        }
+      ]
+    }
+  ],
+  "all_returned_reason_audit_note": "Supplementary descriptive accounting added after the protocol stop to include invalid decisions. Frozen accepted-decision counts remain in G0p2.json; no gate score or threshold changes."
+}

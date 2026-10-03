@@ -1,7 +1,8 @@
 {
-  "implementation_revision": 3,
-  "G0p_frozen_manifest": "revision3/G0p_MANIFEST.json",
-  "downstream_gates": "not_started_after_G0p_failure",
-  "revision3_pilot": "not_frozen",
-  "historical_revision2_manifest": "G0_MANIFEST_revision2.json"
+  "current": "revision3_round2/G0p2_MANIFEST.json",
+  "historical": [
+    "revision3/G0p_MANIFEST.json",
+    "G0_MANIFEST_revision2.json"
+  ],
+  "criteria_unchanged": true
 }

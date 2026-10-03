@@ -1,0 +1,27 @@
+{
+  "audit_passed": true,
+  "gate_verdict": "unverified",
+  "frozen_report_batch_verdict": "unverified",
+  "reasoning_excluded_from_gate": true,
+  "checks": {
+    "frozen_sources": 26,
+    "historical_files_unchanged": 148,
+    "sampling_and_job_order_reproduced": 1,
+    "raw_observations_and_oracles": 60,
+    "qa_requests": 180,
+    "qa_responses": 180,
+    "live_inputs_from_raw_observation": 42,
+    "live_requests": 42,
+    "response_route_metadata": 222
+  },
+  "live_counts": {
+    "main": {
+      "n": 42,
+      "correct": 32,
+      "episodes": 2
+    },
+    "reasoning": {}
+  },
+  "execution_rejections_after_schema_valid_output": [],
+  "claim_ceiling": "Boundary reconciliation only; no learning conclusion. CPU temperature unverified."
+}
