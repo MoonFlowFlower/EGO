@@ -1,0 +1,132 @@
+{
+  "version": "routing-v2",
+  "created_utc": "2026-10-03T09:33:29.116457+00:00",
+  "sources": {
+    "p7/routing_v2.py": "8dd7567e9bb056d255ed83e008a3bb12b29fbb9775f71d67101204bbc446eec4",
+    "p7/routing_v2.json": "400806b87525a06e6f5c888bc565bd34e7a5fa79bf6077aa661ebfc4f159885a",
+    "p7/active_proxy.py": "e2deb264edbfd5ef46177806bdd5dc551b0dde69ec6908b6578a12ae3b86ec8a",
+    "p7/smoke_routing_v2.py": "422c10b0dfce18137d128cd5caa5c19de65aae2cf073ae158213ccce9c6d51a2",
+    "p7/test_routing_v2.py": "a1e88c7958976769528229cf2e3273fb56a146d5ac391d3e4a988edb256f8707",
+    "evidence/routing/ROUTING_V2_PRE_RUN.md": "b17559cf8463e945fbe457736ac34df71a447e767a45dfbe6ac2f080deb4c22e"
+  },
+  "v1_manifest_sha256": "8b02f3c48507394fb6e94b9d88b11d30b8a9d7ce35f71221e9c9f0ebad8d9561",
+  "configuration": {
+    "version": "routing-v2",
+    "public_model": "ego-companion",
+    "routes": [
+      {
+        "model": "deepseek/deepseek-v4.1-flash",
+        "route": "wafer"
+      },
+      {
+        "model": "deepseek/deepseek-v4.1-flash",
+        "route": "together"
+      },
+      {
+        "model": "google/gemini-3.1-flash-lite",
+        "route": "google-vertex/eu"
+      }
+    ],
+    "policy": {
+      "provider": {
+        "allow_fallbacks": false,
+        "data_collection": "deny",
+        "zdr": true,
+        "require_parameters": true,
+        "max_price": {
+          "prompt": 1,
+          "completion": 2
+        }
+      },
+      "fallback_http_statuses": [
+        404,
+        429,
+        502,
+        503,
+        504
+      ],
+      "metadata_ttl_seconds": 60,
+      "cooldown_seconds": 30,
+      "timeout_seconds": 30,
+      "max_attempts_per_request": 3,
+      "shared_budget_usd": 5
+    }
+  },
+  "route_index": 2,
+  "prompts": [
+    {
+      "kind": "json",
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "Return only this JSON object: {\"ok\":true}"
+          }
+        ],
+        "response_format": {
+          "type": "json_object"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "请只回复：收到"
+          }
+        ],
+        "stream": true
+      }
+    },
+    {
+      "kind": "tool",
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call echo with value p7. Do not execute anything."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "echo",
+              "description": "Return a value (inspection only; never executed)",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "echo"
+          }
+        }
+      }
+    }
+  ],
+  "inference": {
+    "temperature": 0,
+    "reasoning": {
+      "enabled": false
+    },
+    "max_tokens": 512
+  },
+  "max_calls": 3,
+  "additional_budget_cap_usd": 0.2,
+  "v1_v2_cap_usd": 0.6
+}

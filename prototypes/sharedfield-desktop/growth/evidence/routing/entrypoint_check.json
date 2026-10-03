@@ -1,0 +1,9 @@
+{
+  "private_process_entry": "PASS",
+  "model_alias": "ego-companion",
+  "eligible_route_count": 3,
+  "paid_calls": 0,
+  "process_exit_code": 0,
+  "ledger_unchanged": true,
+  "port_18787_closed": true
+}

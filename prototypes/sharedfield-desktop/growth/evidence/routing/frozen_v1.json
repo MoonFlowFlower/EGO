@@ -1,0 +1,135 @@
+{
+  "version": "routing-v1",
+  "created_utc": "2026-10-03T09:30:04.067604+00:00",
+  "sources": {
+    "p7/proxy.py": "3f49356f54fc71781c2d0e6d0e06400e7af5543b43561b0aeae43ce4ea804eaf",
+    "p7/routing.py": "68cab0ee0a9fdf7697835ac7bed475551be48258f6f3ae447acc0ce0fdfad57f",
+    "p7/routing_v1.json": "7b51874153c74a4134e1fdf24ad6f2dbe65206bb8d63774cb8985916f9c98d38",
+    "p7/runtime_session.py": "7106aa8857cf2b6627fe797f64022118d31056e6107986865d16cc3ddb1f6f01",
+    "p7/launch_proxy.py": "ede66a0d34b28833dbef04f2f7400fb89ce1afe71660d487fc8e90a0df385269",
+    "p7/smoke_routing.py": "4f9b795cb1174e4b7f89229fd47efbddadacdd194275ea92f7f8be5152385eeb",
+    "p7/test_proxy.py": "414280cd54281a919b8a428bf92491f50a8c36a024067ad3f578a5dfe517089a",
+    "p7/test_routing.py": "f1734545cf524b27aefb67e782f7c1b032f8a0089938d31a76144c10b9135122",
+    "growthlab/models.py": "5831046b024cfc5da2caf530c063f02b24d67994bdd937c6893a027895283e01",
+    "evidence/routing/ROUTING_V1_PRE_RUN.md": "4d69c709143a548924bca1d2388ce884f29d4b67ab6a647148549dd339cf93d7"
+  },
+  "configuration": {
+    "version": "routing-v1",
+    "public_model": "ego-companion",
+    "routes": [
+      {
+        "model": "deepseek/deepseek-v4.1-flash",
+        "route": "wafer"
+      },
+      {
+        "model": "deepseek/deepseek-v4.1-flash",
+        "route": "together"
+      },
+      {
+        "model": "z-ai/glm-5.3-flash",
+        "route": "baseten/fp8"
+      }
+    ],
+    "policy": {
+      "provider": {
+        "allow_fallbacks": false,
+        "data_collection": "deny",
+        "zdr": true,
+        "require_parameters": true,
+        "max_price": {
+          "prompt": 1,
+          "completion": 2
+        }
+      },
+      "fallback_http_statuses": [
+        404,
+        429,
+        502,
+        503,
+        504
+      ],
+      "metadata_ttl_seconds": 60,
+      "cooldown_seconds": 30,
+      "timeout_seconds": 30,
+      "max_attempts_per_request": 3,
+      "shared_budget_usd": 5
+    }
+  },
+  "prompts": [
+    {
+      "kind": "json",
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "Return only this JSON object: {\"ok\":true}"
+          }
+        ],
+        "response_format": {
+          "type": "json_object"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "请只回复：收到"
+          }
+        ],
+        "stream": true
+      }
+    },
+    {
+      "kind": "tool",
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call echo with value p7. Do not execute anything."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "echo",
+              "description": "Return a value (inspection only; never executed)",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "echo"
+          }
+        }
+      }
+    }
+  ],
+  "max_calls": 9,
+  "additional_budget_cap_usd": 0.6,
+  "inference": {
+    "temperature": 0,
+    "reasoning": {
+      "enabled": false
+    },
+    "max_tokens": 512
+  },
+  "u1_v1_manifest_sha256": "659b00ea9e5e61cf8233c67072a700fafe561cc4e49c666047f12a40fa92b870",
+  "official_metadata_sha256": "ba0071dd44ae51f791ec343168c9acc8299deb2f596e76006da837a644806151"
+}

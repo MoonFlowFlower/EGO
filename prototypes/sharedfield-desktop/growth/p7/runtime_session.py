@@ -10,13 +10,14 @@ import json
 import sys
 
 from growthlab.models import read_key
-from p7.proxy import FixedRouteTransport, ProxyServer
+from p7.proxy import ProxyServer
+from p7.routing import RoutedTransport
 
 
 def main():
     if sys.stdout.isatty() or '--private-pipe' not in sys.argv:
         raise SystemExit('private_parent_pipe_required')
-    transport = FixedRouteTransport(api_key=read_key())
+    transport = RoutedTransport(api_key=read_key())
     metadata = transport.preflight()
     # Electron file:// documents use the literal opaque Origin "null".
     # The unpredictable Bearer token is still required for every API call.

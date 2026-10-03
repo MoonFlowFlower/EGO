@@ -1,0 +1,26 @@
+{
+  "u1_frozen_v1_unchanged": true,
+  "routing_frozen_sources": {
+    "1": {
+      "files": 10,
+      "all_match": true
+    },
+    "2": {
+      "files": 6,
+      "all_match": true
+    }
+  },
+  "engineering_checks_passed": 33,
+  "initial_duplicate_test_failures": 4,
+  "actual_attempts": 12,
+  "reported_attempts": 9,
+  "reserved_unknown_attempts": 3,
+  "new_reported_cost_usd": 0.000229275,
+  "new_unknown_reserved_usd": 0.15000000000000002,
+  "shared_ledger_total_usd": 0.9547389175900001,
+  "credential_scan_files": 401,
+  "cloud_key_hits": [],
+  "mindcraft_model_alias": "ego-companion",
+  "mc_agents_started": 0,
+  "u1_new_experiment_started": false
+}

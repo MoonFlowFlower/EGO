@@ -78,7 +78,7 @@ def _validate_function(function):
         raise ProxyError("invalid_function")
 
 
-def prepare_request(request):
+def prepare_request(request, *, model=MODEL, provider=None):
     """Preserve message/tool objects; own only transport and bounded output fields."""
     if not isinstance(request, dict):
         raise ProxyError("invalid_request")
@@ -90,7 +90,7 @@ def prepare_request(request):
     }
     if set(request) - allowed:
         raise ProxyError("unsupported_request_field")
-    if request.get("model", MODEL) != MODEL:
+    if request.get("model", model) != model:
         raise ProxyError("model_not_authorized")
     if request.get("n", 1) != 1 or isinstance(request.get("n", 1), bool):
         raise ProxyError("multiple_completions_not_allowed")
@@ -161,7 +161,7 @@ def prepare_request(request):
         raise ProxyError("invalid_reasoning_limit")
     payload = copy.deepcopy(before_forward(request))
     payload.pop("max_completion_tokens", None)
-    payload.update(model=MODEL, max_tokens=maximum, provider=copy.deepcopy(PROVIDER))
+    payload.update(model=model, max_tokens=maximum, provider=copy.deepcopy(PROVIDER if provider is None else provider))
     payload.setdefault("stream", False)
     if effort is None:
         payload.setdefault("reasoning", {"enabled": False})
@@ -345,6 +345,8 @@ class ProxyServer:
         self.token = secrets.token_urlsafe(32)
         self.allowed_origins = frozenset(allowed_origins)
         self.audit = AuditLog(log_dir, (self.token, transport._key))
+        if hasattr(transport, "set_audit"):
+            transport.set_audit(self.audit)
         self.httpd = _LoopbackHTTPServer(("127.0.0.1", port), _Handler)
         self.httpd.owner = self
         self.base_url = "http://127.0.0.1:%d/v1" % self.httpd.server_address[1]
@@ -356,7 +358,7 @@ class ProxyServer:
         self._thread = threading.Thread(target=self.httpd.serve_forever, kwargs={"poll_interval": .1}, daemon=True)
         self._thread.start()
         self.audit.write("events.jsonl", {"unix_s": time.time(), "outcome": "started", "base_url": self.base_url,
-                                          "model": MODEL, "route": ROUTE, "budget_limit_usd": self.transport.ledger.limit})
+                                          "model": self.transport.model, "route": self.transport.route, "budget_limit_usd": self.transport.ledger.limit})
         return self
 
     def close(self):
@@ -437,7 +439,8 @@ class _Handler(BaseHTTPRequestHandler):
             cost = self.owner.transport.ledger.settle(call.charge_id, usage)
             event.update(charge_id=call.charge_id, reserved_usd=call.reserved_usd, cost_usd=cost,
                          input_tokens=usage.get("prompt_tokens"), output_tokens=usage.get("completion_tokens"),
-                         stream=call.payload["stream"])
+                         stream=call.payload["stream"], requested_model=call.payload["model"],
+                         requested_providers=call.payload["provider"]["only"])
         event["budget_reserved_or_reported_usd"] = self.owner.transport.ledger.total()
         self.owner.audit.write("events.jsonl", event)
 
@@ -459,7 +462,7 @@ class _Handler(BaseHTTPRequestHandler):
             self._check_request()
             if self.path != "/v1/models":
                 raise ProxyError("not_found", 404)
-            self._json(200, {"object": "list", "data": [{"id": MODEL, "object": "model", "created": 0, "owned_by": "p7-fixed-route"}]})
+            self._json(200, {"object": "list", "data": [{"id": self.owner.transport.model, "object": "model", "created": 0, "owned_by": "p7-local-proxy"}]})
             self._event("models", start)
         except ProxyError as error:
             self._event("rejected", start, error=error)

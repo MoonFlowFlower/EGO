@@ -1,0 +1,18 @@
+{
+  "version": "routing-v1",
+  "public_model": "ego-companion",
+  "routes": [
+    {"model": "deepseek/deepseek-v4.1-flash", "route": "wafer"},
+    {"model": "deepseek/deepseek-v4.1-flash", "route": "together"},
+    {"model": "z-ai/glm-5.3-flash", "route": "baseten/fp8"}
+  ],
+  "policy": {
+    "provider": {"allow_fallbacks": false, "data_collection": "deny", "zdr": true, "require_parameters": true, "max_price": {"prompt": 1, "completion": 2}},
+    "fallback_http_statuses": [404, 429, 502, 503, 504],
+    "metadata_ttl_seconds": 60,
+    "cooldown_seconds": 30,
+    "timeout_seconds": 30,
+    "max_attempts_per_request": 3,
+    "shared_budget_usd": 5
+  }
+}

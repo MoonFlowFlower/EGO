@@ -1,0 +1,266 @@
+{
+  "manifest_sha256": "8b02f3c48507394fb6e94b9d88b11d30b8a9d7ce35f71221e9c9f0ebad8d9561",
+  "route_pass": [
+    true,
+    true,
+    false
+  ],
+  "probes": [
+    {
+      "route_index": 0,
+      "model": "deepseek/deepseek-v4.1-flash",
+      "route": "wafer",
+      "probe": "json",
+      "pass": true,
+      "http_status": 200,
+      "actual_model": "deepseek/deepseek-v4.1-flash",
+      "actual_provider": "Wafer",
+      "cost_usd": 4.35e-06,
+      "usage": {
+        "prompt_tokens": 15,
+        "completion_tokens": 6,
+        "total_tokens": 21,
+        "cost": 4.35e-06,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 4.35e-06,
+          "upstream_inference_prompt_cost": 7.5e-07,
+          "upstream_inference_completions_cost": 3.6e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "latency_s": 0.8335,
+      "ledger_total_usd": 0.80451399259
+    },
+    {
+      "route_index": 0,
+      "model": "deepseek/deepseek-v4.1-flash",
+      "route": "wafer",
+      "probe": "stream",
+      "pass": true,
+      "http_status": 200,
+      "actual_model": "deepseek/deepseek-v4.1-flash",
+      "actual_provider": "Wafer",
+      "cost_usd": 1.65e-06,
+      "usage": {
+        "prompt_tokens": 9,
+        "completion_tokens": 2,
+        "total_tokens": 11,
+        "cost": 1.65e-06,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 1.65e-06,
+          "upstream_inference_prompt_cost": 4.5e-07,
+          "upstream_inference_completions_cost": 1.2e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "latency_s": 0.5373,
+      "ledger_total_usd": 0.8045156425900001
+    },
+    {
+      "route_index": 0,
+      "model": "deepseek/deepseek-v4.1-flash",
+      "route": "wafer",
+      "probe": "tool",
+      "pass": true,
+      "http_status": 200,
+      "actual_model": "deepseek/deepseek-v4.1-flash",
+      "actual_provider": "Wafer",
+      "cost_usd": 2.645e-05,
+      "usage": {
+        "prompt_tokens": 289,
+        "completion_tokens": 20,
+        "total_tokens": 309,
+        "cost": 2.645e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 2.645e-05,
+          "upstream_inference_prompt_cost": 1.445e-05,
+          "upstream_inference_completions_cost": 1.2e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "latency_s": 0.5323,
+      "ledger_total_usd": 0.8045420925900001
+    },
+    {
+      "route_index": 1,
+      "model": "deepseek/deepseek-v4.1-flash",
+      "route": "together",
+      "probe": "json",
+      "pass": true,
+      "http_status": 200,
+      "actual_model": "deepseek/deepseek-v4.1-flash",
+      "actual_provider": "Together",
+      "cost_usd": 1.17e-05,
+      "usage": {
+        "prompt_tokens": 15,
+        "completion_tokens": 6,
+        "total_tokens": 21,
+        "cost": 1.17e-05,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 1.17e-05,
+          "upstream_inference_prompt_cost": 4.5e-06,
+          "upstream_inference_completions_cost": 7.2e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "latency_s": 0.5874,
+      "ledger_total_usd": 0.80455379259
+    },
+    {
+      "route_index": 1,
+      "model": "deepseek/deepseek-v4.1-flash",
+      "route": "together",
+      "probe": "stream",
+      "pass": true,
+      "http_status": 200,
+      "actual_model": "deepseek/deepseek-v4.1-flash",
+      "actual_provider": "Together",
+      "cost_usd": 5.1e-06,
+      "usage": {
+        "prompt_tokens": 9,
+        "completion_tokens": 2,
+        "total_tokens": 11,
+        "cost": 5.1e-06,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 5.1e-06,
+          "upstream_inference_prompt_cost": 2.7e-06,
+          "upstream_inference_completions_cost": 2.4e-06
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "latency_s": 0.2046,
+      "ledger_total_usd": 0.80455889259
+    },
+    {
+      "route_index": 1,
+      "model": "deepseek/deepseek-v4.1-flash",
+      "route": "together",
+      "probe": "tool",
+      "pass": true,
+      "http_status": 200,
+      "actual_model": "deepseek/deepseek-v4.1-flash",
+      "actual_provider": "Together",
+      "cost_usd": 0.0001308,
+      "usage": {
+        "prompt_tokens": 284,
+        "completion_tokens": 38,
+        "total_tokens": 322,
+        "cost": 0.0001308,
+        "is_byok": false,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "cache_write_tokens": 0,
+          "audio_tokens": 0,
+          "video_tokens": 0
+        },
+        "cost_details": {
+          "upstream_inference_cost": 0.0001308,
+          "upstream_inference_prompt_cost": 8.52e-05,
+          "upstream_inference_completions_cost": 4.56e-05
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0,
+          "image_tokens": 0,
+          "audio_tokens": 0
+        }
+      },
+      "latency_s": 0.2726,
+      "ledger_total_usd": 0.80468969259
+    },
+    {
+      "route_index": 2,
+      "model": "z-ai/glm-5.3-flash",
+      "route": "baseten/fp8",
+      "probe": "json",
+      "pass": false,
+      "http_status": 400,
+      "error": "http_error",
+      "latency_s": 0.4761,
+      "ledger_total_usd": 0.85468969259
+    },
+    {
+      "route_index": 2,
+      "model": "z-ai/glm-5.3-flash",
+      "route": "baseten/fp8",
+      "probe": "stream",
+      "pass": false,
+      "http_status": 400,
+      "error": "http_error",
+      "latency_s": 0.1463,
+      "ledger_total_usd": 0.9046896925900001
+    },
+    {
+      "route_index": 2,
+      "model": "z-ai/glm-5.3-flash",
+      "route": "baseten/fp8",
+      "probe": "tool",
+      "pass": false,
+      "http_status": 404,
+      "error": "http_error",
+      "latency_s": 0.12,
+      "ledger_total_usd": 0.95468969259
+    }
+  ],
+  "budget_before_usd": 0.80450964259,
+  "budget_after_usd": 0.95468969259,
+  "additional_reserved_or_reported_usd": 0.15018005,
+  "reported_success_cost_usd": 0.00018005,
+  "temporary_proxies_closed": true,
+  "generated_tools_executed": 0,
+  "claim": "connectivity_only_not_unlimited_or_learning_quality"
+}

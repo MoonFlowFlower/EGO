@@ -10,7 +10,8 @@ import argparse
 import queue
 import threading
 
-from .proxy import DEFAULT_ORIGINS, MODEL, FixedRouteTransport, ProxyError, ProxyServer
+from .proxy import DEFAULT_ORIGINS, ProxyError, ProxyServer
+from .routing import RoutedTransport, configuration
 
 
 def main():
@@ -20,6 +21,8 @@ def main():
     parser = argparse.ArgumentParser(description="P7 loopback proxy; enter credentials in its local window")
     parser.add_argument("--port", type=int, default=8787)
     parser.add_argument("--origin", action="append", default=[], help="Explicit AIRI local webview origin; no credentials")
+    parser.add_argument("--routing-mode", choices=("product", "pinned"), default="product")
+    parser.add_argument("--route-index", type=int, choices=range(3), default=0, help="Pinned route index; product mode uses its frozen order")
     args = parser.parse_args()
     if not 0 <= args.port <= 65535:
         parser.error("port must be between 0 and 65535")
@@ -33,14 +36,16 @@ def main():
     credential = tk.StringVar()
     key_entry = ttk.Entry(frame, textvariable=credential, show="*", width=68)
     key_entry.grid(row=1, column=0, columnspan=3, sticky="ew", pady=(4, 12))
-    ttk.Label(frame, text="Model: " + MODEL).grid(row=2, column=0, columnspan=3, sticky="w")
-    ttk.Label(frame, text="Phase 1 shared budget: $5 maximum; fixed ZDR route; no fallbacks").grid(row=3, column=0, columnspan=3, sticky="w")
+    config = configuration()
+    label = config["public_model"] if args.routing_mode == "product" else config["routes"][args.route_index]["model"]
+    ttk.Label(frame, text="Model: " + label + " (" + args.routing_mode + ")").grid(row=2, column=0, columnspan=3, sticky="w")
+    ttk.Label(frame, text="Shared $5 budget; ZDR; product: 3 routes; pinned: no fallback").grid(row=3, column=0, columnspan=3, sticky="w")
     status = tk.StringVar(value="Stopped. Keys and tokens are not saved by this panel.")
     ttk.Label(frame, textvariable=status).grid(row=4, column=0, columnspan=3, sticky="w", pady=(10, 6))
     endpoint, token = tk.StringVar(), tk.StringVar()
     ttk.Label(frame, text="Base URL").grid(row=5, column=0, sticky="w")
     ttk.Entry(frame, textvariable=endpoint, state="readonly", width=67).grid(row=6, column=0, columnspan=3, sticky="ew")
-    ttk.Label(frame, text="Session token (use only in a client that does not persist it)").grid(row=7, column=0, columnspan=3, sticky="w", pady=(10, 0))
+    ttk.Label(frame, text="Local session token (AIRI local storage authorized; never use the cloud key)").grid(row=7, column=0, columnspan=3, sticky="w", pady=(10, 0))
     token_entry = ttk.Entry(frame, textvariable=token, show="*", state="readonly", width=67)
     token_entry.grid(row=8, column=0, columnspan=3, sticky="ew")
     revealed = tk.BooleanVar(value=False)
@@ -51,7 +56,7 @@ def main():
     def create_server(api_key, generation):
         server = None
         try:
-            transport = FixedRouteTransport(api_key=api_key)
+            transport = RoutedTransport(api_key=api_key, mode=args.routing_mode, route_index=args.route_index)
             transport.preflight()
             server = ProxyServer(transport, port=args.port, allowed_origins=set(DEFAULT_ORIGINS) | set(args.origin))
             server.start()
@@ -69,7 +74,7 @@ def main():
         credential.set("")
         key_entry.configure(state="disabled")
         start_button.configure(state="disabled")
-        status.set("Checking fixed ZDR endpoint; no completion request is sent.")
+        status.set("Checking authorized ZDR endpoints; no completion request is sent.")
         active["generation"] += 1
         threading.Thread(target=create_server, args=(api_key, active["generation"]), daemon=True).start()
 
