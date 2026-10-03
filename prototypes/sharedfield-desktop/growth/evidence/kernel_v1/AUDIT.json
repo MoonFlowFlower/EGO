@@ -1,0 +1,470 @@
+{
+  "generated_at": "2026-10-03T18:33:06.662118+00:00",
+  "claim": "bounded_engineering_loop_pass; not U1 learning pass",
+  "frozen_v1_2_files": 26,
+  "frozen_changed": [],
+  "offline_python_tests": 11,
+  "offline_bridge_assertions": 4,
+  "official_body_offline_probe": "pass_no_model_no_generated_code",
+  "sessions": [
+    {
+      "id": "1791049315801778000",
+      "revision": "v1.0",
+      "model_calls": 2,
+      "cost_usd": "0.00021095",
+      "pid": 9256,
+      "closed": [
+        {
+          "event": "supervisor_closed",
+          "reason": "owner_closed",
+          "unix_s": 1791049885.3983412,
+          "budget_total": 1.2505028095900002
+        }
+      ],
+      "body_exit": [
+        {
+          "event": "body_exit",
+          "unix_s": 1791049885.226992,
+          "exit_code": 0
+        }
+      ],
+      "http_failures": [],
+      "turns": [
+        {
+          "event": "turn_done",
+          "event_id": "airi:4da7f4633ef8a4c7314bd63113190d722136b9ad2dab6b71e692e3e902298234",
+          "conversation_id": "ego:Moonlight",
+          "channel": "airi",
+          "receipt_count": 1
+        }
+      ],
+      "native_replays": [],
+      "actions": [],
+      "body_state_samples": 568
+    },
+    {
+      "id": "1791049983970937400",
+      "revision": "v1.1",
+      "model_calls": 2,
+      "cost_usd": "0.000230278",
+      "pid": 22224,
+      "closed": [
+        {
+          "event": "supervisor_closed",
+          "reason": "owner_closed",
+          "unix_s": 1791050484.931922,
+          "budget_total": 1.25073308759
+        }
+      ],
+      "body_exit": [
+        {
+          "event": "body_exit",
+          "unix_s": 1791050484.75894,
+          "exit_code": 0
+        }
+      ],
+      "http_failures": [
+        {
+          "event": "rejected",
+          "code": "unauthorized"
+        },
+        {
+          "event": "rejected",
+          "code": "unauthorized"
+        }
+      ],
+      "turns": [
+        {
+          "event": "turn_done",
+          "event_id": "airi:06f0bf72674ee08a8db198896ee1ab2b7609135869b3b0cc4a10d8155c76d873",
+          "conversation_id": "ego:Moonlight",
+          "channel": "airi",
+          "receipt_count": 1
+        }
+      ],
+      "native_replays": [],
+      "actions": [],
+      "body_state_samples": 499
+    },
+    {
+      "id": "1791050497447919300",
+      "revision": "v1.1",
+      "model_calls": 2,
+      "cost_usd": "0.000247180",
+      "pid": 39632,
+      "closed": [
+        {
+          "event": "supervisor_closed",
+          "reason": "owner_closed",
+          "unix_s": 1791051200.5969417,
+          "budget_total": 1.2509802675900001
+        }
+      ],
+      "body_exit": [
+        {
+          "event": "body_exit",
+          "unix_s": 1791051200.4349275,
+          "exit_code": 0
+        }
+      ],
+      "http_failures": [],
+      "turns": [
+        {
+          "event": "turn_done",
+          "event_id": "mc:a08a500e120f42bdb5434a2c0c17e769",
+          "conversation_id": "ego:Moonlight",
+          "channel": "minecraft",
+          "receipt_count": 1
+        }
+      ],
+      "native_replays": [
+        {
+          "event": "airi_replay",
+          "event_id": null,
+          "model_called": false
+        },
+        {
+          "event": "airi_replay",
+          "event_id": null,
+          "model_called": false
+        }
+      ],
+      "actions": [
+        {
+          "event_id": "mc:a08a500e120f42bdb5434a2c0c17e769",
+          "step": 0,
+          "action": "approach",
+          "verified": true,
+          "status": "approach_checked"
+        }
+      ],
+      "body_state_samples": 701
+    },
+    {
+      "id": "1791051291151211600",
+      "revision": "v1.2",
+      "model_calls": 4,
+      "cost_usd": "0.000655278",
+      "pid": 46160,
+      "closed": [
+        {
+          "event": "supervisor_closed",
+          "reason": "owner_closed",
+          "unix_s": 1791052252.3109,
+          "budget_total": 1.2516355455900001
+        }
+      ],
+      "body_exit": [
+        {
+          "event": "body_exit",
+          "unix_s": 1791052252.1410787,
+          "exit_code": 0
+        }
+      ],
+      "http_failures": [
+        {
+          "event": "rejected",
+          "code": "unauthorized"
+        }
+      ],
+      "turns": [
+        {
+          "event": "turn_done",
+          "event_id": "mc:122faab8cb664183937fcf359755094b",
+          "conversation_id": "ego:Moonlight",
+          "channel": "minecraft",
+          "receipt_count": 1
+        },
+        {
+          "event": "turn_done",
+          "event_id": "airi:9d46eaadfb7557c357c4c6353209ee60f42e701305423d9d32de467d4d98cc38",
+          "conversation_id": "ego:Moonlight",
+          "channel": "airi",
+          "receipt_count": 1
+        },
+        {
+          "event": "turn_done",
+          "event_id": "airi:3748725c52527fafd1aa1fd7d4a10b52a10fa43faa8c2b17f6e732d2f388e6d4",
+          "conversation_id": "ego:Moonlight",
+          "channel": "airi",
+          "receipt_count": 0
+        },
+        {
+          "event": "turn_done",
+          "event_id": "airi:3d2bc3d32d37b842067923cac7afd8aacc29106b9d655f83d2da9ecdaedf3dcc",
+          "conversation_id": "ego:Moonlight",
+          "channel": "airi",
+          "receipt_count": 0
+        },
+        {
+          "event": "turn_done",
+          "event_id": "airi:bc5d80518ba6aa96ff9bbfb7b7d2504c21c6a85022dff298e6b11c246375db1c",
+          "conversation_id": "ego:Moonlight",
+          "channel": "airi",
+          "receipt_count": 1
+        }
+      ],
+      "native_replays": [
+        {
+          "event": "airi_replay",
+          "event_id": "mc:a08a500e120f42bdb5434a2c0c17e769",
+          "model_called": false
+        },
+        {
+          "event": "airi_replay",
+          "event_id": "mc:122faab8cb664183937fcf359755094b",
+          "model_called": false
+        }
+      ],
+      "actions": [
+        {
+          "event_id": "mc:122faab8cb664183937fcf359755094b",
+          "step": 0,
+          "action": "follow",
+          "verified": true,
+          "status": "following_started_only"
+        }
+      ],
+      "body_state_samples": 960
+    }
+  ],
+  "model_calls": 10,
+  "successful_reported_cost_usd": "0.001343686",
+  "single_model_route": true,
+  "body_state_samples": 2728,
+  "all_body_snapshots_model_free_and_generated_code_off": true,
+  "shared_ledger_by_status": {
+    "reported": {
+      "count": 2537,
+      "usd": 0.25163554559
+    },
+    "reserved_unknown": {
+      "count": 20,
+      "usd": 1.0
+    }
+  },
+  "charge_ids_reconciled": true,
+  "acceptance_turns": [
+    {
+      "event_id": "airi:4da7f4633ef8a4c7314bd63113190d722136b9ad2dab6b71e692e3e902298234",
+      "channel": "airi",
+      "user_id": "c5d2a9c85144416e945bbae46f0d70c2",
+      "reply_id": "a2f54d1eebd04016bbda145f654f1258",
+      "phase": "done"
+    },
+    {
+      "event_id": "airi:06f0bf72674ee08a8db198896ee1ab2b7609135869b3b0cc4a10d8155c76d873",
+      "channel": "airi",
+      "user_id": "6b52dc1b249a461789a3c3514c386912",
+      "reply_id": "a6e557028be940d38f57290a33bd5b67",
+      "phase": "done"
+    },
+    {
+      "event_id": "mc:a08a500e120f42bdb5434a2c0c17e769",
+      "channel": "minecraft",
+      "user_id": "b3747e373d4b4804891de44c7c7a077a",
+      "reply_id": "11f73cfe043c4aa58afa08efa5f3cf4f",
+      "phase": "done"
+    },
+    {
+      "event_id": "mc:122faab8cb664183937fcf359755094b",
+      "channel": "minecraft",
+      "user_id": "87bf74323e9f4c02b7ebc202eef6f848",
+      "reply_id": "09bd98447d9d4ea7900b37467b178392",
+      "phase": "done"
+    },
+    {
+      "event_id": "airi:9d46eaadfb7557c357c4c6353209ee60f42e701305423d9d32de467d4d98cc38",
+      "channel": "airi",
+      "user_id": "2769989b79454be4b4c52c2fc3d62380",
+      "reply_id": "7774ffd706d24111aab49cb1c797125f",
+      "phase": "done"
+    },
+    {
+      "event_id": "airi:3748725c52527fafd1aa1fd7d4a10b52a10fa43faa8c2b17f6e732d2f388e6d4",
+      "channel": "airi",
+      "user_id": "7d691e88f40a49b7b200763a9b308a64",
+      "reply_id": "21b4f6d2725d4be78ffbdf09e01ed669",
+      "phase": "done"
+    },
+    {
+      "event_id": "airi:3d2bc3d32d37b842067923cac7afd8aacc29106b9d655f83d2da9ecdaedf3dcc",
+      "channel": "airi",
+      "user_id": "ba698163ba2c464fa1170a41ed9690f9",
+      "reply_id": "333ce7404a524e0b930cbed3b9eb4bb3",
+      "phase": "done"
+    },
+    {
+      "event_id": "airi:bc5d80518ba6aa96ff9bbfb7b7d2504c21c6a85022dff298e6b11c246375db1c",
+      "channel": "airi",
+      "user_id": "65a5b37626814f7fb1b43bb129fef04a",
+      "reply_id": "0edf790265b749709306bdec936a706f",
+      "phase": "done"
+    }
+  ],
+  "action_receipts": [
+    {
+      "record_id": "83fb822f80594aa28030d055e70094d0",
+      "type": "action_receipt",
+      "event_id": "mc:a08a500e120f42bdb5434a2c0c17e769",
+      "action": {
+        "name": "approach",
+        "args": {}
+      },
+      "receipt": {
+        "verified": true,
+        "status": "approach_checked",
+        "observed": {
+          "offline": false,
+          "position": {
+            "x": 7.534483077103878,
+            "y": 109,
+            "z": -53.503375570647776
+          },
+          "health": 20,
+          "hunger": 20,
+          "inventory": {
+            "oak_planks": 14,
+            "rotten_flesh": 2,
+            "wooden_pickaxe": 1,
+            "oak_button": 1,
+            "apple": 2,
+            "oak_sapling": 12,
+            "stone_pickaxe": 1,
+            "stick": 8
+          },
+          "crafting_grid": {},
+          "cursor": null,
+          "window": null,
+          "owner": {
+            "name": "Moonlight",
+            "position": {
+              "x": 8.771040819263836,
+              "y": 109,
+              "z": -52.818679637033846
+            },
+            "distance": 1.4134650937335478,
+            "height_difference": 0
+          },
+          "controls": {},
+          "current_action": null,
+          "model_client_initialized": false,
+          "generated_code_enabled": false
+        },
+        "output": "Found non-destructive path.\nYou have reached Moonlight.\n"
+      }
+    },
+    {
+      "record_id": "277b0734bad04efd93bff12cdbad21ec",
+      "type": "action_receipt",
+      "event_id": "mc:122faab8cb664183937fcf359755094b",
+      "action": {
+        "name": "follow",
+        "args": {}
+      },
+      "receipt": {
+        "verified": true,
+        "status": "following_started_only",
+        "observed": {
+          "offline": false,
+          "position": {
+            "x": 7.534483077103878,
+            "y": 109,
+            "z": -53.503375570647776
+          },
+          "health": 20,
+          "hunger": 20,
+          "inventory": {
+            "oak_planks": 14,
+            "rotten_flesh": 2,
+            "wooden_pickaxe": 1,
+            "oak_button": 1,
+            "apple": 2,
+            "oak_sapling": 12,
+            "stone_pickaxe": 1,
+            "stick": 8
+          },
+          "crafting_grid": {},
+          "cursor": null,
+          "window": null,
+          "owner": {
+            "name": "Moonlight",
+            "position": {
+              "x": 8.771040819263836,
+              "y": 109,
+              "z": -52.818679637033846
+            },
+            "distance": 1.4134650937335478,
+            "height_difference": 0
+          },
+          "controls": {},
+          "current_action": "follow",
+          "model_client_initialized": false,
+          "generated_code_enabled": false
+        },
+        "output": ""
+      }
+    }
+  ],
+  "goal_after_supervisor_exit": {
+    "record_id": "1bec79b5586248019319e44abbac5aba",
+    "type": "kernel_goal",
+    "title": "帮我建一个家",
+    "goal_status": "paused_by_owner"
+  },
+  "known_cloud_and_ws_secret_scan": {
+    "files": 49,
+    "hits": []
+  },
+  "raw_files_sha256": {
+    "runs/kernel_v1/sessions/1791049315801778000/airi_events.jsonl": "b35b1c2e9479ec8f5851e75a7dff280dfc46667c0a248ac908a2d57264c0e3fd",
+    "runs/kernel_v1/sessions/1791049315801778000/body_events.jsonl": "29111513cad2c749fea4707c556c4e9efc5c86fef790b607de5be75c9ae9bebe",
+    "runs/kernel_v1/sessions/1791049315801778000/body_states.jsonl": "80df63e4c8ce6238b7d440770374abdbb32318532a0b84d05706393c81423e2c",
+    "runs/kernel_v1/sessions/1791049315801778000/lifecycle.jsonl": "91b43ef1aa104663f62df38a575d5fd96ff40e18f6e4539a02fd8179a97ef02d",
+    "runs/kernel_v1/sessions/1791049315801778000/model.jsonl": "35e78c877932ff92a71fde56c79d3510811e186c0dbbb436c8d389fce2ceb0a5",
+    "runs/kernel_v1/sessions/1791049315801778000/preflight.jsonl": "acab0c9c1d9d5e4350b2cbfd51a26b6317c289b8f4fa99b0ecc0b95bfdffa9aa",
+    "runs/kernel_v1/sessions/1791049315801778000/routing.jsonl": "366de495d049694ee9613b2af30ca9f634c4c552f9fa0a5eaa3b16f2edf854ce",
+    "runs/kernel_v1/sessions/1791049983970937400/airi_events.jsonl": "f2e5c7d186f78ee133425d34c3deaa73630970a9b99b7d6612dd2f5796032094",
+    "runs/kernel_v1/sessions/1791049983970937400/body_events.jsonl": "8bdf6ee8d311c17a7eb0a08e57bdcd74b43cf7212535d11d383506587949e23c",
+    "runs/kernel_v1/sessions/1791049983970937400/body_states.jsonl": "00bd6baf4171cbb5de556ead27f8fd4df278837830e1d74785c08416fa925119",
+    "runs/kernel_v1/sessions/1791049983970937400/http.jsonl": "33529bfb4c95347236db58ed4f83397687e6f7671e51173a3bd4dfdec735d2ec",
+    "runs/kernel_v1/sessions/1791049983970937400/lifecycle.jsonl": "c05681a8e2ceb7e84fa78277cf563bdc4e65cd56bc30da1b906fb58982872ba5",
+    "runs/kernel_v1/sessions/1791049983970937400/model.jsonl": "d09c3c27a1c23192d9207ec3673c5f2c6ed05bd0daa845d9a16e0f38f25400ae",
+    "runs/kernel_v1/sessions/1791049983970937400/preflight.jsonl": "4f32a27ff978f938c1f2da82c37933995f36d46b837ff1fa9ef423910b24c9f5",
+    "runs/kernel_v1/sessions/1791049983970937400/routing.jsonl": "08c6d07657a97bea25a58e1a2b25c30ae0e21e1be680ae2ba2336b4bd69b58bc",
+    "runs/kernel_v1/sessions/1791050497447919300/actions.jsonl": "16dff76ef689c19b326f963572d8f4830395af5eda0c7b705894aaff62ad8e77",
+    "runs/kernel_v1/sessions/1791050497447919300/airi_events.jsonl": "c03aebb98260448798e40310d823356dcd7ae6304fdcf188a39fe06e083b1df7",
+    "runs/kernel_v1/sessions/1791050497447919300/body_events.jsonl": "a51578b56b57a7c047dabb9aa55c7f02341a27f64f7f76bf1e5abd994a26375a",
+    "runs/kernel_v1/sessions/1791050497447919300/body_states.jsonl": "f830c2bf07a0949dbf1d415293a845b40aaffd4d05bbaeab7a7077dd4cd556d2",
+    "runs/kernel_v1/sessions/1791050497447919300/lifecycle.jsonl": "652c13b52959087249042ad72bd70f3b3e1d48b4015267180800f5dce0f33342",
+    "runs/kernel_v1/sessions/1791050497447919300/model.jsonl": "002f1833d4164a9e4f19e2145691270111b90d44cf40fbd6c50ba7227c4d2343",
+    "runs/kernel_v1/sessions/1791050497447919300/preflight.jsonl": "209a7dd0ae477e67edd87ccc565bd6565e872a90cfb07eb36c5a7604bedb848c",
+    "runs/kernel_v1/sessions/1791050497447919300/routing.jsonl": "04c4be408d60f59e1be31d99eca4b6450fbb5f14622f5d0e8935ba9397d5d7fa",
+    "runs/kernel_v1/sessions/1791051291151211600/actions.jsonl": "bb3b4d4f2dbfc809a04d028eef3bfc03cd7d7bcc8f3f0106351f90a960d1fcaf",
+    "runs/kernel_v1/sessions/1791051291151211600/airi_events.jsonl": "ff642bf7d4dd5732199d09b31b4a409f299d9cbdce9f37d6b88f22bb66a58b1a",
+    "runs/kernel_v1/sessions/1791051291151211600/body_events.jsonl": "7039ab53eed086e8229b98bd56a4ba8173e2b5c20d751dbbd62ea292ab5981ae",
+    "runs/kernel_v1/sessions/1791051291151211600/body_states.jsonl": "ea10a8eeb76149f2ca7db091715ea6655d0e4e5027cfb9a19f1040ea2c2f17eb",
+    "runs/kernel_v1/sessions/1791051291151211600/http.jsonl": "7776122b3cef6ca6ab2f64c020e28434a0b5b020c04e2789c332946c3d855948",
+    "runs/kernel_v1/sessions/1791051291151211600/lifecycle.jsonl": "b13d2a40fabf1e2895e2d274ebb0160bba673a148af2085c3c2a7578edd1f1d1",
+    "runs/kernel_v1/sessions/1791051291151211600/model.jsonl": "93201b80f8e8f8fd56250e3fb7b74ff35c9f20338a095bd58eeb03d6541d4633",
+    "runs/kernel_v1/sessions/1791051291151211600/preflight.jsonl": "38f7242d38e0118d5be80397faed2fdd69a26743c48d2f0ebec6c1d89306c25b",
+    "runs/kernel_v1/sessions/1791051291151211600/routing.jsonl": "4f2377d42ff4f8118f687aba70f0ce3e1268ed88a65d3b15080cd35567c398b0"
+  },
+  "acceptance_db_sha256": "c35d0be847d9788bcf0073d611d6924ea5299097805dbf61f114d3d018bcb8fe",
+  "native_ui_observation": {
+    "cached_mc_reply_visible": true,
+    "new_mc_follow_input_reply_visible": true,
+    "airi_stop_confirmation_visible": true,
+    "desktop_recall_matched_body_state": true,
+    "minecraft_shared_replies_visible": true,
+    "observed_via": "Computer Use native screenshots and UIA; not HTTP fixture"
+  },
+  "limits": [
+    "short stationary follow-start, no sustained moving-owner follow claim",
+    "no construction/craft/collection acceptance in this kernel revision",
+    "goals on short action turns were null; explicit goal check independently passed",
+    "three authentication failures retained before provider refresh",
+    "AIRI UI history is separate display copy; formal store starts empty",
+    "no learning/consciousness inference"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "revision": "kernel_v1.1",
+  "frozen_at": "2026-10-03T12:53:03.441296-05:00",
+  "pre_run_offline_tests": 11,
+  "offline_body_probe": "passed",
+  "files": {
+    "companion/__init__.py": "523d1038ac030a320cd5ae13fdf6ff32332bc6064007d9a4e35ebf87edd3818e",
+    "companion/airi.py": "8280bf4e26472e77d982e7c4c98a17aa0b64326cef8d902bf323cd6ab92cc228",
+    "companion/body.py": "283779eca02038d7b63ca4246bd7df5876e780975f5f75340b40aaabeb696572",
+    "companion/engine.py": "b04a34afcf2f67368f6a2bfe65893cd7f54071ca7993ae152963417157dc19ee",
+    "companion/launcher.py": "7441b13322500c2e695d7574624e1052209296d8ec81b45bbf68913a0cd620ec",
+    "companion/memory.py": "f810b19fbe440994a862fb97fbc29410d973677087f04ce0ad9083c7a1370f93",
+    "companion/model.py": "e4d239f3c46f5981a79b7394a89e28db0cf0d4b8fe590ef80df26559a5703bfd",
+    "companion/runtime.py": "db5d81a34209e6c6e23c89989ccebe6e3368f167534942fbf23687c6cc9bd934",
+    "companion/server.py": "f792878f0922441db26365fe214565f20172cae9945b1ec52457fa22a75dbdf2",
+    "companion/test_kernel.py": "c2ff0a9d4eb1962b2c5eaaa3531409d79b680425b92de16042a6d884f41e9a7e",
+    "companion/airi_bridge.mjs": "4bf8106e27b978aeb6315eb479e1d9d02eecfaf9710d6aa7d252815c1bbfb424",
+    "companion/body.mjs": "84ec8fe93747b82534090024675d9f6c464d540a3b85b3eac9fb0f3964c28f5e",
+    "companion/prompt.txt": "e864cc1e472c61ab72ac1d2433fdf0ba29616730c45c199e400c8ea150c59d70",
+    "evidence/kernel_v1/CHECKLIST.md": "92f6af1a47fbfbbcb090889c93f2ce79d768a14cef2f4fdf16eb19c8fbd2337a",
+    "p7/proxy.py": "3f49356f54fc71781c2d0e6d0e06400e7af5543b43561b0aeae43ce4ea804eaf",
+    "p7/routing.py": "68cab0ee0a9fdf7697835ac7bed475551be48258f6f3ae447acc0ce0fdfad57f",
+    "p7/routing_v2.py": "8dd7567e9bb056d255ed83e008a3bb12b29fbb9775f71d67101204bbc446eec4",
+    "p7/routing_v2.json": "400806b87525a06e6f5c888bc565bd34e7a5fa79bf6077aa661ebfc4f159885a",
+    "p7/body_session_v2.py": "1fe527b601ed3343f2e59e53663660ad793078e68d3f9151c07ab37229c9004c",
+    "p7/protocol_1211.cjs": "236db5df4debe4436098b128525d8df19183e4f35713288353d07b4edd4d49a7",
+    "growthlab/state.py": "cae6cd8990191e0757eee3eb71242471c4a0cf2ccb3394f53c14d68267514f64",
+    "u1/conventions/core.py": "fe5612bba46bc648d3aebea7b325ec99fbc5931c207304b3fc91cf0e3cbcdff3",
+    "u1_resume/library.py": "3bc4b71ef85e3aa05459969c77fc2b707a337f74d429e1e0bb73a6102df4d5a4",
+    "evidence/kernel_v1/REVISION_LOG.md": "f99b163ad03c7843ed5cb2428acf839b14fc42ec70c62f6f9a962ee4b9ba8688"
+  }
+}
