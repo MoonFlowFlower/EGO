@@ -1,0 +1,23 @@
+{
+  "arm": "B",
+  "records": [],
+  "profiles": {},
+  "self": {
+    "type": "self_statistics",
+    "observed_actions": {
+      "move_right": 41,
+      "do": 126,
+      "move_left": 45,
+      "move_up": 36
+    },
+    "events": {
+      "no_visible_effect": 148,
+      "blocked": 42,
+      "health_lost": 5
+    },
+    "skill_attempts": 0,
+    "skill_successes": 0,
+    "scope": "descriptive counts; no capability certification; no inferred emotion"
+  },
+  "measurement": "read-only SQLite export after coordinator cancellation; consolidation did not run"
+}

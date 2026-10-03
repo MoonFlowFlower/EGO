@@ -1,0 +1,21 @@
+{
+  "arm": "B",
+  "records": [],
+  "profiles": {},
+  "self": {
+    "type": "self_statistics",
+    "observed_actions": {
+      "move_right": 28,
+      "do": 95,
+      "move_left": 33
+    },
+    "events": {
+      "no_visible_effect": 88,
+      "blocked": 7,
+      "health_lost": 5
+    },
+    "skill_attempts": 0,
+    "skill_successes": 0,
+    "scope": "descriptive counts; no capability certification; no inferred emotion"
+  }
+}

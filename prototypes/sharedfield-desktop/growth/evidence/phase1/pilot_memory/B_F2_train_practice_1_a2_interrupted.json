@@ -1,0 +1,259 @@
+{
+  "arm": "B",
+  "records": [
+    {
+      "id": "ecfe8551b7324fbe9ccb4e7dc595532c",
+      "kind": "general_rule",
+      "world": null,
+      "body": {
+        "action": "move_up",
+        "scope": "global",
+        "experiences": [
+          "21a3002f6dec4591a531c111d149402a"
+        ],
+        "preconditions": {
+          "inventory_min": {},
+          "nearby": [
+            "water"
+          ],
+          "front_materials": [
+            "water"
+          ],
+          "front_entity": "none"
+        },
+        "expected": {
+          "inventory": {},
+          "needs": {},
+          "front": {
+            "material": "water",
+            "entity": null
+          }
+        },
+        "format": "rule.v1",
+        "support": 1,
+        "counterexamples": 0,
+        "checked": [
+          "3df64d50b4fb492c8ce0808be28ec3c2"
+        ]
+      },
+      "source": "model_proposal"
+    },
+    {
+      "id": "967a233505c74d009f81e5df114ddcdb",
+      "kind": "general_rule",
+      "world": null,
+      "body": {
+        "action": "move_left",
+        "scope": "global",
+        "experiences": [
+          "c477973d4d63441c91555133861e66e2"
+        ],
+        "preconditions": {
+          "inventory_min": {},
+          "nearby": [
+            "water"
+          ],
+          "front_materials": [
+            "water"
+          ],
+          "front_entity": "none"
+        },
+        "expected": {
+          "inventory": {},
+          "needs": {},
+          "front": {
+            "material": "water",
+            "entity": null
+          }
+        },
+        "format": "rule.v1",
+        "support": 2,
+        "counterexamples": 0,
+        "checked": [
+          "789ccce1e13c49dea642e39967d92031",
+          "46964e3cbb6d4eb1a223a04d963fabdd"
+        ]
+      },
+      "source": "model_proposal"
+    },
+    {
+      "id": "a13c88aea194462fab25d4bd555c8a9f",
+      "kind": "general_rule",
+      "world": null,
+      "body": {
+        "action": "do",
+        "scope": "global",
+        "experiences": [
+          "d0c574a497cb44aeabbcaf942e4f0976"
+        ],
+        "preconditions": {
+          "inventory_min": {},
+          "nearby": [
+            "grass"
+          ],
+          "front_materials": [
+            "grass"
+          ],
+          "front_entity": "none"
+        },
+        "expected": {
+          "inventory": {},
+          "needs": {},
+          "front": {
+            "material": "grass",
+            "entity": null
+          }
+        },
+        "format": "rule.v1",
+        "support": 10,
+        "counterexamples": 0,
+        "checked": [
+          "97554c4d28054659ba32577d61259ae1",
+          "94580a87c5de40a5a35d65654935dd72",
+          "e595fd3de6624761836b48eba9211c5e",
+          "1e8c4a039bed4dce8fc781e587d665fc",
+          "661330273a334c54bb722c15bd8a06a0",
+          "5110813574314b3f88942da367a27a3d",
+          "2b7ab759f79f4e62afe6ede626bc35af",
+          "e9880cec02424b4dba31810a6ea892f3",
+          "3a2b552ee010481196a615906dc72aaa",
+          "a080b531fdcb4a558966fef157cf2b8f"
+        ]
+      },
+      "source": "model_proposal"
+    },
+    {
+      "id": "59a2a24e924c4099b1478262e3308d19",
+      "kind": "general_rule",
+      "world": null,
+      "body": {
+        "action": "do",
+        "scope": "global",
+        "experiences": [
+          "c9651314a81d4b14ad31bca7beda284e"
+        ],
+        "preconditions": {
+          "inventory_min": {},
+          "nearby": [
+            "stone"
+          ],
+          "front_materials": [
+            "stone"
+          ],
+          "front_entity": "none"
+        },
+        "expected": {
+          "inventory": {},
+          "needs": {},
+          "front": {
+            "material": "stone",
+            "entity": null
+          }
+        },
+        "format": "rule.v1",
+        "support": 0,
+        "counterexamples": 0,
+        "checked": []
+      },
+      "source": "model_proposal"
+    },
+    {
+      "id": "00b1153463df479bad5c8251fbf6eb73",
+      "kind": "general_rule",
+      "world": null,
+      "body": {
+        "action": "move_left",
+        "scope": "global",
+        "experiences": [
+          "b90d7e9efcbe4d60a8300ee1929763a1"
+        ],
+        "preconditions": {
+          "inventory_min": {},
+          "nearby": [
+            "grass"
+          ],
+          "front_materials": [
+            "grass"
+          ],
+          "front_entity": "none"
+        },
+        "expected": {
+          "inventory": {},
+          "needs": {},
+          "front": {
+            "material": "grass",
+            "entity": null
+          }
+        },
+        "format": "rule.v1",
+        "support": 0,
+        "counterexamples": 3,
+        "checked": [
+          "9776cf21cd024eca8f5af9838175079d",
+          "17eb9ea36de142da8c2a481e79b637de",
+          "a82d83b426b74efba2f867a9c721d4aa"
+        ]
+      },
+      "source": "model_proposal"
+    },
+    {
+      "id": "4892edba29c64b3d8dafac5c1aa9d056",
+      "kind": "general_rule",
+      "world": null,
+      "body": {
+        "action": "move_left",
+        "scope": "global",
+        "experiences": [
+          "6f6ccf433881474599d9e5de80bdbaf1"
+        ],
+        "preconditions": {
+          "inventory_min": {},
+          "nearby": [
+            "grass"
+          ],
+          "front_materials": [
+            "grass"
+          ],
+          "front_entity": "none"
+        },
+        "expected": {
+          "inventory": {},
+          "needs": {},
+          "front": {
+            "material": "grass",
+            "entity": null
+          }
+        },
+        "format": "rule.v1",
+        "support": 0,
+        "counterexamples": 3,
+        "checked": [
+          "9776cf21cd024eca8f5af9838175079d",
+          "17eb9ea36de142da8c2a481e79b637de",
+          "a82d83b426b74efba2f867a9c721d4aa"
+        ]
+      },
+      "source": "model_proposal"
+    }
+  ],
+  "profiles": {},
+  "self": {
+    "type": "self_statistics",
+    "observed_actions": {
+      "move_left": 24,
+      "do": 43,
+      "move_up": 35,
+      "move_down": 1,
+      "move_right": 27
+    },
+    "events": {
+      "no_visible_effect": 62,
+      "blocked": 23,
+      "health_lost": 5
+    },
+    "skill_attempts": 0,
+    "skill_successes": 0,
+    "scope": "descriptive counts; no capability certification; no inferred emotion"
+  },
+  "measurement": "worker export after infrastructure stop"
+}

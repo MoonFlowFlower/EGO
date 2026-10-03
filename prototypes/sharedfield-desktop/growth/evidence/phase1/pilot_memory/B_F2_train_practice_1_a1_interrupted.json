@@ -1,0 +1,299 @@
+{
+  "arm": "B",
+  "records": [
+    {
+      "id": "ecfe8551b7324fbe9ccb4e7dc595532c",
+      "kind": "general_rule",
+      "world": null,
+      "body": {
+        "action": "move_up",
+        "scope": "global",
+        "experiences": [
+          "21a3002f6dec4591a531c111d149402a"
+        ],
+        "preconditions": {
+          "inventory_min": {},
+          "nearby": [
+            "water"
+          ],
+          "front_materials": [
+            "water"
+          ],
+          "front_entity": "none"
+        },
+        "expected": {
+          "inventory": {},
+          "needs": {},
+          "front": {
+            "material": "water",
+            "entity": null
+          }
+        },
+        "format": "rule.v1",
+        "support": 0,
+        "counterexamples": 0,
+        "checked": []
+      },
+      "source": "model_proposal"
+    },
+    {
+      "id": "967a233505c74d009f81e5df114ddcdb",
+      "kind": "general_rule",
+      "world": null,
+      "body": {
+        "action": "move_left",
+        "scope": "global",
+        "experiences": [
+          "c477973d4d63441c91555133861e66e2"
+        ],
+        "preconditions": {
+          "inventory_min": {},
+          "nearby": [
+            "water"
+          ],
+          "front_materials": [
+            "water"
+          ],
+          "front_entity": "none"
+        },
+        "expected": {
+          "inventory": {},
+          "needs": {},
+          "front": {
+            "material": "water",
+            "entity": null
+          }
+        },
+        "format": "rule.v1",
+        "support": 1,
+        "counterexamples": 0,
+        "checked": [
+          "9da9687bf144452e91e8881c2c857c61"
+        ]
+      },
+      "source": "model_proposal"
+    },
+    {
+      "id": "a13c88aea194462fab25d4bd555c8a9f",
+      "kind": "general_rule",
+      "world": null,
+      "body": {
+        "action": "do",
+        "scope": "global",
+        "experiences": [
+          "d0c574a497cb44aeabbcaf942e4f0976"
+        ],
+        "preconditions": {
+          "inventory_min": {},
+          "nearby": [
+            "grass"
+          ],
+          "front_materials": [
+            "grass"
+          ],
+          "front_entity": "none"
+        },
+        "expected": {
+          "inventory": {},
+          "needs": {},
+          "front": {
+            "material": "grass",
+            "entity": null
+          }
+        },
+        "format": "rule.v1",
+        "support": 41,
+        "counterexamples": 0,
+        "checked": [
+          "be5524b145974a5bbe09957384d7f4db",
+          "5c6301151828441d9d4fd8b947296def",
+          "b887fa7b91824d8291a8f715aa38da28",
+          "ae8249aa7ffa46bdbb6836b9507652cc",
+          "886aae57935842429c238dfa8889ce99",
+          "48301a276fee4e5fae4405fe14373352",
+          "b24cf4f4f401410aad31d53c5b40da0b",
+          "90c8d414ac804329adc2af9b78388b44",
+          "b7a1db2461204a368ba2f65298d73230",
+          "209db27521b64e7daea67724720c9bd7",
+          "a4360eed11cf4b128e2c7529a772aa4f",
+          "ad75038318594bea997e62cd5f4a61c2",
+          "afec9afb4d704c5a876410a72df9d5a0",
+          "17e8e16f21cd413fbd9775be7c356c09",
+          "7f0d946f73294c4b85d367f9d2f3128a",
+          "df60e0bf4c304675991f87d934a99041",
+          "d3391a54434c4953b21d1c445a0dce18",
+          "951adf8e529e429b97581854fad153dc",
+          "a4e75248e5774abb9ed66f2cc87a5ea9",
+          "1d1e09194e854b9b9323d0c61f5e4073",
+          "c68945ea316142bf994ec38056c50b00",
+          "39cefdcd77d24b36ad581628f0c00490",
+          "1e8cdd9ce06a494e8046f773ec85e2bd",
+          "3db48501874a4c34929264e215e432c2",
+          "776666b3e1694c48af20d7989dcbc032",
+          "00f63ce1d3994af7a726a4ae503cd69f",
+          "7fe1d0b9f66e41739e086744811455f1",
+          "2ecacd2aa7cb452eb4361983fb8d1eeb",
+          "639c7c0f03154015b53ef022192b3a91",
+          "a0f8734f8fe6458e8df9dd3b52f17e23",
+          "f986f4df2c7849eaad02aa0eaa3fb565",
+          "e831643e61574db0bc308eb14fa22224",
+          "b3e04d19d9f94e76bfa7b9bd607d97ea",
+          "6132973443f04b4f893caae3b6fba698",
+          "51cef0f7b22c4e089e6c07db383725ab",
+          "871a964c3aa9437897140dbeb3dcd0df",
+          "00a2a0e9894043fbbb3f721a4092f99e",
+          "04b7cc4f5bd8452aaacee1a9ad97942c",
+          "b4ba9707669c4a16ab961d1bc81552f8",
+          "bd63e5f51c9a4dd68d770155fa6a8662",
+          "2c3fed99b6ee4cf684fff4acb43c2aac"
+        ]
+      },
+      "source": "model_proposal"
+    },
+    {
+      "id": "59a2a24e924c4099b1478262e3308d19",
+      "kind": "general_rule",
+      "world": null,
+      "body": {
+        "action": "do",
+        "scope": "global",
+        "experiences": [
+          "c9651314a81d4b14ad31bca7beda284e"
+        ],
+        "preconditions": {
+          "inventory_min": {},
+          "nearby": [
+            "stone"
+          ],
+          "front_materials": [
+            "stone"
+          ],
+          "front_entity": "none"
+        },
+        "expected": {
+          "inventory": {},
+          "needs": {},
+          "front": {
+            "material": "stone",
+            "entity": null
+          }
+        },
+        "format": "rule.v1",
+        "support": 0,
+        "counterexamples": 0,
+        "checked": []
+      },
+      "source": "model_proposal"
+    },
+    {
+      "id": "00b1153463df479bad5c8251fbf6eb73",
+      "kind": "general_rule",
+      "world": null,
+      "body": {
+        "action": "move_left",
+        "scope": "global",
+        "experiences": [
+          "b90d7e9efcbe4d60a8300ee1929763a1"
+        ],
+        "preconditions": {
+          "inventory_min": {},
+          "nearby": [
+            "grass"
+          ],
+          "front_materials": [
+            "grass"
+          ],
+          "front_entity": "none"
+        },
+        "expected": {
+          "inventory": {},
+          "needs": {},
+          "front": {
+            "material": "grass",
+            "entity": null
+          }
+        },
+        "format": "rule.v1",
+        "support": 3,
+        "counterexamples": 6,
+        "checked": [
+          "d3698f5b34f94ce9905972354ee5bad0",
+          "15e4cf9a83e444bc8e147dd92c34cb7f",
+          "30613c6e908b4bb4b5191dc74c53f209",
+          "65b0476f51d74efca724a53a2a06763e",
+          "ddd3f5fc85604e0fae97d32420f7849a",
+          "eba63e6c2fa4491b86d894a0b6e34c83",
+          "8af7c3aa80544b008af82270e0dc5c4b",
+          "3f63f42638114d83a8f0c6487a6b2e64",
+          "6c2a7be56fff4f2993b0f42ed54ae100"
+        ]
+      },
+      "source": "model_proposal"
+    },
+    {
+      "id": "4892edba29c64b3d8dafac5c1aa9d056",
+      "kind": "general_rule",
+      "world": null,
+      "body": {
+        "action": "move_left",
+        "scope": "global",
+        "experiences": [
+          "6f6ccf433881474599d9e5de80bdbaf1"
+        ],
+        "preconditions": {
+          "inventory_min": {},
+          "nearby": [
+            "grass"
+          ],
+          "front_materials": [
+            "grass"
+          ],
+          "front_entity": "none"
+        },
+        "expected": {
+          "inventory": {},
+          "needs": {},
+          "front": {
+            "material": "grass",
+            "entity": null
+          }
+        },
+        "format": "rule.v1",
+        "support": 3,
+        "counterexamples": 6,
+        "checked": [
+          "d3698f5b34f94ce9905972354ee5bad0",
+          "15e4cf9a83e444bc8e147dd92c34cb7f",
+          "30613c6e908b4bb4b5191dc74c53f209",
+          "65b0476f51d74efca724a53a2a06763e",
+          "ddd3f5fc85604e0fae97d32420f7849a",
+          "eba63e6c2fa4491b86d894a0b6e34c83",
+          "8af7c3aa80544b008af82270e0dc5c4b",
+          "3f63f42638114d83a8f0c6487a6b2e64",
+          "6c2a7be56fff4f2993b0f42ed54ae100"
+        ]
+      },
+      "source": "model_proposal"
+    }
+  ],
+  "profiles": {},
+  "self": {
+    "type": "self_statistics",
+    "observed_actions": {
+      "move_left": 30,
+      "do": 85,
+      "move_up": 31,
+      "move_down": 1,
+      "move_right": 26
+    },
+    "events": {
+      "no_visible_effect": 96,
+      "blocked": 24,
+      "health_lost": 5
+    },
+    "skill_attempts": 0,
+    "skill_successes": 0,
+    "scope": "descriptive counts; no capability certification; no inferred emotion"
+  },
+  "measurement": "worker export after infrastructure stop"
+}

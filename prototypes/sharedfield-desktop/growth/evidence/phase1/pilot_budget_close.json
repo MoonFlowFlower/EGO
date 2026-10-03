@@ -1,0 +1,18 @@
+{
+  "measurement": "Phase-1 ledger observed after pilot exit and before first G0 call; derived from the already-generated pilot report. This includes engineering debugging and the pilot, excludes later G0 calls.",
+  "observed_no_later_than_utc": "2026-10-02T23:55:58.508107+00:00",
+  "source_report_sha256": "b84243340c80ec09097fc31fa30cb25593ec4970267b271ea30dfb7834940100",
+  "pilot_finished_unix": 1790985103.2119832,
+  "charges": [
+    {
+      "status": "reported",
+      "requests": 937,
+      "usd": 0.088509930822
+    },
+    {
+      "status": "reserved_unknown",
+      "requests": 5,
+      "usd": 0.25
+    }
+  ]
+}

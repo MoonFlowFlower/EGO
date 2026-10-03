@@ -1,0 +1,24 @@
+{
+  "arm": "B",
+  "records": [],
+  "profiles": {},
+  "self": {
+    "type": "self_statistics",
+    "observed_actions": {
+      "move_up": 59,
+      "move_down": 3,
+      "move_right": 57,
+      "do": 17,
+      "move_left": 58
+    },
+    "events": {
+      "no_visible_effect": 61,
+      "blocked": 46,
+      "health_lost": 2
+    },
+    "skill_attempts": 0,
+    "skill_successes": 0,
+    "scope": "descriptive counts; no capability certification; no inferred emotion"
+  },
+  "measurement": "worker export after infrastructure stop"
+}
