@@ -54,12 +54,12 @@ class Cloud:
                     and {'response_format','max_tokens','temperature','reasoning'}<=set(x.get('supported_parameters',[]))]
         if not compatible: raise ValueError('route_preflight_rejected')
 
-    def decide(self,messages,*,response_format=None,max_tokens=512):
+    def decide(self,messages,*,response_format=None,max_tokens=512,reasoning=False):
         # Upper bound: <=16k UTF8 bytes plus framing, output <=512 tokens,
         # provider max prices 1/2 USD per million input/output; reserve 0.05 USD.
         schema=response_format or action_format(messages)
         request_bytes=len(json.dumps({'messages':messages,'response_format':schema}).encode())
-        if request_bytes>60000 or not 1<=max_tokens<=2048: raise ValueError('prompt_size_stop')
+        if request_bytes>60000 or not 1<=max_tokens<=(8192 if reasoning else 2048): raise ValueError('prompt_size_stop')
         # Conservative byte-token bound including schema/framing, with fixed
         # provider price ceilings. Concurrent requests reserve under one lock.
         reserve=max(.05,(request_bytes+2048)*.000001+max_tokens*.000002)
@@ -70,7 +70,7 @@ class Cloud:
             if spent+reserve>self.limit: raise ValueError('budget_stop')
             self.db.execute('INSERT INTO charges VALUES (?,?,?)',(identity,reserve,'reserved_unknown'))
         payload={'model':self.model,'messages':messages,'temperature':0,'max_tokens':max_tokens,
-            'reasoning':{'enabled':False},'response_format':schema,'stream':False,
+            'reasoning':{'enabled':bool(reasoning)},'response_format':schema,'stream':False,
             'provider':{'only':[self.route],'allow_fallbacks':False,'data_collection':'deny','zdr':True,
                         'require_parameters':True,'max_price':{'prompt':1,'completion':2}}}
         start=time.perf_counter()
@@ -81,6 +81,9 @@ class Cloud:
         meta={'latency_s':time.perf_counter()-start,'input_tokens':usage.get('prompt_tokens'),
               'output_tokens':usage.get('completion_tokens'),'cost_usd':cost,'provider':data.get('provider'),
               'charge_id':identity,'reserved_usd':reserve,
+              'reasoning_enabled':bool(reasoning),'max_tokens':max_tokens,
+              'finish_reason':data['choices'][0].get('finish_reason'),
+              'completion_tokens_details':usage.get('completion_tokens_details'),
               'budget_reserved_or_reported_usd':self.db.execute('SELECT SUM(usd) FROM charges').fetchone()[0]}
         return data['choices'][0]['message'].get('content',''),meta
 

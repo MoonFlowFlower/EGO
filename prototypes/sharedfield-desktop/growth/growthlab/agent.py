@@ -9,15 +9,17 @@ from .changes import changes, repeat_action
 from .state import Store
 from .skills import SkillLibrary
 from .sandbox import run
-from .decision import messages, decode, decision_format, VERSION
+from .decision import messages, decode, decision_format, assess_front, recent_view, VERSION
 from .records import write_json, digest
 
 
 class Episode:
-    def __init__(self, host, store, folder, client, *, arm='B', goal='做出木镐 (wood_pickaxe)', memory=None, teaching=None):
+    def __init__(self, host, store, folder, client, *, arm='B', goal='做出木镐 (wood_pickaxe)', memory=None, teaching=None,
+                 observation_format=None, stop_on_success=True):
         self.host,self.store,self.client = host,store,client
         self.folder=Path(folder); self.folder.mkdir(parents=True,exist_ok=True)
         self.arm,self.goal,self.memory,self.teaching = arm,goal,memory,teaching
+        self.observation_format,self.stop_on_success=observation_format,stop_on_success
         self.library=SkillLibrary(store,host.world,host.actions)
         self.trace=(self.folder/'trace.jsonl').open('a',encoding='utf-8')
         self.recent=[];self.events=[];self.calls=[];self.experiences=[];self.skill_results=[]
@@ -77,16 +79,19 @@ class Episode:
         consecutive_invalid=0
         max_decisions=max_decisions or self.host.env._length*2
         try:
-            while not self.host.done and self.first_success is None:
+            while not self.host.done and (self.first_success is None or not self.stop_on_success):
                 if deadline is not None and time.time()>=deadline:self.stop='wall_clock_stop';break
                 if len(self.calls)>=max_decisions:self.stop='decision_limit';break
                 obs=validate(self.host.observe())
                 obs_id=self.experience({'type':'observation','observation':obs})
                 memory=self.memory.retrieve(obs,self.goal) if self.memory else []
-                prompt=messages(obs,self.goal,memory,self.recent,self.events,self.teaching)
+                if self.memory and self.arm=='B':
+                    self.write({'type':'rule_applications','tick':obs['tick'],'applications':self.memory.rules.applied(obs)})
+                prompt=messages(obs,self.goal,memory,self.recent,self.events,self.teaching,observation_format=self.observation_format)
                 self.write({'type':'input','messages':prompt,'input_digest':digest(prompt)})
                 content,meta=self.client.decide(prompt,response_format=decision_format(obs['actions']),max_tokens=2048)
                 self.calls.append(meta);self.write({'type':'call','meta':meta})
+                self.write({'type':'front_assessment','tick':obs['tick'],'output':content,**assess_front(content,obs)})
                 try:
                     choice=decode(content,obs['actions'])
                     # Persist basis before any action or generated program runs.
@@ -99,10 +104,10 @@ class Episode:
                     if consecutive_invalid>=2:self.stop='two_consecutive_invalid_outputs';break
                     continue
                 consecutive_invalid=0
-                self.recent.append({'decision':choice,'execution_status':result['status'],'steps':result['steps']})
+                self.recent.extend(recent_view([{'decision':choice,'execution_status':result['status'],'steps':result['steps']}]))
                 self.write({'type':'progress','decisions':len(self.calls),'steps':self.host.observe()['tick']})
         except (RuntimeError,ValueError) as error:
-            allowed=('http_429','http_404','http_403','http_401','http_402','http_502','http_503','http_504','budget_stop','prompt_size_stop','TimeoutError','URLError')
+            allowed=('http_429','http_404','http_403','http_401','http_402','http_502','http_503','http_504','budget_stop','prompt_size_stop','TimeoutError','URLError','ac_required','machine_time_limit')
             self.stop=str(error) if str(error) in allowed else type(error).__name__
             self.write({'type':'stop','code':self.stop})
         return self.summary()

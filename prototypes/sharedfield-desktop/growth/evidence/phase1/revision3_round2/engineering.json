@@ -1,0 +1,1260 @@
+{
+  "passed": true,
+  "prompt_version": "phase1.prompt.v3.1",
+  "telemetry": [
+    {
+      "unix_s": 1790993467.4645092,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "62, 517, 2789, 26.39",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790993478.4280431,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "61, 525, 2735, 25.00",
+      "gpu_returncode": 0
+    }
+  ],
+  "representation": {
+    "checks": [
+      {
+        "facing": [
+          1,
+          0
+        ],
+        "mode": "v2_cells",
+        "states": [
+          {
+            "dx": -1,
+            "dy": 1,
+            "material": "grass",
+            "entity": "plant",
+            "visible_state": {
+              "plant_ripe": false
+            }
+          },
+          {
+            "dx": 1,
+            "dy": -1,
+            "material": "grass",
+            "entity": "arrow",
+            "visible_state": {
+              "arrow_direction": "left"
+            }
+          },
+          {
+            "dx": 1,
+            "dy": 1,
+            "material": "grass",
+            "entity": "plant",
+            "visible_state": {
+              "plant_ripe": true
+            }
+          }
+        ]
+      },
+      {
+        "facing": [
+          1,
+          0
+        ],
+        "mode": "v2_map",
+        "states": [
+          {
+            "dx": -1,
+            "dy": 1,
+            "material": "grass",
+            "entity": "plant",
+            "visible_state": {
+              "plant_ripe": false
+            }
+          },
+          {
+            "dx": 1,
+            "dy": -1,
+            "material": "grass",
+            "entity": "arrow",
+            "visible_state": {
+              "arrow_direction": "left"
+            }
+          },
+          {
+            "dx": 1,
+            "dy": 1,
+            "material": "grass",
+            "entity": "plant",
+            "visible_state": {
+              "plant_ripe": true
+            }
+          }
+        ]
+      },
+      {
+        "facing": [
+          -1,
+          0
+        ],
+        "mode": "v2_cells",
+        "states": [
+          {
+            "dx": -1,
+            "dy": 1,
+            "material": "grass",
+            "entity": "plant",
+            "visible_state": {
+              "plant_ripe": false
+            }
+          },
+          {
+            "dx": 1,
+            "dy": -1,
+            "material": "grass",
+            "entity": "arrow",
+            "visible_state": {
+              "arrow_direction": "left"
+            }
+          },
+          {
+            "dx": 1,
+            "dy": 1,
+            "material": "grass",
+            "entity": "plant",
+            "visible_state": {
+              "plant_ripe": true
+            }
+          }
+        ]
+      },
+      {
+        "facing": [
+          -1,
+          0
+        ],
+        "mode": "v2_map",
+        "states": [
+          {
+            "dx": -1,
+            "dy": 1,
+            "material": "grass",
+            "entity": "plant",
+            "visible_state": {
+              "plant_ripe": false
+            }
+          },
+          {
+            "dx": 1,
+            "dy": -1,
+            "material": "grass",
+            "entity": "arrow",
+            "visible_state": {
+              "arrow_direction": "left"
+            }
+          },
+          {
+            "dx": 1,
+            "dy": 1,
+            "material": "grass",
+            "entity": "plant",
+            "visible_state": {
+              "plant_ripe": true
+            }
+          }
+        ]
+      },
+      {
+        "facing": [
+          0,
+          1
+        ],
+        "mode": "v2_cells",
+        "states": [
+          {
+            "dx": -1,
+            "dy": 1,
+            "material": "grass",
+            "entity": "plant",
+            "visible_state": {
+              "plant_ripe": false
+            }
+          },
+          {
+            "dx": 1,
+            "dy": -1,
+            "material": "grass",
+            "entity": "arrow",
+            "visible_state": {
+              "arrow_direction": "left"
+            }
+          },
+          {
+            "dx": 1,
+            "dy": 1,
+            "material": "grass",
+            "entity": "plant",
+            "visible_state": {
+              "plant_ripe": true
+            }
+          }
+        ]
+      },
+      {
+        "facing": [
+          0,
+          1
+        ],
+        "mode": "v2_map",
+        "states": [
+          {
+            "dx": -1,
+            "dy": 1,
+            "material": "grass",
+            "entity": "plant",
+            "visible_state": {
+              "plant_ripe": false
+            }
+          },
+          {
+            "dx": 1,
+            "dy": -1,
+            "material": "grass",
+            "entity": "arrow",
+            "visible_state": {
+              "arrow_direction": "left"
+            }
+          },
+          {
+            "dx": 1,
+            "dy": 1,
+            "material": "grass",
+            "entity": "plant",
+            "visible_state": {
+              "plant_ripe": true
+            }
+          }
+        ]
+      },
+      {
+        "facing": [
+          0,
+          -1
+        ],
+        "mode": "v2_cells",
+        "states": [
+          {
+            "dx": -1,
+            "dy": 1,
+            "material": "grass",
+            "entity": "plant",
+            "visible_state": {
+              "plant_ripe": false
+            }
+          },
+          {
+            "dx": 1,
+            "dy": -1,
+            "material": "grass",
+            "entity": "arrow",
+            "visible_state": {
+              "arrow_direction": "left"
+            }
+          },
+          {
+            "dx": 1,
+            "dy": 1,
+            "material": "grass",
+            "entity": "plant",
+            "visible_state": {
+              "plant_ripe": true
+            }
+          }
+        ]
+      },
+      {
+        "facing": [
+          0,
+          -1
+        ],
+        "mode": "v2_map",
+        "states": [
+          {
+            "dx": -1,
+            "dy": 1,
+            "material": "grass",
+            "entity": "plant",
+            "visible_state": {
+              "plant_ripe": false
+            }
+          },
+          {
+            "dx": 1,
+            "dy": -1,
+            "material": "grass",
+            "entity": "arrow",
+            "visible_state": {
+              "arrow_direction": "left"
+            }
+          },
+          {
+            "dx": 1,
+            "dy": 1,
+            "material": "grass",
+            "entity": "plant",
+            "visible_state": {
+              "plant_ripe": true
+            }
+          }
+        ]
+      }
+    ],
+    "night_supplied": 9,
+    "night_unknown": 54,
+    "legacy_K0_packets_equal": 30,
+    "internal_observation_unchanged": true
+  },
+  "decision": {
+    "first_property": true,
+    "actual_order_enforced": true,
+    "wrong_front_scored_not_corrected": true,
+    "recent": [
+      {
+        "kind": "action",
+        "action": "do",
+        "execution_status": "completed",
+        "steps": 1
+      }
+    ],
+    "historical_entity_view_only": true
+  },
+  "navigation": {
+    "lava_detour": {
+      "status": "arrived",
+      "reason": "arrived",
+      "steps": 5,
+      "target_name": "tree",
+      "seconds": 0.015091199995367788,
+      "plans": [
+        {
+          "tick": 0,
+          "status": "route",
+          "actions": [
+            "move_up",
+            "move_right",
+            "move_right",
+            "move_right",
+            "move_down"
+          ],
+          "planned_turns": [
+            false,
+            false,
+            false,
+            false,
+            true
+          ],
+          "target": [
+            3,
+            0
+          ],
+          "searched_cells": [
+            [
+              -4,
+              -1
+            ],
+            [
+              -4,
+              0
+            ],
+            [
+              -3,
+              -2
+            ],
+            [
+              -3,
+              -1
+            ],
+            [
+              -3,
+              0
+            ],
+            [
+              -3,
+              1
+            ],
+            [
+              -2,
+              -3
+            ],
+            [
+              -2,
+              -2
+            ],
+            [
+              -2,
+              -1
+            ],
+            [
+              -2,
+              0
+            ],
+            [
+              -2,
+              1
+            ],
+            [
+              -2,
+              2
+            ],
+            [
+              -1,
+              -3
+            ],
+            [
+              -1,
+              -2
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              2
+            ],
+            [
+              -1,
+              3
+            ],
+            [
+              0,
+              -3
+            ],
+            [
+              0,
+              -2
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              2
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              1,
+              -3
+            ],
+            [
+              1,
+              -2
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              -3
+            ],
+            [
+              2,
+              -2
+            ],
+            [
+              2,
+              -1
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              3,
+              -2
+            ],
+            [
+              3,
+              -1
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              -1
+            ]
+          ]
+        },
+        {
+          "tick": 1,
+          "status": "route",
+          "actions": [
+            "move_right",
+            "move_right",
+            "move_right",
+            "move_down"
+          ],
+          "planned_turns": [
+            false,
+            false,
+            false,
+            true
+          ],
+          "target": [
+            3,
+            1
+          ],
+          "searched_cells": [
+            [
+              -4,
+              0
+            ],
+            [
+              -3,
+              -1
+            ],
+            [
+              -3,
+              0
+            ],
+            [
+              -3,
+              1
+            ],
+            [
+              -2,
+              -2
+            ],
+            [
+              -2,
+              -1
+            ],
+            [
+              -2,
+              0
+            ],
+            [
+              -2,
+              1
+            ],
+            [
+              -2,
+              2
+            ],
+            [
+              -1,
+              -3
+            ],
+            [
+              -1,
+              -2
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              2
+            ],
+            [
+              -1,
+              3
+            ],
+            [
+              0,
+              -3
+            ],
+            [
+              0,
+              -2
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              2
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              1,
+              -3
+            ],
+            [
+              1,
+              -2
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              -2
+            ],
+            [
+              2,
+              -1
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              3,
+              -1
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              4,
+              0
+            ]
+          ]
+        },
+        {
+          "tick": 2,
+          "status": "route",
+          "actions": [
+            "move_right",
+            "move_right",
+            "move_down"
+          ],
+          "planned_turns": [
+            false,
+            false,
+            true
+          ],
+          "target": [
+            2,
+            1
+          ],
+          "searched_cells": [
+            [
+              -3,
+              0
+            ],
+            [
+              -2,
+              -1
+            ],
+            [
+              -2,
+              0
+            ],
+            [
+              -2,
+              1
+            ],
+            [
+              -1,
+              -2
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              2
+            ],
+            [
+              0,
+              -3
+            ],
+            [
+              0,
+              -2
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              -2
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              2,
+              -1
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              3,
+              0
+            ]
+          ]
+        },
+        {
+          "tick": 3,
+          "status": "route",
+          "actions": [
+            "move_right",
+            "move_down"
+          ],
+          "planned_turns": [
+            false,
+            true
+          ],
+          "target": [
+            1,
+            1
+          ],
+          "searched_cells": [
+            [
+              -2,
+              0
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              -2
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              2,
+              0
+            ]
+          ]
+        },
+        {
+          "tick": 4,
+          "status": "route",
+          "actions": [
+            "move_down"
+          ],
+          "planned_turns": [
+            true
+          ],
+          "target": [
+            0,
+            1
+          ],
+          "searched_cells": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "tick": 5,
+          "status": "arrived",
+          "actions": [],
+          "planned_turns": [],
+          "target": [
+            0,
+            1
+          ],
+          "searched_cells": [
+            [
+              0,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    "lava_only": {
+      "status": "no_path",
+      "reason": "no_path",
+      "steps": 0,
+      "target_name": "tree",
+      "seconds": 0.0008808999991742894,
+      "plans": [
+        {
+          "tick": 0,
+          "status": "no_path",
+          "actions": [],
+          "searched_cells": [
+            [
+              0,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    "behind": {
+      "status": "arrived",
+      "reason": "arrived",
+      "steps": 1,
+      "target_name": "tree",
+      "seconds": 0.004013399986433797,
+      "plans": [
+        {
+          "tick": 0,
+          "status": "route",
+          "actions": [
+            "move_left"
+          ],
+          "planned_turns": [
+            true
+          ],
+          "target": [
+            -1,
+            0
+          ],
+          "searched_cells": [
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ]
+          ]
+        },
+        {
+          "tick": 1,
+          "status": "arrived",
+          "actions": [],
+          "planned_turns": [],
+          "target": [
+            -1,
+            0
+          ],
+          "searched_cells": [
+            [
+              0,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    "corridor": {
+      "status": "arrived",
+      "reason": "arrived",
+      "steps": 1,
+      "target_name": "tree",
+      "seconds": 0.0037536000018008053,
+      "plans": [
+        {
+          "tick": 0,
+          "status": "route",
+          "actions": [
+            "move_left"
+          ],
+          "planned_turns": [
+            true
+          ],
+          "target": [
+            -1,
+            0
+          ],
+          "searched_cells": [
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ]
+          ]
+        },
+        {
+          "tick": 1,
+          "status": "arrived",
+          "actions": [],
+          "planned_turns": [],
+          "target": [
+            -1,
+            0
+          ],
+          "searched_cells": [
+            [
+              0,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    "unexpected_block": {
+      "status": "blocked",
+      "reason": "blocked",
+      "steps": 1,
+      "target_name": "tree",
+      "seconds": 0.0035497000062605366,
+      "plans": [
+        {
+          "tick": 0,
+          "status": "route",
+          "actions": [
+            "move_right",
+            "move_right"
+          ],
+          "planned_turns": [
+            false,
+            false
+          ],
+          "target": [
+            3,
+            0
+          ],
+          "searched_cells": [
+            [
+              -2,
+              0
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              0,
+              -2
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              2,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    "skill_turn": {
+      "source_sha256": "b52f5df62567520c3b9266c1a4cb15dd724a250f94b31d9e100784366511706b",
+      "steps": 1,
+      "status": "completed",
+      "reason": null,
+      "calls": [
+        {
+          "name": "turn",
+          "version": 1,
+          "record_id": "03a1a9f62e114f79a14cbd675bc197aa",
+          "depth": 1,
+          "start_step": 0,
+          "start_s": 0.0013988999999128282,
+          "completion": "False",
+          "outcome": "unsuccessful",
+          "execution_status": "completed",
+          "steps": 1,
+          "seconds": 0.27141120001033414
+        }
+      ],
+      "navigation": [
+        {
+          "status": "arrived",
+          "reason": "arrived",
+          "steps": 1,
+          "target_name": "tree",
+          "seconds": 0.008933100005378947,
+          "plans": [
+            {
+              "tick": 0,
+              "status": "route",
+              "actions": [
+                "move_left"
+              ],
+              "planned_turns": [
+                true
+              ],
+              "target": [
+                -1,
+                0
+              ],
+              "searched_cells": [
+                [
+                  0,
+                  -1
+                ],
+                [
+                  0,
+                  0
+                ]
+              ]
+            },
+            {
+              "tick": 1,
+              "status": "arrived",
+              "actions": [],
+              "planned_turns": [],
+              "target": [
+                -1,
+                0
+              ],
+              "searched_cells": [
+                [
+                  0,
+                  0
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      "seconds": 0.27281460000085644
+    }
+  },
+  "rule_applications": {
+    "true": {
+      "type": "action_rule_prediction",
+      "action": "make_wood_pickaxe",
+      "rule_id": "8e2a2d0545be4e138b308b93da53f81f",
+      "applicable": true,
+      "checks": [
+        {
+          "met": true,
+          "text": "背包 wood 至少 2，现在 2"
+        },
+        {
+          "met": true,
+          "text": "身边 3×3 需要 table，现在有"
+        }
+      ],
+      "expected": {
+        "inventory": {
+          "wood_pickaxe": 1
+        },
+        "needs": {},
+        "front": {}
+      },
+      "text": "现在做 make_wood_pickaxe：按规则卡 8e2a2d0545be4e138b308b93da53f81f（支持 1 次、反例 0 次），背包 wood 至少 2，现在 2（满足）；身边 3×3 需要 table，现在有（满足）；预计背包 wood_pickaxe +1。这是卡片预测。"
+    },
+    "partial": {
+      "type": "action_rule_prediction",
+      "action": "make_wood_pickaxe",
+      "rule_id": "8e2a2d0545be4e138b308b93da53f81f",
+      "applicable": false,
+      "checks": [
+        {
+          "met": true,
+          "text": "背包 wood 至少 2，现在 2"
+        },
+        {
+          "met": false,
+          "text": "身边 3×3 需要 table，现在没有"
+        }
+      ],
+      "expected": null,
+      "text": "现在做 make_wood_pickaxe：按规则卡 8e2a2d0545be4e138b308b93da53f81f（支持 1 次、反例 0 次），背包 wood 至少 2，现在 2（满足）；身边 3×3 需要 table，现在没有（不满足）；预计没有本卡所列效果；其他后果未预测。这是卡片预测。"
+    },
+    "false": {
+      "type": "action_rule_prediction",
+      "action": "make_wood_pickaxe",
+      "rule_id": "8e2a2d0545be4e138b308b93da53f81f",
+      "applicable": false,
+      "checks": [
+        {
+          "met": false,
+          "text": "背包 wood 至少 2，现在 0"
+        },
+        {
+          "met": false,
+          "text": "身边 3×3 需要 table，现在没有"
+        }
+      ],
+      "expected": null,
+      "text": "现在做 make_wood_pickaxe：按规则卡 8e2a2d0545be4e138b308b93da53f81f（支持 1 次、反例 0 次），背包 wood 至少 2，现在 0（不满足）；身边 3×3 需要 table，现在没有（不满足）；预计没有本卡所列效果；其他后果未预测。这是卡片预测。"
+    },
+    "negative_and_zero": {
+      "type": "action_rule_prediction",
+      "action": "do",
+      "rule_id": "8e2a2d0545be4e138b308b93da53f81f",
+      "applicable": true,
+      "checks": [
+        {
+          "met": true,
+          "text": "前方实体需要 cow，现在 cow"
+        }
+      ],
+      "expected": {
+        "inventory": {},
+        "needs": {
+          "health": -2,
+          "food": 0
+        },
+        "front": {}
+      },
+      "text": "现在做 do：按规则卡 8e2a2d0545be4e138b308b93da53f81f（支持 1 次、反例 0 次），前方实体需要 cow，现在 cow（满足）；预计血量 -2、食物不变。这是卡片预测。"
+    },
+    "A_excluded": true
+  },
+  "integration": {
+    "decisions": 2,
+    "incorrect_front": 2,
+    "executed_steps": 2,
+    "no_correction_or_retry": true
+  },
+  "reasoning_transport": {
+    "only_reasoning_and_output_limit_differ": true,
+    "max_tokens": [
+      2048,
+      8192
+    ]
+  },
+  "seconds": 10.990138199995272,
+  "cloud_cost_usd": 0
+}

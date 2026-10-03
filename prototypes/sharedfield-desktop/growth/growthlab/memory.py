@@ -122,7 +122,12 @@ class Memory:
             cards=[{k:v for k,v in c.items() if k not in ('checked','format')} for c in self.rules.cards()]
             ordered=[cards[i] for i,_ in rank(query,[(i,compact(c)) for i,c in enumerate(cards)])]
             stats=self.self_model();profile=self.profiles()
-            return bounded([{'type':'rule_card',**c} for c in ordered]+[index,stats]+[{'type':'skill','program':s,'profile':profile.get(f"{s['name']}@{s['version']}",{})} for s in skills])
+            # Evaluate EVERY card before ranking/packing. The same memory cap
+            # applies; compact action-linked prose takes priority over raw cards.
+            applications=self.rules.applied(obs)
+            lookup={p['rule_id']:p for p in applications}
+            predictions=[{'type':'action_rule_prediction','action':c['action'],'text':lookup[c['id']]['text']} for c in ordered]
+            return bounded(predictions+[{'type':'rule_card',**c} for c in ordered]+[index,stats]+[{'type':'skill','program':s,'profile':profile.get(f"{s['name']}@{s['version']}",{})} for s in skills])
         docs=[]
         for row in all_records(self.store):
             if row['kind']=='experience':

@@ -54,6 +54,37 @@ def matches(card, before, after):
     return not expected['front'] or (front is not None and all(front[k] == v for k,v in expected['front'].items()))
 
 
+def application(card, observation):
+    """Apply a stored hypothesis, never consult a recipe or environment object."""
+    obs=validate(observation);pre=card['preconditions'];front=cell_at(obs,obs['facing'])
+    nearby={c['material'] for c in obs['cells'] if abs(c['dx'])<=1 and abs(c['dy'])<=1}
+    checks=[]
+    for item,minimum in sorted(pre['inventory_min'].items()):
+        actual=obs['inventory'].get(item,0)
+        checks.append({'met':actual>=minimum,'text':f'背包 {item} 至少 {minimum}，现在 {actual}'})
+    for material in pre['nearby']:
+        checks.append({'met':material in nearby,'text':f'身边 3×3 需要 {material}，现在'+('有' if material in nearby else '没有')})
+    if pre['front_materials']:
+        checks.append({'met':front['material'] in pre['front_materials'],
+                       'text':f"前方材质需要 {'/'.join(pre['front_materials'])}，现在 {front['material']}"})
+    if pre['front_entity'] is not None:
+        actual=front['entity'] or 'none'
+        checks.append({'met':actual==pre['front_entity'],'text':f"前方实体需要 {pre['front_entity']}，现在 {actual}"})
+    applies=all(x['met'] for x in checks);effects=[]
+    needs={'health':'血量','food':'食物','drink':'水','energy':'精力'}
+    for field in ('inventory','needs'):
+        for key,delta in card['expected'][field].items():
+            label=needs.get(key,key) if field=='needs' else f'背包 {key}'
+            effects.append(label+('不变' if delta==0 else f' {delta:+d}'))
+    for key,value in card['expected']['front'].items():
+        effects.append(f"前方{'材质' if key=='material' else '实体'}变为 {value if value is not None else 'none'}")
+    outcome='预计'+('、'.join(effects) if applies else '没有本卡所列效果；其他后果未预测')
+    explanation='；'.join(x['text']+('（满足）' if x['met'] else '（不满足）') for x in checks) or '本卡没有限制前提'
+    return {'type':'action_rule_prediction','action':card['action'],'rule_id':card['id'],
+            'applicable':applies,'checks':checks,'expected':card['expected'] if applies else None,
+            'text':f"现在做 {card['action']}：按规则卡 {card['id']}（支持 {card.get('support',0)} 次、反例 {card.get('counterexamples',0)} 次），{explanation}；{outcome}。这是卡片预测。"}
+
+
 class Rules:
     def __init__(self, store, world, actions): self.store, self.world, self.actions = store, world, actions
 
@@ -96,6 +127,9 @@ class Rules:
 
     def predict(self, before, action):
         return [{'id':c['id'],'expected':c['expected']} for c in self.cards() if applicable(c,before,action)]
+
+    def applied(self, observation):
+        return [application(c,observation) for c in self.cards() if c['action'] in observation['actions']]
 
     def score(self, before, after, action, experience):
         experience_rows(self.store,[experience])

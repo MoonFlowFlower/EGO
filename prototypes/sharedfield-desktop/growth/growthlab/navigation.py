@@ -6,7 +6,7 @@ from .contract import MATERIALS, ENTITIES, validate
 MOVES = (('move_up', (0, -1)), ('move_left', (-1, 0)), ('move_right', (1, 0)), ('move_down', (0, 1)))
 TARGETS = tuple(x for x in (*MATERIALS, *ENTITIES) if x not in ('unknown', 'player'))
 # Birth-package movement knowledge, not dynamically read feasibility or recipes.
-WALKABLE = {'grass', 'path', 'sand', 'lava'}
+WALKABLE = {'grass', 'path', 'sand'}
 
 
 def plan(observation, name):
@@ -17,16 +17,22 @@ def plan(observation, name):
     def walkable(xy):
         c = cells.get(xy)
         return c is not None and c['material'] in WALKABLE and (c['entity'] is None or xy == (0, 0))
-    start = (0, 0, *obs['facing']); queue = deque([(start, [])]); visited = {start}; searched = set()
+    start = (0, 0, *obs['facing']); queue = deque([(start, [], [])]); visited = {start}; searched = set()
     while queue:
-        (x, y, fx, fy), actions = queue.popleft(); searched.add((x, y))
+        (x, y, fx, fy), actions, turns = queue.popleft(); searched.add((x, y))
         if (x + fx, y + fy) in targets:
             return {'status': 'arrived' if not actions else 'route', 'actions': actions,
-                    'target': [x + fx, y + fy], 'searched_cells': sorted(map(list, searched))}
+                    'planned_turns': turns, 'target': [x + fx, y + fy], 'searched_cells': sorted(map(list, searched))}
         for action, (dx, dy) in MOVES:
-            xy = x + dx, y + dy; state = (*xy, dx, dy)
-            if walkable(xy) and state not in visited:
-                visited.add(state); queue.append((state, [*actions, action]))
+            xy = x + dx, y + dy
+            if xy not in cells: continue  # Never probe outside the allowed view.
+            turn = not walkable(xy)
+            # Lava is physically walkable (fatal), so it cannot be used as a
+            # collision turn merely because our planner excludes it.
+            if turn and cells[xy]['material'] == 'lava': continue
+            state = (x, y, dx, dy) if turn else (*xy, dx, dy)
+            if state not in visited:
+                visited.add(state); queue.append((state, [*actions, action], [*turns, turn]))
     return {'status': 'no_path', 'actions': [], 'searched_cells': sorted(map(list, searched))}
 
 
@@ -48,4 +54,6 @@ def goto(name, observe, act, *, max_steps=32, deadline=None, cancel=None, on_ste
         if on_step: on_step(before, after, action)
         if after['needs']['health'] < before['needs']['health']: return result('injured')
         if after['done']: return result('episode_finished')
-        if after['displacement'] == [0, 0]: return result('blocked')
+        planned_turn = route['planned_turns'][0]
+        facing = list(dict(MOVES)[action])
+        if after['displacement'] == [0, 0] and not (planned_turn and after['facing'] == facing): return result('blocked')
