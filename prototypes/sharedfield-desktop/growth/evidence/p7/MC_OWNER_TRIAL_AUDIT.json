@@ -1,0 +1,234 @@
+{
+  "recorded_utc": "2026-10-03T16:26:09.326424+00:00",
+  "status": "OWNER_EXPERIENCE_RECORDED_ENGINEERING_FAILURES_OPEN",
+  "prior_fixed_task_scores_changed": false,
+  "new_paid_calls_by_diagnosis": 0,
+  "spawn_utc": "2026-10-03T15:44:54.375000+00:00",
+  "last_body_event_utc": "2026-10-03T16:05:59.571000+00:00",
+  "server_disconnect_local": "2026-10-03T11:06:00-05:00",
+  "planned_stop_utc": "2026-10-03T16:14:49.312Z",
+  "termination_cause": "UNKNOWN_ABRUPT_END_BEFORE_DEADLINE",
+  "body_stderr_bytes": 0,
+  "state_samples": 1256,
+  "generated_code_enabled_any": false,
+  "owner_messages": 23,
+  "first_owner_message_utc": "2026-10-03T15:48:31.080000+00:00",
+  "last_owner_message_utc": "2026-10-03T16:05:09.192000+00:00",
+  "owner_message_span_s": 998.112,
+  "owner_span_at_least_15_minutes": true,
+  "house_command_count_before_next_owner_input": 8,
+  "completion_claim_position_checks": [
+    {
+      "said_utc": "2026-10-03T15:55:17.281000+00:00",
+      "snapshot_offset_ms": 37,
+      "bot_y": 106.5,
+      "owner_y": 109,
+      "distance": 2.6076543958204326
+    },
+    {
+      "said_utc": "2026-10-03T15:55:59.227000+00:00",
+      "snapshot_offset_ms": 137,
+      "bot_y": 108,
+      "owner_y": 109,
+      "distance": 4.878551734169985
+    }
+  ],
+  "model_input_checks": [
+    {
+      "case": "forgot_iron_task",
+      "charge_id": "a03669a8e8bc4df58bd2a28303d92887",
+      "finish_reason": "stop",
+      "input_contains_chinese_memory": true,
+      "input_contains_iron_location": true
+    },
+    {
+      "case": "english_after_chinese_instruction",
+      "charge_id": "4f1a3aa2f7644698a0d4b288f5b1a713",
+      "finish_reason": "stop",
+      "input_contains_chinese_memory": true,
+      "input_contains_iron_location": false
+    }
+  ],
+  "cloud": {
+    "completed": 81,
+    "routes": {
+      "deepseek/deepseek-v4.1-flash/wafer": 81
+    },
+    "http_429_observed": 0,
+    "local_404_rejections": 87,
+    "reported_usd": 0.009877158,
+    "latency_p50_s": 0.6236308999941684,
+    "latency_p95_s": 1.4864013999758754
+  },
+  "ledger": {
+    "occupancy_usd": 1.2502918595899999,
+    "by_status": [
+      {
+        "status": "reported",
+        "calls": 2527,
+        "usd": 0.25029185959
+      },
+      {
+        "status": "reserved_unknown",
+        "calls": 20,
+        "usd": 1.0
+      }
+    ]
+  },
+  "server_saved_bot_inventory": {
+    "read_utc": "2026-10-03T16:26:08.831Z",
+    "saved_utc": "2026-10-03T16:06:00.333Z",
+    "position": [
+      6.456902108977727,
+      109,
+      -53.40593427309169
+    ],
+    "inventory": {
+      "minecraft:rotten_flesh": 2,
+      "minecraft:wooden_pickaxe": 1,
+      "minecraft:oak_button": 1,
+      "minecraft:apple": 2,
+      "minecraft:oak_sapling": 12,
+      "minecraft:stone_pickaxe": 1,
+      "minecraft:stick": 8,
+      "minecraft:oak_planks": 14
+    },
+    "limitation": "After disconnect; crafting grid and cursor are not a simultaneous view of the last client state."
+  },
+  "offline_inventory_probe": {
+    "kind": "offline_inventory_scope_mismatch_reproduced",
+    "version": "1.21.1",
+    "inventory": {
+      "slot": 9,
+      "reported_logs": 12,
+      "usable_inventory_logs": 12,
+      "eligible_plank_recipes": 1
+    },
+    "crafting_grid": {
+      "slot": 1,
+      "reported_logs": 12,
+      "usable_inventory_logs": 0,
+      "eligible_plank_recipes": 0
+    },
+    "live_slot_distribution_verified": false,
+    "runtime_source_changed": false
+  },
+  "runtime_freeze_checks": [
+    {
+      "path": "p7/protocol_1211.cjs",
+      "matches": true
+    },
+    {
+      "path": "evidence/p7/MC_CONNECTED_V2_PRE_RUN.md",
+      "matches": true
+    },
+    {
+      "path": "p7/body_session_v2.py",
+      "matches": true
+    },
+    {
+      "path": "p7/mindcraft_body_v2.mjs",
+      "matches": true
+    },
+    {
+      "path": "node_modules/protodef/src/serializer.js",
+      "matches": true
+    },
+    {
+      "path": "node_modules/mineflayer-pvp/lib/PVP.js",
+      "matches": true
+    },
+    {
+      "path": "node_modules/mineflayer/lib/plugins/place_block.js",
+      "matches": true
+    },
+    {
+      "path": "node_modules/mineflayer-pathfinder/lib/movements.js",
+      "matches": true
+    },
+    {
+      "path": "node_modules/mineflayer/lib/plugins/inventory.js",
+      "matches": true
+    },
+    {
+      "path": "package-lock.json",
+      "matches": true
+    },
+    {
+      "path": "node_modules/minecraft-data/minecraft-data/data/pc/1.21.1/protocol.json",
+      "matches": true
+    },
+    {
+      "path": "node_modules/mineflayer/lib/plugins/digging.js",
+      "matches": true
+    },
+    {
+      "path": "node_modules/prismarine-viewer/viewer/lib/entity/Entity.js",
+      "matches": true
+    },
+    {
+      "path": "node_modules/mineflayer-pathfinder/index.js",
+      "matches": true
+    }
+  ],
+  "raw_evidence": [
+    {
+      "path": "runs/p7/body_connected_v2/1791042289663331700/events.jsonl",
+      "sha256": "62eb8e7ed7598bd99e7f7ac4c7bb3dce5547621772eafff8a65fea23494617f4"
+    },
+    {
+      "path": "runs/p7/body_connected_v2/1791042289663331700/stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/p7/body_connected_v2/1791042289663331700/owner_feedback_verbatim.json",
+      "sha256": "f67a4591d3fc03169bbed9e57ada56048695602a344daee128f4b971ffd6ef73"
+    },
+    {
+      "path": "runs/p7/body_connected_v2/1791042289663331700/server_inventory_after_disconnect.json",
+      "sha256": "92d3fcf14a2fb9b7ef5ed136c9daa1648b8143c47d1a424d02b1c960b096274b"
+    },
+    {
+      "path": "runs/p7/body_connected_v2/1791042289663331700/diagnostic_plan.json",
+      "sha256": "c7845ee7ad62ee11906b6785dc5c26a8e040241cbeff1daee159947d963b9b39"
+    },
+    {
+      "path": "runs/p7/body_connected_v2/1791042289663331700/inventory_diagnostic.json",
+      "sha256": "2b64f5242aa225bbaa6bae6f1c9cab6ebbaa46e238e4e4ae9b67343bc5275037"
+    }
+  ],
+  "owner_screenshots": [
+    {
+      "local_path": "runs/p7/body_connected_v2/1791042289663331700/owner_screenshot_1.png",
+      "sha256": "444f5c10eca3b762998f0b5b69ba6f0333d6eab6a73d0cf8681c1c3470c9b731"
+    },
+    {
+      "local_path": "runs/p7/body_connected_v2/1791042289663331700/owner_screenshot_2.png",
+      "sha256": "a8aea9dab441a39a1a67233574a83110970951260c32bac9f14db79e2d3cff4a"
+    },
+    {
+      "local_path": "runs/p7/body_connected_v2/1791042289663331700/owner_screenshot_3.png",
+      "sha256": "b3b81d1d2e23c34a57ea475bd7f1d0032d1846a2c96ef8709304490b39465868"
+    },
+    {
+      "local_path": "runs/p7/body_connected_v2/1791042289663331700/owner_screenshot_4.png",
+      "sha256": "994bcea2220afe0295edb64c2c033ed761e356488e919dfc8cdd7670c65e4c50"
+    },
+    {
+      "local_path": "runs/p7/body_connected_v2/1791042289663331700/owner_screenshot_5.png",
+      "sha256": "928100c1f946af692fda776b7547e05df97981339bfa8dc10ed7d11f4f75c4b6"
+    },
+    {
+      "local_path": "runs/p7/body_connected_v2/1791042289663331700/owner_screenshot_6.png",
+      "sha256": "b56abb932d3bc0f23a9115399688c88b9e30060baf478d66c5a37043c045ec76"
+    }
+  ],
+  "limitations": [
+    "Owner chat span is experience coverage, not continuous attention or a learning score.",
+    "Raw body counts include crafting/equipment slots; per-slot IDs were not logged.",
+    "Saved server inventory is after disconnect, not simultaneous with last client snapshot.",
+    "Transfer callback verifies collector name but not matching item entity ID.",
+    "No exit code or timer completion survived for the controlling parent; no exact termination cause established."
+  ],
+  "frozen_before_probe": "c7845ee7ad62ee11906b6785dc5c26a8e040241cbeff1daee159947d963b9b39"
+}
