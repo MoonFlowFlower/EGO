@@ -1,0 +1,13 @@
+{
+  "official_probe": "BODY_OFFLINE_PROBE.json",
+  "tests": {
+    "job_close_kills_live_node": true,
+    "parent_death_kills_live_node": true,
+    "public_target_refused_before_import": true
+  },
+  "test_seconds": 0.589,
+  "initial_test_caveat": "First process fixture used uv Python trampoline; it could exit at active-process limit before parent death. Replaced fixture with direct Node and asserted ready/alive before killing; initial pass not used as evidence.",
+  "cloud_calls": 0,
+  "mc_connections": 0,
+  "gameplay_unverified": true
+}

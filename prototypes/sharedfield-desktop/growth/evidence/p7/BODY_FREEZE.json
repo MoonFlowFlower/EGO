@@ -1,0 +1,15 @@
+{
+  "frozen_at_utc": "2026-10-03T10:37:01.595810+00:00",
+  "source_sha256": {
+    "p7/body_session.py": "a9db779b7e8dba8bb7f664890818f03e4547adbb8b78cac5e8c9733e3c23a3a9",
+    "p7/mindcraft_body.mjs": "207359739a168389d6c077fec7d4d01546e556aa36f40b21672794b599b18457",
+    "p7/mindcraft_settings.json": "e7289cdac2320ef01d9a5bcd54afa2e0f840be3619bdfdafade18a7ef289e7e6",
+    "p7/mindcraft_profile.json": "4c1ec0f9a2ac8d2432daf51fe1007efe3630b65450b9f76ba28570859dfcc0a0",
+    "p7/start_body.py": "07e5b04ea04a5b61cb829810a4d26d596385e51e397ef241f8596422b186007f",
+    "p7/test_body_session.py": "c23146b903d0fc00f18fb1e31fe63a54707de4570f4e78b37f21b9dac48a63a7",
+    "evidence/p7/RESUME_PRE_RUN.md": "9e7bdb1b9f3f7aef8c26c03ca3fd9fc65ab3859fdc6b6286e6b811ac7d16b305"
+  },
+  "criteria": "Original CHECKLIST.md task inputs/windows/postconditions; new process-only adapter, no MindServer or changes to official source.",
+  "world_status": "awaiting owner selection; no real MC call yet",
+  "official_commit": "b36eaf7e61b3f6bd031fdb531812b2e3c42b6c73"
+}

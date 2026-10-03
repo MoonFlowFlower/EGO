@@ -1,17 +1,29 @@
-# P7 一页恢复与启动说明
+# P7 一页启动说明
 
-**当前尚不能一起玩。** AIRI 已安装；2026-10-03 模型路线已换为通过烟测的主用与备用，但 AIRI 聊天配置未贯通，Mindcraft 身体启动入口仍未交付。此页记录恢复顺序，不能当成一次成功演示。负责人 15 分钟试玩及感受原话仍待完成。
+**AIRI 文字聊天已接通；MC 尚未实测。** 本轮代理已关闭，重启会生成新令牌。U1 本批未通过，当前没有学习集成。记录见 `RESUME_REPORT.md`。
 
-1. **当前模型路线。** `routing-v2`：DeepSeek V4.1 Flash/Wafer → 同模型/Together → Gemini 3.1 Flash-Lite/Google Vertex EU；公开模型名为 `ego-companion`。负责人本轮授权备用，产品代理只对输出开始前的指定传输故障切换，仍保持 ZDR、白名单和原 $5 共享账本。9 项有效路线烟测已通过；失败的 GLM/Baseten 另存，不在当前配置里。规则和费用见 `../routing/REPORT.md`。U1 仍固定配置、禁止中途回退；不要重置账本或释放未知预留。
-2. **启动本机代理。** 在 PowerShell 切到 `D:\Project\AIProject\MyProject\Ego_proejct_restart\.publish\EGO\prototypes\sharedfield-desktop\growth`，运行下方命令。本地窗口输入上游密钥，仅留内存；不把密钥放在命令行或聊天里。
+1. **启动本机代理。** 在 PowerShell 切到 `D:\Project\AIProject\MyProject\Ego_proejct_restart\.publish\EGO\prototypes\sharedfield-desktop\growth`，运行：
 
    ```powershell
    .\.venv\Scripts\python.exe -m p7.active_proxy --port 18787 --origin null --origin app://localhost --origin http://localhost
    ```
 
-   使用上述当前入口；`p7.launch_proxy`、`p7.runtime_session` 保留作 V1 冻结源码复现，不作为当前启动命令。窗口若显示 `Startup refused`，按固定错误代码排查。成功后 Base URL 是 `http://127.0.0.1:18787/v1/`，模型选 `ego-companion`。每次重启令牌都会变化，旧令牌失效。本轮临时代理已关闭，未留下后台监听。
-3. **启动 AIRI。** 打开 `C:\Users\LEO\AppData\Local\Programs\airi\airi.exe`。选择 OpenAI Compatible，只填上述地址、本机代理令牌和 `ego-companion`；不填云端密钥。本机令牌存入 AIRI 配置已获授权。当前 v0.12.0-beta.5 引导 Ping 后实际聊天仍缺少 provider credentials，须先解决配置保存链路，再以原固定聊天探针复验。本轮未改 AIRI UI 中的旧选择；代理烟测不代表 AIRI 聊天通过。保持 Analytics、识别与读屏关闭；Kokoro 声音尚不可用。
-4. **确定世界。** 用 `D:\Software\MC\HMCL\HMCL.exe` 打开 Java 1.21.1，玩家 Moonlight。这个实例目前没有现有存档；待确认新建隔离 P7 世界，或由你打开另一个已有 1.21.1 世界并对局域网开放。目标本机 `127.0.0.1:25575`。不连公共服务器，不升级旧世界。
-5. **身体与试玩。** AIRI MC 因必须执行生成 JavaScript 暂停。Mindcraft 的 `p7/mindcraft_settings.json` 和 `mindcraft_profile.json` 是待验证配置；先完成控制口与进程清理的工程处理，再提供启动入口。随后按清单测进世界、跟随、砍树、木镐、停下，记录真实位置/背包/动作，不用文字回复代替。具备可玩状态后请你亲自玩至少 15 分钟，再保留你的感受原话；现在没有体验记录。
+   在本地窗口输入云密钥，仅保留内存，不写进命令行或聊天。成功后使用 `http://127.0.0.1:18787/v1/`、新生成的本机会话令牌、模型 `ego-companion`。当前顺序为 DeepSeek V4.1 Flash/Wafer → 同模型/Together → Gemini 3.1 Flash-Lite/Vertex EU；只有输出开始前的指定传输错误可触发备用，并遵守冷却。这不是不限流保证；共用原 $5 账本，不重置未知预留。
 
-停止代理使用窗口 **Stop** 或关闭窗口；它会撤销本次令牌。完整记录在本机 `growth/runs/p7/`，不提交。报告见 `REPORT.md`；此阶段不接 U1 学习，也不声称她已经学会你。
+2. **配置 AIRI。** 打开 `C:\Users\LEO\AppData\Local\Programs\airi\airi.exe`。到 Settings → Providers → Chat → OpenAI Compatible，使用实际提供方设置页，避免只填首次引导。
+
+   **先把 Advanced 中 Base URL 改为上述回环地址，再填新本机令牌**；AIRI 会自动验证，不能在默认 OpenAI 地址下先填令牌。然后在思考/Consciousness 页面选择 OpenAI Compatible 和 `ego-companion`，打开 Chat。云密钥不交给 AIRI。本机令牌保存到 AIRI 配置已获授权，旧令牌在代理停止后失效。本次两次实际聊天已通过；本地语音未可用，识别、读屏、Analytics 保持关闭。
+
+3. **打开目标世界。** 用 `D:\Software\MC\HMCL\HMCL.exe` 打开 Java 1.21.1，玩家名 Moonlight，在目标本机世界选择“对局域网开放”，记下 MC 显示的端口。当前实例没有已打开的世界；另发现的 `ServerFiles-7.2` 模组服务端存档不要直接用原版打开。已有世界或新建隔离测试世界仍待选择，未迁移存档。
+
+4. **启动 Mindcraft 身体。** 世界已打开后，在同一 growth 目录运行：
+
+   ```powershell
+   .\.venv\Scripts\python.exe -m p7.start_body
+   ```
+
+   填 MC 显示的 LAN 端口，以及当前代理窗口里的**本机令牌**，点击 Start Mindcraft。此入口只接 127.0.0.1；默认端口 25575 只是待填示例。它拒收云密钥，不运行生成代码，也不打开网页控制口。此路径只完成离线验证，实际登录和玩法还未确认。进世界后由 Moonlight 的 MC 聊天与她交互；AIRI 聊天和身体尚未共享会话。
+
+5. **验收和试玩。** 按原清单记录进入、跟随、砍树、木镐、停下的环境结果，不用回复文字替代。AIRI 自带 MC 因生成代码依赖暂停。具备可玩状态后由你亲自玩至少 15 分钟，再保存你的感受原话；当前没有体验记录。
+
+先按身体窗口 **Stop Mindcraft** 或关闭窗口，再按代理窗口 **Stop** 或关闭代理。身体父进程退出会清理子进程，代理停止会撤销令牌。失败详情留在本机 `growth/runs/p7/body_resume/` 和 `growth/runs/p7/proxy/`，这些目录不提交。旧的 `p7.launch_proxy` / `runtime_session` 是历史冻结入口，不用于当前启动。

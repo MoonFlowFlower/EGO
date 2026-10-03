@@ -1,0 +1,602 @@
+[
+  {
+    "unix_s": 1791024710.4137497,
+    "pid": 58532,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "80, 2467, 3603, 78.08",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024717.8943818,
+    "pid": 45996,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "80, 2370, 3603, 84.81",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024748.8774512,
+    "pid": 45996,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "80, 2332, 3603, 76.67",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024779.47062,
+    "pid": 11076,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "81, 2332, 3603, 87.69",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024809.8224814,
+    "pid": 11076,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "81, 2325, 3603, 82.25",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024839.8980448,
+    "pid": 11076,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "81, 2347, 3602, 82.86",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024357.5018222,
+    "pid": 29340,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "75, 2272, 3597, 61.59",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024387.853829,
+    "pid": 29340,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "74, 2212, 3597, 60.73",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024418.660575,
+    "pid": 29340,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "76, 2332, 3597, 69.16",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024449.2235425,
+    "pid": 29340,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "75, 2265, 3597, 67.30",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024479.3653204,
+    "pid": 29340,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "77, 2280, 3597, 71.53",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024347.5132825,
+    "pid": 42304,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "75, 2317, 3599, 66.34",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024073.2254093,
+    "pid": 21420,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "76, 2332, 3603, 73.78",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024104.617939,
+    "pid": 21420,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "75, 2235, 3596, 64.74",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024135.830093,
+    "pid": 21420,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "77, 2355, 3596, 70.27",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024166.8270535,
+    "pid": 21420,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "75, 2265, 3598, 65.29",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024198.071146,
+    "pid": 21420,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "75, 2235, 3604, 59.84",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024067.847292,
+    "pid": 21064,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "76, 2347, 3603, 69.72",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024212.4371834,
+    "pid": 24024,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "75, 2242, 3604, 63.21",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024242.7419138,
+    "pid": 24024,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "77, 2392, 3599, 71.32",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024273.1036475,
+    "pid": 24024,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "77, 2377, 3599, 64.31",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024305.1739893,
+    "pid": 24024,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "76, 2302, 3604, 67.52",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024335.8684933,
+    "pid": 24024,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "75, 2197, 3599, 60.07",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024211.806216,
+    "pid": 51064,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "76, 2280, 3604, 65.64",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024486.2497606,
+    "pid": 3420,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "78, 2392, 3597, 73.52",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024492.0889454,
+    "pid": 60592,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "79, 2265, 3597, 70.56",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024522.7961547,
+    "pid": 60592,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "77, 2302, 3597, 69.39",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024588.9581332,
+    "pid": 60592,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "77, 2325, 3602, 69.17",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024619.0232115,
+    "pid": 60592,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "77, 2310, 3581, 66.21",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024645.6526065,
+    "pid": 8740,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "79, 2332, 3604, 79.17",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024678.7655063,
+    "pid": 8740,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "80, 2317, 3604, 78.78",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024709.0202496,
+    "pid": 8740,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "79, 2400, 3603, 77.15",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023941.6933303,
+    "pid": 50832,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "75, 2227, 3600, 60.86",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023972.2561371,
+    "pid": 50832,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "75, 2332, 3600, 64.38",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024003.1809998,
+    "pid": 50832,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "77, 2415, 3600, 73.24",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024033.3536894,
+    "pid": 50832,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "74, 2250, 3582, 55.05",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791024064.0768354,
+    "pid": 50832,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "76, 2400, 3603, 77.91",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023935.4161165,
+    "pid": 53360,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "74, 2227, 3600, 66.75",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791022724.1743095,
+    "pid": 52984,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "74, 2152, 3707, 44.15",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791022754.7613108,
+    "pid": 52984,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "76, 2272, 3708, 63.15",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791022785.2276378,
+    "pid": 52984,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "76, 2190, 3639, 57.46",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791022815.3653607,
+    "pid": 52984,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "76, 2250, 3640, 60.10",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791022846.0750268,
+    "pid": 52984,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "75, 2137, 3649, 51.36",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791022877.6701074,
+    "pid": 52984,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "76, 2250, 3643, 59.95",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791022908.0746834,
+    "pid": 52984,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "74, 2152, 3637, 49.11",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791022938.6284826,
+    "pid": 52984,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "76, 2317, 3637, 69.27",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791022970.489881,
+    "pid": 52984,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "73, 2137, 3652, 64.62",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023002.6000896,
+    "pid": 52984,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "76, 2370, 3647, 71.86",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023033.205326,
+    "pid": 52984,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "73, 2265, 3649, 55.80",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023063.2608438,
+    "pid": 52984,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "74, 2302, 3644, 59.78",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023093.40859,
+    "pid": 52984,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "74, 2287, 3613, 59.50",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023123.6779053,
+    "pid": 52984,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "76, 2355, 3626, 71.33",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023137.7910821,
+    "pid": 38336,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "74, 2160, 3626, 53.06",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023173.6721842,
+    "pid": 38336,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "76, 2310, 3626, 66.63",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023205.5021594,
+    "pid": 38336,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "75, 2160, 3600, 51.34",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023257.2465267,
+    "pid": 38336,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "75, 2122, 3600, 52.01",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023287.3520303,
+    "pid": 38336,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "76, 2287, 3600, 61.11",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023324.3259854,
+    "pid": 38336,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "75, 2130, 3600, 52.34",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023360.4293864,
+    "pid": 38336,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "76, 2190, 3600, 59.42",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023391.4377427,
+    "pid": 38336,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "74, 2152, 3600, 55.26",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023423.3796797,
+    "pid": 38336,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "76, 2355, 3600, 69.41",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023477.8404589,
+    "pid": 38336,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "75, 2355, 3600, 68.22",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023509.7618904,
+    "pid": 38336,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "73, 2167, 3611, 51.39",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023540.2254357,
+    "pid": 38336,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "73, 2235, 3611, 58.07",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023572.675946,
+    "pid": 38336,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "73, 2265, 3620, 60.59",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023630.2336097,
+    "pid": 38336,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "71, 2115, 3604, 51.96",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023663.245245,
+    "pid": 38336,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "73, 2295, 3594, 64.66",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023723.437112,
+    "pid": 38336,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "74, 2295, 3592, 68.57",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023759.4776826,
+    "pid": 38336,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "72, 2302, 3593, 57.98",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023789.6803913,
+    "pid": 38336,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "72, 2227, 3593, 52.72",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023822.2249625,
+    "pid": 38336,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "77, 2452, 3676, 87.31",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023841.6822183,
+    "pid": 37004,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "75, 2340, 3600, 64.98",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023871.8829997,
+    "pid": 37004,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "73, 2295, 3600, 60.97",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023890.119837,
+    "pid": 38052,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "75, 2302, 3599, 68.96",
+    "gpu_returncode": 0
+  },
+  {
+    "unix_s": 1791023910.0919893,
+    "pid": 58256,
+    "record_type": "telemetry",
+    "ac_online": true,
+    "gpu_csv_C_MHz_MiB_W": "75, 2227, 3600, 64.45",
+    "gpu_returncode": 0
+  }
+]

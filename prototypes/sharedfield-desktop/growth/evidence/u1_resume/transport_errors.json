@@ -1,0 +1,66 @@
+[
+  {
+    "unix_s": 1791024588.8950608,
+    "pid": 60592,
+    "record_type": "transport_error",
+    "context": {
+      "phase": "corrected",
+      "group": "B_R",
+      "case_id": "chain_emotion_T1_08"
+    },
+    "attempt": 1,
+    "error": "TimeoutError",
+    "latency_s": 60.09088760000304,
+    "shared_ledger_delta_unattributed": [
+      {
+        "charge_id": "6ac12dfb49d743e4b9730f7c8be3fe79",
+        "usd": 0.05,
+        "status": "reserved_unknown"
+      }
+    ]
+  },
+  {
+    "unix_s": 1791023850.8245335,
+    "pid": 37004,
+    "record_type": "transport_error",
+    "context": {
+      "phase": "Ua",
+      "config": "stronger",
+      "condition": "none",
+      "case_id": "ua_code_T1_00",
+      "arm": "B"
+    },
+    "attempt": 1,
+    "error": "http_429",
+    "latency_s": 8.509893799986457,
+    "shared_ledger_delta_unattributed": [
+      {
+        "charge_id": "d8b3faa6df4d4dcf8975fe7ec3f2808e",
+        "usd": 0.05,
+        "status": "reserved_unknown"
+      }
+    ]
+  },
+  {
+    "unix_s": 1791023889.7890358,
+    "pid": 37004,
+    "record_type": "transport_error",
+    "context": {
+      "phase": "Ua",
+      "config": "stronger",
+      "condition": "none",
+      "case_id": "ua_code_T1_00",
+      "arm": "B"
+    },
+    "attempt": 2,
+    "error": "http_429",
+    "latency_s": 8.403129100013757,
+    "shared_ledger_delta_unattributed": [
+      {
+        "charge_id": "803eb27b05014c64b9d0adf3ef0fc470",
+        "usd": 0.05,
+        "status": "reserved_unknown"
+      }
+    ]
+  }
+]

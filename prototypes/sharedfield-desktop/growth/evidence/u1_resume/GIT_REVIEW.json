@@ -1,0 +1,41 @@
+{
+  "reviewed_utc": "2026-10-03T11:15:19.191558+00:00",
+  "staged_scope_files_before_this_summary": 32,
+  "staged_cloud_exact_key_hits": [],
+  "worktree_index_byte_mismatches": [],
+  "frozen_git_blobs": [
+    {
+      "manifest": "u1/frozen_v1.json",
+      "git_blob_files_checked": 18,
+      "mismatches": []
+    },
+    {
+      "manifest": "u1_resume/frozen_v1.json",
+      "git_blob_files_checked": 26,
+      "mismatches": []
+    },
+    {
+      "manifest": "routing/frozen_v1.json",
+      "git_blob_files_checked": 10,
+      "mismatches": []
+    },
+    {
+      "manifest": "routing/frozen_v2.json",
+      "git_blob_files_checked": 6,
+      "mismatches": []
+    },
+    {
+      "manifest": "luna/frozen_v1.json",
+      "git_blob_files_checked": 37,
+      "mismatches": []
+    },
+    {
+      "manifest": "p7/BODY_FREEZE.json",
+      "git_blob_files_checked": 7,
+      "mismatches": []
+    }
+  ],
+  "runs_in_index": false,
+  "additional_model_calls": 0,
+  "validation": "Whitespace check passed; U1 raw-response audit passed while scientific U1 status is NOT_PASSED; P7 MC and voice remain unverified."
+}

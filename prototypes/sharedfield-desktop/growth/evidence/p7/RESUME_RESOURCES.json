@@ -1,0 +1,49 @@
+{
+  "scope": "AIRI and Minecraft client main menu; no body or voice; other applications and U1 also active",
+  "samples": 10,
+  "from_utc": "2026-10-03T10:38:55.4772274+00:00",
+  "to_utc": "2026-10-03T10:39:38.8446160+00:00",
+  "gpu_columns": [
+    "temperature_C",
+    "clock_MHz",
+    "used_MiB",
+    "total_MiB",
+    "percent",
+    "power_W"
+  ],
+  "gpu_min": [
+    74.0,
+    2205.0,
+    3600.0,
+    12227.0,
+    16.0,
+    61.72
+  ],
+  "gpu_max": [
+    77.0,
+    2377.0,
+    3601.0,
+    12227.0,
+    17.0,
+    73.78
+  ],
+  "attributed_working_set_MiB_min": 1835.73828125,
+  "attributed_working_set_MiB_max": 1838.8671875,
+  "attributed_cpu_percent_min": 3.7881911222524662,
+  "attributed_cpu_percent_max": 4.407648825759109,
+  "observed_remote_endpoints": [
+    [
+      "127.0.0.1",
+      6072
+    ],
+    [
+      "127.0.0.1",
+      6121
+    ],
+    [
+      "127.0.0.1",
+      8172
+    ]
+  ],
+  "network_caveat": "Short TCP sample can miss transient external connections; not evidence of no external contact. OpenAI automatic validation incident reported separately."
+}

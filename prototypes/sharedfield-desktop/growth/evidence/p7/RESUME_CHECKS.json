@@ -1,0 +1,104 @@
+{
+  "recorded_utc": "2026-10-03T11:10:34.385493+00:00",
+  "proxy_events": [
+    {
+      "unix_s": 1791023491.1225333,
+      "outcome": "completed",
+      "latency_s": 1.556689200020628,
+      "endpoint": "chat",
+      "charge_id": "cb44337616154276b8fafe28d4b06c01",
+      "reserved_usd": 0.05,
+      "cost_usd": 9.25e-06,
+      "input_tokens": 5,
+      "output_tokens": 15,
+      "stream": false,
+      "requested_model": "deepseek/deepseek-v4.1-flash",
+      "requested_providers": [
+        "wafer"
+      ],
+      "budget_reserved_or_reported_usd": 1.08707890759
+    },
+    {
+      "unix_s": 1791023743.5404491,
+      "outcome": "completed",
+      "latency_s": 1.4504067999951076,
+      "endpoint": "chat",
+      "charge_id": "16852c68e6e2408ea5775510248f1830",
+      "reserved_usd": 0.05,
+      "cost_usd": 0.00022805,
+      "input_tokens": 4021,
+      "output_tokens": 45,
+      "stream": true,
+      "requested_model": "deepseek/deepseek-v4.1-flash",
+      "requested_providers": [
+        "wafer"
+      ],
+      "budget_reserved_or_reported_usd": 1.09814205759
+    },
+    {
+      "unix_s": 1791023903.2914443,
+      "outcome": "completed",
+      "latency_s": 0.7730928999953903,
+      "endpoint": "chat",
+      "charge_id": "cf22aa3e5615401592717af65b2277d2",
+      "reserved_usd": 0.05,
+      "cost_usd": 0.00019757,
+      "input_tokens": 4069,
+      "output_tokens": 3,
+      "stream": true,
+      "requested_model": "deepseek/deepseek-v4.1-flash",
+      "requested_providers": [
+        "wafer"
+      ],
+      "budget_reserved_or_reported_usd": 1.20437157959
+    }
+  ],
+  "reported_cost_usd": 0.00043486999999999996,
+  "chat_probes_completed": 2,
+  "chat_window_reopened": true,
+  "full_airi_process_restart_tested": false,
+  "role_changed": false,
+  "cloud_key_given_to_airi": false,
+  "initial_local_token_validation_incident": {
+    "endpoint": "https://api.openai.com/v1",
+    "status": 401,
+    "caused_by": "token entered before correcting default Base URL",
+    "old_token_revoked": true,
+    "cloud_key_or_chat_sent": false
+  },
+  "body": {
+    "actual_mc_connection": false,
+    "official_offline_probe": true,
+    "process_boundary_tests": 3,
+    "launcher_visible": true,
+    "empty_token_refused": true,
+    "launcher_closed": true
+  },
+  "voice": {
+    "selected": "Q8 (WASM)",
+    "started_utc": "2026-10-03T10:51:21.256Z",
+    "observed_elapsed_s": 314.325,
+    "voice_selected": false,
+    "test_button_disabled": true,
+    "test_voice_clicked": false,
+    "audio_produced": false
+  },
+  "cleanup": {
+    "proxy_pid": 39208,
+    "exit_code": 0,
+    "checked_utc": "2026-10-03T11:01:00Z",
+    "ports_without_listeners": [
+      18787,
+      18080,
+      25575
+    ]
+  },
+  "pending": [
+    "owner world selection",
+    "five real MC tasks",
+    "AIRI-body conversation continuity",
+    "local speech",
+    "full resource coexistence",
+    "15 minute owner trial"
+  ]
+}

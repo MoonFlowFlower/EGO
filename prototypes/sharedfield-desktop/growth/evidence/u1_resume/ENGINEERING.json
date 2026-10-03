@@ -1,0 +1,34 @@
+{
+  "unique_tests_passed": 20,
+  "cloud_calls": 0,
+  "inherited_regressions": 15,
+  "new_boundary_tests": 5,
+  "frozen_sources_verified": 24,
+  "unchanged_protocol_sections": {
+    "ua": true,
+    "ub": true,
+    "uc": true,
+    "chain": true,
+    "artifact_sha256": true
+  },
+  "configs": {
+    "main": {
+      "model": "deepseek/deepseek-v4.1-flash",
+      "route": "wafer",
+      "reasoning": false,
+      "minimum_start_interval_s": 2
+    },
+    "same_reasoning": {
+      "model": "deepseek/deepseek-v4.1-flash",
+      "route": "wafer",
+      "reasoning": true,
+      "minimum_start_interval_s": 2
+    },
+    "stronger": {
+      "model": "deepseek/deepseek-v4-pro-0813",
+      "route": "ionstream",
+      "reasoning": true,
+      "minimum_start_interval_s": 6
+    }
+  }
+}

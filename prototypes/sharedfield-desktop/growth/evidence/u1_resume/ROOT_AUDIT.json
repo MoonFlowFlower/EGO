@@ -1,0 +1,741 @@
+{
+  "reviewed_at_utc": "2026-10-03T11:13:13.783032+00:00",
+  "paid_calls_added": 0,
+  "audit_pass": true,
+  "issues": [],
+  "scientific_status": "U1_NOT_PASSED",
+  "hashes": [
+    {
+      "manifest": "u1/frozen_v1.json",
+      "sha256": "659b00ea9e5e61cf8233c67072a700fafe561cc4e49c666047f12a40fa92b870",
+      "files": 18,
+      "mismatches": []
+    },
+    {
+      "manifest": "u1_resume/frozen_v1.json",
+      "sha256": "2d54f83daf61a33f39d8ed67edb21243ccf8bb3868487b372f826d20dfbdd82b",
+      "files": 26,
+      "mismatches": []
+    },
+    {
+      "manifest": "routing/frozen_v1.json",
+      "sha256": "8b02f3c48507394fb6e94b9d88b11d30b8a9d7ce35f71221e9c9f0ebad8d9561",
+      "files": 10,
+      "mismatches": []
+    },
+    {
+      "manifest": "routing/frozen_v2.json",
+      "sha256": "ba2241366e71b26fe7d88d130b27787f679d2c90146feecffd55169cabd35c0a",
+      "files": 6,
+      "mismatches": []
+    },
+    {
+      "manifest": "luna/frozen_v1.json",
+      "sha256": "2e3e95a43d84bc9b54c3afdfc9ab54feb4357e7eb95ea3a1909db49b5bbbdf39",
+      "files": 37,
+      "mismatches": []
+    },
+    {
+      "manifest": "p7/BODY_FREEZE.json",
+      "sha256": "c8738c30196136967fa63724f0443837e6ef0ab0a82c4c6767c4534ce5a78aad",
+      "files": 7,
+      "mismatches": []
+    }
+  ],
+  "requests": 668,
+  "wire_requests": 668,
+  "responses": 665,
+  "transport_errors": 3,
+  "decision_count": 630,
+  "valid_decisions": 630,
+  "reported_cost_usd": 0.074735078,
+  "latency_median_s": 1.282022200000938,
+  "latency_p95_s": 6.6541496999852825,
+  "shared_ledger_occupancy_usd": 1.2376890655900001,
+  "shared_reserved_usd": 1.0,
+  "retry_waits": [
+    {
+      "unix_s": 1791024588.8960898,
+      "pid": 60592,
+      "record_type": "retry_wait",
+      "context": {
+        "phase": "corrected",
+        "group": "B_R",
+        "case_id": "chain_emotion_T1_08"
+      },
+      "delay_s": 31.219665522125432,
+      "retry_after_s": 0,
+      "same_input": true
+    },
+    {
+      "unix_s": 1791023850.8245335,
+      "pid": 37004,
+      "record_type": "retry_wait",
+      "context": {
+        "phase": "Ua",
+        "config": "stronger",
+        "condition": "none",
+        "case_id": "ua_code_T1_00",
+        "arm": "B"
+      },
+      "delay_s": 30.559669773468368,
+      "retry_after_s": 0.0,
+      "same_input": true
+    }
+  ],
+  "restart": [
+    {
+      "group": "B_R",
+      "learn_pid": 53360,
+      "test_pid": 50832,
+      "state_matches": true,
+      "read_only": true
+    },
+    {
+      "group": "B_I",
+      "learn_pid": 21064,
+      "test_pid": 21420,
+      "state_matches": true,
+      "read_only": true
+    },
+    {
+      "group": "B_N",
+      "learn_pid": 51064,
+      "test_pid": 24024,
+      "state_matches": true,
+      "read_only": true
+    },
+    {
+      "group": "A_R",
+      "learn_pid": 42304,
+      "test_pid": 29340,
+      "state_matches": true,
+      "read_only": true
+    }
+  ],
+  "deletion": [
+    {
+      "group": "B_R",
+      "records": 0,
+      "worker_byte_check": {
+        "pass": true,
+        "files_checked": [
+          "B_R.sqlite"
+        ],
+        "needles_checked": 20,
+        "hits": []
+      },
+      "independent_needles": 15,
+      "files": [
+        "B_R.sqlite"
+      ],
+      "hits": []
+    },
+    {
+      "group": "A_R",
+      "records": 0,
+      "worker_byte_check": {
+        "pass": true,
+        "files_checked": [
+          "A_R.sqlite"
+        ],
+        "needles_checked": 18,
+        "hits": []
+      },
+      "independent_needles": 15,
+      "files": [
+        "A_R.sqlite"
+      ],
+      "hits": []
+    }
+  ],
+  "independent_chain_gates": {
+    "retention_pass": false,
+    "causal_pass": true,
+    "correction_pass": false,
+    "deletion_pass": true
+  },
+  "table": [
+    {
+      "run": "v1/chain/A_R/corrected",
+      "arm": "A",
+      "family": "code",
+      "split": "T1",
+      "condition": "",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/chain/A_R/corrected",
+      "arm": "A",
+      "family": "emotion",
+      "split": "T1",
+      "condition": "",
+      "n": 10,
+      "follows": 8
+    },
+    {
+      "run": "v1/chain/A_R/corrected",
+      "arm": "A",
+      "family": "promise",
+      "split": "T1",
+      "condition": "",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/chain/A_R/deleted",
+      "arm": "A",
+      "family": "code",
+      "split": "T1",
+      "condition": "",
+      "n": 10,
+      "follows": 0
+    },
+    {
+      "run": "v1/chain/A_R/deleted",
+      "arm": "A",
+      "family": "emotion",
+      "split": "T1",
+      "condition": "",
+      "n": 10,
+      "follows": 9
+    },
+    {
+      "run": "v1/chain/A_R/deleted",
+      "arm": "A",
+      "family": "promise",
+      "split": "T1",
+      "condition": "",
+      "n": 10,
+      "follows": 0
+    },
+    {
+      "run": "v1/chain/A_R/initial",
+      "arm": "A",
+      "family": "code",
+      "split": "T1",
+      "condition": "",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/chain/A_R/initial",
+      "arm": "A",
+      "family": "code",
+      "split": "T2",
+      "condition": "",
+      "n": 10,
+      "follows": 5
+    },
+    {
+      "run": "v1/chain/A_R/initial",
+      "arm": "A",
+      "family": "emotion",
+      "split": "T1",
+      "condition": "",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/chain/A_R/initial",
+      "arm": "A",
+      "family": "emotion",
+      "split": "T2",
+      "condition": "",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/chain/A_R/initial",
+      "arm": "A",
+      "family": "promise",
+      "split": "T1",
+      "condition": "",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/chain/A_R/initial",
+      "arm": "A",
+      "family": "promise",
+      "split": "T2",
+      "condition": "",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/chain/B_I/initial",
+      "arm": "B",
+      "family": "code",
+      "split": "T1",
+      "condition": "",
+      "n": 10,
+      "follows": 0
+    },
+    {
+      "run": "v1/chain/B_I/initial",
+      "arm": "B",
+      "family": "code",
+      "split": "T2",
+      "condition": "",
+      "n": 10,
+      "follows": 0
+    },
+    {
+      "run": "v1/chain/B_I/initial",
+      "arm": "B",
+      "family": "emotion",
+      "split": "T1",
+      "condition": "",
+      "n": 10,
+      "follows": 9
+    },
+    {
+      "run": "v1/chain/B_I/initial",
+      "arm": "B",
+      "family": "emotion",
+      "split": "T2",
+      "condition": "",
+      "n": 10,
+      "follows": 8
+    },
+    {
+      "run": "v1/chain/B_I/initial",
+      "arm": "B",
+      "family": "promise",
+      "split": "T1",
+      "condition": "",
+      "n": 10,
+      "follows": 0
+    },
+    {
+      "run": "v1/chain/B_I/initial",
+      "arm": "B",
+      "family": "promise",
+      "split": "T2",
+      "condition": "",
+      "n": 10,
+      "follows": 0
+    },
+    {
+      "run": "v1/chain/B_N/initial",
+      "arm": "B",
+      "family": "code",
+      "split": "T1",
+      "condition": "",
+      "n": 10,
+      "follows": 0
+    },
+    {
+      "run": "v1/chain/B_N/initial",
+      "arm": "B",
+      "family": "code",
+      "split": "T2",
+      "condition": "",
+      "n": 10,
+      "follows": 0
+    },
+    {
+      "run": "v1/chain/B_N/initial",
+      "arm": "B",
+      "family": "emotion",
+      "split": "T1",
+      "condition": "",
+      "n": 10,
+      "follows": 9
+    },
+    {
+      "run": "v1/chain/B_N/initial",
+      "arm": "B",
+      "family": "emotion",
+      "split": "T2",
+      "condition": "",
+      "n": 10,
+      "follows": 9
+    },
+    {
+      "run": "v1/chain/B_N/initial",
+      "arm": "B",
+      "family": "promise",
+      "split": "T1",
+      "condition": "",
+      "n": 10,
+      "follows": 0
+    },
+    {
+      "run": "v1/chain/B_N/initial",
+      "arm": "B",
+      "family": "promise",
+      "split": "T2",
+      "condition": "",
+      "n": 10,
+      "follows": 0
+    },
+    {
+      "run": "v1/chain/B_R/corrected",
+      "arm": "B",
+      "family": "code",
+      "split": "T1",
+      "condition": "",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/chain/B_R/corrected",
+      "arm": "B",
+      "family": "emotion",
+      "split": "T1",
+      "condition": "",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/chain/B_R/corrected",
+      "arm": "B",
+      "family": "promise",
+      "split": "T1",
+      "condition": "",
+      "n": 10,
+      "follows": 0
+    },
+    {
+      "run": "v1/chain/B_R/deleted",
+      "arm": "B",
+      "family": "code",
+      "split": "T1",
+      "condition": "",
+      "n": 10,
+      "follows": 0
+    },
+    {
+      "run": "v1/chain/B_R/deleted",
+      "arm": "B",
+      "family": "emotion",
+      "split": "T1",
+      "condition": "",
+      "n": 10,
+      "follows": 9
+    },
+    {
+      "run": "v1/chain/B_R/deleted",
+      "arm": "B",
+      "family": "promise",
+      "split": "T1",
+      "condition": "",
+      "n": 10,
+      "follows": 0
+    },
+    {
+      "run": "v1/chain/B_R/initial",
+      "arm": "B",
+      "family": "code",
+      "split": "T1",
+      "condition": "",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/chain/B_R/initial",
+      "arm": "B",
+      "family": "code",
+      "split": "T2",
+      "condition": "",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/chain/B_R/initial",
+      "arm": "B",
+      "family": "emotion",
+      "split": "T1",
+      "condition": "",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/chain/B_R/initial",
+      "arm": "B",
+      "family": "emotion",
+      "split": "T2",
+      "condition": "",
+      "n": 10,
+      "follows": 9
+    },
+    {
+      "run": "v1/chain/B_R/initial",
+      "arm": "B",
+      "family": "promise",
+      "split": "T1",
+      "condition": "",
+      "n": 10,
+      "follows": 0
+    },
+    {
+      "run": "v1/chain/B_R/initial",
+      "arm": "B",
+      "family": "promise",
+      "split": "T2",
+      "condition": "",
+      "n": 10,
+      "follows": 0
+    },
+    {
+      "run": "v1/Ua_main",
+      "arm": "B",
+      "family": "code",
+      "split": "T1",
+      "condition": "none",
+      "n": 10,
+      "follows": 0
+    },
+    {
+      "run": "v1/Ua_main",
+      "arm": "A",
+      "family": "code",
+      "split": "T1",
+      "condition": "none",
+      "n": 10,
+      "follows": 0
+    },
+    {
+      "run": "v1/Ua_main",
+      "arm": "B",
+      "family": "code",
+      "split": "T1",
+      "condition": "true",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/Ua_main",
+      "arm": "A",
+      "family": "code",
+      "split": "T1",
+      "condition": "true",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/Ua_main",
+      "arm": "B",
+      "family": "code",
+      "split": "T1",
+      "condition": "false",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/Ua_main",
+      "arm": "A",
+      "family": "code",
+      "split": "T1",
+      "condition": "false",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/Ua_main",
+      "arm": "B",
+      "family": "emotion",
+      "split": "T1",
+      "condition": "none",
+      "n": 10,
+      "follows": 0
+    },
+    {
+      "run": "v1/Ua_main",
+      "arm": "A",
+      "family": "emotion",
+      "split": "T1",
+      "condition": "none",
+      "n": 10,
+      "follows": 0
+    },
+    {
+      "run": "v1/Ua_main",
+      "arm": "B",
+      "family": "emotion",
+      "split": "T1",
+      "condition": "true",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/Ua_main",
+      "arm": "A",
+      "family": "emotion",
+      "split": "T1",
+      "condition": "true",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/Ua_main",
+      "arm": "B",
+      "family": "emotion",
+      "split": "T1",
+      "condition": "false",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/Ua_main",
+      "arm": "A",
+      "family": "emotion",
+      "split": "T1",
+      "condition": "false",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/Ua_main",
+      "arm": "B",
+      "family": "promise",
+      "split": "T1",
+      "condition": "none",
+      "n": 10,
+      "follows": 0
+    },
+    {
+      "run": "v1/Ua_main",
+      "arm": "A",
+      "family": "promise",
+      "split": "T1",
+      "condition": "none",
+      "n": 10,
+      "follows": 0
+    },
+    {
+      "run": "v1/Ua_main",
+      "arm": "B",
+      "family": "promise",
+      "split": "T1",
+      "condition": "true",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/Ua_main",
+      "arm": "A",
+      "family": "promise",
+      "split": "T1",
+      "condition": "true",
+      "n": 10,
+      "follows": 9
+    },
+    {
+      "run": "v1/Ua_main",
+      "arm": "B",
+      "family": "promise",
+      "split": "T1",
+      "condition": "false",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/Ua_main",
+      "arm": "A",
+      "family": "promise",
+      "split": "T1",
+      "condition": "false",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/Ua_same_reasoning",
+      "arm": "B",
+      "family": "code",
+      "split": "T1",
+      "condition": "none",
+      "n": 10,
+      "follows": 0
+    },
+    {
+      "run": "v1/Ua_same_reasoning",
+      "arm": "B",
+      "family": "code",
+      "split": "T1",
+      "condition": "true",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/Ua_same_reasoning",
+      "arm": "B",
+      "family": "code",
+      "split": "T1",
+      "condition": "false",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/Ua_same_reasoning",
+      "arm": "B",
+      "family": "emotion",
+      "split": "T1",
+      "condition": "none",
+      "n": 10,
+      "follows": 0
+    },
+    {
+      "run": "v1/Ua_same_reasoning",
+      "arm": "B",
+      "family": "emotion",
+      "split": "T1",
+      "condition": "true",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/Ua_same_reasoning",
+      "arm": "B",
+      "family": "emotion",
+      "split": "T1",
+      "condition": "false",
+      "n": 10,
+      "follows": 10
+    },
+    {
+      "run": "v1/Ua_same_reasoning",
+      "arm": "B",
+      "family": "promise",
+      "split": "T1",
+      "condition": "none",
+      "n": 10,
+      "follows": 0
+    },
+    {
+      "run": "v1/Ua_same_reasoning",
+      "arm": "B",
+      "family": "promise",
+      "split": "T1",
+      "condition": "true",
+      "n": 10,
+      "follows": 9
+    },
+    {
+      "run": "v1/Ua_same_reasoning",
+      "arm": "B",
+      "family": "promise",
+      "split": "T1",
+      "condition": "false",
+      "n": 10,
+      "follows": 10
+    }
+  ],
+  "resource_samples": 75,
+  "all_ac": true,
+  "gpu_min": [
+    71.0,
+    2115.0,
+    3581.0,
+    44.15
+  ],
+  "gpu_max": [
+    81.0,
+    2467.0,
+    3708.0,
+    87.69
+  ]
+}

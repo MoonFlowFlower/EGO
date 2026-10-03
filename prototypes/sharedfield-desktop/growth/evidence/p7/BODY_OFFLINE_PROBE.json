@@ -1,0 +1,5 @@
+{
+  "returncode": 0,
+  "stdout": "{\"kind\": \"supervisor_started\", \"child_pid\": 47420, \"folder\": \"D:\\\\Project\\\\AIProject\\\\MyProject\\\\Ego_proejct_restart\\\\.publish\\\\EGO\\\\prototypes\\\\sharedfield-desktop\\\\growth\\\\runs\\\\p7\\\\body_resume\\\\1791023376093594200\", \"job_kill_on_close\": true, \"active_process_limit\": 1}\n{\"unix_ms\":1791023377617,\"kind\":\"offline_probe\",\"mutationBlocked\":true,\"codeBlocked\":true,\"newActionPresent\":false,\"controlServerStarted\":false,\"minecraft_version\":\"1.21.1\",\"model\":{\"api\":\"openai\",\"model\":\"ego-companion\",\"url\":\"http://127.0.0.1:18787/v1\",\"params\":{\"temperature\":0,\"max_tokens\":1024}},\"embedding\":{\"api\":\"openai\",\"model\":\"text-embedding-3-small\",\"url\":\"http://127.0.0.1:18787/v1\"}}\n{\"kind\": \"supervisor_closed\", \"child_exit\": 0, \"folder\": \"D:\\\\Project\\\\AIProject\\\\MyProject\\\\Ego_proejct_restart\\\\.publish\\\\EGO\\\\prototypes\\\\sharedfield-desktop\\\\growth\\\\runs\\\\p7\\\\body_resume\\\\1791023376093594200\"}\n",
+  "stderr": ""
+}

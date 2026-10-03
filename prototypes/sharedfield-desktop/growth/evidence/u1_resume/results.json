@@ -1,0 +1,3550 @@
+{
+  "status": "U1_NOT_PASSED",
+  "reviewed_manifest_sha256": "2d54f83daf61a33f39d8ed67edb21243ccf8bb3868487b372f826d20dfbdd82b",
+  "started_utc": "2026-10-03T10:18:43.866092+00:00",
+  "Ua_main": {
+    "pass": true,
+    "decisions": 180,
+    "expected": 180,
+    "table": [
+      {
+        "arm": "B",
+        "family": "code",
+        "condition": "none",
+        "n": 10,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 10
+      },
+      {
+        "arm": "B",
+        "family": "code",
+        "condition": "true",
+        "n": 10,
+        "follows": 10,
+        "rate": 1.0,
+        "valid": 10
+      },
+      {
+        "arm": "B",
+        "family": "code",
+        "condition": "false",
+        "n": 10,
+        "follows": 10,
+        "rate": 1.0,
+        "valid": 10
+      },
+      {
+        "arm": "B",
+        "family": "emotion",
+        "condition": "none",
+        "n": 10,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 10
+      },
+      {
+        "arm": "B",
+        "family": "emotion",
+        "condition": "true",
+        "n": 10,
+        "follows": 10,
+        "rate": 1.0,
+        "valid": 10
+      },
+      {
+        "arm": "B",
+        "family": "emotion",
+        "condition": "false",
+        "n": 10,
+        "follows": 10,
+        "rate": 1.0,
+        "valid": 10
+      },
+      {
+        "arm": "B",
+        "family": "promise",
+        "condition": "none",
+        "n": 10,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 10
+      },
+      {
+        "arm": "B",
+        "family": "promise",
+        "condition": "true",
+        "n": 10,
+        "follows": 10,
+        "rate": 1.0,
+        "valid": 10
+      },
+      {
+        "arm": "B",
+        "family": "promise",
+        "condition": "false",
+        "n": 10,
+        "follows": 10,
+        "rate": 1.0,
+        "valid": 10
+      },
+      {
+        "arm": "A",
+        "family": "code",
+        "condition": "none",
+        "n": 10,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 10
+      },
+      {
+        "arm": "A",
+        "family": "code",
+        "condition": "true",
+        "n": 10,
+        "follows": 10,
+        "rate": 1.0,
+        "valid": 10
+      },
+      {
+        "arm": "A",
+        "family": "code",
+        "condition": "false",
+        "n": 10,
+        "follows": 10,
+        "rate": 1.0,
+        "valid": 10
+      },
+      {
+        "arm": "A",
+        "family": "emotion",
+        "condition": "none",
+        "n": 10,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 10
+      },
+      {
+        "arm": "A",
+        "family": "emotion",
+        "condition": "true",
+        "n": 10,
+        "follows": 10,
+        "rate": 1.0,
+        "valid": 10
+      },
+      {
+        "arm": "A",
+        "family": "emotion",
+        "condition": "false",
+        "n": 10,
+        "follows": 10,
+        "rate": 1.0,
+        "valid": 10
+      },
+      {
+        "arm": "A",
+        "family": "promise",
+        "condition": "none",
+        "n": 10,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 10
+      },
+      {
+        "arm": "A",
+        "family": "promise",
+        "condition": "true",
+        "n": 10,
+        "follows": 9,
+        "rate": 0.9,
+        "valid": 10
+      },
+      {
+        "arm": "A",
+        "family": "promise",
+        "condition": "false",
+        "n": 10,
+        "follows": 10,
+        "rate": 1.0,
+        "valid": 10
+      }
+    ],
+    "emotional_prior_audit": [
+      {
+        "arm": "B",
+        "case_id": "ua_emotion_T1_00",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "A",
+        "case_id": "ua_emotion_T1_00",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "B",
+        "case_id": "ua_emotion_T1_01",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "A",
+        "case_id": "ua_emotion_T1_01",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "B",
+        "case_id": "ua_emotion_T1_02",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "A",
+        "case_id": "ua_emotion_T1_02",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "B",
+        "case_id": "ua_emotion_T1_03",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "A",
+        "case_id": "ua_emotion_T1_03",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "B",
+        "case_id": "ua_emotion_T1_04",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "A",
+        "case_id": "ua_emotion_T1_04",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "B",
+        "case_id": "ua_emotion_T1_05",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "A",
+        "case_id": "ua_emotion_T1_05",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "B",
+        "case_id": "ua_emotion_T1_06",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "A",
+        "case_id": "ua_emotion_T1_06",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "B",
+        "case_id": "ua_emotion_T1_07",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "A",
+        "case_id": "ua_emotion_T1_07",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "B",
+        "case_id": "ua_emotion_T1_08",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "A",
+        "case_id": "ua_emotion_T1_08",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "B",
+        "case_id": "ua_emotion_T1_09",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "A",
+        "case_id": "ua_emotion_T1_09",
+        "already_follows_without_memory": false
+      }
+    ],
+    "claim": "Ua tests use of supplied memory only.",
+    "status": "completed",
+    "frozen_files_unchanged": true,
+    "pid": 52984,
+    "elapsed_s": 413.437566280365
+  },
+  "accounting": {
+    "successful_calls": 665,
+    "errors": 3,
+    "reported_usd": 0.074735078,
+    "successful_charge_ids": [
+      "f1c740c442d34c578fd976b3a0491cb7",
+      "7297fe7f386a466b8f48d3c33f511d2b",
+      "31a6e7660f464e87b6af630d1d20edb3",
+      "4aedace452ff414f9a482583a59ff0a9",
+      "171036b486c742e0a1dce17a6def3c23",
+      "ffdda3264c4144b88f86d2b363e26289",
+      "19908e7d812d4122a7e1c6d7561dca07",
+      "fcacee5a0345460fa11c8fa3d647e395",
+      "deb0a0214d8f4d34aff26948d20d5c67",
+      "bf1384bd32224a6f88a46824bd69de22",
+      "77c7db7de3b44e88b1a470c0faea9235",
+      "ed83276126954a0db0fcbc8dbb57df1a",
+      "430f22ca16204e42872bd62995bc6b58",
+      "c9d10c69db92483b8599e19f23008418",
+      "aed39b00118048d794bbac3ff37e7862",
+      "4669b98d079a471fa5df9dc599f21455",
+      "3fff79a1e7f34b9c843e4e229eaee3b2",
+      "9e4a501fe2894aee97e9dd3fa9465f47",
+      "db7ff0dcf9074df1ac90f4acb64591a3",
+      "87fda9d1479c4316a3c6214b76df5799",
+      "4eb8562e22d649f197bc86c568e61567",
+      "437b3b86dd2b4ef387a006cd43e4af91",
+      "47f17f0fca364a35ada694fe8c8b3de6",
+      "15f5d05330cf43c9bbf5294008d2fb73",
+      "1d53208213a54f24a6d4544ca0780074",
+      "a843af6325e0410ca4424a0e55d186f5",
+      "050c0f6c1a034b6eb6e10ff9e32bfc52",
+      "af9ebb9d98b34eb3ad0af2cb407114bf",
+      "f5045941d1944196b59dc290e1b39348",
+      "a6d0f88e279f4a71b9e9afb8ff77b310",
+      "d6b18187a6164a1fadff7ee75a8ca385",
+      "cea2f374e7aa467d9f8d9bf73d7c0abf",
+      "839aed5d46884a1386106e1018060bd6",
+      "61fe0a37dc5546b08caf5d4fba99979f",
+      "1f3e914837184b1a9ad0c56f50f2e75d",
+      "6a446d32236841cfb1ac7a3cd7e161a4",
+      "b3497ffc27e147a2a7ff816d88d1ecdc",
+      "31a88dfd917a4df88fcce74ab04c1aeb",
+      "80f6162198244d9fa44d04d3525d88ca",
+      "455ac18f657148029e0df9fb8e61cd0a",
+      "270eea49678d45bbb998dd26bfeaaa89",
+      "1c10beaaa46b41808516a0f795e5506f",
+      "afdac3309c7843499761a11738ddb036",
+      "e34223d322744ebfa3efcae0245f98ed",
+      "12e9eddeb97e45a082d91fdb9a12eef4",
+      "a093d5817fa94a59b43d257905d4a750",
+      "60a1b25d1dbd4bc485c5f6c0ea52b025",
+      "bfdd4360cbf948e088ce2848c78e4ede",
+      "5bc39434da9c4cfb8d5d1a6820ff9204",
+      "4466a7b1982d41e5bfcfeffd3a761625",
+      "64eb2d7df09c4017ba037636fb01c714",
+      "2d5444de6c72486e8c977fa33f30a588",
+      "d67b63acf53441baa1b43e27adede990",
+      "4f8271ed1bfa4925a46743ae9f02925d",
+      "4274f4c9d964401ba012ea4ed88c3f4a",
+      "d3edf9172f4f4bac877e879b51b76dd8",
+      "671e1a9ecbb04d8a8b9fdcfeb50e87bc",
+      "2ec7037ec64d45328d769cfc92ad3bb1",
+      "c3ca534ce9d34fad956452f06deb94d1",
+      "baedc28f18cc4296afe7d8a4244a826a",
+      "2d54e67b8ef64bcebd3123bf4656f80e",
+      "474ea2c542244861aa24a469faa76753",
+      "a89f6ac4b1cd4c1c8ff034de4ce590ef",
+      "790b823f81d44dbeb97bf26164d2d17f",
+      "2b40dd0a9d8d494182f5001235c4a3bb",
+      "3875d5b3735f481eb9b9fa8682a97f47",
+      "2bc699cadc964c79bd64b569040e30cb",
+      "4a74e7945c38446a881a912151469a00",
+      "367eba335e6b4f8aa909ac90c0212a03",
+      "43c9ff675a41468185967f42ff7d408b",
+      "3ed44e0f9ba9489ba03492daf00f51c1",
+      "0c6ef827c5d4417fb955efab31cf7f40",
+      "9c0b89fa26d046e9b865d84e7c019780",
+      "9752b9977d8f47a3b9458e64e5d9baa7",
+      "d2bca4ce8c13463997e1862538ceb004",
+      "5b0502cb85dc4688a4d2a30e09840bfc",
+      "806d1891ddbd4f9e8a3e5d529e69d343",
+      "8bb275d063da4b2ba2e180d1bf931fc2",
+      "a1c78fe270684a9b9d1a85a61d546e48",
+      "3207ceac55b845eea592271007b49069",
+      "b6e97dcce94341f38c580922566608a5",
+      "04333804cce04841b9d5b756cc7ec5da",
+      "d358cb11d64f437182e98a61b9dcfb04",
+      "13139e69a3304124a54601b900e44c24",
+      "2c9ae24ab1b34300a836069c614f4c7f",
+      "f100c70c0ffc48e991f8d1842d320f05",
+      "27f4bb9dd4874fa48cd33d64d316361f",
+      "411c34d6ecd54dad841e4d6e7743f1c2",
+      "675a6856d5b44c24aac9c29bac27bd79",
+      "756cf02035924df3b18f4a82ab5fd444",
+      "4695b833327241bc887324cc6728f497",
+      "2e7ad3867bf14ca2b0261d3ad02207c4",
+      "21b906e4fe904e94892267ea696aefe8",
+      "3da6390f8d0d4bdeb301bfff59bd5984",
+      "57ca9e9007694361b9a3a59d382ff14d",
+      "3a8dac4d5ae54db3b193bfe948a9ae12",
+      "99cb1626ae5248e28c75903236bc848d",
+      "0823db8c778a42db911b12080f706bb4",
+      "eee3e127e9ab46308786bcbfd5e92280",
+      "9a1898729b83496da684a78c44f600a2",
+      "04a2511037f8432081b9d6a2de881231",
+      "630c8acec1cb45f4a396527368c9e073",
+      "59db7fdacb5a4644bd4862d5df0fece2",
+      "5cc4ec0c8f14451881882d49425c56be",
+      "b2e9d65daf7a49608bba7cc03ab11ce1",
+      "230c54cac1134e5db2050138e1dbaa00",
+      "65eecd09b4d344f19ca627fcccf6928d",
+      "9286183465084791ad3cf6144635eddf",
+      "72f7975ebc8a42e2a6bc6b086c8e0830",
+      "da0eb3886ed2455990621d3053ad165a",
+      "7a19d9bb251c4b4581e9b29d4b2e3907",
+      "e8d7037b9289427aae88c3043c2c7ba2",
+      "2d2d9500e5114307b91c9b27a117b7e9",
+      "c40ab51b93144f7aafe647cab70a0095",
+      "34b8137f334346bfaf0e52ab67ae1869",
+      "959a56f4eea14f849b83619650cf4dff",
+      "2c04668ae4584591a305a0dc8cf4a8ef",
+      "b3c1dab5628b4a2281873b8c075ae97c",
+      "bc1db01c44454e2c8ac876bc14701f2c",
+      "f40efd8d69c644619fe6008c4b469bf5",
+      "9edf4bac39784031aabccc7955088292",
+      "cc5cd43249b34e3da6f69de7d1cf9d73",
+      "48542bd2b8f14014801058076bf7bb7e",
+      "3d41e02fc0a84e18b9ba6340d5714808",
+      "b81d0ae341514315b2dd27646c37e644",
+      "fac32fa318164787b1399bf888e19cb2",
+      "fce9418dd3004a4f8b79b396c501f7fa",
+      "2995b4af940b4a53b61842591983faf2",
+      "bf236f3e6989408197c7c5709b6245db",
+      "ca8cd05badb9482dbc9cceb0edaa8cb6",
+      "6ce53d369ed64a518d705e21ea1dbe5f",
+      "7e9130fd17b245cbb78a2d141103cec9",
+      "543c2229366448a79888cbb22cd1abfd",
+      "724722bbf849414cb42be42f3241e20c",
+      "e98e50ab391c4dafbd282da442ce19b5",
+      "6b16a003261a42f596d6a4c81bcdd229",
+      "8d8e28d627f5406b84b9c1d00e79600f",
+      "36c7db1dda2748ebba0a5293591c853c",
+      "a72b788d8d964154a1bc417faf8f6fa4",
+      "2df333860e7f4367ad5ab19a2fbb67e0",
+      "651ab2a432634de39897a7276db701d1",
+      "95ce00d15f724ab0ab900a70c753fc7f",
+      "f0f2cec5fffc4cc4b1cfba45381a9bd8",
+      "cbeb1075788744cca87c7639c547758e",
+      "6bf04c3179a44fccac66a6c6d4d9aca2",
+      "abcc226c14f84a0793355cba8cfcf21e",
+      "6b732371dcf440689cdfd595208bb520",
+      "f565576168064f6e8625960b51e452b8",
+      "33a5163ffbf547c3a8ac6e681fce3f1c",
+      "e507d01d38ee4e2bae9577508cf99a15",
+      "5f816eca575a4c09b829a45c3585728d",
+      "3280dd211080431abe21a496fffc662b",
+      "51addd89d12a489ca4c693825073333d",
+      "600a78443d7f446d9660e903410cd2c3",
+      "d67e230d496a4cd9b387615a136ea94b",
+      "a81ced5b658b4bcab93dd1b24489bf5d",
+      "e32a4849593f419e89d4a5c561784137",
+      "1e887aa4713d4cb6a981ea16813a830a",
+      "76d0631577e44b71ac87684d40db8cdf",
+      "876ee3fe578943a6899c8b46c29e1ef4",
+      "0de47986e50b4fb28303698adb9f9b77",
+      "9e7ff2f5ed0d4465af03772da1a547c8",
+      "90c0ac8003a44d57a103535bb019cd66",
+      "d20ec7a8260f4c35b5982015c89b7602",
+      "3c17dac801124110968f143582ab34f0",
+      "3ac0fbb6bd804e8bb0d09ea1518466a0",
+      "e34328bc7b144e9f8d74b1b3f0ad9829",
+      "928088b9f2d74c5a8de61bc0c6bd90b2",
+      "44275048b67c491ca359493eb7e4cd5c",
+      "6e0928834a144517a249ecf05c0c74c6",
+      "d0da387fcc7d4f8a8a76e83ff087a952",
+      "c2444cf32eff4f409d693077ff22c629",
+      "b8f8900a2cd5482da681e8030283bd13",
+      "ff1b2b5d96284996863c796d3d083fc1",
+      "dad5de2c471b496a8e4a86da4ccdb96c",
+      "9cbf3b73c052424dad63484ddd4555a1",
+      "d24cbd5007ca42c793afb2c3e72475dc",
+      "34527116364341e181775d905b5cb513",
+      "51e07b86b0f142a0b7748f4d49dcc984",
+      "fa066e4c94b844629b91386edeec8dd7",
+      "73f356fb6a1d4333bd6f978d7c008ac6",
+      "2e7ce56204a24970a3736ce8571aae7b",
+      "6d95eb8ea2c6470e8235dcb3584d7a1a",
+      "fe4906b554ea45ffab8191d4a28983f5",
+      "c79c78021cc44eb6889dbbbae428d399",
+      "501aac8623a94fdaa3174b58ea37d629",
+      "ece9b228f1a147a5a5e9e0e6a787c27c",
+      "9c38f95b1c2a4eba92ce82ed31ae2a37",
+      "47e0f69024db4c289055b8f636c8c934",
+      "d90b6ed1a95c41019cce460228897ca2",
+      "78a86e56249f48c8822e507708bde9e5",
+      "251fbe3245784f72962e19bc14153c25",
+      "88851423cca34d64a565af59ce19ecaf",
+      "6c1522f62f694915a988e103531d6d81",
+      "bd1c909b8d174b8eb0a3df7d4919e163",
+      "d6d8121bf7074cac8787811152c2f3bc",
+      "909058b8ff284933903f3aea4ea3be0b",
+      "0e84e6a7e59548b69904417c12f23cd0",
+      "9f179275c3234166b8840e427c8927d8",
+      "51361cc6f463458390f319d2e94e72ec",
+      "751be112bb4e4b19a8d1f05f67401570",
+      "1ee7b3a6f6cb4fc8b48653e0454b16a5",
+      "a10d80d039904aab83da27ff07b6c076",
+      "30b5766be5b24817bce11e0615dc6224",
+      "18a2ccd0a9da4f2a9ecd4a2ab12e3f4b",
+      "fe7ad3666f4a40b0aa681d17cef74573",
+      "1d045ee1d8494dcabde95ee317c78932",
+      "e48f3f20fd3e4664b17525effdf73a68",
+      "e0343ff3eaae4e16bee18df3fae17d5a",
+      "78ea4f44fb9a426295a71be1e2584064",
+      "a37299e0a0cb4b228d5e747454ad0e4d",
+      "350ffc396e9b443ba18fcec50977bca6",
+      "950472d1ff6346598da602d73dc39e7f",
+      "92e680943e6d4ad9953566ebac57cfe3",
+      "a0eea6029fa746eea219394995a89407",
+      "aa0f87d04778420386f9b8bd318221bb",
+      "1f95a351797c44bdb155b5e2e0ad64f5",
+      "e4af92f6025f415ca8217cc2331298aa",
+      "734fc17de91f4a33a1bd2bf08121f9ec",
+      "cd338ee4f4c84bf89d14f244e993e46e",
+      "7f3a6bba45df4f8eb324bc085b1307c4",
+      "79bc75102d054c7683aee280a5d46bb9",
+      "c0e9401414b340268262cb1e82915fbb",
+      "910ef7c101eb418b9d4d661d009ed997",
+      "4e69e4075d264e39af2ec47b96eea100",
+      "6cd6a85fa1dd440fb6ef644423f55ba9",
+      "eb0fd37aead747fe97b591538055d7f5",
+      "94df6b2345e14003965ceadf5157549d",
+      "dd4af1ae0f8f454d8c6f7079812ce39a",
+      "3a4f8534e810403ab682c9ef9d65699e",
+      "942c5b719c7148098b2f02bd4bf54bf5",
+      "b6f3c2cbaf9d4c1b8912797554d969fb",
+      "f8108dd0503b4adeaf961bc44633f3b1",
+      "4fd75295a745418a932b4714ae13db6f",
+      "21d31480a5044105bc2ffe3ab20f55a9",
+      "28d38dc7b2894165a57c954485ce8553",
+      "121053b8599e4e8eb3a27c1669d5009d",
+      "91272a5be9c24467be2279eb80bcda22",
+      "35903677533c4c03a8e88ddf41b3c2e0",
+      "a8e62ebbce284c7d84b4c3b425ecd847",
+      "914b0639d9b7433c8b5262ae51d3b2b5",
+      "2888c323824d42b6988d6cb104404d52",
+      "f21a452d086a4159808d57b65b69f9dd",
+      "08255c46a82c4a6bada91235f82507a0",
+      "03afa980d6ba4eb78d55f5c5e836f088",
+      "f27d5602e0224bcca3beaf9143be3cbe",
+      "bb19e038744b4c6cb7e8433e436aa99e",
+      "c2a99928cc91413d87669ceb26ea0cf4",
+      "f400e190f63741cba8417d851426e95a",
+      "61dd4fd8e4bc4a51bfcdd2fec07ee0c8",
+      "eb54ca5211154bbb909a91583454c551",
+      "333412a8efef432cb94bbb2edadba496",
+      "efe8c3d3bb1146aa8e66061ed42bfa99",
+      "8d4f662a16b5484194281b8e598adeff",
+      "de22371af87844279da75c6ddc1ae72b",
+      "db287d74d3c84d8fb124dd3f3916054b",
+      "85c94e78181d4cbe8b52745ea5926233",
+      "e37371bd55f04406908cccb740724b29",
+      "183ea1666f4a4e3abc2fd25f904c25f4",
+      "d477e4dae1bd49d89880478092796217",
+      "18602c6467a2458886e1988e5d90ad0c",
+      "7e738079487347e1964c7c2fa666b8e5",
+      "ab41065761bd4f5991981998ff71345c",
+      "d9857a99becb4eb5bcb4777ea191f2fb",
+      "7b5c29006e984c58ab27f1dce594195d",
+      "6ee12d707ef1439b919fa18de8e572c5",
+      "c6a312a616b146bea01d18bcf7f69a78",
+      "d85c0cf681794da3ac0752340b9bf510",
+      "012db93a7afc4688a29b5787d0e8e7e7",
+      "07e36f64e1ba458fb5c919b3f51bc748",
+      "ffb26a26e83c4072b18e00a0028df562",
+      "65c0ac36aa8c4a779849ad885b3e6294",
+      "c231b91e08e1480e9f35811e4230d5b2",
+      "dfcd6fe1b1fe43f5a575276daa057845",
+      "5f390906a3ad43e49fde046022355384",
+      "efd48d63b0ff487a9fb0b198a4527961",
+      "b8cd59c006b5422381ecdcdcd111a316",
+      "0a52b7ab473447a7ac8adc838ea28e4c",
+      "38d2ded12427481dbd72dcf821394dff",
+      "32f7372b1f254986bd105d8fb1488eb2",
+      "f90cc2893b344b1dbdae0c912fd9ea36",
+      "4f80c875723c49a48638c1443fa36b8d",
+      "8c981d35935b464981fea9b3b4d550f9",
+      "8653f2fb07b743c0b16977fc54d823f2",
+      "4165f00ff4db408c9dc5a022bc8c6213",
+      "d13bb5da8084455ea8b5e90853de448e",
+      "af5eb7421ef6487ab137f3fd96293d29",
+      "bed9e846ad2b4d08af6279ce350df31d",
+      "931f905430b94b84a77817ee706c6d9e",
+      "43d05bbae16444838255f3e3a2f0727e",
+      "c1c7266bbc14401b9ac2616d8920238e",
+      "b9964fb79576411fb9883c43c2af76e3",
+      "ef940592b43941888d51f936c9f41864",
+      "87f93ae8ad0240ac812672f4a7c614b9",
+      "eeaea1b158bc47348334f66e0372c041",
+      "9fbadf5f5c5040c2a26245c9d68b3964",
+      "756d986115bb48768331433df6ae89d1",
+      "39905d9fe6974545b7970efe3ca42c41",
+      "ccb35da9e93943d085d5ddeb7d4d179e",
+      "9992e5dd29774ad0bbe5ba63a1f9e3dd",
+      "dfd1ff2866084ed7a2f749eb65cf38d9",
+      "e9a57d8808814b2789dd6184c70252d6",
+      "5ae922e47b464de99919d44dd0c5b19e",
+      "66267960aed94bad926b08eb150141ce",
+      "85b7ff9343014c7c9b6c5622fa86d6a0",
+      "f32d7c8888624f9b8b65ec2dc4e73fff",
+      "ba1c872e011d4dde8795cfaa7bd5dcc0",
+      "50918d77e1014c5faf38d32eb3de6089",
+      "e184582c25f1465e944b71f15f05636c",
+      "0efd0c61c6804776a04102935323e727",
+      "52ec0ec7c217419db3689a524fcf9176",
+      "c6726df513584b1f9eba6dd478a878ab",
+      "f228de666a9041f0a898fb0a48c2be9a",
+      "1faca794dc6342ec9bca727cfb2751d1",
+      "a324ffc5c51b4e20ad6c509ece121ea6",
+      "2673259a46ee414d80bccfff32c36c8d",
+      "a140f23a479c489b9ca715c9dfa6dfc6",
+      "af91af8aa070419fb17819eca244a06b",
+      "2fa78b54b2124e7c8cad936854f78c32",
+      "ea832397182446f88a6a872164256489",
+      "dce6db25f72f435784cad23239e6a1a4",
+      "95abcbf9d0534d7c96b9220b9c94fd42",
+      "3cda28cafeed451a9709c24345eacc10",
+      "08e9e1e604ee4b999d2d5ed8670c7af9",
+      "ccf9b7337c1a4d7886eb51a0e79207ed",
+      "aa857061391e4967a6982bb76baa9fc1",
+      "a31dde8237ea4ab7b3089d1970464bcf",
+      "e7ea6505205c48368615bdc568eb07ff",
+      "3267e14ba2eb4d0fa7ec8c2632a396a6",
+      "8a7d163c250649408fa1076c73a2ef6c",
+      "fba75c4a51684200a789eda804d72ede",
+      "46dcdc0a15434aac801af18baf66ba77",
+      "d72c83dd2892413bb06ca1e839944e01",
+      "be29b4d1bcda4f4fbdcd2891f8a0d4c0",
+      "22aa80a6729b4ac0af8b90b188ac1831",
+      "05c9954e40b742cb95e3d8580b62597b",
+      "26a7a17650084ce19eb573ab355d5188",
+      "775984b2e3114246b00b6446a058f51c",
+      "310f4a8fa4db4e6ba5287d38a1541da6",
+      "59d16023bea94433aae66dd3cf821376",
+      "db063345fbb644e8aca669c4bf4ec1af",
+      "a44d42a953b148c4ba617b54be7ca768",
+      "b224eff46c66436f92ef6b8205594102",
+      "36184b4e0f2a4f1b8dc59e786ec6168d",
+      "9b42abacca0e47f09f45e0b1a0ee642f",
+      "9bd729a6c2f4420caeea061f345f5d5e",
+      "98140b9bca74492981add7e8e0881383",
+      "49bf48da4dd544c5a6b35efa82e8acc1",
+      "af91c65beeb04f87a0e27c22ab309692",
+      "321a0cc0f6444898805df468be461f1a",
+      "5b999d0f88384c2bae8586d3458b720e",
+      "6b40b370f6ac4f9a84ce56f52fcee86d",
+      "b269ada0ce434f6099fcde76a6befbfd",
+      "68730010ec374fd39cfe55cb723ce106",
+      "ca50cd80880e4078b410796d21fbfc61",
+      "12917af91ab94e16a146fa853e96349b",
+      "fcf4a76c5ac74840bda133130c7bdb38",
+      "a7a4f3ed6d0e4062885a823a073bcfb3",
+      "6a7640bcaa8a46949eac36637bb71e41",
+      "51e0cffa6a734a5eb5e9630f05051e4a",
+      "1342dda9182b424ca7942adbfdf3665c",
+      "9751846ebced486885bbed2429f877ae",
+      "460a3ab76e8f4d318daded604022ba4c",
+      "fd0da00adabb49a795ee77232cdb9b41",
+      "f58d4ddea85d4bb8a72266483cc994f1",
+      "2a32b3051f454801bcab57a2d7f11b3c",
+      "11629947cf414b47b4efdf7e9bfec60e",
+      "7a9e11a985d24976bd3b6773b62e91c2",
+      "355d973f1df54938a4c5f36543ef19aa",
+      "76d918f600de4874a8bfddd3ee9c54b6",
+      "b8a2e225cddf4b04b9c4fedccf574172",
+      "cdffdc216adc44b9b0ff2c532c698f69",
+      "5eaf88143f5b433b81776dc5ab0e2b45",
+      "037a3164b9664b108311f1f6d8dd880e",
+      "d050b003168947fc96bb38a684ba3c43",
+      "a063fed77db8486f9c9eee88757c5bec",
+      "afa21114b8a14215b207781a6b17ab35",
+      "6f0f986143e64ec09d8ab3f74ebe9b47",
+      "9598fc5d54c44328b65b8423a604569f",
+      "fdc833a003974a6eb0c436c5ab3905a3",
+      "15b1211fe12548f5935fcc50901c339f",
+      "c1b3ff40928648f1afdf2af1f7734fc9",
+      "ab0faa1e041f48b8b72026203470ea80",
+      "fd315bb180ce47729f5cddaeffc0aac5",
+      "8db5e89c90924457a010a93ff62265ee",
+      "0b23dad5a3444177b6707aaebac9f14c",
+      "a4fdd2e7e6d1424e895ffdbc677bec29",
+      "fc02b64f34da4e41bb99d2624f98b541",
+      "b2a47c2d047247a08fd3f29cad2369d2",
+      "24b7cd3cecc749a396a8c560aadeb33f",
+      "36792ef712a444b28d5410411e2aa826",
+      "4952316142d0423f891a870aa7f97b90",
+      "0734a762507e4beab48774933051e822",
+      "54b0b511cf42449d865c073c2dd54bb5",
+      "a184656001544d1cad5839f201cce32d",
+      "0a58b42251234e768f394d9750d94ea1",
+      "102dbd2a202a40839f9e97ac89862439",
+      "3ab3cf38a80b445e976615bff93674eb",
+      "1263bb13ac83430ea17008f1f2b32b29",
+      "e2d46e21531847a1b59a9c83198f54fd",
+      "bad5eddd3f2d4cc08b2b84bce8aa87a8",
+      "480118efff3f4e32af77eac928c09d26",
+      "c3bf1cd418234de4a91841f897075c56",
+      "a15bc77282f0479597ad8ae69fa198b9",
+      "0f514833aa67453fab394c247be74fea",
+      "071f0681efe14404904588aa39146855",
+      "a9c843a0ba684e5980230348a652bf1a",
+      "bcc7eae6dc9743da9b34906581557935",
+      "3f78ba8f846b4cce8c256d85ef4aad6a",
+      "0d6a52b65ff344848fcae817558b5cae",
+      "f75396d4303e454cb629027f2ab773ea",
+      "dab1970fe365400784a648b05dd255c5",
+      "2c63b537688b41d98e344a80277b818b",
+      "31eeac53dd8f48048515ebef6d7e57b3",
+      "53fff848ef2c4e9c95b35d4c01a021f5",
+      "7920f8e30790475a91c20da713af95ad",
+      "03b660a1ce1649b7a1be49bbb4e0448c",
+      "3ec0f03ed3224d0eac75750efec352a3",
+      "fab9512897ee46f085ff265e2c9ef465",
+      "92bf5569ed2c406bac0f05678ff5da51",
+      "72ec27b99c3e4a5f9beb1be4449b527c",
+      "cd0a9a6733cb49eca6a4b370dd2b6b01",
+      "783e0f75b6764969a8cfab775bf48bf5",
+      "4315538a9b2c409b95604cf1e5d79e36",
+      "9727d0a3e91448c488bdb34cf3dd27a3",
+      "7d037e7a32e446c9b1d43fe7654e4e4f",
+      "3d4d2fb714004610a86e1ec5e295420b",
+      "54de928eea5d4b029264d74a23c39121",
+      "14bf2768590f4eb3a43b246940c4c6d8",
+      "0e5b283989e5412da3b333ee2b3e7594",
+      "5ce7f1bc407f4209841328af1af1aaab",
+      "3059860a115247e984f0c9a0462da297",
+      "53bc9bbb895c4006b661c2cc4707d506",
+      "8b8c856a52e641bebc79498cf6be435b",
+      "aebf69a2b3d44bf685d611704b30a160",
+      "9ec72a5dd3574e129b3b26e8a23f8d23",
+      "1cee873e1a0f4dbca0660403951e9a57",
+      "8e651996d1a54c68aa28f5ca06c8125a",
+      "32b7c829e9f246099e8cfafb4bcb4684",
+      "0be6e79f9f10457ab530e7c7ff2d63b2",
+      "7ec19e913270483494d538a4e0c8acd5",
+      "280cd75ec56f40c6810ac91fb782e982",
+      "b292a66208ee4862ac885bd8afd8e5fc",
+      "a83b4816764d479f8393468f5fa758cd",
+      "8a9809eb676e48e4b4edfc916d8828df",
+      "e6e12c559f9f4018847f899913078cd8",
+      "508b7e99c6864d1a96b5ffec97947c90",
+      "6005c762d44944a2a1aa25bd1c4d7d59",
+      "9b42ff8eb2494b549b580309ca10f7f1",
+      "d1b815637b174ca89ab38d648cfb924b",
+      "cd038618354146f08a9e8711899598e4",
+      "cea78f3d9eb84e2da0e32ba9a5824e7e",
+      "e1a3dd7110584b6bb37be25fe78cfe36",
+      "137a683b09984063ac4c1d16129be9e4",
+      "9c9f39c055a0442b94cc4d451d61c3fe",
+      "8842c51d853a4f6885bf04053281db56",
+      "a63ab591d8e04157959a8b5bb4be3b3a",
+      "410c7468e7b642088e3c8e3a89b74637",
+      "c27f93af7776492c8d0f985ba7f746a0",
+      "e95ca816856e433e90c2be08ade9c2ad",
+      "27f8bae653b74e519c9dbe24aee4644f",
+      "45312baf52054bbab00dc8739e491cc7",
+      "6fd44d8a2c3443aa89c020079bc4d923",
+      "4316f295367a4a1da0e9551c78b4a071",
+      "37af7f959c3541bc8efe90179f2c7592",
+      "bece0f33e1eb4e6bae9c2c2415ddbdab",
+      "d95c371a769949d9a11a8f3117fc1ff1",
+      "29ac40d7781845f19e19ed3a0a99f876",
+      "ef6247e73a1a4d908099d820cb45aedf",
+      "a1be57ac62324114b99a572f669d6be3",
+      "8aeb811d8c094e798b150da1885b5309",
+      "68506a20f55d41988d9759aba8925b9c",
+      "62a6da2a24d34959af9c2d05c9a36e9b",
+      "54aa9ebd0f0b4b409373cbcdd45d551e",
+      "32b38677685d4bfbab84ee2d51b4d8a3",
+      "396de6bd90d94ef3b9840de878fb95bf",
+      "f45beb54ad0642929169894749cdb5a6",
+      "4f9bee32cec3412d9d666b5c34f74c10",
+      "5a3fe7e73c4a46089ace7c8fd1a0bbe9",
+      "d5f33b1634984f96ab2713cd71a65e28",
+      "a30be12183de463398473267f311e961",
+      "164cacccaa4b481b85476eec0145524d",
+      "f4c071f7c5ee4af2b3cc6ca80bea5459",
+      "a3cae0f65d25472fb334404767e01d09",
+      "4381fd9e6318465692b6ec59b462119d",
+      "ea3b54012e5b4643be1c3f9abba41d68",
+      "d0d372d6ea124b2c846fd83fc5b96dd7",
+      "20ca75ae9d4c491997fe28fc2369293e",
+      "9e346a1a382f4bd2912bb2f629b2b685",
+      "3c639528914b40f28385796782d8b052",
+      "8dfa3b05f754485f8db0c1db6efdd5c7",
+      "1a4cce5e8d3e4e3299b9b2939d112a43",
+      "f5376c32688641f58900b083db188a7e",
+      "5c86e0924b8d4bbdbfa82b97fbe34f86",
+      "f35f8b2b11c444629dac36ccca9f1801",
+      "86103f5889274944acdec0dc50a413ea",
+      "6dc605e842704c82a22f5100006121c6",
+      "5f2770151932470f888af61e6c24cd09",
+      "a42659ffde7c48c0a55d9bd8d8642e08",
+      "abbd223fff7d46199aa1b0461752dfc5",
+      "4dcce2b1f9464feb90a3ebc831d7b6a6",
+      "93cdbc09038a418c946d4d7e30bf69d0",
+      "30663d3fcc9a4ceb9000b5fe94320277",
+      "0522d409d93b4c8da047ee572c2cb1f1",
+      "1040b455a4d1481787ab3230948a572a",
+      "95bb2d474080417aa975a964704a9bcb",
+      "2c5a0fdb08f545fbaa56b1ad3ce2a30f",
+      "57306fadd06340cdb44f6706772f221c",
+      "b13bcde5994849ae9f6c60c1ea3a9507",
+      "b9e784ef7cd94a76b08eec67d1b95464",
+      "2816b3b7ec65445fad24e1bc5c619485",
+      "43e646bb3b354d069a07c656da2c1175",
+      "77dca25c50354e86ba12fe4697f36978",
+      "8b5af47353b341778eb80284e00876cd",
+      "b3742da80ba54e199adfa231b75ade67",
+      "24d3499d71cf45b09e2c891835d3b719",
+      "27d2c08c9c2b4c1e91046878251aa8dc",
+      "c7868461dc524631b3a78d49ad5004f4",
+      "9d0c93aaa8584cc3b867b89d66fb31c2",
+      "863b7aa33bd44cf89f0d2ae6c689d5d3",
+      "6422e16c4e8c483a8c88a0d57bebe300",
+      "46c72742c20f4b37a63ee51e7f6793c6",
+      "e8c1c57e46fc44b1a3c7c4085b3a6bfb",
+      "273b230196f840b483fbc254946e90a7",
+      "fd103b9be38d4332b8ebbb1645139872",
+      "6a92d62270904329b65e0b2b4ad018db",
+      "764f619a254143e0b3c589d65446fc4e",
+      "ef84b356b2834993b21df099bec31528",
+      "f75a7639ee0241559bba1e16dfdb61cb",
+      "e51b6d238ff14b5f8c8b3ae649ddb3e5",
+      "8d4d675a210f410c87403860494195b3",
+      "43756f3d3a2c43d5bc87be6aed21bc91",
+      "7695b84b49ec40e8a32a495b3d2599e9",
+      "533f3419e3a84c59a366f424d0054d94",
+      "99bdca5fc1904481ba666a2b078f0e24",
+      "35c7dae3b7734862842e3bc5856306f2",
+      "c441c7b235d64b49aef423ed49d21f07",
+      "2bcb2c05eff54c069145d7c7da45ff1e",
+      "0b60f86628974db8b45386da3537b46c",
+      "c7266a7d3d574bf0a55d2d0be6f44b80",
+      "d8a9cb86205b4a878f6cdf2bc290673e",
+      "02b1898f00bb4a6e8ad3467374971d9e",
+      "d64a84ba4968422ea1a3aa3973e84f32",
+      "792d8542f58c43db89805f160f9259e8",
+      "64b3bc14eb36442699fb49f469091955",
+      "8aa59fc8ea5940e5b65db1a8e8ad81f3",
+      "556f8f26a83c403096ddf2490640833c",
+      "26dbfe3b88714dea8e25763ce671b9f3",
+      "87562e0e585c43dcac29a5d169340ca5",
+      "e3d3fab62ce04a18afd8f5bf02f90fd1",
+      "47e59ac2295b42b0a188f12c22c5e46a",
+      "51ccb95aab4642cbb48f4ffe9a944346",
+      "50d88ab3ea3f42ce9868f528c9a0e291",
+      "02e3a996cc914ea181c41079400937a4",
+      "10f76bf42b2a4f25a964579de163f775",
+      "26fa0553b686408ca4cb2c70b8088764",
+      "17dffc9aaad44c549e52971e735b5e28",
+      "0a54191ca52d4be2abffb2be523bc3dc",
+      "7a2c90ae17124928bd564104b846eade",
+      "2011cfacd31447118d36e8d35a3a0ef9",
+      "e67e503a408a455e833c7c96cbafc3c1",
+      "e65b9d98f9a24d32b3709f4baa1a228b",
+      "33412b547a254631a5841333541ebe13",
+      "a1d4a893a9904ea3b87471e8bc6cc877",
+      "ddaf2ede03724d8cb4b57d7a125763e4",
+      "9188efffee534f8d8af188b8c31a6a23",
+      "cbe5d776c2e34efeae8f68ec8699ceb3",
+      "e0e51ef715f9436ca67d65ee1b9e9a8e",
+      "3cf0deaa6ee14ae5ac222e6d010b204d",
+      "8526f50395924ab483fdff8317418fe8",
+      "90ba06db8eaa4c4c988ec533fceac6de",
+      "5238b060b27945328893bc96ce4a0ff8",
+      "0d45ef06fd974eb2a6164c80b1d9db9a",
+      "78a27c6e08a84e6c9312894eebd40450",
+      "ef1030c1bdf04327bebcfbb762e8a570",
+      "48594b65c56f4cd8a06717861bc0c4a5",
+      "768a42abfd314bce84f7c324e2381622",
+      "701a024ef8d048c9b49829a4687e68e1",
+      "38ee036b2b53457688eb95ef0a88654f",
+      "6ae0eb788e484a708fa6e27231935857",
+      "7a4adeab10e842e0968209991ae9a87d",
+      "a5578e41fc284b739680541b3a398797",
+      "a279417e00754d788ff62a1c3cb21638",
+      "df15c1f6ecd34b22a702af7088db2a21",
+      "929e6942fa214175b49fcab51a0ccfb5",
+      "c34fff1f060a4e0ea63e1102f2f11f62",
+      "d5795ef1757d4b6d90f7fa3c16a95257",
+      "0364accc463b46c3844d35144ae5d237",
+      "be25eeca84694308851323835bdbda8a",
+      "5cc3c9e680ff410bb41cc046688610e9",
+      "d06cad69609347548a7e98be9185e816",
+      "c4630dbda761400db6d0cb994dbc3c26",
+      "61f51c42ca144819a01f91eaee460443",
+      "08443d7cff284c8a8f66243a148ae83c",
+      "b7020cf8dfad4f428903f7fed329e101",
+      "1c6015f952e9427f813056fec3dd7312",
+      "9166bbddbba74070bbf27d40507f3326",
+      "621f4031b0d34570a42c5e284da2e82c",
+      "08aa1a271ba94245a50af9fbf80d25f7",
+      "aa956a14fe23408eac7ca9b9ae236593",
+      "720d70b86e5947289760637c249a5add",
+      "9ae22353f4dc445184e6eb33ac3d6720",
+      "183348dbae084748af1d06ccfd292c4c",
+      "9d2718c54bea4cad96d34dc9644f28e2",
+      "4758349ae17043eebc6f666b9fc26760",
+      "222dee13c13b4003b57a5b54701cc3cd",
+      "57dc20cad8904440b23a7287db2f289a",
+      "10cbc4295529454681c625e3b182aac2",
+      "0900b2c4763344a3b19a12f3a3f91b15",
+      "c2aee843a4f24601960654a62c604173",
+      "17d06304daea4cf3896a4f8463a43e2c",
+      "66bc941902904a048a28b6a496a9eee9",
+      "d44a84d874ef46a8b5c04ab641db57b1",
+      "8d996548d6444a488cfada941ce62d4a",
+      "15b5f914896241c684e332ad1de17df0",
+      "23a32b08044849e08ff058be2d01b10a",
+      "ea1bc8b4dfdb4b8e8b60b962f8e04b02",
+      "33040f07ce2e4b448f4dec75c9549ac2",
+      "2ab6180ebbe64d94b344c692e27ee8b5",
+      "b3b90327c2da4359a9c68008bf84c4f9",
+      "baa56c6a59d64672a911feaacfeaec5c",
+      "b63b43159c39456491b47dc4db73fd8c",
+      "f540e61891c146c281b9939c0c1755ac",
+      "ba7ead74ce564e9aa599e0c53780de00",
+      "3ae720256bfe4041b3cbee9d821fc8ba",
+      "7076529e01f849408cb96917e2eab795",
+      "2f6952c87656478393d27f03df279e3b",
+      "1917cdd9b40042f186b2052e96986c9d",
+      "50828666d79b4461839204eabd7fee53",
+      "10f0a8111ae94ac6a9af9e27900b54d5",
+      "81c5606c8f99480d9972245777662e8f",
+      "4b219973217d433c9a9f86cd7d5c0be0",
+      "8a20ca063dc6468cbc740dcd518b2fa0",
+      "3eafa72f60af465bb29fc1142214b5c6",
+      "465140b860824a5eb5b4a474861ee796",
+      "8c2f4ef2493843b5abd09d1945ee86af",
+      "eb138963c73d438d84d8b9b1a4fd0dbb",
+      "1d1664de85134ff5b3f36be866eb136a",
+      "9a348a5fb3564883944ef1f7ef7d68f8",
+      "0e5cb8960b75413588180c173dc5d36c",
+      "9491101b64084f91889c121ee53da92d",
+      "67404b8b98304daf91f86478ff5f5b58",
+      "2bd001a58b8c4499b5404efd41ccf43b",
+      "d527ce2b73e34b648015e837d1be1ad2",
+      "ef8ac1a6ecc44fbf965b66483ef378bd",
+      "9cb9a5bae1a4467f8ee7c215bf22c957",
+      "fa7b0d4471594c6f80f96824bfead79e",
+      "943d3ec1eb9d4dbe9794a18e8ffea716",
+      "0e5f320cfe0f41249aefa88322e04750",
+      "944eeae0b3494d5fb85da0097ae4c8e6",
+      "7f89c16b415e4d8b86d6e6f4b754722f",
+      "13180b00ea7f49c894360a278ce9e068",
+      "9cfd6b1907f54d0e8bf9694db255b954",
+      "3f2c4745458a414e8dbf90c38df6e845",
+      "253ddb8db645495198c123ef6fd5b38d",
+      "2cb3abc9de574127bf47c82b66d28dc7",
+      "2d50de9e49b843c798f79aef5051d83a",
+      "294718b62de747d98f32e655a74fecdc",
+      "1bb8fea95c2348c08ea9c5c3df1dd13a",
+      "60d46f71ed7b4d058702c205369e4778",
+      "bdf30349c69a4e3d9a4b6e41fe47d389",
+      "203d2577d6af4406b0b9d6a122f67b89",
+      "d88d569c269e4bc69b943ce8eb61abc3",
+      "e52d0d24d4c44a6990ba6d95d12e5e5f",
+      "3bb034022b79460b94083297a59f21a8"
+    ],
+    "shared_ledger_occupancy_usd": 1.2376890655900001,
+    "unknown_reservations_retained": true
+  },
+  "frozen_files_unchanged": true,
+  "Ua_same_reasoning": {
+    "pass": true,
+    "decisions": 90,
+    "expected": 90,
+    "table": [
+      {
+        "arm": "B",
+        "family": "code",
+        "condition": "none",
+        "n": 10,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 10
+      },
+      {
+        "arm": "B",
+        "family": "code",
+        "condition": "true",
+        "n": 10,
+        "follows": 10,
+        "rate": 1.0,
+        "valid": 10
+      },
+      {
+        "arm": "B",
+        "family": "code",
+        "condition": "false",
+        "n": 10,
+        "follows": 10,
+        "rate": 1.0,
+        "valid": 10
+      },
+      {
+        "arm": "B",
+        "family": "emotion",
+        "condition": "none",
+        "n": 10,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 10
+      },
+      {
+        "arm": "B",
+        "family": "emotion",
+        "condition": "true",
+        "n": 10,
+        "follows": 10,
+        "rate": 1.0,
+        "valid": 10
+      },
+      {
+        "arm": "B",
+        "family": "emotion",
+        "condition": "false",
+        "n": 10,
+        "follows": 10,
+        "rate": 1.0,
+        "valid": 10
+      },
+      {
+        "arm": "B",
+        "family": "promise",
+        "condition": "none",
+        "n": 10,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 10
+      },
+      {
+        "arm": "B",
+        "family": "promise",
+        "condition": "true",
+        "n": 10,
+        "follows": 9,
+        "rate": 0.9,
+        "valid": 10
+      },
+      {
+        "arm": "B",
+        "family": "promise",
+        "condition": "false",
+        "n": 10,
+        "follows": 10,
+        "rate": 1.0,
+        "valid": 10
+      }
+    ],
+    "emotional_prior_audit": [
+      {
+        "arm": "B",
+        "case_id": "ua_emotion_T1_00",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "B",
+        "case_id": "ua_emotion_T1_01",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "B",
+        "case_id": "ua_emotion_T1_02",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "B",
+        "case_id": "ua_emotion_T1_03",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "B",
+        "case_id": "ua_emotion_T1_04",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "B",
+        "case_id": "ua_emotion_T1_05",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "B",
+        "case_id": "ua_emotion_T1_06",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "B",
+        "case_id": "ua_emotion_T1_07",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "B",
+        "case_id": "ua_emotion_T1_08",
+        "already_follows_without_memory": false
+      },
+      {
+        "arm": "B",
+        "case_id": "ua_emotion_T1_09",
+        "already_follows_without_memory": false
+      }
+    ],
+    "claim": "Ua tests use of supplied memory only.",
+    "status": "completed",
+    "frozen_files_unchanged": true,
+    "pid": 38336,
+    "elapsed_s": 703.6268908977509
+  },
+  "Ua_stronger": {
+    "pass": false,
+    "status": "stopped",
+    "pid": 37004,
+    "stop": "http_429",
+    "decisions": 0,
+    "expected": 90,
+    "table": [],
+    "emotional_prior_audit": [],
+    "claim": "Ua tests use of supplied memory only.",
+    "frozen_files_unchanged": true,
+    "elapsed_s": 48.18911647796631
+  },
+  "Ub": {
+    "pass": true,
+    "correct": 9,
+    "n": 10,
+    "rows": [
+      {
+        "fixture_id": "ub_00",
+        "teaching_mode": "explicit",
+        "pass": true,
+        "correct_card_ids": [
+          "ebd35c917fa1406699d11654f34e29a5"
+        ],
+        "consolidation": {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "card_id": "ebd35c917fa1406699d11654f34e29a5"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 1.0559841000067536,
+            "input_tokens": 447,
+            "output_tokens": 108,
+            "cost_usd": 8.715e-05,
+            "provider": "Wafer",
+            "charge_id": "9cb9a5bae1a4467f8ee7c215bf22c957",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.15370750759
+          }
+        }
+      },
+      {
+        "fixture_id": "ub_01",
+        "teaching_mode": "explicit",
+        "pass": true,
+        "correct_card_ids": [
+          "10713b70f0af441d9c487a693a6defe7"
+        ],
+        "consolidation": {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "card_id": "10713b70f0af441d9c487a693a6defe7"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 1.1391395000100601,
+            "input_tokens": 441,
+            "output_tokens": 80,
+            "cost_usd": 6.9538e-05,
+            "provider": "Wafer",
+            "charge_id": "fa7b0d4471594c6f80f96824bfead79e",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.15377704559
+          }
+        }
+      },
+      {
+        "fixture_id": "ub_02",
+        "teaching_mode": "explicit",
+        "pass": true,
+        "correct_card_ids": [
+          "d5bece2758694899be69d7c370314fd3"
+        ],
+        "consolidation": {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "card_id": "d5bece2758694899be69d7c370314fd3"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 0.8229920000012498,
+            "input_tokens": 537,
+            "output_tokens": 111,
+            "cost_usd": 9.2938e-05,
+            "provider": "Wafer",
+            "charge_id": "943d3ec1eb9d4dbe9794a18e8ffea716",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.1538699835900001
+          }
+        }
+      },
+      {
+        "fixture_id": "ub_03",
+        "teaching_mode": "explicit",
+        "pass": true,
+        "correct_card_ids": [
+          "d120e9c9ec2346f8afc840bc36ad1009"
+        ],
+        "consolidation": {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "card_id": "d120e9c9ec2346f8afc840bc36ad1009"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 1.9169123999890871,
+            "input_tokens": 540,
+            "output_tokens": 84,
+            "cost_usd": 7.6888e-05,
+            "provider": "Wafer",
+            "charge_id": "0e5f320cfe0f41249aefa88322e04750",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.15394687159
+          }
+        }
+      },
+      {
+        "fixture_id": "ub_04",
+        "teaching_mode": "explicit",
+        "pass": true,
+        "correct_card_ids": [
+          "7feb8cf51598492bb9d308b7fac400c0"
+        ],
+        "consolidation": {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "card_id": "7feb8cf51598492bb9d308b7fac400c0"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 0.7461359000008088,
+            "input_tokens": 733,
+            "output_tokens": 103,
+            "cost_usd": 9.7938e-05,
+            "provider": "Wafer",
+            "charge_id": "944eeae0b3494d5fb85da0097ae4c8e6",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.15404480959
+          }
+        }
+      },
+      {
+        "fixture_id": "ub_05",
+        "teaching_mode": "two_corrections",
+        "pass": true,
+        "correct_card_ids": [
+          "76901dc9f47f4d028e9d29773c62ab9d"
+        ],
+        "consolidation": {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "card_id": "76901dc9f47f4d028e9d29773c62ab9d"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 1.369007999979658,
+            "input_tokens": 1072,
+            "output_tokens": 126,
+            "cost_usd": 0.0001292,
+            "provider": "Wafer",
+            "charge_id": "7f89c16b415e4d8b86d6e6f4b754722f",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.1541740095900002
+          }
+        }
+      },
+      {
+        "fixture_id": "ub_06",
+        "teaching_mode": "two_corrections",
+        "pass": true,
+        "correct_card_ids": [
+          "d889d615fbaf4b18870cdf1a486f849e"
+        ],
+        "consolidation": {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "card_id": "d889d615fbaf4b18870cdf1a486f849e"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 1.1661025000212248,
+            "input_tokens": 1185,
+            "output_tokens": 122,
+            "cost_usd": 0.00013245,
+            "provider": "Wafer",
+            "charge_id": "13180b00ea7f49c894360a278ce9e068",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.15450402959
+          }
+        }
+      },
+      {
+        "fixture_id": "ub_07",
+        "teaching_mode": "two_corrections",
+        "pass": true,
+        "correct_card_ids": [
+          "c8dd8732a77441c3bb65229658013278"
+        ],
+        "consolidation": {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "card_id": "c8dd8732a77441c3bb65229658013278"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 1.8349385000183247,
+            "input_tokens": 1311,
+            "output_tokens": 136,
+            "cost_usd": 0.00014715,
+            "provider": "Wafer",
+            "charge_id": "9cfd6b1907f54d0e8bf9694db255b954",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.15465117959
+          }
+        }
+      },
+      {
+        "fixture_id": "ub_08",
+        "teaching_mode": "two_corrections",
+        "pass": false,
+        "correct_card_ids": [],
+        "consolidation": {
+          "status": "returned",
+          "accepted": [],
+          "valid": true,
+          "meta": {
+            "latency_s": 1.0748785000178032,
+            "input_tokens": 1307,
+            "output_tokens": 7,
+            "cost_usd": 6.955e-05,
+            "provider": "Wafer",
+            "charge_id": "3f2c4745458a414e8dbf90c38df6e845",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.1547207295900002
+          }
+        }
+      },
+      {
+        "fixture_id": "ub_09",
+        "teaching_mode": "two_corrections",
+        "pass": true,
+        "correct_card_ids": [
+          "0db094623cfe41f58a3d80e69509ea71"
+        ],
+        "consolidation": {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "card_id": "0db094623cfe41f58a3d80e69509ea71"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 0.8980181000079028,
+            "input_tokens": 1305,
+            "output_tokens": 132,
+            "cost_usd": 0.00014445,
+            "provider": "Wafer",
+            "charge_id": "253ddb8db645495198c123ef6fd5b38d",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.15486517959
+          }
+        }
+      }
+    ],
+    "correct_cards": [
+      {
+        "card_id": "ebd35c917fa1406699d11654f34e29a5",
+        "card_status": "active",
+        "type": "convention",
+        "trigger": {
+          "kind": "utterance",
+          "text": "星砂",
+          "weekday": -1,
+          "after": "",
+          "event": ""
+        },
+        "meaning": "去旧车站旁的面包房",
+        "source_ids": [
+          "3f5da8745cbe4f8882f25b49c3caffa9"
+        ]
+      },
+      {
+        "card_id": "10713b70f0af441d9c487a693a6defe7",
+        "card_status": "active",
+        "type": "convention",
+        "trigger": {
+          "kind": "utterance",
+          "text": "小雨",
+          "weekday": -1,
+          "after": "",
+          "event": ""
+        },
+        "meaning": "先陪我安静坐一会",
+        "source_ids": [
+          "d4e27da68dee494d91fc1159c16919b3"
+        ]
+      },
+      {
+        "card_id": "d5bece2758694899be69d7c370314fd3",
+        "card_status": "active",
+        "type": "convention",
+        "trigger": {
+          "kind": "situation",
+          "text": "周一20:00以后上线",
+          "weekday": 0,
+          "after": "20:00",
+          "event": "login"
+        },
+        "meaning": "一起整理相册",
+        "source_ids": [
+          "b9bfa885aa634e828cd40e3b076747a6"
+        ]
+      },
+      {
+        "card_id": "d120e9c9ec2346f8afc840bc36ad1009",
+        "card_status": "active",
+        "type": "convention",
+        "trigger": {
+          "kind": "utterance",
+          "text": "海螺",
+          "weekday": -1,
+          "after": "",
+          "event": ""
+        },
+        "meaning": "把饮料换成温水",
+        "source_ids": [
+          "4f4cbd33e9c6496d8a34f23a402ed2b1"
+        ]
+      },
+      {
+        "card_id": "7feb8cf51598492bb9d308b7fac400c0",
+        "card_status": "active",
+        "type": "convention",
+        "trigger": {
+          "kind": "utterance",
+          "text": "电量低",
+          "weekday": -1,
+          "after": "",
+          "event": ""
+        },
+        "meaning": "用一句简短的话鼓励我",
+        "source_ids": [
+          "41feaa3565644dcdb02098c84c19da8b"
+        ]
+      },
+      {
+        "card_id": "76901dc9f47f4d028e9d29773c62ab9d",
+        "card_status": "active",
+        "type": "convention",
+        "trigger": {
+          "kind": "utterance",
+          "text": "白帆",
+          "weekday": -1,
+          "after": "",
+          "event": ""
+        },
+        "meaning": "把午间小憩安排在图书馆庭院",
+        "source_ids": [
+          "de83aa3a82734b3f94ef18ff6879fd28",
+          "ea23d972f5b04741951c5af6ca256cf7"
+        ]
+      },
+      {
+        "card_id": "d889d615fbaf4b18870cdf1a486f849e",
+        "card_status": "active",
+        "type": "convention",
+        "trigger": {
+          "kind": "utterance",
+          "text": "路有点远",
+          "weekday": -1,
+          "after": "",
+          "event": ""
+        },
+        "meaning": "陪我列出下一步的小行动",
+        "source_ids": [
+          "7e010aea3219459db9682fbf433e53d2",
+          "b99327e7149f40938a2dedd80946726e"
+        ]
+      },
+      {
+        "card_id": "c8dd8732a77441c3bb65229658013278",
+        "card_status": "active",
+        "type": "convention",
+        "trigger": {
+          "kind": "situation",
+          "text": "周二18:30以后上线",
+          "weekday": 1,
+          "after": "18:30",
+          "event": "login"
+        },
+        "meaning": "一起看一页旅行地图",
+        "source_ids": [
+          "d7a5d5a282c24e998daba959623a8da6",
+          "1cc04890629047519f00934c7ffd1d4c"
+        ]
+      },
+      {
+        "card_id": "0db094623cfe41f58a3d80e69509ea71",
+        "card_status": "active",
+        "type": "convention",
+        "trigger": {
+          "kind": "situation",
+          "text": "周四21:00以后上线",
+          "weekday": 3,
+          "after": "21:00",
+          "event": "login"
+        },
+        "meaning": "一起回顾本周的小收获",
+        "source_ids": [
+          "558ecdfa38184735adc15b888e5ede26",
+          "4bb7f98fcff843329b65e1a657c0e573"
+        ]
+      }
+    ],
+    "status": "completed",
+    "frozen_files_unchanged": true,
+    "pid": 38052,
+    "elapsed_s": 19.70790433883667
+  },
+  "Uc": {
+    "pass": true,
+    "initial_correct_cards": 9,
+    "rounds": [
+      {
+        "round": 1,
+        "pass": true,
+        "changed_or_lost": [],
+        "consolidation": {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "card_id": "10713b70f0af441d9c487a693a6defe7"
+            },
+            {
+              "accepted": true,
+              "card_id": "d5bece2758694899be69d7c370314fd3"
+            },
+            {
+              "accepted": true,
+              "card_id": "d120e9c9ec2346f8afc840bc36ad1009"
+            },
+            {
+              "accepted": true,
+              "card_id": "26565f4e1d4d43b89ac8d1de6f5c86fb"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 2.5409931000031065,
+            "input_tokens": 3060,
+            "output_tokens": 414,
+            "cost_usd": 0.0004014,
+            "provider": "Wafer",
+            "charge_id": "2cb3abc9de574127bf47c82b66d28dc7",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.1552665795900001
+          }
+        }
+      },
+      {
+        "round": 2,
+        "pass": true,
+        "changed_or_lost": [],
+        "consolidation": {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "card_id": "10713b70f0af441d9c487a693a6defe7"
+            },
+            {
+              "accepted": true,
+              "card_id": "d5bece2758694899be69d7c370314fd3"
+            },
+            {
+              "accepted": true,
+              "card_id": "d120e9c9ec2346f8afc840bc36ad1009"
+            },
+            {
+              "accepted": true,
+              "card_id": "26565f4e1d4d43b89ac8d1de6f5c86fb"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 2.3959788999927696,
+            "input_tokens": 3132,
+            "output_tokens": 414,
+            "cost_usd": 0.000404488,
+            "provider": "Wafer",
+            "charge_id": "2d50de9e49b843c798f79aef5051d83a",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.1556710675900002
+          }
+        }
+      },
+      {
+        "round": 3,
+        "pass": true,
+        "changed_or_lost": [],
+        "consolidation": {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "card_id": "10713b70f0af441d9c487a693a6defe7"
+            },
+            {
+              "accepted": true,
+              "card_id": "d5bece2758694899be69d7c370314fd3"
+            },
+            {
+              "accepted": true,
+              "card_id": "d120e9c9ec2346f8afc840bc36ad1009"
+            },
+            {
+              "accepted": true,
+              "card_id": "26565f4e1d4d43b89ac8d1de6f5c86fb"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 2.53100399998948,
+            "input_tokens": 3207,
+            "output_tokens": 414,
+            "cost_usd": 0.000404142,
+            "provider": "Wafer",
+            "charge_id": "294718b62de747d98f32e655a74fecdc",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.15607520959
+          }
+        }
+      },
+      {
+        "round": 4,
+        "pass": true,
+        "changed_or_lost": [],
+        "consolidation": {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "card_id": "10713b70f0af441d9c487a693a6defe7"
+            },
+            {
+              "accepted": true,
+              "card_id": "d5bece2758694899be69d7c370314fd3"
+            },
+            {
+              "accepted": true,
+              "card_id": "d120e9c9ec2346f8afc840bc36ad1009"
+            },
+            {
+              "accepted": true,
+              "card_id": "26565f4e1d4d43b89ac8d1de6f5c86fb"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 2.653930999978911,
+            "input_tokens": 3276,
+            "output_tokens": 414,
+            "cost_usd": 0.000407592,
+            "provider": "Wafer",
+            "charge_id": "1bb8fea95c2348c08ea9c5c3df1dd13a",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.15648280159
+          }
+        }
+      },
+      {
+        "round": 5,
+        "pass": true,
+        "changed_or_lost": [],
+        "consolidation": {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "card_id": "10713b70f0af441d9c487a693a6defe7"
+            },
+            {
+              "accepted": true,
+              "card_id": "d5bece2758694899be69d7c370314fd3"
+            },
+            {
+              "accepted": true,
+              "card_id": "d120e9c9ec2346f8afc840bc36ad1009"
+            },
+            {
+              "accepted": true,
+              "card_id": "26565f4e1d4d43b89ac8d1de6f5c86fb"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 2.443097100011073,
+            "input_tokens": 3348,
+            "output_tokens": 414,
+            "cost_usd": 0.000411192,
+            "provider": "Wafer",
+            "charge_id": "60d46f71ed7b4d058702c205369e4778",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.15689399359
+          }
+        }
+      },
+      {
+        "round": 6,
+        "pass": true,
+        "changed_or_lost": [],
+        "consolidation": {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "card_id": "10713b70f0af441d9c487a693a6defe7"
+            },
+            {
+              "accepted": true,
+              "card_id": "d5bece2758694899be69d7c370314fd3"
+            },
+            {
+              "accepted": true,
+              "card_id": "d120e9c9ec2346f8afc840bc36ad1009"
+            },
+            {
+              "accepted": true,
+              "card_id": "26565f4e1d4d43b89ac8d1de6f5c86fb"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 2.3050006999983452,
+            "input_tokens": 3420,
+            "output_tokens": 414,
+            "cost_usd": 0.00041428,
+            "provider": "Wafer",
+            "charge_id": "bdf30349c69a4e3d9a4b6e41fe47d389",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.15730827359
+          }
+        }
+      },
+      {
+        "round": 7,
+        "pass": true,
+        "changed_or_lost": [],
+        "consolidation": {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "card_id": "10713b70f0af441d9c487a693a6defe7"
+            },
+            {
+              "accepted": true,
+              "card_id": "d5bece2758694899be69d7c370314fd3"
+            },
+            {
+              "accepted": true,
+              "card_id": "d120e9c9ec2346f8afc840bc36ad1009"
+            },
+            {
+              "accepted": true,
+              "card_id": "26565f4e1d4d43b89ac8d1de6f5c86fb"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 2.1568690999993123,
+            "input_tokens": 3488,
+            "output_tokens": 414,
+            "cost_usd": 0.00041768,
+            "provider": "Wafer",
+            "charge_id": "203d2577d6af4406b0b9d6a122f67b89",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.15772595359
+          }
+        }
+      },
+      {
+        "round": 8,
+        "pass": true,
+        "changed_or_lost": [],
+        "consolidation": {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "card_id": "10713b70f0af441d9c487a693a6defe7"
+            },
+            {
+              "accepted": true,
+              "card_id": "d5bece2758694899be69d7c370314fd3"
+            },
+            {
+              "accepted": true,
+              "card_id": "d120e9c9ec2346f8afc840bc36ad1009"
+            },
+            {
+              "accepted": true,
+              "card_id": "26565f4e1d4d43b89ac8d1de6f5c86fb"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 2.2830306999967434,
+            "input_tokens": 3559,
+            "output_tokens": 414,
+            "cost_usd": 0.00042123,
+            "provider": "Wafer",
+            "charge_id": "d88d569c269e4bc69b943ce8eb61abc3",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.1581471835900001
+          }
+        }
+      },
+      {
+        "round": 9,
+        "pass": true,
+        "changed_or_lost": [],
+        "consolidation": {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "card_id": "10713b70f0af441d9c487a693a6defe7"
+            },
+            {
+              "accepted": true,
+              "card_id": "d5bece2758694899be69d7c370314fd3"
+            },
+            {
+              "accepted": true,
+              "card_id": "d120e9c9ec2346f8afc840bc36ad1009"
+            },
+            {
+              "accepted": true,
+              "card_id": "26565f4e1d4d43b89ac8d1de6f5c86fb"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 2.032030099973781,
+            "input_tokens": 3629,
+            "output_tokens": 414,
+            "cost_usd": 0.000424218,
+            "provider": "Wafer",
+            "charge_id": "e52d0d24d4c44a6990ba6d95d12e5e5f",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.1585714015900002
+          }
+        }
+      },
+      {
+        "round": 10,
+        "pass": true,
+        "changed_or_lost": [],
+        "consolidation": {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "card_id": "10713b70f0af441d9c487a693a6defe7"
+            },
+            {
+              "accepted": true,
+              "card_id": "d5bece2758694899be69d7c370314fd3"
+            },
+            {
+              "accepted": true,
+              "card_id": "d120e9c9ec2346f8afc840bc36ad1009"
+            },
+            {
+              "accepted": true,
+              "card_id": "26565f4e1d4d43b89ac8d1de6f5c86fb"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 2.612012700003106,
+            "input_tokens": 3702,
+            "output_tokens": 414,
+            "cost_usd": 0.000427868,
+            "provider": "Wafer",
+            "charge_id": "3bb034022b79460b94083297a59f21a8",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.15899926959
+          }
+        }
+      }
+    ],
+    "status": "completed",
+    "frozen_files_unchanged": true,
+    "pid": 58256,
+    "elapsed_s": 24.915238857269287
+  },
+  "steps": {
+    "B_R_learn": {
+      "pass": true,
+      "consolidations": [
+        {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "card_id": "fdd315a36fd64ace9fc44c9e989acce4"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 1.126003400015179,
+            "input_tokens": 455,
+            "output_tokens": 102,
+            "cost_usd": 8.3438e-05,
+            "provider": "Wafer",
+            "charge_id": "5eaf88143f5b433b81776dc5ab0e2b45",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.15908270759
+          }
+        },
+        {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "card_id": "d4e215b7e8234c64861c92b9502856d5"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 1.0052046999917366,
+            "input_tokens": 550,
+            "output_tokens": 103,
+            "cost_usd": 8.8788e-05,
+            "provider": "Wafer",
+            "charge_id": "037a3164b9664b108311f1f6d8dd880e",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.15917149559
+          }
+        },
+        {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": false,
+              "reason": "situation_predicate_disagrees_with_quote"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 1.2910220000194386,
+            "input_tokens": 645,
+            "output_tokens": 111,
+            "cost_usd": 9.8338e-05,
+            "provider": "Wafer",
+            "charge_id": "d050b003168947fc96bb38a684ba3c43",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.15926983359
+          }
+        }
+      ],
+      "state": {
+        "record_count": 8,
+        "active_cards": 2,
+        "provenance": [
+          {
+            "card_id": "fdd315a36fd64ace9fc44c9e989acce4",
+            "card_status": "active",
+            "trigger_text": "纸鹤",
+            "source_ids": [
+              "96896251b96649578a79ca6186a8208d"
+            ],
+            "correction_parents": []
+          },
+          {
+            "card_id": "d4e215b7e8234c64861c92b9502856d5",
+            "card_status": "active",
+            "trigger_text": "还行",
+            "source_ids": [
+              "cbece31053b44bf5bb8c94da5cf1cbdc"
+            ],
+            "correction_parents": []
+          }
+        ]
+      },
+      "state_sha256": "e07422c1cbc9f5e5e06c6034801dfe0c9c4a19c93fd55a798a8a9702e0af349d",
+      "pid": 53360,
+      "status": "completed",
+      "frozen_files_unchanged": true,
+      "elapsed_s": 6.09912896156311
+    },
+    "B_R_initial": {
+      "pass": true,
+      "n": 60,
+      "table": [
+        {
+          "family": "code",
+          "split": "T1",
+          "n": 10,
+          "follows": 10,
+          "rate": 1.0,
+          "valid": 10
+        },
+        {
+          "family": "code",
+          "split": "T2",
+          "n": 10,
+          "follows": 10,
+          "rate": 1.0,
+          "valid": 10
+        },
+        {
+          "family": "emotion",
+          "split": "T1",
+          "n": 10,
+          "follows": 10,
+          "rate": 1.0,
+          "valid": 10
+        },
+        {
+          "family": "emotion",
+          "split": "T2",
+          "n": 10,
+          "follows": 9,
+          "rate": 0.9,
+          "valid": 10
+        },
+        {
+          "family": "promise",
+          "split": "T1",
+          "n": 10,
+          "follows": 0,
+          "rate": 0.0,
+          "valid": 10
+        },
+        {
+          "family": "promise",
+          "split": "T2",
+          "n": 10,
+          "follows": 0,
+          "rate": 0.0,
+          "valid": 10
+        }
+      ],
+      "pid": 50832,
+      "state_before_sha256": "e07422c1cbc9f5e5e06c6034801dfe0c9c4a19c93fd55a798a8a9702e0af349d",
+      "state_after_sha256": "e07422c1cbc9f5e5e06c6034801dfe0c9c4a19c93fd55a798a8a9702e0af349d",
+      "status": "completed",
+      "frozen_files_unchanged": true,
+      "elapsed_s": 125.94925045967102
+    },
+    "B_I_learn": {
+      "pass": true,
+      "consolidations": [
+        {
+          "status": "returned",
+          "accepted": [],
+          "valid": true,
+          "meta": {
+            "latency_s": 0.4000421000237111,
+            "input_tokens": 460,
+            "output_tokens": 7,
+            "cost_usd": 2.6688e-05,
+            "provider": "Wafer",
+            "charge_id": "ece9b228f1a147a5a5e9e0e6a787c27c",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.16392872159
+          }
+        },
+        {
+          "status": "returned",
+          "accepted": [],
+          "valid": true,
+          "meta": {
+            "latency_s": 0.6140267000009771,
+            "input_tokens": 461,
+            "output_tokens": 7,
+            "cost_usd": 2.6738e-05,
+            "provider": "Wafer",
+            "charge_id": "9c38f95b1c2a4eba92ce82ed31ae2a37",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.1639554595900001
+          }
+        },
+        {
+          "status": "returned",
+          "accepted": [],
+          "valid": true,
+          "meta": {
+            "latency_s": 0.4200124000199139,
+            "input_tokens": 464,
+            "output_tokens": 7,
+            "cost_usd": 2.6888e-05,
+            "provider": "Wafer",
+            "charge_id": "47e0f69024db4c289055b8f636c8c934",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.16398234759
+          }
+        }
+      ],
+      "state": {
+        "record_count": 6,
+        "active_cards": 0,
+        "provenance": []
+      },
+      "state_sha256": "2ff5bf03241dbfcc2f6469d543e5a3f079e250bc32bb0b1b68a86b860555d89d",
+      "pid": 21064,
+      "status": "completed",
+      "frozen_files_unchanged": true,
+      "elapsed_s": 5.197451114654541
+    },
+    "B_I_initial": {
+      "pass": true,
+      "n": 60,
+      "table": [
+        {
+          "family": "code",
+          "split": "T1",
+          "n": 10,
+          "follows": 0,
+          "rate": 0.0,
+          "valid": 10
+        },
+        {
+          "family": "code",
+          "split": "T2",
+          "n": 10,
+          "follows": 0,
+          "rate": 0.0,
+          "valid": 10
+        },
+        {
+          "family": "emotion",
+          "split": "T1",
+          "n": 10,
+          "follows": 9,
+          "rate": 0.9,
+          "valid": 10
+        },
+        {
+          "family": "emotion",
+          "split": "T2",
+          "n": 10,
+          "follows": 8,
+          "rate": 0.8,
+          "valid": 10
+        },
+        {
+          "family": "promise",
+          "split": "T1",
+          "n": 10,
+          "follows": 0,
+          "rate": 0.0,
+          "valid": 10
+        },
+        {
+          "family": "promise",
+          "split": "T2",
+          "n": 10,
+          "follows": 0,
+          "rate": 0.0,
+          "valid": 10
+        }
+      ],
+      "pid": 21420,
+      "state_before_sha256": "2ff5bf03241dbfcc2f6469d543e5a3f079e250bc32bb0b1b68a86b860555d89d",
+      "state_after_sha256": "2ff5bf03241dbfcc2f6469d543e5a3f079e250bc32bb0b1b68a86b860555d89d",
+      "status": "completed",
+      "frozen_files_unchanged": true,
+      "elapsed_s": 138.36569094657898
+    },
+    "B_N_learn": {
+      "pass": true,
+      "consolidations": [
+        {
+          "status": "no_evidence_noop",
+          "accepted": []
+        }
+      ],
+      "state": {
+        "record_count": 0,
+        "active_cards": 0,
+        "provenance": []
+      },
+      "state_sha256": "a98f331eaaf74abc93b92d5d658337896d7c29b692fb718231173eee87d5df4f",
+      "pid": 51064,
+      "status": "completed",
+      "frozen_files_unchanged": true,
+      "elapsed_s": 0.428511381149292
+    },
+    "B_N_initial": {
+      "pass": true,
+      "n": 60,
+      "table": [
+        {
+          "family": "code",
+          "split": "T1",
+          "n": 10,
+          "follows": 0,
+          "rate": 0.0,
+          "valid": 10
+        },
+        {
+          "family": "code",
+          "split": "T2",
+          "n": 10,
+          "follows": 0,
+          "rate": 0.0,
+          "valid": 10
+        },
+        {
+          "family": "emotion",
+          "split": "T1",
+          "n": 10,
+          "follows": 9,
+          "rate": 0.9,
+          "valid": 10
+        },
+        {
+          "family": "emotion",
+          "split": "T2",
+          "n": 10,
+          "follows": 9,
+          "rate": 0.9,
+          "valid": 10
+        },
+        {
+          "family": "promise",
+          "split": "T1",
+          "n": 10,
+          "follows": 0,
+          "rate": 0.0,
+          "valid": 10
+        },
+        {
+          "family": "promise",
+          "split": "T2",
+          "n": 10,
+          "follows": 0,
+          "rate": 0.0,
+          "valid": 10
+        }
+      ],
+      "pid": 24024,
+      "state_before_sha256": "a98f331eaaf74abc93b92d5d658337896d7c29b692fb718231173eee87d5df4f",
+      "state_after_sha256": "a98f331eaaf74abc93b92d5d658337896d7c29b692fb718231173eee87d5df4f",
+      "status": "completed",
+      "frozen_files_unchanged": true,
+      "elapsed_s": 134.84762716293335
+    },
+    "A_R_learn": {
+      "pass": true,
+      "consolidations": [
+        {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "record_id": "e8ba5ec4769b4d97b73ba85bbf30502b"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 3.268034799984889,
+            "input_tokens": 387,
+            "output_tokens": 215,
+            "cost_usd": 0.00014835,
+            "provider": "Wafer",
+            "charge_id": "3d41e02fc0a84e18b9ba6340d5714808",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.17194740959
+          }
+        },
+        {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "record_id": "3cf349d43b5947b59c8dd5fc1f12d68d"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 3.0380684999981895,
+            "input_tokens": 680,
+            "output_tokens": 208,
+            "cost_usd": 0.0001588,
+            "provider": "Wafer",
+            "charge_id": "b81d0ae341514315b2dd27646c37e644",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.1721062095900001
+          }
+        },
+        {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "record_id": "f48e7db74ed5458f9ed7ea29cf4593b6"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 2.665928799979156,
+            "input_tokens": 680,
+            "output_tokens": 253,
+            "cost_usd": 0.0001858,
+            "provider": "Wafer",
+            "charge_id": "fac32fa318164787b1399bf888e19cb2",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.17229200959
+          }
+        }
+      ],
+      "state": {
+        "record_count": 9,
+        "active_cards": 0,
+        "provenance": []
+      },
+      "state_sha256": "3d87d387812ec9e7ea4abcb8f8303454a14b8d00bacc6e25c4404989f48aaabd",
+      "pid": 42304,
+      "status": "completed",
+      "frozen_files_unchanged": true,
+      "elapsed_s": 9.803234100341797
+    },
+    "A_R_initial": {
+      "pass": true,
+      "n": 60,
+      "table": [
+        {
+          "family": "code",
+          "split": "T1",
+          "n": 10,
+          "follows": 10,
+          "rate": 1.0,
+          "valid": 10
+        },
+        {
+          "family": "code",
+          "split": "T2",
+          "n": 10,
+          "follows": 5,
+          "rate": 0.5,
+          "valid": 10
+        },
+        {
+          "family": "emotion",
+          "split": "T1",
+          "n": 10,
+          "follows": 10,
+          "rate": 1.0,
+          "valid": 10
+        },
+        {
+          "family": "emotion",
+          "split": "T2",
+          "n": 10,
+          "follows": 10,
+          "rate": 1.0,
+          "valid": 10
+        },
+        {
+          "family": "promise",
+          "split": "T1",
+          "n": 10,
+          "follows": 10,
+          "rate": 1.0,
+          "valid": 10
+        },
+        {
+          "family": "promise",
+          "split": "T2",
+          "n": 10,
+          "follows": 10,
+          "rate": 1.0,
+          "valid": 10
+        }
+      ],
+      "pid": 29340,
+      "state_before_sha256": "3d87d387812ec9e7ea4abcb8f8303454a14b8d00bacc6e25c4404989f48aaabd",
+      "state_after_sha256": "3d87d387812ec9e7ea4abcb8f8303454a14b8d00bacc6e25c4404989f48aaabd",
+      "status": "completed",
+      "frozen_files_unchanged": true,
+      "elapsed_s": 128.5373773574829
+    },
+    "B_R_correct_learn": {
+      "pass": true,
+      "consolidations": [
+        {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "card_id": "c7e95667c53547709bde53c155480d3f"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 1.0000081000034697,
+            "input_tokens": 638,
+            "output_tokens": 121,
+            "cost_usd": 0.000103988,
+            "provider": "Wafer",
+            "charge_id": "61dd4fd8e4bc4a51bfcdd2fec07ee0c8",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.1779359975900001
+          }
+        },
+        {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "card_id": "799294dccec14604a1a89a035f870b64"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 0.9861063999996986,
+            "input_tokens": 642,
+            "output_tokens": 124,
+            "cost_usd": 0.000105988,
+            "provider": "Wafer",
+            "charge_id": "eb54ca5211154bbb909a91583454c551",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.17804198559
+          }
+        },
+        {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": false,
+              "reason": "situation_predicate_disagrees_with_quote"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 0.8757751999946777,
+            "input_tokens": 636,
+            "output_tokens": 110,
+            "cost_usd": 9.78e-05,
+            "provider": "Wafer",
+            "charge_id": "333412a8efef432cb94bbb2edadba496",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.17813978559
+          }
+        }
+      ],
+      "state": {
+        "record_count": 16,
+        "active_cards": 2,
+        "provenance": [
+          {
+            "card_id": "fdd315a36fd64ace9fc44c9e989acce4",
+            "card_status": "superseded",
+            "trigger_text": "纸鹤",
+            "source_ids": [
+              "96896251b96649578a79ca6186a8208d"
+            ],
+            "correction_parents": []
+          },
+          {
+            "card_id": "d4e215b7e8234c64861c92b9502856d5",
+            "card_status": "superseded",
+            "trigger_text": "还行",
+            "source_ids": [
+              "cbece31053b44bf5bb8c94da5cf1cbdc"
+            ],
+            "correction_parents": []
+          },
+          {
+            "card_id": "c7e95667c53547709bde53c155480d3f",
+            "card_status": "active",
+            "trigger_text": "纸鹤",
+            "source_ids": [
+              "803990320b70435ba7777df3dcca3eb4"
+            ],
+            "correction_parents": [
+              "fdd315a36fd64ace9fc44c9e989acce4"
+            ]
+          },
+          {
+            "card_id": "799294dccec14604a1a89a035f870b64",
+            "card_status": "active",
+            "trigger_text": "还行",
+            "source_ids": [
+              "1f13fe8f7c784d27981caaa2ccfb95c2"
+            ],
+            "correction_parents": [
+              "d4e215b7e8234c64861c92b9502856d5"
+            ]
+          }
+        ]
+      },
+      "state_sha256": "dd0cbfca51b443dd36d26d679494c78027c4382dfcaab6615e2185c568c86c54",
+      "pid": 3420,
+      "status": "completed",
+      "frozen_files_unchanged": true,
+      "elapsed_s": 5.6403162479400635
+    },
+    "B_R_corrected": {
+      "pass": true,
+      "n": 30,
+      "table": [
+        {
+          "family": "code",
+          "split": "T1",
+          "n": 10,
+          "follows": 10,
+          "rate": 1.0,
+          "valid": 10
+        },
+        {
+          "family": "emotion",
+          "split": "T1",
+          "n": 10,
+          "follows": 10,
+          "rate": 1.0,
+          "valid": 10
+        },
+        {
+          "family": "promise",
+          "split": "T1",
+          "n": 10,
+          "follows": 0,
+          "rate": 0.0,
+          "valid": 10
+        }
+      ],
+      "pid": 60592,
+      "state_before_sha256": "dd0cbfca51b443dd36d26d679494c78027c4382dfcaab6615e2185c568c86c54",
+      "state_after_sha256": "dd0cbfca51b443dd36d26d679494c78027c4382dfcaab6615e2185c568c86c54",
+      "status": "completed",
+      "frozen_files_unchanged": true,
+      "elapsed_s": 152.85718536376953
+    },
+    "B_R_delete": {
+      "pass": true,
+      "commands": [
+        {
+          "speaker": "user",
+          "utterance_text": "忘掉这个约定：纸鹤，包括原话和更正。",
+          "session_id": "chain_code_delete"
+        },
+        {
+          "speaker": "user",
+          "utterance_text": "忘掉这个约定：还行，包括原话和更正。",
+          "session_id": "chain_emotion_delete"
+        },
+        {
+          "speaker": "user",
+          "utterance_text": "忘掉这个约定：周六19:00以后上线，包括原话和更正。",
+          "session_id": "chain_promise_delete"
+        }
+      ],
+      "receipts": [
+        {
+          "status": "deleted",
+          "removed_records": 4
+        },
+        {
+          "status": "deleted",
+          "removed_records": 4
+        },
+        {
+          "status": "deleted",
+          "removed_records": 8
+        }
+      ],
+      "remaining_records": 0,
+      "byte_check": {
+        "pass": true,
+        "files_checked": [
+          "B_R.sqlite"
+        ],
+        "needles_checked": 20,
+        "hits": []
+      },
+      "pid": 30588,
+      "status": "completed",
+      "frozen_files_unchanged": true,
+      "elapsed_s": 0.20875215530395508
+    },
+    "B_R_deleted": {
+      "pass": true,
+      "n": 30,
+      "table": [
+        {
+          "family": "code",
+          "split": "T1",
+          "n": 10,
+          "follows": 0,
+          "rate": 0.0,
+          "valid": 10
+        },
+        {
+          "family": "emotion",
+          "split": "T1",
+          "n": 10,
+          "follows": 9,
+          "rate": 0.9,
+          "valid": 10
+        },
+        {
+          "family": "promise",
+          "split": "T1",
+          "n": 10,
+          "follows": 0,
+          "rate": 0.0,
+          "valid": 10
+        }
+      ],
+      "pid": 8740,
+      "state_before_sha256": "3ff32a8d6cdc691470c9f22a0e399a3eaef4df69250c3436f831354f85e7d4a8",
+      "state_after_sha256": "3ff32a8d6cdc691470c9f22a0e399a3eaef4df69250c3436f831354f85e7d4a8",
+      "status": "completed",
+      "frozen_files_unchanged": true,
+      "elapsed_s": 64.56572008132935
+    },
+    "A_R_correct_learn": {
+      "pass": true,
+      "consolidations": [
+        {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "record_id": "95810ad6c977491eb294d043c97494fe"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 1.671998599980725,
+            "input_tokens": 690,
+            "output_tokens": 220,
+            "cost_usd": 0.0001665,
+            "provider": "Wafer",
+            "charge_id": "f1c740c442d34c578fd976b3a0491cb7",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.23251980159
+          }
+        },
+        {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "record_id": "7b7fc22e55f14ce88660d5d0dbc07383"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 2.6628262999875005,
+            "input_tokens": 695,
+            "output_tokens": 204,
+            "cost_usd": 0.00015715,
+            "provider": "Wafer",
+            "charge_id": "7297fe7f386a466b8f48d3c33f511d2b",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.23267695159
+          }
+        },
+        {
+          "status": "returned",
+          "accepted": [
+            {
+              "accepted": true,
+              "record_id": "e4a97bf50aea4f0aad55774bf9c5cf11"
+            }
+          ],
+          "valid": true,
+          "meta": {
+            "latency_s": 1.7810488999821246,
+            "input_tokens": 662,
+            "output_tokens": 287,
+            "cost_usd": 0.0002053,
+            "provider": "Wafer",
+            "charge_id": "31a6e7660f464e87b6af630d1d20edb3",
+            "reserved_usd": 0.05,
+            "reasoning_enabled": false,
+            "max_tokens": 2048,
+            "finish_reason": "stop",
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "image_tokens": 0,
+              "audio_tokens": 0
+            },
+            "budget_reserved_or_reported_usd": 1.23288225159
+          }
+        }
+      ],
+      "state": {
+        "record_count": 18,
+        "active_cards": 0,
+        "provenance": []
+      },
+      "state_sha256": "8a27bb24463809a6c7bfbb29ec38b986059d06c86376f19d3027ce90e7e6203f",
+      "pid": 58532,
+      "status": "completed",
+      "frozen_files_unchanged": true,
+      "elapsed_s": 7.227144241333008
+    },
+    "A_R_corrected": {
+      "pass": true,
+      "n": 30,
+      "table": [
+        {
+          "family": "code",
+          "split": "T1",
+          "n": 10,
+          "follows": 10,
+          "rate": 1.0,
+          "valid": 10
+        },
+        {
+          "family": "emotion",
+          "split": "T1",
+          "n": 10,
+          "follows": 8,
+          "rate": 0.8,
+          "valid": 10
+        },
+        {
+          "family": "promise",
+          "split": "T1",
+          "n": 10,
+          "follows": 10,
+          "rate": 1.0,
+          "valid": 10
+        }
+      ],
+      "pid": 45996,
+      "state_before_sha256": "8a27bb24463809a6c7bfbb29ec38b986059d06c86376f19d3027ce90e7e6203f",
+      "state_after_sha256": "8a27bb24463809a6c7bfbb29ec38b986059d06c86376f19d3027ce90e7e6203f",
+      "status": "completed",
+      "frozen_files_unchanged": true,
+      "elapsed_s": 60.98334860801697
+    },
+    "A_R_delete": {
+      "pass": true,
+      "commands": [
+        {
+          "speaker": "user",
+          "utterance_text": "忘掉这个约定：纸鹤，包括原话和更正。",
+          "session_id": "chain_code_delete"
+        },
+        {
+          "speaker": "user",
+          "utterance_text": "忘掉这个约定：还行，包括原话和更正。",
+          "session_id": "chain_emotion_delete"
+        },
+        {
+          "speaker": "user",
+          "utterance_text": "忘掉这个约定：周六19:00以后上线，包括原话和更正。",
+          "session_id": "chain_promise_delete"
+        }
+      ],
+      "receipts": [
+        {
+          "status": "deleted",
+          "removed_records": 18
+        }
+      ],
+      "remaining_records": 0,
+      "byte_check": {
+        "pass": true,
+        "files_checked": [
+          "A_R.sqlite"
+        ],
+        "needles_checked": 18,
+        "hits": []
+      },
+      "pid": 12700,
+      "status": "completed",
+      "frozen_files_unchanged": true,
+      "elapsed_s": 0.20729470252990723
+    },
+    "A_R_deleted": {
+      "pass": true,
+      "n": 30,
+      "table": [
+        {
+          "family": "code",
+          "split": "T1",
+          "n": 10,
+          "follows": 0,
+          "rate": 0.0,
+          "valid": 10
+        },
+        {
+          "family": "emotion",
+          "split": "T1",
+          "n": 10,
+          "follows": 9,
+          "rate": 0.9,
+          "valid": 10
+        },
+        {
+          "family": "promise",
+          "split": "T1",
+          "n": 10,
+          "follows": 0,
+          "rate": 0.0,
+          "valid": 10
+        }
+      ],
+      "pid": 11076,
+      "state_before_sha256": "664aa3e43d7d4026b8f91ab52a1a09c45f54e932358f90af79e753a06adca841",
+      "state_after_sha256": "664aa3e43d7d4026b8f91ab52a1a09c45f54e932358f90af79e753a06adca841",
+      "status": "completed",
+      "frozen_files_unchanged": true,
+      "elapsed_s": 61.69957256317139
+    }
+  },
+  "chain": {
+    "status": "completed",
+    "pass": false,
+    "retention_pass": false,
+    "causal_pass": true,
+    "correction_pass": false,
+    "correction_provenance_pass": false,
+    "correction_rates": {
+      "code": {
+        "n": 10,
+        "rate": 1.0
+      },
+      "emotion": {
+        "n": 10,
+        "rate": 1.0
+      },
+      "promise": {
+        "n": 10,
+        "rate": 0.0
+      }
+    },
+    "correction_provenance_by_family": {
+      "code": true,
+      "emotion": true,
+      "promise": false
+    },
+    "deletion_pass": true,
+    "deletion_rates": {
+      "code": {
+        "true": {
+          "after": {
+            "n": 10,
+            "rate": 0.0
+          },
+          "N": {
+            "n": 10,
+            "rate": 0.0
+          },
+          "pass": true
+        },
+        "new": {
+          "after": {
+            "n": 10,
+            "rate": 0.0
+          },
+          "N": {
+            "n": 10,
+            "rate": 0.0
+          },
+          "pass": true
+        }
+      },
+      "emotion": {
+        "true": {
+          "after": {
+            "n": 10,
+            "rate": 0.9
+          },
+          "N": {
+            "n": 10,
+            "rate": 0.9
+          },
+          "pass": true
+        },
+        "new": {
+          "after": {
+            "n": 10,
+            "rate": 0.0
+          },
+          "N": {
+            "n": 10,
+            "rate": 0.0
+          },
+          "pass": true
+        }
+      },
+      "promise": {
+        "true": {
+          "after": {
+            "n": 10,
+            "rate": 0.0
+          },
+          "N": {
+            "n": 10,
+            "rate": 0.0
+          },
+          "pass": true
+        },
+        "new": {
+          "after": {
+            "n": 10,
+            "rate": 0.0
+          },
+          "N": {
+            "n": 10,
+            "rate": 0.0
+          },
+          "pass": true
+        }
+      }
+    },
+    "deletion_byte_pass": true,
+    "T2_descriptive": [
+      {
+        "group": "B_R",
+        "family": "code",
+        "subset": "all",
+        "n": 10,
+        "follows": 10,
+        "rate": 1.0,
+        "valid": 10
+      },
+      {
+        "group": "B_R",
+        "family": "code",
+        "subset": "retained_trigger_or_situation",
+        "n": 5,
+        "follows": 5,
+        "rate": 1.0,
+        "valid": 5
+      },
+      {
+        "group": "B_R",
+        "family": "code",
+        "subset": "paraphrase_or_new_situation",
+        "n": 5,
+        "follows": 5,
+        "rate": 1.0,
+        "valid": 5
+      },
+      {
+        "group": "B_R",
+        "family": "emotion",
+        "subset": "all",
+        "n": 10,
+        "follows": 9,
+        "rate": 0.9,
+        "valid": 10
+      },
+      {
+        "group": "B_R",
+        "family": "emotion",
+        "subset": "retained_trigger_or_situation",
+        "n": 5,
+        "follows": 5,
+        "rate": 1.0,
+        "valid": 5
+      },
+      {
+        "group": "B_R",
+        "family": "emotion",
+        "subset": "paraphrase_or_new_situation",
+        "n": 5,
+        "follows": 4,
+        "rate": 0.8,
+        "valid": 5
+      },
+      {
+        "group": "B_R",
+        "family": "promise",
+        "subset": "all",
+        "n": 10,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 10
+      },
+      {
+        "group": "B_R",
+        "family": "promise",
+        "subset": "retained_trigger_or_situation",
+        "n": 5,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 5
+      },
+      {
+        "group": "B_R",
+        "family": "promise",
+        "subset": "paraphrase_or_new_situation",
+        "n": 5,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 5
+      },
+      {
+        "group": "B_I",
+        "family": "code",
+        "subset": "all",
+        "n": 10,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 10
+      },
+      {
+        "group": "B_I",
+        "family": "code",
+        "subset": "retained_trigger_or_situation",
+        "n": 5,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 5
+      },
+      {
+        "group": "B_I",
+        "family": "code",
+        "subset": "paraphrase_or_new_situation",
+        "n": 5,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 5
+      },
+      {
+        "group": "B_I",
+        "family": "emotion",
+        "subset": "all",
+        "n": 10,
+        "follows": 8,
+        "rate": 0.8,
+        "valid": 10
+      },
+      {
+        "group": "B_I",
+        "family": "emotion",
+        "subset": "retained_trigger_or_situation",
+        "n": 5,
+        "follows": 5,
+        "rate": 1.0,
+        "valid": 5
+      },
+      {
+        "group": "B_I",
+        "family": "emotion",
+        "subset": "paraphrase_or_new_situation",
+        "n": 5,
+        "follows": 3,
+        "rate": 0.6,
+        "valid": 5
+      },
+      {
+        "group": "B_I",
+        "family": "promise",
+        "subset": "all",
+        "n": 10,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 10
+      },
+      {
+        "group": "B_I",
+        "family": "promise",
+        "subset": "retained_trigger_or_situation",
+        "n": 5,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 5
+      },
+      {
+        "group": "B_I",
+        "family": "promise",
+        "subset": "paraphrase_or_new_situation",
+        "n": 5,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 5
+      },
+      {
+        "group": "B_N",
+        "family": "code",
+        "subset": "all",
+        "n": 10,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 10
+      },
+      {
+        "group": "B_N",
+        "family": "code",
+        "subset": "retained_trigger_or_situation",
+        "n": 5,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 5
+      },
+      {
+        "group": "B_N",
+        "family": "code",
+        "subset": "paraphrase_or_new_situation",
+        "n": 5,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 5
+      },
+      {
+        "group": "B_N",
+        "family": "emotion",
+        "subset": "all",
+        "n": 10,
+        "follows": 9,
+        "rate": 0.9,
+        "valid": 10
+      },
+      {
+        "group": "B_N",
+        "family": "emotion",
+        "subset": "retained_trigger_or_situation",
+        "n": 5,
+        "follows": 5,
+        "rate": 1.0,
+        "valid": 5
+      },
+      {
+        "group": "B_N",
+        "family": "emotion",
+        "subset": "paraphrase_or_new_situation",
+        "n": 5,
+        "follows": 4,
+        "rate": 0.8,
+        "valid": 5
+      },
+      {
+        "group": "B_N",
+        "family": "promise",
+        "subset": "all",
+        "n": 10,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 10
+      },
+      {
+        "group": "B_N",
+        "family": "promise",
+        "subset": "retained_trigger_or_situation",
+        "n": 5,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 5
+      },
+      {
+        "group": "B_N",
+        "family": "promise",
+        "subset": "paraphrase_or_new_situation",
+        "n": 5,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 5
+      },
+      {
+        "group": "A_R",
+        "family": "code",
+        "subset": "all",
+        "n": 10,
+        "follows": 5,
+        "rate": 0.5,
+        "valid": 10
+      },
+      {
+        "group": "A_R",
+        "family": "code",
+        "subset": "retained_trigger_or_situation",
+        "n": 5,
+        "follows": 5,
+        "rate": 1.0,
+        "valid": 5
+      },
+      {
+        "group": "A_R",
+        "family": "code",
+        "subset": "paraphrase_or_new_situation",
+        "n": 5,
+        "follows": 0,
+        "rate": 0.0,
+        "valid": 5
+      },
+      {
+        "group": "A_R",
+        "family": "emotion",
+        "subset": "all",
+        "n": 10,
+        "follows": 10,
+        "rate": 1.0,
+        "valid": 10
+      },
+      {
+        "group": "A_R",
+        "family": "emotion",
+        "subset": "retained_trigger_or_situation",
+        "n": 5,
+        "follows": 5,
+        "rate": 1.0,
+        "valid": 5
+      },
+      {
+        "group": "A_R",
+        "family": "emotion",
+        "subset": "paraphrase_or_new_situation",
+        "n": 5,
+        "follows": 5,
+        "rate": 1.0,
+        "valid": 5
+      },
+      {
+        "group": "A_R",
+        "family": "promise",
+        "subset": "all",
+        "n": 10,
+        "follows": 10,
+        "rate": 1.0,
+        "valid": 10
+      },
+      {
+        "group": "A_R",
+        "family": "promise",
+        "subset": "retained_trigger_or_situation",
+        "n": 5,
+        "follows": 5,
+        "rate": 1.0,
+        "valid": 5
+      },
+      {
+        "group": "A_R",
+        "family": "promise",
+        "subset": "paraphrase_or_new_situation",
+        "n": 5,
+        "follows": 5,
+        "rate": 1.0,
+        "valid": 5
+      }
+    ],
+    "Uc_pass": true
+  },
+  "finished_utc": "2026-10-03T10:54:01.118171+00:00"
+}
