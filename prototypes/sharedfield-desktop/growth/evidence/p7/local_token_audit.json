@@ -1,0 +1,8 @@
+{
+  "revoked_local_session_token_occurrences": 0,
+  "files_checked": 217,
+  "affected_paths": [],
+  "scope": "own source/evidence/runs; excludes user-authorized AIRI local configuration",
+  "token_text_logged": false,
+  "pass": true
+}

@@ -1,0 +1,242 @@
+{
+  "frozen_manifest_sha256": "659b00ea9e5e61cf8233c67072a700fafe561cc4e49c666047f12a40fa92b870",
+  "frozen_files": [
+    {
+      "file": "growthlab/consolidation.py",
+      "match": true
+    },
+    {
+      "file": "growthlab/decision.py",
+      "match": true
+    },
+    {
+      "file": "growthlab/forks.py",
+      "match": true
+    },
+    {
+      "file": "growthlab/memory.py",
+      "match": true
+    },
+    {
+      "file": "growthlab/models.py",
+      "match": true
+    },
+    {
+      "file": "growthlab/records.py",
+      "match": true
+    },
+    {
+      "file": "growthlab/state.py",
+      "match": true
+    },
+    {
+      "file": "u1/__init__.py",
+      "match": true
+    },
+    {
+      "file": "u1/conventions/__init__.py",
+      "match": true
+    },
+    {
+      "file": "u1/conventions/core.py",
+      "match": true
+    },
+    {
+      "file": "u1/fixtures.py",
+      "match": true
+    },
+    {
+      "file": "u1/harness.py",
+      "match": true
+    },
+    {
+      "file": "u1/plan.py",
+      "match": true
+    },
+    {
+      "file": "u1/protocol.py",
+      "match": true
+    },
+    {
+      "file": "u1/run.py",
+      "match": true
+    },
+    {
+      "file": "u1/tests.py",
+      "match": true
+    },
+    {
+      "file": "evidence/u1/scripts_v1.json",
+      "match": true
+    },
+    {
+      "file": "evidence/u1/prompts_v1.json",
+      "match": true
+    }
+  ],
+  "all_frozen_files_match": true,
+  "live_counts": {
+    "v1/Ua_main": 180,
+    "v1/Ua_same_reasoning": 67,
+    "v1/Ua_stronger": 24
+  },
+  "all_valid": true,
+  "two_fields_equal_recorded_score": true,
+  "unique_success_charge_ids": 271,
+  "main_recount": [
+    {
+      "arm": "A",
+      "family": "code",
+      "condition": "false",
+      "follows": true,
+      "count": 10
+    },
+    {
+      "arm": "A",
+      "family": "code",
+      "condition": "none",
+      "follows": false,
+      "count": 10
+    },
+    {
+      "arm": "A",
+      "family": "code",
+      "condition": "true",
+      "follows": true,
+      "count": 10
+    },
+    {
+      "arm": "A",
+      "family": "emotion",
+      "condition": "false",
+      "follows": true,
+      "count": 10
+    },
+    {
+      "arm": "A",
+      "family": "emotion",
+      "condition": "none",
+      "follows": false,
+      "count": 8
+    },
+    {
+      "arm": "A",
+      "family": "emotion",
+      "condition": "none",
+      "follows": true,
+      "count": 2
+    },
+    {
+      "arm": "A",
+      "family": "emotion",
+      "condition": "true",
+      "follows": true,
+      "count": 10
+    },
+    {
+      "arm": "A",
+      "family": "promise",
+      "condition": "false",
+      "follows": false,
+      "count": 2
+    },
+    {
+      "arm": "A",
+      "family": "promise",
+      "condition": "false",
+      "follows": true,
+      "count": 8
+    },
+    {
+      "arm": "A",
+      "family": "promise",
+      "condition": "none",
+      "follows": false,
+      "count": 10
+    },
+    {
+      "arm": "A",
+      "family": "promise",
+      "condition": "true",
+      "follows": false,
+      "count": 2
+    },
+    {
+      "arm": "A",
+      "family": "promise",
+      "condition": "true",
+      "follows": true,
+      "count": 8
+    },
+    {
+      "arm": "B",
+      "family": "code",
+      "condition": "false",
+      "follows": true,
+      "count": 10
+    },
+    {
+      "arm": "B",
+      "family": "code",
+      "condition": "none",
+      "follows": false,
+      "count": 10
+    },
+    {
+      "arm": "B",
+      "family": "code",
+      "condition": "true",
+      "follows": true,
+      "count": 10
+    },
+    {
+      "arm": "B",
+      "family": "emotion",
+      "condition": "false",
+      "follows": true,
+      "count": 10
+    },
+    {
+      "arm": "B",
+      "family": "emotion",
+      "condition": "none",
+      "follows": false,
+      "count": 8
+    },
+    {
+      "arm": "B",
+      "family": "emotion",
+      "condition": "none",
+      "follows": true,
+      "count": 2
+    },
+    {
+      "arm": "B",
+      "family": "emotion",
+      "condition": "true",
+      "follows": true,
+      "count": 10
+    },
+    {
+      "arm": "B",
+      "family": "promise",
+      "condition": "false",
+      "follows": true,
+      "count": 10
+    },
+    {
+      "arm": "B",
+      "family": "promise",
+      "condition": "none",
+      "follows": false,
+      "count": 10
+    },
+    {
+      "arm": "B",
+      "family": "promise",
+      "condition": "true",
+      "follows": true,
+      "count": 10
+    }
+  ]
+}

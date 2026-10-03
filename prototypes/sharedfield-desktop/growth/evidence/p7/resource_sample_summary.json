@@ -1,0 +1,114 @@
+{
+  "source": "runs/p7/host/20261003T041752Z.jsonl",
+  "samples": 8,
+  "utc_start": "2026-10-03T04:17:52.3549011+00:00",
+  "utc_end": "2026-10-03T04:18:26.3371669+00:00",
+  "scope": "partial: AIRI and Minecraft client; no claim of complete body plus local voice coexistence",
+  "groups": {
+    "airi": {
+      "working_set_MiB": [
+        1123.76171875,
+        1133.03125
+      ],
+      "private_MiB": [
+        1156.70703125,
+        1206.2734375
+      ],
+      "cpu_percent_all_logical": [
+        4.886859916777948,
+        6.582393518863416
+      ],
+      "cpu_mean": 5.547616806642147
+    },
+    "java": {
+      "working_set_MiB": [
+        1287.85546875,
+        1287.86328125
+      ],
+      "private_MiB": [
+        1723.21484375,
+        1723.27734375
+      ],
+      "cpu_percent_all_logical": [
+        0.3805061854215774,
+        0.5054339997240962
+      ],
+      "cpu_mean": 0.437083863135185
+    }
+  },
+  "gpu": {
+    "name": "NVIDIA GeForce RTX 5070 Ti Laptop GPU",
+    "attribution": "whole_gpu_not_P7_only",
+    "temperature_C": [
+      80.0,
+      82.0
+    ],
+    "graphics_MHz": [
+      2377.0,
+      2505.0
+    ],
+    "used_MiB": [
+      3608.0,
+      3612.0
+    ],
+    "utilization_percent": [
+      17.0,
+      19.0
+    ],
+    "power_W": [
+      85.47,
+      108.54
+    ]
+  },
+  "tcp_unique": [
+    {
+      "OwningProcess": 44556,
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 8172,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 6121
+    },
+    {
+      "OwningProcess": 44884,
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 6121,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 8172
+    },
+    {
+      "OwningProcess": 44884,
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 6121,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 6072
+    },
+    {
+      "OwningProcess": 44884,
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 6121,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0
+    },
+    {
+      "OwningProcess": 44556,
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 6072,
+      "RemoteAddress": "127.0.0.1",
+      "RemotePort": 6121
+    },
+    {
+      "OwningProcess": 44884,
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 5824,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0
+    },
+    {
+      "OwningProcess": 11308,
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 1942,
+      "RemoteAddress": "0.0.0.0",
+      "RemotePort": 0
+    }
+  ]
+}

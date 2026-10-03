@@ -1,0 +1,343 @@
+{
+  "interim": false,
+  "frozen_manifest_sha256": "659b00ea9e5e61cf8233c67072a700fafe561cc4e49c666047f12a40fa92b870",
+  "frozen_files_unchanged": true,
+  "independent_recount": "Raw JSON order, option IDs and both-field score recomputed from frozen scripts, not the production scorer or contaminated aggregate. No regrading or rerun.",
+  "live_rows": 271,
+  "valid_live_rows": 271,
+  "live_attempts": 276,
+  "live_transport_errors": 5,
+  "frozen_aggregate_rows": 819,
+  "offline_rows_in_frozen_aggregate": 548,
+  "real_rows_in_frozen_aggregate": 271,
+  "rows_by_lane": {
+    "Ua_main": {
+      "expected": 180,
+      "real_returned": 180,
+      "attempts": 180,
+      "transport_errors": 0,
+      "retry_count": 0,
+      "retry_delays_s": [],
+      "status": "completed",
+      "stop": null,
+      "complete": true,
+      "complete_gate_pass": true,
+      "table": [
+        {
+          "arm": "B",
+          "family": "code",
+          "condition": "none",
+          "n": 10,
+          "follows": 0
+        },
+        {
+          "arm": "B",
+          "family": "code",
+          "condition": "true",
+          "n": 10,
+          "follows": 10
+        },
+        {
+          "arm": "B",
+          "family": "code",
+          "condition": "false",
+          "n": 10,
+          "follows": 10
+        },
+        {
+          "arm": "B",
+          "family": "emotion",
+          "condition": "none",
+          "n": 10,
+          "follows": 2
+        },
+        {
+          "arm": "B",
+          "family": "emotion",
+          "condition": "true",
+          "n": 10,
+          "follows": 10
+        },
+        {
+          "arm": "B",
+          "family": "emotion",
+          "condition": "false",
+          "n": 10,
+          "follows": 10
+        },
+        {
+          "arm": "B",
+          "family": "promise",
+          "condition": "none",
+          "n": 10,
+          "follows": 0
+        },
+        {
+          "arm": "B",
+          "family": "promise",
+          "condition": "true",
+          "n": 10,
+          "follows": 10
+        },
+        {
+          "arm": "B",
+          "family": "promise",
+          "condition": "false",
+          "n": 10,
+          "follows": 10
+        },
+        {
+          "arm": "A",
+          "family": "code",
+          "condition": "none",
+          "n": 10,
+          "follows": 0
+        },
+        {
+          "arm": "A",
+          "family": "code",
+          "condition": "true",
+          "n": 10,
+          "follows": 10
+        },
+        {
+          "arm": "A",
+          "family": "code",
+          "condition": "false",
+          "n": 10,
+          "follows": 10
+        },
+        {
+          "arm": "A",
+          "family": "emotion",
+          "condition": "none",
+          "n": 10,
+          "follows": 2
+        },
+        {
+          "arm": "A",
+          "family": "emotion",
+          "condition": "true",
+          "n": 10,
+          "follows": 10
+        },
+        {
+          "arm": "A",
+          "family": "emotion",
+          "condition": "false",
+          "n": 10,
+          "follows": 10
+        },
+        {
+          "arm": "A",
+          "family": "promise",
+          "condition": "none",
+          "n": 10,
+          "follows": 0
+        },
+        {
+          "arm": "A",
+          "family": "promise",
+          "condition": "true",
+          "n": 10,
+          "follows": 8
+        },
+        {
+          "arm": "A",
+          "family": "promise",
+          "condition": "false",
+          "n": 10,
+          "follows": 8
+        }
+      ],
+      "returned_model_ids": [
+        "deepseek/deepseek-v4-flash-0731"
+      ],
+      "returned_provider_names": [
+        "OpenInference"
+      ]
+    },
+    "Ua_same_reasoning": {
+      "expected": 90,
+      "real_returned": 67,
+      "attempts": 68,
+      "transport_errors": 1,
+      "retry_count": 0,
+      "retry_delays_s": [],
+      "status": "stopped",
+      "stop": "http_404",
+      "complete": false,
+      "complete_gate_pass": false,
+      "table": [
+        {
+          "arm": "B",
+          "family": "code",
+          "condition": "none",
+          "n": 10,
+          "follows": 0
+        },
+        {
+          "arm": "B",
+          "family": "code",
+          "condition": "true",
+          "n": 10,
+          "follows": 10
+        },
+        {
+          "arm": "B",
+          "family": "code",
+          "condition": "false",
+          "n": 10,
+          "follows": 10
+        },
+        {
+          "arm": "B",
+          "family": "emotion",
+          "condition": "none",
+          "n": 10,
+          "follows": 3
+        },
+        {
+          "arm": "B",
+          "family": "emotion",
+          "condition": "true",
+          "n": 10,
+          "follows": 10
+        },
+        {
+          "arm": "B",
+          "family": "emotion",
+          "condition": "false",
+          "n": 10,
+          "follows": 10
+        },
+        {
+          "arm": "B",
+          "family": "promise",
+          "condition": "none",
+          "n": 3,
+          "follows": 0
+        },
+        {
+          "arm": "B",
+          "family": "promise",
+          "condition": "true",
+          "n": 2,
+          "follows": 2
+        },
+        {
+          "arm": "B",
+          "family": "promise",
+          "condition": "false",
+          "n": 2,
+          "follows": 2
+        }
+      ],
+      "returned_model_ids": [
+        "deepseek/deepseek-v4-flash-0731"
+      ],
+      "returned_provider_names": [
+        "OpenInference"
+      ]
+    },
+    "Ua_stronger": {
+      "expected": 90,
+      "real_returned": 24,
+      "attempts": 28,
+      "transport_errors": 4,
+      "retry_count": 3,
+      "retry_delays_s": [
+        30.057592630386353,
+        30.05195927619934,
+        30.049198627471924
+      ],
+      "status": "stopped",
+      "stop": "http_429",
+      "complete": false,
+      "complete_gate_pass": false,
+      "table": [
+        {
+          "arm": "B",
+          "family": "code",
+          "condition": "none",
+          "n": 8,
+          "follows": 0
+        },
+        {
+          "arm": "B",
+          "family": "code",
+          "condition": "true",
+          "n": 8,
+          "follows": 8
+        },
+        {
+          "arm": "B",
+          "family": "code",
+          "condition": "false",
+          "n": 8,
+          "follows": 8
+        }
+      ],
+      "returned_model_ids": [
+        "deepseek/deepseek-v4-pro-0813"
+      ],
+      "returned_provider_names": [
+        "Ionstream"
+      ]
+    }
+  },
+  "Ub": {
+    "real_calls": 0,
+    "status": "not_evaluated_route_preflight_rejected"
+  },
+  "Uc": {
+    "real_calls": 0,
+    "status": "not_run_Ub_not_evaluated"
+  },
+  "chain": {
+    "real_decisions": 0,
+    "planned": 360,
+    "status": "not_run_Ub_not_evaluated"
+  },
+  "model_switch": {
+    "triggered": false,
+    "reason": "Main Ua passed; neither descriptive arm completed. No quality-failure substitution for infrastructure stops."
+  },
+  "fees": {
+    "exact_successful_u1_usd": 0.033759043529,
+    "successful_charge_ids_verified_against_shared_ledger": 271,
+    "shared_ledger_total_usd": 0.80450964259,
+    "shared_error_delta_rows": [
+      {
+        "charge_id": "776b21decac343b0a95dadb0046d6c4e",
+        "usd": 0.05,
+        "status": "reserved_unknown"
+      },
+      {
+        "charge_id": "1ec4377c4dc240cda6e235703c0c640d",
+        "usd": 0.05,
+        "status": "reserved_unknown"
+      },
+      {
+        "charge_id": "21af8a9f88da40e0985614bd3d4d0253",
+        "usd": 0.05,
+        "status": "reserved_unknown"
+      },
+      {
+        "charge_id": "4d3bb63bcd9846bbacad056d13d1f96b",
+        "usd": 0.05,
+        "status": "reserved_unknown"
+      },
+      {
+        "charge_id": "8eab309c7b354574a57d951d23ae4009",
+        "usd": 0.05,
+        "status": "reserved_unknown"
+      }
+    ],
+    "shared_error_delta_reserved_unknown_usd": 0.25,
+    "warning": "These five error-window ledger deltas are kept unattributed in the raw logs. They are conservative unknown reservations, not reported fees and not included in the exact successful U1 cost."
+  },
+  "live_export_sha256": "c3884d3259554f8cdab568ed78044d7d537f8902bbc4fff8629866ad2084dab5",
+  "original_aggregate_sha256": "da04de5b641bb76ceb536a4c9fe9dcbad935bb2faaa443ca75525c4a89e8b0a4",
+  "claim_ceiling": "Ua supplied-memory use passed. U1 learning, consolidation, correction, durable transfer and deletion have not been evaluated with real model calls."
+}
