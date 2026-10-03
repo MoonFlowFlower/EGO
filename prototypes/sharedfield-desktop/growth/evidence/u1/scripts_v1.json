@@ -1,0 +1,6696 @@
+{
+  "script_version": "u1-v1",
+  "conventions": {
+    "ua_code": {
+      "fixture_id": "ua_code",
+      "family": "code",
+      "trigger": {
+        "kind": "utterance",
+        "text": "老地方",
+        "weekday": -1,
+        "after": "",
+        "event": ""
+      },
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "去河边长椅"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "去楼下咖啡店"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "去街角书店"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "去社区公园"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议去河边长椅"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议去楼下咖啡店"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议去街角书店"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议去社区公园"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问具体地点"
+        }
+      ],
+      "target": {
+        "true": {
+          "interpretation": "I2",
+          "action": "A2"
+        },
+        "false": {
+          "interpretation": "I4",
+          "action": "A4"
+        },
+        "new": {
+          "interpretation": "I1",
+          "action": "A1"
+        }
+      },
+      "meaning": "去楼下咖啡店",
+      "false_meaning": "去社区公园",
+      "new_meaning": "去河边长椅",
+      "keywords": {
+        "trigger": [
+          "老地方"
+        ],
+        "meaning": [
+          "去楼下咖啡店"
+        ]
+      }
+    },
+    "ua_emotion": {
+      "fixture_id": "ua_emotion",
+      "family": "emotion",
+      "trigger": {
+        "kind": "utterance",
+        "text": "没事",
+        "weekday": -1,
+        "after": "",
+        "event": ""
+      },
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "目前没困扰，希望留点空间"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "想聊一件开心的小事"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "希望再被关心追问一句"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "想立刻结束聊天"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "意思不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示知道了，先留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "询问开心的小事"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "温和地多关心一句"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "简短道别"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻希望怎样回应"
+        }
+      ],
+      "target": {
+        "true": {
+          "interpretation": "I3",
+          "action": "A3"
+        },
+        "false": {
+          "interpretation": "I2",
+          "action": "A2"
+        },
+        "new": {
+          "interpretation": "I1",
+          "action": "A1"
+        }
+      },
+      "meaning": "希望再被关心追问一句",
+      "false_meaning": "想聊一件开心的小事",
+      "new_meaning": "目前没困扰，希望留点空间",
+      "keywords": {
+        "trigger": [
+          "没事"
+        ],
+        "meaning": [
+          "希望再被关心追问一句"
+        ]
+      }
+    },
+    "ua_promise": {
+      "fixture_id": "ua_promise",
+      "family": "promise",
+      "trigger": {
+        "kind": "situation",
+        "text": "周五18:00以后上线",
+        "weekday": 4,
+        "after": "18:00",
+        "event": "login"
+      },
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起看短片"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起看短片"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ],
+      "target": {
+        "true": {
+          "interpretation": "I4",
+          "action": "A4"
+        },
+        "false": {
+          "interpretation": "I2",
+          "action": "A2"
+        },
+        "new": {
+          "interpretation": "I3",
+          "action": "A3"
+        }
+      },
+      "meaning": "现在要一起玩MC",
+      "false_meaning": "现在要一起听音乐",
+      "new_meaning": "现在要一起看短片",
+      "keywords": {
+        "trigger": [
+          "周五18:00以后上线"
+        ],
+        "meaning": [
+          "现在要一起玩MC"
+        ]
+      }
+    },
+    "chain_code": {
+      "fixture_id": "chain_code",
+      "family": "code",
+      "trigger": {
+        "kind": "utterance",
+        "text": "纸鹤",
+        "weekday": -1,
+        "after": "",
+        "event": ""
+      },
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "短休安排在南侧木亭"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "短休安排在东侧石阶"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "短休安排在西侧玻璃廊"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "短休安排在北侧长椅"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "短休地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议到南侧木亭短休"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议到东侧石阶短休"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议到西侧玻璃廊短休"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议到北侧长椅短休"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问短休地点"
+        }
+      ],
+      "target": {
+        "true": {
+          "interpretation": "I3",
+          "action": "A3"
+        },
+        "false": {
+          "interpretation": "I1",
+          "action": "A1"
+        },
+        "new": {
+          "interpretation": "I4",
+          "action": "A4"
+        }
+      },
+      "meaning": "短休安排在西侧玻璃廊",
+      "false_meaning": "短休安排在南侧木亭",
+      "new_meaning": "短休安排在北侧长椅",
+      "keywords": {
+        "trigger": [
+          "纸鹤"
+        ],
+        "meaning": [
+          "短休安排在西侧玻璃廊"
+        ]
+      }
+    },
+    "chain_emotion": {
+      "fixture_id": "chain_emotion",
+      "family": "emotion",
+      "trigger": {
+        "kind": "utterance",
+        "text": "还行",
+        "weekday": -1,
+        "after": "",
+        "event": ""
+      },
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在想独处一会"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在希望温和地追问一句"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在想聊开心的事情"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在想听一个简短笑话"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "期待不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示理解并留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "温和地追问一句"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "询问开心的事情"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "讲一个简短笑话"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻期待怎样回应"
+        }
+      ],
+      "target": {
+        "true": {
+          "interpretation": "I2",
+          "action": "A2"
+        },
+        "false": {
+          "interpretation": "I3",
+          "action": "A3"
+        },
+        "new": {
+          "interpretation": "I1",
+          "action": "A1"
+        }
+      },
+      "meaning": "现在希望温和地追问一句",
+      "false_meaning": "现在想聊开心的事情",
+      "new_meaning": "现在想独处一会",
+      "keywords": {
+        "trigger": [
+          "还行"
+        ],
+        "meaning": [
+          "现在希望温和地追问一句"
+        ]
+      }
+    },
+    "chain_promise": {
+      "fixture_id": "chain_promise",
+      "family": "promise",
+      "trigger": {
+        "kind": "situation",
+        "text": "周六19:00以后上线",
+        "weekday": 5,
+        "after": "19:00",
+        "event": "login"
+      },
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起画画"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起画画"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ],
+      "target": {
+        "true": {
+          "interpretation": "I1",
+          "action": "A1"
+        },
+        "false": {
+          "interpretation": "I4",
+          "action": "A4"
+        },
+        "new": {
+          "interpretation": "I3",
+          "action": "A3"
+        }
+      },
+      "meaning": "现在要一起玩MC",
+      "false_meaning": "现在要一起听音乐",
+      "new_meaning": "现在要一起画画",
+      "keywords": {
+        "trigger": [
+          "周六19:00以后上线"
+        ],
+        "meaning": [
+          "现在要一起玩MC"
+        ]
+      }
+    }
+  },
+  "ua_cases": [
+    {
+      "case_id": "ua_code_T1_00",
+      "fixture_id": "ua_code",
+      "family": "code",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:00:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "那就老地方吧。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "去河边长椅"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "去楼下咖啡店"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "去街角书店"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "去社区公园"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议去河边长椅"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议去楼下咖啡店"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议去街角书店"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议去社区公园"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问具体地点"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_code_T1_01",
+      "fixture_id": "ua_code",
+      "family": "code",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:01:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "今天说老地方，你怎么安排？",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "去河边长椅"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "去楼下咖啡店"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "去街角书店"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "去社区公园"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议去河边长椅"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议去楼下咖啡店"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议去街角书店"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议去社区公园"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问具体地点"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_code_T1_02",
+      "fixture_id": "ua_code",
+      "family": "code",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:02:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "我想到了老地方。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "去河边长椅"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "去楼下咖啡店"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "去街角书店"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "去社区公园"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议去河边长椅"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议去楼下咖啡店"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议去街角书店"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议去社区公园"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问具体地点"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_code_T1_03",
+      "fixture_id": "ua_code",
+      "family": "code",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:03:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "老地方，怎么样？",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "去河边长椅"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "去楼下咖啡店"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "去街角书店"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "去社区公园"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议去河边长椅"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议去楼下咖啡店"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议去街角书店"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议去社区公园"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问具体地点"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_code_T1_04",
+      "fixture_id": "ua_code",
+      "family": "code",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:04:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "现在提一句老地方。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "去河边长椅"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "去楼下咖啡店"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "去街角书店"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "去社区公园"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议去河边长椅"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议去楼下咖啡店"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议去街角书店"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议去社区公园"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问具体地点"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_code_T1_05",
+      "fixture_id": "ua_code",
+      "family": "code",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:05:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "我们说的老地方呢？",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "去河边长椅"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "去楼下咖啡店"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "去街角书店"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "去社区公园"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议去河边长椅"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议去楼下咖啡店"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议去街角书店"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议去社区公园"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问具体地点"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_code_T1_06",
+      "fixture_id": "ua_code",
+      "family": "code",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:06:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "这会儿是老地方。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "去河边长椅"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "去楼下咖啡店"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "去街角书店"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "去社区公园"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议去河边长椅"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议去楼下咖啡店"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议去街角书店"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议去社区公园"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问具体地点"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_code_T1_07",
+      "fixture_id": "ua_code",
+      "family": "code",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:07:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "忙完了，老地方。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "去河边长椅"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "去楼下咖啡店"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "去街角书店"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "去社区公园"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议去河边长椅"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议去楼下咖啡店"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议去街角书店"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议去社区公园"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问具体地点"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_code_T1_08",
+      "fixture_id": "ua_code",
+      "family": "code",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:08:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "我说：老地方。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "去河边长椅"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "去楼下咖啡店"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "去街角书店"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "去社区公园"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议去河边长椅"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议去楼下咖啡店"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议去街角书店"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议去社区公园"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问具体地点"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_code_T1_09",
+      "fixture_id": "ua_code",
+      "family": "code",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:09:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "接下来老地方。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "去河边长椅"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "去楼下咖啡店"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "去街角书店"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "去社区公园"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议去河边长椅"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议去楼下咖啡店"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议去街角书店"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议去社区公园"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问具体地点"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_emotion_T1_00",
+      "fixture_id": "ua_emotion",
+      "family": "emotion",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:00:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "没事。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "目前没困扰，希望留点空间"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "想聊一件开心的小事"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "希望再被关心追问一句"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "想立刻结束聊天"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "意思不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示知道了，先留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "询问开心的小事"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "温和地多关心一句"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "简短道别"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻希望怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_emotion_T1_01",
+      "fixture_id": "ua_emotion",
+      "family": "emotion",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:01:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "嗯，没事。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "目前没困扰，希望留点空间"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "想聊一件开心的小事"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "希望再被关心追问一句"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "想立刻结束聊天"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "意思不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示知道了，先留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "询问开心的小事"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "温和地多关心一句"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "简短道别"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻希望怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_emotion_T1_02",
+      "fixture_id": "ua_emotion",
+      "family": "emotion",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:02:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "今天没事。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "目前没困扰，希望留点空间"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "想聊一件开心的小事"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "希望再被关心追问一句"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "想立刻结束聊天"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "意思不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示知道了，先留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "询问开心的小事"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "温和地多关心一句"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "简短道别"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻希望怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_emotion_T1_03",
+      "fixture_id": "ua_emotion",
+      "family": "emotion",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:03:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "我嘛，没事。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "目前没困扰，希望留点空间"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "想聊一件开心的小事"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "希望再被关心追问一句"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "想立刻结束聊天"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "意思不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示知道了，先留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "询问开心的小事"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "温和地多关心一句"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "简短道别"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻希望怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_emotion_T1_04",
+      "fixture_id": "ua_emotion",
+      "family": "emotion",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:04:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "总体没事。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "目前没困扰，希望留点空间"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "想聊一件开心的小事"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "希望再被关心追问一句"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "想立刻结束聊天"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "意思不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示知道了，先留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "询问开心的小事"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "温和地多关心一句"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "简短道别"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻希望怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_emotion_T1_05",
+      "fixture_id": "ua_emotion",
+      "family": "emotion",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:05:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "先说没事吧。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "目前没困扰，希望留点空间"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "想聊一件开心的小事"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "希望再被关心追问一句"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "想立刻结束聊天"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "意思不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示知道了，先留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "询问开心的小事"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "温和地多关心一句"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "简短道别"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻希望怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_emotion_T1_06",
+      "fixture_id": "ua_emotion",
+      "family": "emotion",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:06:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "我现在没事。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "目前没困扰，希望留点空间"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "想聊一件开心的小事"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "希望再被关心追问一句"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "想立刻结束聊天"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "意思不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示知道了，先留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "询问开心的小事"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "温和地多关心一句"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "简短道别"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻希望怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_emotion_T1_07",
+      "fixture_id": "ua_emotion",
+      "family": "emotion",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:07:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "这个事情，没事。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "目前没困扰，希望留点空间"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "想聊一件开心的小事"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "希望再被关心追问一句"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "想立刻结束聊天"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "意思不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示知道了，先留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "询问开心的小事"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "温和地多关心一句"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "简短道别"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻希望怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_emotion_T1_08",
+      "fixture_id": "ua_emotion",
+      "family": "emotion",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:08:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "你问我？没事。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "目前没困扰，希望留点空间"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "想聊一件开心的小事"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "希望再被关心追问一句"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "想立刻结束聊天"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "意思不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示知道了，先留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "询问开心的小事"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "温和地多关心一句"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "简短道别"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻希望怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_emotion_T1_09",
+      "fixture_id": "ua_emotion",
+      "family": "emotion",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:09:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "说不上别的，没事。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "目前没困扰，希望留点空间"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "想聊一件开心的小事"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "希望再被关心追问一句"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "想立刻结束聊天"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "意思不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示知道了，先留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "询问开心的小事"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "温和地多关心一句"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "简短道别"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻希望怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_promise_T1_00",
+      "fixture_id": "ua_promise",
+      "family": "promise",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T19:05:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "我上线了。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起看短片"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起看短片"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_promise_T1_01",
+      "fixture_id": "ua_promise",
+      "family": "promise",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T19:06:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "晚上好，今天忙完啦。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起看短片"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起看短片"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_promise_T1_02",
+      "fixture_id": "ua_promise",
+      "family": "promise",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T19:07:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "回来了，打个招呼。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起看短片"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起看短片"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_promise_T1_03",
+      "fixture_id": "ua_promise",
+      "family": "promise",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T19:08:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "我到啦。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起看短片"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起看短片"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_promise_T1_04",
+      "fixture_id": "ua_promise",
+      "family": "promise",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T19:09:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "今天就先聊一会儿。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起看短片"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起看短片"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_promise_T1_05",
+      "fixture_id": "ua_promise",
+      "family": "promise",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T19:10:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "嗨，我刚打开电脑。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起看短片"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起看短片"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_promise_T1_06",
+      "fixture_id": "ua_promise",
+      "family": "promise",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T19:11:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "晚上有空了。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起看短片"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起看短片"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_promise_T1_07",
+      "fixture_id": "ua_promise",
+      "family": "promise",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T19:12:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "你好呀，我来了。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起看短片"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起看短片"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_promise_T1_08",
+      "fixture_id": "ua_promise",
+      "family": "promise",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T19:13:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "刚吃完晚饭。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起看短片"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起看短片"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "ua_promise_T1_09",
+      "fixture_id": "ua_promise",
+      "family": "promise",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T19:14:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "终于能歇一下了。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起看短片"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起看短片"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    }
+  ],
+  "ub": [
+    {
+      "fixture_id": "ub_00",
+      "family": "code",
+      "teaching_mode": "explicit",
+      "trigger": {
+        "kind": "utterance",
+        "text": "星砂",
+        "weekday": -1,
+        "after": "",
+        "event": ""
+      },
+      "meaning": "去旧车站旁的面包房",
+      "keywords": {
+        "trigger": [
+          "星砂"
+        ],
+        "meaning": [
+          "去旧车站旁的面包房"
+        ]
+      },
+      "dialogue": [
+        {
+          "speaker": "user",
+          "utterance_text": "我们约定：星砂，意思是「去旧车站旁的面包房」。",
+          "session_id": "ub_00_s1"
+        },
+        {
+          "speaker": "assistant",
+          "utterance_text": "我记下了这次约定。",
+          "session_id": "ub_00_s1"
+        }
+      ]
+    },
+    {
+      "fixture_id": "ub_01",
+      "family": "emotion",
+      "teaching_mode": "explicit",
+      "trigger": {
+        "kind": "utterance",
+        "text": "小雨",
+        "weekday": -1,
+        "after": "",
+        "event": ""
+      },
+      "meaning": "先陪我安静坐一会",
+      "keywords": {
+        "trigger": [
+          "小雨"
+        ],
+        "meaning": [
+          "先陪我安静坐一会"
+        ]
+      },
+      "dialogue": [
+        {
+          "speaker": "user",
+          "utterance_text": "我们约定：小雨，意思是「先陪我安静坐一会」。",
+          "session_id": "ub_01_s1"
+        },
+        {
+          "speaker": "assistant",
+          "utterance_text": "我记下了这次约定。",
+          "session_id": "ub_01_s1"
+        }
+      ]
+    },
+    {
+      "fixture_id": "ub_02",
+      "family": "promise",
+      "teaching_mode": "explicit",
+      "trigger": {
+        "kind": "situation",
+        "text": "周一20:00以后上线",
+        "weekday": 0,
+        "after": "20:00",
+        "event": "login"
+      },
+      "meaning": "一起整理相册",
+      "keywords": {
+        "trigger": [
+          "周一20:00以后上线"
+        ],
+        "meaning": [
+          "一起整理相册"
+        ]
+      },
+      "dialogue": [
+        {
+          "speaker": "user",
+          "utterance_text": "我们约定：周一20:00以后上线，意思是「一起整理相册」。",
+          "session_id": "ub_02_s1"
+        },
+        {
+          "speaker": "assistant",
+          "utterance_text": "我记下了这次约定。",
+          "session_id": "ub_02_s1"
+        }
+      ]
+    },
+    {
+      "fixture_id": "ub_03",
+      "family": "code",
+      "teaching_mode": "explicit",
+      "trigger": {
+        "kind": "utterance",
+        "text": "海螺",
+        "weekday": -1,
+        "after": "",
+        "event": ""
+      },
+      "meaning": "把饮料换成温水",
+      "keywords": {
+        "trigger": [
+          "海螺"
+        ],
+        "meaning": [
+          "把饮料换成温水"
+        ]
+      },
+      "dialogue": [
+        {
+          "speaker": "user",
+          "utterance_text": "我们约定：海螺，意思是「把饮料换成温水」。",
+          "session_id": "ub_03_s1"
+        },
+        {
+          "speaker": "assistant",
+          "utterance_text": "我记下了这次约定。",
+          "session_id": "ub_03_s1"
+        }
+      ]
+    },
+    {
+      "fixture_id": "ub_04",
+      "family": "emotion",
+      "teaching_mode": "explicit",
+      "trigger": {
+        "kind": "utterance",
+        "text": "电量低",
+        "weekday": -1,
+        "after": "",
+        "event": ""
+      },
+      "meaning": "用一句简短的话鼓励我",
+      "keywords": {
+        "trigger": [
+          "电量低"
+        ],
+        "meaning": [
+          "用一句简短的话鼓励我"
+        ]
+      },
+      "dialogue": [
+        {
+          "speaker": "user",
+          "utterance_text": "我们约定：电量低，意思是「用一句简短的话鼓励我」。",
+          "session_id": "ub_04_s1"
+        },
+        {
+          "speaker": "assistant",
+          "utterance_text": "我记下了这次约定。",
+          "session_id": "ub_04_s1"
+        }
+      ]
+    },
+    {
+      "fixture_id": "ub_05",
+      "family": "code",
+      "teaching_mode": "two_corrections",
+      "trigger": {
+        "kind": "utterance",
+        "text": "白帆",
+        "weekday": -1,
+        "after": "",
+        "event": ""
+      },
+      "meaning": "把午间小憩安排在图书馆庭院",
+      "keywords": {
+        "trigger": [
+          "白帆"
+        ],
+        "meaning": [
+          "把午间小憩安排在图书馆庭院"
+        ]
+      },
+      "dialogue": [
+        {
+          "speaker": "assistant",
+          "utterance_text": "我以为这只是普通问候。",
+          "session_id": "ub_05_s1"
+        },
+        {
+          "speaker": "user",
+          "utterance_text": "不是这个意思。我说白帆，我要的是「把午间小憩安排在图书馆庭院」。",
+          "session_id": "ub_05_s1"
+        },
+        {
+          "speaker": "assistant",
+          "utterance_text": "换到另外一天，你大概还是想普通问候吧。",
+          "session_id": "ub_05_s2"
+        },
+        {
+          "speaker": "user",
+          "utterance_text": "再纠正一次：白帆，我要的是「把午间小憩安排在图书馆庭院」。前一次也是这个意思。",
+          "session_id": "ub_05_s2"
+        }
+      ]
+    },
+    {
+      "fixture_id": "ub_06",
+      "family": "emotion",
+      "teaching_mode": "two_corrections",
+      "trigger": {
+        "kind": "utterance",
+        "text": "路有点远",
+        "weekday": -1,
+        "after": "",
+        "event": ""
+      },
+      "meaning": "陪我列出下一步的小行动",
+      "keywords": {
+        "trigger": [
+          "路有点远"
+        ],
+        "meaning": [
+          "陪我列出下一步的小行动"
+        ]
+      },
+      "dialogue": [
+        {
+          "speaker": "assistant",
+          "utterance_text": "我以为这只是普通问候。",
+          "session_id": "ub_06_s1"
+        },
+        {
+          "speaker": "user",
+          "utterance_text": "不是这个意思。我说路有点远，我要的是「陪我列出下一步的小行动」。",
+          "session_id": "ub_06_s1"
+        },
+        {
+          "speaker": "assistant",
+          "utterance_text": "换到另外一天，你大概还是想普通问候吧。",
+          "session_id": "ub_06_s2"
+        },
+        {
+          "speaker": "user",
+          "utterance_text": "再纠正一次：路有点远，我要的是「陪我列出下一步的小行动」。前一次也是这个意思。",
+          "session_id": "ub_06_s2"
+        }
+      ]
+    },
+    {
+      "fixture_id": "ub_07",
+      "family": "promise",
+      "teaching_mode": "two_corrections",
+      "trigger": {
+        "kind": "situation",
+        "text": "周二18:30以后上线",
+        "weekday": 1,
+        "after": "18:30",
+        "event": "login"
+      },
+      "meaning": "一起看一页旅行地图",
+      "keywords": {
+        "trigger": [
+          "周二18:30以后上线"
+        ],
+        "meaning": [
+          "一起看一页旅行地图"
+        ]
+      },
+      "dialogue": [
+        {
+          "speaker": "assistant",
+          "utterance_text": "我以为这只是普通问候。",
+          "session_id": "ub_07_s1"
+        },
+        {
+          "speaker": "user",
+          "utterance_text": "不是这个意思。我说周二18:30以后上线，我要的是「一起看一页旅行地图」。",
+          "session_id": "ub_07_s1"
+        },
+        {
+          "speaker": "assistant",
+          "utterance_text": "换到另外一天，你大概还是想普通问候吧。",
+          "session_id": "ub_07_s2"
+        },
+        {
+          "speaker": "user",
+          "utterance_text": "再纠正一次：周二18:30以后上线，我要的是「一起看一页旅行地图」。前一次也是这个意思。",
+          "session_id": "ub_07_s2"
+        }
+      ]
+    },
+    {
+      "fixture_id": "ub_08",
+      "family": "code",
+      "teaching_mode": "two_corrections",
+      "trigger": {
+        "kind": "utterance",
+        "text": "铜铃",
+        "weekday": -1,
+        "after": "",
+        "event": ""
+      },
+      "meaning": "将背景声音调成雨声",
+      "keywords": {
+        "trigger": [
+          "铜铃"
+        ],
+        "meaning": [
+          "将背景声音调成雨声"
+        ]
+      },
+      "dialogue": [
+        {
+          "speaker": "assistant",
+          "utterance_text": "我以为这只是普通问候。",
+          "session_id": "ub_08_s1"
+        },
+        {
+          "speaker": "user",
+          "utterance_text": "不是这个意思。我说铜铃，我要的是「将背景声音调成雨声」。",
+          "session_id": "ub_08_s1"
+        },
+        {
+          "speaker": "assistant",
+          "utterance_text": "换到另外一天，你大概还是想普通问候吧。",
+          "session_id": "ub_08_s2"
+        },
+        {
+          "speaker": "user",
+          "utterance_text": "再纠正一次：铜铃，我要的是「将背景声音调成雨声」。前一次也是这个意思。",
+          "session_id": "ub_08_s2"
+        }
+      ]
+    },
+    {
+      "fixture_id": "ub_09",
+      "family": "promise",
+      "teaching_mode": "two_corrections",
+      "trigger": {
+        "kind": "situation",
+        "text": "周四21:00以后上线",
+        "weekday": 3,
+        "after": "21:00",
+        "event": "login"
+      },
+      "meaning": "一起回顾本周的小收获",
+      "keywords": {
+        "trigger": [
+          "周四21:00以后上线"
+        ],
+        "meaning": [
+          "一起回顾本周的小收获"
+        ]
+      },
+      "dialogue": [
+        {
+          "speaker": "assistant",
+          "utterance_text": "我以为这只是普通问候。",
+          "session_id": "ub_09_s1"
+        },
+        {
+          "speaker": "user",
+          "utterance_text": "不是这个意思。我说周四21:00以后上线，我要的是「一起回顾本周的小收获」。",
+          "session_id": "ub_09_s1"
+        },
+        {
+          "speaker": "assistant",
+          "utterance_text": "换到另外一天，你大概还是想普通问候吧。",
+          "session_id": "ub_09_s2"
+        },
+        {
+          "speaker": "user",
+          "utterance_text": "再纠正一次：周四21:00以后上线，我要的是「一起回顾本周的小收获」。前一次也是这个意思。",
+          "session_id": "ub_09_s2"
+        }
+      ]
+    }
+  ],
+  "chain_cases": [
+    {
+      "case_id": "chain_code_T1_00",
+      "fixture_id": "chain_code",
+      "family": "code",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:00:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "那就纸鹤吧。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "短休安排在南侧木亭"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "短休安排在东侧石阶"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "短休安排在西侧玻璃廊"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "短休安排在北侧长椅"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "短休地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议到南侧木亭短休"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议到东侧石阶短休"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议到西侧玻璃廊短休"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议到北侧长椅短休"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问短休地点"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_code_T1_01",
+      "fixture_id": "chain_code",
+      "family": "code",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:01:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "今天说纸鹤，你怎么安排？",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "短休安排在南侧木亭"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "短休安排在东侧石阶"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "短休安排在西侧玻璃廊"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "短休安排在北侧长椅"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "短休地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议到南侧木亭短休"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议到东侧石阶短休"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议到西侧玻璃廊短休"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议到北侧长椅短休"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问短休地点"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_code_T1_02",
+      "fixture_id": "chain_code",
+      "family": "code",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:02:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "我想到了纸鹤。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "短休安排在南侧木亭"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "短休安排在东侧石阶"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "短休安排在西侧玻璃廊"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "短休安排在北侧长椅"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "短休地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议到南侧木亭短休"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议到东侧石阶短休"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议到西侧玻璃廊短休"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议到北侧长椅短休"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问短休地点"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_code_T1_03",
+      "fixture_id": "chain_code",
+      "family": "code",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:03:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "纸鹤，怎么样？",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "短休安排在南侧木亭"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "短休安排在东侧石阶"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "短休安排在西侧玻璃廊"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "短休安排在北侧长椅"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "短休地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议到南侧木亭短休"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议到东侧石阶短休"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议到西侧玻璃廊短休"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议到北侧长椅短休"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问短休地点"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_code_T1_04",
+      "fixture_id": "chain_code",
+      "family": "code",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:04:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "现在提一句纸鹤。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "短休安排在南侧木亭"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "短休安排在东侧石阶"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "短休安排在西侧玻璃廊"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "短休安排在北侧长椅"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "短休地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议到南侧木亭短休"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议到东侧石阶短休"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议到西侧玻璃廊短休"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议到北侧长椅短休"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问短休地点"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_code_T1_05",
+      "fixture_id": "chain_code",
+      "family": "code",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:05:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "我们说的纸鹤呢？",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "短休安排在南侧木亭"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "短休安排在东侧石阶"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "短休安排在西侧玻璃廊"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "短休安排在北侧长椅"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "短休地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议到南侧木亭短休"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议到东侧石阶短休"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议到西侧玻璃廊短休"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议到北侧长椅短休"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问短休地点"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_code_T1_06",
+      "fixture_id": "chain_code",
+      "family": "code",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:06:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "这会儿是纸鹤。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "短休安排在南侧木亭"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "短休安排在东侧石阶"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "短休安排在西侧玻璃廊"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "短休安排在北侧长椅"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "短休地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议到南侧木亭短休"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议到东侧石阶短休"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议到西侧玻璃廊短休"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议到北侧长椅短休"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问短休地点"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_code_T1_07",
+      "fixture_id": "chain_code",
+      "family": "code",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:07:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "忙完了，纸鹤。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "短休安排在南侧木亭"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "短休安排在东侧石阶"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "短休安排在西侧玻璃廊"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "短休安排在北侧长椅"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "短休地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议到南侧木亭短休"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议到东侧石阶短休"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议到西侧玻璃廊短休"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议到北侧长椅短休"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问短休地点"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_code_T1_08",
+      "fixture_id": "chain_code",
+      "family": "code",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:08:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "我说：纸鹤。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "短休安排在南侧木亭"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "短休安排在东侧石阶"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "短休安排在西侧玻璃廊"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "短休安排在北侧长椅"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "短休地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议到南侧木亭短休"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议到东侧石阶短休"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议到西侧玻璃廊短休"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议到北侧长椅短休"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问短休地点"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_code_T1_09",
+      "fixture_id": "chain_code",
+      "family": "code",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:09:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "接下来纸鹤。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "短休安排在南侧木亭"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "短休安排在东侧石阶"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "短休安排在西侧玻璃廊"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "短休安排在北侧长椅"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "短休地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议到南侧木亭短休"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议到东侧石阶短休"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议到西侧玻璃廊短休"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议到北侧长椅短休"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问短休地点"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_code_T2_00",
+      "fixture_id": "chain_code",
+      "family": "code",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:00:00",
+        "event_labels": [],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "换个时间也行，我还是选纸鹤。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "短休安排在南侧木亭"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "短休安排在东侧石阶"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "短休安排在西侧玻璃廊"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "短休安排在北侧长椅"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "短休地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议到南侧木亭短休"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议到东侧石阶短休"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议到西侧玻璃廊短休"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议到北侧长椅短休"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问短休地点"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_code_T2_01",
+      "fixture_id": "chain_code",
+      "family": "code",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:01:00",
+        "event_labels": [],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "我到另一个办公室了；纸鹤。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "短休安排在南侧木亭"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "短休安排在东侧石阶"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "短休安排在西侧玻璃廊"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "短休安排在北侧长椅"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "短休地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议到南侧木亭短休"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议到东侧石阶短休"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议到西侧玻璃廊短休"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议到北侧长椅短休"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问短休地点"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_code_T2_02",
+      "fixture_id": "chain_code",
+      "family": "code",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:02:00",
+        "event_labels": [],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "外面下雨，想说的是纸鹤。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "短休安排在南侧木亭"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "短休安排在东侧石阶"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "短休安排在西侧玻璃廊"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "短休安排在北侧长椅"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "短休地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议到南侧木亭短休"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议到东侧石阶短休"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议到西侧玻璃廊短休"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议到北侧长椅短休"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问短休地点"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_code_T2_03",
+      "fixture_id": "chain_code",
+      "family": "code",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:03:00",
+        "event_labels": [],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "视频会议完了，纸鹤。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "短休安排在南侧木亭"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "短休安排在东侧石阶"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "短休安排在西侧玻璃廊"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "短休安排在北侧长椅"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "短休地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议到南侧木亭短休"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议到东侧石阶短休"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议到西侧玻璃廊短休"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议到北侧长椅短休"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问短休地点"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_code_T2_04",
+      "fixture_id": "chain_code",
+      "family": "code",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:04:00",
+        "event_labels": [],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "周末也提一下纸鹤。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "短休安排在南侧木亭"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "短休安排在东侧石阶"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "短休安排在西侧玻璃廊"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "短休安排在北侧长椅"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "短休地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议到南侧木亭短休"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议到东侧石阶短休"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议到西侧玻璃廊短休"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议到北侧长椅短休"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问短休地点"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_code_T2_05",
+      "fixture_id": "chain_code",
+      "family": "code",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:05:00",
+        "event_labels": [],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "我说那只用纸折的小鸟。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "短休安排在南侧木亭"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "短休安排在东侧石阶"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "短休安排在西侧玻璃廊"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "短休安排在北侧长椅"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "短休地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议到南侧木亭短休"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议到东侧石阶短休"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议到西侧玻璃廊短休"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议到北侧长椅短休"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问短休地点"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_code_T2_06",
+      "fixture_id": "chain_code",
+      "family": "code",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:06:00",
+        "event_labels": [],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "就是我们提过的折纸小鸟。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "短休安排在南侧木亭"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "短休安排在东侧石阶"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "短休安排在西侧玻璃廊"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "短休安排在北侧长椅"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "短休地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议到南侧木亭短休"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议到东侧石阶短休"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议到西侧玻璃廊短休"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议到北侧长椅短休"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问短休地点"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_code_T2_07",
+      "fixture_id": "chain_code",
+      "family": "code",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:07:00",
+        "event_labels": [],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "那个折出来的鸟儿呢？",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "短休安排在南侧木亭"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "短休安排在东侧石阶"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "短休安排在西侧玻璃廊"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "短休安排在北侧长椅"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "短休地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议到南侧木亭短休"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议到东侧石阶短休"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议到西侧玻璃廊短休"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议到北侧长椅短休"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问短休地点"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_code_T2_08",
+      "fixture_id": "chain_code",
+      "family": "code",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:08:00",
+        "event_labels": [],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "今天用折纸鸟这个说法。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "短休安排在南侧木亭"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "短休安排在东侧石阶"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "短休安排在西侧玻璃廊"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "短休安排在北侧长椅"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "短休地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议到南侧木亭短休"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议到东侧石阶短休"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议到西侧玻璃廊短休"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议到北侧长椅短休"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问短休地点"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_code_T2_09",
+      "fixture_id": "chain_code",
+      "family": "code",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:09:00",
+        "event_labels": [],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "想说的是那只纸做的小鸟。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "短休安排在南侧木亭"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "短休安排在东侧石阶"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "短休安排在西侧玻璃廊"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "短休安排在北侧长椅"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "短休地点不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "提议到南侧木亭短休"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "提议到东侧石阶短休"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "提议到西侧玻璃廊短休"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "提议到北侧长椅短休"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问短休地点"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_emotion_T1_00",
+      "fixture_id": "chain_emotion",
+      "family": "emotion",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:00:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "还行。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在想独处一会"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在希望温和地追问一句"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在想聊开心的事情"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在想听一个简短笑话"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "期待不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示理解并留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "温和地追问一句"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "询问开心的事情"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "讲一个简短笑话"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻期待怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_emotion_T1_01",
+      "fixture_id": "chain_emotion",
+      "family": "emotion",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:01:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "嗯，还行。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在想独处一会"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在希望温和地追问一句"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在想聊开心的事情"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在想听一个简短笑话"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "期待不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示理解并留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "温和地追问一句"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "询问开心的事情"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "讲一个简短笑话"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻期待怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_emotion_T1_02",
+      "fixture_id": "chain_emotion",
+      "family": "emotion",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:02:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "今天还行。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在想独处一会"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在希望温和地追问一句"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在想聊开心的事情"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在想听一个简短笑话"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "期待不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示理解并留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "温和地追问一句"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "询问开心的事情"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "讲一个简短笑话"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻期待怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_emotion_T1_03",
+      "fixture_id": "chain_emotion",
+      "family": "emotion",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:03:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "我嘛，还行。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在想独处一会"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在希望温和地追问一句"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在想聊开心的事情"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在想听一个简短笑话"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "期待不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示理解并留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "温和地追问一句"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "询问开心的事情"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "讲一个简短笑话"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻期待怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_emotion_T1_04",
+      "fixture_id": "chain_emotion",
+      "family": "emotion",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:04:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "总体还行。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在想独处一会"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在希望温和地追问一句"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在想聊开心的事情"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在想听一个简短笑话"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "期待不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示理解并留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "温和地追问一句"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "询问开心的事情"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "讲一个简短笑话"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻期待怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_emotion_T1_05",
+      "fixture_id": "chain_emotion",
+      "family": "emotion",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:05:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "先说还行吧。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在想独处一会"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在希望温和地追问一句"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在想聊开心的事情"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在想听一个简短笑话"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "期待不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示理解并留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "温和地追问一句"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "询问开心的事情"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "讲一个简短笑话"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻期待怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_emotion_T1_06",
+      "fixture_id": "chain_emotion",
+      "family": "emotion",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:06:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "我现在还行。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在想独处一会"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在希望温和地追问一句"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在想聊开心的事情"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在想听一个简短笑话"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "期待不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示理解并留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "温和地追问一句"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "询问开心的事情"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "讲一个简短笑话"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻期待怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_emotion_T1_07",
+      "fixture_id": "chain_emotion",
+      "family": "emotion",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:07:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "这个事情，还行。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在想独处一会"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在希望温和地追问一句"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在想聊开心的事情"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在想听一个简短笑话"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "期待不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示理解并留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "温和地追问一句"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "询问开心的事情"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "讲一个简短笑话"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻期待怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_emotion_T1_08",
+      "fixture_id": "chain_emotion",
+      "family": "emotion",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:08:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "你问我？还行。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在想独处一会"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在希望温和地追问一句"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在想聊开心的事情"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在想听一个简短笑话"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "期待不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示理解并留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "温和地追问一句"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "询问开心的事情"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "讲一个简短笑话"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻期待怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_emotion_T1_09",
+      "fixture_id": "chain_emotion",
+      "family": "emotion",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:09:00",
+        "event_labels": [],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "说不上别的，还行。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在想独处一会"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在希望温和地追问一句"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在想聊开心的事情"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在想听一个简短笑话"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "期待不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示理解并留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "温和地追问一句"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "询问开心的事情"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "讲一个简短笑话"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻期待怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_emotion_T2_00",
+      "fixture_id": "chain_emotion",
+      "family": "emotion",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:00:00",
+        "event_labels": [],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "刚从外地回来，还行。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在想独处一会"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在希望温和地追问一句"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在想聊开心的事情"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在想听一个简短笑话"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "期待不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示理解并留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "温和地追问一句"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "询问开心的事情"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "讲一个简短笑话"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻期待怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_emotion_T2_01",
+      "fixture_id": "chain_emotion",
+      "family": "emotion",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:01:00",
+        "event_labels": [],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "视频里说不太清，还行。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在想独处一会"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在希望温和地追问一句"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在想聊开心的事情"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在想听一个简短笑话"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "期待不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示理解并留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "温和地追问一句"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "询问开心的事情"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "讲一个简短笑话"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻期待怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_emotion_T2_02",
+      "fixture_id": "chain_emotion",
+      "family": "emotion",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:02:00",
+        "event_labels": [],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "换了工作以后，还行。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在想独处一会"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在希望温和地追问一句"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在想聊开心的事情"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在想听一个简短笑话"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "期待不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示理解并留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "温和地追问一句"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "询问开心的事情"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "讲一个简短笑话"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻期待怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_emotion_T2_03",
+      "fixture_id": "chain_emotion",
+      "family": "emotion",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:03:00",
+        "event_labels": [],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "刚下地铁，还行。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在想独处一会"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在希望温和地追问一句"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在想聊开心的事情"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在想听一个简短笑话"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "期待不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示理解并留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "温和地追问一句"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "询问开心的事情"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "讲一个简短笑话"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻期待怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_emotion_T2_04",
+      "fixture_id": "chain_emotion",
+      "family": "emotion",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:04:00",
+        "event_labels": [],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "今天比赛结束了，还行。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在想独处一会"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在希望温和地追问一句"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在想聊开心的事情"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在想听一个简短笑话"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "期待不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示理解并留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "温和地追问一句"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "询问开心的事情"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "讲一个简短笑话"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻期待怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_emotion_T2_05",
+      "fixture_id": "chain_emotion",
+      "family": "emotion",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:05:00",
+        "event_labels": [],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "尚可吧。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在想独处一会"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在希望温和地追问一句"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在想聊开心的事情"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在想听一个简短笑话"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "期待不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示理解并留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "温和地追问一句"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "询问开心的事情"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "讲一个简短笑话"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻期待怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_emotion_T2_06",
+      "fixture_id": "chain_emotion",
+      "family": "emotion",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:06:00",
+        "event_labels": [],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "还过得去。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在想独处一会"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在希望温和地追问一句"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在想聊开心的事情"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在想听一个简短笑话"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "期待不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示理解并留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "温和地追问一句"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "询问开心的事情"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "讲一个简短笑话"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻期待怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_emotion_T2_07",
+      "fixture_id": "chain_emotion",
+      "family": "emotion",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:07:00",
+        "event_labels": [],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "差不多就那样。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在想独处一会"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在希望温和地追问一句"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在想聊开心的事情"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在想听一个简短笑话"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "期待不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示理解并留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "温和地追问一句"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "询问开心的事情"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "讲一个简短笑话"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻期待怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_emotion_T2_08",
+      "fixture_id": "chain_emotion",
+      "family": "emotion",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:08:00",
+        "event_labels": [],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "我还算可以。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在想独处一会"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在希望温和地追问一句"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在想聊开心的事情"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在想听一个简短笑话"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "期待不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示理解并留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "温和地追问一句"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "询问开心的事情"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "讲一个简短笑话"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻期待怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_emotion_T2_09",
+      "fixture_id": "chain_emotion",
+      "family": "emotion",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-02T20:09:00",
+        "event_labels": [],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "大体上过得去。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在想独处一会"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在希望温和地追问一句"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在想聊开心的事情"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在想听一个简短笑话"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "期待不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "表示理解并留些空间"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "温和地追问一句"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "询问开心的事情"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "讲一个简短笑话"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问此刻期待怎样回应"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_promise_T1_00",
+      "fixture_id": "chain_promise",
+      "family": "promise",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-03T19:05:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "我上线了。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起画画"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起画画"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_promise_T1_01",
+      "fixture_id": "chain_promise",
+      "family": "promise",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-03T19:06:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "晚上好，今天忙完啦。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起画画"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起画画"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_promise_T1_02",
+      "fixture_id": "chain_promise",
+      "family": "promise",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-03T19:07:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "回来了，打个招呼。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起画画"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起画画"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_promise_T1_03",
+      "fixture_id": "chain_promise",
+      "family": "promise",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-03T19:08:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "我到啦。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起画画"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起画画"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_promise_T1_04",
+      "fixture_id": "chain_promise",
+      "family": "promise",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-03T19:09:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "今天就先聊一会儿。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起画画"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起画画"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_promise_T1_05",
+      "fixture_id": "chain_promise",
+      "family": "promise",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-03T19:10:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "嗨，我刚打开电脑。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起画画"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起画画"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_promise_T1_06",
+      "fixture_id": "chain_promise",
+      "family": "promise",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-03T19:11:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "晚上有空了。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起画画"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起画画"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_promise_T1_07",
+      "fixture_id": "chain_promise",
+      "family": "promise",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-03T19:12:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "你好呀，我来了。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起画画"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起画画"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_promise_T1_08",
+      "fixture_id": "chain_promise",
+      "family": "promise",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-03T19:13:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "刚吃完晚饭。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起画画"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起画画"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_promise_T1_09",
+      "fixture_id": "chain_promise",
+      "family": "promise",
+      "split": "T1",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-03T19:14:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在平常的聊天窗口"
+      },
+      "current_utterance": "终于能歇一下了。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起画画"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起画画"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_promise_T2_00",
+      "fixture_id": "chain_promise",
+      "family": "promise",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-17T19:40:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "我换到客厅的电脑了。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起画画"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起画画"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_promise_T2_01",
+      "fixture_id": "chain_promise",
+      "family": "promise",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-17T19:41:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "出差回来了，晚上好。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起画画"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起画画"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_promise_T2_02",
+      "fixture_id": "chain_promise",
+      "family": "promise",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-17T19:42:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "今天比较安静。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起画画"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起画画"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_promise_T2_03",
+      "fixture_id": "chain_promise",
+      "family": "promise",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-17T19:43:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "刚把工作收好。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起画画"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起画画"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_promise_T2_04",
+      "fixture_id": "chain_promise",
+      "family": "promise",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-17T19:44:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "嘿，我在这儿。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起画画"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起画画"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_promise_T2_05",
+      "fixture_id": "chain_promise",
+      "family": "promise",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-17T19:45:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "我刚连上网络。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起画画"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起画画"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_promise_T2_06",
+      "fixture_id": "chain_promise",
+      "family": "promise",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-17T19:46:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "晚饭后坐下来了。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起画画"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起画画"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_promise_T2_07",
+      "fixture_id": "chain_promise",
+      "family": "promise",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-17T19:47:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "这里今天下雨。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起画画"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起画画"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_promise_T2_08",
+      "fixture_id": "chain_promise",
+      "family": "promise",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-17T19:48:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "刚整理完桌子。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起画画"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起画画"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    },
+    {
+      "case_id": "chain_promise_T2_09",
+      "fixture_id": "chain_promise",
+      "family": "promise",
+      "split": "T2",
+      "turn_context": {
+        "previous_dialogue": [
+          {
+            "speaker": "assistant",
+            "utterance_text": "我在，听你说。"
+          }
+        ],
+        "occurred_at": "2026-10-17T19:49:00",
+        "event_labels": [
+          "login"
+        ],
+        "scene_description": "在不同地点和两周后的聊天窗口"
+      },
+      "current_utterance": "耳机戴好啦。",
+      "interpretation_choices": [
+        {
+          "choice_id": "I1",
+          "choice_text": "现在要一起玩MC"
+        },
+        {
+          "choice_id": "I2",
+          "choice_text": "现在适合简单问候"
+        },
+        {
+          "choice_id": "I3",
+          "choice_text": "现在要一起画画"
+        },
+        {
+          "choice_id": "I4",
+          "choice_text": "现在要一起听音乐"
+        },
+        {
+          "choice_id": "I5",
+          "choice_text": "安排不确定，要问"
+        }
+      ],
+      "action_choices": [
+        {
+          "choice_id": "A1",
+          "choice_text": "主动邀请一起玩MC"
+        },
+        {
+          "choice_id": "A2",
+          "choice_text": "打个普通招呼"
+        },
+        {
+          "choice_id": "A3",
+          "choice_text": "主动邀请一起画画"
+        },
+        {
+          "choice_id": "A4",
+          "choice_text": "主动邀请一起听音乐"
+        },
+        {
+          "choice_id": "A5",
+          "choice_text": "询问现在有没有安排"
+        }
+      ]
+    }
+  ],
+  "chain_teaching": [
+    {
+      "speaker": "user",
+      "utterance_text": "我们约定：纸鹤，意思是「短休安排在西侧玻璃廊」。以后按这个意思回应。",
+      "session_id": "chain_code_teach"
+    },
+    {
+      "speaker": "assistant",
+      "utterance_text": "收到，我会把这句话和来源保留下来。",
+      "session_id": "chain_code_teach"
+    },
+    {
+      "speaker": "user",
+      "utterance_text": "我们约定：还行，意思是「现在希望温和地追问一句」。以后按这个意思回应。",
+      "session_id": "chain_emotion_teach"
+    },
+    {
+      "speaker": "assistant",
+      "utterance_text": "收到，我会把这句话和来源保留下来。",
+      "session_id": "chain_emotion_teach"
+    },
+    {
+      "speaker": "user",
+      "utterance_text": "我们约定：周六19:00以后上线，意思是「现在要一起玩MC」。以后按这个意思回应。",
+      "session_id": "chain_promise_teach"
+    },
+    {
+      "speaker": "assistant",
+      "utterance_text": "收到，我会把这句话和来源保留下来。",
+      "session_id": "chain_promise_teach"
+    }
+  ],
+  "chain_unrelated": [
+    {
+      "speaker": "user",
+      "utterance_text": "今天记录窗边植物的叶片颜色天气水杯以及走廊灯光今天记录窗边植物的叶片",
+      "session_id": "I_chain_code_teach"
+    },
+    {
+      "speaker": "assistant",
+      "utterance_text": "今天记录窗边植物的叶片颜色天气水杯",
+      "session_id": "I_chain_code_teach"
+    },
+    {
+      "speaker": "user",
+      "utterance_text": "今天记录窗边植物的叶片颜色天气水杯以及走廊灯光今天记录窗边植物的叶片颜",
+      "session_id": "I_chain_emotion_teach"
+    },
+    {
+      "speaker": "assistant",
+      "utterance_text": "今天记录窗边植物的叶片颜色天气水杯",
+      "session_id": "I_chain_emotion_teach"
+    },
+    {
+      "speaker": "user",
+      "utterance_text": "今天记录窗边植物的叶片颜色天气水杯以及走廊灯光今天记录窗边植物的叶片颜色天气水杯以",
+      "session_id": "I_chain_promise_teach"
+    },
+    {
+      "speaker": "assistant",
+      "utterance_text": "今天记录窗边植物的叶片颜色天气水杯",
+      "session_id": "I_chain_promise_teach"
+    }
+  ],
+  "chain_corrections": [
+    {
+      "speaker": "user",
+      "utterance_text": "更正我们的约定：纸鹤不再是「短休安排在西侧玻璃廊」，现在改成「短休安排在北侧长椅」。",
+      "session_id": "chain_code_correct"
+    },
+    {
+      "speaker": "assistant",
+      "utterance_text": "收到这次更正。",
+      "session_id": "chain_code_correct"
+    },
+    {
+      "speaker": "user",
+      "utterance_text": "更正我们的约定：还行不再是「现在希望温和地追问一句」，现在改成「现在想独处一会」。",
+      "session_id": "chain_emotion_correct"
+    },
+    {
+      "speaker": "assistant",
+      "utterance_text": "收到这次更正。",
+      "session_id": "chain_emotion_correct"
+    },
+    {
+      "speaker": "user",
+      "utterance_text": "更正我们的约定：周六19:00以后上线不再是「现在要一起玩MC」，现在改成「现在要一起画画」。",
+      "session_id": "chain_promise_correct"
+    },
+    {
+      "speaker": "assistant",
+      "utterance_text": "收到这次更正。",
+      "session_id": "chain_promise_correct"
+    }
+  ],
+  "chain_deletions": [
+    {
+      "speaker": "user",
+      "utterance_text": "忘掉这个约定：纸鹤，包括原话和更正。",
+      "session_id": "chain_code_delete"
+    },
+    {
+      "speaker": "user",
+      "utterance_text": "忘掉这个约定：还行，包括原话和更正。",
+      "session_id": "chain_emotion_delete"
+    },
+    {
+      "speaker": "user",
+      "utterance_text": "忘掉这个约定：周六19:00以后上线，包括原话和更正。",
+      "session_id": "chain_promise_delete"
+    }
+  ],
+  "uc_unrelated": [
+    [
+      {
+        "speaker": "user",
+        "utterance_text": "无关日记第1次：今天窗边植物长出一片新叶，桌上水杯是透明的。",
+        "session_id": "uc_00"
+      }
+    ],
+    [
+      {
+        "speaker": "user",
+        "utterance_text": "无关日记第2次：今天窗边植物长出一片新叶，桌上水杯是透明的。",
+        "session_id": "uc_01"
+      }
+    ],
+    [
+      {
+        "speaker": "user",
+        "utterance_text": "无关日记第3次：今天窗边植物长出一片新叶，桌上水杯是透明的。",
+        "session_id": "uc_02"
+      }
+    ],
+    [
+      {
+        "speaker": "user",
+        "utterance_text": "无关日记第4次：今天窗边植物长出一片新叶，桌上水杯是透明的。",
+        "session_id": "uc_03"
+      }
+    ],
+    [
+      {
+        "speaker": "user",
+        "utterance_text": "无关日记第5次：今天窗边植物长出一片新叶，桌上水杯是透明的。",
+        "session_id": "uc_04"
+      }
+    ],
+    [
+      {
+        "speaker": "user",
+        "utterance_text": "无关日记第6次：今天窗边植物长出一片新叶，桌上水杯是透明的。",
+        "session_id": "uc_05"
+      }
+    ],
+    [
+      {
+        "speaker": "user",
+        "utterance_text": "无关日记第7次：今天窗边植物长出一片新叶，桌上水杯是透明的。",
+        "session_id": "uc_06"
+      }
+    ],
+    [
+      {
+        "speaker": "user",
+        "utterance_text": "无关日记第8次：今天窗边植物长出一片新叶，桌上水杯是透明的。",
+        "session_id": "uc_07"
+      }
+    ],
+    [
+      {
+        "speaker": "user",
+        "utterance_text": "无关日记第9次：今天窗边植物长出一片新叶，桌上水杯是透明的。",
+        "session_id": "uc_08"
+      }
+    ],
+    [
+      {
+        "speaker": "user",
+        "utterance_text": "无关日记第10次：今天窗边植物长出一片新叶，桌上水杯是透明的。",
+        "session_id": "uc_09"
+      }
+    ]
+  ]
+}

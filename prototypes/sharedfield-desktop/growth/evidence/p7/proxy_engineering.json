@@ -1,0 +1,185 @@
+{
+  "kind": "p7_proxy_offline_engineering",
+  "unix_s": 1790998859.4756444,
+  "duration_s": 2.2513089179992676,
+  "actual_cloud_calls": 0,
+  "actual_cloud_cost_usd": 0,
+  "upstream": "in_memory_fixture",
+  "airi_ping": "NOT_RUN",
+  "physical_network_disconnect": "NOT_RUN",
+  "model": "deepseek/deepseek-v4-flash-0731",
+  "route": "open-inference/fp8",
+  "criteria_sha256": "a61ec1f6ec7f5bf66e324b33d7a277f9fed25bf256e7ae83a8ae3a0728b7bb0d",
+  "source_sha256": {
+    "proxy.py": "93b4e5281ab644054d78d83b724692f660e909f2e827f67440c7db693f4a9b68",
+    "test_proxy.py": "414280cd54281a919b8a428bf92491f50a8c36a024067ad3f578a5dfe517089a",
+    "launch_proxy.py": "17d230e177020e6fb54b617eae8143588e5315c7bb47043bba44fea1d3f4eb1d"
+  },
+  "passed": true,
+  "tests_run": 19,
+  "results": [
+    {
+      "test": "test_atomic_budget_reservations_across_instances",
+      "status": "passed"
+    },
+    {
+      "test": "test_bad_and_absent_auth_reject_without_upstream",
+      "status": "passed"
+    },
+    {
+      "test": "test_budget_rejection_blocks_completion",
+      "status": "passed"
+    },
+    {
+      "test": "test_cors_and_host_validation",
+      "status": "passed"
+    },
+    {
+      "test": "test_default_phase1_ledger_and_cap",
+      "status": "passed"
+    },
+    {
+      "test": "test_http_error_body_not_forwarded_or_logged",
+      "status": "passed"
+    },
+    {
+      "test": "test_limits_and_nonfinite_input_reject",
+      "status": "passed"
+    },
+    {
+      "test": "test_loopback_tokens_and_models_are_local",
+      "status": "passed"
+    },
+    {
+      "test": "test_message_and_tool_objects_preserved",
+      "status": "passed"
+    },
+    {
+      "test": "test_network_failure_keeps_reservation_and_records",
+      "status": "passed"
+    },
+    {
+      "test": "test_preflight_missing_route_and_high_price_reject",
+      "status": "passed"
+    },
+    {
+      "test": "test_preflight_network_error_no_completion",
+      "status": "passed"
+    },
+    {
+      "test": "test_requested_parameter_support_enforced_before_reserve",
+      "status": "passed"
+    },
+    {
+      "test": "test_route_overrides_and_multimodal_rejected_before_preflight",
+      "status": "passed"
+    },
+    {
+      "test": "test_secrets_redacted_from_content_and_events",
+      "status": "passed"
+    },
+    {
+      "test": "test_sse_and_tool_call_deltas_preserved",
+      "status": "passed"
+    },
+    {
+      "test": "test_sse_error_is_sanitized_and_failed",
+      "status": "passed"
+    },
+    {
+      "test": "test_sse_incomplete_is_failed_not_completed",
+      "status": "passed"
+    },
+    {
+      "test": "test_unknown_cost_retains_reservation",
+      "status": "passed"
+    }
+  ],
+  "raw_run_dir": "runs\\p7\\proxy\\offline-20261003T034059-78e6ad96",
+  "limitations": [
+    "Fake upstream does not establish live route or AIRI compatibility.",
+    "Network failure is simulated, not a physical disconnection.",
+    "No generated code is executed."
+  ],
+  "status": "OFFLINE_ENGINEERING_PASS",
+  "criteria_changes": "No criterion, threshold, or prompt changed. Appending implementation notes added one separating newline after the frozen criteria block.",
+  "test_script_unchanged_across_runs": true,
+  "runs": [
+    {
+      "path": "runs/p7/proxy/offline-20261003T033857-d5871df8/result.json",
+      "passed": false,
+      "tests_run": 19,
+      "criteria_sha256": "7eb3da5e60223be08c5401455e79a3bc82802aa84ff56149552a19679873d18e",
+      "source_sha256": {
+        "proxy.py": "aa882206f9ec007423fcdd5c062dbbdb8dc1299e03449670e447d69aae7e3d11",
+        "test_proxy.py": "414280cd54281a919b8a428bf92491f50a8c36a024067ad3f578a5dfe517089a",
+        "launch_proxy.py": "7df51d4fbb9fcdeb62fdf5b88f148e3af05526d12a17d804fbb432be7ba05dec"
+      }
+    },
+    {
+      "path": "runs/p7/proxy/offline-20261003T033924-77d012c2/result.json",
+      "passed": true,
+      "tests_run": 19,
+      "criteria_sha256": "7eb3da5e60223be08c5401455e79a3bc82802aa84ff56149552a19679873d18e",
+      "source_sha256": {
+        "proxy.py": "93b4e5281ab644054d78d83b724692f660e909f2e827f67440c7db693f4a9b68",
+        "test_proxy.py": "414280cd54281a919b8a428bf92491f50a8c36a024067ad3f578a5dfe517089a",
+        "launch_proxy.py": "7df51d4fbb9fcdeb62fdf5b88f148e3af05526d12a17d804fbb432be7ba05dec"
+      }
+    },
+    {
+      "path": "runs/p7/proxy/offline-20261003T034059-78e6ad96/result.json",
+      "passed": true,
+      "tests_run": 19,
+      "criteria_sha256": "a61ec1f6ec7f5bf66e324b33d7a277f9fed25bf256e7ae83a8ae3a0728b7bb0d",
+      "source_sha256": {
+        "proxy.py": "93b4e5281ab644054d78d83b724692f660e909f2e827f67440c7db693f4a9b68",
+        "test_proxy.py": "414280cd54281a919b8a428bf92491f50a8c36a024067ad3f578a5dfe517089a",
+        "launch_proxy.py": "17d230e177020e6fb54b617eae8143588e5315c7bb47043bba44fea1d3f4eb1d"
+      }
+    }
+  ],
+  "first_failure": {
+    "test": "test_message_and_tool_objects_preserved",
+    "cause": "Completion response preceded budget settlement; immediate reader observed reserved_unknown.",
+    "repair": "Commit known usage and audit before JSON success or final SSE DONE.",
+    "test_changed": false
+  },
+  "additional_checks": [
+    {
+      "path": "runs/p7/proxy/offline-20261003T034018-dd6e367a/extra_checks.json",
+      "passed": true,
+      "check": "Actually absent Authorization header -> 401 and no upstream calls"
+    },
+    {
+      "passed": true,
+      "check": "python -W error -c import p7.launch_proxy and tkinter",
+      "limit": "Imports only; no GUI interaction or cloud call"
+    }
+  ],
+  "shared_production_ledger": "runs/phase1/budget.sqlite",
+  "production_limit_usd": 5,
+  "real_credential_in_tests": false,
+  "long_running_service_started": false,
+  "live_gates": {
+    "airi_ping": "NOT_RUN_BY_THIS_COMPONENT",
+    "physical_disconnect": "NOT_RUN",
+    "actual_route_preflight": "NOT_RUN_BY_THIS_COMPONENT",
+    "owner_ui_tryout": "NOT_RUN"
+  },
+  "scope": [
+    "p7/__init__.py",
+    "p7/proxy.py",
+    "p7/test_proxy.py",
+    "p7/launch_proxy.py",
+    "evidence/p7/PROXY.md",
+    "evidence/p7/proxy_engineering.json"
+  ],
+  "subsequent_authorization": {
+    "date": "2026-10-02",
+    "local_proxy_token_may_be_saved_in_airi_local_config": true,
+    "proxy_itself_writes_token": false,
+    "new_cloud_key_file_allowed": false,
+    "original_criteria_preserved": true
+  }
+}

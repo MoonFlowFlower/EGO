@@ -1,0 +1,266 @@
+{
+  "pass": true,
+  "tests_run": 15,
+  "failures": 0,
+  "errors": 0,
+  "cloud_calls": 0,
+  "cloud_cost_usd": 0,
+  "run_folder": "D:\\Project\\AIProject\\MyProject\\Ego_proejct_restart\\.publish\\EGO\\prototypes\\sharedfield-desktop\\growth\\runs\\u1\\engineering_kg7p_hul",
+  "source_sha256": {
+    "growthlab/consolidation.py": "941ac5e159b1122e82a0dbc1bde798eb1c9e907c4640096006154e4de8239e97",
+    "growthlab/decision.py": "eb19fe4db31631f733bc2a8d635339dd7397316f706ddef4df82d96d12c9ac57",
+    "growthlab/forks.py": "98f695ce21957e0bb5146cbea02ed0434aaaee19da7a4d756211ccf6e1e350fb",
+    "growthlab/memory.py": "83c6cf7fe07a40f31e565a7be215d026be3628f57673dee61dcd633d64aef52b",
+    "growthlab/models.py": "5831046b024cfc5da2caf530c063f02b24d67994bdd937c6893a027895283e01",
+    "growthlab/records.py": "ad3573c3c7c16700d9e36ef13eabd8286088e09e078796588d827c38e49b395a",
+    "growthlab/state.py": "cae6cd8990191e0757eee3eb71242471c4a0cf2ccb3394f53c14d68267514f64",
+    "u1/__init__.py": "9f1d3ea838ecdb403e0cde95a6ec65e616bac3b55242c97c2187fc49d29fa9b2",
+    "u1/conventions/__init__.py": "85ff66f7929f5142b757228220211e86f43e4285185540d02832174a9d7c06b9",
+    "u1/conventions/core.py": "fe5612bba46bc648d3aebea7b325ec99fbc5931c207304b3fc91cf0e3cbcdff3",
+    "u1/fixtures.py": "cb3ba6b386054007884cc141d2677aad1d78bdd11333cc84a2a08e2315469056",
+    "u1/harness.py": "1c6101e1db1c834c9d993d509e4a48c2f0cfe5c0b549d7224310e9d6e9235b5f",
+    "u1/plan.py": "7c7676ba4680107ce2ec89079b8ce34257d1f8d97f24847a9ff19da0ebf7bd6c",
+    "u1/protocol.py": "28ca4424407d47d848547dcd65d9829493656bec0aecd4dcc712d2a368edaec3",
+    "u1/run.py": "bcbcee034560685238f8ddec52951643387f74f76abe139ef7fc90528fcf2135",
+    "u1/tests.py": "cc676deda64537563011bfa3decabd952e49f9bc4bf8ef665c54e801dab721ac"
+  },
+  "key_audit": {
+    "pass": true,
+    "keys": {
+      "action": {
+        "meaning": "selected action option identity only",
+        "paths": [
+          "packet.action"
+        ]
+      },
+      "action_choices": {
+        "meaning": "allowed action options",
+        "paths": [
+          "packet.action_choices"
+        ]
+      },
+      "after": {
+        "meaning": "HH:MM inclusive lower clock bound",
+        "paths": [
+          "packet.memory[].trigger.after",
+          "packet.proposals[].trigger.after"
+        ]
+      },
+      "annotation_text": {
+        "meaning": "program-generated applicable convention prose",
+        "paths": [
+          "packet.memory[].annotation_text"
+        ]
+      },
+      "card_id": {
+        "meaning": "persistent convention record identity",
+        "paths": [
+          "packet.memory[].card_id"
+        ]
+      },
+      "card_status": {
+        "meaning": "P6 active/superseded state",
+        "paths": [
+          "packet.memory[].card_status"
+        ]
+      },
+      "choice_id": {
+        "meaning": "opaque option identifier",
+        "paths": [
+          "packet.action_choices[].choice_id",
+          "packet.interpretation_choices[].choice_id"
+        ]
+      },
+      "choice_text": {
+        "meaning": "option meaning in prose",
+        "paths": [
+          "packet.action_choices[].choice_text",
+          "packet.interpretation_choices[].choice_text"
+        ]
+      },
+      "current_utterance": {
+        "meaning": "present user utterance",
+        "paths": [
+          "packet.current_utterance"
+        ]
+      },
+      "event": {
+        "meaning": "single required observed event label",
+        "paths": [
+          "packet.memory[].trigger.event",
+          "packet.proposals[].trigger.event"
+        ]
+      },
+      "event_labels": {
+        "meaning": "public observed event labels",
+        "paths": [
+          "packet.memory[].event_labels",
+          "packet.original_utterances[].event_labels",
+          "packet.turn_context.event_labels"
+        ]
+      },
+      "interpretation": {
+        "meaning": "selected interpretation option identity only",
+        "paths": [
+          "packet.interpretation"
+        ]
+      },
+      "interpretation_choices": {
+        "meaning": "allowed interpretation options",
+        "paths": [
+          "packet.interpretation_choices"
+        ]
+      },
+      "kind": {
+        "meaning": "trigger matcher type only",
+        "paths": [
+          "packet.memory[].trigger.kind",
+          "packet.proposals[].trigger.kind"
+        ]
+      },
+      "meaning": {
+        "meaning": "quoted user-defined convention meaning",
+        "paths": [
+          "packet.memory[].meaning",
+          "packet.proposals[].meaning"
+        ]
+      },
+      "memory": {
+        "meaning": "bounded recalled memory entries",
+        "paths": [
+          "packet.memory"
+        ]
+      },
+      "memory_kind": {
+        "meaning": "memory entry category",
+        "paths": [
+          "packet.memory[].memory_kind"
+        ]
+      },
+      "occurred_at": {
+        "meaning": "ISO local wall time of event",
+        "paths": [
+          "packet.memory[].occurred_at",
+          "packet.original_utterances[].occurred_at",
+          "packet.turn_context.occurred_at"
+        ]
+      },
+      "original_utterances": {
+        "meaning": "allowed original evidence rows",
+        "paths": [
+          "packet.original_utterances"
+        ]
+      },
+      "previous_dialogue": {
+        "meaning": "prior public dialogue rows",
+        "paths": [
+          "packet.turn_context.previous_dialogue"
+        ]
+      },
+      "proposals": {
+        "meaning": "untrusted convention proposals",
+        "paths": [
+          "packet.proposals"
+        ]
+      },
+      "reason": {
+        "meaning": "pre-choice brief rationale only",
+        "paths": [
+          "packet.reason"
+        ]
+      },
+      "reflection_text": {
+        "meaning": "plain-text end-session reflection",
+        "paths": [
+          "packet.memory[].reflection_text"
+        ]
+      },
+      "replaces": {
+        "meaning": "prior active convention identity",
+        "paths": [
+          "packet.proposals[].replaces"
+        ]
+      },
+      "reply": {
+        "meaning": "free reply text audited but not scored",
+        "paths": [
+          "packet.reply"
+        ]
+      },
+      "scene_description": {
+        "meaning": "public scene description",
+        "paths": [
+          "packet.turn_context.scene_description"
+        ]
+      },
+      "session_id": {
+        "meaning": "original conversation session identity",
+        "paths": [
+          "packet.memory[].session_id",
+          "packet.original_utterances[].session_id"
+        ]
+      },
+      "source_ids": {
+        "meaning": "cited user utterance identities",
+        "paths": [
+          "packet.memory[].source_ids",
+          "packet.proposals[].source_ids"
+        ]
+      },
+      "speaker": {
+        "meaning": "who said an original utterance",
+        "paths": [
+          "packet.memory[].speaker",
+          "packet.original_utterances[].speaker",
+          "packet.turn_context.previous_dialogue[].speaker"
+        ]
+      },
+      "text": {
+        "meaning": "verbatim trigger phrase only",
+        "paths": [
+          "packet.memory[].trigger.text",
+          "packet.proposals[].trigger.text"
+        ]
+      },
+      "trigger": {
+        "meaning": "structured convention trigger",
+        "paths": [
+          "packet.memory[].trigger",
+          "packet.proposals[].trigger"
+        ]
+      },
+      "turn_context": {
+        "meaning": "public conversation/time/events context",
+        "paths": [
+          "packet.turn_context"
+        ]
+      },
+      "utterance_id": {
+        "meaning": "persistent original utterance identity",
+        "paths": [
+          "packet.memory[].utterance_id",
+          "packet.original_utterances[].utterance_id"
+        ]
+      },
+      "utterance_text": {
+        "meaning": "verbatim spoken text",
+        "paths": [
+          "packet.memory[].utterance_text",
+          "packet.original_utterances[].utterance_text",
+          "packet.turn_context.previous_dialogue[].utterance_text"
+        ]
+      },
+      "weekday": {
+        "meaning": "Monday=0 weekday predicate",
+        "paths": [
+          "packet.memory[].trigger.weekday",
+          "packet.proposals[].trigger.weekday"
+        ]
+      }
+    },
+    "schema_envelope_keys": "type/properties/required/additionalProperties/items/enum/minimum/maximum/maxLength/minItems/maxItems are JSON Schema grammar only.",
+    "transport_envelope_keys": "role/content are OpenRouter message envelope only; model input data uses speaker/utterance_text instead."
+  },
+  "test_output": "test_A_B_bound_and_baseline_is_bm25 (u1.tests.Acceptance.test_A_B_bound_and_baseline_is_bm25) ... ok\ntest_both_selected_fields_required_reply_never_scores (u1.tests.Acceptance.test_both_selected_fields_required_reply_never_scores) ... ok\ntest_citation_rejections (u1.tests.Acceptance.test_citation_rejections) ... ok\ntest_deletion_covers_versions_sources_and_derivatives (u1.tests.Acceptance.test_deletion_covers_versions_sources_and_derivatives) ... ok\ntest_emotion_is_reported_not_promoted_to_chain_gate (u1.tests.Acceptance.test_emotion_is_reported_not_promoted_to_chain_gate) ... ok\ntest_fork_independence_and_actual_fresh_process (u1.tests.Acceptance.test_fork_independence_and_actual_fresh_process) ... ok\ntest_inherited_budget_unknown_reservation_and_privacy_payload (u1.tests.Acceptance.test_inherited_budget_unknown_reservation_and_privacy_payload) ... ok\ntest_matching_boundaries_and_superseded (u1.tests.Acceptance.test_matching_boundaries_and_superseded) ... ok\ntest_proposal_path_only_writes_after_validation (u1.tests.Acceptance.test_proposal_path_only_writes_after_validation) ... ok\ntest_reusable_library_has_no_harness_dependencies (u1.tests.Acceptance.test_reusable_library_has_no_harness_dependencies) ... ok\ntest_scripts_counts_disjointness_and_no_answer_prompt_leakage (u1.tests.Acceptance.test_scripts_counts_disjointness_and_no_answer_prompt_leakage) ... ok\ntest_situation_quote_cannot_forge_clock (u1.tests.Acceptance.test_situation_quote_cannot_forge_clock) ... ok\ntest_strict_order_and_actual_logged_harness_output (u1.tests.Acceptance.test_strict_order_and_actual_logged_harness_output) ... ok\ntest_ua_full_job_counts_and_false_memory_gate (u1.tests.Acceptance.test_ua_full_job_counts_and_false_memory_gate) ... ok\ntest_uc_omission_never_removes_or_overwrites (u1.tests.Acceptance.test_uc_omission_never_removes_or_overwrites) ... ok\n\n----------------------------------------------------------------------\nRan 15 tests in 2.464s\n\nOK\n",
+  "claim_ceiling": "Offline engineering acceptance only. Real model order, learning and causal gates remain untested."
+}

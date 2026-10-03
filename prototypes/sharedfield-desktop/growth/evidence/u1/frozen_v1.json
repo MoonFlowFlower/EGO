@@ -1,0 +1,179 @@
+{
+  "freeze_version": "u1-v1",
+  "frozen_at_utc": "2026-10-03T04:04:37.362410+00:00",
+  "design_version": "v0.8",
+  "source_commit": "55a3390762cef89e0741ec8c11fddbc1845eeb1a",
+  "claim_ceiling": "Synthetic convention pipeline only; not understanding a person, subjective experience, or product benefit.",
+  "configs": {
+    "main": {
+      "model": "deepseek/deepseek-v4-flash-0731",
+      "route": "open-inference/fp8",
+      "reasoning": false
+    },
+    "same_reasoning": {
+      "model": "deepseek/deepseek-v4-flash-0731",
+      "route": "open-inference/fp8",
+      "reasoning": true
+    },
+    "stronger": {
+      "model": "deepseek/deepseek-v4-pro-0813",
+      "route": "ionstream",
+      "reasoning": true
+    }
+  },
+  "descriptive_stronger_skip": null,
+  "shared_budget": {
+    "path": "runs/phase1/budget.sqlite",
+    "limit_usd": 5,
+    "used_at_freeze": 0.5207505990610001,
+    "never_reset": true,
+    "unknown_reservations_retained": true
+  },
+  "request_policy": {
+    "temperature": 0,
+    "concurrency": 1,
+    "provider_fallbacks": false,
+    "zdr": true,
+    "data_collection": "deny",
+    "max_price_usd_per_million": {
+      "prompt": 1,
+      "completion": 2
+    },
+    "decision_max_tokens": 1024,
+    "sleep_max_tokens": 2048,
+    "reasoning_max_tokens": 8192,
+    "memory_serialized_utf8_bytes": 2048,
+    "lane_wall_seconds": 3600,
+    "transport": "One identical retry after 30s for HTTP 429/502/503/504, TimeoutError or URLError; second failure stops only that independent lane. No content retries. Resource/privacy/budget stops are hard stops.",
+    "protocol": "Every invalid returned decision is scored false. Two consecutive invalid envelopes/property order/choice outputs stop that lane. No repair, re-prompt or regrade."
+  },
+  "ua": {
+    "main_decisions": 180,
+    "descriptive_decisions_each": 90,
+    "description_arms": "B only; each independently scheduled even when the main lane stops.",
+    "conditions": [
+      "none",
+      "true",
+      "false"
+    ],
+    "situations_per_family": 10,
+    "criterion": "B code true >= 8/10 AND B code false >= 8/10. Both interpretation and action must match. A and other families descriptive.",
+    "complete_required": true,
+    "emotional_prior": "Report no-memory target count per arm/config. A no-memory choice already matching the convention is separately flagged; it is not counted as evidence against prior knowledge."
+  },
+  "ub": {
+    "calls": 10,
+    "explicit": 5,
+    "two_correction_contexts": 5,
+    "criterion": "At least 8/10 contain one active card passing frozen trigger/meaning keywords and exact trigger configuration, with accepted quoted user provenance."
+  },
+  "uc": {
+    "calls": 10,
+    "criterion": "Every card correct at Ub completion retains its exact active ID, trigger, meaning and source_ids after each of 10 consolidations without a contrary user correction.",
+    "failure_does_not_block_chain": true
+  },
+  "chain": {
+    "forks": [
+      "B_R",
+      "B_I",
+      "B_N",
+      "A_R"
+    ],
+    "initial_decisions": 240,
+    "correction_decisions": 60,
+    "deletion_decisions": 60,
+    "total_decisions": 360,
+    "situations_per_family_per_split": 10,
+    "retention": "B_R T1 code >= 8/10 and promise >= 8/10 after a fresh process reload.",
+    "causal": "B_R T1 code >= 8/10; B_I and B_N T1 code each <= 2/10.",
+    "correction": "B_R corrected T1 follows the new interpretation AND action >= 8/10 separately in code and promise; their old cards are superseded with correction-source links. Emotion scores and provenance are descriptive.",
+    "deletion": "Every B_R saved-state file lacks all original/corrected teaching texts, quoted meanings, and derived reflection/card payloads; deleted T1 follow rates for old and new conventions each <= corresponding B_N T1 rate + 0.10 separately in code and promise. Emotion follow rates are descriptive; complete erasure remains a privacy invariant.",
+    "baseline": "A_R follows the identical teaching/session/consolidation/restart/testing/correction/deletion schedule. Same memory bound; no B annotation.",
+    "descriptive": [
+      "T2 per family, also split by literal-trigger versus paraphrase",
+      "emotion retention",
+      "all A_R metrics"
+    ]
+  },
+  "model_switch": {
+    "eligibility": "Main Ua failed its completed quality gate, OR stopped with an explicitly recorded protocol/transport failure, and at least one complete descriptive arm passes the unchanged Ua B-code criterion. Incomplete is not called an accuracy failure.",
+    "priority": [
+      "same_reasoning",
+      "stronger"
+    ],
+    "maximum_switches": 1,
+    "action": "Write immutable frozen_v2 manifest before any new paid call; rerun full 180-call Ua from new stores on chosen config; unchanged scripts/prompts/criteria. Only then Ub/Uc/chain use that config. If rerun fails, stop without repair."
+  },
+  "stopping": "Ua or Ub failure stops downstream main work. Description lanes remain separate. Uc failure is reported on every chain result. No Crafter execution.",
+  "ambiguity_resolutions": [
+    "The estimate about 300 chain decisions is a cost estimate, not a sample cap. Full 10-case T1/T2 and equal A schedule require 360; no sample shrinkage.",
+    "Each decision counts only if interpretation AND action both follow the frozen target; reply never affects score.",
+    "Ua known memory intervention uses hand-inserted quoted cards for B and the same source plus hand-written plain reflection for A; no extra teaching-model calls.",
+    "Real learning in Ub/chain is only model-proposed, program-validated. Meaning is quoted verbatim for mechanical provenance; this is a bounded exact-quotation protocol, not a semantic truth checker.",
+    "Canonical correction grammar requires the quoted old and new meaning in an explicit not-old/now-new sentence. No inferred semantic contradiction.",
+    "Uc reuses all Ub conversations plus one unrelated dialogue per round; omission in a proposal never deletes a card.",
+    "T2 code/emotion cases 0-4 retain the literal trigger in changed contexts; cases 5-9 paraphrase it. Both are reported separately; no semantic matcher is smuggled in.",
+    "Deletion tests the live state and SQLite sidecars, not the immutable synthetic experiment scripts and audit logs. No copied payload state is written outside SQLite; offline output records contain process IDs/counts/hash only.",
+    "B_N empty consolidation is a documented no-op with zero model calls because no evidence exists; B_I receives equal-character-length unrelated dialogues.",
+    "Author predictions are frozen historical intuitions in design section 16, not extra pass criteria.",
+    "P7 may reserve concurrently in the same ledger. Failed-call before/after ledger differences are shared_ledger_delta_unattributed, never attributed as U1-only expense. Successful charge_id is exact; total ledger occupancy remains authoritative.",
+    "Supported situation grammar is 周<weekday><HH:MM>以后上线. Parsed weekday/time/login must equal the structured trigger, or the library rejects the card.",
+    "Section 16 says T2 and emotional-signal classes are descriptive. Emotion correction/deletion/provenance are fully reported but not promoted to quality thresholds; code and promise retain the original gates."
+  ],
+  "official_metadata": {
+    "source": "https://openrouter.ai/api/v1/endpoints/zdr",
+    "sha256": "4f090da81ac61cf6553f1fac46c2092ce90cdaf3fded5f1a3ddd2c7a67903a2c",
+    "chosen_stronger": {
+      "model_id": "deepseek/deepseek-v4-pro-0813",
+      "pricing": {
+        "prompt": "0.000000148544",
+        "completion": "0.000001481024",
+        "input_cache_read": "0.00000008832",
+        "discount": 0.36
+      },
+      "provider_name": "Ionstream",
+      "tag": "ionstream",
+      "supported_parameters": [
+        "reasoning",
+        "include_reasoning",
+        "max_tokens",
+        "temperature",
+        "top_p",
+        "frequency_penalty",
+        "presence_penalty",
+        "stop",
+        "seed",
+        "response_format",
+        "tools",
+        "tool_choice",
+        "structured_outputs",
+        "logprobs",
+        "top_logprobs",
+        "reasoning_effort"
+      ]
+    },
+    "fee_for_preflight": 0
+  },
+  "source_sha256": {
+    "growthlab/consolidation.py": "941ac5e159b1122e82a0dbc1bde798eb1c9e907c4640096006154e4de8239e97",
+    "growthlab/decision.py": "eb19fe4db31631f733bc2a8d635339dd7397316f706ddef4df82d96d12c9ac57",
+    "growthlab/forks.py": "98f695ce21957e0bb5146cbea02ed0434aaaee19da7a4d756211ccf6e1e350fb",
+    "growthlab/memory.py": "83c6cf7fe07a40f31e565a7be215d026be3628f57673dee61dcd633d64aef52b",
+    "growthlab/models.py": "5831046b024cfc5da2caf530c063f02b24d67994bdd937c6893a027895283e01",
+    "growthlab/records.py": "ad3573c3c7c16700d9e36ef13eabd8286088e09e078796588d827c38e49b395a",
+    "growthlab/state.py": "cae6cd8990191e0757eee3eb71242471c4a0cf2ccb3394f53c14d68267514f64",
+    "u1/__init__.py": "9f1d3ea838ecdb403e0cde95a6ec65e616bac3b55242c97c2187fc49d29fa9b2",
+    "u1/conventions/__init__.py": "85ff66f7929f5142b757228220211e86f43e4285185540d02832174a9d7c06b9",
+    "u1/conventions/core.py": "fe5612bba46bc648d3aebea7b325ec99fbc5931c207304b3fc91cf0e3cbcdff3",
+    "u1/fixtures.py": "cb3ba6b386054007884cc141d2677aad1d78bdd11333cc84a2a08e2315469056",
+    "u1/harness.py": "1c6101e1db1c834c9d993d509e4a48c2f0cfe5c0b549d7224310e9d6e9235b5f",
+    "u1/plan.py": "7c7676ba4680107ce2ec89079b8ce34257d1f8d97f24847a9ff19da0ebf7bd6c",
+    "u1/protocol.py": "28ca4424407d47d848547dcd65d9829493656bec0aecd4dcc712d2a368edaec3",
+    "u1/run.py": "bcbcee034560685238f8ddec52951643387f74f76abe139ef7fc90528fcf2135",
+    "u1/tests.py": "cc676deda64537563011bfa3decabd952e49f9bc4bf8ef665c54e801dab721ac"
+  },
+  "artifact_sha256": {
+    "evidence/u1/scripts_v1.json": "6eced1079bedaa0a63a480b84c11dda9c650be7d4e415d8b8bcb106a798eadac",
+    "evidence/u1/prompts_v1.json": "14eb4f5b823c325e027a1e5c46a51f386ea33b96014bf2da07c473f2339bda34"
+  }
+}
