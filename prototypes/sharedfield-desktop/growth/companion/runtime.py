@@ -18,11 +18,14 @@ from .server import KernelServer
 
 
 class Runtime:
-    def __init__(self,*,acceptance=False,minutes=30):
+    def __init__(self,*,acceptance=False,minutes=30,acceptance_case='kernel-v1'):
         if not 1<=minutes<=30:raise ValueError('session_deadline')
+        if acceptance_case not in ('kernel-v1','search-v1.3'):raise ValueError('acceptance_case')
         self.folder=ROOT/'runs/kernel_v1/sessions'/str(time.time_ns())
         self.folder.mkdir(parents=True)
         self.path=ROOT/('runs/kernel_v1/acceptance/state.sqlite' if acceptance else 'runs/kernel_v1/owner/state.sqlite')
+        if acceptance and acceptance_case=='search-v1.3':
+            self.path=ROOT/'runs/kernel_v1_3/acceptance/state.sqlite'
         self.deadline=time.monotonic()+minutes*60
         self._closed=threading.Event()
         self._close_lock=threading.Lock()
@@ -31,7 +34,8 @@ class Runtime:
         key=read_key()
         self.audit=AuditLog(self.folder,(key,))
         self.audit.write('lifecycle.jsonl',{'event':'supervisor_start','pid':os.getpid(),
-            'unix_s':time.time(),'stop_unix_s':time.time()+minutes*60,'acceptance':acceptance})
+            'unix_s':time.time(),'stop_unix_s':time.time()+minutes*60,'acceptance':acceptance,
+            'acceptance_case':acceptance_case if acceptance else None})
         try:
             ledger=BudgetLedger(DEFAULT_BUDGET,5)
             budget_file=ROOT/'runs/kernel_v1/batch_budget.json'

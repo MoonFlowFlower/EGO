@@ -1,4 +1,4 @@
-# Ego 共享内核 v1.2
+# Ego 共享内核 v1.3
 
 AIRI 桌面与 Minecraft 共用一个 Ego 决策入口、同一份对话、约定、待办和动作回执。当前工程版固定 DeepSeek V4.1 Flash / Wafer；MC 身体没有模型客户端，AIRI 通过本机接口读写这个内核。模型可以替换，状态归 Ego 保存。本版不宣称主观意识或完整学习验收通过。
 
@@ -47,8 +47,8 @@ AIRI 使用 **OpenAI Compatible**：Base URL 为 `http://127.0.0.1:18787/v1/`，
 
 运行日志在 `runs/kernel_v1/sessions/`，均不提交。本批共享原 $5 账本，额外占用上限 $0.50，不释放历史未知预留；固定模型不可用时停止并报告，不悄悄换一个模型完成同一验收。
 
-动作只有观察、接近、跟随、停止、搜索、采集、合成、交付、放置的固定函数及参数。每回合最多八次决定、180 秒，每个有限动作最多 60 秒。跟随持续到停止或会话关闭。有合成格/光标残留时拒绝合成；动作失败返回真实回执并暂停。生成代码执行保持关闭。
+动作只有观察、接近、跟随、停止、搜索、走近已找到方块、采集、合成、交付、放置的固定函数及参数。每回合最多八次决定、180 秒，每个有限动作最多 60 秒。跟随持续到停止或会话关闭。有合成格/光标残留时拒绝合成；执行失败返回真实回执并暂停。完成搜索但没有找到目标属于观察，可继续做不同查询；通用木材查询覆盖八种官方常见原木，只查询已加载区块，上限 128 格。生成代码执行保持关闭。
 
 本版依赖已审核的 AIRI v0.12.0-beta.5、Mindcraft v0.1.4、Java MC 1.21.1 和既有 growth Python 环境；第三方安装仍在仓库外。AIRI 自带 MC 代理及原 Mindcraft Agent 不与本内核并行运行。语音、读屏和 Crafter 不在本轮范围。
 
-工程验收见 `../evidence/kernel_v1/REPORT.md`。离线检查可运行 `python -m unittest companion.test_kernel -v` 和 `node companion/test_bridge.mjs`；它们不调用模型或进入游戏。
+原始接线验收见 `../evidence/kernel_v1/REPORT.md`，搜索修复和三原木实测见 `../evidence/kernel_v1_3/REPORT.md`。离线检查可运行 `python -m unittest companion.test_kernel -v`、`node companion/test_search.mjs` 和 `node companion/test_bridge.mjs`；它们不调用模型或进入游戏。独立搜索验收存档可用 `pythonw -m companion.launcher --acceptance --acceptance-case search-v1.3`，不改原验收或正式存档。

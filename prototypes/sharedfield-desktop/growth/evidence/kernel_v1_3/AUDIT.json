@@ -1,0 +1,321 @@
+{
+  "revision": "v1.3",
+  "live_source": "operator engineering input directly to production Engine; native GUI routing unchanged",
+  "session_id": "1791054969286909400",
+  "event_id": "verification:72c3dd39d22a4cd79cd964d453f8ab7d",
+  "model_calls": 4,
+  "models": [
+    "deepseek/deepseek-v4.1-flash"
+  ],
+  "routes": [
+    [
+      "wafer"
+    ],
+    [
+      "wafer"
+    ],
+    [
+      "wafer"
+    ],
+    [
+      "wafer"
+    ]
+  ],
+  "cost_usd": 0.000705718,
+  "ledger_total": 1.25413547359,
+  "ledger_unknown": 1.0,
+  "decisions": [
+    {
+      "name": "search",
+      "args": {
+        "block": "wood",
+        "range": 32
+      }
+    },
+    {
+      "name": "go_to_block",
+      "args": {
+        "block": "oak_log",
+        "range": 32
+      }
+    },
+    {
+      "name": "collect",
+      "args": {
+        "block": "oak_log",
+        "count": 3
+      }
+    },
+    null
+  ],
+  "receipts": [
+    {
+      "record_id": "5e1cd04ff35e472c81270efb5002f88c",
+      "type": "action_receipt",
+      "event_id": "verification:72c3dd39d22a4cd79cd964d453f8ab7d",
+      "action": {
+        "name": "search",
+        "args": {
+          "block": "wood",
+          "range": 32
+        }
+      },
+      "receipt": {
+        "verified": true,
+        "status": "block_located",
+        "observation_complete": true,
+        "found": true,
+        "query": {
+          "requested": "wood",
+          "block_types": [
+            "oak_log",
+            "spruce_log",
+            "birch_log",
+            "jungle_log",
+            "acacia_log",
+            "dark_oak_log",
+            "mangrove_log",
+            "cherry_log"
+          ],
+          "range": 32,
+          "scope": "loaded_chunks_only",
+          "center": {
+            "x": 12.370583106961718,
+            "y": 109,
+            "z": -49.62400017182084
+          }
+        },
+        "matched_block": "oak_log",
+        "block_position": {
+          "x": 8,
+          "y": 109,
+          "z": -56
+        },
+        "distance": 7.730159798076611,
+        "observed": {
+          "offline": false,
+          "position": {
+            "x": 12.370583106961718,
+            "y": 109,
+            "z": -49.62400017182084
+          },
+          "health": 20,
+          "hunger": 20,
+          "inventory": {
+            "oak_planks": 14,
+            "rotten_flesh": 2,
+            "wooden_pickaxe": 1,
+            "oak_button": 1,
+            "apple": 2,
+            "oak_sapling": 12,
+            "stone_pickaxe": 1,
+            "stick": 8
+          },
+          "crafting_grid": {},
+          "cursor": null,
+          "window": null,
+          "owner": {
+            "name": "Moonlight",
+            "position": {
+              "x": 12.048633894808349,
+              "y": 110,
+              "z": -55.870884413156226
+            },
+            "distance": 6.334604488036374,
+            "height_difference": 1
+          },
+          "controls": {},
+          "current_action": null,
+          "model_client_initialized": false,
+          "generated_code_enabled": false
+        },
+        "output": ""
+      }
+    },
+    {
+      "record_id": "f25f560752f841cca871d288219897f2",
+      "type": "action_receipt",
+      "event_id": "verification:72c3dd39d22a4cd79cd964d453f8ab7d",
+      "action": {
+        "name": "go_to_block",
+        "args": {
+          "block": "oak_log",
+          "range": 32
+        }
+      },
+      "receipt": {
+        "verified": true,
+        "status": "block_approach_checked",
+        "observation_complete": true,
+        "found": true,
+        "query": {
+          "requested": "oak_log",
+          "block_types": [
+            "oak_log"
+          ],
+          "range": 32,
+          "scope": "loaded_chunks_only",
+          "center": {
+            "x": 12.370583106961718,
+            "y": 109,
+            "z": -49.62400017182084
+          }
+        },
+        "matched_block": "oak_log",
+        "block_position": {
+          "x": 8,
+          "y": 109,
+          "z": -56
+        },
+        "distance": 4.443139148139892,
+        "observed": {
+          "offline": false,
+          "position": {
+            "x": 10.65476185829737,
+            "y": 109,
+            "z": -52.43717458111364
+          },
+          "health": 20,
+          "hunger": 20,
+          "inventory": {
+            "oak_planks": 14,
+            "rotten_flesh": 2,
+            "wooden_pickaxe": 1,
+            "oak_button": 1,
+            "apple": 2,
+            "oak_sapling": 12,
+            "stone_pickaxe": 1,
+            "stick": 8
+          },
+          "crafting_grid": {},
+          "cursor": null,
+          "window": null,
+          "owner": {
+            "name": "Moonlight",
+            "position": {
+              "x": 12.048633894808349,
+              "y": 110,
+              "z": -55.870884413156226
+            },
+            "distance": 3.838390608683958,
+            "height_difference": 1
+          },
+          "controls": {},
+          "current_action": null,
+          "model_client_initialized": false,
+          "generated_code_enabled": false
+        },
+        "output": "Found non-destructive path.\nYou have reached at 8, 109, -56.\n"
+      }
+    },
+    {
+      "record_id": "0a2cf2d169b946f286f748419753e8b9",
+      "type": "action_receipt",
+      "event_id": "verification:72c3dd39d22a4cd79cd964d453f8ab7d",
+      "action": {
+        "name": "collect",
+        "args": {
+          "block": "oak_log",
+          "count": 3
+        }
+      },
+      "receipt": {
+        "verified": true,
+        "status": "collection_inventory_checked",
+        "item": "oak_log",
+        "gained": 3,
+        "observed": {
+          "offline": false,
+          "position": {
+            "x": 7.634917036796944,
+            "y": 109,
+            "z": -57.4985135610956
+          },
+          "health": 20,
+          "hunger": 20,
+          "inventory": {
+            "oak_planks": 14,
+            "rotten_flesh": 2,
+            "wooden_pickaxe": 1,
+            "oak_button": 1,
+            "oak_log": 3,
+            "apple": 2,
+            "oak_sapling": 12,
+            "stone_pickaxe": 1,
+            "stick": 8
+          },
+          "crafting_grid": {},
+          "cursor": null,
+          "window": null,
+          "owner": {
+            "name": "Moonlight",
+            "position": {
+              "x": 12.048633894808349,
+              "y": 110,
+              "z": -55.870884413156226
+            },
+            "distance": 4.809373467086531,
+            "height_difference": 1
+          },
+          "controls": {},
+          "current_action": null,
+          "model_client_initialized": false,
+          "generated_code_enabled": false
+        },
+        "output": "Collected 3 oak_log.\n"
+      }
+    }
+  ],
+  "live_result": {
+    "passed": true,
+    "log_inventory_gain": 3,
+    "before_position": {
+      "x": 12.370583106961718,
+      "y": 109,
+      "z": -49.62400017182084
+    },
+    "after_position": {
+      "x": 7.634917036796944,
+      "y": 109,
+      "z": -57.4985135610956
+    },
+    "owner_position_unchanged": true
+  },
+  "closed": [
+    {
+      "event": "body_exit",
+      "unix_s": 1791054990.8641362,
+      "exit_code": 0
+    },
+    {
+      "event": "supervisor_closed",
+      "reason": "engineering_wood_check_finished",
+      "unix_s": 1791054991.029322,
+      "budget_total": 1.25413547359
+    }
+  ],
+  "body_state_samples": 20,
+  "all_body_samples_model_free_and_code_off": true,
+  "frozen_files": 27,
+  "frozen_changed": [],
+  "secret_scan_hits": [],
+  "raw_hashes": {
+    "runs/kernel_v1/sessions/1791054969286909400/actions.jsonl": "c3c5620e6c6a7443c8a134332b83aa55368af5866511f48e60c5f6ce961fd1c9",
+    "runs/kernel_v1/sessions/1791054969286909400/airi_events.jsonl": "394011ed1b27e10f2b044c951f62eb08eb974be03188da84b42aff05cb02ed6a",
+    "runs/kernel_v1/sessions/1791054969286909400/body_events.jsonl": "127de64aa45562efe559daff2bb6544961f17f4b886c69847d1a24f7334fa26c",
+    "runs/kernel_v1/sessions/1791054969286909400/body_states.jsonl": "19c6f7b1c1b45aae9f5f5792c4710094d441c1081fb82ff5e64163be1b9afd75",
+    "runs/kernel_v1/sessions/1791054969286909400/lifecycle.jsonl": "234bfefe0fbf60de5e370996f645ab99c949c24175654965cfbae6129b214d0a",
+    "runs/kernel_v1/sessions/1791054969286909400/model.jsonl": "546635a4933619361abf6cd3fa95ae4e3c60c6a7d83523f8be70193806e854ba",
+    "runs/kernel_v1/sessions/1791054969286909400/preflight.jsonl": "ef48866ca2791529c2e027d76262927f62c34d71c39b5049a6cef1c6d6c18763",
+    "runs/kernel_v1/sessions/1791054969286909400/routing.jsonl": "2828ab7400dd6df4ad325a00ed34d203cbb751e720d93a7c766328f6aeb115f3",
+    "runs/kernel_v1_3/LIVE_RESULT.json": "5d094f06261133296a37443dd759abd704d15a01561fe68585dd5d15251ac778",
+    "runs/kernel_v1_3/diagnosis/RESULT.json": "d5967bd885dbb313518c1fb7db4161d058839b6b7eb716e5acb782c1bdd72585",
+    "runs/kernel_v1_3/readonly_after_fix/RESULT.json": "d0181bf0e10640afb2eaac5c08f1e069443031bc67e21ce98045a1efb08d5d5f"
+  },
+  "limits": [
+    "environment query changed between checks; do not attribute nearby log discovery to radius extension",
+    "no 64-128-block navigation acceptance; tested near target",
+    "real-model production Engine entry used; native GUI route not repeated",
+    "negative-query continuation independently covered offline; live first query found logs"
+  ]
+}

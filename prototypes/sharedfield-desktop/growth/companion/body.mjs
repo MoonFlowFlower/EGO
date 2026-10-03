@@ -5,6 +5,7 @@ import readline from 'node:readline';
 import {createRequire} from 'node:module';
 import {pathToFileURL} from 'node:url';
 import repair1211 from '../p7/protocol_1211.cjs';
+import {searchBlocks} from './search.mjs';
 
 const lines = readline.createInterface({input:process.stdin});
 const input = lines[Symbol.asyncIterator]();
@@ -28,7 +29,7 @@ const world = await load('src/agent/library/world.js');
 const {goals,Movements} = req('mineflayer-pathfinder');
 if(config.probe) {
   emit({kind:'offline_probe',model_client_initialized:false,generated_code_enabled:false,
-    protocol_patch:true,skills:['goToPlayer','collectBlock','craftRecipe','giveToPlayer','placeBlock'].every(k=>typeof skills[k]==='function')});
+    protocol_patch:true,skills:['goToPlayer','goToPosition','collectBlock','craftRecipe','giveToPlayer','placeBlock'].every(k=>typeof skills[k]==='function')});
   process.exit(0);
 }
 const bot = mc.initBot('EgoP7');
@@ -57,12 +58,12 @@ function interrupt() {
   if(current==='follow')current=null;
 }
 function allowed(action) {
-  const spec={inspect:[],approach:[],follow:[],stop:[],search:['block','range'],collect:['block','count'],craft:['item','count'],give:['item','count'],place:['block']};
+  const spec={inspect:[],approach:[],follow:[],stop:[],search:['block','range'],go_to_block:['block','range'],collect:['block','count'],craft:['item','count'],give:['item','count'],place:['block']};
   if(!action||!Object.hasOwn(spec,action.name)||!action.args||Object.keys(action).sort().join()!=['args','name'].join()||Object.keys(action.args).sort().join()!=spec[action.name].slice().sort().join())throw new Error('action_not_allowed');
   for(const [k,v] of Object.entries(action.args)) {
     if(['item','block'].includes(k)&&!(typeof v==='string'&&/^[a-z][a-z0-9_]{0,63}$/.test(v)))throw new Error('invalid_identifier');
     if(k==='count'&&!(Number.isInteger(v)&&v>=1&&v<=(action.name==='give'?16:8)))throw new Error('invalid_count');
-    if(k==='range'&&!(Number.isInteger(v)&&v>=8&&v<=64))throw new Error('invalid_range');
+    if(k==='range'&&!(Number.isInteger(v)&&v>=8&&v<=128))throw new Error('invalid_range');
   }
 }
 async function run(message) {
@@ -95,10 +96,14 @@ async function run(message) {
         bot.pathfinder.setMovements(movement);bot.pathfinder.setGoal(new goals.GoalFollow(owner,2),true);
         return {verified:true,status:'following_started_only'};
       }
-      if(name==='search') {
-        if(mc.getBlockId(args.block)===null)return {verified:false,status:'unknown_block'};
-        const block=world.getNearestBlock(bot,args.block,args.range);
-        return {verified:!!block,status:block?'block_located':'block_not_found',block_position:block?.position};
+      if(name==='search')return searchBlocks(bot,mc,world,args.block,args.range);
+      if(name==='go_to_block') {
+        const target=searchBlocks(bot,mc,world,args.block,args.range);
+        if(!target.found)return {...target,verified:false,status:'navigation_target_not_found'};
+        const pos=target.block_position;
+        await skills.goToPosition(bot,pos.x,pos.y,pos.z,4);
+        const distance=bot.entity.position.distanceTo(pos);
+        return {...target,verified:distance<=5,status:'block_approach_checked',distance};
       }
       if(name==='collect') {
         if(mc.getBlockId(args.block)===null)return {verified:false,status:'unknown_block'};

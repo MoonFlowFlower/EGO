@@ -130,6 +130,54 @@ class Tests(unittest.TestCase):
         answer=self.engine(model,max_decisions=1).run('cap','minecraft','看看')
         self.assertEqual(model.calls,1);self.assertIn('已用完',answer)
 
+    def test_negative_search_continues_to_different_query_and_collection(self):
+        original=self.body.start_action
+        def start(action,**kwargs):
+            if action['name']=='search' and action['args']['block']=='oak_log':
+                self.body.actions.append(action)
+                future=concurrent.futures.Future()
+                future.set_result({'verified':False,'status':'block_not_found','observation_complete':True,
+                                   'found':False,'query':{'scope':'loaded_chunks_only','range':32}})
+                return future
+            return original(action,**kwargs)
+        self.body.start_action=start
+        model=Model(decision(action={'name':'search','args':{'block':'oak_log','range':32}}),
+                    decision(action={'name':'search','args':{'block':'wood','range':128}}),
+                    decision(action={'name':'collect','args':{'block':'spruce_log','count':3}}),decision('已采到。'))
+        answer=self.engine(model).run('wood','minecraft','采木头')
+        self.assertEqual(answer,'已采到。')
+        self.assertEqual([a['name'] for a in self.body.actions],['search','search','collect'])
+        self.assertFalse(model.contexts[1]['receipts'][0]['verified'])
+        self.assertNotIn('execution_blocked',model.contexts[1])
+
+    def test_repeated_negative_search_does_not_loop(self):
+        def start(action,**kwargs):
+            self.body.actions.append(action);future=concurrent.futures.Future()
+            future.set_result({'verified':False,'status':'block_not_found','observation_complete':True,
+                               'found':False,'query':{'scope':'loaded_chunks_only'}});return future
+        self.body.start_action=start
+        d=decision(action={'name':'search','args':{'block':'wood','range':128}})
+        model=Model(d,d)
+        answer=self.engine(model).run('repeat','minecraft','采木头')
+        self.assertEqual(len(self.body.actions),1);self.assertEqual(model.calls,2)
+        self.assertIn('已经尝试过',answer)
+
+    def test_failed_queries_and_navigation_still_block_and_record_explanation(self):
+        from .engine import completed_negative_search
+        self.assertFalse(completed_negative_search({'name':'search'}, {'status':'unknown_block','verified':False}))
+        self.assertFalse(completed_negative_search({'name':'go_to_block'},
+            {'status':'block_not_found','observation_complete':True,'found':False,'query':{'scope':'loaded_chunks_only'}}))
+        self.body.verified=False
+        model=Model(decision(action={'name':'search','args':{'block':'unknown','range':32}}),decision('没有有效查询。'))
+        self.engine(model).run('bad','minecraft','查找')
+        self.assertTrue(model.contexts[1]['execution_blocked']);self.assertEqual(len(self.body.actions),1)
+        m=Memory(self.path)
+        saved=[r['body'] for r in m.library.rows('reflection') if r['body'].get('execution_blocked')]
+        m.close();self.assertEqual(saved[0]['decision']['reply'],'没有有效查询。')
+        for name in ('search','go_to_block'):
+            validate_action({'name':name,'args':{'block':'wood','range':128}})
+            with self.assertRaises(ValueError):validate_action({'name':name,'args':{'block':'wood','range':129}})
+
     def test_budget_refusal_keeps_unknown_reservation(self):
         ledger=BudgetLedger(Path(self.tmp.name)/'budget.sqlite',.10)
         charge=ledger.reserve(.08);ledger.settle(charge,{})

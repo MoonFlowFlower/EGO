@@ -12,7 +12,7 @@ CONVERSATION_ID = 'ego:Moonlight'
 PROMPT = Path(__file__).with_name('prompt.txt').read_text(encoding='utf-8')
 STOP = re.compile(r'^(?:请|先)?(?:停下|停止|别动|暂停|stop)[。！!\s]*$', re.I)
 ACTION_FIELDS = {'inspect': set(), 'approach': set(), 'follow': set(), 'stop': set(),
-                 'search': {'block', 'range'}, 'collect': {'block', 'count'},
+                 'search': {'block', 'range'}, 'go_to_block': {'block', 'range'}, 'collect': {'block', 'count'},
                  'craft': {'item', 'count'}, 'give': {'item', 'count'}, 'place': {'block'}}
 
 
@@ -27,9 +27,15 @@ def validate_action(action):
             raise ValueError('invalid_game_identifier')
         if key == 'count' and (type(value) is not int or not 1 <= value <= (16 if name == 'give' else 8)):
             raise ValueError('invalid_action_count')
-        if key == 'range' and (type(value) is not int or not 8 <= value <= 64):
+        if key == 'range' and (type(value) is not int or not 8 <= value <= 128):
             raise ValueError('invalid_search_range')
     return action
+
+
+def completed_negative_search(action, receipt):
+    return (action['name'] == 'search' and receipt.get('status') == 'block_not_found'
+            and receipt.get('observation_complete') is True and receipt.get('found') is False
+            and receipt.get('query', {}).get('scope') == 'loaded_chunks_only')
 
 
 class Engine:
@@ -158,12 +164,15 @@ class Engine:
                                                     'action': action, 'receipt': receipt}, parents)
                         self.audit.write('actions.jsonl', {'event_id': event_id, 'step': index, 'action': action['name'],
                                                           'verified': receipt.get('verified', False), 'status': receipt.get('status')})
-                        # Return one failed receipt to the model for an explanation, but no more actions.
-                        if not receipt.get('verified'):
+                        # An empty search is evidence for the next decision, not an execution fault.
+                        # Actual execution failures still admit one explanation and no more actions.
+                        if not receipt.get('verified') and not completed_negative_search(action, receipt):
                             context['receipts'] = receipts
                             context['body'] = self.body.snapshot()
                             if index + 1 < self.max_decisions and epoch == self._epoch:
                                 result = self.model.decide(PROMPT, {**context, 'execution_blocked': True})
+                                memory.append('reflection', {'type': 'kernel_decision', 'event_id': event_id,
+                                    'step': index + 1, 'execution_blocked': True, 'decision': result}, parents)
                                 if epoch == self._epoch and isinstance(result, dict) and result.get('action') is None and isinstance(result.get('reply'), str):
                                     say(result['reply'])
                             say('这一步没有得到成功确认，动作已暂停，任务仍保留。')

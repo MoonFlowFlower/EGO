@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import {searchBlocks} from './search.mjs';
+const vec=(x,y,z)=>({x,y,z,distanceTo(p){return Math.hypot(x-p.x,y-p.y,z-p.z)}});
+const bot={entity:{position:vec(0,0,0)}};
+const mc={WOOD_TYPES:['oak','spruce','birch','jungle','acacia','dark_oak','mangrove','cherry'],getBlockId:n=>n==='unknown'?null:1};
+let query;
+const world={getNearestBlocks(_bot,names,range,count){query={names,range,count};return names.includes('spruce_log')?[{name:'spruce_log',position:vec(70,0,0)}]:[]}};
+const wood=searchBlocks(bot,mc,world,'wood',128);
+assert.equal(query.names.length,8);assert.equal(query.count,1);
+assert.equal(wood.matched_block,'spruce_log');assert.equal(wood.distance,70);
+assert.equal(wood.found,true);assert.equal(wood.verified,true);
+const exact=searchBlocks(bot,mc,world,'oak_log',64);
+assert.deepEqual(query.names,['oak_log']);assert.equal(exact.found,false);
+assert.equal(exact.verified,false);assert.equal(exact.observation_complete,true);
+assert.equal(exact.query.scope,'loaded_chunks_only');assert.equal(exact.query.range,64);
+assert.equal(searchBlocks(bot,mc,world,'unknown',32).observation_complete,false);
+console.log('search observation checks passed: 8 wood types, exact target, truthful negative result, unknown rejected');

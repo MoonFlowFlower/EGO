@@ -11,6 +11,7 @@ from .runtime import Runtime
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--acceptance',action='store_true')
+    parser.add_argument('--acceptance-case',choices=('kernel-v1','search-v1.3'),default='kernel-v1')
     args=parser.parse_args()
     window=tk.Tk()
     window.title('Ego 共享内核'+(' · 工程验收' if args.acceptance else ''))
@@ -50,7 +51,7 @@ def main():
     ttk.Button(controls,text='同步 MC 回复',command=replay).pack(side='left',padx=10)
     window.protocol('WM_DELETE_WINDOW',close)
     def boot():
-        try:messages.put(('ready',Runtime(acceptance=args.acceptance)))
+        try:messages.put(('ready',Runtime(acceptance=args.acceptance,acceptance_case=args.acceptance_case)))
         except Exception as error:messages.put(('error',type(error).__name__))
     def tick():
         try:
