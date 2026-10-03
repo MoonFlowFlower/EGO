@@ -1,0 +1,77 @@
+{
+  "raw_relative_path": "runs/p7/body_connected_v2/1791040888349906400/events.jsonl",
+  "raw_sha256": "a68f0b83585655b5da9a41cc3376cb8929e294568df19da85cdbdc642d257cfb",
+  "generated_code_enabled_samples": 0,
+  "state_samples": 372,
+  "spawn_observed": true,
+  "protocol_read_error_count": 0,
+  "follow": {
+    "window_s": 60,
+    "samples": 60,
+    "owner_observed": false,
+    "initial_position": {
+      "x": 17.45,
+      "y": 97,
+      "z": 1.59
+    },
+    "final_position": {
+      "x": 17.45,
+      "y": 97,
+      "z": 1.59
+    },
+    "result": "NOT_DEMONSTRATED"
+  },
+  "tree": {
+    "window_s": 180,
+    "first_oak_log_s": 29.604,
+    "initial_inventory": {
+      "rotten_flesh": 2
+    },
+    "inventory_before_next_task": {
+      "rotten_flesh": 2,
+      "oak_log": 2
+    },
+    "tree_location_before_input": "unknown",
+    "result": "INVENTORY_POSTCONDITION_MET"
+  },
+  "pickaxe": {
+    "window_s": 180,
+    "samples": 180,
+    "first_pickaxe_s": null,
+    "final_inventory": {
+      "oak_planks": 6,
+      "stick": 4,
+      "rotten_flesh": 2
+    },
+    "result": "FAIL"
+  },
+  "stop": {
+    "initial_action": {
+      "current": "Idle",
+      "isIdle": true
+    },
+    "command_delay_s": 1.37,
+    "samples_first_15s": 15,
+    "all_idle": true,
+    "result": "IDLE_ACK_ONLY_NO_INTERRUPTION_PROOF"
+  },
+  "proxy": {
+    "outcomes": {
+      "started": 2,
+      "rejected": 261,
+      "completed": 23
+    },
+    "charged_events": 23,
+    "reported_cost_usd": 0.002725636,
+    "routes": [
+      [
+        "deepseek/deepseek-v4.1-flash",
+        "wafer"
+      ]
+    ]
+  },
+  "owner_visible_bot": "not_confirmed",
+  "owner_15min_trial": "not_done",
+  "airi_mc": "blocked_generated_javascript",
+  "local_voice": "unavailable"
+}

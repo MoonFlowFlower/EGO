@@ -1,0 +1,32 @@
+{
+  "probe": {
+    "unix_ms": 1791041124838,
+    "kind": "offline_probe",
+    "mutationBlocked": true,
+    "codeBlocked": true,
+    "newActionPresent": false,
+    "controlServerStarted": false,
+    "minecraft_version": "1.21.1",
+    "model": {
+      "api": "openai",
+      "model": "ego-companion",
+      "url": "http://127.0.0.1:18787/v1",
+      "params": {
+        "temperature": 0,
+        "max_tokens": 1024
+      }
+    },
+    "embedding": {
+      "api": "openai",
+      "model": "text-embedding-3-small",
+      "url": "http://127.0.0.1:18787/v1"
+    }
+  },
+  "supervisor_exit": 0,
+  "child_exit": 0,
+  "job_tests": 3,
+  "recipe_regression": "PASS",
+  "full_packet_bytes": 108271,
+  "full_packet_recipes": 1290,
+  "scope": "offline safeguards plus real captured packet, not gameplay outcome"
+}

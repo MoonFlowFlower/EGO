@@ -1,0 +1,112 @@
+{
+  "files": [
+    {
+      "file": "prototypes/sharedfield-desktop/growth/evidence/p7/MC_CONNECTED_AUDIT.json",
+      "git_bytes_match_worktree": true,
+      "sha256": "d9e8c3215379c2bbcd803226d61d149540a7cf6d5bec057f903256765060bcc2"
+    },
+    {
+      "file": "prototypes/sharedfield-desktop/growth/evidence/p7/MC_CONNECTED_BUDGET_FREEZE.json",
+      "git_bytes_match_worktree": true,
+      "sha256": "b97068a9afa854b3cdb69a2d442fe3a337734193065b6209e03d8850800796ed"
+    },
+    {
+      "file": "prototypes/sharedfield-desktop/growth/evidence/p7/MC_CONNECTED_DEPENDENCIES.md",
+      "git_bytes_match_worktree": true,
+      "sha256": "784e16bc29efcd5a759839d9d9018bc5c185848780913f812c768a01fd1578d1"
+    },
+    {
+      "file": "prototypes/sharedfield-desktop/growth/evidence/p7/MC_CONNECTED_DEPENDENCIES_FREEZE.json",
+      "git_bytes_match_worktree": true,
+      "sha256": "1ab9a8d9eeb26e7a992028afb7b43105d34d220f3131a5e0ac5f0c3556efe4a7"
+    },
+    {
+      "file": "prototypes/sharedfield-desktop/growth/evidence/p7/MC_CONNECTED_ENGINEERING.json",
+      "git_bytes_match_worktree": true,
+      "sha256": "66b0ecf1bf37fbe8838d83c85f15e681bea77505c947ba5c3c90615aaeba7f78"
+    },
+    {
+      "file": "prototypes/sharedfield-desktop/growth/evidence/p7/MC_CONNECTED_FREEZE.json",
+      "git_bytes_match_worktree": true,
+      "sha256": "3aa60509bfc1bbab84d497187a378171f8cc7161338002da6da794ed93bc7496"
+    },
+    {
+      "file": "prototypes/sharedfield-desktop/growth/evidence/p7/MC_CONNECTED_PRE_RUN.md",
+      "git_bytes_match_worktree": true,
+      "sha256": "0a68b2a0b11905158b64dc2c92691c64f52e927908b0e1e6f3f908788bb6ddc6"
+    },
+    {
+      "file": "prototypes/sharedfield-desktop/growth/evidence/p7/MC_CONNECTED_REPORT.md",
+      "git_bytes_match_worktree": true,
+      "sha256": "05e9d03f38a39e35b41b1e61ccdfc0140c27a38c60bebc8673e07a2183499e63"
+    },
+    {
+      "file": "prototypes/sharedfield-desktop/growth/evidence/p7/MC_CONNECTED_RESULTS.json",
+      "git_bytes_match_worktree": true,
+      "sha256": "a663cc3f983e2aff8ae1ec5b6104d2941f600ee6e10eb88d15e4765983b26580"
+    },
+    {
+      "file": "prototypes/sharedfield-desktop/growth/evidence/p7/MC_CONNECTED_V2_FREEZE.json",
+      "git_bytes_match_worktree": true,
+      "sha256": "944c3f7bf63e5761cdf5bb4b91c2afd3bb7d3388c44e6e4535fd96b7650e1cbc"
+    },
+    {
+      "file": "prototypes/sharedfield-desktop/growth/evidence/p7/MC_CONNECTED_V2_PRE_RUN.md",
+      "git_bytes_match_worktree": true,
+      "sha256": "1f2a375e7a0f281f626195fbd0ab03f9705c3c1f771f308ea12a2c6ec9533977"
+    },
+    {
+      "file": "prototypes/sharedfield-desktop/growth/evidence/p7/MC_ENVIRONMENT_BEFORE_TREE.md",
+      "git_bytes_match_worktree": true,
+      "sha256": "c0550ba984cf2b6fd67a3a361bd4713f2a1ef9274d9e5104cc2b3ce02c5262ea"
+    },
+    {
+      "file": "prototypes/sharedfield-desktop/growth/evidence/p7/OWNER_START.md",
+      "git_bytes_match_worktree": true,
+      "sha256": "68adc2a074fc35d11d14fd88b17d8e9079fd884df3ddeee893b89cd04d057154"
+    },
+    {
+      "file": "prototypes/sharedfield-desktop/growth/p7/body_session_v2.py",
+      "git_bytes_match_worktree": true,
+      "sha256": "1fe527b601ed3343f2e59e53663660ad793078e68d3f9151c07ab37229c9004c"
+    },
+    {
+      "file": "prototypes/sharedfield-desktop/growth/p7/connected_proxy.py",
+      "git_bytes_match_worktree": true,
+      "sha256": "fe4f2ad9ec7ae786fe5385a2823694f5d88b604da6ea948b1347011a0d0bad1f"
+    },
+    {
+      "file": "prototypes/sharedfield-desktop/growth/p7/mindcraft_body_v2.mjs",
+      "git_bytes_match_worktree": true,
+      "sha256": "44aa677f6415b57ddbccb748592f71b1f8320e23ab8ab78509792e5b1e190231"
+    },
+    {
+      "file": "prototypes/sharedfield-desktop/growth/p7/protocol_1211.cjs",
+      "git_bytes_match_worktree": true,
+      "sha256": "236db5df4debe4436098b128525d8df19183e4f35713288353d07b4edd4d49a7"
+    },
+    {
+      "file": "prototypes/sharedfield-desktop/growth/p7/protocol_probe.cjs",
+      "git_bytes_match_worktree": true,
+      "sha256": "b9ecaf0338cc6c81abe42c9dce5b868ad7fe217d2886014575637326b7ed1fc0"
+    },
+    {
+      "file": "prototypes/sharedfield-desktop/growth/p7/start_body_v2.py",
+      "git_bytes_match_worktree": true,
+      "sha256": "d7e99855b9d63717902c4aa5ec52e1095b601ef6081d12b36f8c3e859d2672b4"
+    },
+    {
+      "file": "prototypes/sharedfield-desktop/growth/p7/summarize_connected.py",
+      "git_bytes_match_worktree": true,
+      "sha256": "9f3071e80d7c29486dc95fe2995ffcfc5d393790652b6d0531fe81d885f8d448"
+    },
+    {
+      "file": "prototypes/sharedfield-desktop/growth/p7/test_protocol_1211.cjs",
+      "git_bytes_match_worktree": true,
+      "sha256": "9b026ee93132da7c708b6247d2483dd393a87598b82573f1ab4a9f2b27897f14"
+    }
+  ],
+  "scanned_staged_cloud_secret_matches": 0,
+  "whitespace_check": "PASS with cr-at-eol; preserve Windows frozen bytes",
+  "runs_staged": false
+}

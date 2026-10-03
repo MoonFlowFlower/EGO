@@ -1,0 +1,18 @@
+{
+  "cloud_secret_scan_files": 484,
+  "cloud_secret_matches": 0,
+  "frozen_source_checks": 11,
+  "all_frozen_sources_match": true,
+  "tracked_runs_files": 0,
+  "budget_at_end_usd": 1.24041470159,
+  "round_reported_cost_usd": 0.0027256359999998647,
+  "historical_unknown_usd": 1,
+  "body_supervisor_exit": 0,
+  "body_child_exit": 1,
+  "body_child_exit_reason": "LoginGuard disconnect.quitting after requested shutdown",
+  "proxy_exit": 0,
+  "server_pid_preserved": 37108,
+  "client_pid_preserved": 16676,
+  "local_token_scan_files": 485,
+  "local_token_matches": 0
+}

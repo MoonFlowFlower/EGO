@@ -1,0 +1,11 @@
+{
+  "pre_run_sha256": "0a68b2a0b11905158b64dc2c92691c64f52e927908b0e1e6f3f908788bb6ddc6",
+  "body_freeze_sha256": "c8738c30196136967fa63724f0443837e6ef0ab0a82c4c6767c4534ce5a78aad",
+  "budget_at_start_usd": 1.2376890655900001,
+  "additional_occupancy_limit_usd": 0.5,
+  "host": "127.0.0.1",
+  "port": 25565,
+  "owner": "Moonlight",
+  "server_version": "1.21.1",
+  "protocol": 767
+}

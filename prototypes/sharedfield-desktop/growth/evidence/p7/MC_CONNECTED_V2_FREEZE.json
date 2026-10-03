@@ -1,0 +1,21 @@
+{
+  "source": {
+    "p7/protocol_1211.cjs": "236db5df4debe4436098b128525d8df19183e4f35713288353d07b4edd4d49a7",
+    "evidence/p7/MC_CONNECTED_V2_PRE_RUN.md": "1f2a375e7a0f281f626195fbd0ab03f9705c3c1f771f308ea12a2c6ec9533977",
+    "p7/body_session_v2.py": "1fe527b601ed3343f2e59e53663660ad793078e68d3f9151c07ab37229c9004c",
+    "p7/mindcraft_body_v2.mjs": "44aa677f6415b57ddbccb748592f71b1f8320e23ab8ab78509792e5b1e190231"
+  },
+  "frozen_utc": "2026-10-03T15:19:47.5965484Z",
+  "dependencies": {
+    "node_modules/protodef/src/serializer.js": "64e3146db3c3a56d33b1583d8ef3bcf4b0cd05911214c69260e2fd0105a1dc0e",
+    "node_modules/mineflayer-pvp/lib/PVP.js": "55a14ffdd471f619263e7d416b45fb7945cd649c7f1316bf45f73560e8733a2d",
+    "node_modules/mineflayer/lib/plugins/place_block.js": "6d9941df1725432adb12c3a439de4806077c134e569b3af78a80882bd2737d1b",
+    "node_modules/mineflayer-pathfinder/lib/movements.js": "98f585fa4f390ae3b784baeb9bd15920be94acf89633ba0db5b47a1f01de6cac",
+    "node_modules/mineflayer/lib/plugins/inventory.js": "c7c4eb12a4ba606b2abd6ea62701933fd10f3751297590e6b2ee56d78798b4a8",
+    "package-lock.json": "9b454b3f2650d83d9a1ea09c703ee43bb6657907921393201100bc3721a01d0a",
+    "node_modules/minecraft-data/minecraft-data/data/pc/1.21.1/protocol.json": "1f5f23d1d1425a12d1b46d78dbc2b79038ea456cc1be11c942a79bebd8d3f43a",
+    "node_modules/mineflayer/lib/plugins/digging.js": "e615773295934145c59dbcd8502316def235ff337ea77f42d5a5781a4474a85e",
+    "node_modules/prismarine-viewer/viewer/lib/entity/Entity.js": "eb79b793f6be23cb8928e5bf1a393fcbf92ba2b7ba50b9bcb0a5ab26199e5631",
+    "node_modules/mineflayer-pathfinder/index.js": "2934951bb9e3391452ea866efe96c6342a36f98c8be5060de20fae91120175cd"
+  }
+}
