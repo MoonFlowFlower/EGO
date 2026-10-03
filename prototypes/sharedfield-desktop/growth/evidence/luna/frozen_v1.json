@@ -1,0 +1,122 @@
+{
+  "version": "luna-trial-v1",
+  "created_utc": "2026-10-03T09:50:04.177645+00:00",
+  "source_sha256": {
+    "growthlab/consolidation.py": "941ac5e159b1122e82a0dbc1bde798eb1c9e907c4640096006154e4de8239e97",
+    "growthlab/decision.py": "eb19fe4db31631f733bc2a8d635339dd7397316f706ddef4df82d96d12c9ac57",
+    "growthlab/forks.py": "98f695ce21957e0bb5146cbea02ed0434aaaee19da7a4d756211ccf6e1e350fb",
+    "growthlab/memory.py": "83c6cf7fe07a40f31e565a7be215d026be3628f57673dee61dcd633d64aef52b",
+    "growthlab/models.py": "5831046b024cfc5da2caf530c063f02b24d67994bdd937c6893a027895283e01",
+    "growthlab/records.py": "ad3573c3c7c16700d9e36ef13eabd8286088e09e078796588d827c38e49b395a",
+    "growthlab/state.py": "cae6cd8990191e0757eee3eb71242471c4a0cf2ccb3394f53c14d68267514f64",
+    "u1/__init__.py": "9f1d3ea838ecdb403e0cde95a6ec65e616bac3b55242c97c2187fc49d29fa9b2",
+    "u1/conventions/__init__.py": "85ff66f7929f5142b757228220211e86f43e4285185540d02832174a9d7c06b9",
+    "u1/conventions/core.py": "fe5612bba46bc648d3aebea7b325ec99fbc5931c207304b3fc91cf0e3cbcdff3",
+    "u1/fixtures.py": "cb3ba6b386054007884cc141d2677aad1d78bdd11333cc84a2a08e2315469056",
+    "u1/harness.py": "1c6101e1db1c834c9d993d509e4a48c2f0cfe5c0b549d7224310e9d6e9235b5f",
+    "u1/plan.py": "7c7676ba4680107ce2ec89079b8ce34257d1f8d97f24847a9ff19da0ebf7bd6c",
+    "u1/protocol.py": "28ca4424407d47d848547dcd65d9829493656bec0aecd4dcc712d2a368edaec3",
+    "u1/run.py": "bcbcee034560685238f8ddec52951643387f74f76abe139ef7fc90528fcf2135",
+    "u1/tests.py": "cc676deda64537563011bfa3decabd952e49f9bc4bf8ef665c54e801dab721ac",
+    "evidence/u1/scripts_v1.json": "6eced1079bedaa0a63a480b84c11dda9c650be7d4e415d8b8bcb106a798eadac",
+    "evidence/u1/prompts_v1.json": "14eb4f5b823c325e027a1e5c46a51f386ea33b96014bf2da07c473f2339bda34",
+    "p7/proxy.py": "3f49356f54fc71781c2d0e6d0e06400e7af5543b43561b0aeae43ce4ea804eaf",
+    "p7/routing.py": "68cab0ee0a9fdf7697835ac7bed475551be48258f6f3ae447acc0ce0fdfad57f",
+    "p7/routing_v1.json": "7b51874153c74a4134e1fdf24ad6f2dbe65206bb8d63774cb8985916f9c98d38",
+    "p7/runtime_session.py": "7106aa8857cf2b6627fe797f64022118d31056e6107986865d16cc3ddb1f6f01",
+    "p7/launch_proxy.py": "ede66a0d34b28833dbef04f2f7400fb89ce1afe71660d487fc8e90a0df385269",
+    "p7/smoke_routing.py": "4f9b795cb1174e4b7f89229fd47efbddadacdd194275ea92f7f8be5152385eeb",
+    "p7/test_proxy.py": "414280cd54281a919b8a428bf92491f50a8c36a024067ad3f578a5dfe517089a",
+    "p7/test_routing.py": "f1734545cf524b27aefb67e782f7c1b032f8a0089938d31a76144c10b9135122",
+    "evidence/routing/ROUTING_V1_PRE_RUN.md": "4d69c709143a548924bca1d2388ce884f29d4b67ab6a647148549dd339cf93d7",
+    "p7/routing_v2.py": "8dd7567e9bb056d255ed83e008a3bb12b29fbb9775f71d67101204bbc446eec4",
+    "p7/routing_v2.json": "400806b87525a06e6f5c888bc565bd34e7a5fa79bf6077aa661ebfc4f159885a",
+    "p7/active_proxy.py": "e2deb264edbfd5ef46177806bdd5dc551b0dde69ec6908b6578a12ae3b86ec8a",
+    "p7/smoke_routing_v2.py": "422c10b0dfce18137d128cd5caa5c19de65aae2cf073ae158213ccce9c6d51a2",
+    "p7/test_routing_v2.py": "a1e88c7958976769528229cf2e3273fb56a146d5ac391d3e4a988edb256f8707",
+    "evidence/routing/ROUTING_V2_PRE_RUN.md": "b17559cf8463e945fbe457736ac34df71a447e767a45dfbe6ac2f080deb4c22e",
+    "p7/luna.py": "fbb47cd6dc223a98deacd8f8108b02fd57e5968f24d4392eedd2b2309840ff90",
+    "p7/test_luna.py": "74426c57a209e88b1164cfbd23ef5c552500951eb28f1daeb3891ef82ca1e161",
+    "p7/try_luna.py": "149b7ca3ce0361d9f613a13fdac84a720ebf2e376a51129f7fc009c64b5ca8dc",
+    "evidence/luna/PRE_RUN.md": "f12eb5947209a2172f5ddfe1d141c735a92ed428702676aad4173567ac5b14e3"
+  },
+  "model": "openai/gpt-6-luna",
+  "route": "azure",
+  "reasoning_effort": "none",
+  "temperature": "omitted",
+  "smoke_prompts": [
+    {
+      "kind": "json",
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "Return only this JSON object: {\"ok\":true}"
+          }
+        ],
+        "response_format": {
+          "type": "json_object"
+        }
+      }
+    },
+    {
+      "kind": "stream",
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "请只回复：收到"
+          }
+        ],
+        "stream": true
+      }
+    },
+    {
+      "kind": "tool",
+      "request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call echo with value p7. Do not execute anything."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "echo",
+              "description": "Return a value (inspection only; never executed)",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "value"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "echo"
+          }
+        }
+      }
+    }
+  ],
+  "description": "Original Ua B-only 90 decisions; not full U1",
+  "max_attempts": 93,
+  "wall_limit_seconds": 900,
+  "additional_budget_usd": 0.5,
+  "latency_p95_limit_s": 10,
+  "preflight_metadata_sha256": "de74a99632c1a72399a92557ae22ed64d8119b941b77b697d25044c1defd670a",
+  "source_paths_unchanged": true,
+  "automatic_fallback": false,
+  "retry_count": 0
+}

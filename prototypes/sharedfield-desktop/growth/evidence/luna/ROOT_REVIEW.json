@@ -1,0 +1,37 @@
+{
+  "frozen_sources_checked": 37,
+  "all_frozen_sources_match": true,
+  "u1_v1_unchanged": true,
+  "actual_upstream_attempts": 86,
+  "successful_reported_calls": 85,
+  "connection_errors": 1,
+  "upstream_http_errors": 0,
+  "proxy_http_502": 1,
+  "observed_http_429": 0,
+  "classified_timeout": false,
+  "connection_exception_subtype": "not_recorded",
+  "final_attempt_latency_s": 30.0787,
+  "decision_count": 82,
+  "protocol_valid": 82,
+  "grading_recalculation_matches": true,
+  "reported_cost_usd": 0.0077802,
+  "unknown_reserve_usd": 0.05,
+  "shared_ledger": [
+    [
+      "reported",
+      1755,
+      0.16251911759
+    ],
+    [
+      "reserved_unknown",
+      17,
+      0.8500000000000001
+    ]
+  ],
+  "credential_scan_files": 23,
+  "cloud_key_hits": [],
+  "temporary_port_closed": true,
+  "offline_adapter_tests_passed": 6,
+  "product_defaults_changed": false,
+  "claim": "partial_trial_stopped_not_candidate_pass_not_learning"
+}
