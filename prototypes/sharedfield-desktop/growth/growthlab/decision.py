@@ -2,7 +2,8 @@
 import json
 from .sandbox import parse
 
-VERSION = 'phase1.prompt.v2'
+VERSION = 'phase1.prompt.v3'
+OBSERVATION_FORMAT = 'assisted'  # G0p must select/freeze this before G0a and pilot.
 MEMORY_TOKENS = 3000
 RECENT = 4
 SYSTEM = '''You play a structured-observation Crafter task. Pursue the stated goal.
@@ -11,11 +12,15 @@ Each cell dx/dy is relative to your CURRENT position, which is always (0,0).
 do interacts with the facing tile/entity. Choose only listed public action names.
 Change events report observed differences, not causes. no_visible_effect need not
 mean failure; some interactions take several steps. Damage interrupts execution.
-Return the strict JSON decision: kind action, run, or write. For action set action
+Return the strict JSON decision: kind action, goto, run, or write. For action set action
 and repeat (1..8); for run set name; for write set name, description, source and
-completion, to save a new/current-version program and execute it. Other string
-fields must be empty, repeat must be 1 for run/write. Always give a brief reason.
-Skills use ONLY act('listed action'), run('saved name'), observe(), seen('symbol'),
+completion, to save a new/current-version program and execute it. For goto set name
+to a visible material/entity type; inherited BFS walks on currently visible cells
+to a nearest reachable adjacent position facing that target. It does not interact.
+Targets invisible/unreachable, blockage, injury and episode end stop the macro.
+Every underlying move counts as a step. Other string
+fields must be empty, repeat must be 1 for goto/run/write. Always give a brief reason.
+Skills use ONLY act('listed action'), goto('material/entity'), run('saved name'), observe(), seen('symbol'),
 count('item'), need('health/food/drink/energy'), comparisons, and/or/not, if, while,
 for _ in range(N) with N<=32. No variables/arithmetic/imports/attributes. run depth
 limit 3, no recursion. Outermost budget: 32 steps and 5 seconds including children.
@@ -42,7 +47,7 @@ def format_schema(name, schema):
 
 
 def decision_format(actions):
-    return format_schema('decision',obj({'kind':string(enum=['action','run','write']),
+    return format_schema('decision',obj({'kind':string(enum=['action','goto','run','write']),
         'action':string(enum=['',*actions]),'repeat':{'type':'integer','minimum':1,'maximum':8},
         'name':string(64),'description':string(),'source':string(8192),'completion':string(512),'reason':string()}))
 
@@ -55,8 +60,11 @@ def decode(content, actions):
     if type(value['repeat']) is not int or not 1<=value['repeat']<=8: raise ValueError('repeat_limit')
     if value['kind']=='action':
         if value['action'] not in actions or any(value[k] for k in ('name','description','source','completion')): raise ValueError('action_format')
-    elif value['kind']=='run':
+    elif value['kind'] in ('goto','run'):
         if not value['name'] or value['repeat']!=1 or any(value[k] for k in ('action','description','source','completion')): raise ValueError('run_format')
+        if value['kind']=='goto':
+            from .navigation import TARGETS
+            if value['name'] not in TARGETS: raise ValueError('goto_target')
     elif value['kind']=='write':
         if not all(value[k] for k in ('name','description','source','completion')) or value['action'] or value['repeat']!=1: raise ValueError('write_format')
         parse(value['source']); parse(value['completion'],condition=True)
@@ -64,8 +72,9 @@ def decode(content, actions):
     return value
 
 
-def messages(obs, goal, memory, recent, events, teaching=None):
-    content = {'observation':obs,'goal':goal,'memory':memory,'recent':recent[-RECENT:],
+def messages(obs, goal, memory, recent, events, teaching=None, *, observation_format=None):
+    from .spatial import representation
+    content = {**representation(obs,observation_format or OBSERVATION_FORMAT),'goal':goal,'memory':memory,'recent':recent[-RECENT:],
                'previous_changes':events[-8:]}
     if teaching: content['fixed_teaching']=teaching
     return [{'role':'system','content':SYSTEM},{'role':'user','content':json.dumps(content,ensure_ascii=False,separators=(',',':'))}]

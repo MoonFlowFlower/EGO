@@ -2,6 +2,7 @@
 import json
 from .contract import ITEMS, MATERIALS, ENTITIES, NEEDS
 from .changes import cell_at, changes
+from .contract import validate
 
 
 def experience_rows(store, ids, world=None):
@@ -16,8 +17,8 @@ def experience_rows(store, ids, world=None):
 
 
 def validate_card(card, actions):
-    if not isinstance(card, dict) or set(card) != {'action', 'preconditions', 'expected', 'scope', 'experiences'}: raise ValueError('rule_schema')
-    if card['action'] not in actions or card['scope'] not in ('global', 'world'): raise ValueError('rule_action_or_scope')
+    if not isinstance(card, dict) or set(card) != {'action', 'preconditions', 'expected', 'experiences'}: raise ValueError('rule_schema')
+    if card['action'] not in actions: raise ValueError('rule_action')
     pre, expected = card['preconditions'], card['expected']
     if not isinstance(pre, dict) or set(pre) != {'inventory_min','nearby','front_materials','front_entity'}: raise ValueError('precondition_schema')
     if not isinstance(pre['inventory_min'],dict) or any(k not in ITEMS or type(v) is not int or not 0 <= v <= 9 for k,v in pre['inventory_min'].items()): raise ValueError('inventory_precondition')
@@ -57,17 +58,36 @@ class Rules:
     def __init__(self, store, world, actions): self.store, self.world, self.actions = store, world, actions
 
     def cards(self):
-        return [dict(r['body'],id=r['id']) for r in self.store.load(self.world)
-                if r['kind'] in ('general_rule','fact') and r['body'].get('format') == 'rule.v1']
+        # Rules describe effects, not locations. Even legacy rule records are
+        # read across worlds; historical revision-2 databases are never migrated.
+        rows=self.store.db.execute("SELECT id,body FROM records WHERE kind IN ('general_rule','fact') AND status='active' AND personal=0")
+        return [dict(body,id=identity,scope='global') for identity,text in rows
+                if (body:=json.loads(text)).get('format') in ('rule.v1','rule.v2')]
 
     def register(self, card, *, replaces=None):
         validate_card(card,self.actions)
-        world = self.world if card['scope']=='world' else None
-        experience_rows(self.store,card['experiences'],world)
+        evidence=experience_rows(self.store,card['experiences'])
         old = next((r for r in self.cards() if r['id']==replaces),None) if replaces else None
-        if replaces and (old is None or old['scope'] != card['scope']): raise ValueError('correction_scope')
-        body = dict(card,format='rule.v1',support=0,counterexamples=0,checked=[])
-        identity = self.store.put('general_rule' if world is None else 'fact',body,'model_proposal',world=world,parents=card['experiences'])
+        if replaces and old is None: raise ValueError('missing_rule_to_replace')
+        checked=[];world_counts={};worlds=set();contradiction=False
+        for identity,row in zip(card['experiences'],evidence):
+            if row.get('type')!='transition' or row.get('action')!=card['action']:raise ValueError('rule_requires_action_evidence')
+            before,after=validate(row['before']),validate(row['after'])
+            source_world=self.store.db.execute('SELECT world FROM records WHERE id=?',(identity,)).fetchone()[0]
+            if before['world']!=after['world'] or before['world']!=source_world:raise ValueError('evidence_world_mismatch')
+            worlds.add(source_world)
+            # Non-applicable same-action evidence may delimit a precondition or
+            # refute the old rule; it never counts as support for the new rule.
+            if applicable(card,before,row['action']):
+                if not matches(card,before,after):raise ValueError('prediction_mismatch')
+                checked.append(identity)
+                world_counts.setdefault(source_world,{'support':0,'counterexamples':0})['support']+=1
+            if old and applicable(old,before,row['action']) and not matches(old,before,after):contradiction=True
+        if not checked:raise ValueError('no_applicable_supporting_evidence')
+        if old and not contradiction:raise ValueError('replacement_requires_counterexample')
+        body = dict(card,format='rule.v2',scope='global',evidence_worlds=sorted(worlds),
+                    support=len(checked),counterexamples=0,checked=checked,world_counts=world_counts)
+        identity = self.store.put('general_rule',body,'model_proposal',parents=card['experiences'])
         if old:
             with self.store.db:
                 self.store.db.execute("INSERT INTO deps VALUES (?,?,'correction')",(identity,replaces))
@@ -83,7 +103,8 @@ class Rules:
         for card in self.cards():
             if not applicable(card,before,action) or experience in card['checked']: continue
             match = bool(matches(card,before,after))
-            identity = card.pop('id'); card['support' if match else 'counterexamples'] += 1
+            identity = card.pop('id'); field='support' if match else 'counterexamples';card[field] += 1
+            card.setdefault('world_counts',{}).setdefault(before['world'],{'support':0,'counterexamples':0})[field]+=1
             card['checked'].append(experience)
             with self.store.db:
                 self.store.db.execute('UPDATE records SET body=? WHERE id=?',(json.dumps(card,ensure_ascii=False),identity))

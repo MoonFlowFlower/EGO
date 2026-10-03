@@ -17,6 +17,9 @@ class SkillLibrary:
         tree = parse(source); parse(completion, condition=True)
         for node in ast.walk(tree):
             if isinstance(node, ast.Call) and node.func.id == 'act' and node.args[0].value not in self.actions: raise Denied('action_denied')
+            if isinstance(node, ast.Call) and node.func.id == 'goto':
+                from .navigation import TARGETS
+                if node.args[0].value not in TARGETS: raise Denied('goto_target')
         library = self.current(); old = library.get(name)
         skill = dict(name=name, description=description, source=source, completion=completion,
                      version=old['version']+1 if old else 1, origin=origin)

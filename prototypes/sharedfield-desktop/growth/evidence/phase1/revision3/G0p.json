@@ -1,0 +1,3587 @@
+{
+  "manifest_path": "G0p_MANIFEST.json",
+  "status": {
+    "started_unix": 1790988483.3918614,
+    "current": {
+      "stage": "G0p",
+      "id": "p_22_cells",
+      "attempt": 1
+    },
+    "completed": [
+      "p_20_cells",
+      "p_12_map",
+      "p_17_map",
+      "p_10_map",
+      "p_15_assisted",
+      "p_02_map",
+      "p_06_assisted",
+      "p_19_cells",
+      "p_01_map",
+      "p_28_cells",
+      "p_25_assisted",
+      "p_26_assisted",
+      "p_00_cells",
+      "p_05_map",
+      "p_07_cells",
+      "p_04_map",
+      "p_12_assisted",
+      "p_14_cells",
+      "p_06_cells",
+      "p_13_assisted",
+      "p_28_map",
+      "p_20_map",
+      "p_29_map",
+      "p_11_cells",
+      "p_04_assisted",
+      "p_15_cells",
+      "p_14_assisted",
+      "p_26_cells",
+      "p_24_map",
+      "p_16_assisted",
+      "p_05_cells",
+      "p_15_map",
+      "p_18_cells",
+      "p_00_map",
+      "p_21_cells",
+      "p_18_map",
+      "p_19_assisted",
+      "p_13_cells",
+      "p_26_map",
+      "p_01_cells",
+      "p_27_map",
+      "p_17_cells",
+      "p_10_cells",
+      "p_23_assisted",
+      "p_12_cells",
+      "p_08_cells",
+      "p_03_assisted",
+      "p_21_assisted",
+      "p_16_cells",
+      "p_02_cells",
+      "p_07_assisted",
+      "p_16_map",
+      "p_13_map",
+      "p_00_assisted",
+      "p_09_assisted",
+      "p_14_map",
+      "p_20_assisted",
+      "p_24_assisted",
+      "p_11_assisted",
+      "p_01_assisted",
+      "p_07_map",
+      "p_29_cells",
+      "p_25_cells",
+      "p_05_assisted",
+      "p_09_map",
+      "p_03_map",
+      "p_22_map",
+      "p_11_map",
+      "p_17_assisted",
+      "p_08_map",
+      "p_27_assisted",
+      "p_02_assisted",
+      "p_23_cells",
+      "p_03_cells",
+      "p_25_map",
+      "p_09_cells",
+      "p_08_assisted",
+      "p_10_assisted",
+      "p_18_assisted",
+      "p_22_assisted",
+      "p_27_cells",
+      "p_28_assisted",
+      "p_21_map",
+      "p_19_map",
+      "p_24_cells",
+      "p_29_assisted",
+      "p_06_map",
+      "p_23_map",
+      "p_04_cells",
+      "p_22_cells"
+    ],
+    "returned_calls": 90,
+    "errors": [
+      {
+        "type": "error",
+        "time": 1790988587.938434,
+        "context": {
+          "stage": "G0p",
+          "id": "p_18_cells"
+        },
+        "attempt": 1,
+        "code": "http_502",
+        "charges": [
+          {
+            "id": "cd1306fb91e74085a3f09fe453cf0564",
+            "usd": 0.05,
+            "status": "reserved_unknown"
+          }
+        ]
+      }
+    ],
+    "telemetry": [
+      {
+        "unix_s": 1790988483.4469936,
+        "ac_online": true,
+        "gpu_csv_C_MHz_MiB_W": "51, 510, 2794, 20.67",
+        "gpu_returncode": 0
+      },
+      {
+        "unix_s": 1790988515.4980848,
+        "ac_online": true,
+        "gpu_csv_C_MHz_MiB_W": "53, 1387, 2782, 23.51",
+        "gpu_returncode": 0
+      },
+      {
+        "unix_s": 1790988545.805071,
+        "ac_online": true,
+        "gpu_csv_C_MHz_MiB_W": "52, 480, 2784, 20.48",
+        "gpu_returncode": 0
+      },
+      {
+        "unix_s": 1790988578.095558,
+        "ac_online": true,
+        "gpu_csv_C_MHz_MiB_W": "52, 442, 2783, 20.94",
+        "gpu_returncode": 0
+      },
+      {
+        "unix_s": 1790988617.9996486,
+        "ac_online": true,
+        "gpu_csv_C_MHz_MiB_W": "54, 570, 2903, 25.06",
+        "gpu_returncode": 0
+      },
+      {
+        "unix_s": 1790988648.4053931,
+        "ac_online": true,
+        "gpu_csv_C_MHz_MiB_W": "66, 2617, 3063, 79.03",
+        "gpu_returncode": 0
+      },
+      {
+        "unix_s": 1790988681.310262,
+        "ac_online": true,
+        "gpu_csv_C_MHz_MiB_W": "72, 2347, 3151, 97.86",
+        "gpu_returncode": 0
+      },
+      {
+        "unix_s": 1790988713.4949918,
+        "ac_online": true,
+        "gpu_csv_C_MHz_MiB_W": "72, 2250, 3184, 74.72",
+        "gpu_returncode": 0
+      },
+      {
+        "unix_s": 1790988744.26456,
+        "ac_online": true,
+        "gpu_csv_C_MHz_MiB_W": "76, 2025, 3213, 77.71",
+        "gpu_returncode": 0
+      },
+      {
+        "unix_s": 1790988775.2648773,
+        "ac_online": true,
+        "gpu_csv_C_MHz_MiB_W": "74, 2235, 3221, 86.85",
+        "gpu_returncode": 0
+      }
+    ],
+    "stop": null,
+    "finished_unix": 1790988798.9979942,
+    "elapsed_seconds": 315.6061327457428,
+    "sources_unchanged": true
+  },
+  "formats": [
+    {
+      "format": "cells",
+      "n": 30,
+      "front_exact": 7,
+      "tree_direction": 19,
+      "tree_exact": 15,
+      "invalid": 0
+    },
+    {
+      "format": "assisted",
+      "n": 30,
+      "front_exact": 24,
+      "tree_direction": 30,
+      "tree_exact": 30,
+      "invalid": 0
+    },
+    {
+      "format": "map",
+      "n": 30,
+      "front_exact": 25,
+      "tree_direction": 30,
+      "tree_exact": 30,
+      "invalid": 0
+    }
+  ],
+  "selected": "map",
+  "passed": false,
+  "resources": {
+    "cost": {
+      "requests": 91,
+      "reported_usd": 0.005510780487,
+      "unknown_reserved_usd": 0.05,
+      "occupied_usd": 0.055510780487000005
+    },
+    "phase1_all_cost": {
+      "requests": 1175,
+      "reported_usd": 0.107850329931,
+      "unknown_reserved_usd": 0.4,
+      "occupied_usd": 0.507850329931
+    },
+    "returned_calls": 90,
+    "requests_including_retries": 91,
+    "latency_s": {
+      "median": 3.08703410000453,
+      "max": 4.126729499999783
+    },
+    "elapsed_seconds": 315.6061327457428,
+    "concurrency": 1,
+    "telemetry": {
+      "samples": 10,
+      "all_ac": true,
+      "gpu_min_C_MHz_MiB_W": [
+        51.0,
+        442.0,
+        2782.0,
+        20.48
+      ],
+      "gpu_max_C_MHz_MiB_W": [
+        76.0,
+        2617.0,
+        3221.0,
+        97.86
+      ]
+    }
+  },
+  "results": [
+    {
+      "job": {
+        "case": "p_00",
+        "format": "assisted"
+      },
+      "output": "{\"front\":{\"material\":\"grass\",\"entity\": \"player\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":true,\"dx\":1,\"dy\":1,\"steps\":2}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 1,
+            "dy": 1,
+            "steps": 2
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.699211799990735,
+        "input_tokens": 2093,
+        "output_tokens": 46,
+        "cost_usd": 5.0432379e-05,
+        "provider": "OpenInference",
+        "charge_id": "60fc6d1c8b2b4b628689970ea38b2aed",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.505683789769
+      }
+    },
+    {
+      "job": {
+        "case": "p_00",
+        "format": "cells"
+      },
+      "output": "{\"front\": {\"material\": \"grass\", \"entity\": \"player\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": 1, \"dy\": -2, \"steps\": 3}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": false,
+        "tree_exact": false,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 1,
+            "dy": -2,
+            "steps": 3
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.0861329000035767,
+        "input_tokens": 1767,
+        "output_tokens": 60,
+        "cost_usd": 6.5205165e-05,
+        "provider": "OpenInference",
+        "charge_id": "d05a07efb93540e99f78eb32e5fb330f",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.45313170776600004
+      }
+    },
+    {
+      "job": {
+        "case": "p_00",
+        "format": "map"
+      },
+      "output": "{\"front\":{\"material\":\"grass\",\"entity\": \"player\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":true,\"dx\":1,\"dy\":1,\"steps\":2}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 1,
+            "dy": 1,
+            "steps": 2
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.770090399993933,
+        "input_tokens": 2255,
+        "output_tokens": 46,
+        "cost_usd": 5.1060354e-05,
+        "provider": "OpenInference",
+        "charge_id": "c56fb2d60cf84e159640221ff49d485a",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.504474689431
+      }
+    },
+    {
+      "job": {
+        "case": "p_01",
+        "format": "assisted"
+      },
+      "output": "{\"front\":{\"material\":\"grass\",\"entity\": \"player\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":true,\"dx\":2,\"dy\":0,\"steps\":2}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 2,
+            "dy": 0,
+            "steps": 2
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.7547878000041237,
+        "input_tokens": 2041,
+        "output_tokens": 46,
+        "cost_usd": 5.0202954e-05,
+        "provider": "OpenInference",
+        "charge_id": "b4d703f982d1419cb67b4ee90f5e04a1",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.506062240897
+      }
+    },
+    {
+      "job": {
+        "case": "p_01",
+        "format": "cells"
+      },
+      "output": " {\"front\": {\"material\": \"grass\", \"entity\": \"player\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": -1, \"dy\": 2, \"steps\": 3}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": false,
+        "tree_exact": false,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -1,
+            "dy": 2,
+            "steps": 3
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.1288621999992756,
+        "input_tokens": 1766,
+        "output_tokens": 60,
+        "cost_usd": 6.4515915e-05,
+        "provider": "OpenInference",
+        "charge_id": "e62c0ae43a07428eab6f664231978f03",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.504823786111
+      }
+    },
+    {
+      "job": {
+        "case": "p_01",
+        "format": "map"
+      },
+      "output": " {\"front\":{\"material\":\"grass\",\"entity\": \"player\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":true,\"dx\":2,\"dy\":0,\"steps\":2}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 2,
+            "dy": 0,
+            "steps": 2
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.8115450000041164,
+        "input_tokens": 2207,
+        "output_tokens": 46,
+        "cost_usd": 5.0810154e-05,
+        "provider": "OpenInference",
+        "charge_id": "816d26ba735b4f4299c31f4f0eb24894",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.452865504611
+      }
+    },
+    {
+      "job": {
+        "case": "p_02",
+        "format": "assisted"
+      },
+      "output": "{\"front\":{\"material\":\"grass\",\"entity\": \"none\", \"plant_ripe\": null, \"arrow_direction\": \"\"},\"nearest_tree\":{\"visible\":false,\"dx\":0,\"dy\":0,\"steps\":0}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.8629000000073574,
+        "input_tokens": 2035,
+        "output_tokens": 48,
+        "cost_usd": 5.3074677e-05,
+        "provider": "OpenInference",
+        "charge_id": "b4b6ebf2082e44e49b38fdb9399f65a3",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.506767182151
+      }
+    },
+    {
+      "job": {
+        "case": "p_02",
+        "format": "cells"
+      },
+      "output": " {\"front\": {\"material\": \"grass\", \"entity\": \"player\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": false, \"dx\": 0, \"dy\": 0, \"steps\": 0}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.3982265000086045,
+        "input_tokens": 1767,
+        "output_tokens": 60,
+        "cost_usd": 6.4516965e-05,
+        "provider": "OpenInference",
+        "charge_id": "de2e88a316894d2aa509f8dccbfcec30",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.505474839808
+      }
+    },
+    {
+      "job": {
+        "case": "p_02",
+        "format": "map"
+      },
+      "output": "{\"front\":{\"material\":\"grass\",\"entity\": \"none\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":false,\"dx\":0,\"dy\":0,\"steps\":0}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.953253500003484,
+        "input_tokens": 2200,
+        "output_tokens": 46,
+        "cost_usd": 5.0619654e-05,
+        "provider": "OpenInference",
+        "charge_id": "29979fb9ab0c476d9da0a335e63726cd",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.45266896359200004
+      }
+    },
+    {
+      "job": {
+        "case": "p_03",
+        "format": "assisted"
+      },
+      "output": "{\n  \"front\": {\n    \"material\": \"stone\",\n    \"entity\": \"none\",\n    \"plant_ripe\": null,\n    \"arrow_direction\": \"\"\n  },\n  \"nearest_tree\": {\n    \"visible\": false,\n    \"dx\": 0,\n    \"dy\": 0,\n    \"steps\": 0\n  }\n}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "stone",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.7313774000067497,
+        "input_tokens": 2076,
+        "output_tokens": 75,
+        "cost_usd": 8.0733675e-05,
+        "provider": "OpenInference",
+        "charge_id": "73129ce7179b4911b898b90dde46b5de",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.505295598724
+      }
+    },
+    {
+      "job": {
+        "case": "p_03",
+        "format": "cells"
+      },
+      "output": " {\"front\": {\"material\": \"stone\", \"entity\": \"none\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": false, \"dx\": 0, \"dy\": 0, \"steps\": 0}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "stone",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.182176200003596,
+        "input_tokens": 1766,
+        "output_tokens": 60,
+        "cost_usd": 6.490719e-05,
+        "provider": "OpenInference",
+        "charge_id": "67a86efa26d74ed18db2130742502702",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.50689765408
+      }
+    },
+    {
+      "job": {
+        "case": "p_03",
+        "format": "map"
+      },
+      "output": " {\n  \"front\": {\n    \"material\": \"stone\",\n    \"entity\": \"none\",\n    \"plant_ripe\": null,\n    \"arrow_direction\": \"\"\n  },\n  \"nearest_tree\": {\n    \"visible\": false,\n    \"dx\": 0,\n    \"dy\": 0,\n    \"steps\": 0\n  }\n}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "stone",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 4.018164000008255,
+        "input_tokens": 2242,
+        "output_tokens": 75,
+        "cost_usd": 8.06832e-05,
+        "provider": "OpenInference",
+        "charge_id": "625d02b6efaf42e3bfb2e093f8d7e892",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.50644423207
+      }
+    },
+    {
+      "job": {
+        "case": "p_04",
+        "format": "assisted"
+      },
+      "output": " {\"front\":{\"material\":\"stone\",\"entity\": \"none\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":false,\"dx\":0,\"dy\":0,\"steps\":0}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "stone",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.706694799999241,
+        "input_tokens": 2077,
+        "output_tokens": 46,
+        "cost_usd": 5.0587629e-05,
+        "provider": "OpenInference",
+        "charge_id": "0b11e08c75fa42cf86d58b382ac84090",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.453868542365
+      }
+    },
+    {
+      "job": {
+        "case": "p_04",
+        "format": "cells"
+      },
+      "output": " {\"front\": {\"material\": \"grass\", \"entity\": \"player\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": false, \"dx\": 0, \"dy\": 0, \"steps\": 0}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.7732781000086106,
+        "input_tokens": 1767,
+        "output_tokens": 60,
+        "cost_usd": 6.5205165e-05,
+        "provider": "OpenInference",
+        "charge_id": "aad90466410947bcbf830d39414d9c94",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.507785118466
+      }
+    },
+    {
+      "job": {
+        "case": "p_04",
+        "format": "map"
+      },
+      "output": "{\"front\":{\"material\":\"stone\",\"entity\": \"none\", \"plant_ripe\": null, \"arrow_direction\": \"\"},\"nearest_tree\":{\"visible\":false,\"dx\":0,\"dy\":0,\"steps\":0}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "stone",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.0396835999999894,
+        "input_tokens": 2243,
+        "output_tokens": 48,
+        "cost_usd": 5.3379102e-05,
+        "provider": "OpenInference",
+        "charge_id": "015aeb7693764c0fb5462756cac4413b",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.453305102933
+      }
+    },
+    {
+      "job": {
+        "case": "p_05",
+        "format": "assisted"
+      },
+      "output": "{\"front\": {\"material\": \"grass\", \"entity\": \"none\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": -3, \"dy\": -3, \"steps\": 6}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -3,
+            "dy": -3,
+            "steps": 6
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.9510167999978876,
+        "input_tokens": 2143,
+        "output_tokens": 58,
+        "cost_usd": 6.3251967e-05,
+        "provider": "OpenInference",
+        "charge_id": "64f97646aaa24921b30d7f0e0afaf46b",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.506311193092
+      }
+    },
+    {
+      "job": {
+        "case": "p_05",
+        "format": "cells"
+      },
+      "output": " {\"front\": {\"material\": \"grass\", \"entity\": \"cow\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": -3, \"dy\": -3, \"steps\": 6}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "cow",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -3,
+            "dy": -3,
+            "steps": 6
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.2092111999954795,
+        "input_tokens": 1770,
+        "output_tokens": 61,
+        "cost_usd": 6.6251889e-05,
+        "provider": "OpenInference",
+        "charge_id": "620cb6acdfe24a578d0ed0ff08d7407d",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.454307480684
+      }
+    },
+    {
+      "job": {
+        "case": "p_05",
+        "format": "map"
+      },
+      "output": " {\"front\":{\"material\":\"grass\",\"entity\": \"none\", \"plant_ripe\": null, \"arrow_direction\": \"\"},\"nearest_tree\":{\"visible\":true,\"dx\":-3,\"dy\":-3,\"steps\":6}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -3,
+            "dy": -3,
+            "steps": 6
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.2282712000014726,
+        "input_tokens": 2306,
+        "output_tokens": 50,
+        "cost_usd": 5.5302075e-05,
+        "provider": "OpenInference",
+        "charge_id": "82b98423ca7d48188df4505d403dd488",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.453187009841
+      }
+    },
+    {
+      "job": {
+        "case": "p_06",
+        "format": "assisted"
+      },
+      "output": "{\n  \"front\": {\n    \"material\": \"grass\",\n    \"entity\": \"none\",\n    \"plant_ripe\": null,\n    \"arrow_direction\": \"\"\n  },\n  \"nearest_tree\": {\n    \"visible\": true,\n    \"dx\": -2,\n    \"dy\": -3,\n    \"steps\": 5\n  }\n}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -2,
+            "dy": -3,
+            "steps": 5
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.694740799997817,
+        "input_tokens": 2141,
+        "output_tokens": 75,
+        "cost_usd": 8.12265e-05,
+        "provider": "OpenInference",
+        "charge_id": "6f6d1cfaea4f4b56ab8a645fc79d2ce8",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.452750190092
+      }
+    },
+    {
+      "job": {
+        "case": "p_06",
+        "format": "cells"
+      },
+      "output": "{\"front\": {\"material\": \"grass\", \"entity\": \"cow\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": -2, \"dy\": -3, \"steps\": 5}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "cow",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -2,
+            "dy": -3,
+            "steps": 5
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.216127099993173,
+        "input_tokens": 1768,
+        "output_tokens": 61,
+        "cost_usd": 6.5905689e-05,
+        "provider": "OpenInference",
+        "charge_id": "156f42d3297b415eb27fe829919eb7cf",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.45351663921200003
+      }
+    },
+    {
+      "job": {
+        "case": "p_06",
+        "format": "map"
+      },
+      "output": " {\"front\":{\"material\":\"grass\",\"entity\": \"none\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":true,\"dx\":-2,\"dy\":-3,\"steps\":5}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -2,
+            "dy": -3,
+            "steps": 5
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.165201800002251,
+        "input_tokens": 2301,
+        "output_tokens": 48,
+        "cost_usd": 5.2571427e-05,
+        "provider": "OpenInference",
+        "charge_id": "ed81cc802f6742c89e3425bcf4968458",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.507669407872
+      }
+    },
+    {
+      "job": {
+        "case": "p_07",
+        "format": "assisted"
+      },
+      "output": " {\"front\":{\"material\":\"grass\",\"entity\": \"player\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":true,\"dx\":0,\"dy\":-2,\"steps\":2}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 0,
+            "dy": -2,
+            "steps": 2
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.9052860000083456,
+        "input_tokens": 2044,
+        "output_tokens": 47,
+        "cost_usd": 5.1815778e-05,
+        "provider": "OpenInference",
+        "charge_id": "5c0f42cf6cb849e7a1fa20001c258586",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.5055266555860001
+      }
+    },
+    {
+      "job": {
+        "case": "p_07",
+        "format": "cells"
+      },
+      "output": " {\"front\": {\"material\": \"grass\", \"entity\": \"player\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": -1, \"dy\": -3, \"steps\": 4}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": false,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -1,
+            "dy": -3,
+            "steps": 4
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.228607799988822,
+        "input_tokens": 1767,
+        "output_tokens": 60,
+        "cost_usd": 6.471399e-05,
+        "provider": "OpenInference",
+        "charge_id": "ff9f7cc305cd4bc5b2cecc2f05902612",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.45325172383100004
+      }
+    },
+    {
+      "job": {
+        "case": "p_07",
+        "format": "map"
+      },
+      "output": "{\"front\":{\"material\":\"grass\",\"entity\": \"none\", \"plant_ripe\": null, \"arrow_direction\": \"\"},\"nearest_tree\":{\"visible\":true,\"dx\":0,\"dy\":-2,\"steps\":2}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 0,
+            "dy": -2,
+            "steps": 2
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.050255800000741,
+        "input_tokens": 2214,
+        "output_tokens": 49,
+        "cost_usd": 5.3520876e-05,
+        "provider": "OpenInference",
+        "charge_id": "b733a93e5651417d8d34cb447fbfaec6",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.506115761773
+      }
+    },
+    {
+      "job": {
+        "case": "p_08",
+        "format": "assisted"
+      },
+      "output": "{\"front\": {\"material\": \"water\", \"entity\": \"none\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": 1, \"dy\": -1, \"steps\": 2}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "water",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 1,
+            "dy": -1,
+            "steps": 2
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.0739885000075446,
+        "input_tokens": 2052,
+        "output_tokens": 58,
+        "cost_usd": 6.3364542e-05,
+        "provider": "OpenInference",
+        "charge_id": "694ec156e24d408181fba8c3c902bedd",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.5070784469890001
+      }
+    },
+    {
+      "job": {
+        "case": "p_08",
+        "format": "cells"
+      },
+      "output": " {\"front\": {\"material\": \"water\", \"entity\": \"none\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": -1, \"dy\": -3, \"steps\": 4}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": false,
+        "tree_exact": false,
+        "parsed": {
+          "front": {
+            "material": "water",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -1,
+            "dy": -3,
+            "steps": 4
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.32587760000024,
+        "input_tokens": 1769,
+        "output_tokens": 60,
+        "cost_usd": 6.4519065e-05,
+        "provider": "OpenInference",
+        "charge_id": "8e9277304adc40a287e5c0bf6f45c6b7",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.505214865049
+      }
+    },
+    {
+      "job": {
+        "case": "p_08",
+        "format": "map"
+      },
+      "output": " {\"front\":{\"material\":\"water\",\"entity\": \"none\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":true,\"dx\":1,\"dy\":-1,\"steps\":2}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "water",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 1,
+            "dy": -1,
+            "steps": 2
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.0490255000040634,
+        "input_tokens": 2220,
+        "output_tokens": 47,
+        "cost_usd": 5.2303053e-05,
+        "provider": "OpenInference",
+        "charge_id": "2d35a40a5fe24c278327c8b80b7ce392",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.506650624282
+      }
+    },
+    {
+      "job": {
+        "case": "p_09",
+        "format": "assisted"
+      },
+      "output": "{\"front\":{\"material\":\"table\",\"entity\": \"none\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":true,\"dx\":0,\"dy\":-3,\"steps\":3}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "table",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 0,
+            "dy": -3,
+            "steps": 3
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.4150946000008844,
+        "input_tokens": 2087,
+        "output_tokens": 47,
+        "cost_usd": 5.2049628e-05,
+        "provider": "OpenInference",
+        "charge_id": "91d88165d215499799b3104a36a428bd",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.5057358393970001
+      }
+    },
+    {
+      "job": {
+        "case": "p_09",
+        "format": "cells"
+      },
+      "output": "{\"front\": {\"material\": \"grass\", \"entity\": \"player\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": -2, \"dy\": -3, \"steps\": 5}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": false,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -2,
+            "dy": -3,
+            "steps": 5
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.8010858000052394,
+        "input_tokens": 1768,
+        "output_tokens": 60,
+        "cost_usd": 6.4518015e-05,
+        "provider": "OpenInference",
+        "charge_id": "dd47d7164c4d4e12927e4967b4be276f",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.507015082447
+      }
+    },
+    {
+      "job": {
+        "case": "p_09",
+        "format": "map"
+      },
+      "output": "{\"front\":{\"material\":\"table\",\"entity\": \"none\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":true,\"dx\":0,\"dy\":-3,\"steps\":3}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "table",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 0,
+            "dy": -3,
+            "steps": 3
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.6490468999982113,
+        "input_tokens": 2257,
+        "output_tokens": 47,
+        "cost_usd": 5.2355778e-05,
+        "provider": "OpenInference",
+        "charge_id": "ce1b327c13f6496bb8c236697efef24d",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.50636354887
+      }
+    },
+    {
+      "job": {
+        "case": "p_10",
+        "format": "assisted"
+      },
+      "output": "{\"front\":{\"material\":\"grass\",\"entity\": \"player\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":true,\"dx\":3,\"dy\":2,\"steps\":5}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 3,
+            "dy": 2,
+            "steps": 5
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.4749895999993896,
+        "input_tokens": 1933,
+        "output_tokens": 46,
+        "cost_usd": 5.0086779e-05,
+        "provider": "OpenInference",
+        "charge_id": "54fc5f9fe15c45f4803d0ce9c0a8d46f",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.507128533768
+      }
+    },
+    {
+      "job": {
+        "case": "p_10",
+        "format": "cells"
+      },
+      "output": " {\"front\": {\"material\": \"grass\", \"entity\": \"none\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": -4, \"dy\": 2, \"steps\": 6}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": false,
+        "tree_exact": false,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -4,
+            "dy": 2,
+            "steps": 6
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.0662652000028174,
+        "input_tokens": 1742,
+        "output_tokens": 60,
+        "cost_usd": 6.5167815e-05,
+        "provider": "OpenInference",
+        "charge_id": "56c5c8a1edb24da48a58ecb662e1ac8e",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.505005319744
+      }
+    },
+    {
+      "job": {
+        "case": "p_10",
+        "format": "map"
+      },
+      "output": " {\"front\":{\"material\":\"grass\",\"entity\": \"none\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":true,\"dx\":3,\"dy\":2,\"steps\":5}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 3,
+            "dy": 2,
+            "steps": 5
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.1523447000072338,
+        "input_tokens": 2087,
+        "output_tokens": 46,
+        "cost_usd": 5.0251254e-05,
+        "provider": "OpenInference",
+        "charge_id": "f8713f30f3684b94b66990316826403b",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.452555223971
+      }
+    },
+    {
+      "job": {
+        "case": "p_11",
+        "format": "assisted"
+      },
+      "output": "{\n  \"front\": {\n    \"material\": \"grass\",\n    \"entity\": \"none\",\n    \"plant_ripe\": null,\n    \"arrow_direction\": \"\"\n  },\n  \"nearest_tree\": {\n    \"visible\": true,\n    \"dx\": 3,\n    \"dy\": -3,\n    \"steps\": 6\n  }\n}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 3,
+            "dy": -3,
+            "steps": 6
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.6253109999961453,
+        "input_tokens": 1983,
+        "output_tokens": 75,
+        "cost_usd": 8.089965e-05,
+        "provider": "OpenInference",
+        "charge_id": "6f44602d1b5141bb812872ca9ec29cbd",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.506012037943
+      }
+    },
+    {
+      "job": {
+        "case": "p_11",
+        "format": "cells"
+      },
+      "output": "{\"front\": {\"material\": \"grass\", \"entity\": \"player\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": 3, \"dy\": -3, \"steps\": 6}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 3,
+            "dy": -3,
+            "steps": 6
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.0716205000062473,
+        "input_tokens": 1742,
+        "output_tokens": 60,
+        "cost_usd": 6.492639e-05,
+        "provider": "OpenInference",
+        "charge_id": "f0d6ad1d02de403ab1db17d3dfff9c92",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.453817954736
+      }
+    },
+    {
+      "job": {
+        "case": "p_11",
+        "format": "map"
+      },
+      "output": " {\"front\":{\"material\":\"grass\",\"entity\": \"none\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":true,\"dx\":3,\"dy\":-3,\"steps\":6}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 3,
+            "dy": -3,
+            "steps": 6
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.728173899988178,
+        "input_tokens": 2138,
+        "output_tokens": 47,
+        "cost_usd": 5.1351153e-05,
+        "provider": "OpenInference",
+        "charge_id": "17aae45d29214659881d72b008f2967a",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.5065458719020001
+      }
+    },
+    {
+      "job": {
+        "case": "p_12",
+        "format": "assisted"
+      },
+      "output": "{\n  \"front\": {\n    \"material\": \"tree\",\n    \"entity\": \"none\",\n    \"plant_ripe\": null,\n    \"arrow_direction\": \"\"\n  },\n  \"nearest_tree\": {\n    \"visible\": true,\n    \"dx\": 1,\n    \"dy\": 0,\n    \"steps\": 1\n  }\n}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "tree",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 1,
+            "dy": 0,
+            "steps": 1
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.577220599996508,
+        "input_tokens": 2025,
+        "output_tokens": 75,
+        "cost_usd": 8.1124125e-05,
+        "provider": "OpenInference",
+        "charge_id": "94e7e67601ea4d0d872a9aa58211f2ca",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.453386227058
+      }
+    },
+    {
+      "job": {
+        "case": "p_12",
+        "format": "cells"
+      },
+      "output": "{\"front\": {\"material\": \"tree\", \"entity\": \"none\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": -2, \"dy\": -1, \"steps\": 3}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": false,
+        "tree_exact": false,
+        "parsed": {
+          "front": {
+            "material": "tree",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -2,
+            "dy": -1,
+            "steps": 3
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.3458531000069343,
+        "input_tokens": 1742,
+        "output_tokens": 60,
+        "cost_usd": 6.4490715e-05,
+        "provider": "OpenInference",
+        "charge_id": "40eb947306544d618d97d6b7fcc15dcd",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.505150345984
+      }
+    },
+    {
+      "job": {
+        "case": "p_12",
+        "format": "map"
+      },
+      "output": "{\"front\":{\"material\":\"tree\",\"entity\": \"none\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":true,\"dx\":1,\"dy\":0,\"steps\":1}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "tree",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 1,
+            "dy": 0,
+            "steps": 1
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.100342700010515,
+        "input_tokens": 2183,
+        "output_tokens": 46,
+        "cost_usd": 5.0354829e-05,
+        "provider": "OpenInference",
+        "charge_id": "47b2195d90ae4d47b2279774bcb5fcd4",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.452454425438
+      }
+    },
+    {
+      "job": {
+        "case": "p_13",
+        "format": "assisted"
+      },
+      "output": "{\"front\":{\"material\":\"grass\",\"entity\": \"none\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":true,\"dx\":0,\"dy\":2,\"steps\":2}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 0,
+            "dy": 2,
+            "steps": 2
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.391972999990685,
+        "input_tokens": 2065,
+        "output_tokens": 46,
+        "cost_usd": 5.0744304e-05,
+        "provider": "OpenInference",
+        "charge_id": "d9f2155662344715a6ab749685a0e33c",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.453567383516
+      }
+    },
+    {
+      "job": {
+        "case": "p_13",
+        "format": "cells"
+      },
+      "output": " {\"front\": {\"material\": \"grass\", \"entity\": \"none\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": -4, \"dy\": 1, \"steps\": 5}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": false,
+        "tree_exact": false,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -4,
+            "dy": 1,
+            "steps": 5
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.227174500003457,
+        "input_tokens": 1742,
+        "output_tokens": 60,
+        "cost_usd": 6.4490715e-05,
+        "provider": "OpenInference",
+        "charge_id": "0dfdba39e3c646d8a6ad9dd5ecea7503",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.504706236019
+      }
+    },
+    {
+      "job": {
+        "case": "p_13",
+        "format": "map"
+      },
+      "output": " {\"front\":{\"material\":\"grass\",\"entity\": \"none\", \"plant_ripe\": null, \"arrow_direction\": \"\"},\"nearest_tree\":{\"visible\":true,\"dx\":0,\"dy\":2,\"steps\":2}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 0,
+            "dy": 2,
+            "steps": 2
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.853123199995025,
+        "input_tokens": 2230,
+        "output_tokens": 48,
+        "cost_usd": 5.3173977e-05,
+        "provider": "OpenInference",
+        "charge_id": "471a5570087b4d8a8bb1129a046c208d",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.50563335739
+      }
+    },
+    {
+      "job": {
+        "case": "p_14",
+        "format": "assisted"
+      },
+      "output": "{\n  \"front\": {\n    \"material\": \"grass\",\n    \"entity\": \"none\",\n    \"plant_ripe\": null,\n    \"arrow_direction\": \"\"\n  },\n  \"nearest_tree\": {\n    \"visible\": false,\n    \"dx\": 0,\n    \"dy\": 0,\n    \"steps\": 0\n  }\n}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.684949799993774,
+        "input_tokens": 2226,
+        "output_tokens": 75,
+        "cost_usd": 8.10993e-05,
+        "provider": "OpenInference",
+        "charge_id": "c9fe9bff889448248103f2b0579afae4",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.45401449050500003
+      }
+    },
+    {
+      "job": {
+        "case": "p_14",
+        "format": "cells"
+      },
+      "output": "{\"front\": {\"material\": \"grass\", \"entity\": \"player\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": false, \"dx\": 0, \"dy\": 0, \"steps\": 0}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.161380999998073,
+        "input_tokens": 1757,
+        "output_tokens": 60,
+        "cost_usd": 6.4506465e-05,
+        "provider": "OpenInference",
+        "charge_id": "74b0fdda37d148a48596b6d371d8750e",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.453450733523
+      }
+    },
+    {
+      "job": {
+        "case": "p_14",
+        "format": "map"
+      },
+      "output": " {\"front\": {\"material\": \"grass\", \"entity\": \"none\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": false, \"dx\": 0, \"dy\": 0, \"steps\": 0}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.044984799998929,
+        "input_tokens": 2398,
+        "output_tokens": 58,
+        "cost_usd": 6.3109017e-05,
+        "provider": "OpenInference",
+        "charge_id": "0ece3dde19174cdd851e6c7df1aeb4d4",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.505798948414
+      }
+    },
+    {
+      "job": {
+        "case": "p_15",
+        "format": "assisted"
+      },
+      "output": " {\"front\": {\"material\": \"grass\", \"entity\": \"none\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": false, \"dx\": 0, \"dy\": 0, \"steps\": 0}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.3819347000098787,
+        "input_tokens": 2234,
+        "output_tokens": 58,
+        "cost_usd": 6.3119967e-05,
+        "provider": "OpenInference",
+        "charge_id": "2e044286121443b7bdbf6ac58e4c61fd",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.45261834393800005
+      }
+    },
+    {
+      "job": {
+        "case": "p_15",
+        "format": "cells"
+      },
+      "output": "{\"front\": {\"material\": \"grass\", \"entity\": \"player\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": false, \"dx\": 0, \"dy\": 0, \"steps\": 0}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.0790317000064533,
+        "input_tokens": 1758,
+        "output_tokens": 60,
+        "cost_usd": 6.484884e-05,
+        "provider": "OpenInference",
+        "charge_id": "36638138bc6541ab91807d29ae2a2d41",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.45393339120500004
+      }
+    },
+    {
+      "job": {
+        "case": "p_15",
+        "format": "map"
+      },
+      "output": "{\"front\":{\"material\":\"grass\",\"entity\": \"none\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":false,\"dx\":0,\"dy\":0,\"steps\":0}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.004828599994653,
+        "input_tokens": 2406,
+        "output_tokens": 46,
+        "cost_usd": 5.0597304e-05,
+        "provider": "OpenInference",
+        "charge_id": "331b5386443641d2934338306d2b9f39",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.45435807798800004
+      }
+    },
+    {
+      "job": {
+        "case": "p_16",
+        "format": "assisted"
+      },
+      "output": " {\n  \"front\": {\n    \"material\": \"water\",\n    \"entity\": \"none\",\n    \"plant_ripe\": null,\n    \"arrow_direction\": \"\"\n  },\n  \"nearest_tree\": {\n    \"visible\": false,\n    \"dx\": 0,\n    \"dy\": 0,\n    \"steps\": 0\n  }\n}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "water",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.3903188000113005,
+        "input_tokens": 2173,
+        "output_tokens": 75,
+        "cost_usd": 8.1212925e-05,
+        "provider": "OpenInference",
+        "charge_id": "af89f6828eaf45fab5422f4cdfdcefad",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.454241228795
+      }
+    },
+    {
+      "job": {
+        "case": "p_16",
+        "format": "cells"
+      },
+      "output": " {\"front\": {\"material\": \"water\", \"entity\": \"none\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": false, \"dx\": 0, \"dy\": 0, \"steps\": 0}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "water",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.0491347999923164,
+        "input_tokens": 1755,
+        "output_tokens": 60,
+        "cost_usd": 6.4504365e-05,
+        "provider": "OpenInference",
+        "charge_id": "6411355311d7442885e6198505aa6ed2",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.505410322843
+      }
+    },
+    {
+      "job": {
+        "case": "p_16",
+        "format": "map"
+      },
+      "output": "{\"front\":{\"material\":\"water\",\"entity\": \"none\", \"plant_ripe\": null, \"arrow_direction\": \"\"},\"nearest_tree\":{\"visible\":false,\"dx\":0,\"dy\":0,\"steps\":0}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "water",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.050055700005032,
+        "input_tokens": 2345,
+        "output_tokens": 48,
+        "cost_usd": 5.3527827e-05,
+        "provider": "OpenInference",
+        "charge_id": "3ebcfc1bde3a425cb38f2c0bf54e856b",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.505580183413
+      }
+    },
+    {
+      "job": {
+        "case": "p_17",
+        "format": "assisted"
+      },
+      "output": "{\"front\":{\"material\":\"grass\",\"entity\": \"none\", \"plant_ripe\": null, \"arrow_direction\": \"\"},\"nearest_tree\":{\"visible\":false,\"dx\":0,\"dy\":0,\"steps\":0}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.807066699999268,
+        "input_tokens": 2190,
+        "output_tokens": 48,
+        "cost_usd": 5.2449327e-05,
+        "provider": "OpenInference",
+        "charge_id": "b8acb2e496814588944b25b5be26da21",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.5065983212290001
+      }
+    },
+    {
+      "job": {
+        "case": "p_17",
+        "format": "cells"
+      },
+      "output": "{\"front\": {\"material\": \"water\", \"entity\": \"arrow\", \"plant_ripe\": null, \"arrow_direction\": \"up\"}, \"nearest_tree\": {\"visible\": false, \"dx\": 0, \"dy\": 0, \"steps\": 0}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "water",
+            "entity": "arrow",
+            "plant_ripe": null,
+            "arrow_direction": "up"
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.0940136999997776,
+        "input_tokens": 1763,
+        "output_tokens": 61,
+        "cost_usd": 6.5900439e-05,
+        "provider": "OpenInference",
+        "charge_id": "20047ff96cb343fdabc39ef53e040c87",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.504940151929
+      }
+    },
+    {
+      "job": {
+        "case": "p_17",
+        "format": "map"
+      },
+      "output": " {\"front\":{\"material\":\"grass\",\"entity\": \"none\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":false,\"dx\":0,\"dy\":0,\"steps\":0}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.5377272000041557,
+        "input_tokens": 2361,
+        "output_tokens": 46,
+        "cost_usd": 5.0547279e-05,
+        "provider": "OpenInference",
+        "charge_id": "2fbded9fdc294bd28aee8d379802efc6",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.452504972717
+      }
+    },
+    {
+      "job": {
+        "case": "p_18",
+        "format": "assisted"
+      },
+      "output": "{\"front\": {\"material\": \"grass\", \"entity\": \"none\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": false, \"dx\": 0, \"dy\": 0, \"steps\": 0}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.8488359000039054,
+        "input_tokens": 2180,
+        "output_tokens": 58,
+        "cost_usd": 6.2874567e-05,
+        "provider": "OpenInference",
+        "charge_id": "abba2b7be5534a6e8151605707e951aa",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.507191408335
+      }
+    },
+    {
+      "job": {
+        "case": "p_18",
+        "format": "cells"
+      },
+      "output": " {\"front\": {\"material\": \"water\", \"entity\": \"arrow\", \"plant_ripe\": null, \"arrow_direction\": \"up\"}, \"nearest_tree\": {\"visible\": false, \"dx\": 0, \"dy\": 0, \"steps\": 0}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "water",
+            "entity": "arrow",
+            "plant_ripe": null,
+            "arrow_direction": "up"
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.2050249999883818,
+        "input_tokens": 1758,
+        "output_tokens": 61,
+        "cost_usd": 6.5551089e-05,
+        "provider": "OpenInference",
+        "charge_id": "2bb56b46304047bfaa6fcc58510b9bcf",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.504423629077
+      }
+    },
+    {
+      "job": {
+        "case": "p_18",
+        "format": "map"
+      },
+      "output": "{\"front\":{\"material\":\"grass\",\"entity\": \"none\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":false,\"dx\":0,\"dy\":0,\"steps\":0}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.0879353000054834,
+        "input_tokens": 2353,
+        "output_tokens": 46,
+        "cost_usd": 5.0799729e-05,
+        "provider": "OpenInference",
+        "charge_id": "7ea6fde37dc841cbb595587de915774a",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.5045905525000001
+      }
+    },
+    {
+      "job": {
+        "case": "p_19",
+        "format": "assisted"
+      },
+      "output": " {\"front\":{\"material\":\"sand\",\"entity\": \"none\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":false,\"dx\":0,\"dy\":0,\"steps\":0}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "sand",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.7330646000045817,
+        "input_tokens": 2175,
+        "output_tokens": 46,
+        "cost_usd": 5.1192804e-05,
+        "provider": "OpenInference",
+        "charge_id": "99976f75edd2430485f4171ef5ecce4b",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.504641745304
+      }
+    },
+    {
+      "job": {
+        "case": "p_19",
+        "format": "cells"
+      },
+      "output": "{\"front\": {\"material\": \"sand\", \"entity\": \"player\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": false, \"dx\": 0, \"dy\": 0, \"steps\": 0}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "sand",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.4259382000018377,
+        "input_tokens": 1755,
+        "output_tokens": 60,
+        "cost_usd": 6.4504365e-05,
+        "provider": "OpenInference",
+        "charge_id": "c4fc7b454fd0492db4ac08dd2ac4f000",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.452814694457
+      }
+    },
+    {
+      "job": {
+        "case": "p_19",
+        "format": "map"
+      },
+      "output": " {\"front\":{\"material\":\"sand\",\"entity\": \"none\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":false,\"dx\":0,\"dy\":0,\"steps\":0}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "sand",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.717033299995819,
+        "input_tokens": 2345,
+        "output_tokens": 46,
+        "cost_usd": 5.1246429e-05,
+        "provider": "OpenInference",
+        "charge_id": "22911efcebe047f48891e8a2a86fa71f",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.50748653059
+      }
+    },
+    {
+      "job": {
+        "case": "p_20",
+        "format": "assisted"
+      },
+      "output": " {\n  \"front\": {\n    \"material\": \"grass\",\n    \"entity\": \"none\",\n    \"plant_ripe\": null,\n    \"arrow_direction\": \"\"\n  },\n  \"nearest_tree\": {\n    \"visible\": true,\n    \"dx\": 2,\n    \"dy\": 1,\n    \"steps\": 3\n  }\n}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 2,
+            "dy": 1,
+            "steps": 3
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.9408732000010787,
+        "input_tokens": 2056,
+        "output_tokens": 75,
+        "cost_usd": 8.128155e-05,
+        "provider": "OpenInference",
+        "charge_id": "203760c1d4bb4b9e852ed85abed43a4c",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.5058802299640001
+      }
+    },
+    {
+      "job": {
+        "case": "p_20",
+        "format": "cells"
+      },
+      "output": " {\"front\": {\"material\": \"grass\", \"entity\": \"player\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": 2, \"dy\": -2, \"steps\": 4}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": false,
+        "tree_exact": false,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 2,
+            "dy": -2,
+            "steps": 4
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.994141599992872,
+        "input_tokens": 1771,
+        "output_tokens": 60,
+        "cost_usd": 6.4521165e-05,
+        "provider": "OpenInference",
+        "charge_id": "fdfd035f3c2b4c2f8923bb20b01ec546",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.452404070609
+      }
+    },
+    {
+      "job": {
+        "case": "p_20",
+        "format": "map"
+      },
+      "output": "{\"front\":{\"material\":\"grass\",\"entity\": \"player\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":true,\"dx\":2,\"dy\":1,\"steps\":3}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 2,
+            "dy": 1,
+            "steps": 3
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.0166641999967396,
+        "input_tokens": 2215,
+        "output_tokens": 46,
+        "cost_usd": 5.1251454e-05,
+        "provider": "OpenInference",
+        "charge_id": "f2a93a735dd44322966a3c74dc15c289",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.45369939339500004
+      }
+    },
+    {
+      "job": {
+        "case": "p_21",
+        "format": "assisted"
+      },
+      "output": "{\"front\":{\"material\":\"grass\",\"entity\": \"player\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":true,\"dx\":2,\"dy\":1,\"steps\":3}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 2,
+            "dy": 1,
+            "steps": 3
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.013736799999606,
+        "input_tokens": 2057,
+        "output_tokens": 46,
+        "cost_usd": 5.0219754e-05,
+        "provider": "OpenInference",
+        "charge_id": "6038453e76c940c4a4ed6ab765aeaa6d",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.505345818478
+      }
+    },
+    {
+      "job": {
+        "case": "p_21",
+        "format": "cells"
+      },
+      "output": "{\"front\": {\"material\": \"grass\", \"entity\": \"player\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": -2, \"dy\": -2, \"steps\": 4}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": false,
+        "tree_exact": false,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -2,
+            "dy": -2,
+            "steps": 4
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.202126700009103,
+        "input_tokens": 1772,
+        "output_tokens": 60,
+        "cost_usd": 6.506334e-05,
+        "provider": "OpenInference",
+        "charge_id": "478e59956981477ba2f9aa46b6655ae8",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.504539752771
+      }
+    },
+    {
+      "job": {
+        "case": "p_21",
+        "format": "map"
+      },
+      "output": " {\"front\":{\"material\":\"grass\",\"entity\": \"none\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":true,\"dx\":2,\"dy\":1,\"steps\":3}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 2,
+            "dy": 1,
+            "steps": 3
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.529174099996453,
+        "input_tokens": 2216,
+        "output_tokens": 46,
+        "cost_usd": 5.0514354e-05,
+        "provider": "OpenInference",
+        "charge_id": "abb6a270837845e5a499c5e0c7e8dde8",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.507435284161
+      }
+    },
+    {
+      "job": {
+        "case": "p_22",
+        "format": "assisted"
+      },
+      "output": " {\"front\": {\"material\": \"grass\", \"entity\": \"none\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": 4, \"dy\": 1, \"steps\": 5}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 4,
+            "dy": 1,
+            "steps": 5
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 4.074151500011794,
+        "input_tokens": 1964,
+        "output_tokens": 58,
+        "cost_usd": 6.3188892e-05,
+        "provider": "OpenInference",
+        "charge_id": "53cb29b37ca4485ebcbfab3fdaf6d583",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.5072545972270001
+      }
+    },
+    {
+      "job": {
+        "case": "p_22",
+        "format": "cells"
+      },
+      "output": "{\"front\": {\"material\": \"grass\", \"entity\": \"player\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": 4, \"dy\": -2, \"steps\": 6}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": false,
+        "tree_exact": false,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 4,
+            "dy": -2,
+            "steps": 6
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.244953399989754,
+        "input_tokens": 1773,
+        "output_tokens": 60,
+        "cost_usd": 6.5211465e-05,
+        "provider": "OpenInference",
+        "charge_id": "c92056cc1dac436bbbf0a7fc3773af2a",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.507850329931
+      }
+    },
+    {
+      "job": {
+        "case": "p_22",
+        "format": "map"
+      },
+      "output": " {\"front\":{\"material\":\"grass\",\"entity\": \"none\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":true,\"dx\":4,\"dy\":1,\"steps\":5}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 4,
+            "dy": 1,
+            "steps": 5
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.805976500007091,
+        "input_tokens": 2120,
+        "output_tokens": 46,
+        "cost_usd": 5.0288679e-05,
+        "provider": "OpenInference",
+        "charge_id": "fc4da385c1e543ca9f6255aaf4554258",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.506494520749
+      }
+    },
+    {
+      "job": {
+        "case": "p_23",
+        "format": "assisted"
+      },
+      "output": "{\n  \"front\": {\n    \"material\": \"grass\",\n    \"entity\": \"none\",\n    \"plant_ripe\": null,\n    \"arrow_direction\": \"\"\n  },\n  \"nearest_tree\": {\n    \"visible\": true,\n    \"dx\": 2,\n    \"dy\": 1,\n    \"steps\": 3\n  }\n}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 2,
+            "dy": 1,
+            "steps": 3
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.801952199995867,
+        "input_tokens": 2104,
+        "output_tokens": 75,
+        "cost_usd": 8.0535525e-05,
+        "provider": "OpenInference",
+        "charge_id": "07b648e06f644985b2482fbe9cb6ff6c",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.5050858552690001
+      }
+    },
+    {
+      "job": {
+        "case": "p_23",
+        "format": "cells"
+      },
+      "output": "{\"front\": {\"material\": \"grass\", \"entity\": \"skeleton\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": 2, \"dy\": -2, \"steps\": 4}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": false,
+        "tree_exact": false,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "skeleton",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 2,
+            "dy": -2,
+            "steps": 4
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.3580702999897767,
+        "input_tokens": 1771,
+        "output_tokens": 61,
+        "cost_usd": 6.5564739e-05,
+        "provider": "OpenInference",
+        "charge_id": "a4ef0bc9a4cd4cdb98ef82ccb8203af7",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.50683274689
+      }
+    },
+    {
+      "job": {
+        "case": "p_23",
+        "format": "map"
+      },
+      "output": "{\"front\":{\"material\":\"grass\",\"entity\": \"player\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":true,\"dx\":2,\"dy\":1,\"steps\":3}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 2,
+            "dy": 1,
+            "steps": 3
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.732744500011904,
+        "input_tokens": 2263,
+        "output_tokens": 46,
+        "cost_usd": 5.0505429e-05,
+        "provider": "OpenInference",
+        "charge_id": "3e703b67e79d4b40b2e81492216ba5da",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.507719913301
+      }
+    },
+    {
+      "job": {
+        "case": "p_24",
+        "format": "assisted"
+      },
+      "output": "{\"front\":{\"material\":\"grass\",\"entity\": \"none\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":true,\"dx\":3,\"dy\":1,\"steps\":4}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 3,
+            "dy": 1,
+            "steps": 4
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.328231500010588,
+        "input_tokens": 2060,
+        "output_tokens": 46,
+        "cost_usd": 5.0908329e-05,
+        "provider": "OpenInference",
+        "charge_id": "cd2c96496404455a8f7a00f1c91edc9e",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.5059311382930001
+      }
+    },
+    {
+      "job": {
+        "case": "p_24",
+        "format": "cells"
+      },
+      "output": "{\"front\": {\"material\": \"grass\", \"entity\": \"player\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": 3, \"dy\": -2, \"steps\": 5}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": false,
+        "tree_exact": false,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 3,
+            "dy": -2,
+            "steps": 5
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.1603369999938877,
+        "input_tokens": 1774,
+        "output_tokens": 60,
+        "cost_usd": 6.4524315e-05,
+        "provider": "OpenInference",
+        "charge_id": "7fbfd721385c40429acaaedfe1c7d7e4",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.5075510549050001
+      }
+    },
+    {
+      "job": {
+        "case": "p_24",
+        "format": "map"
+      },
+      "output": " {\n  \"front\": {\n    \"material\": \"grass\",\n    \"entity\": \"none\",\n    \"plant_ripe\": null,\n    \"arrow_direction\": \"\"\n  },\n  \"nearest_tree\": {\n    \"visible\": true,\n    \"dx\": 3,\n    \"dy\": 1,\n    \"steps\": 4\n  }\n}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": 3,
+            "dy": 1,
+            "steps": 4
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.8292105000000447,
+        "input_tokens": 2218,
+        "output_tokens": 75,
+        "cost_usd": 8.0658e-05,
+        "provider": "OpenInference",
+        "charge_id": "055e4370e5124526b871b93bc5e9afeb",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.45416001587000004
+      }
+    },
+    {
+      "job": {
+        "case": "p_25",
+        "format": "assisted"
+      },
+      "output": "{\n  \"front\": {\n    \"material\": \"grass\",\n    \"entity\": \"none\",\n    \"plant_ripe\": null,\n    \"arrow_direction\": \"\"\n  },\n  \"nearest_tree\": {\n    \"visible\": true,\n    \"dx\": -3,\n    \"dy\": -2,\n    \"steps\": 5\n  }\n}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -3,
+            "dy": -2,
+            "steps": 5
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 4.126729499999783,
+        "input_tokens": 2108,
+        "output_tokens": 75,
+        "cost_usd": 8.1122475e-05,
+        "provider": "OpenInference",
+        "charge_id": "a1a32c6aa1064abc87288648eb5651b1",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.453011646401
+      }
+    },
+    {
+      "job": {
+        "case": "p_25",
+        "format": "cells"
+      },
+      "output": "{\"front\": {\"material\": \"grass\", \"entity\": \"cow\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": -3, \"dy\": -2, \"steps\": 5}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "cow",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -3,
+            "dy": -2,
+            "steps": 5
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.0178461999894353,
+        "input_tokens": 1774,
+        "output_tokens": 61,
+        "cost_usd": 6.5567889e-05,
+        "provider": "OpenInference",
+        "charge_id": "fee12698043d47a99e69ae5a6b6b0d92",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.506247941125
+      }
+    },
+    {
+      "job": {
+        "case": "p_25",
+        "format": "map"
+      },
+      "output": " {\"front\":{\"material\":\"grass\",\"entity\": \"none\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":true,\"dx\":-3,\"dy\":-2,\"steps\":5}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -3,
+            "dy": -2,
+            "steps": 5
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.948367999997572,
+        "input_tokens": 2267,
+        "output_tokens": 48,
+        "cost_usd": 5.2910352e-05,
+        "provider": "OpenInference",
+        "charge_id": "a27b81ac00c9406bb2680cf73e53112b",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.506950564432
+      }
+    },
+    {
+      "job": {
+        "case": "p_26",
+        "format": "assisted"
+      },
+      "output": " {\"front\":{\"material\":\"grass\",\"entity\": \"none\", \"plant_ripe\": null, \"arrow_direction\": \"\"},\"nearest_tree\":{\"visible\":true,\"dx\":-2,\"dy\":-2,\"steps\":4}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -2,
+            "dy": -2,
+            "steps": 4
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.435139099994558,
+        "input_tokens": 2106,
+        "output_tokens": 50,
+        "cost_usd": 5.48562e-05,
+        "provider": "OpenInference",
+        "charge_id": "1b896874b14c490698d46bb0e11bbfc9",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.453066502601
+      }
+    },
+    {
+      "job": {
+        "case": "p_26",
+        "format": "cells"
+      },
+      "output": "{\"front\": {\"material\": \"grass\", \"entity\": \"player\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": -4, \"dy\": -1, \"steps\": 5}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": false,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -4,
+            "dy": -1,
+            "steps": 5
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.818128999992041,
+        "input_tokens": 1773,
+        "output_tokens": 60,
+        "cost_usd": 6.4867365e-05,
+        "provider": "OpenInference",
+        "charge_id": "e39c46d4d4404f098f5f573fc98c6b0f",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.45407935787000003
+      }
+    },
+    {
+      "job": {
+        "case": "p_26",
+        "format": "map"
+      },
+      "output": " {\"front\":{\"material\":\"grass\",\"entity\": \"player\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":true,\"dx\":-2,\"dy\":-2,\"steps\":4}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -2,
+            "dy": -2,
+            "steps": 4
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.7410852999892086,
+        "input_tokens": 2266,
+        "output_tokens": 48,
+        "cost_usd": 5.3034177e-05,
+        "provider": "OpenInference",
+        "charge_id": "87fb10979b354bc0921413c977ff1030",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.504759270196
+      }
+    },
+    {
+      "job": {
+        "case": "p_27",
+        "format": "assisted"
+      },
+      "output": " {\"front\": {\"material\": \"grass\", \"entity\": \"none\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": false, \"dx\": 0, \"dy\": 0, \"steps\": 0}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.63716640000348,
+        "input_tokens": 2017,
+        "output_tokens": 58,
+        "cost_usd": 6.3483192e-05,
+        "provider": "OpenInference",
+        "charge_id": "9b9b04fc25f14a89bc21ccf8e47bcbd8",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.506714107474
+      }
+    },
+    {
+      "job": {
+        "case": "p_27",
+        "format": "cells"
+      },
+      "output": " {\"front\": {\"material\": \"grass\", \"entity\": \"player\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": false, \"dx\": 0, \"dy\": 0, \"steps\": 0}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.7661512000049697,
+        "input_tokens": 1774,
+        "output_tokens": 60,
+        "cost_usd": 6.4524315e-05,
+        "provider": "OpenInference",
+        "charge_id": "3c32eafda6ce43ac99ef0ab718ecb511",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.507319121542
+      }
+    },
+    {
+      "job": {
+        "case": "p_27",
+        "format": "map"
+      },
+      "output": "{\"front\":{\"material\":\"grass\",\"entity\": \"none\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":false,\"dx\":0,\"dy\":0,\"steps\":0}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": false,
+            "dx": 0,
+            "dy": 0,
+            "steps": 0
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.0370174999989104,
+        "input_tokens": 2172,
+        "output_tokens": 46,
+        "cost_usd": 5.0465379e-05,
+        "provider": "OpenInference",
+        "charge_id": "7db7cd6759a74816a459939b969d5942",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.50487425149
+      }
+    },
+    {
+      "job": {
+        "case": "p_28",
+        "format": "assisted"
+      },
+      "output": " {\"front\": {\"material\": \"grass\", \"entity\": \"zombie\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": -3, \"dy\": -2, \"steps\": 5}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "zombie",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -3,
+            "dy": -2,
+            "steps": 5
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.248999700008426,
+        "input_tokens": 2152,
+        "output_tokens": 60,
+        "cost_usd": 6.5648265e-05,
+        "provider": "OpenInference",
+        "charge_id": "ac3892358fd34739a60142df802d765f",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.507384769807
+      }
+    },
+    {
+      "job": {
+        "case": "p_28",
+        "format": "cells"
+      },
+      "output": "{\"front\": {\"material\": \"grass\", \"entity\": \"player\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": -3, \"dy\": -2, \"steps\": 5}}",
+      "score": {
+        "front_exact": false,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "player",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -3,
+            "dy": -2,
+            "steps": 5
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.3194026999990456,
+        "input_tokens": 1775,
+        "output_tokens": 60,
+        "cost_usd": 6.5019315e-05,
+        "provider": "OpenInference",
+        "charge_id": "7c5c861f12d742298a5401c68b5b0171",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.45293052392600003
+      }
+    },
+    {
+      "job": {
+        "case": "p_28",
+        "format": "map"
+      },
+      "output": "{\n  \"front\": {\n    \"material\": \"grass\",\n    \"entity\": \"none\",\n    \"plant_ripe\": null,\n    \"arrow_direction\": \"\"\n  },\n  \"nearest_tree\": {\n    \"visible\": true,\n    \"dx\": -3,\n    \"dy\": -2,\n    \"steps\": 5\n  }\n}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "none",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -3,
+            "dy": -2,
+            "steps": 5
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.634506300004432,
+        "input_tokens": 2311,
+        "output_tokens": 75,
+        "cost_usd": 8.0758425e-05,
+        "provider": "OpenInference",
+        "charge_id": "94eb6443681c4acdacbcfa69083dadc6",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.453648141941
+      }
+    },
+    {
+      "job": {
+        "case": "p_29",
+        "format": "assisted"
+      },
+      "output": " {\"front\": {\"material\": \"grass\", \"entity\": \"zombie\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": -2, \"dy\": -2, \"steps\": 4}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "zombie",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -2,
+            "dy": -2,
+            "steps": 4
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.2900643999892054,
+        "input_tokens": 2160,
+        "output_tokens": 60,
+        "cost_usd": 6.578154e-05,
+        "provider": "OpenInference",
+        "charge_id": "b0c3c7fa2fea403cbf85df382dfe8a8e",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.507616836445
+      }
+    },
+    {
+      "job": {
+        "case": "p_29",
+        "format": "cells"
+      },
+      "output": " {\"front\": {\"material\": \"grass\", \"entity\": \"zombie\", \"plant_ripe\": null, \"arrow_direction\": \"\"}, \"nearest_tree\": {\"visible\": true, \"dx\": -4, \"dy\": -1, \"steps\": 5}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": false,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "zombie",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -4,
+            "dy": -1,
+            "steps": 5
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 3.243111800009501,
+        "input_tokens": 1774,
+        "output_tokens": 62,
+        "cost_usd": 6.6611463e-05,
+        "provider": "OpenInference",
+        "charge_id": "bf461a0ebc874ebab85d1f96ebd04566",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.506182373236
+      }
+    },
+    {
+      "job": {
+        "case": "p_29",
+        "format": "map"
+      },
+      "output": " {\"front\":{\"material\":\"grass\",\"entity\":\"zombie\",\"plant_ripe\":null,\"arrow_direction\":\"\"},\"nearest_tree\":{\"visible\":true,\"dx\":-2,\"dy\":-2,\"steps\":4}}",
+      "score": {
+        "front_exact": true,
+        "tree_direction": true,
+        "tree_exact": true,
+        "parsed": {
+          "front": {
+            "material": "grass",
+            "entity": "zombie",
+            "plant_ripe": null,
+            "arrow_direction": ""
+          },
+          "nearest_tree": {
+            "visible": true,
+            "dx": -2,
+            "dy": -2,
+            "steps": 4
+          }
+        },
+        "invalid": false
+      },
+      "meta": {
+        "latency_s": 2.817427299989504,
+        "input_tokens": 2320,
+        "output_tokens": 49,
+        "cost_usd": 5.3634951e-05,
+        "provider": "OpenInference",
+        "charge_id": "9e12e57220f64062a68462eeade824ea",
+        "reserved_usd": 0.05,
+        "budget_reserved_or_reported_usd": 0.453753028346
+      }
+    }
+  ]
+}

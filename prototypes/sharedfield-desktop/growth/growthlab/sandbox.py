@@ -20,7 +20,7 @@ def parse(source, *, condition=False):
     allowed = (ast.Module, ast.Expression, ast.Expr, ast.Call, ast.Name, ast.Load, ast.Store,
                ast.Constant, ast.If, ast.While, ast.For, ast.Compare, ast.Eq, ast.NotEq,
                ast.Lt, ast.LtE, ast.Gt, ast.GtE, ast.BoolOp, ast.And, ast.Or, ast.UnaryOp, ast.Not)
-    calls = ('seen', 'count', 'need') if condition else ('act', 'observe', 'seen', 'count', 'need', 'range', 'run')
+    calls = ('seen', 'count', 'need') if condition else ('act', 'goto', 'observe', 'seen', 'count', 'need', 'range', 'run')
     for node in nodes:
         if not isinstance(node, allowed): raise Denied('syntax_denied')
         if isinstance(node, ast.Constant) and (type(node.value) not in (str, int, bool) or len(str(node.value)) > 128): raise Denied('literal_denied')
@@ -93,7 +93,7 @@ def worker(pipe, source):
         return reply[1]
     def call(op, arg):
         if op == 'range': return range(arg)
-        if op == 'act': return rpc('act', arg)
+        if op in ('act', 'goto'): return rpc(op, arg)
         if op == 'run':
             child = rpc('begin', arg)
             if not child['skip']:
@@ -117,7 +117,7 @@ def worker(pipe, source):
 
 def run(source, observe, act, *, max_steps=32, timeout_s=2., cancel=None,
         library=None, name=None, completion=None, on_step=None):
-    start = time.perf_counter(); steps = 0; stack = []; calls = []
+    start = time.perf_counter(); steps = 0; stack = []; calls = []; navigation = []
     record = {'source_sha256': hashlib.sha256(source.encode()).hexdigest(), 'steps': 0}
     resolve = (lambda n: library.current()[n]) if hasattr(library, 'current') else (lambda n: (library or {})[n])
     def begin(skill_name, skill):
@@ -176,6 +176,14 @@ def run(source, observe, act, *, max_steps=32, timeout_s=2., cancel=None,
                 if result['needs']['health'] < before['needs']['health']:
                     status, reason = 'injured', 'health_lost'; break
                 parent.send(('ok', result))
+            elif op == 'goto':
+                from .navigation import goto
+                result = goto(arg, observe, act, max_steps=max_steps-steps,
+                              deadline=start+timeout_s, cancel=cancel, on_step=on_step)
+                steps += result['steps']; navigation.append(result)
+                if result['status'] != 'arrived':
+                    status, reason = result['status'], result['reason']; break
+                parent.send(('ok', result))
             else: raise Denied('protocol_denied')
     except (KeyError, ValueError, TypeError) as error:
         status, reason = 'denied', str(error) if isinstance(error, Denied) else 'action_or_skill_denied'
@@ -184,4 +192,4 @@ def run(source, observe, act, *, max_steps=32, timeout_s=2., cancel=None,
         if process.is_alive(): process.terminate()
         process.join(timeout=2); parent.close()
         while stack: end(status)
-    return dict(record, status=status, reason=reason, steps=steps, calls=calls, seconds=time.perf_counter()-start)
+    return dict(record, status=status, reason=reason, steps=steps, calls=calls, navigation=navigation, seconds=time.perf_counter()-start)

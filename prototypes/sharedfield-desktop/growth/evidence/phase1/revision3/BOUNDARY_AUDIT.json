@@ -1,0 +1,835 @@
+{
+  "passed": true,
+  "checks": {
+    "frozen_hashes": 24,
+    "raw_observations_and_oracles": 30,
+    "outbound_packets_exact": 91,
+    "responses_match_report": 90,
+    "response_provider": 90,
+    "aggregate_formats": 3,
+    "revision2_raw_files_unchanged": 53
+  },
+  "front_fields_correct": {
+    "cells": {
+      "material": 26,
+      "entity": 7,
+      "plant_ripe": 30,
+      "arrow_direction": 28
+    },
+    "assisted": {
+      "material": 30,
+      "entity": 24,
+      "plant_ripe": 30,
+      "arrow_direction": 30
+    },
+    "map": {
+      "material": 30,
+      "entity": 25,
+      "plant_ripe": 30,
+      "arrow_direction": 30
+    }
+  },
+  "visible_tree_only": {
+    "cells": {
+      "n": 20,
+      "direction_correct": 9,
+      "exact_correct": 5
+    },
+    "assisted": {
+      "n": 20,
+      "direction_correct": 20,
+      "exact_correct": 20
+    },
+    "map": {
+      "n": 20,
+      "direction_correct": 20,
+      "exact_correct": 20
+    }
+  },
+  "front_mistakes": [
+    {
+      "case": "p_00",
+      "format": "cells",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_teach_practice_0_a1\\trace.jsonl",
+      "line": 30,
+      "tick": 4,
+      "facing": [
+        1,
+        0
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_01",
+      "format": "cells",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_teach_practice_0_a1\\trace.jsonl",
+      "line": 177,
+      "tick": 25,
+      "facing": [
+        0,
+        -1
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_02",
+      "format": "cells",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_teach_practice_0_a1\\trace.jsonl",
+      "line": 275,
+      "tick": 39,
+      "facing": [
+        0,
+        -1
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_04",
+      "format": "cells",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_teach_practice_0_a1\\trace.jsonl",
+      "line": 289,
+      "tick": 41,
+      "facing": [
+        0,
+        -1
+      ],
+      "expected": {
+        "material": "stone",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_05",
+      "format": "cells",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_teach_practice_0_a1\\trace.jsonl",
+      "line": 317,
+      "tick": 45,
+      "facing": [
+        -1,
+        0
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "cow",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_06",
+      "format": "cells",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_teach_practice_0_a1\\trace.jsonl",
+      "line": 373,
+      "tick": 53,
+      "facing": [
+        1,
+        0
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "cow",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_07",
+      "format": "cells",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_teach_practice_0_a1\\trace.jsonl",
+      "line": 793,
+      "tick": 113,
+      "facing": [
+        1,
+        0
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_09",
+      "format": "cells",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_teach_practice_0_a1\\trace.jsonl",
+      "line": 926,
+      "tick": 132,
+      "facing": [
+        -1,
+        0
+      ],
+      "expected": {
+        "material": "table",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_11",
+      "format": "cells",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F2_train_practice_0_a1\\trace.jsonl",
+      "line": 100,
+      "tick": 14,
+      "facing": [
+        1,
+        0
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_14",
+      "format": "cells",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F2_train_practice_0_a1\\trace.jsonl",
+      "line": 338,
+      "tick": 48,
+      "facing": [
+        0,
+        -1
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_15",
+      "format": "cells",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F2_train_practice_0_a1\\trace.jsonl",
+      "line": 352,
+      "tick": 50,
+      "facing": [
+        0,
+        -1
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_17",
+      "format": "cells",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F2_train_practice_0_a1\\trace.jsonl",
+      "line": 464,
+      "tick": 66,
+      "facing": [
+        -1,
+        0
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "water",
+        "entity": "arrow",
+        "plant_ripe": null,
+        "arrow_direction": "up"
+      }
+    },
+    {
+      "case": "p_18",
+      "format": "cells",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F2_train_practice_0_a1\\trace.jsonl",
+      "line": 576,
+      "tick": 82,
+      "facing": [
+        -1,
+        0
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "water",
+        "entity": "arrow",
+        "plant_ripe": null,
+        "arrow_direction": "up"
+      }
+    },
+    {
+      "case": "p_19",
+      "format": "cells",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F2_train_practice_0_a1\\trace.jsonl",
+      "line": 625,
+      "tick": 89,
+      "facing": [
+        1,
+        0
+      ],
+      "expected": {
+        "material": "sand",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "sand",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_20",
+      "format": "cells",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_auto_practice_0_a2\\trace.jsonl",
+      "line": 23,
+      "tick": 3,
+      "facing": [
+        1,
+        0
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_21",
+      "format": "cells",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_auto_practice_0_a2\\trace.jsonl",
+      "line": 79,
+      "tick": 11,
+      "facing": [
+        -1,
+        0
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_22",
+      "format": "cells",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_auto_practice_0_a2\\trace.jsonl",
+      "line": 93,
+      "tick": 13,
+      "facing": [
+        -1,
+        0
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_23",
+      "format": "cells",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_auto_practice_0_a2\\trace.jsonl",
+      "line": 177,
+      "tick": 25,
+      "facing": [
+        1,
+        0
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "skeleton",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_24",
+      "format": "cells",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_auto_practice_0_a2\\trace.jsonl",
+      "line": 352,
+      "tick": 50,
+      "facing": [
+        -1,
+        0
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_25",
+      "format": "cells",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_auto_practice_0_a2\\trace.jsonl",
+      "line": 464,
+      "tick": 66,
+      "facing": [
+        -1,
+        0
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "cow",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_26",
+      "format": "cells",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_auto_practice_0_a2\\trace.jsonl",
+      "line": 485,
+      "tick": 69,
+      "facing": [
+        -1,
+        0
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_27",
+      "format": "cells",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_auto_practice_0_a2\\trace.jsonl",
+      "line": 919,
+      "tick": 131,
+      "facing": [
+        1,
+        0
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_28",
+      "format": "cells",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_auto_practice_0_a2\\trace.jsonl",
+      "line": 947,
+      "tick": 135,
+      "facing": [
+        -1,
+        0
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_00",
+      "format": "assisted",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_teach_practice_0_a1\\trace.jsonl",
+      "line": 30,
+      "tick": 4,
+      "facing": [
+        1,
+        0
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_01",
+      "format": "assisted",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_teach_practice_0_a1\\trace.jsonl",
+      "line": 177,
+      "tick": 25,
+      "facing": [
+        0,
+        -1
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_07",
+      "format": "assisted",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_teach_practice_0_a1\\trace.jsonl",
+      "line": 793,
+      "tick": 113,
+      "facing": [
+        1,
+        0
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_10",
+      "format": "assisted",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F2_train_practice_0_a1\\trace.jsonl",
+      "line": 2,
+      "tick": 0,
+      "facing": [
+        0,
+        1
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_21",
+      "format": "assisted",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_auto_practice_0_a2\\trace.jsonl",
+      "line": 79,
+      "tick": 11,
+      "facing": [
+        -1,
+        0
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_28",
+      "format": "assisted",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_auto_practice_0_a2\\trace.jsonl",
+      "line": 947,
+      "tick": 135,
+      "facing": [
+        -1,
+        0
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "zombie",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_00",
+      "format": "map",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_teach_practice_0_a1\\trace.jsonl",
+      "line": 30,
+      "tick": 4,
+      "facing": [
+        1,
+        0
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_01",
+      "format": "map",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_teach_practice_0_a1\\trace.jsonl",
+      "line": 177,
+      "tick": 25,
+      "facing": [
+        0,
+        -1
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_20",
+      "format": "map",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_auto_practice_0_a2\\trace.jsonl",
+      "line": 23,
+      "tick": 3,
+      "facing": [
+        1,
+        0
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_23",
+      "format": "map",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_auto_practice_0_a2\\trace.jsonl",
+      "line": 177,
+      "tick": 25,
+      "facing": [
+        1,
+        0
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    },
+    {
+      "case": "p_26",
+      "format": "map",
+      "source": "runs\\phase1\\pilot\\episodes\\B_F1_auto_practice_0_a2\\trace.jsonl",
+      "line": 485,
+      "tick": 69,
+      "facing": [
+        -1,
+        0
+      ],
+      "expected": {
+        "material": "grass",
+        "entity": "none",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      },
+      "returned": {
+        "material": "grass",
+        "entity": "player",
+        "plant_ripe": null,
+        "arrow_direction": ""
+      }
+    }
+  ],
+  "gate_passed": false,
+  "missing_downstream": "Revision-3 G0a/G0b/G0c and pilot not started after G0p stop."
+}

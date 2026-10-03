@@ -57,6 +57,9 @@ class Episode:
     def execute(self,choice,observation_experience):
         if choice['kind']=='action':
             result=repeat_action(choice['action'],choice['repeat'],self.host.observe,self.step)
+        elif choice['kind']=='goto':
+            from .navigation import goto
+            result=goto(choice['name'],self.host.observe,self.step,max_steps=32)
         else:
             starting_observation=self.host.observe()
             if choice['kind']=='write':

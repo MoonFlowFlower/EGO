@@ -12,17 +12,27 @@ Rules predict exact deltas only for named inventory/need fields, and/or the fina
 contents of the same facing tile. Preconditions: inventory minimums, materials
 within 3x3, facing materials (any one), facing entity (empty=unconstrained,
 none=no entity). Expected facing fields empty=unconstrained, entity none=no entity.
-Use scope global for a proposed general rule, world only for a fact confined to
-this world. Counts are computed by the program, never claim support yourself.
+Rules always load across worlds; do not propose a scope field. Evidence world IDs
+and separate per-world support/counterexamples are computed by the program.
+Every rule must cite same-action transitions, have at least one applicable
+supporting transition, and match all applicable cited results. Other cited
+same-action transitions may establish a precondition boundary. A replacement
+must additionally cite an applicable counterexample to the OLD rule.
 If evidence does not warrant a proposal, return an empty list. Use replaces only
 for an existing rule ID to correct. Rules are hypotheses and may have counterexamples.
-Skills use the same closed language: act, run, observe, seen, count, need,
+The successful_sequences field contains observed action sequences ending in a
+visible inventory or food/drink increase. Use these to propose reusable skills
+with a completion expression when warranted, citing the sequence experience IDs.
+Write actual program source, never an experience ID in source. Completion uses
+count/need/seen expressions, not prose. Do not invent an unobserved action effect.
+Skills use the same closed language: act, goto, run, observe, seen, count, need,
 comparisons, and/or/not, if/while, for _ in range(N<=32); no variables/arithmetic.
 Every skill needs a boolean completion condition. No recursion; depth <=3.
 Do not invent observations, teaching, action meanings or experience IDs.'''
 A_SYSTEM = '''Write one plain-text reflection about this episode, for later BM25 retrieval.
 Use only supplied allowed experiences. Describe useful observations, mistakes,
 uncertainties and possible next steps, with relevant public action/item names.
+Successful_sequences are observed examples; include useful sequences in the reflection.
 Do not invent events or treat guesses as facts. No rule cards or self ratings.
 Return JSON with reflection only. Keep it concise enough to retrieve later.'''
 
@@ -39,7 +49,7 @@ def sleep_format(arm,actions):
         'inventory_delta':array(obj({'item':string(enum=list(ITEMS)),'delta':{'type':'integer','minimum':-9,'maximum':9}}),12),
         'needs_delta':array(obj({'need':string(enum=list(NEEDS)),'delta':{'type':'integer','minimum':-9,'maximum':9}}),4),
         'front_material':string(enum=['',*MATERIALS]),'expected_front_entity':string(enum=['','none',*ENTITIES]),
-        'scope':string(enum=['global','world']),'experiences':ids,'replaces':string(32)})
+        'experiences':ids,'replaces':string(32)})
     skills=obj({'name':string(64),'description':string(),'source':string(8192),'completion':string(512),'experiences':ids})
     return format_schema('consolidation',obj({'rules':array(rules),'skills':array(skills,4)}))
 
@@ -60,8 +70,35 @@ def packet(episode):
     for row in ordered:
         if row['id'] in seen:continue
         value=short_experience(row['id'],row['body'])
-        if len(json.dumps(selected+[value]).encode())>24000:continue
+        if len(json.dumps(selected+[value]).encode())>20000:continue
         selected.append(value);seen.add(row['id'])
+    return selected
+
+
+def successful_sequences(episode, evidence):
+    allowed={e['id'] for e in evidence}
+    rows=[r for r in all_records(episode.store,'experience') if r['id'] in allowed and r['body'].get('type')=='transition']
+    sequences=[]
+    for index,row in enumerate(rows):
+        body=row['body'];effects=body['change']['effects']
+        increases=[('inventory',k,v) for k,v in effects['inventory'].items() if v>0]
+        increases += [('needs',k,v) for k,v in effects['consumption'].items() if v>0]
+        if not increases:continue
+        sequence=[row]
+        for previous in reversed(rows[max(0,index-7):index]):
+            if previous['world']!=row['world'] or previous['body']['after']['tick']!=sequence[0]['body']['before']['tick']:break
+            sequence.insert(0,previous)
+        field,key,_=sorted(increases,key=lambda x:(-x[2],x[1]))[0]
+        condition=f"{'count' if field=='inventory' else 'need'}('{key}') >= {body['after'][field][key]}"
+        sequences.append({'experiences':[r['id'] for r in sequence],
+                          'actions':[r['body']['action'] for r in sequence],
+                          'observed_increase':{'field':field,'name':key,'before':body['before'][field][key],'after':body['after'][field][key]},
+                          'completion_candidate':condition})
+    selected=[]
+    for sequence in reversed(sequences):
+        if len(selected)>=4:break
+        if len(json.dumps({'experiences':evidence,'successful_sequences':selected+[sequence]}).encode())<=24000:
+            selected.insert(0,sequence)
     return selected
 
 
@@ -80,12 +117,12 @@ def apply_proposals(memory,proposal,allowed_ids):
                 if not isinstance(ids,list) or not set(ids)<=set(allowed_ids):raise ValueError('unsupplied_experience')
                 experience_rows(memory.store,ids)
                 if kind=='rules':
-                    expected_fields={'action','inventory_min','nearby','front_materials','front_entity','inventory_delta','needs_delta','front_material','expected_front_entity','scope','experiences','replaces'}
+                    expected_fields={'action','inventory_min','nearby','front_materials','front_entity','inventory_delta','needs_delta','front_material','expected_front_entity','experiences','replaces'}
                     if set(item)!=expected_fields:raise ValueError('rule_proposal_schema')
                     front={}
                     if item['front_material']:front['material']=item['front_material']
                     if item['expected_front_entity']:front['entity']=None if item['expected_front_entity']=='none' else item['expected_front_entity']
-                    card={'action':item['action'],'scope':item['scope'],'experiences':ids,
+                    card={'action':item['action'],'experiences':ids,
                           'preconditions':{'inventory_min':{x['item']:x['count'] for x in item['inventory_min']},
                             'nearby':item['nearby'],'front_materials':item['front_materials'],'front_entity':item['front_entity'] or None},
                           'expected':{'inventory':{x['item']:x['delta'] for x in item['inventory_delta']},
@@ -95,7 +132,8 @@ def apply_proposals(memory,proposal,allowed_ids):
                     if set(item)!={'name','description','source','completion','experiences'}:raise ValueError('skill_proposal_schema')
                     identity=memory.library.register(item['name'],item['description'],item['source'],item['completion'],parents=ids)['id']
                 results.append({'type':kind,'accepted':True,'id':identity})
-            except (ValueError,KeyError,TypeError):results.append({'type':kind,'accepted':False,'reason':'invalid_proposal_or_provenance','proposal':json.loads(json.dumps(item))})
+            except (ValueError,KeyError,TypeError) as error:
+                results.append({'type':kind,'accepted':False,'reason':str(error) if isinstance(error,ValueError) else 'invalid_proposal_or_provenance','proposal':json.loads(json.dumps(item))})
     return results
 
 
@@ -106,7 +144,8 @@ def consolidate(episode):
     # Previous memories share the SAME budget as decision-time retrieval.
     prompt=[{'role':'system','content':B_SYSTEM if memory.arm=='B' else A_SYSTEM},
             {'role':'user','content':compact({'goal':episode.goal,'actions':episode.host.actions,
-                'memory':memory.retrieve(episode.host.observe(),episode.goal),'experiences':evidence})}]
+                'memory':memory.retrieve(episode.host.observe(),episode.goal),'experiences':evidence,
+                'successful_sequences':successful_sequences(episode,evidence)})}]
     episode.write({'type':'sleep_input','messages':prompt})
     content,meta=episode.client.decide(prompt,response_format=sleep_format(memory.arm,episode.host.actions),max_tokens=2048)
     episode.calls.append(dict(meta,purpose='consolidation'))

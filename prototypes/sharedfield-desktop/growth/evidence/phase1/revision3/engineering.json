@@ -1,0 +1,1933 @@
+{
+  "implementation_revision": 3,
+  "passed": true,
+  "telemetry": [
+    {
+      "unix_s": 1790988077.7165458,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "53, 457, 2784, 21.29",
+      "gpu_returncode": 0
+    },
+    {
+      "unix_s": 1790988089.8454547,
+      "ac_online": true,
+      "gpu_csv_C_MHz_MiB_W": "54, 480, 2785, 21.31",
+      "gpu_returncode": 0
+    }
+  ],
+  "observation": {
+    "front": {
+      "material": "grass",
+      "entity": null,
+      "visible_state": null
+    },
+    "nearest_tree": {
+      "name": "tree",
+      "dx": 2,
+      "dy": 1,
+      "direction": "下 1 步、右 2 步",
+      "offset_steps": 3,
+      "adjacent": false,
+      "underfoot": false,
+      "visible_state": null
+    },
+    "night_unknown_cells": 54,
+    "pure_json_and_input_unchanged": true
+  },
+  "navigation": {
+    "diagonal": {
+      "status": "arrived",
+      "reason": "arrived",
+      "steps": 3,
+      "target_name": "tree",
+      "seconds": 0.007883700003731064,
+      "plans": [
+        {
+          "tick": 0,
+          "status": "route",
+          "actions": [
+            "move_right",
+            "move_right",
+            "move_down"
+          ],
+          "target": [
+            2,
+            2
+          ],
+          "searched_cells": [
+            [
+              -3,
+              0
+            ],
+            [
+              -2,
+              -1
+            ],
+            [
+              -2,
+              0
+            ],
+            [
+              -2,
+              1
+            ],
+            [
+              -1,
+              -2
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              2
+            ],
+            [
+              0,
+              -3
+            ],
+            [
+              0,
+              -2
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              -2
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              2,
+              -1
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              3,
+              0
+            ]
+          ]
+        },
+        {
+          "tick": 1,
+          "status": "route",
+          "actions": [
+            "move_right",
+            "move_down"
+          ],
+          "target": [
+            1,
+            2
+          ],
+          "searched_cells": [
+            [
+              -2,
+              0
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              0,
+              -2
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              2,
+              0
+            ]
+          ]
+        },
+        {
+          "tick": 2,
+          "status": "route",
+          "actions": [
+            "move_down"
+          ],
+          "target": [
+            0,
+            2
+          ],
+          "searched_cells": [
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "tick": 3,
+          "status": "arrived",
+          "actions": [],
+          "target": [
+            0,
+            1
+          ],
+          "searched_cells": [
+            [
+              0,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    "obstacle": {
+      "status": "arrived",
+      "reason": "arrived",
+      "steps": 7,
+      "target_name": "tree",
+      "seconds": 0.01788650000526104,
+      "plans": [
+        {
+          "tick": 0,
+          "status": "route",
+          "actions": [
+            "move_up",
+            "move_up",
+            "move_up",
+            "move_right",
+            "move_right",
+            "move_down",
+            "move_down"
+          ],
+          "target": [
+            2,
+            0
+          ],
+          "searched_cells": [
+            [
+              -4,
+              -3
+            ],
+            [
+              -4,
+              -2
+            ],
+            [
+              -4,
+              -1
+            ],
+            [
+              -4,
+              0
+            ],
+            [
+              -4,
+              1
+            ],
+            [
+              -4,
+              2
+            ],
+            [
+              -3,
+              -3
+            ],
+            [
+              -3,
+              -2
+            ],
+            [
+              -3,
+              -1
+            ],
+            [
+              -3,
+              0
+            ],
+            [
+              -3,
+              1
+            ],
+            [
+              -3,
+              2
+            ],
+            [
+              -3,
+              3
+            ],
+            [
+              -2,
+              -3
+            ],
+            [
+              -2,
+              -2
+            ],
+            [
+              -2,
+              -1
+            ],
+            [
+              -2,
+              0
+            ],
+            [
+              -2,
+              1
+            ],
+            [
+              -2,
+              2
+            ],
+            [
+              -2,
+              3
+            ],
+            [
+              -1,
+              -3
+            ],
+            [
+              -1,
+              -2
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              2
+            ],
+            [
+              -1,
+              3
+            ],
+            [
+              0,
+              -3
+            ],
+            [
+              0,
+              -2
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              2
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              1,
+              -3
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              -3
+            ],
+            [
+              2,
+              -2
+            ],
+            [
+              2,
+              -1
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              3,
+              -3
+            ],
+            [
+              3,
+              -2
+            ],
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              -3
+            ]
+          ]
+        },
+        {
+          "tick": 1,
+          "status": "route",
+          "actions": [
+            "move_up",
+            "move_up",
+            "move_right",
+            "move_right",
+            "move_down",
+            "move_down"
+          ],
+          "target": [
+            2,
+            1
+          ],
+          "searched_cells": [
+            [
+              -4,
+              -2
+            ],
+            [
+              -4,
+              -1
+            ],
+            [
+              -4,
+              0
+            ],
+            [
+              -4,
+              1
+            ],
+            [
+              -3,
+              -3
+            ],
+            [
+              -3,
+              -2
+            ],
+            [
+              -3,
+              -1
+            ],
+            [
+              -3,
+              0
+            ],
+            [
+              -3,
+              1
+            ],
+            [
+              -3,
+              2
+            ],
+            [
+              -2,
+              -3
+            ],
+            [
+              -2,
+              -2
+            ],
+            [
+              -2,
+              -1
+            ],
+            [
+              -2,
+              0
+            ],
+            [
+              -2,
+              1
+            ],
+            [
+              -2,
+              2
+            ],
+            [
+              -2,
+              3
+            ],
+            [
+              -1,
+              -3
+            ],
+            [
+              -1,
+              -2
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              2
+            ],
+            [
+              -1,
+              3
+            ],
+            [
+              0,
+              -3
+            ],
+            [
+              0,
+              -2
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              2
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              1,
+              -3
+            ],
+            [
+              1,
+              -2
+            ],
+            [
+              2,
+              -3
+            ],
+            [
+              2,
+              -2
+            ],
+            [
+              2,
+              -1
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              3,
+              -3
+            ],
+            [
+              3,
+              -2
+            ],
+            [
+              3,
+              -1
+            ],
+            [
+              4,
+              -2
+            ]
+          ]
+        },
+        {
+          "tick": 2,
+          "status": "route",
+          "actions": [
+            "move_up",
+            "move_right",
+            "move_right",
+            "move_down",
+            "move_down"
+          ],
+          "target": [
+            2,
+            2
+          ],
+          "searched_cells": [
+            [
+              -4,
+              -1
+            ],
+            [
+              -4,
+              0
+            ],
+            [
+              -3,
+              -2
+            ],
+            [
+              -3,
+              -1
+            ],
+            [
+              -3,
+              0
+            ],
+            [
+              -3,
+              1
+            ],
+            [
+              -2,
+              -3
+            ],
+            [
+              -2,
+              -2
+            ],
+            [
+              -2,
+              -1
+            ],
+            [
+              -2,
+              0
+            ],
+            [
+              -2,
+              1
+            ],
+            [
+              -2,
+              2
+            ],
+            [
+              -1,
+              -3
+            ],
+            [
+              -1,
+              -2
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              2
+            ],
+            [
+              -1,
+              3
+            ],
+            [
+              0,
+              -3
+            ],
+            [
+              0,
+              -2
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              2
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              1,
+              -3
+            ],
+            [
+              1,
+              -2
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              2,
+              -3
+            ],
+            [
+              2,
+              -2
+            ],
+            [
+              2,
+              -1
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              3,
+              -2
+            ],
+            [
+              3,
+              -1
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              4,
+              -1
+            ]
+          ]
+        },
+        {
+          "tick": 3,
+          "status": "route",
+          "actions": [
+            "move_right",
+            "move_right",
+            "move_down",
+            "move_down"
+          ],
+          "target": [
+            2,
+            3
+          ],
+          "searched_cells": [
+            [
+              -4,
+              0
+            ],
+            [
+              -3,
+              -1
+            ],
+            [
+              -3,
+              0
+            ],
+            [
+              -3,
+              1
+            ],
+            [
+              -2,
+              -2
+            ],
+            [
+              -2,
+              -1
+            ],
+            [
+              -2,
+              0
+            ],
+            [
+              -2,
+              1
+            ],
+            [
+              -2,
+              2
+            ],
+            [
+              -1,
+              -3
+            ],
+            [
+              -1,
+              -2
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              2
+            ],
+            [
+              -1,
+              3
+            ],
+            [
+              0,
+              -3
+            ],
+            [
+              0,
+              -2
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              2
+            ],
+            [
+              0,
+              3
+            ],
+            [
+              1,
+              -3
+            ],
+            [
+              1,
+              -2
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              2,
+              -2
+            ],
+            [
+              2,
+              -1
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              3,
+              -1
+            ],
+            [
+              3,
+              0
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              4,
+              0
+            ]
+          ]
+        },
+        {
+          "tick": 4,
+          "status": "route",
+          "actions": [
+            "move_right",
+            "move_down",
+            "move_down"
+          ],
+          "target": [
+            1,
+            3
+          ],
+          "searched_cells": [
+            [
+              -3,
+              0
+            ],
+            [
+              -2,
+              -1
+            ],
+            [
+              -2,
+              0
+            ],
+            [
+              -2,
+              1
+            ],
+            [
+              -1,
+              -2
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              -1,
+              2
+            ],
+            [
+              0,
+              -3
+            ],
+            [
+              0,
+              -2
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              1,
+              -2
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              -1
+            ],
+            [
+              2,
+              0
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              3,
+              0
+            ]
+          ]
+        },
+        {
+          "tick": 5,
+          "status": "route",
+          "actions": [
+            "move_down",
+            "move_down"
+          ],
+          "target": [
+            0,
+            3
+          ],
+          "searched_cells": [
+            [
+              -2,
+              0
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              0,
+              -2
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              2,
+              0
+            ]
+          ]
+        },
+        {
+          "tick": 6,
+          "status": "route",
+          "actions": [
+            "move_down"
+          ],
+          "target": [
+            0,
+            2
+          ],
+          "searched_cells": [
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              0
+            ]
+          ]
+        },
+        {
+          "tick": 7,
+          "status": "arrived",
+          "actions": [],
+          "target": [
+            0,
+            1
+          ],
+          "searched_cells": [
+            [
+              0,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    "unseen": {
+      "status": "target_not_visible",
+      "reason": "target_not_visible",
+      "steps": 0,
+      "target_name": "tree",
+      "seconds": 0.0006301999965216964,
+      "plans": [
+        {
+          "tick": 0,
+          "status": "target_not_visible",
+          "actions": [],
+          "searched_cells": []
+        }
+      ]
+    },
+    "no_path": {
+      "status": "no_path",
+      "reason": "no_path",
+      "steps": 0,
+      "target_name": "tree",
+      "seconds": 0.0006696000054944307,
+      "plans": [
+        {
+          "tick": 0,
+          "status": "no_path",
+          "actions": [],
+          "searched_cells": [
+            [
+              0,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    "blocked": {
+      "status": "blocked",
+      "reason": "blocked",
+      "steps": 1,
+      "target_name": "tree",
+      "seconds": 0.0024523000029148534,
+      "plans": [
+        {
+          "tick": 0,
+          "status": "route",
+          "actions": [
+            "move_right",
+            "move_right"
+          ],
+          "target": [
+            3,
+            0
+          ],
+          "searched_cells": [
+            [
+              -2,
+              0
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              0,
+              -2
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              2,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    "hurt": {
+      "status": "injured",
+      "reason": "injured",
+      "steps": 1,
+      "target_name": "tree",
+      "seconds": 0.0026805000088643283,
+      "plans": [
+        {
+          "tick": 0,
+          "status": "route",
+          "actions": [
+            "move_right",
+            "move_right"
+          ],
+          "target": [
+            3,
+            0
+          ],
+          "searched_cells": [
+            [
+              -2,
+              0
+            ],
+            [
+              -1,
+              -1
+            ],
+            [
+              -1,
+              0
+            ],
+            [
+              -1,
+              1
+            ],
+            [
+              0,
+              -2
+            ],
+            [
+              0,
+              -1
+            ],
+            [
+              0,
+              0
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              -1
+            ],
+            [
+              1,
+              0
+            ],
+            [
+              2,
+              0
+            ]
+          ]
+        }
+      ]
+    },
+    "timeout_and_cancellation": true,
+    "visible_bounds_only": true
+  },
+  "skill_goto": {
+    "shared_budget": {
+      "source_sha256": "62e8c4b8003ad77503254a5a2e4aa0e682b8aeb8482fcf450a8a75267a44bb16",
+      "steps": 1,
+      "status": "step_limit",
+      "reason": "step_limit",
+      "calls": [
+        {
+          "name": "parent",
+          "version": 1,
+          "record_id": "a375d6433ea1411ba48cd9888f1d0369",
+          "depth": 1,
+          "start_step": 0,
+          "start_s": 0.0006486999918706715,
+          "completion": "False",
+          "outcome": "unsuccessful",
+          "execution_status": "step_limit",
+          "steps": 1,
+          "seconds": 0.28431269999418873
+        },
+        {
+          "name": "reach",
+          "version": 1,
+          "record_id": "3367559d7b3840ff90db9aedb6c381a2",
+          "depth": 2,
+          "start_step": 0,
+          "start_s": 0.2764386999915587,
+          "completion": "False",
+          "outcome": "unsuccessful",
+          "execution_status": "step_limit",
+          "steps": 1,
+          "seconds": 0.008165499995811842
+        }
+      ],
+      "navigation": [
+        {
+          "status": "step_limit",
+          "reason": "step_limit",
+          "steps": 1,
+          "target_name": "tree",
+          "seconds": 0.0031522000062977895,
+          "plans": [
+            {
+              "tick": 0,
+              "status": "route",
+              "actions": [
+                "move_right",
+                "move_right"
+              ],
+              "target": [
+                3,
+                0
+              ],
+              "searched_cells": [
+                [
+                  -2,
+                  0
+                ],
+                [
+                  -1,
+                  -1
+                ],
+                [
+                  -1,
+                  0
+                ],
+                [
+                  -1,
+                  1
+                ],
+                [
+                  0,
+                  -2
+                ],
+                [
+                  0,
+                  -1
+                ],
+                [
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1
+                ],
+                [
+                  1,
+                  -1
+                ],
+                [
+                  1,
+                  0
+                ],
+                [
+                  2,
+                  0
+                ]
+              ]
+            },
+            {
+              "tick": 1,
+              "status": "route",
+              "actions": [
+                "move_right"
+              ],
+              "target": [
+                2,
+                0
+              ],
+              "searched_cells": [
+                [
+                  -1,
+                  0
+                ],
+                [
+                  0,
+                  -1
+                ],
+                [
+                  0,
+                  0
+                ],
+                [
+                  1,
+                  0
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      "seconds": 0.28496249999443535
+    },
+    "nested_hurt": {
+      "source_sha256": "62e8c4b8003ad77503254a5a2e4aa0e682b8aeb8482fcf450a8a75267a44bb16",
+      "steps": 1,
+      "status": "injured",
+      "reason": "injured",
+      "calls": [
+        {
+          "name": "parent",
+          "version": 1,
+          "record_id": "a375d6433ea1411ba48cd9888f1d0369",
+          "depth": 1,
+          "start_step": 0,
+          "start_s": 0.0006816999957663938,
+          "completion": "False",
+          "outcome": "unsuccessful",
+          "execution_status": "injured",
+          "steps": 1,
+          "seconds": 0.2004095000011148
+        },
+        {
+          "name": "reach",
+          "version": 1,
+          "record_id": "3367559d7b3840ff90db9aedb6c381a2",
+          "depth": 2,
+          "start_step": 0,
+          "start_s": 0.1898944999993546,
+          "completion": "False",
+          "outcome": "unsuccessful",
+          "execution_status": "injured",
+          "steps": 1,
+          "seconds": 0.00950899999588728
+        }
+      ],
+      "navigation": [
+        {
+          "status": "injured",
+          "reason": "injured",
+          "steps": 1,
+          "target_name": "tree",
+          "seconds": 0.0035161999985575676,
+          "plans": [
+            {
+              "tick": 0,
+              "status": "route",
+              "actions": [
+                "move_right",
+                "move_right"
+              ],
+              "target": [
+                3,
+                0
+              ],
+              "searched_cells": [
+                [
+                  -2,
+                  0
+                ],
+                [
+                  -1,
+                  -1
+                ],
+                [
+                  -1,
+                  0
+                ],
+                [
+                  -1,
+                  1
+                ],
+                [
+                  0,
+                  -2
+                ],
+                [
+                  0,
+                  -1
+                ],
+                [
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1
+                ],
+                [
+                  1,
+                  -1
+                ],
+                [
+                  1,
+                  0
+                ],
+                [
+                  2,
+                  0
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      "seconds": 0.20109499999671243
+    },
+    "nested_takeover": {
+      "source_sha256": "62e8c4b8003ad77503254a5a2e4aa0e682b8aeb8482fcf450a8a75267a44bb16",
+      "steps": 1,
+      "status": "cancelled",
+      "reason": "cancelled",
+      "calls": [
+        {
+          "name": "parent",
+          "version": 1,
+          "record_id": "a375d6433ea1411ba48cd9888f1d0369",
+          "depth": 1,
+          "start_step": 0,
+          "start_s": 0.0013329999928828329,
+          "completion": "False",
+          "outcome": "unsuccessful",
+          "execution_status": "cancelled",
+          "steps": 1,
+          "seconds": 0.2179584999976214
+        },
+        {
+          "name": "reach",
+          "version": 1,
+          "record_id": "3367559d7b3840ff90db9aedb6c381a2",
+          "depth": 2,
+          "start_step": 0,
+          "start_s": 0.20356439999886788,
+          "completion": "False",
+          "outcome": "unsuccessful",
+          "execution_status": "cancelled",
+          "steps": 1,
+          "seconds": 0.014054200000828132
+        }
+      ],
+      "navigation": [
+        {
+          "status": "cancelled",
+          "reason": "cancelled",
+          "steps": 1,
+          "target_name": "tree",
+          "seconds": 0.007627300001331605,
+          "plans": [
+            {
+              "tick": 0,
+              "status": "route",
+              "actions": [
+                "move_right",
+                "move_right"
+              ],
+              "target": [
+                3,
+                0
+              ],
+              "searched_cells": [
+                [
+                  -2,
+                  0
+                ],
+                [
+                  -1,
+                  -1
+                ],
+                [
+                  -1,
+                  0
+                ],
+                [
+                  -1,
+                  1
+                ],
+                [
+                  0,
+                  -2
+                ],
+                [
+                  0,
+                  -1
+                ],
+                [
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1
+                ],
+                [
+                  1,
+                  -1
+                ],
+                [
+                  1,
+                  0
+                ],
+                [
+                  2,
+                  0
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      "seconds": 0.21929439999803435
+    },
+    "decision_kind": "goto"
+  },
+  "rules": {
+    "world_counts_before_correction": {
+      "aa4badda3ac24a659d7ae3fd19459aa9": {
+        "support": 1,
+        "counterexamples": 0
+      },
+      "350a98a7bb294f699ec70d07e8eb01ab": {
+        "support": 0,
+        "counterexamples": 1
+      }
+    },
+    "rejection_reasons": [
+      "unknown_experience",
+      "prediction_mismatch",
+      "replacement_requires_counterexample",
+      "no_applicable_supporting_evidence"
+    ],
+    "old": "97c17c6c944c437cad6d1ba10158b3c3",
+    "new": "808181acc4824ecb9960acc27c2392d3",
+    "new_world_prompt_contains_rule": true,
+    "world_map_project_remain_scoped": true,
+    "registered": [
+      {
+        "action": "do",
+        "preconditions": {
+          "inventory_min": {},
+          "nearby": [],
+          "front_materials": [
+            "tree"
+          ],
+          "front_entity": "none"
+        },
+        "expected": {
+          "inventory": {
+            "wood": 2
+          },
+          "needs": {},
+          "front": {}
+        },
+        "experiences": [
+          "d78a1f324b9d457fa2f81407fd7c20c4"
+        ],
+        "format": "rule.v2",
+        "scope": "global",
+        "evidence_worlds": [
+          "350a98a7bb294f699ec70d07e8eb01ab"
+        ],
+        "support": 1,
+        "counterexamples": 0,
+        "checked": [
+          "d78a1f324b9d457fa2f81407fd7c20c4"
+        ],
+        "world_counts": {
+          "350a98a7bb294f699ec70d07e8eb01ab": {
+            "support": 1,
+            "counterexamples": 0
+          }
+        },
+        "id": "808181acc4824ecb9960acc27c2392d3"
+      }
+    ]
+  },
+  "sleep_skills": {
+    "sleep": {
+      "status": "returned",
+      "results": [
+        {
+          "type": "skills",
+          "accepted": true,
+          "id": "2e591059a01e400e91637a3e4ba621ff"
+        }
+      ],
+      "output": "{\"rules\": [], \"skills\": [{\"name\": \"collect_visible_tree\", \"description\": \"Observed movement and collection sequence\", \"source\": \"goto('tree')\\nact('do')\", \"completion\": \"count('wood') >= 1\", \"experiences\": [\"1a518c67b4cd45a3832c22db9619c5f4\", \"68cd6e1820f34da7aad4e0c83a7abc4a\", \"4618b6e36331499f9484c0181f279c7f\"]}]}",
+      "meta": {
+        "cost_usd": 0,
+        "purpose": "engineering_stub"
+      },
+      "supplied_experiences": [
+        "1a518c67b4cd45a3832c22db9619c5f4",
+        "68cd6e1820f34da7aad4e0c83a7abc4a",
+        "4618b6e36331499f9484c0181f279c7f"
+      ]
+    },
+    "executed": {
+      "source_sha256": "f7c76f9b38ebfc1e5a674e9411ca002136419f7d0207d65abeac9eb89e221d6f",
+      "steps": 3,
+      "status": "completed",
+      "reason": null,
+      "calls": [
+        {
+          "name": "collect_visible_tree",
+          "version": 1,
+          "record_id": "2e591059a01e400e91637a3e4ba621ff",
+          "depth": 1,
+          "start_step": 0,
+          "start_s": 0.000995800000964664,
+          "completion": "count('wood') >= 1",
+          "outcome": "success",
+          "execution_status": "completed",
+          "steps": 3,
+          "seconds": 0.2206840999861015
+        }
+      ],
+      "navigation": [
+        {
+          "status": "arrived",
+          "reason": "arrived",
+          "steps": 2,
+          "target_name": "tree",
+          "seconds": 0.00967710000986699,
+          "plans": [
+            {
+              "tick": 0,
+              "status": "route",
+              "actions": [
+                "move_down",
+                "move_right"
+              ],
+              "target": [
+                2,
+                1
+              ],
+              "searched_cells": [
+                [
+                  -2,
+                  0
+                ],
+                [
+                  -1,
+                  -1
+                ],
+                [
+                  -1,
+                  0
+                ],
+                [
+                  -1,
+                  1
+                ],
+                [
+                  0,
+                  -2
+                ],
+                [
+                  0,
+                  -1
+                ],
+                [
+                  0,
+                  0
+                ],
+                [
+                  0,
+                  1
+                ],
+                [
+                  1,
+                  -1
+                ],
+                [
+                  1,
+                  0
+                ],
+                [
+                  1,
+                  1
+                ],
+                [
+                  2,
+                  0
+                ]
+              ]
+            },
+            {
+              "tick": 1,
+              "status": "route",
+              "actions": [
+                "move_right"
+              ],
+              "target": [
+                2,
+                0
+              ],
+              "searched_cells": [
+                [
+                  -1,
+                  0
+                ],
+                [
+                  0,
+                  -1
+                ],
+                [
+                  0,
+                  0
+                ],
+                [
+                  1,
+                  0
+                ]
+              ]
+            },
+            {
+              "tick": 2,
+              "status": "arrived",
+              "actions": [],
+              "target": [
+                1,
+                0
+              ],
+              "searched_cells": [
+                [
+                  0,
+                  0
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      "seconds": 0.22168219999002758
+    },
+    "real_model_extraction": "unverified; engineering transport stub"
+  },
+  "seconds": 12.139745699998457
+}
