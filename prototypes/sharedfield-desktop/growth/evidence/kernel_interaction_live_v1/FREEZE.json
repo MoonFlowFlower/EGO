@@ -1,0 +1,16 @@
+{
+  "created_utc": "2026-10-04T22:25:54.976388+00:00",
+  "candidate_commit": "abf0f61fe7fb968a8c57eabaa0c9850809354d26",
+  "source_freeze": "evidence/kernel_interaction_v10/FREEZE.json",
+  "source_freeze_sha256": "573829e76c5f7a8f4aa387ee4a151eec4f40b71a137f06e6f50a6324c8606afd",
+  "checklist_sha256": "1190fef7be2ed3f9d9a7efa9b8944a25fcd6565b0df1372beccf42bdd7d868db",
+  "backup_run": "1791152754953598400",
+  "owner_backup_sha256": "59a2b124aeeaa92b17aa875bf311b1c10bae27968f49ac81537971acc0bc34ed",
+  "source_files_verified": 61,
+  "cloud_key_found_in_source": false,
+  "runs_tracked": false,
+  "generated_code_enabled": false,
+  "automatic_world_test_actions": false,
+  "launch": "companion/start.ps1",
+  "minutes": 30
+}
