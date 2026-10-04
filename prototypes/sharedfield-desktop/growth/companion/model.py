@@ -1,6 +1,7 @@
 """The only component allowed to call a model; fixed route and shared ledger."""
 import json
 import time
+from .compact import compact_context
 
 from p7.proxy import ProxyError, MAX_RESPONSE_BYTES
 
@@ -11,7 +12,7 @@ def request_messages(system, context):
     if not isinstance(current, str):
         event = context.get('current')
         current = event.get('user') if isinstance(event, dict) else None
-    evidence_context = dict(context)
+    evidence_context = compact_context(context)
     feedback=evidence_context.pop('execution_feedback',None)
     if feedback is not None:
         evidence_context.pop('receipts',None)
@@ -23,7 +24,7 @@ def request_messages(system, context):
                 if isinstance(r,dict) and r.get('role') in ('user','assistant') and isinstance(r.get('text'),str)]
     if transcript and transcript[-1]=={'role':'user','content':current}:
         transcript.pop()
-    evidence = json.dumps(evidence_context, ensure_ascii=False)
+    evidence = json.dumps(evidence_context, ensure_ascii=False,separators=(',',':'))
     if isinstance(current, str) and current:
         messages.append({'role':'user', 'content':'本轮可用的证据与状态，字段内话语保留其来源和时间；随后是最近共同对话，最后是当前用户原话。旧对话不是当前身体事实。\n'+evidence})
         messages.extend(transcript)
@@ -32,8 +33,8 @@ def request_messages(system, context):
             feedback=dict(feedback)
             previous=feedback.pop('previous_decision',None)
             if previous is not None:
-                messages.append({'role':'assistant','content':json.dumps(previous,ensure_ascii=False)})
-            messages.append({'role':'user','content':'内核执行反馈（工具证据，不是新用户请求）：\n'+json.dumps(feedback,ensure_ascii=False)})
+                messages.append({'role':'assistant','content':json.dumps(previous,ensure_ascii=False,separators=(',',':'))})
+            messages.append({'role':'user','content':'内核执行反馈（工具证据，不是新用户请求）：\n'+json.dumps(feedback,ensure_ascii=False,separators=(',',':'))})
     else:
         messages.append({'role':'user', 'content':evidence})
     return messages
@@ -43,7 +44,7 @@ def request_payload(model,system,context):
     execution=isinstance(context.get('current'),dict) and 'remaining_decisions' in context
     return {'model':model,'stream':False,'temperature':0,
             'max_tokens':8192 if execution else 1600,
-            'reasoning':{'enabled':True,'effort':'high','exclude':True} if execution else {'enabled':False},
+            'reasoning':{'enabled':True,'effort':'low','exclude':True} if execution else {'enabled':False},
             'response_format':{'type':'json_object'},'messages':request_messages(system,context)}
 
 
@@ -78,5 +79,6 @@ class Model:
                     'model': call.payload['model'], 'providers': call.payload['provider']['only'],
                     'latency_s': time.monotonic()-started, 'cost_usd': cost,
                     'reasoning_requested':request['reasoning'],'max_tokens':request['max_tokens'],
+                    'request_bytes':len(json.dumps(call.payload,ensure_ascii=False,separators=(',',':')).encode()),
                     'reasoning_tokens':usage.get('completion_tokens_details',{}).get('reasoning_tokens'),
                     'input_tokens': usage.get('prompt_tokens'), 'output_tokens': usage.get('completion_tokens')})

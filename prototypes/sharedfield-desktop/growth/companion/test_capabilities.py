@@ -20,7 +20,7 @@ class CapabilityTests(unittest.TestCase):
     def test_execution_requests_reasoning_without_returning_hidden_text(self):
         payload=request_payload('deepseek/deepseek-v4.1-flash','instructions',{'current':{'user':'搭起来'},'remaining_decisions':64})
         forwarded,_,_=prepare_request(payload,model=payload['model'])
-        self.assertEqual(forwarded['reasoning'],{'enabled':True,'effort':'high','exclude':True})
+        self.assertEqual(forwarded['reasoning'],{'enabled':True,'effort':'low','exclude':True})
         self.assertEqual(forwarded['max_tokens'],8192)
         for context in ({'current_user':'对'}, {'current_user':'在吗','mode':'chat'}):
             payload=request_payload('deepseek/deepseek-v4.1-flash','instructions',context)

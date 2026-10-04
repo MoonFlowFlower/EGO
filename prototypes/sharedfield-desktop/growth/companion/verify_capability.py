@@ -104,7 +104,7 @@ def main():
             acceptable=not record or record['goal_status'] in ('waiting_user','blocked')
             observed=identity=='missing' or any(a['name'] in ('inspect','inspect_area','search') for a in body.actions)
             add('C5-'+identity,not body.changes and acceptable and observed and reply and REFUSAL not in reply
-                and '核对条件还不符合' not in reply,
+                and not any(s in reply for s in ('核对条件还不符合','连接或格式问题','本次预算不足','这些观察还没找到','行动缺少可检查的目标')),
                 reply=reply,work=record,actions=[a['name'] for a in body.actions]);export(identity,body)
 
         body=VoxelScene(origin=(-9,81,23),inventory={'birch_planks':3});path,engine=case('transfer',body,12)
