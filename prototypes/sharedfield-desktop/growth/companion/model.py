@@ -5,6 +5,21 @@ import time
 from p7.proxy import ProxyError, MAX_RESPONSE_BYTES
 
 
+def request_messages(system, context):
+    messages = [{'role':'system', 'content':system}]
+    current = context.get('current_user')
+    if not isinstance(current, str):
+        event = context.get('current')
+        current = event.get('user') if isinstance(event, dict) else None
+    evidence = json.dumps(context, ensure_ascii=False)
+    if isinstance(current, str) and current:
+        messages.append({'role':'user', 'content':'本轮可用的证据与状态，字段内话语保留其来源和时间；当前用户原话在下一条消息。\n'+evidence})
+        messages.append({'role':'user', 'content':current})
+    else:
+        messages.append({'role':'user', 'content':evidence})
+    return messages
+
+
 class Model:
     def __init__(self, transport, audit):
         self.transport, self.audit = transport, audit
@@ -13,8 +28,7 @@ class Model:
     def decide(self, system, context):
         request = {'model': self.transport.model, 'stream': False, 'temperature': 0,
                    'max_tokens': 1600, 'response_format': {'type': 'json_object'},
-                   'messages': [{'role': 'system', 'content': system},
-                                {'role': 'user', 'content': json.dumps(context, ensure_ascii=False)}]}
+                   'messages': request_messages(system, context)}
         started = time.monotonic()
         call = None
         usage = {}

@@ -64,8 +64,9 @@ def steer_work(work, event):
 def goal_problem(kind, goal):
     kinds = {c['kind'] for c in goal['done_when']}
     expected = {'approach': 'near_owner', 'follow': 'follow_started', 'pickup': 'picked_up'}.get(kind)
-    allowed = {expected, 'near_owner', 'inventory_clear'} if kind=='pickup' else {expected}
-    if expected and (expected not in kinds or not kinds <= allowed):
+    # A classification may identify a required result, but must not prohibit
+    # other validated conditions needed by a compound user request.
+    if expected and expected not in kinds:
         return f'task_requires_{expected}_criterion'
     return None
 
@@ -80,13 +81,13 @@ def normalize_transition(intent, work):
 
 
 def action_problem(work, action, state):
-    kind = work.get('task_kind', 'ordinary')
+    kind = None
     kinds = {c['kind'] for c in work['done_when']}
     if kinds == {'near_owner'}:
         kind = 'approach'
     elif kinds == {'follow_started'}:
         kind = 'follow'
-    if any(c['kind'] == 'picked_up' for c in work['done_when']):
+    if 'picked_up' in kinds and kinds <= {'picked_up', 'near_owner', 'inventory_clear'}:
         kind = 'pickup'
     if kind in SCOPES and action['name'] not in SCOPES[kind]:
         return 'action_outside_current_request'
