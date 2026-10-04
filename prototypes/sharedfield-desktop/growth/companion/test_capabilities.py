@@ -7,6 +7,8 @@ from .test_harness import Model, Body, decision, goal
 from .test_kernel import Audit
 from .work import validate_action, validate_goal, create_work, incorporate
 from .voxel_scene import VoxelScene, grade_hut
+from .model import request_messages
+from .memory import Memory
 
 
 def pos(x,y=64,z=0):return dict(x=x,y=y,z=z)
@@ -14,6 +16,28 @@ def spatial(conditions):return dict(title='按坐标构造并保留空间',steps
 
 
 class CapabilityTests(unittest.TestCase):
+    def test_dialogue_roles_and_adjacency_survive_state_serialization(self):
+        context={'current_user':'对','situation':{'pending_work':{'title':'挖矿','status':'blocked'},'dialogue':[
+            {'record_id':'u1','role':'user','text':'雨后挺安静'},
+            {'record_id':'a1','role':'assistant','text':'是挺安静的。'},
+            {'record_id':'u2','role':'user','text':'对'}]}}
+        original=copy.deepcopy(context);messages=request_messages('instruction',context)
+        self.assertEqual(messages[-2:], [{'role':'assistant','content':'是挺安静的。'},{'role':'user','content':'对'}])
+        self.assertEqual(sum(m['content']=='对' for m in messages),1)
+        self.assertNotIn('"dialogue"',messages[1]['content']);self.assertEqual(context,original)
+
+    def test_observation_does_not_commit_placeholder_goal(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'state.sqlite';body=Body()
+            placeholder=spatial([dict(kind='blocks',block='oak_planks',positions=[pos(0,0,0)])])
+            model=Model(decision(goal=placeholder,action=dict(name='inspect',args={})),decision(status='waiting_user',reply='确认一下施工位置。'))
+            h=Harness(path,model,body,Audit(),input_router=lambda *args:dict(mode='task',task_kind='structure'))
+            h.run('plan','verification','先看场地')
+            self.assertEqual([a['name'] for a in body.actions],['inspect']);self.assertIsNone(model.contexts[1]['work'])
+            m=Memory(path)
+            try:self.assertIsNone(m.goal())
+            finally:m.close()
+
     def test_geometry_grader_rejects_missing_roof_wall_and_blocked_interior(self):
         scene=VoxelScene(origin=(0,64,0))
         for x in range(5):

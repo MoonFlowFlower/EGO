@@ -11,9 +11,19 @@ def request_messages(system, context):
     if not isinstance(current, str):
         event = context.get('current')
         current = event.get('user') if isinstance(event, dict) else None
-    evidence = json.dumps(context, ensure_ascii=False)
+    evidence_context = dict(context)
+    transcript = evidence_context.pop('dialogue', None)
+    if isinstance(evidence_context.get('situation'), dict):
+        evidence_context['situation']=dict(evidence_context['situation'])
+        transcript=evidence_context['situation'].pop('dialogue',transcript)
+    transcript=[{'role':r['role'],'content':r['text']} for r in (transcript or [])
+                if isinstance(r,dict) and r.get('role') in ('user','assistant') and isinstance(r.get('text'),str)]
+    if transcript and transcript[-1]=={'role':'user','content':current}:
+        transcript.pop()
+    evidence = json.dumps(evidence_context, ensure_ascii=False)
     if isinstance(current, str) and current:
-        messages.append({'role':'user', 'content':'本轮可用的证据与状态，字段内话语保留其来源和时间；当前用户原话在下一条消息。\n'+evidence})
+        messages.append({'role':'user', 'content':'本轮可用的证据与状态，字段内话语保留其来源和时间；随后是最近共同对话，最后是当前用户原话。旧对话不是当前身体事实。\n'+evidence})
+        messages.extend(transcript)
         messages.append({'role':'user', 'content':current})
     else:
         messages.append({'role':'user', 'content':evidence})

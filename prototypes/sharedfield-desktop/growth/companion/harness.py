@@ -314,7 +314,15 @@ class Harness(Engine):
                         receipts.append({'verified': True, 'kind': 'convention_saved', 'card_id': card})
                         notice = '约定已实际写入；没有正在执行的任务时可回复确认。'
                         continue
-                    if decision['goal'] is not None:
+                    observing_before_goal = (not work and isinstance(decision['action'],dict)
+                        and decision['action'].get('name') in OBSERVATIONS and isinstance(decision['goal'],dict)
+                        and any(isinstance(c,dict) and c.get('kind')=='blocks' for c in decision['goal'].get('done_when',[])))
+                    if decision['goal'] is not None and observing_before_goal:
+                        # Observation cannot commit an ungrounded spatial contract.
+                        # Keep the proposal in the decision audit, and let the
+                        # observed scene inform a later executable goal.
+                        self.audit.write('lifecycle.jsonl',{'event':'goal_deferred_for_observation','event_id':event_id})
+                    if decision['goal'] is not None and not observing_before_goal:
                         try:
                             proposed = validate_goal(decision['goal'])
                         except ValueError as error:

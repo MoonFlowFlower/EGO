@@ -27,7 +27,7 @@ CHAIN=[('需要的,你在这附近建一个家吧 小房子就行',REFUSAL),('�
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 def manifest():
     files=[p for p in (ROOT/'companion').iterdir() if p.suffix in ('.py','.mjs','.txt','.ps1')]
-    files += [EVIDENCE/'CHECKLIST.md']
+    files += [EVIDENCE/'CHECKLIST.md',ROOT/'evidence/kernel_capability_v2/CHECKLIST.md']
     return {p.relative_to(ROOT).as_posix():sha(p) for p in sorted(files)}
 def saved(path):
     m=Memory(path)
@@ -51,7 +51,7 @@ def main():
         print(json.dumps({'frozen':len(manifest())}));return 0
     frozen=json.loads(freeze.read_text(encoding='utf-8'))['sha256']
     if manifest()!=frozen:raise RuntimeError('source_changed')
-    base=ROOT/'runs/kernel_capability_v2';base.mkdir(parents=True,exist_ok=True)
+    base=ROOT/'runs'/EVIDENCE.name;base.mkdir(parents=True,exist_ok=True)
     with (base/'attempt.claim').open('x',encoding='utf-8') as f:f.write(str(time.time_ns()))
     folder=base/str(time.time_ns());folder.mkdir()
     owner_before=sha(OWNER);key=read_key();audit=AuditLog(folder,(key,))
@@ -102,7 +102,9 @@ def main():
             body=VoxelScene(**options);path,engine=case(identity,body,12)
             reply=engine.run(identity,'verification',text);record=saved(path)
             acceptable=not record or record['goal_status'] in ('waiting_user','blocked')
-            add('C5-'+identity,not body.changes and acceptable and reply and REFUSAL not in reply,
+            observed=identity=='missing' or any(a['name'] in ('inspect','inspect_area','search') for a in body.actions)
+            add('C5-'+identity,not body.changes and acceptable and observed and reply and REFUSAL not in reply
+                and '核对条件还不符合' not in reply,
                 reply=reply,work=record,actions=[a['name'] for a in body.actions]);export(identity,body)
 
         body=VoxelScene(origin=(-9,81,23),inventory={'birch_planks':3});path,engine=case('transfer',body,12)
