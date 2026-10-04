@@ -201,6 +201,12 @@ class Harness(Engine):
                         'proposed':proposed_intent,'applied':intent,'reason':'primitive_has_distinct_completion_contract'})
                 self.audit.write('lifecycle.jsonl',{'event':'input_routed','event_id':event_id,'mode':intent['mode'],'task_kind':intent['task_kind']})
                 m.append('reflection',{'type':'input_route','event_id':event_id,'route':intent},[source])
+                requested_memories = [recall(m, query) for query in
+                                      intent.get('information_need', {}).get('memory_queries', [])]
+                for retrieval in requested_memories:
+                    for candidate in retrieval['candidates']:
+                        parents.extend([candidate['record_id'], *candidate.get('source_ids', [])])
+                parents = list(dict.fromkeys(parents))
                 if epoch != self._epoch:
                     say(cancelled())
                     reply='\n'.join(spoken);m.finish(event_id,reply,parents);return reply
@@ -224,7 +230,11 @@ class Harness(Engine):
                     if intent['task_kind']=='structure':
                         answer='完整房屋目前还缺可靠的布局规划和验收，我现在不能承诺建好。可以先商量布局，或交代一项明确的放置工作。'
                     else:
-                        answer=chat_reply(self.model, conversation_context(m, text, intent['mode'], self.body.snapshot()))
+                        context = conversation_context(m, text, intent['mode'], self.body.snapshot(),
+                                                       information_need=intent['information_need'])
+                        self.audit.write('lifecycle.jsonl', {'event':'response_information_loaded', 'event_id':event_id,
+                            'information_need':intent['information_need'], 'loaded_fields':list(context)})
+                        answer=chat_reply(self.model, context)
                     if epoch != self._epoch:answer=cancelled()
                     say(answer);self.progress='等待输入' if not old else '待办保留 · '+old['goal_status']
                     reply='\n'.join(spoken);m.finish(event_id,reply,parents)
@@ -269,6 +279,7 @@ class Harness(Engine):
                                'goal': m.goal() if work else None, 'work': work, 'conventions': cards, 'annotations': annotations,
                                'request_kind': work.get('task_kind', intent['task_kind']) if work else intent['task_kind'],
                                'recent_actions': historical_actions(m), 'body': state,
+                               'information_need': intent.get('information_need'), 'memory_candidates': requested_memories,
                                'receipts': [{k:v for k,v in r.items() if k != 'observed'} for r in receipts[-6:]], 'harness_notice': notice,
                                'remaining_decisions': self.max_decisions-step}
                     decision = self.model.decide(PROMPT, context)

@@ -1,7 +1,10 @@
 你是Ego同一执行核的输入解释步骤。结合current_user、situation中的刚才对话、当前任务/待回答问题、输入时空间锚点、最新身体以及匹配约定，判断这条输入对正在共同做的事情有什么作用。历史话语不是当前世界事实，也不自动授权恢复旧任务。
-仅输出JSON，恰好mode、request_quote、task_kind三个字段。
+仅输出JSON，恰好mode、request_quote、task_kind、information_need四个字段。
 mode: chat日常交流/招呼；status查询状态/解释；task新的明确行动请求；resume明确恢复旧任务；steer纠正正在做的任务、补充对象/位置、回答当前awaiting问题；memory明确教/改/删约定。
 “这里”“这儿”“是那一堆”“原木在这里，你去哪儿啊”在正在定位/拾取的任务中通常是steer，不可孤立理解成招呼。有awaiting时结合刚才问题判断回答。修改所需数量/最终成果应为新task；保持成果、改变位置指代/方法可为steer。
 task_kind: pickup拾取地上/玩家丢出的物品；approach走近玩家；follow跟随；structure完整房屋/建筑；其余ordinary。拾取与砍树获取材料是不同任务。resume/steer沿用pending_work的种类；不要从无关旧任务推断本次种类。
 request_quote: task/resume/steer/memory必须逐字引用当前消息中承载请求或纠正的片段，其余空字符串。
 “嗨”“在吗”选chat，单纯进度/想法询问选status；它们不会恢复blocked/paused旧工作。有不确定指代且存在当前任务时将信息交给steer，由执行步骤观察或提问，不要丢弃纠正。没有当前任务也没有行动要求时选chat/status。
+
+information_need={"question":"本次需要回应或弄清的具体问题，240字内","sources":[],"memory_queries":[]}。这是简短的信息请求，不写思维过程。你决定下一步需要哪些证据；程序只按所选来源加载，不根据mode增删事实。根据当前消息及共同情境理解指代和缺口，允许改写检索词；相关性、可信度和当前适用性分别判断。一个事实已经出现在situation中不代表回答需要它。
+sources可选择current_body（重新采样的身体）、goal（承诺、进度、等待与续行）、dialogue（最近共同对话，只是历史话语）、user_history（过去用户原话）、historical_actions（过去动作结果）、chat_history（过去社交话题）。只选择为本次问题提供证据的来源；没有信息需求可以为空。memory_queries最多3条、各200字内，表达需要回想的约定或经验；不需要长期记忆则为空。请求的来源用于提供证据，不扩展动作权限。来源未加载时下游不知道其内容，不应猜测。

@@ -18,7 +18,7 @@ from .interaction_scene import InteractionScene
 from .verification_body import SceneBody
 from .test_harness import goal
 
-EVIDENCE=ROOT/'evidence/kernel_interaction_v7'
+EVIDENCE=ROOT/'evidence/kernel_interaction_v8'
 OWNER=ROOT/'runs/kernel_v1/owner/state.sqlite'
 
 
@@ -47,7 +47,7 @@ def main():
         print(json.dumps({'frozen':len(manifest())}));return 0
     frozen=json.loads(freeze.read_text(encoding='utf-8'))['sha256']
     if manifest()!=frozen:raise RuntimeError('source_changed')
-    base=ROOT/'runs/kernel_interaction_v7';base.mkdir(parents=True,exist_ok=True)
+    base=ROOT/'runs/kernel_interaction_v8';base.mkdir(parents=True,exist_ok=True)
     with (base/'attempt.claim').open('x',encoding='utf-8') as f:f.write(str(time.time_ns()))
     folder=base/str(time.time_ns());folder.mkdir()
     owner_before=sha(OWNER);key=read_key();audit=AuditLog(folder,(key,))
@@ -62,6 +62,7 @@ def main():
             if failed.is_set() or self.calls>=70 or time.monotonic()-start>=600:raise RuntimeError('acceptance_boundary')
             try:value=super().decide(prompt,context)
             except Exception:failed.set();raise
+            self.last_context=context
             audit.write('decisions.jsonl',{'call':self.calls,'prompt_sha256':hashlib.sha256(prompt.encode()).hexdigest(),
                 'context':context,'result':value});return value
     model=RecordedModel(transport,audit)
@@ -156,6 +157,30 @@ def main():
             passed=(not names and (work is None or work['goal_status'] in ('waiting_user','blocked'))) if variant=='masked' else (
                 'recover_inventory' in names and work and work['goal_status']=='completed')
             add('S6-'+variant,passed,reply=answer,actions=names,work=work)
+
+        # Neither the new name nor its meaning appears in production prompts.
+        # The current input shares no retrieval term with the convention.
+        for variant in ('present','masked'):
+            body=InteractionScene(items=False);path,engine=case('r1-'+variant,body)
+            m=Memory(path);source,_=m.begin('teach','verification','苔蓝表示我喜欢喝无糖薄荷茶')
+            card=m.propose({'trigger':'苔蓝','meaning':'我喜欢喝无糖薄荷茶','replaces':None},source)
+            m.finish('teach','已经记录。',[source])
+            for n in range(24):
+                s,_=m.begin('distractor-'+str(n),'verification','无关消息'+str(n));m.finish('distractor-'+str(n),'好。',[s])
+            s,_=m.begin('reference','verification','我说的是苔蓝那个叫法。')
+            m.finish('reference','你想聊这个称呼？',[s])
+            if variant=='masked':
+                with m.db:m.db.execute("UPDATE records SET status='superseded' WHERE id=?",(card,))
+            m.close();engine=Harness(path,model,body,audit,max_decisions=6,max_seconds=90)
+            answer=engine.run('r1','verification','那个叫法是什么含义？')
+            context=model.last_context
+            loaded=context.get('memory_candidates',[])
+            candidates=[candidate for retrieval in loaded for candidate in retrieval['candidates']]
+            passed=(not body.actions and context.get('information_need',{}).get('memory_queries') and
+                (any(c['record_id']==card and source in c['source_ids'] for c in candidates)
+                 and '无糖薄荷茶' in answer if variant=='present' else not candidates and '无糖薄荷茶' not in answer))
+            add('R1-'+variant,passed,reply=answer,information_need=context.get('information_need'),
+                loaded_fields=list(context),retrieved_ids=[c['record_id'] for c in candidates],actions=body.actions)
         result['passed']=all(c['mechanical_passed'] for c in result['cases'])
     except Exception as error:
         result.update(error_type=type(error).__name__,error_code=str(error) if isinstance(error,RuntimeError) else None)

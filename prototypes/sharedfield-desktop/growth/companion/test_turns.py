@@ -22,7 +22,9 @@ from .work import create_work, save_work
 
 
 def route(mode='status', kind='ordinary', quote=''):
-    return {'mode':mode,'task_kind':kind,'request_quote':quote}
+    return {'mode':mode,'task_kind':kind,'request_quote':quote,
+            'information_need': {'question':'测试替身请求证据',
+                'sources':['current_body','goal','dialogue','user_history','historical_actions'], 'memory_queries':[]}}
 
 
 class TurnTests(unittest.TestCase):

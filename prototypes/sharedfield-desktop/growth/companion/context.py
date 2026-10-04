@@ -30,20 +30,36 @@ def chat_history(memory):
     return [row for row in user_history(memory) if row['record_id'] in allowed]
 
 
-def conversation_context(memory, text, mode, state, *, capability_notice=None):
+def conversation_context(memory, text, mode, state, *, information_need, capability_notice=None):
+    from .attention import validate_need
+    from .interaction import dialogue
     from .recall import recall
-    candidates = recall(memory, text)
-    if mode == 'chat':
-        # Intent interpretation already saw the full joint situation. Once it
-        # identifies a social exchange, unrelated task/body facts are not a
-        # response need. Keep them available to status and steering instead.
-        return {'current_user': text, 'mode': mode, 'chat_history': chat_history(memory),
-                'memory_candidates': candidates, 'capability_notice': capability_notice}
+    need = validate_need(information_need)
+    context = {'current_user': text, 'mode': mode, 'information_need': copy.deepcopy(need),
+               'capability_notice': capability_notice}
+    if 'current_body' in need['sources']:
+        context['current_body'] = current_body(state)
+    if 'goal' in need['sources']:
+        context['goal'] = task_context(memory)
+    loaders = {'dialogue': dialogue, 'user_history': user_history,
+               'historical_actions': historical_actions, 'chat_history': chat_history}
+    for name, loader in loaders.items():
+        if name in need['sources']:
+            context[name] = loader(memory)
+    if need['memory_queries']:
+        context['memory_candidates'] = [recall(memory, query) for query in need['memory_queries']]
+    return context
+
+
+def current_body(state):
     online = state.get('offline') is False
-    current = {'available': online, 'sampled_at': datetime.now().astimezone().isoformat(),
+    return {'available': online, 'sampled_at': datetime.now().astimezone().isoformat(),
                'source': 'body.snapshot', 'state': copy.deepcopy(state) if online else
                {'offline': True, 'reason': state.get('reason', 'body_offline')},
                'semantics': 'empty/null are observed empty; missing fields are unknown; only this snapshot describes the current body'}
+
+
+def task_context(memory):
     saved = memory.goal()
     goal = None
     if saved:
@@ -58,8 +74,4 @@ def conversation_context(memory, text, mode, state, *, capability_notice=None):
                 'awaiting': work.get('awaiting'), 'latest_input': (work.get('inputs') or [None])[-1],
                 'last_attempt_problem': work.get('last_problem'),
                 'semantics': 'durable task progress; last_attempt_problem is historical, not proof of a current body defect'}
-    from .interaction import dialogue
-    return {'current_user': text, 'mode': mode, 'current_body': current, 'goal': goal,
-            'dialogue': dialogue(memory), 'chat_history': chat_history(memory),
-            'memory_candidates': candidates, 'user_history': user_history(memory),
-            'historical_actions': historical_actions(memory), 'capability_notice': capability_notice}
+    return goal

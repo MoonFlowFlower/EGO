@@ -9,7 +9,7 @@ from .verification_body import SceneBody
 
 
 class ContextAndSceneTests(unittest.TestCase):
-    def test_social_reply_excludes_unrelated_facts_status_keeps_joint_context(self):
+    def test_evidence_projection_follows_need_independently_of_mode(self):
         with tempfile.TemporaryDirectory() as tmp:
             m = Memory(Path(tmp) / 'state.sqlite')
             try:
@@ -17,16 +17,24 @@ class ContextAndSceneTests(unittest.TestCase):
                     source, _ = m.begin(identity, 'airi', text)
                     m.append('reflection', {'type': 'input_route', 'event_id': identity, 'route': {'mode': mode}}, [source])
                     m.finish(identity, '之前生成的身体断言', [source])
-                context = conversation_context(m, '嗨', 'chat', Body().snapshot())
+                need = {'question':'刚才的社交话题', 'sources':['chat_history'], 'memory_queries':[]}
+                context = conversation_context(m, '嗨', 'chat', Body().snapshot(), information_need=need)
                 for key in ('current_body', 'goal', 'dialogue', 'user_history', 'historical_actions'):
                     self.assertNotIn(key, context)
-                self.assertIn('memory_candidates', context)
+                self.assertNotIn('memory_candidates', context)
                 self.assertNotIn('action', context)
                 self.assertEqual([r['text'] for r in context['chat_history']], ['我喜欢猫'])
                 self.assertIn('之前生成', m.cached('build'))
-                status = conversation_context(m, '材料够吗', 'status', Body().snapshot())
+                need = {'question':'当前材料', 'sources':['current_body','user_history'], 'memory_queries':[]}
+                status = conversation_context(m, '材料够吗', 'status', Body().snapshot(), information_need=need)
                 self.assertIn('current_body', status)
                 self.assertEqual(len(status['user_history']), 2)
+                social = conversation_context(m, '看看现在的材料', 'chat', Body().snapshot(), information_need=need)
+                self.assertEqual(social['current_body']['state'], status['current_body']['state'])
+                self.assertNotIn('goal', social)
+                empty = conversation_context(m, '嗯', 'status', Body().snapshot(),
+                    information_need={'question':'确认收到', 'sources':[], 'memory_queries':[]})
+                self.assertNotIn('current_body', empty)
             finally:
                 m.close()
 

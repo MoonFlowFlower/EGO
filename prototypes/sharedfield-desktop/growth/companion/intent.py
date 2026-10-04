@@ -1,5 +1,6 @@
 """One shared model, separate conversational intent from execution permission."""
 from pathlib import Path
+from .attention import validate_need
 
 ROUTE_PROMPT=Path(__file__).with_name('intent_prompt.txt').read_text(encoding='utf-8')
 CHAT_PROMPT=Path(__file__).with_name('chat_prompt.txt').read_text(encoding='utf-8')
@@ -8,8 +9,9 @@ CHAT_PROMPT=Path(__file__).with_name('chat_prompt.txt').read_text(encoding='utf-
 def route_input(model, text, pending, annotations, *, situation=None):
     result=model.decide(ROUTE_PROMPT,{'current_user':text,'pending_title':pending.get('title') if pending else None,
                                     'matched_conventions':annotations, 'situation': situation})
-    if not isinstance(result,dict) or set(result)!={'mode','request_quote','task_kind'}:
+    if not isinstance(result,dict) or set(result)!={'mode','request_quote','task_kind','information_need'}:
         raise ValueError('intent_schema')
+    validate_need(result['information_need'])
     if result['mode'] not in ('chat','status','task','resume','steer','memory') or result['task_kind'] not in ('ordinary','structure','pickup','approach','follow'):
         raise ValueError('intent_value')
     quote=result['request_quote']
