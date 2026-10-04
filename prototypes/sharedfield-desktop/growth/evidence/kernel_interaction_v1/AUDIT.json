@@ -1,0 +1,29 @@
+{
+  "checked_at": "2026-10-04T00:07:21.201886-05:00",
+  "baseline": "476e76abde2b1893093277b50f24e7ec2a4d7a3b",
+  "verdict": "LIVE_INTERACTION_FAIL / ROOT_CAUSES_REPRODUCED / FIX_NOT_IMPLEMENTED",
+  "frozen_files_checked": 49,
+  "frozen_files_changed": {},
+  "preserved_snapshot_changed": {},
+  "defect_witnesses_observed": 6,
+  "new_provider_calls": 0,
+  "diagnostic_world_actions": 0,
+  "production_diff": "",
+  "old_evidence_diff": "",
+  "tracked_runs": [],
+  "run_is_ignored": true,
+  "additional_raw_hashes": {
+    "body_summary.json": "5fa897db6bce99e91272eb55703a6fdc57fe06444d998b81266712fe2fee2e66",
+    "defects.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "defects.stdout.json": "11278e799ce85b077fd44b86f7d6a03468acdc38512f4b9e56845c35472de8f7",
+    "owner_failure.png": "312d8f14bff9958cedde241cbdd5fb2680ef5b97e1f76c7c4cb24913c262b14f",
+    "pi-agent-loop.ts": "e773e822a2587caf314e6bb66ea6370fce3468b7eecd26d6a67afe673f81eabc",
+    "pi-agent.ts": "7024a3145a6ebc951a0f030164adb1dfb12d33d6e0dbbac15ef0efda49c87457",
+    "selected_records.json": "1031b19abf92506251747fb8c3406fa3b99258422083dd8ae896977e6743e408"
+  },
+  "body_sample_summary": {
+    "samples": 1186,
+    "generated_code_enabled_samples": 0,
+    "body_model_initialized_samples": 0
+  }
+}
