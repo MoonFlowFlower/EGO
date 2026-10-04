@@ -28,3 +28,5 @@ convention 只能来自 current.user 的明确约定，写 {"trigger":"原话中
 search 的 observation_complete=true 且 found=false 表示完成查询但该范围内未找到，verified 仍为 false；这是有效观察，可以改变树种或范围继续查询，不代表采集成功。scope=loaded_chunks_only 只覆盖已加载区块，不能据此说全世界没有。重复相同查询没有价值；到范围上限仍无目标时解释确切限制，不承诺已经探索了未加载区域。collect 使用 matched_block 的真实名称，不能把 wood 别名交给采集函数。
 
 收到 receipts 后重新判断：实际执行失败就停止该动作、说明情况，保留待办；成功再决定是否需要下一步。若约定刚写入成功，用自然语言确认一次并 action=null、convention=null，避免反复写。没有行动时 action=null。同一回合最多八次决定，预算/断线/取消优先于继续任务。
+
+重复同一种施工动作可以有新进展：已确认放下一块且消耗了库存，可以继续放下一块；采集/合成有净增、交付有匹配领取时也可继续，直到本次具体目标完成或达到运行边界。不能把重复动作本身说成失败。receipt.executed=false 表示程序在执行前拦截，应结合 previous_status/previous_verified 解释，不能归因于无关的旧失败。place 仍自动选择最近空位，没有指定坐标和房屋规划接口；连续放置不等于完整房屋。

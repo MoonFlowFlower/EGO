@@ -1,0 +1,64 @@
+{
+  "baseline": "8591a2bc",
+  "run": "1791073468966152900",
+  "passed": true,
+  "cloud_model_calls": 0,
+  "replay_decisions": 3,
+  "inventory_before": 7,
+  "inventory_after": 5,
+  "inventory_consumed": 2,
+  "distinct_positions": 2,
+  "placement_receipts": [
+    {
+      "verified": true,
+      "position": {
+        "x": 9,
+        "y": 109,
+        "z": -61
+      },
+      "placement": {
+        "before_block": "air",
+        "after_block": "oak_planks",
+        "inventory_before": 7,
+        "inventory_after": 6,
+        "consumed": 1
+      }
+    },
+    {
+      "verified": true,
+      "position": {
+        "x": 7,
+        "y": 109,
+        "z": -60
+      },
+      "placement": {
+        "before_block": "air",
+        "after_block": "oak_planks",
+        "inventory_before": 6,
+        "inventory_after": 5,
+        "consumed": 1
+      }
+    }
+  ],
+  "body_exit_code": 0,
+  "generated_code_enabled": false,
+  "offline_checks": {
+    "python_tests": 20,
+    "placement_assertions": 14,
+    "body_syntax": "pass"
+  },
+  "frozen_files": 8,
+  "freeze_all_match": true,
+  "claim_ceiling": "recorded-decision engine/body integration; no fresh model task or house planning result",
+  "formal_restore": {
+    "session": "1791073872683156400",
+    "owner_memory_preserved": true,
+    "mc_online_at_check": true,
+    "airi_token_updated": true,
+    "airi_fully_restarted": true,
+    "native_chat_cached_reply_visible": true,
+    "cached_reply_model_calls": 0,
+    "formal_model_calls_at_check": 0,
+    "deadline_local": "2026-10-03 20:01:12 America/Winnipeg"
+  }
+}

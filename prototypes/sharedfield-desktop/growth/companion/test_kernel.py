@@ -162,6 +162,80 @@ class Tests(unittest.TestCase):
         self.assertEqual(len(self.body.actions),1);self.assertEqual(model.calls,2)
         self.assertIn('已经尝试过',answer)
 
+    def placement_body(self, *, proof=True, fail_at=None):
+        def start(action, **kwargs):
+            self.body.actions.append(action)
+            n=len(self.body.actions)
+            receipt={'verified':n!=fail_at, 'status':'placed_block_checked', 'position':{'x':n,'y':64,'z':0}}
+            if proof:
+                receipt['placement']={'before_block':'air','after_block':'oak_planks',
+                                      'inventory_before':20-n,'inventory_after':19-n,'consumed':1}
+            future=concurrent.futures.Future();future.set_result(receipt);return future
+        self.body.start_action=start
+
+    def test_repeated_placement_with_world_and_inventory_progress_continues(self):
+        self.placement_body()
+        d=decision(action={'name':'place','args':{'block':'oak_planks'}})
+        model=Model(d,d,decision('两块已确认。'))
+        engine=self.engine(model)
+        self.assertEqual(engine.run('two-places','minecraft','继续铺两块'),'两块已确认。')
+        self.assertEqual(len(self.body.actions),2)
+        self.assertNotEqual(model.contexts[2]['receipts'][0]['position'],model.contexts[2]['receipts'][1]['position'])
+        engine.run('two-places','minecraft','继续铺两块')
+        self.assertEqual(len(self.body.actions),2);self.assertEqual(model.calls,3)
+
+    def test_success_flag_without_placement_progress_is_blocked_and_recorded(self):
+        self.placement_body(proof=False)
+        d=decision(action={'name':'place','args':{'block':'oak_planks'}})
+        answer=self.engine(Model(d,d)).run('no-progress','minecraft','继续铺')
+        self.assertIn('没有确认新的进展',answer);self.assertEqual(len(self.body.actions),1)
+        m=Memory(self.path);guard=m.recent_actions()[-1]['receipt'];m.close()
+        self.assertFalse(guard['executed']);self.assertTrue(guard['previous_verified'])
+        self.assertEqual(guard['previous_status'],'placed_block_checked')
+        self.assertTrue(any(row.get('event')=='action_repeat_blocked' for _,row in self.audit.rows))
+
+    def test_repeat_permissions_do_not_survive_failed_placement(self):
+        self.placement_body(fail_at=2)
+        d=decision(action={'name':'place','args':{'block':'oak_planks'}})
+        answer=self.engine(Model(d,d,d)).run('failed-second','minecraft','连续铺')
+        self.assertEqual(len(self.body.actions),2);self.assertIn('没有得到成功确认',answer)
+
+    def test_inventory_work_can_repeat_after_confirmed_gain_or_delivery(self):
+        for name,args,receipt in (
+            ('collect',{'block':'oak_log','count':1},{'status':'collection_inventory_checked','gained':1}),
+            ('craft',{'item':'oak_planks','count':1},{'status':'craft_inventory_checked','gained':4}),
+            ('give',{'item':'oak_planks','count':1},{'status':'give_entity_and_inventory_checked','lost':1,'matching_collected':1}),
+        ):
+            with self.subTest(name=name):
+                self.body.actions=[]
+                def start(action,**kwargs):
+                    self.body.actions.append(action);future=concurrent.futures.Future()
+                    future.set_result({'verified':True,**receipt});return future
+                self.body.start_action=start
+                d=decision(action={'name':name,'args':args})
+                self.assertEqual(self.engine(Model(d,d,decision('完成两次。'))).run(name,'minecraft','继续'),'完成两次。')
+                self.assertEqual(len(self.body.actions),2)
+
+    def test_repeated_placement_still_obeys_eight_decision_cap(self):
+        self.placement_body()
+        d=decision(action={'name':'place','args':{'block':'oak_planks'}})
+        model=Model(*[d for _ in range(8)])
+        answer=self.engine(model).run('repeat-cap','minecraft','继续铺')
+        self.assertEqual(len(self.body.actions),8);self.assertEqual(model.calls,8)
+        self.assertIn('八次决定已用完',answer)
+
+    def test_progress_requires_concrete_matching_effect(self):
+        from .engine import confirmed_progress
+        action={'name':'place','args':{'block':'oak_planks'}}
+        receipt={'verified':True,'status':'placed_block_checked','position':{'x':1,'y':64,'z':0},
+                 'placement':{'before_block':'air','after_block':'oak_planks','inventory_before':4,'inventory_after':3,'consumed':1}}
+        self.assertTrue(confirmed_progress(action,receipt))
+        for change in ({'before_block':'oak_planks'},{'after_block':'dirt'},{'inventory_after':4},{'consumed':0}):
+            self.assertFalse(confirmed_progress(action,{**receipt,'placement':{**receipt['placement'],**change}}))
+        self.assertFalse(confirmed_progress({'name':'inspect','args':{}},{'verified':True,'status':'observed'}))
+        self.assertFalse(confirmed_progress({'name':'craft','args':{'item':'oak_planks','count':1}},
+                                          {'verified':True,'status':'craft_inventory_checked','gained':0}))
+
     def test_failed_queries_and_navigation_still_block_and_record_explanation(self):
         from .engine import completed_negative_search
         self.assertFalse(completed_negative_search({'name':'search'}, {'status':'unknown_block','verified':False}))

@@ -6,6 +6,7 @@ import {createRequire} from 'node:module';
 import {pathToFileURL} from 'node:url';
 import repair1211 from '../p7/protocol_1211.cjs';
 import {searchBlocks} from './search.mjs';
+import {placeNextBlock} from './placement.mjs';
 
 const lines = readline.createInterface({input:process.stdin});
 const input = lines[Symbol.asyncIterator]();
@@ -130,11 +131,7 @@ async function run(message) {
         return {verified:loss===args.count&&collected>=args.count,status:'give_entity_and_inventory_checked',lost:loss,matching_collected:collected};
       }
       if(name==='place') {
-        if(mc.getBlockId(args.block)===null)return {verified:false,status:'unknown_block'};
-        const pos=world.getNearestFreeSpace(bot,1,4);
-        if(!pos)return {verified:false,status:'no_placement_space'};
-        await skills.placeBlock(bot,args.block,pos.x,pos.y,pos.z);
-        return {verified:bot.blockAt(pos)?.name===args.block,status:'placed_block_checked',position:pos};
+        return placeNextBlock(bot,mc,world,skills,args.block);
       }
     };
     receipt=await Promise.race([execute(),new Promise((_,reject)=>{timer=setTimeout(()=>{timedOut=true;interrupt();reject(new Error('action_timeout'))},60000)})]);

@@ -38,6 +38,32 @@ def completed_negative_search(action, receipt):
             and receipt.get('query', {}).get('scope') == 'loaded_chunks_only')
 
 
+def confirmed_progress(action, receipt):
+    """A repeated command may do new work; a success flag alone proves no progress."""
+    if receipt.get('verified') is not True:
+        return False
+    name, args = action['name'], action['args']
+    if name == 'place':
+        effect = receipt.get('placement') or {}
+        position = receipt.get('position') or {}
+        before, after = effect.get('inventory_before'), effect.get('inventory_after')
+        return (receipt.get('status') == 'placed_block_checked'
+                and set(position) == {'x', 'y', 'z'} and all(type(v) is int for v in position.values())
+                and effect.get('before_block') == 'air' and effect.get('after_block') == args['block']
+                and type(before) is int and type(after) is int and before > after >= 0
+                and before - after == 1 and effect.get('consumed') == 1)
+    if name in ('collect', 'craft'):
+        gain = receipt.get('gained')
+        status = 'collection_inventory_checked' if name == 'collect' else 'craft_inventory_checked'
+        return receipt.get('status') == status and type(gain) is int and gain >= args['count']
+    if name == 'give':
+        return (receipt.get('status') == 'give_entity_and_inventory_checked'
+                and receipt.get('lost') == args['count']
+                and type(receipt.get('matching_collected')) is int
+                and receipt['matching_collected'] >= args['count'])
+    return False
+
+
 class Engine:
     def __init__(self, path, model, body, audit, *, max_decisions=8, max_seconds=180):
         self.path, self.model, self.body, self.audit = path, model, body, audit
@@ -74,7 +100,7 @@ class Engine:
                 if memory.goal():parents.append(memory.goal()['record_id'])
                 start = time.monotonic()
                 epoch = self._epoch
-                receipts, spoken, seen_actions = [], [], set()
+                receipts, spoken, seen_actions = [], [], {}
                 annotations = memory.library.annotate(text, datetime.now().astimezone().isoformat(), ('login',) if text == '上线了' else ())
                 for card in memory.library.cards():
                     parents.extend([card['card_id'], *card['source_ids']])
@@ -149,16 +175,24 @@ class Engine:
                             break
                         validate_action(action)
                         encoded = json.dumps(action, sort_keys=True)
-                        if encoded in seen_actions:
-                            say('同一动作已经尝试过，我先停在这里，保留任务和结果，避免反复空转。')
+                        previous = seen_actions.get(encoded)
+                        if previous is not None and not confirmed_progress(action, previous):
+                            guard = {'verified': False, 'executed': False, 'status': 'repeat_without_confirmed_progress',
+                                     'previous_status': previous.get('status'), 'previous_verified': previous.get('verified', False)}
+                            receipts.append(guard)
+                            memory.append('experience', {'type': 'action_receipt', 'event_id': event_id,
+                                                        'action': action, 'receipt': guard}, parents)
+                            self.audit.write('lifecycle.jsonl', {'event': 'action_repeat_blocked', 'event_id': event_id,
+                                                                'action': action['name'], **guard})
+                            say('同一动作已经尝试过，但没有确认新的进展；我先暂停，任务和上一步结果已保存。')
                             break
-                        seen_actions.add(encoded)
                         with self._dispatch_lock:
                             if epoch != self._epoch:
                                 break
                             future = self.body.start_action(action, timeout=60)
                         # Before-action text may promise or hallucinate completion. Do not publish it.
                         receipt = future.result(timeout=65)
+                        seen_actions[encoded] = receipt
                         receipts.append(receipt)
                         memory.append('experience', {'type': 'action_receipt', 'event_id': event_id,
                                                     'action': action, 'receipt': receipt}, parents)
