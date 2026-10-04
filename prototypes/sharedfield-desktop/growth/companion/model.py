@@ -12,6 +12,9 @@ def request_messages(system, context):
         event = context.get('current')
         current = event.get('user') if isinstance(event, dict) else None
     evidence_context = dict(context)
+    feedback=evidence_context.pop('execution_feedback',None)
+    if feedback is not None:
+        evidence_context.pop('receipts',None)
     transcript = evidence_context.pop('dialogue', None)
     if isinstance(evidence_context.get('situation'), dict):
         evidence_context['situation']=dict(evidence_context['situation'])
@@ -25,6 +28,12 @@ def request_messages(system, context):
         messages.append({'role':'user', 'content':'本轮可用的证据与状态，字段内话语保留其来源和时间；随后是最近共同对话，最后是当前用户原话。旧对话不是当前身体事实。\n'+evidence})
         messages.extend(transcript)
         messages.append({'role':'user', 'content':current})
+        if isinstance(feedback,dict):
+            feedback=dict(feedback)
+            previous=feedback.pop('previous_decision',None)
+            if previous is not None:
+                messages.append({'role':'assistant','content':json.dumps(previous,ensure_ascii=False)})
+            messages.append({'role':'user','content':'内核执行反馈（工具证据，不是新用户请求）：\n'+json.dumps(feedback,ensure_ascii=False)})
     else:
         messages.append({'role':'user', 'content':evidence})
     return messages

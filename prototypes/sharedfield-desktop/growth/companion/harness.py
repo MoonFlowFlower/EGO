@@ -262,6 +262,8 @@ class Harness(Engine):
                 seen, failures, no_action, premature = {}, 0, 0, 0
                 observations, repeated_observations, observations_without_effect = set(), 0, 0
                 notice = None
+                previous_decision = None
+                invalid_decisions = 0
                 state = self.body.snapshot()
                 for step in range(self.max_decisions):
                     if epoch != self._epoch:
@@ -280,7 +282,13 @@ class Harness(Engine):
                                'information_need': intent.get('information_need'), 'memory_candidates': requested_memories,
                                'receipts': [{k:v for k,v in r.items() if k != 'observed'} for r in receipts[-6:]], 'harness_notice': notice,
                                'remaining_decisions': self.max_decisions-step}
+                    if previous_decision is not None:
+                        context['execution_feedback']={'previous_decision':previous_decision,
+                            'event_id':event_id,'step':step,'receipts':context['receipts'],
+                            'harness_notice':notice,'current_body':state,'work':work,
+                            'semantics':'continuation after the preceding decision; not a new user request or new authorization'}
                     decision = self.model.decide(PROMPT, context)
+                    previous_decision = copy.deepcopy(decision)
                     if epoch != self._epoch:
                         persist('paused_by_owner', 'late_decision_discarded'); say(cancelled()); break
                     with self._waiting_lock:
@@ -296,7 +304,15 @@ class Harness(Engine):
                         persist('paused_limit', 'task_deadline'); say('这项任务到时间上限了，进度和具体剩余工作已保存。'); break
                     required = {'reply', 'goal', 'convention', 'forget_card', 'action', 'status'}
                     if not isinstance(decision, dict) or set(decision) != required or decision['status'] not in ('continue', 'done', 'blocked', 'chat', 'waiting_user'):
-                        raise ValueError('harness_decision_schema')
+                        invalid_decisions += 1
+                        notice={'kind':'invalid_decision','code':'harness_decision_schema','required_top_level_fields':sorted(required),
+                                'effect':'nothing executed; repair the JSON structure without changing the task'}
+                        self.audit.write('lifecycle.jsonl',{'event':'decision_rejected','event_id':event_id,
+                                                          'error_code':'harness_decision_schema','attempt':invalid_decisions})
+                        if invalid_decisions>=3:
+                            persist('blocked','harness_decision_schema');say('连续三次决定格式不完整，已停止；没有执行这些无效决定。');break
+                        continue
+                    invalid_decisions=0
                     if not isinstance(decision['reply'], str) or len(decision['reply']) > 1800:
                         raise ValueError('reply_schema')
                     if intent['mode']=='memory' and (decision['goal'] is not None or decision['action'] is not None):

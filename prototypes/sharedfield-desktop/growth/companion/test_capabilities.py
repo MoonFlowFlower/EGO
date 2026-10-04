@@ -16,6 +16,29 @@ def spatial(conditions):return dict(title='按坐标构造并保留空间',steps
 
 
 class CapabilityTests(unittest.TestCase):
+    def test_tool_result_follows_previous_decision_instead_of_reissuing_request(self):
+        prior=decision(action=dict(name='inspect',args={}))
+        context={'current':{'user':'先看再搭'},'execution_feedback':{'previous_decision':prior,'receipts':[{'status':'observed'}]}}
+        messages=request_messages('instruction',context)
+        self.assertEqual(messages[-2]['role'],'assistant');self.assertIn('"inspect"',messages[-2]['content'])
+        self.assertIn('observed',messages[-1]['content']);self.assertEqual(messages[-3]['content'],'先看再搭')
+
+    def test_invalid_decision_is_repairable_and_cannot_execute(self):
+        with tempfile.TemporaryDirectory() as folder:
+            body=Body();path=Path(folder)/'state.sqlite'
+            model=Model({'goal':{'action':{'name':'place','args':{'block':'oak_planks'}}}},
+                decision(goal=goal(1),action=dict(name='place',args=dict(block='oak_planks'))))
+            h=Harness(path,model,body,Audit(),input_router=lambda *args:dict(mode='task',task_kind='ordinary'))
+            h.run('schema','verification','放一块')
+            self.assertEqual(len(body.blocks),1);self.assertEqual(model.calls,2)
+            self.assertEqual(model.contexts[1]['execution_feedback']['harness_notice']['code'],'harness_decision_schema')
+
+    def test_invalid_decision_repair_is_bounded(self):
+        with tempfile.TemporaryDirectory() as folder:
+            body=Body();model=Model({}, {}, {}, decision(goal=goal(1)))
+            h=Harness(Path(folder)/'state.sqlite',model,body,Audit(),input_router=lambda *args:dict(mode='task',task_kind='ordinary'))
+            h.run('schema','verification','放一块');self.assertEqual(model.calls,3);self.assertFalse(body.actions)
+
     def test_dialogue_roles_and_adjacency_survive_state_serialization(self):
         context={'current_user':'对','situation':{'pending_work':{'title':'挖矿','status':'blocked'},'dialogue':[
             {'record_id':'u1','role':'user','text':'雨后挺安静'},
