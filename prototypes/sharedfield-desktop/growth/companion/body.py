@@ -24,6 +24,7 @@ class Body:
         self._lock = threading.Lock()
         self._write_lock = threading.Lock()
         self._pending = {}
+        self.exit_reason = None
 
     def start(self):
         revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=OFFICIAL, text=True,
@@ -73,14 +74,17 @@ class Body:
                 # The reader must keep draining receipts while this input waits for a turn.
                 threading.Thread(target=self.on_input, args=(row['text'],), daemon=True).start()
             else:
+                if kind == 'action_deadline_exit':self.exit_reason='action_timeout'
+                elif kind in ('disconnected','spawn_timeout') and not self.exit_reason:self.exit_reason=kind
                 self.audit.write('body_events.jsonl', row)
         code = self.process.wait()
         with self._lock:
-            self._state = {'offline':True}
+            self._state = {'offline':True,'reason':self.exit_reason or 'body_exit'}
+            self._at = time.monotonic()
             for future in self._pending.values():
                 if not future.done():future.set_result({'verified':False,'status':'body_disconnected'})
             self._pending.clear()
-        self.audit.write('lifecycle.jsonl', {'event':'body_exit','unix_s':time.time(),'exit_code':code})
+        self.audit.write('lifecycle.jsonl', {'event':'body_exit','unix_s':time.time(),'exit_code':code,'reason':self.exit_reason})
 
     def _send(self, value):
         with self._write_lock:
@@ -92,7 +96,7 @@ class Body:
     def snapshot(self):
         with self._lock:
             if time.monotonic()-self._at > 4:
-                return {'offline':True,'reason':'no_fresh_body_state'}
+                return {'offline':True,'reason':self.exit_reason or 'no_fresh_body_state'}
             return json.loads(json.dumps(self._state))
 
     def start_action(self, action, timeout=60):

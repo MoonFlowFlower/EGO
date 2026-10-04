@@ -9,7 +9,7 @@ import {searchBlocks} from './search.mjs';
 import {placeNextBlock} from './placement.mjs';
 import {recoverInventory,craftChecked} from './inventory.mjs';
 import {inspectArea,placeAt,verifyBlocks,validPosition} from './spatial.mjs';
-import {collectTree,approachOwner} from './trees.mjs';
+import {collectTree,approachOwner,approachBlock} from './trees.mjs';
 
 const lines = readline.createInterface({input:process.stdin});
 const input = lines[Symbol.asyncIterator]();
@@ -106,7 +106,7 @@ async function run(message) {
       if(name==='follow') {
         const owner=bot.players.Moonlight?.entity;
         if(!owner)return {verified:false,status:'owner_not_visible'};
-        const movement=new Movements(bot);movement.canDig=false;
+        const movement=new Movements(bot);movement.canDig=false;movement.allow1by1towers=false;movement.scafoldingBlocks=[];movement.canOpenDoors=false;
         bot.pathfinder.setMovements(movement);bot.pathfinder.setGoal(new goals.GoalFollow(owner,2),true);
         return {verified:true,status:'following_started_only'};
       }
@@ -114,10 +114,7 @@ async function run(message) {
       if(name==='go_to_block') {
         const target=searchBlocks(bot,mc,world,args.block,args.range);
         if(!target.found)return {...target,verified:false,status:'navigation_target_not_found'};
-        const pos=target.block_position;
-        await skills.goToPosition(bot,pos.x,pos.y,pos.z,4);
-        const distance=bot.entity.position.distanceTo(pos);
-        return {...target,verified:distance<=5,status:'block_approach_checked',distance};
+        return {...target,...await approachBlock(bot,Movements,goals,target.block_position)};
       }
       if(name==='collect') {
         if(mc.getBlockId(args.block)===null)return {verified:false,status:'unknown_block'};
@@ -144,13 +141,13 @@ async function run(message) {
     };
     receipt=await Promise.race([execute(),new Promise((_,reject)=>{timer=setTimeout(()=>{timedOut=true;interrupt();reject(new Error('action_timeout'))},60000)})]);
     if(epoch!==generation)receipt={verified:false,status:'interrupted'};
-  }catch(error){receipt={verified:false,status:'action_failed',error_type:error.name};interrupt()}
+  }catch(error){receipt={verified:false,status:timedOut?'action_timeout':'action_failed',error_type:error.name};interrupt()}
   finally{clearTimeout(timer);if(name!=='follow'||!receipt.verified)current=null}
   emit({kind:'receipt',id,receipt:{...receipt,observed:snapshot(),output:bot.output.slice(-1200)}});
   bot.output='';
   // A timed-out library promise might still own controls. Terminate this body
   // instead of admitting a second action alongside an unfinished promise.
-  if(timedOut){emit({kind:'action_deadline_exit'});await close()}
+  if(timedOut){bot.whisper('Moonlight','刚才的动作超过60秒，我会重新连接；进度保留，这个动作不会自动重试。');emit({kind:'action_deadline_exit'});await close()}
 }
 bot.on('chat',(name,text)=>{if(name==='Moonlight'&&text.trim())emit({kind:'owner_input',text})});
 bot.on('whisper',(name,text)=>{if(name==='Moonlight'&&text.trim())emit({kind:'owner_input',text})});

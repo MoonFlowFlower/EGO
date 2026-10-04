@@ -71,6 +71,7 @@ class Engine:
         self._turn_lock = threading.Lock()
         self._dispatch_lock = threading.Lock()
         self._epoch = 0
+        self._cancel_reason = 'owner_stop'
         # Recovery records interrupted turns but never replays a pending action.
         memory = Memory(path)
         memory.mark_interrupted()
@@ -78,6 +79,7 @@ class Engine:
 
     def stop(self):
         with self._dispatch_lock:
+            self._cancel_reason = 'owner_stop'
             self._epoch += 1
             return self.body.stop()
 

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {treeCandidate,collectTree,approachOwner} from './trees.mjs';
+import {treeCandidate,collectTree,approachOwner,approachBlock} from './trees.mjs';
 class Pos {constructor(x,y,z){Object.assign(this,{x,y,z});}offset(x,y,z){return new Pos(this.x+x,this.y+y,this.z+z);}distanceTo(p){return Math.hypot(this.x-p.x,this.y-p.y,this.z-p.z);}}
 const origin=new Pos(0,64,0),cells=new Map();
 const key=p=>`${p.x},${p.y},${p.z}`;
@@ -19,6 +19,7 @@ bot.inventory={slots,emptySlotCount:()=>30,items:()=>count?[{name:'oak_log',coun
 const old={id:'old'};
 bot.pathfinder={movements:old,setMovements(v){this.movements=v;},async goto(){
   assert.equal(this.movements.canDig,false);assert.deepEqual(this.movements.scafoldingBlocks,[]);
+  assert.equal(this.movements.allow1by1towers,false);assert.equal(this.movements.canOpenDoors,false);
 }};
 bot.dig=async b=>{digs++;assert.equal(key(b.position),key(origin));put(b.position,'air');count++;};
 class Movements {}
@@ -31,4 +32,9 @@ assert.equal((await collectTree(bot,mc,Movements,goals,64)).status,'crafting_gri
 bot.players={Moonlight:{entity:{position:origin.offset(1,0,0)}}};
 assert.equal((await approachOwner(bot,Movements,goals)).verified,true);
 assert.equal(bot.pathfinder.movements,old);
+assert.equal((await approachBlock(bot,Movements,goals,origin.offset(2,0,0))).verified,true);
+assert.equal((await approachBlock(bot,Movements,goals,origin.offset(20,0,0))).verified,false);
+bot.pathfinder.goto=async()=>{throw new Error('no_path');};
+await assert.rejects(()=>approachBlock(bot,Movements,goals,origin),/no_path/);
+assert.equal(bot.pathfinder.movements,old);assert.equal(digs,1);
 console.log('tree preparation checks passed: reject bare pillars, require crown/ground, one log, no navigation modification, inventory guard');

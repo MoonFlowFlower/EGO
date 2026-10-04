@@ -16,10 +16,11 @@ from .harness import Harness
 from .model import Model
 from .memory import Memory
 from .server import KernelServer
+from .reconnect import ReconnectSchedule
 
 
 class Runtime:
-    def __init__(self,*,acceptance=False,minutes=30,acceptance_case='kernel-v1'):
+    def __init__(self,*,acceptance=False,minutes=30,acceptance_case='kernel-v1',local_token=None):
         if not 1<=minutes<=30:raise ValueError('session_deadline')
         if acceptance_case not in ('kernel-v1','search-v1.3'):raise ValueError('acceptance_case')
         self.folder=ROOT/'runs/kernel_v1/sessions'/str(time.time_ns())
@@ -30,6 +31,9 @@ class Runtime:
         self.deadline=time.monotonic()+minutes*60
         self._closed=threading.Event()
         self._close_lock=threading.Lock()
+        self._body_lock=threading.RLock()
+        self._reconnect=ReconnectSchedule()
+        self._reconnect_notice=False
         self._inputs=threading.BoundedSemaphore(8)
         self.body=self.engine=self.server=self.bridge=None
         key=read_key()
@@ -52,7 +56,7 @@ class Runtime:
             self.audit.write('preflight.jsonl',{'route':self.transport.preflight(),'budget_start':ledger.total(),'batch_limit':limit})
             self.body=Body(self.audit,self.on_minecraft)
             self.engine=Harness(self.path,Model(self.transport,self.audit),self.body,self.audit)
-            self.server=KernelServer(self.engine,self.audit)
+            self.server=KernelServer(self.engine,self.audit,local_token=local_token)
             self.server.start()
             self.bridge=AiriBridge(self.audit)
             try:self.bridge.start()
@@ -68,6 +72,14 @@ class Runtime:
         while not self._closed.wait(.5):
             if time.monotonic()>=self.deadline:
                 self.close('session_deadline');break
+            process=self.body.process
+            if self._reconnect.due(time.monotonic(),exited=process is None or process.poll() is not None,deadline=self.deadline):
+                try:self.reconnect_body(automatic=True)
+                except Exception as error:self.audit.write('lifecycle.jsonl',{'event':'body_reconnect_failed','error_type':type(error).__name__})
+            if self._reconnect_notice and not self.body.snapshot().get('offline'):
+                self._reconnect_notice=False
+                self.body.say('我重新连上了。刚才的任务和回执保留着；没有重放动作。你明确说继续后，我会先重新观察。')
+                self.audit.write('lifecycle.jsonl',{'event':'body_reconnected','replayed_actions':0})
 
     def on_minecraft(self,text):
         if self._closed.is_set():return
@@ -83,14 +95,18 @@ class Runtime:
         finally:
             if not urgent:self._inputs.release()
 
-    def reconnect_body(self):
-        if self._closed.is_set():return
-        # Explicit operator control only. No old action/goal is automatically replayed.
-        if self.body.process and self.body.process.poll() is None:return
-        self.body.close('operator_reconnect')
-        self.body=Body(self.audit,self.on_minecraft)
-        self.engine.body=self.body
-        self.body.start()
+    def reconnect_body(self,*,automatic=False):
+        with self._body_lock:
+            if self._closed.is_set() or time.monotonic()>=self.deadline:return
+            if self.body.process and self.body.process.poll() is None:return
+            self.engine.invalidate('body_reconnect')
+            self.body.close('bounded_reconnect' if automatic else 'operator_reconnect')
+            if self._closed.is_set() or time.monotonic()>=self.deadline:return
+            self.body=Body(self.audit,self.on_minecraft)
+            self.engine.body=self.body
+            self.body.start()
+            self._reconnect_notice=True
+            self.audit.write('lifecycle.jsonl',{'event':'body_reconnect_started','automatic':automatic,'attempt':self._reconnect.attempts})
 
     def replay_latest_mc(self):
         """Explicit display recovery. Reads a finished turn, never calls the model."""
@@ -117,7 +133,8 @@ class Runtime:
             self.audit.write('lifecycle.jsonl',{'event':'supervisor_closing','reason':reason,'unix_s':time.time()})
             if self.engine:self.engine.stop()
             if self.server:self.server.close()
-            if self.body:self.body.close(reason)
+            with self._body_lock:
+                if self.body:self.body.close(reason)
             if self.bridge:self.bridge.close()
             self.audit.write('lifecycle.jsonl',{'event':'supervisor_closed','reason':reason,'unix_s':time.time(),
                 'budget_total':self.transport.ledger.total() if hasattr(self,'transport') else None})

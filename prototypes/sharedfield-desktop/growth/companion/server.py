@@ -43,9 +43,11 @@ def last_input(request):
 
 
 class KernelServer:
-    def __init__(self,engine,audit,*,port=18787):
+    def __init__(self,engine,audit,*,port=18787,local_token=None):
         self.engine,self.audit=engine,audit
-        self.token=secrets.token_urlsafe(32)
+        if local_token is not None and (not isinstance(local_token,str) or not re.fullmatch(r'[A-Za-z0-9_-]{43}',local_token)):
+            raise ValueError('invalid_local_token')
+        self.token=local_token if local_token is not None else secrets.token_urlsafe(32)
         self.allowed_origins=frozenset(('null','http://localhost','app://localhost','http://tauri.localhost','tauri://localhost'))
         self.httpd=_LoopbackHTTPServer(('127.0.0.1',port),Handler)
         self.httpd.owner=self

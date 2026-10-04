@@ -10,6 +10,7 @@ from p7.proxy import ProxyError
 
 from .engine import Engine, STOP, confirmed_progress, completed_negative_search
 from .memory import Memory
+from .intent import route_input, chat_reply
 from .work import validate_action, validate_goal, create_work, save_work, incorporate, preliminary_completion, fingerprint
 
 PROMPT = Path(__file__).with_name('harness_prompt.txt').read_text(encoding='utf-8')
@@ -17,16 +18,22 @@ RECOVERABLE = {'crafting_grid_or_cursor_not_clear', 'craft_inventory_checked', '
                'placement_target_not_empty', 'no_placement_space', 'placed_block_checked', 'navigation_target_not_found',
                'block_approach_checked', 'approach_checked', 'owner_not_visible', 'collection_inventory_checked',
                'inventory_no_empty_slot', 'inventory_recovery_incomplete', 'action_repeated_without_progress',
-               'target_out_of_reach', 'target_not_loaded', 'natural_tree_not_found', 'tree_inventory_checked', 'tree_target_changed'}
+               'target_out_of_reach', 'target_not_loaded', 'natural_tree_not_found', 'tree_inventory_checked', 'tree_target_changed', 'missing_ingredients'}
 
 
 class Harness(Engine):
-    def __init__(self, path, model, body, audit, *, max_decisions=64, max_seconds=900, action_policy=None):
+    def invalidate(self, reason):
+        with self._dispatch_lock:
+            self._cancel_reason=reason
+            self._epoch+=1
+
+    def __init__(self, path, model, body, audit, *, max_decisions=64, max_seconds=900, action_policy=None, input_router=None):
         super().__init__(path, model, body, audit, max_decisions=max_decisions, max_seconds=max_seconds)
         self._waiting_lock = threading.Lock()
         self._waiting = 0
         self.progress = '等待输入'
         self.action_policy = action_policy
+        self.input_router = input_router or (lambda text, pending, annotations: route_input(self.model,text,pending,annotations))
         m = Memory(path)
         try:
             old = m.goal()
@@ -52,6 +59,7 @@ class Harness(Engine):
     def _work(self, event_id, channel, text, emit, epoch, stop_receipt):
         m = Memory(self.path)
         work = None
+        execution_granted = False
         parents, spoken, receipts = [], [], []
         try:
             source, cached = m.begin(event_id, channel, text)
@@ -71,7 +79,13 @@ class Harness(Engine):
                 if value and (not spoken or spoken[-1] != value):
                     spoken.append(value); emit(value); self.body.say(value)
 
+            def cancelled():
+                return ('身体正在重新连接；进度已保存，迟到的决定没有执行。'
+                        if self._cancel_reason=='body_reconnect' else '已停止，进度已保存，后续决定没有执行。')
+
             def persist(status, problem=None):
+                if status=='paused_by_owner' and self._cancel_reason=='body_reconnect':
+                    status,problem='interrupted','body_reconnect'
                 if work:
                     work['status'] = status
                     work['last_problem'] = problem
@@ -109,13 +123,30 @@ class Harness(Engine):
                 persist('paused_by_owner', 'owner_stop')
                 say('已经停下，目标和进度已保存。' if stop_receipt and stop_receipt.get('verified') else '这一轮已被停止请求取消，没有继续执行。')
             else:
+                intent=self.input_router(text,old,annotations)
+                self.audit.write('lifecycle.jsonl',{'event':'input_routed','event_id':event_id,'mode':intent['mode'],'task_kind':intent['task_kind']})
+                m.append('reflection',{'type':'input_route','event_id':event_id,'route':intent},[source])
+                if epoch != self._epoch:
+                    say(cancelled())
+                    reply='\n'.join(spoken);m.finish(event_id,reply,parents);return reply
+                if intent['mode'] in ('chat','status') or intent['task_kind']=='structure':
+                    # This path has no tool schema and cannot create/replace a goal.
+                    answer=chat_reply(self.model,{'current_user':text,'mode':intent['mode'],'body':self.body.snapshot(),
+                        'goal':old,'history':m.context(),'recent_actions':m.recent_actions(),
+                        'capability_notice':'完整建房缺少可靠的布局验收；先保留原待办，不把放置数量当作房屋完成。' if intent['task_kind']=='structure' else None})
+                    if epoch != self._epoch:answer=cancelled()
+                    say(answer);self.progress='等待输入' if not old else '待办保留 · '+old['goal_status']
+                    reply='\n'.join(spoken);m.finish(event_id,reply,parents)
+                    self.audit.write('lifecycle.jsonl',{'event':'conversation_done','event_id':event_id,'body_actions':0,'goal_changed':False})
+                    return reply
+                execution_granted = intent['mode'] in ('task','resume')
                 started = time.monotonic()
                 seen, failures, no_action, premature = {}, 0, 0, 0
                 notice = None
                 state = self.body.snapshot()
                 for step in range(self.max_decisions):
                     if epoch != self._epoch:
-                        persist('paused_by_owner', 'owner_stop'); say('已停止，进度已保存。'); break
+                        persist('paused_by_owner', 'owner_stop'); say(cancelled()); break
                     with self._waiting_lock:
                         waiting = self._waiting
                     if waiting:
@@ -129,12 +160,14 @@ class Harness(Engine):
                                'remaining_decisions': self.max_decisions-step}
                     decision = self.model.decide(PROMPT, context)
                     if epoch != self._epoch:
-                        persist('paused_by_owner', 'late_decision_discarded'); say('已停止，迟到的决定没有执行。'); break
+                        persist('paused_by_owner', 'late_decision_discarded'); say(cancelled()); break
                     required = {'reply', 'goal', 'convention', 'forget_card', 'action', 'status'}
                     if not isinstance(decision, dict) or set(decision) != required or decision['status'] not in ('continue', 'done', 'blocked', 'chat'):
                         raise ValueError('harness_decision_schema')
                     if not isinstance(decision['reply'], str) or len(decision['reply']) > 1800:
                         raise ValueError('reply_schema')
+                    if intent['mode']=='memory' and (decision['goal'] is not None or decision['action'] is not None):
+                        raise ValueError('memory_input_cannot_act_or_change_goal')
                     m.append('reflection', {'type': 'kernel_decision', 'event_id': event_id, 'step': step, 'decision': decision}, parents)
                     if work:
                         work['decisions'] += 1
@@ -164,6 +197,9 @@ class Harness(Engine):
                         if step == 0:
                             say('我会连续推进：' + work['title'] + '。完成后会核对结果。')
                     action = decision['action']
+                    if intent['mode']=='memory':
+                        if action is not None:raise ValueError('memory_input_cannot_act')
+                        say(decision['reply']);break
                     if work and complete(state, step):
                         break
                     if action is None:
@@ -210,7 +246,7 @@ class Harness(Engine):
                     state = receipt.get('observed', self.body.snapshot())
                     no_action = 0
                     if epoch != self._epoch:
-                        persist('paused_by_owner', 'owner_stop'); say('已停止，动作结果与任务进度已保存。'); break
+                        persist('paused_by_owner', 'owner_stop'); say(cancelled()); break
                     if receipt.get('verified') or completed_negative_search(action, receipt):
                         failures = 0; notice = None; persist('active')
                         if complete(state, step):
@@ -224,7 +260,7 @@ class Harness(Engine):
                             persist('blocked', receipt.get('status'))
                             reasons={'inventory_no_empty_slot':'背包没有足够空位整理材料', 'action_repeated_without_progress':'相同状态下重复尝试没有进展',
                                      'body_disconnected':'游戏连接中断', 'unsupported_container':'当前打开的容器不在整理工具支持范围内',
-                                     'action_failed':'动作执行遇到尚未确认的错误'}
+                                     'action_failed':'动作执行遇到尚未确认的错误', 'action_timeout':'动作超过60秒，身体将重新连接；此动作不会自动重试'}
                             say('当前步骤受阻：' + reasons.get(receipt.get('status'),'恢复尝试仍未确认成功') + '；进度和回执已保存。'); break
                     if (step + 1) % 8 == 0:
                         work['checkpoints'] += 1; persist(work['status'], work['last_problem'])
@@ -239,9 +275,9 @@ class Harness(Engine):
                                                'receipt_count': len(receipts), 'task_status': work['status'] if work else None})
             return reply
         except Exception as error:
-            self.body.stop()
+            if execution_granted and epoch==self._epoch:self.body.stop()
             problem = error.code if isinstance(error, ProxyError) else type(error).__name__
-            if work and parents:
+            if execution_granted and work and parents:
                 work['status'] = 'blocked'; work['last_problem'] = problem
                 save_work(m, work, parents)
             result = ('本次预算不足以预留下一次请求，已停止；目标和进度已保存。' if problem == 'budget_stop'

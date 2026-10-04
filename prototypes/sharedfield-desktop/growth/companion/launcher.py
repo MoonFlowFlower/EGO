@@ -1,6 +1,7 @@
 """Local owner panel; started independently of any Codex tool process."""
 import argparse
 import queue
+import re
 import threading
 import tkinter as tk
 from tkinter import ttk
@@ -11,9 +12,15 @@ from .runtime import Runtime
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--acceptance',action='store_true')
+    parser.add_argument('--reuse-local-token',action='store_true')
     parser.add_argument('--acceptance-case',choices=('kernel-v1','search-v1.3'),default='kernel-v1')
     args=parser.parse_args()
     window=tk.Tk()
+    local_token=None
+    if args.reuse_local_token:
+        local_token=window.clipboard_get()
+        if not re.fullmatch(r'[A-Za-z0-9_-]{43}',local_token):
+            window.destroy();raise ValueError('invalid_local_token_clipboard')
     window.title('Ego 共享内核'+(' · 工程验收' if args.acceptance else ''))
     window.geometry('720x300')
     window.resizable(False,False)
@@ -51,7 +58,7 @@ def main():
     ttk.Button(controls,text='同步 MC 回复',command=replay).pack(side='left',padx=10)
     window.protocol('WM_DELETE_WINDOW',close)
     def boot():
-        try:messages.put(('ready',Runtime(acceptance=args.acceptance,acceptance_case=args.acceptance_case)))
+        try:messages.put(('ready',Runtime(acceptance=args.acceptance,acceptance_case=args.acceptance_case,local_token=local_token)))
         except Exception as error:messages.put(('error',type(error).__name__))
     def tick():
         try:

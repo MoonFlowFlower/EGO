@@ -17,6 +17,14 @@ export async function approachOwner(bot,Movements,goals) {
   return {verified:!!current&&bot.entity.position.distanceTo(current.position)<=3.25&&Math.abs(bot.entity.position.y-current.position.y)<=1.25,
     status:'approach_checked',navigation:'no_break_no_place'};
 }
+export async function approachBlock(bot,Movements,goals,position) {
+  const old=bot.pathfinder.movements;
+  bot.pathfinder.setMovements(walking(bot,Movements));
+  try {await bot.pathfinder.goto(new goals.GoalNear(position.x,position.y,position.z,4));}
+  finally {bot.pathfinder.setMovements(old);}
+  const distance=bot.entity.position.distanceTo(position);
+  return {verified:distance<=5,status:'block_approach_checked',distance,navigation:'no_break_no_place'};
+}
 export function treeCandidate(bot,mc,range) {
   const ids=mc.WOOD_TYPES.map(t=>mc.getBlockId(`${t}_log`)).filter(v=>v!==null);
   const positions=bot.findBlocks({matching:ids,maxDistance:range,count:512});

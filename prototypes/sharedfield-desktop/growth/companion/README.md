@@ -66,3 +66,7 @@ AIRI 重开时，消息桥每隔 5 秒尝试本机重连，兼容只有 error、
 持续任务实现为 `harness.py`（正式入口已接入），旧 `engine.py` 留作历史回归。公开机制参考：[Codex agent loop](https://openai.com/index/unrolling-the-codex-agent-loop/)、[Codex harness](https://openai.com/index/unlocking-the-codex-harness/) 及 [Anthropic long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)。采用多次工具结果回送、持久进度和环境验收；不读取或保存模型隐藏思维链。
 
 新验收见 `../evidence/kernel_harness_v2/REPORT.md`，旧预算失败见 v1 报告。离线运行 `python -m unittest companion.test_harness companion.test_kernel -v`、`node companion/test_inventory.mjs`、`node companion/test_spatial.mjs`、`node companion/test_trees.mjs`。`verify_harness_v2.py` 和 `prepare_harness_wood.py` 是会改变世界、有一次性 claim 的工程工具，不属于自动回归；后者的树木筛选只供本轮已授权材料准备，不开放为模型可调用动作。
+
+2026-10-03 对话与执行分流修复：同一个固定模型先判断当前原话。聊天/询问无工具接口且不改待办；暂停或阻塞的任务需要明确继续。完整房屋尚缺可靠布局验收，不能按散放数量宣称建好。合成前检查真实材料与配方；普通走近方块/跟随不挖路、不垫路。身体退出后主管最多三次有限重连，取消旧决定，保留原30分钟期限。见 `../evidence/kernel_turn_v1/REPORT.md`，真实三输入回放仅通过路由；旧状态干扰回复仍失败，聊天让出后持续施工尚未实现。
+
+本地重启可先在旧面板按“复制本机令牌”，再执行 `companion/start.ps1 -ReuseLocalToken`。这会从剪贴板读取到内存并沿用已配置的本机令牌，格式不符拒绝；不保存云端密钥或令牌文件。默认不加开关仍生成新令牌。离线检查增加 `python -m unittest companion.test_turns -v`；`verify_turn_v1.py` 是已消耗一次性claim的真实模型验收，不属于自动回归。

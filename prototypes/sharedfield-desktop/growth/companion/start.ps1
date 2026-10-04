@@ -1,4 +1,4 @@
-param([switch]$Acceptance)
+param([switch]$Acceptance,[switch]$ReuseLocalToken)
 
 $ErrorActionPreference = 'Stop'
 $taskGrowthRoot = Split-Path -Parent $PSScriptRoot
@@ -8,4 +8,5 @@ if (-not (Test-Path -LiteralPath $taskPython)) {
 }
 $taskArguments = @('-m', 'companion.launcher')
 if ($Acceptance) { $taskArguments += '--acceptance' }
+if ($ReuseLocalToken) { $taskArguments += '--reuse-local-token' }
 Start-Process -FilePath $taskPython -ArgumentList $taskArguments -WorkingDirectory $taskGrowthRoot -WindowStyle Hidden

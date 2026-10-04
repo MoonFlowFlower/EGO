@@ -52,12 +52,26 @@ export async function craftChecked(bot, mc, skills, item, count) {
   const win=bot.currentWindow||bot.inventory;
   if(bot.currentWindow||!emptyGrid(win))return {verified:false,status:'crafting_grid_or_cursor_not_clear',recovery:'recover_inventory'};
   if(mc.getItemId(item)===null)return {verified:false,status:'unknown_item'};
+  const available={};
+  for(const stack of bot.inventory.items())if(stack)available[stack.name]=(available[stack.name]||0)+stack.count;
+  const recipes=mc.getItemCraftingRecipes(item)||[];
+  const missing=recipe=>Object.fromEntries(Object.entries(recipe[0]).map(([name,n])=>[name,Math.max(0,n*count-(available[name]||0))]).filter(([,n])=>n>0));
+  const recipe=recipes.find(r=>Object.keys(missing(r)).length===0);
+  if(!recipe) {
+    const alternatives=[];
+    if(item.endsWith('_planks'))for(const wood of mc.WOOD_TYPES||[]) {
+      const output=wood+'_planks';
+      if((mc.getItemCraftingRecipes(output)||[]).some(r=>Object.keys(missing(r)).length===0))alternatives.push(output);
+    }
+    return {verified:false,executed:false,status:recipes.length?'missing_ingredients':'unknown_recipe',item,count,
+      missing_options:recipes.map(missing),available_plank_alternatives:alternatives};
+  }
   const amount=()=>bot.inventory.items().reduce((n,v)=>n+(v?.name===item?v.count:0),0);
   const before=amount();
   let error=null;
   try {await skills.craftRecipe(bot,item,count);}catch(e){error=e.name;}
   await syncInventory(bot);
-  const gained=amount()-before,recipe=mc.getItemCraftingRecipes(item)?.[0];
+  const gained=amount()-before;
   return {verified:!!recipe&&gained>=count*recipe[1].craftedCount,
     status:'craft_inventory_checked',gained,item,error_type:error,
     recovery:!emptyGrid(bot.inventory)||bot.currentWindow?'recover_inventory':null};

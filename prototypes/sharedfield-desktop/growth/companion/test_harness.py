@@ -70,7 +70,9 @@ class HarnessTests(unittest.TestCase):
     def setUp(self):
         self.tmp=tempfile.TemporaryDirectory();self.path=Path(self.tmp.name)/'state.sqlite';self.body=Body();self.audit=Audit()
     def tearDown(self):self.tmp.cleanup()
-    def engine(self,model,**kw):return Harness(self.path,model,self.body,self.audit,**kw)
+    def engine(self,model,**kw):
+        # Actor-loop fixtures have already-classified task inputs; production routing is tested separately.
+        return Harness(self.path,model,self.body,self.audit,input_router=lambda *args:{'mode':'task','task_kind':'ordinary'},**kw)
     def saved(self):
         m=Memory(self.path)
         try:return m.goal()['work']
