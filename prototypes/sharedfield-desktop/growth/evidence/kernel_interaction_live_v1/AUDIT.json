@@ -1,0 +1,21 @@
+{
+  "observed_unix_s": 1791152950.3325067,
+  "session": "1791152755949355900",
+  "status": "RUNNING_NO_OWNER_TEST",
+  "pid": 48452,
+  "stop_unix_s": 1791154555.9518673,
+  "source_files_verified": 61,
+  "body_samples": 192,
+  "generated_code_enabled_samples": 0,
+  "body_model_enabled_samples": 0,
+  "body_online": true,
+  "owner_visible": true,
+  "owner_distance": 118.79674310389306,
+  "current_action": null,
+  "owner_inputs_routed": 0,
+  "model_log_created": false,
+  "actions_log_created": false,
+  "cloud_key_found_in_session": false,
+  "airi_native_input_verified": false,
+  "l1_l4": "NOT_EXERCISED"
+}
