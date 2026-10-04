@@ -20,7 +20,19 @@ def historical_actions(memory):
     return result
 
 
+def chat_history(memory):
+    # Select the topic before rendering facts. Merely labelling an irrelevant
+    # construction history did not stop the fixed model from repeating it.
+    modes = {r['body']['event_id']: r['body']['route']['mode'] for r in memory.library.rows('reflection')
+             if r['body'].get('type') == 'input_route'}
+    allowed = {user_id for event_id, user_id in memory.db.execute(
+        'SELECT event_id,user_id FROM kernel_turns ORDER BY rowid DESC LIMIT 20') if modes.get(event_id) == 'chat'}
+    return [row for row in user_history(memory) if row['record_id'] in allowed]
+
+
 def conversation_context(memory, text, mode, state, *, capability_notice=None):
+    if mode == 'chat' and not capability_notice:
+        return {'current_user': text, 'mode': mode, 'chat_history': chat_history(memory)}
     online = state.get('offline') is False
     current = {'available': online, 'sampled_at': datetime.now().astimezone().isoformat(),
                'source': 'body.snapshot', 'state': copy.deepcopy(state) if online else

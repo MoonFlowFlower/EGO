@@ -1,0 +1,17 @@
+{
+  "run": "1791088323911292200",
+  "source_hashes_unchanged": 49,
+  "v2_source_hashes_preserved_at_fb4a728a": 45,
+  "exact_credential_matches": 0,
+  "historical_evidence_unchanged": true,
+  "runs_tracked": false,
+  "budget_total": 1.27524416559,
+  "budget_by_status": {
+    "reported": 0.27524416559,
+    "reserved_unknown": 1.0
+  },
+  "model_route": "DeepSeek V4.1 Flash / Wafer",
+  "real_mc_connection": false,
+  "generated_code_enabled": false,
+  "body_source_unchanged_from_f0477b5b": true
+}

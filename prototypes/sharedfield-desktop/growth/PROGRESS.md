@@ -310,3 +310,10 @@
 - 新身体事实与历史结果分开；原任务聊天让出后保留执行栈续行，停止/重连/新任务/记忆修改撤销，缓存回显不等待长任务结束。旧实现新回归12项仅1通过；最终63项Python回归通过。
 - 新清单事前写入，45份文件收费前冻结。真实run1791087740178765300：12调用、$0.001030516。空残留/真残留/离线事实已区分，但招呼仍主动讲旧施工；C1替身漏支持inspect_area，未执行放置，续行未验。结论ENGINEERING_PASS / GREETING_CONTEXT_FAIL / MODEL_CONTINUATION_UNVERIFIED。
 - v2原输出/claim保留，不改分不补跑；下一修订仅处理普通闲聊背景与替身空间接口，另冻结后验证。报告evidence/kernel_turn_v2/REPORT.md；旧U1/P7与失败证据不变，密钥不落盘、生成代码关闭、runs不提交。
+
+## 2026-10-03 — 身体事实与聊天续行 v3，有界通过（Codex）
+
+- v2失败实现和证据已留本地提交fb4a728a。v3只缩减普通闲聊的无关任务背景、补齐替身inspect_area；状态分支的身体事实表示保持。新增3项＋31项相关回归共34项通过，此前v2完整63项已通过。
+- 新清单、49项源码/测试/提示哈希在收费前冻结。run1791088323911292200：招呼自然回应；原任务第一块后优先回答进度，再自动完成第二块与回读。task_id/source_id/条件保持、库存净减2、聊天零动作，8次固定模型调用、6.531秒、$0.000809748。两修订合计20调用、$0.001840264，历史未知预留保持。
+- 结论CURRENT_STATE_PROJECTION_PASS / MODEL_CONTINUATION_SIMULATED_BODY_PASS / LIVE_MC_UNVERIFIED。正文仍有“让出中”工程措辞，完整自然度不宣称通过。原owner库字节与49项冻结哈希一致；未启动正式内核，未连接/修改MC世界。
+- 当前使用说明companion/README.md v1.6；报告evidence/kernel_turn_v3/REPORT.md，语义逐项核对见SEMANTIC_REVIEW.json。下一次正式启动会加载修复，旧blocked建房不自动唤醒。未来现场验证另冻结，不复用旧claim，不重做U1/P7摸底；密钥不落盘、生成代码关闭、runs不提交。
