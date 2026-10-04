@@ -24,6 +24,7 @@ RECOVERABLE = {'crafting_grid_or_cursor_not_clear', 'craft_inventory_checked', '
                'target_out_of_reach', 'target_not_loaded', 'natural_tree_not_found', 'tree_inventory_checked', 'tree_target_changed', 'missing_ingredients',
                'pickup_partial', 'pickup_target_missing', 'pickup_path_failed', 'pickup_requires_current_entity_observation',
                'pickup_requires_owner_spatial_anchor', 'pickup_outside_indicated_area', 'action_outside_current_request', 'pickup_item_mismatch'}
+RECOVERABLE.update({'placement_batch_partial','placement_no_support','placement_path_failed','placement_body_occupies_target'})
 
 
 class Harness(Engine):
@@ -219,22 +220,19 @@ class Harness(Engine):
                         say('收到，你的新信息已经记进当前任务；我会重新观察再行动。')
                         reply='\n'.join(spoken);m.finish(event_id,reply,parents)
                         return reply
-                if intent['mode'] not in ('chat', 'status') or intent['task_kind'] == 'structure':
+                if intent['mode'] not in ('chat', 'status'):
                     # A new execution/memory request takes ownership. Pure dialogue
                     # is the only input that can return control to a suspended turn.
                     self._execution_generation += 1
-                    if (intent['mode'] == 'memory' or intent['task_kind'] == 'structure') and work and work['status'] == 'yielded':
+                    if intent['mode'] == 'memory' and work and work['status'] == 'yielded':
                         persist('interrupted', 'input_requires_explicit_resume')
-                if intent['mode'] in ('chat','status') or intent['task_kind']=='structure':
+                if intent['mode'] in ('chat','status'):
                     # This path has no tool schema and cannot create/replace a goal.
-                    if intent['task_kind']=='structure':
-                        answer='完整房屋目前还缺可靠的布局规划和验收，我现在不能承诺建好。可以先商量布局，或交代一项明确的放置工作。'
-                    else:
-                        context = conversation_context(m, text, intent['mode'], self.body.snapshot(),
-                                                       information_need=intent['information_need'])
-                        self.audit.write('lifecycle.jsonl', {'event':'response_information_loaded', 'event_id':event_id,
-                            'information_need':intent['information_need'], 'loaded_fields':list(context)})
-                        answer=chat_reply(self.model, context)
+                    context = conversation_context(m, text, intent['mode'], self.body.snapshot(),
+                                                   information_need=intent['information_need'])
+                    self.audit.write('lifecycle.jsonl', {'event':'response_information_loaded', 'event_id':event_id,
+                        'information_need':intent['information_need'], 'loaded_fields':list(context)})
+                    answer=chat_reply(self.model, context)
                     if epoch != self._epoch:answer=cancelled()
                     say(answer);self.progress='等待输入' if not old else '待办保留 · '+old['goal_status']
                     reply='\n'.join(spoken);m.finish(event_id,reply,parents)
@@ -317,7 +315,14 @@ class Harness(Engine):
                         notice = '约定已实际写入；没有正在执行的任务时可回复确认。'
                         continue
                     if decision['goal'] is not None:
-                        proposed = validate_goal(decision['goal'])
+                        try:
+                            proposed = validate_goal(decision['goal'])
+                        except ValueError as error:
+                            notice = {'kind':'invalid_goal_contract', 'code':str(error)}
+                            premature += 1
+                            if premature >= 3:
+                                say('目标的核对条件仍有矛盾或缺项，尚未执行。'); break
+                            continue
                         contract_problem = goal_problem(work.get('task_kind', 'ordinary') if work else intent['task_kind'], proposed)
                         if contract_problem:
                             notice = contract_problem; premature += 1
@@ -375,7 +380,7 @@ class Harness(Engine):
                         if no_action >= 2:
                             persist('blocked', 'no_action_or_unverified_completion'); say('目标尚未通过核对，当前没有给出可执行的下一步；进度已保存。'); break
                         continue
-                    if not work:
+                    if not work and action.get('name') not in OBSERVATIONS:
                         notice = '执行前先提供 goal 的 title、steps、done_when。'
                         no_action += 1
                         if no_action >= 2:
@@ -388,7 +393,7 @@ class Harness(Engine):
                     state_key = fingerprint(state)
                     previous = seen.get((key, state_key))
                     progress_action = action if action['name'] != 'place_at' else {'name': 'place', 'args': {'block': action['args']['block']}}
-                    problem = action_problem(work, action, state)
+                    problem = action_problem(work, action, state) if work else None
                     if problem:
                         receipt = {'verified': False, 'executed': False, 'status': problem, 'observed': state}
                     elif action['name'] not in OBSERVATIONS and previous is not None and not confirmed_progress(progress_action, previous):
@@ -402,13 +407,13 @@ class Harness(Engine):
                             if self._waiting:
                                 continue
                             self.audit.write('lifecycle.jsonl', {'event': 'action_authorized', 'event_id': event_id,
-                                'task_id': work['task_id'], 'revision': work.get('revision', 0), 'action': action['name']})
+                                'task_id': work['task_id'] if work else None, 'revision': work.get('revision', 0) if work else 0, 'action': action['name']})
                             if decision['reply']:
                                 say(decision['reply'])
                             future = self.body.start_action(action, timeout=60)
                         receipt = future.result(timeout=65)
                         seen[(key, state_key)] = receipt
-                        work['actions'] += 1
+                        if work:work['actions'] += 1
                     record(action, receipt, step)
                     incorporate(work, action, receipt)
                     state = receipt.get('observed', self.body.snapshot())
@@ -441,11 +446,11 @@ class Harness(Engine):
                                      'body_disconnected':'游戏连接中断', 'unsupported_container':'当前打开的容器不在整理工具支持范围内',
                                      'action_failed':'动作执行遇到尚未确认的错误', 'action_timeout':'动作超过60秒，身体将重新连接；此动作不会自动重试'}
                             say('当前步骤受阻：' + reasons.get(receipt.get('status'),'恢复尝试仍未确认成功') + '；进度和回执已保存。'); break
-                    if (step + 1) % 8 == 0:
+                    if work and (step + 1) % 8 == 0:
                         work['checkpoints'] += 1; persist(work['status'], work['last_problem'])
                         self.audit.write('lifecycle.jsonl', {'event': 'task_checkpoint', 'event_id': event_id, 'step': step+1, 'continues': True})
                         say('进度已保存，正在继续处理剩余步骤。')
-                    self.progress = '执行中 · ' + work['title'][:32] + ' · ' + str(step+1) + ' 次决定'
+                    self.progress = ('执行中 · ' + work['title'][:32] if work else '观察与规划中') + ' · ' + str(step+1) + ' 次决定'
                 else:
                     persist('paused_limit', 'task_decision_cap'); say('这项任务达到决定次数上限，进度与剩余工作已保存。')
             reply = '\n'.join(spoken) or '本轮进度已保存。'

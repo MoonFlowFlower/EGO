@@ -8,7 +8,7 @@ import repair1211 from '../p7/protocol_1211.cjs';
 import {searchBlocks} from './search.mjs';
 import {placeNextBlock} from './placement.mjs';
 import {recoverInventory,craftChecked} from './inventory.mjs';
-import {inspectArea,placeAt,verifyBlocks,validPosition} from './spatial.mjs';
+import {inspectArea,placeAt,placeMany,verifyBlocks,validPosition} from './spatial.mjs';
 import {collectTree,approachOwner,approachBlock} from './trees.mjs';
 import {observeItems,pickupItems,trackPickups} from './items.mjs';
 import {randomUUID} from 'node:crypto';
@@ -67,7 +67,7 @@ function interrupt() {
   if(current==='follow')current=null;
 }
 function allowed(action) {
-  const spec={inspect:[],observe_items:['range'],pickup_items:['entity_ids','item','count'],approach:[],follow:[],stop:[],search:['block','range'],go_to_block:['block','range'],collect:['block','count'],collect_tree:['block','range'],craft:['item','count'],give:['item','count'],place:['block'],recover_inventory:[],inspect_area:['radius'],place_at:['block','position'],verify_blocks:['targets']};
+  const spec={inspect:[],observe_items:['range'],pickup_items:['entity_ids','item','count'],approach:[],follow:[],stop:[],search:['block','range'],go_to_block:['block','range'],collect:['block','count'],collect_tree:['block','range'],craft:['item','count'],give:['item','count'],place:['block'],recover_inventory:[],inspect_area:['radius'],place_at:['block','position'],place_many:['targets'],verify_blocks:['targets']};
   if(!action||!Object.hasOwn(spec,action.name)||!action.args||Object.keys(action).sort().join()!=['args','name'].join()||Object.keys(action.args).sort().join()!=spec[action.name].slice().sort().join())throw new Error('action_not_allowed');
   for(const [k,v] of Object.entries(action.args)) {
     if(['item','block'].includes(k)&&!(typeof v==='string'&&/^[a-z][a-z0-9_]{0,63}$/.test(v)))throw new Error('invalid_identifier');
@@ -76,7 +76,8 @@ function allowed(action) {
     if(k==='entity_ids'&&!(Array.isArray(v)&&v.length>=1&&v.length<=16&&v.every(i=>Number.isInteger(i)&&i>=0)&&new Set(v).size===v.length))throw new Error('invalid_entity_ids');
     if(k==='radius'&&!(Number.isInteger(v)&&v>=1&&v<=4))throw new Error('invalid_radius');
     if(k==='position'&&!validPosition(v))throw new Error('invalid_position');
-    if(k==='targets'&&!(Array.isArray(v)&&v.length>0&&v.length<=128&&v.every(t=>t&&Object.keys(t).sort().join()==='block,position'&&typeof t.block==='string'&&/^[a-z][a-z0-9_]{0,63}$/.test(t.block)&&validPosition(t.position))))throw new Error('invalid_targets');
+    if(k==='targets'&&!(Array.isArray(v)&&v.length>0&&v.length<=(action.name==='place_many'?8:128)&&v.every(t=>t&&Object.keys(t).sort().join()==='block,position'&&typeof t.block==='string'&&/^[a-z][a-z0-9_]{0,63}$/.test(t.block)&&validPosition(t.position))))throw new Error('invalid_targets');
+    if(k==='targets'&&action.name==='place_many'&&(v.some(t=>t.block==='air')||new Set(v.map(t=>[t.position.x,t.position.y,t.position.z].join())).size!==v.length))throw new Error('invalid_placement_targets');
   }
 }
 async function run(message) {
@@ -99,6 +100,7 @@ async function run(message) {
   current=action.name;
   const before=snapshot(); const {name,args}=action;
   let timer,timedOut=false,receipt={verified:false,status:'not_demonstrated'};
+  const partialPlacements=[];
   try {
     const execute=async()=>{
       if(name==='pickup_items')return pickupItems(bot,Movements,goals,args,bodySession);
@@ -107,7 +109,8 @@ async function run(message) {
         if(args.block!=='wood'&&!mc.WOOD_TYPES.some(t=>`${t}_log`===args.block))return {verified:false,status:'unknown_tree_type'};
         return collectTree(bot,{...mc,WOOD_TYPES:args.block==='wood'?mc.WOOD_TYPES:[args.block.slice(0,-4)]},Movements,goals,args.range);
       }
-      if(name==='place_at')return placeAt(bot,mc,skills,args.block,args.position);
+      if(name==='place_at')return placeAt(bot,mc,skills,args.block,args.position,{Movements,goals});
+      if(name==='place_many')return placeMany(bot,mc,skills,args.targets,{Movements,goals},value=>partialPlacements.push(value));
       if(name==='approach') {
         return approachOwner(bot,Movements,goals);
       }
@@ -148,8 +151,9 @@ async function run(message) {
       }
     };
     receipt=await Promise.race([execute(),new Promise((_,reject)=>{timer=setTimeout(()=>{timedOut=true;interrupt();reject(new Error('action_timeout'))},60000)})]);
-    if(epoch!==generation)receipt={verified:false,status:'interrupted'};
-  }catch(error){receipt={verified:false,status:timedOut?'action_timeout':'action_failed',error_type:error.name};interrupt()}
+    if(epoch!==generation)receipt={...receipt,verified:false,status:'interrupted'};
+  }catch(error){receipt={verified:false,status:timedOut?'action_timeout':'action_failed',error_type:error.name,
+    ...(name==='place_many'?{placements:partialPlacements.slice()}: {})};interrupt()}
   finally{clearTimeout(timer);if(name!=='follow'||!receipt.verified)current=null}
   emit({kind:'receipt',id,receipt:{...receipt,observed:snapshot(),output:bot.output.slice(-1200)}});
   bot.output='';

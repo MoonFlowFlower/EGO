@@ -63,6 +63,8 @@ def steer_work(work, event):
 
 def goal_problem(kind, goal):
     kinds = {c['kind'] for c in goal['done_when']}
+    if kind=='structure' and ('blocks' not in kinds or not any(c['kind']=='blocks' and c['block']=='air' for c in goal['done_when'])):
+        return 'structure_requires_spatial_contract_including_clear_space'
     expected = {'approach': 'near_owner', 'follow': 'follow_started', 'pickup': 'picked_up'}.get(kind)
     # A classification may identify a required result, but must not prohibit
     # other validated conditions needed by a compound user request.

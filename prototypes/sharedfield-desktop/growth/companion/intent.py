@@ -7,7 +7,7 @@ CHAT_PROMPT=Path(__file__).with_name('chat_prompt.txt').read_text(encoding='utf-
 
 
 def route_input(model, text, pending, annotations, *, situation=None):
-    result=model.decide(ROUTE_PROMPT,{'current_user':text,'pending_title':pending.get('title') if pending else None,
+    result=model.decide(ROUTE_PROMPT,{'current_user':text,'pending_title':pending.get('title') if pending and pending.get('goal_status')!='completed' else None,
                                     'matched_conventions':annotations, 'situation': situation})
     if not isinstance(result,dict) or set(result)!={'mode','request_quote','task_kind','information_need'}:
         raise ValueError('intent_schema')

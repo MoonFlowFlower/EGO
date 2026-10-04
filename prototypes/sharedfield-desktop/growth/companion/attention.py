@@ -1,5 +1,5 @@
 """Validate an information request, without deciding what a topic should need."""
-SOURCES = ('current_body', 'goal', 'dialogue', 'user_history', 'historical_actions', 'chat_history')
+SOURCES = ('current_body', 'goal', 'dialogue', 'user_history', 'historical_actions', 'chat_history', 'capabilities')
 
 
 def validate_need(value):

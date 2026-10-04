@@ -139,10 +139,11 @@ class InteractionTests(unittest.TestCase):
         self.assertIn('你指的是哪一堆？', self.body.speech); self.assertEqual(self.saved()['status'], 'waiting_user')
         self.assertEqual(self.body.actions, [])
 
-    def test_structure_cannot_promise_execution(self):
-        model = Model()
+    def test_structure_is_not_a_category_level_refusal_and_can_observe_before_goal(self):
+        model = Model(decision(action={'name':'inspect','args':{}}),decision(status='waiting_user',reply='地形尚不明确，在哪一侧？'))
         reply = Harness(self.path, model, self.body, self.audit, input_router=task('structure')).run('house', 'verification', '建房')
-        self.assertIn('不能承诺', reply); self.assertEqual(model.calls, 0); self.assertEqual(self.body.actions, [])
+        self.assertIn('在哪一侧', reply); self.assertEqual(model.calls, 2)
+        self.assertEqual([a['name'] for a in self.body.actions], ['inspect'])
 
     def test_fresh_observation_allowed_and_repetition_bounded(self):
         inspect = {'name': 'inspect', 'args': {}}

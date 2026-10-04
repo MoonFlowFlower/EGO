@@ -60,9 +60,9 @@ class TurnTests(unittest.TestCase):
             self.assertEqual(self.saved(),self.original);self.assertEqual(self.body.stops,0)
         self.assertEqual(self.body.actions,[])
     def test_full_house_does_not_become_eight_blocks(self):
-        model=Model(route('task','structure','建一座房子'),{'reply':'完整房屋还缺少可靠的布局验收，原待办保留。'})
+        model=Model(route('task','structure','建一座房子'),place(goal(8)),place(goal(8)))
         self.engine(model).run('house','minecraft','建一座房子')
-        self.assertEqual(self.saved(),self.original);self.assertEqual(self.body.actions,[])
+        self.assertEqual(self.saved()['goal_status'],'suspended');self.assertEqual(self.body.actions,[])
     def test_memory_output_cannot_rewrite_goal_or_act(self):
         model=Model(route('memory',quote='记住蓝灯'),decision(goal=goal(1)))
         self.engine(model).run('memory','airi','记住蓝灯')
@@ -80,8 +80,8 @@ class TurnTests(unittest.TestCase):
         self.assertEqual(self.saved()['work']['task_id'],self.original['work']['task_id'])
         self.assertEqual(len(self.body.blocks),8)
     def test_resume_full_house_is_kept_without_actor(self):
-        self.engine(Model(route('resume','structure','继续'),{'reply':'房屋还缺布局验收，原待办保留。'})).run('resume-house','minecraft','继续')
-        self.assertEqual(self.saved(),self.original);self.assertEqual(self.body.actions,[])
+        self.engine(Model(route('resume','structure','继续'))).run('resume-house','minecraft','继续')
+        self.assertEqual(self.saved()['goal_status'],'waiting_user');self.assertEqual(self.body.actions,[])
     def test_reconnect_invalidates_late_model_action(self):
         entered=threading.Event();release=threading.Event()
         def late(_):entered.set();release.wait(3);return place(goal(1))

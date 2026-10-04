@@ -37,6 +37,9 @@ def conversation_context(memory, text, mode, state, *, information_need, capabil
     need = validate_need(information_need)
     context = {'current_user': text, 'mode': mode, 'information_need': copy.deepcopy(need),
                'capability_notice': capability_notice}
+    if 'capabilities' in need['sources']:
+        from .capabilities import capabilities
+        context['capabilities']=capabilities()
     if 'current_body' in need['sources']:
         context['current_body'] = current_body(state)
     if 'goal' in need['sources']:

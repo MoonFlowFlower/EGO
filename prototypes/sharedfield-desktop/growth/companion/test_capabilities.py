@@ -1,0 +1,78 @@
+import copy
+import tempfile
+import unittest
+from pathlib import Path
+from .harness import Harness
+from .test_harness import Model, Body, decision, goal
+from .test_kernel import Audit
+from .work import validate_action, validate_goal, create_work, incorporate
+from .voxel_scene import VoxelScene, grade_hut
+
+
+def pos(x,y=64,z=0):return dict(x=x,y=y,z=z)
+def spatial(conditions):return dict(title='按坐标构造并保留空间',steps=['观察','构造','核对'],done_when=conditions)
+
+
+class CapabilityTests(unittest.TestCase):
+    def test_geometry_grader_rejects_missing_roof_wall_and_blocked_interior(self):
+        scene=VoxelScene(origin=(0,64,0))
+        for x in range(5):
+            for z in range(5):
+                scene.blocks[(x,66,z)]='oak_planks'
+                if x in (0,4) or z in (0,4):
+                    if (x,z)!=(2,0):
+                        for y in (64,65):scene.blocks[(x,y,z)]='oak_planks'
+        scene.changes=[dict(block=b,position=dict(zip(('x','y','z'),p))) for p,b in scene.blocks.items()]
+        scene.state['inventory']['oak_planks']-=len(scene.changes)
+        self.assertTrue(grade_hut(scene)['passed'])
+        for missing,flag in [((2,66,2),'roof'),((0,64,2),'walls')]:
+            block=scene.blocks.pop(missing)
+            self.assertFalse(grade_hut(scene)[flag]);scene.blocks[missing]=block
+        scene.blocks[(2,64,2)]='stone';self.assertFalse(grade_hut(scene)['interior_clear'])
+
+    def test_regions_expand_union_without_changing_input(self):
+        g=spatial([dict(kind='blocks',block='oak_planks',regions=[dict(min=pos(0),max=pos(2)),dict(min=pos(2),max=pos(3))])])
+        original=copy.deepcopy(g);checked=validate_goal(g)
+        self.assertEqual(g,original);self.assertEqual(checked['done_when'][0]['positions'],[pos(n) for n in range(4)])
+
+    def test_regions_and_world_bounds(self):
+        for a,b in [(pos(3),pos(2)),(pos(0),pos(64)),(pos(0,320),pos(0,320))]:
+            with self.assertRaises(ValueError):validate_goal(spatial([dict(kind='blocks',block='stone',regions=[dict(min=a,max=b)])]))
+        conditions=[dict(kind='blocks',block='stone',regions=[dict(min=pos(n*64),max=pos(n*64+63))]) for n in range(3)]
+        self.assertEqual(len(validate_goal(spatial(conditions[:2]))['done_when']),2)
+        with self.assertRaisesRegex(ValueError,'goal_world_check_limit'):validate_goal(spatial(conditions))
+
+    def test_conflicting_solid_and_air_is_not_a_completable_contract(self):
+        with self.assertRaisesRegex(ValueError,'goal_conflicting_blocks'):
+            validate_goal(spatial([dict(kind='blocks',block=block,positions=[pos(1)]) for block in ('stone','air')]))
+
+    def test_batch_bounds_and_partial_effects(self):
+        targets=[dict(block='oak_planks',position=pos(n)) for n in range(8)]
+        action=dict(name='place_many',args=dict(targets=targets));validate_action(action)
+        for bad in [[],targets+[targets[0]],targets[:1]*2,[dict(block='air',position=pos(1))]]:
+            with self.assertRaises(ValueError):validate_action(dict(name='place_many',args=dict(targets=bad)))
+        w=create_work(goal(8),Body().snapshot(),'source')
+        receipt=dict(verified=False,placements=[dict(target=targets[0],receipt=dict(verified=True,position=pos(0),placement=dict(consumed=1))),
+            dict(target=targets[1],receipt=dict(verified=False,position=pos(1)))])
+        incorporate(w,action,receipt);incorporate(w,action,receipt)
+        self.assertEqual(w['placed'],targets[:1])
+
+    def test_observation_can_precede_goal_but_mutation_cannot(self):
+        with tempfile.TemporaryDirectory() as folder:
+            body=Body();model=Model(decision(action=dict(name='inspect',args={})),
+                decision(action=dict(name='place',args=dict(block='oak_planks'))),
+                decision(action=dict(name='place',args=dict(block='oak_planks'))))
+            h=Harness(Path(folder)/'state.sqlite',model,body,Audit(),input_router=lambda *args:dict(mode='task',task_kind='ordinary'))
+            h.run('preplan','verification','看看现场再规划')
+            self.assertEqual([a['name'] for a in body.actions],['inspect']);self.assertFalse(body.blocks)
+
+    def test_invalid_coordinate_contract_returns_diagnostic_for_repair(self):
+        with tempfile.TemporaryDirectory() as folder:
+            body=Body();bad=spatial([dict(kind='blocks',block=block,positions=[pos(1)]) for block in ('stone','air')])
+            model=Model(decision(goal=bad),decision(status='waiting_user',reply='这个位置已有障碍，请指定另外一处。'))
+            h=Harness(Path(folder)/'state.sqlite',model,body,Audit(),input_router=lambda *args:dict(mode='task',task_kind='ordinary'))
+            h.run('repair','verification','搭个东西')
+            self.assertEqual(model.contexts[1]['harness_notice']['code'],'goal_conflicting_blocks');self.assertFalse(body.actions)
+
+
+if __name__=='__main__':unittest.main()
