@@ -69,6 +69,15 @@ def goal_problem(kind, goal):
     return None
 
 
+def normalize_transition(intent, work):
+    # A concrete primitive with a different result cannot be a correction of
+    # an unrelated durable task, even when the model calls it "steer".
+    if (intent['mode']=='steer' and work and intent['task_kind'] in ('approach','follow')
+            and goal_problem(intent['task_kind'], work)):
+        return {**intent, 'mode':'task'}
+    return intent
+
+
 def action_problem(work, action, state):
     kind = work.get('task_kind', 'ordinary')
     kinds = {c['kind'] for c in work['done_when']}

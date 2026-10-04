@@ -13,7 +13,7 @@ from .memory import Memory
 from .intent import route_input, chat_reply
 from .context import conversation_context, user_history, historical_actions
 from .work import validate_action, validate_goal, create_work, save_work, incorporate, preliminary_completion, fingerprint
-from .interaction import input_event, dialogue, bind_request, steer_work, goal_problem, action_problem, observation_key, reconcile_pickups, OBSERVATIONS
+from .interaction import input_event, dialogue, bind_request, steer_work, goal_problem, action_problem, observation_key, reconcile_pickups, normalize_transition, OBSERVATIONS
 from .recall import recall, matched_cards
 
 PROMPT = Path(__file__).with_name('harness_prompt.txt').read_text(encoding='utf-8')
@@ -188,6 +188,11 @@ class Harness(Engine):
                              'pending_work': work, 'memory_candidates': recall(m, text)}
                 intent=(self.input_router(text, old, annotations) if self.input_router else
                         route_input(self.model, text, old, annotations, situation=situation))
+                proposed_intent = intent
+                intent = normalize_transition(intent, work)
+                if proposed_intent != intent:
+                    self.audit.write('lifecycle.jsonl', {'event':'input_transition_normalized','event_id':event_id,
+                        'proposed':proposed_intent,'applied':intent,'reason':'primitive_has_distinct_completion_contract'})
                 self.audit.write('lifecycle.jsonl',{'event':'input_routed','event_id':event_id,'mode':intent['mode'],'task_kind':intent['task_kind']})
                 m.append('reflection',{'type':'input_route','event_id':event_id,'route':intent},[source])
                 if epoch != self._epoch:

@@ -59,6 +59,13 @@ class InteractionTests(unittest.TestCase):
         try: self.assertTrue(any(r['body'].get('type') == 'suspended_task' for r in m.library.rows('project')))
         finally: m.close()
 
+    def test_incompatible_primitive_steering_establishes_new_goal(self):
+        old=self.seed()
+        near={'title':'走近玩家','steps':['走近'],'done_when':[{'kind':'near_owner'}]}
+        model=Model(decision(goal=near,action={'name':'approach','args':{}}))
+        Harness(self.path,model,self.body,self.audit,input_router=lambda *a:{'mode':'steer','task_kind':'approach'}).run('come','verification','过来一下')
+        self.assertEqual(self.saved()['status'],'completed');self.assertNotEqual(self.saved()['task_id'],old['task_id'])
+
     def test_pickup_contract_cannot_be_inventory_gain(self):
         bad = pickup_goal(); bad['done_when'] = [{'kind': 'gained', 'item': 'oak_log', 'count': 8}]
         model = Model(decision(goal=bad, action={'name': 'collect', 'args': {'block': 'oak_log', 'count': 8}}), decision(goal=bad))

@@ -18,7 +18,7 @@ from .interaction_scene import InteractionScene
 from .verification_body import SceneBody
 from .test_harness import goal
 
-EVIDENCE=ROOT/'evidence/kernel_interaction_v3'
+EVIDENCE=ROOT/'evidence/kernel_interaction_v4'
 OWNER=ROOT/'runs/kernel_v1/owner/state.sqlite'
 
 
@@ -27,7 +27,7 @@ def sha(path): return hashlib.sha256(path.read_bytes()).hexdigest()
 
 def manifest():
     files=[p for p in (ROOT/'companion').iterdir() if p.suffix in ('.py','.mjs','.txt','.ps1')]
-    files += [EVIDENCE/'CHECKLIST.md',ROOT/'evidence/kernel_interaction_v2/CHECKLIST.md',ROOT/'evidence/kernel_interaction_v1/NEXT_ACCEPTANCE.md']
+    files += [EVIDENCE/'CHECKLIST.md',ROOT/'evidence/kernel_interaction_v3/CHECKLIST.md',ROOT/'evidence/kernel_interaction_v2/CHECKLIST.md',ROOT/'evidence/kernel_interaction_v1/NEXT_ACCEPTANCE.md']
     return {p.relative_to(ROOT).as_posix():sha(p) for p in sorted(files)}
 
 
@@ -42,12 +42,12 @@ def main():
     freeze=EVIDENCE/'FREEZE.json'
     if args.freeze:
         with freeze.open('x',encoding='utf-8') as f:
-            json.dump({'created_utc':datetime.now(timezone.utc).isoformat(),'base_commit':'aa419d9',
+            json.dump({'created_utc':datetime.now(timezone.utc).isoformat(),'base_commit':'10292e2',
                        'sha256':manifest()},f,indent=2);f.write('\n')
         print(json.dumps({'frozen':len(manifest())}));return 0
     frozen=json.loads(freeze.read_text(encoding='utf-8'))['sha256']
     if manifest()!=frozen:raise RuntimeError('source_changed')
-    base=ROOT/'runs/kernel_interaction_v3';base.mkdir(parents=True,exist_ok=True)
+    base=ROOT/'runs/kernel_interaction_v4';base.mkdir(parents=True,exist_ok=True)
     with (base/'attempt.claim').open('x',encoding='utf-8') as f:f.write(str(time.time_ns()))
     folder=base/str(time.time_ns());folder.mkdir()
     owner_before=sha(OWNER);key=read_key();audit=AuditLog(folder,(key,))
@@ -72,7 +72,8 @@ def main():
     def add(identity,passed,**data):
         value={'case':identity,'mechanical_passed':bool(passed),**data};result['cases'].append(value)
         audit.write('case_results.jsonl',value)
-        if not passed:raise RuntimeError(identity+'_failed')
+        # Keep independent scenario outcomes in one frozen attempt; a failure
+        # remains a failure and does not silently prevent observing other cases.
     def queue(engine,event,text):
         thread=threading.Thread(target=engine.run,args=(event,'verification',text),daemon=True);threads.append(thread);thread.start()
         end=time.monotonic()+5
@@ -153,7 +154,7 @@ def main():
             passed=(not names and (work is None or work['goal_status'] in ('waiting_user','blocked'))) if variant=='masked' else (
                 'recover_inventory' in names and work and work['goal_status']=='completed')
             add('S6-'+variant,passed,reply=answer,actions=names,work=work)
-        result['passed']=True
+        result['passed']=all(c['mechanical_passed'] for c in result['cases'])
     except Exception as error:
         result.update(error_type=type(error).__name__,error_code=str(error) if isinstance(error,RuntimeError) else None)
     finally:
