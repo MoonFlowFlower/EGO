@@ -11,7 +11,8 @@ from p7.proxy import AuditLog, BudgetLedger, DEFAULT_BUDGET
 from p7.routing_v2 import RoutedTransportV2
 from .airi import AiriBridge
 from .body import Body, ROOT
-from .engine import Engine, STOP
+from .engine import STOP
+from .harness import Harness
 from .model import Model
 from .memory import Memory
 from .server import KernelServer
@@ -50,7 +51,7 @@ class Runtime:
             self.transport.set_audit(self.audit)
             self.audit.write('preflight.jsonl',{'route':self.transport.preflight(),'budget_start':ledger.total(),'batch_limit':limit})
             self.body=Body(self.audit,self.on_minecraft)
-            self.engine=Engine(self.path,Model(self.transport,self.audit),self.body,self.audit)
+            self.engine=Harness(self.path,Model(self.transport,self.audit),self.body,self.audit)
             self.server=KernelServer(self.engine,self.audit)
             self.server.start()
             self.bridge=AiriBridge(self.audit)
@@ -107,7 +108,7 @@ class Runtime:
     def status(self):
         if self._closed.is_set():return '本次运行已结束'
         state=self.body.snapshot()
-        return f"MC {'未连接' if state.get('offline') else '已连接'} · AIRI {'已连接' if self.bridge.ready else '等待连接'} · 剩余 {max(0,int(self.deadline-time.monotonic()))} 秒 · 模型调用 {self.engine.model.calls} 次"
+        return f"MC {'未连接' if state.get('offline') else '已连接'} · AIRI {'已连接' if self.bridge.ready else '等待连接'} · 剩余 {max(0,int(self.deadline-time.monotonic()))} 秒 · 模型调用 {self.engine.model.calls} 次 · {self.engine.progress}"
 
     def close(self,reason='owner_closed'):
         with self._close_lock:

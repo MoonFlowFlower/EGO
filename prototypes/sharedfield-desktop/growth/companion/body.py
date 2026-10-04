@@ -65,6 +65,8 @@ class Body:
             elif kind == 'receipt':
                 with self._lock:
                     future = self._pending.pop(row['id'], None)
+                    if isinstance(row.get('receipt', {}).get('observed'), dict):
+                        self._state, self._at = row['receipt']['observed'], time.monotonic()
                 if future and not future.done():
                     future.set_result(row['receipt'])
             elif kind == 'owner_input':

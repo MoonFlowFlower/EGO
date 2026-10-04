@@ -1,0 +1,94 @@
+[
+  {
+    "path": "companion/harness.py",
+    "sha256": "ea3116a89ddda8ff1aaee3fd75074dee03e49df60da5b9222ea345e107d342ef"
+  },
+  {
+    "path": "companion/work.py",
+    "sha256": "81e17769a0279476db1cd787cb342a275844554ef796dce33d803c660d894a8c"
+  },
+  {
+    "path": "companion/harness_prompt.txt",
+    "sha256": "4fa6c13f1f115a738e32610c81c61c25d27cf7677c38f95383bc1e6604bdbab4"
+  },
+  {
+    "path": "companion/inventory.mjs",
+    "sha256": "fe3fb4bebef610ce6df16a64cc0674f7ab3f7135479c07dce7452344cc0f0648"
+  },
+  {
+    "path": "companion/spatial.mjs",
+    "sha256": "fc208d85d97ff9604db3a77806a217cd02cfe6c8b08d92cdb1136e7f91fb9a17"
+  },
+  {
+    "path": "companion/body.mjs",
+    "sha256": "35f611b8464bd09ab0ed7d71f4edbe440f1353af8afc9d1e1f35f4e54b224cd2"
+  },
+  {
+    "path": "companion/body.py",
+    "sha256": "e44baa96cbcaca2c35b1c1d7a69826eb310eeebf15f1da1b4d2a5037e0002c94"
+  },
+  {
+    "path": "companion/runtime.py",
+    "sha256": "b00f4b0cc285ea0d36b61eb3eb363318ee734727db2c1dabe71b6ed180c90023"
+  },
+  {
+    "path": "companion/model.py",
+    "sha256": "e4d239f3c46f5981a79b7394a89e28db0cf0d4b8fe590ef80df26559a5703bfd"
+  },
+  {
+    "path": "companion/engine.py",
+    "sha256": "7f29309eefaa8b3de5168916fb1346572f8058651e6d01c87d0d9fecc5493c5d"
+  },
+  {
+    "path": "companion/memory.py",
+    "sha256": "483b8e5431cb937d0d6c2b9ccf9a2f1272d307342df9575c3d5403ee14c4ca1f"
+  },
+  {
+    "path": "companion/server.py",
+    "sha256": "f792878f0922441db26365fe214565f20172cae9945b1ec52457fa22a75dbdf2"
+  },
+  {
+    "path": "companion/test_harness.py",
+    "sha256": "bdd79545d21394a0f4201b5f8a557ab781aac51bcd19482ae53eb1d95141e486"
+  },
+  {
+    "path": "companion/test_inventory.mjs",
+    "sha256": "fd529b13302fdb49c7e02f58570d1a02dfc462ac5dae1dcfb4c407d28a3179db"
+  },
+  {
+    "path": "companion/test_spatial.mjs",
+    "sha256": "ae739ee7fb4bbb843f0e260d7f93354b96db8ba12339b76b1ca278cd7146a667"
+  },
+  {
+    "path": "companion/test_kernel.py",
+    "sha256": "66affcaeb7a64342b89e2a2c3a333f5cc2faf499fa6b2a7b33a9517a7d785c8b"
+  },
+  {
+    "path": "companion/verify_harness.py",
+    "sha256": "b5dcee456ee6a4c6a39d4c2071610afe43e9f688472838fa380181abaa9ce895"
+  },
+  {
+    "path": "evidence/kernel_harness_v1/CHECKLIST.md",
+    "sha256": "c715c80aa9b796c313273c17c3fae0fafbfd7b75b74dcabae2dd1b1aaf1729fa"
+  },
+  {
+    "path": "companion/trees.mjs",
+    "sha256": "802596193b6452342b854202ccfc54e7245a4f1df4d065644ebd00ef44cda5f1"
+  },
+  {
+    "path": "companion/test_trees.mjs",
+    "sha256": "b46b1826e0b650f6fd586848106e1610f164c893e95bd887296b4b9940b27ba7"
+  },
+  {
+    "path": "companion/prepare_harness_wood.py",
+    "sha256": "073309e06b08c0c7b95c4a1ddef06453bc7f9de54b9c19ddf231be26c4bdb31d"
+  },
+  {
+    "path": "companion/verify_harness_v2.py",
+    "sha256": "e5314a9d04a29131e3549d290174d21a53652385ca935fca451a908c953fc993"
+  },
+  {
+    "path": "evidence/kernel_harness_v2/CHECKLIST.md",
+    "sha256": "720cd3af4067403c9ea4b350f9a3428a3954bc4d5375513d06a6afb84bcdd78a"
+  }
+]

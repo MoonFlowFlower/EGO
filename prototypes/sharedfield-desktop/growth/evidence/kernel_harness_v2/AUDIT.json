@@ -1,0 +1,131 @@
+{
+  "main_run": "1791077453372095500",
+  "passed": true,
+  "model_calls": 5,
+  "duration_s": 5.98399999999674,
+  "cost_usd": 0.0017175300000000782,
+  "placements": 2,
+  "body_exit_code": 0,
+  "frozen_source_checks": [
+    {
+      "path": "companion/harness.py",
+      "matches": true
+    },
+    {
+      "path": "companion/work.py",
+      "matches": true
+    },
+    {
+      "path": "companion/harness_prompt.txt",
+      "matches": true
+    },
+    {
+      "path": "companion/inventory.mjs",
+      "matches": true
+    },
+    {
+      "path": "companion/spatial.mjs",
+      "matches": true
+    },
+    {
+      "path": "companion/body.mjs",
+      "matches": true
+    },
+    {
+      "path": "companion/body.py",
+      "matches": true
+    },
+    {
+      "path": "companion/runtime.py",
+      "matches": true
+    },
+    {
+      "path": "companion/model.py",
+      "matches": true
+    },
+    {
+      "path": "companion/engine.py",
+      "matches": true
+    },
+    {
+      "path": "companion/memory.py",
+      "matches": true
+    },
+    {
+      "path": "companion/server.py",
+      "matches": true
+    },
+    {
+      "path": "companion/test_harness.py",
+      "matches": true
+    },
+    {
+      "path": "companion/test_inventory.mjs",
+      "matches": true
+    },
+    {
+      "path": "companion/test_spatial.mjs",
+      "matches": true
+    },
+    {
+      "path": "companion/test_kernel.py",
+      "matches": true
+    },
+    {
+      "path": "companion/verify_harness.py",
+      "matches": true
+    },
+    {
+      "path": "evidence/kernel_harness_v1/CHECKLIST.md",
+      "matches": true
+    },
+    {
+      "path": "companion/trees.mjs",
+      "matches": true
+    },
+    {
+      "path": "companion/test_trees.mjs",
+      "matches": true
+    },
+    {
+      "path": "companion/prepare_harness_wood.py",
+      "matches": true
+    },
+    {
+      "path": "companion/verify_harness_v2.py",
+      "matches": true
+    },
+    {
+      "path": "evidence/kernel_harness_v2/CHECKLIST.md",
+      "matches": true
+    },
+    {
+      "path": "evidence/kernel_harness_v2/PREPARATION_REVISION.md",
+      "matches": true
+    }
+  ],
+  "body_state_samples": 8,
+  "all_generated_code_disabled": true,
+  "all_body_models_absent": true,
+  "v1_failure_preserved": true,
+  "budget_total_including_historical_unknown_reserve": 1.26638476359,
+  "claim_limits": [
+    "five real decisions only",
+    "inventory empty on recovery",
+    "no full house or learning claim"
+  ],
+  "credential_scan": {
+    "files": 28,
+    "cloud_credential_matches": 0
+  },
+  "formal_session": {
+    "id": "1791077509047494400",
+    "started_local": "2026-10-03 20:31:49 America/Winnipeg",
+    "deadline_local": "2026-10-03 21:01:49 America/Winnipeg",
+    "owner_database_preserved": true,
+    "minecraft_online": true,
+    "airi_bridge_connected": true,
+    "airi_chat_token_updated": false,
+    "blocker": "transparent_window_automation_cannot_get_foreground_pid"
+  }
+}

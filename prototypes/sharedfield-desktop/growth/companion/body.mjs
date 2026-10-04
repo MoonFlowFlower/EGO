@@ -7,6 +7,9 @@ import {pathToFileURL} from 'node:url';
 import repair1211 from '../p7/protocol_1211.cjs';
 import {searchBlocks} from './search.mjs';
 import {placeNextBlock} from './placement.mjs';
+import {recoverInventory,craftChecked} from './inventory.mjs';
+import {inspectArea,placeAt,verifyBlocks,validPosition} from './spatial.mjs';
+import {collectTree,approachOwner} from './trees.mjs';
 
 const lines = readline.createInterface({input:process.stdin});
 const input = lines[Symbol.asyncIterator]();
@@ -44,7 +47,7 @@ function snapshot() {
   if(!online||!bot.entity)return {offline:true,model_client_initialized:false,generated_code_enabled:false};
   const owner=bot.players.Moonlight?.entity;
   return {offline:false,position:bot.entity.position,health:bot.health,hunger:bot.food,
-    inventory:counts(bot.inventory.items()),crafting_grid:counts(bot.inventory.slots.slice(0,5)),
+    inventory:counts(bot.inventory.items()),crafting_grid:counts(bot.inventory.slots.slice(1,5)),
     cursor:bot.inventory.selectedItem?{name:bot.inventory.selectedItem.name,count:bot.inventory.selectedItem.count}:null,
     window:bot.currentWindow?{type:bot.currentWindow.type,cursor:bot.currentWindow.selectedItem?.name||null}:null,
     owner:owner?{name:'Moonlight',position:owner.position,distance:owner.position.distanceTo(bot.entity.position),height_difference:Math.abs(owner.position.y-bot.entity.position.y)}:null,
@@ -59,12 +62,15 @@ function interrupt() {
   if(current==='follow')current=null;
 }
 function allowed(action) {
-  const spec={inspect:[],approach:[],follow:[],stop:[],search:['block','range'],go_to_block:['block','range'],collect:['block','count'],craft:['item','count'],give:['item','count'],place:['block']};
+  const spec={inspect:[],approach:[],follow:[],stop:[],search:['block','range'],go_to_block:['block','range'],collect:['block','count'],collect_tree:['block','range'],craft:['item','count'],give:['item','count'],place:['block'],recover_inventory:[],inspect_area:['radius'],place_at:['block','position'],verify_blocks:['targets']};
   if(!action||!Object.hasOwn(spec,action.name)||!action.args||Object.keys(action).sort().join()!=['args','name'].join()||Object.keys(action.args).sort().join()!=spec[action.name].slice().sort().join())throw new Error('action_not_allowed');
   for(const [k,v] of Object.entries(action.args)) {
     if(['item','block'].includes(k)&&!(typeof v==='string'&&/^[a-z][a-z0-9_]{0,63}$/.test(v)))throw new Error('invalid_identifier');
     if(k==='count'&&!(Number.isInteger(v)&&v>=1&&v<=(action.name==='give'?16:8)))throw new Error('invalid_count');
     if(k==='range'&&!(Number.isInteger(v)&&v>=8&&v<=128))throw new Error('invalid_range');
+    if(k==='radius'&&!(Number.isInteger(v)&&v>=1&&v<=4))throw new Error('invalid_radius');
+    if(k==='position'&&!validPosition(v))throw new Error('invalid_position');
+    if(k==='targets'&&!(Array.isArray(v)&&v.length>0&&v.length<=128&&v.every(t=>t&&Object.keys(t).sort().join()==='block,position'&&typeof t.block==='string'&&/^[a-z][a-z0-9_]{0,63}$/.test(t.block)&&validPosition(t.position))))throw new Error('invalid_targets');
   }
 }
 async function run(message) {
@@ -76,6 +82,11 @@ async function run(message) {
     interrupt();await sleep(150);
     emit({kind:'receipt',id,receipt:{verified:!Object.values(bot.controlState).some(Boolean)&&!bot.targetDigBlock,status:'stopped',observed:snapshot()}});return;
   }
+  if(['inspect','inspect_area','verify_blocks'].includes(action.name)) {
+    const receipt=action.name==='inspect'?{verified:true,status:'observed'}:
+      action.name==='inspect_area'?inspectArea(bot,action.args.radius):verifyBlocks(bot,action.args.targets);
+    emit({kind:'receipt',id,receipt:{...receipt,observed:snapshot()}});return;
+  }
   interrupt();bot.interrupt_code=false;
   const epoch=generation;
   current=action.name;
@@ -83,12 +94,14 @@ async function run(message) {
   let timer,timedOut=false,receipt={verified:false,status:'not_demonstrated'};
   try {
     const execute=async()=>{
-      if(name==='inspect')return {verified:true,status:'observed'};
+      if(name==='recover_inventory')return recoverInventory(bot);
+      if(name==='collect_tree') {
+        if(args.block!=='wood'&&!mc.WOOD_TYPES.some(t=>`${t}_log`===args.block))return {verified:false,status:'unknown_tree_type'};
+        return collectTree(bot,{...mc,WOOD_TYPES:args.block==='wood'?mc.WOOD_TYPES:[args.block.slice(0,-4)]},Movements,goals,args.range);
+      }
+      if(name==='place_at')return placeAt(bot,mc,skills,args.block,args.position);
       if(name==='approach') {
-        if(!bot.players.Moonlight?.entity)return {verified:false,status:'owner_not_visible'};
-        await skills.goToPlayer(bot,'Moonlight',1.5);
-        const state=snapshot();
-        return {verified:!!state.owner&&state.owner.distance<=3.25&&state.owner.height_difference<=1.25,status:'approach_checked'};
+        return approachOwner(bot,Movements,goals);
       }
       if(name==='follow') {
         const owner=bot.players.Moonlight?.entity;
@@ -114,12 +127,7 @@ async function run(message) {
         return {verified:gain>=args.count,status:'collection_inventory_checked',item,gained:gain};
       }
       if(name==='craft') {
-        if(Object.keys(before.crafting_grid).length||before.cursor||before.window)return {verified:false,status:'crafting_grid_or_cursor_not_clear'};
-        if(mc.getItemId(args.item)===null)return {verified:false,status:'unknown_item'};
-        await skills.craftRecipe(bot,args.item,args.count);
-        const gain=(snapshot().inventory[args.item]||0)-(before.inventory[args.item]||0);
-        const recipe=mc.getItemCraftingRecipes(args.item)?.[0];
-        return {verified:!!recipe&&gain>=args.count*recipe[1].craftedCount,status:'craft_inventory_checked',gained:gain};
+        return craftChecked(bot,mc,skills,args.item,args.count);
       }
       if(name==='give') {
         if(!bot.players.Moonlight?.entity)return {verified:false,status:'owner_not_visible'};
