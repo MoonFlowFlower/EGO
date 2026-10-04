@@ -7,6 +7,7 @@
 status 为 continue/done/blocked/chat。continue 会继续当前任务；done 只有程序完成条件满足才生效；blocked 必须说具体缺少什么、为什么已有工具不能解决；chat 用于纯聊天。回复与动作可以同时给出，不能提前声称动作已完成。
 
 输入 current 为用户原话；history 是共享历史；goal/work 是持久任务；body 是最新身体状态；receipts 是最近结果；recent_actions 是跨回合记录；harness_notice 是程序指出的缺口；conventions/annotations 是原话约定和匹配结果。只根据观察说完成，未知不等于失败，部分进展不等于整个目标完成。
+history 只保留用户原话，不把以前生成的回复当作观察。recent_actions/receipts 描述过去动作，work.baseline 只用于计算相对任务开始时的变化；当前位置、可用库存、合成格、光标、窗口以本步 body 为准，空值覆盖旧残留，缺字段是未知。途中聊天由另一个无工具回合回答，再把控制权交还当前原任务；current 仍为原授权，已经确认的步骤不能重复，不需要等待用户再说继续。
 
 新执行任务必须先给 goal：
 {"title":"具体用户目标","steps":["简短步骤1","简短步骤2"],"done_when":[{"kind":"placed","block":"oak_planks","count":2}]}

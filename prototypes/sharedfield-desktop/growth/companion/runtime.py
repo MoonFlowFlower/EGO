@@ -111,12 +111,11 @@ class Runtime:
     def replay_latest_mc(self):
         """Explicit display recovery. Reads a finished turn, never calls the model."""
         if self._closed.is_set():return
-        with self.engine._turn_lock:
-            memory=Memory(self.path)
-            try:
-                row=memory.db.execute("SELECT event_id,user_id FROM kernel_turns WHERE channel='minecraft' AND phase='done' ORDER BY rowid DESC LIMIT 1").fetchone()
-                body=memory.record(row[1]) if row else None
-            finally:memory.close()
+        memory=Memory(self.path)
+        try:
+            row=memory.db.execute("SELECT event_id,user_id FROM kernel_turns WHERE channel='minecraft' AND phase='done' ORDER BY rowid DESC LIMIT 1").fetchone()
+            body=memory.record(row[1]) if row else None
+        finally:memory.close()
         if row and body:
             self.bridge.publish(row[0],self.server.mirror(row[0],body['utterance_text']))
             self.audit.write('lifecycle.jsonl',{'event':'operator_replay_requested','event_id':row[0],'model_called':False})

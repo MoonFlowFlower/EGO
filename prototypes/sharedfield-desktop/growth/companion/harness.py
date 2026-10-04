@@ -11,6 +11,7 @@ from p7.proxy import ProxyError
 from .engine import Engine, STOP, confirmed_progress, completed_negative_search
 from .memory import Memory
 from .intent import route_input, chat_reply
+from .context import conversation_context, user_history, historical_actions
 from .work import validate_action, validate_goal, create_work, save_work, incorporate, preliminary_completion, fingerprint
 
 PROMPT = Path(__file__).with_name('harness_prompt.txt').read_text(encoding='utf-8')
@@ -30,7 +31,9 @@ class Harness(Engine):
     def __init__(self, path, model, body, audit, *, max_decisions=64, max_seconds=900, action_policy=None, input_router=None):
         super().__init__(path, model, body, audit, max_decisions=max_decisions, max_seconds=max_seconds)
         self._waiting_lock = threading.Lock()
+        self._waiting_changed = threading.Condition(self._waiting_lock)
         self._waiting = 0
+        self._execution_generation = 0
         self.progress = '等待输入'
         self.action_policy = action_policy
         self.input_router = input_router or (lambda text, pending, annotations: route_input(self.model,text,pending,annotations))
@@ -54,6 +57,7 @@ class Harness(Engine):
         with self._turn_lock:
             with self._waiting_lock:
                 self._waiting -= 1
+                self._waiting_changed.notify_all()
             return self._work(event_id, channel, text, emit, epoch, stop_receipt)
 
     def _work(self, event_id, channel, text, emit, epoch, stop_receipt):
@@ -92,6 +96,51 @@ class Harness(Engine):
                     save_work(m, work, parents)
                 self.progress = status
 
+            def yield_to_inputs(generation):
+                """Suspend this stack, drain inputs, then revalidate its authority.
+
+                The original loop keeps its deadline, counters, receipts and seen
+                failures. No synthetic user message or persisted replay token exists.
+                """
+                nonlocal work
+                with self._waiting_lock:
+                    if not self._waiting:
+                        return True
+                previous_status = work['status'] if work else None
+                previous_problem = work.get('last_problem') if work else None
+                persist('yielded', 'new_owner_input')
+                self.audit.write('lifecycle.jsonl', {'event': 'task_yielded', 'event_id': event_id,
+                                                    'task_id': work['task_id'] if work else None})
+                while True:
+                    self._turn_lock.release()
+                    try:
+                        with self._waiting_changed:
+                            self._waiting_changed.wait_for(lambda: self._waiting == 0)
+                    finally:
+                        self._turn_lock.acquire()
+                    with self._waiting_lock:
+                        if not self._waiting:
+                            break
+                current = m.goal()
+                current_work = current.get('work') if current else None
+                same_task = bool(work and current_work and current_work['task_id'] == work['task_id'])
+                if same_task:
+                    work = copy.deepcopy(current_work)
+                if epoch != self._epoch:
+                    if same_task and work['status'] == 'yielded':
+                        persist('paused_by_owner', 'owner_stop')
+                    say(cancelled())
+                    return False
+                if generation != self._execution_generation:
+                    return False
+                if work and (not same_task or work['status'] != 'yielded'):
+                    return False
+                if work:
+                    persist(previous_status, previous_problem)
+                self.audit.write('lifecycle.jsonl', {'event': 'task_resumed_after_conversation', 'event_id': event_id,
+                                                    'task_id': work['task_id'] if work else None})
+                return True
+
             def record(action, receipt, step):
                 receipts.append(receipt)
                 identity = m.append('experience', {'type': 'action_receipt', 'event_id': event_id, 'task_id': work['task_id'] if work else None,
@@ -129,17 +178,23 @@ class Harness(Engine):
                 if epoch != self._epoch:
                     say(cancelled())
                     reply='\n'.join(spoken);m.finish(event_id,reply,parents);return reply
+                if intent['mode'] not in ('chat', 'status') or intent['task_kind'] == 'structure':
+                    # A new execution/memory request takes ownership. Pure dialogue
+                    # is the only input that can return control to a suspended turn.
+                    self._execution_generation += 1
+                    if (intent['mode'] == 'memory' or intent['task_kind'] == 'structure') and work and work['status'] == 'yielded':
+                        persist('interrupted', 'input_requires_explicit_resume')
                 if intent['mode'] in ('chat','status') or intent['task_kind']=='structure':
                     # This path has no tool schema and cannot create/replace a goal.
-                    answer=chat_reply(self.model,{'current_user':text,'mode':intent['mode'],'body':self.body.snapshot(),
-                        'goal':old,'history':m.context(),'recent_actions':m.recent_actions(),
-                        'capability_notice':'完整建房缺少可靠的布局验收；先保留原待办，不把放置数量当作房屋完成。' if intent['task_kind']=='structure' else None})
+                    answer=chat_reply(self.model, conversation_context(m, text, intent['mode'], self.body.snapshot(),
+                        capability_notice='完整建房缺少可靠的布局验收；先保留原待办，不把放置数量当作房屋完成。' if intent['task_kind']=='structure' else None))
                     if epoch != self._epoch:answer=cancelled()
                     say(answer);self.progress='等待输入' if not old else '待办保留 · '+old['goal_status']
                     reply='\n'.join(spoken);m.finish(event_id,reply,parents)
                     self.audit.write('lifecycle.jsonl',{'event':'conversation_done','event_id':event_id,'body_actions':0,'goal_changed':False})
                     return reply
                 execution_granted = intent['mode'] in ('task','resume')
+                generation = self._execution_generation
                 started = time.monotonic()
                 seen, failures, no_action, premature = {}, 0, 0, 0
                 notice = None
@@ -147,20 +202,30 @@ class Harness(Engine):
                 for step in range(self.max_decisions):
                     if epoch != self._epoch:
                         persist('paused_by_owner', 'owner_stop'); say(cancelled()); break
-                    with self._waiting_lock:
-                        waiting = self._waiting
-                    if waiting:
-                        persist('yielded', 'new_owner_input'); say('收到新消息，我先按你的新输入调整；当前进度已保存。'); break
+                    if not yield_to_inputs(generation):
+                        break
                     if time.monotonic() - started >= self.max_seconds:
                         persist('paused_limit', 'task_deadline'); say('这项任务到时间上限了，进度和具体剩余工作已保存。'); break
                     state = self.body.snapshot()
-                    context = {'current': {'event_id': event_id, 'channel': channel, 'user': text}, 'history': m.context(),
+                    context = {'current': {'event_id': event_id, 'channel': channel, 'user': text}, 'history': user_history(m),
                                'goal': m.goal(), 'work': work, 'conventions': m.library.cards(), 'annotations': annotations,
-                               'recent_actions': m.recent_actions(), 'body': state, 'receipts': receipts[-6:], 'harness_notice': notice,
+                               'recent_actions': historical_actions(m), 'body': state,
+                               'receipts': [{k:v for k,v in r.items() if k != 'observed'} for r in receipts[-6:]], 'harness_notice': notice,
                                'remaining_decisions': self.max_decisions-step}
                     decision = self.model.decide(PROMPT, context)
                     if epoch != self._epoch:
                         persist('paused_by_owner', 'late_decision_discarded'); say(cancelled()); break
+                    with self._waiting_lock:
+                        waiting = self._waiting
+                    if waiting:
+                        self.audit.write('lifecycle.jsonl', {'event': 'decision_deferred_for_input', 'event_id': event_id, 'step': step})
+                        if not yield_to_inputs(generation):
+                            break
+                        # Count the spent decision; do not execute it against a
+                        # snapshot taken before the intervening conversation.
+                        continue
+                    if time.monotonic() - started >= self.max_seconds:
+                        persist('paused_limit', 'task_deadline'); say('这项任务到时间上限了，进度和具体剩余工作已保存。'); break
                     required = {'reply', 'goal', 'convention', 'forget_card', 'action', 'status'}
                     if not isinstance(decision, dict) or set(decision) != required or decision['status'] not in ('continue', 'done', 'blocked', 'chat'):
                         raise ValueError('harness_decision_schema')
@@ -270,11 +335,21 @@ class Harness(Engine):
                 else:
                     persist('paused_limit', 'task_decision_cap'); say('这项任务达到决定次数上限，进度与剩余工作已保存。')
             reply = '\n'.join(spoken) or '本轮进度已保存。'
+            # A queued forget request may have deleted the suspended turn's
+            # source/dependencies. Do not recreate its removed derived text.
+            if not m.record(source) or any(not m.record(p) for p in parents):
+                reply, parents = '这项任务的来源已删除，执行已结束。', []
+            else:
+                parents = [p for p in parents if m.record(p)]
             m.finish(event_id, reply, parents)
             self.audit.write('lifecycle.jsonl', {'event': 'turn_done', 'event_id': event_id, 'channel': channel,
                                                'receipt_count': len(receipts), 'task_status': work['status'] if work else None})
             return reply
         except Exception as error:
+            if not execution_granted:
+                self._execution_generation += 1
+                if work and work['status'] == 'yielded':
+                    persist('interrupted', 'input_requires_explicit_resume')
             if execution_granted and epoch==self._epoch:self.body.stop()
             problem = error.code if isinstance(error, ProxyError) else type(error).__name__
             if execution_granted and work and parents:

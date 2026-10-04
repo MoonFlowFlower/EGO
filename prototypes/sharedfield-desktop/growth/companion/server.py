@@ -66,21 +66,21 @@ class KernelServer:
     def mirror(self,event_id,text):
         # A readable timestamp distinguishes repeated identical MC inputs.
         rendered=f'{MIRROR_PREFIX}（{datetime.now().isoformat(sep=" ",timespec="microseconds")}）：{text}'
-        with self.engine._turn_lock:
-            m=Memory(self.engine.path)
-            try:m.register_mirror(digest(rendered),event_id)
-            finally:m.close()
+        # Display/cache operations use their own short SQLite transactions;
+        # they must not wait for a resumed task to finish its model/action loop.
+        m=Memory(self.engine.path)
+        try:m.register_mirror(digest(rendered),event_id)
+        finally:m.close()
         return rendered
 
     def respond(self,request,emit):
         text,identity=last_input(request)
         if text.startswith(MIRROR_PREFIX):
-            with self.engine._turn_lock:
-                m=Memory(self.engine.path)
-                try:
-                    event=m.mirror(digest(text))
-                    result=m.cached(event) if event else '这条 MC 回显没有对应的内核记录，我没有执行新动作。'
-                finally:m.close()
+            m=Memory(self.engine.path)
+            try:
+                event=m.mirror(digest(text))
+                result=m.cached(event) if event else '这条 MC 回显没有对应的内核记录，我没有执行新动作。'
+            finally:m.close()
             self.audit.write('lifecycle.jsonl',{'event':'airi_replay','event_id':event,'model_called':False})
             emit(result);return result
         return self.engine.run(identity,'airi',text,emit)
