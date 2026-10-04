@@ -18,7 +18,7 @@ from .interaction_scene import InteractionScene
 from .verification_body import SceneBody
 from .test_harness import goal
 
-EVIDENCE=ROOT/'evidence/kernel_interaction_v5'
+EVIDENCE=ROOT/'evidence/kernel_interaction_v6'
 OWNER=ROOT/'runs/kernel_v1/owner/state.sqlite'
 
 
@@ -42,12 +42,12 @@ def main():
     freeze=EVIDENCE/'FREEZE.json'
     if args.freeze:
         with freeze.open('x',encoding='utf-8') as f:
-            json.dump({'created_utc':datetime.now(timezone.utc).isoformat(),'base_commit':'f035aea',
+            json.dump({'created_utc':datetime.now(timezone.utc).isoformat(),'base_commit':__import__('subprocess').check_output(['git','rev-parse','HEAD'],text=True).strip(),
                        'sha256':manifest()},f,indent=2);f.write('\n')
         print(json.dumps({'frozen':len(manifest())}));return 0
     frozen=json.loads(freeze.read_text(encoding='utf-8'))['sha256']
     if manifest()!=frozen:raise RuntimeError('source_changed')
-    base=ROOT/'runs/kernel_interaction_v5';base.mkdir(parents=True,exist_ok=True)
+    base=ROOT/'runs/kernel_interaction_v6';base.mkdir(parents=True,exist_ok=True)
     with (base/'attempt.claim').open('x',encoding='utf-8') as f:f.write(str(time.time_ns()))
     folder=base/str(time.time_ns());folder.mkdir()
     owner_before=sha(OWNER);key=read_key();audit=AuditLog(folder,(key,))
@@ -93,6 +93,8 @@ def main():
         body=InteractionScene();path,engine=case('s1',body)
         m=Memory(path);source,_=m.begin('old','verification','先铺8块木板')
         old=create_work(goal(8),body.snapshot(),source);old['status']='blocked';save_work(m,old,[source]);m.finish('old','施工受阻。',[source]);m.close()
+        greeting=engine.run('g1','verification','在吗')
+        add('G1',not body.actions and saved(path)['goal_status']=='blocked',reply=greeting)
         answer=engine.run('s1','verification','过来一下')
         work=saved(path)['work'];names=[a['name'] for a in body.actions]
         add('S1',work['task_id']!=old['task_id'] and work['status']=='completed' and work['done_when']==[{'kind':'near_owner'}]

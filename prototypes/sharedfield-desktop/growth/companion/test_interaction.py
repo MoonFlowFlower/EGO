@@ -149,6 +149,7 @@ class InteractionTests(unittest.TestCase):
         model = Model(decision(goal=goal(8), action=inspect), *[decision(action=inspect) for _ in range(5)])
         Harness(self.path, model, self.body, self.audit, input_router=task()).run('observe', 'verification', '观察后放8块')
         self.assertGreater(len(self.body.actions), 1); self.assertEqual(self.saved()['status'], 'waiting_user')
+        self.assertIn('请指出', self.saved()['awaiting']['question'])
         self.assertLessEqual(len(self.body.actions), 5)
         a = self.body.snapshot(); b = copy.deepcopy(a); b['owner']['position']['x'] = 100
         self.assertNotEqual(fingerprint(a), fingerprint(b))

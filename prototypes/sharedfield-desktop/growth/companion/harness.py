@@ -149,6 +149,12 @@ class Harness(Engine):
                                                     'task_id': work['task_id'] if work else None})
                 return True
 
+            def wait_for_user(question, problem):
+                if work:
+                    work['awaiting'] = {'question': question, 'event_id': event_id}
+                persist('waiting_user', problem)
+                say(question)
+
             def record(action, receipt, step):
                 receipts.append(receipt)
                 identity = m.append('experience', {'type': 'action_receipt', 'event_id': event_id, 'task_id': work['task_id'] if work else None,
@@ -342,8 +348,7 @@ class Harness(Engine):
                         record(action, {'verified': True, 'status': 'memory_candidates', **result}, step)
                         no_action += 1
                         if no_action >= 4:
-                            persist('waiting_user', 'recall_without_actionable_information')
-                            say('找到的记忆还不足以确定下一步，需要补充当前目标的信息。'); break
+                            wait_for_user('找到的记忆还不足以确定下一步，请补充这次要做的具体事情。', 'recall_without_actionable_information'); break
                         continue
                     if action is None:
                         if not work:
@@ -406,8 +411,7 @@ class Harness(Engine):
                             repeated_observations += int(observed_key in observations)
                             observations.add(observed_key)
                             if repeated_observations >= 4 or observations_without_effect >= 12:
-                                persist('waiting_user', 'observation_without_new_actionable_information')
-                                say('这些观察还没找到可用的新线索。请指出目标位置或补充你指的对象。'); break
+                                wait_for_user('这些观察还没找到可用的新线索。请指出目标位置或补充你指的对象。', 'observation_without_new_actionable_information'); break
                         else:
                             failures = 0
                             observations_without_effect = repeated_observations = 0

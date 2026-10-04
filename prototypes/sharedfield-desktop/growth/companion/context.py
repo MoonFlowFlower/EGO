@@ -40,7 +40,9 @@ def conversation_context(memory, text, mode, state, *, capability_notice=None):
     goal = None
     if saved:
         work = saved.get('work', {})
-        goal = {'record_id': saved['record_id'], 'title': saved['title'], 'status': saved['goal_status'],
+        goal = {'record_id': saved['record_id'], 'title': saved['title'],
+                'status': 'active' if saved['goal_status']=='yielded' else saved['goal_status'],
+                'continuation': 'scheduled_after_current_reply' if saved['goal_status']=='yielded' else 'requires_explicit_input',
                 'task_id': work.get('task_id'), 'source_id': work.get('source_id'),
                 'done_when': work.get('done_when'), 'steps': work.get('steps'),
                 'verified_progress': {key: copy.deepcopy(work[key]) for key in
