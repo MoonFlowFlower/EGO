@@ -18,7 +18,7 @@ from .interaction_scene import InteractionScene
 from .verification_body import SceneBody
 from .test_harness import goal
 
-EVIDENCE=ROOT/'evidence/kernel_interaction_v2'
+EVIDENCE=ROOT/'evidence/kernel_interaction_v3'
 OWNER=ROOT/'runs/kernel_v1/owner/state.sqlite'
 
 
@@ -27,7 +27,7 @@ def sha(path): return hashlib.sha256(path.read_bytes()).hexdigest()
 
 def manifest():
     files=[p for p in (ROOT/'companion').iterdir() if p.suffix in ('.py','.mjs','.txt','.ps1')]
-    files += [EVIDENCE/'CHECKLIST.md',ROOT/'evidence/kernel_interaction_v1/NEXT_ACCEPTANCE.md']
+    files += [EVIDENCE/'CHECKLIST.md',ROOT/'evidence/kernel_interaction_v2/CHECKLIST.md',ROOT/'evidence/kernel_interaction_v1/NEXT_ACCEPTANCE.md']
     return {p.relative_to(ROOT).as_posix():sha(p) for p in sorted(files)}
 
 
@@ -42,12 +42,12 @@ def main():
     freeze=EVIDENCE/'FREEZE.json'
     if args.freeze:
         with freeze.open('x',encoding='utf-8') as f:
-            json.dump({'created_utc':datetime.now(timezone.utc).isoformat(),'base_commit':'c3498ef',
+            json.dump({'created_utc':datetime.now(timezone.utc).isoformat(),'base_commit':'aa419d9',
                        'sha256':manifest()},f,indent=2);f.write('\n')
         print(json.dumps({'frozen':len(manifest())}));return 0
     frozen=json.loads(freeze.read_text(encoding='utf-8'))['sha256']
     if manifest()!=frozen:raise RuntimeError('source_changed')
-    base=ROOT/'runs/kernel_interaction_v2';base.mkdir(parents=True,exist_ok=True)
+    base=ROOT/'runs/kernel_interaction_v3';base.mkdir(parents=True,exist_ok=True)
     with (base/'attempt.claim').open('x',encoding='utf-8') as f:f.write(str(time.time_ns()))
     folder=base/str(time.time_ns());folder.mkdir()
     owner_before=sha(OWNER);key=read_key();audit=AuditLog(folder,(key,))
@@ -80,6 +80,15 @@ def main():
         if not engine._waiting:raise RuntimeError('input_not_queued')
         return thread
     try:
+        body=InteractionScene();path,engine=case('s0',body)
+        m=Memory(path);source,_=m.begin('old','verification','我丢了8个原木，你捡一下')
+        old=create_work({'title':'捡起Moonlight丢的8个原木','steps':['拾取'],
+            'done_when':[{'kind':'gained','item':'oak_log','count':8}]},body.snapshot(),source)
+        old['status']='blocked';save_work(m,old,[source]);m.finish('old','采集超时。',[source]);m.close()
+        body.state['inventory']['oak_log']=10
+        answer=engine.run('s0','verification','继续')
+        add('S0-legacy',saved(path)['goal_status']=='waiting_user' and not body.actions,reply=answer)
+
         body=InteractionScene();path,engine=case('s1',body)
         m=Memory(path);source,_=m.begin('old','verification','先铺8块木板')
         old=create_work(goal(8),body.snapshot(),source);old['status']='blocked';save_work(m,old,[source]);m.finish('old','施工受阻。',[source]);m.close()

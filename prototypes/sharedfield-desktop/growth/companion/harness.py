@@ -220,6 +220,15 @@ class Harness(Engine):
                     self.audit.write('lifecycle.jsonl',{'event':'conversation_done','event_id':event_id,'body_actions':0,'goal_changed':False})
                     return reply
                 execution_granted = intent['mode'] in ('task','resume','steer')
+                if intent['mode'] in ('resume','steer') and work and (
+                        work.get('requires_new_contract') or goal_problem(intent['task_kind'], work)):
+                    question = '旧任务的完成条件不能核对你当前要的结果。请重新说明这次要做什么、对象在哪里，我会建立对应的核对条件。'
+                    work['requires_new_contract'] = True
+                    work['awaiting'] = {'question': question, 'event_id': event_id}
+                    persist('waiting_user', 'legacy_contract_requires_reinterpretation')
+                    say(question)
+                    reply='\n'.join(spoken);m.finish(event_id,reply,parents)
+                    return reply
                 if intent['mode'] == 'task':
                     if work:
                         persist('suspended', 'new_request_has_separate_goal')

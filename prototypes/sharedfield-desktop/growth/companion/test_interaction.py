@@ -65,6 +65,15 @@ class InteractionTests(unittest.TestCase):
         Harness(self.path, model, self.body, self.audit, input_router=task('pickup')).run('pick', 'verification', '捡起8个原木')
         self.assertEqual(self.body.actions, [])
 
+    def test_legacy_inventory_only_pickup_cannot_complete_on_resume(self):
+        m=Memory(self.path);source,_=m.begin('old','verification','捡8个原木')
+        legacy=pickup_goal();legacy['done_when']=[{'kind':'gained','item':'oak_log','count':8}]
+        w=create_work(legacy,self.body.snapshot(),source);w['status']='blocked';save_work(m,w,[source]);m.close()
+        self.body.state['inventory']['oak_log']=10
+        engine=Harness(self.path,Model(),self.body,self.audit,input_router=lambda *a:{'mode':'resume','task_kind':'pickup'})
+        engine.run('resume','verification','继续')
+        self.assertEqual(self.saved()['status'],'waiting_user');self.assertEqual(self.body.actions,[])
+
     def test_bound_pickup_requires_events_and_inventory(self):
         a = {'name': 'pickup_items', 'args': {'entity_ids': [41], 'item': 'wood', 'count': 8}}
         w = create_work(pickup_goal(), self.body.snapshot(), 'source')
