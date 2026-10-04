@@ -55,6 +55,7 @@ class InteractionScene(Body):
                         if not item_matches(args['item'], e['item']):
                             raise ValueError('scene_item_mismatch')
                         events.append({k: e[k] for k in ('entity_id', 'entity_key', 'item', 'count')})
+                        self.state['position'] = {**e['position'], 'x': e['position']['x'] - .5}
                         gained[e['item']] = gained.get(e['item'], 0) + e['count']
                         self.state['inventory'][e['item']] = self.state['inventory'].get(e['item'], 0) + e['count']
                     self.state['dropped_items']['items'] = [e for e in entities.values() if e['entity_id'] not in args['entity_ids']]

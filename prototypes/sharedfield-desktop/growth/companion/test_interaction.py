@@ -5,7 +5,7 @@ import time
 import unittest
 from pathlib import Path
 from .harness import Harness
-from .interaction import action_problem, bind_request, input_event, reconcile_pickups
+from .interaction import action_problem, bind_request, input_event, reconcile_pickups, goal_problem
 from .interaction_scene import InteractionScene
 from .memory import Memory
 from .recall import recall
@@ -71,6 +71,12 @@ class InteractionTests(unittest.TestCase):
         model = Model(decision(goal=bad, action={'name': 'collect', 'args': {'block': 'oak_log', 'count': 8}}), decision(goal=bad))
         Harness(self.path, model, self.body, self.audit, input_router=task('pickup')).run('pick', 'verification', '捡起8个原木')
         self.assertEqual(self.body.actions, [])
+
+    def test_pickup_can_require_arrival_and_clear_inventory_without_weakening_evidence(self):
+        combined=pickup_goal();combined['done_when'] += [{'kind':'near_owner'},{'kind':'inventory_clear'}]
+        self.assertIsNone(goal_problem('pickup',combined))
+        combined['done_when']=[{'kind':'gained','item':'oak_log','count':8},{'kind':'near_owner'}]
+        self.assertEqual(goal_problem('pickup',combined),'task_requires_picked_up_criterion')
 
     def test_legacy_inventory_only_pickup_cannot_complete_on_resume(self):
         m=Memory(self.path);source,_=m.begin('old','verification','捡8个原木')

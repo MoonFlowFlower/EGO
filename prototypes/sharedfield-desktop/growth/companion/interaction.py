@@ -64,7 +64,8 @@ def steer_work(work, event):
 def goal_problem(kind, goal):
     kinds = {c['kind'] for c in goal['done_when']}
     expected = {'approach': 'near_owner', 'follow': 'follow_started', 'pickup': 'picked_up'}.get(kind)
-    if expected and kinds != {expected}:
+    allowed = {expected, 'near_owner', 'inventory_clear'} if kind=='pickup' else {expected}
+    if expected and (expected not in kinds or not kinds <= allowed):
         return f'task_requires_{expected}_criterion'
     return None
 
