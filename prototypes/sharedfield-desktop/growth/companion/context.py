@@ -31,6 +31,14 @@ def chat_history(memory):
 
 
 def conversation_context(memory, text, mode, state, *, capability_notice=None):
+    from .recall import recall
+    candidates = recall(memory, text)
+    if mode == 'chat':
+        # Intent interpretation already saw the full joint situation. Once it
+        # identifies a social exchange, unrelated task/body facts are not a
+        # response need. Keep them available to status and steering instead.
+        return {'current_user': text, 'mode': mode, 'chat_history': chat_history(memory),
+                'memory_candidates': candidates, 'capability_notice': capability_notice}
     online = state.get('offline') is False
     current = {'available': online, 'sampled_at': datetime.now().astimezone().isoformat(),
                'source': 'body.snapshot', 'state': copy.deepcopy(state) if online else
@@ -51,8 +59,7 @@ def conversation_context(memory, text, mode, state, *, capability_notice=None):
                 'last_attempt_problem': work.get('last_problem'),
                 'semantics': 'durable task progress; last_attempt_problem is historical, not proof of a current body defect'}
     from .interaction import dialogue
-    from .recall import recall
     return {'current_user': text, 'mode': mode, 'current_body': current, 'goal': goal,
             'dialogue': dialogue(memory), 'chat_history': chat_history(memory),
-            'memory_candidates': recall(memory, text), 'user_history': user_history(memory),
+            'memory_candidates': candidates, 'user_history': user_history(memory),
             'historical_actions': historical_actions(memory), 'capability_notice': capability_notice}

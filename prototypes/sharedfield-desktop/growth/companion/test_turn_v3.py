@@ -9,7 +9,7 @@ from .verification_body import SceneBody
 
 
 class ContextAndSceneTests(unittest.TestCase):
-    def test_chat_keeps_shared_context_without_granting_actions(self):
+    def test_social_reply_excludes_unrelated_facts_status_keeps_joint_context(self):
         with tempfile.TemporaryDirectory() as tmp:
             m = Memory(Path(tmp) / 'state.sqlite')
             try:
@@ -18,8 +18,9 @@ class ContextAndSceneTests(unittest.TestCase):
                     m.append('reflection', {'type': 'input_route', 'event_id': identity, 'route': {'mode': mode}}, [source])
                     m.finish(identity, '之前生成的身体断言', [source])
                 context = conversation_context(m, '嗨', 'chat', Body().snapshot())
-                self.assertIn('current_body', context)
-                self.assertIn('dialogue', context)
+                for key in ('current_body', 'goal', 'dialogue', 'user_history', 'historical_actions'):
+                    self.assertNotIn(key, context)
+                self.assertIn('memory_candidates', context)
                 self.assertNotIn('action', context)
                 self.assertEqual([r['text'] for r in context['chat_history']], ['我喜欢猫'])
                 self.assertIn('之前生成', m.cached('build'))
