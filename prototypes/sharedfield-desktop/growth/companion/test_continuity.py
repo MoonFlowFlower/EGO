@@ -11,7 +11,7 @@ from unittest.mock import patch
 from .harness import Harness
 from .memory import Memory
 from .server import KernelServer
-from .test_harness import Body, Model, decision, goal, place
+from .test_harness import Body, Model, decision, goal, place, delayed_result
 from .test_kernel import Audit
 from .test_turns import route
 from .work import create_work, save_work
@@ -60,9 +60,7 @@ class ContinuityTests(unittest.TestCase):
         def held(action, **kw):
             result = original(action, **kw)
             if len(self.body.actions) == 1:
-                entered.set()
-                if not self.release.wait(4):
-                    raise TimeoutError('test_release')
+                return delayed_result(result, entered, self.release)
             return result
         self.body.start_action = held
         return entered
@@ -87,7 +85,8 @@ class ContinuityTests(unittest.TestCase):
         Harness(self.path, model, self.body, self.audit).run('now', 'airi', '合成格和光标现在怎么样？')
         context = model.contexts[-1]
         encoded = json.dumps(context, ensure_ascii=False)
-        self.assertNotIn('历史错误断言', encoded)
+        self.assertTrue(all(r['authority']=='past_utterance_not_current_world_fact' for r in context['dialogue']))
+        self.assertNotIn('历史错误断言', json.dumps(context['current_body'], ensure_ascii=False))
         self.assertNotIn('"observed"', encoded)
         self.assertNotIn('"baseline"', encoded)
         self.assertEqual(context['current_body']['state']['crafting_grid'], {})
@@ -334,7 +333,7 @@ class ContinuityTests(unittest.TestCase):
         def twice(action, **kw):
             result = underlying(action, **kw)
             if len(self.body.actions) == 2:
-                second.set(); finish_second.wait(4)
+                return delayed_result(result, second, finish_second)
             return result
         self.body.start_action = twice
         model = Model(route('task', quote='放三块'), place(goal(3)), route('resume', quote='继续'), place(),

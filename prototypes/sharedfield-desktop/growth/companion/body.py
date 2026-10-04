@@ -16,7 +16,7 @@ NODE = r'C:\Program Files\nodejs\node.exe'
 
 
 class Body:
-    def __init__(self, audit, on_input=lambda text: None):
+    def __init__(self, audit, on_input=lambda text, state=None: None):
         self.audit, self.on_input = audit, on_input
         self.process, self.job = None, None
         self._state = {'offline': True}
@@ -72,7 +72,7 @@ class Body:
                     future.set_result(row['receipt'])
             elif kind == 'owner_input':
                 # The reader must keep draining receipts while this input waits for a turn.
-                threading.Thread(target=self.on_input, args=(row['text'],), daemon=True).start()
+                threading.Thread(target=self.on_input, args=(row['text'], row.get('state')), daemon=True).start()
             else:
                 if kind == 'action_deadline_exit':self.exit_reason='action_timeout'
                 elif kind in ('disconnected','spawn_timeout') and not self.exit_reason:self.exit_reason=kind

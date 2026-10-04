@@ -26,6 +26,17 @@ def place(g=None):
     return decision(goal=g, action={'name': 'place', 'args': {'block': 'oak_planks'}})
 
 
+def delayed_result(result, entered, release):
+    """Match Body.start_action: dispatch returns a future without blocking."""
+    future = concurrent.futures.Future()
+    def finish():
+        if release.wait(4): future.set_result(result.result())
+        else: future.set_exception(TimeoutError('test_release'))
+    threading.Thread(target=finish, daemon=True).start()
+    entered.set()
+    return future
+
+
 class Model:
     def __init__(self, *steps): self.steps=list(steps); self.calls=0; self.contexts=[]
     def decide(self, prompt, context):
@@ -72,7 +83,7 @@ class HarnessTests(unittest.TestCase):
     def tearDown(self):self.tmp.cleanup()
     def engine(self,model,**kw):
         # Actor-loop fixtures have already-classified task inputs; production routing is tested separately.
-        return Harness(self.path,model,self.body,self.audit,input_router=lambda *args:{'mode':'task','task_kind':'ordinary'},**kw)
+        return Harness(self.path,model,self.body,self.audit,input_router=lambda text,*args:{'mode':'resume' if text.startswith('继续') else 'task','task_kind':'ordinary'},**kw)
     def saved(self):
         m=Memory(self.path)
         try:return m.goal()['work']
@@ -125,8 +136,9 @@ class HarnessTests(unittest.TestCase):
     def test_new_input_yields_at_boundary_and_keeps_same_task(self):
         entered=threading.Event();release=threading.Event();original=self.body.start_action
         def first(a,**kw):
-            if not self.body.actions:entered.set();release.wait(3)
-            return original(a,**kw)
+            first_call=not self.body.actions
+            result=original(a,**kw)
+            return delayed_result(result,entered,release) if first_call else result
         self.body.start_action=first
         model=Model(place(goal(3)),place(),place());e=self.engine(model)
         one=threading.Thread(target=e.run,args=('a','minecraft','放3块'));one.start();self.assertTrue(entered.wait(2))

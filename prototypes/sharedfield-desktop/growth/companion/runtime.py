@@ -81,14 +81,14 @@ class Runtime:
                 self.body.say('我重新连上了。刚才的任务和回执保留着；没有重放动作。你明确说继续后，我会先重新观察。')
                 self.audit.write('lifecycle.jsonl',{'event':'body_reconnected','replayed_actions':0})
 
-    def on_minecraft(self,text):
+    def on_minecraft(self,text,input_state=None):
         if self._closed.is_set():return
         urgent=bool(STOP.fullmatch(text.strip()))
         if not urgent and not self._inputs.acquire(blocking=False):
             self.body.say('输入队列已满，请等这一轮结束。');return
         try:
             identity='mc:'+uuid.uuid4().hex
-            self.engine.run(identity,'minecraft',text)
+            self.engine.run(identity,'minecraft',text,input_state=input_state)
             if not self._closed.is_set():
                 rendered=self.server.mirror(identity,text)
                 self.bridge.publish(identity,rendered)

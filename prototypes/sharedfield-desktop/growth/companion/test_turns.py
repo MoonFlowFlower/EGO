@@ -86,7 +86,7 @@ class TurnTests(unittest.TestCase):
         model=Model(route('task',quote='放1块'),late);e=self.engine(model)
         t=threading.Thread(target=e.run,args=('late','minecraft','放1块'));t.start();self.assertTrue(entered.wait(2))
         e.invalidate('body_reconnect');release.set();t.join(3)
-        self.assertFalse(t.is_alive());self.assertEqual(self.body.actions,[]);self.assertEqual(self.saved()['goal_status'],'interrupted')
+        self.assertFalse(t.is_alive());self.assertEqual(self.body.actions,[]);self.assertEqual(self.saved()['goal_status'],'suspended')
 
 
 class ReconnectTests(unittest.TestCase):

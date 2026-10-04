@@ -31,8 +31,6 @@ def chat_history(memory):
 
 
 def conversation_context(memory, text, mode, state, *, capability_notice=None):
-    if mode == 'chat' and not capability_notice:
-        return {'current_user': text, 'mode': mode, 'chat_history': chat_history(memory)}
     online = state.get('offline') is False
     current = {'available': online, 'sampled_at': datetime.now().astimezone().isoformat(),
                'source': 'body.snapshot', 'state': copy.deepcopy(state) if online else
@@ -46,9 +44,13 @@ def conversation_context(memory, text, mode, state, *, capability_notice=None):
                 'task_id': work.get('task_id'), 'source_id': work.get('source_id'),
                 'done_when': work.get('done_when'), 'steps': work.get('steps'),
                 'verified_progress': {key: copy.deepcopy(work[key]) for key in
-                                      ('placed', 'delivered', 'follow_started', 'actions', 'completion') if key in work},
+                                      ('placed', 'delivered', 'picked_up', 'follow_started', 'actions', 'completion') if key in work},
+                'awaiting': work.get('awaiting'), 'latest_input': (work.get('inputs') or [None])[-1],
                 'last_attempt_problem': work.get('last_problem'),
                 'semantics': 'durable task progress; last_attempt_problem is historical, not proof of a current body defect'}
+    from .interaction import dialogue
+    from .recall import recall
     return {'current_user': text, 'mode': mode, 'current_body': current, 'goal': goal,
-            'user_history': user_history(memory), 'conventions': memory.library.cards(),
+            'dialogue': dialogue(memory), 'chat_history': chat_history(memory),
+            'memory_candidates': recall(memory, text), 'user_history': user_history(memory),
             'historical_actions': historical_actions(memory), 'capability_notice': capability_notice}

@@ -10,6 +10,8 @@ import {placeNextBlock} from './placement.mjs';
 import {recoverInventory,craftChecked} from './inventory.mjs';
 import {inspectArea,placeAt,verifyBlocks,validPosition} from './spatial.mjs';
 import {collectTree,approachOwner,approachBlock} from './trees.mjs';
+import {observeItems,pickupItems,trackPickups} from './items.mjs';
+import {randomUUID} from 'node:crypto';
 
 const lines = readline.createInterface({input:process.stdin});
 const input = lines[Symbol.asyncIterator]();
@@ -41,12 +43,15 @@ bot.output = '';
 bot.interrupt_code = false;
 bot.modes = {isOn:()=>false,pause(){},unpause(){}};
 let online=false, current=null, generation=0, closing=false;
+const bodySession=randomUUID();
+const pickupTracker=trackPickups(bot,bodySession);
 const sleep = ms=>new Promise(resolve=>setTimeout(resolve,ms));
 const counts = items => { const result={}; for(const item of items) if(item) result[item.name]=(result[item.name]||0)+item.count; return result; };
 function snapshot() {
   if(!online||!bot.entity)return {offline:true,model_client_initialized:false,generated_code_enabled:false};
   const owner=bot.players.Moonlight?.entity;
   return {offline:false,position:bot.entity.position,health:bot.health,hunger:bot.food,
+    sampled_at:Date.now(),dropped_items:observeItems(bot,16,bodySession),recent_pickups:pickupTracker.snapshot(),
     inventory:counts(bot.inventory.items()),crafting_grid:counts(bot.inventory.slots.slice(1,5)),
     cursor:bot.inventory.selectedItem?{name:bot.inventory.selectedItem.name,count:bot.inventory.selectedItem.count}:null,
     window:bot.currentWindow?{type:bot.currentWindow.type,cursor:bot.currentWindow.selectedItem?.name||null}:null,
@@ -62,12 +67,13 @@ function interrupt() {
   if(current==='follow')current=null;
 }
 function allowed(action) {
-  const spec={inspect:[],approach:[],follow:[],stop:[],search:['block','range'],go_to_block:['block','range'],collect:['block','count'],collect_tree:['block','range'],craft:['item','count'],give:['item','count'],place:['block'],recover_inventory:[],inspect_area:['radius'],place_at:['block','position'],verify_blocks:['targets']};
+  const spec={inspect:[],observe_items:['range'],pickup_items:['entity_ids','item','count'],approach:[],follow:[],stop:[],search:['block','range'],go_to_block:['block','range'],collect:['block','count'],collect_tree:['block','range'],craft:['item','count'],give:['item','count'],place:['block'],recover_inventory:[],inspect_area:['radius'],place_at:['block','position'],verify_blocks:['targets']};
   if(!action||!Object.hasOwn(spec,action.name)||!action.args||Object.keys(action).sort().join()!=['args','name'].join()||Object.keys(action.args).sort().join()!=spec[action.name].slice().sort().join())throw new Error('action_not_allowed');
   for(const [k,v] of Object.entries(action.args)) {
     if(['item','block'].includes(k)&&!(typeof v==='string'&&/^[a-z][a-z0-9_]{0,63}$/.test(v)))throw new Error('invalid_identifier');
-    if(k==='count'&&!(Number.isInteger(v)&&v>=1&&v<=(action.name==='give'?16:8)))throw new Error('invalid_count');
-    if(k==='range'&&!(Number.isInteger(v)&&v>=8&&v<=128))throw new Error('invalid_range');
+    if(k==='count'&&!(Number.isInteger(v)&&v>=1&&v<=(['give','pickup_items'].includes(action.name)?16:8)))throw new Error('invalid_count');
+    if(k==='range'&&!(Number.isInteger(v)&&v>=(action.name==='observe_items'?1:8)&&v<=(action.name==='observe_items'?32:128)))throw new Error('invalid_range');
+    if(k==='entity_ids'&&!(Array.isArray(v)&&v.length>=1&&v.length<=16&&v.every(i=>Number.isInteger(i)&&i>=0)&&new Set(v).size===v.length))throw new Error('invalid_entity_ids');
     if(k==='radius'&&!(Number.isInteger(v)&&v>=1&&v<=4))throw new Error('invalid_radius');
     if(k==='position'&&!validPosition(v))throw new Error('invalid_position');
     if(k==='targets'&&!(Array.isArray(v)&&v.length>0&&v.length<=128&&v.every(t=>t&&Object.keys(t).sort().join()==='block,position'&&typeof t.block==='string'&&/^[a-z][a-z0-9_]{0,63}$/.test(t.block)&&validPosition(t.position))))throw new Error('invalid_targets');
@@ -82,9 +88,10 @@ async function run(message) {
     interrupt();await sleep(150);
     emit({kind:'receipt',id,receipt:{verified:!Object.values(bot.controlState).some(Boolean)&&!bot.targetDigBlock,status:'stopped',observed:snapshot()}});return;
   }
-  if(['inspect','inspect_area','verify_blocks'].includes(action.name)) {
+  if(['inspect','inspect_area','observe_items','verify_blocks'].includes(action.name)) {
     const receipt=action.name==='inspect'?{verified:true,status:'observed'}:
-      action.name==='inspect_area'?inspectArea(bot,action.args.radius):verifyBlocks(bot,action.args.targets);
+      action.name==='inspect_area'?inspectArea(bot,action.args.radius):
+      action.name==='observe_items'?{verified:true,status:'items_observed',observation_complete:true,dropped_items:observeItems(bot,action.args.range,bodySession)}:verifyBlocks(bot,action.args.targets);
     emit({kind:'receipt',id,receipt:{...receipt,observed:snapshot()}});return;
   }
   interrupt();bot.interrupt_code=false;
@@ -94,6 +101,7 @@ async function run(message) {
   let timer,timedOut=false,receipt={verified:false,status:'not_demonstrated'};
   try {
     const execute=async()=>{
+      if(name==='pickup_items')return pickupItems(bot,Movements,goals,args,bodySession);
       if(name==='recover_inventory')return recoverInventory(bot);
       if(name==='collect_tree') {
         if(args.block!=='wood'&&!mc.WOOD_TYPES.some(t=>`${t}_log`===args.block))return {verified:false,status:'unknown_tree_type'};
@@ -149,15 +157,15 @@ async function run(message) {
   // instead of admitting a second action alongside an unfinished promise.
   if(timedOut){bot.whisper('Moonlight','刚才的动作超过60秒，我会重新连接；进度保留，这个动作不会自动重试。');emit({kind:'action_deadline_exit'});await close()}
 }
-bot.on('chat',(name,text)=>{if(name==='Moonlight'&&text.trim())emit({kind:'owner_input',text})});
-bot.on('whisper',(name,text)=>{if(name==='Moonlight'&&text.trim())emit({kind:'owner_input',text})});
+bot.on('chat',(name,text)=>{if(name==='Moonlight'&&text.trim())emit({kind:'owner_input',text,state:snapshot()})});
+bot.on('whisper',(name,text)=>{if(name==='Moonlight'&&text.trim())emit({kind:'owner_input',text,state:snapshot()})});
 bot.once('spawn',async()=>{await sleep(1000);online=true;emit({kind:'ready',state:snapshot()})});
 bot.on('error',error=>emit({kind:'body_error',error_type:error.name}));
 bot.on('end',()=>{online=false;emit({kind:'disconnected'});if(!closing)process.exit(1)});
 const stateTimer=setInterval(()=>emit({kind:'state',state:snapshot()}),1000);
 const spawnTimer=setTimeout(()=>{if(!online){emit({kind:'spawn_timeout'});process.exit(1)}},120000);
 async function close() {
-  if(closing)return;closing=true;interrupt();clearInterval(stateTimer);clearTimeout(spawnTimer);
+  if(closing)return;closing=true;interrupt();pickupTracker.close();clearInterval(stateTimer);clearTimeout(spawnTimer);
   emit({kind:'body_closing'});try{bot.quit()}catch{};setTimeout(()=>process.exit(0),200);
 }
 lines.on('close',close);process.on('SIGTERM',close);
