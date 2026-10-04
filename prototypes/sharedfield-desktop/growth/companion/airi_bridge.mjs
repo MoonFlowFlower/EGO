@@ -22,11 +22,20 @@ function publish(message){
   emit({kind:'mirror_sent',id:message.id,single_stage_destination:true});
 }
 function flush(){if(ready&&target)while(pending.length)publish(pending.shift())}
+function reconnect(socket,kind){
+  if(closed||socket!==ws)return;
+  ready=false;target=null;ws=null;
+  socket.onopen=socket.onmessage=socket.onerror=socket.onclose=null;
+  emit({kind});
+  try{socket.close()}catch{}
+  clearTimeout(retry);retry=setTimeout(connect,5000);
+}
 function connect(){
   if(closed)return;
-  ws=new WebSocket(cfg.url);
-  ws.onopen=()=>send('module:authenticate',{token:cfg.token});
-  ws.onmessage=event=>{
+  const socket=ws=new WebSocket(cfg.url);
+  socket.onopen=()=>{if(!closed&&socket===ws)send('module:authenticate',{token:cfg.token})};
+  socket.onmessage=event=>{
+    if(closed||socket!==ws)return;
     let row;try{row=JSON.parse(event.data);row=row.json||row}catch{return}
     if(row.type==='registry:modules:sync'){
       target=stageTarget(row.data?.modules||[]);emit({kind:'stage_destination',available:!!target});flush();
@@ -42,8 +51,8 @@ function connect(){
       emit({kind:'airi_output',type:row.type,sha256:createHash('sha256').update(JSON.stringify(row.data)).digest('hex')});
     if(row.type?.includes('error'))emit({kind:'bridge_protocol_error',type:row.type});
   };
-  ws.onerror=()=>emit({kind:'bridge_connection_error'});
-  ws.onclose=()=>{ready=false;target=null;emit({kind:'bridge_disconnected'});if(!closed)retry=setTimeout(connect,5000)};
+  socket.onerror=()=>reconnect(socket,'bridge_connection_error');
+  socket.onclose=()=>reconnect(socket,'bridge_disconnected');
 }
 function close(){closed=true;clearTimeout(retry);clearInterval(heartbeat);ws?.close();setTimeout(()=>process.exit(0),150)}
 lines.on('close',close);process.on('SIGTERM',close);connect();

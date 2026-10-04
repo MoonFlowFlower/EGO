@@ -1,0 +1,22 @@
+[
+  {
+    "path": "companion/airi_bridge.mjs",
+    "sha256": "d3ee6a52e6948ca9df73be31f87f6e950aa8457e46dac6c15ed0b02760948342"
+  },
+  {
+    "path": "companion/bridge_protocol.mjs",
+    "sha256": "175b7a2e3fe503099bac8e94dea945394a8c3b97ac99573884c3266b3f75182b"
+  },
+  {
+    "path": "companion/test_bridge_reconnect.mjs",
+    "sha256": "405f24ea19f83483481c2ad8ca0a6fbd5116841915e9c783a7bfdaff948445ec"
+  },
+  {
+    "path": "companion/test_bridge.mjs",
+    "sha256": "3e9d321df0b58e1e7bcc3a873c643c468e40f865668f2ba72cbe7595fb590dbd"
+  },
+  {
+    "path": "evidence/kernel_connection_v1/CHECKLIST.md",
+    "sha256": "f76d22c0d3831e737c94a6405e2c67ab6781f65d5ab22e17d4d95221f71cec4b"
+  }
+]

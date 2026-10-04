@@ -28,7 +28,9 @@ flowchart LR
 
 AIRI 使用 **OpenAI Compatible**：Base URL 为 `http://127.0.0.1:18787/v1/`，模型为 `ego-companion`。先确认 Base URL，再点击内核面板“复制本机令牌”，粘贴到该提供方的 API Key 输入框。这里只填本机令牌，云端密钥由内核读取既有本机凭据源并只持于内存。
 
-每次内核重启会换本机令牌。更新后必须让所有已打开的 AIRI 主窗口及 Settings 窗口各按一次 Ctrl+R，或完整重开 AIRI；本版 AIRI 有多个 Stage 实例，单刷新 Chat 不能保证旧客户端失效。先前遇到的 401 已据实记录。完整重开这一替代路径未在本批做现场验收。
+每次内核重启会换本机令牌。更新后推荐从 AIRI 窗口的 File → Exit 完整退出并重新打开；这条路径已现场验证。设置页验证通过不保证已有聊天客户端已更新，Ctrl+R 也曾未消除主窗口的旧客户端。主窗口菜单的 Refresh 可重新加载主窗口，但聊天显示仍可能需要完整重开。旧 401 与漏显示记录保留在连接修复报告中。
+
+AIRI 重开时，消息桥每隔 5 秒尝试本机重连，兼容只有 error、没有 close 的连接失败；主管结束时停止重连。它不重新调用模型或重放 MC 动作。内核到期后必须重新启动并更新本机令牌，重连不会绕过 30 分钟期限。
 
 ## 使用
 
@@ -52,3 +54,5 @@ AIRI 使用 **OpenAI Compatible**：Base URL 为 `http://127.0.0.1:18787/v1/`，
 本版依赖已审核的 AIRI v0.12.0-beta.5、Mindcraft v0.1.4、Java MC 1.21.1 和既有 growth Python 环境；第三方安装仍在仓库外。AIRI 自带 MC 代理及原 Mindcraft Agent 不与本内核并行运行。语音、读屏和 Crafter 不在本轮范围。
 
 原始接线验收见 `../evidence/kernel_v1/REPORT.md`，搜索修复和三原木实测见 `../evidence/kernel_v1_3/REPORT.md`。离线检查可运行 `python -m unittest companion.test_kernel -v`、`node companion/test_search.mjs` 和 `node companion/test_bridge.mjs`；它们不调用模型或进入游戏。独立搜索验收存档可用 `pythonw -m companion.launcher --acceptance --acceptance-case search-v1.3`，不改原验收或正式存档。
+
+连接恢复报告见 `../evidence/kernel_connection_v1/REPORT.md`；重连回归为 `node companion/test_bridge_reconnect.mjs`，只使用进程内 WebSocket 替身，不联网。

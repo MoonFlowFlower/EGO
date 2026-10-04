@@ -1,0 +1,76 @@
+{
+  "baseline": "a5504f6d",
+  "session": "1791071596428970300",
+  "snapshot_utc": "2026-10-04T00:06:16.483533+00:00",
+  "freeze_matches": [
+    {
+      "path": "companion/airi_bridge.mjs",
+      "matches": true
+    },
+    {
+      "path": "companion/bridge_protocol.mjs",
+      "matches": true
+    },
+    {
+      "path": "companion/test_bridge_reconnect.mjs",
+      "matches": true
+    },
+    {
+      "path": "companion/test_bridge.mjs",
+      "matches": true
+    },
+    {
+      "path": "evidence/kernel_connection_v1/CHECKLIST.md",
+      "matches": true
+    }
+  ],
+  "offline_tests": {
+    "routing_assertions": 4,
+    "reconnect_assertions": 8,
+    "node_syntax": "pass"
+  },
+  "live_restart": {
+    "disconnected_unix_ms": 1791072128467,
+    "connection_error_unix_ms": [
+      1791072133470,
+      1791072138471,
+      1791072143474,
+      1791072148476
+    ],
+    "retry_intervals_ms": [
+      5003,
+      5001,
+      5003,
+      5002,
+      5006
+    ],
+    "ready_unix_ms": 1791072153482,
+    "body_samples_while_disconnected": 25,
+    "body_online_all": true
+  },
+  "native_replay": {
+    "event_id": "mc:3b5b9dd515e340f2b4e5d0aa99851159",
+    "sent_unix_ms": 1791072226695,
+    "kernel_received": true,
+    "airi_output_kinds": [
+      "output:gen-ai:chat:message",
+      "output:gen-ai:chat:complete"
+    ],
+    "chat_reply_visually_observed": true,
+    "model_calls_after_replay": 0
+  },
+  "owner_activity": {
+    "completed_mc_turns": 3,
+    "model_calls": 4,
+    "cost_usd": 0.00104
+  },
+  "generated_code_enabled_any": false,
+  "budget_start": 1.2543636735900001,
+  "batch_limit": 1.75029185959,
+  "deadline_utc": "2026-10-04T00:23:16.431025+00:00",
+  "limitations": [
+    "Not a fresh model probe or learning result",
+    "30-minute session deadline unchanged",
+    "Earlier 401 errors and missing display observations retained"
+  ]
+}
