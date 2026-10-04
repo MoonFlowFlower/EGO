@@ -7,7 +7,8 @@ from .test_harness import Model, Body, decision, goal
 from .test_kernel import Audit
 from .work import validate_action, validate_goal, create_work, incorporate
 from .voxel_scene import VoxelScene, grade_hut
-from .model import request_messages
+from .model import request_messages, request_payload
+from p7.proxy import prepare_request
 from .memory import Memory
 
 
@@ -16,6 +17,15 @@ def spatial(conditions):return dict(title='按坐标构造并保留空间',steps
 
 
 class CapabilityTests(unittest.TestCase):
+    def test_execution_requests_reasoning_without_returning_hidden_text(self):
+        payload=request_payload('deepseek/deepseek-v4.1-flash','instructions',{'current':{'user':'搭起来'},'remaining_decisions':64})
+        forwarded,_,_=prepare_request(payload,model=payload['model'])
+        self.assertEqual(forwarded['reasoning'],{'enabled':True,'effort':'high','exclude':True})
+        self.assertEqual(forwarded['max_tokens'],8192)
+        for context in ({'current_user':'对'}, {'current_user':'在吗','mode':'chat'}):
+            payload=request_payload('deepseek/deepseek-v4.1-flash','instructions',context)
+            self.assertEqual(payload['reasoning'],{'enabled':False});self.assertEqual(payload['max_tokens'],1600)
+
     def test_tool_result_follows_previous_decision_instead_of_reissuing_request(self):
         prior=decision(action=dict(name='inspect',args={}))
         context={'current':{'user':'先看再搭'},'execution_feedback':{'previous_decision':prior,'receipts':[{'status':'observed'}]}}

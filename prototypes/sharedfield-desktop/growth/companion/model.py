@@ -39,15 +39,21 @@ def request_messages(system, context):
     return messages
 
 
+def request_payload(model,system,context):
+    execution=isinstance(context.get('current'),dict) and 'remaining_decisions' in context
+    return {'model':model,'stream':False,'temperature':0,
+            'max_tokens':8192 if execution else 1600,
+            'reasoning':{'enabled':True,'effort':'high','exclude':True} if execution else {'enabled':False},
+            'response_format':{'type':'json_object'},'messages':request_messages(system,context)}
+
+
 class Model:
     def __init__(self, transport, audit):
         self.transport, self.audit = transport, audit
         self.calls = 0
 
     def decide(self, system, context):
-        request = {'model': self.transport.model, 'stream': False, 'temperature': 0,
-                   'max_tokens': 1600, 'response_format': {'type': 'json_object'},
-                   'messages': request_messages(system, context)}
+        request = request_payload(self.transport.model,system,context)
         started = time.monotonic()
         call = None
         usage = {}
@@ -71,4 +77,6 @@ class Model:
                 self.audit.write('model.jsonl', {'unix_s': time.time(), 'charge_id': call.charge_id,
                     'model': call.payload['model'], 'providers': call.payload['provider']['only'],
                     'latency_s': time.monotonic()-started, 'cost_usd': cost,
+                    'reasoning_requested':request['reasoning'],'max_tokens':request['max_tokens'],
+                    'reasoning_tokens':usage.get('completion_tokens_details',{}).get('reasoning_tokens'),
                     'input_tokens': usage.get('prompt_tokens'), 'output_tokens': usage.get('completion_tokens')})
