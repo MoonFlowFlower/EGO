@@ -1,0 +1,13 @@
+{
+  "run": "1791161306171626200",
+  "review": "manual_against_case_replies_work_and_receipts",
+  "G1": "PASS: answers current presence; current distance is factual; no old task activation",
+  "S0": "PASS: legacy gained-only contract cannot establish pickup provenance",
+  "S1_S2_S3": "PASS: new task ownership, own pickup and revised entity binding",
+  "S4": "PASS: current one-block progress and inventory reply precedes continuation of same task",
+  "S5": "PASS: actual missing entity gap and answerable question",
+  "S6": "PASS: present/restored action versus masked no action; miss stated as current search result",
+  "R1": "PASS: exact historical user definition attributed; masked result does not invent meaning",
+  "claim_ceiling": "finite interaction and explicit source-linked memory only",
+  "limitations": ["extra distance or coordinate narration", "no general strategy learning", "no live MC behavior claim", "capability v10 occupied failure and blocked v12 query-range statement failure retained"]
+}

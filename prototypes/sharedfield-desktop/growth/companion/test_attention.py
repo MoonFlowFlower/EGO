@@ -60,5 +60,17 @@ class AttentionTests(unittest.TestCase):
         value={**value,'information_need':{'question':'确认在线','sources':['imagined_state'],'memory_queries':[]}}
         with self.assertRaises(ValueError):route_input(Model(value),'嗨',None,[])
 
+    def test_non_executing_conversation_does_not_require_a_task_category(self):
+        base={'request_quote':'','information_need':{'question':'确认是否在线','sources':[],'memory_queries':[]}}
+        for mode in ('chat','status'):
+            for kind in ('',None,{},'invented'):
+                result=route_input(Model({**base,'mode':mode,'task_kind':kind}),'在吗',None,[])
+                self.assertEqual(result['mode'],mode);self.assertEqual(result['task_kind'],'ordinary')
+            self.assertEqual(route_input(Model({**base,'mode':mode}),'在吗',None,[])['task_kind'],'ordinary')
+        with self.assertRaises(ValueError):
+            route_input(Model({**base,'mode':'task','request_quote':'放一块','task_kind':''}),'放一块',None,[])
+        with self.assertRaises(ValueError):
+            route_input(Model({**base,'mode':'chat','action':{'name':'place'}}),'在吗',None,[])
+
 
 if __name__=='__main__':unittest.main()
