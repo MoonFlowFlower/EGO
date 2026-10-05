@@ -1,0 +1,3 @@
+# Preserve synthetic test evidence despite the root Test/ rule on Windows.
+!round2/raw/**/test/
+!round2/raw/**/test/**

@@ -1,0 +1,4 @@
+{"unix_s":1791210219.7119653,"outcome":"attempt","mode":"pinned","attempt":1,"charge_id":"dc9b1695738942799f4e0022d5c53b78","reserved_usd":0.05,"model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791210220.4606285,"outcome":"response_opened","mode":"pinned","charge_id":"dc9b1695738942799f4e0022d5c53b78","model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791210221.731123,"outcome":"attempt","mode":"pinned","attempt":1,"charge_id":"7eb707930be84ba2ad37b16df4c581ab","reserved_usd":0.05,"model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791210222.6387541,"outcome":"response_opened","mode":"pinned","charge_id":"7eb707930be84ba2ad37b16df4c581ab","model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
