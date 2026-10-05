@@ -47,7 +47,7 @@ class CapabilityTests(unittest.TestCase):
             h.run('bounded','verification','构造');self.assertEqual(model.calls,3);self.assertFalse(body.actions)
 
     def test_invalid_tool_arguments_are_returned_for_bounded_repair(self):
-        invalid=dict(name='inspect_area',args=dict(radius=2,center=pos(4)))
+        invalid=dict(name='inspect_area',args=dict(radius=2,center=pos(4),below=17))
         with tempfile.TemporaryDirectory() as folder:
             body=Body();model=Model(decision(action=invalid),decision(action=dict(name='inspect_area',args=dict(radius=4))),
                 decision(status='waiting_user',reply='目标在观察范围外，请带我走近。'))
@@ -148,9 +148,12 @@ class CapabilityTests(unittest.TestCase):
             model=Model(decision(goal=placeholder,action=dict(name='inspect',args={})),decision(status='waiting_user',reply='确认一下施工位置。'))
             h=Harness(path,model,body,Audit(),input_router=lambda *args:dict(mode='task',task_kind='structure'))
             h.run('plan','verification','先看场地')
-            self.assertEqual([a['name'] for a in body.actions],['inspect']);self.assertIsNone(model.contexts[1]['work'])
+            self.assertEqual([a['name'] for a in body.actions],['inspect'])
+            self.assertEqual(model.contexts[1]['work']['done_when'],[])
             m=Memory(path)
-            try:self.assertIsNone(m.goal())
+            try:
+                self.assertEqual(m.goal()['work']['done_when'],[])
+                self.assertEqual(m.goal()['work']['request']['user'],'先看场地')
             finally:m.close()
 
     def test_geometry_grader_rejects_missing_roof_wall_and_blocked_interior(self):

@@ -34,7 +34,7 @@ check((await placeAt(f.bot,mc,skills,'oak_planks',p(2))).status==='placement_tar
 check(f.bot.calls===1&&f.bot.stock===7);
 check((await placeAt(f.bot,mc,skills,'oak_planks',p(20))).status==='target_out_of_reach');
 check(!validPosition(p(1.1))&&!validPosition(p(true)));
-check(inspectArea(f.bot,1).cells.length===36);
+check(inspectArea(f.bot,1).cells.length===81);
 check((await placeAt(f.bot,mc,skills,'air',p(3))).status==='unknown_block_or_position');
 check((await placeAt(f.bot,mc,skills,'oak_planks',p(3,66))).status==='placement_no_support');
 f.blocks.set(key(p(2,66)),'stone');

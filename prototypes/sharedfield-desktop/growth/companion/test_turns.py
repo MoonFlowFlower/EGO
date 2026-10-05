@@ -60,9 +60,18 @@ class TurnTests(unittest.TestCase):
             self.assertEqual(self.saved(),self.original);self.assertEqual(self.body.stops,0)
         self.assertEqual(self.body.actions,[])
     def test_full_house_does_not_become_eight_blocks(self):
-        model=Model(route('task','structure','建一座房子'),place(goal(8)),place(goal(8)))
+        model=Model(route('task','structure','建一座房子'),place(goal(8)),place(goal(8)),place(goal(8)))
         self.engine(model).run('house','minecraft','建一座房子')
-        self.assertEqual(self.saved()['goal_status'],'suspended');self.assertEqual(self.body.actions,[])
+        current=self.saved()
+        self.assertEqual(current['goal_status'],'blocked');self.assertEqual(self.body.actions,[])
+        self.assertEqual(current['work']['done_when'],[])
+        self.assertEqual(current['work']['last_problem'],'structure_requires_spatial_contract_including_clear_space')
+        self.assertNotEqual(current['work']['task_id'],self.original['work']['task_id'])
+        memory=Memory(self.path)
+        try:
+            old=[r['body']['work'] for r in memory.library.rows('project') if r['body'].get('type')=='suspended_task']
+            self.assertTrue(any(w['task_id']==self.original['work']['task_id'] and w['status']=='suspended' for w in old))
+        finally:memory.close()
     def test_memory_output_cannot_rewrite_goal_or_act(self):
         model=Model(route('memory',quote='记住蓝灯'),decision(goal=goal(1)))
         self.engine(model).run('memory','airi','记住蓝灯')
@@ -88,7 +97,10 @@ class TurnTests(unittest.TestCase):
         model=Model(route('task',quote='放1块'),late);e=self.engine(model)
         t=threading.Thread(target=e.run,args=('late','minecraft','放1块'));t.start();self.assertTrue(entered.wait(2))
         e.invalidate('body_reconnect');release.set();t.join(3)
-        self.assertFalse(t.is_alive());self.assertEqual(self.body.actions,[]);self.assertEqual(self.saved()['goal_status'],'suspended')
+        self.assertFalse(t.is_alive());self.assertEqual(self.body.actions,[])
+        self.assertEqual(self.saved()['goal_status'],'interrupted')
+        self.assertEqual(self.saved()['work']['request']['user'],'放1块')
+        self.assertEqual(self.saved()['work']['last_problem'],'body_reconnect')
 
 
 class ReconnectTests(unittest.TestCase):

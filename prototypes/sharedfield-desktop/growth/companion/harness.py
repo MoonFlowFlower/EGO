@@ -12,7 +12,7 @@ from .engine import Engine, STOP, confirmed_progress, completed_negative_search
 from .memory import Memory
 from .intent import route_input, chat_reply
 from .context import conversation_context, user_history, historical_actions
-from .work import validate_action, validate_goal, create_work, save_work, incorporate, preliminary_completion, fingerprint
+from .work import validate_action, validate_goal, create_work, create_pending_work, save_work, incorporate, preliminary_completion, fingerprint
 from .interaction import input_event, dialogue, bind_request, steer_work, goal_problem, action_problem, observation_key, reconcile_pickups, normalize_transition, OBSERVATIONS
 from .recall import recall, matched_cards
 from .model import DecisionError
@@ -27,6 +27,7 @@ RECOVERABLE = {'crafting_grid_or_cursor_not_clear', 'craft_inventory_checked', '
                'pickup_partial', 'pickup_target_missing', 'pickup_path_failed', 'pickup_requires_current_entity_observation',
                'pickup_requires_owner_spatial_anchor', 'pickup_outside_indicated_area', 'action_outside_current_request', 'pickup_item_mismatch'}
 RECOVERABLE.update({'placement_batch_partial','placement_no_support','placement_path_failed','placement_body_occupies_target'})
+RECOVERABLE.update({'observation_center_out_of_reach','planning_approach_requires_nearby_owner','result_contract_required_before_effect'})
 
 
 class Harness(Engine):
@@ -247,7 +248,7 @@ class Harness(Engine):
                     return reply
                 execution_granted = intent['mode'] in ('task','resume','steer')
                 if intent['mode'] in ('resume','steer') and work and (
-                        work.get('requires_new_contract') or goal_problem(intent['task_kind'], work)):
+                        work.get('requires_new_contract') or work['done_when'] and goal_problem(intent['task_kind'], work)):
                     question = '旧任务的完成条件不能核对你当前要的结果。请重新说明这次要做什么、对象在哪里，我会建立对应的核对条件。'
                     work['requires_new_contract'] = True
                     work['awaiting'] = {'question': question, 'event_id': event_id}
@@ -258,7 +259,8 @@ class Harness(Engine):
                 if intent['mode'] == 'task':
                     if work:
                         persist('suspended', 'new_request_has_separate_goal')
-                    work = None
+                    work = create_pending_work(text, event['body_at_input'], source)
+                    bind_request(work, event, intent['task_kind'])
                 elif work and intent['mode'] == 'resume':
                     work.setdefault('inputs', []).append(copy.deepcopy(event))
                     work['inputs'] = work['inputs'][-8:]
@@ -357,7 +359,7 @@ class Harness(Engine):
                         receipts.append({'verified': True, 'kind': 'convention_saved', 'card_id': card})
                         notice = '约定已实际写入；没有正在执行的任务时可回复确认。'
                         continue
-                    observing_before_goal = (not work and isinstance(decision['action'],dict)
+                    observing_before_goal = ((not work or not work['done_when']) and isinstance(decision['action'],dict)
                         and decision['action'].get('name') in OBSERVATIONS and isinstance(decision['goal'],dict)
                         and any(isinstance(c,dict) and c.get('kind')=='blocks' for c in decision['goal'].get('done_when',[])))
                     if decision['goal'] is not None and observing_before_goal:
@@ -370,14 +372,16 @@ class Harness(Engine):
                             proposed = validate_goal(decision['goal'])
                         except ValueError as error:
                             if reject('invalid_goal_contract', str(error), getattr(error, 'details', None)):
+                                persist('blocked', str(error))
                                 say('目标的核对条件仍有矛盾或缺项，尚未执行。'); break
                             continue
                         contract_problem = goal_problem(work.get('task_kind', 'ordinary') if work else intent['task_kind'], proposed)
                         if contract_problem:
                             if reject('goal_request_mismatch', contract_problem):
+                                persist('blocked', contract_problem)
                                 say('当前目标的核对条件还不符合你的请求，尚未执行。'); break
                             continue
-                        if work:
+                        if work and work['done_when']:
                             if proposed['done_when'] != work['done_when']:
                                 notice = '已有任务完成条件不可为提前结束而降低；请完成原条件或明确说明阻塞。'
                                 contract_changes += 1
@@ -385,6 +389,8 @@ class Harness(Engine):
                                     persist('blocked', 'completion_contract_changed'); say('完成条件被改写，任务没有通过核对，已保留原目标。'); break
                                 continue
                             work['steps'] = proposed['steps']
+                        elif work:
+                            work.update(proposed)
                         else:
                             work = create_work(proposed, state, source)
                             bind_request(work, event, intent['task_kind'])
@@ -537,12 +543,13 @@ class Harness(Engine):
             if execution_granted and work and parents:
                 work['status'] = 'blocked'; work['last_problem'] = problem
                 save_work(m, work, parents)
-            result = ('本次预算不足以预留下一次请求，已停止；目标和进度已保存。' if problem == 'budget_stop'
+            result = ('本批模型预算不足以预留下一次请求，已暂停。' +
+                      ('当前任务和已确认进度已保存。' if execution_granted and work else '这条消息已记录。') if problem == 'budget_stop'
                       else '任务遇到连接或格式问题，进度已保存；没有自动重试。')
             emit(result); self.body.say(result)
             self.audit.write('lifecycle.jsonl', {'event': 'turn_failed', 'event_id': event_id, 'error_type': type(error).__name__, 'error_code': problem})
             if 'source' in locals() and source and m.record(source):
-                m.finish(event_id, result, [source])
-            return result
+                m.finish(event_id, '\n'.join([*spoken, result]), [p for p in parents if m.record(p)] or [source])
+            return '\n'.join([*spoken, result])
         finally:
             m.close()

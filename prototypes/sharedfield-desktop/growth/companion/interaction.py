@@ -83,6 +83,15 @@ def normalize_transition(intent, work):
 
 
 def action_problem(work, action, state):
+    if not work['done_when']:
+        if action['name'] in OBSERVATIONS or action['name'] == 'stop':
+            return None
+        if action['name'] == 'approach':
+            owner = state.get('owner') or {}
+            if owner.get('distance', float('inf')) <= 16 and owner.get('position'):
+                return None
+            return 'planning_approach_requires_nearby_owner'
+        return 'result_contract_required_before_effect'
     kind = None
     kinds = {c['kind'] for c in work['done_when']}
     if kinds == {'near_owner'}:

@@ -43,10 +43,12 @@ class InteractionTests(unittest.TestCase):
 
     def test_new_request_cannot_act_under_old_goal(self):
         old = self.seed()
-        model = Model(decision(action={'name': 'approach', 'args': {}}), place())
+        model = Model(place(), place())
         Harness(self.path, model, self.body, self.audit, input_router=task('approach'), max_decisions=2).run('new', 'verification', '过来一下')
         self.assertEqual(self.body.actions, [])
-        self.assertEqual(self.saved()['task_id'], old['task_id'])
+        self.assertNotEqual(self.saved()['task_id'], old['task_id'])
+        self.assertEqual(self.saved()['done_when'], [])
+        self.assertEqual(self.saved()['request']['user'], '过来一下')
 
     def test_come_has_own_goal_finishes_and_preserves_suspended_task(self):
         old = self.seed()

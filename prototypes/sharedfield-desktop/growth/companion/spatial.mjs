@@ -1,13 +1,34 @@
 // Local observations and explicit coordinates; no generated building code.
 export const validPosition=p=>p&&Object.keys(p).sort().join()==='x,y,z'&&Object.values(p).every(Number.isInteger)
   &&Math.abs(p.x)<=29999984&&Math.abs(p.z)<=29999984&&p.y>=-64&&p.y<=319;
-export function inspectArea(bot,radius) {
-  const center=bot.entity.position.floored(),cells=[];
-  for(let dx=-radius;dx<=radius;dx++)for(let dz=-radius;dz<=radius;dz++)for(let dy=-1;dy<=2;dy++) {
-    const p=center.offset(dx,dy,dz),b=bot.blockAt(p);
-    cells.push([p.x,p.y,p.z,b?.name??null]);
-  }
-  return {verified:true,status:'local_area_observed',scope:'loaded_chunks_only',cells,center};
+export function validAreaArgs(args) {
+  return args&&Object.keys(args).every(k=>['radius','center','below','above'].includes(k))
+    &&Number.isInteger(args.radius)&&args.radius>=1&&args.radius<=4
+    &&(!Object.hasOwn(args,'center')||validPosition(args.center))
+    &&(!Object.hasOwn(args,'below')||Number.isInteger(args.below)&&args.below>=1&&args.below<=16)
+    &&(!Object.hasOwn(args,'above')||Number.isInteger(args.above)&&args.above>=0&&args.above<=16);
+}
+export function inspectArea(bot,radius,options={}) {
+  if(!validAreaArgs({...options,radius}))return {verified:false,status:'invalid_observation_bounds'};
+  const observer={...bot.entity.position},center=bot.entity.position.floored(),cells=[];
+  if(options.center)Object.assign(center,options.center);
+  if(bot.entity.position.distanceTo(center)>16)return {verified:false,status:'observation_center_out_of_reach',
+    requested_center:center,observer_position:observer,max_center_distance:16};
+  const below=options.below??4,above=options.above??4;
+  const bounds={min:{x:center.x-radius,y:Math.max(-64,center.y-below),z:center.z-radius},
+    max:{x:center.x+radius,y:Math.min(319,center.y+above),z:center.z+radius}};
+  let unknown=0;
+  for(let x=bounds.min.x;x<=bounds.max.x;x++)for(let z=bounds.min.z;z<=bounds.max.z;z++)
+    for(let y=bounds.min.y;y<=bounds.max.y;y++) {
+      const p=center.offset(x-center.x,y-center.y,z-center.z),b=bot.blockAt(p);
+      const name=b?.name??null;
+      if(name===null)unknown++;
+      cells.push([x,y,z,name]);
+    }
+  return {verified:true,status:'local_area_observed',scope:'loaded_chunks_only',sampled_at:Date.now(),
+    cells,center,observer_position:observer,
+    query:{radius,below,above,center_source:options.center?'explicit':'body'},
+    coverage:{bounds,known:cells.length-unknown,unknown,complete:unknown===0,outside_bounds:'not_observed'}};
 }
 export function verifyBlocks(bot,targets) {
   const blocks=targets.map(t=>{

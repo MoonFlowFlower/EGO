@@ -159,7 +159,11 @@ class HarnessTests(unittest.TestCase):
         e.run('destroyed','minecraft','放1块');self.assertEqual(self.saved()['status'],'blocked')
     def test_chat_works_without_mc(self):
         self.body.state={'offline':True}
-        self.assertEqual(self.engine(Model(decision(status='chat',reply='我在。'))).run('chat','airi','在吗'),'我在。')
+        # Exercise the real no-action conversation path, not the task-only fixture router.
+        from .test_turns import route
+        engine=Harness(self.path,Model(route('chat'),{'reply':'我在。'}),self.body,self.audit)
+        self.assertEqual(engine.run('chat','airi','在吗'),'我在。')
+        self.assertEqual(self.body.actions,[])
     def test_convention_can_be_saved_and_used_by_harness(self):
         model=Model(decision(convention={'trigger':'蓝灯','meaning':'走到我身边','replaces':None}),decision(status='chat',reply='记住了。'))
         self.engine(model).run('teach','airi','蓝灯代表走到我身边。')

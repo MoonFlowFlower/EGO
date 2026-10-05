@@ -47,8 +47,13 @@ def validate_action(action):
         raise ValueError('pickup_entities')
     if name == 'recover_inventory' and args == {}:
         return action
-    if name == 'inspect_area' and set(args) == {'radius'} and type(args['radius']) is int and 1 <= args['radius'] <= 4:
-        return action
+    if name == 'inspect_area':
+        if (set(args) <= {'radius', 'center', 'below', 'above'} and type(args.get('radius')) is int
+                and 1 <= args['radius'] <= 4 and ('center' not in args or position(args['center']))
+                and ('below' not in args or type(args['below']) is int and 1 <= args['below'] <= 16)
+                and ('above' not in args or type(args['above']) is int and 0 <= args['above'] <= 16)):
+            return action
+        raise ValueError('invalid_observation_bounds')
     if name == 'place_at' and set(args) == {'block', 'position'} and identifier(args['block']) and position(args['position']):
         return action
     return legacy_action(action)
@@ -118,7 +123,16 @@ def validate_goal(goal):
 
 
 def create_work(goal, state, source_id):
-    return {**validate_goal(goal), 'task_id': uuid.uuid4().hex, 'source_id': source_id,
+    return _work_state(validate_goal(goal), state, source_id)
+
+
+def create_pending_work(title, state, source_id):
+    """Remember accepted intent before enough evidence exists for a result contract."""
+    return _work_state({'title': title[:300], 'steps': [], 'done_when': []}, state, source_id)
+
+
+def _work_state(goal, state, source_id):
+    return {**goal, 'task_id': uuid.uuid4().hex, 'source_id': source_id,
             'baseline': copy.deepcopy(state.get('inventory', {})), 'placed': [], 'delivered': {},
             'picked_up': {}, 'pickup_entities': [], 'follow_started': False, 'status': 'active', 'decisions': 0, 'actions': 0,
             'checkpoints': 0, 'last_problem': None, 'completion': None}
@@ -208,7 +222,7 @@ def preliminary_completion(work, state):
         else:
             ok = work['follow_started']
         checks.append({'criterion': c, 'satisfied': bool(ok)})
-    return {'satisfied': not state.get('offline', True) and all(c['satisfied'] for c in checks), 'checks': checks, 'targets': targets}
+    return {'satisfied': bool(checks) and not state.get('offline', True) and all(c['satisfied'] for c in checks), 'checks': checks, 'targets': targets}
 
 
 def fingerprint(state):

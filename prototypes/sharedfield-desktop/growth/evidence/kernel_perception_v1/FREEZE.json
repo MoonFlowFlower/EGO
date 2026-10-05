@@ -1,0 +1,23 @@
+{
+  "scope": "production body observation and read-only live probe; task lifecycle frozen separately",
+  "at": "2026-10-04T20:24:55.472528-05:00",
+  "base_commit": "af680345147288a33ffad4ad937c5cd5e6d5cd09",
+  "files": {
+    "companion/spatial.mjs": "eca20c5e9053a9a44cbe1cdeef7f0929c6dc59000cea34926a784672f4048fdf",
+    "companion/body.mjs": "2838c374a5b0a8b5fe3de2d78055981ea3cf555bd1c46d587be004970cc6a57b",
+    "companion/body.py": "c39e704beb91b67a317e5945b1d1d854cd5513c4ee103eafcea85b94721469ee",
+    "companion/trees.mjs": "92185854ef35032204ed49156be5e8314155df8d36e8417883a74577e9ccc397",
+    "companion/inventory.mjs": "d9dda1f6513f967efcee32d1d4c05d6de83e34d8e66f0ec6b41d03ed9dd4fdd0",
+    "companion/placement.mjs": "e5b11d1d1addfe04e3b8a286e2a774f887896f28755ceb031f4e5c45aa42acd9",
+    "companion/search.mjs": "e97e6cabf63ec7d07ebfc067fde2d7345e6f6b03e8da80c29b00a383444d60ce",
+    "companion/items.mjs": "0e1852d1bbeff3ae0f34431dc09ef9a1b0e771357575c7e4cd3eaf56025d738f",
+    "companion/compact.py": "c0300e352cbba4b04740952a5aa8c3c14873339569c96eb6527ebd56f2d97223",
+    "companion/test_spatial.mjs": "e7d0d23c23a428031a72e6eaa29fed445fd6b8a25bb567c5f6c76805c4c2b13f",
+    "companion/test_perception.mjs": "e91f06b8d599f7a52c05e87b5fc40f00c221130cb001a46fdad60cd7ba02a6ff",
+    "companion/verify_perception_live_v1.py": "3fed4110b29b8ced04692edbfc8c95c701e0ce6756084585aa0228f0d5fefb3b",
+    "p7/body_session_v2.py": "1fe527b601ed3343f2e59e53663660ad793078e68d3f9151c07ab37229c9004c",
+    "p7/protocol_1211.cjs": "236db5df4debe4436098b128525d8df19183e4f35713288353d07b4edd4d49a7",
+    "p7/proxy.py": "3f49356f54fc71781c2d0e6d0e06400e7af5543b43561b0aeae43ce4ea804eaf",
+    "evidence/kernel_perception_v1/CHECKLIST.md": "8428bfd1df153003021f057a0787d4ca791d9178adee4c4aff17981e596daa7c"
+  }
+}

@@ -8,7 +8,7 @@ import repair1211 from '../p7/protocol_1211.cjs';
 import {searchBlocks} from './search.mjs';
 import {placeNextBlock} from './placement.mjs';
 import {recoverInventory,craftChecked} from './inventory.mjs';
-import {inspectArea,placeAt,placeMany,verifyBlocks,validPosition} from './spatial.mjs';
+import {inspectArea,placeAt,placeMany,verifyBlocks,validPosition,validAreaArgs} from './spatial.mjs';
 import {collectTree,approachOwner,approachBlock} from './trees.mjs';
 import {observeItems,pickupItems,trackPickups} from './items.mjs';
 import {randomUUID} from 'node:crypto';
@@ -67,6 +67,10 @@ function interrupt() {
   if(current==='follow')current=null;
 }
 function allowed(action) {
+  if(action?.name==='inspect_area') {
+    if(Object.keys(action).sort().join()!=='args,name'||!validAreaArgs(action.args))throw new Error('invalid_observation_bounds');
+    return;
+  }
   const spec={inspect:[],observe_items:['range'],pickup_items:['entity_ids','item','count'],approach:[],follow:[],stop:[],search:['block','range'],go_to_block:['block','range'],collect:['block','count'],collect_tree:['block','range'],craft:['item','count'],give:['item','count'],place:['block'],recover_inventory:[],inspect_area:['radius'],place_at:['block','position'],place_many:['targets'],verify_blocks:['targets']};
   if(!action||!Object.hasOwn(spec,action.name)||!action.args||Object.keys(action).sort().join()!=['args','name'].join()||Object.keys(action.args).sort().join()!=spec[action.name].slice().sort().join())throw new Error('action_not_allowed');
   for(const [k,v] of Object.entries(action.args)) {
@@ -91,7 +95,7 @@ async function run(message) {
   }
   if(['inspect','inspect_area','observe_items','verify_blocks'].includes(action.name)) {
     const receipt=action.name==='inspect'?{verified:true,status:'observed'}:
-      action.name==='inspect_area'?inspectArea(bot,action.args.radius):
+      action.name==='inspect_area'?inspectArea(bot,action.args.radius,action.args):
       action.name==='observe_items'?{verified:true,status:'items_observed',observation_complete:true,dropped_items:observeItems(bot,action.args.range,bodySession)}:verifyBlocks(bot,action.args.targets);
     emit({kind:'receipt',id,receipt:{...receipt,observed:snapshot()}});return;
   }
