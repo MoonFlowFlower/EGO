@@ -1,0 +1,16 @@
+{"unix_s":1791209493.318611,"outcome":"attempt","mode":"pinned","attempt":1,"charge_id":"7062778c23834836913a824578a45344","reserved_usd":0.05,"model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791209494.1615598,"outcome":"response_opened","mode":"pinned","charge_id":"7062778c23834836913a824578a45344","model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791209521.496343,"outcome":"attempt","mode":"pinned","attempt":1,"charge_id":"e900436b995045299db4b4332e30cea0","reserved_usd":0.05,"model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791209522.5993812,"outcome":"response_opened","mode":"pinned","charge_id":"e900436b995045299db4b4332e30cea0","model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791209622.2734685,"outcome":"attempt","mode":"pinned","attempt":1,"charge_id":"3dfede2a81d74d2d8df178b20158f1cb","reserved_usd":0.05,"model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791209623.1802962,"outcome":"response_opened","mode":"pinned","charge_id":"3dfede2a81d74d2d8df178b20158f1cb","model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791209670.3545501,"outcome":"attempt","mode":"pinned","attempt":1,"charge_id":"5175dcd6598540029f21228f0d2fdf86","reserved_usd":0.05,"model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791209670.8390486,"outcome":"response_opened","mode":"pinned","charge_id":"5175dcd6598540029f21228f0d2fdf86","model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791209719.3979435,"outcome":"attempt","mode":"pinned","attempt":1,"charge_id":"a8e2fbce3fc84ebab307260be5c62299","reserved_usd":0.05,"model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791209720.188851,"outcome":"response_opened","mode":"pinned","charge_id":"a8e2fbce3fc84ebab307260be5c62299","model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791209844.0512867,"outcome":"attempt","mode":"pinned","attempt":1,"charge_id":"09148b7f66464757bf3ccb0e829cd75e","reserved_usd":0.05,"model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791209845.941469,"outcome":"response_opened","mode":"pinned","charge_id":"09148b7f66464757bf3ccb0e829cd75e","model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791209893.2408931,"outcome":"attempt","mode":"pinned","attempt":1,"charge_id":"60e0320a1c61429799314a2b5d624423","reserved_usd":0.05,"model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791209893.6927986,"outcome":"response_opened","mode":"pinned","charge_id":"60e0320a1c61429799314a2b5d624423","model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791209935.3699856,"outcome":"attempt","mode":"pinned","attempt":1,"charge_id":"617d77fe3d8e4bea8ff02dc22c65eaf3","reserved_usd":0.05,"model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791209935.9618795,"outcome":"response_opened","mode":"pinned","charge_id":"617d77fe3d8e4bea8ff02dc22c65eaf3","model":"deepseek/deepseek-v4.1-flash","route":"wafer"}

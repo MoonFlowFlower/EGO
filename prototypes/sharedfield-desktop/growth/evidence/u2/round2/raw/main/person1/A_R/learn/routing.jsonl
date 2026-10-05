@@ -1,0 +1,8 @@
+{"unix_s":1791207515.8769903,"outcome":"attempt","mode":"pinned","attempt":1,"charge_id":"ed12c01277e3405585088b242ed5f103","reserved_usd":0.05,"model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791207516.3246105,"outcome":"response_opened","mode":"pinned","charge_id":"ed12c01277e3405585088b242ed5f103","model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791207518.4515753,"outcome":"attempt","mode":"pinned","attempt":1,"charge_id":"8a45a434fc5845c2b8f06ec6423a9da3","reserved_usd":0.05,"model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791207518.9758375,"outcome":"response_opened","mode":"pinned","charge_id":"8a45a434fc5845c2b8f06ec6423a9da3","model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791207520.458309,"outcome":"attempt","mode":"pinned","attempt":1,"charge_id":"ac53b4e292884cc8a796d77846e40e8d","reserved_usd":0.05,"model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791207521.6307604,"outcome":"response_opened","mode":"pinned","charge_id":"ac53b4e292884cc8a796d77846e40e8d","model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791207523.6123934,"outcome":"attempt","mode":"pinned","attempt":1,"charge_id":"fdec112241b144bb92d097e85e8c0a1d","reserved_usd":0.05,"model":"deepseek/deepseek-v4.1-flash","route":"wafer"}
+{"unix_s":1791207524.150465,"outcome":"response_opened","mode":"pinned","charge_id":"fdec112241b144bb92d097e85e8c0a1d","model":"deepseek/deepseek-v4.1-flash","route":"wafer"}

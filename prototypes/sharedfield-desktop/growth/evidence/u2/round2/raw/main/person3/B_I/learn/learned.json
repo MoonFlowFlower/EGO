@@ -1,0 +1,315 @@
+{
+  "pid": 4060,
+  "source_map": {},
+  "questions": [],
+  "lengths": [
+    {
+      "dialogue": 1,
+      "speaker": "user",
+      "utf8_bytes": 42,
+      "characters": 14
+    },
+    {
+      "dialogue": 1,
+      "speaker": "assistant",
+      "utf8_bytes": 63,
+      "characters": 21
+    },
+    {
+      "dialogue": 1,
+      "speaker": "user",
+      "utf8_bytes": 51,
+      "characters": 17
+    },
+    {
+      "dialogue": 1,
+      "speaker": "user",
+      "utf8_bytes": 75,
+      "characters": 25
+    },
+    {
+      "dialogue": 1,
+      "speaker": "user",
+      "utf8_bytes": 54,
+      "characters": 18
+    },
+    {
+      "dialogue": 2,
+      "speaker": "user",
+      "utf8_bytes": 42,
+      "characters": 14
+    },
+    {
+      "dialogue": 2,
+      "speaker": "assistant",
+      "utf8_bytes": 54,
+      "characters": 18
+    },
+    {
+      "dialogue": 2,
+      "speaker": "user",
+      "utf8_bytes": 51,
+      "characters": 17
+    },
+    {
+      "dialogue": 2,
+      "speaker": "assistant",
+      "utf8_bytes": 54,
+      "characters": 18
+    },
+    {
+      "dialogue": 2,
+      "speaker": "user",
+      "utf8_bytes": 60,
+      "characters": 20
+    },
+    {
+      "dialogue": 2,
+      "speaker": "assistant",
+      "utf8_bytes": 60,
+      "characters": 20
+    },
+    {
+      "dialogue": 2,
+      "speaker": "user",
+      "utf8_bytes": 45,
+      "characters": 15
+    },
+    {
+      "dialogue": 2,
+      "speaker": "user",
+      "utf8_bytes": 57,
+      "characters": 19
+    },
+    {
+      "dialogue": 2,
+      "speaker": "user",
+      "utf8_bytes": 66,
+      "characters": 22
+    },
+    {
+      "dialogue": 3,
+      "speaker": "user",
+      "utf8_bytes": 42,
+      "characters": 14
+    },
+    {
+      "dialogue": 3,
+      "speaker": "assistant",
+      "utf8_bytes": 45,
+      "characters": 15
+    },
+    {
+      "dialogue": 3,
+      "speaker": "user",
+      "utf8_bytes": 42,
+      "characters": 14
+    },
+    {
+      "dialogue": 3,
+      "speaker": "assistant",
+      "utf8_bytes": 51,
+      "characters": 17
+    },
+    {
+      "dialogue": 3,
+      "speaker": "user",
+      "utf8_bytes": 39,
+      "characters": 13
+    },
+    {
+      "dialogue": 3,
+      "speaker": "assistant",
+      "utf8_bytes": 54,
+      "characters": 18
+    },
+    {
+      "dialogue": 3,
+      "speaker": "user",
+      "utf8_bytes": 42,
+      "characters": 14
+    },
+    {
+      "dialogue": 3,
+      "speaker": "user",
+      "utf8_bytes": 72,
+      "characters": 24
+    },
+    {
+      "dialogue": 3,
+      "speaker": "user",
+      "utf8_bytes": 75,
+      "characters": 25
+    },
+    {
+      "dialogue": 4,
+      "speaker": "user",
+      "utf8_bytes": 42,
+      "characters": 14
+    },
+    {
+      "dialogue": 4,
+      "speaker": "user",
+      "utf8_bytes": 87,
+      "characters": 29
+    },
+    {
+      "dialogue": 4,
+      "speaker": "user",
+      "utf8_bytes": 75,
+      "characters": 25
+    },
+    {
+      "dialogue": 4,
+      "speaker": "user",
+      "utf8_bytes": 66,
+      "characters": 22
+    },
+    {
+      "dialogue": 4,
+      "speaker": "user",
+      "utf8_bytes": 39,
+      "characters": 13
+    },
+    {
+      "dialogue": 4,
+      "speaker": "assistant",
+      "utf8_bytes": 24,
+      "characters": 8
+    },
+    {
+      "dialogue": 5,
+      "speaker": "user",
+      "utf8_bytes": 42,
+      "characters": 14
+    },
+    {
+      "dialogue": 5,
+      "speaker": "user",
+      "utf8_bytes": 90,
+      "characters": 30
+    },
+    {
+      "dialogue": 5,
+      "speaker": "user",
+      "utf8_bytes": 87,
+      "characters": 29
+    },
+    {
+      "dialogue": 5,
+      "speaker": "user",
+      "utf8_bytes": 81,
+      "characters": 27
+    },
+    {
+      "dialogue": 5,
+      "speaker": "user",
+      "utf8_bytes": 81,
+      "characters": 27
+    },
+    {
+      "dialogue": 5,
+      "speaker": "user",
+      "utf8_bytes": 72,
+      "characters": 24
+    },
+    {
+      "dialogue": 5,
+      "speaker": "user",
+      "utf8_bytes": 66,
+      "characters": 22
+    },
+    {
+      "dialogue": 5,
+      "speaker": "user",
+      "utf8_bytes": 51,
+      "characters": 17
+    },
+    {
+      "dialogue": 5,
+      "speaker": "assistant",
+      "utf8_bytes": 87,
+      "characters": 29
+    },
+    {
+      "dialogue": 5,
+      "speaker": "user",
+      "utf8_bytes": 24,
+      "characters": 8
+    },
+    {
+      "dialogue": 6,
+      "speaker": "user",
+      "utf8_bytes": 42,
+      "characters": 14
+    },
+    {
+      "dialogue": 6,
+      "speaker": "user",
+      "utf8_bytes": 63,
+      "characters": 21
+    },
+    {
+      "dialogue": 6,
+      "speaker": "user",
+      "utf8_bytes": 72,
+      "characters": 24
+    },
+    {
+      "dialogue": 6,
+      "speaker": "user",
+      "utf8_bytes": 69,
+      "characters": 23
+    },
+    {
+      "dialogue": 6,
+      "speaker": "user",
+      "utf8_bytes": 69,
+      "characters": 23
+    },
+    {
+      "dialogue": 6,
+      "speaker": "user",
+      "utf8_bytes": 51,
+      "characters": 17
+    },
+    {
+      "dialogue": 6,
+      "speaker": "assistant",
+      "utf8_bytes": 72,
+      "characters": 24
+    },
+    {
+      "dialogue": 6,
+      "speaker": "user",
+      "utf8_bytes": 21,
+      "characters": 7
+    },
+    {
+      "dialogue": 6,
+      "speaker": "user",
+      "utf8_bytes": 48,
+      "characters": 16
+    },
+    {
+      "dialogue": 6,
+      "speaker": "assistant",
+      "utf8_bytes": 36,
+      "characters": 12
+    },
+    {
+      "dialogue": 7,
+      "speaker": "user",
+      "utf8_bytes": 42,
+      "characters": 14
+    },
+    {
+      "dialogue": 8,
+      "speaker": "user",
+      "utf8_bytes": 42,
+      "characters": 14
+    }
+  ],
+  "source_count": 51,
+  "understanding_count": 3
+}

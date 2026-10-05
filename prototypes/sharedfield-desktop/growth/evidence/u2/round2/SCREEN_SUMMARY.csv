@@ -1,5 +1,5 @@
-﻿round,category,stage,items,decisions,invalid,target_hits,reported_cost_usd
-2,P,prior,24,48,0,17,0.005309325
-2,P,ceiling,24,48,0,48,0.005703675
-2,Q,prior,24,24,0,12,0.00327135
-2,Q,ceiling,24,48,0,43,0.00577845
+﻿round,category,stage,items,decisions,invalid,target_hits,reported_cost_usd
+2,P,prior,24,48,0,17,0.005309325
+2,P,ceiling,24,48,0,48,0.005703675
+2,Q,prior,24,24,0,12,0.00327135
+2,Q,ceiling,24,48,0,43,0.00577845

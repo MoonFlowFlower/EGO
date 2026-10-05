@@ -1,0 +1,23 @@
+{
+  "status": "complete",
+  "pid": 56376,
+  "deletion": {
+    "removed": {
+      "status": "deleted",
+      "removed_records": 3,
+      "removed_ids": [
+        "273b76e4547245aca501a0c03f3a465d",
+        "4e29b45c86524d7688bd23ac095cb320",
+        "bb226434fa254f19a21093ffd6f210e6"
+      ]
+    },
+    "checked_text_count": 3,
+    "matched_text_hashes": [],
+    "preserved_unrelated": true,
+    "passed": true,
+    "archive_files": [
+      "state.sqlite"
+    ],
+    "scope": "Canonical experimental SQLite archive including journals; synthetic scientific raw logs are retained separately."
+  }
+}

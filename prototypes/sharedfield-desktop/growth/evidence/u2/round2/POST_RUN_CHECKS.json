@@ -1,0 +1,139 @@
+{
+  "kind": "post_run_readonly_recomputation_not_new_trial",
+  "passed": true,
+  "issues": [],
+  "decisions": 360,
+  "all_decisions_valid": true,
+  "independent_criteria": {
+    "H1": true,
+    "H2": false,
+    "Q": false,
+    "W": true,
+    "deletion": false
+  },
+  "P_counts": {
+    "B_R": {
+      "correct": 41,
+      "n": 46
+    },
+    "B_I": {
+      "correct": 4,
+      "n": 46
+    },
+    "B_N": {
+      "correct": 5,
+      "n": 46
+    },
+    "A_R": {
+      "correct": 41,
+      "n": 46
+    }
+  },
+  "H2_pairs": {
+    "B_only": 2,
+    "A_only": 2
+  },
+  "Q": {
+    "appropriate_ask": {
+      "correct": 1,
+      "n": 6
+    },
+    "intrusions": 4,
+    "no_count": 6,
+    "correct_use_after_answer": {
+      "correct": 4,
+      "n": 5
+    },
+    "asked_ids": [
+      "Q25",
+      "Q29",
+      "Q44",
+      "Q59",
+      "Q61"
+    ]
+  },
+  "W": {
+    "True": {
+      "correct": 12,
+      "n": 12
+    },
+    "False": {
+      "correct": 12,
+      "n": 12
+    }
+  },
+  "W_no_teaching": {
+    "correct": 23,
+    "n": 24
+  },
+  "deletion_follow": {
+    "correct": 3,
+    "n": 8
+  },
+  "deletion_N_same_cases": {
+    "correct": 1,
+    "n": 8
+  },
+  "byte_rechecks": [
+    {
+      "persona": "1",
+      "removed_records": 3,
+      "reconstructed_texts": 3,
+      "missing_records": [],
+      "byte_matches": [],
+      "removed_ids_and_dependency_edges_absent": true,
+      "passed": true,
+      "archive_sha256": "495917cf5aa601e2fa2ff2a248619590ebffec02318ff8895387311d9c55d798"
+    },
+    {
+      "persona": "2",
+      "removed_records": 4,
+      "reconstructed_texts": 4,
+      "missing_records": [],
+      "byte_matches": [],
+      "removed_ids_and_dependency_edges_absent": true,
+      "passed": true,
+      "archive_sha256": "f7ee4f33da1350b52c720713774081b97f9ee3860b54d849ee30250d17d5f6e0"
+    },
+    {
+      "persona": "3",
+      "removed_records": 7,
+      "reconstructed_texts": 7,
+      "missing_records": [],
+      "byte_matches": [],
+      "removed_ids_and_dependency_edges_absent": true,
+      "passed": true,
+      "archive_sha256": "51908a064f27a2ee8bc149671d92f5da7a9628fdaebd3499376c1328ed797fb8"
+    }
+  ],
+  "requests": 408,
+  "responses": 408,
+  "request_setting_mismatches": [],
+  "providers": {
+    "Wafer": 408
+  },
+  "response_models": {
+    "deepseek/deepseek-v4.1-flash": 408
+  },
+  "decision_reasoning_tokens": 0,
+  "resource_by_stage": {
+    "consolidation": {
+      "calls": 48,
+      "cost_usd": 0.214477215
+    },
+    "learning": {
+      "calls": 24,
+      "cost_usd": 0.01011762
+    },
+    "test": {
+      "calls": 328,
+      "cost_usd": 0.13511031
+    },
+    "deleted": {
+      "calls": 8,
+      "cost_usd": 0.00519318
+    }
+  },
+  "wall_seconds": 3720.3316333293915,
+  "byte_scope": "Actual post-deletion canonical SQLite and sidecars only; synthetic raw scientific logs intentionally retained. Includes UTF8 and JSON-escaped text variants; checks record IDs and dependency edges."
+}

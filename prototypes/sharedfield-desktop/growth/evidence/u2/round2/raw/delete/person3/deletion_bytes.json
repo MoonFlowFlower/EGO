@@ -1,0 +1,23 @@
+{
+  "removed": {
+    "status": "deleted",
+    "removed_records": 7,
+    "removed_ids": [
+      "08f5535e1f1249c08147a8c2d75cb48f",
+      "24eccd2f2bc148278923865db5c573be",
+      "32c9587e36c74059b6b45dd4e83dcd57",
+      "53cc437f05914dbb97e9474e74d446b5",
+      "cc97cd28443d48b3ab9aa4648ced9c58",
+      "d6082c73a83b4f2db79dfab22580e05f",
+      "d9b514b3f1f7435a97ef412cdda54ced"
+    ]
+  },
+  "checked_text_count": 7,
+  "matched_text_hashes": [],
+  "preserved_unrelated": true,
+  "passed": true,
+  "archive_files": [
+    "state.sqlite"
+  ],
+  "scope": "Canonical experimental SQLite archive including journals; synthetic scientific raw logs are retained separately."
+}
