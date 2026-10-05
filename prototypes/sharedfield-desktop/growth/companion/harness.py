@@ -16,6 +16,7 @@ from .work import validate_action, validate_goal, create_work, save_work, incorp
 from .interaction import input_event, dialogue, bind_request, steer_work, goal_problem, action_problem, observation_key, reconcile_pickups, normalize_transition, OBSERVATIONS
 from .recall import recall, matched_cards
 from .model import DecisionError
+from .stall import question as stalled_question
 
 PROMPT = Path(__file__).with_name('harness_prompt.txt').read_text(encoding='utf-8')
 RECOVERABLE = {'crafting_grid_or_cursor_not_clear', 'craft_inventory_checked', 'placement_material_missing',
@@ -73,6 +74,7 @@ class Harness(Engine):
         work = None
         execution_granted = False
         parents, spoken, receipts = [], [], []
+        action_records=[]
         try:
             source, cached = m.begin(event_id, channel, text)
             if cached is not None:
@@ -164,6 +166,10 @@ class Harness(Engine):
                                                    'task_title': work['title'] if work else None,
                                                    'action': action, 'receipt': receipt}, parents)
                 parents.append(identity)
+                action_records.append({'record_id':identity,'action':copy.deepcopy(action),
+                    'sampled_at':receipt.get('observed',{}).get('sampled_at'),
+                    'receipt':{k:copy.deepcopy(v) for k,v in receipt.items() if k!='observed'},
+                    'authority':'past tool result, not new authorization or a replacement for current body'})
                 self.audit.write('actions.jsonl', {'event_id': event_id, 'step': step, 'action': action['name'],
                                                   'verified': receipt.get('verified', False), 'status': receipt.get('status')})
 
@@ -462,7 +468,17 @@ class Harness(Engine):
                             repeated_observations += int(observed_key in observations)
                             observations.add(observed_key)
                             if repeated_observations >= 4 or observations_without_effect >= 12:
-                                wait_for_user('这些观察还没找到可用的新线索。请指出目标位置或补充你指的对象。', 'observation_without_new_actionable_information'); break
+                                question='这些观察还没找到可用的新线索。请指出目标位置或补充你指的对象。'
+                                if step+1<self.max_decisions and time.monotonic()-started<self.max_seconds:
+                                    try:
+                                        if work:work['decisions']+=1
+                                        question=stalled_question(self.model,latest['user'],work,self.body.snapshot(),action_records,
+                                                                  'observation_without_new_actionable_information')
+                                    except (ValueError,DecisionError):
+                                        self.audit.write('lifecycle.jsonl',{'event':'stall_explanation_invalid','event_id':event_id})
+                                    if epoch!=self._epoch:
+                                        persist('paused_by_owner','late_decision_discarded');say(cancelled());break
+                                wait_for_user(question, 'observation_without_new_actionable_information'); break
                         else:
                             failures = 0
                             observations_without_effect = repeated_observations = 0

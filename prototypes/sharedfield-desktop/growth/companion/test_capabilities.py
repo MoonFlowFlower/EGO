@@ -17,6 +17,22 @@ def spatial(conditions):return dict(title='按坐标构造并保留空间',steps
 
 
 class CapabilityTests(unittest.TestCase):
+    def test_stagnation_question_uses_evidence_and_preserves_pending_work(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path=Path(folder)/'state.sqlite';body=Body();inspect=dict(name='inspect',args={})
+            question='现有位置没有可用空位，你能带我到旁边那块空地吗？'
+            model=Model(decision(goal=goal(2),action=inspect),*[decision(action=inspect) for _ in range(4)],{'reply':question})
+            h=Harness(path,model,body,Audit(),max_decisions=6,input_router=lambda *args:dict(mode='task',task_kind='ordinary'))
+            answer=h.run('stall','verification','放两块')
+            self.assertIn(question,answer);self.assertEqual(model.calls,6);self.assertEqual(len(body.actions),5);self.assertFalse(body.blocks)
+            self.assertFalse(model.contexts[-1]['execution_boundary']['further_actions_allowed'])
+            self.assertTrue(all(r['record_id'] for r in model.contexts[-1]['tool_evidence']))
+            m=Memory(path)
+            try:
+                w=m.goal()['work'];self.assertEqual(w['status'],'waiting_user');self.assertEqual(w['awaiting']['question'],question)
+                self.assertEqual(w['done_when'],goal(2)['done_when'])
+            finally:m.close()
+
     def test_truncated_output_has_no_effect_and_bounded_same_model_repair(self):
         def truncated(_):raise DecisionError('model_output_truncated')
         with tempfile.TemporaryDirectory() as folder:
