@@ -59,7 +59,7 @@ def freeze():
         raise Stop('engineering_checked_different_source')
     if read(MATERIALS) != build():
         raise Stop('material_generator_mismatch')
-    value = {'version': 'u3-v2-prepaid-strata-clarification', 'frozen_at_utc': utc(), 'source_sha256': pins(),
+    value = {'version': 'u3-v3-authorized-daily-budget', 'frozen_at_utc': utc(), 'source_sha256': pins(),
              'seed': SEED, 'model': MODEL, 'route': ROUTE, 'temperature': 0,
              'reasoning': False, 'max_tokens': 1024, 'criteria_verbatim': CRITERIA,
              'u3a_gate_scope_verbatim': A_GATE_SCOPE,
@@ -68,9 +68,8 @@ def freeze():
              'stops': 'U2: single concurrency; >=2s between starts; 429/502/503/504 or connection only one same-input retry; second failure stops lane; two invalid outputs stop lane; 3600 seconds per lane; no replay/replacement/content retry.',
              'preregistration': 'All alternative branches, reactions and deterministic prior-only selection code frozen before ANY paid call. Materialization adds a derived hash manifest; it does not edit this source.',
              'claim_ceiling': 'Synthetic learning of when to speak beyond fixed rules only; no subjective agency.'}
-    superseded = OUT / 'preflight_versions/v1/FROZEN.json'
-    if superseded.exists():
-        value['superseded_prepaid_manifest_sha256'] = sha(superseded)
+    value['superseded_prepaid_manifests'] = {p.relative_to(OUT).as_posix(): sha(p)
+        for p in sorted((OUT / 'preflight_versions').glob('*/FROZEN.json'))}
     write(FROZEN, value, exclusive=True)
     print(json.dumps({'frozen_sha256': sha(FROZEN), 'budget': budget_snapshot()}, ensure_ascii=False))
 

@@ -1,0 +1,14 @@
+{
+  "at_utc": "2026-10-05T19:37:42.949941+00:00",
+  "reason": "insufficient_daily_balance",
+  "budget": {
+    "local_day": "2026-10-05",
+    "timezone": "America/Winnipeg",
+    "limit_usd": 1,
+    "used_usd": 0.429652205,
+    "unknown_included_usd": 0,
+    "remaining_usd": 0.570347795
+  },
+  "remaining_estimate_usd": 0.6,
+  "paid_calls_started_now": 0
+}

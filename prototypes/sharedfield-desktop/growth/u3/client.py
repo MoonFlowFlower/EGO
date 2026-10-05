@@ -6,7 +6,7 @@ import time
 import urllib.error
 from pathlib import Path
 
-from companion.budget import DailyLedger
+from companion.budget import DailyLedger, DAILY_LIMIT
 from companion.model import Model, DecisionError
 from growthlab.models import read_key
 from growthlab.records import telemetry
@@ -28,7 +28,7 @@ class Client:
         key = read_key()
         self.audit = AuditLog(self.folder, (key,))
         self.transport = RoutedTransportV2(api_key=key, mode='pinned', route_index=0,
-            budget_path=DEFAULT_BUDGET, limit=1, log_dir=self.folder)
+            budget_path=DEFAULT_BUDGET, limit=DAILY_LIMIT, log_dir=self.folder)
         self.transport.timeout = 60
         self.transport.ledger = DailyLedger(DEFAULT_BUDGET)
         self.transport.set_audit(self.audit)

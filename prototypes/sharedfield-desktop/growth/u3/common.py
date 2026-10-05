@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import sqlite3
 from zoneinfo import ZoneInfo
+from companion.budget import DAILY_LIMIT, OWNER_ZONE
 
 from growthlab.records import ROOT
 from p7.proxy import DEFAULT_BUDGET
@@ -36,13 +37,13 @@ def utc():
 
 
 def budget_snapshot(path=DEFAULT_BUDGET, *, now=None):
-    day = (now or datetime.now(timezone.utc)).astimezone(ZoneInfo('America/Winnipeg')).date().isoformat()
+    day = (now or datetime.now(timezone.utc)).astimezone(ZoneInfo(OWNER_ZONE)).date().isoformat()
     with closing(sqlite3.connect(Path(path).resolve().as_uri() + '?mode=ro', uri=True)) as db:
         used, unknown = db.execute('''SELECT COALESCE(SUM(c.usd),0),
             COALESCE(SUM(CASE WHEN c.status='reserved_unknown' THEN c.usd ELSE 0 END),0)
             FROM charges c JOIN charge_days d ON c.id=d.id WHERE d.local_day=?''', (day,)).fetchone()
-    return {'local_day': day, 'timezone': 'America/Winnipeg', 'limit_usd': 1,
-            'used_usd': used, 'unknown_included_usd': unknown, 'remaining_usd': max(0, 1-used)}
+    return {'local_day': day, 'timezone': OWNER_ZONE, 'limit_usd': DAILY_LIMIT,
+            'used_usd': used, 'unknown_included_usd': unknown, 'remaining_usd': max(0, DAILY_LIMIT-used)}
 
 
 def pins():

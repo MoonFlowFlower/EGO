@@ -71,9 +71,9 @@ class ClientTests(unittest.TestCase):
         ledger = DailyLedger(self.root / 'midnight.sqlite', clock=lambda: clock[0])
         ledger.reserve(.2)
         before = (self.root / 'midnight.sqlite').read_bytes()
-        self.assertAlmostEqual(budget_snapshot(ledger.path, now=clock[0])['remaining_usd'], .8)
+        self.assertAlmostEqual(budget_snapshot(ledger.path, now=clock[0])['remaining_usd'], 3.8)
         clock[0] = datetime(2026, 10, 6, 5, 0, tzinfo=timezone.utc)
-        self.assertEqual(budget_snapshot(ledger.path, now=clock[0])['remaining_usd'], 1)
+        self.assertEqual(budget_snapshot(ledger.path, now=clock[0])['remaining_usd'], 4)
         self.assertEqual((self.root / 'midnight.sqlite').read_bytes(), before)
 
 

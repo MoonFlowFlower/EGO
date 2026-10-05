@@ -1,8 +1,8 @@
 {
-  "version": "u3-v3-authorized-daily-budget",
-  "frozen_at_utc": "2026-10-05T19:43:46.663241+00:00",
+  "version": "u3-v2-prepaid-strata-clarification",
+  "frozen_at_utc": "2026-10-05T19:37:42.559172+00:00",
   "source_sha256": {
-    "companion/budget.py": "ddd5d2a8fcd9963a60b9dfad0c55590ac6e9d3ddd70bb7e15258297fd73ceefa",
+    "companion/budget.py": "b413e56110182f67f3c53aec0d35618650f27dd12e0aae373b51b9a7a2b5720e",
     "companion/compact.py": "c0300e352cbba4b04740952a5aa8c3c14873339569c96eb6527ebd56f2d97223",
     "companion/memory.py": "9a74aaeb7598ad9acae029b59909b2f41ea67de74f8b36eb3b88e385275c00a8",
     "companion/model.py": "06dbf36ede7a6d46954961cfa0a9ac66ad98fa7228bc559f27fd605ad729c6a6",
@@ -27,19 +27,19 @@
     "u3/audit.py": "dfec067c426b3bc0a4ec5473969cd115b1c8083d7369fe4a7fe18966751cab2f",
     "u3/baselines.py": "d67919e48a9abd857e810f90d205df2105c030f61a323f92061416dad589a503",
     "u3/check_engineering.py": "4c493ee0b5a051c6c1ed8314a381c7a05e8f8295c293dde6ce9a7428a36875cd",
-    "u3/client.py": "a3481ea1d245bbcfec385271a62916de1205b2a3db34857f7db8555fbbfa6b57",
-    "u3/common.py": "51210c41bcd41999da2a772600603688c70064db4f06e7bdf067089171f2f025",
+    "u3/client.py": "0a2052f8528b1e5ebb86f91e968a03b2fce634b661ec5e02bed2079a52ce8eb0",
+    "u3/common.py": "2bfcf55d4f5f613a166d4c595ad6dd9b1620128cbbc640c562be8f155b3db525",
     "u3/MATERIALS.json": "b4ce6d9ebc6074185d5f8ffecfb6806d63c11117bf495e842fe794454655ec38",
     "u3/materials.py": "164ff40cfc220022c5ad6d369b5737147211a6ce458a07c5ea876229113072c2",
     "u3/protocol.py": "27c271c8030c8f4e04eb7d3dc20accab00a194ecd472744a6f2db6354011e4d3",
-    "u3/README.md": "806afcf3c0f71baa9d42cd1cba41127834a28cc6e1401edd6bd1a01b1e55e3b5",
+    "u3/README.md": "63cc52940a9934a08b26e89b92d533c299cecc3a8d3441f65b6692593086c71b",
     "u3/report.py": "9bac8d8444da88c834aca49075ced28df6dc4b6aae9511c747ba40babc027b9f",
-    "u3/run.py": "7819932ece784ff2377676aa5fa691f81f4b89da0268ecdbbf8b12ad9cfe5229",
+    "u3/run.py": "df5778ec87be6c177e04754797b0a58570397a911469e0957f075b33dc4b1926",
     "u3/SCREEN_POLICY.json": "14d6dbbf63d6409637e6c15951b53ee215814bb38afd9df95fd7b80d4b2b1317",
     "u3/selection.py": "41855abdb180c90a532d7d525db02c70e8d9ff91a21d6c1c74a46863d43496b2",
     "u3/statistics.py": "614bfc7cd6c0de8960ff01308f702da20623389b9a9b4f1a897bd1902525c04e",
     "u3/study.py": "4f0b148c83c938eba8609f4ac2af5f3ccab8477787b0b11109f9117f65e2055b",
-    "u3/test_client.py": "86254065d0aeb6bb702be5f3a3e95da2f692c34dfaf3dfac2201e6bd990508fb",
+    "u3/test_client.py": "52ef91cc9dd4e4f703e6df2f41a5450fe0025ebef767f7ce5b2a0431686221a2",
     "u3/test_protocol.py": "6f6c1b5be2737edcf40d5ef0702c4e3abe7baf7c06c6a69288f34f15f0f754e5",
     "u3/test_report.py": "fb5a5fef9ce18876d034b001b6e4ff0b35a597a8a29990bfaa83411840db9a64",
     "u3/test_run.py": "e4099b06cc667adf4322617f81c191fbea9ffe7213aa7bfce30f291df28c8302",
@@ -77,13 +77,10 @@
     "thresholds_and_model_changed": false
   },
   "evidence_sha256": {
-    "evidence/u3/ENGINEERING.json": "409745c2c0569fc950066850e9debefe6264a3b4ecdd326d0ef8dea793ce42f7"
+    "evidence/u3/ENGINEERING.json": "e13f1c0014d418271805bcc210109ef5d814216f84d3f7be4a1b7b0b73bcfcd9"
   },
   "stops": "U2: single concurrency; >=2s between starts; 429/502/503/504 or connection only one same-input retry; second failure stops lane; two invalid outputs stop lane; 3600 seconds per lane; no replay/replacement/content retry.",
   "preregistration": "All alternative branches, reactions and deterministic prior-only selection code frozen before ANY paid call. Materialization adds a derived hash manifest; it does not edit this source.",
   "claim_ceiling": "Synthetic learning of when to speak beyond fixed rules only; no subjective agency.",
-  "superseded_prepaid_manifests": {
-    "preflight_versions/v1/FROZEN.json": "0bd7d516271319670788def09d1093ac43944a88ffaf2a496ce9476bc6d1ac86",
-    "preflight_versions/v2/FROZEN.json": "edf6e0ad04610c9e34333f125488420c6e49808948182dc22abcac2a0f7815be"
-  }
+  "superseded_prepaid_manifest_sha256": "0bd7d516271319670788def09d1093ac43944a88ffaf2a496ce9476bc6d1ac86"
 }

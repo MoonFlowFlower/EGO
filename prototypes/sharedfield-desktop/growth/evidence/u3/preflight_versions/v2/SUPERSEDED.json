@@ -1,0 +1,11 @@
+{
+  "at_utc": "2026-10-05T19:42:45.129667+00:00",
+  "status": "superseded_before_any_paid_call",
+  "source_commit": "df606618e93f14043717bf868c56e4da478ebd3a",
+  "source_hashes_match_git_commit": true,
+  "manifest_sha256": "edf6e0ad04610c9e34333f125488420c6e49808948182dc22abcac2a0f7815be",
+  "cloud_calls": 0,
+  "cloud_cost_usd": 0,
+  "reason": "Owner explicitly authorized the shared daily cap increase from 1 USD to 4 USD and U3 today. Only daily-budget plumbing and tests change; experimental criteria, material, prompts, model and scoring remain frozen.",
+  "original_frozen_source_recovery": "git show source_commit:prototypes/sharedfield-desktop/growth/<source_sha256 key>"
+}
