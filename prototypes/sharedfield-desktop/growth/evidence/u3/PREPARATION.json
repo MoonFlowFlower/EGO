@@ -1,6 +1,6 @@
 {
-  "at_utc": "2026-10-05T19:23:34.143902+00:00",
-  "status": "engineering_ready_not_frozen_not_started",
+  "at_utc": "2026-10-05T19:32:13.678074+00:00",
+  "status": "frozen_not_started_budget_deferred",
   "source_origin_commit": "1bac5db",
   "design_version": "v0.9",
   "required_sections_read": [
@@ -10,7 +10,7 @@
     "22",
     "23"
   ],
-  "tests_passed": 35,
+  "tests_passed": 36,
   "fresh_process_checks": 4,
   "cloud_calls": 0,
   "new_cloud_cost_usd": 0,
@@ -26,7 +26,6 @@
   "F1_estimate_usd": 0.1,
   "F1_status": "not_started_before_U3b",
   "blockers": [
-    "U3a aligned-item screening policy requires explicit owner answer",
     "2026-10-05 balance is below the 0.60 USD U3 estimate"
   ],
   "next_followup": {
@@ -34,7 +33,7 @@
     "local_date": "2026-10-06",
     "local_time": "00:10",
     "timezone": "America/Winnipeg",
-    "condition": "screen policy explicitly resolved and budget rechecked"
+    "condition": "verify existing frozen hashes and recheck daily budget; owner screening policy is resolved"
   },
   "not_results": [
     "A priors and screening",
@@ -43,5 +42,15 @@
     "F1 behavioural forgetting"
   ],
   "root_agent_contract_note": "AGENTS.md references three route-state/context files absent in this checkout; current explicit owner card and growth design used as the bounded task authority.",
-  "implementation_commit": "a724444"
+  "implementation_commit": "f1cdc5f9dd4af26a3e0314ee571fa2f5ad7ff3f8",
+  "screen_policy": {
+    "status": "owner_resolved",
+    "aligned_policy": "retain_calibration",
+    "owner_confirmation_date": "2026-10-05",
+    "owner_answer": "保留先验一致的校准题，分层报告",
+    "calibration_ceiling_required": true,
+    "counter_prior_rule": "exclude if independent no-memory screening chooses a correct action",
+    "thresholds_and_model_changed": false
+  },
+  "frozen_manifest_sha256": "0bd7d516271319670788def09d1093ac43944a88ffaf2a496ce9476bc6d1ac86"
 }
