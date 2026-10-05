@@ -1,0 +1,10 @@
+{
+  "at": "2026-10-04T20:39:08.794955-05:00",
+  "reason": "first startup retained obsolete hardcoded 0.50 cap; preserve that failure",
+  "files": {
+    "companion/runtime.py": "941678a14894e790c86a5e292e4efe9d7b27f79c58c076d6e2776f5ef2546cf2",
+    "companion/test_runtime_budget.py": "cf19fe3489a5a5d9d125ad212fced67e203a51e6fdcad9c37e40ac94864acd57",
+    "companion/test_turns.py": "d63ece960aba1bd652ee6b6223ac6da99f50da066c7151c384569253b1235ba0",
+    "evidence/kernel_perception_v1/LIVE_CHECKLIST.md": "9ee51e66807336fdaea4439fc04308c023cda8c79251a512236a221b6e51d0c4"
+  }
+}

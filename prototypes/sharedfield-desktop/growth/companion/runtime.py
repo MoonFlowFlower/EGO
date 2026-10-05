@@ -1,5 +1,6 @@
 """Independent, deadline-owning supervisor. Secrets are never passed in argv."""
 import json
+import math
 import os
 from pathlib import Path
 import threading
@@ -17,6 +18,14 @@ from .model import Model
 from .memory import Memory
 from .server import KernelServer
 from .reconnect import ReconnectSchedule
+
+
+def batch_limit(budget):
+    values = [budget[key] for key in ('start_total', 'extra_cap', 'limit')]
+    if any(type(value) not in (int, float) or not math.isfinite(value) or value < 0 for value in values):
+        raise ValueError('invalid_batch_budget')
+    start, extra, limit = values
+    return min(5, start + extra, limit)
 
 
 class Runtime:
@@ -49,7 +58,7 @@ class Runtime:
                     json.dump({'start_total':ledger.total(),'extra_cap':.50,'limit':min(5,ledger.total()+.50)},f)
             except FileExistsError:pass
             budget=json.loads(budget_file.read_bytes())
-            limit=min(5,budget['start_total']+.50,budget['limit'])
+            limit=batch_limit(budget)
             self.transport=RoutedTransportV2(api_key=key,mode='pinned',route_index=0,
                 budget_path=DEFAULT_BUDGET,limit=limit,log_dir=self.folder)
             self.transport.set_audit(self.audit)
