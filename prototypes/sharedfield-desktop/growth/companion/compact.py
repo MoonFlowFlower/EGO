@@ -1,6 +1,6 @@
 """Lossless spatial compression and exact-alias removal for model input only."""
 import copy
-from collections import defaultdict
+from collections import defaultdict,Counter
 
 
 def regions(cells):
@@ -59,6 +59,9 @@ def project(value):
             and (c[3] is None or isinstance(c[3],str)) for c in cells) and len({tuple(c[:3]) for c in cells})==len(cells):
         result.pop('cells');result.update(observed_regions=regions(cells),observed_cell_count=len(cells),
             spatial_encoding='inclusive integer xyz regions; null=unknown, air=observed empty; outside these regions is not observed')
+        counts=Counter(c[3] for c in cells)
+        result['observation_counts']={'known':len(cells)-counts[None],'unknown':counts[None],
+                                     'by_block':{k:v for k,v in counts.items() if k is not None}}
     blocks=value.get('blocks')
     if value.get('status')=='goal_blocks_checked' and isinstance(blocks,list) and blocks and all(isinstance(b,dict)
             and set(b)=={'block','position','observed_block','matches'} and valid_point(b['position']) for b in blocks):

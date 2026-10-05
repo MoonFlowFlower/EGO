@@ -15,6 +15,7 @@ from .context import conversation_context, user_history, historical_actions
 from .work import validate_action, validate_goal, create_work, save_work, incorporate, preliminary_completion, fingerprint
 from .interaction import input_event, dialogue, bind_request, steer_work, goal_problem, action_problem, observation_key, reconcile_pickups, normalize_transition, OBSERVATIONS
 from .recall import recall, matched_cards
+from .model import DecisionError
 
 PROMPT = Path(__file__).with_name('harness_prompt.txt').read_text(encoding='utf-8')
 RECOVERABLE = {'crafting_grid_or_cursor_not_clear', 'craft_inventory_checked', 'placement_material_missing',
@@ -282,12 +283,22 @@ class Harness(Engine):
                                'information_need': intent.get('information_need'), 'memory_candidates': requested_memories,
                                'receipts': [{k:v for k,v in r.items() if k != 'observed'} for r in receipts[-6:]], 'harness_notice': notice,
                                'remaining_decisions': self.max_decisions-step}
-                    if previous_decision is not None:
+                    if previous_decision is not None or isinstance(notice,dict) and notice.get('kind')=='invalid_model_output':
                         context['execution_feedback']={'previous_decision':previous_decision,
                             'event_id':event_id,'step':step,'receipts':context['receipts'],
                             'harness_notice':notice,'current_body':state,'work':work,
                             'semantics':'continuation after the preceding decision; not a new user request or new authorization'}
-                    decision = self.model.decide(PROMPT, context)
+                    try:
+                        decision = self.model.decide(PROMPT, context)
+                    except DecisionError as error:
+                        invalid_decisions+=1
+                        notice={'kind':'invalid_model_output','code':error.code,
+                                'effect':'no decision executed; provide one concise valid decision using existing evidence, or state the actual blocker'}
+                        self.audit.write('lifecycle.jsonl',{'event':'model_output_rejected','event_id':event_id,
+                                                          'error_code':error.code,'attempt':invalid_decisions})
+                        if invalid_decisions>=3:
+                            persist('blocked',error.code);say('连续三次模型输出不完整，已停止；没有执行这些无效输出。');break
+                        continue
                     previous_decision = copy.deepcopy(decision)
                     if epoch != self._epoch:
                         persist('paused_by_owner', 'late_decision_discarded'); say(cancelled()); break
@@ -494,7 +505,7 @@ class Harness(Engine):
                 if work and work['status'] == 'yielded':
                     persist('interrupted', 'input_requires_explicit_resume')
             if execution_granted and epoch==self._epoch:self.body.stop()
-            problem = error.code if isinstance(error, ProxyError) else type(error).__name__
+            problem = error.code if isinstance(error, (ProxyError,DecisionError)) else type(error).__name__
             if execution_granted and work and parents:
                 work['status'] = 'blocked'; work['last_problem'] = problem
                 save_work(m, work, parents)

@@ -17,6 +17,12 @@ def expand(rs):
 
 
 class CompactTests(unittest.TestCase):
+    def test_readability_counts_do_not_confuse_query_success_with_known_cells(self):
+        unknown=project({'verified':True,'cells':[[x,70,0,None] for x in range(3)]})
+        self.assertEqual(unknown['observation_counts'],{'known':0,'unknown':3,'by_block':{}})
+        mixed=project({'cells':[[0,70,0,'air'],[1,70,0,'stone'],[2,70,0,None]]})
+        self.assertEqual(mixed['observation_counts'],{'known':2,'unknown':1,'by_block':{'air':1,'stone':1}})
+
     def test_sparse_unknown_air_solid_roundtrip_does_not_fill_holes(self):
         random.seed(41)
         cells=[[x,y,z,random.choice(['stone','air',None])] for x in range(-3,5) for y in range(4) for z in range(3) if random.random()>.2]

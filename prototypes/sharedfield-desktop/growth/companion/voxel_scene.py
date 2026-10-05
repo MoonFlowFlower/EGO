@@ -46,12 +46,12 @@ class VoxelScene:
     def standable(self,p):
         return self.block(p)=='air' and self.block((p[0],p[1]+1,p[2]))=='air' and self.block((p[0],p[1]-1,p[2])) not in (None,'air')
 
-    def reach(self,target):
+    def reach(self,target,distance=4.5):
         # Walk only through currently supported free cells; cannot dig or scaffold.
         start=xyz(self.state['position']);queue=deque([start]);seen={start}
         while queue and len(seen)<=4096:
             p=queue.popleft()
-            if math.dist(p,target)<=4.5 and target not in (p,(p[0],p[1]+1,p[2])):
+            if math.dist(p,target)<=distance and target not in (p,(p[0],p[1]+1,p[2])):
                 self.state['position']=point(p);return True
             for dx,dz in ((1,0),(-1,0),(0,1),(0,-1)):
                 for dy in (0,1,-1):
@@ -86,6 +86,9 @@ class VoxelScene:
         elif name=='verify_blocks':
             blocks=[{**t,'observed_block':self.block(xyz(t['position'])), 'matches':self.block(xyz(t['position']))==t['block']} for t in args['targets']]
             r.update(verified=bool(blocks) and all(t['matches'] for t in blocks),status='goal_blocks_checked',blocks=blocks)
+        elif name=='approach':
+            success=self.reach(xyz(self.state['owner']['position']),1.5)
+            r.update(verified=success,status='approach_checked',navigation='no_break_no_place')
         elif name=='place_at':r=self.place(args)
         elif name=='place_many':
             receipts=[]

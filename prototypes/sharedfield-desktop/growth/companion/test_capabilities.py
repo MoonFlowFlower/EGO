@@ -7,7 +7,7 @@ from .test_harness import Model, Body, decision, goal
 from .test_kernel import Audit
 from .work import validate_action, validate_goal, create_work, incorporate
 from .voxel_scene import VoxelScene, grade_hut
-from .model import request_messages, request_payload
+from .model import request_messages, request_payload, DecisionError
 from p7.proxy import prepare_request
 from .memory import Memory
 
@@ -17,6 +17,27 @@ def spatial(conditions):return dict(title='按坐标构造并保留空间',steps
 
 
 class CapabilityTests(unittest.TestCase):
+    def test_truncated_output_has_no_effect_and_bounded_same_model_repair(self):
+        def truncated(_):raise DecisionError('model_output_truncated')
+        with tempfile.TemporaryDirectory() as folder:
+            body=Body();model=Model(truncated,decision(status='waiting_user',reply='当前区块无法读取，请带我到可观察的位置。'))
+            h=Harness(Path(folder)/'state.sqlite',model,body,Audit(),input_router=lambda *args:dict(mode='task',task_kind='ordinary'))
+            h.run('cutoff','verification','先看看');self.assertFalse(body.actions)
+            request=request_payload('deepseek/deepseek-v4.1-flash','instructions',model.contexts[1])
+            self.assertEqual(request['reasoning'],{'enabled':False});self.assertEqual(request['max_tokens'],1600)
+            self.assertIn('model_output_truncated',request['messages'][-1]['content'])
+        with tempfile.TemporaryDirectory() as folder:
+            body=Body();model=Model(truncated,truncated,truncated,decision())
+            h=Harness(Path(folder)/'state.sqlite',model,body,Audit(),input_router=lambda *args:dict(mode='task',task_kind='ordinary'))
+            h.run('cutoff','verification','先看看');self.assertEqual(model.calls,3);self.assertFalse(body.actions)
+
+    def test_voxel_approach_is_a_reachable_walk_and_cannot_cross_solid_cells(self):
+        scene=VoxelScene();r=scene.start_action({'name':'approach','args':{}}).result()
+        self.assertTrue(r['verified']);self.assertLessEqual(r['observed']['owner']['distance'],1.5)
+        blocked=VoxelScene(occupied=True);before=blocked.export()
+        self.assertFalse(blocked.start_action({'name':'approach','args':{}}).result()['verified'])
+        self.assertEqual(before['blocks'],blocked.export()['blocks']);self.assertFalse(blocked.changes)
+
     def test_execution_requests_reasoning_without_returning_hidden_text(self):
         payload=request_payload('deepseek/deepseek-v4.1-flash','instructions',{'current':{'user':'搭起来'},'remaining_decisions':64})
         forwarded,_,_=prepare_request(payload,model=payload['model'])
@@ -25,6 +46,8 @@ class CapabilityTests(unittest.TestCase):
         for context in ({'current_user':'对'}, {'current_user':'在吗','mode':'chat'}):
             payload=request_payload('deepseek/deepseek-v4.1-flash','instructions',context)
             self.assertEqual(payload['reasoning'],{'enabled':False});self.assertEqual(payload['max_tokens'],1600)
+        route=request_payload('deepseek/deepseek-v4.1-flash','instructions',{'current_user':'对','matched_conventions':[],'situation':{}})
+        self.assertTrue(route['reasoning']['enabled']);self.assertEqual(route['max_tokens'],2048)
 
     def test_tool_result_follows_previous_decision_instead_of_reissuing_request(self):
         prior=decision(action=dict(name='inspect',args={}))

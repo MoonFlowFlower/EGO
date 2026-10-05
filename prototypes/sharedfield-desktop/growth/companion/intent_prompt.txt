@@ -3,6 +3,7 @@
 分别作两个简短判断：mode管理这条输入与当前承诺、执行权的关系；information_need描述回应本次需求所缺的证据。执行权判断不自动成为回复话题。只输出JSON，恰好mode、request_quote、task_kind、information_need四个字段，不输出思维过程。
 
 mode可为chat（日常交流）、status（询问状态或解释）、task（新的明确行动请求）、resume（明确恢复旧任务）、steer（纠正当前任务、补充指代/条件或回答当前等待的问题）、memory（明确教、改、删约定）。用上下文还原省略和指代。改变最终成果为新task；保持成果但修订对象/位置/方法可为steer。与当前工作无关的交流不授予恢复旧任务的权限。
+明确交代你规划、调查或想办法也属于task，可以先观察和规划，不要求立刻改变世界。用户已经交代要做事并让你自行选择常规细节时，不再把后续规划委托当成是否授权的悬问。
 用户短句同意紧邻的明确行动提议时，结合提议理解本次授权；新提议尚未成为任务就用task，回答现有任务的问题用steer。单纯附和叙述仍为chat/status，不能因此恢复旧任务。不要只因原话短而丢弃确认；request_quote仍逐字引用本次确认。
 task_kind沿用现有身体接口的分类：pickup拾取掉落物、approach走近玩家、follow跟随、structure完整建筑、ordinary其他。根据本次请求的结果选，resume/steer沿用当前任务；不得从无关旧任务移植类别。request_quote在task/resume/steer/memory时逐字引用本条输入承载请求的片段，其余为空字符串。
 

@@ -42,10 +42,18 @@ def request_messages(system, context):
 
 def request_payload(model,system,context):
     execution=isinstance(context.get('current'),dict) and 'remaining_decisions' in context
+    interpretation='situation' in context and 'matched_conventions' in context
+    notice=context.get('harness_notice') or (context.get('execution_feedback') or {}).get('harness_notice')
+    repair=isinstance(notice,dict) and notice.get('kind')=='invalid_model_output'
+    thinking=(execution or interpretation) and not repair
     return {'model':model,'stream':False,'temperature':0,
-            'max_tokens':8192 if execution else 1600,
-            'reasoning':{'enabled':True,'effort':'low','exclude':True} if execution else {'enabled':False},
+            'max_tokens':(8192 if execution else 2048) if thinking else 1600,
+            'reasoning':{'enabled':True,'effort':'low','exclude':True} if thinking else {'enabled':False},
             'response_format':{'type':'json_object'},'messages':request_messages(system,context)}
+
+
+class DecisionError(ValueError):
+    def __init__(self,code):super().__init__(code);self.code=code
 
 
 class Model:
@@ -58,6 +66,7 @@ class Model:
         started = time.monotonic()
         call = None
         usage = {}
+        finish_reason=None
         try:
             call = self.transport.open_call(request)
             self.calls += 1
@@ -68,9 +77,11 @@ class Model:
                 data = json.loads(raw)
             usage = data.get('usage', {})
             choice = data['choices'][0]
-            if choice.get('finish_reason') != 'stop':
-                raise ValueError('incomplete_model_decision')
-            return json.loads(choice['message']['content'])
+            finish_reason=choice.get('finish_reason')
+            if finish_reason != 'stop':
+                raise DecisionError('model_output_truncated' if finish_reason=='length' else 'model_output_incomplete')
+            try:return json.loads(choice['message']['content'])
+            except (json.JSONDecodeError,TypeError) as error:raise DecisionError('model_decision_json') from error
         finally:
             if call:
                 cost = self.transport.ledger.settle(call.charge_id, usage)
@@ -79,6 +90,7 @@ class Model:
                     'model': call.payload['model'], 'providers': call.payload['provider']['only'],
                     'latency_s': time.monotonic()-started, 'cost_usd': cost,
                     'reasoning_requested':request['reasoning'],'max_tokens':request['max_tokens'],
+                    'finish_reason':finish_reason,
                     'request_bytes':len(json.dumps(call.payload,ensure_ascii=False,separators=(',',':')).encode()),
                     'reasoning_tokens':usage.get('completion_tokens_details',{}).get('reasoning_tokens'),
                     'input_tokens': usage.get('prompt_tokens'), 'output_tokens': usage.get('completion_tokens')})
