@@ -51,20 +51,20 @@ class DailyTests(unittest.TestCase):
 
     def test_midnight_and_late_settlement_keep_original_day(self):
         ledger = self.ledger()
-        first = ledger.reserve(.8)
-        self.assertAlmostEqual(ledger.total(), .8)
+        first = ledger.reserve(3.8)
+        self.assertAlmostEqual(ledger.total(), 3.8)
         self.now[0] = datetime(2026, 10, 5, 5, 0, tzinfo=timezone.utc)
         self.assertEqual(ledger.total(), 0)
-        ledger.reserve(.7)
-        ledger.settle(first, {'cost': .6})
-        self.assertAlmostEqual(ledger.total(), .7)
+        ledger.reserve(3.7)
+        ledger.settle(first, {'cost': 3.6})
+        self.assertAlmostEqual(ledger.total(), 3.7)
         with self.assertRaises(ProxyError):
             ledger.reserve(.31)
 
     def test_unknown_reservation_survives_restart_and_atomic_cap(self):
         ledger = self.ledger()
-        ledger.reserve(.6)
-        self.assertAlmostEqual(self.ledger().total(), .6)
+        ledger.reserve(3.6)
+        self.assertAlmostEqual(self.ledger().total(), 3.6)
         def reserve(_):
             try:
                 self.ledger().reserve(.3)
@@ -73,7 +73,21 @@ class DailyTests(unittest.TestCase):
                 return False
         with concurrent.futures.ThreadPoolExecutor(4) as pool:
             self.assertEqual(sum(pool.map(reserve, range(4))), 1)
-        self.assertAlmostEqual(ledger.total(), .9)
+        self.assertAlmostEqual(ledger.total(), 3.9)
+
+    def test_companion_and_experiment_share_four_dollars_including_unknown(self):
+        companion, experiment = self.ledger(), self.ledger()
+        self.assertEqual(companion.limit, 4)
+        paid = companion.reserve(3.6)
+        companion.settle(paid, {'cost': 3.5})
+        experiment.reserve(.25)  # Unknown hold survives a separate caller.
+        snapshot = self.ledger().snapshot()
+        self.assertEqual(snapshot['limit_usd'], 4)
+        self.assertAlmostEqual(snapshot['used_usd'], 3.75)
+        self.assertAlmostEqual(snapshot['remaining_usd'], .25)
+        with self.assertRaisesRegex(ProxyError, 'daily_budget_stop'):
+            companion.reserve(.26)
+        self.assertAlmostEqual(experiment.total(), 3.75)
 
     def test_legacy_ledger_is_retained_as_history(self):
         with sqlite3.connect(self.path) as db:
@@ -90,7 +104,7 @@ class DailyTests(unittest.TestCase):
         ledger = self.ledger()
         midnight = datetime(2026, 11, 2, tzinfo=ZoneInfo('America/Winnipeg')).astimezone(timezone.utc)
         self.now[0] = midnight - timedelta(seconds=1)
-        ledger.reserve(.9)
+        ledger.reserve(3.9)
         self.now[0] = midnight
         self.assertEqual(ledger.total(), 0)
 
@@ -158,7 +172,7 @@ class DailyTests(unittest.TestCase):
         from companion.harness import Harness
         from companion.test_kernel import Audit, Body
         from companion.budget import BUDGET_MESSAGE
-        ledger=self.ledger(); ledger.reserve(1)
+        ledger=self.ledger(); ledger.reserve(4)
         class Model:
             calls=0
             def decide(inner,*args):

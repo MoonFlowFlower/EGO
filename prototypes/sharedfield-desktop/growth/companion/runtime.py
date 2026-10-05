@@ -18,7 +18,7 @@ from .model import Model
 from .memory import Memory
 from .server import KernelServer
 from .reconnect import ReconnectSchedule
-from .budget import DailyLedger
+from .budget import DailyLedger, DAILY_LIMIT
 from .tokens import persistent_token
 
 
@@ -63,7 +63,7 @@ class Runtime:
         try:
             ledger=DailyLedger(DEFAULT_BUDGET)
             self.transport=RoutedTransportV2(api_key=key,mode='pinned',route_index=0,
-                budget_path=DEFAULT_BUDGET,limit=1,log_dir=self.folder)
+                budget_path=DEFAULT_BUDGET,limit=DAILY_LIMIT,log_dir=self.folder)
             self.transport.ledger=ledger
             self.transport.set_audit(self.audit)
             self.audit.write('preflight.jsonl',{'route':self.transport.preflight(),'daily_budget':ledger.snapshot()})

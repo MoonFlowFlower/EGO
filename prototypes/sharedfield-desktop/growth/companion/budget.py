@@ -9,7 +9,7 @@ import time
 from p7.proxy import BudgetLedger, ProxyError, DEFAULT_BUDGET, _finite_number
 
 OWNER_ZONE = 'America/Winnipeg'
-DAILY_LIMIT = 1.0
+DAILY_LIMIT = 4.0
 BUDGET_MESSAGE = '今天的模型额度用完了，模型调用已暂停。'
 
 
