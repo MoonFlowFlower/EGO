@@ -1,17 +1,17 @@
 {
-  "at_utc": "2026-10-05T19:37:34.550406+00:00",
+  "at_utc": "2026-10-05T19:28:48.260456+00:00",
   "passed": true,
-  "tests_run": 38,
+  "tests_run": 36,
   "failures": 0,
   "errors": 0,
-  "seconds": 9.453000000008615,
+  "seconds": 9.35899999999674,
   "process_checks": {
     "passed": true,
     "fresh_process_checks": 4,
     "network_blocked_in_workers": true,
     "stages": [
       {
-        "pid": 12300,
+        "pid": 18020,
         "operation": "learn",
         "simulated_decisions": 32,
         "cloud_calls": 0,
@@ -19,7 +19,7 @@
         "stage": "R/learn"
       },
       {
-        "pid": 38348,
+        "pid": 58256,
         "operation": "test",
         "simulated_decisions": 24,
         "cloud_calls": 0,
@@ -27,7 +27,7 @@
         "stage": "R/test"
       },
       {
-        "pid": 41964,
+        "pid": 42068,
         "operation": "fork",
         "simulated_decisions": 0,
         "cloud_calls": 0,
@@ -35,7 +35,7 @@
         "stage": "I/learn"
       },
       {
-        "pid": 24252,
+        "pid": 4180,
         "operation": "test",
         "simulated_decisions": 24,
         "cloud_calls": 0,
@@ -43,7 +43,7 @@
         "stage": "I/test"
       },
       {
-        "pid": 57556,
+        "pid": 47744,
         "operation": "fork",
         "simulated_decisions": 0,
         "cloud_calls": 0,
@@ -51,7 +51,7 @@
         "stage": "N/learn"
       },
       {
-        "pid": 50120,
+        "pid": 57520,
         "operation": "test",
         "simulated_decisions": 24,
         "cloud_calls": 0,
@@ -59,7 +59,7 @@
         "stage": "N/test"
       },
       {
-        "pid": 51700,
+        "pid": 51072,
         "operation": "fork",
         "simulated_decisions": 0,
         "cloud_calls": 0,
@@ -67,7 +67,7 @@
         "stage": "R_SHUFFLED/learn"
       },
       {
-        "pid": 39124,
+        "pid": 55092,
         "operation": "test",
         "simulated_decisions": 24,
         "cloud_calls": 0,
@@ -114,15 +114,15 @@
     "u3/client.py": "0a2052f8528b1e5ebb86f91e968a03b2fce634b661ec5e02bed2079a52ce8eb0",
     "u3/common.py": "2bfcf55d4f5f613a166d4c595ad6dd9b1620128cbbc640c562be8f155b3db525",
     "u3/materials.py": "164ff40cfc220022c5ad6d369b5737147211a6ce458a07c5ea876229113072c2",
-    "u3/protocol.py": "27c271c8030c8f4e04eb7d3dc20accab00a194ecd472744a6f2db6354011e4d3",
-    "u3/report.py": "9bac8d8444da88c834aca49075ced28df6dc4b6aae9511c747ba40babc027b9f",
-    "u3/run.py": "df5778ec87be6c177e04754797b0a58570397a911469e0957f075b33dc4b1926",
-    "u3/selection.py": "41855abdb180c90a532d7d525db02c70e8d9ff91a21d6c1c74a46863d43496b2",
+    "u3/protocol.py": "9029d1a4892134111db4751a8aeae126ae7f20c7e8ae08413a68f568370930ce",
+    "u3/report.py": "2cc6748a7ee90e5951eacc8591da7403457a83c4b633fa98024898e76daa020f",
+    "u3/run.py": "c12e67ec0d740bfb4d5446de581a1dd40e60f72c901d27c80ad2957acbc3d31a",
+    "u3/selection.py": "c9235aaf888008fa906a9ace449ba140f63670d5325c4d91885af7015d57e6be",
     "u3/statistics.py": "614bfc7cd6c0de8960ff01308f702da20623389b9a9b4f1a897bd1902525c04e",
     "u3/study.py": "4f0b148c83c938eba8609f4ac2af5f3ccab8477787b0b11109f9117f65e2055b",
     "u3/test_client.py": "52ef91cc9dd4e4f703e6df2f41a5450fe0025ebef767f7ce5b2a0431686221a2",
-    "u3/test_protocol.py": "6f6c1b5be2737edcf40d5ef0702c4e3abe7baf7c06c6a69288f34f15f0f754e5",
-    "u3/test_report.py": "fb5a5fef9ce18876d034b001b6e4ff0b35a597a8a29990bfaa83411840db9a64",
+    "u3/test_protocol.py": "d41b384da10f20cd21449ef939ab8966c0a3aed217179090656addd39b513f53",
+    "u3/test_report.py": "dfc89aa774fe08bc775eb067867c058e0af50b813528896b23023005fc3120a9",
     "u3/test_run.py": "e4099b06cc667adf4322617f81c191fbea9ffe7213aa7bfce30f291df28c8302",
     "u3/test_study.py": "bb7013d95e239d1154a2e1285936b6f896bf85fd6ca15dff2ae7275700fd1371"
   },

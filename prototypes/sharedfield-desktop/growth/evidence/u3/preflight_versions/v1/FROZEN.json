@@ -1,6 +1,6 @@
 {
-  "version": "u3-v2-prepaid-strata-clarification",
-  "frozen_at_utc": "2026-10-05T19:37:42.559172+00:00",
+  "version": "u3-v1",
+  "frozen_at_utc": "2026-10-05T19:31:06.590917+00:00",
   "source_sha256": {
     "companion/budget.py": "b413e56110182f67f3c53aec0d35618650f27dd12e0aae373b51b9a7a2b5720e",
     "companion/compact.py": "c0300e352cbba4b04740952a5aa8c3c14873339569c96eb6527ebd56f2d97223",
@@ -31,17 +31,17 @@
     "u3/common.py": "2bfcf55d4f5f613a166d4c595ad6dd9b1620128cbbc640c562be8f155b3db525",
     "u3/MATERIALS.json": "b4ce6d9ebc6074185d5f8ffecfb6806d63c11117bf495e842fe794454655ec38",
     "u3/materials.py": "164ff40cfc220022c5ad6d369b5737147211a6ce458a07c5ea876229113072c2",
-    "u3/protocol.py": "27c271c8030c8f4e04eb7d3dc20accab00a194ecd472744a6f2db6354011e4d3",
-    "u3/README.md": "63cc52940a9934a08b26e89b92d533c299cecc3a8d3441f65b6692593086c71b",
-    "u3/report.py": "9bac8d8444da88c834aca49075ced28df6dc4b6aae9511c747ba40babc027b9f",
-    "u3/run.py": "df5778ec87be6c177e04754797b0a58570397a911469e0957f075b33dc4b1926",
-    "u3/SCREEN_POLICY.json": "14d6dbbf63d6409637e6c15951b53ee215814bb38afd9df95fd7b80d4b2b1317",
-    "u3/selection.py": "41855abdb180c90a532d7d525db02c70e8d9ff91a21d6c1c74a46863d43496b2",
+    "u3/protocol.py": "9029d1a4892134111db4751a8aeae126ae7f20c7e8ae08413a68f568370930ce",
+    "u3/README.md": "8e0a33ed6592336ecfe4c3188e403d1fb854fe8c4b8c00ed5b6096d966e95a95",
+    "u3/report.py": "2cc6748a7ee90e5951eacc8591da7403457a83c4b633fa98024898e76daa020f",
+    "u3/run.py": "c12e67ec0d740bfb4d5446de581a1dd40e60f72c901d27c80ad2957acbc3d31a",
+    "u3/SCREEN_POLICY.json": "eb0e139ffa3d3d7153f044b48b0a5d529c98446a1a22e8fca561e4914da5c5c9",
+    "u3/selection.py": "c9235aaf888008fa906a9ace449ba140f63670d5325c4d91885af7015d57e6be",
     "u3/statistics.py": "614bfc7cd6c0de8960ff01308f702da20623389b9a9b4f1a897bd1902525c04e",
     "u3/study.py": "4f0b148c83c938eba8609f4ac2af5f3ccab8477787b0b11109f9117f65e2055b",
     "u3/test_client.py": "52ef91cc9dd4e4f703e6df2f41a5450fe0025ebef767f7ce5b2a0431686221a2",
-    "u3/test_protocol.py": "6f6c1b5be2737edcf40d5ef0702c4e3abe7baf7c06c6a69288f34f15f0f754e5",
-    "u3/test_report.py": "fb5a5fef9ce18876d034b001b6e4ff0b35a597a8a29990bfaa83411840db9a64",
+    "u3/test_protocol.py": "d41b384da10f20cd21449ef939ab8966c0a3aed217179090656addd39b513f53",
+    "u3/test_report.py": "dfc89aa774fe08bc775eb067867c058e0af50b813528896b23023005fc3120a9",
     "u3/test_run.py": "e4099b06cc667adf4322617f81c191fbea9ffe7213aa7bfce30f291df28c8302",
     "u3/test_study.py": "bb7013d95e239d1154a2e1285936b6f896bf85fd6ca15dff2ae7275700fd1371"
   },
@@ -57,7 +57,6 @@
     "H1": "R 组的总效用减去最好的固定基线，用测试时刻配对的自助法求 95% 区间，下限 > 0。\"最好的固定基线\"按学习时刻的效用选定，不看测试结果挑。",
     "H2": "R 组减去 I、N 两组中较高者，95% 区间下限 > 0；R 组减去\"R 打乱\"，95% 区间下限 > 0。"
   },
-  "u3a_gate_scope_verbatim": "门槛只按反先验层计算；每一半至少 6 条才可评价。校准层只报告，与 S0 对照，不挤占反先验题。",
   "estimate_usd": 0.6,
   "screen_policy": {
     "status": "owner_resolved",
@@ -65,22 +64,13 @@
     "owner_confirmation_date": "2026-10-05",
     "owner_answer": "保留先验一致的校准题，分层报告",
     "calibration_ceiling_required": true,
-    "calibration_prior_reconfirmation_required": true,
-    "calibration_drift_action": "exclude without relabelling",
     "counter_prior_rule": "exclude if independent no-memory screening chooses a correct action",
-    "gate_population": "counter_prior_only",
-    "counter_prior_minimum_per_half": 6,
-    "separate_stratum_draws": true,
-    "calibration_reporting": "descriptive only; paired S1 versus S0 regressions and improvements",
-    "u3b_strata": "descriptive only; total utility criteria unchanged",
-    "author_clarification_commit": "eca6f6cc",
     "thresholds_and_model_changed": false
   },
   "evidence_sha256": {
-    "evidence/u3/ENGINEERING.json": "e13f1c0014d418271805bcc210109ef5d814216f84d3f7be4a1b7b0b73bcfcd9"
+    "evidence/u3/ENGINEERING.json": "12c65e47fef1608e6db08c0637e0f5ce6dc2c78eb9bee61c2da9f4ee18f5250d"
   },
   "stops": "U2: single concurrency; >=2s between starts; 429/502/503/504 or connection only one same-input retry; second failure stops lane; two invalid outputs stop lane; 3600 seconds per lane; no replay/replacement/content retry.",
   "preregistration": "All alternative branches, reactions and deterministic prior-only selection code frozen before ANY paid call. Materialization adds a derived hash manifest; it does not edit this source.",
-  "claim_ceiling": "Synthetic learning of when to speak beyond fixed rules only; no subjective agency.",
-  "superseded_prepaid_manifest_sha256": "0bd7d516271319670788def09d1093ac43944a88ffaf2a496ce9476bc6d1ac86"
+  "claim_ceiling": "Synthetic learning of when to speak beyond fixed rules only; no subjective agency."
 }

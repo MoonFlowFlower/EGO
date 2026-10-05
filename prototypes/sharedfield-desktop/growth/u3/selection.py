@@ -61,32 +61,47 @@ def a_screen(items, prior_rows, ceiling_rows, *, aligned_policy):
             ceiling_correct = prior_agrees(item['kind'], c['action'])
             if prior_correct and not (aligned_policy == 'retain_calibration' and item['prior_aligned']):
                 reasons.append('no_memory_already_correct')
+            if aligned_policy == 'retain_calibration' and item['prior_aligned'] and not prior_correct:
+                reasons.append('calibration_prior_not_reconfirmed')
             if not ceiling_correct:
                 reasons.append('explicit_information_ceiling_wrong')
         if reasons:
             excluded.append({'item_id': item['id'], 'reasons': reasons})
         else:
             kept.append(item)
-    # Random, balanced draw; do not replace failures. Minimum same as U2 Q.
+    # Draw the counter-prior layer independently. Calibration never supplies
+    # its sample minimum, displaces its items, or rescues its gate.
     rng = random.Random(SEED+1)
-    yes = [i for i in kept if i['kind'] == 'ask']
-    known = [i for i in kept if i['kind'] == 'known']
-    limits = [i for i in kept if i['kind'] == 'restriction']
+    contrary = [i for i in kept if not i['prior_aligned']]
+    calibration = [i for i in kept if i['prior_aligned']]
+    yes = [i for i in contrary if i['kind'] == 'ask']
+    known = [i for i in contrary if i['kind'] == 'known']
+    limits = [i for i in contrary if i['kind'] == 'restriction']
     for values in (yes, known, limits):
         rng.shuffle(values)
-    half_no = min(len(known), len(limits), len(yes)//2, 6)
-    enough = half_no >= 3
-    def stratified_take(values, n):
-        # Keep both prior strata represented within each available item kind;
-        # otherwise a balanced size reduction could silently drop calibration.
-        first = [next((i for i in values if i['prior_aligned'] == aligned), None) for aligned in (True, False)]
-        chosen = [i for i in first if i is not None][:n]
-        chosen_ids = {i['id'] for i in chosen}
-        return chosen+[i for i in values if i['id'] not in chosen_ids][:max(0, n-len(chosen))]
-    picked = stratified_take(yes, 2*half_no)+stratified_take(known, half_no)+stratified_take(limits, half_no) if enough else []
+    half = min(len(yes), len(known)+len(limits), 12)
+    enough = half >= 6
+    no = []
+    # Alternate the two no-question kinds while available. A scarcity of one
+    # kind does not invent a stricter minimum than six per ask/no-ask half.
+    for index in range(max(len(known), len(limits))):
+        for values in (known, limits):
+            if index < len(values):
+                no.append(values[index])
+    counter_picked = yes[:half]+no[:half] if enough else []
+    random.Random(SEED+2).shuffle(calibration)
+    picked = counter_picked+calibration
+    def counts(values):
+        return {kind: sum(i['kind'] == kind for i in values) for kind in ('ask', 'known', 'restriction')}
     return {'eligible_ids': [i['id'] for i in kept], 'excluded': excluded,
             'selected_ids': sorted(i['id'] for i in picked), 'passed': enough,
-            'counts': {'ask': 2*half_no, 'known': half_no, 'restriction': half_no},
+            'counts': counts(picked), 'criterion_population': 'counter_prior_only',
+            'strata': {'counter_prior': {'eligible_ids': [i['id'] for i in contrary],
+                        'available_counts': counts(contrary), 'selected_ids': sorted(i['id'] for i in counter_picked),
+                        'counts': counts(counter_picked), 'evaluable': enough},
+                       'calibration': {'eligible_ids': sorted(i['id'] for i in calibration),
+                        'selected_ids': sorted(i['id'] for i in calibration), 'counts': counts(calibration),
+                        'report_only': True}},
             'aligned_policy': aligned_policy,
             'on_shortfall': 'U3a not evaluable; no replacement; U3b runs both S0 and S1'}
 

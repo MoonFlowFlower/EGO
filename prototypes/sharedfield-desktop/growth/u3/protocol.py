@@ -21,6 +21,7 @@ CRITERIA = {
     'H1': 'R 组的总效用减去最好的固定基线，用测试时刻配对的自助法求 95% 区间，下限 > 0。"最好的固定基线"按学习时刻的效用选定，不看测试结果挑。',
     'H2': 'R 组减去 I、N 两组中较高者，95% 区间下限 > 0；R 组减去"R 打乱"，95% 区间下限 > 0。',
 }
+A_GATE_SCOPE = '门槛只按反先验层计算；每一半至少 6 条才可评价。校准层只报告，与 S0 对照，不挤占反先验题。'
 ACTIONS = ('quiet', 'reply', 'ask', 'repeat', 'suggest')
 FEATURES = ('time_band', 'day_type', 'busy', 'topic_seen')
 BOOTSTRAP_REPLICATES = 20000
@@ -96,6 +97,19 @@ def a_verdict(rows):
             'ask_correct': sum(r['appropriate_ask'] for r in yes), 'ask_n': len(yes),
             'intrusions': sum(r['intrusion'] for r in no), 'no_n': len(no),
             'ask_rate': ask, 'intrusion_rate': intrusion}
+
+
+def a_format_result(rows, *, complete, screen_evaluable):
+    counter = [r for r in rows if not r['prior_aligned']]
+    calibration = [r for r in rows if r['prior_aligned']]
+    gate = a_verdict(counter)
+    gate['evaluable'] &= screen_evaluable
+    gate['passed'] &= complete and screen_evaluable
+    def descriptive(values):
+        return {k: v for k, v in a_verdict(values).items() if k not in ('passed', 'evaluable')}
+    return {**gate, 'complete': complete, 'criterion_population': 'counter_prior_only',
+            'by_prior_stratum': {'counter_prior': dict(gate), 'calibration': descriptive(calibration)},
+            'all_items_descriptive': descriptive(rows)}
 
 
 def bundle_packet(moment, memory, fmt):

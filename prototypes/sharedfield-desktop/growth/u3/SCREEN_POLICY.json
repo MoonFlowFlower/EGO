@@ -4,6 +4,14 @@
   "owner_confirmation_date": "2026-10-05",
   "owner_answer": "保留先验一致的校准题，分层报告",
   "calibration_ceiling_required": true,
+  "calibration_prior_reconfirmation_required": true,
+  "calibration_drift_action": "exclude without relabelling",
   "counter_prior_rule": "exclude if independent no-memory screening chooses a correct action",
+  "gate_population": "counter_prior_only",
+  "counter_prior_minimum_per_half": 6,
+  "separate_stratum_draws": true,
+  "calibration_reporting": "descriptive only; paired S1 versus S0 regressions and improvements",
+  "u3b_strata": "descriptive only; total utility criteria unchanged",
+  "author_clarification_commit": "eca6f6cc",
   "thresholds_and_model_changed": false
 }

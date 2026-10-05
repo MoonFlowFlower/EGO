@@ -1,0 +1,11 @@
+{
+  "at_utc": "2026-10-05T19:34:32.289324+00:00",
+  "status": "superseded_before_any_paid_call",
+  "source_commit": "f1cdc5f9dd4af26a3e0314ee571fa2f5ad7ff3f8",
+  "source_hashes_match_git_commit": true,
+  "manifest_sha256": "0bd7d516271319670788def09d1093ac43944a88ffaf2a496ce9476bc6d1ac86",
+  "cloud_calls": 0,
+  "cloud_cost_usd": 0,
+  "reason": "Author clarification eca6f6cc: counter-prior-only U3a gate, independent strata, calibration stability check, and U3b descriptive strata. No model results were available.",
+  "original_frozen_source_recovery": "git show source_commit:prototypes/sharedfield-desktop/growth/<source_sha256 key>"
+}

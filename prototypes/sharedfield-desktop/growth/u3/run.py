@@ -12,7 +12,7 @@ from growthlab.records import ROOT
 from .client import Client, Stop
 from .common import BASE, OUT, read, write, sha, utc, pins, verify, budget_snapshot, cost, append
 from .materials import build
-from .protocol import SEED, MODEL, ROUTE, ESTIMATE_USD, CRITERIA, ARMS, packet, schema, parse, a_verdict
+from .protocol import SEED, MODEL, ROUTE, ESTIMATE_USD, CRITERIA, A_GATE_SCOPE, ARMS, packet, schema, parse, a_format_result
 from .selection import a_materialize, a_screen, b_materialize
 from .study import decide, a_store, a_test, learn, fork_store, b_test
 
@@ -59,14 +59,18 @@ def freeze():
         raise Stop('engineering_checked_different_source')
     if read(MATERIALS) != build():
         raise Stop('material_generator_mismatch')
-    value = {'version': 'u3-v1', 'frozen_at_utc': utc(), 'source_sha256': pins(),
+    value = {'version': 'u3-v2-prepaid-strata-clarification', 'frozen_at_utc': utc(), 'source_sha256': pins(),
              'seed': SEED, 'model': MODEL, 'route': ROUTE, 'temperature': 0,
              'reasoning': False, 'max_tokens': 1024, 'criteria_verbatim': CRITERIA,
+             'u3a_gate_scope_verbatim': A_GATE_SCOPE,
              'estimate_usd': ESTIMATE_USD, 'screen_policy': policy,
              'evidence_sha256': {'evidence/u3/ENGINEERING.json': sha(OUT / 'ENGINEERING.json')},
              'stops': 'U2: single concurrency; >=2s between starts; 429/502/503/504 or connection only one same-input retry; second failure stops lane; two invalid outputs stop lane; 3600 seconds per lane; no replay/replacement/content retry.',
              'preregistration': 'All alternative branches, reactions and deterministic prior-only selection code frozen before ANY paid call. Materialization adds a derived hash manifest; it does not edit this source.',
              'claim_ceiling': 'Synthetic learning of when to speak beyond fixed rules only; no subjective agency.'}
+    superseded = OUT / 'preflight_versions/v1/FROZEN.json'
+    if superseded.exists():
+        value['superseded_prepaid_manifest_sha256'] = sha(superseded)
     write(FROZEN, value, exclusive=True)
     print(json.dumps({'frozen_sha256': sha(FROZEN), 'budget': budget_snapshot()}, ensure_ascii=False))
 
@@ -219,21 +223,31 @@ def a_run(materials, manifest):
                  *sorted((OUT / 'raw/a/screen_prior').rglob('*.json*')),
                  *sorted((OUT / 'raw/a/screen_ceiling').rglob('*.json*'))])
     selected = [i for i in items if i['id'] in screened['selected_ids']]
-    results = {}
+    results, scored_by_format = {}, {}
     if selected:
         require_complete(execute('a/store', 'a_store', items=selected))
         for fmt in ('S0', 'S1'):
             completed = execute('a/test_'+fmt, 'a_test', items=selected, format=fmt, store_dir=str(BASE / 'a/store/stores'))
             scored = rows(BASE / f'a/test_{fmt}/scores.jsonl')
-            verdict = a_verdict(scored)
-            verdict['complete'] = completed['status'] == 'complete' and len(scored) == len(selected)
-            verdict['passed'] &= verdict['complete']
-            verdict['by_prior_stratum'] = {str(aligned): a_verdict([r for r in scored if r['prior_aligned'] == aligned]) for aligned in (True, False)}
-            results[fmt] = verdict
+            scored_by_format[fmt] = {r['item_id']: r for r in scored}
+            results[fmt] = a_format_result(scored,
+                complete=completed['status'] == 'complete' and len(scored) == len(selected),
+                screen_evaluable=screened['passed'])
     else:
-        results = {fmt: {'passed': False, 'complete': True, 'evaluable': False, 'reason': 'screening_shortfall'} for fmt in ('S0', 'S1')}
+        results = {fmt: {**a_format_result([], complete=True, screen_evaluable=False),
+                        'reason': 'screening_shortfall'} for fmt in ('S0', 'S1')}
     formats = ['S1'] if results['S1']['passed'] else ['S0', 'S1']
+    paired_calibration = sorted(i['id'] for i in selected if i['prior_aligned'] and
+                                all(i['id'] in scored_by_format.get(fmt, {}) for fmt in ('S0', 'S1')))
+    calibration_comparison = {'paired_n': len(paired_calibration),
+        'correct': {fmt: sum(scored_by_format[fmt][identity]['correct'] for identity in paired_calibration)
+                    for fmt in ('S0', 'S1')},
+        's1_regressed_ids': [identity for identity in paired_calibration
+            if scored_by_format['S0'][identity]['correct'] and not scored_by_format['S1'][identity]['correct']],
+        's1_improved_ids': [identity for identity in paired_calibration
+            if not scored_by_format['S0'][identity]['correct'] and scored_by_format['S1'][identity]['correct']]}
     value = {'formats': results, 'b_formats': formats, 'screen_passed': screened['passed'],
+             'calibration_comparison': calibration_comparison,
              'screen_manifest_sha256': sha(OUT / 'A_SCREEN_RESULTS.json')}
     recorded(OUT / 'A_RESULTS.json', value)
     return formats

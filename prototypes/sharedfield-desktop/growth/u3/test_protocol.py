@@ -7,7 +7,7 @@ import tempfile
 import unittest
 
 from .materials import build
-from .protocol import FORMATS, packet, a_score, a_verdict, bundle_packet
+from .protocol import FORMATS, packet, a_score, a_verdict, a_format_result, bundle_packet
 from .selection import a_materialize, a_screen, b_materialize
 from .baselines import fit, evaluate
 from .statistics import comparisons
@@ -96,7 +96,7 @@ class ProtocolTests(unittest.TestCase):
                     self.assertIsNone(moment['reactions']['quiet'])
                     self.assertIn('语气不舒服', moment['reactions']['d5'])
 
-    def test_balanced_reduction_keeps_available_calibration_strata(self):
+    def test_counter_draw_is_independent_of_calibration_capacity(self):
         items = deepcopy(self.items)
         seen = Counter()
         for item in items:
@@ -109,10 +109,39 @@ class ProtocolTests(unittest.TestCase):
             ceiling[item['id']]['action'] = 'repeat'
         result = a_screen(items, prior, ceiling, aligned_policy='retain_calibration')
         self.assertTrue(result['passed'])
-        self.assertEqual(len(result['selected_ids']), 16)
-        for kind in ('ask', 'known', 'restriction'):
-            chosen = [i for i in items if i['id'] in result['selected_ids'] and i['kind'] == kind]
-            self.assertEqual({i['prior_aligned'] for i in chosen}, {True, False})
+        self.assertEqual(len(result['strata']['counter_prior']['selected_ids']), 16)
+        self.assertEqual(len(result['strata']['calibration']['selected_ids']), 3)
+        without_calibration = a_screen([i for i in items if not i['prior_aligned']], prior, ceiling,
+                                       aligned_policy='retain_calibration')
+        self.assertEqual(result['strata']['counter_prior'], without_calibration['strata']['counter_prior'])
+
+    def test_calibration_drift_is_rejected_not_relabelled(self):
+        prior = {i['id']: {'valid': True, 'action': i['target'] if i['prior_aligned'] else
+                 ('reply' if i['kind'] == 'ask' else 'ask')} for i in self.items}
+        ceiling = {i['id']: {'valid': True, 'action': i['target']} for i in self.items}
+        drifted = next(i for i in self.items if i['prior_aligned'])
+        prior[drifted['id']]['action'] = 'ask' if drifted['kind'] != 'ask' else 'reply'
+        result = a_screen(self.items, prior, ceiling, aligned_policy='retain_calibration')
+        self.assertNotIn(drifted['id'], result['eligible_ids'])
+        self.assertIn({'item_id': drifted['id'], 'reasons': ['calibration_prior_not_reconfirmed']}, result['excluded'])
+        self.assertTrue(drifted['prior_aligned'])
+
+    def test_calibration_cannot_rescue_counter_gate_or_sample_minimum(self):
+        def scored(aligned, ask, good):
+            return {'prior_aligned': aligned, 'should_ask': ask, 'appropriate_ask': ask and good,
+                    'intrusion': not ask and not good}
+        counter = [scored(False, True, n < 2) for n in range(6)]+[scored(False, False, True) for _ in range(6)]
+        calibration = [scored(True, ask, True) for ask in (True, False) for _ in range(6)]
+        self.assertTrue(a_verdict(counter+calibration)['passed'])
+        result = a_format_result(counter+calibration, complete=True, screen_evaluable=True)
+        self.assertFalse(result['passed'])
+        self.assertEqual(result['ask_n'], 6)
+        self.assertNotIn('passed', result['by_prior_stratum']['calibration'])
+        counter[2]['appropriate_ask'] = True
+        self.assertTrue(a_format_result(counter+calibration, complete=True, screen_evaluable=True)['passed'])
+        result = a_format_result(counter[1:]+calibration, complete=True, screen_evaluable=True)
+        self.assertFalse(result['evaluable'])
+        self.assertFalse(result['passed'])
 
     def test_best_baseline_is_training_only_and_oracle_not_selectable(self):
         person = self.people['1']

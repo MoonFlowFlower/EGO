@@ -1,5 +1,6 @@
 """Analytical fixtures: complete identical controls must never pass learning."""
 from pathlib import Path
+import csv
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -65,6 +66,21 @@ class ReportTests(unittest.TestCase):
             from .common import read
             self.assertTrue(read(out / 'AUDIT.json')['passed'])
             self.assertEqual(read(out / 'AUDIT.json')['checked_test_moments'], 288)
+            with (out / 'SUMMARY.csv').open(encoding='utf-8', newline='') as stream:
+                summaries = list(csv.DictReader(stream))
+            self.assertEqual(len(summaries), 36)
+            for person in people:
+                for arm in ARMS:
+                    strata = {r['prior_stratum']: r for r in summaries if r['persona'] == person and r['arm'] == arm}
+                    self.assertEqual(int(strata['prior_aligned']['moments']), 9)
+                    self.assertEqual(int(strata['counter_prior']['moments']), 15)
+                    for metric in ('utility', 'immediate_utility', 'information_bonus', 'd5_learning_and_test'):
+                        self.assertEqual(int(strata['all'][metric]),
+                                         int(strata['prior_aligned'][metric])+int(strata['counter_prior'][metric]))
+            baseline_report = read(out / 'BASELINES.json')
+            for person, data in baseline_report['people'].items():
+                for policy, totals in data['test_stratum_totals'].items():
+                    self.assertEqual(sum(totals.values()), data['tests'][policy]['total'])
 
 
 if __name__ == '__main__':
