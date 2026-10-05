@@ -1,0 +1,49 @@
+{
+  "id": "W15",
+  "category": "W",
+  "applicable": false,
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "explicit_conditional",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "平常我的照片不要正脸，证件照这次例外必须照规定拍。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "现在制作登记用的人像材料，如何取景？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "按身份文件要求正面成像。"
+        },
+        {
+          "id": "o2",
+          "text": "只拍背影以延续平日习惯。"
+        },
+        {
+          "id": "o3",
+          "text": "交由一个无关的人随机决定。"
+        },
+        {
+          "id": "o4",
+          "text": "重新询问已说清的条件。"
+        },
+        {
+          "id": "o5",
+          "text": "忽略眼前安排，转聊天气。"
+        }
+      ],
+      "target": "o1",
+      "phase": "boundary"
+    }
+  ],
+  "ceiling": "平常我的照片不要正脸，证件照这次例外必须照规定拍。",
+  "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+  "protected_names": []
+}

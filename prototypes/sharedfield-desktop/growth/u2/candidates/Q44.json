@@ -1,0 +1,85 @@
+{
+  "id": "Q44",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "no_future",
+  "hidden_answer": "我愿意住最上层。",
+  "teaching": [
+    {
+      "dialogue": 4,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "那段航海旅行是桌游里的故事，不会成为我的实际计划。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 5,
+  "question": {
+    "situation": "地图上的岛画完了，我们看看线条吧。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "线条走得很舒展，留白也舒服。对了，本人远航愿意住哪层船舱？"
+      },
+      {
+        "id": "o2",
+        "text": "线条走得很舒展，留白也舒服。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o3",
+        "text": "线条走得很舒展，留白也舒服。"
+      },
+      {
+        "id": "o4",
+        "text": "本人远航愿意住哪层船舱？"
+      }
+    ],
+    "target": "o3",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "在另一次真实乘船安排中为你定住处。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "选择最底层便宜舱位。"
+        },
+        {
+          "id": "o2",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o3",
+          "text": "选择较高的一层。"
+        },
+        {
+          "id": "o4",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o5",
+          "text": "再问你一次。"
+        }
+      ],
+      "target": "o3",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "这件事没有现实中的后续用途。",
+  "ceiling_use": "我愿意住最上层。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

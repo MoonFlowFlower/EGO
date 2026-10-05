@@ -1,0 +1,49 @@
+{
+  "id": "W26",
+  "category": "W",
+  "applicable": true,
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "explicit_conditional",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "我晚上要早睡的前一小时不看刺激剧情。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "离你预定入睡只剩半小时，怎样安排消遣？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "选情节平稳的轻内容。"
+        },
+        {
+          "id": "o2",
+          "text": "交由一个无关的人随机决定。"
+        },
+        {
+          "id": "o3",
+          "text": "忽略眼前安排，转聊天气。"
+        },
+        {
+          "id": "o4",
+          "text": "重新询问已说清的条件。"
+        },
+        {
+          "id": "o5",
+          "text": "播放紧张惊悚片段。"
+        }
+      ],
+      "target": "o1",
+      "phase": "boundary"
+    }
+  ],
+  "ceiling": "我晚上要早睡的前一小时不看刺激剧情。",
+  "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+  "protected_names": []
+}

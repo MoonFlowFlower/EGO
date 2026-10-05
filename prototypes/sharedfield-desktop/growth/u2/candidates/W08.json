@@ -1,0 +1,51 @@
+{
+  "id": "W08",
+  "category": "W",
+  "applicable": true,
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "explicit_conditional",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "我独自读书时要安静，招待客人不按这条。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "你一个人在角落翻阅新册子，怎样陪伴？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "交由一个无关的人随机决定。"
+        },
+        {
+          "id": "o2",
+          "text": "保持低干扰的环境。"
+        },
+        {
+          "id": "o3",
+          "text": "忽略眼前安排，转聊天气。"
+        },
+        {
+          "id": "o4",
+          "text": "重新询问已说清的条件。"
+        },
+        {
+          "id": "o5",
+          "text": "播放热闹背景音。"
+        }
+      ],
+      "target": "o2",
+      "phase": "boundary"
+    }
+  ],
+  "ceiling": "我独自读书时要安静，招待客人不按这条。",
+  "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+  "protected_names": [
+    "安静"
+  ]
+}

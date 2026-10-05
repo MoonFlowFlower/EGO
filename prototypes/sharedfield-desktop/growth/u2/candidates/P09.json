@@ -1,0 +1,93 @@
+{
+  "id": "P09",
+  "category": "P",
+  "preference": "你休闲体验愿意慢慢手动操作，不追求自动省力。",
+  "teaching_domain": "生活操作",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "咖啡豆用电磨还是手摇？"
+        },
+        {
+          "speaker": "user",
+          "text": "手摇那台给我，等几分钟也挺有意思。"
+        }
+      ]
+    },
+    {
+      "dialogue": 6,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "阳台花浇完半小时了，提壶挪来挪去我没嫌累。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "陪你准备一杯果汁，怎样协助？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o2",
+          "text": "让机器包办全部工序。"
+        },
+        {
+          "id": "o3",
+          "text": "用简易压榨器一点点完成。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "按全自动按钮立刻做好。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T1",
+      "domain": "生活操作"
+    },
+    {
+      "situation": "陪你游览线上展馆，用哪种方式？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o2",
+          "text": "全程替你跳过操作。"
+        },
+        {
+          "id": "o3",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o4",
+          "text": "自动播放完整导览。"
+        },
+        {
+          "id": "o5",
+          "text": "逐处点击探索，自行推进。"
+        }
+      ],
+      "target": "o5",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你休闲体验愿意慢慢手动操作，不追求自动省力。",
+  "counterintuitive": "常见默认是“按全自动按钮立刻做好。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

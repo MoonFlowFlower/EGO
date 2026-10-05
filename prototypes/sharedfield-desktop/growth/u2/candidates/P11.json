@@ -1,0 +1,93 @@
+{
+  "id": "P11",
+  "category": "P",
+  "preference": "你欣赏作品时愿意先接触不受欢迎的部分。",
+  "teaching_domain": "探索顺序",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "画展先去人气厅还是没人排队的小厅？"
+        },
+        {
+          "speaker": "user",
+          "text": "去角落那间，人人举手机的先搁着。"
+        }
+      ]
+    },
+    {
+      "dialogue": 5,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "专辑评论都在夸主打，我倒把冷门曲循环了整晚。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "书店向你展示几部同类作品，先递哪一本？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "只展示排行榜前列。"
+        },
+        {
+          "id": "o2",
+          "text": "递销量最高的畅销款。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "先拿少被提及的那册。"
+        },
+        {
+          "id": "o5",
+          "text": "把话题转向天气。"
+        }
+      ],
+      "target": "o4",
+      "phase": "T1",
+      "domain": "探索顺序"
+    },
+    {
+      "situation": "陪你试玩一个新游戏，先选哪条路径？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o2",
+          "text": "严格照最热门攻略走。"
+        },
+        {
+          "id": "o3",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o4",
+          "text": "进入少有人采用的支线。"
+        },
+        {
+          "id": "o5",
+          "text": "沿大家推荐的主路线。"
+        }
+      ],
+      "target": "o4",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你欣赏作品时愿意先接触不受欢迎的部分。",
+  "counterintuitive": "常见默认是“递销量最高的畅销款。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

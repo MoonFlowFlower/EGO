@@ -1,0 +1,87 @@
+{
+  "id": "Q29",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "known",
+  "hidden_answer": "用全名许闻舟。",
+  "teaching": [
+    {
+      "dialogue": 4,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "新的签收单写我的全名许闻舟，别用小名。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 5,
+  "question": {
+    "situation": "纸笔都拿来了，我们把这件事办妥。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "文件上用哪个称呼？"
+      },
+      {
+        "id": "o2",
+        "text": "好，我把要填写的栏目找出来。对了，文件上用哪个称呼？"
+      },
+      {
+        "id": "o3",
+        "text": "好，我把要填写的栏目找出来。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o4",
+        "text": "好，我把要填写的栏目找出来。"
+      }
+    ],
+    "target": "o4",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o2"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o3"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你填写收件身份。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "使用拼音 Xu Wenzhou。"
+        },
+        {
+          "id": "o2",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o3",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o4",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o5",
+          "text": "采用平时的昵称。"
+        }
+      ],
+      "target": "o1",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "这件事已有明确答案。用全名许闻舟。",
+  "ceiling_use": "用全名许闻舟。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": [
+    "许闻舟"
+  ]
+}

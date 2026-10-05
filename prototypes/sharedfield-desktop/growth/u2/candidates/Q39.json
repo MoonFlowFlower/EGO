@@ -1,0 +1,87 @@
+{
+  "id": "Q39",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "busy",
+  "hidden_answer": "我需要两根登山杖。",
+  "teaching": [
+    {
+      "dialogue": 4,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "周末可能做一次短途登山，眼下这班车要赶上。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 5,
+  "question": {
+    "situation": "我提着包在站台奔跑，入口快关了。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "先顾脚下，站稳了再聊。对了，是否需要登山杖？"
+      },
+      {
+        "id": "o2",
+        "text": "先顾脚下，站稳了再聊。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o3",
+        "text": "先顾脚下，站稳了再聊。"
+      },
+      {
+        "id": "o4",
+        "text": "是否需要登山杖？"
+      }
+    ],
+    "target": "o3",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你准备辅助装备。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o2",
+          "text": "备齐双侧支撑工具。"
+        },
+        {
+          "id": "o3",
+          "text": "不准备任何支撑物。"
+        },
+        {
+          "id": "o4",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o5",
+          "text": "暂时不处理并转聊天气。"
+        }
+      ],
+      "target": "o2",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "对方现在正在处理紧急事情。",
+  "ceiling_use": "我需要两根登山杖。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": [
+    "登山"
+  ]
+}

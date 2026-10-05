@@ -1,0 +1,85 @@
+{
+  "id": "Q23",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "领子贴脖子会让我喘不过气。",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "过两周打算添一件衣物，我现在得去开门。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 4,
+  "question": {
+    "situation": "衣柜收拾完了，我们慢慢聊会儿。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "清爽多了，我们慢慢聊。"
+      },
+      {
+        "id": "o2",
+        "text": "清爽多了，我们慢慢聊。对了，颈部能不能接受紧贴的领口？"
+      },
+      {
+        "id": "o3",
+        "text": "清爽多了，我们慢慢聊。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o4",
+        "text": "颈部能不能接受紧贴的领口？"
+      }
+    ],
+    "target": "o2",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o2",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o2",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你从两件上衣里选一件。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o2",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o3",
+          "text": "选贴颈高领款。"
+        },
+        {
+          "id": "o4",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o5",
+          "text": "选领部宽松敞开的款式。"
+        }
+      ],
+      "target": "o5",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+  "ceiling_use": "领子贴脖子会让我喘不过气。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

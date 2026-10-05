@@ -1,0 +1,93 @@
+{
+  "id": "P28",
+  "category": "P",
+  "preference": "你在安全的娱乐中倾向亲自承受后果，不让伙伴代打。",
+  "teaching_domain": "游戏协助",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "这一关我替你过，还是留着你再试？"
+        },
+        {
+          "speaker": "user",
+          "text": "别接手，摔下去也算我自己的。"
+        }
+      ]
+    },
+    {
+      "dialogue": 4,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "昨天最后一滴血我没让人救，输了倒没那么憋。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "一个益智关卡卡住了，怎么陪你？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o3",
+          "text": "直接代为通关。"
+        },
+        {
+          "id": "o4",
+          "text": "保持在旁，让你自己完成最后操作。"
+        },
+        {
+          "id": "o5",
+          "text": "替你包办所有难点。"
+        }
+      ],
+      "target": "o4",
+      "phase": "T1",
+      "domain": "游戏协助"
+    },
+    {
+      "situation": "一起做陶艺时形状不稳，怎样协助？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "提供观察建议，让你亲手调整。"
+        },
+        {
+          "id": "o3",
+          "text": "未经询问替你重做。"
+        },
+        {
+          "id": "o4",
+          "text": "立刻接管作品做成标准形。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你在安全的娱乐中倾向亲自承受后果，不让伙伴代打。",
+  "counterintuitive": "常见默认是“直接代为通关。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

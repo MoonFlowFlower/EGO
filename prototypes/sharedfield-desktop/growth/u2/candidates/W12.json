@@ -1,0 +1,49 @@
+{
+  "id": "W12",
+  "category": "W",
+  "applicable": true,
+  "teaching": [
+    {
+      "dialogue": 6,
+      "mode": "explicit_conditional",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "今年备考期间我的周日晚间只安排复习。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "仍在应试准备阶段，星期日夜里怎样安排？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "安排临时社交娱乐。"
+        },
+        {
+          "id": "o2",
+          "text": "交由一个无关的人随机决定。"
+        },
+        {
+          "id": "o3",
+          "text": "忽略眼前安排，转聊天气。"
+        },
+        {
+          "id": "o4",
+          "text": "留给巩固课程的活动。"
+        },
+        {
+          "id": "o5",
+          "text": "重新询问已说清的条件。"
+        }
+      ],
+      "target": "o4",
+      "phase": "boundary"
+    }
+  ],
+  "ceiling": "今年备考期间我的周日晚间只安排复习。",
+  "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+  "protected_names": []
+}

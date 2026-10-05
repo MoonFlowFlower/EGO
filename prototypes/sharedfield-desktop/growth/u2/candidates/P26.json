@@ -1,0 +1,95 @@
+{
+  "id": "P26",
+  "category": "P",
+  "preference": "你对新地点更愿意步行认识而不是坐车快速浏览。",
+  "teaching_domain": "外出方式",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "老城区打车兜圈还是沿巷子走？"
+        },
+        {
+          "speaker": "user",
+          "text": "脚上这双鞋就是为慢慢逛穿的。"
+        }
+      ]
+    },
+    {
+      "dialogue": 5,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "昨天多绕了两条小路，墙上的涂鸦坐车肯定错过。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "陪你熟悉新街区，怎么安排？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o2",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o3",
+          "text": "选可以逐处驻足的漫游方式。"
+        },
+        {
+          "id": "o4",
+          "text": "乘交通工具快速经过。"
+        },
+        {
+          "id": "o5",
+          "text": "把所有停留都取消。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T1",
+      "domain": "外出方式"
+    },
+    {
+      "situation": "游览数字博物馆，怎样切换展品？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "压缩成一分钟总览。"
+        },
+        {
+          "id": "o2",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "让你一步步接近并随意停顿。"
+        },
+        {
+          "id": "o5",
+          "text": "自动快进到各个重点。"
+        }
+      ],
+      "target": "o4",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你对新地点更愿意步行认识而不是坐车快速浏览。",
+  "counterintuitive": "常见默认是“乘交通工具快速经过。”；此人的两次选择暗示不同取向。",
+  "protected_names": [
+    "老城区"
+  ]
+}

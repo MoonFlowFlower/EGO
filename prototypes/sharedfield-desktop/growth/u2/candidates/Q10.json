@@ -1,0 +1,85 @@
+{
+  "id": "Q10",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "我不能吃花生。",
+  "teaching": [
+    {
+      "dialogue": 5,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "明天想烤点小点心，现在路口要转弯，晚点再说。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 6,
+  "question": {
+    "situation": "食材篮子拿出来了，咱们随便聊会儿。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "嗯，东西都齐齐整整摆着了。对了，有没有需要避开的坚果成分？"
+      },
+      {
+        "id": "o2",
+        "text": "有没有需要避开的坚果成分？"
+      },
+      {
+        "id": "o3",
+        "text": "嗯，东西都齐齐整整摆着了。"
+      },
+      {
+        "id": "o4",
+        "text": "嗯，东西都齐齐整整摆着了。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      }
+    ],
+    "target": "o1",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o2"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你选一份烘焙配料。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "用常见花生酱馅。"
+        },
+        {
+          "id": "o2",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o3",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o4",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o5",
+          "text": "采用不含相关豆果的配方。"
+        }
+      ],
+      "target": "o5",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+  "ceiling_use": "我不能吃花生。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

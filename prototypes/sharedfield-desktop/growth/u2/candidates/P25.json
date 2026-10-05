@@ -1,0 +1,93 @@
+{
+  "id": "P25",
+  "category": "P",
+  "preference": "你用餐时倾向把不同口味分开放。",
+  "teaching_domain": "饮食呈现",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "酱汁拌进面里，还是另盛小碟？"
+        },
+        {
+          "speaker": "user",
+          "text": "分开放，我想一口口自己配。"
+        }
+      ]
+    },
+    {
+      "dialogue": 4,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "便当那几个格子装满了也不串味，吃着很舒服。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "给你准备一份拼盘，如何装盘？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o2",
+          "text": "混合成统一口味。"
+        },
+        {
+          "id": "o3",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o4",
+          "text": "让各部分保持边界，蘸料独立。"
+        },
+        {
+          "id": "o5",
+          "text": "全部搅匀再端上来。"
+        }
+      ],
+      "target": "o4",
+      "phase": "T1",
+      "domain": "饮食呈现"
+    },
+    {
+      "situation": "给你整理一批不同主题的信息，怎样呈现？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o2",
+          "text": "各主题独立排列，允许自行组合。"
+        },
+        {
+          "id": "o3",
+          "text": "融合成一个连续总述。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "抹去所有分类界线。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你用餐时倾向把不同口味分开放。",
+  "counterintuitive": "常见默认是“混合成统一口味。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

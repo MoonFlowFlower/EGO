@@ -1,0 +1,85 @@
+{
+  "id": "Q45",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "bad_mood",
+  "hidden_answer": "我要圆角的。",
+  "teaching": [
+    {
+      "dialogue": 5,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "下周得选相框；今天丢了重要东西，不想回答额外的问题。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 6,
+  "question": {
+    "situation": "我还在难受，想先安静坐着。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "好，我陪你坐着，慢慢缓。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o2",
+        "text": "好，我陪你坐着，慢慢缓。对了，框边想要圆角还是直角？"
+      },
+      {
+        "id": "o3",
+        "text": "好，我陪你坐着，慢慢缓。"
+      },
+      {
+        "id": "o4",
+        "text": "框边想要圆角还是直角？"
+      }
+    ],
+    "target": "o3",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o2",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你挑一件展示用品。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "选边缘圆润的款式。"
+        },
+        {
+          "id": "o2",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o3",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o4",
+          "text": "选棱角分明的款式。"
+        },
+        {
+          "id": "o5",
+          "text": "再问你一次。"
+        }
+      ],
+      "target": "o1",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "对方现在情绪很差，已说明暂不想回答额外问题。",
+  "ceiling_use": "我要圆角的。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

@@ -1,0 +1,87 @@
+{
+  "id": "Q30",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "known",
+  "hidden_answer": "只能吃熟透的。",
+  "teaching": [
+    {
+      "dialogue": 5,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "那次聚餐我只吃熟透的海鲜，不要生食，已经告诉你啦。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 6,
+  "question": {
+    "situation": "菜单打开了，咱们看看有哪些菜。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "好，我先浏览几道备选。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o2",
+        "text": "好，我先浏览几道备选。对了，能不能接受未经加热的海产？"
+      },
+      {
+        "id": "o3",
+        "text": "能不能接受未经加热的海产？"
+      },
+      {
+        "id": "o4",
+        "text": "好，我先浏览几道备选。"
+      }
+    ],
+    "target": "o4",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o2",
+      "o3"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o3"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你从两道菜中选择。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "选生拌海味拼盘。"
+        },
+        {
+          "id": "o2",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o3",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o4",
+          "text": "选充分烹熟的一份。"
+        },
+        {
+          "id": "o5",
+          "text": "暂时不处理并转聊天气。"
+        }
+      ],
+      "target": "o4",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "这件事已有明确答案。只能吃熟透的。",
+  "ceiling_use": "只能吃熟透的。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": [
+    "海鲜"
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "id": "P19",
+  "category": "P",
+  "preference": "你看复杂解释时愿意先见反例和限制。",
+  "teaching_domain": "理解方式",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "这条定理先讲成功情形还是失效情形？"
+        },
+        {
+          "speaker": "user",
+          "text": "先让我看哪儿行不通，免得满世界套。"
+        }
+      ]
+    },
+    {
+      "dialogue": 4,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "指南那页写着例外，我折了角，正文反而没画线。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "解释一项新方法，怎样展开？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o3",
+          "text": "宣称任何情况都有效。"
+        },
+        {
+          "id": "o4",
+          "text": "先展示不成立的边界案例。"
+        },
+        {
+          "id": "o5",
+          "text": "先说明普遍优点。"
+        }
+      ],
+      "target": "o4",
+      "phase": "T1",
+      "domain": "理解方式"
+    },
+    {
+      "situation": "陪你评估一个生活计划，怎么介绍？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把所有限制藏到最后。"
+        },
+        {
+          "id": "o2",
+          "text": "先列出可能不适合的条件。"
+        },
+        {
+          "id": "o3",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o4",
+          "text": "只描绘顺利的前景。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你看复杂解释时愿意先见反例和限制。",
+  "counterintuitive": "常见默认是“先说明普遍优点。”；此人的两次选择暗示不同取向。",
+  "protected_names": [
+    "正文"
+  ]
+}

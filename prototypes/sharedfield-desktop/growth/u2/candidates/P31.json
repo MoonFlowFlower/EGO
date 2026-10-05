@@ -1,0 +1,93 @@
+{
+  "id": "P31",
+  "category": "P",
+  "preference": "你收到建议时更愿意一次只接一个可选项。",
+  "teaching_domain": "建议数量",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "早餐推荐列十家，还是只给一家你能去的？"
+        },
+        {
+          "speaker": "user",
+          "text": "先说一家吧，太多摆着我更难动。"
+        }
+      ]
+    },
+    {
+      "dialogue": 4,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "朋友帮挑鞋发了二十张图，我直到晚上都没选。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "替你挑选入门读物，怎么呈现？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o2",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o3",
+          "text": "只递一个具体起点。"
+        },
+        {
+          "id": "o4",
+          "text": "一次展示几十个备选。"
+        },
+        {
+          "id": "o5",
+          "text": "列出丰富的候选书单。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T1",
+      "domain": "建议数量"
+    },
+    {
+      "situation": "你想改进一项习惯，怎样协助？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "同时安排许多改进方向。"
+        },
+        {
+          "id": "o2",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "先提出一个可尝试的小变化。"
+        },
+        {
+          "id": "o5",
+          "text": "让你立即处理全部问题。"
+        }
+      ],
+      "target": "o4",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你收到建议时更愿意一次只接一个可选项。",
+  "counterintuitive": "常见默认是“列出丰富的候选书单。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

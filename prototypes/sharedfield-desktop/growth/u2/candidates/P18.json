@@ -1,0 +1,95 @@
+{
+  "id": "P18",
+  "category": "P",
+  "preference": "你对工具更看重能修而不追求最新款。",
+  "teaching_domain": "工具购置",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "台灯有密封新款和能拆换零件的旧款。"
+        },
+        {
+          "speaker": "user",
+          "text": "给我能拧开的，坏了还有地方下手。"
+        }
+      ]
+    },
+    {
+      "dialogue": 6,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "用了多年的收音机换个电容又响，我没打算扔。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "帮你挑一副头戴设备，侧重什么？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "优先购买无法拆解的流行款。"
+        },
+        {
+          "id": "o2",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o3",
+          "text": "选零件可替换、结构可维护的型号。"
+        },
+        {
+          "id": "o4",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o5",
+          "text": "选刚发布的一体化旗舰。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T1",
+      "domain": "工具购置"
+    },
+    {
+      "situation": "给你的数字资料选择保存形式，怎样建议？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "选最新但封闭的专用格式。"
+        },
+        {
+          "id": "o2",
+          "text": "依赖完全不可迁移的服务。"
+        },
+        {
+          "id": "o3",
+          "text": "采用能自行恢复和编辑的开放格式。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你对工具更看重能修而不追求最新款。",
+  "counterintuitive": "常见默认是“选刚发布的一体化旗舰。”；此人的两次选择暗示不同取向。",
+  "protected_names": [
+    "密封"
+  ]
+}

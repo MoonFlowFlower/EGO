@@ -1,0 +1,85 @@
+{
+  "id": "Q06",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "我得靠过道，坐中间会紧张。",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "下星期要去听一场演奏，先让我回完工作邮件。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 2,
+  "question": {
+    "situation": "票务页面打开了，今天时间挺宽裕。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "好呀，先把几个区域放大看看。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o2",
+        "text": "好呀，先把几个区域放大看看。"
+      },
+      {
+        "id": "o3",
+        "text": "好呀，先把几个区域放大看看。对了，是否需要方便离席的座位？"
+      },
+      {
+        "id": "o4",
+        "text": "是否需要方便离席的座位？"
+      }
+    ],
+    "target": "o3",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o3",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你从大厅座位图中选一处。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "选中央视野最正的位置。"
+        },
+        {
+          "id": "o2",
+          "text": "选紧邻通行边线的位置。"
+        },
+        {
+          "id": "o3",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o4",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o5",
+          "text": "暂时不处理并转聊天气。"
+        }
+      ],
+      "target": "o2",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+  "ceiling_use": "我得靠过道，坐中间会紧张。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

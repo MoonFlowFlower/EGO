@@ -1,0 +1,93 @@
+{
+  "id": "P42",
+  "category": "P",
+  "preference": "你保存资料时愿意按时间线查找。",
+  "teaching_domain": "资料组织",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "票据按店名分，还是按月份排？"
+        },
+        {
+          "speaker": "user",
+          "text": "月份吧，我记得是哪天买的，店名总忘。"
+        }
+      ]
+    },
+    {
+      "dialogue": 6,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "老照片照年份一翻就到了，按人物我找了好久。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "给你归档一批笔记，怎样安排？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o2",
+          "text": "按主题类别建立树状目录。"
+        },
+        {
+          "id": "o3",
+          "text": "完全打乱日期只看标签。"
+        },
+        {
+          "id": "o4",
+          "text": "依发生先后顺序排列。"
+        },
+        {
+          "id": "o5",
+          "text": "把话题转向天气。"
+        }
+      ],
+      "target": "o4",
+      "phase": "T1",
+      "domain": "资料组织"
+    },
+    {
+      "situation": "为你回顾一次共同项目，怎么展示？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "省略所有时间关系。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "只按成果类型拆分。"
+        },
+        {
+          "id": "o5",
+          "text": "沿着进展的先后脉络展开。"
+        }
+      ],
+      "target": "o5",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你保存资料时愿意按时间线查找。",
+  "counterintuitive": "常见默认是“按主题类别建立树状目录。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

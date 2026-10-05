@@ -1,0 +1,85 @@
+{
+  "id": "Q33",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "busy",
+  "hidden_answer": "我只用很低的枕头。",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "下周要选一款枕头，不过今天提交窗口很紧，等我忙完再说。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 4,
+  "question": {
+    "situation": "上传倒计时只剩两分钟，我还在逐项核对。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "你继续核对，我这边安静等。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o2",
+        "text": "你继续核对，我这边安静等。"
+      },
+      {
+        "id": "o3",
+        "text": "你继续核对，我这边安静等。对了，睡觉喜欢高一点还是低一点的支撑？"
+      },
+      {
+        "id": "o4",
+        "text": "睡觉喜欢高一点还是低一点的支撑？"
+      }
+    ],
+    "target": "o2",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o3",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你准备卧具。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "选薄而低的支撑。"
+        },
+        {
+          "id": "o2",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o3",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o4",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o5",
+          "text": "选常见高蓬松款。"
+        }
+      ],
+      "target": "o1",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "对方现在正在处理紧急事情。",
+  "ceiling_use": "我只用很低的枕头。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

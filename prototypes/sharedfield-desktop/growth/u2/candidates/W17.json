@@ -1,0 +1,51 @@
+{
+  "id": "W17",
+  "category": "W",
+  "applicable": false,
+  "teaching": [
+    {
+      "dialogue": 5,
+      "mode": "explicit_conditional",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "这次招待过敏的客人不放芝麻，之后给我自己做不用避开。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "宴请已结束，你自己想吃香浓的拌面。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "忽略眼前安排，转聊天气。"
+        },
+        {
+          "id": "o2",
+          "text": "重新询问已说清的条件。"
+        },
+        {
+          "id": "o3",
+          "text": "按当前用餐者需要搭配常规配料。"
+        },
+        {
+          "id": "o4",
+          "text": "继续把先前为访客排除的成分禁掉。"
+        },
+        {
+          "id": "o5",
+          "text": "交由一个无关的人随机决定。"
+        }
+      ],
+      "target": "o3",
+      "phase": "boundary"
+    }
+  ],
+  "ceiling": "这次招待过敏的客人不放芝麻，之后给我自己做不用避开。",
+  "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+  "protected_names": [
+    "过敏"
+  ]
+}

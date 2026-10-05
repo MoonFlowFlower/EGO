@@ -1,0 +1,93 @@
+{
+  "id": "P46",
+  "category": "P",
+  "preference": "你试新事物时愿意用小份先探路。",
+  "teaching_domain": "尝新投入",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "新口味整盒买，还是拆一颗试吃？"
+        },
+        {
+          "speaker": "user",
+          "text": "先拿那一颗，尝过再决定囤不囤。"
+        }
+      ]
+    },
+    {
+      "dialogue": 4,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "健身课我只报了单次，没急着办年卡。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "推荐给你一个陌生系列产品，怎样开始？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "直接购买最大组合以求划算。"
+        },
+        {
+          "id": "o2",
+          "text": "先选最小规格进行试用。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "尚未体验就长期订购。"
+        },
+        {
+          "id": "o5",
+          "text": "把话题转向天气。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T1",
+      "domain": "尝新投入"
+    },
+    {
+      "situation": "一起改变一种协作方式，怎样实施？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "立刻放弃所有旧方式。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "一次推广到全部工作。"
+        },
+        {
+          "id": "o5",
+          "text": "先在一个很小的任务中试行。"
+        }
+      ],
+      "target": "o5",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你试新事物时愿意用小份先探路。",
+  "counterintuitive": "常见默认是“直接购买最大组合以求划算。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

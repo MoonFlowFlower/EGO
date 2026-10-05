@@ -1,0 +1,95 @@
+{
+  "id": "P08",
+  "category": "P",
+  "preference": "你在不伤人的讨论里希望对方明确表达不同意见。",
+  "teaching_domain": "讨论",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "方案我有异议，要现在挑出来还是先附和？"
+        },
+        {
+          "speaker": "user",
+          "text": "你直接驳，绕着我说没劲。"
+        }
+      ]
+    },
+    {
+      "dialogue": 5,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "下棋那会儿老周一直顺我，我反倒更想找会顶嘴的人。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "你提出一个有漏洞的论点，怎样回应？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o2",
+          "text": "只表达赞同。"
+        },
+        {
+          "id": "o3",
+          "text": "先顺着说以免扫兴。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "直说分歧并举出反例。"
+        }
+      ],
+      "target": "o5",
+      "phase": "T1",
+      "domain": "讨论"
+    },
+    {
+      "situation": "共同挑选一件摆设时审美不合，怎样处理？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "坦率讲出自己的另一种看法。"
+        },
+        {
+          "id": "o2",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "隐去自身判断一味迎合。"
+        },
+        {
+          "id": "o5",
+          "text": "以你的意见为唯一依据。"
+        }
+      ],
+      "target": "o1",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你在不伤人的讨论里希望对方明确表达不同意见。",
+  "counterintuitive": "常见默认是“先顺着说以免扫兴。”；此人的两次选择暗示不同取向。",
+  "protected_names": [
+    "老周"
+  ]
+}

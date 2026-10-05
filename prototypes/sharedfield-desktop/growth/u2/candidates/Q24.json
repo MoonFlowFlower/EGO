@@ -1,0 +1,85 @@
+{
+  "id": "Q24",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "我不能喝牛奶，会肚子疼。",
+  "teaching": [
+    {
+      "dialogue": 4,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "下次想自己弄一份早餐，这会儿我正在赶末班车。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 5,
+  "question": {
+    "situation": "烤面包机擦好了，今天有空歇歇。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "乳制品能否正常消化？"
+      },
+      {
+        "id": "o2",
+        "text": "好呀，眼前这块地方亮亮的。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o3",
+        "text": "好呀，眼前这块地方亮亮的。对了，乳制品能否正常消化？"
+      },
+      {
+        "id": "o4",
+        "text": "好呀，眼前这块地方亮亮的。"
+      }
+    ],
+    "target": "o3",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o3"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o3"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你配一杯餐旁饮料。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o2",
+          "text": "选通常搭配的鲜奶。"
+        },
+        {
+          "id": "o3",
+          "text": "选植物来源或清水类。"
+        },
+        {
+          "id": "o4",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o5",
+          "text": "再问你一次。"
+        }
+      ],
+      "target": "o3",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+  "ceiling_use": "我不能喝牛奶，会肚子疼。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

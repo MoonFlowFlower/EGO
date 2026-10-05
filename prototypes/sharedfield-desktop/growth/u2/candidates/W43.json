@@ -1,0 +1,49 @@
+{
+  "id": "W43",
+  "category": "W",
+  "applicable": false,
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "explicit_conditional",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "平常我只做简餐，今天纪念日明确想慢慢做一道复杂菜。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "正在为这个特殊夜晚准备晚饭。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "按此次选择展开较细致的烹饪。"
+        },
+        {
+          "id": "o2",
+          "text": "忽略眼前安排，转聊天气。"
+        },
+        {
+          "id": "o3",
+          "text": "重新询问已说清的条件。"
+        },
+        {
+          "id": "o4",
+          "text": "坚持日常最快的简单搭配。"
+        },
+        {
+          "id": "o5",
+          "text": "交由一个无关的人随机决定。"
+        }
+      ],
+      "target": "o1",
+      "phase": "boundary"
+    }
+  ],
+  "ceiling": "平常我只做简餐，今天纪念日明确想慢慢做一道复杂菜。",
+  "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+  "protected_names": []
+}

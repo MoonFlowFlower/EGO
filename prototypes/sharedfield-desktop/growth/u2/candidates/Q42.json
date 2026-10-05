@@ -1,0 +1,85 @@
+{
+  "id": "Q42",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "no_future",
+  "hidden_answer": "我只接受浅水。",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "刚提到的潜水只是角色背景，我不准备去，也没有后续行程。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 3,
+  "question": {
+    "situation": "那个人物的小传已经完稿，咱们轻松聊聊。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "这一页收得很稳，先歇一会儿。对了，本人下水时能承受多深？"
+      },
+      {
+        "id": "o2",
+        "text": "这一页收得很稳，先歇一会儿。"
+      },
+      {
+        "id": "o3",
+        "text": "本人下水时能承受多深？"
+      },
+      {
+        "id": "o4",
+        "text": "这一页收得很稳，先歇一会儿。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      }
+    ],
+    "target": "o2",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o3"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "在未来一个实际水上活动中为你选区域。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "选择水位很浅的一段。"
+        },
+        {
+          "id": "o2",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o3",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o4",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o5",
+          "text": "选择深水训练区。"
+        }
+      ],
+      "target": "o1",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "这件事没有现实中的后续用途。",
+  "ceiling_use": "我只接受浅水。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

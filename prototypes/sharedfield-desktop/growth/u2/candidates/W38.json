@@ -1,0 +1,51 @@
+{
+  "id": "W38",
+  "category": "W",
+  "applicable": true,
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "explicit_conditional",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "这次送给朋友的书要精装，他准备长期珍藏。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "仍在为那位收礼者挑选版本。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "按你随身阅读的习惯选便携软封。"
+        },
+        {
+          "id": "o2",
+          "text": "重新询问已说清的条件。"
+        },
+        {
+          "id": "o3",
+          "text": "忽略眼前安排，转聊天气。"
+        },
+        {
+          "id": "o4",
+          "text": "选耐用的硬壳装订。"
+        },
+        {
+          "id": "o5",
+          "text": "交由一个无关的人随机决定。"
+        }
+      ],
+      "target": "o4",
+      "phase": "boundary"
+    }
+  ],
+  "ceiling": "这次送给朋友的书要精装，他准备长期珍藏。",
+  "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+  "protected_names": [
+    "珍藏"
+  ]
+}

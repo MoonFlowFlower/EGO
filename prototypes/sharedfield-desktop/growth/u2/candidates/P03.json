@@ -1,0 +1,95 @@
+{
+  "id": "P03",
+  "category": "P",
+  "preference": "你独自专注时愿意周围有人声杂响。",
+  "teaching_domain": "工作环境",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "写稿去空会议室，还是楼下茶摊？"
+        },
+        {
+          "speaker": "user",
+          "text": "去吆喝的那边，关上门太静我坐不住。"
+        }
+      ]
+    },
+    {
+      "dialogue": 6,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "修图时隔壁一直打麻将，那天倒顺手做完了。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "替你安排一下午校对，座位怎么选？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "戴降噪耳机独坐。"
+        },
+        {
+          "id": "o3",
+          "text": "坐在交谈声不断的公共大厅。"
+        },
+        {
+          "id": "o4",
+          "text": "预约隔音单间。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T1",
+      "domain": "工作环境"
+    },
+    {
+      "situation": "一个人练习陌生乐器，配什么背景？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把一切声音隔绝。"
+        },
+        {
+          "id": "o2",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "保持完全安静。"
+        },
+        {
+          "id": "o5",
+          "text": "放街市闲聊的环境音。"
+        }
+      ],
+      "target": "o5",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你独自专注时愿意周围有人声杂响。",
+  "counterintuitive": "常见默认是“预约隔音单间。”；此人的两次选择暗示不同取向。",
+  "protected_names": [
+    "太静"
+  ]
+}

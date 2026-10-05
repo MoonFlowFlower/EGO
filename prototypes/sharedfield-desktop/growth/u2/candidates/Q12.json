@@ -1,0 +1,85 @@
+{
+  "id": "Q12",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "我一坐车就晕，要靠前并能透气。",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "过几天想做一次长途出行，这会儿没空展开。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 3,
+  "question": {
+    "situation": "行李箱翻出来了，我们边坐边看看。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "这个箱子还很结实，先放身边吧。"
+      },
+      {
+        "id": "o2",
+        "text": "乘交通工具是否容易晕？"
+      },
+      {
+        "id": "o3",
+        "text": "这个箱子还很结实，先放身边吧。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o4",
+        "text": "这个箱子还很结实，先放身边吧。对了，乘交通工具是否容易晕？"
+      }
+    ],
+    "target": "o4",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o2",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o2",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你挑一张交通座票。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o2",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o3",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o4",
+          "text": "选前排通风较好的位置。"
+        },
+        {
+          "id": "o5",
+          "text": "选后排便宜的位置。"
+        }
+      ],
+      "target": "o4",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+  "ceiling_use": "我一坐车就晕，要靠前并能透气。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

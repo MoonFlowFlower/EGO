@@ -1,0 +1,49 @@
+{
+  "id": "W18",
+  "category": "W",
+  "applicable": true,
+  "teaching": [
+    {
+      "dialogue": 6,
+      "mode": "explicit_conditional",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "替我弟弟买耳机时选头戴的，我本人用入耳式。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "现在为你的胞弟准备听音设备。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "选择覆盖耳部的款型。"
+        },
+        {
+          "id": "o2",
+          "text": "交由一个无关的人随机决定。"
+        },
+        {
+          "id": "o3",
+          "text": "用你的塞入耳道款。"
+        },
+        {
+          "id": "o4",
+          "text": "忽略眼前安排，转聊天气。"
+        },
+        {
+          "id": "o5",
+          "text": "重新询问已说清的条件。"
+        }
+      ],
+      "target": "o1",
+      "phase": "boundary"
+    }
+  ],
+  "ceiling": "替我弟弟买耳机时选头戴的，我本人用入耳式。",
+  "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+  "protected_names": []
+}

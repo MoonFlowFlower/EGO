@@ -1,0 +1,95 @@
+{
+  "id": "P44",
+  "category": "P",
+  "preference": "你阅读长内容时愿意保留实体翻页感。",
+  "teaching_domain": "阅读载体",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "旅行指南下载到平板，还是带折角那本？"
+        },
+        {
+          "speaker": "user",
+          "text": "带纸本，手指夹着两页比来回滑省心。"
+        }
+      ]
+    },
+    {
+      "dialogue": 5,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "烹饪步骤我抄在卡片上，沾点面粉也照样用。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "给你准备一段离线学习材料，怎么交付？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o2",
+          "text": "只提供连续滚动的电子长页。"
+        },
+        {
+          "id": "o3",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o4",
+          "text": "做成能逐张翻动的印刷小册。"
+        },
+        {
+          "id": "o5",
+          "text": "彻底取消分页与页码。"
+        }
+      ],
+      "target": "o4",
+      "phase": "T1",
+      "domain": "阅读载体"
+    },
+    {
+      "situation": "为你设计一个数字知识浏览器，如何交互？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "提供清晰的页面切换与位置感。"
+        },
+        {
+          "id": "o2",
+          "text": "每次随机刷新位置。"
+        },
+        {
+          "id": "o3",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o4",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o5",
+          "text": "所有信息堆成无尽滚屏。"
+        }
+      ],
+      "target": "o1",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你阅读长内容时愿意保留实体翻页感。",
+  "counterintuitive": "常见默认是“只提供连续滚动的电子长页。”；此人的两次选择暗示不同取向。",
+  "protected_names": [
+    "卡片"
+  ]
+}

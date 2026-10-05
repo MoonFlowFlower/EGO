@@ -1,0 +1,93 @@
+{
+  "id": "P23",
+  "category": "P",
+  "preference": "你在评价信息里更看重具体缺点而非总评分。",
+  "teaching_domain": "挑选依据",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "酒店只看星级，还是翻差评细节？"
+        },
+        {
+          "speaker": "user",
+          "text": "把抱怨那几条给我，我自己掂量。"
+        }
+      ]
+    },
+    {
+      "dialogue": 5,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "耳机打分都差不多，风噪那段描述倒帮我定了。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "协助你比较两家培训机构，先呈现什么？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "列出亲历者提到的实际不足。"
+        },
+        {
+          "id": "o2",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o3",
+          "text": "只展示综合分数。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "按好评数量直接排名。"
+        }
+      ],
+      "target": "o1",
+      "phase": "T1",
+      "domain": "挑选依据"
+    },
+    {
+      "situation": "复盘你做的菜，怎样反馈更有帮助？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o2",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o3",
+          "text": "仅用五颗星评价。"
+        },
+        {
+          "id": "o4",
+          "text": "给一个总体满意度数字。"
+        },
+        {
+          "id": "o5",
+          "text": "指出口感与火候上的具体偏差。"
+        }
+      ],
+      "target": "o5",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你在评价信息里更看重具体缺点而非总评分。",
+  "counterintuitive": "常见默认是“只展示综合分数。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

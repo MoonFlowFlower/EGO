@@ -1,0 +1,85 @@
+{
+  "id": "Q31",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "known",
+  "hidden_answer": "摆阳台。",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "周日带回来的花别放卧室，我会打喷嚏，摆阳台就好。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 2,
+  "question": {
+    "situation": "花瓶找到了，坐下聊两句。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "嗯，搁在旁边就稳了。"
+      },
+      {
+        "id": "o2",
+        "text": "嗯，搁在旁边就稳了。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o3",
+        "text": "嗯，搁在旁边就稳了。对了，新植物适合摆在哪里？"
+      },
+      {
+        "id": "o4",
+        "text": "新植物适合摆在哪里？"
+      }
+    ],
+    "target": "o1",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o3",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o2",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你安排植物的位置。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o2",
+          "text": "放到床头。"
+        },
+        {
+          "id": "o3",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o4",
+          "text": "放到居住睡眠区之外的露台。"
+        },
+        {
+          "id": "o5",
+          "text": "再问你一次。"
+        }
+      ],
+      "target": "o4",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "这件事已有明确答案。摆阳台。",
+  "ceiling_use": "摆阳台。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

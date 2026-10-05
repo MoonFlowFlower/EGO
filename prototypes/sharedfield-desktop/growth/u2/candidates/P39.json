@@ -1,0 +1,95 @@
+{
+  "id": "P39",
+  "category": "P",
+  "preference": "你安排共同活动时愿意保留各自独处的时间。",
+  "teaching_domain": "相处密度",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "周末两天都黏一起，还是中间各逛各的？"
+        },
+        {
+          "speaker": "user",
+          "text": "留半天分开，我还想自己钻个旧书摊。"
+        }
+      ]
+    },
+    {
+      "dialogue": 6,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "旅行时我们各坐窗边看了会儿书，比赶着聊天自在。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "安排一次结伴出行，怎样分配？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "加入可分别行动的自由段落。"
+        },
+        {
+          "id": "o2",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o3",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o4",
+          "text": "从早到晚始终共同参与。"
+        },
+        {
+          "id": "o5",
+          "text": "所有环节都要求同步。"
+        }
+      ],
+      "target": "o1",
+      "phase": "T1",
+      "domain": "相处密度"
+    },
+    {
+      "situation": "计划一场线上合作，怎样组织休息？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "允许双方各自暂离一会儿。"
+        },
+        {
+          "id": "o2",
+          "text": "休息时也持续连麦互动。"
+        },
+        {
+          "id": "o3",
+          "text": "不留任何单独空间。"
+        },
+        {
+          "id": "o4",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o5",
+          "text": "把话题转向天气。"
+        }
+      ],
+      "target": "o1",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你安排共同活动时愿意保留各自独处的时间。",
+  "counterintuitive": "常见默认是“所有环节都要求同步。”；此人的两次选择暗示不同取向。",
+  "protected_names": [
+    "聊天"
+  ]
+}

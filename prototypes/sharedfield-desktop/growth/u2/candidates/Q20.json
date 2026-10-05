@@ -1,0 +1,85 @@
+{
+  "id": "Q20",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "我不想当众长篇发言。",
+  "teaching": [
+    {
+      "dialogue": 5,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "月底准备参加一场桌游聚会，今天先不展开了。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 6,
+  "question": {
+    "situation": "桌面擦好了，牌垫也拿出来了，休息一下。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "现在这块地方宽敞多了。"
+      },
+      {
+        "id": "o2",
+        "text": "现在这块地方宽敞多了。对了，是否能接受需要演讲的玩法？"
+      },
+      {
+        "id": "o3",
+        "text": "是否能接受需要演讲的玩法？"
+      },
+      {
+        "id": "o4",
+        "text": "现在这块地方宽敞多了。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      }
+    ],
+    "target": "o2",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o2",
+      "o3"
+    ],
+    "any_question_ids": [
+      "o2",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你挑一种多人娱乐形式。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o2",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o3",
+          "text": "选长篇辩论式角色游戏。"
+        },
+        {
+          "id": "o4",
+          "text": "选靠小动作或简短交流推进的玩法。"
+        },
+        {
+          "id": "o5",
+          "text": "再问你一次。"
+        }
+      ],
+      "target": "o4",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+  "ceiling_use": "我不想当众长篇发言。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

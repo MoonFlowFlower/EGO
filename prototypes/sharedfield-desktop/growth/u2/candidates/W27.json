@@ -1,0 +1,49 @@
+{
+  "id": "W27",
+  "category": "W",
+  "applicable": false,
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "explicit_conditional",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "我个人的文档先写结论，替老师排教材要照他的循序结构。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "现在处理导师指定的课程资料，怎样排序？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把你的个人写作顺序直接套上去。"
+        },
+        {
+          "id": "o2",
+          "text": "忽略眼前安排，转聊天气。"
+        },
+        {
+          "id": "o3",
+          "text": "交由一个无关的人随机决定。"
+        },
+        {
+          "id": "o4",
+          "text": "重新询问已说清的条件。"
+        },
+        {
+          "id": "o5",
+          "text": "按授课者要求逐步展开。"
+        }
+      ],
+      "target": "o5",
+      "phase": "boundary"
+    }
+  ],
+  "ceiling": "我个人的文档先写结论，替老师排教材要照他的循序结构。",
+  "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+  "protected_names": []
+}

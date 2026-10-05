@@ -1,0 +1,93 @@
+{
+  "id": "P45",
+  "category": "P",
+  "preference": "你在熟悉的地方愿意坐靠出口的位置。",
+  "teaching_domain": "位置选择",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "影院选正中还是走道旁？"
+        },
+        {
+          "speaker": "user",
+          "text": "靠边那张吧，出去不用挤过别人。"
+        }
+      ]
+    },
+    {
+      "dialogue": 6,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "开会我总先坐门口，散场不用等一排人起身。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "帮你预订一场讲座的座位，怎么选？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "挑方便离席、通行直接的位置。"
+        },
+        {
+          "id": "o2",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o3",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o4",
+          "text": "挑视野最居中的区域。"
+        },
+        {
+          "id": "o5",
+          "text": "选最深处且难以离开的角落。"
+        }
+      ],
+      "target": "o1",
+      "phase": "T1",
+      "domain": "位置选择"
+    },
+    {
+      "situation": "安排一张线上仪表盘，怎样放常用退出入口？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把中心区域全留给内容。"
+        },
+        {
+          "id": "o2",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "把离开操作藏进多层菜单。"
+        },
+        {
+          "id": "o5",
+          "text": "让返回和离开始终容易触达。"
+        }
+      ],
+      "target": "o5",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你在熟悉的地方愿意坐靠出口的位置。",
+  "counterintuitive": "常见默认是“挑视野最居中的区域。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

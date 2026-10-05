@@ -1,0 +1,85 @@
+{
+  "id": "Q37",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "busy",
+  "hidden_answer": "扶手必须能升降。",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "过阵子会买一把椅子；今晚直播演讲时别打岔。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 3,
+  "question": {
+    "situation": "我正在讲关键段落，台下等我继续。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "嗯，你继续，我安静听着。"
+      },
+      {
+        "id": "o2",
+        "text": "嗯，你继续，我安静听着。对了，扶手需不需要能调节？"
+      },
+      {
+        "id": "o3",
+        "text": "嗯，你继续，我安静听着。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o4",
+        "text": "扶手需不需要能调节？"
+      }
+    ],
+    "target": "o1",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o2",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o2",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你从两款座具里选一款。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o2",
+          "text": "选高度固定的一体式。"
+        },
+        {
+          "id": "o3",
+          "text": "选侧部支撑高度可变的。"
+        },
+        {
+          "id": "o4",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o5",
+          "text": "暂时不处理并转聊天气。"
+        }
+      ],
+      "target": "o3",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "对方现在正在处理紧急事情。",
+  "ceiling_use": "扶手必须能升降。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

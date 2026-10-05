@@ -1,0 +1,93 @@
+{
+  "id": "P13",
+  "category": "P",
+  "preference": "你接受邀请时愿意明确收到时间范围而不喜欢随时都行。",
+  "teaching_domain": "安排",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "碰面定四点到四点半，还是你有空就来？"
+        },
+        {
+          "speaker": "user",
+          "text": "给我那个半小时的档，我才好安排行程。"
+        }
+      ]
+    },
+    {
+      "dialogue": 4,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "朋友说改天聊我老惦记，后来圈了周三傍晚就踏实了。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "约你做一项短练习，怎样表达？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o3",
+          "text": "始终不给具体时段。"
+        },
+        {
+          "id": "o4",
+          "text": "给出清晰的开始与结束时刻。"
+        },
+        {
+          "id": "o5",
+          "text": "说任何时候都欢迎。"
+        }
+      ],
+      "target": "o4",
+      "phase": "T1",
+      "domain": "安排"
+    },
+    {
+      "situation": "设计一个软件里的协作入口，怎样提示？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "标明预约窗口与截止点。"
+        },
+        {
+          "id": "o2",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o3",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o4",
+          "text": "省略所有时间界线。"
+        },
+        {
+          "id": "o5",
+          "text": "显示随时可用。"
+        }
+      ],
+      "target": "o1",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你接受邀请时愿意明确收到时间范围而不喜欢随时都行。",
+  "counterintuitive": "常见默认是“说任何时候都欢迎。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

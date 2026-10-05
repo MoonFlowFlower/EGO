@@ -1,0 +1,85 @@
+{
+  "id": "Q28",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "known",
+  "hidden_answer": "不要加糖。",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "我喝茶不加糖，后天来时那罐甜的别放进杯里。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 4,
+  "question": {
+    "situation": "茶具都洗好了，休息一下吧。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "嗯，坐一会儿，不着急。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o2",
+        "text": "嗯，坐一会儿，不着急。"
+      },
+      {
+        "id": "o3",
+        "text": "饮品需要增甜吗？"
+      },
+      {
+        "id": "o4",
+        "text": "嗯，坐一会儿，不着急。对了，饮品需要增甜吗？"
+      }
+    ],
+    "target": "o2",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o3",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你准备一杯热饮。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o2",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o3",
+          "text": "按常见习惯加一勺砂糖。"
+        },
+        {
+          "id": "o4",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o5",
+          "text": "不加入甜味配料。"
+        }
+      ],
+      "target": "o5",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "这件事已有明确答案。不要加糖。",
+  "ceiling_use": "不要加糖。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

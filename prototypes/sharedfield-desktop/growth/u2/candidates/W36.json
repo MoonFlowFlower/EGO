@@ -1,0 +1,49 @@
+{
+  "id": "W36",
+  "category": "W",
+  "applicable": true,
+  "teaching": [
+    {
+      "dialogue": 6,
+      "mode": "explicit_conditional",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "我自己下厨时不希望别人直接接管，提醒我就行。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "你正在独立准备一顿家常餐，有个小步骤卡住。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "重新询问已说清的条件。"
+        },
+        {
+          "id": "o2",
+          "text": "交由一个无关的人随机决定。"
+        },
+        {
+          "id": "o3",
+          "text": "立刻替你完成剩余工序。"
+        },
+        {
+          "id": "o4",
+          "text": "给线索并让你继续操作。"
+        },
+        {
+          "id": "o5",
+          "text": "忽略眼前安排，转聊天气。"
+        }
+      ],
+      "target": "o4",
+      "phase": "boundary"
+    }
+  ],
+  "ceiling": "我自己下厨时不希望别人直接接管，提醒我就行。",
+  "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+  "protected_names": []
+}

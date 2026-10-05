@@ -1,0 +1,85 @@
+{
+  "id": "Q13",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "小号字看不清，我得用大字版。",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "近期想打印一批阅读材料，先让我把这通电话说完。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 4,
+  "question": {
+    "situation": "书桌清好了，你也坐下聊聊吧。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "好呀，我陪你待一会儿。"
+      },
+      {
+        "id": "o2",
+        "text": "好呀，我陪你待一会儿。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o3",
+        "text": "看小字是否吃力？"
+      },
+      {
+        "id": "o4",
+        "text": "好呀，我陪你待一会儿。对了，看小字是否吃力？"
+      }
+    ],
+    "target": "o4",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o3",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o2",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你制作一份纸质资料。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o2",
+          "text": "用省纸的紧凑小字号。"
+        },
+        {
+          "id": "o3",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o4",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o5",
+          "text": "用明显放大的正文。"
+        }
+      ],
+      "target": "o5",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+  "ceiling_use": "小号字看不清，我得用大字版。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

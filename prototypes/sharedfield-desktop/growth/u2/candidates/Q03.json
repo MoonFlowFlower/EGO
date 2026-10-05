@@ -1,0 +1,85 @@
+{
+  "id": "Q03",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "我只用扬声器，不愿戴耳机。",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "过阵子要录一段朗读，先不聊了我要开会。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 4,
+  "question": {
+    "situation": "房间终于腾出来了，来听听这里的回音。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "嗯，这里的声音比走廊收得住。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o2",
+        "text": "嗯，这里的声音比走廊收得住。对了，接收声音时偏向贴耳还是外放？"
+      },
+      {
+        "id": "o3",
+        "text": "嗯，这里的声音比走廊收得住。"
+      },
+      {
+        "id": "o4",
+        "text": "接收声音时偏向贴耳还是外放？"
+      }
+    ],
+    "target": "o2",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o2",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "给你安排回听设备。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o2",
+          "text": "准备头戴监听设备。"
+        },
+        {
+          "id": "o3",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o4",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o5",
+          "text": "准备桌面的扩音装置。"
+        }
+      ],
+      "target": "o5",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+  "ceiling_use": "我只用扬声器，不愿戴耳机。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

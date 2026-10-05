@@ -1,0 +1,95 @@
+{
+  "id": "P48",
+  "category": "P",
+  "preference": "你对公共承诺倾向少说一点再实际做到。",
+  "teaching_domain": "承诺表达",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "群里预告全部计划，还是做好一件再提？"
+        },
+        {
+          "speaker": "user",
+          "text": "别先放那么大话，有一件拿得出再说。"
+        }
+      ]
+    },
+    {
+      "dialogue": 6,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "上次我没报跑步目标，跑满一周才给人看记录。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "你准备启动一项个人挑战，如何对外表达？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "频繁宣布尚未落实的保证。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "立刻公开宏大目标。"
+        },
+        {
+          "id": "o5",
+          "text": "先安静行动，有成果再分享。"
+        }
+      ],
+      "target": "o5",
+      "phase": "T1",
+      "domain": "承诺表达"
+    },
+    {
+      "situation": "共同承担一个新任务，怎样回应期待？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "给克制的承诺并用交付说明。"
+        },
+        {
+          "id": "o2",
+          "text": "先保证一定超额完成。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "用热烈宣言代替行动。"
+        },
+        {
+          "id": "o5",
+          "text": "把话题转向天气。"
+        }
+      ],
+      "target": "o1",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你对公共承诺倾向少说一点再实际做到。",
+  "counterintuitive": "常见默认是“立刻公开宏大目标。”；此人的两次选择暗示不同取向。",
+  "protected_names": [
+    "别先放"
+  ]
+}

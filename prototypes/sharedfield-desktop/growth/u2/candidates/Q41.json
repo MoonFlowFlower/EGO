@@ -1,0 +1,85 @@
+{
+  "id": "Q41",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "no_future",
+  "hidden_answer": "我会选长桌。",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "刚才那份婚宴设计是写小说用的，现实里并没有婚礼计划。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 2,
+  "question": {
+    "situation": "我把那段虚构故事翻出来了，场面呈现得挺热闹。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "这一段画面挺鲜活，读着有声响。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o2",
+        "text": "本人办宴会想用哪种餐桌形状？"
+      },
+      {
+        "id": "o3",
+        "text": "这一段画面挺鲜活，读着有声响。对了，本人办宴会想用哪种餐桌形状？"
+      },
+      {
+        "id": "o4",
+        "text": "这一段画面挺鲜活，读着有声响。"
+      }
+    ],
+    "target": "o4",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o2",
+      "o3"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o3"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "在另一次真的聚餐中替你安排桌型。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o2",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o3",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o4",
+          "text": "用普通圆桌。"
+        },
+        {
+          "id": "o5",
+          "text": "用修长的多人排列。"
+        }
+      ],
+      "target": "o5",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "这件事没有现实中的后续用途。",
+  "ceiling_use": "我会选长桌。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

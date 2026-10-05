@@ -1,0 +1,93 @@
+{
+  "id": "P32",
+  "category": "P",
+  "preference": "你在有限资源里愿意优先留一份备用。",
+  "teaching_domain": "资源分配",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "出门电量全用来拍摄，还是空着一块充电宝？"
+        },
+        {
+          "speaker": "user",
+          "text": "留那块别动，万一返程要叫车呢。"
+        }
+      ]
+    },
+    {
+      "dialogue": 5,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "饼干我总剩一袋在包底，没吃上也不心疼。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "给你安排一天设备使用，怎么分配？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "保留一部分容量应对意外。"
+        },
+        {
+          "id": "o2",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "彻底清空所有余量。"
+        },
+        {
+          "id": "o5",
+          "text": "把可用容量全部消耗以提高利用率。"
+        }
+      ],
+      "target": "o1",
+      "phase": "T1",
+      "domain": "资源分配"
+    },
+    {
+      "situation": "共同制定一个项目的工时计划，怎么排？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o3",
+          "text": "每一小时都安排满。"
+        },
+        {
+          "id": "o4",
+          "text": "留出未分配的缓冲。"
+        },
+        {
+          "id": "o5",
+          "text": "不为变动留任何空间。"
+        }
+      ],
+      "target": "o4",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你在有限资源里愿意优先留一份备用。",
+  "counterintuitive": "常见默认是“把可用容量全部消耗以提高利用率。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

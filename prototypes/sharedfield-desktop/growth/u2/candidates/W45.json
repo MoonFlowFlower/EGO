@@ -1,0 +1,51 @@
+{
+  "id": "W45",
+  "category": "W",
+  "applicable": false,
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "explicit_conditional",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "这两天为采样我只喝白水，结束后可以恢复喜欢的果汁。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "检测流程已经完成，你在挑休闲饮品。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "继续只允许无味清水。"
+        },
+        {
+          "id": "o2",
+          "text": "交由一个无关的人随机决定。"
+        },
+        {
+          "id": "o3",
+          "text": "提供正常可选的水果饮料。"
+        },
+        {
+          "id": "o4",
+          "text": "忽略眼前安排，转聊天气。"
+        },
+        {
+          "id": "o5",
+          "text": "重新询问已说清的条件。"
+        }
+      ],
+      "target": "o3",
+      "phase": "boundary"
+    }
+  ],
+  "ceiling": "这两天为采样我只喝白水，结束后可以恢复喜欢的果汁。",
+  "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+  "protected_names": [
+    "白水"
+  ]
+}

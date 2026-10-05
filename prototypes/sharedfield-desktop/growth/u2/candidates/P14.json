@@ -1,0 +1,95 @@
+{
+  "id": "P14",
+  "category": "P",
+  "preference": "你在安全的小尝试里愿意优先选择容易失败的挑战。",
+  "teaching_domain": "挑战程度",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "攀岩有稳妥的黄线和常掉下来的紫线。"
+        },
+        {
+          "speaker": "user",
+          "text": "先上紫的，垫子够厚，掉几回也行。"
+        }
+      ]
+    },
+    {
+      "dialogue": 5,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "练折纸那只老折歪的我又拆了一遍，简单的没拿。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "两套练习难度不同，陪你挑哪套？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o2",
+          "text": "选最容易获得成功的版本。"
+        },
+        {
+          "id": "o3",
+          "text": "选失误机会较多但可重来的版本。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "只做保证一次完成的版本。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T1",
+      "domain": "挑战程度"
+    },
+    {
+      "situation": "给你安排一次可撤回的创作尝试，怎么设定？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "选有明显不确定性的陌生技法。"
+        },
+        {
+          "id": "o2",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o3",
+          "text": "沿用最稳妥的成熟方案。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "完全排除出错空间。"
+        }
+      ],
+      "target": "o1",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你在安全的小尝试里愿意优先选择容易失败的挑战。",
+  "counterintuitive": "常见默认是“选最容易获得成功的版本。”；此人的两次选择暗示不同取向。",
+  "protected_names": [
+    "攀岩"
+  ]
+}

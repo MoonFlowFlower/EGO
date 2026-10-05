@@ -1,0 +1,85 @@
+{
+  "id": "Q02",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "我很怕冷，要厚的铺盖。",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "月底想去郊外住一晚，现在得赶着交表。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 3,
+  "question": {
+    "situation": "帐篷借到了，我们坐着喝口水吧。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "好呀，这会儿总算能松口气了。"
+      },
+      {
+        "id": "o2",
+        "text": "好呀，这会儿总算能松口气了。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o3",
+        "text": "夜里盖东西需要厚薄哪档？"
+      },
+      {
+        "id": "o4",
+        "text": "好呀，这会儿总算能松口气了。对了，夜里盖东西需要厚薄哪档？"
+      }
+    ],
+    "target": "o4",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o3",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o2",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你准备露营时的覆盖物。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "带轻薄夏季款。"
+        },
+        {
+          "id": "o2",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o3",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o4",
+          "text": "带保暖能力较强的一套。"
+        },
+        {
+          "id": "o5",
+          "text": "再问你一次。"
+        }
+      ],
+      "target": "o4",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+  "ceiling_use": "我很怕冷，要厚的铺盖。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

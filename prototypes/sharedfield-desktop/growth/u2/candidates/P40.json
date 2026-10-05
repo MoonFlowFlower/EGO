@@ -1,0 +1,93 @@
+{
+  "id": "P40",
+  "category": "P",
+  "preference": "你谈自己的失误时希望伙伴保持平常语气。",
+  "teaching_domain": "失误回应",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "打翻了那杯茶，要紧张安慰还是照常擦桌子？"
+        },
+        {
+          "speaker": "user",
+          "text": "照常擦就好，别把这事弄大了。"
+        }
+      ]
+    },
+    {
+      "dialogue": 4,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "跑错站朋友没大惊小怪，下一站下去也就完了。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "你犯了一个可挽回的小错，怎样回应？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "反复强调多么令人难过。"
+        },
+        {
+          "id": "o2",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o3",
+          "text": "平静处理并自然继续。"
+        },
+        {
+          "id": "o4",
+          "text": "把事情渲染成严重事故。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T1",
+      "domain": "失误回应"
+    },
+    {
+      "situation": "共同做一项练习出现小偏差，如何反馈？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "表现出强烈惊讶。"
+        },
+        {
+          "id": "o2",
+          "text": "用普通音量指出并调整。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "不停提醒失败的严重性。"
+        },
+        {
+          "id": "o5",
+          "text": "把话题转向天气。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你谈自己的失误时希望伙伴保持平常语气。",
+  "counterintuitive": "常见默认是“反复强调多么令人难过。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

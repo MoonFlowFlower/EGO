@@ -1,0 +1,87 @@
+{
+  "id": "Q01",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "我吃辣会难受，只能很淡。",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "下周想请两个人来家里聚一聚，车快到了，回头聊。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 2,
+  "question": {
+    "situation": "我刚把厨房台面擦好了，歇会儿聊聊。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "台面看着很清爽，坐下来歇歇。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o2",
+        "text": "台面看着很清爽，坐下来歇歇。"
+      },
+      {
+        "id": "o3",
+        "text": "是否能接受刺激性的调味？"
+      },
+      {
+        "id": "o4",
+        "text": "台面看着很清爽，坐下来歇歇。对了，是否能接受刺激性的调味？"
+      }
+    ],
+    "target": "o4",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o3",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你订一份外卖作主餐。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o2",
+          "text": "选店里的招牌重口。"
+        },
+        {
+          "id": "o3",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o4",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o5",
+          "text": "选温和不刺激的口味。"
+        }
+      ],
+      "target": "o5",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+  "ceiling_use": "我吃辣会难受，只能很淡。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": [
+    "聚一聚"
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "id": "W29",
+  "category": "W",
+  "applicable": false,
+  "teaching": [
+    {
+      "dialogue": 5,
+      "mode": "explicit_conditional",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "我平时不拍视频，今天要给远方家人录段问候，破例一次。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "镜头已经摆好，怎样留下这次致意？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "忽略眼前安排，转聊天气。"
+        },
+        {
+          "id": "o2",
+          "text": "交由一个无关的人随机决定。"
+        },
+        {
+          "id": "o3",
+          "text": "继续只允许静态照片。"
+        },
+        {
+          "id": "o4",
+          "text": "按本次明确需要录制。"
+        },
+        {
+          "id": "o5",
+          "text": "重新询问已说清的条件。"
+        }
+      ],
+      "target": "o4",
+      "phase": "boundary"
+    }
+  ],
+  "ceiling": "我平时不拍视频，今天要给远方家人录段问候，破例一次。",
+  "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+  "protected_names": []
+}

@@ -1,0 +1,93 @@
+{
+  "id": "P34",
+  "category": "P",
+  "preference": "你倾向把借来的东西尽早归还，不留到最后期限。",
+  "teaching_domain": "归还习惯",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "图书到期还早，明天还还是再摆几天？"
+        },
+        {
+          "speaker": "user",
+          "text": "读完了就送回去，搁着总挂心。"
+        }
+      ]
+    },
+    {
+      "dialogue": 4,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "借来的梯子我当晚就扛回邻居门口了。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "临时用过别人的设备，如何安排？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "能多留一天就多留一天。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "等到约定截止日再交回。"
+        },
+        {
+          "id": "o5",
+          "text": "用途结束便尽快交回。"
+        }
+      ],
+      "target": "o5",
+      "phase": "T1",
+      "domain": "归还习惯"
+    },
+    {
+      "situation": "处理一次临时账号授权，如何收尾？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "保留到自动到期。"
+        },
+        {
+          "id": "o2",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o3",
+          "text": "事情做完即撤销权限。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "尽量长期占用访问资格。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你倾向把借来的东西尽早归还，不留到最后期限。",
+  "counterintuitive": "常见默认是“等到约定截止日再交回。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

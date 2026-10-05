@@ -1,0 +1,87 @@
+{
+  "id": "Q04",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "我碰乳胶会起疹，只能不用它。",
+  "teaching": [
+    {
+      "dialogue": 4,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "周末想试一次攀岩，这班车上太挤，改天说。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 5,
+  "question": {
+    "situation": "装备店今天有空位，咱们先坐下聊两句。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "手部接触橡胶是否不舒服？"
+      },
+      {
+        "id": "o2",
+        "text": "可以，我们先找个位置坐。对了，手部接触橡胶是否不舒服？"
+      },
+      {
+        "id": "o3",
+        "text": "可以，我们先找个位置坐。"
+      },
+      {
+        "id": "o4",
+        "text": "可以，我们先找个位置坐。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      }
+    ],
+    "target": "o2",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o2"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你挑一副防护用品。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o2",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o3",
+          "text": "选常规橡胶款。"
+        },
+        {
+          "id": "o4",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o5",
+          "text": "选不含相关过敏材料的款式。"
+        }
+      ],
+      "target": "o5",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+  "ceiling_use": "我碰乳胶会起疹，只能不用它。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": [
+    "攀岩"
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "id": "P04",
+  "category": "P",
+  "preference": "你收到反馈时倾向先听问题，再听肯定。",
+  "teaching_domain": "反馈顺序",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "画稿评语先念亮点还是败笔？"
+        },
+        {
+          "speaker": "user",
+          "text": "先把毛病圈给我，夸奖可以等会儿。"
+        }
+      ]
+    },
+    {
+      "dialogue": 4,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "教练昨天开口就说我抬肘太高，省了半天绕弯子。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "审阅你写的短文，该怎样开场？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "直接指出最弱的一段。"
+        },
+        {
+          "id": "o2",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o3",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o4",
+          "text": "先赞扬优点再委婉建议。"
+        },
+        {
+          "id": "o5",
+          "text": "只讲好的一面。"
+        }
+      ],
+      "target": "o1",
+      "phase": "T1",
+      "domain": "反馈顺序"
+    },
+    {
+      "situation": "陪你复盘一次出游，怎么展开？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "从最不顺的一站谈起。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "回避所有遗憾。"
+        },
+        {
+          "id": "o5",
+          "text": "先回味开心片段。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你收到反馈时倾向先听问题，再听肯定。",
+  "counterintuitive": "常见默认是“先赞扬优点再委婉建议。”；此人的两次选择暗示不同取向。",
+  "protected_names": [
+    "评语"
+  ]
+}

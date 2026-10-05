@@ -1,0 +1,96 @@
+{
+  "id": "P21",
+  "category": "P",
+  "preference": "你更愿意把美好体验留在当下而不急着记录。",
+  "teaching_domain": "留念",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "夕阳要架手机拍延时，还是空手看？"
+        },
+        {
+          "speaker": "user",
+          "text": "先收起来，我想完整看这几分钟。"
+        }
+      ]
+    },
+    {
+      "dialogue": 6,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "演出散场才发现一张照都没拍，也没觉得少了什么。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "遇到好看的夜景，怎样陪你？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o2",
+          "text": "一起欣赏，暂缓取景。"
+        },
+        {
+          "id": "o3",
+          "text": "不断要求摆姿势。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "立即替你连拍存档。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T1",
+      "domain": "留念"
+    },
+    {
+      "situation": "共同完成一场精彩游戏后怎么收尾？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "要求马上制作完整战报。"
+        },
+        {
+          "id": "o2",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o3",
+          "text": "先聊当下感受，稍后再考虑回放。"
+        },
+        {
+          "id": "o4",
+          "text": "立刻整理每个精彩片段。"
+        },
+        {
+          "id": "o5",
+          "text": "把话题转向天气。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你更愿意把美好体验留在当下而不急着记录。",
+  "counterintuitive": "常见默认是“立即替你连拍存档。”；此人的两次选择暗示不同取向。",
+  "protected_names": [
+    "夕阳",
+    "延时"
+  ]
+}

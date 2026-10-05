@@ -1,0 +1,85 @@
+{
+  "id": "Q26",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "known",
+  "hidden_answer": "发文字给我。",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "明晚送餐到我家，门铃坏了，到了发文字别按铃。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 2,
+  "question": {
+    "situation": "地址确认好了，咱们继续聊点轻松的。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "到达时该怎样通知你？"
+      },
+      {
+        "id": "o2",
+        "text": "嗯，这件事安排好了，松口气。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o3",
+        "text": "嗯，这件事安排好了，松口气。"
+      },
+      {
+        "id": "o4",
+        "text": "嗯，这件事安排好了，松口气。对了，到达时该怎样通知你？"
+      }
+    ],
+    "target": "o3",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "物品送到了，选择通知方式。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "按响门口设备。"
+        },
+        {
+          "id": "o2",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o3",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o4",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o5",
+          "text": "发送可阅读的简短消息。"
+        }
+      ],
+      "target": "o5",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "这件事已有明确答案。发文字给我。",
+  "ceiling_use": "发文字给我。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

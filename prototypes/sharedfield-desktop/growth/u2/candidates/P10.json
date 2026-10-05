@@ -1,0 +1,93 @@
+{
+  "id": "P10",
+  "category": "P",
+  "preference": "你独自休闲时愿意重复熟悉的体验。",
+  "teaching_domain": "休闲内容",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "今晚放新专辑还是旧磁带？"
+        },
+        {
+          "speaker": "user",
+          "text": "就上次那盒吧，连卡带的地方我都等着听。"
+        }
+      ]
+    },
+    {
+      "dialogue": 4,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "书架最旧的侦探集又被我翻了一遍，没急着拆新书。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "为你安排独处的银幕时光，如何选择？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "推荐最新上映的作品。"
+        },
+        {
+          "id": "o2",
+          "text": "只挑从未接触的题材。"
+        },
+        {
+          "id": "o3",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o4",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o5",
+          "text": "重温已经看过多遍的片子。"
+        }
+      ],
+      "target": "o5",
+      "phase": "T1",
+      "domain": "休闲内容"
+    },
+    {
+      "situation": "一场已经走过的城市漫步和全新路线都可行，怎样安排？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o3",
+          "text": "再访记忆里的街巷。"
+        },
+        {
+          "id": "o4",
+          "text": "避开一切曾经到过的地方。"
+        },
+        {
+          "id": "o5",
+          "text": "探索全新的区域。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你独自休闲时愿意重复熟悉的体验。",
+  "counterintuitive": "常见默认是“推荐最新上映的作品。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

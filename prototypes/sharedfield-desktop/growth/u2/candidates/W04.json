@@ -1,0 +1,49 @@
+{
+  "id": "W04",
+  "category": "W",
+  "applicable": true,
+  "teaching": [
+    {
+      "dialogue": 4,
+      "mode": "explicit_conditional",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "只给我用的床品要纯棉，混纺贴着不舒服。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "替你自己的卧室添一套铺盖。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "忽略眼前安排，转聊天气。"
+        },
+        {
+          "id": "o2",
+          "text": "交由一个无关的人随机决定。"
+        },
+        {
+          "id": "o3",
+          "text": "选择化纤混合款。"
+        },
+        {
+          "id": "o4",
+          "text": "选择天然棉纤维材质。"
+        },
+        {
+          "id": "o5",
+          "text": "重新询问已说清的条件。"
+        }
+      ],
+      "target": "o4",
+      "phase": "boundary"
+    }
+  ],
+  "ceiling": "只给我用的床品要纯棉，混纺贴着不舒服。",
+  "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+  "protected_names": []
+}

@@ -1,0 +1,96 @@
+{
+  "id": "P30",
+  "category": "P",
+  "preference": "你独处时愿意把日常声响调得很轻。",
+  "teaching_domain": "声音强度",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "提示铃用响亮那档还是最轻那档？"
+        },
+        {
+          "speaker": "user",
+          "text": "轻的就行，桌面震一下我也看得见。"
+        }
+      ]
+    },
+    {
+      "dialogue": 6,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "厨房计时器叫得太猛，我把它裹进毛巾了。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "替你设置阅读辅助的提醒方式，怎么选？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "用醒目的强音效。"
+        },
+        {
+          "id": "o2",
+          "text": "每次都发出尖锐警报。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "用柔和、低强度的提醒。"
+        }
+      ],
+      "target": "o5",
+      "phase": "T1",
+      "domain": "声音强度"
+    },
+    {
+      "situation": "为你准备独自放松的环境，如何处理背景？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "保持低音量的细微声息。"
+        },
+        {
+          "id": "o2",
+          "text": "制造强烈的听觉冲击。"
+        },
+        {
+          "id": "o3",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o4",
+          "text": "把所有声源开到最大。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o1",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你独处时愿意把日常声响调得很轻。",
+  "counterintuitive": "常见默认是“用醒目的强音效。”；此人的两次选择暗示不同取向。",
+  "protected_names": [
+    "太猛",
+    "毛巾"
+  ]
+}

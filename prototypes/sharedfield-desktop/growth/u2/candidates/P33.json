@@ -1,0 +1,95 @@
+{
+  "id": "P33",
+  "category": "P",
+  "preference": "你学新技能时愿意先练容易被忽略的基础动作。",
+  "teaching_domain": "练习重点",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "先学花哨的转身，还是一直练站稳？"
+        },
+        {
+          "speaker": "user",
+          "text": "站稳那套再来几遍，我还会晃呢。"
+        }
+      ]
+    },
+    {
+      "dialogue": 6,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "吉他课一直按单音没进新曲，我反倒松了口气。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "陪你练习一种球类活动，先做什么？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "略过入门动作直接表演。"
+        },
+        {
+          "id": "o3",
+          "text": "尽快尝试高难花式。"
+        },
+        {
+          "id": "o4",
+          "text": "反复打磨基本姿势。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o4",
+      "phase": "T1",
+      "domain": "练习重点"
+    },
+    {
+      "situation": "一起学习编程，怎样安排最初任务？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "跳过基础概念追求炫技。"
+        },
+        {
+          "id": "o2",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "马上搭一个华丽的大应用。"
+        },
+        {
+          "id": "o5",
+          "text": "集中巩固最简单的构件。"
+        }
+      ],
+      "target": "o5",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你学新技能时愿意先练容易被忽略的基础动作。",
+  "counterintuitive": "常见默认是“尽快尝试高难花式。”；此人的两次选择暗示不同取向。",
+  "protected_names": [
+    "吉他"
+  ]
+}

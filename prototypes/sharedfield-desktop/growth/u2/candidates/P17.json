@@ -1,0 +1,93 @@
+{
+  "id": "P17",
+  "category": "P",
+  "preference": "你独处的行程愿意保留没有安排的空档。",
+  "teaching_domain": "行程",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "午后把三处景点填满，还是空一截？"
+        },
+        {
+          "speaker": "user",
+          "text": "中间那块别排，我想走到哪算哪。"
+        }
+      ]
+    },
+    {
+      "dialogue": 5,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "周日原本没写事项，发了半天呆也没觉得浪费。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "替你设计一人外出的一天，怎样分配？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o2",
+          "text": "预留一段完全自由的时段。"
+        },
+        {
+          "id": "o3",
+          "text": "紧密衔接全部活动。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "填满每一分钟。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T1",
+      "domain": "行程"
+    },
+    {
+      "situation": "一起制定个人学习周历，怎么排版？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把休息也拆成固定项目。"
+        },
+        {
+          "id": "o2",
+          "text": "留出没有指定任务的区块。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "所有格子都写上目标。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你独处的行程愿意保留没有安排的空档。",
+  "counterintuitive": "常见默认是“紧密衔接全部活动。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

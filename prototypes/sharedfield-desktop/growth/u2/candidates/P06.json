@@ -1,0 +1,95 @@
+{
+  "id": "P06",
+  "category": "P",
+  "preference": "你遇到低风险且难分高下的选项时，愿意交给随机抽签。",
+  "teaching_domain": "选择方式",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "两家面店都行，继续看评分还是抛硬币？"
+        },
+        {
+          "speaker": "user",
+          "text": "掷一下吧，别把午饭挑成论文。"
+        }
+      ]
+    },
+    {
+      "dialogue": 6,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "昨夜两本漫画来回翻，抽到哪册就读哪册，挺利落。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "两种价位相同的体验课程难分伯仲，怎么办？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "用随机数定一个并参加。"
+        },
+        {
+          "id": "o2",
+          "text": "继续搜集评价。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "反复比较直到确认最优。"
+        },
+        {
+          "id": "o5",
+          "text": "把话题转向天气。"
+        }
+      ],
+      "target": "o1",
+      "phase": "T1",
+      "domain": "选择方式"
+    },
+    {
+      "situation": "两个无关紧要的待办都能先做，怎么起步？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把次序抓阄决定。"
+        },
+        {
+          "id": "o2",
+          "text": "详细权衡优先级。"
+        },
+        {
+          "id": "o3",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o4",
+          "text": "一直等待充分理由。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o1",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你遇到低风险且难分高下的选项时，愿意交给随机抽签。",
+  "counterintuitive": "常见默认是“继续搜集评价。”；此人的两次选择暗示不同取向。",
+  "protected_names": [
+    "论文"
+  ]
+}

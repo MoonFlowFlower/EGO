@@ -1,0 +1,85 @@
+{
+  "id": "Q46",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "bad_mood",
+  "hidden_answer": "我不要身体接触。",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "后天本来想试新运动，今天刚和家人争执，先别盘问我。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 2,
+  "question": {
+    "situation": "我现在心里还堵着，只想喘口气。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "嗯，先喘口气，我在旁边。对了，是否能接受需要接触身体的项目？"
+      },
+      {
+        "id": "o2",
+        "text": "嗯，先喘口气，我在旁边。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o3",
+        "text": "是否能接受需要接触身体的项目？"
+      },
+      {
+        "id": "o4",
+        "text": "嗯，先喘口气，我在旁边。"
+      }
+    ],
+    "target": "o4",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o3"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o3"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你挑一类轻量活动。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o2",
+          "text": "选保持个人距离的形式。"
+        },
+        {
+          "id": "o3",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o4",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o5",
+          "text": "选需要持续肢体配合的形式。"
+        }
+      ],
+      "target": "o2",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "对方现在情绪很差，已说明暂不想回答额外问题。",
+  "ceiling_use": "我不要身体接触。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

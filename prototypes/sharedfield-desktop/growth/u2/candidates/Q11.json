@@ -1,0 +1,85 @@
+{
+  "id": "Q11",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "我不吃早饭会发抖，必须先吃。",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "下周打算参加晨间课程，现在得先赶稿。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 2,
+  "question": {
+    "situation": "窗帘拉开了，早上的光真亮，可以休息一下。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "是挺明亮的，我们缓一缓。"
+      },
+      {
+        "id": "o2",
+        "text": "是挺明亮的，我们缓一缓。对了，习惯先吃东西还是空腹出门？"
+      },
+      {
+        "id": "o3",
+        "text": "是挺明亮的，我们缓一缓。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o4",
+        "text": "习惯先吃东西还是空腹出门？"
+      }
+    ],
+    "target": "o2",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o2",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o2",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你安排出门前的半小时。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o2",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o3",
+          "text": "直接出门到结束后再进食。"
+        },
+        {
+          "id": "o4",
+          "text": "预留一顿小餐的时间。"
+        },
+        {
+          "id": "o5",
+          "text": "暂时不处理并转聊天气。"
+        }
+      ],
+      "target": "o4",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+  "ceiling_use": "我不吃早饭会发抖，必须先吃。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

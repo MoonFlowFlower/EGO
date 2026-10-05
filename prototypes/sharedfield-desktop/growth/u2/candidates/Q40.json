@@ -1,0 +1,85 @@
+{
+  "id": "Q40",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "busy",
+  "hidden_answer": "绒毛会让我皮肤痒。",
+  "teaching": [
+    {
+      "dialogue": 5,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "下周要选床单；今晚照看病人时只聊眼前的事情。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 6,
+  "question": {
+    "situation": "我正在帮他换药，手上没法停。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "你先照料，我不催。"
+      },
+      {
+        "id": "o2",
+        "text": "你先照料，我不催。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o3",
+        "text": "织物能否带明显绒毛？"
+      },
+      {
+        "id": "o4",
+        "text": "你先照料，我不催。对了，织物能否带明显绒毛？"
+      }
+    ],
+    "target": "o1",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o3",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o2",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你挑睡眠用品。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "选蓬松长绒款。"
+        },
+        {
+          "id": "o2",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o3",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o4",
+          "text": "选表面平滑少毛的材质。"
+        },
+        {
+          "id": "o5",
+          "text": "先询问其他人的通用建议。"
+        }
+      ],
+      "target": "o4",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "对方现在正在处理紧急事情。",
+  "ceiling_use": "绒毛会让我皮肤痒。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

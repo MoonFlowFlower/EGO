@@ -1,0 +1,96 @@
+{
+  "id": "P02",
+  "category": "P",
+  "preference": "你愿意保留手工作品上的细小不完美。",
+  "teaching_domain": "器物",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "陶杯有机器量产款和手捏歪口款。"
+        },
+        {
+          "speaker": "user",
+          "text": "歪的留给我，齐刷刷那批退掉吧。"
+        }
+      ]
+    },
+    {
+      "dialogue": 5,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "阿榕织的围巾掉了一针，那个洞我一直没缝。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "给你定制木制收纳盒，表面怎样收尾？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "留下刀痕与不对称的棱角。"
+        },
+        {
+          "id": "o2",
+          "text": "彻底抹平所有痕迹。"
+        },
+        {
+          "id": "o3",
+          "text": "打磨得光洁规整。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o1",
+      "phase": "T1",
+      "domain": "器物"
+    },
+    {
+      "situation": "替你处理合唱录音，怎样剪辑？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "修成标准音准。"
+        },
+        {
+          "id": "o2",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o3",
+          "text": "把每个呼吸都消除。"
+        },
+        {
+          "id": "o4",
+          "text": "保留一处轻微走调的笑场。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o4",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你愿意保留手工作品上的细小不完美。",
+  "counterintuitive": "常见默认是“打磨得光洁规整。”；此人的两次选择暗示不同取向。",
+  "protected_names": [
+    "阿榕",
+    "阿榕织"
+  ]
+}

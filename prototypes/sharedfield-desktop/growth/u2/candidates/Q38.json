@@ -1,0 +1,85 @@
+{
+  "id": "Q38",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "busy",
+  "hidden_answer": "我需要字幕，不能开声音。",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "明天安排线上课程，但现在我要集中处理故障。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 4,
+  "question": {
+    "situation": "报警还在响，我正在按顺序排查。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "更方便接收字幕还是配音？"
+      },
+      {
+        "id": "o2",
+        "text": "你先处理，我待在旁边。"
+      },
+      {
+        "id": "o3",
+        "text": "你先处理，我待在旁边。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o4",
+        "text": "你先处理，我待在旁边。对了，更方便接收字幕还是配音？"
+      }
+    ],
+    "target": "o2",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你设置学习材料形式。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "提供可静音阅读的文字。"
+        },
+        {
+          "id": "o2",
+          "text": "只提供口头讲解。"
+        },
+        {
+          "id": "o3",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o4",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o5",
+          "text": "再问你一次。"
+        }
+      ],
+      "target": "o1",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "对方现在正在处理紧急事情。",
+  "ceiling_use": "我需要字幕，不能开声音。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

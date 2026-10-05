@@ -1,0 +1,85 @@
+{
+  "id": "Q05",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "我傍晚不能喝咖啡因。",
+  "teaching": [
+    {
+      "dialogue": 5,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "下月准备参加夜跑，眼前这份工作得先做完。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 6,
+  "question": {
+    "situation": "新鞋到了，我在门边试系法呢。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "傍晚饮料是否需要避开提神成分？"
+      },
+      {
+        "id": "o2",
+        "text": "看着挺合脚，这个结也牢。对了，傍晚饮料是否需要避开提神成分？"
+      },
+      {
+        "id": "o3",
+        "text": "看着挺合脚，这个结也牢。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o4",
+        "text": "看着挺合脚，这个结也牢。"
+      }
+    ],
+    "target": "o2",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o2"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o3"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你安排活动前的饮品。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o2",
+          "text": "选常见能量饮料。"
+        },
+        {
+          "id": "o3",
+          "text": "选不含兴奋成分的温水类。"
+        },
+        {
+          "id": "o4",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o5",
+          "text": "再问你一次。"
+        }
+      ],
+      "target": "o3",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+  "ceiling_use": "我傍晚不能喝咖啡因。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

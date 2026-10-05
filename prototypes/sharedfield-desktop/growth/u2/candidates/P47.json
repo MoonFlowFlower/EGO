@@ -1,0 +1,95 @@
+{
+  "id": "P47",
+  "category": "P",
+  "preference": "你制作个人物品时愿意使用低饱和颜色。",
+  "teaching_domain": "色彩",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "围巾选荧光绿，还是灰苔色？"
+        },
+        {
+          "speaker": "user",
+          "text": "灰苔那条给我，亮得扎眼的放回去。"
+        }
+      ]
+    },
+    {
+      "dialogue": 5,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "笔记本封皮是雾蓝的，我没贴那张大红标签。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "替你挑一个日常配件，怎么选色？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o3",
+          "text": "采用强烈荧光撞色。"
+        },
+        {
+          "id": "o4",
+          "text": "使用柔和而不鲜艳的色调。"
+        },
+        {
+          "id": "o5",
+          "text": "选高亮醒目的流行色。"
+        }
+      ],
+      "target": "o4",
+      "phase": "T1",
+      "domain": "色彩"
+    },
+    {
+      "situation": "给你布置一个数字工作空间，怎样配色？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o2",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o3",
+          "text": "以含灰、克制的色系为主。"
+        },
+        {
+          "id": "o4",
+          "text": "大面积使用刺目的高饱和色。"
+        },
+        {
+          "id": "o5",
+          "text": "让每个区域都鲜亮抢眼。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你制作个人物品时愿意使用低饱和颜色。",
+  "counterintuitive": "常见默认是“选高亮醒目的流行色。”；此人的两次选择暗示不同取向。",
+  "protected_names": [
+    "张大红"
+  ]
+}

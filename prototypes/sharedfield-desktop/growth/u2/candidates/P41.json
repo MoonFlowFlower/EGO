@@ -1,0 +1,93 @@
+{
+  "id": "P41",
+  "category": "P",
+  "preference": "你参加活动时更愿意站在边缘观察后再加入。",
+  "teaching_domain": "社交进入",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "聚会先站中心介绍自己，还是窗边待会儿？"
+        },
+        {
+          "speaker": "user",
+          "text": "我去窗边看看，别急着把我推上去。"
+        }
+      ]
+    },
+    {
+      "dialogue": 5,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "上次读书会我听了半场才开口，那样挺顺。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "带你参加一个陌生小组，怎样陪伴？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "强行让你主持开场。"
+        },
+        {
+          "id": "o2",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o3",
+          "text": "马上请你向全场发言。"
+        },
+        {
+          "id": "o4",
+          "text": "先提供可安静旁观的位置。"
+        },
+        {
+          "id": "o5",
+          "text": "把话题转向天气。"
+        }
+      ],
+      "target": "o4",
+      "phase": "T1",
+      "domain": "社交进入"
+    },
+    {
+      "situation": "带你进入一个多人线上空间，怎么引导？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o3",
+          "text": "先开放浏览与旁听。"
+        },
+        {
+          "id": "o4",
+          "text": "立刻要求公开展示。"
+        },
+        {
+          "id": "o5",
+          "text": "第一步就让你组织所有人。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你参加活动时更愿意站在边缘观察后再加入。",
+  "counterintuitive": "常见默认是“马上请你向全场发言。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

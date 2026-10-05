@@ -1,0 +1,85 @@
+{
+  "id": "Q17",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "我晚上八点以后不吃正餐。",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "下次准备一起做晚餐，先让我把今天的工作收尾。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 3,
+  "question": {
+    "situation": "锅洗好了，今天有余裕聊些小事。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "看着亮堂多了，咱们待一会儿。对了，进食时间是否有固定限制？"
+      },
+      {
+        "id": "o2",
+        "text": "看着亮堂多了，咱们待一会儿。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o3",
+        "text": "看着亮堂多了，咱们待一会儿。"
+      },
+      {
+        "id": "o4",
+        "text": "进食时间是否有固定限制？"
+      }
+    ],
+    "target": "o1",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你安排一次聚食的开席点。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o2",
+          "text": "安排在夜间较早时段。"
+        },
+        {
+          "id": "o3",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o4",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o5",
+          "text": "按大家常见的晚间九点安排。"
+        }
+      ],
+      "target": "o2",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+  "ceiling_use": "我晚上八点以后不吃正餐。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

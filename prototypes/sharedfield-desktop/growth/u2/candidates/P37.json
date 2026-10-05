@@ -1,0 +1,93 @@
+{
+  "id": "P37",
+  "category": "P",
+  "preference": "你在低风险创作里倾向先做粗糙雏形。",
+  "teaching_domain": "创作起步",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "先画精细草图，还是纸板随手搭一下？"
+        },
+        {
+          "speaker": "user",
+          "text": "先糊个能立住的，漂亮的后面再说。"
+        }
+      ]
+    },
+    {
+      "dialogue": 4,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "昨晚那页初稿错字一堆，可有东西改就顺了。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "陪你开始一个新作品，怎样推进？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o2",
+          "text": "等到方案完全无瑕才开始。"
+        },
+        {
+          "id": "o3",
+          "text": "迅速做出简陋而能体验的版本。"
+        },
+        {
+          "id": "o4",
+          "text": "先完善所有细节再动手。"
+        },
+        {
+          "id": "o5",
+          "text": "把话题转向天气。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T1",
+      "domain": "创作起步"
+    },
+    {
+      "situation": "准备一次私人演讲，怎么练？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "没有完美措辞就不开口。"
+        },
+        {
+          "id": "o2",
+          "text": "先把每句话雕琢好。"
+        },
+        {
+          "id": "o3",
+          "text": "先完整试讲一遍再修补。"
+        },
+        {
+          "id": "o4",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o5",
+          "text": "把话题转向天气。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你在低风险创作里倾向先做粗糙雏形。",
+  "counterintuitive": "常见默认是“先完善所有细节再动手。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

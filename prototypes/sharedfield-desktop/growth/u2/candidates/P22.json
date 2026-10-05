@@ -1,0 +1,93 @@
+{
+  "id": "P22",
+  "category": "P",
+  "preference": "你对简短交流更愿意收到直接文字而不是语音。",
+  "teaching_domain": "交流媒介",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "路线发语音还是打几个字？"
+        },
+        {
+          "speaker": "user",
+          "text": "敲给我吧，我能一眼扫过去。"
+        }
+      ]
+    },
+    {
+      "dialogue": 4,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "电梯里又来三条录音，我等回家才敢点开。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "告诉你一个简短事项，用什么形式？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "发可快速阅读的小段消息。"
+        },
+        {
+          "id": "o2",
+          "text": "发送音频便条。"
+        },
+        {
+          "id": "o3",
+          "text": "用连续口述传达。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o1",
+      "phase": "T1",
+      "domain": "交流媒介"
+    },
+    {
+      "situation": "给你设计一个烹饪提示界面，怎样表现？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o2",
+          "text": "只靠扬声器播报。"
+        },
+        {
+          "id": "o3",
+          "text": "用静态字幕标明关键步骤。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "让所有说明只能收听。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你对简短交流更愿意收到直接文字而不是语音。",
+  "counterintuitive": "常见默认是“发送音频便条。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

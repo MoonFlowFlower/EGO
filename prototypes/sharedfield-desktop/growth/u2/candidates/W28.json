@@ -1,0 +1,49 @@
+{
+  "id": "W28",
+  "category": "W",
+  "applicable": true,
+  "teaching": [
+    {
+      "dialogue": 4,
+      "mode": "explicit_conditional",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "这趟带孩子出门，所有餐馆都选有室内座位的。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "同一段亲子行程中准备吃饭。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "选只有露天站台的小摊。"
+        },
+        {
+          "id": "o2",
+          "text": "选能在建筑里面坐下的店。"
+        },
+        {
+          "id": "o3",
+          "text": "忽略眼前安排，转聊天气。"
+        },
+        {
+          "id": "o4",
+          "text": "重新询问已说清的条件。"
+        },
+        {
+          "id": "o5",
+          "text": "交由一个无关的人随机决定。"
+        }
+      ],
+      "target": "o2",
+      "phase": "boundary"
+    }
+  ],
+  "ceiling": "这趟带孩子出门，所有餐馆都选有室内座位的。",
+  "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+  "protected_names": []
+}

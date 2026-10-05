@@ -1,0 +1,85 @@
+{
+  "id": "Q27",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "known",
+  "hidden_answer": "我要最后一排。",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "周末看演出我坐最后一排就好，这点我已想清楚了。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 3,
+  "question": {
+    "situation": "票务图摊开了，正好可以定位置。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "嗯，把剩余区域放大看看。"
+      },
+      {
+        "id": "o2",
+        "text": "嗯，把剩余区域放大看看。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o3",
+        "text": "想坐大厅的哪个区域？"
+      },
+      {
+        "id": "o4",
+        "text": "嗯，把剩余区域放大看看。对了，想坐大厅的哪个区域？"
+      }
+    ],
+    "target": "o1",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o3",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o2",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你确定席位。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "选靠前的中心位置。"
+        },
+        {
+          "id": "o2",
+          "text": "选靠后的一排。"
+        },
+        {
+          "id": "o3",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o4",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o5",
+          "text": "暂时不处理并转聊天气。"
+        }
+      ],
+      "target": "o2",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "这件事已有明确答案。我要最后一排。",
+  "ceiling_use": "我要最后一排。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

@@ -1,0 +1,93 @@
+{
+  "id": "P20",
+  "category": "P",
+  "preference": "你等待别人回复时倾向不被反复报进度。",
+  "teaching_domain": "等待",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "快递那边每小时报一次，还是到了再告知？"
+        },
+        {
+          "speaker": "user",
+          "text": "有结果再说吧，中途那几句我总得停下来瞄。"
+        }
+      ]
+    },
+    {
+      "dialogue": 5,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "安装包转圈时我把提示关了，做完自己弹一下就够。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "代你处理一件耗时事务，怎样通知？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "事成后集中通知一回。"
+        },
+        {
+          "id": "o2",
+          "text": "不停提醒尚未结束。"
+        },
+        {
+          "id": "o3",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o4",
+          "text": "每隔几分钟发送状态。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o1",
+      "phase": "T1",
+      "domain": "等待"
+    },
+    {
+      "situation": "为你设置烹饪辅助，怎么发声？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "频繁提示剩余秒数。"
+        },
+        {
+          "id": "o2",
+          "text": "持续播报各个阶段。"
+        },
+        {
+          "id": "o3",
+          "text": "只在需要你接手时响一声。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你等待别人回复时倾向不被反复报进度。",
+  "counterintuitive": "常见默认是“每隔几分钟发送状态。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

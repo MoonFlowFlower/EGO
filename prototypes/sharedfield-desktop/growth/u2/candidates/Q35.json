@@ -1,0 +1,85 @@
+{
+  "id": "Q35",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "busy",
+  "hidden_answer": "我不能用含酒精的。",
+  "teaching": [
+    {
+      "dialogue": 5,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "下周想试一套新护肤用品，今天先把这场谈判熬过去。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 6,
+  "question": {
+    "situation": "电话还连着，我一边听一边记要点。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "嗯，你先听，我等着。"
+      },
+      {
+        "id": "o2",
+        "text": "皮肤对酒精成分的反应？"
+      },
+      {
+        "id": "o3",
+        "text": "嗯，你先听，我等着。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o4",
+        "text": "嗯，你先听，我等着。对了，皮肤对酒精成分的反应？"
+      }
+    ],
+    "target": "o1",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o2",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o2",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你挑一瓶护理用品。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "采用不含相关刺激成分的配方。"
+        },
+        {
+          "id": "o2",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o3",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o4",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o5",
+          "text": "采用常规含酒精配方。"
+        }
+      ],
+      "target": "o1",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "对方现在正在处理紧急事情。",
+  "ceiling_use": "我不能用含酒精的。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

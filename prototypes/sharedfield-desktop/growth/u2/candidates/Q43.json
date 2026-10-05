@@ -1,0 +1,87 @@
+{
+  "id": "Q43",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "no_future",
+  "hidden_answer": "我只会选草料。",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "谈到养马只是故事设定，我的住处根本不涉及这项安排。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 4,
+  "question": {
+    "situation": "稿子里的牧场画好了，你看这匹马挺神气。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "以后打算给马喂哪种饲料？"
+      },
+      {
+        "id": "o2",
+        "text": "这幅看着很有劲，轮廓也清楚。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o3",
+        "text": "这幅看着很有劲，轮廓也清楚。"
+      },
+      {
+        "id": "o4",
+        "text": "这幅看着很有劲，轮廓也清楚。对了，以后打算给马喂哪种饲料？"
+      }
+    ],
+    "target": "o3",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "在后来另一个独立的模拟照料题里替你选食物。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o2",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o3",
+          "text": "采用默认混合颗粒。"
+        },
+        {
+          "id": "o4",
+          "text": "采用干草类。"
+        },
+        {
+          "id": "o5",
+          "text": "再问你一次。"
+        }
+      ],
+      "target": "o4",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "这件事没有现实中的后续用途。",
+  "ceiling_use": "我只会选草料。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": [
+    "养马"
+  ]
+}

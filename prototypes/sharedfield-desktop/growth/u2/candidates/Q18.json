@@ -1,0 +1,85 @@
+{
+  "id": "Q18",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "我是左撇子。",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "周末要搭个小书架，这会儿我手上拿着东西不方便。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 4,
+  "question": {
+    "situation": "螺丝盒找到啦，坐下来喝点水。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "好呀，杯子放这边，别碰倒了。"
+      },
+      {
+        "id": "o2",
+        "text": "好呀，杯子放这边，别碰倒了。对了，左右哪只手更顺？"
+      },
+      {
+        "id": "o3",
+        "text": "好呀，杯子放这边，别碰倒了。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o4",
+        "text": "左右哪只手更顺？"
+      }
+    ],
+    "target": "o2",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o2",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o2",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你摆放主要操作工具。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o2",
+          "text": "按通常做法放右侧。"
+        },
+        {
+          "id": "o3",
+          "text": "放在左侧容易够到的位置。"
+        },
+        {
+          "id": "o4",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o5",
+          "text": "暂时不处理并转聊天气。"
+        }
+      ],
+      "target": "o3",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+  "ceiling_use": "我是左撇子。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

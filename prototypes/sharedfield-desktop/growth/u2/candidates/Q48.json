@@ -1,0 +1,85 @@
+{
+  "id": "Q48",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "bad_mood",
+  "hidden_answer": "我只用粗柄。",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "下周想练书法；今天刚听到坏消息，别用问题让我分心。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 4,
+  "question": {
+    "situation": "我还没缓过来，暂时不想谈安排。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "嗯，先不展开，我陪你缓一缓。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o2",
+        "text": "嗯，先不展开，我陪你缓一缓。"
+      },
+      {
+        "id": "o3",
+        "text": "用笔时握柄希望粗还是细？"
+      },
+      {
+        "id": "o4",
+        "text": "嗯，先不展开，我陪你缓一缓。对了，用笔时握柄希望粗还是细？"
+      }
+    ],
+    "target": "o2",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o3",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你选一支书写工具。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o2",
+          "text": "选择握持部较宽的款式。"
+        },
+        {
+          "id": "o3",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o4",
+          "text": "选择细杆轻巧款。"
+        },
+        {
+          "id": "o5",
+          "text": "先询问其他人的通用建议。"
+        }
+      ],
+      "target": "o2",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "对方现在情绪很差，已说明暂不想回答额外问题。",
+  "ceiling_use": "我只用粗柄。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

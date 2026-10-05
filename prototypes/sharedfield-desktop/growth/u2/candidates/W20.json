@@ -1,0 +1,49 @@
+{
+  "id": "W20",
+  "category": "W",
+  "applicable": true,
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "explicit_conditional",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "本次外出只有一天，我的包里只带必要的小件。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "仍在这一趟短行程出发前，怎样准备？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "忽略眼前安排，转聊天气。"
+        },
+        {
+          "id": "o2",
+          "text": "重新询问已说清的条件。"
+        },
+        {
+          "id": "o3",
+          "text": "加入大量备用装备。"
+        },
+        {
+          "id": "o4",
+          "text": "交由一个无关的人随机决定。"
+        },
+        {
+          "id": "o5",
+          "text": "保持轻量的基础配置。"
+        }
+      ],
+      "target": "o5",
+      "phase": "boundary"
+    }
+  ],
+  "ceiling": "本次外出只有一天，我的包里只带必要的小件。",
+  "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+  "protected_names": []
+}

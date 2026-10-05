@@ -1,0 +1,93 @@
+{
+  "id": "P05",
+  "category": "P",
+  "preference": "你开心时倾向私下简短庆祝，不愿公开表彰。",
+  "teaching_domain": "庆祝",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "这次拿奖，群里发喜报还是我们碰个杯？"
+        },
+        {
+          "speaker": "user",
+          "text": "就咱俩喝一口，别在大群点我名。"
+        }
+      ]
+    },
+    {
+      "dialogue": 5,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "升职那天我把蛋糕带回家，没叫同事围过来。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "你完成了艰难练习，怎么祝贺？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "邀请大家集体鼓掌。"
+        },
+        {
+          "id": "o2",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o3",
+          "text": "安排热闹的公开致辞。"
+        },
+        {
+          "id": "o4",
+          "text": "留一条仅双方可见的短短祝福。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o4",
+      "phase": "T1",
+      "domain": "庆祝"
+    },
+    {
+      "situation": "为你纪念一个共同旅行节点，怎么留念？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "发布社交动态让众人祝福。"
+        },
+        {
+          "id": "o3",
+          "text": "做一枚只留在个人相册的标记。"
+        },
+        {
+          "id": "o4",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o5",
+          "text": "在游客聚集处高声宣布。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你开心时倾向私下简短庆祝，不愿公开表彰。",
+  "counterintuitive": "常见默认是“邀请大家集体鼓掌。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

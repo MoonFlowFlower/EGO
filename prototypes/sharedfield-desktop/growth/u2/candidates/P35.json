@@ -1,0 +1,95 @@
+{
+  "id": "P35",
+  "category": "P",
+  "preference": "你表达谢意时愿意具体指出对方帮到了哪里。",
+  "teaching_domain": "致谢方式",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "回一句谢谢，还是讲清楚他那一段怎么帮了忙？"
+        },
+        {
+          "speaker": "user",
+          "text": "说说那个转折吧，不然他不知道我看进去了。"
+        }
+      ]
+    },
+    {
+      "dialogue": 5,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "昨天我把邻居送伞救急那一刻写进回信，他笑了半天。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "有人帮助你完成一次协作，怎样回应？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o2",
+          "text": "点出其贡献产生的实际作用。"
+        },
+        {
+          "id": "o3",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o4",
+          "text": "用一模一样的客套话群发。"
+        },
+        {
+          "id": "o5",
+          "text": "只发一个通用感谢表情。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T1",
+      "domain": "致谢方式"
+    },
+    {
+      "situation": "给你设计一张感谢卡，正文如何措辞？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "采用适用于任何人的套话。"
+        },
+        {
+          "id": "o3",
+          "text": "只印抽象口号。"
+        },
+        {
+          "id": "o4",
+          "text": "记录一件可辨认的具体小事。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o4",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你表达谢意时愿意具体指出对方帮到了哪里。",
+  "counterintuitive": "常见默认是“只发一个通用感谢表情。”；此人的两次选择暗示不同取向。",
+  "protected_names": [
+    "谢谢"
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "id": "W46",
+  "category": "W",
+  "applicable": true,
+  "teaching": [
+    {
+      "dialogue": 4,
+      "mode": "explicit_conditional",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "我帮姐姐挑鞋按她的宽脚型，不照我自己的窄版。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "正在替年长的手足购买她日常穿的一双。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "选你平时用的收窄款。"
+        },
+        {
+          "id": "o2",
+          "text": "忽略眼前安排，转聊天气。"
+        },
+        {
+          "id": "o3",
+          "text": "交由一个无关的人随机决定。"
+        },
+        {
+          "id": "o4",
+          "text": "选前端较松快的款型。"
+        },
+        {
+          "id": "o5",
+          "text": "重新询问已说清的条件。"
+        }
+      ],
+      "target": "o4",
+      "phase": "boundary"
+    }
+  ],
+  "ceiling": "我帮姐姐挑鞋按她的宽脚型，不照我自己的窄版。",
+  "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+  "protected_names": []
+}

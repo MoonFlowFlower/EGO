@@ -1,0 +1,93 @@
+{
+  "id": "P43",
+  "category": "P",
+  "preference": "你对日常提醒愿意选择视觉标记。",
+  "teaching_domain": "提醒渠道",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "门口便签还是电话闹钟提醒带钥匙？"
+        },
+        {
+          "speaker": "user",
+          "text": "贴张纸就好，响一下我容易烦。"
+        }
+      ]
+    },
+    {
+      "dialogue": 4,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "水杯旁画了个小圆点，我瞄见就喝了，没再设铃。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "准备一个温和的休息提示，怎么做？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "用语音反复催促。"
+        },
+        {
+          "id": "o2",
+          "text": "出现一个静静可见的小图案。"
+        },
+        {
+          "id": "o3",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o4",
+          "text": "发出高频鸣叫。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T1",
+      "domain": "提醒渠道"
+    },
+    {
+      "situation": "共同游戏中传达一个非紧急信号，怎样呈现？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "用连续播报打断交流。"
+        },
+        {
+          "id": "o3",
+          "text": "立刻播放很响的警示声。"
+        },
+        {
+          "id": "o4",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o5",
+          "text": "在角落显示柔和的图形提示。"
+        }
+      ],
+      "target": "o5",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你对日常提醒愿意选择视觉标记。",
+  "counterintuitive": "常见默认是“用语音反复催促。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

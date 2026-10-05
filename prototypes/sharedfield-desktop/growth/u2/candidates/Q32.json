@@ -1,0 +1,87 @@
+{
+  "id": "Q32",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "known",
+  "hidden_answer": "我坐地铁到东门。",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "后天见面不用开车接我，我会乘地铁到东门。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 3,
+  "question": {
+    "situation": "路线页面已经打开，我们接着安排吧。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "好，把会合的入口标出来。"
+      },
+      {
+        "id": "o2",
+        "text": "会怎样抵达？"
+      },
+      {
+        "id": "o3",
+        "text": "好，把会合的入口标出来。对了，会怎样抵达？"
+      },
+      {
+        "id": "o4",
+        "text": "好，把会合的入口标出来。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      }
+    ],
+    "target": "o1",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o2",
+      "o3"
+    ],
+    "any_question_ids": [
+      "o2",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你选择会合入口。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o2",
+          "text": "到停车区等候。"
+        },
+        {
+          "id": "o3",
+          "text": "在轨道交通出口一侧等候。"
+        },
+        {
+          "id": "o4",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o5",
+          "text": "再问你一次。"
+        }
+      ],
+      "target": "o3",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "这件事已有明确答案。我坐地铁到东门。",
+  "ceiling_use": "我坐地铁到东门。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": [
+    "东门"
+  ]
+}

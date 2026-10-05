@@ -1,0 +1,93 @@
+{
+  "id": "P16",
+  "category": "P",
+  "preference": "你收礼时倾向实用且可消耗的东西。",
+  "teaching_domain": "礼物",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "生日买装饰摆件还是一包烘焙材料？"
+        },
+        {
+          "speaker": "user",
+          "text": "面粉那袋就行，摆着的我没地方搁。"
+        }
+      ]
+    },
+    {
+      "dialogue": 4,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "同事送的洗手皂用完了，这样的东西不占着心思。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "准备给你一个小惊喜，怎么选？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "递一份能很快用掉的日用品。"
+        },
+        {
+          "id": "o2",
+          "text": "送大型展示雕塑。"
+        },
+        {
+          "id": "o3",
+          "text": "选可以永久陈列的纪念物。"
+        },
+        {
+          "id": "o4",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o5",
+          "text": "把话题转向天气。"
+        }
+      ],
+      "target": "o1",
+      "phase": "T1",
+      "domain": "礼物"
+    },
+    {
+      "situation": "完成一项合作后用什么形式留下心意？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "提供一次能当场使用的便利服务。"
+        },
+        {
+          "id": "o2",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o3",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o4",
+          "text": "赠送长期展示的奖牌。"
+        },
+        {
+          "id": "o5",
+          "text": "制作需要珍藏的厚重摆台。"
+        }
+      ],
+      "target": "o1",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你收礼时倾向实用且可消耗的东西。",
+  "counterintuitive": "常见默认是“选可以永久陈列的纪念物。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

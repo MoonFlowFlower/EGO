@@ -1,0 +1,85 @@
+{
+  "id": "Q15",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "我手上有伤，这阵子不能泡水。",
+  "teaching": [
+    {
+      "dialogue": 5,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "周六可能去做陶艺，我得先出门送个东西。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 6,
+  "question": {
+    "situation": "围裙找到了，坐着歇一会儿吧。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "能否接受手上长期沾湿？"
+      },
+      {
+        "id": "o2",
+        "text": "好，先坐稳，慢慢来。对了，能否接受手上长期沾湿？"
+      },
+      {
+        "id": "o3",
+        "text": "好，先坐稳，慢慢来。"
+      },
+      {
+        "id": "o4",
+        "text": "好，先坐稳，慢慢来。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      }
+    ],
+    "target": "o2",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o2"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你选择一次手作工序。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o2",
+          "text": "选能保持皮肤干燥的方式。"
+        },
+        {
+          "id": "o3",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o4",
+          "text": "安排长时间湿泥塑形。"
+        },
+        {
+          "id": "o5",
+          "text": "再问你一次。"
+        }
+      ],
+      "target": "o2",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+  "ceiling_use": "我手上有伤，这阵子不能泡水。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

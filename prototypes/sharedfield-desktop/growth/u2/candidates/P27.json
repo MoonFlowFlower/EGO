@@ -1,0 +1,95 @@
+{
+  "id": "P27",
+  "category": "P",
+  "preference": "你遇到复杂选择时愿意先排除最不合适的项。",
+  "teaching_domain": "取舍顺序",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "这几套衣服先挑最好看的，还是先划掉不行的？"
+        },
+        {
+          "speaker": "user",
+          "text": "把扎人的两件拿走，剩下再说。"
+        }
+      ]
+    },
+    {
+      "dialogue": 6,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "投票时我先圈不能接受的，心里一下清楚了。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "帮你选一个周末活动，怎样开始？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "坚持所有备选都不删。"
+        },
+        {
+          "id": "o2",
+          "text": "直接选最受欢迎的一项。"
+        },
+        {
+          "id": "o3",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o4",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o5",
+          "text": "先剔除明显不合心意的候选。"
+        }
+      ],
+      "target": "o5",
+      "phase": "T1",
+      "domain": "取舍顺序"
+    },
+    {
+      "situation": "一起规划一份创作方案，如何收敛？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把全部点子等量展开。"
+        },
+        {
+          "id": "o2",
+          "text": "先明确不采用的方向。"
+        },
+        {
+          "id": "o3",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o4",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o5",
+          "text": "立刻宣布最佳构想。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你遇到复杂选择时愿意先排除最不合适的项。",
+  "counterintuitive": "常见默认是“直接选最受欢迎的一项。”；此人的两次选择暗示不同取向。",
+  "protected_names": [
+    "扎人"
+  ]
+}

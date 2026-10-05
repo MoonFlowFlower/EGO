@@ -1,0 +1,85 @@
+{
+  "id": "Q21",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "尖锐高音会让我很难受。",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "下周想听些新的声音作品，现在赶着提交作业。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 2,
+  "question": {
+    "situation": "音箱充满电了，来坐会儿。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "好呀，挨着你坐。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o2",
+        "text": "能否忍受反复出现的高频尖音？"
+      },
+      {
+        "id": "o3",
+        "text": "好呀，挨着你坐。对了，能否忍受反复出现的高频尖音？"
+      },
+      {
+        "id": "o4",
+        "text": "好呀，挨着你坐。"
+      }
+    ],
+    "target": "o3",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o2",
+      "o3"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o3"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你选一段放松的音频。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o2",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o3",
+          "text": "用音色柔和的低刺激内容。"
+        },
+        {
+          "id": "o4",
+          "text": "用尖亮高频效果突出的作品。"
+        },
+        {
+          "id": "o5",
+          "text": "先询问其他人的通用建议。"
+        }
+      ],
+      "target": "o3",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+  "ceiling_use": "尖锐高音会让我很难受。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

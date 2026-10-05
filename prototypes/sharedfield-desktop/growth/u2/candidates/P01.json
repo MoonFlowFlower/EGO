@@ -1,0 +1,93 @@
+{
+  "id": "P01",
+  "category": "P",
+  "preference": "你在开始一段体验前愿意先知道最终结果，再体会过程。",
+  "teaching_domain": "叙事",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "悬疑书拆封了，先读末页还是按页翻？"
+        },
+        {
+          "speaker": "user",
+          "text": "把凶手那页递来，藏着掖着我反倒看不进去。"
+        }
+      ]
+    },
+    {
+      "dialogue": 4,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "昨晚听评书，知道谁活下来以后，才留心那些伏笔。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "有部尚未接触的影片，如何陪你欣赏？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "全程遮住重要情节。"
+        },
+        {
+          "id": "o2",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "开播前透露终局，再一起品味铺垫。"
+        },
+        {
+          "id": "o5",
+          "text": "保留悬念到最后。"
+        }
+      ],
+      "target": "o4",
+      "phase": "T1",
+      "domain": "叙事"
+    },
+    {
+      "situation": "陪你尝试一套陌生的实验教程，该怎样呈现？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o2",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o3",
+          "text": "不让你见到预期效果。"
+        },
+        {
+          "id": "o4",
+          "text": "先展示成品，再探索步骤。"
+        },
+        {
+          "id": "o5",
+          "text": "循序渐进，结尾揭晓。"
+        }
+      ],
+      "target": "o4",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你在开始一段体验前愿意先知道最终结果，再体会过程。",
+  "counterintuitive": "常见默认是“保留悬念到最后。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

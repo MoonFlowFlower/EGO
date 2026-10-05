@@ -1,0 +1,49 @@
+{
+  "id": "W30",
+  "category": "W",
+  "applicable": true,
+  "teaching": [
+    {
+      "dialogue": 6,
+      "mode": "explicit_conditional",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "我接下来三天右手受伤，工具都放左边方便取。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "恢复期第二天，替你准备操作台。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "交由一个无关的人随机决定。"
+        },
+        {
+          "id": "o2",
+          "text": "忽略眼前安排，转聊天气。"
+        },
+        {
+          "id": "o3",
+          "text": "重新询问已说清的条件。"
+        },
+        {
+          "id": "o4",
+          "text": "把常用物品移到另一侧易于触达。"
+        },
+        {
+          "id": "o5",
+          "text": "照平时习惯摆在右方。"
+        }
+      ],
+      "target": "o4",
+      "phase": "boundary"
+    }
+  ],
+  "ceiling": "我接下来三天右手受伤，工具都放左边方便取。",
+  "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+  "protected_names": []
+}

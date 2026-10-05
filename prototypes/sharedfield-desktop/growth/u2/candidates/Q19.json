@@ -1,0 +1,85 @@
+{
+  "id": "Q19",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "不要拍我的正脸，只能拍背影。",
+  "teaching": [
+    {
+      "dialogue": 4,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "下周想参加摄影散步，我现在得先去接人。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 5,
+  "question": {
+    "situation": "相机包拿出来了，今天可以慢慢聊。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "袋子看着挺轻便，我们坐会儿。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o2",
+        "text": "袋子看着挺轻便，我们坐会儿。"
+      },
+      {
+        "id": "o3",
+        "text": "袋子看着挺轻便，我们坐会儿。对了，能不能接受别人拍到你的正脸？"
+      },
+      {
+        "id": "o4",
+        "text": "能不能接受别人拍到你的正脸？"
+      }
+    ],
+    "target": "o3",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o3",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你留下这次活动的照片。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "拍一张清晰的正面肖像。"
+        },
+        {
+          "id": "o2",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o3",
+          "text": "选择不显露面部的角度。"
+        },
+        {
+          "id": "o4",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o5",
+          "text": "暂时不处理并转聊天气。"
+        }
+      ],
+      "target": "o3",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+  "ceiling_use": "不要拍我的正脸，只能拍背影。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

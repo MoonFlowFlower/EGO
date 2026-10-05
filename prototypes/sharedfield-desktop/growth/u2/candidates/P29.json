@@ -1,0 +1,96 @@
+{
+  "id": "P29",
+  "category": "P",
+  "preference": "你对信息量大的东西倾向先得到一页概览。",
+  "teaching_domain": "信息结构",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "资料一百页，先看全部正文还是那张索引图？"
+        },
+        {
+          "speaker": "user",
+          "text": "先给图，我知道各块在哪儿再翻。"
+        }
+      ]
+    },
+    {
+      "dialogue": 5,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "新工作手册我先看了目录，细节第二天才补。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "带你认识一门陌生主题，怎么开头？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "从第一页逐句讲到末尾。"
+        },
+        {
+          "id": "o3",
+          "text": "先提供简短全貌与主要关系。"
+        },
+        {
+          "id": "o4",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o5",
+          "text": "上来就堆满所有技术细节。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T1",
+      "domain": "信息结构"
+    },
+    {
+      "situation": "进入一个陌生的软件环境，如何引导？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "立刻打开最深层设置。"
+        },
+        {
+          "id": "o3",
+          "text": "先展示核心区域的一屏示意。"
+        },
+        {
+          "id": "o4",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o5",
+          "text": "连续弹出几十条操作说明。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你对信息量大的东西倾向先得到一页概览。",
+  "counterintuitive": "常见默认是“从第一页逐句讲到末尾。”；此人的两次选择暗示不同取向。",
+  "protected_names": [
+    "正文",
+    "索引"
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "id": "P07",
+  "category": "P",
+  "preference": "你日常用的东西愿意露在外面，方便一眼找到。",
+  "teaching_domain": "收纳",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "铅笔放带盖匣子还是摊桌边？"
+        },
+        {
+          "speaker": "user",
+          "text": "摊着吧，藏进去我就想不起来它了。"
+        }
+      ]
+    },
+    {
+      "dialogue": 4,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "调料瓶虽然排得乱，我伸手都够得到，不想塞橱柜。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "替你布置随手使用的工具，怎样摆？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "装入整洁的封闭抽屉。"
+        },
+        {
+          "id": "o2",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o3",
+          "text": "完全遮挡以保持空白台面。"
+        },
+        {
+          "id": "o4",
+          "text": "挂在外露的墙面架上。"
+        },
+        {
+          "id": "o5",
+          "text": "把话题转向天气。"
+        }
+      ],
+      "target": "o4",
+      "phase": "T1",
+      "domain": "收纳"
+    },
+    {
+      "situation": "整理电脑里常用的资料入口，怎样呈现？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "隐藏所有快捷入口。"
+        },
+        {
+          "id": "o2",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o3",
+          "text": "在首页铺出可直接点击的图标。"
+        },
+        {
+          "id": "o4",
+          "text": "收进层级目录。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你日常用的东西愿意露在外面，方便一眼找到。",
+  "counterintuitive": "常见默认是“装入整洁的封闭抽屉。”；此人的两次选择暗示不同取向。",
+  "protected_names": [
+    "藏进去"
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "id": "W47",
+  "category": "W",
+  "applicable": false,
+  "teaching": [
+    {
+      "dialogue": 5,
+      "mode": "explicit_conditional",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "平时晚间我不收工作提醒，今晚值守故障是例外。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "现在正是你明确承担应急值班的夜里。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "忽略眼前安排，转聊天气。"
+        },
+        {
+          "id": "o2",
+          "text": "重新询问已说清的条件。"
+        },
+        {
+          "id": "o3",
+          "text": "及时呈现必要的异常信息。"
+        },
+        {
+          "id": "o4",
+          "text": "套用平日安排屏蔽全部提示。"
+        },
+        {
+          "id": "o5",
+          "text": "交由一个无关的人随机决定。"
+        }
+      ],
+      "target": "o3",
+      "phase": "boundary"
+    }
+  ],
+  "ceiling": "平时晚间我不收工作提醒，今晚值守故障是例外。",
+  "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+  "protected_names": []
+}

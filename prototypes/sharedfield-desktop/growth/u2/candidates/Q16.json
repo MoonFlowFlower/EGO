@@ -1,0 +1,85 @@
+{
+  "id": "Q16",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "太软会让我不舒服，我要硬一点。",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "下个月想试一次骑行，我现在正忙着搬箱子。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 2,
+  "question": {
+    "situation": "头盔拿到了，咱们歇一歇。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "嗯，忙了一阵，可以缓缓了。"
+      },
+      {
+        "id": "o2",
+        "text": "嗯，忙了一阵，可以缓缓了。对了，坐垫是否有必须满足的软硬要求？"
+      },
+      {
+        "id": "o3",
+        "text": "嗯，忙了一阵，可以缓缓了。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o4",
+        "text": "坐垫是否有必须满足的软硬要求？"
+      }
+    ],
+    "target": "o2",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o2",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o2",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你从两款支撑件里选一个。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o2",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o3",
+          "text": "选较硬且支撑明确的款式。"
+        },
+        {
+          "id": "o4",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o5",
+          "text": "选柔软厚垫款。"
+        }
+      ],
+      "target": "o3",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+  "ceiling_use": "太软会让我不舒服，我要硬一点。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

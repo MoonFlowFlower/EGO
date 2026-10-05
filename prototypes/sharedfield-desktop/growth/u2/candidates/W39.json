@@ -1,0 +1,49 @@
+{
+  "id": "W39",
+  "category": "W",
+  "applicable": false,
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "explicit_conditional",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "我通常避开人多的活动，但这次想去现场一起看决赛。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "今天准备参加你明确选定的赛事观看。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "忽略眼前安排，转聊天气。"
+        },
+        {
+          "id": "o2",
+          "text": "替你取消并安排独自观看。"
+        },
+        {
+          "id": "o3",
+          "text": "重新询问已说清的条件。"
+        },
+        {
+          "id": "o4",
+          "text": "安排共同观赛的热闹场馆。"
+        },
+        {
+          "id": "o5",
+          "text": "交由一个无关的人随机决定。"
+        }
+      ],
+      "target": "o4",
+      "phase": "boundary"
+    }
+  ],
+  "ceiling": "我通常避开人多的活动，但这次想去现场一起看决赛。",
+  "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+  "protected_names": []
+}

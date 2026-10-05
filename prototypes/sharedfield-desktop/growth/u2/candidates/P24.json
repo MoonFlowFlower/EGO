@@ -1,0 +1,93 @@
+{
+  "id": "P24",
+  "category": "P",
+  "preference": "你协作时希望自己保留最后一次确认。",
+  "teaching_domain": "协作权限",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "表格改好直接替你提交，还是先给你看？"
+        },
+        {
+          "speaker": "user",
+          "text": "停在草稿，我扫一眼再按发送。"
+        }
+      ]
+    },
+    {
+      "dialogue": 6,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "自动续费的选项我都关了，怕自己还没看清。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "替你准备报名资料，做到哪一步？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "填完后停下，等你亲自确认。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "未经查看直接完成支付。"
+        },
+        {
+          "id": "o5",
+          "text": "准备好就一并递交。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T1",
+      "domain": "协作权限"
+    },
+    {
+      "situation": "共同搭建虚拟空间，准备落定布局时怎么办？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "立即执行全部更改。"
+        },
+        {
+          "id": "o2",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o3",
+          "text": "呈现预览并等待你的最终点头。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "跳过预览自行定案。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你协作时希望自己保留最后一次确认。",
+  "counterintuitive": "常见默认是“准备好就一并递交。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

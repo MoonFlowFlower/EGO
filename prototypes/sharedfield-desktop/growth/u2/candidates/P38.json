@@ -1,0 +1,93 @@
+{
+  "id": "P38",
+  "category": "P",
+  "preference": "你在无法判断的事实问题上愿意听到明确的不确定。",
+  "teaching_domain": "事实态度",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "这段掌故我记不清，要猜个版本还是说没查到？"
+        },
+        {
+          "speaker": "user",
+          "text": "没查到就直说，编圆了我还得纠正。"
+        }
+      ]
+    },
+    {
+      "dialogue": 5,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "天气预报写着不确定，我倒知道该带两套衣服。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "你询问一个证据不足的细节，怎样答复？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把猜测说成已经证实。"
+        },
+        {
+          "id": "o2",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o3",
+          "text": "说明尚无把握并指出缺失依据。"
+        },
+        {
+          "id": "o4",
+          "text": "给出听起来完整的确定回答。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T1",
+      "domain": "事实态度"
+    },
+    {
+      "situation": "陪你评估新计划的风险，怎样呈现？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o2",
+          "text": "清楚标出尚无法估计的部分。"
+        },
+        {
+          "id": "o3",
+          "text": "给每一项都填上肯定数值。"
+        },
+        {
+          "id": "o4",
+          "text": "隐藏全部未知因素。"
+        },
+        {
+          "id": "o5",
+          "text": "把话题转向天气。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你在无法判断的事实问题上愿意听到明确的不确定。",
+  "counterintuitive": "常见默认是“给出听起来完整的确定回答。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

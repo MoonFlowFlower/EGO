@@ -1,0 +1,95 @@
+{
+  "id": "P36",
+  "category": "P",
+  "preference": "你面对同价替代品时愿意优先选本地小店。",
+  "teaching_domain": "消费来源",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "买面包去连锁超市，还是巷口那家？"
+        },
+        {
+          "speaker": "user",
+          "text": "去老两口开的铺子吧，价钱也没差。"
+        }
+      ]
+    },
+    {
+      "dialogue": 6,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "修拉链我找了楼下阿姨，商场柜台没去。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "为你选择一次日常服务，怎么筛？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o3",
+          "text": "优先考虑附近独立经营者。"
+        },
+        {
+          "id": "o4",
+          "text": "只选最大规模的集团。"
+        },
+        {
+          "id": "o5",
+          "text": "优先全国知名品牌。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T1",
+      "domain": "消费来源"
+    },
+    {
+      "situation": "帮你寻找可用的小软件，怎么推荐？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先考虑维护透明的独立开发作品。"
+        },
+        {
+          "id": "o2",
+          "text": "把个人创作者全部排除。"
+        },
+        {
+          "id": "o3",
+          "text": "只推荐大型平台出品。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o1",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你面对同价替代品时愿意优先选本地小店。",
+  "counterintuitive": "常见默认是“优先全国知名品牌。”；此人的两次选择暗示不同取向。",
+  "protected_names": [
+    "阿姨"
+  ]
+}

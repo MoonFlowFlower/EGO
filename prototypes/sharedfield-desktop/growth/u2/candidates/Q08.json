@@ -1,0 +1,87 @@
+{
+  "id": "Q08",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "我必须单独住，不能和陌生人合住。",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "下个月想去一个新城市短住，眼下先把电话接完。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 4,
+  "question": {
+    "situation": "地图摊好了，我们慢慢看看。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "晚上住宿能否接受共用空间？"
+      },
+      {
+        "id": "o2",
+        "text": "好，我们慢慢看，不急着定。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      },
+      {
+        "id": "o3",
+        "text": "好，我们慢慢看，不急着定。对了，晚上住宿能否接受共用空间？"
+      },
+      {
+        "id": "o4",
+        "text": "好，我们慢慢看，不急着定。"
+      }
+    ],
+    "target": "o3",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o3"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o3"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你选一处临时落脚点。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o2",
+          "text": "订多人青旅床位。"
+        },
+        {
+          "id": "o3",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o4",
+          "text": "订独立房间。"
+        },
+        {
+          "id": "o5",
+          "text": "先询问其他人的通用建议。"
+        }
+      ],
+      "target": "o4",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+  "ceiling_use": "我必须单独住，不能和陌生人合住。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": [
+    "城市"
+  ]
+}

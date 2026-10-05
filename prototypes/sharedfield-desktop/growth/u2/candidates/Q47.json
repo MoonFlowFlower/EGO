@@ -1,0 +1,85 @@
+{
+  "id": "Q47",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "bad_mood",
+  "hidden_answer": "我需要完全遮光。",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "月底可能重整卧室，但我今天失眠很累，不想做选择。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 3,
+  "question": {
+    "situation": "我脑子像堵住了，先让我静一静。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "窗帘希望透光还是全遮？"
+      },
+      {
+        "id": "o2",
+        "text": "好，闭会儿眼也行，我安静待着。"
+      },
+      {
+        "id": "o3",
+        "text": "好，闭会儿眼也行，我安静待着。对了，窗帘希望透光还是全遮？"
+      },
+      {
+        "id": "o4",
+        "text": "好，闭会儿眼也行，我安静待着。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      }
+    ],
+    "target": "o2",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o3"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你安排睡眠区的覆盖物。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o2",
+          "text": "用轻薄透光纱。"
+        },
+        {
+          "id": "o3",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o4",
+          "text": "用能挡住外部亮光的一套。"
+        },
+        {
+          "id": "o5",
+          "text": "再问你一次。"
+        }
+      ],
+      "target": "o4",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "对方现在情绪很差，已说明暂不想回答额外问题。",
+  "ceiling_use": "我需要完全遮光。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

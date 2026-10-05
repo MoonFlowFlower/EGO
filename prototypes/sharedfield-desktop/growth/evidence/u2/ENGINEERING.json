@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "tests_run": 182,
+  "failures": 0,
+  "errors": 0,
+  "seconds": 40.13999999999942,
+  "utc": "2026-10-05T06:13:07.190000+00:00",
+  "cloud_calls": 0,
+  "new_cloud_cost_usd": 0,
+  "candidate_validation": {
+    "format_errors": [],
+    "overlaps": [],
+    "counts": {
+      "P": 48,
+      "Q": 48,
+      "W": 48
+    },
+    "passed": true,
+    "segmenter": "jieba 0.42.1 POS nouns/verbs/adjectives; generic discourse words excluded",
+    "note": "Lexical separation is mechanical; it does not prove naturalness or valid cross-domain inference."
+  },
+  "scope": [
+    "canonical understanding/source/version deletion and physical erasure",
+    "fresh process learning/testing with read-only unchanged SQLite",
+    "daily midnight/late settle/unknown reservations/concurrent cap",
+    "DPAPI token unchanged in fresh process",
+    "real child crash and supervisor recovery without repeat simulated effects",
+    "owner absence requires grant; no unsolicited initiative chat",
+    "fixed decision order, full originals, identical arm prompt",
+    "same-input one retry; second/nonretryable failure stops"
+  ],
+  "not_verified": [
+    "live AIRI GUI reconfiguration and real MC runtime restart",
+    "model learning or naturally understanding the owner"
+  ],
+  "runner_note": "首次把完整测试套件从标准输入启动，Windows spawn 无法重载 <stdin>，故恢复测试失败；改为 u2.check_engineering 模块入口后 182 项全部通过。此修正只涉及零费用验收入口。",
+  "post_suite_check": "增加结算后超估计立即停止检查；u2.test_client 的 4 项故障回归再次通过。"
+}

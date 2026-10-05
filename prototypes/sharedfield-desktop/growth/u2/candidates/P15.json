@@ -1,0 +1,93 @@
+{
+  "id": "P15",
+  "category": "P",
+  "preference": "你解决烦恼时倾向先拿到能做的小步骤。",
+  "teaching_domain": "安慰",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "你烦着呢，我先抱抱你，还是帮你拆个能动手的小口？"
+        },
+        {
+          "speaker": "user",
+          "text": "先告诉我眼下能干哪一步，感受待会儿再聊。"
+        }
+      ]
+    },
+    {
+      "dialogue": 6,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "昨晚朋友列了两件小事，我照着做完就缓过来了。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "你因拖延而焦虑，怎样陪你？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "长篇表达共情。"
+        },
+        {
+          "id": "o2",
+          "text": "给一个马上能完成的微小行动。"
+        },
+        {
+          "id": "o3",
+          "text": "只反复描述难过的情绪。"
+        },
+        {
+          "id": "o4",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o5",
+          "text": "把话题转向天气。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T1",
+      "domain": "安慰"
+    },
+    {
+      "situation": "你对陌生系统感到畏难，怎样引导？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先谈心理压力有多合理。"
+        },
+        {
+          "id": "o2",
+          "text": "先指出一处可以立即点击的入口。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "避免提供任何具体操作。"
+        },
+        {
+          "id": "o5",
+          "text": "把话题转向天气。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你解决烦恼时倾向先拿到能做的小步骤。",
+  "counterintuitive": "常见默认是“长篇表达共情。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}

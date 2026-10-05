@@ -1,0 +1,85 @@
+{
+  "id": "Q14",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "一定先告诉我再录，我不接受偷偷录。",
+  "teaching": [
+    {
+      "dialogue": 4,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "下周有一场线上面试，现在正在排队办事。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 5,
+  "question": {
+    "situation": "摄像头摆好了，今天终于能缓口气。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "这会儿放松一点，肩膀也不用绷着。对了，是否需要别人先告知录制开始？"
+      },
+      {
+        "id": "o2",
+        "text": "是否需要别人先告知录制开始？"
+      },
+      {
+        "id": "o3",
+        "text": "这会儿放松一点，肩膀也不用绷着。"
+      },
+      {
+        "id": "o4",
+        "text": "这会儿放松一点，肩膀也不用绷着。对了，你觉得靛蓝和赭红哪种更顺眼？"
+      }
+    ],
+    "target": "o1",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o2"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你启动一次模拟问答。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "连接成功便自动保存全过程。"
+        },
+        {
+          "id": "o2",
+          "text": "明确说明后等你同意再开始保存。"
+        },
+        {
+          "id": "o3",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o4",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o5",
+          "text": "先询问其他人的通用建议。"
+        }
+      ],
+      "target": "o2",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+  "ceiling_use": "一定先告诉我再录，我不接受偷偷录。",
+  "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+  "protected_names": []
+}

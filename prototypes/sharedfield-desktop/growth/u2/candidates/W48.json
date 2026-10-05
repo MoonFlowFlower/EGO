@@ -1,0 +1,49 @@
+{
+  "id": "W48",
+  "category": "W",
+  "applicable": true,
+  "teaching": [
+    {
+      "dialogue": 6,
+      "mode": "explicit_conditional",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "这一周我要独处，不参加聚会，下周再恢复社交。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "本周第三天出现一个普通聚餐邀请。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "忽略眼前安排，转聊天气。"
+        },
+        {
+          "id": "o2",
+          "text": "重新询问已说清的条件。"
+        },
+        {
+          "id": "o3",
+          "text": "交由一个无关的人随机决定。"
+        },
+        {
+          "id": "o4",
+          "text": "直接接受参加多人活动。"
+        },
+        {
+          "id": "o5",
+          "text": "保留个人空间并谢绝此次。"
+        }
+      ],
+      "target": "o5",
+      "phase": "boundary"
+    }
+  ],
+  "ceiling": "这一周我要独处，不参加聚会，下周再恢复社交。",
+  "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+  "protected_names": []
+}

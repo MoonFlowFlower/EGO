@@ -1,0 +1,93 @@
+{
+  "id": "P12",
+  "category": "P",
+  "preference": "你在亲自尝试之前不愿先看完整教程。",
+  "teaching_domain": "上手方式",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "拼装模型先读说明还是摸索一下？"
+        },
+        {
+          "speaker": "user",
+          "text": "纸先放旁边，让我拧两颗试试。"
+        }
+      ]
+    },
+    {
+      "dialogue": 6,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "昨晚烤饼弄塌一盘，后来才翻食谱，倒记得牢。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "一起学用新相机，怎么开始？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先讲完整使用指南。"
+        },
+        {
+          "id": "o2",
+          "text": "让你随意拍几张再补知识。"
+        },
+        {
+          "id": "o3",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o4",
+          "text": "逐条背熟规则才允许动手。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T1",
+      "domain": "上手方式"
+    },
+    {
+      "situation": "陪你接触一款棋类玩法，怎样引入？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先走一小局，碰到问题再解释。"
+        },
+        {
+          "id": "o2",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o3",
+          "text": "先考试确认理论都记住。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "先系统讲解全部规程。"
+        }
+      ],
+      "target": "o1",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你在亲自尝试之前不愿先看完整教程。",
+  "counterintuitive": "常见默认是“先讲完整使用指南。”；此人的两次选择暗示不同取向。",
+  "protected_names": []
+}
