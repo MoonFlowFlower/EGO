@@ -1,6 +1,6 @@
 {
-  "at_utc": "2026-10-05T19:41:32.878364+00:00",
-  "status": "frozen_not_started_budget_deferred",
+  "at_utc": "2026-10-05T19:45:08.676100+00:00",
+  "status": "frozen_ready_to_run_today",
   "source_origin_commit": "1bac5db",
   "design_version": "v0.9",
   "required_sections_read": [
@@ -10,30 +10,26 @@
     "22",
     "23"
   ],
-  "tests_passed": 38,
+  "tests_passed": 39,
   "fresh_process_checks": 4,
   "cloud_calls": 0,
   "new_cloud_cost_usd": 0,
   "daily_budget": {
     "local_day": "2026-10-05",
     "timezone": "America/Winnipeg",
-    "limit_usd": 1,
+    "limit_usd": 4.0,
     "used_usd": 0.429652205,
     "unknown_included_usd": 0,
-    "remaining_usd": 0.570347795
+    "remaining_usd": 3.570347795
   },
   "u3_estimate_usd": 0.6,
   "F1_estimate_usd": 0.1,
   "F1_status": "not_started_before_U3b",
-  "blockers": [
-    "2026-10-05 balance is below the 0.60 USD U3 estimate"
-  ],
+  "blockers": [],
   "next_followup": {
     "automation_id": "u3",
-    "local_date": "2026-10-06",
-    "local_time": "00:10",
-    "timezone": "America/Winnipeg",
-    "condition": "verify current v2 frozen hashes and recheck daily budget; owner screening policy and author clarification are applied"
+    "status": "PAUSED",
+    "reason": "Owner authorized U3 today; no next-day duplicate."
   },
   "not_results": [
     "A priors and screening",
@@ -42,7 +38,7 @@
     "F1 behavioural forgetting"
   ],
   "root_agent_contract_note": "AGENTS.md references three route-state/context files absent in this checkout; current explicit owner card and growth design used as the bounded task authority.",
-  "implementation_commit": "9c8d59cf215b6837b6ad8d447c1b66473196918e",
+  "implementation_commit": "55c20a91",
   "screen_policy": {
     "status": "owner_resolved",
     "aligned_policy": "retain_calibration",
@@ -60,16 +56,18 @@
     "author_clarification_commit": "eca6f6cc",
     "thresholds_and_model_changed": false
   },
-  "frozen_manifest_sha256": "edf6e0ad04610c9e34333f125488420c6e49808948182dc22abcac2a0f7815be",
+  "frozen_manifest_sha256": "7639792b419ac28d9efab3b2c89d5f636ef2f20d2fd677a5a81aff6d40ba996f",
   "author_clarification_commit": "eca6f6cc",
-  "superseded_prepaid_manifest": "preflight_versions/v1/FROZEN.json",
-  "supersession_reason": "Author clarification received during push; no paid prior, treatment, or consumed worker existed. Counter-prior-only gate and descriptive calibration now match section 22.3.",
+  "supersession_reason": "v1 superseded by author screening clarification; v2 superseded only by explicit owner daily-budget increase. Both unused versions retained. No paid result preceded these changes.",
   "budget_authorization": {
-    "in_chat_limit_usd": 1,
-    "new_design_limit_usd": 4,
-    "new_design_commit": "e0702697",
-    "status": "explicit_human_confirmation_requested",
-    "runtime_limit_changed": false,
-    "no_reply_behavior": "Keep the explicitly authorized 1 USD daily cap and next-day budget check; do not infer a higher spending authorization from repository prose."
-  }
+    "in_chat_limit_usd": 4,
+    "status": "explicitly_authorized",
+    "owner_answer": "授权每天 $4，今天运行 U3",
+    "runtime_limit_changed": true,
+    "engineering_commit": "29ff7483"
+  },
+  "superseded_prepaid_manifests": [
+    "preflight_versions/v1/FROZEN.json",
+    "preflight_versions/v2/FROZEN.json"
+  ]
 }
