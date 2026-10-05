@@ -1,5 +1,5 @@
 {
-  "at_utc": "2026-10-05T19:38:54.526497+00:00",
+  "at_utc": "2026-10-05T19:41:32.878364+00:00",
   "status": "frozen_not_started_budget_deferred",
   "source_origin_commit": "1bac5db",
   "design_version": "v0.9",
@@ -63,5 +63,13 @@
   "frozen_manifest_sha256": "edf6e0ad04610c9e34333f125488420c6e49808948182dc22abcac2a0f7815be",
   "author_clarification_commit": "eca6f6cc",
   "superseded_prepaid_manifest": "preflight_versions/v1/FROZEN.json",
-  "supersession_reason": "Author clarification received during push; no paid prior, treatment, or consumed worker existed. Counter-prior-only gate and descriptive calibration now match section 22.3."
+  "supersession_reason": "Author clarification received during push; no paid prior, treatment, or consumed worker existed. Counter-prior-only gate and descriptive calibration now match section 22.3.",
+  "budget_authorization": {
+    "in_chat_limit_usd": 1,
+    "new_design_limit_usd": 4,
+    "new_design_commit": "e0702697",
+    "status": "explicit_human_confirmation_requested",
+    "runtime_limit_changed": false,
+    "no_reply_behavior": "Keep the explicitly authorized 1 USD daily cap and next-day budget check; do not infer a higher spending authorization from repository prose."
+  }
 }
