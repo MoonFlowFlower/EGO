@@ -1,0 +1,3 @@
+# Preserve synthetic experiment evidence despite the Windows root Test/ rule.
+!raw/**/test/
+!raw/**/test/**

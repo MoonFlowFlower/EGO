@@ -1,0 +1,46 @@
+{
+  "at_utc": "2026-10-05T19:23:34.143902+00:00",
+  "status": "engineering_ready_not_frozen_not_started",
+  "source_origin_commit": "1bac5db",
+  "design_version": "v0.9",
+  "required_sections_read": [
+    "18.11",
+    "18.12 including D16 correction",
+    "19.1 item 5",
+    "22",
+    "23"
+  ],
+  "tests_passed": 35,
+  "fresh_process_checks": 4,
+  "cloud_calls": 0,
+  "new_cloud_cost_usd": 0,
+  "daily_budget": {
+    "local_day": "2026-10-05",
+    "timezone": "America/Winnipeg",
+    "limit_usd": 1,
+    "used_usd": 0.429652205,
+    "unknown_included_usd": 0,
+    "remaining_usd": 0.570347795
+  },
+  "u3_estimate_usd": 0.6,
+  "F1_estimate_usd": 0.1,
+  "F1_status": "not_started_before_U3b",
+  "blockers": [
+    "U3a aligned-item screening policy requires explicit owner answer",
+    "2026-10-05 balance is below the 0.60 USD U3 estimate"
+  ],
+  "next_followup": {
+    "automation_id": "u3",
+    "local_date": "2026-10-06",
+    "local_time": "00:10",
+    "timezone": "America/Winnipeg",
+    "condition": "screen policy explicitly resolved and budget rechecked"
+  },
+  "not_results": [
+    "A priors and screening",
+    "S0/S1 real model comparison",
+    "B personalized timing learning",
+    "F1 behavioural forgetting"
+  ],
+  "root_agent_contract_note": "AGENTS.md references three route-state/context files absent in this checkout; current explicit owner card and growth design used as the bounded task authority."
+}

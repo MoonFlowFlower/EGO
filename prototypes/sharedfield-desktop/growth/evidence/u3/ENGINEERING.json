@@ -1,0 +1,135 @@
+{
+  "at_utc": "2026-10-05T19:22:07.539588+00:00",
+  "passed": true,
+  "tests_run": 35,
+  "failures": 0,
+  "errors": 0,
+  "seconds": 9.203000000008615,
+  "process_checks": {
+    "passed": true,
+    "fresh_process_checks": 4,
+    "network_blocked_in_workers": true,
+    "stages": [
+      {
+        "pid": 31700,
+        "operation": "learn",
+        "simulated_decisions": 32,
+        "cloud_calls": 0,
+        "max_request_bytes": 27320,
+        "stage": "R/learn"
+      },
+      {
+        "pid": 3880,
+        "operation": "test",
+        "simulated_decisions": 24,
+        "cloud_calls": 0,
+        "max_request_bytes": 28725,
+        "stage": "R/test"
+      },
+      {
+        "pid": 47240,
+        "operation": "fork",
+        "simulated_decisions": 0,
+        "cloud_calls": 0,
+        "max_request_bytes": 0,
+        "stage": "I/learn"
+      },
+      {
+        "pid": 7580,
+        "operation": "test",
+        "simulated_decisions": 24,
+        "cloud_calls": 0,
+        "max_request_bytes": 28725,
+        "stage": "I/test"
+      },
+      {
+        "pid": 42696,
+        "operation": "fork",
+        "simulated_decisions": 0,
+        "cloud_calls": 0,
+        "max_request_bytes": 0,
+        "stage": "N/learn"
+      },
+      {
+        "pid": 42380,
+        "operation": "test",
+        "simulated_decisions": 24,
+        "cloud_calls": 0,
+        "max_request_bytes": 3069,
+        "stage": "N/test"
+      },
+      {
+        "pid": 41624,
+        "operation": "fork",
+        "simulated_decisions": 0,
+        "cloud_calls": 0,
+        "max_request_bytes": 0,
+        "stage": "R_SHUFFLED/learn"
+      },
+      {
+        "pid": 31532,
+        "operation": "test",
+        "simulated_decisions": 24,
+        "cloud_calls": 0,
+        "max_request_bytes": 28725,
+        "stage": "R_SHUFFLED/test"
+      }
+    ],
+    "claim": "scripted fixtures only, no model learning evidence"
+  },
+  "cloud_calls": 0,
+  "new_cloud_cost_usd": 0,
+  "daily_budget_readonly": {
+    "local_day": "2026-10-05",
+    "timezone": "America/Winnipeg",
+    "limit_usd": 1,
+    "used_usd": 0.429652205,
+    "unknown_included_usd": 0,
+    "remaining_usd": 0.570347795
+  },
+  "code_sha256": {
+    "companion/budget.py": "b413e56110182f67f3c53aec0d35618650f27dd12e0aae373b51b9a7a2b5720e",
+    "companion/compact.py": "c0300e352cbba4b04740952a5aa8c3c14873339569c96eb6527ebd56f2d97223",
+    "companion/memory.py": "9a74aaeb7598ad9acae029b59909b2f41ea67de74f8b36eb3b88e385275c00a8",
+    "companion/model.py": "06dbf36ede7a6d46954961cfa0a9ac66ad98fa7228bc559f27fd605ad729c6a6",
+    "companion/understanding.py": "f5e2b5cbd1aaba02d89645fdae5bc5d9583c0823086ecaa32b6aa5df4ae5feca",
+    "growthlab/models.py": "5831046b024cfc5da2caf530c063f02b24d67994bdd937c6893a027895283e01",
+    "growthlab/records.py": "ad3573c3c7c16700d9e36ef13eabd8286088e09e078796588d827c38e49b395a",
+    "growthlab/state.py": "cae6cd8990191e0757eee3eb71242471c4a0cf2ccb3394f53c14d68267514f64",
+    "p7/proxy.py": "3f49356f54fc71781c2d0e6d0e06400e7af5543b43561b0aeae43ce4ea804eaf",
+    "p7/routing.py": "68cab0ee0a9fdf7697835ac7bed475551be48258f6f3ae447acc0ce0fdfad57f",
+    "p7/routing_v2.py": "8dd7567e9bb056d255ed83e008a3bb12b29fbb9775f71d67101204bbc446eec4",
+    "u1/conventions/core.py": "fe5612bba46bc648d3aebea7b325ec99fbc5931c207304b3fc91cf0e3cbcdff3",
+    "u1/harness.py": "1c6101e1db1c834c9d993d509e4a48c2f0cfe5c0b549d7224310e9d6e9235b5f",
+    "u1/protocol.py": "28ca4424407d47d848547dcd65d9829493656bec0aecd4dcc712d2a368edaec3",
+    "u1_resume/client.py": "23a8cc930a9b69ed6c77e663b4a89428956fc1ef8e8b4cc6d42cf61e6bb47193",
+    "u1_resume/library.py": "3bc4b71ef85e3aa05459969c77fc2b707a337f74d429e1e0bb73a6102df4d5a4",
+    "u2/client.py": "5c62fcb111971912f35ef0c29de32f294617748ef11adaefd8a44e558a6565ed",
+    "u2/protocol.py": "5a3e613c1223094bd7658f1efaf1f3332c57561a1e3507712e453689d894eb54",
+    "u2/study.py": "9cd8c880c111a8c133b64680344d29d26b235c85ddededbda9b664e117595309",
+    "u3/__init__.py": "892d3e71bba217868eefb30c47e2bfa4368a819e41b1f6396366c15a5f5f3216",
+    "u3/audit.py": "dfec067c426b3bc0a4ec5473969cd115b1c8083d7369fe4a7fe18966751cab2f",
+    "u3/baselines.py": "d67919e48a9abd857e810f90d205df2105c030f61a323f92061416dad589a503",
+    "u3/check_engineering.py": "4c493ee0b5a051c6c1ed8314a381c7a05e8f8295c293dde6ce9a7428a36875cd",
+    "u3/client.py": "0a2052f8528b1e5ebb86f91e968a03b2fce634b661ec5e02bed2079a52ce8eb0",
+    "u3/common.py": "2bfcf55d4f5f613a166d4c595ad6dd9b1620128cbbc640c562be8f155b3db525",
+    "u3/materials.py": "164ff40cfc220022c5ad6d369b5737147211a6ce458a07c5ea876229113072c2",
+    "u3/protocol.py": "9029d1a4892134111db4751a8aeae126ae7f20c7e8ae08413a68f568370930ce",
+    "u3/report.py": "2cc6748a7ee90e5951eacc8591da7403457a83c4b633fa98024898e76daa020f",
+    "u3/run.py": "c12e67ec0d740bfb4d5446de581a1dd40e60f72c901d27c80ad2957acbc3d31a",
+    "u3/selection.py": "80802aecfa0107fbcd398dfd188c29997139a2aa15c96b2c72f53ff288b11fc1",
+    "u3/statistics.py": "614bfc7cd6c0de8960ff01308f702da20623389b9a9b4f1a897bd1902525c04e",
+    "u3/study.py": "4f0b148c83c938eba8609f4ac2af5f3ccab8477787b0b11109f9117f65e2055b",
+    "u3/test_client.py": "52ef91cc9dd4e4f703e6df2f41a5450fe0025ebef767f7ce5b2a0431686221a2",
+    "u3/test_protocol.py": "bc3a52d09d194458b69b45eb2d445067931e5ebaa3d6d5715fe4677711dafd27",
+    "u3/test_report.py": "dfc89aa774fe08bc775eb067867c058e0af50b813528896b23023005fc3120a9",
+    "u3/test_run.py": "e4099b06cc667adf4322617f81c191fbea9ffe7213aa7bfce30f291df28c8302",
+    "u3/test_study.py": "bb7013d95e239d1154a2e1285936b6f896bf85fd6ca15dff2ae7275700fd1371"
+  },
+  "not_verified": [
+    "U3a screening or model effects",
+    "U3b learning beyond baselines",
+    "F1 behavioural forgetting",
+    "real owner use or MC/AIRI integration"
+  ]
+}
