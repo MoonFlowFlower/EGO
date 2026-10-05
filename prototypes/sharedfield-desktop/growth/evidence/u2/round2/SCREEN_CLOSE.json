@@ -1,0 +1,40 @@
+{
+  "closed_at_utc": "2026-10-05T13:21:07.760584+00:00",
+  "screen_manifest_sha256": "866ad5abb09957d96dc6350188ac036706779ad0c1e602c13a2eebe0292297ea",
+  "selection_sha256": "13b731d923495130c78d8d0bfb990f154a00a8b0bb88752aab91110657c874e9",
+  "source_hashes_verified": true,
+  "raw_sha256": {
+    "raw/screen/P_ceiling/calls.jsonl": "b6a0b51821d502fef8e0d54fb0374d802522d45c830cd6bc99ced57d5a136bba",
+    "raw/screen/P_ceiling/result.json": "35182762bdfe0e39eb44083fac0ecd85fdcf961ba6733c22f309edba369de605",
+    "raw/screen/P_ceiling/routing.jsonl": "42ed650ff325b90723749c774116ee21bbfe7e3ace8e4a7249a27ad45c8a8939",
+    "raw/screen/P_ceiling/screen.jsonl": "036f1ceea2a23088d96cb6957e06e5c0a87538c9441d00f1c22ddf6136900dee",
+    "raw/screen/P_prior/calls.jsonl": "06d6916c0bb72c7080440553ee9e41d6b93efd9992b0ccd18e12874166b49997",
+    "raw/screen/P_prior/result.json": "521f4f93a2e500af2ba4587a7dad339c46e70bc2f15c1afcf8e84b669f7f3e80",
+    "raw/screen/P_prior/routing.jsonl": "3f215f798d635092fea33c485e62532db9c8d4ec0fb9e949848cc5a0ee985fa2",
+    "raw/screen/P_prior/screen.jsonl": "c70cd1dc4ba23409b2d9d01b9b206360484060743bdf800a56f00856264107af",
+    "raw/screen/Q_ceiling/calls.jsonl": "982cd99cde4fecd576784fffe3dc51ba0e33719116cc1f93594627f0d56e37f8",
+    "raw/screen/Q_ceiling/result.json": "646b3134dbb7fb80b33e0efd223db6c84cdbfe482af5db72698aa6976b7c54d5",
+    "raw/screen/Q_ceiling/routing.jsonl": "bba3cb9f6f86fb3b2766c5970f0f7a0d09bd6b88f054f77870c08642dbe73be4",
+    "raw/screen/Q_ceiling/screen.jsonl": "c7d095e6b62a7561244bf82b3f5d7f60c9adb7a36cef7b3b19430630ff2e87bb",
+    "raw/screen/Q_prior/calls.jsonl": "59bf06facd92683caecb32f550792e16161f1fb2ce5876b10776345bffda76e4",
+    "raw/screen/Q_prior/result.json": "7deab3adf3f298c6db354e96d7f68625af13b9ca89cfbc0f2142610c3932f760",
+    "raw/screen/Q_prior/routing.jsonl": "86e6c94169cdffdfd324f17b16539a19841d3ec43bad3fcb5c08d63a8a7b4254",
+    "raw/screen/Q_prior/screen.jsonl": "b46435d8c4711f6a8fcba73d5a93c524457f6b0295eb60ccb26e209fba229df2"
+  },
+  "screen_cost_usd": 0.0200628,
+  "main_has_not_started": true,
+  "original_failed_items_recalled": 0,
+  "pooled_counts": {
+    "P": 23,
+    "Q": {
+      "yes": 13,
+      "no": 6,
+      "total": 19
+    },
+    "W": {
+      "yes": 24,
+      "no": 24,
+      "total": 48
+    }
+  }
+}

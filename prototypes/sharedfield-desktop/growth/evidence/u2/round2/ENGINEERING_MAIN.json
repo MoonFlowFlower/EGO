@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "tests": 11,
+  "cloud_calls": 0,
+  "command": "python -m unittest u2.round2.test_main u2.test_protocol -v",
+  "covers": [
+    "same original criterion function",
+    "semantic and exact Q leakage guards",
+    "fresh OS processes through actual second-round worker",
+    "readonly store hashes",
+    "real-time Q response insertion with offline fixture",
+    "insufficient daily balance creates no claim or request",
+    "original packet and threshold regressions"
+  ],
+  "prior_screen_regressions": 9,
+  "limit": "Engineering only; fake outputs are not learning evidence."
+}

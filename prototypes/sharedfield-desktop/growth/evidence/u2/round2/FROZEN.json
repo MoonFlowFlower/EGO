@@ -1,0 +1,6760 @@
+{
+  "version": "u2-round2-main",
+  "frozen_at_utc": "2026-10-05T13:21:53.375666+00:00",
+  "source_sha256": {
+    "companion/budget.py": "b413e56110182f67f3c53aec0d35618650f27dd12e0aae373b51b9a7a2b5720e",
+    "companion/compact.py": "c0300e352cbba4b04740952a5aa8c3c14873339569c96eb6527ebd56f2d97223",
+    "companion/memory.py": "9a74aaeb7598ad9acae029b59909b2f41ea67de74f8b36eb3b88e385275c00a8",
+    "companion/model.py": "06dbf36ede7a6d46954961cfa0a9ac66ad98fa7228bc559f27fd605ad729c6a6",
+    "companion/understanding.py": "f5e2b5cbd1aaba02d89645fdae5bc5d9583c0823086ecaa32b6aa5df4ae5feca",
+    "growthlab/models.py": "5831046b024cfc5da2caf530c063f02b24d67994bdd937c6893a027895283e01",
+    "growthlab/records.py": "ad3573c3c7c16700d9e36ef13eabd8286088e09e078796588d827c38e49b395a",
+    "growthlab/state.py": "cae6cd8990191e0757eee3eb71242471c4a0cf2ccb3394f53c14d68267514f64",
+    "p7/proxy.py": "3f49356f54fc71781c2d0e6d0e06400e7af5543b43561b0aeae43ce4ea804eaf",
+    "p7/routing.py": "68cab0ee0a9fdf7697835ac7bed475551be48258f6f3ae447acc0ce0fdfad57f",
+    "p7/routing_v1.json": "7b51874153c74a4134e1fdf24ad6f2dbe65206bb8d63774cb8985916f9c98d38",
+    "p7/routing_v2.json": "400806b87525a06e6f5c888bc565bd34e7a5fa79bf6077aa661ebfc4f159885a",
+    "p7/routing_v2.py": "8dd7567e9bb056d255ed83e008a3bb12b29fbb9775f71d67101204bbc446eec4",
+    "requirements-growth.txt": "8393f4add2b4de6a752a00a5573bf4032de74235b2e7b342cbed110f534cd1a1",
+    "u1/conventions/core.py": "fe5612bba46bc648d3aebea7b325ec99fbc5931c207304b3fc91cf0e3cbcdff3",
+    "u1/harness.py": "1c6101e1db1c834c9d993d509e4a48c2f0cfe5c0b549d7224310e9d6e9235b5f",
+    "u1/protocol.py": "28ca4424407d47d848547dcd65d9829493656bec0aecd4dcc712d2a368edaec3",
+    "u1_resume/client.py": "23a8cc930a9b69ed6c77e663b4a89428956fc1ef8e8b4cc6d42cf61e6bb47193",
+    "u1_resume/library.py": "3bc4b71ef85e3aa05459969c77fc2b707a337f74d429e1e0bb73a6102df4d5a4",
+    "u2/__init__.py": "6f270c1d00f472c8f75af268dc42e537ed8ab55dc228c1bd3cdc11363e4c5089",
+    "u2/author_candidates.py": "52eec76b5189a2bd547dfab635148fa3f4a58650abc7237ce7f6ed6ff7e01dd2",
+    "u2/author_qw.py": "f3977f090a014e9b4f73b92c09793f584dd07b778ec72f75db7cda8d1dd61339",
+    "u2/candidates/P01.json": "d89807483a120ebf1a166454b7ff628969a8225c91637f6b057293a1dada2227",
+    "u2/candidates/P02.json": "65ee39946151beb8bd067588a4011aeec169f5e2eed645edca6dc4757854c637",
+    "u2/candidates/P03.json": "0039902b91da8c8ed498b1646e4a9dc3a15e8ed8b6d89ad81c93ef4410ca5bb1",
+    "u2/candidates/P04.json": "856d97f4ddaafb038723bd74299687ea73c2440391773509deebc4faa23ab59e",
+    "u2/candidates/P05.json": "3d8c7f20e5fb6968b4121a0978b7d86c2ecc2354b0937990d268c91e3e6c783f",
+    "u2/candidates/P06.json": "0feac5eed90fc53b026768aefeb5c49f48aac3ec30146f9e270381aea15fa9fb",
+    "u2/candidates/P07.json": "180ed54bbf7e463c5b5c3011e0acd97bf5bb18261f7947eb03394be1741192a0",
+    "u2/candidates/P08.json": "253cf34248e6d1299dd31b3f195c75c6f75d9122295cd0e98cd0010bc78c3909",
+    "u2/candidates/P09.json": "3c6f68be7fac5603b408876e0b22cd8a3470b44f45005bc6e25e96072e723820",
+    "u2/candidates/P10.json": "5b7e93e52b384d394ede2f7a51a9d1bc866bed68a6ed7d5254c34adf5def8292",
+    "u2/candidates/P11.json": "100583f8f9d8d891f5270109d81b71b9833272cbe634822580986f138a0ea510",
+    "u2/candidates/P12.json": "fdcb614d726ad79f8c7131d0d07de98d95b0a65f60c23bbc63e45961e003d1a4",
+    "u2/candidates/P13.json": "151cf7486e3f726e38997343e2430ad508fa80de2e8f8ad839ffc4b0a703d83d",
+    "u2/candidates/P14.json": "ceeb79cfca59543a666c8c160cc816d39c4a6ed6305c410cedae5ed4aae609e8",
+    "u2/candidates/P15.json": "4a4861337ecd001dc5464859757c2b3ae019130ba3c41dae5330c6973695aeb5",
+    "u2/candidates/P16.json": "017668fa4551917bcf70a3eec94a58eb4db785830d4d0da9c41572950c0fdfd4",
+    "u2/candidates/P17.json": "9cc566145dca07479e0d673114adff011f8a5c6772201c756923acf31fddbf46",
+    "u2/candidates/P18.json": "a9dd74e751c6a8220ed8898a7fc463fd7c9bd40d188ce2effaaafb96c926a470",
+    "u2/candidates/P19.json": "7e8e311e8e92293d1c6dfbc27d5124a2a7f076b38836d29b3d054daf0f577dae",
+    "u2/candidates/P20.json": "9c57766c2649aa50e8c6a5b5ec9f7cfffc9098af89af220049849ddbde2c5adf",
+    "u2/candidates/P21.json": "d9dec9c3bda0c1a6353e2b192546697e523a7b907e2adbd970253a09d061366f",
+    "u2/candidates/P22.json": "c0cbf20796ea615e62b7d64aecbe955fa108ddf0e7581ffe06f9cd673f113a72",
+    "u2/candidates/P23.json": "497c6285259f261e4128e3f079936ffd125a58cc7bc0780357b7e585960affca",
+    "u2/candidates/P24.json": "cb588018a5a088b7dc8c91bf153a43e984c4cf61259f16b0b92b09fab852c5bc",
+    "u2/candidates/P25.json": "007764869ec15c9a0c6e534a7c8f3814c4913024f8e0b0e38e7753bd8cf879bc",
+    "u2/candidates/P26.json": "4c4ac1be52cdfddb4e66dc7a4c2096e6b68e4ce42c6a45d7caf0b5ff4c68615f",
+    "u2/candidates/P27.json": "a4771ad6eda22d79cc25126faceca5246908ce2dd1678e05e74ddfa07165880a",
+    "u2/candidates/P28.json": "78b2e45beeed834f40af11a6a289441e8c01124659fd3f39a753ee878f17aad3",
+    "u2/candidates/P29.json": "3e74f644b0d0ff5deb4018ee5b099196051a4c91ed2ccd3f86b98764fbda866b",
+    "u2/candidates/P30.json": "afb5e677a8b0d866ddd71e887195ec26ae6b3ac25c7d28b1594a5329fae45605",
+    "u2/candidates/P31.json": "6923d29969d1e19869322bef245f92aff1d5ed710efbad34f38c6c56bb0c0303",
+    "u2/candidates/P32.json": "c6ab68f943d363c1e00d8d583d5ed567d56f9dc114bbf6b06be5889c9f89cc8d",
+    "u2/candidates/P33.json": "c03e463352656263bfdb2d3011714ae4d866ea63bb2428ea47a05667095cf070",
+    "u2/candidates/P34.json": "67c0999ea7281efcc4e1f930c390c9d903e718236278a0286cb7e3e53ba5c5c0",
+    "u2/candidates/P35.json": "ba0617d79175ed9d2ef820a419bb7dd4529a41334cadbe6e37f1f322018686f5",
+    "u2/candidates/P36.json": "14eb305bf9bcd970cc18defd766fcc97df63c6268b6b2bfd3d0bb176b2e3fdee",
+    "u2/candidates/P37.json": "f2bfab441d6e639ecd7843e61e481cd1ecac52ac3fdb8959df0dde44b5afe7ce",
+    "u2/candidates/P38.json": "f23bb72342239866e0e390c249ed5cb094df291799f796d1576a0550fe2ec7ca",
+    "u2/candidates/P39.json": "6ab2d3a1b90e2e66ee6776566aa0e2a44124cebfc5d90fdb21d0600952ebc0a3",
+    "u2/candidates/P40.json": "652e836818422527355ec76cb7bce66b850c20743cd219196e8b10105f2736af",
+    "u2/candidates/P41.json": "15906785902889836de47e5d0471108f5eb982de3c7f02f4b38b8fcc39369f1d",
+    "u2/candidates/P42.json": "1ee39726482ff5fa8e51df1888398bb02861ce5259370f990df122fb8807826a",
+    "u2/candidates/P43.json": "2d8424b0245ad861a17eab733af4afb5c69f34a71febb6a7f9ba800ffe3a362f",
+    "u2/candidates/P44.json": "91fb03b03b3c474c9eb612be75b3961b72b9ae2e027c2a884d49328cc95929f2",
+    "u2/candidates/P45.json": "3d106a77c6fa5ac5e6bc256dcd578186866084468151c2dc5ac9848d29282a64",
+    "u2/candidates/P46.json": "98fa6192b12c12cfaf986989b0435b06a5920b48e6947d984fbb44eb96f956e2",
+    "u2/candidates/P47.json": "cab67d6a939d0353ea3b0f7d190a51db0c8b11f612561437bf47fe26067e73cd",
+    "u2/candidates/P48.json": "2b10580273a13e9ab72c498f61cd7392f03204ab95c1b11533eed20bd19b7926",
+    "u2/candidates/Q01.json": "cd8bf3849e93abac7fe119692e3caad9ec2e31f781e423d8711ffbff74d82628",
+    "u2/candidates/Q02.json": "42bdb1f08193f44bcfd966660f2ac6c1d72a0c0b50ee2fd970939976370c7661",
+    "u2/candidates/Q03.json": "cceeea462101f9b8a649e86810ba37b9a18bcd78e095b76b3bce8f430ee31a96",
+    "u2/candidates/Q04.json": "f870d11167ef3e92bef2a2b977c9986e304d2af7bbcf72844e26231b00c55682",
+    "u2/candidates/Q05.json": "64b3d84782d339a9c78e282205053ca18167fbeac7f2eb2044695f6bd420c30f",
+    "u2/candidates/Q06.json": "32e7cb6c173c899379308b91ea792f34eb7a94913cf099707b4477bb701c8b09",
+    "u2/candidates/Q07.json": "e7a3c965e829521dd6ce04c5644e279ba1d78df21c5c8fb29c4c7823abb42606",
+    "u2/candidates/Q08.json": "f174d0cd160365e2024704cbbaeb604664bc9533fa45bb06ba4bc8cf6181626c",
+    "u2/candidates/Q09.json": "f3cdafd07fa5979879b80e6b2420059b07ec5846023df14cb32b65216a6dfdfa",
+    "u2/candidates/Q10.json": "e6f236bf2b27ce06e0ad97d70f70dfb913498dc405f5352f0bc8dccd2707d234",
+    "u2/candidates/Q11.json": "dde007a787027d652f05b8933277b4dbbbe731cb4fb1f2c036775e93ad7391aa",
+    "u2/candidates/Q12.json": "133df631082cbcfcdfff50834c3da4863df70587e79447a2097d9c77b29065e1",
+    "u2/candidates/Q13.json": "6b50df3a81870edc2543771b5d52fd97ac02b5a81b09a117388b03c584cc8894",
+    "u2/candidates/Q14.json": "584561496ab945442860e4987658c6c76ae94840cba7e812a914801ac000c017",
+    "u2/candidates/Q15.json": "1a3d0d2c2cd8b41cba9a0333fdc49f5260e08ee2fd57f3c4305280bc53d981bc",
+    "u2/candidates/Q16.json": "d86f48a81665fac614b7733b3530d0a68aa1911e0a5700c5ee8bdd36397f4284",
+    "u2/candidates/Q17.json": "12d3450c63e506fab261ce022cd368945327952da2fb2b565e6347b7fe815945",
+    "u2/candidates/Q18.json": "16139ab122740611d363e502df0bc2c6884f2e2e1fabdc2577524779d9d8117d",
+    "u2/candidates/Q19.json": "dbdb93697b7cbc5bb85b6dd2fc1320069ebdf468fdbfa262549aecefa4a45bcf",
+    "u2/candidates/Q20.json": "ac7ef0904143b9466e8a542ac493ae9d53734c462a7d8e460a27fb7dd806c781",
+    "u2/candidates/Q21.json": "0694226c783dbc1f332be6d03eb4a299c410f5e57da310d1dc1ab8241331ac75",
+    "u2/candidates/Q22.json": "138e4d294e54064973036e8a041a70a0113c0041cc2336315161f2b7fc191aee",
+    "u2/candidates/Q23.json": "7a5c3d00c16b6985141dc50f6bc39a920701b3accd2dd3596a2b6a78d3eef3f8",
+    "u2/candidates/Q24.json": "ae03205173e9727c24369dcab0a5d96561a5bf82cb88e70453ff9ec8899c51d5",
+    "u2/candidates/Q25.json": "bf17e2ae6084d6385689f87dbde7fb69acebf8009a3a16a1ff33e4c3f598a5f0",
+    "u2/candidates/Q26.json": "f6eedf44b77323a6687ca775507c1d5c63f1aebbe0da80c2a2110020be41ae48",
+    "u2/candidates/Q27.json": "fb572a15fae1b23abb3e35cf60d50ddba0f1c5503db6ac0ddda50663a6039e30",
+    "u2/candidates/Q28.json": "87e059a7844babb982e573d9705366e1882441e47f9c8197fa659b2768c99624",
+    "u2/candidates/Q29.json": "5cfda5ad7d826ea4146fa32ae49572355d7e00644181c501a1dcfc6afcf7ecac",
+    "u2/candidates/Q30.json": "8fc03d012504c3415b4f62ef2e00b382e2ab939845ae4a2401bdd3086f219aa4",
+    "u2/candidates/Q31.json": "6c61c3a71e08d50314786b1691047917a6e855f00e4bc4ed02cefb0bbd9ff0cd",
+    "u2/candidates/Q32.json": "52fb0e0c6f8a7fd11d0abca25fc84e1decd2b3359ef32c55d3f9394e60957e3e",
+    "u2/candidates/Q33.json": "ff3d4637315bd6528b8f75d39dce5f2ab47d969b55a412f39833faebf5a84f32",
+    "u2/candidates/Q34.json": "71b6f8dadea27fc54beebe1a4268e7c9509d66fab39b0f3c45be2ad679185dd9",
+    "u2/candidates/Q35.json": "981f97af5d796b067a3d2e854b510a22cc0ee8b677e383aecf2472af6399416b",
+    "u2/candidates/Q36.json": "952fa5591da420483801ac3aa65b7f453434cde303cd6deec6dd90bc78a4e03d",
+    "u2/candidates/Q37.json": "ec6c3b338ca885cddcb7529485b1382c129a9b98495ad98e070cf86b54429b5c",
+    "u2/candidates/Q38.json": "9e6c4f9722a9d433ba86dad797abdd213c05e724c7659c515d8c482834f66b66",
+    "u2/candidates/Q39.json": "22412b53820cb074d96f00b12baed9e09d527e4531d20308e86bdd49a66dd2a8",
+    "u2/candidates/Q40.json": "496ca71bf92b0808f61b984e9c6e21d9279625e0734f3b24cc47b3a0943374e7",
+    "u2/candidates/Q41.json": "cb3bfdf01a4baeb008c336a3a1c2d9f5c30e648ce359b9d64e82f2490b30516c",
+    "u2/candidates/Q42.json": "6fe9d3e8a95b235ae5f97e3122f3751c6bd563f281596354eaebe6a97b7e0694",
+    "u2/candidates/Q43.json": "ea3bfb4fae63f4569c04004fc6a37ea9713e40606ee50a5b1e2e6b5447501c26",
+    "u2/candidates/Q44.json": "42a421f726c33af36fc1e2aa29305b1b8c65a3b0e9416de92ff06f8be439eceb",
+    "u2/candidates/Q45.json": "c7bee5a7be730e6a5761103ea6473bdd1d8f5c9f3c07e686b31345b5d978c9f6",
+    "u2/candidates/Q46.json": "2d85e00b28b6d18659e86a5af4303c6329a104523ee6e135a565155a870e69e9",
+    "u2/candidates/Q47.json": "14ba3d2c041303d4b17d02c4993f0d666271a9781ed21ee098f426e28a3e93b0",
+    "u2/candidates/Q48.json": "7c864b9cbe30c8bf2be4d0774d6d014879f904ee9b5ef1eea5ab331285242a65",
+    "u2/candidates/W01.json": "b12577bffae176d60c5a493dc144a542ff359b9298e9fd3ce9f6fdd4d200b704",
+    "u2/candidates/W02.json": "69b94462dd88fd41b911fb089ab1c6b81abe62ba62b588fea0265047fc00e014",
+    "u2/candidates/W03.json": "3ff794471ecda27ce273dbcffb1f47064f40d4b12705c9b6fca25fff838b6d80",
+    "u2/candidates/W04.json": "9fd63ea573b860e2b76ad8258c59fec2f3ec666f2c717d506871145b7d1c7e10",
+    "u2/candidates/W05.json": "23138f6f2906899fb684dd64913023bb3faf05f390a1eb40e704f8bcb694cff2",
+    "u2/candidates/W06.json": "b22b3788a89f4e8c6f58b73c78993370a1d5cf331b63ffc2469ad3c586049b75",
+    "u2/candidates/W07.json": "fe47dfd6fccad0ad6ba3634ec2396a4bd152e943bedaae40e4c272fd739819cf",
+    "u2/candidates/W08.json": "a31a4a248adcc1c482444379c6831eab317661db72da2faeeba099a2116311e4",
+    "u2/candidates/W09.json": "8064a31d44143c594142c89fc2de9f132094323ab851b05a058c38f32ee2e089",
+    "u2/candidates/W10.json": "80d134493f2fb59d258bda803977fb0391952993231f1a520fa1889065ca700e",
+    "u2/candidates/W11.json": "ae844ca62efbe7975acd4b52a0b55176d97ba9577660f8293b5eed8e11ce7bd9",
+    "u2/candidates/W12.json": "85beebbd7dce05ff9662eb2825e2776a6d253aa237bc67079890f6d98e7a86ae",
+    "u2/candidates/W13.json": "b37788e99340078d80179ad684fbedfe6201622d8bf5ee1f842d52d3c2fb423a",
+    "u2/candidates/W14.json": "7438e95d542a0004dcca498469cb11d2610331315f08a27bad048c9f2de46f93",
+    "u2/candidates/W15.json": "247649f5d1ccb38552d00764eb0f404a40d7afec428b062a40635463098e14ec",
+    "u2/candidates/W16.json": "4c523af62e383b4fe5ecfb57e335e4c592fd8e61f9cf00260799282e095eb591",
+    "u2/candidates/W17.json": "2268bf6d9f3714748d0f5456e7c8c141786ffd11b02088a746047b00f29c035c",
+    "u2/candidates/W18.json": "3a6eaafc59dc39a1ba2eeade6b4c7ac5352e2612876bb07295439405121c0055",
+    "u2/candidates/W19.json": "90f05af3afcb07f53f7b8d58b18926ac646c65653e8336f4203938fe33edae2b",
+    "u2/candidates/W20.json": "8ac9b4ef2d4a3d016b9c5df91114924631c9a59a9c99d887fae318514725be94",
+    "u2/candidates/W21.json": "a105e8f0cc0a8d9f62499429495d557275f03da83d1849cff88ae4f989629e6f",
+    "u2/candidates/W22.json": "2b48f1f42e22baa5c889c6fd95d796d9393cae099d03f420255c6e806f90912a",
+    "u2/candidates/W23.json": "50e3a278e74b9f542ff6452d3ac0d3b6b2a9a910d66f1143eb738737a85e7735",
+    "u2/candidates/W24.json": "8e11d0c6caef3118b74e14dc4e31e08bdeade6adc6543cb439bcac662414d3e6",
+    "u2/candidates/W25.json": "b10f02d0909c52a50e9c3684f7ee59c20699ebb3f72c811433067aecebab9fce",
+    "u2/candidates/W26.json": "e36929518ab7878f3151c3e7fd483054b07eaee03e5b3d064f2bfa9677b81edc",
+    "u2/candidates/W27.json": "8f80ed2433856bca1598934b7e37c3c487dcbac05f49cc5cfbeecadd2efcb9c1",
+    "u2/candidates/W28.json": "adda087d76d22da93d86bc046b347ffe21fc05477a86b5d092c066c0702dc5be",
+    "u2/candidates/W29.json": "4344a277aa0550180d2bd50ca7aa5580a2811ee25c5d7d066d3620ad0ccfbb9c",
+    "u2/candidates/W30.json": "ef4464b2870f80b7e724e71626b34d22793ceb8b7ac5e746a06a10786568dab6",
+    "u2/candidates/W31.json": "9eecf7f9716853da757ab944fa73230917f105c693ae83405876b9ca8737cfa0",
+    "u2/candidates/W32.json": "726311908ea4cfefd63b6a953a7bc524965a291ced4ba134007de81aa2a076b1",
+    "u2/candidates/W33.json": "1624739ca8e04e2975283e19a616da9bfd3350b1af9c1b523ed5e47bf59f8865",
+    "u2/candidates/W34.json": "bfdcf020a84a123f1dd34b0bc3fc80bc621e0894eeb746901323cc01c8585fed",
+    "u2/candidates/W35.json": "e4b82b92396b8a8483dbedc8eac628a587341d3cd22cc8013ae2de52b40168b3",
+    "u2/candidates/W36.json": "b9a84e01c3791efa6e797700d3548387a0008af92c934b7676fee2913081007c",
+    "u2/candidates/W37.json": "4658d5232c2c9c0216163543e0a540a47d84aa37324934872df5f7d8008121c9",
+    "u2/candidates/W38.json": "28eec06cc3aba498566d5834f1cdb4087543f68b1f117e63c66ef96118fe6980",
+    "u2/candidates/W39.json": "cbe43b4380b2a980997fcb465db2d0f6f96efcf6871a43b8c6c04127394bc1a6",
+    "u2/candidates/W40.json": "115d7a3e068d0d42209e0d7269c0684eb2e929281d6c76b5bc967cfefb935b91",
+    "u2/candidates/W41.json": "add2976d1cc1ae9be6b8b7e6bd349370bba907176af29f28adfa2f3bbf902e52",
+    "u2/candidates/W42.json": "3ca8721ccdc2575bc3a250742a6fa662e2f1d625c9ef53f1984c887bbd2a0c26",
+    "u2/candidates/W43.json": "aab95b8c54ec4b4fc6ce93fcabf971d3bf89c879ca112113362f8d80d042ec72",
+    "u2/candidates/W44.json": "2ee8381d55b2368c308170060525f9c58d76f921a84350cc8ec3f5285e707a35",
+    "u2/candidates/W45.json": "d37e1d72112e6c6afea639fbe42201ff03eb061f6c502a14deec15e1d1a18ba1",
+    "u2/candidates/W46.json": "95414731c12ce8c9c7aec13d176317e11a5793be492f1fedd6cc4b3326486b8f",
+    "u2/candidates/W47.json": "f36925254903f954d41784cee32e39b1b137644015049c103c18e29faafd386b",
+    "u2/candidates/W48.json": "37c92139f54113d0ac56d9c9f65bd36fa147f706885d62cefc5278b864c51875",
+    "u2/check_engineering.py": "a6552917f5c68eb209e936bcf9101488e86b707d42fa10d2e6eefeec35073978",
+    "u2/client.py": "5c62fcb111971912f35ef0c29de32f294617748ef11adaefd8a44e558a6565ed",
+    "u2/PRE_RUN.md": "e2ce6cc4346f9fd435afafaf6d25dcad33b25f8486d675689030a738ed58d97d",
+    "u2/protocol.py": "5a3e613c1223094bd7658f1efaf1f3332c57561a1e3507712e453689d894eb54",
+    "u2/report.py": "8423b5fba96e5af054846db8a934068e604b38df0ad894ef863f800a71f4c305",
+    "u2/requirements.txt": "3d7bb3eb7e7ba4940412c29d120926f25fe3a63ed34a0aa5220774642da45c6c",
+    "u2/round2/__init__.py": "c5ccadbd474e55cb7106a52652c0b50a72b41b552a6490f3815bb979d9f58410",
+    "u2/round2/audit.py": "fb173518580f01c83d2384b66bde46a2321c7ff196d20988139a57b0bc1c32d0",
+    "u2/round2/leakage.py": "c74a2d66472e9c68617049c1a855956656e2d306892251899442b3e0a33035af",
+    "u2/round2/main.py": "8df52fef8c07194add16052c095cbf39b8e607370c3e9baa031b3030b5f04bf7",
+    "u2/round2/report.py": "583f3d0ca5b8059f44709d716ebe63f5aa1bf32dde02d4d8b1e89ffd6931ae27",
+    "u2/round2/screen.py": "06deaf73ee59b10f1c714ac2092fbaae82acde39488e7ef704ac0011c669da78",
+    "u2/round2/selection.py": "6dbcd53571e42e5b3df3286575187a25880519015a0f78c5d8b0fb24d41fd26b",
+    "u2/round2/test_main.py": "17cff1c6ddff7d158f2815fab63bc1b3cc1f2df6a4d98007c4fbb06b81263521",
+    "u2/round2/test_screen.py": "31ae48b227065dfa48dca802336e5c06d8eebdd4a22cce2ff83e98897353553c",
+    "u2/run.py": "942f3172f6cc7df1f551c616e0b95a2913d1622c6dbf2562c7273bcfd95ee91e",
+    "u2/study.py": "9cd8c880c111a8c133b64680344d29d26b235c85ddededbda9b664e117595309",
+    "u2/supplement_v2/author.py": "ce4108c9d9a8ed767419b7b5d026802a5a7c9f10889402627f4c22bf24005c39",
+    "u2/supplement_v2/author_q.py": "9b55a99e8f0ccd715b05f6e0ed298043d435d8e0967322f1147576b50c1cdf81",
+    "u2/supplement_v2/check.py": "4ac7d596fa56ac9f3d209a3e88f2ae9dfbe910a27910d105ab87354cb9d469ba",
+    "u2/supplement_v2/test_supplement.py": "961f287cfb62bd55b2926bf7c7cc693c09e3201264ec6db25f81360aa90273cf",
+    "u2/test_client.py": "3bf893dae7698b2bc6fc0ccbed8c9d869b95642919f770fe517ef87ab1a2049a",
+    "u2/test_protocol.py": "3defa6ecd56fa7cd4716b4c9e87c695f6d3aa0b5493aa445ce399f5003e3c82c",
+    "u2/test_storage.py": "f7490581ca5b7495271ba0c704a81f923752144163eda375c2e255caba7505a2",
+    "u2/validate.py": "b36ea92d8b6f15c4177c5c373621d61760e2e1fc41d53135230827f132dcf036",
+    "u2/supplement_v2/candidates/P49.json": "adbc864cfe4ff2a6b6ddf3cb30fd03ed930d3f2095076f2e93266ee33a96ec2b",
+    "u2/supplement_v2/candidates/P50.json": "0c6334fdf21699cf3907af08ffe20ff188e14bac38cf9dde709831bd36d949de",
+    "u2/supplement_v2/candidates/P51.json": "655c5b515d426bf1ca8b0fad00e2630f1c075099aaefafcce786cf4449c762ce",
+    "u2/supplement_v2/candidates/P52.json": "2d9c2dd53cc4fcab954c3f3f1087ef829005ee29817a7617ecb9986f38550fbe",
+    "u2/supplement_v2/candidates/P53.json": "c73a43ace1b976b867b3e1fc1d85ded8b0320576ee009ab379e6380cea10a480",
+    "u2/supplement_v2/candidates/P54.json": "a746d3a4841744f6ae0048367c76e929f4a7d3f1f981fe0ffb521354e9b9bfcd",
+    "u2/supplement_v2/candidates/P55.json": "68794e26090e86459a45379e52cc03a9841545ebe9fecb9867c20d232d4694a3",
+    "u2/supplement_v2/candidates/P56.json": "61de539389c245dc8e9df6a3ce547ae26b314fd4af5dda7051dd69f019748696",
+    "u2/supplement_v2/candidates/P57.json": "085b0c137b67273dd865a56ce1bec60db5343fff54c599259bbb9d1aecfcafa2",
+    "u2/supplement_v2/candidates/P58.json": "89de8ccd0e3928ed1adedc9801d09ceac79e19a1f5a4f9879102cd4e9cb56193",
+    "u2/supplement_v2/candidates/P59.json": "49700e5a049fdb60572058fef959bc481e87ccd97159c46507dbfc31ca41b19d",
+    "u2/supplement_v2/candidates/P60.json": "b5cbfb33fb8641097d8e3afaadbf524a27dde941c1b7a2f0d73fc292731b6d4b",
+    "u2/supplement_v2/candidates/P61.json": "4233c70b74e295f17bb1e2399c0e95725863795c769bbdff49178c6cf4a4977b",
+    "u2/supplement_v2/candidates/P62.json": "d0715d7b1ff9d4405c4cafea7e48430d7a58dfffc82061b94cf1b3781f52ccf5",
+    "u2/supplement_v2/candidates/P63.json": "02a021eb0da39bec2f8d9d1a6c81acc695f5ea748d94b581c544571ec34c8836",
+    "u2/supplement_v2/candidates/P64.json": "adb06eb66a1d19e03220bdb644626a45a1c2298f85856a17718359166a67fbab",
+    "u2/supplement_v2/candidates/P65.json": "177a11aefb33f8d73a7a9c5416e3d5ce63bdafc74bc66168443bf64404657708",
+    "u2/supplement_v2/candidates/P66.json": "9081304364da1fd6ccb43a70932d30c5d269f467aae5c17230768136c00a171a",
+    "u2/supplement_v2/candidates/P67.json": "ad5d40a339bba4527b4712a8295b4f2989c969b541d62c1483b829794d47f0db",
+    "u2/supplement_v2/candidates/P68.json": "2d5005fd39ae833ba37bba76a48fb99dd15937ec9e43cde68e67b98b4cf66e08",
+    "u2/supplement_v2/candidates/P69.json": "56c570aafc4242efd8202f4425c453a6d07b20a07f8acdb1beb02590c6f00c38",
+    "u2/supplement_v2/candidates/P70.json": "567548446b27755a5463ce1cd3239e052b3085b98d3d3d7d9e58ce162c5520f1",
+    "u2/supplement_v2/candidates/P71.json": "be048e9f7ae38294509d0fb295ae6eba6defb2c002ab723ae5df00249576d899",
+    "u2/supplement_v2/candidates/P72.json": "817c6bb47427b5fb272b6b11f70537bbe65a7bcbeb11f91116c09e08f568533e",
+    "u2/supplement_v2/candidates/Q49.json": "e53b472e914e81855f7ebb331d944d9cc651ed7c63d903bac8aed125257fb416",
+    "u2/supplement_v2/candidates/Q50.json": "8667a3a57528af92e86d7e627a7091edced46d2a62ef871eb0cf1a3d0f0cc7e2",
+    "u2/supplement_v2/candidates/Q51.json": "d029562011299b537fdf0c58453aec47544042775b9d0f099c8358b9d40d6514",
+    "u2/supplement_v2/candidates/Q52.json": "246988e894fa7b7243c3e753223a2a2adf719d0070c8955289515cc7c87fce45",
+    "u2/supplement_v2/candidates/Q53.json": "bfb1060e770cd81d283efe382919f53bade6472daff2518f89b80914acaeaf66",
+    "u2/supplement_v2/candidates/Q54.json": "311f02390b481b858ea6fcc2509eddb3aa31a15bccd2bea072b6e278946f79ea",
+    "u2/supplement_v2/candidates/Q55.json": "1eacb04a502c59409ea2d56d9356f5f0abd55ecd0faf020451bc7a36abc849aa",
+    "u2/supplement_v2/candidates/Q56.json": "ef6450f823c722f18625e5787f31a7b67ddea8a5f827c29fb8eff527492cb8f0",
+    "u2/supplement_v2/candidates/Q57.json": "5c2f077e9d50a2fa80bc4b0df96e5a5fb8bab947b959af3e1668ed596ae02d3e",
+    "u2/supplement_v2/candidates/Q58.json": "915ccdc76257078d88400914369db35efe2c401c82491c6255e56a1cd2f09ec2",
+    "u2/supplement_v2/candidates/Q59.json": "bc97ce3456e51499e60fcaf70653a03f60437c1e25494cd120521fc4f5f33793",
+    "u2/supplement_v2/candidates/Q60.json": "2c5fd4582fdb6337706ec6be8efe69582493584b3833840f1206b95ef2650d45",
+    "u2/supplement_v2/candidates/Q61.json": "bd3294772f1ad50bd86e6ef6d03c3bf606ab74f8921d773b7ecff95f6cf9b631",
+    "u2/supplement_v2/candidates/Q62.json": "9bd6e211e4aed65d2420943c8dbf2ab06b43889b0610dd8c73810b3c71b1cfd0",
+    "u2/supplement_v2/candidates/Q63.json": "1512ef57dc190835b276e8edf19ff853be859c3e39ee42d522a16d4ea215a99a",
+    "u2/supplement_v2/candidates/Q64.json": "db889562273af08981c6a9eca2bc37cf0fa6d3fe273be6dd57a0bb13c90a71cb",
+    "u2/supplement_v2/candidates/Q65.json": "692dcc75921674497897c02f327a5f52249216c6585dcec247066015de2f3361",
+    "u2/supplement_v2/candidates/Q66.json": "55f342ad5c53afb0447b8eccd7d658f40fd3a4dc73d8bc4c26e3a2e614c8a647",
+    "u2/supplement_v2/candidates/Q67.json": "0ac7331eb3201ca747aead34ee416f297d8d7b427b855d21dfe21b938bf32ec8",
+    "u2/supplement_v2/candidates/Q68.json": "828b966c8dc5e5184888440683a71e084462949a909f103db19b918141accd9d",
+    "u2/supplement_v2/candidates/Q69.json": "13dc228fa7ac0070b715e6bbff6b605e262a3b511cb3e829fb8a4fdad7bf48ea",
+    "u2/supplement_v2/candidates/Q70.json": "a64259040d9b24d64408ffb07dfea9171ebbd20d5cfc3a17b0a8856e6d3d815a",
+    "u2/supplement_v2/candidates/Q71.json": "b6e02586bb06e3394e606c08723958fcd1d52f8dcd5ab58e5c5cc5ec78626469",
+    "u2/supplement_v2/candidates/Q72.json": "7b71a9dff0e0beb3eafc0b094abd3dafd49a9cd209c8734743e841e8a84fc110",
+    "u2/round2/PRE_SCREEN.md": "0083d5d0f05fa6709f285859c261ed5127bacea0d24e0bc5a8e144b2f11c929e",
+    "u2/round2/PRE_MAIN.md": "d4d626b0ee2f685a668df42d57c3430719fcbaa8eae96dbd3eeb400016118b6d"
+  },
+  "seed": 20261005,
+  "model": "deepseek/deepseek-v4.1-flash",
+  "route": "wafer",
+  "decision_reasoning": false,
+  "consolidation_effort": "low",
+  "criteria_verbatim": "### 18.7 判据（跑之前写死）\n\n- **H1 学得到（P 类，主判据）**：B 的 R 组 ≥ 60%，并且比 I、N 两组中较高的一组高至少 40 个百分点。P 类按全部测试局面计算（T1、T2 合并），也分开报告。\n- **H2 离线想明白有用（P 类）**：B 的 R 组比 A 的 R 组高至少 15 个百分点；并且在 A、B 结果不同的局面里，B 对 A 错的至少是 A 对 B 错的 3 倍。不过线就记\"整理没有额外收益\"，内核继续用原话（与 U1 一致）。\n- **Q 该不该问**：B 的 R 组在该问的条目里问的比例 ≥ 50%，在不该问的条目里 ≤ 20%；问了的条目，之后用对的比例 ≥ 80%。\n- **W 什么时候不用**：B 的 R 组在不适用的条目里不套用 ≥ 70%，在适用的条目里套用 ≥ 70%。\n- **删除**：4 条的跟随率不高于 N 组在同样局面上的跟随率加 10 个百分点；字节检查通过。\n- 只报告：T1 与 T2 分开的结果；描述臂；I 组比 N 组多出的跟随率（视为整理凭空造出的\"假记忆\"）。\n\n",
+  "candidate_ids": [
+    "P49",
+    "P50",
+    "P51",
+    "P52",
+    "P53",
+    "P54",
+    "P55",
+    "P56",
+    "P57",
+    "P58",
+    "P59",
+    "P60",
+    "P61",
+    "P62",
+    "P63",
+    "P64",
+    "P65",
+    "P66",
+    "P67",
+    "P68",
+    "P69",
+    "P70",
+    "P71",
+    "P72",
+    "Q49",
+    "Q50",
+    "Q51",
+    "Q52",
+    "Q53",
+    "Q54",
+    "Q55",
+    "Q56",
+    "Q57",
+    "Q58",
+    "Q59",
+    "Q60",
+    "Q61",
+    "Q62",
+    "Q63",
+    "Q64",
+    "Q65",
+    "Q66",
+    "Q67",
+    "Q68",
+    "Q69",
+    "Q70",
+    "Q71",
+    "Q72"
+  ],
+  "validation": {
+    "kind": "unscreened_supplement",
+    "new_ids": [
+      "P49",
+      "P50",
+      "P51",
+      "P52",
+      "P53",
+      "P54",
+      "P55",
+      "P56",
+      "P57",
+      "P58",
+      "P59",
+      "P60",
+      "P61",
+      "P62",
+      "P63",
+      "P64",
+      "P65",
+      "P66",
+      "P67",
+      "P68",
+      "P69",
+      "P70",
+      "P71",
+      "P72",
+      "Q49",
+      "Q50",
+      "Q51",
+      "Q52",
+      "Q53",
+      "Q54",
+      "Q55",
+      "Q56",
+      "Q57",
+      "Q58",
+      "Q59",
+      "Q60",
+      "Q61",
+      "Q62",
+      "Q63",
+      "Q64",
+      "Q65",
+      "Q66",
+      "Q67",
+      "Q68",
+      "Q69",
+      "Q70",
+      "Q71",
+      "Q72"
+    ],
+    "new_counts": {
+      "P": 24,
+      "Q": 24
+    },
+    "Q_should_ask": 12,
+    "format_errors": [],
+    "overlaps": [],
+    "passed": true,
+    "batch_count_note": "v1 48/category checks remain unchanged. New supplement requires 24 P and 24 Q (12/12), checked separately. No screening or main threshold is relaxed.",
+    "cloud_calls": 0,
+    "semantic_limit": "Word overlap checks do not prove naturalness or that an upper-bound decision will succeed."
+  },
+  "old_manifest_sha256": "c969a2f884692f51c2e0c860d811e6434f87884ae0623bcafec7bc4486de607e",
+  "old_close_sha256": "56a80baa233b53dae6bc79fd11106843948798e257f2a38aafd5d5e936744362",
+  "old_eligible_ids": [
+    "P01",
+    "P02",
+    "P03",
+    "P06",
+    "P09",
+    "P10",
+    "P11",
+    "P12",
+    "P30",
+    "P33",
+    "Q03",
+    "Q05",
+    "Q07",
+    "Q08",
+    "Q11",
+    "Q15",
+    "Q17",
+    "Q23",
+    "Q25",
+    "Q27",
+    "Q29",
+    "Q44",
+    "W01",
+    "W02",
+    "W03",
+    "W04",
+    "W05",
+    "W06",
+    "W07",
+    "W08",
+    "W09",
+    "W10",
+    "W11",
+    "W12",
+    "W13",
+    "W14",
+    "W15",
+    "W16",
+    "W17",
+    "W18",
+    "W19",
+    "W20",
+    "W21",
+    "W22",
+    "W23",
+    "W24",
+    "W25",
+    "W26",
+    "W27",
+    "W28",
+    "W29",
+    "W30",
+    "W31",
+    "W32",
+    "W33",
+    "W34",
+    "W35",
+    "W36",
+    "W37",
+    "W38",
+    "W39",
+    "W40",
+    "W41",
+    "W42",
+    "W43",
+    "W44",
+    "W45",
+    "W46",
+    "W47",
+    "W48"
+  ],
+  "old_excluded": [
+    {
+      "id": "P04",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P05",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P07",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P08",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P13",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P14",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P15",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P16",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P17",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P18",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P19",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P20",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P21",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P22",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P23",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P24",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P25",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P26",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P27",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P28",
+      "reasons": [
+        "prior_already_target",
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "P29",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P31",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P32",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P34",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P35",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P36",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P37",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P38",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P39",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P40",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P41",
+      "reasons": [
+        "prior_already_target",
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "P42",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P43",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P44",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P45",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P46",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P47",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P48",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q01",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q02",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q04",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q06",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q09",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q10",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q12",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q13",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q14",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q16",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q18",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q19",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q20",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q21",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q22",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q24",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q26",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q28",
+      "reasons": [
+        "prior_already_target",
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q30",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q31",
+      "reasons": [
+        "prior_already_target",
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q32",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q33",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q34",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q35",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q36",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q37",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q38",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q39",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q40",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q41",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q42",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q43",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q45",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q46",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q47",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q48",
+      "reasons": [
+        "prior_already_target"
+      ]
+    }
+  ],
+  "old_Q_reuse_authorization": "Owner 2026-10-05 and design 18.11: all twelve passed with less information and may be pooled unchanged.",
+  "screen_policy": "Each candidate one no-memory request (P T1+T2 bundled; Q question only); remove any target hit. W has no prior screen. One ceiling request for every candidate (P T1+T2; Q question+use; W boundary). Retain only all-valid/all-correct ceilings.",
+  "selection": {
+    "counts": {
+      "P": 23,
+      "Q": {
+        "yes": 13,
+        "no": 6,
+        "total": 19
+      },
+      "W": {
+        "yes": 24,
+        "no": 24,
+        "total": 48
+      }
+    },
+    "passed": true,
+    "selected_ids": [
+      "P49",
+      "P03",
+      "P61",
+      "P52",
+      "P71",
+      "P10",
+      "P70",
+      "P11",
+      "P12",
+      "P69",
+      "P72",
+      "P65",
+      "P50",
+      "P55",
+      "P02",
+      "P01",
+      "P62",
+      "P06",
+      "P09",
+      "P51",
+      "P33",
+      "P63",
+      "P30",
+      "Q05",
+      "Q29",
+      "Q56",
+      "Q25",
+      "Q58",
+      "Q61",
+      "Q15",
+      "Q27",
+      "Q23",
+      "Q64",
+      "Q59",
+      "Q44",
+      "W46",
+      "W43",
+      "W08",
+      "W07",
+      "W20",
+      "W45",
+      "W32",
+      "W33",
+      "W26",
+      "W23",
+      "W10",
+      "W13",
+      "W30",
+      "W41",
+      "W18",
+      "W39",
+      "W38",
+      "W29",
+      "W06",
+      "W15",
+      "W22",
+      "W47",
+      "W14",
+      "W11"
+    ],
+    "complete": true,
+    "eligible_ids": [
+      "P01",
+      "P02",
+      "P03",
+      "P06",
+      "P09",
+      "P10",
+      "P11",
+      "P12",
+      "P30",
+      "P33",
+      "Q03",
+      "Q05",
+      "Q07",
+      "Q08",
+      "Q11",
+      "Q15",
+      "Q17",
+      "Q23",
+      "Q25",
+      "Q27",
+      "Q29",
+      "Q44",
+      "W01",
+      "W02",
+      "W03",
+      "W04",
+      "W05",
+      "W06",
+      "W07",
+      "W08",
+      "W09",
+      "W10",
+      "W11",
+      "W12",
+      "W13",
+      "W14",
+      "W15",
+      "W16",
+      "W17",
+      "W18",
+      "W19",
+      "W20",
+      "W21",
+      "W22",
+      "W23",
+      "W24",
+      "W25",
+      "W26",
+      "W27",
+      "W28",
+      "W29",
+      "W30",
+      "W31",
+      "W32",
+      "W33",
+      "W34",
+      "W35",
+      "W36",
+      "W37",
+      "W38",
+      "W39",
+      "W40",
+      "W41",
+      "W42",
+      "W43",
+      "W44",
+      "W45",
+      "W46",
+      "W47",
+      "W48",
+      "P49",
+      "P50",
+      "P51",
+      "P52",
+      "P55",
+      "P61",
+      "P62",
+      "P63",
+      "P65",
+      "P69",
+      "P70",
+      "P71",
+      "P72",
+      "Q52",
+      "Q54",
+      "Q56",
+      "Q58",
+      "Q59",
+      "Q61",
+      "Q64"
+    ],
+    "inherited_ids": [
+      "P01",
+      "P02",
+      "P03",
+      "P06",
+      "P09",
+      "P10",
+      "P11",
+      "P12",
+      "P30",
+      "P33",
+      "Q03",
+      "Q05",
+      "Q07",
+      "Q08",
+      "Q11",
+      "Q15",
+      "Q17",
+      "Q23",
+      "Q25",
+      "Q27",
+      "Q29",
+      "Q44",
+      "W01",
+      "W02",
+      "W03",
+      "W04",
+      "W05",
+      "W06",
+      "W07",
+      "W08",
+      "W09",
+      "W10",
+      "W11",
+      "W12",
+      "W13",
+      "W14",
+      "W15",
+      "W16",
+      "W17",
+      "W18",
+      "W19",
+      "W20",
+      "W21",
+      "W22",
+      "W23",
+      "W24",
+      "W25",
+      "W26",
+      "W27",
+      "W28",
+      "W29",
+      "W30",
+      "W31",
+      "W32",
+      "W33",
+      "W34",
+      "W35",
+      "W36",
+      "W37",
+      "W38",
+      "W39",
+      "W40",
+      "W41",
+      "W42",
+      "W43",
+      "W44",
+      "W45",
+      "W46",
+      "W47",
+      "W48"
+    ],
+    "new_eligible_ids": [
+      "P49",
+      "P50",
+      "P51",
+      "P52",
+      "P55",
+      "P61",
+      "P62",
+      "P63",
+      "P65",
+      "P69",
+      "P70",
+      "P71",
+      "P72",
+      "Q52",
+      "Q54",
+      "Q56",
+      "Q58",
+      "Q59",
+      "Q61",
+      "Q64"
+    ],
+    "excluded": [
+      {
+        "round": 1,
+        "id": "P04",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P05",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P07",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P08",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P13",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P14",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P15",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P16",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P17",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P18",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P19",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P20",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P21",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P22",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P23",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P24",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P25",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P26",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P27",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P28",
+        "reasons": [
+          "prior_already_target",
+          "ceiling_missing_invalid_or_wrong"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P29",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P31",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P32",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P34",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P35",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P36",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P37",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P38",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P39",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P40",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P41",
+        "reasons": [
+          "prior_already_target",
+          "ceiling_missing_invalid_or_wrong"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P42",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P43",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P44",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P45",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P46",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P47",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "P48",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q01",
+        "reasons": [
+          "ceiling_missing_invalid_or_wrong"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q02",
+        "reasons": [
+          "ceiling_missing_invalid_or_wrong"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q04",
+        "reasons": [
+          "ceiling_missing_invalid_or_wrong"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q06",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q09",
+        "reasons": [
+          "ceiling_missing_invalid_or_wrong"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q10",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q12",
+        "reasons": [
+          "ceiling_missing_invalid_or_wrong"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q13",
+        "reasons": [
+          "ceiling_missing_invalid_or_wrong"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q14",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q16",
+        "reasons": [
+          "ceiling_missing_invalid_or_wrong"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q18",
+        "reasons": [
+          "ceiling_missing_invalid_or_wrong"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q19",
+        "reasons": [
+          "ceiling_missing_invalid_or_wrong"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q20",
+        "reasons": [
+          "ceiling_missing_invalid_or_wrong"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q21",
+        "reasons": [
+          "ceiling_missing_invalid_or_wrong"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q22",
+        "reasons": [
+          "ceiling_missing_invalid_or_wrong"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q24",
+        "reasons": [
+          "ceiling_missing_invalid_or_wrong"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q26",
+        "reasons": [
+          "ceiling_missing_invalid_or_wrong"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q28",
+        "reasons": [
+          "prior_already_target",
+          "ceiling_missing_invalid_or_wrong"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q30",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q31",
+        "reasons": [
+          "prior_already_target",
+          "ceiling_missing_invalid_or_wrong"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q32",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q33",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q34",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q35",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q36",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q37",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q38",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q39",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q40",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q41",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q42",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q43",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q45",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q46",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q47",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 1,
+        "id": "Q48",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "P53",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "P54",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "P56",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "P57",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "P58",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "P59",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "P60",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "P64",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "P66",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "P67",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "P68",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "Q49",
+        "reasons": [
+          "ceiling_missing_invalid_or_wrong"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "Q50",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "Q51",
+        "reasons": [
+          "ceiling_missing_invalid_or_wrong"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "Q53",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "Q55",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "Q57",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "Q60",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "Q62",
+        "reasons": [
+          "ceiling_missing_invalid_or_wrong"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "Q63",
+        "reasons": [
+          "ceiling_missing_invalid_or_wrong"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "Q65",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "Q66",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "Q67",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "Q68",
+        "reasons": [
+          "ceiling_missing_invalid_or_wrong"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "Q69",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "Q70",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "Q71",
+        "reasons": [
+          "prior_already_target"
+        ]
+      },
+      {
+        "round": 2,
+        "id": "Q72",
+        "reasons": [
+          "prior_already_target"
+        ]
+      }
+    ],
+    "screen_cost_usd": 0.0200628,
+    "daily_budget": {
+      "local_day": "2026-10-05",
+      "timezone": "America/Winnipeg",
+      "limit_usd": 1.0,
+      "used_usd": 0.06475388,
+      "remaining_usd": 0.93524612
+    }
+  },
+  "stops": "Concurrency 1; starts >=2s apart; only 429/502/503/504/connection one identical retry after max(30,Retry-After)+0..3s; second failure stops lane; two consecutive invalid outputs stop lane; 3600s/lane; no content retries, resumption or replacement items.",
+  "claim_ceiling": "Synthetic implicit learning/use evidence only, not understanding the whole person or subjective experience.",
+  "lanes": [
+    [
+      "P",
+      "prior"
+    ],
+    [
+      "P",
+      "ceiling"
+    ],
+    [
+      "Q",
+      "prior"
+    ],
+    [
+      "Q",
+      "ceiling"
+    ]
+  ],
+  "screen_estimate_usd": 0.1,
+  "cost_before_screen": 0.04469108,
+  "cumulative_cap_usd": 0.9647538800000001,
+  "main_estimate_usd": 0.9,
+  "daily_budget": {
+    "daily": {
+      "local_day": "2026-10-05",
+      "timezone": "America/Winnipeg",
+      "limit_usd": 1.0,
+      "used_usd": 0.04469108,
+      "remaining_usd": 0.95530892
+    },
+    "legacy_snapshot": {
+      "count": 3416,
+      "usd": 1.9076275225900001,
+      "unknown_usd": 1.1500000000000001
+    },
+    "dated_charge_ids": 2311,
+    "undated_historical_rows": 1398,
+    "undated_historical_usd": 0.5207505990610001,
+    "append_only_chronology": {
+      "last_undated_row": 1398,
+      "later_pre_today_row": 3416
+    }
+  },
+  "official_preflight": {
+    "model": "deepseek/deepseek-v4.1-flash",
+    "mode": "pinned",
+    "eligible_routes": [
+      {
+        "model": "deepseek/deepseek-v4.1-flash",
+        "route": "wafer"
+      }
+    ],
+    "zdr_listed": true,
+    "metadata_at": 1791205973.300114
+  },
+  "future_P_rule": "Only if pooled P<12: freeze new situations and all unlabelled options; make one no-memory call; choose an unselected human-plausible target, then author two disclosures. Never rerun a failed old item.",
+  "screen_manifest_sha256": "866ad5abb09957d96dc6350188ac036706779ad0c1e602c13a2eebe0292297ea",
+  "evidence_sha256": {
+    "evidence/u2/round2/SCREEN_FREEZE.json": "866ad5abb09957d96dc6350188ac036706779ad0c1e602c13a2eebe0292297ea",
+    "evidence/u2/round2/SCREEN_RESULTS.json": "13b731d923495130c78d8d0bfb990f154a00a8b0bb88752aab91110657c874e9",
+    "evidence/u2/round2/SCREEN_CLOSE.json": "e0b2f2f19fa6fb9c56f00ccd24db28c0bf76c677abcce846be6b359f1ea52808",
+    "evidence/u2/round2/Q_LEAKAGE_REVIEW.json": "35ace2587a0bc17d9f570c1239703226ce837c85b90ccfa79b0bf8315c7df212",
+    "evidence/u2/round2/PERSONA_SEMANTIC_REVIEW.md": "9187c99514904870f04a3339c8a19dba327980ab6f8d46425b40cc48e75b82e6",
+    "evidence/u2/round2/ENGINEERING_MAIN.json": "5d7ac58ff60797d7838f90677da89bfcc98660d61f77b16472b01c2c0ddef654",
+    "evidence/u2/SCREEN_FREEZE.json": "c969a2f884692f51c2e0c860d811e6434f87884ae0623bcafec7bc4486de607e",
+    "evidence/u2/SCREEN_CLOSE.json": "56a80baa233b53dae6bc79fd11106843948798e257f2a38aafd5d5e936744362",
+    "evidence/u2/round2/raw/screen/P_ceiling/calls.jsonl": "b6a0b51821d502fef8e0d54fb0374d802522d45c830cd6bc99ced57d5a136bba",
+    "evidence/u2/round2/raw/screen/P_ceiling/result.json": "35182762bdfe0e39eb44083fac0ecd85fdcf961ba6733c22f309edba369de605",
+    "evidence/u2/round2/raw/screen/P_ceiling/routing.jsonl": "42ed650ff325b90723749c774116ee21bbfe7e3ace8e4a7249a27ad45c8a8939",
+    "evidence/u2/round2/raw/screen/P_ceiling/screen.jsonl": "036f1ceea2a23088d96cb6957e06e5c0a87538c9441d00f1c22ddf6136900dee",
+    "evidence/u2/round2/raw/screen/P_prior/calls.jsonl": "06d6916c0bb72c7080440553ee9e41d6b93efd9992b0ccd18e12874166b49997",
+    "evidence/u2/round2/raw/screen/P_prior/result.json": "521f4f93a2e500af2ba4587a7dad339c46e70bc2f15c1afcf8e84b669f7f3e80",
+    "evidence/u2/round2/raw/screen/P_prior/routing.jsonl": "3f215f798d635092fea33c485e62532db9c8d4ec0fb9e949848cc5a0ee985fa2",
+    "evidence/u2/round2/raw/screen/P_prior/screen.jsonl": "c70cd1dc4ba23409b2d9d01b9b206360484060743bdf800a56f00856264107af",
+    "evidence/u2/round2/raw/screen/Q_ceiling/calls.jsonl": "982cd99cde4fecd576784fffe3dc51ba0e33719116cc1f93594627f0d56e37f8",
+    "evidence/u2/round2/raw/screen/Q_ceiling/result.json": "646b3134dbb7fb80b33e0efd223db6c84cdbfe482af5db72698aa6976b7c54d5",
+    "evidence/u2/round2/raw/screen/Q_ceiling/routing.jsonl": "bba3cb9f6f86fb3b2766c5970f0f7a0d09bd6b88f054f77870c08642dbe73be4",
+    "evidence/u2/round2/raw/screen/Q_ceiling/screen.jsonl": "c7d095e6b62a7561244bf82b3f5d7f60c9adb7a36cef7b3b19430630ff2e87bb",
+    "evidence/u2/round2/raw/screen/Q_prior/calls.jsonl": "59bf06facd92683caecb32f550792e16161f1fb2ce5876b10776345bffda76e4",
+    "evidence/u2/round2/raw/screen/Q_prior/result.json": "7deab3adf3f298c6db354e96d7f68625af13b9ca89cfbc0f2142610c3932f760",
+    "evidence/u2/round2/raw/screen/Q_prior/routing.jsonl": "86e6c94169cdffdfd324f17b16539a19841d3ec43bad3fcb5c08d63a8a7b4254",
+    "evidence/u2/round2/raw/screen/Q_prior/screen.jsonl": "b46435d8c4711f6a8fcba73d5a93c524457f6b0295eb60ccb26e209fba229df2",
+    "evidence/u2/raw/screen/P_ceiling/calls.jsonl": "90e87f0db603caf227b07cae6552acdf8fd6aba058a23a62bbd789d8ccc937a3",
+    "evidence/u2/raw/screen/P_ceiling/result.json": "9363259b9f9fdda8d13025dea6e1583001837bc878f8a216896cad80c4d20543",
+    "evidence/u2/raw/screen/P_ceiling/routing.jsonl": "d45c3600bafe505b504566f7e750bb951776d4b8ea390d7766212219bf05615c",
+    "evidence/u2/raw/screen/P_ceiling/screen.jsonl": "3f4ab115e9e4379c463b7eec10a3c174f7a5fda239577f5798be771affb91bf6",
+    "evidence/u2/raw/screen/P_prior/calls.jsonl": "2380f6259c722e7e693ded03f5aa547fa597f1b4ccbf4375b77e34e8d895d6ce",
+    "evidence/u2/raw/screen/P_prior/result.json": "b0b389974f732af16e5a57eb70046b67a73e58432ebcea1450a5478de47ad557",
+    "evidence/u2/raw/screen/P_prior/routing.jsonl": "428fb2d36215bf965e2e9edbbe54b608c9aec2abb3b40d67a433e18c9480040c",
+    "evidence/u2/raw/screen/P_prior/screen.jsonl": "c88234d7b3534c66144ac33f2d0c4758c9d51f15e1bd0aad3046c6cef60a46c8",
+    "evidence/u2/raw/screen/Q_ceiling/calls.jsonl": "9c46978790a29ba2babb75d616b796df41d089d3c56e3bf26c31a42b2e339185",
+    "evidence/u2/raw/screen/Q_ceiling/result.json": "f290460fc6c7720746d2db957618f0387b03a9e10701be55aebbe8cf3138455b",
+    "evidence/u2/raw/screen/Q_ceiling/routing.jsonl": "117a5b2008b2b2d97712076e731e3e740544b72b10e767723f8f8914e62e84a7",
+    "evidence/u2/raw/screen/Q_ceiling/screen.jsonl": "b6dd28056059d5a875b906faaf1c44611ac0ab7b4a24f0d0e50370c373fdc2e2",
+    "evidence/u2/raw/screen/Q_prior/calls.jsonl": "d7e0f3360db1c366b63559081a6e91d29f8996192fbf45089c0ec876510b0e63",
+    "evidence/u2/raw/screen/Q_prior/result.json": "15d68530fe5490c9332abd579b622520e2bb403c03a89957594cbdace592f061",
+    "evidence/u2/raw/screen/Q_prior/routing.jsonl": "737d12f515404b978c3f4f19e52bc3ccb1e16fa70a8313b5aba73f109452e1a1",
+    "evidence/u2/raw/screen/Q_prior/screen.jsonl": "7b426b2ca2abd4d2dc27b62d05f7405c56220ebb223d3c3c10f19dc9a4cf3be1",
+    "evidence/u2/raw/screen/W_ceiling/calls.jsonl": "82b8d4085552dc3ecdfd544ff9bc37bb52c9f1809a629e638641ef891b7925d5",
+    "evidence/u2/raw/screen/W_ceiling/result.json": "1658ab574c9be288593a388ebdbcc4be93103fed5a393238dba26145f8018a98",
+    "evidence/u2/raw/screen/W_ceiling/routing.jsonl": "60f4ee7fa74be782907355f16ac934ab46ed206c973fe0e0c93fc51c4ad695c9",
+    "evidence/u2/raw/screen/W_ceiling/screen.jsonl": "85551bdc27dc4b4e73e25bb1caf969742bc09dea01a3b3fa00706f4b881e6d57"
+  },
+  "personas": {
+    "1": [
+      {
+        "id": "P03",
+        "category": "P",
+        "preference": "你独自专注时愿意周围有人声杂响。",
+        "teaching_domain": "工作环境",
+        "teaching": [
+          {
+            "dialogue": 3,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "写稿去空会议室，还是楼下茶摊？"
+              },
+              {
+                "speaker": "user",
+                "text": "去吆喝的那边，关上门太静我坐不住。"
+              }
+            ]
+          },
+          {
+            "dialogue": 6,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "修图时隔壁一直打麻将，那天倒顺手做完了。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "替你安排一下午校对，座位怎么选？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o2",
+                "text": "戴降噪耳机独坐。"
+              },
+              {
+                "id": "o3",
+                "text": "坐在交谈声不断的公共大厅。"
+              },
+              {
+                "id": "o4",
+                "text": "预约隔音单间。"
+              },
+              {
+                "id": "o5",
+                "text": "先确认你此刻想要哪一种。"
+              }
+            ],
+            "target": "o3",
+            "phase": "T1",
+            "domain": "工作环境"
+          },
+          {
+            "situation": "一个人练习陌生乐器，配什么背景？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "把一切声音隔绝。"
+              },
+              {
+                "id": "o2",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o3",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o4",
+                "text": "保持完全安静。"
+              },
+              {
+                "id": "o5",
+                "text": "放街市闲聊的环境音。"
+              }
+            ],
+            "target": "o5",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你独自专注时愿意周围有人声杂响。",
+        "counterintuitive": "常见默认是“预约隔音单间。”；此人的两次选择暗示不同取向。",
+        "protected_names": [
+          "太静"
+        ]
+      },
+      {
+        "id": "P52",
+        "category": "P",
+        "preference": "你睡前消遣倾向情节紧凑有张力，轻缓故事反而不合口味。",
+        "teaching_domain": "睡前情绪强度",
+        "teaching": [
+          {
+            "dialogue": 1,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "入睡前放温柔散文，还是追逐戏那一集？"
+              },
+              {
+                "speaker": "user",
+                "text": "追逐那集吧，平平缓缓的我听着走神。"
+              }
+            ]
+          },
+          {
+            "dialogue": 4,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "夜里把侦探对峙那段看完，脑子过完瘾反而踏实。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "临就寝给你挑一段娱乐内容，选什么？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o2",
+                "text": "只允许没有起伏的单调内容。"
+              },
+              {
+                "id": "o3",
+                "text": "选冲突鲜明、节奏急促的作品。"
+              },
+              {
+                "id": "o4",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o5",
+                "text": "选平淡舒缓的抒情作品。"
+              }
+            ],
+            "target": "o3",
+            "phase": "T1",
+            "domain": "睡前情绪强度"
+          },
+          {
+            "situation": "临关灯做一局简短数字游戏，怎样选？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "把全部刺激和变化去掉。"
+              },
+              {
+                "id": "o2",
+                "text": "选几乎不需参与的缓慢漫游。"
+              },
+              {
+                "id": "o3",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o4",
+                "text": "选有适度紧张转折的短局。"
+              },
+              {
+                "id": "o5",
+                "text": "把话题转向天气。"
+              }
+            ],
+            "target": "o4",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你睡前消遣倾向情节紧凑有张力，轻缓故事反而不合口味。",
+        "counterintuitive": "此人的取向不采用通常推荐的“选平淡舒缓的抒情作品。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+        "protected_names": []
+      },
+      {
+        "id": "P70",
+        "category": "P",
+        "preference": "你给私人纪念物做标记时倾向把发生日期放在显眼位置。",
+        "teaching_domain": "日期标记",
+        "teaching": [
+          {
+            "dialogue": 1,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "杯底刻日期，还是正面大大写上那天？"
+              },
+              {
+                "speaker": "user",
+                "text": "正面吧，每次拿起来都能看见。"
+              }
+            ]
+          },
+          {
+            "dialogue": 4,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "去年那张车票我把年月圈粗了，收进盒里也一眼认得出来。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "为你制作仅供本人保留的留念卡，怎样布局？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "把时间缩进隐蔽的小字。"
+              },
+              {
+                "id": "o2",
+                "text": "让事件发生的时间成为主要视觉元素。"
+              },
+              {
+                "id": "o3",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o4",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o5",
+                "text": "省略全部时间信息。"
+              }
+            ],
+            "target": "o2",
+            "phase": "T1",
+            "domain": "日期标记"
+          },
+          {
+            "situation": "替你整理一份私人作品索引，首页突出什么？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "突出每次创作对应的年月日。"
+              },
+              {
+                "id": "o2",
+                "text": "移除所有可定位时期的线索。"
+              },
+              {
+                "id": "o3",
+                "text": "只放一个不带时间的统一标题。"
+              },
+              {
+                "id": "o4",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o5",
+                "text": "把话题转向天气。"
+              }
+            ],
+            "target": "o1",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你给私人纪念物做标记时倾向把发生日期放在显眼位置。",
+        "counterintuitive": "此人的取向不采用通常推荐的“把时间缩进隐蔽的小字。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+        "protected_names": []
+      },
+      {
+        "id": "P62",
+        "category": "P",
+        "preference": "你选饮品和小食时倾向有明显苦味，甜味不是首选。",
+        "teaching_domain": "味觉苦味",
+        "teaching": [
+          {
+            "dialogue": 2,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "橙味糖还是无糖可可那块？"
+              },
+              {
+                "speaker": "user",
+                "text": "可可给我，越嚼越有那股苦劲。"
+              }
+            ]
+          },
+          {
+            "dialogue": 5,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "昨天下午把茶泡浓了些，舌根那点涩我慢慢含了好久。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "替你挑一种饭后点心，怎么选？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "用大量糖把所有苦涩盖掉。"
+              },
+              {
+                "id": "o2",
+                "text": "选择香甜柔滑的常见款。"
+              },
+              {
+                "id": "o3",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o4",
+                "text": "选择苦韵较鲜明的版本。"
+              },
+              {
+                "id": "o5",
+                "text": "把话题转向天气。"
+              }
+            ],
+            "target": "o4",
+            "phase": "T1",
+            "domain": "味觉苦味"
+          },
+          {
+            "situation": "为你准备一杯新的草本饮料，如何定口感？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "调成明显甜口。"
+              },
+              {
+                "id": "o2",
+                "text": "保留带苦感的植物风味。"
+              },
+              {
+                "id": "o3",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o4",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o5",
+                "text": "完全去掉任何苦感。"
+              }
+            ],
+            "target": "o2",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你选饮品和小食时倾向有明显苦味，甜味不是首选。",
+        "counterintuitive": "此人的取向不采用通常推荐的“选择香甜柔滑的常见款。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+        "protected_names": []
+      },
+      {
+        "id": "P09",
+        "category": "P",
+        "preference": "你休闲体验愿意慢慢手动操作，不追求自动省力。",
+        "teaching_domain": "生活操作",
+        "teaching": [
+          {
+            "dialogue": 3,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "咖啡豆用电磨还是手摇？"
+              },
+              {
+                "speaker": "user",
+                "text": "手摇那台给我，等几分钟也挺有意思。"
+              }
+            ]
+          },
+          {
+            "dialogue": 6,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "阳台花浇完半小时了，提壶挪来挪去我没嫌累。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "陪你准备一杯果汁，怎样协助？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o2",
+                "text": "让机器包办全部工序。"
+              },
+              {
+                "id": "o3",
+                "text": "用简易压榨器一点点完成。"
+              },
+              {
+                "id": "o4",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o5",
+                "text": "按全自动按钮立刻做好。"
+              }
+            ],
+            "target": "o3",
+            "phase": "T1",
+            "domain": "生活操作"
+          },
+          {
+            "situation": "陪你游览线上展馆，用哪种方式？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o2",
+                "text": "全程替你跳过操作。"
+              },
+              {
+                "id": "o3",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o4",
+                "text": "自动播放完整导览。"
+              },
+              {
+                "id": "o5",
+                "text": "逐处点击探索，自行推进。"
+              }
+            ],
+            "target": "o5",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你休闲体验愿意慢慢手动操作，不追求自动省力。",
+        "counterintuitive": "常见默认是“按全自动按钮立刻做好。”；此人的两次选择暗示不同取向。",
+        "protected_names": []
+      },
+      {
+        "id": "P51",
+        "category": "P",
+        "preference": "你吃日常饭菜时倾向放凉，不急着趁热。",
+        "teaching_domain": "入口温度",
+        "teaching": [
+          {
+            "dialogue": 3,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "刚蒸好的包子，还是晾了一阵的那盘？"
+              },
+              {
+                "speaker": "user",
+                "text": "晾过的给我，刚出的先放着。"
+              }
+            ]
+          },
+          {
+            "dialogue": 6,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "昨晚的米饼凉透才咬，那个口感我一口接一口。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "旅途中替你备一份午间餐食，怎么处理？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "入口前不断提高温度。"
+              },
+              {
+                "id": "o2",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o3",
+                "text": "提供无需再加热的偏冷餐。"
+              },
+              {
+                "id": "o4",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o5",
+                "text": "保持滚烫并催你趁热食用。"
+              }
+            ],
+            "target": "o3",
+            "phase": "T1",
+            "domain": "入口温度"
+          },
+          {
+            "situation": "给你准备一小份甜点，如何上桌？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o2",
+                "text": "等待热度退去再递上。"
+              },
+              {
+                "id": "o3",
+                "text": "出炉后立即端到面前。"
+              },
+              {
+                "id": "o4",
+                "text": "持续保温到吃完最后一口。"
+              },
+              {
+                "id": "o5",
+                "text": "先确认你此刻想要哪一种。"
+              }
+            ],
+            "target": "o2",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你吃日常饭菜时倾向放凉，不急着趁热。",
+        "counterintuitive": "此人的取向不采用通常推荐的“保持滚烫并催你趁热食用。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+        "protected_names": []
+      },
+      {
+        "id": "P33",
+        "category": "P",
+        "preference": "你学新技能时愿意先练容易被忽略的基础动作。",
+        "teaching_domain": "练习重点",
+        "teaching": [
+          {
+            "dialogue": 3,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "先学花哨的转身，还是一直练站稳？"
+              },
+              {
+                "speaker": "user",
+                "text": "站稳那套再来几遍，我还会晃呢。"
+              }
+            ]
+          },
+          {
+            "dialogue": 6,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "吉他课一直按单音没进新曲，我反倒松了口气。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "陪你练习一种球类活动，先做什么？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o2",
+                "text": "略过入门动作直接表演。"
+              },
+              {
+                "id": "o3",
+                "text": "尽快尝试高难花式。"
+              },
+              {
+                "id": "o4",
+                "text": "反复打磨基本姿势。"
+              },
+              {
+                "id": "o5",
+                "text": "先确认你此刻想要哪一种。"
+              }
+            ],
+            "target": "o4",
+            "phase": "T1",
+            "domain": "练习重点"
+          },
+          {
+            "situation": "一起学习编程，怎样安排最初任务？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "跳过基础概念追求炫技。"
+              },
+              {
+                "id": "o2",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o3",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o4",
+                "text": "马上搭一个华丽的大应用。"
+              },
+              {
+                "id": "o5",
+                "text": "集中巩固最简单的构件。"
+              }
+            ],
+            "target": "o5",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你学新技能时愿意先练容易被忽略的基础动作。",
+        "counterintuitive": "常见默认是“尽快尝试高难花式。”；此人的两次选择暗示不同取向。",
+        "protected_names": [
+          "吉他"
+        ]
+      },
+      {
+        "id": "P63",
+        "category": "P",
+        "preference": "你接触个人用品时偏向冷硬光滑的质感。",
+        "teaching_domain": "触觉材质",
+        "teaching": [
+          {
+            "dialogue": 3,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "鼠标垫要软绒还是金属面？"
+              },
+              {
+                "speaker": "user",
+                "text": "金属的，手腕贴上去凉凉的舒服。"
+              }
+            ]
+          },
+          {
+            "dialogue": 6,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "夏天握着那块玻璃镇纸，滑溜溜的，我总舍不得松手。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "替你挑一件掌中小物，怎样选触感？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o2",
+                "text": "采用清凉而坚实的表面。"
+              },
+              {
+                "id": "o3",
+                "text": "加上厚厚保暖包层。"
+              },
+              {
+                "id": "o4",
+                "text": "采用温软蓬松的表面。"
+              },
+              {
+                "id": "o5",
+                "text": "先确认你此刻想要哪一种。"
+              }
+            ],
+            "target": "o2",
+            "phase": "T1",
+            "domain": "触觉材质"
+          },
+          {
+            "situation": "布置一个休闲倚靠处，怎样处理接触面？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "全部铺成暖绒软垫。"
+              },
+              {
+                "id": "o2",
+                "text": "让身体触不到任何凉面。"
+              },
+              {
+                "id": "o3",
+                "text": "保留偏冷且平滑的硬质部分。"
+              },
+              {
+                "id": "o4",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o5",
+                "text": "先确认你此刻想要哪一种。"
+              }
+            ],
+            "target": "o3",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你接触个人用品时偏向冷硬光滑的质感。",
+        "counterintuitive": "此人的取向不采用通常推荐的“采用温软蓬松的表面。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+        "protected_names": []
+      },
+      {
+        "id": "Q27",
+        "category": "Q",
+        "should_ask": false,
+        "subtype": "known",
+        "hidden_answer": "我要最后一排。",
+        "teaching": [
+          {
+            "dialogue": 2,
+            "mode": "gap",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "周末看演出我坐最后一排就好，这点我已想清楚了。"
+              }
+            ]
+          }
+        ],
+        "question_dialogue": 3,
+        "question": {
+          "situation": "票务图摊开了，正好可以定位置。",
+          "options": [
+            {
+              "id": "o1",
+              "text": "嗯，把剩余区域放大看看。"
+            },
+            {
+              "id": "o2",
+              "text": "嗯，把剩余区域放大看看。对了，你觉得靛蓝和赭红哪种更顺眼？"
+            },
+            {
+              "id": "o3",
+              "text": "想坐大厅的哪个区域？"
+            },
+            {
+              "id": "o4",
+              "text": "嗯，把剩余区域放大看看。对了，想坐大厅的哪个区域？"
+            }
+          ],
+          "target": "o1",
+          "phase": "ask",
+          "relevant_ask_ids": [
+            "o3",
+            "o4"
+          ],
+          "any_question_ids": [
+            "o2",
+            "o3",
+            "o4"
+          ]
+        },
+        "tests": [
+          {
+            "situation": "替你确定席位。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "选靠前的中心位置。"
+              },
+              {
+                "id": "o2",
+                "text": "选靠后的一排。"
+              },
+              {
+                "id": "o3",
+                "text": "再问你一次。"
+              },
+              {
+                "id": "o4",
+                "text": "先询问其他人的通用建议。"
+              },
+              {
+                "id": "o5",
+                "text": "暂时不处理并转聊天气。"
+              }
+            ],
+            "target": "o2",
+            "phase": "use"
+          }
+        ],
+        "ceiling_question": "这件事已有明确答案。我要最后一排。",
+        "ceiling_use": "我要最后一排。",
+        "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+        "protected_names": []
+      },
+      {
+        "id": "Q23",
+        "category": "Q",
+        "should_ask": true,
+        "subtype": "unknown_future_useful",
+        "hidden_answer": "领子贴脖子会让我喘不过气。",
+        "teaching": [
+          {
+            "dialogue": 3,
+            "mode": "gap",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "过两周打算添一件衣物，我现在得去开门。"
+              }
+            ]
+          }
+        ],
+        "question_dialogue": 4,
+        "question": {
+          "situation": "衣柜收拾完了，我们慢慢聊会儿。",
+          "options": [
+            {
+              "id": "o1",
+              "text": "清爽多了，我们慢慢聊。"
+            },
+            {
+              "id": "o2",
+              "text": "清爽多了，我们慢慢聊。对了，颈部能不能接受紧贴的领口？"
+            },
+            {
+              "id": "o3",
+              "text": "清爽多了，我们慢慢聊。对了，你觉得靛蓝和赭红哪种更顺眼？"
+            },
+            {
+              "id": "o4",
+              "text": "颈部能不能接受紧贴的领口？"
+            }
+          ],
+          "target": "o2",
+          "phase": "ask",
+          "relevant_ask_ids": [
+            "o2",
+            "o4"
+          ],
+          "any_question_ids": [
+            "o2",
+            "o3",
+            "o4"
+          ]
+        },
+        "tests": [
+          {
+            "situation": "替你从两件上衣里选一件。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "先询问其他人的通用建议。"
+              },
+              {
+                "id": "o2",
+                "text": "暂时不处理并转聊天气。"
+              },
+              {
+                "id": "o3",
+                "text": "选贴颈高领款。"
+              },
+              {
+                "id": "o4",
+                "text": "再问你一次。"
+              },
+              {
+                "id": "o5",
+                "text": "选领部宽松敞开的款式。"
+              }
+            ],
+            "target": "o5",
+            "phase": "use"
+          }
+        ],
+        "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+        "ceiling_use": "领子贴脖子会让我喘不过气。",
+        "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+        "protected_names": []
+      },
+      {
+        "id": "Q64",
+        "category": "Q",
+        "should_ask": false,
+        "subtype": "known",
+        "hidden_answer": "我只要一个大空间。",
+        "teaching": [
+          {
+            "dialogue": 1,
+            "mode": "gap",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "旅行小包只留一个大仓，不要分成好多隔层；我先赶一下作业。"
+              }
+            ]
+          }
+        ],
+        "question_dialogue": 2,
+        "question": {
+          "situation": "行李照片发过来了，坐着看会儿吧。",
+          "options": [
+            {
+              "id": "o1",
+              "text": "收到，咱们把细节放大看看。对了，内部需要划出许多独立小区吗？"
+            },
+            {
+              "id": "o2",
+              "text": "收到，咱们把细节放大看看。对了，你更喜欢靛蓝还是赭红？"
+            },
+            {
+              "id": "o3",
+              "text": "收到，咱们把细节放大看看。"
+            },
+            {
+              "id": "o4",
+              "text": "内部需要划出许多独立小区吗？"
+            }
+          ],
+          "target": "o3",
+          "phase": "ask",
+          "relevant_ask_ids": [
+            "o1",
+            "o4"
+          ],
+          "any_question_ids": [
+            "o1",
+            "o2",
+            "o4"
+          ]
+        },
+        "tests": [
+          {
+            "situation": "替你从两种收纳结构中选一个。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "再问你一次。"
+              },
+              {
+                "id": "o2",
+                "text": "暂时不处理并转聊天气。"
+              },
+              {
+                "id": "o3",
+                "text": "选多个分区的结构。"
+              },
+              {
+                "id": "o4",
+                "text": "选内部连成整体的单腔。"
+              },
+              {
+                "id": "o5",
+                "text": "先询问其他人的通用建议。"
+              }
+            ],
+            "target": "o4",
+            "phase": "use"
+          }
+        ],
+        "ceiling_question": "已经知道你要求内部连续的单个空间，不需要再次取得这个事实。",
+        "ceiling_use": "我只要一个大空间。",
+        "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+        "protected_names": [
+          "大仓"
+        ]
+      },
+      {
+        "id": "Q59",
+        "category": "Q",
+        "should_ask": true,
+        "subtype": "unknown_future_useful",
+        "hidden_answer": "拍坏的也别替我删掉。",
+        "teaching": [
+          {
+            "dialogue": 1,
+            "mode": "gap",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "下周准备整理一些旧影像，快递员来敲门了，稍后再聊。"
+              }
+            ]
+          }
+        ],
+        "question_dialogue": 2,
+        "question": {
+          "situation": "硬盘盒接好了，歇会儿聊两句吧。",
+          "options": [
+            {
+              "id": "o1",
+              "text": "好，先让它稳稳放着。对了，你更喜欢靛蓝还是赭红？"
+            },
+            {
+              "id": "o2",
+              "text": "保存照片时想把拍坏的也留下吗？"
+            },
+            {
+              "id": "o3",
+              "text": "好，先让它稳稳放着。"
+            },
+            {
+              "id": "o4",
+              "text": "好，先让它稳稳放着。对了，保存照片时想把拍坏的也留下吗？"
+            }
+          ],
+          "target": "o4",
+          "phase": "ask",
+          "relevant_ask_ids": [
+            "o2",
+            "o4"
+          ],
+          "any_question_ids": [
+            "o1",
+            "o2",
+            "o4"
+          ]
+        },
+        "tests": [
+          {
+            "situation": "替你归整一份私人照片资料。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "自动去掉模糊和曝光失败的片段。"
+              },
+              {
+                "id": "o2",
+                "text": "先询问其他人的通用建议。"
+              },
+              {
+                "id": "o3",
+                "text": "再问你一次。"
+              },
+              {
+                "id": "o4",
+                "text": "暂时不处理并转聊天气。"
+              },
+              {
+                "id": "o5",
+                "text": "保留不够理想的片段供本人日后决定。"
+              }
+            ],
+            "target": "o5",
+            "phase": "use"
+          }
+        ],
+        "ceiling_question": "还不知道你是否希望保存拍坏的照片；之后整理个人档案会用得上。",
+        "ceiling_use": "拍坏的也别替我删掉。",
+        "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+        "protected_names": []
+      },
+      {
+        "id": "W13",
+        "category": "W",
+        "applicable": false,
+        "teaching": [
+          {
+            "dialogue": 1,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "我对自己的衣服不用亮黄；妹妹演出服她指定金黄色。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "代姐妹挑舞台装束，怎样配色？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "交由一个无关的人随机决定。"
+              },
+              {
+                "id": "o2",
+                "text": "采用收礼者要求的明亮暖色。"
+              },
+              {
+                "id": "o3",
+                "text": "重新询问已说清的条件。"
+              },
+              {
+                "id": "o4",
+                "text": "套用你的低调衣着选择。"
+              },
+              {
+                "id": "o5",
+                "text": "忽略眼前安排，转聊天气。"
+              }
+            ],
+            "target": "o2",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "我对自己的衣服不用亮黄；妹妹演出服她指定金黄色。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      },
+      {
+        "id": "W30",
+        "category": "W",
+        "applicable": true,
+        "teaching": [
+          {
+            "dialogue": 6,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "我接下来三天右手受伤，工具都放左边方便取。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "恢复期第二天，替你准备操作台。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "交由一个无关的人随机决定。"
+              },
+              {
+                "id": "o2",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o3",
+                "text": "重新询问已说清的条件。"
+              },
+              {
+                "id": "o4",
+                "text": "把常用物品移到另一侧易于触达。"
+              },
+              {
+                "id": "o5",
+                "text": "照平时习惯摆在右方。"
+              }
+            ],
+            "target": "o4",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "我接下来三天右手受伤，工具都放左边方便取。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      },
+      {
+        "id": "W18",
+        "category": "W",
+        "applicable": true,
+        "teaching": [
+          {
+            "dialogue": 6,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "替我弟弟买耳机时选头戴的，我本人用入耳式。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "现在为你的胞弟准备听音设备。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "选择覆盖耳部的款型。"
+              },
+              {
+                "id": "o2",
+                "text": "交由一个无关的人随机决定。"
+              },
+              {
+                "id": "o3",
+                "text": "用你的塞入耳道款。"
+              },
+              {
+                "id": "o4",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o5",
+                "text": "重新询问已说清的条件。"
+              }
+            ],
+            "target": "o1",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "替我弟弟买耳机时选头戴的，我本人用入耳式。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      },
+      {
+        "id": "W39",
+        "category": "W",
+        "applicable": false,
+        "teaching": [
+          {
+            "dialogue": 3,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "我通常避开人多的活动，但这次想去现场一起看决赛。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "今天准备参加你明确选定的赛事观看。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o2",
+                "text": "替你取消并安排独自观看。"
+              },
+              {
+                "id": "o3",
+                "text": "重新询问已说清的条件。"
+              },
+              {
+                "id": "o4",
+                "text": "安排共同观赛的热闹场馆。"
+              },
+              {
+                "id": "o5",
+                "text": "交由一个无关的人随机决定。"
+              }
+            ],
+            "target": "o4",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "我通常避开人多的活动，但这次想去现场一起看决赛。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      },
+      {
+        "id": "W38",
+        "category": "W",
+        "applicable": true,
+        "teaching": [
+          {
+            "dialogue": 2,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "这次送给朋友的书要精装，他准备长期珍藏。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "仍在为那位收礼者挑选版本。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "按你随身阅读的习惯选便携软封。"
+              },
+              {
+                "id": "o2",
+                "text": "重新询问已说清的条件。"
+              },
+              {
+                "id": "o3",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o4",
+                "text": "选耐用的硬壳装订。"
+              },
+              {
+                "id": "o5",
+                "text": "交由一个无关的人随机决定。"
+              }
+            ],
+            "target": "o4",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "这次送给朋友的书要精装，他准备长期珍藏。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": [
+          "珍藏"
+        ]
+      },
+      {
+        "id": "W15",
+        "category": "W",
+        "applicable": false,
+        "teaching": [
+          {
+            "dialogue": 3,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "平常我的照片不要正脸，证件照这次例外必须照规定拍。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "现在制作登记用的人像材料，如何取景？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "按身份文件要求正面成像。"
+              },
+              {
+                "id": "o2",
+                "text": "只拍背影以延续平日习惯。"
+              },
+              {
+                "id": "o3",
+                "text": "交由一个无关的人随机决定。"
+              },
+              {
+                "id": "o4",
+                "text": "重新询问已说清的条件。"
+              },
+              {
+                "id": "o5",
+                "text": "忽略眼前安排，转聊天气。"
+              }
+            ],
+            "target": "o1",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "平常我的照片不要正脸，证件照这次例外必须照规定拍。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      },
+      {
+        "id": "W14",
+        "category": "W",
+        "applicable": true,
+        "teaching": [
+          {
+            "dialogue": 2,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "这周脚踝扭伤，外出都别给我安排长距离步行。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "本周末你需要去附近办事。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "排一条很长的漫游路线。"
+              },
+              {
+                "id": "o2",
+                "text": "选能减少徒步负担的方式。"
+              },
+              {
+                "id": "o3",
+                "text": "重新询问已说清的条件。"
+              },
+              {
+                "id": "o4",
+                "text": "交由一个无关的人随机决定。"
+              },
+              {
+                "id": "o5",
+                "text": "忽略眼前安排，转聊天气。"
+              }
+            ],
+            "target": "o2",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "这周脚踝扭伤，外出都别给我安排长距离步行。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      },
+      {
+        "id": "W11",
+        "category": "W",
+        "applicable": false,
+        "teaching": [
+          {
+            "dialogue": 5,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "冬天我睡前把窗关严，夏天炎热时不按这条。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "盛夏的夜晚屋里闷，你准备休息。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "让空气有适当流通。"
+              },
+              {
+                "id": "o2",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o3",
+                "text": "继续完全封闭通风口。"
+              },
+              {
+                "id": "o4",
+                "text": "重新询问已说清的条件。"
+              },
+              {
+                "id": "o5",
+                "text": "交由一个无关的人随机决定。"
+              }
+            ],
+            "target": "o1",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "冬天我睡前把窗关严，夏天炎热时不按这条。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      }
+    ],
+    "2": [
+      {
+        "id": "P49",
+        "category": "P",
+        "preference": "你布置小组合时倾向成双，避免留下落单的一件。",
+        "teaching_domain": "组合数量",
+        "teaching": [
+          {
+            "dialogue": 1,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "柜顶摆三盏还是四盏小灯？"
+              },
+              {
+                "speaker": "user",
+                "text": "四盏吧，两边各两盏。"
+              }
+            ]
+          },
+          {
+            "dialogue": 4,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "展柜买了六个小底座，正好能两两相伴，没谁孤零零。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "策划窗边的装饰，数量选哪档？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o2",
+                "text": "用七件形成常见的错落感。"
+              },
+              {
+                "id": "o3",
+                "text": "取八件分成若干对。"
+              },
+              {
+                "id": "o4",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o5",
+                "text": "坚持只放单数的一组。"
+              }
+            ],
+            "target": "o3",
+            "phase": "T1",
+            "domain": "组合数量"
+          },
+          {
+            "situation": "拟一份私人练习清单，怎样定项目数？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "列九项作为普通套餐。"
+              },
+              {
+                "id": "o2",
+                "text": "列十项，逐对归组。"
+              },
+              {
+                "id": "o3",
+                "text": "只采用奇数项。"
+              },
+              {
+                "id": "o4",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o5",
+                "text": "先确认你此刻想要哪一种。"
+              }
+            ],
+            "target": "o2",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你布置小组合时倾向成双，避免留下落单的一件。",
+        "counterintuitive": "此人的取向不采用通常推荐的“用七件形成常见的错落感。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+        "protected_names": []
+      },
+      {
+        "id": "P10",
+        "category": "P",
+        "preference": "你独自休闲时愿意重复熟悉的体验。",
+        "teaching_domain": "休闲内容",
+        "teaching": [
+          {
+            "dialogue": 1,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "今晚放新专辑还是旧磁带？"
+              },
+              {
+                "speaker": "user",
+                "text": "就上次那盒吧，连卡带的地方我都等着听。"
+              }
+            ]
+          },
+          {
+            "dialogue": 4,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "书架最旧的侦探集又被我翻了一遍，没急着拆新书。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "为你安排独处的银幕时光，如何选择？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "推荐最新上映的作品。"
+              },
+              {
+                "id": "o2",
+                "text": "只挑从未接触的题材。"
+              },
+              {
+                "id": "o3",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o4",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o5",
+                "text": "重温已经看过多遍的片子。"
+              }
+            ],
+            "target": "o5",
+            "phase": "T1",
+            "domain": "休闲内容"
+          },
+          {
+            "situation": "一场已经走过的城市漫步和全新路线都可行，怎样安排？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o2",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o3",
+                "text": "再访记忆里的街巷。"
+              },
+              {
+                "id": "o4",
+                "text": "避开一切曾经到过的地方。"
+              },
+              {
+                "id": "o5",
+                "text": "探索全新的区域。"
+              }
+            ],
+            "target": "o3",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你独自休闲时愿意重复熟悉的体验。",
+        "counterintuitive": "常见默认是“推荐最新上映的作品。”；此人的两次选择暗示不同取向。",
+        "protected_names": []
+      },
+      {
+        "id": "P11",
+        "category": "P",
+        "preference": "你欣赏作品时愿意先接触不受欢迎的部分。",
+        "teaching_domain": "探索顺序",
+        "teaching": [
+          {
+            "dialogue": 2,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "画展先去人气厅还是没人排队的小厅？"
+              },
+              {
+                "speaker": "user",
+                "text": "去角落那间，人人举手机的先搁着。"
+              }
+            ]
+          },
+          {
+            "dialogue": 5,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "专辑评论都在夸主打，我倒把冷门曲循环了整晚。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "书店向你展示几部同类作品，先递哪一本？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "只展示排行榜前列。"
+              },
+              {
+                "id": "o2",
+                "text": "递销量最高的畅销款。"
+              },
+              {
+                "id": "o3",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o4",
+                "text": "先拿少被提及的那册。"
+              },
+              {
+                "id": "o5",
+                "text": "把话题转向天气。"
+              }
+            ],
+            "target": "o4",
+            "phase": "T1",
+            "domain": "探索顺序"
+          },
+          {
+            "situation": "陪你试玩一个新游戏，先选哪条路径？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o2",
+                "text": "严格照最热门攻略走。"
+              },
+              {
+                "id": "o3",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o4",
+                "text": "进入少有人采用的支线。"
+              },
+              {
+                "id": "o5",
+                "text": "沿大家推荐的主路线。"
+              }
+            ],
+            "target": "o4",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你欣赏作品时愿意先接触不受欢迎的部分。",
+        "counterintuitive": "常见默认是“递销量最高的畅销款。”；此人的两次选择暗示不同取向。",
+        "protected_names": []
+      },
+      {
+        "id": "P69",
+        "category": "P",
+        "preference": "你写给熟人的轻松短文时倾向保留一点家乡话。",
+        "teaching_domain": "私人语言口吻",
+        "teaching": [
+          {
+            "dialogue": 3,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "寄给老同学的便条全用普通话，还是留那句土语？"
+              },
+              {
+                "speaker": "user",
+                "text": "土语留着，他看见就知道是我写的。"
+              }
+            ]
+          },
+          {
+            "dialogue": 6,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "昨天录语音蹦出家乡那个词，我没删掉重录，反倒像坐在老院子里。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "替你润色一段私人问候，怎样处理表达？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o2",
+                "text": "消除一切个人口音痕迹。"
+              },
+              {
+                "id": "o3",
+                "text": "全部改成无地域色彩的标准用语。"
+              },
+              {
+                "id": "o4",
+                "text": "保留少量有地域味道的说法。"
+              },
+              {
+                "id": "o5",
+                "text": "把话题转向天气。"
+              }
+            ],
+            "target": "o4",
+            "phase": "T1",
+            "domain": "私人语言口吻"
+          },
+          {
+            "situation": "为你编一段私人纪念故事，怎样选叙述口吻？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o2",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o3",
+                "text": "让部分地方性措辞自然出现。"
+              },
+              {
+                "id": "o4",
+                "text": "只用统一正式的书面语。"
+              },
+              {
+                "id": "o5",
+                "text": "把每处民间表达都换掉。"
+              }
+            ],
+            "target": "o3",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你写给熟人的轻松短文时倾向保留一点家乡话。",
+        "counterintuitive": "此人的取向不采用通常推荐的“全部改成无地域色彩的标准用语。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+        "protected_names": [
+          "土语"
+        ]
+      },
+      {
+        "id": "P55",
+        "category": "P",
+        "preference": "你阅读工作参考页时倾向紧凑排布，在一页里看到尽量多的内容。",
+        "teaching_domain": "信息密度",
+        "teaching": [
+          {
+            "dialogue": 1,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "配方排三张疏朗纸，还是一张密密的？"
+              },
+              {
+                "speaker": "user",
+                "text": "密一点放一张，我不用翻来翻去。"
+              }
+            ]
+          },
+          {
+            "dialogue": 4,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "旧地图满是小标记，我摊开一次就全看到了，空白太多那版反而找半天。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "给你整理一份速查材料，如何布局？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o2",
+                "text": "用大面积留白分散到多页。"
+              },
+              {
+                "id": "o3",
+                "text": "采用较高密度的集中呈现。"
+              },
+              {
+                "id": "o4",
+                "text": "每屏只放一个极大的字。"
+              },
+              {
+                "id": "o5",
+                "text": "把话题转向天气。"
+              }
+            ],
+            "target": "o3",
+            "phase": "T1",
+            "domain": "信息密度"
+          },
+          {
+            "situation": "替你配置常看的数字面板，如何排版？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "每次仅展示很少项目。"
+              },
+              {
+                "id": "o2",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o3",
+                "text": "把绝大部分区域留空。"
+              },
+              {
+                "id": "o4",
+                "text": "同时露出较多可读条目。"
+              },
+              {
+                "id": "o5",
+                "text": "把话题转向天气。"
+              }
+            ],
+            "target": "o4",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你阅读工作参考页时倾向紧凑排布，在一页里看到尽量多的内容。",
+        "counterintuitive": "此人的取向不采用通常推荐的“用大面积留白分散到多页。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+        "protected_names": [
+          "太多那版"
+        ]
+      },
+      {
+        "id": "P02",
+        "category": "P",
+        "preference": "你愿意保留手工作品上的细小不完美。",
+        "teaching_domain": "器物",
+        "teaching": [
+          {
+            "dialogue": 2,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "陶杯有机器量产款和手捏歪口款。"
+              },
+              {
+                "speaker": "user",
+                "text": "歪的留给我，齐刷刷那批退掉吧。"
+              }
+            ]
+          },
+          {
+            "dialogue": 5,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "阿榕织的围巾掉了一针，那个洞我一直没缝。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "给你定制木制收纳盒，表面怎样收尾？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "留下刀痕与不对称的棱角。"
+              },
+              {
+                "id": "o2",
+                "text": "彻底抹平所有痕迹。"
+              },
+              {
+                "id": "o3",
+                "text": "打磨得光洁规整。"
+              },
+              {
+                "id": "o4",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o5",
+                "text": "先确认你此刻想要哪一种。"
+              }
+            ],
+            "target": "o1",
+            "phase": "T1",
+            "domain": "器物"
+          },
+          {
+            "situation": "替你处理合唱录音，怎样剪辑？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "修成标准音准。"
+              },
+              {
+                "id": "o2",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o3",
+                "text": "把每个呼吸都消除。"
+              },
+              {
+                "id": "o4",
+                "text": "保留一处轻微走调的笑场。"
+              },
+              {
+                "id": "o5",
+                "text": "先确认你此刻想要哪一种。"
+              }
+            ],
+            "target": "o4",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你愿意保留手工作品上的细小不完美。",
+        "counterintuitive": "常见默认是“打磨得光洁规整。”；此人的两次选择暗示不同取向。",
+        "protected_names": [
+          "阿榕",
+          "阿榕织"
+        ]
+      },
+      {
+        "id": "P01",
+        "category": "P",
+        "preference": "你在开始一段体验前愿意先知道最终结果，再体会过程。",
+        "teaching_domain": "叙事",
+        "teaching": [
+          {
+            "dialogue": 1,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "悬疑书拆封了，先读末页还是按页翻？"
+              },
+              {
+                "speaker": "user",
+                "text": "把凶手那页递来，藏着掖着我反倒看不进去。"
+              }
+            ]
+          },
+          {
+            "dialogue": 4,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "昨晚听评书，知道谁活下来以后，才留心那些伏笔。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "有部尚未接触的影片，如何陪你欣赏？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "全程遮住重要情节。"
+              },
+              {
+                "id": "o2",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o3",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o4",
+                "text": "开播前透露终局，再一起品味铺垫。"
+              },
+              {
+                "id": "o5",
+                "text": "保留悬念到最后。"
+              }
+            ],
+            "target": "o4",
+            "phase": "T1",
+            "domain": "叙事"
+          },
+          {
+            "situation": "陪你尝试一套陌生的实验教程，该怎样呈现？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o2",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o3",
+                "text": "不让你见到预期效果。"
+              },
+              {
+                "id": "o4",
+                "text": "先展示成品，再探索步骤。"
+              },
+              {
+                "id": "o5",
+                "text": "循序渐进，结尾揭晓。"
+              }
+            ],
+            "target": "o4",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你在开始一段体验前愿意先知道最终结果，再体会过程。",
+        "counterintuitive": "常见默认是“保留悬念到最后。”；此人的两次选择暗示不同取向。",
+        "protected_names": []
+      },
+      {
+        "id": "P30",
+        "category": "P",
+        "preference": "你独处时愿意把日常声响调得很轻。",
+        "teaching_domain": "声音强度",
+        "teaching": [
+          {
+            "dialogue": 3,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "提示铃用响亮那档还是最轻那档？"
+              },
+              {
+                "speaker": "user",
+                "text": "轻的就行，桌面震一下我也看得见。"
+              }
+            ]
+          },
+          {
+            "dialogue": 6,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "厨房计时器叫得太猛，我把它裹进毛巾了。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "替你设置阅读辅助的提醒方式，怎么选？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "用醒目的强音效。"
+              },
+              {
+                "id": "o2",
+                "text": "每次都发出尖锐警报。"
+              },
+              {
+                "id": "o3",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o4",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o5",
+                "text": "用柔和、低强度的提醒。"
+              }
+            ],
+            "target": "o5",
+            "phase": "T1",
+            "domain": "声音强度"
+          },
+          {
+            "situation": "为你准备独自放松的环境，如何处理背景？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "保持低音量的细微声息。"
+              },
+              {
+                "id": "o2",
+                "text": "制造强烈的听觉冲击。"
+              },
+              {
+                "id": "o3",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o4",
+                "text": "把所有声源开到最大。"
+              },
+              {
+                "id": "o5",
+                "text": "先确认你此刻想要哪一种。"
+              }
+            ],
+            "target": "o1",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你独处时愿意把日常声响调得很轻。",
+        "counterintuitive": "常见默认是“用醒目的强音效。”；此人的两次选择暗示不同取向。",
+        "protected_names": [
+          "太猛",
+          "毛巾"
+        ]
+      },
+      {
+        "id": "Q05",
+        "category": "Q",
+        "should_ask": true,
+        "subtype": "unknown_future_useful",
+        "hidden_answer": "我傍晚不能喝咖啡因。",
+        "teaching": [
+          {
+            "dialogue": 5,
+            "mode": "gap",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "下月准备参加夜跑，眼前这份工作得先做完。"
+              }
+            ]
+          }
+        ],
+        "question_dialogue": 6,
+        "question": {
+          "situation": "新鞋到了，我在门边试系法呢。",
+          "options": [
+            {
+              "id": "o1",
+              "text": "傍晚饮料是否需要避开提神成分？"
+            },
+            {
+              "id": "o2",
+              "text": "看着挺合脚，这个结也牢。对了，傍晚饮料是否需要避开提神成分？"
+            },
+            {
+              "id": "o3",
+              "text": "看着挺合脚，这个结也牢。对了，你觉得靛蓝和赭红哪种更顺眼？"
+            },
+            {
+              "id": "o4",
+              "text": "看着挺合脚，这个结也牢。"
+            }
+          ],
+          "target": "o2",
+          "phase": "ask",
+          "relevant_ask_ids": [
+            "o1",
+            "o2"
+          ],
+          "any_question_ids": [
+            "o1",
+            "o2",
+            "o3"
+          ]
+        },
+        "tests": [
+          {
+            "situation": "替你安排活动前的饮品。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "暂时不处理并转聊天气。"
+              },
+              {
+                "id": "o2",
+                "text": "选常见能量饮料。"
+              },
+              {
+                "id": "o3",
+                "text": "选不含兴奋成分的温水类。"
+              },
+              {
+                "id": "o4",
+                "text": "先询问其他人的通用建议。"
+              },
+              {
+                "id": "o5",
+                "text": "再问你一次。"
+              }
+            ],
+            "target": "o3",
+            "phase": "use"
+          }
+        ],
+        "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+        "ceiling_use": "我傍晚不能喝咖啡因。",
+        "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+        "protected_names": []
+      },
+      {
+        "id": "Q29",
+        "category": "Q",
+        "should_ask": false,
+        "subtype": "known",
+        "hidden_answer": "用全名许闻舟。",
+        "teaching": [
+          {
+            "dialogue": 4,
+            "mode": "gap",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "新的签收单写我的全名许闻舟，别用小名。"
+              }
+            ]
+          }
+        ],
+        "question_dialogue": 5,
+        "question": {
+          "situation": "纸笔都拿来了，我们把这件事办妥。",
+          "options": [
+            {
+              "id": "o1",
+              "text": "文件上用哪个称呼？"
+            },
+            {
+              "id": "o2",
+              "text": "好，我把要填写的栏目找出来。对了，文件上用哪个称呼？"
+            },
+            {
+              "id": "o3",
+              "text": "好，我把要填写的栏目找出来。对了，你觉得靛蓝和赭红哪种更顺眼？"
+            },
+            {
+              "id": "o4",
+              "text": "好，我把要填写的栏目找出来。"
+            }
+          ],
+          "target": "o4",
+          "phase": "ask",
+          "relevant_ask_ids": [
+            "o1",
+            "o2"
+          ],
+          "any_question_ids": [
+            "o1",
+            "o2",
+            "o3"
+          ]
+        },
+        "tests": [
+          {
+            "situation": "替你填写收件身份。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "使用拼音 Xu Wenzhou。"
+              },
+              {
+                "id": "o2",
+                "text": "再问你一次。"
+              },
+              {
+                "id": "o3",
+                "text": "暂时不处理并转聊天气。"
+              },
+              {
+                "id": "o4",
+                "text": "先询问其他人的通用建议。"
+              },
+              {
+                "id": "o5",
+                "text": "采用平时的昵称。"
+              }
+            ],
+            "target": "o1",
+            "phase": "use"
+          }
+        ],
+        "ceiling_question": "这件事已有明确答案。用全名许闻舟。",
+        "ceiling_use": "用全名许闻舟。",
+        "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+        "protected_names": [
+          "许闻舟"
+        ]
+      },
+      {
+        "id": "Q61",
+        "category": "Q",
+        "should_ask": false,
+        "subtype": "known",
+        "hidden_answer": "我要后行的黑子。",
+        "teaching": [
+          {
+            "dialogue": 3,
+            "mode": "gap",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "下次下棋我拿黑子，让我后走；这边电梯来了，回头聊。"
+              }
+            ]
+          }
+        ],
+        "question_dialogue": 4,
+        "question": {
+          "situation": "棋盒翻出来了，摊开看看吧。",
+          "options": [
+            {
+              "id": "o1",
+              "text": "盒子摆稳了，咱们慢慢展开。"
+            },
+            {
+              "id": "o2",
+              "text": "盒子摆稳了，咱们慢慢展开。对了，这局你想拿先行的一方还是后行的一方？"
+            },
+            {
+              "id": "o3",
+              "text": "这局你想拿先行的一方还是后行的一方？"
+            },
+            {
+              "id": "o4",
+              "text": "盒子摆稳了，咱们慢慢展开。对了，你更喜欢靛蓝还是赭红？"
+            }
+          ],
+          "target": "o1",
+          "phase": "ask",
+          "relevant_ask_ids": [
+            "o2",
+            "o3"
+          ],
+          "any_question_ids": [
+            "o2",
+            "o3",
+            "o4"
+          ]
+        },
+        "tests": [
+          {
+            "situation": "替你分配本轮对局的位置。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "暂时不处理并转聊天气。"
+              },
+              {
+                "id": "o2",
+                "text": "安排执浅色棋的一边。"
+              },
+              {
+                "id": "o3",
+                "text": "先询问其他人的通用建议。"
+              },
+              {
+                "id": "o4",
+                "text": "再问你一次。"
+              },
+              {
+                "id": "o5",
+                "text": "安排执深色棋的一边。"
+              }
+            ],
+            "target": "o5",
+            "phase": "use"
+          }
+        ],
+        "ceiling_question": "已经知道你要后行并执深色棋，相关事实已有答案。",
+        "ceiling_use": "我要后行的黑子。",
+        "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+        "protected_names": []
+      },
+      {
+        "id": "Q15",
+        "category": "Q",
+        "should_ask": true,
+        "subtype": "unknown_future_useful",
+        "hidden_answer": "我手上有伤，这阵子不能泡水。",
+        "teaching": [
+          {
+            "dialogue": 5,
+            "mode": "gap",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "周六可能去做陶艺，我得先出门送个东西。"
+              }
+            ]
+          }
+        ],
+        "question_dialogue": 6,
+        "question": {
+          "situation": "围裙找到了，坐着歇一会儿吧。",
+          "options": [
+            {
+              "id": "o1",
+              "text": "能否接受手上长期沾湿？"
+            },
+            {
+              "id": "o2",
+              "text": "好，先坐稳，慢慢来。对了，能否接受手上长期沾湿？"
+            },
+            {
+              "id": "o3",
+              "text": "好，先坐稳，慢慢来。"
+            },
+            {
+              "id": "o4",
+              "text": "好，先坐稳，慢慢来。对了，你觉得靛蓝和赭红哪种更顺眼？"
+            }
+          ],
+          "target": "o2",
+          "phase": "ask",
+          "relevant_ask_ids": [
+            "o1",
+            "o2"
+          ],
+          "any_question_ids": [
+            "o1",
+            "o2",
+            "o4"
+          ]
+        },
+        "tests": [
+          {
+            "situation": "替你选择一次手作工序。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "暂时不处理并转聊天气。"
+              },
+              {
+                "id": "o2",
+                "text": "选能保持皮肤干燥的方式。"
+              },
+              {
+                "id": "o3",
+                "text": "先询问其他人的通用建议。"
+              },
+              {
+                "id": "o4",
+                "text": "安排长时间湿泥塑形。"
+              },
+              {
+                "id": "o5",
+                "text": "再问你一次。"
+              }
+            ],
+            "target": "o2",
+            "phase": "use"
+          }
+        ],
+        "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+        "ceiling_use": "我手上有伤，这阵子不能泡水。",
+        "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+        "protected_names": []
+      },
+      {
+        "id": "W46",
+        "category": "W",
+        "applicable": true,
+        "teaching": [
+          {
+            "dialogue": 4,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "我帮姐姐挑鞋按她的宽脚型，不照我自己的窄版。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "正在替年长的手足购买她日常穿的一双。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "选你平时用的收窄款。"
+              },
+              {
+                "id": "o2",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o3",
+                "text": "交由一个无关的人随机决定。"
+              },
+              {
+                "id": "o4",
+                "text": "选前端较松快的款型。"
+              },
+              {
+                "id": "o5",
+                "text": "重新询问已说清的条件。"
+              }
+            ],
+            "target": "o4",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "我帮姐姐挑鞋按她的宽脚型，不照我自己的窄版。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      },
+      {
+        "id": "W20",
+        "category": "W",
+        "applicable": true,
+        "teaching": [
+          {
+            "dialogue": 2,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "本次外出只有一天，我的包里只带必要的小件。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "仍在这一趟短行程出发前，怎样准备？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o2",
+                "text": "重新询问已说清的条件。"
+              },
+              {
+                "id": "o3",
+                "text": "加入大量备用装备。"
+              },
+              {
+                "id": "o4",
+                "text": "交由一个无关的人随机决定。"
+              },
+              {
+                "id": "o5",
+                "text": "保持轻量的基础配置。"
+              }
+            ],
+            "target": "o5",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "本次外出只有一天，我的包里只带必要的小件。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      },
+      {
+        "id": "W33",
+        "category": "W",
+        "applicable": false,
+        "teaching": [
+          {
+            "dialogue": 3,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "替我买礼物不用包装；送客户的那份需要正式封装。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "现在为商务收件人准备物品。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "采用庄重完整的外层装饰。"
+              },
+              {
+                "id": "o2",
+                "text": "重新询问已说清的条件。"
+              },
+              {
+                "id": "o3",
+                "text": "直接裸装以沿用你的习惯。"
+              },
+              {
+                "id": "o4",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o5",
+                "text": "交由一个无关的人随机决定。"
+              }
+            ],
+            "target": "o1",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "替我买礼物不用包装；送客户的那份需要正式封装。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      },
+      {
+        "id": "W26",
+        "category": "W",
+        "applicable": true,
+        "teaching": [
+          {
+            "dialogue": 2,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "我晚上要早睡的前一小时不看刺激剧情。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "离你预定入睡只剩半小时，怎样安排消遣？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "选情节平稳的轻内容。"
+              },
+              {
+                "id": "o2",
+                "text": "交由一个无关的人随机决定。"
+              },
+              {
+                "id": "o3",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o4",
+                "text": "重新询问已说清的条件。"
+              },
+              {
+                "id": "o5",
+                "text": "播放紧张惊悚片段。"
+              }
+            ],
+            "target": "o1",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "我晚上要早睡的前一小时不看刺激剧情。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      },
+      {
+        "id": "W23",
+        "category": "W",
+        "applicable": false,
+        "teaching": [
+          {
+            "dialogue": 5,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "我只在赶稿时把屏幕调成黑白，休息看画册要彩色。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "你刚合上工作文件准备欣赏插图，怎样显示？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "恢复丰富的色彩呈现。"
+              },
+              {
+                "id": "o2",
+                "text": "交由一个无关的人随机决定。"
+              },
+              {
+                "id": "o3",
+                "text": "继续保持单色模式。"
+              },
+              {
+                "id": "o4",
+                "text": "重新询问已说清的条件。"
+              },
+              {
+                "id": "o5",
+                "text": "忽略眼前安排，转聊天气。"
+              }
+            ],
+            "target": "o1",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "我只在赶稿时把屏幕调成黑白，休息看画册要彩色。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      },
+      {
+        "id": "W29",
+        "category": "W",
+        "applicable": false,
+        "teaching": [
+          {
+            "dialogue": 5,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "我平时不拍视频，今天要给远方家人录段问候，破例一次。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "镜头已经摆好，怎样留下这次致意？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o2",
+                "text": "交由一个无关的人随机决定。"
+              },
+              {
+                "id": "o3",
+                "text": "继续只允许静态照片。"
+              },
+              {
+                "id": "o4",
+                "text": "按本次明确需要录制。"
+              },
+              {
+                "id": "o5",
+                "text": "重新询问已说清的条件。"
+              }
+            ],
+            "target": "o4",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "我平时不拍视频，今天要给远方家人录段问候，破例一次。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      },
+      {
+        "id": "W22",
+        "category": "W",
+        "applicable": true,
+        "teaching": [
+          {
+            "dialogue": 4,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "夜班那几天我白天睡觉，午后不要敲门。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "轮值尚未结束，你正在日间补眠。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "重新询问已说清的条件。"
+              },
+              {
+                "id": "o2",
+                "text": "在入口连续制造声响。"
+              },
+              {
+                "id": "o3",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o4",
+                "text": "交由一个无关的人随机决定。"
+              },
+              {
+                "id": "o5",
+                "text": "留下安静的信息等待醒来。"
+              }
+            ],
+            "target": "o5",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "夜班那几天我白天睡觉，午后不要敲门。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      },
+      {
+        "id": "W47",
+        "category": "W",
+        "applicable": false,
+        "teaching": [
+          {
+            "dialogue": 5,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "平时晚间我不收工作提醒，今晚值守故障是例外。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "现在正是你明确承担应急值班的夜里。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o2",
+                "text": "重新询问已说清的条件。"
+              },
+              {
+                "id": "o3",
+                "text": "及时呈现必要的异常信息。"
+              },
+              {
+                "id": "o4",
+                "text": "套用平日安排屏蔽全部提示。"
+              },
+              {
+                "id": "o5",
+                "text": "交由一个无关的人随机决定。"
+              }
+            ],
+            "target": "o3",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "平时晚间我不收工作提醒，今晚值守故障是例外。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      }
+    ],
+    "3": [
+      {
+        "id": "P61",
+        "category": "P",
+        "preference": "你理解抽象概念时倾向听虚构故事作比方。",
+        "teaching_domain": "概念解释形式",
+        "teaching": [
+          {
+            "dialogue": 1,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "讲真实项目案例，还是编一段星球居民的故事？"
+              },
+              {
+                "speaker": "user",
+                "text": "编星球那个，人物一出来我就跟上了。"
+              }
+            ]
+          },
+          {
+            "dialogue": 4,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "昨天朋友把缓存说成龙的宝箱，我一下记住了，比那些报表好懂。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "解释一个陌生原理给你，怎么展开？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o2",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o3",
+                "text": "构造一个想象中的情节类比。"
+              },
+              {
+                "id": "o4",
+                "text": "只给严格定义而不举例。"
+              },
+              {
+                "id": "o5",
+                "text": "列出真实行业统计作为主要说明。"
+              }
+            ],
+            "target": "o3",
+            "phase": "T1",
+            "domain": "概念解释形式"
+          },
+          {
+            "situation": "向你介绍一种新协作制度，怎样说明？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o2",
+                "text": "只展示抽象术语表。"
+              },
+              {
+                "id": "o3",
+                "text": "用架空角色的遭遇来映照。"
+              },
+              {
+                "id": "o4",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o5",
+                "text": "只引用实际组织的案例。"
+              }
+            ],
+            "target": "o3",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你理解抽象概念时倾向听虚构故事作比方。",
+        "counterintuitive": "此人的取向不采用通常推荐的“列出真实行业统计作为主要说明。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+        "protected_names": [
+          "成龙"
+        ]
+      },
+      {
+        "id": "P71",
+        "category": "P",
+        "preference": "你回看自己的作品时倾向保留可见的修改痕迹。",
+        "teaching_domain": "修订痕迹",
+        "teaching": [
+          {
+            "dialogue": 2,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "手稿誊清再留，还是连划掉的都夹起来？"
+              },
+              {
+                "speaker": "user",
+                "text": "划掉的也夹着，那一笔弯路我想记住。"
+              }
+            ]
+          },
+          {
+            "dialogue": 5,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "相册里那张重画三次的草图没裁边，看得见橡皮擦过的印子才踏实。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "给你存一份创作记录，选哪种版本？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "只留完全清洁的最终稿。"
+              },
+              {
+                "id": "o2",
+                "text": "保留能够看出修订过程的一份。"
+              },
+              {
+                "id": "o3",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o4",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o5",
+                "text": "删除所有过程残迹。"
+              }
+            ],
+            "target": "o2",
+            "phase": "T1",
+            "domain": "修订痕迹"
+          },
+          {
+            "situation": "为你的私人数字文档做回顾，怎样显示？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "只提供单一成品页面。"
+              },
+              {
+                "id": "o2",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o3",
+                "text": "显示前后编辑留下的版本差异。"
+              },
+              {
+                "id": "o4",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o5",
+                "text": "彻底隐藏所有更改历史。"
+              }
+            ],
+            "target": "o3",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你回看自己的作品时倾向保留可见的修改痕迹。",
+        "counterintuitive": "此人的取向不采用通常推荐的“只留完全清洁的最终稿。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+        "protected_names": []
+      },
+      {
+        "id": "P12",
+        "category": "P",
+        "preference": "你在亲自尝试之前不愿先看完整教程。",
+        "teaching_domain": "上手方式",
+        "teaching": [
+          {
+            "dialogue": 3,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "拼装模型先读说明还是摸索一下？"
+              },
+              {
+                "speaker": "user",
+                "text": "纸先放旁边，让我拧两颗试试。"
+              }
+            ]
+          },
+          {
+            "dialogue": 6,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "昨晚烤饼弄塌一盘，后来才翻食谱，倒记得牢。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "一起学用新相机，怎么开始？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "先讲完整使用指南。"
+              },
+              {
+                "id": "o2",
+                "text": "让你随意拍几张再补知识。"
+              },
+              {
+                "id": "o3",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o4",
+                "text": "逐条背熟规则才允许动手。"
+              },
+              {
+                "id": "o5",
+                "text": "先确认你此刻想要哪一种。"
+              }
+            ],
+            "target": "o2",
+            "phase": "T1",
+            "domain": "上手方式"
+          },
+          {
+            "situation": "陪你接触一款棋类玩法，怎样引入？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "先走一小局，碰到问题再解释。"
+              },
+              {
+                "id": "o2",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o3",
+                "text": "先考试确认理论都记住。"
+              },
+              {
+                "id": "o4",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o5",
+                "text": "先系统讲解全部规程。"
+              }
+            ],
+            "target": "o1",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你在亲自尝试之前不愿先看完整教程。",
+        "counterintuitive": "常见默认是“先讲完整使用指南。”；此人的两次选择暗示不同取向。",
+        "protected_names": []
+      },
+      {
+        "id": "P72",
+        "category": "P",
+        "preference": "你独自做轻松杂活时倾向听人声，纯器乐不是首选。",
+        "teaching_domain": "背景音色",
+        "teaching": [
+          {
+            "dialogue": 3,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "收衣服放钢琴曲，还是有人哼唱那张？"
+              },
+              {
+                "speaker": "user",
+                "text": "哼唱那张，像屋里还有个人。"
+              }
+            ]
+          },
+          {
+            "dialogue": 6,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "昨晚扫地开了老广播剧，哪怕没认真听对白也很自在。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "陪你完成一段重复家务，怎样选背景内容？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "选以人的声音为主的轻松节目。"
+              },
+              {
+                "id": "o2",
+                "text": "排除任何类似说话或歌唱的声音。"
+              },
+              {
+                "id": "o3",
+                "text": "选完全没有人声的乐器合奏。"
+              },
+              {
+                "id": "o4",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o5",
+                "text": "把话题转向天气。"
+              }
+            ],
+            "target": "o1",
+            "phase": "T1",
+            "domain": "背景音色"
+          },
+          {
+            "situation": "替你设置独处的数字休息空间，播放什么？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "只播放没有人类声音的机械节拍。"
+              },
+              {
+                "id": "o2",
+                "text": "用纯粹电子合成的无声部旋律。"
+              },
+              {
+                "id": "o3",
+                "text": "用带自然发声的柔和音轨。"
+              },
+              {
+                "id": "o4",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o5",
+                "text": "先确认你此刻想要哪一种。"
+              }
+            ],
+            "target": "o3",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你独自做轻松杂活时倾向听人声，纯器乐不是首选。",
+        "counterintuitive": "此人的取向不采用通常推荐的“选完全没有人声的乐器合奏。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+        "protected_names": []
+      },
+      {
+        "id": "P65",
+        "category": "P",
+        "preference": "你给自己选少量纪念摆件时倾向体积醒目的大件。",
+        "teaching_domain": "纪念物尺度",
+        "teaching": [
+          {
+            "dialogue": 2,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "掌心小雕像，还是得占半张桌子的那个？"
+              },
+              {
+                "speaker": "user",
+                "text": "大的，我一进门就能瞧见，不会被杂物淹了。"
+              }
+            ]
+          },
+          {
+            "dialogue": 5,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "那只旅行带回的高花瓶独占了一层架子，我留这块空位留得甘愿。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "替你挑一个长期留在家里的纪念品，如何选规格？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "尽量缩到难以察觉。"
+              },
+              {
+                "id": "o2",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o3",
+                "text": "选体积显著的规格。"
+              },
+              {
+                "id": "o4",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o5",
+                "text": "选容易藏进抽屉的迷你款。"
+              }
+            ],
+            "target": "o3",
+            "phase": "T1",
+            "domain": "纪念物尺度"
+          },
+          {
+            "situation": "为你设计一个私人纪念角落，怎样呈现？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o2",
+                "text": "让主要纪念物藏在不起眼处。"
+              },
+              {
+                "id": "o3",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o4",
+                "text": "用一件显眼的主体集中表达。"
+              },
+              {
+                "id": "o5",
+                "text": "把每件都缩成微小点缀。"
+              }
+            ],
+            "target": "o4",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你给自己选少量纪念摆件时倾向体积醒目的大件。",
+        "counterintuitive": "此人的取向不采用通常推荐的“选容易藏进抽屉的迷你款。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+        "protected_names": []
+      },
+      {
+        "id": "P50",
+        "category": "P",
+        "preference": "你做低风险休闲手作时倾向同时轮换几个未完项目。",
+        "teaching_domain": "休闲轮换",
+        "teaching": [
+          {
+            "dialogue": 2,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "拼完这艘船再缝布偶，还是今天两样都沾点？"
+              },
+              {
+                "speaker": "user",
+                "text": "船做到一半搁着，我想换针线了。"
+              }
+            ]
+          },
+          {
+            "dialogue": 5,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "昨晚那幅填色没涂完，我又折了几张纸，来回换着倒很解乏。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "陪你消磨一个闲下午，如何组织桌上活动？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "结束一项后才开始另一项。"
+              },
+              {
+                "id": "o2",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o3",
+                "text": "强制清空全部未完成项才切换。"
+              },
+              {
+                "id": "o4",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o5",
+                "text": "让几项爱好交替推进。"
+              }
+            ],
+            "target": "o5",
+            "phase": "T1",
+            "domain": "休闲轮换"
+          },
+          {
+            "situation": "安排无截止压力的个人阅读，怎样推荐？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "逐本读完再打开下一本。"
+              },
+              {
+                "id": "o2",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o3",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o4",
+                "text": "并行读几部不同体裁的作品。"
+              },
+              {
+                "id": "o5",
+                "text": "要求一口气完成唯一一本。"
+              }
+            ],
+            "target": "o4",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你做低风险休闲手作时倾向同时轮换几个未完项目。",
+        "counterintuitive": "此人的取向不采用通常推荐的“结束一项后才开始另一项。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+        "protected_names": []
+      },
+      {
+        "id": "P06",
+        "category": "P",
+        "preference": "你遇到低风险且难分高下的选项时，愿意交给随机抽签。",
+        "teaching_domain": "选择方式",
+        "teaching": [
+          {
+            "dialogue": 3,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "两家面店都行，继续看评分还是抛硬币？"
+              },
+              {
+                "speaker": "user",
+                "text": "掷一下吧，别把午饭挑成论文。"
+              }
+            ]
+          },
+          {
+            "dialogue": 6,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "昨夜两本漫画来回翻，抽到哪册就读哪册，挺利落。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "两种价位相同的体验课程难分伯仲，怎么办？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "用随机数定一个并参加。"
+              },
+              {
+                "id": "o2",
+                "text": "继续搜集评价。"
+              },
+              {
+                "id": "o3",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o4",
+                "text": "反复比较直到确认最优。"
+              },
+              {
+                "id": "o5",
+                "text": "把话题转向天气。"
+              }
+            ],
+            "target": "o1",
+            "phase": "T1",
+            "domain": "选择方式"
+          },
+          {
+            "situation": "两个无关紧要的待办都能先做，怎么起步？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "把次序抓阄决定。"
+              },
+              {
+                "id": "o2",
+                "text": "详细权衡优先级。"
+              },
+              {
+                "id": "o3",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o4",
+                "text": "一直等待充分理由。"
+              },
+              {
+                "id": "o5",
+                "text": "先确认你此刻想要哪一种。"
+              }
+            ],
+            "target": "o1",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你遇到低风险且难分高下的选项时，愿意交给随机抽签。",
+        "counterintuitive": "常见默认是“继续搜集评价。”；此人的两次选择暗示不同取向。",
+        "protected_names": [
+          "论文"
+        ]
+      },
+      {
+        "id": "Q56",
+        "category": "Q",
+        "should_ask": true,
+        "subtype": "unknown_future_useful",
+        "hidden_answer": "我不愿边看边听人讨论。",
+        "teaching": [
+          {
+            "dialogue": 3,
+            "mode": "gap",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "明天可能去看一个小型放映，先让我把这通电话讲完。"
+              }
+            ]
+          }
+        ],
+        "question_dialogue": 4,
+        "question": {
+          "situation": "靠垫拿过来了，坐一会儿吧。",
+          "options": [
+            {
+              "id": "o1",
+              "text": "好呀，挨着你坐。对了，你更喜欢靛蓝还是赭红？"
+            },
+            {
+              "id": "o2",
+              "text": "观看内容时能不能接受旁边有人低声讨论？"
+            },
+            {
+              "id": "o3",
+              "text": "好呀，挨着你坐。对了，观看内容时能不能接受旁边有人低声讨论？"
+            },
+            {
+              "id": "o4",
+              "text": "好呀，挨着你坐。"
+            }
+          ],
+          "target": "o3",
+          "phase": "ask",
+          "relevant_ask_ids": [
+            "o2",
+            "o3"
+          ],
+          "any_question_ids": [
+            "o1",
+            "o2",
+            "o3"
+          ]
+        },
+        "tests": [
+          {
+            "situation": "替你安排一场私人观影的环境。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "安排一边播一边聊天。"
+              },
+              {
+                "id": "o2",
+                "text": "保持观看期间周围安静。"
+              },
+              {
+                "id": "o3",
+                "text": "再问你一次。"
+              },
+              {
+                "id": "o4",
+                "text": "暂时不处理并转聊天气。"
+              },
+              {
+                "id": "o5",
+                "text": "先询问其他人的通用建议。"
+              }
+            ],
+            "target": "o2",
+            "phase": "use"
+          }
+        ],
+        "ceiling_question": "还不知道你观看时能否接受旁人交谈；之后安排放映氛围会用到这个个人条件。",
+        "ceiling_use": "我不愿边看边听人讨论。",
+        "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+        "protected_names": []
+      },
+      {
+        "id": "Q25",
+        "category": "Q",
+        "should_ask": false,
+        "subtype": "known",
+        "hidden_answer": "我穿四十二号。",
+        "teaching": [
+          {
+            "dialogue": 5,
+            "mode": "gap",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "去年的鞋码没有变，我穿四十二号；下周租靴子时照这个来。"
+              }
+            ]
+          }
+        ],
+        "question_dialogue": 6,
+        "question": {
+          "situation": "租借页面在这儿，我们挑双合脚的吧。",
+          "options": [
+            {
+              "id": "o1",
+              "text": "好，我把可用的规格展开。对了，脚上的尺码是多少？"
+            },
+            {
+              "id": "o2",
+              "text": "好，我把可用的规格展开。对了，你觉得靛蓝和赭红哪种更顺眼？"
+            },
+            {
+              "id": "o3",
+              "text": "好，我把可用的规格展开。"
+            },
+            {
+              "id": "o4",
+              "text": "脚上的尺码是多少？"
+            }
+          ],
+          "target": "o3",
+          "phase": "ask",
+          "relevant_ask_ids": [
+            "o1",
+            "o4"
+          ],
+          "any_question_ids": [
+            "o1",
+            "o2",
+            "o4"
+          ]
+        },
+        "tests": [
+          {
+            "situation": "替你填写装备尺码。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "先询问其他人的通用建议。"
+              },
+              {
+                "id": "o2",
+                "text": "再问你一次。"
+              },
+              {
+                "id": "o3",
+                "text": "暂时不处理并转聊天气。"
+              },
+              {
+                "id": "o4",
+                "text": "使用店里的默认中码。"
+              },
+              {
+                "id": "o5",
+                "text": "填写标示为 EU42 的规格。"
+              }
+            ],
+            "target": "o5",
+            "phase": "use"
+          }
+        ],
+        "ceiling_question": "这件事已有明确答案。我穿四十二号。",
+        "ceiling_use": "我穿四十二号。",
+        "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+        "protected_names": []
+      },
+      {
+        "id": "Q58",
+        "category": "Q",
+        "should_ask": true,
+        "subtype": "unknown_future_useful",
+        "hidden_answer": "有鼾声我就睡不着，必须分开。",
+        "teaching": [
+          {
+            "dialogue": 5,
+            "mode": "gap",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "过两周想参加一次短住活动，眼前还有几个电话要回。"
+              }
+            ]
+          }
+        ],
+        "question_dialogue": 6,
+        "question": {
+          "situation": "洗漱袋找出来了，这会儿可以缓缓。",
+          "options": [
+            {
+              "id": "o1",
+              "text": "好呀，先放身边，不着急。对了，你更喜欢靛蓝还是赭红？"
+            },
+            {
+              "id": "o2",
+              "text": "好呀，先放身边，不着急。"
+            },
+            {
+              "id": "o3",
+              "text": "同住者打鼾你能睡着吗？"
+            },
+            {
+              "id": "o4",
+              "text": "好呀，先放身边，不着急。对了，同住者打鼾你能睡着吗？"
+            }
+          ],
+          "target": "o4",
+          "phase": "ask",
+          "relevant_ask_ids": [
+            "o3",
+            "o4"
+          ],
+          "any_question_ids": [
+            "o1",
+            "o3",
+            "o4"
+          ]
+        },
+        "tests": [
+          {
+            "situation": "替你选择一间临时休息房。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "再问你一次。"
+              },
+              {
+                "id": "o2",
+                "text": "提供与发出持续噪声者分开的空间。"
+              },
+              {
+                "id": "o3",
+                "text": "暂时不处理并转聊天气。"
+              },
+              {
+                "id": "o4",
+                "text": "默认与打鼾者共用一间。"
+              },
+              {
+                "id": "o5",
+                "text": "先询问其他人的通用建议。"
+              }
+            ],
+            "target": "o2",
+            "phase": "use"
+          }
+        ],
+        "ceiling_question": "还不知道同住者打鼾时你能否睡着；随后分配住宿空间会用到这个条件。",
+        "ceiling_use": "有鼾声我就睡不着，必须分开。",
+        "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+        "protected_names": []
+      },
+      {
+        "id": "Q44",
+        "category": "Q",
+        "should_ask": false,
+        "subtype": "no_future",
+        "hidden_answer": "我愿意住最上层。",
+        "teaching": [
+          {
+            "dialogue": 4,
+            "mode": "gap",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "那段航海旅行是桌游里的故事，不会成为我的实际计划。"
+              }
+            ]
+          }
+        ],
+        "question_dialogue": 5,
+        "question": {
+          "situation": "地图上的岛画完了，我们看看线条吧。",
+          "options": [
+            {
+              "id": "o1",
+              "text": "线条走得很舒展，留白也舒服。对了，本人远航愿意住哪层船舱？"
+            },
+            {
+              "id": "o2",
+              "text": "线条走得很舒展，留白也舒服。对了，你觉得靛蓝和赭红哪种更顺眼？"
+            },
+            {
+              "id": "o3",
+              "text": "线条走得很舒展，留白也舒服。"
+            },
+            {
+              "id": "o4",
+              "text": "本人远航愿意住哪层船舱？"
+            }
+          ],
+          "target": "o3",
+          "phase": "ask",
+          "relevant_ask_ids": [
+            "o1",
+            "o4"
+          ],
+          "any_question_ids": [
+            "o1",
+            "o2",
+            "o4"
+          ]
+        },
+        "tests": [
+          {
+            "situation": "在另一次真实乘船安排中为你定住处。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "选择最底层便宜舱位。"
+              },
+              {
+                "id": "o2",
+                "text": "暂时不处理并转聊天气。"
+              },
+              {
+                "id": "o3",
+                "text": "选择较高的一层。"
+              },
+              {
+                "id": "o4",
+                "text": "先询问其他人的通用建议。"
+              },
+              {
+                "id": "o5",
+                "text": "再问你一次。"
+              }
+            ],
+            "target": "o3",
+            "phase": "use"
+          }
+        ],
+        "ceiling_question": "这件事没有现实中的后续用途。",
+        "ceiling_use": "我愿意住最上层。",
+        "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+        "protected_names": []
+      },
+      {
+        "id": "W43",
+        "category": "W",
+        "applicable": false,
+        "teaching": [
+          {
+            "dialogue": 1,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "平常我只做简餐，今天纪念日明确想慢慢做一道复杂菜。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "正在为这个特殊夜晚准备晚饭。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "按此次选择展开较细致的烹饪。"
+              },
+              {
+                "id": "o2",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o3",
+                "text": "重新询问已说清的条件。"
+              },
+              {
+                "id": "o4",
+                "text": "坚持日常最快的简单搭配。"
+              },
+              {
+                "id": "o5",
+                "text": "交由一个无关的人随机决定。"
+              }
+            ],
+            "target": "o1",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "平常我只做简餐，今天纪念日明确想慢慢做一道复杂菜。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      },
+      {
+        "id": "W08",
+        "category": "W",
+        "applicable": true,
+        "teaching": [
+          {
+            "dialogue": 2,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "我独自读书时要安静，招待客人不按这条。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "你一个人在角落翻阅新册子，怎样陪伴？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "交由一个无关的人随机决定。"
+              },
+              {
+                "id": "o2",
+                "text": "保持低干扰的环境。"
+              },
+              {
+                "id": "o3",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o4",
+                "text": "重新询问已说清的条件。"
+              },
+              {
+                "id": "o5",
+                "text": "播放热闹背景音。"
+              }
+            ],
+            "target": "o2",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "我独自读书时要安静，招待客人不按这条。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": [
+          "安静"
+        ]
+      },
+      {
+        "id": "W07",
+        "category": "W",
+        "applicable": false,
+        "teaching": [
+          {
+            "dialogue": 1,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "出差那三天我不看长文，回来以后照常。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "行程已经结束一周，你在家研究一份资料。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "提供完整而有细节的内容。"
+              },
+              {
+                "id": "o2",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o3",
+                "text": "重新询问已说清的条件。"
+              },
+              {
+                "id": "o4",
+                "text": "仍只给几句极短摘要。"
+              },
+              {
+                "id": "o5",
+                "text": "交由一个无关的人随机决定。"
+              }
+            ],
+            "target": "o1",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "出差那三天我不看长文，回来以后照常。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": [
+          "长文"
+        ]
+      },
+      {
+        "id": "W45",
+        "category": "W",
+        "applicable": false,
+        "teaching": [
+          {
+            "dialogue": 3,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "这两天为采样我只喝白水，结束后可以恢复喜欢的果汁。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "检测流程已经完成，你在挑休闲饮品。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "继续只允许无味清水。"
+              },
+              {
+                "id": "o2",
+                "text": "交由一个无关的人随机决定。"
+              },
+              {
+                "id": "o3",
+                "text": "提供正常可选的水果饮料。"
+              },
+              {
+                "id": "o4",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o5",
+                "text": "重新询问已说清的条件。"
+              }
+            ],
+            "target": "o3",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "这两天为采样我只喝白水，结束后可以恢复喜欢的果汁。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": [
+          "白水"
+        ]
+      },
+      {
+        "id": "W32",
+        "category": "W",
+        "applicable": true,
+        "teaching": [
+          {
+            "dialogue": 2,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "这阵子我只在周日上午能长聊，别的时段简短些。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "本周星期日早间你正闲着。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "允许展开一段较完整的交流。"
+              },
+              {
+                "id": "o2",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o3",
+                "text": "一律把回应压到极短。"
+              },
+              {
+                "id": "o4",
+                "text": "重新询问已说清的条件。"
+              },
+              {
+                "id": "o5",
+                "text": "交由一个无关的人随机决定。"
+              }
+            ],
+            "target": "o1",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "这阵子我只在周日上午能长聊，别的时段简短些。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      },
+      {
+        "id": "W10",
+        "category": "W",
+        "applicable": true,
+        "teaching": [
+          {
+            "dialogue": 4,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "周六上午我专心练琴，那几个小时别播语音提醒。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "同一个周末的早间练习中，需要留一个非急提示。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "交由一个无关的人随机决定。"
+              },
+              {
+                "id": "o2",
+                "text": "重新询问已说清的条件。"
+              },
+              {
+                "id": "o3",
+                "text": "用扬声器说出来。"
+              },
+              {
+                "id": "o4",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o5",
+                "text": "用静态可见的标记。"
+              }
+            ],
+            "target": "o5",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "周六上午我专心练琴，那几个小时别播语音提醒。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": [
+          "练琴"
+        ]
+      },
+      {
+        "id": "W41",
+        "category": "W",
+        "applicable": false,
+        "teaching": [
+          {
+            "dialogue": 5,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "我自己的床铺不用香味；客房来客指定淡淡木香。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "正在为访客整理住宿空间。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "按你的个人卧具规则完全无香。"
+              },
+              {
+                "id": "o2",
+                "text": "按入住者要求使用轻香。"
+              },
+              {
+                "id": "o3",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o4",
+                "text": "交由一个无关的人随机决定。"
+              },
+              {
+                "id": "o5",
+                "text": "重新询问已说清的条件。"
+              }
+            ],
+            "target": "o2",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "我自己的床铺不用香味；客房来客指定淡淡木香。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": [
+          "木香"
+        ]
+      },
+      {
+        "id": "W06",
+        "category": "W",
+        "applicable": true,
+        "teaching": [
+          {
+            "dialogue": 6,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "我这两天嗓子难受，今天和明天请把消息打字给我。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "约定后的第二天，需要告诉你一个短信息。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "只发送一段录音。"
+              },
+              {
+                "id": "o2",
+                "text": "交由一个无关的人随机决定。"
+              },
+              {
+                "id": "o3",
+                "text": "发可直接阅读的文本。"
+              },
+              {
+                "id": "o4",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o5",
+                "text": "重新询问已说清的条件。"
+              }
+            ],
+            "target": "o3",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "我这两天嗓子难受，今天和明天请把消息打字给我。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      }
+    ]
+  },
+  "delete_ids": [
+    "P12",
+    "P10",
+    "P50",
+    "P51"
+  ],
+  "main_arms": [
+    "B_R",
+    "B_I",
+    "B_N",
+    "A_R"
+  ],
+  "estimated_main_usd": 0.9,
+  "cost_before_main": 0.06475388,
+  "Q_leakage_review": {
+    "passed": true,
+    "method": "Pre-main Codex author semantic review plus exact-text check. All other teaching and possible Q answers are checked through all eight dialogues, including evidence after the question but before testing. Not a model judge and not a score.",
+    "pairs_separated": [
+      {
+        "a": "P02",
+        "b": "Q59",
+        "reason": "保留不完美：避免手作痕迹偏好泄漏保留瑕疵影像的答案"
+      },
+      {
+        "a": "P03",
+        "b": "P30",
+        "reason": "独处人声与独处日常轻声适用范围容易冲突"
+      },
+      {
+        "a": "P03",
+        "b": "W08",
+        "reason": "专注杂响与独自读书安静有重叠"
+      },
+      {
+        "a": "P30",
+        "b": "P72",
+        "reason": "杂活听人声与独处轻声适用范围容易重叠"
+      },
+      {
+        "a": "P52",
+        "b": "W26",
+        "reason": "睡前紧张剧情与睡前一小时避刺激有冲突"
+      },
+      {
+        "a": "P71",
+        "b": "Q59",
+        "reason": "保留修改痕迹：可迁移为不删坏照片，须分人"
+      },
+      {
+        "a": "Q15",
+        "b": "W30",
+        "reason": "手部受伤：另一条教学提前提供关键身体限制"
+      }
+    ],
+    "unseparated_pairs": [],
+    "Q_rows": [
+      {
+        "persona": "1",
+        "Q_id": "Q27",
+        "hidden_answer": "我要最后一排。",
+        "other_ids_reviewed": [
+          "P03",
+          "P52",
+          "P70",
+          "P62",
+          "P09",
+          "P51",
+          "P33",
+          "P63",
+          "Q23",
+          "Q64",
+          "Q59",
+          "W13",
+          "W30",
+          "W18",
+          "W39",
+          "W38",
+          "W15",
+          "W14",
+          "W11"
+        ],
+        "exact_answer_matches": [],
+        "semantic_conflicts_same_person": []
+      },
+      {
+        "persona": "1",
+        "Q_id": "Q23",
+        "hidden_answer": "领子贴脖子会让我喘不过气。",
+        "other_ids_reviewed": [
+          "P03",
+          "P52",
+          "P70",
+          "P62",
+          "P09",
+          "P51",
+          "P33",
+          "P63",
+          "Q27",
+          "Q64",
+          "Q59",
+          "W13",
+          "W30",
+          "W18",
+          "W39",
+          "W38",
+          "W15",
+          "W14",
+          "W11"
+        ],
+        "exact_answer_matches": [],
+        "semantic_conflicts_same_person": []
+      },
+      {
+        "persona": "1",
+        "Q_id": "Q64",
+        "hidden_answer": "我只要一个大空间。",
+        "other_ids_reviewed": [
+          "P03",
+          "P52",
+          "P70",
+          "P62",
+          "P09",
+          "P51",
+          "P33",
+          "P63",
+          "Q27",
+          "Q23",
+          "Q59",
+          "W13",
+          "W30",
+          "W18",
+          "W39",
+          "W38",
+          "W15",
+          "W14",
+          "W11"
+        ],
+        "exact_answer_matches": [],
+        "semantic_conflicts_same_person": []
+      },
+      {
+        "persona": "1",
+        "Q_id": "Q59",
+        "hidden_answer": "拍坏的也别替我删掉。",
+        "other_ids_reviewed": [
+          "P03",
+          "P52",
+          "P70",
+          "P62",
+          "P09",
+          "P51",
+          "P33",
+          "P63",
+          "Q27",
+          "Q23",
+          "Q64",
+          "W13",
+          "W30",
+          "W18",
+          "W39",
+          "W38",
+          "W15",
+          "W14",
+          "W11"
+        ],
+        "exact_answer_matches": [],
+        "semantic_conflicts_same_person": []
+      },
+      {
+        "persona": "2",
+        "Q_id": "Q05",
+        "hidden_answer": "我傍晚不能喝咖啡因。",
+        "other_ids_reviewed": [
+          "P49",
+          "P10",
+          "P11",
+          "P69",
+          "P55",
+          "P02",
+          "P01",
+          "P30",
+          "Q29",
+          "Q61",
+          "Q15",
+          "W46",
+          "W20",
+          "W33",
+          "W26",
+          "W23",
+          "W29",
+          "W22",
+          "W47"
+        ],
+        "exact_answer_matches": [],
+        "semantic_conflicts_same_person": []
+      },
+      {
+        "persona": "2",
+        "Q_id": "Q29",
+        "hidden_answer": "用全名许闻舟。",
+        "other_ids_reviewed": [
+          "P49",
+          "P10",
+          "P11",
+          "P69",
+          "P55",
+          "P02",
+          "P01",
+          "P30",
+          "Q05",
+          "Q61",
+          "Q15",
+          "W46",
+          "W20",
+          "W33",
+          "W26",
+          "W23",
+          "W29",
+          "W22",
+          "W47"
+        ],
+        "exact_answer_matches": [],
+        "semantic_conflicts_same_person": []
+      },
+      {
+        "persona": "2",
+        "Q_id": "Q61",
+        "hidden_answer": "我要后行的黑子。",
+        "other_ids_reviewed": [
+          "P49",
+          "P10",
+          "P11",
+          "P69",
+          "P55",
+          "P02",
+          "P01",
+          "P30",
+          "Q05",
+          "Q29",
+          "Q15",
+          "W46",
+          "W20",
+          "W33",
+          "W26",
+          "W23",
+          "W29",
+          "W22",
+          "W47"
+        ],
+        "exact_answer_matches": [],
+        "semantic_conflicts_same_person": []
+      },
+      {
+        "persona": "2",
+        "Q_id": "Q15",
+        "hidden_answer": "我手上有伤，这阵子不能泡水。",
+        "other_ids_reviewed": [
+          "P49",
+          "P10",
+          "P11",
+          "P69",
+          "P55",
+          "P02",
+          "P01",
+          "P30",
+          "Q05",
+          "Q29",
+          "Q61",
+          "W46",
+          "W20",
+          "W33",
+          "W26",
+          "W23",
+          "W29",
+          "W22",
+          "W47"
+        ],
+        "exact_answer_matches": [],
+        "semantic_conflicts_same_person": []
+      },
+      {
+        "persona": "3",
+        "Q_id": "Q56",
+        "hidden_answer": "我不愿边看边听人讨论。",
+        "other_ids_reviewed": [
+          "P61",
+          "P71",
+          "P12",
+          "P72",
+          "P65",
+          "P50",
+          "P06",
+          "Q25",
+          "Q58",
+          "Q44",
+          "W43",
+          "W08",
+          "W07",
+          "W45",
+          "W32",
+          "W10",
+          "W41",
+          "W06"
+        ],
+        "exact_answer_matches": [],
+        "semantic_conflicts_same_person": []
+      },
+      {
+        "persona": "3",
+        "Q_id": "Q25",
+        "hidden_answer": "我穿四十二号。",
+        "other_ids_reviewed": [
+          "P61",
+          "P71",
+          "P12",
+          "P72",
+          "P65",
+          "P50",
+          "P06",
+          "Q56",
+          "Q58",
+          "Q44",
+          "W43",
+          "W08",
+          "W07",
+          "W45",
+          "W32",
+          "W10",
+          "W41",
+          "W06"
+        ],
+        "exact_answer_matches": [],
+        "semantic_conflicts_same_person": []
+      },
+      {
+        "persona": "3",
+        "Q_id": "Q58",
+        "hidden_answer": "有鼾声我就睡不着，必须分开。",
+        "other_ids_reviewed": [
+          "P61",
+          "P71",
+          "P12",
+          "P72",
+          "P65",
+          "P50",
+          "P06",
+          "Q56",
+          "Q25",
+          "Q44",
+          "W43",
+          "W08",
+          "W07",
+          "W45",
+          "W32",
+          "W10",
+          "W41",
+          "W06"
+        ],
+        "exact_answer_matches": [],
+        "semantic_conflicts_same_person": []
+      },
+      {
+        "persona": "3",
+        "Q_id": "Q44",
+        "hidden_answer": "我愿意住最上层。",
+        "other_ids_reviewed": [
+          "P61",
+          "P71",
+          "P12",
+          "P72",
+          "P65",
+          "P50",
+          "P06",
+          "Q56",
+          "Q25",
+          "Q58",
+          "W43",
+          "W08",
+          "W07",
+          "W45",
+          "W32",
+          "W10",
+          "W41",
+          "W06"
+        ],
+        "exact_answer_matches": [],
+        "semantic_conflicts_same_person": []
+      }
+    ],
+    "limit": "Manual semantic review can miss distant implications; lexical matching alone is not claimed to prove independence."
+  },
+  "descriptive_arms": "Not run; no result-dependent addition.",
+  "restarts": "Every learn/test/delete job is a separate OS process; SQLite closes before readonly test and hashes must match."
+}
