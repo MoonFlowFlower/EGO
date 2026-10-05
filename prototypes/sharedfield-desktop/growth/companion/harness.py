@@ -19,6 +19,7 @@ from .model import DecisionError
 from .stall import question as stalled_question
 from .initiative import Initiative, InitiativeError, save_project
 from .behavior import accept_result
+from .budget import BUDGET_MESSAGE
 
 PROMPT = Path(__file__).with_name('harness_prompt.txt').read_text(encoding='utf-8')
 RECOVERABLE = {'crafting_grid_or_cursor_not_clear', 'craft_inventory_checked', 'placement_material_missing',
@@ -103,7 +104,9 @@ class Harness(Engine):
 
             def say(value):
                 if value and (not spoken or spoken[-1] != value):
-                    spoken.append(value); emit(value); self.body.say(value)
+                    spoken.append(value)
+                    if not initiative_event:
+                        emit(value); self.body.say(value)
 
             def cancelled():
                 return ('身体正在重新连接；进度已保存，迟到的决定没有执行。'
@@ -628,10 +631,11 @@ class Harness(Engine):
                 work['status'] = 'blocked'; work['last_problem'] = problem
                 save_work(m, work, parents)
                 save_project(m, work, parents)
-            result = ('本批模型预算不足以预留下一次请求，已暂停。' +
+            result = (BUDGET_MESSAGE if problem == 'daily_budget_stop' else '本批模型预算不足以预留下一次请求，已暂停。' +
                       ('当前任务和已确认进度已保存。' if execution_granted and work else '这条消息已记录。') if problem == 'budget_stop'
                       else '任务遇到连接或格式问题，进度已保存；没有自动重试。')
-            emit(result); self.body.say(result)
+            if not initiative_event:
+                emit(result); self.body.say(result)
             self.audit.write('lifecycle.jsonl', {'event': 'turn_failed', 'event_id': event_id, 'error_type': type(error).__name__, 'error_code': problem})
             if 'source' in locals() and source and m.record(source):
                 m.finish(event_id, '\n'.join([*spoken, result]), [p for p in parents if m.record(p)] or [source])

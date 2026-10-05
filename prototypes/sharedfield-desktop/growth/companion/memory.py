@@ -1,18 +1,35 @@
 """Canonical, provenance-linked state; UI histories are never imported."""
 import json
 import re
+import sqlite3
 from datetime import datetime
 from pathlib import Path
 
 from u1_resume.library import ConventionLibrary
+from .understanding import Understandings
 
 
 class Memory:
+    @classmethod
+    def readonly(cls, path):
+        """Same schema and interfaces, with SQLite enforcing no test-time writes."""
+        from growthlab.state import Store
+        value=cls.__new__(cls)
+        value.library=ConventionLibrary.__new__(ConventionLibrary)
+        value.store=Store.__new__(Store)
+        value.db=sqlite3.connect(Path(path).resolve().as_uri()+'?mode=ro',uri=True)
+        value.db.execute('PRAGMA query_only=ON')
+        value.store.db=value.db
+        value.library.store=value.store
+        value.understandings=Understandings(value.library)
+        return value
+
     def __init__(self, path):
         Path(path).parent.mkdir(parents=True, exist_ok=True)
         self.library = ConventionLibrary(path)
         self.store = self.library.store
         self.db = self.store.db
+        self.understandings = Understandings(self.library)
         self.db.executescript('''
         CREATE TABLE IF NOT EXISTS kernel_turns(
           event_id TEXT PRIMARY KEY, channel TEXT NOT NULL, created TEXT NOT NULL,

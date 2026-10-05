@@ -18,6 +18,8 @@ from .model import Model
 from .memory import Memory
 from .server import KernelServer
 from .reconnect import ReconnectSchedule
+from .budget import DailyLedger
+from .tokens import persistent_token
 
 
 def batch_limit(budget):
@@ -29,15 +31,17 @@ def batch_limit(budget):
 
 
 class Runtime:
-    def __init__(self,*,acceptance=False,minutes=30,acceptance_case='kernel-v1',local_token=None):
-        if not 1<=minutes<=30:raise ValueError('session_deadline')
+    def __init__(self,*,acceptance=False,minutes=None,acceptance_case='kernel-v1',local_token=None):
+        if minutes is not None and not 1<=minutes<=30:raise ValueError('session_deadline')
         if acceptance_case not in ('kernel-v1','search-v1.3'):raise ValueError('acceptance_case')
         self.folder=ROOT/'runs/kernel_v1/sessions'/str(time.time_ns())
         self.folder.mkdir(parents=True)
         self.path=ROOT/('runs/kernel_v1/acceptance/state.sqlite' if acceptance else 'runs/kernel_v1/owner/state.sqlite')
         if acceptance and acceptance_case=='search-v1.3':
             self.path=ROOT/'runs/kernel_v1_3/acceptance/state.sqlite'
-        self.deadline=time.monotonic()+minutes*60
+        self.deadline=time.monotonic()+minutes*60 if minutes is not None else float('inf')
+        self.last_error = ''
+        self._owner_absent_stopped = False
         self._closed=threading.Event()
         self._close_lock=threading.Lock()
         self._body_lock=threading.RLock()
@@ -47,32 +51,34 @@ class Runtime:
         self.body=self.engine=self.server=self.bridge=None
         key=read_key()
         self.audit=AuditLog(self.folder,(key,))
+        original_write=self.audit.write
+        def track_error(name,row):
+            if row.get('error_code') or row.get('error_type'):
+                self.last_error=str(row.get('error_code') or row.get('error_type'))
+            original_write(name,row)
+        self.audit.write=track_error
         self.audit.write('lifecycle.jsonl',{'event':'supervisor_start','pid':os.getpid(),
-            'unix_s':time.time(),'stop_unix_s':time.time()+minutes*60,'acceptance':acceptance,
+            'unix_s':time.time(),'stop_unix_s':time.time()+minutes*60 if minutes is not None else None,'acceptance':acceptance,
             'acceptance_case':acceptance_case if acceptance else None})
         try:
-            ledger=BudgetLedger(DEFAULT_BUDGET,5)
-            budget_file=ROOT/'runs/kernel_v1/batch_budget.json'
-            try:
-                with budget_file.open('x',encoding='utf-8') as f:
-                    json.dump({'start_total':ledger.total(),'extra_cap':.50,'limit':min(5,ledger.total()+.50)},f)
-            except FileExistsError:pass
-            budget=json.loads(budget_file.read_bytes())
-            limit=batch_limit(budget)
+            ledger=DailyLedger(DEFAULT_BUDGET)
             self.transport=RoutedTransportV2(api_key=key,mode='pinned',route_index=0,
-                budget_path=DEFAULT_BUDGET,limit=limit,log_dir=self.folder)
+                budget_path=DEFAULT_BUDGET,limit=1,log_dir=self.folder)
+            self.transport.ledger=ledger
             self.transport.set_audit(self.audit)
-            self.audit.write('preflight.jsonl',{'route':self.transport.preflight(),'budget_start':ledger.total(),'batch_limit':limit})
+            self.audit.write('preflight.jsonl',{'route':self.transport.preflight(),'daily_budget':ledger.snapshot()})
             self.body=Body(self.audit,self.on_minecraft)
             self.engine=Harness(self.path,Model(self.transport,self.audit),self.body,self.audit)
-            self.server=KernelServer(self.engine,self.audit,local_token=local_token)
+            self.engine.action_policy=self.owner_authorized
+            self.server=KernelServer(self.engine,self.audit,local_token=persistent_token(supplied=local_token))
             self.server.start()
             self.bridge=AiriBridge(self.audit)
             try:self.bridge.start()
             except Exception as error:self.audit.write('lifecycle.jsonl',{'event':'airi_bridge_unavailable','error_type':type(error).__name__})
             self.body.start()
             self.audit.write('lifecycle.jsonl',{'event':'supervisor_ready','pid':os.getpid(),'model':self.transport.model,'base_url':self.server.base_url})
-            threading.Thread(target=self._watch,daemon=True).start()
+            self.watcher=threading.Thread(target=self._watch,daemon=True)
+            self.watcher.start()
         except Exception:
             self.close('startup_failed')
             raise
@@ -84,13 +90,26 @@ class Runtime:
             process=self.body.process
             if self._reconnect.due(time.monotonic(),exited=process is None or process.poll() is not None,deadline=self.deadline):
                 try:self.reconnect_body(automatic=True)
-                except Exception as error:self.audit.write('lifecycle.jsonl',{'event':'body_reconnect_failed','error_type':type(error).__name__})
+                except Exception as error:
+                    self.last_error=type(error).__name__
+                    self.audit.write('lifecycle.jsonl',{'event':'body_reconnect_failed','error_type':self.last_error})
             if self._reconnect_notice and not self.body.snapshot().get('offline'):
                 self._reconnect_notice=False
-                self.body.say('我重新连上了。刚才的任务和回执保留着；没有重放动作。你明确说继续后，我会先重新观察。')
                 self.audit.write('lifecycle.jsonl',{'event':'body_reconnected','replayed_actions':0})
             if self.engine and not self.body.snapshot().get('offline'):
+                if not self.owner_authorized(None):
+                    if not self._owner_absent_stopped:
+                        self.engine.stop()
+                        self._owner_absent_stopped=True
+                    continue
+                self._owner_absent_stopped=False
                 self.engine.initiative.pulse()
+
+    def owner_authorized(self, action):
+        if self.body.snapshot().get('owner'):
+            return True
+        with Memory(self.path) as memory:
+            return bool(self.engine.initiative.grant(memory))
 
     def on_minecraft(self,text,input_state=None):
         if self._closed.is_set():return
@@ -134,7 +153,8 @@ class Runtime:
     def status(self):
         if self._closed.is_set():return '本次运行已结束'
         state=self.body.snapshot()
-        return f"MC {'未连接' if state.get('offline') else '已连接'} · AIRI {'已连接' if self.bridge.ready else '等待连接'} · 剩余 {max(0,int(self.deadline-time.monotonic()))} 秒 · 模型调用 {self.engine.model.calls} 次 · {self.engine.progress}"
+        budget=self.transport.ledger.snapshot()
+        return f"在线 · MC {'未连接' if state.get('offline') else '已连接'} · AIRI {'已连接' if self.bridge.ready else '等待连接'} · 今日已用 ${budget['used_usd']:.4f} / 剩余 ${budget['remaining_usd']:.4f} · 最近错误：{self.last_error or '无'} · {self.engine.progress}"
 
     def close(self,reason='owner_closed'):
         with self._close_lock:

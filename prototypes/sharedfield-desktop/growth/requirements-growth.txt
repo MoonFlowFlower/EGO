@@ -6,3 +6,4 @@ opensimplex==0.4.5.1
 pillow==12.3.0
 pygame==2.6.1
 ruamel-yaml==0.17.21
+tzdata==2026.5

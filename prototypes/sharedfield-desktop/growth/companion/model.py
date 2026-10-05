@@ -1,6 +1,7 @@
 """The only component allowed to call a model; fixed route and shared ledger."""
 import json
 import time
+from contextlib import nullcontext
 from .compact import compact_context
 
 from p7.proxy import ProxyError, MAX_RESPONSE_BYTES
@@ -68,10 +69,25 @@ class Model:
 
     def decide(self, system, context):
         request = request_payload(self.transport.model,system,context)
+        output, _ = self.complete(request)
+        return output
+
+    def complete(self, request, *, observer=None, allow_invalid=False):
+        """Shared production/experiment entry. The observer never receives headers."""
+        lock = getattr(self.transport.ledger, 'call_lock', nullcontext)
+        with lock():
+            return self._complete(request, observer=observer, allow_invalid=allow_invalid)
+
+    def _complete(self, request, *, observer=None, allow_invalid=False):
         started = time.monotonic()
         call = None
         usage = {}
         finish_reason=None
+        data = None
+        error_code = None
+        failed_charge = None
+        if observer:
+            observer('request', {'request':request})
         try:
             call = self.transport.open_call(request)
             self.calls += 1
@@ -85,9 +101,19 @@ class Model:
             finish_reason=choice.get('finish_reason')
             if finish_reason != 'stop':
                 raise DecisionError('model_output_truncated' if finish_reason=='length' else 'model_output_incomplete')
-            try:return json.loads(choice['message']['content'])
+            try:
+                output = json.loads(choice['message']['content'])
             except (json.JSONDecodeError,TypeError) as error:raise DecisionError('model_decision_json') from error
+        except DecisionError as error:
+            error_code=error.code
+            if not allow_invalid: raise
+            output=None
+        except Exception as error:
+            error_code = getattr(error,'code',type(error).__name__)
+            failed_charge = getattr(error,'charge_id',None)
+            raise
         finally:
+            cost = None
             if call:
                 cost = self.transport.ledger.settle(call.charge_id, usage)
                 # Content has provenance in canonical SQLite, not a second raw log.
@@ -99,3 +125,11 @@ class Model:
                     'request_bytes':len(json.dumps(call.payload,ensure_ascii=False,separators=(',',':')).encode()),
                     'reasoning_tokens':usage.get('completion_tokens_details',{}).get('reasoning_tokens'),
                     'input_tokens': usage.get('prompt_tokens'), 'output_tokens': usage.get('completion_tokens')})
+            meta = {'latency_s':time.monotonic()-started, 'charge_id':call.charge_id if call else failed_charge,
+                    'cost_usd':cost, 'usage':usage, 'finish_reason':finish_reason,
+                    'error':error_code, 'reasoning_requested':request.get('reasoning')}
+            if error_code:
+                self.audit.write('model.jsonl', {'event':'model_error','error_code':error_code})
+            if observer:
+                observer('response', {'response':data,'meta':meta})
+        return output, meta
