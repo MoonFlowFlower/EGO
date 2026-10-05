@@ -1,0 +1,42 @@
+{
+  "model": "gpt-6-astra",
+  "effort": "medium",
+  "synthetic_only": true,
+  "probe_round": 2,
+  "prior_engineering_attempts": 5,
+  "owner_confirmed_subscription_only": true,
+  "lanes": {
+    "off": {
+      "attempts": 1,
+      "completed": 0,
+      "strict_json_valid": 0,
+      "median_s": null,
+      "p95_s": null,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "errors": [
+        {
+          "code": "unsupported_value",
+          "http_status": 400,
+          "body": "{\n  \"error\": {\n    \"message\": \"Unsupported value: 'none' is not supported with the 'gpt-6-astra' model. Supported values are: 'low', 'medium', 'high', 'xhigh', and 'max'.\",\n    \"type\": \"invalid_request_error\",\n    \"param\": \"reasoning.effort\",\n    \"code\": \"unsupported_value\"\n  }\n}",
+          "request_id": null,
+          "retry_after": null
+        }
+      ]
+    },
+    "on": {
+      "attempts": 20,
+      "completed": 20,
+      "strict_json_valid": 20,
+      "median_s": 4.122254449997854,
+      "p95_s": 7.324681269999565,
+      "input_tokens": 4760,
+      "output_tokens": 1391,
+      "errors": []
+    }
+  },
+  "ready_for_reasoning_judge": true,
+  "quota_error_observed": false,
+  "revoked_or_expired_grant_observed": false,
+  "error_probe_boundary": "Only actual observed errors are raw evidence; offline fault injection does not prove live quota/revocation."
+}

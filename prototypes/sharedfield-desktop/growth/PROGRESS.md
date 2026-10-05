@@ -488,3 +488,5 @@
 - 交付evidence/u2/round2/REPORT.md、MAIN_RESULTS.json、SUMMARY.csv、RESOURCE_SUMMARY.csv、POST_RUN_CHECKS.json、冻结/关闭清单及全部逐次原始记录。WEEKLY.md置顶本次白话更新。U2整体不通过，不宣称已懂真人，不扩展MC或initiative；runs不提交。
 
 - 工程修正 `7804609`：为U2合成证据加入限定范围的Git忽略例外，修复Windows根Test/规则漏收75份测试原始文件的问题；171份第二轮证据全部已跟踪，Git对象字节与本地逐一一致，runs仍被忽略。
+
+- 2026-10-05 D17 工程接入：官方 SIWC/PKCE/DPAPI，显式合成路线，默认 DeepSeek；Astra medium 20/20 严格 JSON，中位数 4.1223s/P95 7.3247s；none 不支持，撤销刷新实测 invalid_grant。U4 已冻结 567 输入与 60 个 D0 重跑，27 项离线检查通过，待运行；数据条款适用范围、实网额度上限与 GUI 显示仍有未验证项。

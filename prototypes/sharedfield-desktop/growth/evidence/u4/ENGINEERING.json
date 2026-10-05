@@ -1,0 +1,7 @@
+{
+  "at_utc": "2026-10-05T22:10:27.258094+00:00",
+  "passed": true,
+  "tests": 27,
+  "command": "python -m unittest u4.test_u4 companion.test_chatgpt companion.test_chatgpt_oauth u3.test_client companion.test_runtime_budget -q",
+  "scope": "Offline engineering and exact historical regrade; no U4 model calls"
+}
