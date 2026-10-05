@@ -1,0 +1,553 @@
+{
+  "status": "screening_closed_no_main",
+  "closed_utc": "2026-10-05T06:34:06.065212+00:00",
+  "screen_manifest_sha256": "c969a2f884692f51c2e0c860d811e6434f87884ae0623bcafec7bc4486de607e",
+  "selection_sha256": "5d3a3a26a1eeba7ad9c7730e2fbb8b3cbdd240c376304136c63dbb4f36ea0807",
+  "source_hashes_verified": true,
+  "eligible_ids": [
+    "P01",
+    "P02",
+    "P03",
+    "P06",
+    "P09",
+    "P10",
+    "P11",
+    "P12",
+    "P30",
+    "P33",
+    "Q03",
+    "Q05",
+    "Q07",
+    "Q08",
+    "Q11",
+    "Q15",
+    "Q17",
+    "Q23",
+    "Q25",
+    "Q27",
+    "Q29",
+    "Q44",
+    "W01",
+    "W02",
+    "W03",
+    "W04",
+    "W05",
+    "W06",
+    "W07",
+    "W08",
+    "W09",
+    "W10",
+    "W11",
+    "W12",
+    "W13",
+    "W14",
+    "W15",
+    "W16",
+    "W17",
+    "W18",
+    "W19",
+    "W20",
+    "W21",
+    "W22",
+    "W23",
+    "W24",
+    "W25",
+    "W26",
+    "W27",
+    "W28",
+    "W29",
+    "W30",
+    "W31",
+    "W32",
+    "W33",
+    "W34",
+    "W35",
+    "W36",
+    "W37",
+    "W38",
+    "W39",
+    "W40",
+    "W41",
+    "W42",
+    "W43",
+    "W44",
+    "W45",
+    "W46",
+    "W47",
+    "W48"
+  ],
+  "excluded": [
+    {
+      "id": "P04",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P05",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P07",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P08",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P13",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P14",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P15",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P16",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P17",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P18",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P19",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P20",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P21",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P22",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P23",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P24",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P25",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P26",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P27",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P28",
+      "reasons": [
+        "prior_already_target",
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "P29",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P31",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P32",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P34",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P35",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P36",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P37",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P38",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P39",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P40",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P41",
+      "reasons": [
+        "prior_already_target",
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "P42",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P43",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P44",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P45",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P46",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P47",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P48",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q01",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q02",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q04",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q06",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q09",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q10",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q12",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q13",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q14",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q16",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q18",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q19",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q20",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q21",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q22",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q24",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q26",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q28",
+      "reasons": [
+        "prior_already_target",
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q30",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q31",
+      "reasons": [
+        "prior_already_target",
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q32",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q33",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q34",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q35",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q36",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q37",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q38",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q39",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q40",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q41",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q42",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q43",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q45",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q46",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q47",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q48",
+      "reasons": [
+        "prior_already_target"
+      ]
+    }
+  ],
+  "selected_ids": [],
+  "raw_sha256": {
+    "raw/screen/P_ceiling/calls.jsonl": "90e87f0db603caf227b07cae6552acdf8fd6aba058a23a62bbd789d8ccc937a3",
+    "raw/screen/P_ceiling/result.json": "9363259b9f9fdda8d13025dea6e1583001837bc878f8a216896cad80c4d20543",
+    "raw/screen/P_ceiling/routing.jsonl": "d45c3600bafe505b504566f7e750bb951776d4b8ea390d7766212219bf05615c",
+    "raw/screen/P_ceiling/screen.jsonl": "3f4ab115e9e4379c463b7eec10a3c174f7a5fda239577f5798be771affb91bf6",
+    "raw/screen/P_prior/calls.jsonl": "2380f6259c722e7e693ded03f5aa547fa597f1b4ccbf4375b77e34e8d895d6ce",
+    "raw/screen/P_prior/result.json": "b0b389974f732af16e5a57eb70046b67a73e58432ebcea1450a5478de47ad557",
+    "raw/screen/P_prior/routing.jsonl": "428fb2d36215bf965e2e9edbbe54b608c9aec2abb3b40d67a433e18c9480040c",
+    "raw/screen/P_prior/screen.jsonl": "c88234d7b3534c66144ac33f2d0c4758c9d51f15e1bd0aad3046c6cef60a46c8",
+    "raw/screen/Q_ceiling/calls.jsonl": "9c46978790a29ba2babb75d616b796df41d089d3c56e3bf26c31a42b2e339185",
+    "raw/screen/Q_ceiling/result.json": "f290460fc6c7720746d2db957618f0387b03a9e10701be55aebbe8cf3138455b",
+    "raw/screen/Q_ceiling/routing.jsonl": "117a5b2008b2b2d97712076e731e3e740544b72b10e767723f8f8914e62e84a7",
+    "raw/screen/Q_ceiling/screen.jsonl": "b6dd28056059d5a875b906faaf1c44611ac0ab7b4a24f0d0e50370c373fdc2e2",
+    "raw/screen/Q_prior/calls.jsonl": "d7e0f3360db1c366b63559081a6e91d29f8996192fbf45089c0ec876510b0e63",
+    "raw/screen/Q_prior/result.json": "15d68530fe5490c9332abd579b622520e2bb403c03a89957594cbdace592f061",
+    "raw/screen/Q_prior/routing.jsonl": "737d12f515404b978c3f4f19e52bc3ccb1e16fa70a8313b5aba73f109452e1a1",
+    "raw/screen/Q_prior/screen.jsonl": "7b426b2ca2abd4d2dc27b62d05f7405c56220ebb223d3c3c10f19dc9a4cf3be1",
+    "raw/screen/W_ceiling/calls.jsonl": "82b8d4085552dc3ecdfd544ff9bc37bb52c9f1809a629e638641ef891b7925d5",
+    "raw/screen/W_ceiling/result.json": "1658ab574c9be288593a388ebdbcc4be93103fed5a393238dba26145f8018a98",
+    "raw/screen/W_ceiling/routing.jsonl": "60f4ee7fa74be782907355f16ac934ab46ed206c973fe0e0c93fc51c4ad695c9",
+    "raw/screen/W_ceiling/screen.jsonl": "85551bdc27dc4b4e73e25bb1caf969742bc09dea01a3b3fa00706f4b881e6d57"
+  },
+  "Q_ceiling_validity": "The unknown-future-useful upper-bound memory did not name the unknown; retain original mechanical scores but do not treat Q as a complete specification-conforming ceiling check."
+}

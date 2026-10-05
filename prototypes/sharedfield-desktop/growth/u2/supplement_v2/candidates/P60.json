@@ -1,0 +1,95 @@
+{
+  "id": "P60",
+  "category": "P",
+  "preference": "你自己拍照留念时倾向没有人物的静物与环境。",
+  "teaching_domain": "影像主体",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "拍大家的合影，还是门边那排雨靴？"
+        },
+        {
+          "speaker": "user",
+          "text": "拍雨靴，乱七八糟摆着就知道今天多热闹。"
+        }
+      ]
+    },
+    {
+      "dialogue": 6,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "相册里那张空秋千留了好多年，我一直没补人像进去。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "为你记录一次小聚，镜头主要指向哪里？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "只拍清晰的人脸特写。"
+        },
+        {
+          "id": "o3",
+          "text": "捕捉物件与空间留下的痕迹。"
+        },
+        {
+          "id": "o4",
+          "text": "让所有参与者面对镜头摆姿势。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T1",
+      "domain": "影像主体"
+    },
+    {
+      "situation": "为你的个人纪念页选封面，用什么？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "用本人正面肖像。"
+        },
+        {
+          "id": "o3",
+          "text": "完全依赖大幅人物头像。"
+        },
+        {
+          "id": "o4",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o5",
+          "text": "用能暗示经历的场所细节。"
+        }
+      ],
+      "target": "o5",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你自己拍照留念时倾向没有人物的静物与环境。",
+  "counterintuitive": "此人的取向不采用通常推荐的“让所有参与者面对镜头摆姿势。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+  "protected_names": [
+    "秋千"
+  ]
+}

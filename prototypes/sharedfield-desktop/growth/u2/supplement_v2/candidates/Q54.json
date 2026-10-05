@@ -1,0 +1,85 @@
+{
+  "id": "Q54",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "不要放闪粉，清理起来太麻烦。",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "过几天想寄一份自制小礼物，先等我把眼前的手续办完。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 2,
+  "question": {
+    "situation": "封口纸都到了，我们坐会儿。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "包裹里能放闪粉一类的碎屑吗？"
+      },
+      {
+        "id": "o2",
+        "text": "这些纸挺整齐，放旁边就好。对了，包裹里能放闪粉一类的碎屑吗？"
+      },
+      {
+        "id": "o3",
+        "text": "这些纸挺整齐，放旁边就好。"
+      },
+      {
+        "id": "o4",
+        "text": "这些纸挺整齐，放旁边就好。对了，你更喜欢靛蓝还是赭红？"
+      }
+    ],
+    "target": "o2",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o2"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你做一次私人赠礼包装。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o2",
+          "text": "用不会散落细屑的装饰。"
+        },
+        {
+          "id": "o3",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o4",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o5",
+          "text": "加入会洒落的亮粉。"
+        }
+      ],
+      "target": "o2",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "还不知道你是否接受包裹里的闪粉或碎屑；之后包装赠礼会用得上这个信息。",
+  "ceiling_use": "不要放闪粉，清理起来太麻烦。",
+  "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+  "protected_names": []
+}

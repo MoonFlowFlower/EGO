@@ -1,0 +1,85 @@
+{
+  "id": "Q69",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "no_future",
+  "hidden_answer": "我会穿低帮。",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "刚才那些行装是给小说人物配的，我本人没有舞会打算，纯粹画角色。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 2,
+  "question": {
+    "situation": "披风的轮廓完成了，看着还挺飘。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "这个外沿挺舒展，放在画面里顺眼。"
+      },
+      {
+        "id": "o2",
+        "text": "这个外沿挺舒展，放在画面里顺眼。对了，你更喜欢靛蓝还是赭红？"
+      },
+      {
+        "id": "o3",
+        "text": "你本人参加宴会时想穿高帮还是低帮鞋？"
+      },
+      {
+        "id": "o4",
+        "text": "这个外沿挺舒展，放在画面里顺眼。对了，你本人参加宴会时想穿高帮还是低帮鞋？"
+      }
+    ],
+    "target": "o1",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o3",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o2",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "在后来另一次真实活动中替你选择脚部穿戴。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o2",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o3",
+          "text": "选择不包住踝部的款型。"
+        },
+        {
+          "id": "o4",
+          "text": "选择包覆到踝上的款型。"
+        },
+        {
+          "id": "o5",
+          "text": "再问你一次。"
+        }
+      ],
+      "target": "o3",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "这项打扮只属于虚构人物，对方本人没有相关安排，询问其个人穿戴偏好没有已知后续用途。",
+  "ceiling_use": "我会穿低帮。",
+  "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+  "protected_names": []
+}

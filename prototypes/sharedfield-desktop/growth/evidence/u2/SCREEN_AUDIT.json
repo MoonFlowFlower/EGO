@@ -1,0 +1,1257 @@
+{
+  "utc": "2026-10-05T06:34:06.065212+00:00",
+  "source_files_verified": 178,
+  "screen_manifest_sha256": "c969a2f884692f51c2e0c860d811e6434f87884ae0623bcafec7bc4486de607e",
+  "requests": 240,
+  "responses": 240,
+  "unique_charges": 240,
+  "reported_usd": 0.04469108,
+  "unknown_reservations_usd": 0,
+  "cost_total_usd": 0.04469108,
+  "retry_count": 0,
+  "invalid_decisions": 0,
+  "latency_seconds": {
+    "median": 1.6880000000019209,
+    "maximum": 30.531000000002678,
+    "sum": 618.7020000000848
+  },
+  "wall_seconds": 714.9157013893127,
+  "daily_budget": {
+    "local_day": "2026-10-05",
+    "timezone": "America/Winnipeg",
+    "limit_usd": 1.0,
+    "used_usd": 0.04469108,
+    "remaining_usd": 0.95530892
+  },
+  "lanes": [
+    {
+      "lane": "P_ceiling",
+      "status": "complete",
+      "pid": 46408
+    },
+    {
+      "lane": "P_prior",
+      "status": "complete",
+      "pid": 10444
+    },
+    {
+      "lane": "Q_ceiling",
+      "status": "complete",
+      "pid": 55104
+    },
+    {
+      "lane": "Q_prior",
+      "status": "complete",
+      "pid": 56376
+    },
+    {
+      "lane": "W_ceiling",
+      "status": "complete",
+      "pid": 50908
+    }
+  ],
+  "charges": [
+    {
+      "id": "8e03a9903d0c48ddbd6dc0090cfb81ac",
+      "usd": 0.00022616,
+      "status": "reported"
+    },
+    {
+      "id": "9ad64ea48f6c4f6a9108c16ab037fcab",
+      "usd": 0.0002296,
+      "status": "reported"
+    },
+    {
+      "id": "a1d901fbc9eb497fa946df1dbd976ac9",
+      "usd": 0.00020864,
+      "status": "reported"
+    },
+    {
+      "id": "9da199c3c5144cfc913fb2bc374e0a43",
+      "usd": 0.0002192,
+      "status": "reported"
+    },
+    {
+      "id": "0d68289f5d2a4411af1fd12684f87ef7",
+      "usd": 0.0002308,
+      "status": "reported"
+    },
+    {
+      "id": "0886505478a74ba999d5d1ae2497f42f",
+      "usd": 0.00023056,
+      "status": "reported"
+    },
+    {
+      "id": "69e2c9151ee84da59f0966cd28a75b5b",
+      "usd": 0.00023176,
+      "status": "reported"
+    },
+    {
+      "id": "41ec3b01949346c78098037a135e1157",
+      "usd": 0.00021752,
+      "status": "reported"
+    },
+    {
+      "id": "211e36e0154942df8e2458fea03c17de",
+      "usd": 0.00019336,
+      "status": "reported"
+    },
+    {
+      "id": "3c85fecb12a842f9acee3d2290b2e7d4",
+      "usd": 0.00021888,
+      "status": "reported"
+    },
+    {
+      "id": "c6d4c3f4f3d74cf2a6a7d9c2b9c9a9de",
+      "usd": 0.00020456,
+      "status": "reported"
+    },
+    {
+      "id": "75e6f17a06f1469b9ebeecdd42b56298",
+      "usd": 0.00020704,
+      "status": "reported"
+    },
+    {
+      "id": "b13b5fd3136048f98b7aa693423778b5",
+      "usd": 0.0002072,
+      "status": "reported"
+    },
+    {
+      "id": "80c0195572d74da8a1c532d863a9aeae",
+      "usd": 0.00023344,
+      "status": "reported"
+    },
+    {
+      "id": "62b0772dad3a4d009d0993dd9ee708f8",
+      "usd": 0.00025352,
+      "status": "reported"
+    },
+    {
+      "id": "d6e1e8f274834740b920167a9dfa0b3b",
+      "usd": 0.000196,
+      "status": "reported"
+    },
+    {
+      "id": "976a9fed58c94aedb781bc2b5d43af8e",
+      "usd": 0.00021832,
+      "status": "reported"
+    },
+    {
+      "id": "f09a3a35c20042fda6b72cc9f60c2cf5",
+      "usd": 0.00023272,
+      "status": "reported"
+    },
+    {
+      "id": "c1de6571ff564f39851596570f74c080",
+      "usd": 0.0002024,
+      "status": "reported"
+    },
+    {
+      "id": "eea5a4af45734f039cfbcf192b2d8671",
+      "usd": 0.00020624,
+      "status": "reported"
+    },
+    {
+      "id": "07053b2b7b00449581ca3c32d6451590",
+      "usd": 0.00021984,
+      "status": "reported"
+    },
+    {
+      "id": "8daeecd1b66b47c88755984a425d0a35",
+      "usd": 0.0002136,
+      "status": "reported"
+    },
+    {
+      "id": "6f7f060b8a9c4106919ad6120652b78f",
+      "usd": 0.00023312,
+      "status": "reported"
+    },
+    {
+      "id": "4eb0dcd89ab14415ab8f8b60377a365c",
+      "usd": 0.00021136,
+      "status": "reported"
+    },
+    {
+      "id": "f9a02ede4492417eb1feb01970574331",
+      "usd": 0.00022,
+      "status": "reported"
+    },
+    {
+      "id": "3af5a0b0bdd248b29254eaac954d6ce3",
+      "usd": 0.0002112,
+      "status": "reported"
+    },
+    {
+      "id": "876b7ebe8d064d0b8b76de696fed4b07",
+      "usd": 0.0002052,
+      "status": "reported"
+    },
+    {
+      "id": "75ca9cacfd22452dade113605a0ff926",
+      "usd": 0.00022952,
+      "status": "reported"
+    },
+    {
+      "id": "159e328d964e4bfb8413e2df6e71b337",
+      "usd": 0.00020096,
+      "status": "reported"
+    },
+    {
+      "id": "e0d60c6ed30a445aad5d8e8ebe5c1e70",
+      "usd": 0.00020648,
+      "status": "reported"
+    },
+    {
+      "id": "5aab8cdd60e44b5aa995dbd04b02b912",
+      "usd": 0.00020504,
+      "status": "reported"
+    },
+    {
+      "id": "9750ad9571894164aa0c71bae1bfa3f1",
+      "usd": 0.00021368,
+      "status": "reported"
+    },
+    {
+      "id": "950aff87c3924f5eb4d153e2eb3f0616",
+      "usd": 0.0002232,
+      "status": "reported"
+    },
+    {
+      "id": "ec72d630608d4d0089ada4b7fe354a09",
+      "usd": 0.00021256,
+      "status": "reported"
+    },
+    {
+      "id": "7569e497dde44460beced8de360d9133",
+      "usd": 0.0002236,
+      "status": "reported"
+    },
+    {
+      "id": "aefb3730953c45f3a667395a1132c5b4",
+      "usd": 0.00022064,
+      "status": "reported"
+    },
+    {
+      "id": "427ac0c3398445adbfae90719a94afde",
+      "usd": 0.00019352,
+      "status": "reported"
+    },
+    {
+      "id": "550faae6487f4e948b381fc3938a2fcc",
+      "usd": 0.0002284,
+      "status": "reported"
+    },
+    {
+      "id": "c84b36bf7ec34b1e88d0767e67d0137b",
+      "usd": 0.00020648,
+      "status": "reported"
+    },
+    {
+      "id": "3c4ac6bbd5ab4fd292f5ab9a93cafe8a",
+      "usd": 0.0002016,
+      "status": "reported"
+    },
+    {
+      "id": "77869db49bc34d0a957e04965642c682",
+      "usd": 0.00022432,
+      "status": "reported"
+    },
+    {
+      "id": "971bd97374d34a268ebe7830a3f96c18",
+      "usd": 0.00023992,
+      "status": "reported"
+    },
+    {
+      "id": "d54e4c025e3e4263a1db8a54223259ee",
+      "usd": 0.00022704,
+      "status": "reported"
+    },
+    {
+      "id": "76ffc6b2390b40199bce3595afdf72c2",
+      "usd": 0.000218,
+      "status": "reported"
+    },
+    {
+      "id": "7558bf79ef4d40eebd871d8e3dd35171",
+      "usd": 0.0002184,
+      "status": "reported"
+    },
+    {
+      "id": "1de91ca7e56949139ae407617579663e",
+      "usd": 0.00021368,
+      "status": "reported"
+    },
+    {
+      "id": "fd6b031dc0d64aa987bd69cf320d6e71",
+      "usd": 0.00021448,
+      "status": "reported"
+    },
+    {
+      "id": "dd5055c308fa41388ba65d5a86cec2fc",
+      "usd": 0.00019832,
+      "status": "reported"
+    },
+    {
+      "id": "75b1b0db235142a9abbc79f9780470e7",
+      "usd": 0.00022616,
+      "status": "reported"
+    },
+    {
+      "id": "324f27569885447cb36f8ef7a782aca5",
+      "usd": 0.00025416,
+      "status": "reported"
+    },
+    {
+      "id": "ac355f0650874255bbf1d6234d363934",
+      "usd": 0.000238,
+      "status": "reported"
+    },
+    {
+      "id": "878187e050be495baf2cd051d72bca95",
+      "usd": 0.00021408,
+      "status": "reported"
+    },
+    {
+      "id": "aa1157cd1409410e947f6d5e09e80a0e",
+      "usd": 0.00023152,
+      "status": "reported"
+    },
+    {
+      "id": "3fd4d13c084e4ea780a388273965738e",
+      "usd": 0.00023224,
+      "status": "reported"
+    },
+    {
+      "id": "f8600b8773334ee8a286e708c75ac267",
+      "usd": 0.00023608,
+      "status": "reported"
+    },
+    {
+      "id": "6a365dc75e0943deb99282edf0a4511b",
+      "usd": 0.0002184,
+      "status": "reported"
+    },
+    {
+      "id": "0eb3bc5a37334f3182687d29f80ae991",
+      "usd": 0.0002232,
+      "status": "reported"
+    },
+    {
+      "id": "27f80488a4ce494d94bb3b20be0043c5",
+      "usd": 0.00023952,
+      "status": "reported"
+    },
+    {
+      "id": "835517544e4641fdb2ff375d5aabc26e",
+      "usd": 0.00021952,
+      "status": "reported"
+    },
+    {
+      "id": "3456f66cccda4398925636cf258a1066",
+      "usd": 0.00020384,
+      "status": "reported"
+    },
+    {
+      "id": "df402df3060640378640cdf861edd671",
+      "usd": 0.000236,
+      "status": "reported"
+    },
+    {
+      "id": "65560f15f22445ea9a1af336277be312",
+      "usd": 0.00026296,
+      "status": "reported"
+    },
+    {
+      "id": "8eca465c323446848b729a2e138f0dac",
+      "usd": 0.00024688,
+      "status": "reported"
+    },
+    {
+      "id": "1ccac31c599340a0a0d1ecefcf572855",
+      "usd": 0.00022896,
+      "status": "reported"
+    },
+    {
+      "id": "810a19e7e87c45d1ab021fec638facbc",
+      "usd": 0.00023208,
+      "status": "reported"
+    },
+    {
+      "id": "955871bda7e14a69ba894476512ce512",
+      "usd": 0.00021888,
+      "status": "reported"
+    },
+    {
+      "id": "290c1eadf629450faae390886ba2a950",
+      "usd": 0.00023312,
+      "status": "reported"
+    },
+    {
+      "id": "e44ce261bc6e4360a6dcb178d08d2f70",
+      "usd": 0.00022,
+      "status": "reported"
+    },
+    {
+      "id": "6dd23ca86c8b462e88edf69cd81e54c2",
+      "usd": 0.00023496,
+      "status": "reported"
+    },
+    {
+      "id": "3a88d79daeb24e169f1eb04108763b59",
+      "usd": 0.00021776,
+      "status": "reported"
+    },
+    {
+      "id": "c58fbcac20a24346bf0768eae3d2c0ef",
+      "usd": 0.00022424,
+      "status": "reported"
+    },
+    {
+      "id": "1e03974b913e41e5af5f677262a42fb5",
+      "usd": 0.0002284,
+      "status": "reported"
+    },
+    {
+      "id": "cfe8e88f0a294f8088f25d308034450c",
+      "usd": 0.0002444,
+      "status": "reported"
+    },
+    {
+      "id": "3407c4ee8e23485087a5a83a34fb6af8",
+      "usd": 0.00023608,
+      "status": "reported"
+    },
+    {
+      "id": "d5c3ba7056a341d091e5716dd22bbd6b",
+      "usd": 0.00024328,
+      "status": "reported"
+    },
+    {
+      "id": "17209d9bb77e4fcfb2e3006f56d6932c",
+      "usd": 0.00023176,
+      "status": "reported"
+    },
+    {
+      "id": "db628bd2d2fd4de590855184d6bb489e",
+      "usd": 0.00022584,
+      "status": "reported"
+    },
+    {
+      "id": "fd3fa296231c421c85999b19a382c6fe",
+      "usd": 0.0002276,
+      "status": "reported"
+    },
+    {
+      "id": "b5a209604f2d42b794677299935670cf",
+      "usd": 0.00023952,
+      "status": "reported"
+    },
+    {
+      "id": "69d96f3ca1014659bd5b5a610d81932f",
+      "usd": 0.00022248,
+      "status": "reported"
+    },
+    {
+      "id": "39db1a5ffef84079a89e97a61e570e5d",
+      "usd": 0.00022168,
+      "status": "reported"
+    },
+    {
+      "id": "f89e7d86071641af9e35a3c3f928af38",
+      "usd": 0.00022064,
+      "status": "reported"
+    },
+    {
+      "id": "e9daaf4fff1845d8a4db20e4b403401f",
+      "usd": 0.00022928,
+      "status": "reported"
+    },
+    {
+      "id": "31b2847560f74b959e8900db916e54d5",
+      "usd": 0.00022632,
+      "status": "reported"
+    },
+    {
+      "id": "dc0a30a074784f70a175f3e3d5ddfb6b",
+      "usd": 0.00022304,
+      "status": "reported"
+    },
+    {
+      "id": "75dc48c36ba0465f90e1d5dfcc1791cd",
+      "usd": 0.00024096,
+      "status": "reported"
+    },
+    {
+      "id": "5b101170557547148c50779339262f1c",
+      "usd": 0.0002396,
+      "status": "reported"
+    },
+    {
+      "id": "ccad0345bab04c8d94f55530a17f90d9",
+      "usd": 0.00021176,
+      "status": "reported"
+    },
+    {
+      "id": "e9594eead9d34fc4879eb4e072beef09",
+      "usd": 0.00022624,
+      "status": "reported"
+    },
+    {
+      "id": "db62db43d0564bd8be0c8032fd116f90",
+      "usd": 0.00024632,
+      "status": "reported"
+    },
+    {
+      "id": "17a68544d87d4e51bbd3906ddc6d84fb",
+      "usd": 0.00021992,
+      "status": "reported"
+    },
+    {
+      "id": "947a7d2af517486e9405dcdb246b6bb4",
+      "usd": 0.00023912,
+      "status": "reported"
+    },
+    {
+      "id": "d02a85ef46ca4468bd4f3943fba7c297",
+      "usd": 0.00024504,
+      "status": "reported"
+    },
+    {
+      "id": "9110461093a74f1fb13a857ef1099a1c",
+      "usd": 0.000236,
+      "status": "reported"
+    },
+    {
+      "id": "71062689847647c9b5353d6a5a759450",
+      "usd": 0.00023064,
+      "status": "reported"
+    },
+    {
+      "id": "7ba2572ddc0c494fbd8a01921fbd2ea4",
+      "usd": 0.00020968,
+      "status": "reported"
+    },
+    {
+      "id": "f42d7a94f4154f128ea2251f47df2476",
+      "usd": 0.0001316,
+      "status": "reported"
+    },
+    {
+      "id": "fe47561f46d74d8488a67d995ac30bc5",
+      "usd": 0.00012952,
+      "status": "reported"
+    },
+    {
+      "id": "774550a595934811bf5a263258353903",
+      "usd": 0.00012232,
+      "status": "reported"
+    },
+    {
+      "id": "94376d7375474ec19606a5b2fa2286e1",
+      "usd": 0.00012504,
+      "status": "reported"
+    },
+    {
+      "id": "543b79a64acb4e5889f5bcb0f78451d9",
+      "usd": 0.00013672,
+      "status": "reported"
+    },
+    {
+      "id": "9d055658f4f748c0ac801553fc1e5dee",
+      "usd": 0.00014464,
+      "status": "reported"
+    },
+    {
+      "id": "57f939b2ca314f708ffaf071f8c492ff",
+      "usd": 0.00011552,
+      "status": "reported"
+    },
+    {
+      "id": "3c4d7abcdb9f4a01a075f2d7d41ac02d",
+      "usd": 0.00012424,
+      "status": "reported"
+    },
+    {
+      "id": "cce2e623a8594da8b1d5dfe53db62dc0",
+      "usd": 0.0001228,
+      "status": "reported"
+    },
+    {
+      "id": "f363494f62f44382a795ff1eff559934",
+      "usd": 0.00013736,
+      "status": "reported"
+    },
+    {
+      "id": "a58e2eb845044956a2197586d85bf622",
+      "usd": 0.0001172,
+      "status": "reported"
+    },
+    {
+      "id": "56ea0dbea84b4153935153ae9aa6396d",
+      "usd": 0.00013264,
+      "status": "reported"
+    },
+    {
+      "id": "c378c347eb9f4706abf5f96021cee185",
+      "usd": 0.00011656,
+      "status": "reported"
+    },
+    {
+      "id": "95cc946b13ba4216a5ff25b614abda85",
+      "usd": 0.00013856,
+      "status": "reported"
+    },
+    {
+      "id": "f6ad3cb06a474c219f45ae1bbaa01843",
+      "usd": 0.00011328,
+      "status": "reported"
+    },
+    {
+      "id": "fc844b51d9f44a06b4f8fb894e5e525b",
+      "usd": 0.00011968,
+      "status": "reported"
+    },
+    {
+      "id": "40d913051ccc4906b5d3c2139c27dec7",
+      "usd": 0.00014208,
+      "status": "reported"
+    },
+    {
+      "id": "1f0e7da8507e4d89a30d796337eff8d4",
+      "usd": 0.00010528,
+      "status": "reported"
+    },
+    {
+      "id": "3f0e5da10dfa4a53b644471273f04a9f",
+      "usd": 0.00014976,
+      "status": "reported"
+    },
+    {
+      "id": "4999e78096fb439db3e523836bf74e5f",
+      "usd": 0.00012128,
+      "status": "reported"
+    },
+    {
+      "id": "af058d24ba4042a5bcd17d0cccb76ac8",
+      "usd": 0.00011792,
+      "status": "reported"
+    },
+    {
+      "id": "0276e714a88c4e519eb1a68aa29af11e",
+      "usd": 0.00011224,
+      "status": "reported"
+    },
+    {
+      "id": "2414f1298c1548edb6884154afb91c88",
+      "usd": 0.00013832,
+      "status": "reported"
+    },
+    {
+      "id": "0baba59524814719a8e9bfd367565b3c",
+      "usd": 0.00012408,
+      "status": "reported"
+    },
+    {
+      "id": "4226dcbdb08a4ea395948477822971e9",
+      "usd": 0.00013232,
+      "status": "reported"
+    },
+    {
+      "id": "fbc8b923e28c406790e3634aaaa494e7",
+      "usd": 0.00014096,
+      "status": "reported"
+    },
+    {
+      "id": "0f52563ea7bd44c9aaf9cfcc677273ce",
+      "usd": 0.000148,
+      "status": "reported"
+    },
+    {
+      "id": "6dbe0d3fca0f49669043119cd81dda83",
+      "usd": 0.00012248,
+      "status": "reported"
+    },
+    {
+      "id": "b9223c35b96a428bafda287b3cf18453",
+      "usd": 0.00012296,
+      "status": "reported"
+    },
+    {
+      "id": "41b84da4cc2c4a85a1b69bc38bdefcd4",
+      "usd": 0.0001312,
+      "status": "reported"
+    },
+    {
+      "id": "3aac6f3313444aa68fa552501023f046",
+      "usd": 0.00013312,
+      "status": "reported"
+    },
+    {
+      "id": "4204c44c4b58464bae1cd705f0025f85",
+      "usd": 0.00012848,
+      "status": "reported"
+    },
+    {
+      "id": "304d52e0d81241f295214c1861659e7b",
+      "usd": 0.00011992,
+      "status": "reported"
+    },
+    {
+      "id": "36df57f74c77494ca055afe51c7e14cc",
+      "usd": 0.00012536,
+      "status": "reported"
+    },
+    {
+      "id": "9e55ecf20ef24ab6955402841cf85704",
+      "usd": 0.00012744,
+      "status": "reported"
+    },
+    {
+      "id": "3fd0a01868e0439c9d8a18cff1a0ec65",
+      "usd": 0.00011832,
+      "status": "reported"
+    },
+    {
+      "id": "0640a4dda78c487397de1dc805004a9b",
+      "usd": 0.00012872,
+      "status": "reported"
+    },
+    {
+      "id": "144d4ba740084db18cfd5530cb02f5d8",
+      "usd": 0.00011624,
+      "status": "reported"
+    },
+    {
+      "id": "f1a16631945b4df4ad73272caae2577c",
+      "usd": 0.00012264,
+      "status": "reported"
+    },
+    {
+      "id": "bb2d4361147f4afb80db1f0c87423b5f",
+      "usd": 0.0001292,
+      "status": "reported"
+    },
+    {
+      "id": "1cfa942a1fde4cb1aa52e7481511b51c",
+      "usd": 0.00012016,
+      "status": "reported"
+    },
+    {
+      "id": "2f9397e656334a5f912cca099c288df2",
+      "usd": 0.00013552,
+      "status": "reported"
+    },
+    {
+      "id": "8110eb8a92154cc79effab71afaa0e4b",
+      "usd": 0.00012584,
+      "status": "reported"
+    },
+    {
+      "id": "d8c19fb2085a41988ba735a3f6344fa1",
+      "usd": 0.00013456,
+      "status": "reported"
+    },
+    {
+      "id": "2ee2caf2424341fda4408a389af9c1c5",
+      "usd": 0.00012064,
+      "status": "reported"
+    },
+    {
+      "id": "37d3f41dadd0478b8facbf275d5096a7",
+      "usd": 0.00012296,
+      "status": "reported"
+    },
+    {
+      "id": "1f81946ed76c4148826b12be6fcfbd3a",
+      "usd": 0.0001252,
+      "status": "reported"
+    },
+    {
+      "id": "ca357a6b7d26425aaef98d750699752e",
+      "usd": 0.00012536,
+      "status": "reported"
+    },
+    {
+      "id": "c9a29a875fee4593a23c7fc899170d57",
+      "usd": 0.00029168,
+      "status": "reported"
+    },
+    {
+      "id": "10c8f229e8a04e6d9f15550cb634f826",
+      "usd": 0.0002232,
+      "status": "reported"
+    },
+    {
+      "id": "df4e5d4d2b804b8ab247f718e393d178",
+      "usd": 0.00027608,
+      "status": "reported"
+    },
+    {
+      "id": "d81b0b49c5fc4752ad0d6ec7106ebbd5",
+      "usd": 0.00022376,
+      "status": "reported"
+    },
+    {
+      "id": "61261ca754e34311a1119be7896e04b4",
+      "usd": 0.00027952,
+      "status": "reported"
+    },
+    {
+      "id": "b85c93207d32462fb885757cb41e7bff",
+      "usd": 0.000306,
+      "status": "reported"
+    },
+    {
+      "id": "156882bce04741af919af257e9363393",
+      "usd": 0.00026304,
+      "status": "reported"
+    },
+    {
+      "id": "372a8212e51341aeba24938739e75809",
+      "usd": 0.00024192,
+      "status": "reported"
+    },
+    {
+      "id": "3f69a2bac45743888e62bee645ca914c",
+      "usd": 0.00023824,
+      "status": "reported"
+    },
+    {
+      "id": "dbd991652a2c4dfcb47e88583c7357ed",
+      "usd": 0.0002296,
+      "status": "reported"
+    },
+    {
+      "id": "fd581b1e539947c0ae394d26d4892ceb",
+      "usd": 0.00025776,
+      "status": "reported"
+    },
+    {
+      "id": "edbc394bc879415bb77e7edcd1f33c8f",
+      "usd": 0.00023488,
+      "status": "reported"
+    },
+    {
+      "id": "8b37883a709f42ae9dc03131af2fe7dc",
+      "usd": 0.00022608,
+      "status": "reported"
+    },
+    {
+      "id": "e86e9c7296de47368a83da01d492c030",
+      "usd": 0.00027232,
+      "status": "reported"
+    },
+    {
+      "id": "aee75189b30e4721ade237fd16804a08",
+      "usd": 0.00023024,
+      "status": "reported"
+    },
+    {
+      "id": "6cab1b079a714b7493fd56b12791ed23",
+      "usd": 0.00022584,
+      "status": "reported"
+    },
+    {
+      "id": "15be6baed223463e9c5358dbc00a960a",
+      "usd": 0.00023608,
+      "status": "reported"
+    },
+    {
+      "id": "9d18cb08cb1145189605331f9485085b",
+      "usd": 0.00021792,
+      "status": "reported"
+    },
+    {
+      "id": "4cc4b39373794ca28095a0da9ea71290",
+      "usd": 0.0002388,
+      "status": "reported"
+    },
+    {
+      "id": "4828688e250e425e902dcf5fba7c0540",
+      "usd": 0.00024768,
+      "status": "reported"
+    },
+    {
+      "id": "cb9c6a5d3434493aaf11408db168b8e7",
+      "usd": 0.000224,
+      "status": "reported"
+    },
+    {
+      "id": "1f6bfe7428744b29b7040bb6333ebfb4",
+      "usd": 0.00020832,
+      "status": "reported"
+    },
+    {
+      "id": "37bd1e2da5fe4d669f40f5cc279f2cdd",
+      "usd": 0.00028056,
+      "status": "reported"
+    },
+    {
+      "id": "de16b274d7c7462993a3ae7447fd6412",
+      "usd": 0.00023712,
+      "status": "reported"
+    },
+    {
+      "id": "d940e2ab0cda442887c1e647e66a28e8",
+      "usd": 0.00020928,
+      "status": "reported"
+    },
+    {
+      "id": "4ad069647e0c4325b4d26e11907ff93b",
+      "usd": 0.00023416,
+      "status": "reported"
+    },
+    {
+      "id": "8c4055bf5cb94f46a971ecd778f8baef",
+      "usd": 0.00022296,
+      "status": "reported"
+    },
+    {
+      "id": "ff7f6c6a3c5b44a6bc437a6a33d53729",
+      "usd": 0.00022296,
+      "status": "reported"
+    },
+    {
+      "id": "3a252c4ca12a4b5a88cc5e775068983b",
+      "usd": 0.00020096,
+      "status": "reported"
+    },
+    {
+      "id": "8826cf4afa3349c0a56352a44960a1b0",
+      "usd": 0.0002428,
+      "status": "reported"
+    },
+    {
+      "id": "79a9a0f84b9a4684a4195c915deba68b",
+      "usd": 0.00022112,
+      "status": "reported"
+    },
+    {
+      "id": "1a1946310606445f83eca39b9fc7e358",
+      "usd": 0.0002244,
+      "status": "reported"
+    },
+    {
+      "id": "5cdc32ca19e04bf987769f42e1415bee",
+      "usd": 0.00020464,
+      "status": "reported"
+    },
+    {
+      "id": "a27dbaee676e498ab3b90023c04b8ec5",
+      "usd": 0.00020568,
+      "status": "reported"
+    },
+    {
+      "id": "8b88c7e94ce44bac8fbd5c8e770e623a",
+      "usd": 0.00020992,
+      "status": "reported"
+    },
+    {
+      "id": "0853146c967141c8b5385bd1a9c7825b",
+      "usd": 0.00023142,
+      "status": "reported"
+    },
+    {
+      "id": "867372ec64f94f76ab60c201a62cdb87",
+      "usd": 0.00022104,
+      "status": "reported"
+    },
+    {
+      "id": "0b32363a20fd45359bd2894f74854d6d",
+      "usd": 0.00020557,
+      "status": "reported"
+    },
+    {
+      "id": "096059ea9f194b459ca24edd9b3f1456",
+      "usd": 0.0002336,
+      "status": "reported"
+    },
+    {
+      "id": "5b6947785057474fbfff31ad8dba0469",
+      "usd": 0.00020808,
+      "status": "reported"
+    },
+    {
+      "id": "41aa8fe71e404b11a36b43e065280259",
+      "usd": 0.000227335,
+      "status": "reported"
+    },
+    {
+      "id": "35939d9cb67d49c9adbf7d33ef5c4e95",
+      "usd": 0.000225875,
+      "status": "reported"
+    },
+    {
+      "id": "8a90f133cfb745e08c2a89257b6e9903",
+      "usd": 0.00021754,
+      "status": "reported"
+    },
+    {
+      "id": "493e6081df3643f2aea9190ba8f4cd93",
+      "usd": 0.000240665,
+      "status": "reported"
+    },
+    {
+      "id": "8beeefbc84234f2c9fb74b60ac5edcdc",
+      "usd": 0.000223345,
+      "status": "reported"
+    },
+    {
+      "id": "955d2582ef794b83befc922242a22b7e",
+      "usd": 0.00021608,
+      "status": "reported"
+    },
+    {
+      "id": "11c9d05d7d6f4bd4b26c84d592cb1159",
+      "usd": 0.000187055,
+      "status": "reported"
+    },
+    {
+      "id": "3edc5082f973466aa0bf9988d4b49aa5",
+      "usd": 0.000208785,
+      "status": "reported"
+    },
+    {
+      "id": "d486d6d0d4f745b88571956de4df087c",
+      "usd": 0.00012824,
+      "status": "reported"
+    },
+    {
+      "id": "a3a67fa2cdc74b00ab54dc4db46d4f46",
+      "usd": 0.00012626,
+      "status": "reported"
+    },
+    {
+      "id": "29dd1d83726c42cc9591fcedbae0b6c4",
+      "usd": 0.00014465,
+      "status": "reported"
+    },
+    {
+      "id": "d33de16af6614b7aad634cfe897fb555",
+      "usd": 0.0001296,
+      "status": "reported"
+    },
+    {
+      "id": "ac464cabc50d42dd8cef8839de6a6d8a",
+      "usd": 0.000121785,
+      "status": "reported"
+    },
+    {
+      "id": "c0bb20d14e694e70a9bba19ebdbbd9e7",
+      "usd": 0.000109265,
+      "status": "reported"
+    },
+    {
+      "id": "bb4acc01df5e42288fda25a4c4a035f2",
+      "usd": 0.00012386,
+      "status": "reported"
+    },
+    {
+      "id": "10336bb50a9d4de6bb219bad361997d7",
+      "usd": 0.000116335,
+      "status": "reported"
+    },
+    {
+      "id": "10e6fe276d9a4bb8bff390d88fb73b02",
+      "usd": 0.00011692,
+      "status": "reported"
+    },
+    {
+      "id": "5ae764e9f8474482936e6258678a91ea",
+      "usd": 0.00012999,
+      "status": "reported"
+    },
+    {
+      "id": "4322b3a99d3a4d7d93ef4ac70c099ab4",
+      "usd": 0.00012373,
+      "status": "reported"
+    },
+    {
+      "id": "ba5e6c79b5244fb18b8923c4741830ee",
+      "usd": 0.000115005,
+      "status": "reported"
+    },
+    {
+      "id": "e844988c7de64c968084ebda8cb90fca",
+      "usd": 0.00012159,
+      "status": "reported"
+    },
+    {
+      "id": "cf81dbfd345d45888fdaa68782768409",
+      "usd": 0.00013226,
+      "status": "reported"
+    },
+    {
+      "id": "0e74eafe5c6a4224811a6b81e7681941",
+      "usd": 0.000119385,
+      "status": "reported"
+    },
+    {
+      "id": "854aabd86193417a8877226bef7232bc",
+      "usd": 0.00011786,
+      "status": "reported"
+    },
+    {
+      "id": "2e498f2e60804f96b0b8d29db8a97f1f",
+      "usd": 0.000116045,
+      "status": "reported"
+    },
+    {
+      "id": "e745fb731ae649dba7edf86c20709cf1",
+      "usd": 0.00012292,
+      "status": "reported"
+    },
+    {
+      "id": "ab4ceaa45d49471ebc6b6f162d04b2aa",
+      "usd": 0.00011773,
+      "status": "reported"
+    },
+    {
+      "id": "a4d210577a0c4126ba9242914486c35b",
+      "usd": 0.000126065,
+      "status": "reported"
+    },
+    {
+      "id": "2c3517f0895a4aadb06394c5f31573c4",
+      "usd": 0.00011533,
+      "status": "reported"
+    },
+    {
+      "id": "bb83698b6ce44603b5b93488df8ad997",
+      "usd": 0.00012133,
+      "status": "reported"
+    },
+    {
+      "id": "63ddf559904a419db2fe38a34a3a5533",
+      "usd": 0.000126455,
+      "status": "reported"
+    },
+    {
+      "id": "d78e7426d0a3463b8a6e1b47691beaf8",
+      "usd": 0.000127395,
+      "status": "reported"
+    },
+    {
+      "id": "eec0991b4b4e46329f9c1dc473722794",
+      "usd": 0.00010959,
+      "status": "reported"
+    },
+    {
+      "id": "83a44517f53c46bd884842d17229e1c8",
+      "usd": 0.00011893,
+      "status": "reported"
+    },
+    {
+      "id": "b33aafa9f9c04480a9662333fb655e68",
+      "usd": 0.00013012,
+      "status": "reported"
+    },
+    {
+      "id": "172edcb59ca749d3a9155f0d18d29f8f",
+      "usd": 0.00012746,
+      "status": "reported"
+    },
+    {
+      "id": "353c5bf2d94a4afaaceeaa1bab985dfc",
+      "usd": 0.000127655,
+      "status": "reported"
+    },
+    {
+      "id": "27e6979156544d9fb2653fe42d89e53b",
+      "usd": 0.000129925,
+      "status": "reported"
+    },
+    {
+      "id": "03895ec7bf8448e9964d01cff1ac0c89",
+      "usd": 0.000117665,
+      "status": "reported"
+    },
+    {
+      "id": "b4ae7a7e188e4053814978feec9b9055",
+      "usd": 0.000120325,
+      "status": "reported"
+    },
+    {
+      "id": "94207a514eb14fb29cf3cb9ce81df2c2",
+      "usd": 0.000134725,
+      "status": "reported"
+    },
+    {
+      "id": "7db844c24b7f43d2a48b11e877944ff0",
+      "usd": 0.000113935,
+      "status": "reported"
+    },
+    {
+      "id": "c17652b6419242ac9ba49c84263b7efe",
+      "usd": 0.00011932,
+      "status": "reported"
+    },
+    {
+      "id": "b728f4a981ec4105bb95bc75eecc0e1e",
+      "usd": 0.00012759,
+      "status": "reported"
+    },
+    {
+      "id": "5c4f8d19430e4137b26f10b4544aafaa",
+      "usd": 0.00013959,
+      "status": "reported"
+    },
+    {
+      "id": "30e85dddfa184272a9d55bc138a5ae8c",
+      "usd": 0.00012639,
+      "status": "reported"
+    },
+    {
+      "id": "7e970c664a7e4722b20016a44f453d51",
+      "usd": 0.00014319,
+      "status": "reported"
+    },
+    {
+      "id": "7381e7291c994601864c6bee7498e504",
+      "usd": 0.0001272,
+      "status": "reported"
+    },
+    {
+      "id": "99f3731ef4264eaba9218a6b608f6f51",
+      "usd": 0.000138455,
+      "status": "reported"
+    },
+    {
+      "id": "be331c2d024a4c00b8a17f619fcd4503",
+      "usd": 0.00013907,
+      "status": "reported"
+    },
+    {
+      "id": "8b89362d7f584c3289df7678063a034a",
+      "usd": 0.000121525,
+      "status": "reported"
+    },
+    {
+      "id": "4bfbf3d070954205861b4af00d0dd284",
+      "usd": 0.000117795,
+      "status": "reported"
+    },
+    {
+      "id": "2a1fca62527e444a99f1f136ba328fb6",
+      "usd": 0.000130995,
+      "status": "reported"
+    },
+    {
+      "id": "f7f0129a628b49fcbeacc1e7969759a1",
+      "usd": 0.000129245,
+      "status": "reported"
+    },
+    {
+      "id": "8895a81ac847411bb038d8ab690a755f",
+      "usd": 0.000115395,
+      "status": "reported"
+    },
+    {
+      "id": "80953ec9d2f34086b974a08006f516bf",
+      "usd": 0.000122595,
+      "status": "reported"
+    }
+  ],
+  "no_main_claim": true,
+  "no_main_manifest": true
+}

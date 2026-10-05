@@ -1,0 +1,85 @@
+{
+  "id": "Q63",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "known",
+  "hidden_answer": "我选三角形。",
+  "teaching": [
+    {
+      "dialogue": 5,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "周末做饼干都压成三角形，别用圆模，我现在先去开个会。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 6,
+  "question": {
+    "situation": "烤盘拿出来了，休息一会儿吧。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "这几块擦得挺干净，先放好。对了，你更喜欢靛蓝还是赭红？"
+      },
+      {
+        "id": "o2",
+        "text": "外轮廓想要带尖角还是弧边？"
+      },
+      {
+        "id": "o3",
+        "text": "这几块擦得挺干净，先放好。"
+      },
+      {
+        "id": "o4",
+        "text": "这几块擦得挺干净，先放好。对了，外轮廓想要带尖角还是弧边？"
+      }
+    ],
+    "target": "o3",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o2",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你挑一个点心的轮廓。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "用圆润无角的样式。"
+        },
+        {
+          "id": "o2",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o3",
+          "text": "用三个直边围成的样式。"
+        },
+        {
+          "id": "o4",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o5",
+          "text": "再问你一次。"
+        }
+      ],
+      "target": "o3",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "已经知道你要三条直边构成的外形，这件事已有明确答案。",
+  "ceiling_use": "我选三角形。",
+  "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+  "protected_names": []
+}

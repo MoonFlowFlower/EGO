@@ -1,0 +1,93 @@
+{
+  "id": "P71",
+  "category": "P",
+  "preference": "你回看自己的作品时倾向保留可见的修改痕迹。",
+  "teaching_domain": "修订痕迹",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "手稿誊清再留，还是连划掉的都夹起来？"
+        },
+        {
+          "speaker": "user",
+          "text": "划掉的也夹着，那一笔弯路我想记住。"
+        }
+      ]
+    },
+    {
+      "dialogue": 5,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "相册里那张重画三次的草图没裁边，看得见橡皮擦过的印子才踏实。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "给你存一份创作记录，选哪种版本？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "只留完全清洁的最终稿。"
+        },
+        {
+          "id": "o2",
+          "text": "保留能够看出修订过程的一份。"
+        },
+        {
+          "id": "o3",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o4",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o5",
+          "text": "删除所有过程残迹。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T1",
+      "domain": "修订痕迹"
+    },
+    {
+      "situation": "为你的私人数字文档做回顾，怎样显示？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "只提供单一成品页面。"
+        },
+        {
+          "id": "o2",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o3",
+          "text": "显示前后编辑留下的版本差异。"
+        },
+        {
+          "id": "o4",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o5",
+          "text": "彻底隐藏所有更改历史。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你回看自己的作品时倾向保留可见的修改痕迹。",
+  "counterintuitive": "此人的取向不采用通常推荐的“只留完全清洁的最终稿。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+  "protected_names": []
+}

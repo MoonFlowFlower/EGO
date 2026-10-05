@@ -1,0 +1,85 @@
+{
+  "id": "Q57",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "我不要横线，空白页才自在。",
+  "teaching": [
+    {
+      "dialogue": 4,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "月底想尝试一个手写本，现在要先把这批资料送出去。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 5,
+  "question": {
+    "situation": "笔套到了，我们休息一下吧。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "这套拿在手里倒挺轻的。对了，书写时纸张的横线会碍事吗？"
+      },
+      {
+        "id": "o2",
+        "text": "书写时纸张的横线会碍事吗？"
+      },
+      {
+        "id": "o3",
+        "text": "这套拿在手里倒挺轻的。"
+      },
+      {
+        "id": "o4",
+        "text": "这套拿在手里倒挺轻的。对了，你更喜欢靛蓝还是赭红？"
+      }
+    ],
+    "target": "o1",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o2"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你挑一份随身记录材料。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o2",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o3",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o4",
+          "text": "选常见的横格内页。"
+        },
+        {
+          "id": "o5",
+          "text": "选不带预印分隔线的内页。"
+        }
+      ],
+      "target": "o5",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "还不知道你是否接受书写纸张上的横线；之后挑记录本会用到。",
+  "ceiling_use": "我不要横线，空白页才自在。",
+  "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+  "protected_names": []
+}

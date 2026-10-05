@@ -1,0 +1,93 @@
+{
+  "id": "P67",
+  "category": "P",
+  "preference": "你在熟悉伙伴面前吐槽小烦恼时倾向轻松打趣。",
+  "teaching_domain": "轻微烦恼回应",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "公交晚点，要陪你严肃分析还是损它两句？"
+        },
+        {
+          "speaker": "user",
+          "text": "损它两句，它是不是又去绕地球了。"
+        }
+      ]
+    },
+    {
+      "dialogue": 4,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "昨天雨把袜子打湿，朋友说脚底开水族馆，我气也消了一半。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "你抱怨一件无损失的小插曲，如何回应？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "郑重反复表达沉重同情。"
+        },
+        {
+          "id": "o2",
+          "text": "把问题渲染得格外悲惨。"
+        },
+        {
+          "id": "o3",
+          "text": "用不冒犯你的幽默接住情绪。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T1",
+      "domain": "轻微烦恼回应"
+    },
+    {
+      "situation": "共同复盘一局娱乐游戏里的小乌龙，怎么说？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "持续哀叹这次遭遇。"
+        },
+        {
+          "id": "o2",
+          "text": "用高度严肃的检讨语气。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "带一点友善的调侃。"
+        },
+        {
+          "id": "o5",
+          "text": "把话题转向天气。"
+        }
+      ],
+      "target": "o4",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你在熟悉伙伴面前吐槽小烦恼时倾向轻松打趣。",
+  "counterintuitive": "此人的取向不采用通常推荐的“郑重反复表达沉重同情。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+  "protected_names": []
+}

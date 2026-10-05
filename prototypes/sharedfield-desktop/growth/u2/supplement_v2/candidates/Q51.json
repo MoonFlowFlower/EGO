@@ -1,0 +1,85 @@
+{
+  "id": "Q51",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "我床边必须无香。",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "过阵子准备更换一套床品，先让我回完这封工作邮件。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 4,
+  "question": {
+    "situation": "柜门理顺了，坐着缓口气吧。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "嗯，现在拿东西方便多了。"
+      },
+      {
+        "id": "o2",
+        "text": "嗯，现在拿东西方便多了。对了，你更喜欢靛蓝还是赭红？"
+      },
+      {
+        "id": "o3",
+        "text": "嗯，现在拿东西方便多了。对了，枕边用品能带香味吗？"
+      },
+      {
+        "id": "o4",
+        "text": "枕边用品能带香味吗？"
+      }
+    ],
+    "target": "o3",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o3",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o2",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你挑一款临睡前使用的小物。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "选常见的薰香款。"
+        },
+        {
+          "id": "o2",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o3",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o4",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o5",
+          "text": "选不添加气味的版本。"
+        }
+      ],
+      "target": "o5",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "还不知道枕边用品是否能带香味；之后选择寝具周边会用到这项个人条件。",
+  "ceiling_use": "我床边必须无香。",
+  "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+  "protected_names": []
+}

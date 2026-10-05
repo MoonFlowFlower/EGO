@@ -1,0 +1,85 @@
+{
+  "id": "Q70",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "no_future",
+  "hidden_answer": "我愿住高层。",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "我们刚搭的住处只是桌游里的棋盘场景，不是我的租房计划，也没有搬迁安排。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 3,
+  "question": {
+    "situation": "小庭院的模型接上了，线条挺流畅。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "这一段衔接自然，放在边缘正合适。"
+      },
+      {
+        "id": "o2",
+        "text": "这一段衔接自然，放在边缘正合适。对了，你本人日后搬家想住高层还是低层？"
+      },
+      {
+        "id": "o3",
+        "text": "你本人日后搬家想住高层还是低层？"
+      },
+      {
+        "id": "o4",
+        "text": "这一段衔接自然，放在边缘正合适。对了，你更喜欢靛蓝还是赭红？"
+      }
+    ],
+    "target": "o1",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o2",
+      "o3"
+    ],
+    "any_question_ids": [
+      "o2",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "在另一次真的住宿选择中替你定位置。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o2",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o3",
+          "text": "选建筑中较高的一层。"
+        },
+        {
+          "id": "o4",
+          "text": "选紧贴地面的底层。"
+        },
+        {
+          "id": "o5",
+          "text": "先询问其他人的通用建议。"
+        }
+      ],
+      "target": "o3",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "对方没有搬迁或租住计划，这里只有游戏布景，个人楼层偏好目前没有后续用途。",
+  "ceiling_use": "我愿住高层。",
+  "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+  "protected_names": []
+}

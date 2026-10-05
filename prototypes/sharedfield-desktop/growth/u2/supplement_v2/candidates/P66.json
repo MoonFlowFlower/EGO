@@ -1,0 +1,93 @@
+{
+  "id": "P66",
+  "category": "P",
+  "preference": "你观看动作过程时倾向持续的固定远景，少切特写。",
+  "teaching_domain": "动态观看视角",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "舞台录像看多机位剪辑，还是后排一镜到底？"
+        },
+        {
+          "speaker": "user",
+          "text": "后排那条吧，谁从哪走到哪都看得见。"
+        }
+      ]
+    },
+    {
+      "dialogue": 6,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "昨晚看球我关了自动近镜，整片场地一起动才有意思。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "播放一段连续表演给你，怎样取景？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "保持较远且完整稳定的视野。"
+        },
+        {
+          "id": "o2",
+          "text": "只显示面部细节。"
+        },
+        {
+          "id": "o3",
+          "text": "频繁切换局部近照。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o1",
+      "phase": "T1",
+      "domain": "动态观看视角"
+    },
+    {
+      "situation": "给你演示一个数字流程的变化，怎样展示？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "不断放大切换单个局部。"
+        },
+        {
+          "id": "o2",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "让整体位置持续可见。"
+        },
+        {
+          "id": "o5",
+          "text": "隐藏所有部分之间的空间关系。"
+        }
+      ],
+      "target": "o4",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你观看动作过程时倾向持续的固定远景，少切特写。",
+  "counterintuitive": "此人的取向不采用通常推荐的“频繁切换局部近照。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+  "protected_names": []
+}

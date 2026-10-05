@@ -1,0 +1,85 @@
+{
+  "id": "Q59",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "拍坏的也别替我删掉。",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "下周准备整理一些旧影像，快递员来敲门了，稍后再聊。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 2,
+  "question": {
+    "situation": "硬盘盒接好了，歇会儿聊两句吧。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "好，先让它稳稳放着。对了，你更喜欢靛蓝还是赭红？"
+      },
+      {
+        "id": "o2",
+        "text": "保存照片时想把拍坏的也留下吗？"
+      },
+      {
+        "id": "o3",
+        "text": "好，先让它稳稳放着。"
+      },
+      {
+        "id": "o4",
+        "text": "好，先让它稳稳放着。对了，保存照片时想把拍坏的也留下吗？"
+      }
+    ],
+    "target": "o4",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o2",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你归整一份私人照片资料。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "自动去掉模糊和曝光失败的片段。"
+        },
+        {
+          "id": "o2",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o3",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o4",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o5",
+          "text": "保留不够理想的片段供本人日后决定。"
+        }
+      ],
+      "target": "o5",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "还不知道你是否希望保存拍坏的照片；之后整理个人档案会用得上。",
+  "ceiling_use": "拍坏的也别替我删掉。",
+  "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+  "protected_names": []
+}

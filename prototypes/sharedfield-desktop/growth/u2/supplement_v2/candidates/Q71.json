@@ -1,0 +1,85 @@
+{
+  "id": "Q71",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "no_future",
+  "hidden_answer": "我只用燕麦奶。",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "刚才那份饮食访谈只是翻译练习，里面的人并不是我，我也没有去点单的计划。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 4,
+  "question": {
+    "situation": "这句尾音读起来顺了，我们缓一缓。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "是顺畅多了，停顿也自然。对了，你更喜欢靛蓝还是赭红？"
+      },
+      {
+        "id": "o2",
+        "text": "是顺畅多了，停顿也自然。"
+      },
+      {
+        "id": "o3",
+        "text": "是顺畅多了，停顿也自然。对了，你本人喝拿铁想用哪种奶？"
+      },
+      {
+        "id": "o4",
+        "text": "你本人喝拿铁想用哪种奶？"
+      }
+    ],
+    "target": "o2",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o3",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "在另一个真实饮品安排中替你选配料。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o2",
+          "text": "采用谷物来源的乳状饮料。"
+        },
+        {
+          "id": "o3",
+          "text": "采用常见动物乳品。"
+        },
+        {
+          "id": "o4",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o5",
+          "text": "先询问其他人的通用建议。"
+        }
+      ],
+      "target": "o2",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "先前内容只属于翻译练习，没有对方本人的饮品安排，这个个人条件没有已知近期用途。",
+  "ceiling_use": "我只用燕麦奶。",
+  "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+  "protected_names": []
+}

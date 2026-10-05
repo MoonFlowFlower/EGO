@@ -1,0 +1,85 @@
+{
+  "id": "Q58",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "有鼾声我就睡不着，必须分开。",
+  "teaching": [
+    {
+      "dialogue": 5,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "过两周想参加一次短住活动，眼前还有几个电话要回。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 6,
+  "question": {
+    "situation": "洗漱袋找出来了，这会儿可以缓缓。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "好呀，先放身边，不着急。对了，你更喜欢靛蓝还是赭红？"
+      },
+      {
+        "id": "o2",
+        "text": "好呀，先放身边，不着急。"
+      },
+      {
+        "id": "o3",
+        "text": "同住者打鼾你能睡着吗？"
+      },
+      {
+        "id": "o4",
+        "text": "好呀，先放身边，不着急。对了，同住者打鼾你能睡着吗？"
+      }
+    ],
+    "target": "o4",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o3",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你选择一间临时休息房。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o2",
+          "text": "提供与发出持续噪声者分开的空间。"
+        },
+        {
+          "id": "o3",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o4",
+          "text": "默认与打鼾者共用一间。"
+        },
+        {
+          "id": "o5",
+          "text": "先询问其他人的通用建议。"
+        }
+      ],
+      "target": "o2",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "还不知道同住者打鼾时你能否睡着；随后分配住宿空间会用到这个条件。",
+  "ceiling_use": "有鼾声我就睡不着，必须分开。",
+  "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+  "protected_names": []
+}

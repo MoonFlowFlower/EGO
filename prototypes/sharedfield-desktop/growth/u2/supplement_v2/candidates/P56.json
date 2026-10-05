@@ -1,0 +1,93 @@
+{
+  "id": "P56",
+  "category": "P",
+  "preference": "你对自己珍藏的物件倾向经常使用，允许正常磨损。",
+  "teaching_domain": "收藏使用",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "纪念笔放玻璃柜，还是带出去写字？"
+        },
+        {
+          "speaker": "user",
+          "text": "带走啊，笔尖都没碰过纸多可惜。"
+        }
+      ]
+    },
+    {
+      "dialogue": 5,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "那套餐碟越用越旧，每次招待人都能多添一段回忆。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "你收到一件心爱的私人藏品，怎样对待？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o2",
+          "text": "封存起来避免接触。"
+        },
+        {
+          "id": "o3",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o4",
+          "text": "永远包好不允许使用。"
+        },
+        {
+          "id": "o5",
+          "text": "把它纳入日常实际用途。"
+        }
+      ],
+      "target": "o5",
+      "phase": "T1",
+      "domain": "收藏使用"
+    },
+    {
+      "situation": "给你整理数字收藏，怎样安排？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o3",
+          "text": "把全部内容锁成不可触及的存档。"
+        },
+        {
+          "id": "o4",
+          "text": "只存备份从不查看。"
+        },
+        {
+          "id": "o5",
+          "text": "经常打开体验，并允许留下个人编辑。"
+        }
+      ],
+      "target": "o5",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你对自己珍藏的物件倾向经常使用，允许正常磨损。",
+  "counterintuitive": "此人的取向不采用通常推荐的“封存起来避免接触。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+  "protected_names": []
+}

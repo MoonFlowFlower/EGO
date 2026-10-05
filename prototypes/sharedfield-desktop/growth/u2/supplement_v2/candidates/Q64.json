@@ -1,0 +1,87 @@
+{
+  "id": "Q64",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "known",
+  "hidden_answer": "我只要一个大空间。",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "旅行小包只留一个大仓，不要分成好多隔层；我先赶一下作业。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 2,
+  "question": {
+    "situation": "行李照片发过来了，坐着看会儿吧。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "收到，咱们把细节放大看看。对了，内部需要划出许多独立小区吗？"
+      },
+      {
+        "id": "o2",
+        "text": "收到，咱们把细节放大看看。对了，你更喜欢靛蓝还是赭红？"
+      },
+      {
+        "id": "o3",
+        "text": "收到，咱们把细节放大看看。"
+      },
+      {
+        "id": "o4",
+        "text": "内部需要划出许多独立小区吗？"
+      }
+    ],
+    "target": "o3",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你从两种收纳结构中选一个。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o2",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o3",
+          "text": "选多个分区的结构。"
+        },
+        {
+          "id": "o4",
+          "text": "选内部连成整体的单腔。"
+        },
+        {
+          "id": "o5",
+          "text": "先询问其他人的通用建议。"
+        }
+      ],
+      "target": "o4",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "已经知道你要求内部连续的单个空间，不需要再次取得这个事实。",
+  "ceiling_use": "我只要一个大空间。",
+  "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+  "protected_names": [
+    "大仓"
+  ]
+}

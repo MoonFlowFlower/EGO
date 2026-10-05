@@ -1,0 +1,93 @@
+{
+  "id": "P49",
+  "category": "P",
+  "preference": "你布置小组合时倾向成双，避免留下落单的一件。",
+  "teaching_domain": "组合数量",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "柜顶摆三盏还是四盏小灯？"
+        },
+        {
+          "speaker": "user",
+          "text": "四盏吧，两边各两盏。"
+        }
+      ]
+    },
+    {
+      "dialogue": 4,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "展柜买了六个小底座，正好能两两相伴，没谁孤零零。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "策划窗边的装饰，数量选哪档？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "用七件形成常见的错落感。"
+        },
+        {
+          "id": "o3",
+          "text": "取八件分成若干对。"
+        },
+        {
+          "id": "o4",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o5",
+          "text": "坚持只放单数的一组。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T1",
+      "domain": "组合数量"
+    },
+    {
+      "situation": "拟一份私人练习清单，怎样定项目数？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "列九项作为普通套餐。"
+        },
+        {
+          "id": "o2",
+          "text": "列十项，逐对归组。"
+        },
+        {
+          "id": "o3",
+          "text": "只采用奇数项。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你布置小组合时倾向成双，避免留下落单的一件。",
+  "counterintuitive": "此人的取向不采用通常推荐的“用七件形成常见的错落感。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+  "protected_names": []
+}

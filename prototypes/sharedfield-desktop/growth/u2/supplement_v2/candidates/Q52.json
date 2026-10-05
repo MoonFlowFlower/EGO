@@ -1,0 +1,85 @@
+{
+  "id": "Q52",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "我很怕虫，不在露天吃。",
+  "teaching": [
+    {
+      "dialogue": 4,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "周末想在院子里吃一顿，会议要开始了，晚点说。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 5,
+  "question": {
+    "situation": "折叠桌找到了，这会儿总算轻松些。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "这张搬起来还挺省力，先歇歇。"
+      },
+      {
+        "id": "o2",
+        "text": "这张搬起来还挺省力，先歇歇。对了，飞虫多时你介意在室外进食吗？"
+      },
+      {
+        "id": "o3",
+        "text": "飞虫多时你介意在室外进食吗？"
+      },
+      {
+        "id": "o4",
+        "text": "这张搬起来还挺省力，先歇歇。对了，你更喜欢靛蓝还是赭红？"
+      }
+    ],
+    "target": "o2",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o2",
+      "o3"
+    ],
+    "any_question_ids": [
+      "o2",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你选择聚食区域。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o2",
+          "text": "安排无遮蔽的露天区域。"
+        },
+        {
+          "id": "o3",
+          "text": "安排有封闭防护的室内区域。"
+        },
+        {
+          "id": "o4",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o5",
+          "text": "先询问其他人的通用建议。"
+        }
+      ],
+      "target": "o3",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "还不知道飞虫多时你是否接受在室外进食；即将挑聚食地点，这个条件会用上。",
+  "ceiling_use": "我很怕虫，不在露天吃。",
+  "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+  "protected_names": []
+}

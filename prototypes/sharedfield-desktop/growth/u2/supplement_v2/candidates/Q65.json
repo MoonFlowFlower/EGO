@@ -1,0 +1,87 @@
+{
+  "id": "Q65",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "busy",
+  "hidden_answer": "我只要纯色。",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "后天要买文具，但我今天下午两点前都在封闭答题，短暂喝水也不能岔开聊采购。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 2,
+  "question": {
+    "situation": "杯子放下了，图片我也看到了。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "笔袋上想要纯色还是图案？"
+      },
+      {
+        "id": "o2",
+        "text": "收到，你继续眼前的事，我这边等着。对了，你更喜欢靛蓝还是赭红？"
+      },
+      {
+        "id": "o3",
+        "text": "收到，你继续眼前的事，我这边等着。对了，笔袋上想要纯色还是图案？"
+      },
+      {
+        "id": "o4",
+        "text": "收到，你继续眼前的事，我这边等着。"
+      }
+    ],
+    "target": "o4",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o3"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o3"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你选一件书写用品的收纳外套。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "用没有花纹的单一色面。"
+        },
+        {
+          "id": "o2",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o3",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o4",
+          "text": "用满版图案的常规款。"
+        },
+        {
+          "id": "o5",
+          "text": "再问你一次。"
+        }
+      ],
+      "target": "o1",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "对方当前仍在限时考核中，尚未到下午两点；这个时候注意力不可分散。",
+  "ceiling_use": "我只要纯色。",
+  "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+  "protected_names": [
+    "今天下午"
+  ]
+}

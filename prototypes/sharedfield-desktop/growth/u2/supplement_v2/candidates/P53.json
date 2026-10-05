@@ -1,0 +1,93 @@
+{
+  "id": "P53",
+  "category": "P",
+  "preference": "你欣赏虚构作品时倾向保留悬而未决的结尾。",
+  "teaching_domain": "故事收束",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "最后讲清门后是谁，还是停在敲门那声？"
+        },
+        {
+          "speaker": "user",
+          "text": "停在敲门那儿，剩下的我自己琢磨。"
+        }
+      ]
+    },
+    {
+      "dialogue": 5,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "那部电影散场了还没揭谜，我一路猜到地铁口，真过瘾。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "为你挑一篇短篇小说，怎样结束合适？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "附上唯一标准答案。"
+        },
+        {
+          "id": "o2",
+          "text": "留下多种解释的余地。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "明确交代全部因果。"
+        },
+        {
+          "id": "o5",
+          "text": "把话题转向天气。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T1",
+      "domain": "故事收束"
+    },
+    {
+      "situation": "陪你看一场抽象展览，怎样提供说明？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o2",
+          "text": "保留可自行想象的空间。"
+        },
+        {
+          "id": "o3",
+          "text": "消除所有可能的歧义。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "给每件展品附完整的唯一解读。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你欣赏虚构作品时倾向保留悬而未决的结尾。",
+  "counterintuitive": "此人的取向不采用通常推荐的“明确交代全部因果。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+  "protected_names": []
+}

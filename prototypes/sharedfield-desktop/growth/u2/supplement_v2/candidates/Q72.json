@@ -1,0 +1,87 @@
+{
+  "id": "Q72",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "no_future",
+  "hidden_answer": "我只接受偏温的水。",
+  "teaching": [
+    {
+      "dialogue": 4,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "那座温泉是游戏建筑，我没有现实旅行安排，也没在计划去泡澡。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 5,
+  "question": {
+    "situation": "瓷砖的配色完成了，你看这块纹路。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "这片过渡很柔和，图面也清楚。对了，你本人浸泡时能接受较烫的水吗？"
+      },
+      {
+        "id": "o2",
+        "text": "这片过渡很柔和，图面也清楚。"
+      },
+      {
+        "id": "o3",
+        "text": "你本人浸泡时能接受较烫的水吗？"
+      },
+      {
+        "id": "o4",
+        "text": "这片过渡很柔和，图面也清楚。对了，你更喜欢靛蓝还是赭红？"
+      }
+    ],
+    "target": "o2",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o3"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "在后来一个独立的居家放松情境中选择温度。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o2",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o3",
+          "text": "采用明显较热的一档。"
+        },
+        {
+          "id": "o4",
+          "text": "采用柔和不烫的一档。"
+        },
+        {
+          "id": "o5",
+          "text": "先询问其他人的通用建议。"
+        }
+      ],
+      "target": "o4",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "此前谈的是虚拟建筑，没有本人浸泡安排；这个个人条件没有已知后续用途。",
+  "ceiling_use": "我只接受偏温的水。",
+  "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+  "protected_names": [
+    "温泉"
+  ]
+}

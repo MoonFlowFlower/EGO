@@ -1,0 +1,85 @@
+{
+  "id": "Q66",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "busy",
+  "hidden_answer": "我首先要挡住外面看进来的视线。",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "下周打算换窗帘；今天五点交接前我一直守应急席，间歇抬头不代表能聊别的。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 2,
+  "question": {
+    "situation": "新照片亮起来了，我把椅背靠舒服一点。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "遮住外面视线和透进光线，你更在意哪一项？"
+      },
+      {
+        "id": "o2",
+        "text": "嗯，你先顾这边，照片留着就行。对了，遮住外面视线和透进光线，你更在意哪一项？"
+      },
+      {
+        "id": "o3",
+        "text": "嗯，你先顾这边，照片留着就行。对了，你更喜欢靛蓝还是赭红？"
+      },
+      {
+        "id": "o4",
+        "text": "嗯，你先顾这边，照片留着就行。"
+      }
+    ],
+    "target": "o4",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o2"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o3"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你选室内遮挡方案。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "优先透光而忽略遮蔽。"
+        },
+        {
+          "id": "o2",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o3",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o4",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o5",
+          "text": "优先保障不被外部窥见。"
+        }
+      ],
+      "target": "o5",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "当前还在应急值守期间，没有完成交接；对方正忙。",
+  "ceiling_use": "我首先要挡住外面看进来的视线。",
+  "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+  "protected_names": []
+}

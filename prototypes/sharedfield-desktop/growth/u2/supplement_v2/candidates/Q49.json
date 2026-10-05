@@ -1,0 +1,85 @@
+{
+  "id": "Q49",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "我不能戴贴脸的眼罩。",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "下周要坐夜班飞机，眼前这通电话得先说完。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 2,
+  "question": {
+    "situation": "小旅行袋翻出来了，这会儿能缓口气。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "遮光用品贴着脸会不舒服吗？"
+      },
+      {
+        "id": "o2",
+        "text": "这个袋子放随手的小物正合适。对了，你更喜欢靛蓝还是赭红？"
+      },
+      {
+        "id": "o3",
+        "text": "这个袋子放随手的小物正合适。"
+      },
+      {
+        "id": "o4",
+        "text": "这个袋子放随手的小物正合适。对了，遮光用品贴着脸会不舒服吗？"
+      }
+    ],
+    "target": "o4",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你配一套途中休息用品。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "选不会压住面部的遮光方案。"
+        },
+        {
+          "id": "o2",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o3",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o4",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o5",
+          "text": "选常见的紧贴式罩具。"
+        }
+      ],
+      "target": "o1",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "还不知道你是否能接受遮光用品压在面部；即将安排途中休息，这项信息会影响选择。",
+  "ceiling_use": "我不能戴贴脸的眼罩。",
+  "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+  "protected_names": []
+}

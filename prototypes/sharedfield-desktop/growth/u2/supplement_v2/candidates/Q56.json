@@ -1,0 +1,85 @@
+{
+  "id": "Q56",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "我不愿边看边听人讨论。",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "明天可能去看一个小型放映，先让我把这通电话讲完。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 4,
+  "question": {
+    "situation": "靠垫拿过来了，坐一会儿吧。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "好呀，挨着你坐。对了，你更喜欢靛蓝还是赭红？"
+      },
+      {
+        "id": "o2",
+        "text": "观看内容时能不能接受旁边有人低声讨论？"
+      },
+      {
+        "id": "o3",
+        "text": "好呀，挨着你坐。对了，观看内容时能不能接受旁边有人低声讨论？"
+      },
+      {
+        "id": "o4",
+        "text": "好呀，挨着你坐。"
+      }
+    ],
+    "target": "o3",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o2",
+      "o3"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o3"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你安排一场私人观影的环境。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "安排一边播一边聊天。"
+        },
+        {
+          "id": "o2",
+          "text": "保持观看期间周围安静。"
+        },
+        {
+          "id": "o3",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o4",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o5",
+          "text": "先询问其他人的通用建议。"
+        }
+      ],
+      "target": "o2",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "还不知道你观看时能否接受旁人交谈；之后安排放映氛围会用到这个个人条件。",
+  "ceiling_use": "我不愿边看边听人讨论。",
+  "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+  "protected_names": []
+}

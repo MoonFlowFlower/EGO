@@ -1,0 +1,85 @@
+{
+  "id": "Q55",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "我不能接受生蒜。",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "下个月准备学做一道新菜，我这会儿正在核对报销单。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 3,
+  "question": {
+    "situation": "砧板晾好了，今天能聊几句。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "嗯，台面终于宽敞了。对了，生蒜的味道你能接受吗？"
+      },
+      {
+        "id": "o2",
+        "text": "嗯，台面终于宽敞了。对了，你更喜欢靛蓝还是赭红？"
+      },
+      {
+        "id": "o3",
+        "text": "生蒜的味道你能接受吗？"
+      },
+      {
+        "id": "o4",
+        "text": "嗯，台面终于宽敞了。"
+      }
+    ],
+    "target": "o1",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o3"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o3"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你从两种凉拌调味中选一种。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "选没有未经烹熟蒜类的版本。"
+        },
+        {
+          "id": "o2",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o3",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o4",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o5",
+          "text": "选带明显鲜蒜气味的版本。"
+        }
+      ],
+      "target": "o1",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "还不知道你是否能接受未经烹熟的蒜类风味；后续选调味方式会用到。",
+  "ceiling_use": "我不能接受生蒜。",
+  "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+  "protected_names": []
+}

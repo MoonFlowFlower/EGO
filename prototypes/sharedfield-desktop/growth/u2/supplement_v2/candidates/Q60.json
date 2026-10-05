@@ -1,0 +1,85 @@
+{
+  "id": "Q60",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "颗粒摩擦手掌我难受，要光滑的。",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "周日想报名一个陶泥课，我得先去前台办点事。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 3,
+  "question": {
+    "situation": "工具盒打开了，今天总算不赶了。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "这一盒配得挺齐，我们坐会儿。对了，成品表面可以留粗糙颗粒吗？"
+      },
+      {
+        "id": "o2",
+        "text": "成品表面可以留粗糙颗粒吗？"
+      },
+      {
+        "id": "o3",
+        "text": "这一盒配得挺齐，我们坐会儿。"
+      },
+      {
+        "id": "o4",
+        "text": "这一盒配得挺齐，我们坐会儿。对了，你更喜欢靛蓝还是赭红？"
+      }
+    ],
+    "target": "o1",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o2"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o2",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你决定手作小物的表面处理。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "采用细腻平滑的触感。"
+        },
+        {
+          "id": "o2",
+          "text": "保留明显磨手的粗粒。"
+        },
+        {
+          "id": "o3",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o4",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o5",
+          "text": "暂时不处理并转聊天气。"
+        }
+      ],
+      "target": "o1",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "还不知道你能否接受触摸时的粗颗粒；之后决定手作表面质感会用到。",
+  "ceiling_use": "颗粒摩擦手掌我难受，要光滑的。",
+  "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+  "protected_names": []
+}

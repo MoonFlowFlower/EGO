@@ -1,0 +1,93 @@
+{
+  "id": "P63",
+  "category": "P",
+  "preference": "你接触个人用品时偏向冷硬光滑的质感。",
+  "teaching_domain": "触觉材质",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "鼠标垫要软绒还是金属面？"
+        },
+        {
+          "speaker": "user",
+          "text": "金属的，手腕贴上去凉凉的舒服。"
+        }
+      ]
+    },
+    {
+      "dialogue": 6,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "夏天握着那块玻璃镇纸，滑溜溜的，我总舍不得松手。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "替你挑一件掌中小物，怎样选触感？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "采用清凉而坚实的表面。"
+        },
+        {
+          "id": "o3",
+          "text": "加上厚厚保暖包层。"
+        },
+        {
+          "id": "o4",
+          "text": "采用温软蓬松的表面。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T1",
+      "domain": "触觉材质"
+    },
+    {
+      "situation": "布置一个休闲倚靠处，怎样处理接触面？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "全部铺成暖绒软垫。"
+        },
+        {
+          "id": "o2",
+          "text": "让身体触不到任何凉面。"
+        },
+        {
+          "id": "o3",
+          "text": "保留偏冷且平滑的硬质部分。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你接触个人用品时偏向冷硬光滑的质感。",
+  "counterintuitive": "此人的取向不采用通常推荐的“采用温软蓬松的表面。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+  "protected_names": []
+}

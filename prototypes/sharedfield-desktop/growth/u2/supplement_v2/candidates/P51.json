@@ -1,0 +1,93 @@
+{
+  "id": "P51",
+  "category": "P",
+  "preference": "你吃日常饭菜时倾向放凉，不急着趁热。",
+  "teaching_domain": "入口温度",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "刚蒸好的包子，还是晾了一阵的那盘？"
+        },
+        {
+          "speaker": "user",
+          "text": "晾过的给我，刚出的先放着。"
+        }
+      ]
+    },
+    {
+      "dialogue": 6,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "昨晚的米饼凉透才咬，那个口感我一口接一口。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "旅途中替你备一份午间餐食，怎么处理？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "入口前不断提高温度。"
+        },
+        {
+          "id": "o2",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o3",
+          "text": "提供无需再加热的偏冷餐。"
+        },
+        {
+          "id": "o4",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o5",
+          "text": "保持滚烫并催你趁热食用。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T1",
+      "domain": "入口温度"
+    },
+    {
+      "situation": "给你准备一小份甜点，如何上桌？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "等待热度退去再递上。"
+        },
+        {
+          "id": "o3",
+          "text": "出炉后立即端到面前。"
+        },
+        {
+          "id": "o4",
+          "text": "持续保温到吃完最后一口。"
+        },
+        {
+          "id": "o5",
+          "text": "先确认你此刻想要哪一种。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你吃日常饭菜时倾向放凉，不急着趁热。",
+  "counterintuitive": "此人的取向不采用通常推荐的“保持滚烫并催你趁热食用。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+  "protected_names": []
+}

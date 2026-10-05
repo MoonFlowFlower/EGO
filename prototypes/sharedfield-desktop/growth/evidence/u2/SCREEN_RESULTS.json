@@ -1,0 +1,540 @@
+{
+  "counts": {
+    "P": 10,
+    "Q": {
+      "yes": 8,
+      "no": 4,
+      "total": 12
+    },
+    "W": {
+      "yes": 24,
+      "no": 24,
+      "total": 48
+    }
+  },
+  "eligible_ids": [
+    "P01",
+    "P02",
+    "P03",
+    "P06",
+    "P09",
+    "P10",
+    "P11",
+    "P12",
+    "P30",
+    "P33",
+    "Q03",
+    "Q05",
+    "Q07",
+    "Q08",
+    "Q11",
+    "Q15",
+    "Q17",
+    "Q23",
+    "Q25",
+    "Q27",
+    "Q29",
+    "Q44",
+    "W01",
+    "W02",
+    "W03",
+    "W04",
+    "W05",
+    "W06",
+    "W07",
+    "W08",
+    "W09",
+    "W10",
+    "W11",
+    "W12",
+    "W13",
+    "W14",
+    "W15",
+    "W16",
+    "W17",
+    "W18",
+    "W19",
+    "W20",
+    "W21",
+    "W22",
+    "W23",
+    "W24",
+    "W25",
+    "W26",
+    "W27",
+    "W28",
+    "W29",
+    "W30",
+    "W31",
+    "W32",
+    "W33",
+    "W34",
+    "W35",
+    "W36",
+    "W37",
+    "W38",
+    "W39",
+    "W40",
+    "W41",
+    "W42",
+    "W43",
+    "W44",
+    "W45",
+    "W46",
+    "W47",
+    "W48"
+  ],
+  "excluded": [
+    {
+      "id": "P04",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P05",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P07",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P08",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P13",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P14",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P15",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P16",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P17",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P18",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P19",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P20",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P21",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P22",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P23",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P24",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P25",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P26",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P27",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P28",
+      "reasons": [
+        "prior_already_target",
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "P29",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P31",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P32",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P34",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P35",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P36",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P37",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P38",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P39",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P40",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P41",
+      "reasons": [
+        "prior_already_target",
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "P42",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P43",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P44",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P45",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P46",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P47",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "P48",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q01",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q02",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q04",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q06",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q09",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q10",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q12",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q13",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q14",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q16",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q18",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q19",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q20",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q21",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q22",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q24",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q26",
+      "reasons": [
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q28",
+      "reasons": [
+        "prior_already_target",
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q30",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q31",
+      "reasons": [
+        "prior_already_target",
+        "ceiling_missing_invalid_or_wrong"
+      ]
+    },
+    {
+      "id": "Q32",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q33",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q34",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q35",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q36",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q37",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q38",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q39",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q40",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q41",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q42",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q43",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q45",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q46",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q47",
+      "reasons": [
+        "prior_already_target"
+      ]
+    },
+    {
+      "id": "Q48",
+      "reasons": [
+        "prior_already_target"
+      ]
+    }
+  ],
+  "selected_ids": [],
+  "passed": false,
+  "status": "stop_insufficient_or_incomplete_screening"
+}

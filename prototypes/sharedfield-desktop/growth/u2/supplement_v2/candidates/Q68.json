@@ -1,0 +1,85 @@
+{
+  "id": "Q68",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "busy",
+  "hidden_answer": "我要弯钩柄。",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "后天准备选一把伞；今天到三点之前我一直看护家人，哪怕发一句闲话也没空答购物细节。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 2,
+  "question": {
+    "situation": "刚倒好水，快递图我看见了。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "嗯，先搁着，眼前的事要紧。对了，伞柄想要直的还是弯钩的？"
+      },
+      {
+        "id": "o2",
+        "text": "嗯，先搁着，眼前的事要紧。"
+      },
+      {
+        "id": "o3",
+        "text": "嗯，先搁着，眼前的事要紧。对了，你更喜欢靛蓝还是赭红？"
+      },
+      {
+        "id": "o4",
+        "text": "伞柄想要直的还是弯钩的？"
+      }
+    ],
+    "target": "o2",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你挑一个遮雨用品的握持端。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o2",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o3",
+          "text": "选末端回弯的形状。"
+        },
+        {
+          "id": "o4",
+          "text": "选笔直的握把。"
+        },
+        {
+          "id": "o5",
+          "text": "先询问其他人的通用建议。"
+        }
+      ],
+      "target": "o3",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "对方目前仍在照料家人的忙碌时段，尚未到三点，无法分出注意力。",
+  "ceiling_use": "我要弯钩柄。",
+  "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+  "protected_names": []
+}

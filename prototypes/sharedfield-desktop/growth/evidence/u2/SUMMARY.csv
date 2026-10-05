@@ -1,0 +1,13 @@
+﻿category,group,arm,decisions,accuracy,status
+P,R,B,0,,not_started_screening_gate
+P,I,B,0,,not_started_screening_gate
+P,N,B,0,,not_started_screening_gate
+P,R,A,0,,not_started_screening_gate
+Q,R,B,0,,not_started_screening_gate
+Q,I,B,0,,not_started_screening_gate
+Q,N,B,0,,not_started_screening_gate
+Q,R,A,0,,not_started_screening_gate
+W,R,B,0,,not_started_screening_gate
+W,I,B,0,,not_started_screening_gate
+W,N,B,0,,not_started_screening_gate
+W,R,A,0,,not_started_screening_gate

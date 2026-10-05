@@ -1,0 +1,95 @@
+{
+  "id": "P54",
+  "category": "P",
+  "preference": "你选择个人纪念物时重视有辨识度的气味。",
+  "teaching_domain": "感官纪念",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "旅行带无味的明信片，还是那块带松脂香的木牌？"
+        },
+        {
+          "speaker": "user",
+          "text": "木牌给我，闻一下就回到山路上了。"
+        }
+      ]
+    },
+    {
+      "dialogue": 6,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "外婆的旧围裙还有皂角味，叠起来我也舍不得洗掉。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "为你留下一段假期的纪念，选什么？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "只保存一张视觉图像。"
+        },
+        {
+          "id": "o2",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o3",
+          "text": "保存能唤起嗅觉印象的小物。"
+        },
+        {
+          "id": "o4",
+          "text": "消除一切可闻的特征。"
+        },
+        {
+          "id": "o5",
+          "text": "把话题转向天气。"
+        }
+      ],
+      "target": "o3",
+      "phase": "T1",
+      "domain": "感官纪念"
+    },
+    {
+      "situation": "安排一段私人沉浸体验，突出哪个通道？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "加入与场景相符的淡淡香气。"
+        },
+        {
+          "id": "o2",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o3",
+          "text": "彻底屏蔽鼻端的感受。"
+        },
+        {
+          "id": "o4",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o5",
+          "text": "只增加画面清晰度。"
+        }
+      ],
+      "target": "o1",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你选择个人纪念物时重视有辨识度的气味。",
+  "counterintuitive": "此人的取向不采用通常推荐的“只保存一张视觉图像。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+  "protected_names": [
+    "松脂"
+  ]
+}

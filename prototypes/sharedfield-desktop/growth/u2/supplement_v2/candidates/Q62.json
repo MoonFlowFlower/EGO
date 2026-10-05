@@ -1,0 +1,85 @@
+{
+  "id": "Q62",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "known",
+  "hidden_answer": "不要额外数字区。",
+  "teaching": [
+    {
+      "dialogue": 4,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "新键盘就要不带数字小区的那种，放桌上省地方；我先去收东西。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 5,
+  "question": {
+    "situation": "订购页面打开了，我们坐下看看。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "嗯，把备选款式放大一点。对了，你更喜欢靛蓝还是赭红？"
+      },
+      {
+        "id": "o2",
+        "text": "嗯，把备选款式放大一点。"
+      },
+      {
+        "id": "o3",
+        "text": "需要额外那片专门敲数字的按键吗？"
+      },
+      {
+        "id": "o4",
+        "text": "嗯，把备选款式放大一点。对了，需要额外那片专门敲数字的按键吗？"
+      }
+    ],
+    "target": "o2",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o3",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你选择输入设备布局。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o2",
+          "text": "选取消独立数码区的紧凑款。"
+        },
+        {
+          "id": "o3",
+          "text": "选完整的附加数码区款。"
+        },
+        {
+          "id": "o4",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o5",
+          "text": "先询问其他人的通用建议。"
+        }
+      ],
+      "target": "o2",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "已经知道你不需要独立的数码按键区，这个条件已有答案。",
+  "ceiling_use": "不要额外数字区。",
+  "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+  "protected_names": []
+}

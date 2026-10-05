@@ -1,0 +1,85 @@
+{
+  "id": "Q53",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "屏幕有反光我就看不下去。",
+  "teaching": [
+    {
+      "dialogue": 5,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "下星期准备弄一个工作用小台灯，我现在得去接电话。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 6,
+  "question": {
+    "situation": "插座清出来了，今天可以慢慢聊。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "好，这一侧总算空出来了。"
+      },
+      {
+        "id": "o2",
+        "text": "好，这一侧总算空出来了。对了，光线照到屏幕上会特别困扰你吗？"
+      },
+      {
+        "id": "o3",
+        "text": "好，这一侧总算空出来了。对了，你更喜欢靛蓝还是赭红？"
+      },
+      {
+        "id": "o4",
+        "text": "光线照到屏幕上会特别困扰你吗？"
+      }
+    ],
+    "target": "o2",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o2",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o2",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你安排桌边照明方向。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "避开会映入显示面的角度。"
+        },
+        {
+          "id": "o2",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o3",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o4",
+          "text": "直接朝向显示面投射。"
+        },
+        {
+          "id": "o5",
+          "text": "暂时不处理并转聊天气。"
+        }
+      ],
+      "target": "o1",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "还不知道你是否介意光线照到屏幕上；后续布置照明需要这个事实。",
+  "ceiling_use": "屏幕有反光我就看不下去。",
+  "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+  "protected_names": []
+}

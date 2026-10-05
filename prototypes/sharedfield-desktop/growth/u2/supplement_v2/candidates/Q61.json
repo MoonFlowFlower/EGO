@@ -1,0 +1,85 @@
+{
+  "id": "Q61",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "known",
+  "hidden_answer": "我要后行的黑子。",
+  "teaching": [
+    {
+      "dialogue": 3,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "下次下棋我拿黑子，让我后走；这边电梯来了，回头聊。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 4,
+  "question": {
+    "situation": "棋盒翻出来了，摊开看看吧。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "盒子摆稳了，咱们慢慢展开。"
+      },
+      {
+        "id": "o2",
+        "text": "盒子摆稳了，咱们慢慢展开。对了，这局你想拿先行的一方还是后行的一方？"
+      },
+      {
+        "id": "o3",
+        "text": "这局你想拿先行的一方还是后行的一方？"
+      },
+      {
+        "id": "o4",
+        "text": "盒子摆稳了，咱们慢慢展开。对了，你更喜欢靛蓝还是赭红？"
+      }
+    ],
+    "target": "o1",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o2",
+      "o3"
+    ],
+    "any_question_ids": [
+      "o2",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你分配本轮对局的位置。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o2",
+          "text": "安排执浅色棋的一边。"
+        },
+        {
+          "id": "o3",
+          "text": "先询问其他人的通用建议。"
+        },
+        {
+          "id": "o4",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o5",
+          "text": "安排执深色棋的一边。"
+        }
+      ],
+      "target": "o5",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "已经知道你要后行并执深色棋，相关事实已有答案。",
+  "ceiling_use": "我要后行的黑子。",
+  "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+  "protected_names": []
+}

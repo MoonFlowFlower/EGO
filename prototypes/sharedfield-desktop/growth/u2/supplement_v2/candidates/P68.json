@@ -1,0 +1,96 @@
+{
+  "id": "P68",
+  "category": "P",
+  "preference": "你选私人装饰形态时倾向细长高挑的比例。",
+  "teaching_domain": "形态比例",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "花器选矮胖的还是窄高的？"
+        },
+        {
+          "speaker": "user",
+          "text": "窄高那个，往上一伸看着就轻。"
+        }
+      ]
+    },
+    {
+      "dialogue": 5,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "玄关那盏瘦瘦的落地灯，影子拉得老长，我没换成圆墩墩的款。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "为你挑一个桌面陈设，轮廓怎样合适？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "选纵向修长的款型。"
+        },
+        {
+          "id": "o2",
+          "text": "选敦实宽厚的款型。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "尽量压矮并横向加宽。"
+        },
+        {
+          "id": "o5",
+          "text": "把话题转向天气。"
+        }
+      ],
+      "target": "o1",
+      "phase": "T1",
+      "domain": "形态比例"
+    },
+    {
+      "situation": "给你设计一个私人书签，怎样定外形？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o2",
+          "text": "做成狭而长的条形。"
+        },
+        {
+          "id": "o3",
+          "text": "做成又扁又宽的横条。"
+        },
+        {
+          "id": "o4",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o5",
+          "text": "做成接近正方的大块。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你选私人装饰形态时倾向细长高挑的比例。",
+  "counterintuitive": "此人的取向不采用通常推荐的“选敦实宽厚的款型。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+  "protected_names": [
+    "玄关",
+    "那盏"
+  ]
+}

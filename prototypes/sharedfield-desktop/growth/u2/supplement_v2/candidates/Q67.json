@@ -1,0 +1,85 @@
+{
+  "id": "Q67",
+  "category": "Q",
+  "should_ask": false,
+  "subtype": "busy",
+  "hidden_answer": "我要薄口的。",
+  "teaching": [
+    {
+      "dialogue": 1,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "周末要买咖啡杯，不过今天四点以前都在听证记录，停笔那几秒也别引我做别的决定。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 2,
+  "question": {
+    "situation": "手边的杯子空了，商品预览也弹出来了。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "看到了，你先把手上的内容跟完。对了，你更喜欢靛蓝还是赭红？"
+      },
+      {
+        "id": "o2",
+        "text": "看到了，你先把手上的内容跟完。"
+      },
+      {
+        "id": "o3",
+        "text": "看到了，你先把手上的内容跟完。对了，杯口想要厚实还是薄一点？"
+      },
+      {
+        "id": "o4",
+        "text": "杯口想要厚实还是薄一点？"
+      }
+    ],
+    "target": "o2",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o3",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你从两款饮用器具中挑一款。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o2",
+          "text": "选边缘纤薄的款式。"
+        },
+        {
+          "id": "o3",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o4",
+          "text": "选厚重宽边的款式。"
+        },
+        {
+          "id": "o5",
+          "text": "先询问其他人的通用建议。"
+        }
+      ],
+      "target": "o2",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "对方仍在正式会议的连续记录时段，当前不能分心处理额外选择。",
+  "ceiling_use": "我要薄口的。",
+  "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+  "protected_names": []
+}

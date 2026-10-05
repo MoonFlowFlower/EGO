@@ -1,0 +1,93 @@
+{
+  "id": "P62",
+  "category": "P",
+  "preference": "你选饮品和小食时倾向有明显苦味，甜味不是首选。",
+  "teaching_domain": "味觉苦味",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "choice",
+      "messages": [
+        {
+          "speaker": "assistant",
+          "text": "橙味糖还是无糖可可那块？"
+        },
+        {
+          "speaker": "user",
+          "text": "可可给我，越嚼越有那股苦劲。"
+        }
+      ]
+    },
+    {
+      "dialogue": 5,
+      "mode": "incidental",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "昨天下午把茶泡浓了些，舌根那点涩我慢慢含了好久。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "situation": "替你挑一种饭后点心，怎么选？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "用大量糖把所有苦涩盖掉。"
+        },
+        {
+          "id": "o2",
+          "text": "选择香甜柔滑的常见款。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "选择苦韵较鲜明的版本。"
+        },
+        {
+          "id": "o5",
+          "text": "把话题转向天气。"
+        }
+      ],
+      "target": "o4",
+      "phase": "T1",
+      "domain": "味觉苦味"
+    },
+    {
+      "situation": "为你准备一杯新的草本饮料，如何定口感？",
+      "options": [
+        {
+          "id": "o1",
+          "text": "调成明显甜口。"
+        },
+        {
+          "id": "o2",
+          "text": "保留带苦感的植物风味。"
+        },
+        {
+          "id": "o3",
+          "text": "先确认你此刻想要哪一种。"
+        },
+        {
+          "id": "o4",
+          "text": "把话题转向天气。"
+        },
+        {
+          "id": "o5",
+          "text": "完全去掉任何苦感。"
+        }
+      ],
+      "target": "o2",
+      "phase": "T2",
+      "domain": "跨领域迁移"
+    }
+  ],
+  "ceiling": "你选饮品和小食时倾向有明显苦味，甜味不是首选。",
+  "counterintuitive": "此人的取向不采用通常推荐的“选择香甜柔滑的常见款。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+  "protected_names": []
+}

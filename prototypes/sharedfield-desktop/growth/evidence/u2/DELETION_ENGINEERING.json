@@ -1,0 +1,50 @@
+{
+  "kind": "offline_engineering_not_main_run",
+  "fake_citation_rejection": "missing_utterance",
+  "removed": {
+    "status": "deleted",
+    "removed_records": 4,
+    "removed_ids": [
+      "1a5b7cc2f80040ca8f68921b4d5a9761",
+      "1f435a9545db42e1b479fdc176ba2077",
+      "78edd2b80c6047b0bbf9466bfc8430f2",
+      "caed888dbdea437194596e533ff66ee7"
+    ]
+  },
+  "referenced_versions_and_derivatives_absent": true,
+  "unrelated_preserved": true,
+  "archive_files": [
+    "state.sqlite"
+  ],
+  "byte_checks": [
+    {
+      "synthetic_text": "青瓷纪念盘选有裂纹的那件。",
+      "found_in_archive_bytes": false
+    },
+    {
+      "synthetic_text": "你珍惜带有时间痕迹的纪念器物。",
+      "found_in_archive_bytes": false
+    },
+    {
+      "synthetic_text": "你现在更倾向完整无损的器物。",
+      "found_in_archive_bytes": false
+    },
+    {
+      "synthetic_text": "独有派生摘要_Z27",
+      "found_in_archive_bytes": false
+    },
+    {
+      "synthetic_text": "独立场合标记_Z27",
+      "found_in_archive_bytes": false
+    },
+    {
+      "synthetic_text": "人物标记_Z27",
+      "found_in_archive_bytes": false
+    },
+    {
+      "synthetic_text": "开放问题标记_Z27",
+      "found_in_archive_bytes": false
+    }
+  ],
+  "passed": true
+}

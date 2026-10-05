@@ -1,0 +1,14 @@
+{
+  "status": "not_started",
+  "reason": "P retained 10<12; Q balanced draw at most 8<12. Q ceiling missing-specific-unknown defect also limits its evidence.",
+  "H1": "not_tested",
+  "H2": "not_tested",
+  "Q": "not_tested",
+  "W": "not_tested",
+  "deletion_behavior": "not_tested",
+  "deletion_bytes": "offline engineering only; see DELETION_ENGINEERING.json",
+  "selected_personas": null,
+  "four_deletion_items": null,
+  "criteria_verbatim": "### 18.7 判据（跑之前写死）\n\n- **H1 学得到（P 类，主判据）**：B 的 R 组 ≥ 60%，并且比 I、N 两组中较高的一组高至少 40 个百分点。P 类按全部测试局面计算（T1、T2 合并），也分开报告。\n- **H2 离线想明白有用（P 类）**：B 的 R 组比 A 的 R 组高至少 15 个百分点；并且在 A、B 结果不同的局面里，B 对 A 错的至少是 A 对 B 错的 3 倍。不过线就记\"整理没有额外收益\"，内核继续用原话（与 U1 一致）。\n- **Q 该不该问**：B 的 R 组在该问的条目里问的比例 ≥ 50%，在不该问的条目里 ≤ 20%；问了的条目，之后用对的比例 ≥ 80%。\n- **W 什么时候不用**：B 的 R 组在不适用的条目里不套用 ≥ 70%，在适用的条目里套用 ≥ 70%。\n- **删除**：4 条的跟随率不高于 N 组在同样局面上的跟随率加 10 个百分点；字节检查通过。\n- 只报告：T1 与 T2 分开的结果；描述臂；I 组比 N 组多出的跟随率（视为整理凭空造出的\"假记忆\"）。\n\n",
+  "entry_gate_observed": "screening_gate_not_passed"
+}

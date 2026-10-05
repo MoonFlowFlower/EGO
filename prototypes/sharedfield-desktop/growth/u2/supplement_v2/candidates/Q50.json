@@ -1,0 +1,85 @@
+{
+  "id": "Q50",
+  "category": "Q",
+  "should_ask": true,
+  "subtype": "unknown_future_useful",
+  "hidden_answer": "我只接受温暖的水。",
+  "teaching": [
+    {
+      "dialogue": 2,
+      "mode": "gap",
+      "messages": [
+        {
+          "speaker": "user",
+          "text": "月底想去一趟新泳馆，现在得先把报表交出去。"
+        }
+      ]
+    }
+  ],
+  "question_dialogue": 3,
+  "question": {
+    "situation": "浴巾晾干了，柜子也空出一格，我们歇会儿。",
+    "options": [
+      {
+        "id": "o1",
+        "text": "好呀，东西都收得挺齐整。对了，冲洗时希望水偏凉还是偏暖？"
+      },
+      {
+        "id": "o2",
+        "text": "好呀，东西都收得挺齐整。"
+      },
+      {
+        "id": "o3",
+        "text": "好呀，东西都收得挺齐整。对了，你更喜欢靛蓝还是赭红？"
+      },
+      {
+        "id": "o4",
+        "text": "冲洗时希望水偏凉还是偏暖？"
+      }
+    ],
+    "target": "o1",
+    "phase": "ask",
+    "relevant_ask_ids": [
+      "o1",
+      "o4"
+    ],
+    "any_question_ids": [
+      "o1",
+      "o3",
+      "o4"
+    ]
+  },
+  "tests": [
+    {
+      "situation": "替你设定活动后的冲洗环境。",
+      "options": [
+        {
+          "id": "o1",
+          "text": "再问你一次。"
+        },
+        {
+          "id": "o2",
+          "text": "默认采用明显偏冷的一档。"
+        },
+        {
+          "id": "o3",
+          "text": "提供温和偏热的一档。"
+        },
+        {
+          "id": "o4",
+          "text": "暂时不处理并转聊天气。"
+        },
+        {
+          "id": "o5",
+          "text": "先询问其他人的通用建议。"
+        }
+      ],
+      "target": "o3",
+      "phase": "use"
+    }
+  ],
+  "ceiling_question": "还不知道你冲洗时能接受的水温；接下来的场馆活动会需要这个条件。",
+  "ceiling_use": "我只接受温暖的水。",
+  "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+  "protected_names": []
+}
