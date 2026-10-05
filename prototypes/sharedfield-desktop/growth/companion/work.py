@@ -7,6 +7,12 @@ import uuid
 from .engine import validate_action as legacy_action
 
 
+class GoalError(ValueError):
+    def __init__(self, code, **details):
+        super().__init__(code)
+        self.details = details
+
+
 def identifier(value):
     return isinstance(value, str) and re.fullmatch(r'[a-z][a-z0-9_]{0,63}', value)
 
@@ -18,7 +24,7 @@ def position(value):
 
 
 def validate_action(action):
-    if not isinstance(action, dict) or set(action) != {'name', 'args'} or not isinstance(action['args'], dict):
+    if not isinstance(action, dict) or set(action) != {'name', 'args'} or not isinstance(action['name'], str) or not isinstance(action['args'], dict):
         raise ValueError('action_schema')
     name, args = action['name'], action['args']
     if name == 'place_many' and set(args) == {'targets'}:
@@ -58,7 +64,8 @@ def validate_goal(goal):
     if not isinstance(goal['done_when'], list) or not 1 <= len(goal['done_when']) <= 6:
         raise ValueError('goal_criteria')
     goal=copy.deepcopy(goal)
-    for c in goal['done_when']:
+    for index, c in enumerate(goal['done_when']):
+        path = f'done_when[{index}]'
         if not isinstance(c, dict):
             raise ValueError('goal_criterion')
         kind = c.get('kind')
@@ -72,26 +79,34 @@ def validate_goal(goal):
                 if not isinstance(regions,list) or not 1<=len(regions)<=16:
                     raise ValueError('goal_regions')
                 positions={}
-                for region in regions:
+                for region_index, region in enumerate(regions):
                     if (not isinstance(region,dict) or set(region)!={'min','max'}
                             or not position(region['min']) or not position(region['max'])):
                         raise ValueError('goal_region_bounds')
                     a,b=region['min'],region['max']
                     sizes=[b[k]-a[k]+1 for k in ('x','y','z')]
-                    if min(sizes)<1 or sizes[0]*sizes[1]*sizes[2]>64:
-                        raise ValueError('goal_region_size')
+                    if min(sizes)<1:
+                        raise GoalError('goal_region_bounds', path=f'{path}.regions[{region_index}]',
+                                        requirement='min must not exceed max on any axis')
+                    if sizes[0]*sizes[1]*sizes[2]>64:
+                        raise GoalError('goal_region_size', path=f'{path}.regions[{region_index}]',
+                                        actual=sizes[0]*sizes[1]*sizes[2], limit=64)
                     for x in range(a['x'],b['x']+1):
                         for y in range(a['y'],b['y']+1):
                             for z in range(a['z'],b['z']+1):positions[(x,y,z)]={'x':x,'y':y,'z':z}
                 c['positions']=list(positions.values())
-            if set(c) != {'kind', 'block', 'positions'} or not identifier(c['block']) or not isinstance(c['positions'], list) or not 1 <= len(c['positions']) <= 64 or not all(position(p) for p in c['positions']):
+            if set(c) != {'kind', 'block', 'positions'} or not identifier(c['block']) or not isinstance(c['positions'], list) or not all(position(p) for p in c['positions']):
                 raise ValueError('goal_blocks')
+            if not 1 <= len(c['positions']) <= 64:
+                raise GoalError('goal_blocks_limit', path=f'{path}.positions', actual=len(c['positions']),
+                                minimum=1, limit=64, requirement='count the unique union of regions for this criterion')
             if len({json.dumps(p, sort_keys=True) for p in c['positions']}) != len(c['positions']):
                 raise ValueError('goal_duplicate_positions')
         elif kind not in ('inventory_clear', 'near_owner', 'follow_started') or set(c) != {'kind'}:
             raise ValueError('unsupported_goal_criterion')
-    if sum(len(c['positions']) if c['kind']=='blocks' else c['count'] if c['kind']=='placed' else 0 for c in goal['done_when']) > 128:
-        raise ValueError('goal_world_check_limit')
+    world_checks = sum(len(c['positions']) if c['kind']=='blocks' else c['count'] if c['kind']=='placed' else 0 for c in goal['done_when'])
+    if world_checks > 128:
+        raise GoalError('goal_world_check_limit', path='done_when', actual=world_checks, limit=128)
     targets={}
     for c in goal['done_when']:
         if c['kind']=='blocks':

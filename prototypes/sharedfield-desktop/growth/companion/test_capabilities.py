@@ -17,6 +17,49 @@ def spatial(conditions):return dict(title='按坐标构造并保留空间',steps
 
 
 class CapabilityTests(unittest.TestCase):
+    def test_goal_limit_feedback_reports_actual_count_without_relaxing_bound(self):
+        bad=spatial([dict(kind='blocks',block='stone',positions=[pos(n) for n in range(65)])])
+        with self.assertRaisesRegex(ValueError,'goal_blocks_limit') as caught:validate_goal(bad)
+        self.assertEqual(caught.exception.details['actual'],65)
+        self.assertEqual(caught.exception.details['limit'],64)
+        self.assertEqual(caught.exception.details['path'],'done_when[0].positions')
+
+    def test_repaired_error_does_not_consume_first_feedback_for_new_error(self):
+        with tempfile.TemporaryDirectory() as folder:
+            bad=spatial([dict(kind='blocks',block='oak_planks',positions=[pos(n) for n in range(65)])])
+            sized=spatial([dict(kind='blocks',block='oak_planks',positions=[pos(1)])])
+            complete=spatial(sized['done_when']+[dict(kind='blocks',block='air',positions=[pos(2)])])
+            body=Body();model=Model(decision(goal=bad),decision(goal=bad),decision(goal=sized),
+                decision(goal=complete,action=dict(name='place_at',args=dict(block='oak_planks',position=pos(1)))),
+                decision(status='waiting_user',reply='已放好一块，继续前请确认位置。'))
+            h=Harness(Path(folder)/'state.sqlite',model,body,Audit(),input_router=lambda *args:dict(mode='task',task_kind='structure'))
+            h.run('repair','verification','构造并保留空位')
+            self.assertEqual(len(body.blocks),1);self.assertEqual(model.calls,5)
+            self.assertEqual(model.contexts[2]['harness_notice']['attempts_for_error'],2)
+            self.assertEqual(model.contexts[3]['harness_notice']['attempts_for_error'],1)
+            self.assertIn('clear_space',model.contexts[3]['harness_notice']['code'])
+
+    def test_repeated_invalid_contract_still_stops_before_any_action(self):
+        with tempfile.TemporaryDirectory() as folder:
+            bad=spatial([dict(kind='blocks',block='stone',positions=[pos(n) for n in range(65)])])
+            body=Body();model=Model(*[decision(goal=bad) for _ in range(4)])
+            h=Harness(Path(folder)/'state.sqlite',model,body,Audit(),input_router=lambda *args:dict(mode='task',task_kind='ordinary'))
+            h.run('bounded','verification','构造');self.assertEqual(model.calls,3);self.assertFalse(body.actions)
+
+    def test_invalid_tool_arguments_are_returned_for_bounded_repair(self):
+        invalid=dict(name='inspect_area',args=dict(radius=2,center=pos(4)))
+        with tempfile.TemporaryDirectory() as folder:
+            body=Body();model=Model(decision(action=invalid),decision(action=dict(name='inspect_area',args=dict(radius=4))),
+                decision(status='waiting_user',reply='目标在观察范围外，请带我走近。'))
+            h=Harness(Path(folder)/'state.sqlite',model,body,Audit(),input_router=lambda *args:dict(mode='task',task_kind='ordinary'))
+            h.run('args','verification','看看这里')
+            self.assertEqual(body.actions,[dict(name='inspect_area',args=dict(radius=4))])
+            self.assertEqual(model.contexts[1]['harness_notice']['kind'],'invalid_action')
+        with tempfile.TemporaryDirectory() as folder:
+            body=Body();model=Model(*[decision(action=invalid) for _ in range(4)])
+            h=Harness(Path(folder)/'state.sqlite',model,body,Audit(),input_router=lambda *args:dict(mode='task',task_kind='ordinary'))
+            h.run('args','verification','看看这里');self.assertEqual(model.calls,3);self.assertFalse(body.actions)
+
     def test_stagnation_question_uses_evidence_and_preserves_pending_work(self):
         with tempfile.TemporaryDirectory() as folder:
             path=Path(folder)/'state.sqlite';body=Body();inspect=dict(name='inspect',args={})

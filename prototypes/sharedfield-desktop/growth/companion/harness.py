@@ -266,11 +266,21 @@ class Harness(Engine):
                     persist('active')
                 generation = self._execution_generation
                 started = time.monotonic()
-                seen, failures, no_action, premature = {}, 0, 0, 0
+                seen, failures, no_action, contract_changes = {}, 0, 0, 0
+                rejected = {}
                 observations, repeated_observations, observations_without_effect = set(), 0, 0
                 notice = None
                 previous_decision = None
                 invalid_decisions = 0
+                def reject(kind, code, details=None):
+                    nonlocal notice
+                    key = (kind, code)
+                    rejected[key] = rejected.get(key, 0) + 1
+                    notice = {'kind':kind, 'code':code, **(details or {}),
+                              'attempts_for_error':rejected[key], 'same_error_limit':3,
+                              'effect':'rejected proposal not executed; repair against the documented interface and current evidence'}
+                    self.audit.write('lifecycle.jsonl', {'event':'proposal_rejected', 'event_id':event_id, **notice})
+                    return rejected[key] >= 3
                 state = self.body.snapshot()
                 for step in range(self.max_decisions):
                     if epoch != self._epoch:
@@ -359,22 +369,19 @@ class Harness(Engine):
                         try:
                             proposed = validate_goal(decision['goal'])
                         except ValueError as error:
-                            notice = {'kind':'invalid_goal_contract', 'code':str(error)}
-                            premature += 1
-                            if premature >= 3:
+                            if reject('invalid_goal_contract', str(error), getattr(error, 'details', None)):
                                 say('目标的核对条件仍有矛盾或缺项，尚未执行。'); break
                             continue
                         contract_problem = goal_problem(work.get('task_kind', 'ordinary') if work else intent['task_kind'], proposed)
                         if contract_problem:
-                            notice = contract_problem; premature += 1
-                            if premature >= 2:
+                            if reject('goal_request_mismatch', contract_problem):
                                 say('当前目标的核对条件还不符合你的请求，尚未执行。'); break
                             continue
                         if work:
                             if proposed['done_when'] != work['done_when']:
                                 notice = '已有任务完成条件不可为提前结束而降低；请完成原条件或明确说明阻塞。'
-                                premature += 1
-                                if premature >= 2:
+                                contract_changes += 1
+                                if contract_changes >= 2:
                                     persist('blocked', 'completion_contract_changed'); say('完成条件被改写，任务没有通过核对，已保留原目标。'); break
                                 continue
                             work['steps'] = proposed['steps']
@@ -397,8 +404,14 @@ class Harness(Engine):
                         say(decision['reply']);break
                     if work and complete(state, step):
                         break
+                    if action is not None:
+                        try:
+                            validate_action(action)
+                        except ValueError as error:
+                            if reject('invalid_action', str(error), {'requirement':'use only the exact action names, arguments and bounds in the tool interface; no added fields'}):
+                                persist('blocked', 'invalid_action');say('连续三次工具参数不符合接口，已停止；没有执行这些无效动作。');break
+                            continue
                     if action and action.get('name') == 'recall':
-                        validate_action(action)
                         result = recall(m, action['args']['query'])
                         for candidate in result['candidates']:
                             parents.extend([candidate['record_id'], *candidate.get('source_ids', [])])
@@ -427,7 +440,6 @@ class Harness(Engine):
                         if no_action >= 2:
                             say('行动缺少可检查的目标，尚未执行。'); break
                         continue
-                    validate_action(action)
                     if state.get('offline'):
                         persist('blocked', 'body_offline'); say('身体连接不可用，目标已保存；连接恢复后先观察，再决定下一步。'); break
                     key = json.dumps(action, sort_keys=True)
