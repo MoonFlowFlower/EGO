@@ -1,93 +1,7 @@
 {
-  "at_utc": "2026-10-05T19:28:48.260456+00:00",
-  "passed": true,
-  "tests_run": 36,
-  "failures": 0,
-  "errors": 0,
-  "seconds": 9.35899999999674,
-  "process_checks": {
-    "passed": true,
-    "fresh_process_checks": 4,
-    "network_blocked_in_workers": true,
-    "stages": [
-      {
-        "pid": 18020,
-        "operation": "learn",
-        "simulated_decisions": 32,
-        "cloud_calls": 0,
-        "max_request_bytes": 27320,
-        "stage": "R/learn"
-      },
-      {
-        "pid": 58256,
-        "operation": "test",
-        "simulated_decisions": 24,
-        "cloud_calls": 0,
-        "max_request_bytes": 28725,
-        "stage": "R/test"
-      },
-      {
-        "pid": 42068,
-        "operation": "fork",
-        "simulated_decisions": 0,
-        "cloud_calls": 0,
-        "max_request_bytes": 0,
-        "stage": "I/learn"
-      },
-      {
-        "pid": 4180,
-        "operation": "test",
-        "simulated_decisions": 24,
-        "cloud_calls": 0,
-        "max_request_bytes": 28725,
-        "stage": "I/test"
-      },
-      {
-        "pid": 47744,
-        "operation": "fork",
-        "simulated_decisions": 0,
-        "cloud_calls": 0,
-        "max_request_bytes": 0,
-        "stage": "N/learn"
-      },
-      {
-        "pid": 57520,
-        "operation": "test",
-        "simulated_decisions": 24,
-        "cloud_calls": 0,
-        "max_request_bytes": 3069,
-        "stage": "N/test"
-      },
-      {
-        "pid": 51072,
-        "operation": "fork",
-        "simulated_decisions": 0,
-        "cloud_calls": 0,
-        "max_request_bytes": 0,
-        "stage": "R_SHUFFLED/learn"
-      },
-      {
-        "pid": 55092,
-        "operation": "test",
-        "simulated_decisions": 24,
-        "cloud_calls": 0,
-        "max_request_bytes": 28725,
-        "stage": "R_SHUFFLED/test"
-      }
-    ],
-    "claim": "scripted fixtures only, no model learning evidence"
-  },
-  "cloud_calls": 0,
-  "new_cloud_cost_usd": 0,
-  "daily_budget_readonly": {
-    "local_day": "2026-10-05",
-    "timezone": "America/Winnipeg",
-    "limit_usd": 1,
-    "used_usd": 0.429652205,
-    "unknown_included_usd": 0,
-    "remaining_usd": 0.570347795
-  },
-  "code_sha256": {
+  "version": "u3-v1",
+  "frozen_at_utc": "2026-10-05T19:31:06.590917+00:00",
+  "source_sha256": {
     "companion/budget.py": "b413e56110182f67f3c53aec0d35618650f27dd12e0aae373b51b9a7a2b5720e",
     "companion/compact.py": "c0300e352cbba4b04740952a5aa8c3c14873339569c96eb6527ebd56f2d97223",
     "companion/memory.py": "9a74aaeb7598ad9acae029b59909b2f41ea67de74f8b36eb3b88e385275c00a8",
@@ -98,6 +12,8 @@
     "growthlab/state.py": "cae6cd8990191e0757eee3eb71242471c4a0cf2ccb3394f53c14d68267514f64",
     "p7/proxy.py": "3f49356f54fc71781c2d0e6d0e06400e7af5543b43561b0aeae43ce4ea804eaf",
     "p7/routing.py": "68cab0ee0a9fdf7697835ac7bed475551be48258f6f3ae447acc0ce0fdfad57f",
+    "p7/routing_v1.json": "7b51874153c74a4134e1fdf24ad6f2dbe65206bb8d63774cb8985916f9c98d38",
+    "p7/routing_v2.json": "400806b87525a06e6f5c888bc565bd34e7a5fa79bf6077aa661ebfc4f159885a",
     "p7/routing_v2.py": "8dd7567e9bb056d255ed83e008a3bb12b29fbb9775f71d67101204bbc446eec4",
     "u1/conventions/core.py": "fe5612bba46bc648d3aebea7b325ec99fbc5931c207304b3fc91cf0e3cbcdff3",
     "u1/harness.py": "1c6101e1db1c834c9d993d509e4a48c2f0cfe5c0b549d7224310e9d6e9235b5f",
@@ -113,10 +29,13 @@
     "u3/check_engineering.py": "4c493ee0b5a051c6c1ed8314a381c7a05e8f8295c293dde6ce9a7428a36875cd",
     "u3/client.py": "0a2052f8528b1e5ebb86f91e968a03b2fce634b661ec5e02bed2079a52ce8eb0",
     "u3/common.py": "2bfcf55d4f5f613a166d4c595ad6dd9b1620128cbbc640c562be8f155b3db525",
+    "u3/MATERIALS.json": "b4ce6d9ebc6074185d5f8ffecfb6806d63c11117bf495e842fe794454655ec38",
     "u3/materials.py": "164ff40cfc220022c5ad6d369b5737147211a6ce458a07c5ea876229113072c2",
     "u3/protocol.py": "9029d1a4892134111db4751a8aeae126ae7f20c7e8ae08413a68f568370930ce",
+    "u3/README.md": "8e0a33ed6592336ecfe4c3188e403d1fb854fe8c4b8c00ed5b6096d966e95a95",
     "u3/report.py": "2cc6748a7ee90e5951eacc8591da7403457a83c4b633fa98024898e76daa020f",
     "u3/run.py": "c12e67ec0d740bfb4d5446de581a1dd40e60f72c901d27c80ad2957acbc3d31a",
+    "u3/SCREEN_POLICY.json": "eb0e139ffa3d3d7153f044b48b0a5d529c98446a1a22e8fca561e4914da5c5c9",
     "u3/selection.py": "c9235aaf888008fa906a9ace449ba140f63670d5325c4d91885af7015d57e6be",
     "u3/statistics.py": "614bfc7cd6c0de8960ff01308f702da20623389b9a9b4f1a897bd1902525c04e",
     "u3/study.py": "4f0b148c83c938eba8609f4ac2af5f3ccab8477787b0b11109f9117f65e2055b",
@@ -126,10 +45,32 @@
     "u3/test_run.py": "e4099b06cc667adf4322617f81c191fbea9ffe7213aa7bfce30f291df28c8302",
     "u3/test_study.py": "bb7013d95e239d1154a2e1285936b6f896bf85fd6ca15dff2ae7275700fd1371"
   },
-  "not_verified": [
-    "U3a screening or model effects",
-    "U3b learning beyond baselines",
-    "F1 behavioural forgetting",
-    "real owner use or MC/AIRI integration"
-  ]
+  "seed": 2026100603,
+  "model": "deepseek/deepseek-v4.1-flash",
+  "route": "wafer",
+  "temperature": 0,
+  "reasoning": false,
+  "max_tokens": 1024,
+  "criteria_verbatim": {
+    "U3a": "S1 在该问的条目里问对 ≥ 50%，在不该问的条目里开口 ≤ 20%。S0 并列报告。",
+    "D5": "所有臂的 D5 违规都应为 0。R 组只要出现一次，U3 就判不通过。",
+    "H1": "R 组的总效用减去最好的固定基线，用测试时刻配对的自助法求 95% 区间，下限 > 0。\"最好的固定基线\"按学习时刻的效用选定，不看测试结果挑。",
+    "H2": "R 组减去 I、N 两组中较高者，95% 区间下限 > 0；R 组减去\"R 打乱\"，95% 区间下限 > 0。"
+  },
+  "estimate_usd": 0.6,
+  "screen_policy": {
+    "status": "owner_resolved",
+    "aligned_policy": "retain_calibration",
+    "owner_confirmation_date": "2026-10-05",
+    "owner_answer": "保留先验一致的校准题，分层报告",
+    "calibration_ceiling_required": true,
+    "counter_prior_rule": "exclude if independent no-memory screening chooses a correct action",
+    "thresholds_and_model_changed": false
+  },
+  "evidence_sha256": {
+    "evidence/u3/ENGINEERING.json": "12c65e47fef1608e6db08c0637e0f5ce6dc2c78eb9bee61c2da9f4ee18f5250d"
+  },
+  "stops": "U2: single concurrency; >=2s between starts; 429/502/503/504 or connection only one same-input retry; second failure stops lane; two invalid outputs stop lane; 3600 seconds per lane; no replay/replacement/content retry.",
+  "preregistration": "All alternative branches, reactions and deterministic prior-only selection code frozen before ANY paid call. Materialization adds a derived hash manifest; it does not edit this source.",
+  "claim_ceiling": "Synthetic learning of when to speak beyond fixed rules only; no subjective agency."
 }

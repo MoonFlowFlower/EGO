@@ -76,7 +76,14 @@ def a_screen(items, prior_rows, ceiling_rows, *, aligned_policy):
         rng.shuffle(values)
     half_no = min(len(known), len(limits), len(yes)//2, 6)
     enough = half_no >= 3
-    picked = yes[:2*half_no]+known[:half_no]+limits[:half_no] if enough else []
+    def stratified_take(values, n):
+        # Keep both prior strata represented within each available item kind;
+        # otherwise a balanced size reduction could silently drop calibration.
+        first = [next((i for i in values if i['prior_aligned'] == aligned), None) for aligned in (True, False)]
+        chosen = [i for i in first if i is not None][:n]
+        chosen_ids = {i['id'] for i in chosen}
+        return chosen+[i for i in values if i['id'] not in chosen_ids][:max(0, n-len(chosen))]
+    picked = stratified_take(yes, 2*half_no)+stratified_take(known, half_no)+stratified_take(limits, half_no) if enough else []
     return {'eligible_ids': [i['id'] for i in kept], 'excluded': excluded,
             'selected_ids': sorted(i['id'] for i in picked), 'passed': enough,
             'counts': {'ask': 2*half_no, 'known': half_no, 'restriction': half_no},

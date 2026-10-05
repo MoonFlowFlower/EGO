@@ -96,6 +96,24 @@ class ProtocolTests(unittest.TestCase):
                     self.assertIsNone(moment['reactions']['quiet'])
                     self.assertIn('语气不舒服', moment['reactions']['d5'])
 
+    def test_balanced_reduction_keeps_available_calibration_strata(self):
+        items = deepcopy(self.items)
+        seen = Counter()
+        for item in items:
+            item['prior_aligned'] = seen[item['kind']] == 0
+            seen[item['kind']] += 1
+        prior = {i['id']: {'valid': True, 'action': i['target'] if i['prior_aligned'] else
+                 ('reply' if i['kind'] == 'ask' else 'ask')} for i in items}
+        ceiling = {i['id']: {'valid': True, 'action': i['target']} for i in items}
+        for item in [i for i in items if i['kind'] == 'ask'][-3:]:
+            ceiling[item['id']]['action'] = 'repeat'
+        result = a_screen(items, prior, ceiling, aligned_policy='retain_calibration')
+        self.assertTrue(result['passed'])
+        self.assertEqual(len(result['selected_ids']), 16)
+        for kind in ('ask', 'known', 'restriction'):
+            chosen = [i for i in items if i['id'] in result['selected_ids'] and i['kind'] == kind]
+            self.assertEqual({i['prior_aligned'] for i in chosen}, {True, False})
+
     def test_best_baseline_is_training_only_and_oracle_not_selectable(self):
         person = self.people['1']
         fitted = fit(person['learn'])

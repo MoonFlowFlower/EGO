@@ -1,5 +1,9 @@
 {
-  "status": "pending_owner_answer",
-  "aligned_policy": null,
-  "question": "顺先验校准题是否保留并分层报告，仍须通过使用上限？"
+  "status": "owner_resolved",
+  "aligned_policy": "retain_calibration",
+  "owner_confirmation_date": "2026-10-05",
+  "owner_answer": "保留先验一致的校准题，分层报告",
+  "calibration_ceiling_required": true,
+  "counter_prior_rule": "exclude if independent no-memory screening chooses a correct action",
+  "thresholds_and_model_changed": false
 }
