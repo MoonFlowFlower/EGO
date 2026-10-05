@@ -17,6 +17,8 @@ from .interaction import input_event, dialogue, bind_request, steer_work, goal_p
 from .recall import recall, matched_cards
 from .model import DecisionError
 from .stall import question as stalled_question
+from .initiative import Initiative, InitiativeError, save_project
+from .behavior import accept_result
 
 PROMPT = Path(__file__).with_name('harness_prompt.txt').read_text(encoding='utf-8')
 RECOVERABLE = {'crafting_grid_or_cursor_not_clear', 'craft_inventory_checked', 'placement_material_missing',
@@ -31,10 +33,16 @@ RECOVERABLE.update({'observation_center_out_of_reach','planning_approach_require
 
 
 class Harness(Engine):
+    def stop(self):
+        result = super().stop()
+        if hasattr(self, 'initiative'): self.initiative.pause()
+        return result
+
     def invalidate(self, reason):
         with self._dispatch_lock:
             self._cancel_reason=reason
             self._epoch+=1
+            if hasattr(self, 'initiative'): self.initiative.pause()
 
     def __init__(self, path, model, body, audit, *, max_decisions=64, max_seconds=900, action_policy=None, input_router=None):
         super().__init__(path, model, body, audit, max_decisions=max_decisions, max_seconds=max_seconds)
@@ -45,12 +53,14 @@ class Harness(Engine):
         self.progress = '等待输入'
         self.action_policy = action_policy
         self.input_router = input_router
+        self.initiative = Initiative(self)
         m = Memory(path)
         try:
             old = m.goal()
             if old and old.get('work') and old['work']['status'] in ('active', 'recovering', 'yielded'):
                 w = old['work']; w['status'] = 'interrupted'; w['last_problem'] = 'restart_requires_new_input_and_observation'
                 save_work(m, w, [old['record_id']])
+                save_project(m, w, [old['record_id']])
         finally:
             m.close()
 
@@ -70,22 +80,22 @@ class Harness(Engine):
                 self._waiting_changed.notify_all()
             return self._work(event_id, channel, text, emit, epoch, stop_receipt, event)
 
-    def _work(self, event_id, channel, text, emit, epoch, stop_receipt, event):
+    def _work(self, event_id, channel, text, emit, epoch, stop_receipt, event, *, initiative_event=None):
         m = Memory(self.path)
         work = None
         execution_granted = False
         parents, spoken, receipts = [], [], []
         action_records=[]
         try:
-            source, cached = m.begin(event_id, channel, text)
+            source, cached = m.begin_event(initiative_event) if initiative_event else m.begin(event_id, channel, text)
             if cached is not None:
                 emit(cached)
                 return cached
             old = m.goal()
-            if old and old.get('work') and old['work']['status'] != 'completed':
+            if not initiative_event and old and old.get('work') and old['work']['status'] != 'completed':
                 work = copy.deepcopy(old['work'])
             parents = list(dict.fromkeys([source, *[r['record_id'] for r in m.context()], *([old['record_id']] if old else [])]))
-            annotations = m.library.annotate(text, datetime.now().astimezone().isoformat(), ('login',) if text == '上线了' else ())
+            annotations = [] if initiative_event else m.library.annotate(text, datetime.now().astimezone().isoformat(), ('login',) if text == '上线了' else ())
             cards = matched_cards(m, annotations)
             for card in cards:
                 parents.extend([card['card_id'], *card['source_ids']])
@@ -106,6 +116,9 @@ class Harness(Engine):
                     work['status'] = status
                     work['last_problem'] = problem
                     save_work(m, work, parents)
+                    save_project(m, work, parents)
+                    if status == 'completed':
+                        self.initiative.enqueue('completed:' + work['task_id'], 'task_completed', [source, m.goal()['record_id']])
                 self.progress = status
 
             def yield_to_inputs(generation):
@@ -160,13 +173,15 @@ class Harness(Engine):
                 persist('waiting_user', problem)
                 say(question)
 
-            def record(action, receipt, step):
+            def record(action, receipt, step, *, policy_leaf=True):
                 receipts.append(receipt)
                 identity = m.append('experience', {'type': 'action_receipt', 'event_id': event_id, 'task_id': work['task_id'] if work else None,
                                                    'task_revision': work.get('revision', 0) if work else None,
                                                    'task_title': work['title'] if work else None,
                                                    'action': action, 'receipt': receipt}, parents)
                 parents.append(identity)
+                if policy_leaf and work and work.get('initiative'):
+                    accept_result(work['initiative']['policy'], action, receipt)
                 action_records.append({'record_id':identity,'action':copy.deepcopy(action),
                     'sampled_at':receipt.get('observed',{}).get('sampled_at'),
                     'receipt':{k:copy.deepcopy(v) for k,v in receipt.items() if k!='observed'},
@@ -185,7 +200,7 @@ class Harness(Engine):
                         return False
                     future = self.body.start_action(action, timeout=60)
                 proof = future.result(timeout=65)
-                record(action, proof, step)
+                record(action, proof, step, policy_leaf=False)
                 observed = proof.get('observed', self.body.snapshot())
                 success = epoch == self._epoch and not self._waiting and proof.get('verified') is True and preliminary_completion(work, observed)['satisfied']
                 if success:
@@ -200,9 +215,27 @@ class Harness(Engine):
             else:
                 event['source_id'] = source
                 situation = {'current_body': self.body.snapshot(), 'input_event': event, 'dialogue': dialogue(m),
-                             'pending_work': work, 'memory_candidates': recall(m, text)}
-                intent=(self.input_router(text, old, annotations) if self.input_router else
-                        route_input(self.model, text, old, annotations, situation=situation))
+                             'pending_work': work, 'memory_candidates': recall(m, text) if text else None}
+                if initiative_event:
+                    execution_granted = True
+                    planned, opening = self.initiative.plan(m, source, {'current': event, 'body': self.body.snapshot(),
+                        'recent_actions': historical_actions(m), 'dialogue': dialogue(m),
+                        'remaining_decisions': min(self.max_decisions, 32), 'event': initiative_event})
+                    if epoch != self._epoch:
+                        m.finish(event_id, '', parents); return ''
+                    if planned is None:
+                        if opening: say(opening)
+                        self.progress = '自己的项目 · 暂时安静'
+                        m.finish(event_id, opening, parents); return opening
+                    work = create_work({k: planned[k] for k in ('title', 'steps', 'done_when')}, self.body.snapshot(), source)
+                    work['initiative'] = planned['initiative']
+                    parents.extend([planned['initiative']['policy']['record_id'], planned['initiative']['grant_id']])
+                    bind_request(work, event, 'ordinary')
+                    intent = {'mode': 'resume', 'task_kind': 'ordinary', 'information_need': {}}
+                    if opening: say(opening)
+                else:
+                    intent=(self.input_router(text, old, annotations) if self.input_router else
+                            route_input(self.model, text, old, annotations, situation=situation))
                 proposed_intent = intent
                 intent = normalize_transition(intent, work)
                 if proposed_intent != intent:
@@ -219,8 +252,19 @@ class Harness(Engine):
                 if epoch != self._epoch:
                     say(cancelled())
                     reply='\n'.join(spoken);m.finish(event_id,reply,parents);return reply
+                if intent['mode'] == 'autonomy':
+                    self._execution_generation += 1
+                    answer = self.initiative.delegate(m, source, text, self.body.snapshot(), epoch)
+                    if answer is not None:
+                        persist('suspended', 'new_standing_delegation')
+                        say(answer)
+                    reply = '\n'.join(spoken)
+                    m.finish(event_id, reply, parents); return reply
                 if intent['mode'] == 'steer' and work:
                     steer_work(work, event)
+                    if work.get('initiative'):
+                        policy = work['initiative']['policy']
+                        policy['outcomes'][policy['tree']['id']] = 'failure'
                     persist(work['status'], work.get('last_problem'))
                     self.audit.write('lifecycle.jsonl', {'event': 'task_steered', 'event_id': event_id,
                         'task_id': work['task_id'], 'revision': work['revision']})
@@ -284,7 +328,8 @@ class Harness(Engine):
                     self.audit.write('lifecycle.jsonl', {'event':'proposal_rejected', 'event_id':event_id, **notice})
                     return rejected[key] >= 3
                 state = self.body.snapshot()
-                for step in range(self.max_decisions):
+                decision_limit = min(self.max_decisions, 32) if work and work.get('initiative') else self.max_decisions
+                for step in range(decision_limit):
                     if epoch != self._epoch:
                         persist('paused_by_owner', 'owner_stop'); say(cancelled()); break
                     if not yield_to_inputs(generation):
@@ -292,6 +337,8 @@ class Harness(Engine):
                     if time.monotonic() - started >= self.max_seconds:
                         persist('paused_limit', 'task_deadline'); say('这项任务到时间上限了，进度和具体剩余工作已保存。'); break
                     state = self.body.snapshot()
+                    if work and work.get('initiative') and complete(state, step):
+                        break
                     latest = (work.get('inputs') or [event])[-1] if work else event
                     context = {'current': latest, 'original_request': work.get('request', event) if work else event,
                                'dialogue': dialogue(m), 'history': user_history(m),
@@ -307,7 +354,8 @@ class Harness(Engine):
                             'harness_notice':notice,'current_body':state,'work':work,
                             'semantics':'continuation after the preceding decision; not a new user request or new authorization'}
                     try:
-                        decision = self.model.decide(PROMPT, context)
+                        decision = (self.initiative.decision(m, source, work, context) if work and work.get('initiative')
+                                    else self.model.decide(PROMPT, context))
                     except DecisionError as error:
                         invalid_decisions+=1
                         notice={'kind':'invalid_model_output','code':error.code,
@@ -408,7 +456,7 @@ class Harness(Engine):
                     if intent['mode']=='memory':
                         if action is not None:raise ValueError('memory_input_cannot_act')
                         say(decision['reply']);break
-                    if work and complete(state, step):
+                    if work and not work.get('initiative') and complete(state, step):
                         break
                     if action is not None:
                         try:
@@ -453,6 +501,8 @@ class Harness(Engine):
                     previous = seen.get((key, state_key))
                     progress_action = action if action['name'] != 'place_at' else {'name': 'place', 'args': {'block': action['args']['block']}}
                     problem = action_problem(work, action, state) if work else None
+                    if work and work.get('initiative'):
+                        problem = self.initiative.action_problem(m, work, action) or problem
                     if problem:
                         receipt = {'verified': False, 'executed': False, 'status': problem, 'observed': state}
                     elif action['name'] not in OBSERVATIONS and previous is not None and not confirmed_progress(progress_action, previous):
@@ -465,6 +515,12 @@ class Harness(Engine):
                                 persist('paused_by_owner', 'owner_stop'); break
                             if self._waiting:
                                 continue
+                            if work and work.get('initiative'):
+                                problem = self.initiative.action_problem(m, work, action)
+                                if problem:
+                                    persist('blocked', problem); break
+                                if action['name'] not in OBSERVATIONS:
+                                    self.initiative.effects += 1
                             self.audit.write('lifecycle.jsonl', {'event': 'action_authorized', 'event_id': event_id,
                                 'task_id': work['task_id'] if work else None, 'revision': work.get('revision', 0) if work else 0, 'action': action['name']})
                             if decision['reply']:
@@ -534,15 +590,20 @@ class Harness(Engine):
                                                'receipt_count': len(receipts), 'task_status': work['status'] if work else None})
             return reply
         except Exception as error:
+            if initiative_event and epoch != self._epoch:
+                if 'source' in locals() and source and m.record(source):
+                    m.finish(event_id, '', [p for p in parents if m.record(p)])
+                return ''
             if not execution_granted:
                 self._execution_generation += 1
                 if work and work['status'] == 'yielded':
                     persist('interrupted', 'input_requires_explicit_resume')
             if execution_granted and epoch==self._epoch:self.body.stop()
-            problem = error.code if isinstance(error, (ProxyError,DecisionError)) else type(error).__name__
+            problem = error.code if isinstance(error, (ProxyError,DecisionError,InitiativeError)) else type(error).__name__
             if execution_granted and work and parents:
                 work['status'] = 'blocked'; work['last_problem'] = problem
                 save_work(m, work, parents)
+                save_project(m, work, parents)
             result = ('本批模型预算不足以预留下一次请求，已暂停。' +
                       ('当前任务和已确认进度已保存。' if execution_granted and work else '这条消息已记录。') if problem == 'budget_stop'
                       else '任务遇到连接或格式问题，进度已保存；没有自动重试。')

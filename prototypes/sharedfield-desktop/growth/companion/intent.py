@@ -15,10 +15,10 @@ def route_input(model, text, pending, annotations, *, situation=None):
     if not isinstance(result,dict) or set(result)!={'mode','request_quote','task_kind','information_need'}:
         raise ValueError('intent_schema')
     validate_need(result['information_need'])
-    if result['mode'] not in ('chat','status','task','resume','steer','memory') or result['task_kind'] not in ('ordinary','structure','pickup','approach','follow'):
+    if result['mode'] not in ('chat','status','task','resume','steer','memory','autonomy') or result['task_kind'] not in ('ordinary','structure','pickup','approach','follow'):
         raise ValueError('intent_value')
     quote=result['request_quote']
-    if not isinstance(quote,str) or (result['mode'] in ('task','resume','steer','memory') and (not quote or quote not in text)):
+    if not isinstance(quote,str) or (result['mode'] in ('task','resume','steer','memory','autonomy') and (not quote or quote not in text)):
         raise ValueError('intent_must_quote_current_input')
     if result['mode']=='steer' and (not pending or pending.get('goal_status')=='completed'):
         return {**result,'mode':'task'}

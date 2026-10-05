@@ -45,9 +45,9 @@ def request_payload(model,system,context):
     interpretation='situation' in context and 'matched_conventions' in context
     notice=context.get('harness_notice') or (context.get('execution_feedback') or {}).get('harness_notice')
     repair=isinstance(notice,dict) and notice.get('kind')=='invalid_model_output'
-    thinking=(execution or interpretation) and not repair
+    thinking=(execution or interpretation or 'initiative_stage' in context) and not repair
     return {'model':model,'stream':False,'temperature':0,
-            'max_tokens':(8192 if execution else 2048) if thinking else 1600,
+            'max_tokens':(8192 if execution or context.get('initiative_stage') in ('choose','revise') else 2048) if thinking else 1600,
             'reasoning':{'enabled':True,'effort':'low','exclude':True} if thinking else {'enabled':False},
             'response_format':{'type':'json_object'},'messages':request_messages(system,context)}
 

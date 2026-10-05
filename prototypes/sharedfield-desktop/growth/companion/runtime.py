@@ -89,6 +89,8 @@ class Runtime:
                 self._reconnect_notice=False
                 self.body.say('我重新连上了。刚才的任务和回执保留着；没有重放动作。你明确说继续后，我会先重新观察。')
                 self.audit.write('lifecycle.jsonl',{'event':'body_reconnected','replayed_actions':0})
+            if self.engine and not self.body.snapshot().get('offline'):
+                self.engine.initiative.pulse()
 
     def on_minecraft(self,text,input_state=None):
         if self._closed.is_set():return

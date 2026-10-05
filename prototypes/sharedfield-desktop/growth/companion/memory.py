@@ -25,6 +25,23 @@ class Memory:
     def close(self):
         self.store.close()
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        self.close()
+
+    def begin_event(self, event):
+        row = self.db.execute('SELECT phase FROM kernel_turns WHERE event_id=?', (event['event_id'],)).fetchone()
+        if row:
+            return None, self.cached(event['event_id'])
+        source = self.append('experience', {'type': 'kernel_event', **event}, event['parents'])
+        with self.db:
+            # No user_id: an endogenous event is never an utterance or grant.
+            self.db.execute('INSERT INTO kernel_turns VALUES (?,?,?,?,?,?)',
+                            (event['event_id'], 'initiative', datetime.now().astimezone().isoformat(), None, None, 'running'))
+        return source, None
+
     def begin(self, event_id, channel, text):
         row = self.db.execute('SELECT phase,reply_id FROM kernel_turns WHERE event_id=?', (event_id,)).fetchone()
         if row:
