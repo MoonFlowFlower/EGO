@@ -42,5 +42,6 @@
     "B personalized timing learning",
     "F1 behavioural forgetting"
   ],
-  "root_agent_contract_note": "AGENTS.md references three route-state/context files absent in this checkout; current explicit owner card and growth design used as the bounded task authority."
+  "root_agent_contract_note": "AGENTS.md references three route-state/context files absent in this checkout; current explicit owner card and growth design used as the bounded task authority.",
+  "implementation_commit": "a724444"
 }
