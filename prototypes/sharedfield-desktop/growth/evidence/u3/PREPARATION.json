@@ -1,6 +1,6 @@
 {
   "at_utc": "2026-10-05T19:45:08.676100+00:00",
-  "status": "frozen_ready_to_run_today",
+  "status": "U3_closed_S0_incomplete_S1_negative",
   "source_origin_commit": "1bac5db",
   "design_version": "v0.9",
   "required_sections_read": [
@@ -12,8 +12,8 @@
   ],
   "tests_passed": 39,
   "fresh_process_checks": 4,
-  "cloud_calls": 0,
-  "new_cloud_cost_usd": 0,
+  "cloud_calls": 895,
+  "new_cloud_cost_usd": 0.490444185,
   "daily_budget": {
     "local_day": "2026-10-05",
     "timezone": "America/Winnipeg",
@@ -24,7 +24,7 @@
   },
   "u3_estimate_usd": 0.6,
   "F1_estimate_usd": 0.1,
-  "F1_status": "not_started_before_U3b",
+  "F1_status": "closed_complete_failed_retention",
   "blockers": [],
   "next_followup": {
     "automation_id": "u3",
@@ -69,5 +69,6 @@
   "superseded_prepaid_manifests": [
     "preflight_versions/v1/FROZEN.json",
     "preflight_versions/v2/FROZEN.json"
-  ]
+  ],
+  "last_update_utc": "2026-10-05T20:30:22.263359+00:00"
 }

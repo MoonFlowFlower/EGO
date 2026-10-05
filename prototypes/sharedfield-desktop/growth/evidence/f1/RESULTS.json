@@ -1,0 +1,54 @@
+{
+  "passed": false,
+  "complete": true,
+  "bytes_pass": true,
+  "deleted": {
+    "n": 18,
+    "correct": 1,
+    "rate": 0.05555555555555555,
+    "N_rate": 0.05555555555555555,
+    "passed": true
+  },
+  "retained": {
+    "n": 64,
+    "correct": 49,
+    "rate": 0.765625,
+    "before_rate": 0.96875,
+    "passed": false
+  },
+  "at_utc": "2026-10-05T20:28:45.916465+00:00",
+  "cost_usd": 0.04779207,
+  "daily_budget": {
+    "local_day": "2026-10-05",
+    "timezone": "America/Winnipeg",
+    "limit_usd": 4.0,
+    "used_usd": 0.96788846,
+    "unknown_included_usd": 0,
+    "remaining_usd": 3.03211154
+  },
+  "regraded_decisions": 82,
+  "score_mismatches": 0,
+  "retained_by_category": {
+    "P": {
+      "n": 28,
+      "correct": 16,
+      "rate": 0.5714285714285714,
+      "before_rate": 0.9642857142857143,
+      "passed": false
+    },
+    "Q": {
+      "n": 12,
+      "correct": 9,
+      "rate": 0.75,
+      "before_rate": 0.9166666666666666,
+      "passed": false
+    },
+    "W": {
+      "n": 24,
+      "correct": 24,
+      "rate": 1.0,
+      "before_rate": 1.0,
+      "passed": true
+    }
+  }
+}

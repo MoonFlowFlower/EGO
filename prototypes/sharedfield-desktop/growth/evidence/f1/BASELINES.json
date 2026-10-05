@@ -1,0 +1,116 @@
+{
+  "kind": "historical_frozen_same_situation_controls_regraded",
+  "B_N": "U2 B_N on the same deleted situations",
+  "before_B_R": "U2 B_R before any deletion on the same retained situations",
+  "groups": [
+    {
+      "person": "1",
+      "group": "deleted",
+      "category": "P",
+      "n": 6,
+      "after_correct": 1,
+      "before_B_R_correct": 5,
+      "B_N_correct": 0
+    },
+    {
+      "person": "1",
+      "group": "retained",
+      "category": "P",
+      "n": 10,
+      "after_correct": 5,
+      "before_B_R_correct": 10,
+      "B_N_correct": 1
+    },
+    {
+      "person": "1",
+      "group": "retained",
+      "category": "Q",
+      "n": 4,
+      "after_correct": 3,
+      "before_B_R_correct": 4,
+      "B_N_correct": 2
+    },
+    {
+      "person": "1",
+      "group": "retained",
+      "category": "W",
+      "n": 8,
+      "after_correct": 8,
+      "before_B_R_correct": 8,
+      "B_N_correct": 7
+    },
+    {
+      "person": "2",
+      "group": "deleted",
+      "category": "P",
+      "n": 6,
+      "after_correct": 0,
+      "before_B_R_correct": 4,
+      "B_N_correct": 0
+    },
+    {
+      "person": "2",
+      "group": "retained",
+      "category": "P",
+      "n": 10,
+      "after_correct": 5,
+      "before_B_R_correct": 10,
+      "B_N_correct": 1
+    },
+    {
+      "person": "2",
+      "group": "retained",
+      "category": "Q",
+      "n": 4,
+      "after_correct": 2,
+      "before_B_R_correct": 3,
+      "B_N_correct": 3
+    },
+    {
+      "person": "2",
+      "group": "retained",
+      "category": "W",
+      "n": 8,
+      "after_correct": 8,
+      "before_B_R_correct": 8,
+      "B_N_correct": 8
+    },
+    {
+      "person": "3",
+      "group": "deleted",
+      "category": "P",
+      "n": 6,
+      "after_correct": 0,
+      "before_B_R_correct": 5,
+      "B_N_correct": 1
+    },
+    {
+      "person": "3",
+      "group": "retained",
+      "category": "P",
+      "n": 8,
+      "after_correct": 6,
+      "before_B_R_correct": 7,
+      "B_N_correct": 2
+    },
+    {
+      "person": "3",
+      "group": "retained",
+      "category": "Q",
+      "n": 4,
+      "after_correct": 4,
+      "before_B_R_correct": 4,
+      "B_N_correct": 2
+    },
+    {
+      "person": "3",
+      "group": "retained",
+      "category": "W",
+      "n": 8,
+      "after_correct": 8,
+      "before_B_R_correct": 8,
+      "B_N_correct": 8
+    }
+  ],
+  "utility": "F1 has binary following/correctness criteria, not the U3 timing utility table. Per-decision scores and both historical controls are in SUMMARY.csv."
+}

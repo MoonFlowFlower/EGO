@@ -1,0 +1,12 @@
+{
+  "status": "complete",
+  "pid": 6084,
+  "file_sha256": {
+    "calls.jsonl": "2cf5e44d64970b2a0d3ce493bedcb08871341da2028c3a25bc85512cd16648d2",
+    "claim.json": "5e428857f34f99beea4f421f96a941375452cfedff0086d45ddbe8d0871b38bb",
+    "decisions.jsonl": "301f8b97819bd5b78c40f076dcd6c090d5588a03df0c437406cbb15c5d5693cb",
+    "job.json": "99d6de50fe68eabf04e21ccde4326e6d97d0796b0dc998becdefcdf0bbb63787",
+    "model.jsonl": "6c6015d26210aaaf7a22bee4cbbf7da95d68b30c3ca3b04f6c0c9e92a52fcae6",
+    "routing.jsonl": "e1921bfd7d67da533d80b242a8f8c90caa8da1f3029bc0da87d75fae38739970"
+  }
+}

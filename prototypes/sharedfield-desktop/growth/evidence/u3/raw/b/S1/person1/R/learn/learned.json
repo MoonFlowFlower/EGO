@@ -1,0 +1,776 @@
+{
+  "pid": 6992,
+  "format": "S1",
+  "arm": "R",
+  "persona": "1",
+  "reaction_ids": [
+    "1efbe37a40e44a5da87b6ff5fa375dad",
+    "e687f5470a834222816d1ab51b5b50eb",
+    "d199fba06c6249079eaf223a11cb3b84",
+    "a6acf6b7966d4d91b5a454b3d2860b69",
+    "6bf5589476ad4a719e1eb256ec5df24e",
+    "c1c319ab18604faebfbe289bd8c7baec",
+    "42675108048d4451aed737617f2eea84",
+    "c1d7385c65c64a3d9fec95d1f10361a5",
+    "b0c1ccd5d04944f3aa954be70ad84c7a",
+    "1e3f10d9e8c4477da5ee8f4482edb8c5",
+    "05b08b8f23b2414888ee63eab401736e",
+    "d39e05864c5b428eb77e3a93e1c1b0c1",
+    "2d0a96035c6b43729036bc1c46e55814",
+    "ec32e4c908cc4b00baf2e788fe450959",
+    "b24be916e06f4dc3a06e0bac4058b68e",
+    "14e5c344f0504377837f7667aa0da639",
+    "9492b71d62014191bb1aaf998a949f44",
+    "7860e777059741a1a886ce7e1124f48e",
+    "11c97872c9cd4a8f836683135e7e5ca6",
+    "bed19416323c4b9c87dcf75df18221c0",
+    "c8d52fb7c6ee49e983b529a0e67cd739",
+    "1522e6268a6548ecbe35360ebe20fb8a",
+    "f8b1c0e281fa431284594607f0b9e116",
+    "475e9f37640e4f048d0542aebfc3651b",
+    "4b1cb6ca544e4d0cb201d0a43ca2a478",
+    "57f273b39f7140c6abf495b637476c9e",
+    "be0c52256de74ac8ae3695d1c3935a26",
+    "77d5b0a6622044f1a7863916aa6d29a4",
+    "40e3deb5d490465c9c5365e360209360",
+    "e80c4a0bd7234ca5a31bb7c8f6be0910",
+    "be7c559e8b8b449aa14a397005ed6d84",
+    "01131e6883324031a765737adbe8ab2f"
+  ],
+  "acquisitions": {
+    "1-03-learn-0": false,
+    "1-02-learn-0": false,
+    "1-03-learn-1": false,
+    "1-02-learn-1": false,
+    "1-09-learn-0": false,
+    "1-11-learn-0": false,
+    "1-09-learn-1": false,
+    "1-11-learn-1": false,
+    "1-04-learn-0": false,
+    "1-05-learn-0": false,
+    "1-04-learn-1": false,
+    "1-05-learn-1": true,
+    "1-15-learn-0": false,
+    "1-14-learn-0": false,
+    "1-15-learn-1": false,
+    "1-14-learn-1": false,
+    "1-03-learn-2": false,
+    "1-02-learn-2": false,
+    "1-03-learn-3": false,
+    "1-02-learn-3": false,
+    "1-09-learn-2": false,
+    "1-11-learn-2": false,
+    "1-09-learn-3": false,
+    "1-11-learn-3": false,
+    "1-04-learn-2": false,
+    "1-05-learn-2": false,
+    "1-04-learn-3": false,
+    "1-05-learn-3": false,
+    "1-15-learn-2": false,
+    "1-14-learn-2": false,
+    "1-15-learn-3": false,
+    "1-14-learn-3": false
+  },
+  "trace": [
+    {
+      "moment_id": "1-03-learn-0",
+      "context_id": "0c9f23d741fe4aacb3f77aea3143a696",
+      "reaction_id": "1efbe37a40e44a5da87b6ff5fa375dad",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-02-learn-0",
+      "context_id": "ca5c5802f45646dbbf717af7300a2faf",
+      "reaction_id": "e687f5470a834222816d1ab51b5b50eb",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-03-learn-1",
+      "context_id": "2f7354c1f916427cae323536ed6adc37",
+      "reaction_id": "d199fba06c6249079eaf223a11cb3b84",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-02-learn-1",
+      "context_id": "fc481ab20a974d5d8b0ea5de2325694f",
+      "reaction_id": "a6acf6b7966d4d91b5a454b3d2860b69",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-09-learn-0",
+      "context_id": "4eec95164f5742efad045a8efcc203a6",
+      "reaction_id": "6bf5589476ad4a719e1eb256ec5df24e",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-11-learn-0",
+      "context_id": "f568567482fa4fd983ebf37d957402d2",
+      "reaction_id": "c1c319ab18604faebfbe289bd8c7baec",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-09-learn-1",
+      "context_id": "c3ee3f3ee39742088965f38fe1880c60",
+      "reaction_id": "42675108048d4451aed737617f2eea84",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-11-learn-1",
+      "context_id": "3915b6759dd64f6fa0af60456f333e92",
+      "reaction_id": "c1d7385c65c64a3d9fec95d1f10361a5",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-04-learn-0",
+      "context_id": "20dfe000be9f4871b6fe01d97180584d",
+      "reaction_id": "b0c1ccd5d04944f3aa954be70ad84c7a",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-05-learn-0",
+      "context_id": "d0cbf85af1a3469da454e003e5621187",
+      "reaction_id": "1e3f10d9e8c4477da5ee8f4482edb8c5",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-04-learn-1",
+      "context_id": "7e9a255fbba04a04a1a73d1bff91865e",
+      "reaction_id": "05b08b8f23b2414888ee63eab401736e",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-05-learn-1",
+      "context_id": "3f717d7711c04406b8cf67c02757de9f",
+      "reaction_id": "d39e05864c5b428eb77e3a93e1c1b0c1",
+      "acquired": true
+    },
+    {
+      "moment_id": "1-15-learn-0",
+      "context_id": "3de76df74cd94bd3818f84397db0cb32",
+      "reaction_id": "2d0a96035c6b43729036bc1c46e55814",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-14-learn-0",
+      "context_id": "b45b676aebfd498a92525d6bb58ddd07",
+      "reaction_id": "ec32e4c908cc4b00baf2e788fe450959",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-15-learn-1",
+      "context_id": "6b0b030b824b4baa8b5611a8d08b8305",
+      "reaction_id": "b24be916e06f4dc3a06e0bac4058b68e",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-14-learn-1",
+      "context_id": "18e33bc15e2447e2af6e7c63bbcc3519",
+      "reaction_id": "14e5c344f0504377837f7667aa0da639",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-03-learn-2",
+      "context_id": "de8ba32ceb9043d28cd4d3c8363b1646",
+      "reaction_id": "9492b71d62014191bb1aaf998a949f44",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-02-learn-2",
+      "context_id": "1e4d952848ef4b3494ab6ccb630b2634",
+      "reaction_id": "7860e777059741a1a886ce7e1124f48e",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-03-learn-3",
+      "context_id": "0f9ccf55620347708c803fa7f29f7d10",
+      "reaction_id": "11c97872c9cd4a8f836683135e7e5ca6",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-02-learn-3",
+      "context_id": "85b9d64358ad4f149a014b017aec2203",
+      "reaction_id": "bed19416323c4b9c87dcf75df18221c0",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-09-learn-2",
+      "context_id": "956639ca666148dab5b642640801b4d0",
+      "reaction_id": "c8d52fb7c6ee49e983b529a0e67cd739",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-11-learn-2",
+      "context_id": "d191ee5bbbe24c7d8b080afd43f593e7",
+      "reaction_id": "1522e6268a6548ecbe35360ebe20fb8a",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-09-learn-3",
+      "context_id": "ebe4552ce9544b0399747bc3f1751b6b",
+      "reaction_id": "f8b1c0e281fa431284594607f0b9e116",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-11-learn-3",
+      "context_id": "568b0212e2ee4ec0b62b87ec8c04528e",
+      "reaction_id": "475e9f37640e4f048d0542aebfc3651b",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-04-learn-2",
+      "context_id": "af77ae29828641d79678d8879a923590",
+      "reaction_id": "4b1cb6ca544e4d0cb201d0a43ca2a478",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-05-learn-2",
+      "context_id": "aaca3ba1831f4eb08ecf3dcc92eecd35",
+      "reaction_id": "57f273b39f7140c6abf495b637476c9e",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-04-learn-3",
+      "context_id": "1aad0488bd5f44e794832bd750204d55",
+      "reaction_id": "be0c52256de74ac8ae3695d1c3935a26",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-05-learn-3",
+      "context_id": "d3da4be0455643e8947a9eecf585ab33",
+      "reaction_id": "77d5b0a6622044f1a7863916aa6d29a4",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-15-learn-2",
+      "context_id": "166fdd6c425a438ca8af4c1b813deeec",
+      "reaction_id": "40e3deb5d490465c9c5365e360209360",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-14-learn-2",
+      "context_id": "e67591b5caba44d7bb081d854c7986c9",
+      "reaction_id": "e80c4a0bd7234ca5a31bb7c8f6be0910",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-15-learn-3",
+      "context_id": "709428bf1b2a40ed8de4ddeea865a5ff",
+      "reaction_id": "be7c559e8b8b449aa14a397005ed6d84",
+      "acquired": false
+    },
+    {
+      "moment_id": "1-14-learn-3",
+      "context_id": "81f6a8f595c2411a94fa8f05da801b6e",
+      "reaction_id": "01131e6883324031a765737adbe8ab2f",
+      "acquired": false
+    }
+  ],
+  "lengths": [
+    {
+      "speaker": "user",
+      "characters": 26,
+      "utf8_bytes": 78
+    },
+    {
+      "speaker": "user",
+      "characters": 53,
+      "utf8_bytes": 159
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 53,
+      "utf8_bytes": 157
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 52,
+      "utf8_bytes": 156
+    },
+    {
+      "speaker": "assistant",
+      "characters": 30,
+      "utf8_bytes": 90
+    },
+    {
+      "speaker": "user",
+      "characters": 13,
+      "utf8_bytes": 39
+    },
+    {
+      "speaker": "user",
+      "characters": 57,
+      "utf8_bytes": 169
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 26,
+      "utf8_bytes": 78
+    },
+    {
+      "speaker": "user",
+      "characters": 57,
+      "utf8_bytes": 171
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 26,
+      "utf8_bytes": 78
+    },
+    {
+      "speaker": "user",
+      "characters": 53,
+      "utf8_bytes": 159
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 58,
+      "utf8_bytes": 174
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 52,
+      "utf8_bytes": 156
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 59,
+      "utf8_bytes": 175
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 26,
+      "utf8_bytes": 78
+    },
+    {
+      "speaker": "user",
+      "characters": 57,
+      "utf8_bytes": 171
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 59,
+      "utf8_bytes": 175
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 58,
+      "utf8_bytes": 174
+    },
+    {
+      "speaker": "assistant",
+      "characters": 42,
+      "utf8_bytes": 124
+    },
+    {
+      "speaker": "user",
+      "characters": 21,
+      "utf8_bytes": 63
+    },
+    {
+      "speaker": "user",
+      "characters": 26,
+      "utf8_bytes": 78
+    },
+    {
+      "speaker": "user",
+      "characters": 54,
+      "utf8_bytes": 162
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 53,
+      "utf8_bytes": 157
+    },
+    {
+      "speaker": "assistant",
+      "characters": 44,
+      "utf8_bytes": 128
+    },
+    {
+      "speaker": "user",
+      "characters": 17,
+      "utf8_bytes": 51
+    },
+    {
+      "speaker": "user",
+      "characters": 50,
+      "utf8_bytes": 150
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 55,
+      "utf8_bytes": 163
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 54,
+      "utf8_bytes": 162
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 58,
+      "utf8_bytes": 172
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 55,
+      "utf8_bytes": 165
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 55,
+      "utf8_bytes": 163
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 58,
+      "utf8_bytes": 174
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 54,
+      "utf8_bytes": 162
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 54,
+      "utf8_bytes": 162
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 55,
+      "utf8_bytes": 165
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 55,
+      "utf8_bytes": 163
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 55,
+      "utf8_bytes": 165
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 59,
+      "utf8_bytes": 175
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 54,
+      "utf8_bytes": 162
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 54,
+      "utf8_bytes": 162
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 56,
+      "utf8_bytes": 166
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 55,
+      "utf8_bytes": 165
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    },
+    {
+      "speaker": "user",
+      "characters": 56,
+      "utf8_bytes": 166
+    },
+    {
+      "speaker": "assistant",
+      "characters": 10,
+      "utf8_bytes": 30
+    },
+    {
+      "speaker": "user",
+      "characters": 2,
+      "utf8_bytes": 6
+    }
+  ],
+  "sha256": "146f4bb395c01a9b7a1c42d6b2a1fb31e669870ebddc2eb7888c0420eb9e8c82"
+}

@@ -1,0 +1,13 @@
+person,group,category,n,after_correct,before_B_R_correct,B_N_correct
+1,deleted,P,6,1,5,0
+1,retained,P,10,5,10,1
+1,retained,Q,4,3,4,2
+1,retained,W,8,8,8,7
+2,deleted,P,6,0,4,0
+2,retained,P,10,5,10,1
+2,retained,Q,4,2,3,3
+2,retained,W,8,8,8,8
+3,deleted,P,6,0,5,1
+3,retained,P,8,6,7,2
+3,retained,Q,4,4,4,2
+3,retained,W,8,8,8,8

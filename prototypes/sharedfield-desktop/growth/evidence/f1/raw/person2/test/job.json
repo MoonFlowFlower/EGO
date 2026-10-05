@@ -1,0 +1,1509 @@
+{
+  "folder": "D:\\Project\\AIProject\\MyProject\\Ego_proejct_restart\\.publish\\EGO\\prototypes\\sharedfield-desktop\\growth\\runs\\f1\\person2\\test",
+  "operation": "test",
+  "person": "2",
+  "data": {
+    "items": [
+      {
+        "id": "P49",
+        "category": "P",
+        "preference": "你布置小组合时倾向成双，避免留下落单的一件。",
+        "teaching_domain": "组合数量",
+        "teaching": [
+          {
+            "dialogue": 1,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "柜顶摆三盏还是四盏小灯？"
+              },
+              {
+                "speaker": "user",
+                "text": "四盏吧，两边各两盏。"
+              }
+            ]
+          },
+          {
+            "dialogue": 4,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "展柜买了六个小底座，正好能两两相伴，没谁孤零零。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "策划窗边的装饰，数量选哪档？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o2",
+                "text": "用七件形成常见的错落感。"
+              },
+              {
+                "id": "o3",
+                "text": "取八件分成若干对。"
+              },
+              {
+                "id": "o4",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o5",
+                "text": "坚持只放单数的一组。"
+              }
+            ],
+            "target": "o3",
+            "phase": "T1",
+            "domain": "组合数量"
+          },
+          {
+            "situation": "拟一份私人练习清单，怎样定项目数？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "列九项作为普通套餐。"
+              },
+              {
+                "id": "o2",
+                "text": "列十项，逐对归组。"
+              },
+              {
+                "id": "o3",
+                "text": "只采用奇数项。"
+              },
+              {
+                "id": "o4",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o5",
+                "text": "先确认你此刻想要哪一种。"
+              }
+            ],
+            "target": "o2",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你布置小组合时倾向成双，避免留下落单的一件。",
+        "counterintuitive": "此人的取向不采用通常推荐的“用七件形成常见的错落感。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+        "protected_names": []
+      },
+      {
+        "id": "P10",
+        "category": "P",
+        "preference": "你独自休闲时愿意重复熟悉的体验。",
+        "teaching_domain": "休闲内容",
+        "teaching": [
+          {
+            "dialogue": 1,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "今晚放新专辑还是旧磁带？"
+              },
+              {
+                "speaker": "user",
+                "text": "就上次那盒吧，连卡带的地方我都等着听。"
+              }
+            ]
+          },
+          {
+            "dialogue": 4,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "书架最旧的侦探集又被我翻了一遍，没急着拆新书。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "为你安排独处的银幕时光，如何选择？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "推荐最新上映的作品。"
+              },
+              {
+                "id": "o2",
+                "text": "只挑从未接触的题材。"
+              },
+              {
+                "id": "o3",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o4",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o5",
+                "text": "重温已经看过多遍的片子。"
+              }
+            ],
+            "target": "o5",
+            "phase": "T1",
+            "domain": "休闲内容"
+          },
+          {
+            "situation": "一场已经走过的城市漫步和全新路线都可行，怎样安排？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o2",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o3",
+                "text": "再访记忆里的街巷。"
+              },
+              {
+                "id": "o4",
+                "text": "避开一切曾经到过的地方。"
+              },
+              {
+                "id": "o5",
+                "text": "探索全新的区域。"
+              }
+            ],
+            "target": "o3",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你独自休闲时愿意重复熟悉的体验。",
+        "counterintuitive": "常见默认是“推荐最新上映的作品。”；此人的两次选择暗示不同取向。",
+        "protected_names": []
+      },
+      {
+        "id": "P11",
+        "category": "P",
+        "preference": "你欣赏作品时愿意先接触不受欢迎的部分。",
+        "teaching_domain": "探索顺序",
+        "teaching": [
+          {
+            "dialogue": 2,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "画展先去人气厅还是没人排队的小厅？"
+              },
+              {
+                "speaker": "user",
+                "text": "去角落那间，人人举手机的先搁着。"
+              }
+            ]
+          },
+          {
+            "dialogue": 5,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "专辑评论都在夸主打，我倒把冷门曲循环了整晚。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "书店向你展示几部同类作品，先递哪一本？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "只展示排行榜前列。"
+              },
+              {
+                "id": "o2",
+                "text": "递销量最高的畅销款。"
+              },
+              {
+                "id": "o3",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o4",
+                "text": "先拿少被提及的那册。"
+              },
+              {
+                "id": "o5",
+                "text": "把话题转向天气。"
+              }
+            ],
+            "target": "o4",
+            "phase": "T1",
+            "domain": "探索顺序"
+          },
+          {
+            "situation": "陪你试玩一个新游戏，先选哪条路径？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o2",
+                "text": "严格照最热门攻略走。"
+              },
+              {
+                "id": "o3",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o4",
+                "text": "进入少有人采用的支线。"
+              },
+              {
+                "id": "o5",
+                "text": "沿大家推荐的主路线。"
+              }
+            ],
+            "target": "o4",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你欣赏作品时愿意先接触不受欢迎的部分。",
+        "counterintuitive": "常见默认是“递销量最高的畅销款。”；此人的两次选择暗示不同取向。",
+        "protected_names": []
+      },
+      {
+        "id": "P69",
+        "category": "P",
+        "preference": "你写给熟人的轻松短文时倾向保留一点家乡话。",
+        "teaching_domain": "私人语言口吻",
+        "teaching": [
+          {
+            "dialogue": 3,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "寄给老同学的便条全用普通话，还是留那句土语？"
+              },
+              {
+                "speaker": "user",
+                "text": "土语留着，他看见就知道是我写的。"
+              }
+            ]
+          },
+          {
+            "dialogue": 6,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "昨天录语音蹦出家乡那个词，我没删掉重录，反倒像坐在老院子里。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "替你润色一段私人问候，怎样处理表达？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o2",
+                "text": "消除一切个人口音痕迹。"
+              },
+              {
+                "id": "o3",
+                "text": "全部改成无地域色彩的标准用语。"
+              },
+              {
+                "id": "o4",
+                "text": "保留少量有地域味道的说法。"
+              },
+              {
+                "id": "o5",
+                "text": "把话题转向天气。"
+              }
+            ],
+            "target": "o4",
+            "phase": "T1",
+            "domain": "私人语言口吻"
+          },
+          {
+            "situation": "为你编一段私人纪念故事，怎样选叙述口吻？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o2",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o3",
+                "text": "让部分地方性措辞自然出现。"
+              },
+              {
+                "id": "o4",
+                "text": "只用统一正式的书面语。"
+              },
+              {
+                "id": "o5",
+                "text": "把每处民间表达都换掉。"
+              }
+            ],
+            "target": "o3",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你写给熟人的轻松短文时倾向保留一点家乡话。",
+        "counterintuitive": "此人的取向不采用通常推荐的“全部改成无地域色彩的标准用语。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+        "protected_names": [
+          "土语"
+        ]
+      },
+      {
+        "id": "P55",
+        "category": "P",
+        "preference": "你阅读工作参考页时倾向紧凑排布，在一页里看到尽量多的内容。",
+        "teaching_domain": "信息密度",
+        "teaching": [
+          {
+            "dialogue": 1,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "配方排三张疏朗纸，还是一张密密的？"
+              },
+              {
+                "speaker": "user",
+                "text": "密一点放一张，我不用翻来翻去。"
+              }
+            ]
+          },
+          {
+            "dialogue": 4,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "旧地图满是小标记，我摊开一次就全看到了，空白太多那版反而找半天。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "给你整理一份速查材料，如何布局？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o2",
+                "text": "用大面积留白分散到多页。"
+              },
+              {
+                "id": "o3",
+                "text": "采用较高密度的集中呈现。"
+              },
+              {
+                "id": "o4",
+                "text": "每屏只放一个极大的字。"
+              },
+              {
+                "id": "o5",
+                "text": "把话题转向天气。"
+              }
+            ],
+            "target": "o3",
+            "phase": "T1",
+            "domain": "信息密度"
+          },
+          {
+            "situation": "替你配置常看的数字面板，如何排版？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "每次仅展示很少项目。"
+              },
+              {
+                "id": "o2",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o3",
+                "text": "把绝大部分区域留空。"
+              },
+              {
+                "id": "o4",
+                "text": "同时露出较多可读条目。"
+              },
+              {
+                "id": "o5",
+                "text": "把话题转向天气。"
+              }
+            ],
+            "target": "o4",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你阅读工作参考页时倾向紧凑排布，在一页里看到尽量多的内容。",
+        "counterintuitive": "此人的取向不采用通常推荐的“用大面积留白分散到多页。”；能否排除底模先验仍须新一轮筛选，不能由作者断言。",
+        "protected_names": [
+          "太多那版"
+        ]
+      },
+      {
+        "id": "P02",
+        "category": "P",
+        "preference": "你愿意保留手工作品上的细小不完美。",
+        "teaching_domain": "器物",
+        "teaching": [
+          {
+            "dialogue": 2,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "陶杯有机器量产款和手捏歪口款。"
+              },
+              {
+                "speaker": "user",
+                "text": "歪的留给我，齐刷刷那批退掉吧。"
+              }
+            ]
+          },
+          {
+            "dialogue": 5,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "阿榕织的围巾掉了一针，那个洞我一直没缝。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "给你定制木制收纳盒，表面怎样收尾？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "留下刀痕与不对称的棱角。"
+              },
+              {
+                "id": "o2",
+                "text": "彻底抹平所有痕迹。"
+              },
+              {
+                "id": "o3",
+                "text": "打磨得光洁规整。"
+              },
+              {
+                "id": "o4",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o5",
+                "text": "先确认你此刻想要哪一种。"
+              }
+            ],
+            "target": "o1",
+            "phase": "T1",
+            "domain": "器物"
+          },
+          {
+            "situation": "替你处理合唱录音，怎样剪辑？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "修成标准音准。"
+              },
+              {
+                "id": "o2",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o3",
+                "text": "把每个呼吸都消除。"
+              },
+              {
+                "id": "o4",
+                "text": "保留一处轻微走调的笑场。"
+              },
+              {
+                "id": "o5",
+                "text": "先确认你此刻想要哪一种。"
+              }
+            ],
+            "target": "o4",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你愿意保留手工作品上的细小不完美。",
+        "counterintuitive": "常见默认是“打磨得光洁规整。”；此人的两次选择暗示不同取向。",
+        "protected_names": [
+          "阿榕",
+          "阿榕织"
+        ]
+      },
+      {
+        "id": "P01",
+        "category": "P",
+        "preference": "你在开始一段体验前愿意先知道最终结果，再体会过程。",
+        "teaching_domain": "叙事",
+        "teaching": [
+          {
+            "dialogue": 1,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "悬疑书拆封了，先读末页还是按页翻？"
+              },
+              {
+                "speaker": "user",
+                "text": "把凶手那页递来，藏着掖着我反倒看不进去。"
+              }
+            ]
+          },
+          {
+            "dialogue": 4,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "昨晚听评书，知道谁活下来以后，才留心那些伏笔。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "有部尚未接触的影片，如何陪你欣赏？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "全程遮住重要情节。"
+              },
+              {
+                "id": "o2",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o3",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o4",
+                "text": "开播前透露终局，再一起品味铺垫。"
+              },
+              {
+                "id": "o5",
+                "text": "保留悬念到最后。"
+              }
+            ],
+            "target": "o4",
+            "phase": "T1",
+            "domain": "叙事"
+          },
+          {
+            "situation": "陪你尝试一套陌生的实验教程，该怎样呈现？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o2",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o3",
+                "text": "不让你见到预期效果。"
+              },
+              {
+                "id": "o4",
+                "text": "先展示成品，再探索步骤。"
+              },
+              {
+                "id": "o5",
+                "text": "循序渐进，结尾揭晓。"
+              }
+            ],
+            "target": "o4",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你在开始一段体验前愿意先知道最终结果，再体会过程。",
+        "counterintuitive": "常见默认是“保留悬念到最后。”；此人的两次选择暗示不同取向。",
+        "protected_names": []
+      },
+      {
+        "id": "P30",
+        "category": "P",
+        "preference": "你独处时愿意把日常声响调得很轻。",
+        "teaching_domain": "声音强度",
+        "teaching": [
+          {
+            "dialogue": 3,
+            "mode": "choice",
+            "messages": [
+              {
+                "speaker": "assistant",
+                "text": "提示铃用响亮那档还是最轻那档？"
+              },
+              {
+                "speaker": "user",
+                "text": "轻的就行，桌面震一下我也看得见。"
+              }
+            ]
+          },
+          {
+            "dialogue": 6,
+            "mode": "incidental",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "厨房计时器叫得太猛，我把它裹进毛巾了。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "替你设置阅读辅助的提醒方式，怎么选？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "用醒目的强音效。"
+              },
+              {
+                "id": "o2",
+                "text": "每次都发出尖锐警报。"
+              },
+              {
+                "id": "o3",
+                "text": "先确认你此刻想要哪一种。"
+              },
+              {
+                "id": "o4",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o5",
+                "text": "用柔和、低强度的提醒。"
+              }
+            ],
+            "target": "o5",
+            "phase": "T1",
+            "domain": "声音强度"
+          },
+          {
+            "situation": "为你准备独自放松的环境，如何处理背景？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "保持低音量的细微声息。"
+              },
+              {
+                "id": "o2",
+                "text": "制造强烈的听觉冲击。"
+              },
+              {
+                "id": "o3",
+                "text": "把话题转向天气。"
+              },
+              {
+                "id": "o4",
+                "text": "把所有声源开到最大。"
+              },
+              {
+                "id": "o5",
+                "text": "先确认你此刻想要哪一种。"
+              }
+            ],
+            "target": "o1",
+            "phase": "T2",
+            "domain": "跨领域迁移"
+          }
+        ],
+        "ceiling": "你独处时愿意把日常声响调得很轻。",
+        "counterintuitive": "常见默认是“用醒目的强音效。”；此人的两次选择暗示不同取向。",
+        "protected_names": [
+          "太猛",
+          "毛巾"
+        ]
+      },
+      {
+        "id": "Q05",
+        "category": "Q",
+        "should_ask": true,
+        "subtype": "unknown_future_useful",
+        "hidden_answer": "我傍晚不能喝咖啡因。",
+        "teaching": [
+          {
+            "dialogue": 5,
+            "mode": "gap",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "下月准备参加夜跑，眼前这份工作得先做完。"
+              }
+            ]
+          }
+        ],
+        "question_dialogue": 6,
+        "question": {
+          "situation": "新鞋到了，我在门边试系法呢。",
+          "options": [
+            {
+              "id": "o1",
+              "text": "傍晚饮料是否需要避开提神成分？"
+            },
+            {
+              "id": "o2",
+              "text": "看着挺合脚，这个结也牢。对了，傍晚饮料是否需要避开提神成分？"
+            },
+            {
+              "id": "o3",
+              "text": "看着挺合脚，这个结也牢。对了，你觉得靛蓝和赭红哪种更顺眼？"
+            },
+            {
+              "id": "o4",
+              "text": "看着挺合脚，这个结也牢。"
+            }
+          ],
+          "target": "o2",
+          "phase": "ask",
+          "relevant_ask_ids": [
+            "o1",
+            "o2"
+          ],
+          "any_question_ids": [
+            "o1",
+            "o2",
+            "o3"
+          ]
+        },
+        "tests": [
+          {
+            "situation": "替你安排活动前的饮品。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "暂时不处理并转聊天气。"
+              },
+              {
+                "id": "o2",
+                "text": "选常见能量饮料。"
+              },
+              {
+                "id": "o3",
+                "text": "选不含兴奋成分的温水类。"
+              },
+              {
+                "id": "o4",
+                "text": "先询问其他人的通用建议。"
+              },
+              {
+                "id": "o5",
+                "text": "再问你一次。"
+              }
+            ],
+            "target": "o3",
+            "phase": "use"
+          }
+        ],
+        "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+        "ceiling_use": "我傍晚不能喝咖啡因。",
+        "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+        "protected_names": []
+      },
+      {
+        "id": "Q29",
+        "category": "Q",
+        "should_ask": false,
+        "subtype": "known",
+        "hidden_answer": "用全名许闻舟。",
+        "teaching": [
+          {
+            "dialogue": 4,
+            "mode": "gap",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "新的签收单写我的全名许闻舟，别用小名。"
+              }
+            ]
+          }
+        ],
+        "question_dialogue": 5,
+        "question": {
+          "situation": "纸笔都拿来了，我们把这件事办妥。",
+          "options": [
+            {
+              "id": "o1",
+              "text": "文件上用哪个称呼？"
+            },
+            {
+              "id": "o2",
+              "text": "好，我把要填写的栏目找出来。对了，文件上用哪个称呼？"
+            },
+            {
+              "id": "o3",
+              "text": "好，我把要填写的栏目找出来。对了，你觉得靛蓝和赭红哪种更顺眼？"
+            },
+            {
+              "id": "o4",
+              "text": "好，我把要填写的栏目找出来。"
+            }
+          ],
+          "target": "o4",
+          "phase": "ask",
+          "relevant_ask_ids": [
+            "o1",
+            "o2"
+          ],
+          "any_question_ids": [
+            "o1",
+            "o2",
+            "o3"
+          ]
+        },
+        "tests": [
+          {
+            "situation": "替你填写收件身份。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "使用拼音 Xu Wenzhou。"
+              },
+              {
+                "id": "o2",
+                "text": "再问你一次。"
+              },
+              {
+                "id": "o3",
+                "text": "暂时不处理并转聊天气。"
+              },
+              {
+                "id": "o4",
+                "text": "先询问其他人的通用建议。"
+              },
+              {
+                "id": "o5",
+                "text": "采用平时的昵称。"
+              }
+            ],
+            "target": "o1",
+            "phase": "use"
+          }
+        ],
+        "ceiling_question": "这件事已有明确答案。用全名许闻舟。",
+        "ceiling_use": "用全名许闻舟。",
+        "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+        "protected_names": [
+          "许闻舟"
+        ]
+      },
+      {
+        "id": "Q61",
+        "category": "Q",
+        "should_ask": false,
+        "subtype": "known",
+        "hidden_answer": "我要后行的黑子。",
+        "teaching": [
+          {
+            "dialogue": 3,
+            "mode": "gap",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "下次下棋我拿黑子，让我后走；这边电梯来了，回头聊。"
+              }
+            ]
+          }
+        ],
+        "question_dialogue": 4,
+        "question": {
+          "situation": "棋盒翻出来了，摊开看看吧。",
+          "options": [
+            {
+              "id": "o1",
+              "text": "盒子摆稳了，咱们慢慢展开。"
+            },
+            {
+              "id": "o2",
+              "text": "盒子摆稳了，咱们慢慢展开。对了，这局你想拿先行的一方还是后行的一方？"
+            },
+            {
+              "id": "o3",
+              "text": "这局你想拿先行的一方还是后行的一方？"
+            },
+            {
+              "id": "o4",
+              "text": "盒子摆稳了，咱们慢慢展开。对了，你更喜欢靛蓝还是赭红？"
+            }
+          ],
+          "target": "o1",
+          "phase": "ask",
+          "relevant_ask_ids": [
+            "o2",
+            "o3"
+          ],
+          "any_question_ids": [
+            "o2",
+            "o3",
+            "o4"
+          ]
+        },
+        "tests": [
+          {
+            "situation": "替你分配本轮对局的位置。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "暂时不处理并转聊天气。"
+              },
+              {
+                "id": "o2",
+                "text": "安排执浅色棋的一边。"
+              },
+              {
+                "id": "o3",
+                "text": "先询问其他人的通用建议。"
+              },
+              {
+                "id": "o4",
+                "text": "再问你一次。"
+              },
+              {
+                "id": "o5",
+                "text": "安排执深色棋的一边。"
+              }
+            ],
+            "target": "o5",
+            "phase": "use"
+          }
+        ],
+        "ceiling_question": "已经知道你要后行并执深色棋，相关事实已有答案。",
+        "ceiling_use": "我要后行的黑子。",
+        "counterintuitive": "判断依赖前次谈话的具体已知、未知或持续情境；先验是否已会选择必须实测，作者不作保证。",
+        "protected_names": []
+      },
+      {
+        "id": "Q15",
+        "category": "Q",
+        "should_ask": true,
+        "subtype": "unknown_future_useful",
+        "hidden_answer": "我手上有伤，这阵子不能泡水。",
+        "teaching": [
+          {
+            "dialogue": 5,
+            "mode": "gap",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "周六可能去做陶艺，我得先出门送个东西。"
+              }
+            ]
+          }
+        ],
+        "question_dialogue": 6,
+        "question": {
+          "situation": "围裙找到了，坐着歇一会儿吧。",
+          "options": [
+            {
+              "id": "o1",
+              "text": "能否接受手上长期沾湿？"
+            },
+            {
+              "id": "o2",
+              "text": "好，先坐稳，慢慢来。对了，能否接受手上长期沾湿？"
+            },
+            {
+              "id": "o3",
+              "text": "好，先坐稳，慢慢来。"
+            },
+            {
+              "id": "o4",
+              "text": "好，先坐稳，慢慢来。对了，你觉得靛蓝和赭红哪种更顺眼？"
+            }
+          ],
+          "target": "o2",
+          "phase": "ask",
+          "relevant_ask_ids": [
+            "o1",
+            "o2"
+          ],
+          "any_question_ids": [
+            "o1",
+            "o2",
+            "o4"
+          ]
+        },
+        "tests": [
+          {
+            "situation": "替你选择一次手作工序。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "暂时不处理并转聊天气。"
+              },
+              {
+                "id": "o2",
+                "text": "选能保持皮肤干燥的方式。"
+              },
+              {
+                "id": "o3",
+                "text": "先询问其他人的通用建议。"
+              },
+              {
+                "id": "o4",
+                "text": "安排长时间湿泥塑形。"
+              },
+              {
+                "id": "o5",
+                "text": "再问你一次。"
+              }
+            ],
+            "target": "o2",
+            "phase": "use"
+          }
+        ],
+        "ceiling_question": "你还不知道这件个人条件，后续安排会用得上。",
+        "ceiling_use": "我手上有伤，这阵子不能泡水。",
+        "counterintuitive": "需要把此前已知或未知的具体情况和眼前时机合起来；不按总是询问或总是沉默评分。",
+        "protected_names": []
+      },
+      {
+        "id": "W46",
+        "category": "W",
+        "applicable": true,
+        "teaching": [
+          {
+            "dialogue": 4,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "我帮姐姐挑鞋按她的宽脚型，不照我自己的窄版。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "正在替年长的手足购买她日常穿的一双。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "选你平时用的收窄款。"
+              },
+              {
+                "id": "o2",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o3",
+                "text": "交由一个无关的人随机决定。"
+              },
+              {
+                "id": "o4",
+                "text": "选前端较松快的款型。"
+              },
+              {
+                "id": "o5",
+                "text": "重新询问已说清的条件。"
+              }
+            ],
+            "target": "o4",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "我帮姐姐挑鞋按她的宽脚型，不照我自己的窄版。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      },
+      {
+        "id": "W20",
+        "category": "W",
+        "applicable": true,
+        "teaching": [
+          {
+            "dialogue": 2,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "本次外出只有一天，我的包里只带必要的小件。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "仍在这一趟短行程出发前，怎样准备？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o2",
+                "text": "重新询问已说清的条件。"
+              },
+              {
+                "id": "o3",
+                "text": "加入大量备用装备。"
+              },
+              {
+                "id": "o4",
+                "text": "交由一个无关的人随机决定。"
+              },
+              {
+                "id": "o5",
+                "text": "保持轻量的基础配置。"
+              }
+            ],
+            "target": "o5",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "本次外出只有一天，我的包里只带必要的小件。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      },
+      {
+        "id": "W33",
+        "category": "W",
+        "applicable": false,
+        "teaching": [
+          {
+            "dialogue": 3,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "替我买礼物不用包装；送客户的那份需要正式封装。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "现在为商务收件人准备物品。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "采用庄重完整的外层装饰。"
+              },
+              {
+                "id": "o2",
+                "text": "重新询问已说清的条件。"
+              },
+              {
+                "id": "o3",
+                "text": "直接裸装以沿用你的习惯。"
+              },
+              {
+                "id": "o4",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o5",
+                "text": "交由一个无关的人随机决定。"
+              }
+            ],
+            "target": "o1",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "替我买礼物不用包装；送客户的那份需要正式封装。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      },
+      {
+        "id": "W26",
+        "category": "W",
+        "applicable": true,
+        "teaching": [
+          {
+            "dialogue": 2,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "我晚上要早睡的前一小时不看刺激剧情。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "离你预定入睡只剩半小时，怎样安排消遣？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "选情节平稳的轻内容。"
+              },
+              {
+                "id": "o2",
+                "text": "交由一个无关的人随机决定。"
+              },
+              {
+                "id": "o3",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o4",
+                "text": "重新询问已说清的条件。"
+              },
+              {
+                "id": "o5",
+                "text": "播放紧张惊悚片段。"
+              }
+            ],
+            "target": "o1",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "我晚上要早睡的前一小时不看刺激剧情。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      },
+      {
+        "id": "W23",
+        "category": "W",
+        "applicable": false,
+        "teaching": [
+          {
+            "dialogue": 5,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "我只在赶稿时把屏幕调成黑白，休息看画册要彩色。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "你刚合上工作文件准备欣赏插图，怎样显示？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "恢复丰富的色彩呈现。"
+              },
+              {
+                "id": "o2",
+                "text": "交由一个无关的人随机决定。"
+              },
+              {
+                "id": "o3",
+                "text": "继续保持单色模式。"
+              },
+              {
+                "id": "o4",
+                "text": "重新询问已说清的条件。"
+              },
+              {
+                "id": "o5",
+                "text": "忽略眼前安排，转聊天气。"
+              }
+            ],
+            "target": "o1",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "我只在赶稿时把屏幕调成黑白，休息看画册要彩色。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      },
+      {
+        "id": "W29",
+        "category": "W",
+        "applicable": false,
+        "teaching": [
+          {
+            "dialogue": 5,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "我平时不拍视频，今天要给远方家人录段问候，破例一次。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "镜头已经摆好，怎样留下这次致意？",
+            "options": [
+              {
+                "id": "o1",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o2",
+                "text": "交由一个无关的人随机决定。"
+              },
+              {
+                "id": "o3",
+                "text": "继续只允许静态照片。"
+              },
+              {
+                "id": "o4",
+                "text": "按本次明确需要录制。"
+              },
+              {
+                "id": "o5",
+                "text": "重新询问已说清的条件。"
+              }
+            ],
+            "target": "o4",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "我平时不拍视频，今天要给远方家人录段问候，破例一次。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      },
+      {
+        "id": "W22",
+        "category": "W",
+        "applicable": true,
+        "teaching": [
+          {
+            "dialogue": 4,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "夜班那几天我白天睡觉，午后不要敲门。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "轮值尚未结束，你正在日间补眠。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "重新询问已说清的条件。"
+              },
+              {
+                "id": "o2",
+                "text": "在入口连续制造声响。"
+              },
+              {
+                "id": "o3",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o4",
+                "text": "交由一个无关的人随机决定。"
+              },
+              {
+                "id": "o5",
+                "text": "留下安静的信息等待醒来。"
+              }
+            ],
+            "target": "o5",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "夜班那几天我白天睡觉，午后不要敲门。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      },
+      {
+        "id": "W47",
+        "category": "W",
+        "applicable": false,
+        "teaching": [
+          {
+            "dialogue": 5,
+            "mode": "explicit_conditional",
+            "messages": [
+              {
+                "speaker": "user",
+                "text": "平时晚间我不收工作提醒，今晚值守故障是例外。"
+              }
+            ]
+          }
+        ],
+        "tests": [
+          {
+            "situation": "现在正是你明确承担应急值班的夜里。",
+            "options": [
+              {
+                "id": "o1",
+                "text": "忽略眼前安排，转聊天气。"
+              },
+              {
+                "id": "o2",
+                "text": "重新询问已说清的条件。"
+              },
+              {
+                "id": "o3",
+                "text": "及时呈现必要的异常信息。"
+              },
+              {
+                "id": "o4",
+                "text": "套用平日安排屏蔽全部提示。"
+              },
+              {
+                "id": "o5",
+                "text": "交由一个无关的人随机决定。"
+              }
+            ],
+            "target": "o3",
+            "phase": "boundary"
+          }
+        ],
+        "ceiling": "平时晚间我不收工作提醒，今晚值守故障是例外。",
+        "counterintuitive": "熟悉的偏好必须连同对象、时间或本次例外使用；另一半保留条件仍成立的对照。",
+        "protected_names": []
+      }
+    ],
+    "deleted_ids": [
+      "P02",
+      "P10",
+      "P69"
+    ],
+    "topics": {
+      "P02": "作品和器物的完工状态与瑕疵处理偏好",
+      "P10": "休闲体验中新旧与熟悉程度的偏好",
+      "P69": "私人表达的语言口吻偏好"
+    }
+  },
+  "manifest_sha256": "2c52db8e3213291ada1fe7dd49275a6df580268ca1597ec4d520d8e05f5a79f6",
+  "prepared": "D:\\Project\\AIProject\\MyProject\\Ego_proejct_restart\\.publish\\EGO\\prototypes\\sharedfield-desktop\\growth\\runs\\f1\\person2\\prepare\\archive"
+}

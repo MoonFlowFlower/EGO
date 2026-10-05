@@ -1,0 +1,23 @@
+{
+  "at_utc": "2026-10-05T20:20:08.625775+00:00",
+  "kind": "read_only_per_format_audit_scope",
+  "source_audit": "AUDIT.json",
+  "formats": {
+    "S0": {
+      "scoring_mismatches": [],
+      "completeness_issues": [
+        {
+          "format": "S0",
+          "persona": "3",
+          "arm": "R",
+          "reason": "incomplete_test_grid"
+        }
+      ]
+    },
+    "S1": {
+      "scoring_mismatches": [],
+      "completeness_issues": []
+    }
+  },
+  "note": "Overall frozen audit fails for the missing S0 grid. No available score mismatch exists, including S1. S1 independently fails all effect criteria; per-format audit scoping does not change its negative verdict."
+}

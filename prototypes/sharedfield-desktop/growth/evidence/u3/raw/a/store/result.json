@@ -1,0 +1,17 @@
+{
+  "status": "complete",
+  "pid": 25432,
+  "file_sha256": {
+    "claim.json": "0acb14903a7164f9168a555923b2d65b7ab4cc191fc00263714dfc2e3a659c3b",
+    "job.json": "4386a950786ddb7c190aa1511c00beea32fabd6847cdef8e1b36533418d640e9",
+    "stores/created.json": "090101207a3429e1a2a14d292ac1abca79fc278d575735d8b984b7dbb778555e",
+    "stores/A03.sqlite": "f6720f93e9c71709d8422e735838cf27218b9aedfe90e8301bcf26842213a2c2",
+    "stores/A10.sqlite": "62e85b84a91108cc5609c8f170f9835dcf49e08e723f77b24e305c99ec534d27",
+    "stores/A13.sqlite": "1920b635394cdb6474628e2df49986698f0ab4b2d9ec6bf8bfa75ccc69818622",
+    "stores/A14.sqlite": "3a893da3dffd3395003bad80474d789cc97db08e7542aca7d90ab457830363c9",
+    "stores/A15.sqlite": "43e17383250835af23204d39ab63f7832fa5cc81f51af0baf4d65238a07c1805",
+    "stores/A22.sqlite": "466accf2df8e1ef5db66a4ad482ef5bc716cabd842b9c62ee872de686c52fe79",
+    "stores/A23.sqlite": "e5eaf5546f7505b2f35ae4cd63f998f46bf9d0c433378613d2baf14c39ea7dc4",
+    "stores/A24.sqlite": "215f6bc789ebc6ae4a07f0520833682bad5dee7b97085e2f31afdf2e9cf59dae"
+  }
+}

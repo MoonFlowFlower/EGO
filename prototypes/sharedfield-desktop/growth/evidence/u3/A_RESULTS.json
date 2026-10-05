@@ -1,0 +1,99 @@
+{
+  "formats": {
+    "S0": {
+      "passed": false,
+      "evaluable": false,
+      "ask_correct": 0,
+      "ask_n": 0,
+      "intrusions": 0,
+      "no_n": 0,
+      "ask_rate": null,
+      "intrusion_rate": null,
+      "complete": true,
+      "criterion_population": "counter_prior_only",
+      "by_prior_stratum": {
+        "counter_prior": {
+          "passed": false,
+          "evaluable": false,
+          "ask_correct": 0,
+          "ask_n": 0,
+          "intrusions": 0,
+          "no_n": 0,
+          "ask_rate": null,
+          "intrusion_rate": null
+        },
+        "calibration": {
+          "ask_correct": 8,
+          "ask_n": 8,
+          "intrusions": 0,
+          "no_n": 0,
+          "ask_rate": 1.0,
+          "intrusion_rate": null
+        }
+      },
+      "all_items_descriptive": {
+        "ask_correct": 8,
+        "ask_n": 8,
+        "intrusions": 0,
+        "no_n": 0,
+        "ask_rate": 1.0,
+        "intrusion_rate": null
+      }
+    },
+    "S1": {
+      "passed": false,
+      "evaluable": false,
+      "ask_correct": 0,
+      "ask_n": 0,
+      "intrusions": 0,
+      "no_n": 0,
+      "ask_rate": null,
+      "intrusion_rate": null,
+      "complete": true,
+      "criterion_population": "counter_prior_only",
+      "by_prior_stratum": {
+        "counter_prior": {
+          "passed": false,
+          "evaluable": false,
+          "ask_correct": 0,
+          "ask_n": 0,
+          "intrusions": 0,
+          "no_n": 0,
+          "ask_rate": null,
+          "intrusion_rate": null
+        },
+        "calibration": {
+          "ask_correct": 8,
+          "ask_n": 8,
+          "intrusions": 0,
+          "no_n": 0,
+          "ask_rate": 1.0,
+          "intrusion_rate": null
+        }
+      },
+      "all_items_descriptive": {
+        "ask_correct": 8,
+        "ask_n": 8,
+        "intrusions": 0,
+        "no_n": 0,
+        "ask_rate": 1.0,
+        "intrusion_rate": null
+      }
+    }
+  },
+  "b_formats": [
+    "S0",
+    "S1"
+  ],
+  "screen_passed": false,
+  "calibration_comparison": {
+    "paired_n": 8,
+    "correct": {
+      "S0": 8,
+      "S1": 8
+    },
+    "s1_regressed_ids": [],
+    "s1_improved_ids": []
+  },
+  "screen_manifest_sha256": "88f6a8b2bc8f3cbae93af22e89849ea15aee17dde42ae3172a12826725d2afad"
+}

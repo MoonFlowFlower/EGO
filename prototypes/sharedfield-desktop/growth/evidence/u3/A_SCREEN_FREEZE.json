@@ -1,0 +1,13 @@
+{
+  "source_manifest_sha256": "7639792b419ac28d9efab3b2c89d5f636ef2f20d2fd677a5a81aff6d40ba996f",
+  "evidence_sha256": {
+    "evidence/u3/A_MATERIALIZED.json": "19df02ce4b551cb06477ec411c603c01e6835786a114884da7f79c5859900539",
+    "evidence/u3/raw/a/prior_probe/calls.jsonl": "f1d5bf9728918499867014de341e8ec9e0f675f7ada6fb862a6d890e1dbd271e",
+    "evidence/u3/raw/a/prior_probe/claim.json": "e5cbd7cb29492b6bcd3c1f5058cda419e3d7dbb0059484b68366556bdec8dd61",
+    "evidence/u3/raw/a/prior_probe/decisions.jsonl": "de8e9c7182b88478c6db0b9035de8d55f577fcbbe2e35a578c615f66553b5300",
+    "evidence/u3/raw/a/prior_probe/job.json": "ed71b8f768a16c847783c4d3d2d0b62417b15698881ac65f170c24012fb0a755",
+    "evidence/u3/raw/a/prior_probe/model.jsonl": "e7545c3514504ee4e6d2d9396783e37e0bfa9428deb97c0e00df54060c0556fa",
+    "evidence/u3/raw/a/prior_probe/result.json": "a49b4784754265726cc8b282f9d4614e305e433e38a46c1caeb960566cb87930",
+    "evidence/u3/raw/a/prior_probe/routing.jsonl": "15cfac73a0dd695500fbcadc48d2d0dd8ee2af7693586670a3d98abda5e6df01"
+  }
+}

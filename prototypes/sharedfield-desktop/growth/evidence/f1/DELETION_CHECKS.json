@@ -1,0 +1,125 @@
+{
+  "all_passed": true,
+  "people": [
+    {
+      "person": "1",
+      "reconstruction": {
+        "person": "1",
+        "utterances": 53,
+        "accepted_versions_replayed": 36,
+        "packet_sha256": "30b8631f05f84479fd955f0e5c80c2c9baa98d285337a006430d5a4ba3ea45d9",
+        "exact_predelete_packet_match": true
+      },
+      "deletion": {
+        "passed": true,
+        "deleted_items": [
+          "P03",
+          "P33",
+          "P63"
+        ],
+        "removed_record_count": 10,
+        "checked_text_count": 9,
+        "matched_text_hashes": [],
+        "preserved_unrelated_records": true,
+        "notes_contain_no_deleted_text": true,
+        "removed_ids_not_in_dependencies": true,
+        "non_use_ids": [
+          "033ac0494ffb4af188baf148f8acd357",
+          "9519a890804e47c08c680989c397352f",
+          "fdd2c76ec83649b3bd4cb533d55a30b2"
+        ],
+        "archive_files": [
+          "state.sqlite"
+        ],
+        "scope": "Canonical post-forgetting SQLite and its journals. Original synthetic scientific evidence is retained separately."
+      },
+      "readonly_test": {
+        "before": "844e0b6b2c5afe22494c984fb2db1f9fbab2b36ed1320cebf3357768736ddd9b",
+        "after": "844e0b6b2c5afe22494c984fb2db1f9fbab2b36ed1320cebf3357768736ddd9b",
+        "unchanged": true,
+        "learning_pid": 55964,
+        "testing_pid": 58052
+      }
+    },
+    {
+      "person": "2",
+      "reconstruction": {
+        "person": "2",
+        "utterances": 54,
+        "accepted_versions_replayed": 38,
+        "packet_sha256": "a976f04e0915d4805c56e871e42999dcab51590cacc5fb9bed2286857be1d645",
+        "exact_predelete_packet_match": true
+      },
+      "deletion": {
+        "passed": true,
+        "deleted_items": [
+          "P02",
+          "P10",
+          "P69"
+        ],
+        "removed_record_count": 12,
+        "checked_text_count": 12,
+        "matched_text_hashes": [],
+        "preserved_unrelated_records": true,
+        "notes_contain_no_deleted_text": true,
+        "removed_ids_not_in_dependencies": true,
+        "non_use_ids": [
+          "bf38768742e544a3a5cd19372c080a3f",
+          "4367535a282f45a98453476df8089d60",
+          "03db1ca37afd4ac4b7d109a4c4e5b2b2"
+        ],
+        "archive_files": [
+          "state.sqlite"
+        ],
+        "scope": "Canonical post-forgetting SQLite and its journals. Original synthetic scientific evidence is retained separately."
+      },
+      "readonly_test": {
+        "before": "4647a25d0e4b8fc58e61c6eadbfd3f4ad385d9b1f99970c3e8cdb95245f0019e",
+        "after": "4647a25d0e4b8fc58e61c6eadbfd3f4ad385d9b1f99970c3e8cdb95245f0019e",
+        "unchanged": true,
+        "learning_pid": 42628,
+        "testing_pid": 53816
+      }
+    },
+    {
+      "person": "3",
+      "reconstruction": {
+        "person": "3",
+        "utterances": 51,
+        "accepted_versions_replayed": 30,
+        "packet_sha256": "57cb9c015aef4d5d4ad1b81710301a48ae44b9a055db4f49ffe941c094a65c63",
+        "exact_predelete_packet_match": true
+      },
+      "deletion": {
+        "passed": true,
+        "deleted_items": [
+          "P06",
+          "P50",
+          "P71"
+        ],
+        "removed_record_count": 10,
+        "checked_text_count": 10,
+        "matched_text_hashes": [],
+        "preserved_unrelated_records": true,
+        "notes_contain_no_deleted_text": true,
+        "removed_ids_not_in_dependencies": true,
+        "non_use_ids": [
+          "e4b2cf8735ba42f1b344d7d8e3c7c6e3",
+          "4f86023a8f3b495581fbcf4bdb54cf47",
+          "2af8982064fc48c7bf2798287946496d"
+        ],
+        "archive_files": [
+          "state.sqlite"
+        ],
+        "scope": "Canonical post-forgetting SQLite and its journals. Original synthetic scientific evidence is retained separately."
+      },
+      "readonly_test": {
+        "before": "ae7b7b0edd20134a528875cdc88481551b2284b4d665d1a3bba3148d9ef6064d",
+        "after": "ae7b7b0edd20134a528875cdc88481551b2284b4d665d1a3bba3148d9ef6064d",
+        "unchanged": true,
+        "learning_pid": 21648,
+        "testing_pid": 41520
+      }
+    }
+  ]
+}

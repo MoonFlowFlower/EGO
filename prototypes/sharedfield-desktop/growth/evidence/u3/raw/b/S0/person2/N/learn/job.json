@@ -1,0 +1,11 @@
+{
+  "folder": "D:\\Project\\AIProject\\MyProject\\Ego_proejct_restart\\.publish\\EGO\\prototypes\\sharedfield-desktop\\growth\\runs\\u3\\b\\S0\\person2\\N\\learn",
+  "operation": "fork",
+  "manifest_sha256": "7639792b419ac28d9efab3b2c89d5f636ef2f20d2fd677a5a81aff6d40ba996f",
+  "related_store": "D:\\Project\\AIProject\\MyProject\\Ego_proejct_restart\\.publish\\EGO\\prototypes\\sharedfield-desktop\\growth\\runs\\u3\\b\\S0\\person2\\R\\learn\\state.sqlite",
+  "persona": "2",
+  "format": "S0",
+  "arm": "N",
+  "phase_freeze": "D:\\Project\\AIProject\\MyProject\\Ego_proejct_restart\\.publish\\EGO\\prototypes\\sharedfield-desktop\\growth\\evidence\\u3\\B_MAIN_FREEZE.json",
+  "phase_freeze_sha256": "71194c1f35ca822bc86e8f456647f3d8cfb303e0da6228de0b089fb4b3764b6e"
+}

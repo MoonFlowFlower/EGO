@@ -1,0 +1,22 @@
+{
+  "status": "not_applicable",
+  "reason": "F1 reuses the complete previously frozen U2 pool; no new screening, replacement or result-based selection.",
+  "selection_seed": 2026100523,
+  "selected_ids": {
+    "1": [
+      "P03",
+      "P33",
+      "P63"
+    ],
+    "2": [
+      "P02",
+      "P10",
+      "P69"
+    ],
+    "3": [
+      "P06",
+      "P50",
+      "P71"
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "at_utc": "2026-10-05T20:26:58.235149+00:00",
+  "request_attempts": 895,
+  "responses": 895,
+  "network_retries": 0,
+  "median_latency_s": 1.7189999999973224,
+  "p95_latency_s": 3.3289999999979045,
+  "max_latency_s": 11.781999999991967,
+  "cost_usd_including_unknown": 0.490444185,
+  "logged_model_call_failures": 0,
+  "runtime_stopped_lanes": 1
+}

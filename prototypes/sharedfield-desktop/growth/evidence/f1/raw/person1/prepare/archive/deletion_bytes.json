@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "deleted_items": [
+    "P03",
+    "P33",
+    "P63"
+  ],
+  "removed_record_count": 10,
+  "checked_text_count": 9,
+  "matched_text_hashes": [],
+  "preserved_unrelated_records": true,
+  "notes_contain_no_deleted_text": true,
+  "removed_ids_not_in_dependencies": true,
+  "non_use_ids": [
+    "033ac0494ffb4af188baf148f8acd357",
+    "9519a890804e47c08c680989c397352f",
+    "fdd2c76ec83649b3bd4cb533d55a30b2"
+  ],
+  "archive_files": [
+    "state.sqlite"
+  ],
+  "scope": "Canonical post-forgetting SQLite and its journals. Original synthetic scientific evidence is retained separately."
+}

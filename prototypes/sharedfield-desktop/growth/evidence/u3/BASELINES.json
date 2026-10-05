@@ -1,0 +1,5602 @@
+{
+  "people": {
+    "1": {
+      "fitted": {
+        "policies": {
+          "always_quiet": {
+            "kind": "constant",
+            "action": "quiet"
+          },
+          "always_reply": {
+            "kind": "constant",
+            "action": "reply"
+          },
+          "always_ask": {
+            "kind": "constant",
+            "action": "ask"
+          },
+          "always_suggest": {
+            "kind": "constant",
+            "action": "suggest"
+          },
+          "cue_time_band": {
+            "kind": "cue",
+            "feature": "time_band",
+            "mapping": {
+              "早上": "quiet",
+              "晚上": "quiet"
+            }
+          },
+          "cue_day_type": {
+            "kind": "cue",
+            "feature": "day_type",
+            "mapping": {
+              "周末": "quiet",
+              "工作日": "quiet"
+            }
+          },
+          "cue_busy": {
+            "kind": "cue",
+            "feature": "busy",
+            "mapping": {
+              "False": "ask",
+              "True": "quiet"
+            }
+          },
+          "cue_topic_seen": {
+            "kind": "cue",
+            "feature": "topic_seen",
+            "mapping": {
+              "False": "quiet",
+              "True": "quiet"
+            }
+          },
+          "polite": {
+            "kind": "polite"
+          }
+        },
+        "learning_utilities": {
+          "always_quiet": 0,
+          "always_reply": 0,
+          "always_ask": -8,
+          "always_suggest": -16,
+          "cue_time_band": 0,
+          "cue_day_type": 0,
+          "cue_busy": 4,
+          "cue_topic_seen": 0,
+          "polite": -4
+        },
+        "selected": "cue_busy",
+        "single_cue_selected": "cue_busy",
+        "tie_order": [
+          "always_quiet",
+          "always_reply",
+          "always_ask",
+          "always_suggest",
+          "cue_time_band",
+          "cue_day_type",
+          "cue_busy",
+          "cue_topic_seen",
+          "polite"
+        ],
+        "fit_scope": "immediate utility on learning moments only"
+      },
+      "tests": {
+        "always_quiet": {
+          "rows": [
+            {
+              "moment_id": "1-09-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-04-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-03-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-15-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-14-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-11-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-02-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-05-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-09-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-04-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-03-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-15-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-14-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-11-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-02-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-05-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-09-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-04-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-03-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-15-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-14-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-11-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-02-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-05-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            }
+          ],
+          "total": 0
+        },
+        "always_reply": {
+          "rows": [
+            {
+              "moment_id": "1-09-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-04-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-03-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-15-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-14-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-11-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-02-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-05-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-09-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-04-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-03-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-15-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-14-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-11-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-02-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-05-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-09-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-04-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-03-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-15-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-14-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-11-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-02-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-05-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            }
+          ],
+          "total": 0
+        },
+        "always_ask": {
+          "rows": [
+            {
+              "moment_id": "1-09-test-0",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "1-04-test-0",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-03-test-0",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-15-test-0",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-14-test-0",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-11-test-0",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-02-test-0",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "1-05-test-0",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "1-09-test-1",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "1-04-test-1",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-03-test-1",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-15-test-1",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-14-test-1",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-11-test-1",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-02-test-1",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "1-05-test-1",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "1-09-test-2",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "1-04-test-2",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-03-test-2",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-15-test-2",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-14-test-2",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-11-test-2",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-02-test-2",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "1-05-test-2",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            }
+          ],
+          "total": 3
+        },
+        "always_suggest": {
+          "rows": [
+            {
+              "moment_id": "1-09-test-0",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-04-test-0",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-03-test-0",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "1-15-test-0",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "1-14-test-0",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-11-test-0",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-02-test-0",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-05-test-0",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-09-test-1",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-04-test-1",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-03-test-1",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "1-15-test-1",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "1-14-test-1",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-11-test-1",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-02-test-1",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-05-test-1",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-09-test-2",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-04-test-2",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-03-test-2",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "1-15-test-2",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "1-14-test-2",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-11-test-2",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-02-test-2",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-05-test-2",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            }
+          ],
+          "total": -12
+        },
+        "cue_time_band": {
+          "rows": [
+            {
+              "moment_id": "1-09-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-04-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-03-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-15-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-14-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-11-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-02-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-05-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-09-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-04-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-03-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-15-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-14-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-11-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-02-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-05-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-09-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-04-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-03-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-15-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-14-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-11-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-02-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-05-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            }
+          ],
+          "total": 0
+        },
+        "cue_day_type": {
+          "rows": [
+            {
+              "moment_id": "1-09-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-04-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-03-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-15-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-14-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-11-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-02-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-05-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-09-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-04-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-03-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-15-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-14-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-11-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-02-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-05-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-09-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-04-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-03-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-15-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-14-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-11-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-02-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-05-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            }
+          ],
+          "total": 0
+        },
+        "cue_busy": {
+          "rows": [
+            {
+              "moment_id": "1-09-test-0",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "1-04-test-0",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-03-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-15-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-14-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-11-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-02-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-05-test-0",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "1-09-test-1",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "1-04-test-1",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-03-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-15-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-14-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-11-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-02-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-05-test-1",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "1-09-test-2",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "1-04-test-2",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-03-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-15-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-14-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-11-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-02-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-05-test-2",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            }
+          ],
+          "total": 9
+        },
+        "cue_topic_seen": {
+          "rows": [
+            {
+              "moment_id": "1-09-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-04-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-03-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-15-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-14-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-11-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-02-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-05-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-09-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-04-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-03-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-15-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-14-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-11-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-02-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-05-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-09-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-04-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-03-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-15-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-14-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-11-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-02-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-05-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            }
+          ],
+          "total": 0
+        },
+        "polite": {
+          "rows": [
+            {
+              "moment_id": "1-09-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-04-test-0",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-03-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-15-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-14-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-11-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-02-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-05-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-09-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-04-test-1",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-03-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-15-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-14-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-11-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-02-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-05-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-09-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-04-test-2",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "1-03-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-15-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-14-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-11-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-02-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-05-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            }
+          ],
+          "total": -3
+        },
+        "oracle": {
+          "rows": [
+            {
+              "moment_id": "1-09-test-0",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "1-04-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-03-test-0",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "1-15-test-0",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "1-14-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-11-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-02-test-0",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "1-05-test-0",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "1-09-test-1",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "1-04-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-03-test-1",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "1-15-test-1",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "1-14-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-11-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-02-test-1",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "1-05-test-1",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "1-09-test-2",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "1-04-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-03-test-2",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "1-15-test-2",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "1-14-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-11-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "1-02-test-2",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "1-05-test-2",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            }
+          ],
+          "total": 24
+        }
+      },
+      "prior_alignment": {
+        "C09": false,
+        "C04": false,
+        "C03": false,
+        "C15": true,
+        "C14": true,
+        "C11": true,
+        "C02": false,
+        "C05": false
+      },
+      "test_stratum_totals": {
+        "always_quiet": {
+          "prior_aligned": 0,
+          "counter_prior": 0
+        },
+        "always_reply": {
+          "prior_aligned": 0,
+          "counter_prior": 0
+        },
+        "always_ask": {
+          "prior_aligned": -9,
+          "counter_prior": 12
+        },
+        "always_suggest": {
+          "prior_aligned": -3,
+          "counter_prior": -9
+        },
+        "cue_time_band": {
+          "prior_aligned": 0,
+          "counter_prior": 0
+        },
+        "cue_day_type": {
+          "prior_aligned": 0,
+          "counter_prior": 0
+        },
+        "cue_busy": {
+          "prior_aligned": 0,
+          "counter_prior": 9
+        },
+        "cue_topic_seen": {
+          "prior_aligned": 0,
+          "counter_prior": 0
+        },
+        "polite": {
+          "prior_aligned": 0,
+          "counter_prior": -3
+        },
+        "oracle": {
+          "prior_aligned": 3,
+          "counter_prior": 21
+        }
+      }
+    },
+    "2": {
+      "fitted": {
+        "policies": {
+          "always_quiet": {
+            "kind": "constant",
+            "action": "quiet"
+          },
+          "always_reply": {
+            "kind": "constant",
+            "action": "reply"
+          },
+          "always_ask": {
+            "kind": "constant",
+            "action": "ask"
+          },
+          "always_suggest": {
+            "kind": "constant",
+            "action": "suggest"
+          },
+          "cue_time_band": {
+            "kind": "cue",
+            "feature": "time_band",
+            "mapping": {
+              "早上": "quiet",
+              "晚上": "quiet"
+            }
+          },
+          "cue_day_type": {
+            "kind": "cue",
+            "feature": "day_type",
+            "mapping": {
+              "周末": "quiet",
+              "工作日": "quiet"
+            }
+          },
+          "cue_busy": {
+            "kind": "cue",
+            "feature": "busy",
+            "mapping": {
+              "False": "suggest",
+              "True": "quiet"
+            }
+          },
+          "cue_topic_seen": {
+            "kind": "cue",
+            "feature": "topic_seen",
+            "mapping": {
+              "False": "quiet",
+              "True": "quiet"
+            }
+          },
+          "polite": {
+            "kind": "polite"
+          }
+        },
+        "learning_utilities": {
+          "always_quiet": 0,
+          "always_reply": 0,
+          "always_ask": -16,
+          "always_suggest": -8,
+          "cue_time_band": 0,
+          "cue_day_type": 0,
+          "cue_busy": 4,
+          "cue_topic_seen": 0,
+          "polite": -8
+        },
+        "selected": "cue_busy",
+        "single_cue_selected": "cue_busy",
+        "tie_order": [
+          "always_quiet",
+          "always_reply",
+          "always_ask",
+          "always_suggest",
+          "cue_time_band",
+          "cue_day_type",
+          "cue_busy",
+          "cue_topic_seen",
+          "polite"
+        ],
+        "fit_scope": "immediate utility on learning moments only"
+      },
+      "tests": {
+        "always_quiet": {
+          "rows": [
+            {
+              "moment_id": "2-00-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-09-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-02-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-14-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-11-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-15-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-06-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-04-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-00-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-09-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-02-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-14-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-11-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-15-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-06-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-04-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-00-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-09-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-02-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-14-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-11-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-15-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-06-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-04-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            }
+          ],
+          "total": 0
+        },
+        "always_reply": {
+          "rows": [
+            {
+              "moment_id": "2-00-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-09-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-02-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-14-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-11-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-15-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-06-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-04-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-00-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-09-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-02-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-14-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-11-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-15-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-06-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-04-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-00-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-09-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-02-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-14-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-11-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-15-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-06-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-04-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            }
+          ],
+          "total": 0
+        },
+        "always_ask": {
+          "rows": [
+            {
+              "moment_id": "2-00-test-0",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-09-test-0",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-02-test-0",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "2-14-test-0",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "2-11-test-0",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-15-test-0",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-06-test-0",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-04-test-0",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-00-test-1",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-09-test-1",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-02-test-1",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "2-14-test-1",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "2-11-test-1",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-15-test-1",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-06-test-1",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-04-test-1",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-00-test-2",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-09-test-2",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-02-test-2",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "2-14-test-2",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "2-11-test-2",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-15-test-2",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-06-test-2",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-04-test-2",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            }
+          ],
+          "total": -6
+        },
+        "always_suggest": {
+          "rows": [
+            {
+              "moment_id": "2-00-test-0",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "2-09-test-0",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "2-02-test-0",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-14-test-0",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-11-test-0",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-15-test-0",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-06-test-0",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "2-04-test-0",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-00-test-1",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "2-09-test-1",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "2-02-test-1",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-14-test-1",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-11-test-1",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-15-test-1",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-06-test-1",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "2-04-test-1",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-00-test-2",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "2-09-test-2",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "2-02-test-2",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-14-test-2",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-11-test-2",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-15-test-2",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-06-test-2",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "2-04-test-2",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            }
+          ],
+          "total": -6
+        },
+        "cue_time_band": {
+          "rows": [
+            {
+              "moment_id": "2-00-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-09-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-02-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-14-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-11-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-15-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-06-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-04-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-00-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-09-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-02-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-14-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-11-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-15-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-06-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-04-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-00-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-09-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-02-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-14-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-11-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-15-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-06-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-04-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            }
+          ],
+          "total": 0
+        },
+        "cue_day_type": {
+          "rows": [
+            {
+              "moment_id": "2-00-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-09-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-02-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-14-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-11-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-15-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-06-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-04-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-00-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-09-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-02-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-14-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-11-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-15-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-06-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-04-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-00-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-09-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-02-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-14-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-11-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-15-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-06-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-04-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            }
+          ],
+          "total": 0
+        },
+        "cue_busy": {
+          "rows": [
+            {
+              "moment_id": "2-00-test-0",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "2-09-test-0",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "2-02-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-14-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-11-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-15-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-06-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-04-test-0",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-00-test-1",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "2-09-test-1",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "2-02-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-14-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-11-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-15-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-06-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-04-test-1",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-00-test-2",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "2-09-test-2",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "2-02-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-14-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-11-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-15-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-06-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-04-test-2",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            }
+          ],
+          "total": 3
+        },
+        "cue_topic_seen": {
+          "rows": [
+            {
+              "moment_id": "2-00-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-09-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-02-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-14-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-11-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-15-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-06-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-04-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-00-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-09-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-02-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-14-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-11-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-15-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-06-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-04-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-00-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-09-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-02-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-14-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-11-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-15-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-06-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-04-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            }
+          ],
+          "total": 0
+        },
+        "polite": {
+          "rows": [
+            {
+              "moment_id": "2-00-test-0",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-09-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-02-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-14-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-11-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-15-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-06-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-04-test-0",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-00-test-1",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-09-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-02-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-14-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-11-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-15-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-06-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-04-test-1",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-00-test-2",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "2-09-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-02-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-14-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-11-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-15-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-06-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-04-test-2",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            }
+          ],
+          "total": -6
+        },
+        "oracle": {
+          "rows": [
+            {
+              "moment_id": "2-00-test-0",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "2-09-test-0",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "2-02-test-0",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "2-14-test-0",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "2-11-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-15-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-06-test-0",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "2-04-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-00-test-1",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "2-09-test-1",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "2-02-test-1",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "2-14-test-1",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "2-11-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-15-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-06-test-1",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "2-04-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-00-test-2",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "2-09-test-2",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "2-02-test-2",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "2-14-test-2",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "2-11-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-15-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "2-06-test-2",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "2-04-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            }
+          ],
+          "total": 21
+        }
+      },
+      "prior_alignment": {
+        "C00": false,
+        "C09": false,
+        "C02": true,
+        "C14": false,
+        "C11": true,
+        "C15": false,
+        "C06": true,
+        "C04": false
+      },
+      "test_stratum_totals": {
+        "always_quiet": {
+          "prior_aligned": 0,
+          "counter_prior": 0
+        },
+        "always_reply": {
+          "prior_aligned": 0,
+          "counter_prior": 0
+        },
+        "always_ask": {
+          "prior_aligned": 0,
+          "counter_prior": -6
+        },
+        "always_suggest": {
+          "prior_aligned": -3,
+          "counter_prior": -3
+        },
+        "cue_time_band": {
+          "prior_aligned": 0,
+          "counter_prior": 0
+        },
+        "cue_day_type": {
+          "prior_aligned": 0,
+          "counter_prior": 0
+        },
+        "cue_busy": {
+          "prior_aligned": 0,
+          "counter_prior": 3
+        },
+        "cue_topic_seen": {
+          "prior_aligned": 0,
+          "counter_prior": 0
+        },
+        "polite": {
+          "prior_aligned": 0,
+          "counter_prior": -6
+        },
+        "oracle": {
+          "prior_aligned": 9,
+          "counter_prior": 12
+        }
+      }
+    },
+    "3": {
+      "fitted": {
+        "policies": {
+          "always_quiet": {
+            "kind": "constant",
+            "action": "quiet"
+          },
+          "always_reply": {
+            "kind": "constant",
+            "action": "reply"
+          },
+          "always_ask": {
+            "kind": "constant",
+            "action": "ask"
+          },
+          "always_suggest": {
+            "kind": "constant",
+            "action": "suggest"
+          },
+          "cue_time_band": {
+            "kind": "cue",
+            "feature": "time_band",
+            "mapping": {
+              "早上": "quiet",
+              "晚上": "quiet"
+            }
+          },
+          "cue_day_type": {
+            "kind": "cue",
+            "feature": "day_type",
+            "mapping": {
+              "周末": "quiet",
+              "工作日": "quiet"
+            }
+          },
+          "cue_busy": {
+            "kind": "cue",
+            "feature": "busy",
+            "mapping": {
+              "False": "suggest",
+              "True": "quiet"
+            }
+          },
+          "cue_topic_seen": {
+            "kind": "cue",
+            "feature": "topic_seen",
+            "mapping": {
+              "False": "quiet",
+              "True": "quiet"
+            }
+          },
+          "polite": {
+            "kind": "polite"
+          }
+        },
+        "learning_utilities": {
+          "always_quiet": 0,
+          "always_reply": 0,
+          "always_ask": -16,
+          "always_suggest": -8,
+          "cue_time_band": 0,
+          "cue_day_type": 0,
+          "cue_busy": 8,
+          "cue_topic_seen": 0,
+          "polite": -12
+        },
+        "selected": "cue_busy",
+        "single_cue_selected": "cue_busy",
+        "tie_order": [
+          "always_quiet",
+          "always_reply",
+          "always_ask",
+          "always_suggest",
+          "cue_time_band",
+          "cue_day_type",
+          "cue_busy",
+          "cue_topic_seen",
+          "polite"
+        ],
+        "fit_scope": "immediate utility on learning moments only"
+      },
+      "tests": {
+        "always_quiet": {
+          "rows": [
+            {
+              "moment_id": "3-11-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-14-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-00-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-07-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-12-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-05-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-02-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-08-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-11-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-14-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-00-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-07-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-12-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-05-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-02-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-08-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-11-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-14-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-00-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-07-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-12-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-05-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-02-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-08-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            }
+          ],
+          "total": 0
+        },
+        "always_reply": {
+          "rows": [
+            {
+              "moment_id": "3-11-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-14-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-00-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-07-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-12-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-05-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-02-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-08-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-11-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-14-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-00-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-07-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-12-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-05-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-02-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-08-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-11-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-14-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-00-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-07-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-12-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-05-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-02-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-08-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            }
+          ],
+          "total": 0
+        },
+        "always_ask": {
+          "rows": [
+            {
+              "moment_id": "3-11-test-0",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-14-test-0",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "3-00-test-0",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-07-test-0",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "3-12-test-0",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-05-test-0",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-02-test-0",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-08-test-0",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-11-test-1",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-14-test-1",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "3-00-test-1",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-07-test-1",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "3-12-test-1",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-05-test-1",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-02-test-1",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-08-test-1",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-11-test-2",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-14-test-2",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "3-00-test-2",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-07-test-2",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "3-12-test-2",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-05-test-2",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-02-test-2",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-08-test-2",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            }
+          ],
+          "total": -6
+        },
+        "always_suggest": {
+          "rows": [
+            {
+              "moment_id": "3-11-test-0",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-14-test-0",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-00-test-0",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-07-test-0",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-12-test-0",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "3-05-test-0",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "3-02-test-0",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-08-test-0",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "3-11-test-1",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-14-test-1",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-00-test-1",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-07-test-1",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-12-test-1",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "3-05-test-1",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "3-02-test-1",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-08-test-1",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "3-11-test-2",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-14-test-2",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-00-test-2",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-07-test-2",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-12-test-2",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "3-05-test-2",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "3-02-test-2",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-08-test-2",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            }
+          ],
+          "total": -6
+        },
+        "cue_time_band": {
+          "rows": [
+            {
+              "moment_id": "3-11-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-14-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-00-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-07-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-12-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-05-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-02-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-08-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-11-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-14-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-00-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-07-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-12-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-05-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-02-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-08-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-11-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-14-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-00-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-07-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-12-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-05-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-02-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-08-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            }
+          ],
+          "total": 0
+        },
+        "cue_day_type": {
+          "rows": [
+            {
+              "moment_id": "3-11-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-14-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-00-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-07-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-12-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-05-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-02-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-08-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-11-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-14-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-00-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-07-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-12-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-05-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-02-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-08-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-11-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-14-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-00-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-07-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-12-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-05-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-02-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-08-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            }
+          ],
+          "total": 0
+        },
+        "cue_busy": {
+          "rows": [
+            {
+              "moment_id": "3-11-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-14-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-00-test-0",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-07-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-12-test-0",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "3-05-test-0",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "3-02-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-08-test-0",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "3-11-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-14-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-00-test-1",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-07-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-12-test-1",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "3-05-test-1",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "3-02-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-08-test-1",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "3-11-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-14-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-00-test-2",
+              "action": "suggest",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-07-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-12-test-2",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "3-05-test-2",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "3-02-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-08-test-2",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            }
+          ],
+          "total": 6
+        },
+        "cue_topic_seen": {
+          "rows": [
+            {
+              "moment_id": "3-11-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-14-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-00-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-07-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-12-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-05-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-02-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-08-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-11-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-14-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-00-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-07-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-12-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-05-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-02-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-08-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-11-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-14-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-00-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-07-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-12-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-05-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-02-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-08-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            }
+          ],
+          "total": 0
+        },
+        "polite": {
+          "rows": [
+            {
+              "moment_id": "3-11-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-14-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-00-test-0",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-07-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-12-test-0",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-05-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-02-test-0",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-08-test-0",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-11-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-14-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-00-test-1",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-07-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-12-test-1",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-05-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-02-test-1",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-08-test-1",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-11-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-14-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-00-test-2",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-07-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-12-test-2",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            },
+            {
+              "moment_id": "3-05-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-02-test-2",
+              "action": "reply",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-08-test-2",
+              "action": "ask",
+              "immediate_utility": -1,
+              "information_bonus": 0,
+              "utility": -1
+            }
+          ],
+          "total": -9
+        },
+        "oracle": {
+          "rows": [
+            {
+              "moment_id": "3-11-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-14-test-0",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "3-00-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-07-test-0",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "3-12-test-0",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "3-05-test-0",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "3-02-test-0",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-08-test-0",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "3-11-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-14-test-1",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "3-00-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-07-test-1",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "3-12-test-1",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "3-05-test-1",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "3-02-test-1",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-08-test-1",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "3-11-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-14-test-2",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "3-00-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-07-test-2",
+              "action": "ask",
+              "immediate_utility": 1,
+              "information_bonus": 1,
+              "utility": 2
+            },
+            {
+              "moment_id": "3-12-test-2",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "3-05-test-2",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            },
+            {
+              "moment_id": "3-02-test-2",
+              "action": "quiet",
+              "immediate_utility": 0,
+              "information_bonus": 0,
+              "utility": 0
+            },
+            {
+              "moment_id": "3-08-test-2",
+              "action": "suggest",
+              "immediate_utility": 1,
+              "information_bonus": 0,
+              "utility": 1
+            }
+          ],
+          "total": 21
+        }
+      },
+      "prior_alignment": {
+        "C11": true,
+        "C14": false,
+        "C00": false,
+        "C07": false,
+        "C12": false,
+        "C05": true,
+        "C02": true,
+        "C08": false
+      },
+      "test_stratum_totals": {
+        "always_quiet": {
+          "prior_aligned": 0,
+          "counter_prior": 0
+        },
+        "always_reply": {
+          "prior_aligned": 0,
+          "counter_prior": 0
+        },
+        "always_ask": {
+          "prior_aligned": -9,
+          "counter_prior": 3
+        },
+        "always_suggest": {
+          "prior_aligned": -3,
+          "counter_prior": -3
+        },
+        "cue_time_band": {
+          "prior_aligned": 0,
+          "counter_prior": 0
+        },
+        "cue_day_type": {
+          "prior_aligned": 0,
+          "counter_prior": 0
+        },
+        "cue_busy": {
+          "prior_aligned": 3,
+          "counter_prior": 3
+        },
+        "cue_topic_seen": {
+          "prior_aligned": 0,
+          "counter_prior": 0
+        },
+        "polite": {
+          "prior_aligned": 0,
+          "counter_prior": -9
+        },
+        "oracle": {
+          "prior_aligned": 3,
+          "counter_prior": 18
+        }
+      }
+    }
+  }
+}

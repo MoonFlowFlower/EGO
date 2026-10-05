@@ -1,0 +1,123 @@
+{
+  "eligible_ids": [
+    "A01",
+    "A02",
+    "A03",
+    "A04",
+    "A06",
+    "A07",
+    "A10",
+    "A11",
+    "A12",
+    "A13",
+    "A14",
+    "A15",
+    "A16",
+    "A17",
+    "A18",
+    "A19",
+    "A20",
+    "A21",
+    "A22",
+    "A23",
+    "A24"
+  ],
+  "excluded": [
+    {
+      "item_id": "A05",
+      "reasons": [
+        "no_memory_already_correct"
+      ]
+    },
+    {
+      "item_id": "A08",
+      "reasons": [
+        "explicit_information_ceiling_wrong"
+      ]
+    },
+    {
+      "item_id": "A09",
+      "reasons": [
+        "explicit_information_ceiling_wrong"
+      ]
+    }
+  ],
+  "selected_ids": [
+    "A03",
+    "A10",
+    "A13",
+    "A14",
+    "A15",
+    "A22",
+    "A23",
+    "A24"
+  ],
+  "passed": false,
+  "counts": {
+    "ask": 8,
+    "known": 0,
+    "restriction": 0
+  },
+  "criterion_population": "counter_prior_only",
+  "strata": {
+    "counter_prior": {
+      "eligible_ids": [
+        "A01",
+        "A02",
+        "A04",
+        "A06",
+        "A07",
+        "A11",
+        "A12",
+        "A16",
+        "A17",
+        "A18",
+        "A19",
+        "A20",
+        "A21"
+      ],
+      "available_counts": {
+        "ask": 3,
+        "known": 5,
+        "restriction": 5
+      },
+      "selected_ids": [],
+      "counts": {
+        "ask": 0,
+        "known": 0,
+        "restriction": 0
+      },
+      "evaluable": false
+    },
+    "calibration": {
+      "eligible_ids": [
+        "A03",
+        "A10",
+        "A13",
+        "A14",
+        "A15",
+        "A22",
+        "A23",
+        "A24"
+      ],
+      "selected_ids": [
+        "A03",
+        "A10",
+        "A13",
+        "A14",
+        "A15",
+        "A22",
+        "A23",
+        "A24"
+      ],
+      "counts": {
+        "ask": 8,
+        "known": 0,
+        "restriction": 0
+      },
+      "report_only": true
+    }
+  },
+  "aligned_policy": "retain_calibration",
+  "on_shortfall": "U3a not evaluable; no replacement; U3b runs both S0 and S1"
+}

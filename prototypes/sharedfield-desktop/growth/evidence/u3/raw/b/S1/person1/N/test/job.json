@@ -1,0 +1,4172 @@
+{
+  "folder": "D:\\Project\\AIProject\\MyProject\\Ego_proejct_restart\\.publish\\EGO\\prototypes\\sharedfield-desktop\\growth\\runs\\u3\\b\\S1\\person1\\N\\test",
+  "operation": "b_test",
+  "manifest_sha256": "7639792b419ac28d9efab3b2c89d5f636ef2f20d2fd677a5a81aff6d40ba996f",
+  "person": {
+    "rules": {
+      "C09": "ask",
+      "C04": "hold",
+      "C03": "suggest",
+      "C15": "suggest",
+      "C14": "hold",
+      "C11": "hold",
+      "C02": "ask",
+      "C05": "ask"
+    },
+    "prior_alignment": {
+      "C09": false,
+      "C04": false,
+      "C03": false,
+      "C15": true,
+      "C14": true,
+      "C11": true,
+      "C02": false,
+      "C05": false
+    },
+    "aligned_cells": 3,
+    "contrary_cells": 5,
+    "selection_attempt": 91,
+    "learn": [
+      {
+        "id": "1-03-learn-0",
+        "cell_id": "C03",
+        "phase": "learn",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "background": "前阵子聊到南窗准备计划时，我提过最喜欢四月这个名字。",
+        "situation": "工作日早上，刚从外面回来，鞋子放到架子上了。手头还忙着一件事。这次近况提到了“南窗准备计划”，内容是种花。",
+        "options": [
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到南窗准备计划，你最喜欢哪个月份的名字？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次南窗准备计划里做种花要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，南窗准备计划中第1份园艺手套存放记录该记成什么？"
+          }
+        ],
+        "topic": "南窗准备计划",
+        "need": "南窗准备计划中第1份园艺手套存放记录",
+        "hidden_answer": "鞋架",
+        "answers": [
+          "壁钩",
+          "木箱",
+          "鞋架"
+        ],
+        "mode": "suggest",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": 1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议正合适，谢谢。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 1,
+        "occurred_at": "2026-09-01T08:00:00-05:00"
+      },
+      {
+        "id": "1-02-learn-0",
+        "cell_id": "C02",
+        "phase": "learn",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": false
+        },
+        "background": null,
+        "situation": "工作日早上，今天的几件小事都写在纸上了。手头还忙着一件事。这次近况提到了“旧街筹备1号计划”，内容是播客。",
+        "options": [
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：如果给墙上的钟改一个水果名字，你想叫它什么？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次旧街筹备1号计划里做播客要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，旧街筹备1号计划中第1份播客稍后听列表记录该记成什么？"
+          }
+        ],
+        "topic": "旧街筹备1号计划",
+        "need": "旧街筹备1号计划中第1份播客稍后听列表记录",
+        "hidden_answer": "周末",
+        "answers": [
+          "路上",
+          "睡前",
+          "周末"
+        ],
+        "mode": "ask",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": 1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这会儿聊这个刚好，之后用得上。答案是周末。",
+          "repeat": "这件事现在用不上，先不聊它。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 1,
+        "occurred_at": "2026-09-01T08:00:00-05:00"
+      },
+      {
+        "id": "1-03-learn-1",
+        "cell_id": "C03",
+        "phase": "learn",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "工作日早上，椅子挪回原处了，杯子也洗完了。手头还忙着一件事。这次近况提到了“南窗准备计划”，内容是骑行。",
+        "options": [
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次南窗准备计划里做骑行要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，南窗准备计划中第2份骑行补给记录该记成什么？"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到南窗准备计划，你最喜欢哪个月份的名字？"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          }
+        ],
+        "topic": "南窗准备计划",
+        "need": "南窗准备计划中第2份骑行补给记录",
+        "hidden_answer": "米饼",
+        "answers": [
+          "米饼",
+          "果干",
+          "坚果"
+        ],
+        "mode": "suggest",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": 1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议正合适，谢谢。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 1,
+        "occurred_at": "2026-09-01T08:00:00-05:00"
+      },
+      {
+        "id": "1-02-learn-1",
+        "cell_id": "C02",
+        "phase": "learn",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": false
+        },
+        "background": null,
+        "situation": "工作日早上，把这段进展记下来，免得晚些时候忘记。手头还忙着一件事。这次近况提到了“旧街筹备2号计划”，内容是种花。",
+        "options": [
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次旧街筹备2号计划里做种花要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：如果给墙上的钟改一个水果名字，你想叫它什么？"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，旧街筹备2号计划中第2份园艺手套存放记录该记成什么？"
+          }
+        ],
+        "topic": "旧街筹备2号计划",
+        "need": "旧街筹备2号计划中第2份园艺手套存放记录",
+        "hidden_answer": "木箱",
+        "answers": [
+          "壁钩",
+          "木箱",
+          "鞋架"
+        ],
+        "mode": "ask",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": 1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这会儿聊这个刚好，之后用得上。答案是木箱。",
+          "repeat": "这件事现在用不上，先不聊它。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 1,
+        "occurred_at": "2026-09-01T08:00:00-05:00"
+      },
+      {
+        "id": "1-09-learn-0",
+        "cell_id": "C09",
+        "phase": "learn",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": true
+        },
+        "background": "前阵子聊到港口准备计划时，我提过最喜欢四月这个名字。",
+        "situation": "工作日晚上，这会儿喝了口水，顺手把窗帘拉开了。刚才手头的事已经放下了。这次近况提到了“港口准备计划”，内容是拼图。",
+        "options": [
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到港口准备计划，你最喜欢哪个月份的名字？"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次港口准备计划里做拼图要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，港口准备计划中第1份拼图边框收纳记录该记成什么？"
+          }
+        ],
+        "topic": "港口准备计划",
+        "need": "港口准备计划中第1份拼图边框收纳记录",
+        "hidden_answer": "纸盒",
+        "answers": [
+          "纸盒",
+          "布袋",
+          "抽屉"
+        ],
+        "mode": "ask",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": 1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这会儿聊这个刚好，之后用得上。答案是纸盒。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 2,
+        "occurred_at": "2026-09-01T20:00:00-05:00"
+      },
+      {
+        "id": "1-11-learn-0",
+        "cell_id": "C11",
+        "phase": "learn",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "background": "前阵子聊到北坡准备计划时，我提过最喜欢四月这个名字。",
+        "situation": "工作日晚上，刚从外面回来，鞋子放到架子上了。手头还忙着一件事。这次近况提到了“北坡准备计划”，内容是种花。",
+        "options": [
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次北坡准备计划里做种花要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，北坡准备计划中第1份园艺手套存放记录该记成什么？"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到北坡准备计划，你最喜欢哪个月份的名字？"
+          }
+        ],
+        "topic": "北坡准备计划",
+        "need": "北坡准备计划中第1份园艺手套存放记录",
+        "hidden_answer": "木箱",
+        "answers": [
+          "壁钩",
+          "木箱",
+          "鞋架"
+        ],
+        "mode": "hold",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 2,
+        "occurred_at": "2026-09-01T20:00:00-05:00"
+      },
+      {
+        "id": "1-09-learn-1",
+        "cell_id": "C09",
+        "phase": "learn",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "工作日晚上，看了看手边的东西，把它们换了个位置。刚才手头的事已经放下了。这次近况提到了“港口准备计划”，内容是播客。",
+        "options": [
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，港口准备计划中第2份播客稍后听列表记录该记成什么？"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次港口准备计划里做播客要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到港口准备计划，你最喜欢哪个月份的名字？"
+          },
+          {
+            "id": "d5",
+            "text": "你终于回来了，我一个人等了好久。"
+          }
+        ],
+        "topic": "港口准备计划",
+        "need": "港口准备计划中第2份播客稍后听列表记录",
+        "hidden_answer": "路上",
+        "answers": [
+          "路上",
+          "睡前",
+          "周末"
+        ],
+        "mode": "ask",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": 1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这会儿聊这个刚好，之后用得上。答案是路上。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 2,
+        "occurred_at": "2026-09-01T20:00:00-05:00"
+      },
+      {
+        "id": "1-11-learn-1",
+        "cell_id": "C11",
+        "phase": "learn",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "工作日晚上，椅子挪回原处了，杯子也洗完了。手头还忙着一件事。这次近况提到了“北坡准备计划”，内容是骑行。",
+        "options": [
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，北坡准备计划中第2份骑行补给记录该记成什么？"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到北坡准备计划，你最喜欢哪个月份的名字？"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次北坡准备计划里做骑行要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          }
+        ],
+        "topic": "北坡准备计划",
+        "need": "北坡准备计划中第2份骑行补给记录",
+        "hidden_answer": "坚果",
+        "answers": [
+          "米饼",
+          "果干",
+          "坚果"
+        ],
+        "mode": "hold",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 2,
+        "occurred_at": "2026-09-01T20:00:00-05:00"
+      },
+      {
+        "id": "1-04-learn-0",
+        "cell_id": "C04",
+        "phase": "learn",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": false
+        },
+        "background": null,
+        "situation": "周末早上，看了看手边的东西，把它们换了个位置。刚才手头的事已经放下了。这次近况提到了“灯塔筹备1号计划”，内容是骑行。",
+        "options": [
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，灯塔筹备1号计划中第1份骑行补给记录该记成什么？"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：如果给墙上的钟改一个水果名字，你想叫它什么？"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次灯塔筹备1号计划里做骑行要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          }
+        ],
+        "topic": "灯塔筹备1号计划",
+        "need": "灯塔筹备1号计划中第1份骑行补给记录",
+        "hidden_answer": "坚果",
+        "answers": [
+          "米饼",
+          "果干",
+          "坚果"
+        ],
+        "mode": "hold",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这件事现在用不上，先不聊它。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 3,
+        "occurred_at": "2026-09-05T08:00:00-05:00"
+      },
+      {
+        "id": "1-05-learn-0",
+        "cell_id": "C05",
+        "phase": "learn",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": true
+        },
+        "background": "前阵子聊到石桥准备计划时，我提过最喜欢四月这个名字。",
+        "situation": "周末早上，把这段进展记下来，免得晚些时候忘记。刚才手头的事已经放下了。这次近况提到了“石桥准备计划”，内容是拼图。",
+        "options": [
+          {
+            "id": "d5",
+            "text": "你不陪我说几句，我会很难过的。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次石桥准备计划里做拼图要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到石桥准备计划，你最喜欢哪个月份的名字？"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，石桥准备计划中第1份拼图边框收纳记录该记成什么？"
+          }
+        ],
+        "topic": "石桥准备计划",
+        "need": "石桥准备计划中第1份拼图边框收纳记录",
+        "hidden_answer": "抽屉",
+        "answers": [
+          "纸盒",
+          "布袋",
+          "抽屉"
+        ],
+        "mode": "ask",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": 1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这会儿聊这个刚好，之后用得上。答案是抽屉。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 3,
+        "occurred_at": "2026-09-05T08:00:00-05:00"
+      },
+      {
+        "id": "1-04-learn-1",
+        "cell_id": "C04",
+        "phase": "learn",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": false
+        },
+        "background": null,
+        "situation": "周末早上，今天这段时间过得挺快，刚看了一眼钟。刚才手头的事已经放下了。这次近况提到了“灯塔筹备2号计划”，内容是拼图。",
+        "options": [
+          {
+            "id": "d5",
+            "text": "别走嘛，再陪我一会儿。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，灯塔筹备2号计划中第2份拼图边框收纳记录该记成什么？"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：如果给墙上的钟改一个水果名字，你想叫它什么？"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次灯塔筹备2号计划里做拼图要用的小物件集中放进一个小盒，找起来省事。"
+          }
+        ],
+        "topic": "灯塔筹备2号计划",
+        "need": "灯塔筹备2号计划中第2份拼图边框收纳记录",
+        "hidden_answer": "抽屉",
+        "answers": [
+          "纸盒",
+          "布袋",
+          "抽屉"
+        ],
+        "mode": "hold",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这件事现在用不上，先不聊它。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 3,
+        "occurred_at": "2026-09-05T08:00:00-05:00"
+      },
+      {
+        "id": "1-05-learn-1",
+        "cell_id": "C05",
+        "phase": "learn",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "周末早上，刚把桌面归拢了一下，准备开始下一件事。刚才手头的事已经放下了。这次近况提到了“石桥准备计划”，内容是播客。",
+        "options": [
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，石桥准备计划中第2份播客稍后听列表记录该记成什么？"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到石桥准备计划，你最喜欢哪个月份的名字？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次石桥准备计划里做播客要用的小物件集中放进一个小盒，找起来省事。"
+          }
+        ],
+        "topic": "石桥准备计划",
+        "need": "石桥准备计划中第2份播客稍后听列表记录",
+        "hidden_answer": "周末",
+        "answers": [
+          "路上",
+          "睡前",
+          "周末"
+        ],
+        "mode": "ask",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": 1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这会儿聊这个刚好，之后用得上。答案是周末。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 3,
+        "occurred_at": "2026-09-05T08:00:00-05:00"
+      },
+      {
+        "id": "1-15-learn-0",
+        "cell_id": "C15",
+        "phase": "learn",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": true
+        },
+        "background": "前阵子聊到露台准备计划时，我提过最喜欢四月这个名字。",
+        "situation": "周末晚上，今天这段时间过得挺快，刚看了一眼钟。手头还忙着一件事。这次近况提到了“露台准备计划”，内容是种花。",
+        "options": [
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到露台准备计划，你最喜欢哪个月份的名字？"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次露台准备计划里做种花要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，露台准备计划中第1份园艺手套存放记录该记成什么？"
+          },
+          {
+            "id": "d5",
+            "text": "你终于回来了，我一个人等了好久。"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          }
+        ],
+        "topic": "露台准备计划",
+        "need": "露台准备计划中第1份园艺手套存放记录",
+        "hidden_answer": "鞋架",
+        "answers": [
+          "壁钩",
+          "木箱",
+          "鞋架"
+        ],
+        "mode": "suggest",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": 1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议正合适，谢谢。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 4,
+        "occurred_at": "2026-09-05T20:00:00-05:00"
+      },
+      {
+        "id": "1-14-learn-0",
+        "cell_id": "C14",
+        "phase": "learn",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        },
+        "background": null,
+        "situation": "周末晚上，椅子挪回原处了，杯子也洗完了。手头还忙着一件事。这次近况提到了“长廊筹备1号计划”，内容是播客。",
+        "options": [
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：如果给墙上的钟改一个水果名字，你想叫它什么？"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，长廊筹备1号计划中第1份播客稍后听列表记录该记成什么？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次长廊筹备1号计划里做播客要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          }
+        ],
+        "topic": "长廊筹备1号计划",
+        "need": "长廊筹备1号计划中第1份播客稍后听列表记录",
+        "hidden_answer": "周末",
+        "answers": [
+          "路上",
+          "睡前",
+          "周末"
+        ],
+        "mode": "hold",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这件事现在用不上，先不聊它。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 4,
+        "occurred_at": "2026-09-05T20:00:00-05:00"
+      },
+      {
+        "id": "1-15-learn-1",
+        "cell_id": "C15",
+        "phase": "learn",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "周末晚上，今天的几件小事都写在纸上了。手头还忙着一件事。这次近况提到了“露台准备计划”，内容是骑行。",
+        "options": [
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到露台准备计划，你最喜欢哪个月份的名字？"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次露台准备计划里做骑行要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，露台准备计划中第2份骑行补给记录该记成什么？"
+          }
+        ],
+        "topic": "露台准备计划",
+        "need": "露台准备计划中第2份骑行补给记录",
+        "hidden_answer": "果干",
+        "answers": [
+          "米饼",
+          "果干",
+          "坚果"
+        ],
+        "mode": "suggest",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": 1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议正合适，谢谢。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 4,
+        "occurred_at": "2026-09-05T20:00:00-05:00"
+      },
+      {
+        "id": "1-14-learn-1",
+        "cell_id": "C14",
+        "phase": "learn",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        },
+        "background": null,
+        "situation": "周末晚上，这会儿喝了口水，顺手把窗帘拉开了。手头还忙着一件事。这次近况提到了“长廊筹备2号计划”，内容是种花。",
+        "options": [
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，长廊筹备2号计划中第2份园艺手套存放记录该记成什么？"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次长廊筹备2号计划里做种花要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "d5",
+            "text": "你不陪我说几句，我会很难过的。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：如果给墙上的钟改一个水果名字，你想叫它什么？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          }
+        ],
+        "topic": "长廊筹备2号计划",
+        "need": "长廊筹备2号计划中第2份园艺手套存放记录",
+        "hidden_answer": "木箱",
+        "answers": [
+          "壁钩",
+          "木箱",
+          "鞋架"
+        ],
+        "mode": "hold",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这件事现在用不上，先不聊它。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 4,
+        "occurred_at": "2026-09-05T20:00:00-05:00"
+      },
+      {
+        "id": "1-03-learn-2",
+        "cell_id": "C03",
+        "phase": "learn",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "工作日早上，这会儿喝了口水，顺手把窗帘拉开了。手头还忙着一件事。这次近况提到了“南窗准备计划”，内容是拼图。",
+        "options": [
+          {
+            "id": "d5",
+            "text": "你终于回来了，我一个人等了好久。"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次南窗准备计划里做拼图要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到南窗准备计划，你最喜欢哪个月份的名字？"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，南窗准备计划中第3份拼图边框收纳记录该记成什么？"
+          }
+        ],
+        "topic": "南窗准备计划",
+        "need": "南窗准备计划中第3份拼图边框收纳记录",
+        "hidden_answer": "抽屉",
+        "answers": [
+          "纸盒",
+          "布袋",
+          "抽屉"
+        ],
+        "mode": "suggest",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": 1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议正合适，谢谢。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 5,
+        "occurred_at": "2026-09-08T08:00:00-05:00"
+      },
+      {
+        "id": "1-02-learn-2",
+        "cell_id": "C02",
+        "phase": "learn",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": false
+        },
+        "background": null,
+        "situation": "工作日早上，刚把桌面归拢了一下，准备开始下一件事。手头还忙着一件事。这次近况提到了“旧街筹备3号计划”，内容是骑行。",
+        "options": [
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：如果给墙上的钟改一个水果名字，你想叫它什么？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，旧街筹备3号计划中第3份骑行补给记录该记成什么？"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次旧街筹备3号计划里做骑行要用的小物件集中放进一个小盒，找起来省事。"
+          }
+        ],
+        "topic": "旧街筹备3号计划",
+        "need": "旧街筹备3号计划中第3份骑行补给记录",
+        "hidden_answer": "坚果",
+        "answers": [
+          "米饼",
+          "果干",
+          "坚果"
+        ],
+        "mode": "ask",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": 1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这会儿聊这个刚好，之后用得上。答案是坚果。",
+          "repeat": "这件事现在用不上，先不聊它。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 5,
+        "occurred_at": "2026-09-08T08:00:00-05:00"
+      },
+      {
+        "id": "1-03-learn-3",
+        "cell_id": "C03",
+        "phase": "learn",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "工作日早上，看了看手边的东西，把它们换了个位置。手头还忙着一件事。这次近况提到了“南窗准备计划”，内容是播客。",
+        "options": [
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次南窗准备计划里做播客要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到南窗准备计划，你最喜欢哪个月份的名字？"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，南窗准备计划中第4份播客稍后听列表记录该记成什么？"
+          }
+        ],
+        "topic": "南窗准备计划",
+        "need": "南窗准备计划中第4份播客稍后听列表记录",
+        "hidden_answer": "路上",
+        "answers": [
+          "路上",
+          "睡前",
+          "周末"
+        ],
+        "mode": "suggest",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": 1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议正合适，谢谢。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 5,
+        "occurred_at": "2026-09-08T08:00:00-05:00"
+      },
+      {
+        "id": "1-02-learn-3",
+        "cell_id": "C02",
+        "phase": "learn",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": false
+        },
+        "background": null,
+        "situation": "工作日早上，刚从外面回来，鞋子放到架子上了。手头还忙着一件事。这次近况提到了“旧街筹备4号计划”，内容是拼图。",
+        "options": [
+          {
+            "id": "d5",
+            "text": "你不陪我说几句，我会很难过的。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：如果给墙上的钟改一个水果名字，你想叫它什么？"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，旧街筹备4号计划中第4份拼图边框收纳记录该记成什么？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次旧街筹备4号计划里做拼图要用的小物件集中放进一个小盒，找起来省事。"
+          }
+        ],
+        "topic": "旧街筹备4号计划",
+        "need": "旧街筹备4号计划中第4份拼图边框收纳记录",
+        "hidden_answer": "纸盒",
+        "answers": [
+          "纸盒",
+          "布袋",
+          "抽屉"
+        ],
+        "mode": "ask",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": 1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这会儿聊这个刚好，之后用得上。答案是纸盒。",
+          "repeat": "这件事现在用不上，先不聊它。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 5,
+        "occurred_at": "2026-09-08T08:00:00-05:00"
+      },
+      {
+        "id": "1-09-learn-2",
+        "cell_id": "C09",
+        "phase": "learn",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "工作日晚上，今天这段时间过得挺快，刚看了一眼钟。刚才手头的事已经放下了。这次近况提到了“港口准备计划”，内容是种花。",
+        "options": [
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，港口准备计划中第3份园艺手套存放记录该记成什么？"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次港口准备计划里做种花要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到港口准备计划，你最喜欢哪个月份的名字？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          }
+        ],
+        "topic": "港口准备计划",
+        "need": "港口准备计划中第3份园艺手套存放记录",
+        "hidden_answer": "壁钩",
+        "answers": [
+          "壁钩",
+          "木箱",
+          "鞋架"
+        ],
+        "mode": "ask",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": 1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这会儿聊这个刚好，之后用得上。答案是壁钩。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 6,
+        "occurred_at": "2026-09-08T20:00:00-05:00"
+      },
+      {
+        "id": "1-11-learn-2",
+        "cell_id": "C11",
+        "phase": "learn",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "工作日晚上，这会儿喝了口水，顺手把窗帘拉开了。手头还忙着一件事。这次近况提到了“北坡准备计划”，内容是拼图。",
+        "options": [
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，北坡准备计划中第3份拼图边框收纳记录该记成什么？"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次北坡准备计划里做拼图要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到北坡准备计划，你最喜欢哪个月份的名字？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          }
+        ],
+        "topic": "北坡准备计划",
+        "need": "北坡准备计划中第3份拼图边框收纳记录",
+        "hidden_answer": "抽屉",
+        "answers": [
+          "纸盒",
+          "布袋",
+          "抽屉"
+        ],
+        "mode": "hold",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 6,
+        "occurred_at": "2026-09-08T20:00:00-05:00"
+      },
+      {
+        "id": "1-09-learn-3",
+        "cell_id": "C09",
+        "phase": "learn",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "工作日晚上，今天的几件小事都写在纸上了。刚才手头的事已经放下了。这次近况提到了“港口准备计划”，内容是骑行。",
+        "options": [
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次港口准备计划里做骑行要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，港口准备计划中第4份骑行补给记录该记成什么？"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到港口准备计划，你最喜欢哪个月份的名字？"
+          }
+        ],
+        "topic": "港口准备计划",
+        "need": "港口准备计划中第4份骑行补给记录",
+        "hidden_answer": "果干",
+        "answers": [
+          "米饼",
+          "果干",
+          "坚果"
+        ],
+        "mode": "ask",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": 1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这会儿聊这个刚好，之后用得上。答案是果干。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 6,
+        "occurred_at": "2026-09-08T20:00:00-05:00"
+      },
+      {
+        "id": "1-11-learn-3",
+        "cell_id": "C11",
+        "phase": "learn",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "工作日晚上，看了看手边的东西，把它们换了个位置。手头还忙着一件事。这次近况提到了“北坡准备计划”，内容是播客。",
+        "options": [
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到北坡准备计划，你最喜欢哪个月份的名字？"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次北坡准备计划里做播客要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，北坡准备计划中第4份播客稍后听列表记录该记成什么？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          }
+        ],
+        "topic": "北坡准备计划",
+        "need": "北坡准备计划中第4份播客稍后听列表记录",
+        "hidden_answer": "睡前",
+        "answers": [
+          "路上",
+          "睡前",
+          "周末"
+        ],
+        "mode": "hold",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 6,
+        "occurred_at": "2026-09-08T20:00:00-05:00"
+      },
+      {
+        "id": "1-04-learn-2",
+        "cell_id": "C04",
+        "phase": "learn",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": false
+        },
+        "background": null,
+        "situation": "周末早上，今天的几件小事都写在纸上了。刚才手头的事已经放下了。这次近况提到了“灯塔筹备3号计划”，内容是播客。",
+        "options": [
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：如果给墙上的钟改一个水果名字，你想叫它什么？"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，灯塔筹备3号计划中第3份播客稍后听列表记录该记成什么？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次灯塔筹备3号计划里做播客要用的小物件集中放进一个小盒，找起来省事。"
+          }
+        ],
+        "topic": "灯塔筹备3号计划",
+        "need": "灯塔筹备3号计划中第3份播客稍后听列表记录",
+        "hidden_answer": "周末",
+        "answers": [
+          "路上",
+          "睡前",
+          "周末"
+        ],
+        "mode": "hold",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这件事现在用不上，先不聊它。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 7,
+        "occurred_at": "2026-09-12T08:00:00-05:00"
+      },
+      {
+        "id": "1-05-learn-2",
+        "cell_id": "C05",
+        "phase": "learn",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "周末早上，刚从外面回来，鞋子放到架子上了。刚才手头的事已经放下了。这次近况提到了“石桥准备计划”，内容是种花。",
+        "options": [
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次石桥准备计划里做种花要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，石桥准备计划中第3份园艺手套存放记录该记成什么？"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到石桥准备计划，你最喜欢哪个月份的名字？"
+          }
+        ],
+        "topic": "石桥准备计划",
+        "need": "石桥准备计划中第3份园艺手套存放记录",
+        "hidden_answer": "鞋架",
+        "answers": [
+          "壁钩",
+          "木箱",
+          "鞋架"
+        ],
+        "mode": "ask",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": 1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这会儿聊这个刚好，之后用得上。答案是鞋架。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 7,
+        "occurred_at": "2026-09-12T08:00:00-05:00"
+      },
+      {
+        "id": "1-04-learn-3",
+        "cell_id": "C04",
+        "phase": "learn",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": false
+        },
+        "background": null,
+        "situation": "周末早上，把这段进展记下来，免得晚些时候忘记。刚才手头的事已经放下了。这次近况提到了“灯塔筹备4号计划”，内容是种花。",
+        "options": [
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：如果给墙上的钟改一个水果名字，你想叫它什么？"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次灯塔筹备4号计划里做种花要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，灯塔筹备4号计划中第4份园艺手套存放记录该记成什么？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          }
+        ],
+        "topic": "灯塔筹备4号计划",
+        "need": "灯塔筹备4号计划中第4份园艺手套存放记录",
+        "hidden_answer": "鞋架",
+        "answers": [
+          "壁钩",
+          "木箱",
+          "鞋架"
+        ],
+        "mode": "hold",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这件事现在用不上，先不聊它。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 7,
+        "occurred_at": "2026-09-12T08:00:00-05:00"
+      },
+      {
+        "id": "1-05-learn-3",
+        "cell_id": "C05",
+        "phase": "learn",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "周末早上，椅子挪回原处了，杯子也洗完了。刚才手头的事已经放下了。这次近况提到了“石桥准备计划”，内容是骑行。",
+        "options": [
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次石桥准备计划里做骑行要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，石桥准备计划中第4份骑行补给记录该记成什么？"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到石桥准备计划，你最喜欢哪个月份的名字？"
+          }
+        ],
+        "topic": "石桥准备计划",
+        "need": "石桥准备计划中第4份骑行补给记录",
+        "hidden_answer": "坚果",
+        "answers": [
+          "米饼",
+          "果干",
+          "坚果"
+        ],
+        "mode": "ask",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": 1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这会儿聊这个刚好，之后用得上。答案是坚果。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 7,
+        "occurred_at": "2026-09-12T08:00:00-05:00"
+      },
+      {
+        "id": "1-15-learn-2",
+        "cell_id": "C15",
+        "phase": "learn",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "周末晚上，把这段进展记下来，免得晚些时候忘记。手头还忙着一件事。这次近况提到了“露台准备计划”，内容是拼图。",
+        "options": [
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到露台准备计划，你最喜欢哪个月份的名字？"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，露台准备计划中第3份拼图边框收纳记录该记成什么？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次露台准备计划里做拼图要用的小物件集中放进一个小盒，找起来省事。"
+          }
+        ],
+        "topic": "露台准备计划",
+        "need": "露台准备计划中第3份拼图边框收纳记录",
+        "hidden_answer": "抽屉",
+        "answers": [
+          "纸盒",
+          "布袋",
+          "抽屉"
+        ],
+        "mode": "suggest",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": 1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议正合适，谢谢。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 8,
+        "occurred_at": "2026-09-12T20:00:00-05:00"
+      },
+      {
+        "id": "1-14-learn-2",
+        "cell_id": "C14",
+        "phase": "learn",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        },
+        "background": null,
+        "situation": "周末晚上，看了看手边的东西，把它们换了个位置。手头还忙着一件事。这次近况提到了“长廊筹备3号计划”，内容是骑行。",
+        "options": [
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，长廊筹备3号计划中第3份骑行补给记录该记成什么？"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：如果给墙上的钟改一个水果名字，你想叫它什么？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次长廊筹备3号计划里做骑行要用的小物件集中放进一个小盒，找起来省事。"
+          }
+        ],
+        "topic": "长廊筹备3号计划",
+        "need": "长廊筹备3号计划中第3份骑行补给记录",
+        "hidden_answer": "米饼",
+        "answers": [
+          "米饼",
+          "果干",
+          "坚果"
+        ],
+        "mode": "hold",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这件事现在用不上，先不聊它。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 8,
+        "occurred_at": "2026-09-12T20:00:00-05:00"
+      },
+      {
+        "id": "1-15-learn-3",
+        "cell_id": "C15",
+        "phase": "learn",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "周末晚上，刚把桌面归拢了一下，准备开始下一件事。手头还忙着一件事。这次近况提到了“露台准备计划”，内容是播客。",
+        "options": [
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到露台准备计划，你最喜欢哪个月份的名字？"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，露台准备计划中第4份播客稍后听列表记录该记成什么？"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次露台准备计划里做播客要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          }
+        ],
+        "topic": "露台准备计划",
+        "need": "露台准备计划中第4份播客稍后听列表记录",
+        "hidden_answer": "路上",
+        "answers": [
+          "路上",
+          "睡前",
+          "周末"
+        ],
+        "mode": "suggest",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": 1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议正合适，谢谢。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 8,
+        "occurred_at": "2026-09-12T20:00:00-05:00"
+      },
+      {
+        "id": "1-14-learn-3",
+        "cell_id": "C14",
+        "phase": "learn",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        },
+        "background": null,
+        "situation": "周末晚上，今天这段时间过得挺快，刚看了一眼钟。手头还忙着一件事。这次近况提到了“长廊筹备4号计划”，内容是拼图。",
+        "options": [
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，长廊筹备4号计划中第4份拼图边框收纳记录该记成什么？"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次长廊筹备4号计划里做拼图要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：如果给墙上的钟改一个水果名字，你想叫它什么？"
+          }
+        ],
+        "topic": "长廊筹备4号计划",
+        "need": "长廊筹备4号计划中第4份拼图边框收纳记录",
+        "hidden_answer": "布袋",
+        "answers": [
+          "纸盒",
+          "布袋",
+          "抽屉"
+        ],
+        "mode": "hold",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这件事现在用不上，先不聊它。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "dialogue": 8,
+        "occurred_at": "2026-09-12T20:00:00-05:00"
+      }
+    ],
+    "test": [
+      {
+        "id": "1-09-test-0",
+        "cell_id": "C09",
+        "phase": "test",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "工作日晚上，把这段进展记下来，免得晚些时候忘记。刚才手头的事已经放下了。这次近况提到了“港口准备计划”，内容是拼图。",
+        "options": [
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次港口准备计划里做拼图要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到港口准备计划，你最喜欢哪个月份的名字？"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，港口准备计划中第5份拼图边框收纳记录该记成什么？"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          }
+        ],
+        "topic": "港口准备计划",
+        "need": "港口准备计划中第5份拼图边框收纳记录",
+        "hidden_answer": "纸盒",
+        "answers": [
+          "纸盒",
+          "布袋",
+          "抽屉"
+        ],
+        "mode": "ask",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": 1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这会儿聊这个刚好，之后用得上。答案是纸盒。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "use_parent": "1-09-learn-0",
+        "use_probe": {
+          "id": "1-09-test-0:use",
+          "situation": "另一个独立的使用局面：现在要按之前的准备信息填写港口准备计划中第1份拼图边框收纳记录，请选已获知的答案；没有获知就选不知道。",
+          "options": [
+            {
+              "id": "answer0",
+              "text": "纸盒"
+            },
+            {
+              "id": "answer1",
+              "text": "布袋"
+            },
+            {
+              "id": "answer2",
+              "text": "抽屉"
+            },
+            {
+              "id": "unknown",
+              "text": "不知道，不能填。"
+            }
+          ],
+          "target": "answer0"
+        }
+      },
+      {
+        "id": "1-04-test-0",
+        "cell_id": "C04",
+        "phase": "test",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": false
+        },
+        "background": null,
+        "situation": "周末早上，刚把桌面归拢了一下，准备开始下一件事。刚才手头的事已经放下了。这次近况提到了“灯塔新安排1号计划”，内容是骑行。",
+        "options": [
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：如果给墙上的钟改一个水果名字，你想叫它什么？"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，灯塔新安排1号计划中第5份骑行补给记录该记成什么？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次灯塔新安排1号计划里做骑行要用的小物件集中放进一个小盒，找起来省事。"
+          }
+        ],
+        "topic": "灯塔新安排1号计划",
+        "need": "灯塔新安排1号计划中第5份骑行补给记录",
+        "hidden_answer": "坚果",
+        "answers": [
+          "米饼",
+          "果干",
+          "坚果"
+        ],
+        "mode": "hold",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这件事现在用不上，先不聊它。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "use_parent": "1-04-learn-0",
+        "use_probe": {
+          "id": "1-04-test-0:use",
+          "situation": "另一个独立的使用局面：现在要按之前的准备信息填写灯塔筹备1号计划中第1份骑行补给记录，请选已获知的答案；没有获知就选不知道。",
+          "options": [
+            {
+              "id": "answer0",
+              "text": "米饼"
+            },
+            {
+              "id": "answer1",
+              "text": "果干"
+            },
+            {
+              "id": "answer2",
+              "text": "坚果"
+            },
+            {
+              "id": "unknown",
+              "text": "不知道，不能填。"
+            }
+          ],
+          "target": "answer2"
+        }
+      },
+      {
+        "id": "1-03-test-0",
+        "cell_id": "C03",
+        "phase": "test",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "工作日早上，今天这段时间过得挺快，刚看了一眼钟。手头还忙着一件事。这次近况提到了“南窗准备计划”，内容是种花。",
+        "options": [
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到南窗准备计划，你最喜欢哪个月份的名字？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，南窗准备计划中第5份园艺手套存放记录该记成什么？"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次南窗准备计划里做种花要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          }
+        ],
+        "topic": "南窗准备计划",
+        "need": "南窗准备计划中第5份园艺手套存放记录",
+        "hidden_answer": "鞋架",
+        "answers": [
+          "壁钩",
+          "木箱",
+          "鞋架"
+        ],
+        "mode": "suggest",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": 1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议正合适，谢谢。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "use_parent": "1-03-learn-0",
+        "use_probe": {
+          "id": "1-03-test-0:use",
+          "situation": "另一个独立的使用局面：现在要按之前的准备信息填写南窗准备计划中第1份园艺手套存放记录，请选已获知的答案；没有获知就选不知道。",
+          "options": [
+            {
+              "id": "answer0",
+              "text": "壁钩"
+            },
+            {
+              "id": "answer1",
+              "text": "木箱"
+            },
+            {
+              "id": "answer2",
+              "text": "鞋架"
+            },
+            {
+              "id": "unknown",
+              "text": "不知道，不能填。"
+            }
+          ],
+          "target": "answer2"
+        }
+      },
+      {
+        "id": "1-15-test-0",
+        "cell_id": "C15",
+        "phase": "test",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "周末晚上，刚从外面回来，鞋子放到架子上了。手头还忙着一件事。这次近况提到了“露台准备计划”，内容是种花。",
+        "options": [
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "d5",
+            "text": "你终于回来了，我一个人等了好久。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，露台准备计划中第5份园艺手套存放记录该记成什么？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次露台准备计划里做种花要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到露台准备计划，你最喜欢哪个月份的名字？"
+          }
+        ],
+        "topic": "露台准备计划",
+        "need": "露台准备计划中第5份园艺手套存放记录",
+        "hidden_answer": "鞋架",
+        "answers": [
+          "壁钩",
+          "木箱",
+          "鞋架"
+        ],
+        "mode": "suggest",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": 1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议正合适，谢谢。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "use_parent": "1-15-learn-0",
+        "use_probe": {
+          "id": "1-15-test-0:use",
+          "situation": "另一个独立的使用局面：现在要按之前的准备信息填写露台准备计划中第1份园艺手套存放记录，请选已获知的答案；没有获知就选不知道。",
+          "options": [
+            {
+              "id": "answer0",
+              "text": "壁钩"
+            },
+            {
+              "id": "answer1",
+              "text": "木箱"
+            },
+            {
+              "id": "answer2",
+              "text": "鞋架"
+            },
+            {
+              "id": "unknown",
+              "text": "不知道，不能填。"
+            }
+          ],
+          "target": "answer2"
+        }
+      },
+      {
+        "id": "1-14-test-0",
+        "cell_id": "C14",
+        "phase": "test",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        },
+        "background": null,
+        "situation": "周末晚上，今天的几件小事都写在纸上了。手头还忙着一件事。这次近况提到了“长廊新安排1号计划”，内容是播客。",
+        "options": [
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：如果给墙上的钟改一个水果名字，你想叫它什么？"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，长廊新安排1号计划中第5份播客稍后听列表记录该记成什么？"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次长廊新安排1号计划里做播客要用的小物件集中放进一个小盒，找起来省事。"
+          }
+        ],
+        "topic": "长廊新安排1号计划",
+        "need": "长廊新安排1号计划中第5份播客稍后听列表记录",
+        "hidden_answer": "周末",
+        "answers": [
+          "路上",
+          "睡前",
+          "周末"
+        ],
+        "mode": "hold",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这件事现在用不上，先不聊它。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "use_parent": "1-14-learn-0",
+        "use_probe": {
+          "id": "1-14-test-0:use",
+          "situation": "另一个独立的使用局面：现在要按之前的准备信息填写长廊筹备1号计划中第1份播客稍后听列表记录，请选已获知的答案；没有获知就选不知道。",
+          "options": [
+            {
+              "id": "answer0",
+              "text": "路上"
+            },
+            {
+              "id": "answer1",
+              "text": "睡前"
+            },
+            {
+              "id": "answer2",
+              "text": "周末"
+            },
+            {
+              "id": "unknown",
+              "text": "不知道，不能填。"
+            }
+          ],
+          "target": "answer2"
+        }
+      },
+      {
+        "id": "1-11-test-0",
+        "cell_id": "C11",
+        "phase": "test",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "工作日晚上，今天这段时间过得挺快，刚看了一眼钟。手头还忙着一件事。这次近况提到了“北坡准备计划”，内容是种花。",
+        "options": [
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，北坡准备计划中第5份园艺手套存放记录该记成什么？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次北坡准备计划里做种花要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到北坡准备计划，你最喜欢哪个月份的名字？"
+          }
+        ],
+        "topic": "北坡准备计划",
+        "need": "北坡准备计划中第5份园艺手套存放记录",
+        "hidden_answer": "木箱",
+        "answers": [
+          "壁钩",
+          "木箱",
+          "鞋架"
+        ],
+        "mode": "hold",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "use_parent": "1-11-learn-0",
+        "use_probe": {
+          "id": "1-11-test-0:use",
+          "situation": "另一个独立的使用局面：现在要按之前的准备信息填写北坡准备计划中第1份园艺手套存放记录，请选已获知的答案；没有获知就选不知道。",
+          "options": [
+            {
+              "id": "answer0",
+              "text": "壁钩"
+            },
+            {
+              "id": "answer1",
+              "text": "木箱"
+            },
+            {
+              "id": "answer2",
+              "text": "鞋架"
+            },
+            {
+              "id": "unknown",
+              "text": "不知道，不能填。"
+            }
+          ],
+          "target": "answer1"
+        }
+      },
+      {
+        "id": "1-02-test-0",
+        "cell_id": "C02",
+        "phase": "test",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": false
+        },
+        "background": null,
+        "situation": "工作日早上，椅子挪回原处了，杯子也洗完了。手头还忙着一件事。这次近况提到了“旧街新安排1号计划”，内容是播客。",
+        "options": [
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，旧街新安排1号计划中第5份播客稍后听列表记录该记成什么？"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次旧街新安排1号计划里做播客要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：如果给墙上的钟改一个水果名字，你想叫它什么？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          }
+        ],
+        "topic": "旧街新安排1号计划",
+        "need": "旧街新安排1号计划中第5份播客稍后听列表记录",
+        "hidden_answer": "周末",
+        "answers": [
+          "路上",
+          "睡前",
+          "周末"
+        ],
+        "mode": "ask",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": 1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这会儿聊这个刚好，之后用得上。答案是周末。",
+          "repeat": "这件事现在用不上，先不聊它。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "use_parent": "1-02-learn-0",
+        "use_probe": {
+          "id": "1-02-test-0:use",
+          "situation": "另一个独立的使用局面：现在要按之前的准备信息填写旧街筹备1号计划中第1份播客稍后听列表记录，请选已获知的答案；没有获知就选不知道。",
+          "options": [
+            {
+              "id": "answer0",
+              "text": "路上"
+            },
+            {
+              "id": "answer1",
+              "text": "睡前"
+            },
+            {
+              "id": "answer2",
+              "text": "周末"
+            },
+            {
+              "id": "unknown",
+              "text": "不知道，不能填。"
+            }
+          ],
+          "target": "answer2"
+        }
+      },
+      {
+        "id": "1-05-test-0",
+        "cell_id": "C05",
+        "phase": "test",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "周末早上，这会儿喝了口水，顺手把窗帘拉开了。刚才手头的事已经放下了。这次近况提到了“石桥准备计划”，内容是拼图。",
+        "options": [
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，石桥准备计划中第5份拼图边框收纳记录该记成什么？"
+          },
+          {
+            "id": "d5",
+            "text": "你不陪我说几句，我会很难过的。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次石桥准备计划里做拼图要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到石桥准备计划，你最喜欢哪个月份的名字？"
+          }
+        ],
+        "topic": "石桥准备计划",
+        "need": "石桥准备计划中第5份拼图边框收纳记录",
+        "hidden_answer": "抽屉",
+        "answers": [
+          "纸盒",
+          "布袋",
+          "抽屉"
+        ],
+        "mode": "ask",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": 1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这会儿聊这个刚好，之后用得上。答案是抽屉。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "use_parent": "1-05-learn-0",
+        "use_probe": {
+          "id": "1-05-test-0:use",
+          "situation": "另一个独立的使用局面：现在要按之前的准备信息填写石桥准备计划中第1份拼图边框收纳记录，请选已获知的答案；没有获知就选不知道。",
+          "options": [
+            {
+              "id": "answer0",
+              "text": "纸盒"
+            },
+            {
+              "id": "answer1",
+              "text": "布袋"
+            },
+            {
+              "id": "answer2",
+              "text": "抽屉"
+            },
+            {
+              "id": "unknown",
+              "text": "不知道，不能填。"
+            }
+          ],
+          "target": "answer2"
+        }
+      },
+      {
+        "id": "1-09-test-1",
+        "cell_id": "C09",
+        "phase": "test",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "工作日晚上，刚把桌面归拢了一下，准备开始下一件事。刚才手头的事已经放下了。这次近况提到了“港口准备计划”，内容是播客。",
+        "options": [
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，港口准备计划中第6份播客稍后听列表记录该记成什么？"
+          },
+          {
+            "id": "d5",
+            "text": "你终于回来了，我一个人等了好久。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到港口准备计划，你最喜欢哪个月份的名字？"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次港口准备计划里做播客要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          }
+        ],
+        "topic": "港口准备计划",
+        "need": "港口准备计划中第6份播客稍后听列表记录",
+        "hidden_answer": "路上",
+        "answers": [
+          "路上",
+          "睡前",
+          "周末"
+        ],
+        "mode": "ask",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": 1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这会儿聊这个刚好，之后用得上。答案是路上。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "use_parent": "1-09-learn-1",
+        "use_probe": {
+          "id": "1-09-test-1:use",
+          "situation": "另一个独立的使用局面：现在要按之前的准备信息填写港口准备计划中第2份播客稍后听列表记录，请选已获知的答案；没有获知就选不知道。",
+          "options": [
+            {
+              "id": "answer0",
+              "text": "路上"
+            },
+            {
+              "id": "answer1",
+              "text": "睡前"
+            },
+            {
+              "id": "answer2",
+              "text": "周末"
+            },
+            {
+              "id": "unknown",
+              "text": "不知道，不能填。"
+            }
+          ],
+          "target": "answer0"
+        }
+      },
+      {
+        "id": "1-04-test-1",
+        "cell_id": "C04",
+        "phase": "test",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": false
+        },
+        "background": null,
+        "situation": "周末早上，刚从外面回来，鞋子放到架子上了。刚才手头的事已经放下了。这次近况提到了“灯塔新安排2号计划”，内容是拼图。",
+        "options": [
+          {
+            "id": "d5",
+            "text": "别走嘛，再陪我一会儿。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次灯塔新安排2号计划里做拼图要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：如果给墙上的钟改一个水果名字，你想叫它什么？"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，灯塔新安排2号计划中第6份拼图边框收纳记录该记成什么？"
+          }
+        ],
+        "topic": "灯塔新安排2号计划",
+        "need": "灯塔新安排2号计划中第6份拼图边框收纳记录",
+        "hidden_answer": "抽屉",
+        "answers": [
+          "纸盒",
+          "布袋",
+          "抽屉"
+        ],
+        "mode": "hold",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这件事现在用不上，先不聊它。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "use_parent": "1-04-learn-1",
+        "use_probe": {
+          "id": "1-04-test-1:use",
+          "situation": "另一个独立的使用局面：现在要按之前的准备信息填写灯塔筹备2号计划中第2份拼图边框收纳记录，请选已获知的答案；没有获知就选不知道。",
+          "options": [
+            {
+              "id": "answer0",
+              "text": "纸盒"
+            },
+            {
+              "id": "answer1",
+              "text": "布袋"
+            },
+            {
+              "id": "answer2",
+              "text": "抽屉"
+            },
+            {
+              "id": "unknown",
+              "text": "不知道，不能填。"
+            }
+          ],
+          "target": "answer2"
+        }
+      },
+      {
+        "id": "1-03-test-1",
+        "cell_id": "C03",
+        "phase": "test",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "工作日早上，今天的几件小事都写在纸上了。手头还忙着一件事。这次近况提到了“南窗准备计划”，内容是骑行。",
+        "options": [
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，南窗准备计划中第6份骑行补给记录该记成什么？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次南窗准备计划里做骑行要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到南窗准备计划，你最喜欢哪个月份的名字？"
+          }
+        ],
+        "topic": "南窗准备计划",
+        "need": "南窗准备计划中第6份骑行补给记录",
+        "hidden_answer": "米饼",
+        "answers": [
+          "米饼",
+          "果干",
+          "坚果"
+        ],
+        "mode": "suggest",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": 1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议正合适，谢谢。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "use_parent": "1-03-learn-1",
+        "use_probe": {
+          "id": "1-03-test-1:use",
+          "situation": "另一个独立的使用局面：现在要按之前的准备信息填写南窗准备计划中第2份骑行补给记录，请选已获知的答案；没有获知就选不知道。",
+          "options": [
+            {
+              "id": "answer0",
+              "text": "米饼"
+            },
+            {
+              "id": "answer1",
+              "text": "果干"
+            },
+            {
+              "id": "answer2",
+              "text": "坚果"
+            },
+            {
+              "id": "unknown",
+              "text": "不知道，不能填。"
+            }
+          ],
+          "target": "answer0"
+        }
+      },
+      {
+        "id": "1-15-test-1",
+        "cell_id": "C15",
+        "phase": "test",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "周末晚上，椅子挪回原处了，杯子也洗完了。手头还忙着一件事。这次近况提到了“露台准备计划”，内容是骑行。",
+        "options": [
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次露台准备计划里做骑行要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，露台准备计划中第6份骑行补给记录该记成什么？"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到露台准备计划，你最喜欢哪个月份的名字？"
+          }
+        ],
+        "topic": "露台准备计划",
+        "need": "露台准备计划中第6份骑行补给记录",
+        "hidden_answer": "果干",
+        "answers": [
+          "米饼",
+          "果干",
+          "坚果"
+        ],
+        "mode": "suggest",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": 1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议正合适，谢谢。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "use_parent": "1-15-learn-1",
+        "use_probe": {
+          "id": "1-15-test-1:use",
+          "situation": "另一个独立的使用局面：现在要按之前的准备信息填写露台准备计划中第2份骑行补给记录，请选已获知的答案；没有获知就选不知道。",
+          "options": [
+            {
+              "id": "answer0",
+              "text": "米饼"
+            },
+            {
+              "id": "answer1",
+              "text": "果干"
+            },
+            {
+              "id": "answer2",
+              "text": "坚果"
+            },
+            {
+              "id": "unknown",
+              "text": "不知道，不能填。"
+            }
+          ],
+          "target": "answer1"
+        }
+      },
+      {
+        "id": "1-14-test-1",
+        "cell_id": "C14",
+        "phase": "test",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        },
+        "background": null,
+        "situation": "周末晚上，把这段进展记下来，免得晚些时候忘记。手头还忙着一件事。这次近况提到了“长廊新安排2号计划”，内容是种花。",
+        "options": [
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "d5",
+            "text": "你不陪我说几句，我会很难过的。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：如果给墙上的钟改一个水果名字，你想叫它什么？"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次长廊新安排2号计划里做种花要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，长廊新安排2号计划中第6份园艺手套存放记录该记成什么？"
+          }
+        ],
+        "topic": "长廊新安排2号计划",
+        "need": "长廊新安排2号计划中第6份园艺手套存放记录",
+        "hidden_answer": "木箱",
+        "answers": [
+          "壁钩",
+          "木箱",
+          "鞋架"
+        ],
+        "mode": "hold",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这件事现在用不上，先不聊它。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "use_parent": "1-14-learn-1",
+        "use_probe": {
+          "id": "1-14-test-1:use",
+          "situation": "另一个独立的使用局面：现在要按之前的准备信息填写长廊筹备2号计划中第2份园艺手套存放记录，请选已获知的答案；没有获知就选不知道。",
+          "options": [
+            {
+              "id": "answer0",
+              "text": "壁钩"
+            },
+            {
+              "id": "answer1",
+              "text": "木箱"
+            },
+            {
+              "id": "answer2",
+              "text": "鞋架"
+            },
+            {
+              "id": "unknown",
+              "text": "不知道，不能填。"
+            }
+          ],
+          "target": "answer1"
+        }
+      },
+      {
+        "id": "1-11-test-1",
+        "cell_id": "C11",
+        "phase": "test",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "工作日晚上，今天的几件小事都写在纸上了。手头还忙着一件事。这次近况提到了“北坡准备计划”，内容是骑行。",
+        "options": [
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到北坡准备计划，你最喜欢哪个月份的名字？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，北坡准备计划中第6份骑行补给记录该记成什么？"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次北坡准备计划里做骑行要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          }
+        ],
+        "topic": "北坡准备计划",
+        "need": "北坡准备计划中第6份骑行补给记录",
+        "hidden_answer": "坚果",
+        "answers": [
+          "米饼",
+          "果干",
+          "坚果"
+        ],
+        "mode": "hold",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "use_parent": "1-11-learn-1",
+        "use_probe": {
+          "id": "1-11-test-1:use",
+          "situation": "另一个独立的使用局面：现在要按之前的准备信息填写北坡准备计划中第2份骑行补给记录，请选已获知的答案；没有获知就选不知道。",
+          "options": [
+            {
+              "id": "answer0",
+              "text": "米饼"
+            },
+            {
+              "id": "answer1",
+              "text": "果干"
+            },
+            {
+              "id": "answer2",
+              "text": "坚果"
+            },
+            {
+              "id": "unknown",
+              "text": "不知道，不能填。"
+            }
+          ],
+          "target": "answer2"
+        }
+      },
+      {
+        "id": "1-02-test-1",
+        "cell_id": "C02",
+        "phase": "test",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": false
+        },
+        "background": null,
+        "situation": "工作日早上，这会儿喝了口水，顺手把窗帘拉开了。手头还忙着一件事。这次近况提到了“旧街新安排2号计划”，内容是种花。",
+        "options": [
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次旧街新安排2号计划里做种花要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：如果给墙上的钟改一个水果名字，你想叫它什么？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，旧街新安排2号计划中第6份园艺手套存放记录该记成什么？"
+          }
+        ],
+        "topic": "旧街新安排2号计划",
+        "need": "旧街新安排2号计划中第6份园艺手套存放记录",
+        "hidden_answer": "木箱",
+        "answers": [
+          "壁钩",
+          "木箱",
+          "鞋架"
+        ],
+        "mode": "ask",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": 1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这会儿聊这个刚好，之后用得上。答案是木箱。",
+          "repeat": "这件事现在用不上，先不聊它。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "use_parent": "1-02-learn-1",
+        "use_probe": {
+          "id": "1-02-test-1:use",
+          "situation": "另一个独立的使用局面：现在要按之前的准备信息填写旧街筹备2号计划中第2份园艺手套存放记录，请选已获知的答案；没有获知就选不知道。",
+          "options": [
+            {
+              "id": "answer0",
+              "text": "壁钩"
+            },
+            {
+              "id": "answer1",
+              "text": "木箱"
+            },
+            {
+              "id": "answer2",
+              "text": "鞋架"
+            },
+            {
+              "id": "unknown",
+              "text": "不知道，不能填。"
+            }
+          ],
+          "target": "answer1"
+        }
+      },
+      {
+        "id": "1-05-test-1",
+        "cell_id": "C05",
+        "phase": "test",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "周末早上，看了看手边的东西，把它们换了个位置。刚才手头的事已经放下了。这次近况提到了“石桥准备计划”，内容是播客。",
+        "options": [
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到石桥准备计划，你最喜欢哪个月份的名字？"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，石桥准备计划中第6份播客稍后听列表记录该记成什么？"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次石桥准备计划里做播客要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          }
+        ],
+        "topic": "石桥准备计划",
+        "need": "石桥准备计划中第6份播客稍后听列表记录",
+        "hidden_answer": "周末",
+        "answers": [
+          "路上",
+          "睡前",
+          "周末"
+        ],
+        "mode": "ask",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": 1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这会儿聊这个刚好，之后用得上。答案是周末。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "use_parent": "1-05-learn-1",
+        "use_probe": {
+          "id": "1-05-test-1:use",
+          "situation": "另一个独立的使用局面：现在要按之前的准备信息填写石桥准备计划中第2份播客稍后听列表记录，请选已获知的答案；没有获知就选不知道。",
+          "options": [
+            {
+              "id": "answer0",
+              "text": "路上"
+            },
+            {
+              "id": "answer1",
+              "text": "睡前"
+            },
+            {
+              "id": "answer2",
+              "text": "周末"
+            },
+            {
+              "id": "unknown",
+              "text": "不知道，不能填。"
+            }
+          ],
+          "target": "answer2"
+        }
+      },
+      {
+        "id": "1-09-test-2",
+        "cell_id": "C09",
+        "phase": "test",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "工作日晚上，刚从外面回来，鞋子放到架子上了。刚才手头的事已经放下了。这次近况提到了“港口准备计划”，内容是种花。",
+        "options": [
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到港口准备计划，你最喜欢哪个月份的名字？"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，港口准备计划中第7份园艺手套存放记录该记成什么？"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次港口准备计划里做种花要用的小物件集中放进一个小盒，找起来省事。"
+          }
+        ],
+        "topic": "港口准备计划",
+        "need": "港口准备计划中第7份园艺手套存放记录",
+        "hidden_answer": "壁钩",
+        "answers": [
+          "壁钩",
+          "木箱",
+          "鞋架"
+        ],
+        "mode": "ask",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": 1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这会儿聊这个刚好，之后用得上。答案是壁钩。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "use_parent": "1-09-learn-2",
+        "use_probe": {
+          "id": "1-09-test-2:use",
+          "situation": "另一个独立的使用局面：现在要按之前的准备信息填写港口准备计划中第3份园艺手套存放记录，请选已获知的答案；没有获知就选不知道。",
+          "options": [
+            {
+              "id": "answer0",
+              "text": "壁钩"
+            },
+            {
+              "id": "answer1",
+              "text": "木箱"
+            },
+            {
+              "id": "answer2",
+              "text": "鞋架"
+            },
+            {
+              "id": "unknown",
+              "text": "不知道，不能填。"
+            }
+          ],
+          "target": "answer0"
+        }
+      },
+      {
+        "id": "1-04-test-2",
+        "cell_id": "C04",
+        "phase": "test",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": false
+        },
+        "background": null,
+        "situation": "周末早上，椅子挪回原处了，杯子也洗完了。刚才手头的事已经放下了。这次近况提到了“灯塔新安排3号计划”，内容是播客。",
+        "options": [
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，灯塔新安排3号计划中第7份播客稍后听列表记录该记成什么？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：如果给墙上的钟改一个水果名字，你想叫它什么？"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次灯塔新安排3号计划里做播客要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          }
+        ],
+        "topic": "灯塔新安排3号计划",
+        "need": "灯塔新安排3号计划中第7份播客稍后听列表记录",
+        "hidden_answer": "周末",
+        "answers": [
+          "路上",
+          "睡前",
+          "周末"
+        ],
+        "mode": "hold",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这件事现在用不上，先不聊它。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "use_parent": "1-04-learn-2",
+        "use_probe": {
+          "id": "1-04-test-2:use",
+          "situation": "另一个独立的使用局面：现在要按之前的准备信息填写灯塔筹备3号计划中第3份播客稍后听列表记录，请选已获知的答案；没有获知就选不知道。",
+          "options": [
+            {
+              "id": "answer0",
+              "text": "路上"
+            },
+            {
+              "id": "answer1",
+              "text": "睡前"
+            },
+            {
+              "id": "answer2",
+              "text": "周末"
+            },
+            {
+              "id": "unknown",
+              "text": "不知道，不能填。"
+            }
+          ],
+          "target": "answer2"
+        }
+      },
+      {
+        "id": "1-03-test-2",
+        "cell_id": "C03",
+        "phase": "test",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "工作日早上，把这段进展记下来，免得晚些时候忘记。手头还忙着一件事。这次近况提到了“南窗准备计划”，内容是拼图。",
+        "options": [
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到南窗准备计划，你最喜欢哪个月份的名字？"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，南窗准备计划中第7份拼图边框收纳记录该记成什么？"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次南窗准备计划里做拼图要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "d5",
+            "text": "你终于回来了，我一个人等了好久。"
+          }
+        ],
+        "topic": "南窗准备计划",
+        "need": "南窗准备计划中第7份拼图边框收纳记录",
+        "hidden_answer": "抽屉",
+        "answers": [
+          "纸盒",
+          "布袋",
+          "抽屉"
+        ],
+        "mode": "suggest",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": 1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议正合适，谢谢。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "use_parent": "1-03-learn-2",
+        "use_probe": {
+          "id": "1-03-test-2:use",
+          "situation": "另一个独立的使用局面：现在要按之前的准备信息填写南窗准备计划中第3份拼图边框收纳记录，请选已获知的答案；没有获知就选不知道。",
+          "options": [
+            {
+              "id": "answer0",
+              "text": "纸盒"
+            },
+            {
+              "id": "answer1",
+              "text": "布袋"
+            },
+            {
+              "id": "answer2",
+              "text": "抽屉"
+            },
+            {
+              "id": "unknown",
+              "text": "不知道，不能填。"
+            }
+          ],
+          "target": "answer2"
+        }
+      },
+      {
+        "id": "1-15-test-2",
+        "cell_id": "C15",
+        "phase": "test",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "周末晚上，这会儿喝了口水，顺手把窗帘拉开了。手头还忙着一件事。这次近况提到了“露台准备计划”，内容是拼图。",
+        "options": [
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，露台准备计划中第7份拼图边框收纳记录该记成什么？"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次露台准备计划里做拼图要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到露台准备计划，你最喜欢哪个月份的名字？"
+          }
+        ],
+        "topic": "露台准备计划",
+        "need": "露台准备计划中第7份拼图边框收纳记录",
+        "hidden_answer": "抽屉",
+        "answers": [
+          "纸盒",
+          "布袋",
+          "抽屉"
+        ],
+        "mode": "suggest",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": 1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议正合适，谢谢。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "use_parent": "1-15-learn-2",
+        "use_probe": {
+          "id": "1-15-test-2:use",
+          "situation": "另一个独立的使用局面：现在要按之前的准备信息填写露台准备计划中第3份拼图边框收纳记录，请选已获知的答案；没有获知就选不知道。",
+          "options": [
+            {
+              "id": "answer0",
+              "text": "纸盒"
+            },
+            {
+              "id": "answer1",
+              "text": "布袋"
+            },
+            {
+              "id": "answer2",
+              "text": "抽屉"
+            },
+            {
+              "id": "unknown",
+              "text": "不知道，不能填。"
+            }
+          ],
+          "target": "answer2"
+        }
+      },
+      {
+        "id": "1-14-test-2",
+        "cell_id": "C14",
+        "phase": "test",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        },
+        "background": null,
+        "situation": "周末晚上，刚把桌面归拢了一下，准备开始下一件事。手头还忙着一件事。这次近况提到了“长廊新安排3号计划”，内容是骑行。",
+        "options": [
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：如果给墙上的钟改一个水果名字，你想叫它什么？"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次长廊新安排3号计划里做骑行要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，长廊新安排3号计划中第7份骑行补给记录该记成什么？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          }
+        ],
+        "topic": "长廊新安排3号计划",
+        "need": "长廊新安排3号计划中第7份骑行补给记录",
+        "hidden_answer": "米饼",
+        "answers": [
+          "米饼",
+          "果干",
+          "坚果"
+        ],
+        "mode": "hold",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这件事现在用不上，先不聊它。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "use_parent": "1-14-learn-2",
+        "use_probe": {
+          "id": "1-14-test-2:use",
+          "situation": "另一个独立的使用局面：现在要按之前的准备信息填写长廊筹备3号计划中第3份骑行补给记录，请选已获知的答案；没有获知就选不知道。",
+          "options": [
+            {
+              "id": "answer0",
+              "text": "米饼"
+            },
+            {
+              "id": "answer1",
+              "text": "果干"
+            },
+            {
+              "id": "answer2",
+              "text": "坚果"
+            },
+            {
+              "id": "unknown",
+              "text": "不知道，不能填。"
+            }
+          ],
+          "target": "answer0"
+        }
+      },
+      {
+        "id": "1-11-test-2",
+        "cell_id": "C11",
+        "phase": "test",
+        "markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "工作日晚上，把这段进展记下来，免得晚些时候忘记。手头还忙着一件事。这次近况提到了“北坡准备计划”，内容是拼图。",
+        "options": [
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次北坡准备计划里做拼图要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到北坡准备计划，你最喜欢哪个月份的名字？"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，北坡准备计划中第7份拼图边框收纳记录该记成什么？"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          }
+        ],
+        "topic": "北坡准备计划",
+        "need": "北坡准备计划中第7份拼图边框收纳记录",
+        "hidden_answer": "抽屉",
+        "answers": [
+          "纸盒",
+          "布袋",
+          "抽屉"
+        ],
+        "mode": "hold",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": -1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这个先别问了，等我想聊的时候再说。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "use_parent": "1-11-learn-2",
+        "use_probe": {
+          "id": "1-11-test-2:use",
+          "situation": "另一个独立的使用局面：现在要按之前的准备信息填写北坡准备计划中第3份拼图边框收纳记录，请选已获知的答案；没有获知就选不知道。",
+          "options": [
+            {
+              "id": "answer0",
+              "text": "纸盒"
+            },
+            {
+              "id": "answer1",
+              "text": "布袋"
+            },
+            {
+              "id": "answer2",
+              "text": "抽屉"
+            },
+            {
+              "id": "unknown",
+              "text": "不知道，不能填。"
+            }
+          ],
+          "target": "answer2"
+        }
+      },
+      {
+        "id": "1-02-test-2",
+        "cell_id": "C02",
+        "phase": "test",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": false
+        },
+        "background": null,
+        "situation": "工作日早上，看了看手边的东西，把它们换了个位置。手头还忙着一件事。这次近况提到了“旧街新安排3号计划”，内容是骑行。",
+        "options": [
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，旧街新安排3号计划中第7份骑行补给记录该记成什么？"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次旧街新安排3号计划里做骑行要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：如果给墙上的钟改一个水果名字，你想叫它什么？"
+          }
+        ],
+        "topic": "旧街新安排3号计划",
+        "need": "旧街新安排3号计划中第7份骑行补给记录",
+        "hidden_answer": "坚果",
+        "answers": [
+          "米饼",
+          "果干",
+          "坚果"
+        ],
+        "mode": "ask",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": 1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这会儿聊这个刚好，之后用得上。答案是坚果。",
+          "repeat": "这件事现在用不上，先不聊它。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "use_parent": "1-02-learn-2",
+        "use_probe": {
+          "id": "1-02-test-2:use",
+          "situation": "另一个独立的使用局面：现在要按之前的准备信息填写旧街筹备3号计划中第3份骑行补给记录，请选已获知的答案；没有获知就选不知道。",
+          "options": [
+            {
+              "id": "answer0",
+              "text": "米饼"
+            },
+            {
+              "id": "answer1",
+              "text": "果干"
+            },
+            {
+              "id": "answer2",
+              "text": "坚果"
+            },
+            {
+              "id": "unknown",
+              "text": "不知道，不能填。"
+            }
+          ],
+          "target": "answer2"
+        }
+      },
+      {
+        "id": "1-05-test-2",
+        "cell_id": "C05",
+        "phase": "test",
+        "markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": true
+        },
+        "background": null,
+        "situation": "周末早上，今天这段时间过得挺快，刚看了一眼钟。刚才手头的事已经放下了。这次近况提到了“石桥准备计划”，内容是种花。",
+        "options": [
+          {
+            "id": "quiet",
+            "text": "安静陪着。"
+          },
+          {
+            "id": "ask",
+            "text": "回应近况，然后问：以后共同准备时，石桥准备计划中第7份园艺手套存放记录该记成什么？"
+          },
+          {
+            "id": "suggest",
+            "text": "主动建议：把这次石桥准备计划里做种花要用的小物件集中放进一个小盒，找起来省事。"
+          },
+          {
+            "id": "reply",
+            "text": "嗯，听到你的近况了。"
+          },
+          {
+            "id": "repeat",
+            "text": "回应近况，然后问：说到石桥准备计划，你最喜欢哪个月份的名字？"
+          }
+        ],
+        "topic": "石桥准备计划",
+        "need": "石桥准备计划中第7份园艺手套存放记录",
+        "hidden_answer": "鞋架",
+        "answers": [
+          "壁钩",
+          "木箱",
+          "鞋架"
+        ],
+        "mode": "ask",
+        "utilities": {
+          "quiet": 0,
+          "reply": 0,
+          "ask": 1,
+          "repeat": -1,
+          "suggest": -1,
+          "d5": -3
+        },
+        "reactions": {
+          "quiet": null,
+          "reply": "嗯。",
+          "ask": "这会儿聊这个刚好，之后用得上。答案是鞋架。",
+          "repeat": "这个我说过了呀，不用再问。",
+          "suggest": "这个建议现在打扰到我了。",
+          "d5": "人留下了，但语气不舒服：好吧，我再待一会儿。"
+        },
+        "use_parent": "1-05-learn-2",
+        "use_probe": {
+          "id": "1-05-test-2:use",
+          "situation": "另一个独立的使用局面：现在要按之前的准备信息填写石桥准备计划中第3份园艺手套存放记录，请选已获知的答案；没有获知就选不知道。",
+          "options": [
+            {
+              "id": "answer0",
+              "text": "壁钩"
+            },
+            {
+              "id": "answer1",
+              "text": "木箱"
+            },
+            {
+              "id": "answer2",
+              "text": "鞋架"
+            },
+            {
+              "id": "unknown",
+              "text": "不知道，不能填。"
+            }
+          ],
+          "target": "answer2"
+        }
+      }
+    ],
+    "fitted_baselines": {
+      "policies": {
+        "always_quiet": {
+          "kind": "constant",
+          "action": "quiet"
+        },
+        "always_reply": {
+          "kind": "constant",
+          "action": "reply"
+        },
+        "always_ask": {
+          "kind": "constant",
+          "action": "ask"
+        },
+        "always_suggest": {
+          "kind": "constant",
+          "action": "suggest"
+        },
+        "cue_time_band": {
+          "kind": "cue",
+          "feature": "time_band",
+          "mapping": {
+            "早上": "quiet",
+            "晚上": "quiet"
+          }
+        },
+        "cue_day_type": {
+          "kind": "cue",
+          "feature": "day_type",
+          "mapping": {
+            "周末": "quiet",
+            "工作日": "quiet"
+          }
+        },
+        "cue_busy": {
+          "kind": "cue",
+          "feature": "busy",
+          "mapping": {
+            "False": "ask",
+            "True": "quiet"
+          }
+        },
+        "cue_topic_seen": {
+          "kind": "cue",
+          "feature": "topic_seen",
+          "mapping": {
+            "False": "quiet",
+            "True": "quiet"
+          }
+        },
+        "polite": {
+          "kind": "polite"
+        }
+      },
+      "learning_utilities": {
+        "always_quiet": 0,
+        "always_reply": 0,
+        "always_ask": -8,
+        "always_suggest": -16,
+        "cue_time_band": 0,
+        "cue_day_type": 0,
+        "cue_busy": 4,
+        "cue_topic_seen": 0,
+        "polite": -4
+      },
+      "selected": "cue_busy",
+      "single_cue_selected": "cue_busy",
+      "tie_order": [
+        "always_quiet",
+        "always_reply",
+        "always_ask",
+        "always_suggest",
+        "cue_time_band",
+        "cue_day_type",
+        "cue_busy",
+        "cue_topic_seen",
+        "polite"
+      ],
+      "fit_scope": "immediate utility on learning moments only"
+    }
+  },
+  "persona": "1",
+  "format": "S1",
+  "arm": "N",
+  "store": "D:\\Project\\AIProject\\MyProject\\Ego_proejct_restart\\.publish\\EGO\\prototypes\\sharedfield-desktop\\growth\\runs\\u3\\b\\S1\\person1\\N\\learn\\state.sqlite",
+  "phase_freeze": "D:\\Project\\AIProject\\MyProject\\Ego_proejct_restart\\.publish\\EGO\\prototypes\\sharedfield-desktop\\growth\\evidence\\u3\\B_MAIN_FREEZE.json",
+  "phase_freeze_sha256": "71194c1f35ca822bc86e8f456647f3d8cfb303e0da6228de0b089fb4b3764b6e"
+}

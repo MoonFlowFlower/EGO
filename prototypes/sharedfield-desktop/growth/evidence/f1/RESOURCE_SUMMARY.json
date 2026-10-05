@@ -1,0 +1,9 @@
+{
+  "at_utc": "2026-10-05T20:30:22.244256+00:00",
+  "request_attempts": 82,
+  "network_retries": 0,
+  "logged_model_call_failures": 0,
+  "median_latency_s": 1.4605000000010477,
+  "p95_latency_s": 2.2340000000112923,
+  "cost_usd_including_unknown": 0.04779207
+}

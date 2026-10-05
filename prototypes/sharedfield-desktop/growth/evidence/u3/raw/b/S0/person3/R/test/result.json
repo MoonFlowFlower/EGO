@@ -1,0 +1,14 @@
+{
+  "status": "stopped",
+  "pid": 41880,
+  "stop": "sleep length must be non-negative",
+  "file_sha256": {
+    "calls.jsonl": "fcd3f685a9b54af235564e22e828630bff0389b45dfb544fd51020039f71d144",
+    "claim.json": "59c8bea79bd6f04c6a574819d6c90a0b5ede71f2b9b2060361a0b1dbf52f4d4c",
+    "decisions.jsonl": "7eeb21cb52e87e4b9a9ec3fb0af32c053aba761777213ad9120b73c239c599e7",
+    "job.json": "c8871ae95471c54a4520a0979860d2fe9e2da2e1129a65f9c42c7fcf196bf34f",
+    "model.jsonl": "bee9daf3ed07a999ada25cb1c643733d030de778e6821f80942517d6c1041e39",
+    "routing.jsonl": "ca71e85c5ce14d9eb8bf0b8a10ab92630f6c21ef450cf45374861b3e7e6e1ff7",
+    "storage_hash.json": "c96e1faf701eee44af7fc18e10a4d61dab2d4b88739daf94335ed594cd8349ff"
+  }
+}

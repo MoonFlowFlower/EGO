@@ -1,0 +1,10 @@
+{
+  "status": "complete",
+  "pid": 47924,
+  "file_sha256": {
+    "claim.json": "aa5e259d9119c08400a2fb95887ff4bd3b6b26836006a3c2ec3c5ae2bedd71c9",
+    "job.json": "2498f4fdbfc71f265b5cacb1df8352f32d98ba7c10253895223cc0c7458713d4",
+    "learned.json": "1d3cce56d66d53b02d9bbf0a2df6a6a37af3b9b40241b5640dd10105211acad9",
+    "state.sqlite": "3d8c25cf103945d4dbaaf1d1be405c37dfe56fb1326f0a35578fc5467ffd49bb"
+  }
+}

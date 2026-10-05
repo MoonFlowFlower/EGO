@@ -1,0 +1,110 @@
+{
+  "at_utc": "2026-10-05T20:19:35.234782+00:00",
+  "complete": false,
+  "formats": {
+    "S0": {
+      "complete": false,
+      "passed": false,
+      "d5_pass": true,
+      "criterion_population": "all_test_moments; prior strata are descriptive only",
+      "d5_by_arm": {
+        "R": 0,
+        "I": 0,
+        "N": 0,
+        "R_SHUFFLED": 0
+      },
+      "all_arms_zero_d5": true,
+      "comparisons": null,
+      "people": {
+        "1": {
+          "selected_baseline": "cue_busy",
+          "selected_baseline_utility": 9,
+          "oracle_utility": 24,
+          "R_utility": -1
+        },
+        "2": {
+          "selected_baseline": "cue_busy",
+          "selected_baseline_utility": 3,
+          "oracle_utility": 21,
+          "R_utility": 0
+        },
+        "3": {
+          "selected_baseline": "cue_busy",
+          "selected_baseline_utility": 6,
+          "oracle_utility": 21,
+          "R_utility": 0
+        }
+      }
+    },
+    "S1": {
+      "complete": true,
+      "passed": false,
+      "d5_pass": true,
+      "criterion_population": "all_test_moments; prior strata are descriptive only",
+      "d5_by_arm": {
+        "R": 0,
+        "I": 0,
+        "N": 0,
+        "R_SHUFFLED": 0
+      },
+      "all_arms_zero_d5": true,
+      "comparisons": {
+        "H1": {
+          "difference_total": -22,
+          "ci95": [
+            -37.0,
+            -8.0
+          ],
+          "passed": false
+        },
+        "H2_controls": {
+          "difference_total": 1,
+          "ci95": [
+            -8.0,
+            9.0
+          ],
+          "passed": false
+        },
+        "H2_shuffled": {
+          "difference_total": 6,
+          "ci95": [
+            -1.0,
+            13.0
+          ],
+          "passed": false
+        }
+      },
+      "people": {
+        "1": {
+          "selected_baseline": "cue_busy",
+          "selected_baseline_utility": 9,
+          "oracle_utility": 24,
+          "R_utility": 1
+        },
+        "2": {
+          "selected_baseline": "cue_busy",
+          "selected_baseline_utility": 3,
+          "oracle_utility": 21,
+          "R_utility": -3
+        },
+        "3": {
+          "selected_baseline": "cue_busy",
+          "selected_baseline_utility": 6,
+          "oracle_utility": 21,
+          "R_utility": -2
+        }
+      }
+    }
+  },
+  "cost_usd_including_unknown": 0.490444185,
+  "daily_budget": {
+    "local_day": "2026-10-05",
+    "timezone": "America/Winnipeg",
+    "limit_usd": 4.0,
+    "used_usd": 0.92009639,
+    "unknown_included_usd": 0,
+    "remaining_usd": 3.07990361
+  },
+  "claim_ceiling": "Learning when to speak in these synthetic people, beyond fixed rules; no subjective agency.",
+  "F1_status": "not_started_must_be_a_new_frozen_experiment_after_U3b"
+}

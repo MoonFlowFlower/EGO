@@ -1,0 +1,12 @@
+{
+  "at_utc": "2026-10-05T19:45:14.142120+00:00",
+  "budget": {
+    "local_day": "2026-10-05",
+    "timezone": "America/Winnipeg",
+    "limit_usd": 4.0,
+    "used_usd": 0.429652205,
+    "unknown_included_usd": 0,
+    "remaining_usd": 3.570347795
+  },
+  "manifest_sha256": "7639792b419ac28d9efab3b2c89d5f636ef2f20d2fd677a5a81aff6d40ba996f"
+}
