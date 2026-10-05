@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "tests": 9,
+  "cloud_calls": 0,
+  "command": "python -m unittest u2.round2.test_screen u2.supplement_v2.test_supplement u2.test_client -v",
+  "covers": [
+    "sealed old pool reproduction",
+    "minimum counts and balanced deterministic draw",
+    "only 96 supplement requests",
+    "one-shot claim",
+    "retry stops and reasoning flags"
+  ]
+}
