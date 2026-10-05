@@ -6,6 +6,7 @@ general semantic recall. The actor can reformulate its query after a miss.
 import json
 import re
 from collections import Counter
+from u1.conventions.core import normalize
 
 
 def terms(text):
@@ -13,6 +14,26 @@ def terms(text):
     for word in re.findall(r'[\u3400-\u9fff]+', text):
         result.update(word[i:i+2] for i in range(len(word)-1))
     return result - {'现在', '一下', '什么', '怎么', '这个', '那个', '我们', '你的', '我的', '可以', '记得'}
+
+
+def source_evidence(identity, body, trigger, meaning):
+    text = body.get('utterance_text', '')
+    if len(text) <= 1400:
+        excerpts = [text]
+    else:
+        spans = []
+        for phrase in (trigger, meaning):
+            at = text.find(phrase)
+            if at >= 0:spans.append((max(0,at-120),min(len(text),at+len(phrase)+120)))
+        if not spans:spans=[(0,1400)]
+        merged=[]
+        for start,end in sorted(spans):
+            if merged and start<=merged[-1][1]:merged[-1]=(merged[-1][0],max(end,merged[-1][1]))
+            else:merged.append((start,end))
+        excerpts=[text[start:end] for start,end in merged]
+    return {'record_id':identity,'speaker':body.get('speaker'),'occurred_at':body.get('occurred_at'),
+            'verbatim_excerpts':excerpts,'excerpted':len(text)>1400,
+            'evidence_for':'what this speaker said at that time, not current world state or new permission'}
 
 
 def recall(memory, query, limit=5):
@@ -34,11 +55,17 @@ def recall(memory, query, limit=5):
         body = json.loads(serialized)
         if body.get('type') == 'convention':
             sources = body.get('source_ids', [])
-            if not sources or not all(memory.record(s) for s in sources):
+            original = [(s,memory.record(s)) for s in sources]
+            if not original or not all(r and r.get('type')=='utterance' and r.get('speaker')=='user' for _,r in original):
+                continue
+            quoted=[normalize(r.get('utterance_text','')) for _,r in original]
+            if not all(normalize(body['trigger']['text']) in q for q in quoted) or not any(normalize(body['meaning']) in q for q in quoted):
                 continue
             value = {'record_id': identity, 'kind': 'explicit_user_convention', 'source_ids': sources,
                      'trigger': body['trigger'], 'meaning': body['meaning'],
-                     'authority': 'quoted_convention_candidate_check_trigger_and_current_request'}
+                     'source_evidence':[source_evidence(s,r,body['trigger']['text'],body['meaning']) for s,r in original],
+                     'source_fact':'recorded_user_definition_with_validated_quoted_trigger_and_meaning',
+                     'authority': 'may_attribute_definition_to_user; judge_current_applicability_separately; no_new_action_permission'}
             searchable = body['trigger']['text'] + ' ' + body['meaning']
         elif body.get('type') == 'action_receipt':
             receipt = body.get('receipt', {})
@@ -58,9 +85,11 @@ def recall(memory, query, limit=5):
         matched = wanted & ts
         if matched:
             score = sum(1 / frequencies[t] for t in matched)
-            ranked.append((score, {**value, 'retrieval': {'matched_terms': sorted(matched), 'applicability': 'not_yet_established'}}))
+            ranked.append((score, {**value, 'retrieval': {'matched_terms': sorted(matched),
+                'applicability': 'judge_relevance_to_current_request; does_not_negate_verified_source_fact'}}))
     ranked.sort(key=lambda row: row[0], reverse=True)
     return {'query': query, 'candidates': [r[1] for r in ranked[:limit]], 'searched_active_records': len(rows),
+            'query_result':'matches_found' if ranked else 'no_match_in_this_bounded_query',
             'scope': 'up_to_512_query_matching_active_conventions_and_action_records',
             'semantics': 'candidate evidence only; verify conditions against current body and input; a miss is not proof of no memory'}
 

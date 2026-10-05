@@ -1,5 +1,6 @@
 """Information selection is model-owned; source authority remains explicit."""
 import tempfile
+import json
 import unittest
 from pathlib import Path
 from .attention import validate_need
@@ -29,11 +30,29 @@ class AttentionTests(unittest.TestCase):
                 candidate=context['memory_candidates'][0]['candidates'][0]
                 self.assertEqual(candidate['record_id'],card)
                 self.assertIn(source,candidate['source_ids'])
+                self.assertEqual(candidate['source_evidence'][0]['verbatim_excerpts'],['紫灯表示我喜欢乌龙茶'])
+                self.assertEqual(candidate['source_evidence'][0]['speaker'],'user')
+                self.assertIn('no_new_action_permission',candidate['authority'])
                 self.assertNotIn('current_body',context)
+                original=m.record(card);altered={**original,'meaning':'未说过的新定义'}
+                with m.db:m.db.execute('UPDATE records SET body=? WHERE id=?',(json.dumps(altered,ensure_ascii=False),card))
+                ungrounded=conversation_context(m,'那个叫法是什么意思？','chat',{},information_need=need)
+                self.assertEqual(ungrounded['memory_candidates'][0]['candidates'],[])
+                with m.db:m.db.execute('UPDATE records SET body=? WHERE id=?',(json.dumps(original,ensure_ascii=False),card))
                 with m.db:m.db.execute("UPDATE records SET status='superseded' WHERE id=?",(card,))
                 hidden=conversation_context(m,'那个叫法是什么意思？','chat',{},information_need=need)
                 self.assertEqual(hidden['memory_candidates'][0]['candidates'],[])
+                self.assertEqual(hidden['memory_candidates'][0]['query_result'],'no_match_in_this_bounded_query')
             finally:m.close()
+
+    def test_long_source_keeps_actual_definition_without_inventing_a_summary(self):
+        from .recall import source_evidence
+        text='无关前文'*500+'紫灯表示我喜欢乌龙茶'+'无关后文'*500
+        evidence=source_evidence('source',{'utterance_text':text,'speaker':'user','occurred_at':'then'},'紫灯','我喜欢乌龙茶')
+        self.assertTrue(evidence['excerpted'])
+        self.assertTrue(any('紫灯表示我喜欢乌龙茶' in s for s in evidence['verbatim_excerpts']))
+        self.assertTrue(all(s in text for s in evidence['verbatim_excerpts']))
+        self.assertLess(sum(map(len,evidence['verbatim_excerpts'])),1400)
 
     def test_router_cannot_omit_information_selection_or_invent_a_source(self):
         value={'mode':'chat','request_quote':'','task_kind':'ordinary'}

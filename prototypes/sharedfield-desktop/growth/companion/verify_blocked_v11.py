@@ -70,7 +70,7 @@ def main():
         print(json.dumps({'frozen':len(base.manifest())}));return 0
     frozen=json.loads(path.read_bytes())['sha256']
     if base.manifest()!=frozen:raise RuntimeError('source_changed')
-    root=base.ROOT/'runs/kernel_blocked_v11';root.mkdir(parents=True,exist_ok=True)
+    root=base.ROOT/'runs'/EVIDENCE.name;root.mkdir(parents=True,exist_ok=True)
     with (root/'attempt.claim').open('x') as f:f.write(str(time.time_ns()))
     folder=root/str(time.time_ns());folder.mkdir()
     owner_before=base.sha(base.OWNER);key=read_key();audit=AuditLog(folder,(key,))
