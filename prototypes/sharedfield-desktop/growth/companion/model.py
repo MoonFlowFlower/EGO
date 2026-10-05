@@ -20,6 +20,11 @@ def request_messages(system, context):
     if isinstance(evidence_context.get('situation'), dict):
         evidence_context['situation']=dict(evidence_context['situation'])
         transcript=evidence_context['situation'].pop('dialogue',transcript)
+    if not isinstance(current, str) or not current:
+        # Endogenous events have no current utterance. Keep source-bearing
+        # history and tool feedback as evidence, not fabricated new dialogue.
+        if transcript: evidence_context['historical_dialogue'] = transcript
+        if feedback is not None: evidence_context['execution_feedback'] = feedback
     transcript=[{'role':r['role'],'content':r['text']} for r in (transcript or [])
                 if isinstance(r,dict) and r.get('role') in ('user','assistant') and isinstance(r.get('text'),str)]
     if transcript and transcript[-1]=={'role':'user','content':current}:

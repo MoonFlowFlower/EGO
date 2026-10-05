@@ -120,7 +120,7 @@ class Initiative:
         if not value or not memory.record(value['source_id']): return None
         return {'record_id': identity, **value}
 
-    def delegate(self, memory, source, text, state, epoch):
+    def delegate(self, memory, source, text, state, epoch, *, anchor_state=None):
         previous = projects(memory)
         result = self.engine.model.decide(GRANT_PROMPT, {'current_user': text, 'current_body': state,
             'initiative_stage': 'delegation', 'supported_effects': sorted(EFFECTS),
@@ -141,14 +141,16 @@ class Initiative:
         if spatial and (not re.search(r'(?<!\d)' + str(result['placement_radius']) + r'\s*格', text)
                         or not any(anchor in text for anchor in ('当前位置', '现在位置', '你身边'))):
             raise InitiativeError('initiative_placement_area_not_grounded_in_input')
-        position = state.get('position')
-        if spatial and (state.get('offline') is not False or not isinstance(position, dict)
+        anchor_state = state if anchor_state is None else anchor_state
+        position = anchor_state.get('position')
+        if spatial and (state.get('offline') is not False or anchor_state.get('offline') is not False or not isinstance(position, dict)
                         or any(type(position.get(k)) not in (int, float) or not math.isfinite(position[k]) for k in ('x','y','z'))):
             raise InitiativeError('initiative_placement_anchor_unknown')
         with self.engine._dispatch_lock:
             if epoch != self.engine._epoch: return None
             identity = memory.append('project', {'type': 'initiative_grant', 'source_id': source,
-                **result, 'anchor': {k: math.floor(position[k]) for k in ('x','y','z')} if spatial else None},
+                **result, 'anchor': {k: math.floor(position[k]) for k in ('x','y','z')} if spatial else None,
+                'anchor_source_id': source if spatial else None, 'anchor_sampled_at': anchor_state.get('sampled_at') if spatial else None},
                 [source, *[p['record_id'] for p in previous]])
             with self.lock:
                 self.grant_id, self.grant_epoch = identity, epoch
@@ -194,8 +196,8 @@ class Initiative:
                     old = memory.goal()
                     work = old.get('work') if old else None
                     if work and not work.get('initiative') and work['status'] not in ('completed', 'suspended'): return False
-                    if work and work.get('initiative') and work['status'] not in ('completed', 'interrupted', 'suspended'):
-                        return False
+                    if work and work.get('initiative') and work['status'] not in ('completed', 'interrupted', 'suspended', 'not_needed'):
+                        if work['status'] != 'blocked' or self.queue[0]['kind'] != 'body_changed': return False
                     if self.events >= self.MAX_EVENTS: return False
                     event = self.queue.pop(0)
                     if any(not memory.record(p) for p in event['parents']): return False
@@ -213,13 +215,24 @@ class Initiative:
         finally:
             self.engine._turn_lock.release()
 
-    def action_problem(self, memory, work, action):
+    def work_problem(self, memory, work):
         grant = self.grant(memory)
         if not grant or work['initiative']['grant_id'] != grant['record_id']:
             return 'initiative_authority_expired'
+        policy = work['initiative']['policy']
+        row = memory.db.execute('SELECT status,body FROM records WHERE id=?', (policy['record_id'],)).fetchone()
+        if not row or row[0] != 'active': return 'initiative_policy_inactive'
+        saved = json.loads(row[1])
+        if (saved.get('type') != 'initiative_policy' or saved.get('tree') != policy['tree']
+                or saved.get('goal', {}).get('done_when') != work['done_when']):
+            return 'initiative_policy_mismatch'
+
+    def action_problem(self, memory, work, action):
+        problem = self.work_problem(memory, work)
+        if problem: return problem
         if action['name'] not in READS and self.effects >= self.MAX_EFFECT_ACTIONS:
             return 'initiative_action_cap'
-        return scope_problem(grant, action)
+        return scope_problem(self.grant(memory), action)
 
     def plan(self, memory, source, context, work=None):
         grant = self.grant(memory)
@@ -271,7 +284,7 @@ class Initiative:
         if work and goal['done_when'] != work['done_when']:
             raise InitiativeError('initiative_result_contract_changed')
         previous_project = next((p for p in prior if p['project_id'] == result['project_id']), None)
-        if (not work and previous_project and previous_project['status'] != 'completed'
+        if (not work and previous_project and previous_project['status'] not in ('completed', 'not_needed')
                 and goal['done_when'] != previous_project['work']['done_when']):
             raise InitiativeError('initiative_pending_project_contract_changed')
         for action in actions(tree):
@@ -288,6 +301,8 @@ class Initiative:
                 'tree': tree, 'outcomes': {}, 'pending': None}}}, result['reply']
 
     def decision(self, memory, source, work, context):
+        problem = self.work_problem(memory, work)
+        if problem: raise InitiativeError(problem)
         policy = work['initiative']['policy']
         action = next_action(policy, context['body'])
         reply = ''

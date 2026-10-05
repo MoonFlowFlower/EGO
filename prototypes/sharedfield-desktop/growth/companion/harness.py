@@ -12,7 +12,7 @@ from .engine import Engine, STOP, confirmed_progress, completed_negative_search
 from .memory import Memory
 from .intent import route_input, chat_reply
 from .context import conversation_context, user_history, historical_actions
-from .work import validate_action, validate_goal, create_work, create_pending_work, save_work, incorporate, preliminary_completion, fingerprint
+from .work import validate_action, validate_goal, create_work, create_pending_work, save_work, incorporate, preliminary_completion, fingerprint, changed_since_failure
 from .interaction import input_event, dialogue, bind_request, steer_work, goal_problem, action_problem, observation_key, reconcile_pickups, normalize_transition, OBSERVATIONS
 from .recall import recall, matched_cards
 from .model import DecisionError
@@ -92,7 +92,7 @@ class Harness(Engine):
                 emit(cached)
                 return cached
             old = m.goal()
-            if not initiative_event and old and old.get('work') and old['work']['status'] != 'completed':
+            if not initiative_event and old and old.get('work') and old['work']['status'] not in ('completed', 'not_needed'):
                 work = copy.deepcopy(old['work'])
             parents = list(dict.fromkeys([source, *[r['record_id'] for r in m.context()], *([old['record_id']] if old else [])]))
             annotations = [] if initiative_event else m.library.annotate(text, datetime.now().astimezone().isoformat(), ('login',) if text == '上线了' else ())
@@ -190,6 +190,9 @@ class Harness(Engine):
                                                   'verified': receipt.get('verified', False), 'status': receipt.get('status')})
 
             def complete(state, step):
+                if work and work.get('initiative'):
+                    problem = self.initiative.work_problem(m, work)
+                    if problem: raise InitiativeError(problem)
                 reconcile_pickups(work, state)
                 if not work or not preliminary_completion(work, state)['satisfied']:
                     return False
@@ -204,6 +207,14 @@ class Harness(Engine):
                 observed = proof.get('observed', self.body.snapshot())
                 success = epoch == self._epoch and not self._waiting and proof.get('verified') is True and preliminary_completion(work, observed)['satisfied']
                 if success:
+                    if work.get('initiative'):
+                        problem = self.initiative.work_problem(m, work)
+                        if problem: raise InitiativeError(problem)
+                        if not work.get('initiative_effects', 0):
+                            persist('not_needed', 'result_already_present')
+                            self.audit.write('lifecycle.jsonl', {'event': 'initiative_result_already_present',
+                                'event_id': event_id, 'task_id': work['task_id'], 'receipt_id': parents[-1]})
+                            return True
                     work['completion'] = {'checks': preliminary['checks'], 'world_verified': bool(preliminary['targets']), 'receipt_id': parents[-1]}
                     persist('completed')
                     say('目标已核对完成：' + work['title'] + '。')
@@ -218,6 +229,7 @@ class Harness(Engine):
                              'pending_work': work, 'memory_candidates': recall(m, text) if text else None}
                 if initiative_event:
                     execution_granted = True
+                    self.progress = '正在选择自己的项目'
                     planned, opening = self.initiative.plan(m, source, {'current': event, 'body': self.body.snapshot(),
                         'recent_actions': historical_actions(m), 'dialogue': dialogue(m),
                         'remaining_decisions': min(self.max_decisions, 32), 'event': initiative_event})
@@ -254,7 +266,8 @@ class Harness(Engine):
                     reply='\n'.join(spoken);m.finish(event_id,reply,parents);return reply
                 if intent['mode'] == 'autonomy':
                     self._execution_generation += 1
-                    answer = self.initiative.delegate(m, source, text, self.body.snapshot(), epoch)
+                    answer = self.initiative.delegate(m, source, text, self.body.snapshot(), epoch,
+                                                     anchor_state=event['body_at_input'])
                     if answer is not None:
                         persist('suspended', 'new_standing_delegation')
                         say(answer)
@@ -356,6 +369,11 @@ class Harness(Engine):
                     try:
                         decision = (self.initiative.decision(m, source, work, context) if work and work.get('initiative')
                                     else self.model.decide(PROMPT, context))
+                        if work and work.get('initiative'):
+                            problem = self.initiative.work_problem(m, work)
+                            if problem: raise InitiativeError(problem)
+                            identity = work['initiative']['policy']['record_id']
+                            if identity not in parents: parents.append(identity)
                     except DecisionError as error:
                         invalid_decisions+=1
                         notice={'kind':'invalid_model_output','code':error.code,
@@ -505,7 +523,8 @@ class Harness(Engine):
                         problem = self.initiative.action_problem(m, work, action) or problem
                     if problem:
                         receipt = {'verified': False, 'executed': False, 'status': problem, 'observed': state}
-                    elif action['name'] not in OBSERVATIONS and previous is not None and not confirmed_progress(progress_action, previous):
+                    elif (action['name'] not in OBSERVATIONS and previous is not None
+                          and not confirmed_progress(progress_action, previous) and not changed_since_failure(previous, state)):
                         receipt = {'verified': False, 'executed': False, 'status': 'action_repeated_without_progress', 'observed': state}
                     elif self.action_policy and not self.action_policy(action):
                         persist('blocked', 'acceptance_action_boundary'); say('到达本次验收动作边界，已停止。'); break
@@ -521,6 +540,7 @@ class Harness(Engine):
                                     persist('blocked', problem); break
                                 if action['name'] not in OBSERVATIONS:
                                     self.initiative.effects += 1
+                                    work['initiative_effects'] = work.get('initiative_effects', 0) + 1
                             self.audit.write('lifecycle.jsonl', {'event': 'action_authorized', 'event_id': event_id,
                                 'task_id': work['task_id'] if work else None, 'revision': work.get('revision', 0) if work else 0, 'action': action['name']})
                             if decision['reply']:
@@ -591,6 +611,10 @@ class Harness(Engine):
             return reply
         except Exception as error:
             if initiative_event and epoch != self._epoch:
+                current = m.goal()
+                if (work and current and current.get('work', {}).get('task_id') == work['task_id']
+                        and all(m.record(p) for p in parents)):
+                    persist('paused_by_owner', 'late_decision_discarded')
                 if 'source' in locals() and source and m.record(source):
                     m.finish(event_id, '', [p for p in parents if m.record(p)])
                 return ''
@@ -600,7 +624,7 @@ class Harness(Engine):
                     persist('interrupted', 'input_requires_explicit_resume')
             if execution_granted and epoch==self._epoch:self.body.stop()
             problem = error.code if isinstance(error, (ProxyError,DecisionError,InitiativeError)) else type(error).__name__
-            if execution_granted and work and parents:
+            if execution_granted and work and parents and all(m.record(p) for p in parents):
                 work['status'] = 'blocked'; work['last_problem'] = problem
                 save_work(m, work, parents)
                 save_project(m, work, parents)

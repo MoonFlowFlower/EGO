@@ -231,3 +231,16 @@ def fingerprint(state):
     stable['owner'] = state.get('owner')
     stable['items'] = (state.get('dropped_items') or {}).get('items')
     return json.dumps(stable, sort_keys=True)
+
+
+def changed_since_failure(receipt, state):
+    """A failure describes its resulting state, not necessarily its input state.
+
+    A recovery can return to the original pre-action state. Comparing only that
+    input fingerprint would then incorrectly prohibit the recovered action.
+    Missing observations never provide evidence for a retry.
+    """
+    if not isinstance(receipt, dict) or receipt.get('verified') is not False:
+        return False
+    observed = receipt.get('observed')
+    return isinstance(observed, dict) and 'offline' in observed and fingerprint(observed) != fingerprint(state)

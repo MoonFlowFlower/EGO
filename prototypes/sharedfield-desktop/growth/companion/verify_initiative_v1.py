@@ -24,6 +24,7 @@ ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = ROOT / 'evidence/kernel_initiative_v1'
 FREEZE = EVIDENCE / 'PAID_FREEZE.json'
 RUNS = ROOT / 'runs/kernel_initiative_v1'
+REVISION = 1
 TEXT = '我忙一会儿。你自己选个有用的事情做，可以使用背包现有材料合成和整理；不采集、不放置。'
 
 
@@ -33,6 +34,7 @@ def sha(path): return hashlib.sha256(path.read_bytes()).hexdigest()
 def manifest():
     files = [p for p in (ROOT / 'companion').iterdir() if p.suffix in ('.py', '.mjs', '.txt', '.ps1')]
     files += [EVIDENCE / 'ACCEPTANCE.md']
+    if REVISION == 2: files += [EVIDENCE / 'ACCEPTANCE_R2.md']
     return {p.relative_to(ROOT).as_posix(): sha(p) for p in sorted(files)}
 
 
@@ -42,7 +44,7 @@ def ledger_total():
 
 
 def write(path, value):
-    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n', encoding='utf-8', newline='\n')
 
 
 class InventoryScene:
@@ -51,10 +53,10 @@ class InventoryScene:
     This is a constructed observation/action test, not Minecraft evidence.
     It supplies no goals, tree, priorities or next-action choices to the model.
     """
-    def __init__(self, case):
+    def __init__(self, case, revision=1):
         self.actions, self.speech = [], []
         self.case, self.injected = case, False
-        self.wood = 'oak' if case == 'initial' else 'birch'
+        self.wood = ('spruce' if revision == 2 else 'oak') if case == 'initial' else 'birch'
         self.state = {'offline': False, 'position': {'x': 12, 'y': 109, 'z': -57},
             'inventory': {self.wood + '_log': 3, 'coal': 2}, 'owner': {'distance': 6, 'height_difference': 0},
             'crafting_grid': {}, 'cursor': None, 'window': None, 'health': 20, 'food': 20}
@@ -114,7 +116,7 @@ def run_child(folder, case):
     transport = RoutedTransportV2(api_key=key, mode='pinned', route_index=0,
         budget_path=DEFAULT_BUDGET, limit=authorization['limit'], log_dir=folder)
     transport.set_audit(audit)
-    model, body = Model(transport, audit), InventoryScene(case)
+    model, body = Model(transport, audit), InventoryScene(case, REVISION)
     path = folder / 'state.sqlite'
     engine = Harness(path, model, body, audit, max_decisions=20, max_seconds=180)
     with Memory(path) as memory:
@@ -122,6 +124,7 @@ def run_child(folder, case):
         raw_hash = hashlib.sha256(json.dumps(raw, sort_keys=True).encode()).hexdigest()
         policy_count = len(records(memory, 'skill', 'initiative_policy'))
         previous_tasks = {p['work']['task_id'] for p in projects(memory)}
+        previous_projects = [p['project_id'] for p in projects(memory)]
     before = ledger_total()
     engine.run('delegation:' + case, 'verification', TEXT)
     engine.initiative.drain_one()
@@ -140,6 +143,8 @@ def run_child(folder, case):
         'actions': body.actions, 'state': body.snapshot(), 'injected_fault': body.injected,
         'retained_failures': failures, 'policy_count_before': policy_count, 'policy_count_after': len(policies),
         'latest_policy_based_on': policies[-1].get('based_on_policy') if len(policies) > policy_count else None,
+        'project_id': work.get('initiative', {}).get('project_id') if fresh else None,
+        'prior_project_ids': previous_projects,
         'raw_experience_sha256_before': raw_hash, 'owner_turn_count': turns, 'model_calls': model.calls,
         'cost_delta': ledger_total() - before, 'budget_total': ledger_total()}
     write(folder / 'RESULT.json', result)
@@ -149,13 +154,17 @@ def run_child(folder, case):
 def run():
     frozen = json.loads(FREEZE.read_bytes())
     if manifest() != frozen['sha256']: raise ValueError('freeze_mismatch')
-    root = RUNS / ('paid_' + str(time.time_ns())); root.mkdir(parents=True)
-    with (RUNS / 'PAID_V1_CONSUMED.json').open('x', encoding='utf-8') as marker:
+    root = RUNS / ('paid_' + ('r2_' if REVISION == 2 else '') + str(time.time_ns())); root.mkdir(parents=True)
+    with (RUNS / f'PAID_V{REVISION}_CONSUMED.json').open('x', encoding='utf-8') as marker:
         json.dump({'root': str(root), 'freeze_sha256': sha(FREEZE)}, marker)
     start = ledger_total()
     batch = json.loads((ROOT / 'runs/kernel_v1/batch_budget.json').read_bytes())
     limit = min(5, batch['limit'], batch['start_total'] + batch['extra_cap'], start + .35)
-    write(root / 'AUTHORIZATION.json', {'start_total': start, 'extra_cap': .35, 'limit': limit,
+    if REVISION == 2:
+        previous = json.loads((RUNS / 'PAID_V1_CONSUMED.json').read_bytes())
+        initial = json.loads((Path(previous['root']) / 'AUTHORIZATION.json').read_bytes())
+        limit = min(limit, initial['limit'])
+    write(root / 'AUTHORIZATION.json', {'start_total': start, 'extra_cap': max(0, limit-start), 'limit': limit,
         'freeze_sha256': sha(FREEZE), 'source': 'user agreed to DESIGN.md; ACCEPTANCE.md frozen before validation'})
     owner = ROOT / 'runs/kernel_v1/owner/state.sqlite'
     owner_before = sha(owner)
@@ -175,7 +184,7 @@ def run():
                     if case == 'restored':
                         db.execute("UPDATE records SET status='active' WHERE json_extract(body,'$.type')='initiative_policy'")
         try:
-            done = subprocess.run([sys.executable, '-m', 'companion.verify_initiative_v1', '--child', case, '--folder', str(folder)],
+            done = subprocess.run([sys.executable, '-m', 'companion.verify_initiative_v1', '--revision', str(REVISION), '--child', case, '--folder', str(folder)],
                 cwd=ROOT, capture_output=True, text=True, timeout=240,
                 creationflags=subprocess.CREATE_NO_WINDOW if sys.platform == 'win32' else 0)
             results[case] = json.loads((folder / 'RESULT.json').read_bytes()) if (folder / 'RESULT.json').exists() else {'failed': 'child_failed', 'exit_code': done.returncode}
@@ -190,13 +199,17 @@ def run():
 
 
 def main():
+    global FREEZE, REVISION
     parser = argparse.ArgumentParser()
     parser.add_argument('--freeze', action='store_true'); parser.add_argument('--run', action='store_true')
     parser.add_argument('--child', choices=('initial', 'transfer', 'masked', 'restored')); parser.add_argument('--folder', type=Path)
+    parser.add_argument('--revision', type=int, choices=(1, 2), default=1)
     args = parser.parse_args()
+    REVISION = args.revision
+    if REVISION == 2: FREEZE = EVIDENCE / 'PAID_FREEZE_R2.json'
     if args.freeze:
-        with FREEZE.open('x', encoding='utf-8') as file:
-            json.dump({'base_commit': '98d3781', 'at': datetime.now().astimezone().isoformat(),
+        with FREEZE.open('x', encoding='utf-8', newline='\n') as file:
+            json.dump({'base_commit': '6b90aa4' if REVISION == 2 else '98d3781', 'at': datetime.now().astimezone().isoformat(),
                        'sha256': manifest(), 'extra_budget_cap': .35}, file, indent=2)
             file.write('\n')
         print('frozen', len(manifest()), 'files')

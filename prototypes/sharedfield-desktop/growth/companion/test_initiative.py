@@ -1,5 +1,6 @@
 """Mechanism tests with scripted decisions; these do not establish model learning."""
 import copy
+import json
 import tempfile
 import threading
 import time
@@ -101,6 +102,11 @@ class InitiativeTests(unittest.TestCase):
             self.assertEqual(len(records(memory, 'skill', 'initiative_policy')), 2)
             self.assertTrue(any(r['body'].get('receipt', {}).get('verified') is False
                                 for r in memory.library.rows('experience')))
+            current_policy = self.saved()['initiative']['policy']['record_id']
+            recovered = next(r for r in memory.library.rows('experience')
+                             if r['body'].get('action', {}).get('name') == 'recover_inventory')
+            self.assertIn(current_policy, [r[0] for r in memory.db.execute(
+                'SELECT parent FROM deps WHERE child=?', (recovered['record_id'],))])
 
     def test_completion_event_deduplicates_and_no_grant_means_no_calls(self):
         engine = self.engine(Model())
@@ -293,6 +299,134 @@ class InitiativeTests(unittest.TestCase):
         self.assertEqual(self.body.actions, [])
         with Memory(self.path) as memory:
             self.assertIsNone(memory.goal())
+
+    def test_recovery_to_pre_action_state_replays_retained_r1_mechanism(self):
+        from .verify_initiative_v1 import InventoryScene
+        from .work import changed_since_failure
+        self.body = InventoryScene('initial')
+        steps = [leaf('planks', CRAFT), leaf('sticks', {'name': 'craft', 'args': {'item': 'stick', 'count': 1}}),
+                 leaf('torches', {'name': 'craft', 'args': {'item': 'torch', 'count': 2}})]
+        def selected(context, recovery=False):
+            value = proposal(context, {'id': 'sequence', 'type': 'sequence',
+                                      'children': ([leaf('recover', RECOVER)] if recovery else []) + steps})
+            value['goal'] = {'title': '合成8支火把', 'steps': ['从现有材料合成'],
+                             'done_when': [{'kind': 'gained', 'item': 'torch', 'count': 8}]}
+            return value
+        engine = self.start(Model(grant, selected, lambda c: selected(c, True)))
+        engine.initiative.drain_one()
+        self.assertEqual(self.saved()['status'], 'completed')
+        self.assertEqual(self.body.state['inventory']['torch'], 8)
+        self.assertEqual([a['name'] for a in self.body.actions], ['craft', 'recover_inventory', 'craft', 'craft', 'craft', 'inspect'])
+        unchanged = self.body.snapshot()
+        self.assertFalse(changed_since_failure({'verified': False, 'observed': unchanged}, unchanged))
+        self.assertFalse(changed_since_failure({'verified': False}, unchanged))
+
+    def test_existing_world_result_is_not_a_new_achievement(self):
+        text = '在你现在位置2格内自己安排放木板。'
+        position = {'x': 1, 'y': 64, 'z': 0}
+        self.body.blocks[(1, 64, 0)] = 'oak_planks'
+        def plan(context):
+            value = proposal(context, leaf('place', {'name': 'place_at', 'args': {'block': 'oak_planks', 'position': position}}))
+            value['goal'] = {'title': '试一种摆法', 'steps': ['放置并观察'],
+                             'done_when': [{'kind': 'blocks', 'block': 'oak_planks', 'positions': [position]}]}
+            return value
+        model = Model(lambda c: {**grant(c), 'actions': ['place_at'], 'placement_radius': 2}, plan)
+        engine = Harness(self.path, model, self.body, self.audit,
+                         input_router=lambda *args: {'mode': 'autonomy', 'task_kind': 'ordinary'})
+        engine.run('existing', 'minecraft', text)
+        engine.initiative.drain_one()
+        self.assertEqual([a['name'] for a in self.body.actions], ['verify_blocks'])
+        self.assertEqual(self.saved()['status'], 'not_needed')
+        self.assertIsNone(self.saved()['completion'])
+        self.assertEqual(engine.initiative.queue, [])
+        self.assertFalse(any('目标已核对完成' in line for line in self.body.speech))
+
+    def test_stop_during_revision_persists_paused_work(self):
+        self.body.state['crafting_grid'] = {'oak_log': 1}
+        entered, release = threading.Event(), threading.Event()
+        def slow(context):
+            entered.set(); release.wait(4)
+            return repair(context)
+        engine = self.start(Model(grant, proposal, slow))
+        worker = threading.Thread(target=engine.initiative.drain_one)
+        worker.start(); self.assertTrue(entered.wait(2))
+        engine.stop(); release.set(); worker.join(4)
+        self.assertFalse(worker.is_alive())
+        self.assertEqual([a['name'] for a in self.body.actions], ['craft'])
+        self.assertEqual(self.saved()['status'], 'paused_by_owner')
+        self.assertEqual(self.saved()['last_problem'], 'late_decision_discarded')
+        self.assertEqual(engine.initiative.queue, [])
+
+    def test_changed_body_can_reconsider_blocked_project(self):
+        self.body.always_fail = True
+        def idle(context):
+            return {**proposal(context), 'choice': None, 'goal': None, 'tree': None}
+        engine = self.start(Model(grant, proposal, idle, proposal))
+        engine.initiative.drain_one()
+        self.assertEqual(self.saved()['status'], 'blocked')
+        engine.initiative.pulse()
+        self.assertEqual(engine.model.calls, 3)
+        self.body.always_fail = False
+        self.body.state['inventory']['oak_log'] += 1
+        engine.initiative.next_check = engine.initiative.not_before = 0
+        engine.initiative.pulse()
+        engine.initiative.worker.join(3)
+        self.assertFalse(engine.initiative.worker.is_alive())
+        self.assertEqual(self.saved()['status'], 'completed')
+        self.assertEqual(engine.model.calls, 4)
+
+    def test_autonomous_request_keeps_history_and_feedback_as_evidence(self):
+        from .model import request_messages
+        history = [{'record_id': 'past-owner', 'role': 'user', 'text': '留些木料',
+                    'authority': 'past_utterance_not_current_world_fact'}]
+        context = {'current': {'user': '', 'channel': 'initiative'}, 'dialogue': history,
+                   'execution_feedback': {'event_id': 'feedback', 'receipts': [{'verified': False}]}}
+        original = copy.deepcopy(context)
+        messages = request_messages('instruction', context)
+        self.assertEqual(len(messages), 2)
+        evidence = json.loads(messages[1]['content'])
+        self.assertEqual(evidence['historical_dialogue'], history)
+        self.assertEqual(evidence['execution_feedback']['event_id'], 'feedback')
+        self.assertEqual(context, original)
+
+    def test_policy_revocation_before_dispatch_cannot_act_or_restore_deleted_work(self):
+        for revoke in ('masked', 'deleted', 'modified'):
+            with self.subTest(revoke=revoke):
+                self.path = Path(self.temp.name) / (revoke + '.sqlite')
+                engine = self.start(Model(grant, proposal))
+                original = engine.initiative.decision
+                def decision(memory, source, work, context):
+                    action = original(memory, source, work, context)
+                    identity = work['initiative']['policy']['record_id']
+                    if revoke == 'deleted':
+                        memory.store.delete_private(identity)
+                    elif revoke == 'masked':
+                        with memory.db: memory.db.execute("UPDATE records SET status='masked' WHERE id=?", (identity,))
+                    else:
+                        work['initiative']['policy']['tree']['action']['args']['count'] = 2
+                    return action
+                engine.initiative.decision = decision
+                engine.initiative.drain_one()
+                self.assertEqual(self.body.actions, [])
+                with Memory(self.path) as memory:
+                    if revoke == 'deleted': self.assertIsNone(memory.goal())
+                    else: self.assertEqual(memory.goal()['work']['status'], 'blocked')
+
+    def test_spatial_delegation_keeps_input_time_anchor(self):
+        text = '在你现在位置2格内自己安排放木板。'
+        input_state = self.body.snapshot()
+        input_state['sampled_at'] = 123000
+        self.body.state['position']['x'] = 10
+        engine = Harness(self.path, Model(lambda c: {**grant(c), 'actions': ['place_at'], 'placement_radius': 2}),
+                         self.body, self.audit, input_router=lambda *args: {'mode': 'autonomy', 'task_kind': 'ordinary'})
+        engine.run('anchor', 'minecraft', text, input_state=input_state)
+        with Memory(self.path) as memory:
+            authorized = engine.initiative.grant(memory)
+            self.assertEqual(authorized['anchor'], input_state['position'])
+            self.assertEqual(authorized['anchor_sampled_at'], 123000)
+            self.assertEqual(authorized['anchor_source_id'], authorized['source_id'])
+            action = {'name': 'place_at', 'args': {'block': 'oak_planks', 'position': self.body.state['position']}}
+            self.assertEqual(scope_problem(authorized, action), 'initiative_placement_outside_area')
 
 
 if __name__ == '__main__': unittest.main()
