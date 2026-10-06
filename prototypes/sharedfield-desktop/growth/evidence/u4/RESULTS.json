@@ -1,0 +1,582 @@
+{
+  "at_utc": "2026-10-06T00:36:23.458942+00:00",
+  "manifest_sha256": "2cf28f2a339b914de5731b6d710fd7f6e8486424857111dd82f6d7a41b0760a5",
+  "complete": true,
+  "judges": {
+    "D0": {
+      "completed": 567,
+      "planned": 567,
+      "questions": {
+        "complete": true,
+        "passed": false,
+        "counter_prior": {
+          "ask_n": 3,
+          "ask_correct": 3,
+          "ask_rate": 1.0,
+          "no_n": 10,
+          "intrusions": 5,
+          "intrusion_rate": 0.5
+        },
+        "ask_reference_only": true,
+        "ask_reference_threshold_met": true,
+        "calibration_report_only": {
+          "ask_n": 8,
+          "ask_correct": 8,
+          "ask_rate": 1.0,
+          "no_n": 0,
+          "intrusions": 0,
+          "intrusion_rate": null
+        },
+        "U2_R_report_only": {
+          "ask_n": 6,
+          "ask_correct": 1,
+          "ask_rate": 0.16666666666666666,
+          "no_n": 6,
+          "intrusions": 4,
+          "intrusion_rate": 0.6666666666666666
+        }
+      },
+      "timing": {
+        "complete": true,
+        "passed": false,
+        "d5_zero_hard_gate": true,
+        "d5_by_arm": {
+          "R": 0,
+          "I": 0,
+          "N": 0,
+          "R_SHUFFLED": 0
+        },
+        "utility_by_arm": {
+          "R": -4,
+          "I": -5,
+          "N": -7,
+          "R_SHUFFLED": -10
+        },
+        "fixed_baseline": 18,
+        "comparisons": {
+          "H1": {
+            "difference_total": -22,
+            "ci95": [
+              -37.0,
+              -8.0
+            ],
+            "passed": false
+          },
+          "H2_controls": {
+            "difference_total": 1,
+            "ci95": [
+              -8.0,
+              9.0
+            ],
+            "passed": false
+          },
+          "H2_shuffled": {
+            "difference_total": 6,
+            "ci95": [
+              -1.0,
+              13.0
+            ],
+            "passed": false
+          }
+        }
+      },
+      "forgetting": {
+        "passed": false,
+        "complete": true,
+        "bytes_pass": true,
+        "deleted": {
+          "n": 18,
+          "correct": 1,
+          "rate": 0.05555555555555555,
+          "N_rate": 0.05555555555555555,
+          "passed": true
+        },
+        "retained": {
+          "n": 64,
+          "correct": 49,
+          "rate": 0.765625,
+          "before_rate": 0.96875,
+          "passed": false
+        },
+        "bytes_scope": "Inherited unchanged F1 synthetic input evidence; U4 does not delete or relearn storage.",
+        "retained_by_category": {
+          "P": {
+            "n": 28,
+            "correct": 16,
+            "rate": 0.5714285714285714,
+            "before_rate": 0.9642857142857143,
+            "passed": false
+          },
+          "Q": {
+            "n": 12,
+            "correct": 9,
+            "rate": 0.75,
+            "before_rate": 0.9166666666666666,
+            "passed": false
+          },
+          "W": {
+            "n": 24,
+            "correct": 24,
+            "rate": 1.0,
+            "before_rate": 1.0,
+            "passed": true
+          }
+        }
+      },
+      "reflex": {
+        "report_only": true,
+        "groups": {
+          "F1_retained_P_after": {
+            "n": 28,
+            "confirm_first": 12,
+            "rate": 0.42857142857142855,
+            "invalid": 0
+          },
+          "U3a_no_ask": {
+            "n": 10,
+            "confirm_first": 5,
+            "rate": 0.5,
+            "invalid": 0
+          },
+          "U2_no_ask": {
+            "n": 6,
+            "confirm_first": 4,
+            "rate": 0.6666666666666666,
+            "invalid": 0
+          }
+        },
+        "pooled": {
+          "n": 44,
+          "confirm_first": 21,
+          "rate": 0.4772727272727273,
+          "invalid": 0
+        }
+      }
+    },
+    "D1": {
+      "completed": 567,
+      "planned": 567,
+      "questions": {
+        "complete": true,
+        "passed": true,
+        "counter_prior": {
+          "ask_n": 3,
+          "ask_correct": 3,
+          "ask_rate": 1.0,
+          "no_n": 10,
+          "intrusions": 2,
+          "intrusion_rate": 0.2
+        },
+        "ask_reference_only": true,
+        "ask_reference_threshold_met": true,
+        "calibration_report_only": {
+          "ask_n": 8,
+          "ask_correct": 8,
+          "ask_rate": 1.0,
+          "no_n": 0,
+          "intrusions": 0,
+          "intrusion_rate": null
+        },
+        "U2_R_report_only": {
+          "ask_n": 6,
+          "ask_correct": 1,
+          "ask_rate": 0.16666666666666666,
+          "no_n": 6,
+          "intrusions": 2,
+          "intrusion_rate": 0.3333333333333333
+        }
+      },
+      "timing": {
+        "complete": true,
+        "passed": false,
+        "d5_zero_hard_gate": true,
+        "d5_by_arm": {
+          "R": 0,
+          "I": 0,
+          "N": 0,
+          "R_SHUFFLED": 0
+        },
+        "utility_by_arm": {
+          "R": 4,
+          "I": -3,
+          "N": 0,
+          "R_SHUFFLED": -1
+        },
+        "fixed_baseline": 18,
+        "comparisons": {
+          "H1": {
+            "difference_total": -14,
+            "ci95": [
+              -26.0,
+              -2.0
+            ],
+            "passed": false
+          },
+          "H2_controls": {
+            "difference_total": 4,
+            "ci95": [
+              -3.0,
+              11.0
+            ],
+            "passed": false
+          },
+          "H2_shuffled": {
+            "difference_total": 5,
+            "ci95": [
+              1.0,
+              10.0
+            ],
+            "passed": true
+          }
+        }
+      },
+      "forgetting": {
+        "passed": false,
+        "complete": true,
+        "bytes_pass": true,
+        "deleted": {
+          "n": 18,
+          "correct": 1,
+          "rate": 0.05555555555555555,
+          "N_rate": 0.1111111111111111,
+          "passed": true
+        },
+        "retained": {
+          "n": 64,
+          "correct": 55,
+          "rate": 0.859375,
+          "before_rate": 0.96875,
+          "passed": false
+        },
+        "bytes_scope": "Inherited unchanged F1 synthetic input evidence; U4 does not delete or relearn storage.",
+        "retained_by_category": {
+          "P": {
+            "n": 28,
+            "correct": 21,
+            "rate": 0.75,
+            "before_rate": 0.9642857142857143,
+            "passed": false
+          },
+          "Q": {
+            "n": 12,
+            "correct": 10,
+            "rate": 0.8333333333333334,
+            "before_rate": 0.9166666666666666,
+            "passed": true
+          },
+          "W": {
+            "n": 24,
+            "correct": 24,
+            "rate": 1.0,
+            "before_rate": 1.0,
+            "passed": true
+          }
+        }
+      },
+      "reflex": {
+        "report_only": true,
+        "groups": {
+          "F1_retained_P_after": {
+            "n": 28,
+            "confirm_first": 7,
+            "rate": 0.25,
+            "invalid": 0
+          },
+          "U3a_no_ask": {
+            "n": 10,
+            "confirm_first": 2,
+            "rate": 0.2,
+            "invalid": 0
+          },
+          "U2_no_ask": {
+            "n": 6,
+            "confirm_first": 2,
+            "rate": 0.3333333333333333,
+            "invalid": 0
+          }
+        },
+        "pooled": {
+          "n": 44,
+          "confirm_first": 11,
+          "rate": 0.25,
+          "invalid": 0
+        }
+      }
+    },
+    "D2": {
+      "completed": 567,
+      "planned": 567,
+      "questions": {
+        "complete": true,
+        "passed": true,
+        "counter_prior": {
+          "ask_n": 3,
+          "ask_correct": 3,
+          "ask_rate": 1.0,
+          "no_n": 10,
+          "intrusions": 0,
+          "intrusion_rate": 0.0
+        },
+        "ask_reference_only": true,
+        "ask_reference_threshold_met": true,
+        "calibration_report_only": {
+          "ask_n": 8,
+          "ask_correct": 8,
+          "ask_rate": 1.0,
+          "no_n": 0,
+          "intrusions": 0,
+          "intrusion_rate": null
+        },
+        "U2_R_report_only": {
+          "ask_n": 6,
+          "ask_correct": 2,
+          "ask_rate": 0.3333333333333333,
+          "no_n": 6,
+          "intrusions": 0,
+          "intrusion_rate": 0.0
+        }
+      },
+      "timing": {
+        "complete": true,
+        "passed": false,
+        "d5_zero_hard_gate": true,
+        "d5_by_arm": {
+          "R": 0,
+          "I": 0,
+          "N": 0,
+          "R_SHUFFLED": 0
+        },
+        "utility_by_arm": {
+          "R": -10,
+          "I": -20,
+          "N": -11,
+          "R_SHUFFLED": -18
+        },
+        "fixed_baseline": 18,
+        "comparisons": {
+          "H1": {
+            "difference_total": -28,
+            "ci95": [
+              -42.0,
+              -14.0
+            ],
+            "passed": false
+          },
+          "H2_controls": {
+            "difference_total": 1,
+            "ci95": [
+              -11.0,
+              13.0
+            ],
+            "passed": false
+          },
+          "H2_shuffled": {
+            "difference_total": 8,
+            "ci95": [
+              2.0,
+              15.0
+            ],
+            "passed": true
+          }
+        }
+      },
+      "forgetting": {
+        "passed": true,
+        "complete": true,
+        "bytes_pass": true,
+        "deleted": {
+          "n": 18,
+          "correct": 0,
+          "rate": 0.0,
+          "N_rate": 0.3333333333333333,
+          "passed": true
+        },
+        "retained": {
+          "n": 64,
+          "correct": 59,
+          "rate": 0.921875,
+          "before_rate": 0.921875,
+          "passed": true
+        },
+        "bytes_scope": "Inherited unchanged F1 synthetic input evidence; U4 does not delete or relearn storage.",
+        "retained_by_category": {
+          "P": {
+            "n": 28,
+            "correct": 28,
+            "rate": 1.0,
+            "before_rate": 1.0,
+            "passed": true
+          },
+          "Q": {
+            "n": 12,
+            "correct": 7,
+            "rate": 0.5833333333333334,
+            "before_rate": 0.5833333333333334,
+            "passed": true
+          },
+          "W": {
+            "n": 24,
+            "correct": 24,
+            "rate": 1.0,
+            "before_rate": 1.0,
+            "passed": true
+          }
+        }
+      },
+      "reflex": {
+        "report_only": true,
+        "groups": {
+          "F1_retained_P_after": {
+            "n": 28,
+            "confirm_first": 0,
+            "rate": 0.0,
+            "invalid": 0
+          },
+          "U3a_no_ask": {
+            "n": 10,
+            "confirm_first": 0,
+            "rate": 0.0,
+            "invalid": 0
+          },
+          "U2_no_ask": {
+            "n": 6,
+            "confirm_first": 0,
+            "rate": 0.0,
+            "invalid": 0
+          }
+        },
+        "pooled": {
+          "n": 44,
+          "confirm_first": 0,
+          "rate": 0.0,
+          "invalid": 0
+        }
+      }
+    }
+  },
+  "D0_variability": {
+    "all": {
+      "n": 60,
+      "D0_disagreements": 6,
+      "D0_rate": 0.1,
+      "judges": {
+        "D1": {
+          "matched_n": 60,
+          "disagreements": 8,
+          "rate": 0.13333333333333333,
+          "D0_disagreements_same_subset": 6,
+          "withhold_attribution": false
+        },
+        "D2": {
+          "matched_n": 60,
+          "disagreements": 16,
+          "rate": 0.26666666666666666,
+          "D0_disagreements_same_subset": 6,
+          "withhold_attribution": false
+        }
+      }
+    },
+    "question": {
+      "n": 3,
+      "D0_disagreements": 0,
+      "D0_rate": 0.0,
+      "judges": {
+        "D1": {
+          "matched_n": 3,
+          "disagreements": 0,
+          "rate": 0.0,
+          "D0_disagreements_same_subset": 0,
+          "withhold_attribution": true
+        },
+        "D2": {
+          "matched_n": 3,
+          "disagreements": 0,
+          "rate": 0.0,
+          "D0_disagreements_same_subset": 0,
+          "withhold_attribution": true
+        }
+      }
+    },
+    "timing": {
+      "n": 35,
+      "D0_disagreements": 6,
+      "D0_rate": 0.17142857142857143,
+      "judges": {
+        "D1": {
+          "matched_n": 35,
+          "disagreements": 7,
+          "rate": 0.2,
+          "D0_disagreements_same_subset": 6,
+          "withhold_attribution": false
+        },
+        "D2": {
+          "matched_n": 35,
+          "disagreements": 12,
+          "rate": 0.34285714285714286,
+          "D0_disagreements_same_subset": 6,
+          "withhold_attribution": false
+        }
+      }
+    },
+    "forget": {
+      "n": 22,
+      "D0_disagreements": 0,
+      "D0_rate": 0.0,
+      "judges": {
+        "D1": {
+          "matched_n": 22,
+          "disagreements": 1,
+          "rate": 0.045454545454545456,
+          "D0_disagreements_same_subset": 0,
+          "withhold_attribution": false
+        },
+        "D2": {
+          "matched_n": 22,
+          "disagreements": 4,
+          "rate": 0.18181818181818182,
+          "D0_disagreements_same_subset": 0,
+          "withhold_attribution": false
+        }
+      }
+    }
+  },
+  "conclusions": {
+    "D1": {
+      "mechanical_passes": {
+        "questions": true,
+        "timing": false,
+        "forgetting": false
+      },
+      "withhold_domain_attribution": {
+        "questions": true,
+        "timing": false,
+        "forgetting": false
+      },
+      "conclusion": "partial_pass_handle_each_domain_separately"
+    },
+    "D2": {
+      "mechanical_passes": {
+        "questions": true,
+        "timing": false,
+        "forgetting": true
+      },
+      "withhold_domain_attribution": {
+        "questions": true,
+        "timing": false,
+        "forgetting": false
+      },
+      "conclusion": "partial_pass_handle_each_domain_separately"
+    }
+  },
+  "cost_usd": 0.83595248,
+  "daily_budget": {
+    "local_day": "2026-10-05",
+    "timezone": "America/Winnipeg",
+    "limit_usd": 4.0,
+    "used_usd": 1.80384094,
+    "unknown_included_usd": 0,
+    "remaining_usd": 2.1961590600000003
+  },
+  "claim_ceiling": "Distinguish judge bottlenecks from method limitations on synthetic frozen inputs; not evidence of learning.",
+  "transport_limit": "D2 uses service sampling defaults because SIWC rejects temperature. This is a route+judge comparison."
+}

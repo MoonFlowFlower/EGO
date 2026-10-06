@@ -9,7 +9,7 @@
 - 一般 API 数据说明关于训练的原文片段：“is not used to train or improve OpenAI models”。同段说明用户主动选择分享数据属于例外。
 - 同页关于默认滥用监测日志保留的原文片段：“retained for up to 30 days”。原文还列出法律要求和保护服务／第三方的例外。
 
-来源：[Data controls in the OpenAI platform](https://developers.openai.com/api/docs/guides/your-data)。上面共摘录 16 个英文词。该页写的是一般 OpenAI API；本次查到的 SIWC 专用说明未明确给出这条套餐路线的独立训练／保留条款，**适用范围尚未核实**，不能承诺套餐请求一定不训练或只留 30 天。真实对话继续禁止，后续需拿到适用于 SIWC 的明确说明并由负责人决定。
+来源：[Data controls in the OpenAI platform](https://developers.openai.com/api/docs/guides/your-data)。上面共摘录 15 个英文词。该页写的是一般 OpenAI API；本次查到的 SIWC 专用说明未明确给出这条套餐路线的独立训练／保留条款，**适用范围尚未核实**，不能承诺套餐请求一定不训练或只留 30 天。真实对话继续禁止，后续需拿到适用于 SIWC 的明确说明并由负责人决定。
 
 费用边界也核对了当前官方说明：套餐流量计入 ChatGPT Work/Codex 的共享额度；用户若另行允许，某些应用可在套餐用尽后消耗 credits。本次负责人已确认不会使用 credits。应用周上限低于 100% 也能阻止该应用使用 credits。[Using your ChatGPT plan in other apps and sites](https://help.openai.com/en/articles/20001542-using-your-chatgpt-plan-in-other-apps-and-sites)
 

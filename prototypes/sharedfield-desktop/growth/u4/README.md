@@ -11,6 +11,9 @@ python -m u4.run run --judge D0_repeat
 python -m u4.run run --judge D1
 python -m u4.run run --judge D2
 python -m u4.report
+python -m audits.u4_export_redactions
+python -m audits.u4_replay_audit
+python -m audits.u4_readout
 ```
 
 只允许一位判断者在跑。冻结后不得编辑清单、输入或冻结源码。D0 复用 554 份历史决定并新增缺少的 13 份；60 份重复决定从有历史结果的输入中按冻结种子抽取，保存在独立 D0_repeat 臂。D1/D2 各 567 份，U3b 的成对决定保留原来一个请求内两个局面的结构。

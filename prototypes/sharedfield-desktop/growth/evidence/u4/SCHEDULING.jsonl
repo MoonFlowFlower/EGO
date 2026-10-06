@@ -1,0 +1,5 @@
+{"at_utc":"2026-10-05T22:56:10.433263+00:00","action":"graceful_pause_requested","judge":"D1","reason":"Multiple recent response latencies much higher than initial run; switch to D2 only after current D1 request terminates. Frozen per-judge order and parameters unchanged."}
+{"at_utc":"2026-10-05T22:56:33.788409+00:00","action":"D1_closed_D2_next","D1_completed":327,"errors":0,"pending_request":null,"concurrency":1}
+{"at_utc":"2026-10-05T23:56:52.749632+00:00","action":"resume_after_lane_wall_limit","judge":"D2","completed":457,"remaining":110,"pending_request":null,"parameters_changed":false}
+{"at_utc":"2026-10-06T00:11:10.977873+00:00","action":"D2_complete_resume_D1","D2_completed":567,"D1_completed":327,"D1_remaining":240,"parameters_changed":false,"concurrency":1}
+{"at_utc":"2026-10-06T00:39:26.040974+00:00","action":"all_judges_complete","D0":567,"D0_repeat":60,"D1":567,"D2":567,"parameters_changed":false}

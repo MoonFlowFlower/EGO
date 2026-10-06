@@ -1,0 +1,13 @@
+{
+  "at_utc": "2026-10-05T22:44:34.782237+00:00",
+  "freeze_commit": "f0560e3f1ad1bb5d2cee85ca0a6d584d86bf0010",
+  "manifest_sha256": "2cf28f2a339b914de5731b6d710fd7f6e8486424857111dd82f6d7a41b0760a5",
+  "checked_files": 83,
+  "mismatches": [],
+  "method": "SHA256 of each git-show blob at the freeze commit compared with source_sha256 and evidence_sha256 in FROZEN.json; checked after run start without modifying any frozen file.",
+  "manifest_blob_matches": true,
+  "freeze_commit_unix_s": 1791238279,
+  "first_U4_request_unix_s": 1791238294.1295624,
+  "commit_precedes_all_U4_requests": true,
+  "additional_check_at_utc": "2026-10-06T00:03:28.017674+00:00"
+}
