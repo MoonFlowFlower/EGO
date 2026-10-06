@@ -1,0 +1,29 @@
+{
+  "at_utc": "2026-10-06T03:46:38.041069+00:00",
+  "parent_manifest_sha256": "04ca0c1ac2af3a2d2510f37609ce1c554b634ef31784247f65d356e3a971580e",
+  "owner_authorization_verbatim": "允许这条重试一次，再继续",
+  "authorized_input_id": "b/3/feedback_control/3-07-test-2",
+  "authorized_judge": "D0",
+  "additional_attempts": 1,
+  "attempt_number": 2,
+  "unknown_reserve_retained_usd": 0.086888,
+  "before_calls_sha256": "b54286ce8cfd2b89d8b361f300e2aa7266d92b7ed1a6a0c81f1393654bd1aaff",
+  "before_decisions_sha256": "3c1d994272dd4069948e712502198eaf2a1b4b3f14f40869b87c39df54dc1710",
+  "before_decisions": 392,
+  "before_new_decisions": 257,
+  "before_cost_usd": 0.36404743,
+  "messages_sha256": "ac4823425dbc50c66ecd3be6ff4fa511d0a485818419bf038be35e19430c8128",
+  "schema_sha256": "c55e09d99033fec8eb83a2050c4137d3f81e7f7a254cfed8c2b07c1ae4d52d5e",
+  "driver_sha256": "6c4282d507c870bc4bd2df9d8a7dcfd0a5ee3244220add7f1354c76f5c91ec62",
+  "unchanged": [
+    "input corpus",
+    "judge configurations",
+    "memory constructions",
+    "criteria",
+    "scores",
+    "seeds",
+    "cost projection and daily budget",
+    "all other automatic retry and stop rules"
+  ],
+  "new_failure_rule": "No automatic third attempt. Any error on this extra attempt stops; no duplicate successful output."
+}

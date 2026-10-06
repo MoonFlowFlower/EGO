@@ -1,0 +1,160 @@
+{
+  "completed": 392,
+  "planned": 616,
+  "new_decisions": 257,
+  "reused_decisions": 135,
+  "timing": {
+    "complete": false,
+    "d5_zero_hard_gate": true,
+    "arms": {
+      "N": {
+        "n": 72,
+        "active": 42,
+        "passive": 30,
+        "d5": 0,
+        "invalid": 0,
+        "utility": -28,
+        "information_bonus": 0,
+        "busy_speaking": 34,
+        "busy_n": 42,
+        "appropriate_suggest": 5,
+        "suggest_n": 24,
+        "difference_from_fixed_18": -46
+      },
+      "R": {
+        "n": 68,
+        "active": 1,
+        "passive": 67,
+        "d5": 0,
+        "invalid": 0,
+        "utility": -1,
+        "information_bonus": 0,
+        "busy_speaking": 32,
+        "busy_n": 40,
+        "appropriate_suggest": 0,
+        "suggest_n": 22,
+        "difference_from_fixed_18": null
+      },
+      "precedent": {
+        "n": 36,
+        "active": 32,
+        "passive": 4,
+        "d5": 0,
+        "invalid": 0,
+        "utility": -8,
+        "information_bonus": 0,
+        "busy_speaking": 19,
+        "busy_n": 20,
+        "appropriate_suggest": 7,
+        "suggest_n": 10,
+        "difference_from_fixed_18": null
+      },
+      "feedback": {
+        "n": 40,
+        "active": 7,
+        "passive": 33,
+        "d5": 0,
+        "invalid": 0,
+        "utility": 3,
+        "information_bonus": 0,
+        "busy_speaking": 13,
+        "busy_n": 24,
+        "appropriate_suggest": 4,
+        "suggest_n": 15,
+        "difference_from_fixed_18": null
+      },
+      "feedback_control": {
+        "n": 50,
+        "active": 0,
+        "passive": 50,
+        "d5": 0,
+        "invalid": 0,
+        "utility": 0,
+        "information_bonus": 0,
+        "busy_speaking": 28,
+        "busy_n": 30,
+        "appropriate_suggest": 0,
+        "suggest_n": 18,
+        "difference_from_fixed_18": null
+      },
+      "scope": {
+        "n": 41,
+        "active": 1,
+        "passive": 40,
+        "d5": 0,
+        "invalid": 0,
+        "utility": -1,
+        "information_bonus": 0,
+        "busy_speaking": 22,
+        "busy_n": 26,
+        "appropriate_suggest": 0,
+        "suggest_n": 13,
+        "difference_from_fixed_18": null
+      },
+      "scope_shuffled": {
+        "n": 44,
+        "active": 2,
+        "passive": 42,
+        "d5": 0,
+        "invalid": 0,
+        "utility": -2,
+        "information_bonus": 0,
+        "busy_speaking": 20,
+        "busy_n": 27,
+        "appropriate_suggest": 0,
+        "suggest_n": 15,
+        "difference_from_fixed_18": null
+      }
+    },
+    "comparisons": null,
+    "interpretation": "incomplete_no_conclusion",
+    "fixed_baseline": 18
+  },
+  "F1b": {
+    "passed": false,
+    "complete": false,
+    "bytes_pass": true,
+    "deleted": {
+      "n": 9,
+      "correct": 0,
+      "rate": 0.0,
+      "N_rate": 0.1111111111111111,
+      "passed": true,
+      "before_correct": 9,
+      "N_correct": 1,
+      "u4_after_correct": 0
+    },
+    "retained": {
+      "n": 32,
+      "correct": 29,
+      "rate": 0.90625,
+      "before_rate": 0.9375,
+      "passed": true,
+      "before_correct": 30,
+      "N_correct": 18,
+      "u4_after_correct": 24
+    },
+    "bytes_scope": "Input intervention only; original F1 deletion evidence inherited, no new deletion claim.",
+    "retained_by_category": {
+      "P": {
+        "n": 13,
+        "correct": 11,
+        "before_correct": 12,
+        "u4_after_correct": 6
+      },
+      "Q": {
+        "n": 8,
+        "correct": 7,
+        "before_correct": 7,
+        "u4_after_correct": 7
+      },
+      "W": {
+        "n": 11,
+        "correct": 11,
+        "before_correct": 11,
+        "u4_after_correct": 11
+      }
+    }
+  },
+  "interpretation_stopped": false
+}

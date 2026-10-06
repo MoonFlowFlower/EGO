@@ -1,0 +1,12 @@
+{
+  "at_utc": "2026-10-06T03:47:14.913770+00:00",
+  "cloud_calls": 0,
+  "checks": [
+    "failure has exactly one extra attempt",
+    "attempt number is 2",
+    "request equals frozen configuration",
+    "success returned once",
+    "other inputs retain frozen implementation"
+  ],
+  "passed": true
+}

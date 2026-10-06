@@ -1,0 +1,589 @@
+{
+  "at_utc": "2026-10-06T03:44:52.422398+00:00",
+  "manifest_sha256": "04ca0c1ac2af3a2d2510f37609ce1c554b634ef31784247f65d356e3a971580e",
+  "complete": false,
+  "judges": {
+    "D0": {
+      "completed": 392,
+      "planned": 616,
+      "new_decisions": 257,
+      "reused_decisions": 135,
+      "timing": {
+        "complete": false,
+        "d5_zero_hard_gate": true,
+        "arms": {
+          "N": {
+            "n": 72,
+            "active": 42,
+            "passive": 30,
+            "d5": 0,
+            "invalid": 0,
+            "utility": -28,
+            "information_bonus": 0,
+            "busy_speaking": 34,
+            "busy_n": 42,
+            "appropriate_suggest": 5,
+            "suggest_n": 24,
+            "difference_from_fixed_18": -46
+          },
+          "R": {
+            "n": 68,
+            "active": 1,
+            "passive": 67,
+            "d5": 0,
+            "invalid": 0,
+            "utility": -1,
+            "information_bonus": 0,
+            "busy_speaking": 32,
+            "busy_n": 40,
+            "appropriate_suggest": 0,
+            "suggest_n": 22,
+            "difference_from_fixed_18": null
+          },
+          "precedent": {
+            "n": 36,
+            "active": 32,
+            "passive": 4,
+            "d5": 0,
+            "invalid": 0,
+            "utility": -8,
+            "information_bonus": 0,
+            "busy_speaking": 19,
+            "busy_n": 20,
+            "appropriate_suggest": 7,
+            "suggest_n": 10,
+            "difference_from_fixed_18": null
+          },
+          "feedback": {
+            "n": 40,
+            "active": 7,
+            "passive": 33,
+            "d5": 0,
+            "invalid": 0,
+            "utility": 3,
+            "information_bonus": 0,
+            "busy_speaking": 13,
+            "busy_n": 24,
+            "appropriate_suggest": 4,
+            "suggest_n": 15,
+            "difference_from_fixed_18": null
+          },
+          "feedback_control": {
+            "n": 50,
+            "active": 0,
+            "passive": 50,
+            "d5": 0,
+            "invalid": 0,
+            "utility": 0,
+            "information_bonus": 0,
+            "busy_speaking": 28,
+            "busy_n": 30,
+            "appropriate_suggest": 0,
+            "suggest_n": 18,
+            "difference_from_fixed_18": null
+          },
+          "scope": {
+            "n": 41,
+            "active": 1,
+            "passive": 40,
+            "d5": 0,
+            "invalid": 0,
+            "utility": -1,
+            "information_bonus": 0,
+            "busy_speaking": 22,
+            "busy_n": 26,
+            "appropriate_suggest": 0,
+            "suggest_n": 13,
+            "difference_from_fixed_18": null
+          },
+          "scope_shuffled": {
+            "n": 44,
+            "active": 2,
+            "passive": 42,
+            "d5": 0,
+            "invalid": 0,
+            "utility": -2,
+            "information_bonus": 0,
+            "busy_speaking": 20,
+            "busy_n": 27,
+            "appropriate_suggest": 0,
+            "suggest_n": 15,
+            "difference_from_fixed_18": null
+          }
+        },
+        "comparisons": null,
+        "interpretation": "incomplete_no_conclusion",
+        "fixed_baseline": 18
+      },
+      "F1b": {
+        "passed": false,
+        "complete": false,
+        "bytes_pass": true,
+        "deleted": {
+          "n": 9,
+          "correct": 0,
+          "rate": 0.0,
+          "N_rate": 0.1111111111111111,
+          "passed": true,
+          "before_correct": 9,
+          "N_correct": 1,
+          "u4_after_correct": 0
+        },
+        "retained": {
+          "n": 32,
+          "correct": 29,
+          "rate": 0.90625,
+          "before_rate": 0.9375,
+          "passed": true,
+          "before_correct": 30,
+          "N_correct": 18,
+          "u4_after_correct": 24
+        },
+        "bytes_scope": "Input intervention only; original F1 deletion evidence inherited, no new deletion claim.",
+        "retained_by_category": {
+          "P": {
+            "n": 13,
+            "correct": 11,
+            "before_correct": 12,
+            "u4_after_correct": 6
+          },
+          "Q": {
+            "n": 8,
+            "correct": 7,
+            "before_correct": 7,
+            "u4_after_correct": 7
+          },
+          "W": {
+            "n": 11,
+            "correct": 11,
+            "before_correct": 11,
+            "u4_after_correct": 11
+          }
+        }
+      },
+      "interpretation_stopped": false
+    },
+    "D1": {
+      "completed": 0,
+      "planned": 586,
+      "new_decisions": 0,
+      "reused_decisions": 0,
+      "timing": {
+        "complete": false,
+        "d5_zero_hard_gate": true,
+        "arms": {
+          "N": {
+            "n": 0,
+            "active": 0,
+            "passive": 0,
+            "d5": 0,
+            "invalid": 0,
+            "utility": 0,
+            "information_bonus": 0,
+            "busy_speaking": 0,
+            "busy_n": 0,
+            "appropriate_suggest": 0,
+            "suggest_n": 0,
+            "difference_from_fixed_18": null
+          },
+          "R": {
+            "n": 0,
+            "active": 0,
+            "passive": 0,
+            "d5": 0,
+            "invalid": 0,
+            "utility": 0,
+            "information_bonus": 0,
+            "busy_speaking": 0,
+            "busy_n": 0,
+            "appropriate_suggest": 0,
+            "suggest_n": 0,
+            "difference_from_fixed_18": null
+          },
+          "precedent": {
+            "n": 0,
+            "active": 0,
+            "passive": 0,
+            "d5": 0,
+            "invalid": 0,
+            "utility": 0,
+            "information_bonus": 0,
+            "busy_speaking": 0,
+            "busy_n": 0,
+            "appropriate_suggest": 0,
+            "suggest_n": 0,
+            "difference_from_fixed_18": null
+          },
+          "feedback": {
+            "n": 0,
+            "active": 0,
+            "passive": 0,
+            "d5": 0,
+            "invalid": 0,
+            "utility": 0,
+            "information_bonus": 0,
+            "busy_speaking": 0,
+            "busy_n": 0,
+            "appropriate_suggest": 0,
+            "suggest_n": 0,
+            "difference_from_fixed_18": null
+          },
+          "feedback_control": {
+            "n": 0,
+            "active": 0,
+            "passive": 0,
+            "d5": 0,
+            "invalid": 0,
+            "utility": 0,
+            "information_bonus": 0,
+            "busy_speaking": 0,
+            "busy_n": 0,
+            "appropriate_suggest": 0,
+            "suggest_n": 0,
+            "difference_from_fixed_18": null
+          },
+          "scope": {
+            "n": 0,
+            "active": 0,
+            "passive": 0,
+            "d5": 0,
+            "invalid": 0,
+            "utility": 0,
+            "information_bonus": 0,
+            "busy_speaking": 0,
+            "busy_n": 0,
+            "appropriate_suggest": 0,
+            "suggest_n": 0,
+            "difference_from_fixed_18": null
+          },
+          "scope_shuffled": {
+            "n": 0,
+            "active": 0,
+            "passive": 0,
+            "d5": 0,
+            "invalid": 0,
+            "utility": 0,
+            "information_bonus": 0,
+            "busy_speaking": 0,
+            "busy_n": 0,
+            "appropriate_suggest": 0,
+            "suggest_n": 0,
+            "difference_from_fixed_18": null
+          }
+        },
+        "comparisons": null,
+        "interpretation": "incomplete_no_conclusion",
+        "fixed_baseline": 18
+      },
+      "F1b": {
+        "passed": false,
+        "complete": false,
+        "bytes_pass": true,
+        "deleted": {
+          "n": 0,
+          "correct": 0,
+          "rate": null,
+          "N_rate": null,
+          "passed": false,
+          "before_correct": 0,
+          "N_correct": 0,
+          "u4_after_correct": 0
+        },
+        "retained": {
+          "n": 0,
+          "correct": 0,
+          "rate": null,
+          "before_rate": null,
+          "passed": false,
+          "before_correct": 0,
+          "N_correct": 0,
+          "u4_after_correct": 0
+        },
+        "bytes_scope": "Input intervention only; original F1 deletion evidence inherited, no new deletion claim.",
+        "retained_by_category": {
+          "P": {
+            "n": 0,
+            "correct": 0,
+            "before_correct": 0,
+            "u4_after_correct": 0
+          },
+          "Q": {
+            "n": 0,
+            "correct": 0,
+            "before_correct": 0,
+            "u4_after_correct": 0
+          },
+          "W": {
+            "n": 0,
+            "correct": 0,
+            "before_correct": 0,
+            "u4_after_correct": 0
+          }
+        }
+      },
+      "interpretation_stopped": false
+    }
+  },
+  "question_noise": {
+    "report_only": true,
+    "completed": 0,
+    "different_runs": 0,
+    "planned_runs": 30,
+    "items_changed_at_least_once": 0,
+    "planned_items": 10,
+    "U4_D1_vs_D0": 3,
+    "U4_D2_vs_D0": 5,
+    "items": [
+      {
+        "item_id": "A02",
+        "U4_D0_signature": [
+          "quiet"
+        ],
+        "completed": 0,
+        "different_runs": 0,
+        "signatures": [],
+        "invalid": 0,
+        "U4_D1_differs": false,
+        "U4_D2_differs": false
+      },
+      {
+        "item_id": "A04",
+        "U4_D0_signature": [
+          "reply"
+        ],
+        "completed": 0,
+        "different_runs": 0,
+        "signatures": [],
+        "invalid": 0,
+        "U4_D1_differs": false,
+        "U4_D2_differs": false
+      },
+      {
+        "item_id": "A06",
+        "U4_D0_signature": [
+          "ask"
+        ],
+        "completed": 0,
+        "different_runs": 0,
+        "signatures": [],
+        "invalid": 0,
+        "U4_D1_differs": false,
+        "U4_D2_differs": true
+      },
+      {
+        "item_id": "A11",
+        "U4_D0_signature": [
+          "ask"
+        ],
+        "completed": 0,
+        "different_runs": 0,
+        "signatures": [],
+        "invalid": 0,
+        "U4_D1_differs": false,
+        "U4_D2_differs": true
+      },
+      {
+        "item_id": "A12",
+        "U4_D0_signature": [
+          "reply"
+        ],
+        "completed": 0,
+        "different_runs": 0,
+        "signatures": [],
+        "invalid": 0,
+        "U4_D1_differs": false,
+        "U4_D2_differs": false
+      },
+      {
+        "item_id": "A16",
+        "U4_D0_signature": [
+          "reply"
+        ],
+        "completed": 0,
+        "different_runs": 0,
+        "signatures": [],
+        "invalid": 0,
+        "U4_D1_differs": false,
+        "U4_D2_differs": false
+      },
+      {
+        "item_id": "A17",
+        "U4_D0_signature": [
+          "ask"
+        ],
+        "completed": 0,
+        "different_runs": 0,
+        "signatures": [],
+        "invalid": 0,
+        "U4_D1_differs": true,
+        "U4_D2_differs": true
+      },
+      {
+        "item_id": "A18",
+        "U4_D0_signature": [
+          "ask"
+        ],
+        "completed": 0,
+        "different_runs": 0,
+        "signatures": [],
+        "invalid": 0,
+        "U4_D1_differs": true,
+        "U4_D2_differs": true
+      },
+      {
+        "item_id": "A20",
+        "U4_D0_signature": [
+          "reply"
+        ],
+        "completed": 0,
+        "different_runs": 0,
+        "signatures": [],
+        "invalid": 0,
+        "U4_D1_differs": false,
+        "U4_D2_differs": false
+      },
+      {
+        "item_id": "A21",
+        "U4_D0_signature": [
+          "ask"
+        ],
+        "completed": 0,
+        "different_runs": 0,
+        "signatures": [],
+        "invalid": 0,
+        "U4_D1_differs": true,
+        "U4_D2_differs": true
+      }
+    ],
+    "U4_conclusion_unchanged": true
+  },
+  "cost_usd": 0.36404743,
+  "projection": {
+    "actual_usd": 0.36404743,
+    "projected_total_usd": 1.6696179383866967,
+    "strata": {
+      "D0/timing/feedback_control": {
+        "planned": 72,
+        "completed": 50,
+        "observed_cost_n": 50,
+        "rate_usd": 0.0016732542,
+        "remaining_estimate_usd": 0.036811592399999996
+      },
+      "D0/timing/scope": {
+        "planned": 72,
+        "completed": 41,
+        "observed_cost_n": 41,
+        "rate_usd": 0.0007881712195121952,
+        "remaining_estimate_usd": 0.02443330780487805
+      },
+      "D0/forget/F1b": {
+        "planned": 82,
+        "completed": 41,
+        "observed_cost_n": 41,
+        "rate_usd": 0.0005763275609756098,
+        "remaining_estimate_usd": 0.02362943
+      },
+      "D0/timing/precedent": {
+        "planned": 72,
+        "completed": 36,
+        "observed_cost_n": 36,
+        "rate_usd": 0.000879365,
+        "remaining_estimate_usd": 0.03165714
+      },
+      "D0/timing/scope_shuffled": {
+        "planned": 72,
+        "completed": 44,
+        "observed_cost_n": 44,
+        "rate_usd": 0.0007884813636363636,
+        "remaining_estimate_usd": 0.02207747818181818
+      },
+      "D0/timing/feedback": {
+        "planned": 72,
+        "completed": 40,
+        "observed_cost_n": 40,
+        "rate_usd": 0.0016738369999999999,
+        "remaining_estimate_usd": 0.053562783999999995
+      },
+      "D0/timing/R": {
+        "planned": 9,
+        "completed": 5,
+        "observed_cost_n": 5,
+        "rate_usd": 0.000849694,
+        "remaining_estimate_usd": 0.003398776
+      },
+      "D0/noise/": {
+        "planned": 30,
+        "completed": 0,
+        "observed_cost_n": 0,
+        "rate_usd": 0.0003333333333333333,
+        "remaining_estimate_usd": 0.01
+      },
+      "D1/timing/feedback_control": {
+        "planned": 72,
+        "completed": 0,
+        "observed_cost_n": 0,
+        "rate_usd": 0.001877133105802048,
+        "remaining_estimate_usd": 0.13515358361774746
+      },
+      "D1/timing/R": {
+        "planned": 72,
+        "completed": 0,
+        "observed_cost_n": 0,
+        "rate_usd": 0.001877133105802048,
+        "remaining_estimate_usd": 0.13515358361774746
+      },
+      "D1/timing/scope": {
+        "planned": 72,
+        "completed": 0,
+        "observed_cost_n": 0,
+        "rate_usd": 0.001877133105802048,
+        "remaining_estimate_usd": 0.13515358361774746
+      },
+      "D1/forget/F1b": {
+        "planned": 82,
+        "completed": 0,
+        "observed_cost_n": 0,
+        "rate_usd": 0.001877133105802048,
+        "remaining_estimate_usd": 0.15392491467576794
+      },
+      "D1/timing/N": {
+        "planned": 72,
+        "completed": 0,
+        "observed_cost_n": 0,
+        "rate_usd": 0.001877133105802048,
+        "remaining_estimate_usd": 0.13515358361774746
+      },
+      "D1/timing/precedent": {
+        "planned": 72,
+        "completed": 0,
+        "observed_cost_n": 0,
+        "rate_usd": 0.001877133105802048,
+        "remaining_estimate_usd": 0.13515358361774746
+      },
+      "D1/timing/scope_shuffled": {
+        "planned": 72,
+        "completed": 0,
+        "observed_cost_n": 0,
+        "rate_usd": 0.001877133105802048,
+        "remaining_estimate_usd": 0.13515358361774746
+      },
+      "D1/timing/feedback": {
+        "planned": 72,
+        "completed": 0,
+        "observed_cost_n": 0,
+        "rate_usd": 0.001877133105802048,
+        "remaining_estimate_usd": 0.13515358361774746
+      }
+    },
+    "stop": false
+  },
+  "daily_budget": {
+    "local_day": "2026-10-05",
+    "timezone": "America/Winnipeg",
+    "limit_usd": 4.0,
+    "used_usd": 2.16788837,
+    "unknown_included_usd": 0.08688799999999999,
+    "remaining_usd": 1.83211163
+  },
+  "claim_ceiling": "Synthetic memory-only mechanism diagnostics and F1b collateral effects; no evidence she learned anything."
+}
