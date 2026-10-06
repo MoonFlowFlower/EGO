@@ -1,4 +1,4 @@
-"""Owner-authorized $4 reservation headroom, unchanged $2 projection gate."""
+"""Pending owner approval: reservation headroom, unchanged $2 projection gate."""
 import argparse
 import json
 from pathlib import Path
@@ -12,7 +12,7 @@ from . import run as runner
 from .client import projection, request_bound
 from .corpus import BASE, OUT, rows
 
-LIMIT = 4.0
+LIMIT = 2.05
 PROPOSAL = OUT/'RESERVATION_PROPOSAL.json'
 AMENDMENT = OUT/'OWNER_RESERVATION_LIMIT.json'
 
@@ -57,24 +57,18 @@ def proposal():
         'projected_total_plus_largest_remaining_reserve_usd': estimate + max(r['reserve_usd'] for r in reserves),
         'proposed_request_reservation_ceiling_usd': LIMIT,
         'unchanged_projection_stop_usd': 2.0, 'unchanged_daily_budget_usd': 4.0,
-        'scope': f'Only the conservative per-request reservation headroom changes from $2 to ${LIMIT:g}. Total actual-plus-remaining projection above $2 still stops before the next request. Existing unknown reserves remain included. Inputs, judges, scoring, retry limits and concurrency are unchanged.'}
+        'scope': 'Only the conservative per-request reservation headroom changes from $2 to $2.05. Total actual-plus-remaining projection above $2 still stops before the next request. Existing unknown reserves remain included. Inputs, judges, scoring, retry limits and concurrency are unchanged.'}
     write(PROPOSAL, value, exclusive=True)
     return value
 
 
 def approve(quote):
     value = read(PROPOSAL)
-    archive = OUT/'preflight_versions/reservation_2_05_proposal'
-    assert value['driver_sha256'] == sha(archive/'owner_reservation.py')
-    assert value['tests_sha256'] == sha(archive/'test_owner_reservation.py')
+    assert value['driver_sha256'] == sha(__file__)
+    assert value['tests_sha256'] == sha(Path(__file__).with_name('test_owner_reservation.py'))
     assert value['before_calls_sha256'] == sha(BASE/'D1/calls.jsonl')
     assert value['before_decisions_sha256'] == sha(BASE/'D1/decisions.jsonl')
-    value.update(state='owner_authorized', owner_authorization_verbatim=quote, authorized_at_utc=utc(),
-        original_proposal_sha256=sha(PROPOSAL), proposed_driver_sha256=value['driver_sha256'],
-        proposed_tests_sha256=value['tests_sha256'], proposal_scope=value['scope'],
-        driver_sha256=sha(__file__), tests_sha256=sha(Path(__file__).with_name('test_owner_reservation.py')),
-        authorized_request_reservation_ceiling_usd=LIMIT,
-        scope='Owner authorized the request reservation ceiling at $4 instead of the proposed $2.05. The original $2 total projection stop and $4 shared daily ledger remain unchanged; no input, judge, scoring or retry changes.')
+    value.update(state='owner_authorized', owner_authorization_verbatim=quote, authorized_at_utc=utc())
     write(AMENDMENT, value, exclusive=True)
     return value
 
@@ -83,11 +77,6 @@ def verify():
     import hashlib
     value = read(AMENDMENT)
     assert value['state'] == 'owner_authorized'
-    assert value['authorized_request_reservation_ceiling_usd'] == LIMIT
-    assert value['original_proposal_sha256'] == sha(PROPOSAL)
-    archive = OUT/'preflight_versions/reservation_2_05_proposal'
-    assert value['proposed_driver_sha256'] == sha(archive/'owner_reservation.py')
-    assert value['proposed_tests_sha256'] == sha(archive/'test_owner_reservation.py')
     assert value['parent_manifest_sha256'] == sha(runner.FROZEN)
     assert value['retry_policy_sha256'] == sha(policy.AMENDMENT)
     assert value['driver_sha256'] == sha(__file__)
@@ -120,5 +109,5 @@ if __name__ == '__main__':
     else:
         value = proposal() if args.operation == 'proposal' else verify()
         print(json.dumps({'remaining': value['remaining'], 'projected_usd': value['projected_usd'],
-            'reservation_ceiling_usd': value.get('authorized_request_reservation_ceiling_usd', value['proposed_request_reservation_ceiling_usd']),
+            'reservation_ceiling_usd': value['proposed_request_reservation_ceiling_usd'],
             'projection_stop_usd': value['unchanged_projection_stop_usd']}))

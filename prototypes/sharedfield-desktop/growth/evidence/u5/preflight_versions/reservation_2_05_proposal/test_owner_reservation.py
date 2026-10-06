@@ -22,7 +22,7 @@ class ReservationTests(unittest.TestCase):
 
     def test_only_reservation_headroom_changes(self):
         client = self.make_client()
-        self.assertEqual((client.cap, client.deepseek.cap), (4.0, 4.0))
+        self.assertEqual((client.cap, client.deepseek.cap), (2.05, 2.05))
         self.assertEqual(client.manifest['dollar_cap_usd'], 2.0)
 
     def test_projection_still_stops_above_two(self):
@@ -47,7 +47,7 @@ class ReservationTests(unittest.TestCase):
                 self.assertEqual(client.call({'id': 'next'}), ('same-output', {}))
             self.assertEqual(client.model.complete.call_args.args, ({'frozen': 'unchanged'},))
             self.assertEqual(client.model.complete.call_count, 1)
-            client.deepseek.cost = lambda: 3.95
+            client.deepseek.cost = lambda: 2.01
             client.model.reset_mock()
             with patch('u4.client.prepare_request', return_value=(None, None, .09988)):
                 with self.assertRaisesRegex(Stop, 'estimate_reservation_stop'):
