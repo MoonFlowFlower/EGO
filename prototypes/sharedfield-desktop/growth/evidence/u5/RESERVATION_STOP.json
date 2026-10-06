@@ -1,0 +1,25 @@
+{
+  "at_utc": "2026-10-06T07:15:09.742719+00:00",
+  "status": {
+    "state": "stopped",
+    "at_utc": "2026-10-06T07:10:03.407757+00:00",
+    "completed": 566,
+    "stop": "estimate_reservation_stop"
+  },
+  "next_input_id": "b/2/feedback_control/2-04-test-0",
+  "next_request_sent": false,
+  "accounted_usd": 1.90135425,
+  "projected_usd": 1.9326686476379795,
+  "next_reserve_usd": 0.09988,
+  "next_accounted_plus_reserve_usd": 2.00123425,
+  "proposal_sha256": "37512d856bad2dd8e740038c72e8cdc4bcd4dfb2d16ca7a2ac1cdf241d38e647",
+  "approval_pending": false,
+  "owner_authorization_verbatim": "确认 门槛调整至4刀",
+  "reservation_limit_usd": 4.0,
+  "projection_stop_usd": 2.0,
+  "amendment_sha256": "7b0d38b2066f226c13504519a2a40129555f651d360c9a2c5b5ff4eed32c4271",
+  "resolved": true,
+  "resolved_at_utc": "2026-10-06T12:39:55.481849+00:00",
+  "resolution": "Owner-authorized $4 request reservation ceiling; all remaining 20 calls completed, no new failures; original $2 projection and $4 daily gates retained.",
+  "completion_recheck": "RESERVATION_COMPLETION_RECHECK.json"
+}

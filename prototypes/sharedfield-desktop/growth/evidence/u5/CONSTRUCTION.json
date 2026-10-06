@@ -1,0 +1,1612 @@
+{
+  "1": {
+    "archive": "runs/u3/b/S0/person1/R/learn/state.sqlite",
+    "archive_sha256": "6294125808717210ce7350678e442976a3a1e58c82cf9701be6684a766548ae7",
+    "source_list_sha256": "ab4b3c2d155a83bfc5c023497f943e027ed0a22cafd045d5b52711081ae347ca",
+    "acquisitions": {
+      "1-03-learn-0": false,
+      "1-02-learn-0": false,
+      "1-03-learn-1": false,
+      "1-02-learn-1": false,
+      "1-09-learn-0": false,
+      "1-11-learn-0": false,
+      "1-09-learn-1": false,
+      "1-11-learn-1": false,
+      "1-04-learn-0": false,
+      "1-05-learn-0": false,
+      "1-04-learn-1": false,
+      "1-05-learn-1": false,
+      "1-15-learn-0": false,
+      "1-14-learn-0": false,
+      "1-15-learn-1": false,
+      "1-14-learn-1": false,
+      "1-03-learn-2": false,
+      "1-02-learn-2": false,
+      "1-03-learn-3": false,
+      "1-02-learn-3": false,
+      "1-09-learn-2": false,
+      "1-11-learn-2": false,
+      "1-09-learn-3": false,
+      "1-11-learn-3": false,
+      "1-04-learn-2": false,
+      "1-05-learn-2": false,
+      "1-04-learn-3": false,
+      "1-05-learn-3": false,
+      "1-15-learn-2": false,
+      "1-14-learn-2": false,
+      "1-15-learn-3": false,
+      "1-14-learn-3": false
+    },
+    "audit": [
+      {
+        "moment_id": "1-03-learn-0",
+        "original_action": "repeat",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": true,
+        "label_donor": "1-02-learn-2",
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": false
+        }
+      },
+      {
+        "moment_id": "1-02-learn-0",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-03-learn-1",
+        "original_action": "quiet",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-02-learn-1",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-09-learn-0",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-11-learn-0",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-09-learn-1",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-11-learn-1",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-04-learn-0",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-05-learn-0",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-04-learn-1",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-05-learn-1",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-15-learn-0",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-14-learn-0",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-15-learn-1",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-14-learn-1",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-03-learn-2",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-02-learn-2",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-03-learn-3",
+        "original_action": "quiet",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-02-learn-3",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-09-learn-2",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-11-learn-2",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-09-learn-3",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-11-learn-3",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-04-learn-2",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-05-learn-2",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-04-learn-3",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-05-learn-3",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-15-learn-2",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-14-learn-2",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-15-learn-3",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "1-14-learn-3",
+        "original_action": "quiet",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      }
+    ],
+    "arm_sizes": {
+      "N": 0,
+      "R": 95,
+      "precedent": 101,
+      "feedback": 223,
+      "feedback_control": 223,
+      "scope": 95,
+      "scope_shuffled": 95
+    }
+  },
+  "2": {
+    "archive": "runs/u3/b/S0/person2/R/learn/state.sqlite",
+    "archive_sha256": "66ec0d197b9dbe05abc751e5d2113448aed899c38382b7df5917dc1e5c3f0610",
+    "source_list_sha256": "0ffee170a2630dd80508a23b04886ec8a317ec7f31356641871876d8d84ffd1d",
+    "acquisitions": {
+      "2-00-learn-0": false,
+      "2-02-learn-0": false,
+      "2-00-learn-1": false,
+      "2-02-learn-1": false,
+      "2-09-learn-0": false,
+      "2-11-learn-0": false,
+      "2-09-learn-1": false,
+      "2-11-learn-1": false,
+      "2-06-learn-0": false,
+      "2-04-learn-0": false,
+      "2-06-learn-1": false,
+      "2-04-learn-1": false,
+      "2-14-learn-0": false,
+      "2-15-learn-0": false,
+      "2-14-learn-1": false,
+      "2-15-learn-1": false,
+      "2-00-learn-2": false,
+      "2-02-learn-2": false,
+      "2-00-learn-3": false,
+      "2-02-learn-3": false,
+      "2-09-learn-2": false,
+      "2-11-learn-2": false,
+      "2-09-learn-3": false,
+      "2-11-learn-3": false,
+      "2-06-learn-2": false,
+      "2-04-learn-2": false,
+      "2-06-learn-3": false,
+      "2-04-learn-3": false,
+      "2-14-learn-2": false,
+      "2-15-learn-2": false,
+      "2-14-learn-3": false,
+      "2-15-learn-3": false
+    },
+    "audit": [
+      {
+        "moment_id": "2-00-learn-0",
+        "original_action": "repeat",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": true,
+        "label_donor": "2-06-learn-1",
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": false
+        },
+        "donor_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        }
+      },
+      {
+        "moment_id": "2-02-learn-0",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-00-learn-1",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-02-learn-1",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-09-learn-0",
+        "original_action": "repeat",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": true,
+        "label_donor": "2-06-learn-3",
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": true
+        },
+        "donor_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        }
+      },
+      {
+        "moment_id": "2-11-learn-0",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-09-learn-1",
+        "original_action": "quiet",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-11-learn-1",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-06-learn-0",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-04-learn-0",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-06-learn-1",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-04-learn-1",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-14-learn-0",
+        "original_action": "quiet",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-15-learn-0",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-14-learn-1",
+        "original_action": "quiet",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-15-learn-1",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-00-learn-2",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-02-learn-2",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-00-learn-3",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-02-learn-3",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-09-learn-2",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-11-learn-2",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-09-learn-3",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-11-learn-3",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-06-learn-2",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-04-learn-2",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-06-learn-3",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-04-learn-3",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-14-learn-2",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-15-learn-2",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-14-learn-3",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "2-15-learn-3",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      }
+    ],
+    "arm_sizes": {
+      "N": 0,
+      "R": 93,
+      "precedent": 99,
+      "feedback": 221,
+      "feedback_control": 221,
+      "scope": 93,
+      "scope_shuffled": 93
+    }
+  },
+  "3": {
+    "archive": "runs/u3/b/S0/person3/R/learn/state.sqlite",
+    "archive_sha256": "3a5f1dba740043bbc9613d40325f77b4d4b13694c7e704b542887c257bd92c6d",
+    "source_list_sha256": "a537c5476e97af90c2b9e186fdc8e086eafb5a841f4faf8f0fc69a50f19315c1",
+    "acquisitions": {
+      "3-00-learn-0": false,
+      "3-02-learn-0": false,
+      "3-00-learn-1": false,
+      "3-02-learn-1": false,
+      "3-11-learn-0": false,
+      "3-08-learn-0": false,
+      "3-11-learn-1": false,
+      "3-08-learn-1": false,
+      "3-07-learn-0": false,
+      "3-05-learn-0": false,
+      "3-07-learn-1": false,
+      "3-05-learn-1": false,
+      "3-14-learn-0": false,
+      "3-12-learn-0": false,
+      "3-14-learn-1": false,
+      "3-12-learn-1": false,
+      "3-00-learn-2": false,
+      "3-02-learn-2": false,
+      "3-00-learn-3": false,
+      "3-02-learn-3": false,
+      "3-11-learn-2": false,
+      "3-08-learn-2": false,
+      "3-11-learn-3": false,
+      "3-08-learn-3": false,
+      "3-07-learn-2": false,
+      "3-05-learn-2": false,
+      "3-07-learn-3": false,
+      "3-05-learn-3": false,
+      "3-14-learn-2": false,
+      "3-12-learn-2": false,
+      "3-14-learn-3": false,
+      "3-12-learn-3": false
+    },
+    "audit": [
+      {
+        "moment_id": "3-00-learn-0",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-02-learn-0",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-00-learn-1",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-02-learn-1",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-11-learn-0",
+        "original_action": "repeat",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": true,
+        "label_donor": "3-08-learn-3",
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": false
+        }
+      },
+      {
+        "moment_id": "3-08-learn-0",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-11-learn-1",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-08-learn-1",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-07-learn-0",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-05-learn-0",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-07-learn-1",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-05-learn-1",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-14-learn-0",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-12-learn-0",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-14-learn-1",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-12-learn-1",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-00-learn-2",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-02-learn-2",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-00-learn-3",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-02-learn-3",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-11-learn-2",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-08-learn-2",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-11-learn-3",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-08-learn-3",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "工作日",
+          "busy": false,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-07-learn-2",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-05-learn-2",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-07-learn-3",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-05-learn-3",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "早上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": true
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-14-learn-2",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-12-learn-2",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-14-learn-3",
+        "original_action": "reply",
+        "precedent_action": "ask",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": true,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      },
+      {
+        "moment_id": "3-12-learn-3",
+        "original_action": "reply",
+        "precedent_action": "suggest",
+        "supplement_count": 4,
+        "negative_reaction": false,
+        "label_donor": null,
+        "visible_markers": {
+          "time_band": "晚上",
+          "day_type": "周末",
+          "busy": false,
+          "topic_seen": false
+        },
+        "donor_markers": null
+      }
+    ],
+    "arm_sizes": {
+      "N": 0,
+      "R": 99,
+      "precedent": 99,
+      "feedback": 227,
+      "feedback_control": 227,
+      "scope": 99,
+      "scope_shuffled": 99
+    }
+  }
+}

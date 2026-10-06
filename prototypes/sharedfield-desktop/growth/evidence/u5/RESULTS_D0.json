@@ -1,0 +1,196 @@
+{
+  "completed": 616,
+  "planned": 616,
+  "new_decisions": 481,
+  "reused_decisions": 135,
+  "timing": {
+    "complete": true,
+    "d5_zero_hard_gate": true,
+    "arms": {
+      "N": {
+        "n": 72,
+        "active": 42,
+        "passive": 30,
+        "d5": 0,
+        "invalid": 0,
+        "utility": -28,
+        "information_bonus": 0,
+        "busy_speaking": 34,
+        "busy_n": 42,
+        "appropriate_suggest": 5,
+        "suggest_n": 24,
+        "difference_from_fixed_18": -46
+      },
+      "R": {
+        "n": 72,
+        "active": 1,
+        "passive": 71,
+        "d5": 0,
+        "invalid": 0,
+        "utility": -1,
+        "information_bonus": 0,
+        "busy_speaking": 33,
+        "busy_n": 42,
+        "appropriate_suggest": 0,
+        "suggest_n": 24,
+        "difference_from_fixed_18": -19
+      },
+      "precedent": {
+        "n": 72,
+        "active": 65,
+        "passive": 7,
+        "d5": 0,
+        "invalid": 0,
+        "utility": -25,
+        "information_bonus": 0,
+        "busy_speaking": 40,
+        "busy_n": 42,
+        "appropriate_suggest": 14,
+        "suggest_n": 24,
+        "difference_from_fixed_18": -43
+      },
+      "feedback": {
+        "n": 72,
+        "active": 11,
+        "passive": 61,
+        "d5": 0,
+        "invalid": 0,
+        "utility": 1,
+        "information_bonus": 0,
+        "busy_speaking": 25,
+        "busy_n": 42,
+        "appropriate_suggest": 5,
+        "suggest_n": 24,
+        "difference_from_fixed_18": -17
+      },
+      "feedback_control": {
+        "n": 72,
+        "active": 0,
+        "passive": 72,
+        "d5": 0,
+        "invalid": 0,
+        "utility": 0,
+        "information_bonus": 0,
+        "busy_speaking": 37,
+        "busy_n": 42,
+        "appropriate_suggest": 0,
+        "suggest_n": 24,
+        "difference_from_fixed_18": -18
+      },
+      "scope": {
+        "n": 72,
+        "active": 2,
+        "passive": 70,
+        "d5": 0,
+        "invalid": 0,
+        "utility": -2,
+        "information_bonus": 0,
+        "busy_speaking": 33,
+        "busy_n": 42,
+        "appropriate_suggest": 0,
+        "suggest_n": 24,
+        "difference_from_fixed_18": -20
+      },
+      "scope_shuffled": {
+        "n": 72,
+        "active": 2,
+        "passive": 70,
+        "d5": 0,
+        "invalid": 0,
+        "utility": -2,
+        "information_bonus": 0,
+        "busy_speaking": 33,
+        "busy_n": 42,
+        "appropriate_suggest": 0,
+        "suggest_n": 24,
+        "difference_from_fixed_18": -20
+      }
+    },
+    "comparisons": {
+      "phenomenon": {
+        "difference_total": 41,
+        "ci95": [
+          33.0,
+          49.0
+        ],
+        "threshold_met": true
+      },
+      "C5": {
+        "difference_total": 23,
+        "ci95": [
+          14.0,
+          32.0
+        ],
+        "threshold_met": true,
+        "established": true
+      },
+      "C1": {
+        "difference_total": 1,
+        "ci95": [
+          -5.0,
+          7.0
+        ],
+        "threshold_met": false,
+        "established": false
+      },
+      "C3": {
+        "difference_total": 0,
+        "ci95": [
+          -4.0,
+          4.0
+        ],
+        "threshold_met": false,
+        "established": false
+      }
+    },
+    "interpretation": "mechanisms_evaluable",
+    "fixed_baseline": 18
+  },
+  "F1b": {
+    "passed": true,
+    "complete": true,
+    "bytes_pass": true,
+    "deleted": {
+      "n": 18,
+      "correct": 0,
+      "rate": 0.0,
+      "N_rate": 0.05555555555555555,
+      "passed": true,
+      "before_correct": 14,
+      "N_correct": 1,
+      "u4_after_correct": 1
+    },
+    "retained": {
+      "n": 64,
+      "correct": 59,
+      "rate": 0.921875,
+      "before_rate": 0.96875,
+      "passed": true,
+      "before_correct": 62,
+      "N_correct": 34,
+      "u4_after_correct": 49
+    },
+    "bytes_scope": "Input intervention only; original F1 deletion evidence inherited, no new deletion claim.",
+    "retained_by_category": {
+      "P": {
+        "n": 28,
+        "correct": 24,
+        "before_correct": 27,
+        "u4_after_correct": 16
+      },
+      "Q": {
+        "n": 12,
+        "correct": 11,
+        "before_correct": 11,
+        "u4_after_correct": 9
+      },
+      "W": {
+        "n": 24,
+        "correct": 24,
+        "before_correct": 24,
+        "u4_after_correct": 24
+      }
+    }
+  },
+  "interpretation_stopped": false
+}

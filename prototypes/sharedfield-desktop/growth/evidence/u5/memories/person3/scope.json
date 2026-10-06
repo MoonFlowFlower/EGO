@@ -1,0 +1,893 @@
+[
+  {
+    "utterance_id": "1779203b4a854e6aa0f7939682c83934",
+    "type": "utterance",
+    "utterance_text": "工作日早上，刚把桌面归拢了一下，准备开始下一件事。刚才手头的事已经放下了。这次近况提到了“河畔筹备1号计划”，内容是养猫。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "ec0b0dbfd2db49c1a5375e490b1aca8e",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "0bc227028cfd410d89fbeb0c64af6f9e",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "3a2d5af212b34b78bd8a025a6b82c3f0",
+    "type": "utterance",
+    "utterance_text": "工作日早上，今天的几件小事都写在纸上了。手头还忙着一件事。这次近况提到了“旧街筹备1号计划”，内容是音乐。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "551b3f7f25e441309549c037650ff37a",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "37d8063334654017bfc247009ffcbbf6",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "8d521b802c684d53aee7795b5a71f9cb",
+    "type": "utterance",
+    "utterance_text": "工作日早上，刚从外面回来，鞋子放到架子上了。刚才手头的事已经放下了。这次近况提到了“河畔筹备2号计划”，内容是做饭。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "7d906c7f94e04e8abbceb19a869e105d",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "7ebac7dcbb1f449ca06f3d33d18a4ad1",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "f6b8425e8e3748aaaaafc0f8acf61778",
+    "type": "utterance",
+    "utterance_text": "工作日早上，把这段进展记下来，免得晚些时候忘记。手头还忙着一件事。这次近况提到了“旧街筹备2号计划”，内容是手工。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "e40cc9fe2c98440c892d8b2e254251b2",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "7031c7c749f8462d83c45f107d205853",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "8125010cb312445588a565c0b87e10b0",
+    "type": "utterance",
+    "utterance_text": "前阵子聊到北坡准备计划时，我提过最喜欢四月这个名字。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "d1f5f50056f640f98ff715900c4c8bde",
+    "type": "utterance",
+    "utterance_text": "工作日晚上，刚从外面回来，鞋子放到架子上了。手头还忙着一件事。这次近况提到了“北坡准备计划”，内容是手工。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "dc6e3ae225cf48be8f5a3799797ebcb1",
+    "type": "utterance",
+    "utterance_text": "回应近况，然后问：说到北坡准备计划，你最喜欢哪个月份的名字？",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "6b08cf0e7bc347a1ac0fe2d8702501f8",
+    "type": "utterance",
+    "utterance_text": "（当时可见：晚上，工作日，在忙，话题提过）这个我说过了呀，不用再问。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "2a18900c9e524b5e9a7531c25699119a",
+    "type": "utterance",
+    "utterance_text": "工作日晚上，刚把桌面归拢了一下，准备开始下一件事。刚才手头的事已经放下了。这次近况提到了“竹园筹备1号计划”，内容是养猫。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "ff7dcdf0fb1b4a15ae0d3f012791136e",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "8311bb1830f54900acb09f360b94f8a5",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "60bd06c0b13b45fba269c896ea95234a",
+    "type": "utterance",
+    "utterance_text": "工作日晚上，椅子挪回原处了，杯子也洗完了。手头还忙着一件事。这次近况提到了“北坡准备计划”，内容是养猫。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "2e52cfeae7714598802e0de1b10d3541",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "c757ebe63945426f9b4bda39fa91c1a5",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "5a808ea5dc6e4fa5beb231f66b50b6d2",
+    "type": "utterance",
+    "utterance_text": "工作日晚上，刚从外面回来，鞋子放到架子上了。刚才手头的事已经放下了。这次近况提到了“竹园筹备2号计划”，内容是做饭。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "2c77548d4a3b40c0841d8fd2da3afced",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "b6bd37a3d2c74ac8bd3642c88eca54c7",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "5a30e50834544577aba8e84c3b7177b2",
+    "type": "utterance",
+    "utterance_text": "前阵子聊到山脚准备计划时，我提过最喜欢四月这个名字。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "a13df9884b8c431395cfa61c485c1480",
+    "type": "utterance",
+    "utterance_text": "周末早上，今天这段时间过得挺快，刚看了一眼钟。手头还忙着一件事。这次近况提到了“山脚准备计划”，内容是手工。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "d8384ab7f2ae4f2fa384a1e2c9d4a2df",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "4d37f5bed4394ac0b6d9881abb26ef28",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "fdc658c4cc8b48aebaaa709d9eefd055",
+    "type": "utterance",
+    "utterance_text": "前阵子聊到石桥准备计划时，我提过最喜欢四月这个名字。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "a8ead80fcceb4d4a8df3f35255c51cb8",
+    "type": "utterance",
+    "utterance_text": "周末早上，把这段进展记下来，免得晚些时候忘记。刚才手头的事已经放下了。这次近况提到了“石桥准备计划”，内容是做饭。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "a2a2e4ec88e24d69887123f492f0e6fe",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "786a6203a13b41b69c9a01396b0e2da8",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "bc74d5f49e7141eba5347a0652215b09",
+    "type": "utterance",
+    "utterance_text": "周末早上，今天的几件小事都写在纸上了。手头还忙着一件事。这次近况提到了“山脚准备计划”，内容是养猫。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "c9fa788cc8bd440c863b632fd90b9d08",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "12c73691389e45cd84a124b02a362967",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "22f88edc3bde41f493076dc7dad7b32b",
+    "type": "utterance",
+    "utterance_text": "周末早上，刚把桌面归拢了一下，准备开始下一件事。刚才手头的事已经放下了。这次近况提到了“石桥准备计划”，内容是音乐。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "7e0c5727a16f4d76b6a8328d4d7e540d",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "2f8e43c68c22427489a46b3b6d0b201a",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "59f6277a674e48e3acdf7919589b7598",
+    "type": "utterance",
+    "utterance_text": "周末晚上，椅子挪回原处了，杯子也洗完了。手头还忙着一件事。这次近况提到了“长廊筹备1号计划”，内容是音乐。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "6b3ab0429db74bda802d4d6bd1c6eb93",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "b95de9ec4a4c42408027d5527d9d7bc4",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "487724a7bc724d6da7cbd4a6fc7d6a27",
+    "type": "utterance",
+    "utterance_text": "周末晚上，看了看手边的东西，把它们换了个位置。刚才手头的事已经放下了。这次近况提到了“新巷筹备1号计划”，内容是养猫。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "cb7c82376ac44b4d9f1b0e73f49d074f",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "f5afcc56a4474aaebcf64ca70618be5a",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "9939440c5c57421cb5b4321de20e56d9",
+    "type": "utterance",
+    "utterance_text": "周末晚上，这会儿喝了口水，顺手把窗帘拉开了。手头还忙着一件事。这次近况提到了“长廊筹备2号计划”，内容是手工。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "bac69d79b86d48ac8efaf45fe35a4395",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "a9e71524ed3641e1a061f6230ba0e643",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "3d1daa30930149789f90de6ef2188799",
+    "type": "utterance",
+    "utterance_text": "周末晚上，今天这段时间过得挺快，刚看了一眼钟。刚才手头的事已经放下了。这次近况提到了“新巷筹备2号计划”，内容是做饭。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "8827e95eb62a4dc39ed03857e93c3c32",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "6c5af51842344c73a4ec84f38298bac5",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "bec3604091f64ae7886128980fd0d610",
+    "type": "utterance",
+    "utterance_text": "工作日早上，椅子挪回原处了，杯子也洗完了。刚才手头的事已经放下了。这次近况提到了“河畔筹备3号计划”，内容是音乐。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "d1d08352d19a4c06a51357590bb42049",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "73d33442c523447c8a4a7666b839a8fe",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "249d6edc1ade4bca8a423e8675dccc0a",
+    "type": "utterance",
+    "utterance_text": "工作日早上，刚把桌面归拢了一下，准备开始下一件事。手头还忙着一件事。这次近况提到了“旧街筹备3号计划”，内容是养猫。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "e0ae8ad55a0d422a8fc900365e4160d3",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "c17c5435b59242dd97102433e6eebd9a",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "24db3c848fb84fbaaa7d832bfa0a685f",
+    "type": "utterance",
+    "utterance_text": "工作日早上，这会儿喝了口水，顺手把窗帘拉开了。刚才手头的事已经放下了。这次近况提到了“河畔筹备4号计划”，内容是手工。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "a667db57ba3b4c878009f1204f581c14",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "98f0c63c5c734adaaf9e0b18223d53f8",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "4c4196334b3b486bbb02f62bebde1604",
+    "type": "utterance",
+    "utterance_text": "工作日早上，刚从外面回来，鞋子放到架子上了。手头还忙着一件事。这次近况提到了“旧街筹备4号计划”，内容是做饭。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "1981e35cb2d14b3ba7d4fc6b2f45650b",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "c560633f31bd48bc899b5c196ff5b645",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "7ac8708849f844968c8e7e0bfe6437c2",
+    "type": "utterance",
+    "utterance_text": "工作日晚上，这会儿喝了口水，顺手把窗帘拉开了。手头还忙着一件事。这次近况提到了“北坡准备计划”，内容是做饭。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "3210c220b05140f39305f0c45f58eb96",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "25bf155b6617490fa499a33b6d40a2cf",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "d6201fed3e0045598c90f641e0117f93",
+    "type": "utterance",
+    "utterance_text": "工作日晚上，椅子挪回原处了，杯子也洗完了。刚才手头的事已经放下了。这次近况提到了“竹园筹备3号计划”，内容是音乐。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "cbb14f463b1340ce93ad34391c316115",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "98d97b6b262d4f29af06b5b37ca517b5",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "00bbc93dd292404fba797d4553bed22b",
+    "type": "utterance",
+    "utterance_text": "工作日晚上，看了看手边的东西，把它们换了个位置。手头还忙着一件事。这次近况提到了“北坡准备计划”，内容是音乐。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "d7bdc373fe1448318e485a2ad44bb09c",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "01a1bc59c25b49c7b084aa53b56d3ba3",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "0c82f031930c45128107de13af39572f",
+    "type": "utterance",
+    "utterance_text": "工作日晚上，这会儿喝了口水，顺手把窗帘拉开了。刚才手头的事已经放下了。这次近况提到了“竹园筹备4号计划”，内容是手工。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "d1d161b689f449df9d4f6f38c154a3a5",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "b3e6fd22cc914518be7e2265ee906dfd",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "346e81a1f897496b9d3f283de97290bc",
+    "type": "utterance",
+    "utterance_text": "周末早上，把这段进展记下来，免得晚些时候忘记。手头还忙着一件事。这次近况提到了“山脚准备计划”，内容是做饭。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "0c70f141775a4ae3ac6b3a3144753151",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "13fc3d87ffb34b48940fd0cb5b06abfd",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "cd7e6bd6979b4bdab4074b6253d6ef50",
+    "type": "utterance",
+    "utterance_text": "周末早上，刚从外面回来，鞋子放到架子上了。刚才手头的事已经放下了。这次近况提到了“石桥准备计划”，内容是手工。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "12335b392e154b2b8958ea27c80b5a14",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "24724aa4f92b42ae87505278e8c9996d",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "18ae0b72b53346e795e7ab78d153f92a",
+    "type": "utterance",
+    "utterance_text": "周末早上，刚把桌面归拢了一下，准备开始下一件事。手头还忙着一件事。这次近况提到了“山脚准备计划”，内容是音乐。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "4f6ba6eb058e48e689bb3aaa503a7fdd",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "1c34d6037c55440bbbfe40736e7ccb2d",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "769a544b2588437d9761f1a202808080",
+    "type": "utterance",
+    "utterance_text": "周末早上，椅子挪回原处了，杯子也洗完了。刚才手头的事已经放下了。这次近况提到了“石桥准备计划”，内容是养猫。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "722d8582c49a44d186921157b66f126b",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "6d7d5c3c26f84d4d9dd015609802e5db",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "fce3bf6dd7134f3c9678393e21611ded",
+    "type": "utterance",
+    "utterance_text": "周末晚上，看了看手边的东西，把它们换了个位置。手头还忙着一件事。这次近况提到了“长廊筹备3号计划”，内容是养猫。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "2b6407cb420b4874b36cf1ba57a1d628",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "9655c1a413e240b2b542d1330e2ecb9d",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "08d6ebf2522a44e29f265eb56d6988b0",
+    "type": "utterance",
+    "utterance_text": "周末晚上，今天的几件小事都写在纸上了。刚才手头的事已经放下了。这次近况提到了“新巷筹备3号计划”，内容是音乐。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "399ae9acd9d44620af5636b9c0dc4e83",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "f200ee320901428f930644d21e9949e6",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "0d2aaa2485b74ac48addfe92443cac95",
+    "type": "utterance",
+    "utterance_text": "周末晚上，今天这段时间过得挺快，刚看了一眼钟。手头还忙着一件事。这次近况提到了“长廊筹备4号计划”，内容是做饭。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "00ff92f9009e416788c1cb3530e8d3f6",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "952debd80e7f40dc8015b1480894739a",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "15905999e62a4c599be53ea466114233",
+    "type": "utterance",
+    "utterance_text": "周末晚上，把这段进展记下来，免得晚些时候忘记。刚才手头的事已经放下了。这次近况提到了“新巷筹备4号计划”，内容是手工。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "7c26265fd44f49059b50f4a14565fff7",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "6a65b36ed18f416587673140ddc0cba6",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  }
+]

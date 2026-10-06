@@ -1,0 +1,31 @@
+{
+  "at_utc": "2026-10-06T12:48:00.025133+00:00",
+  "parent_manifest_sha256": "04ca0c1ac2af3a2d2510f37609ce1c554b634ef31784247f65d356e3a971580e",
+  "amendment_sha256": "7b0d38b2066f226c13504519a2a40129555f651d360c9a2c5b5ff4eed32c4271",
+  "audit_script_sha256": "ac833c820670e10842bf324d5b49686d35e0a1fc595cfe3baf8857b8178aa52a",
+  "prior_566_decisions_and_calls_prefix_byte_identical": true,
+  "new_decisions": 20,
+  "new_requests": 20,
+  "new_failures": 0,
+  "new_request_order_identical_to_authorized_remaining": true,
+  "first_resumed_input": "b/2/feedback_control/2-04-test-0",
+  "remaining": 0,
+  "status": {
+    "state": "complete",
+    "at_utc": "2026-10-06T12:39:55.481849+00:00",
+    "completed": 586
+  },
+  "authorization_committed_before_request": "4346de6c",
+  "request_reservation_ceiling_usd": 4.0,
+  "unchanged_projection_stop_usd": 2.0,
+  "unchanged_daily_budget_usd": 4.0,
+  "accounted_usd": 1.93557957,
+  "settled_usd": 1.59288257,
+  "unknown_reserves_preserved_usd": 0.34269700000000003,
+  "original_U3_statistics_match_current_results": {
+    "D0": true,
+    "D1": true
+  },
+  "exact_frozen_requests_and_single_concurrency": true,
+  "complete": true
+}

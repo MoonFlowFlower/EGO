@@ -1,0 +1,15 @@
+{
+  "at_utc": "2026-10-06T03:30:49.904863+00:00",
+  "old_manifest_sha256": "9812fe0e44f3fde3e0f29eb9076081338094179e630968ed51c3ee238ebf919d",
+  "new_manifest_sha256": "04ca0c1ac2af3a2d2510f37609ce1c554b634ef31784247f65d356e3a971580e",
+  "unchanged_inputs": 616,
+  "unchanged_judges": true,
+  "unchanged_order": true,
+  "unchanged_criteria": true,
+  "paid_requests_before_repair": 0,
+  "local_validation_limits_bytes": [
+    60000,
+    82946
+  ],
+  "production_source_modified": false
+}

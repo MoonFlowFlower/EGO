@@ -1,0 +1,46 @@
+{
+  "at_utc": "2026-10-06T12:40:31.714579+00:00",
+  "amendment_sha256": "719987f50bd393d3039c9bcdcf8eb0d453daf4a53e42897c9e47e05749917a47",
+  "D0_calls_and_decisions_byte_identical": true,
+  "D1_original_14_decisions_and_call_prefix_byte_identical": true,
+  "requests_identical_across_retries": true,
+  "maximum_attempts_per_input": 2,
+  "current_interrupted_input_retried_successfully": true,
+  "completed": 586,
+  "requests": 589,
+  "retried_inputs": [
+    "b/3/feedback_control/3-14-test-2",
+    "b/3/feedback_control/3-14-test-0",
+    "b/3/precedent/3-11-test-2"
+  ],
+  "D1_unknown_reserves": [
+    {
+      "charge_id": "066bbfd7918247f0a6fa997ec68f34e0",
+      "usd": 0.101282,
+      "status": "reserved_unknown",
+      "error": "upstream_unavailable"
+    },
+    {
+      "charge_id": "b75a5ccc45944cbc94711b5f08e90c8a",
+      "usd": 0.10127299999999999,
+      "status": "reserved_unknown",
+      "error": "upstream_connection_error"
+    },
+    {
+      "charge_id": "1e70bba1337a433fbc296ab9b801e66e",
+      "usd": 0.053253999999999996,
+      "status": "reserved_unknown",
+      "error": "upstream_unavailable"
+    }
+  ],
+  "transport_exception_types": {
+    "RemoteDisconnected": 1,
+    "SSLError": 1
+  },
+  "diagnostics_contain_only_allowed_fields": true,
+  "status": {
+    "state": "complete",
+    "at_utc": "2026-10-06T12:39:55.481849+00:00",
+    "completed": 586
+  }
+}

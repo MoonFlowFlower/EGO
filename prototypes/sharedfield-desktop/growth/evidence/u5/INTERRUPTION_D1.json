@@ -1,0 +1,46 @@
+{
+  "at_utc": "2026-10-06T04:15:15.501419+00:00",
+  "state": "resolved_by_owner_retry_policy",
+  "failed_input_id": "b/3/feedback_control/3-14-test-2",
+  "error": {
+    "code": "upstream_unavailable"
+  },
+  "completed": 14,
+  "attempt": 1,
+  "routing": [
+    {
+      "unix_s": 1791260049.2726512,
+      "outcome": "attempt",
+      "mode": "pinned",
+      "attempt": 1,
+      "charge_id": "066bbfd7918247f0a6fa997ec68f34e0",
+      "reserved_usd": 0.101282,
+      "model": "deepseek/deepseek-v4.1-flash",
+      "route": "wafer"
+    },
+    {
+      "unix_s": 1791260049.4277346,
+      "outcome": "unexpected_error",
+      "mode": "pinned",
+      "charge_id": "066bbfd7918247f0a6fa997ec68f34e0",
+      "reserved_usd": 0.101282,
+      "model": "deepseek/deepseek-v4.1-flash",
+      "route": "wafer"
+    }
+  ],
+  "cost_usd": 0.6792068099999999,
+  "projection": 1.7747831699999996,
+  "daily_budget": {
+    "local_day": "2026-10-05",
+    "timezone": "America/Winnipeg",
+    "limit_usd": 4.0,
+    "used_usd": 2.48304775,
+    "unknown_included_usd": 0.18817,
+    "remaining_usd": 1.5169522500000001
+  },
+  "proposed_scope": "One additional unchanged-input retry for this request; optionally authorize the same bounded rule for later upstream_unavailable errors, while keeping original cost/daily gates and no third attempt.",
+  "owner_authorization_verbatim": "可以都重试一次",
+  "owner_route_clarification_verbatim": "U5 按冻结配置继续，以后优先 OAuth",
+  "retry_policy_sha256": "719987f50bd393d3039c9bcdcf8eb0d453daf4a53e42897c9e47e05749917a47",
+  "resolution": "The original failed input completed on its second request. Later failures also completed after one retry. See OWNER_RETRY_POLICY_RECHECK.json; the new reservation stop is separate."
+}

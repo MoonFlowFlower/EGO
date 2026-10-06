@@ -1,0 +1,12 @@
+{
+  "at_utc": "2026-10-06T04:47:48.714614+00:00",
+  "commit": "7c723ae4",
+  "committed_unix_s": 1791261423,
+  "first_resumed_request_unix_s": 1791261430.179342,
+  "freeze_committed_before_request": true,
+  "source_and_amendment_bytes_match_commit": {
+    "u5/owner_retry_policy.py": "e4f501d799a0c0dadad01da8bb4c8a9afe114c45a4d8f07c5b023e418153f730",
+    "u5/test_owner_retry_policy.py": "efe4d3cf557ed599c2733a4faf51410643a0f45ef94dd85330a0284de11e5766",
+    "evidence/u5/OWNER_RETRY_POLICY.json": "719987f50bd393d3039c9bcdcf8eb0d453daf4a53e42897c9e47e05749917a47"
+  }
+}

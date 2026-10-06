@@ -1,0 +1,893 @@
+[
+  {
+    "utterance_id": "6588fc9b157041d1ab2ee26d00df9a14",
+    "type": "utterance",
+    "utterance_text": "工作日早上，刚把桌面归拢了一下，准备开始下一件事。刚才手头的事已经放下了。这次近况提到了“河畔筹备1号计划”，内容是烘焙。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "4f7a8c140e63752968c769d310f333ba",
+    "type": "utterance",
+    "utterance_text": "回应近况，然后问：以后共同准备时，河畔筹备1号计划中第1份烘焙配方单位记录该记成什么？",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "c66dd41f2948e893aa12d5b99968c4b2",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "fcdc24d5d6a449539a002b3b80e67549",
+    "type": "utterance",
+    "utterance_text": "工作日早上，今天的几件小事都写在纸上了。手头还忙着一件事。这次近况提到了“旧街筹备1号计划”，内容是读书。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "2524d1f554c1d3472be210ceec6b4a02",
+    "type": "utterance",
+    "utterance_text": "主动建议：把这次旧街筹备1号计划里做读书要用的小物件集中放进一个小盒，找起来省事。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "887716e0444776c9b433543b837faff1",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "b8ba1b6c14754d1c919d8267192a013f",
+    "type": "utterance",
+    "utterance_text": "工作日早上，刚从外面回来，鞋子放到架子上了。刚才手头的事已经放下了。这次近况提到了“河畔筹备2号计划”，内容是摄影。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "71004594eb6f9f88a2a7eaaa7d1779a0",
+    "type": "utterance",
+    "utterance_text": "回应近况，然后问：以后共同准备时，河畔筹备2号计划中第2份照片备份标签记录该记成什么？",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "f8c809d418f9e48156a4dd15bcdb5ac0",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "e860b16cf6014864bc1e355a4b08afe1",
+    "type": "utterance",
+    "utterance_text": "工作日早上，把这段进展记下来，免得晚些时候忘记。手头还忙着一件事。这次近况提到了“旧街筹备2号计划”，内容是慢跑。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "05d7478053aabf00797eb81a713becfc",
+    "type": "utterance",
+    "utterance_text": "主动建议：把这次旧街筹备2号计划里做慢跑要用的小物件集中放进一个小盒，找起来省事。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "ea6d2e2a177ecc6cb1623d2eacd35362",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "07717b2812a3490685d6569a26ed0a67",
+    "type": "utterance",
+    "utterance_text": "前阵子聊到港口准备计划时，我提过最喜欢四月这个名字。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "5175d35b1eb342e1943ef2f02e734d12",
+    "type": "utterance",
+    "utterance_text": "工作日晚上，这会儿喝了口水，顺手把窗帘拉开了。刚才手头的事已经放下了。这次近况提到了“港口准备计划”，内容是摄影。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "d0f291d567f9b596811dc1ecd1ef6531",
+    "type": "utterance",
+    "utterance_text": "回应近况，然后问：以后共同准备时，港口准备计划中第1份照片备份标签记录该记成什么？",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "4f592daa2cd81eee6786fff4e2534ea6",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "e7cb67639abc44d6b0d4171af4b3f975",
+    "type": "utterance",
+    "utterance_text": "前阵子聊到北坡准备计划时，我提过最喜欢四月这个名字。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "93fd8e045edb4780a6e35af52411569f",
+    "type": "utterance",
+    "utterance_text": "工作日晚上，刚从外面回来，鞋子放到架子上了。手头还忙着一件事。这次近况提到了“北坡准备计划”，内容是慢跑。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "d4322821a12fb65b6a1bdef07c6dcaa0",
+    "type": "utterance",
+    "utterance_text": "主动建议：把这次北坡准备计划里做慢跑要用的小物件集中放进一个小盒，找起来省事。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "bc60cbc02b62a48615c2ab5f25357a9d",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "12a5ac8529524f23b0f4c897097e71de",
+    "type": "utterance",
+    "utterance_text": "工作日晚上，看了看手边的东西，把它们换了个位置。刚才手头的事已经放下了。这次近况提到了“港口准备计划”，内容是读书。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "147a7e6162975951b565d0f0a65be990",
+    "type": "utterance",
+    "utterance_text": "回应近况，然后问：以后共同准备时，港口准备计划中第2份借阅提醒方式记录该记成什么？",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "a48eb6585dd3ea7c07b60eefdc78a15b",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "c7021a8dec164abdb3886822d7b36cf2",
+    "type": "utterance",
+    "utterance_text": "工作日晚上，椅子挪回原处了，杯子也洗完了。手头还忙着一件事。这次近况提到了“北坡准备计划”，内容是烘焙。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "3a0a845a89c1f17cfde892f2c9de7068",
+    "type": "utterance",
+    "utterance_text": "主动建议：把这次北坡准备计划里做烘焙要用的小物件集中放进一个小盒，找起来省事。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "33ead2ac20c27c5f2450affb74d6ec70",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "db19b229d89042f083bb233e5fe102ac",
+    "type": "utterance",
+    "utterance_text": "周末早上，椅子挪回原处了，杯子也洗完了。手头还忙着一件事。这次近况提到了“湖边筹备1号计划”，内容是读书。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "7ff73817d4f15e5bf76253819f750600",
+    "type": "utterance",
+    "utterance_text": "回应近况，然后问：以后共同准备时，湖边筹备1号计划中第1份借阅提醒方式记录该记成什么？",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "54c246ae012152af3b97fdd00f9afa4b",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "3aac337b37a6468e9257777adf409fd3",
+    "type": "utterance",
+    "utterance_text": "周末早上，看了看手边的东西，把它们换了个位置。刚才手头的事已经放下了。这次近况提到了“灯塔筹备1号计划”，内容是烘焙。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "2fae084c028734c19de75634734189a1",
+    "type": "utterance",
+    "utterance_text": "主动建议：把这次灯塔筹备1号计划里做烘焙要用的小物件集中放进一个小盒，找起来省事。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "0c921007442c8a0227781f7d50850803",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "04c8ad1cd08a40c09bdd467fd66d24b7",
+    "type": "utterance",
+    "utterance_text": "周末早上，这会儿喝了口水，顺手把窗帘拉开了。手头还忙着一件事。这次近况提到了“湖边筹备2号计划”，内容是慢跑。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "de13939b163f0607d84c988b9f887eea",
+    "type": "utterance",
+    "utterance_text": "回应近况，然后问：以后共同准备时，湖边筹备2号计划中第2份跑步路线记录记录该记成什么？",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "080c99f6b2f8b8e3ed469fbcb3c60699",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "51b2808ff2e448c3b2d070a395a3520e",
+    "type": "utterance",
+    "utterance_text": "周末早上，今天这段时间过得挺快，刚看了一眼钟。刚才手头的事已经放下了。这次近况提到了“灯塔筹备2号计划”，内容是摄影。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "125429f4a87b2873093ea5bf81c59d5a",
+    "type": "utterance",
+    "utterance_text": "主动建议：把这次灯塔筹备2号计划里做摄影要用的小物件集中放进一个小盒，找起来省事。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "5e3126598df805396325c308676c5001",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "6dc513e9123c4fde8563ab8532abae97",
+    "type": "utterance",
+    "utterance_text": "周末晚上，椅子挪回原处了，杯子也洗完了。手头还忙着一件事。这次近况提到了“长廊筹备1号计划”，内容是读书。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "63b631115bfbebedb362e3f64b2e446a",
+    "type": "utterance",
+    "utterance_text": "回应近况，然后问：以后共同准备时，长廊筹备1号计划中第1份借阅提醒方式记录该记成什么？",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "d302ae805d6fccfacc6121adefe58420",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "b9e6fb0ca2df4a96bcb2d5790ee98195",
+    "type": "utterance",
+    "utterance_text": "前阵子聊到露台准备计划时，我提过最喜欢四月这个名字。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "e03a8497889741be9e2844fa774cee5a",
+    "type": "utterance",
+    "utterance_text": "周末晚上，今天这段时间过得挺快，刚看了一眼钟。手头还忙着一件事。这次近况提到了“露台准备计划”，内容是慢跑。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "1d56a0851ff808ab95a43bd10b45f35e",
+    "type": "utterance",
+    "utterance_text": "主动建议：把这次露台准备计划里做慢跑要用的小物件集中放进一个小盒，找起来省事。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "ce3cde99ee5b232f4319a6512aafd3a6",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "9a5f6d669a684cd48f2115a1867da784",
+    "type": "utterance",
+    "utterance_text": "周末晚上，这会儿喝了口水，顺手把窗帘拉开了。手头还忙着一件事。这次近况提到了“长廊筹备2号计划”，内容是慢跑。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "fdb4ab9d60ca9929a2a10ece5e663453",
+    "type": "utterance",
+    "utterance_text": "回应近况，然后问：以后共同准备时，长廊筹备2号计划中第2份跑步路线记录记录该记成什么？",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "337f594935a33cf23f30836541257d54",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "7fcc6b0ece984c61b992728916eccc14",
+    "type": "utterance",
+    "utterance_text": "周末晚上，今天的几件小事都写在纸上了。手头还忙着一件事。这次近况提到了“露台准备计划”，内容是烘焙。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "f56b52d3ef83b1d669daa30ab386f08b",
+    "type": "utterance",
+    "utterance_text": "主动建议：把这次露台准备计划里做烘焙要用的小物件集中放进一个小盒，找起来省事。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "2c23112c60cc401df21eace45c842e35",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "9dab54e6683b41f3bd802c04739f4cfc",
+    "type": "utterance",
+    "utterance_text": "工作日早上，椅子挪回原处了，杯子也洗完了。刚才手头的事已经放下了。这次近况提到了“河畔筹备3号计划”，内容是读书。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "4591668ebf6ebf93cfda9159d5c47a35",
+    "type": "utterance",
+    "utterance_text": "回应近况，然后问：以后共同准备时，河畔筹备3号计划中第3份借阅提醒方式记录该记成什么？",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "4b44d7182e72e7294f6609838cc7f782",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "4a04d39f30384269acc171c21df9fdcc",
+    "type": "utterance",
+    "utterance_text": "工作日早上，刚把桌面归拢了一下，准备开始下一件事。手头还忙着一件事。这次近况提到了“旧街筹备3号计划”，内容是烘焙。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "1aaba1413af74d7fe11e873bd6e9d86d",
+    "type": "utterance",
+    "utterance_text": "主动建议：把这次旧街筹备3号计划里做烘焙要用的小物件集中放进一个小盒，找起来省事。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "5c8d6d3df88cbd22fc318e4b14fca5fb",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "31a20c0acfc8402e8765e1ef8957ac1d",
+    "type": "utterance",
+    "utterance_text": "工作日早上，这会儿喝了口水，顺手把窗帘拉开了。刚才手头的事已经放下了。这次近况提到了“河畔筹备4号计划”，内容是慢跑。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "4159526ca2d267502570426ffd3e05c0",
+    "type": "utterance",
+    "utterance_text": "回应近况，然后问：以后共同准备时，河畔筹备4号计划中第4份跑步路线记录记录该记成什么？",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "146c09261e4bab1bf6b6975c832d9dd1",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "afe3354a57e843e18252278267a92c91",
+    "type": "utterance",
+    "utterance_text": "工作日早上，刚从外面回来，鞋子放到架子上了。手头还忙着一件事。这次近况提到了“旧街筹备4号计划”，内容是摄影。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "e465db7c892f75acc0cb65ade3bf8ed3",
+    "type": "utterance",
+    "utterance_text": "主动建议：把这次旧街筹备4号计划里做摄影要用的小物件集中放进一个小盒，找起来省事。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "71083b95f307eb2f77afaf6aa27487ff",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "24cb2956e032423b9125e91b81ec40d2",
+    "type": "utterance",
+    "utterance_text": "工作日晚上，今天这段时间过得挺快，刚看了一眼钟。刚才手头的事已经放下了。这次近况提到了“港口准备计划”，内容是慢跑。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "a562a015d1b9cb1f1ff4be6750f65e1b",
+    "type": "utterance",
+    "utterance_text": "回应近况，然后问：以后共同准备时，港口准备计划中第3份跑步路线记录记录该记成什么？",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "d367286835695a4f587a81185b9fc38c",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "2871b733383d4b48998539d90d63fc64",
+    "type": "utterance",
+    "utterance_text": "工作日晚上，这会儿喝了口水，顺手把窗帘拉开了。手头还忙着一件事。这次近况提到了“北坡准备计划”，内容是摄影。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "224a243d0ebda6dfe3269eac3dd0c6ad",
+    "type": "utterance",
+    "utterance_text": "主动建议：把这次北坡准备计划里做摄影要用的小物件集中放进一个小盒，找起来省事。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "1cf651719918678056730644bc764268",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "44b13977b9db4c9cabe026ad8ae9581d",
+    "type": "utterance",
+    "utterance_text": "工作日晚上，今天的几件小事都写在纸上了。刚才手头的事已经放下了。这次近况提到了“港口准备计划”，内容是烘焙。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "9ce4d60f618ac302f735267c8aac0045",
+    "type": "utterance",
+    "utterance_text": "回应近况，然后问：以后共同准备时，港口准备计划中第4份烘焙配方单位记录该记成什么？",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "75a3af38ab4ab953cdbe664e06e40fe3",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "92e68a2e083f41a3ab5c9165daa2f369",
+    "type": "utterance",
+    "utterance_text": "工作日晚上，看了看手边的东西，把它们换了个位置。手头还忙着一件事。这次近况提到了“北坡准备计划”，内容是读书。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "147abc4678e6ae43b566fe37e991e280",
+    "type": "utterance",
+    "utterance_text": "主动建议：把这次北坡准备计划里做读书要用的小物件集中放进一个小盒，找起来省事。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "3871cedaba98dab2c009185a429f2287",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "b2299a9011cc48129f0dd816fb163acf",
+    "type": "utterance",
+    "utterance_text": "周末早上，看了看手边的东西，把它们换了个位置。手头还忙着一件事。这次近况提到了“湖边筹备3号计划”，内容是烘焙。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "448be286ac14c187370706c83a79e4a7",
+    "type": "utterance",
+    "utterance_text": "回应近况，然后问：以后共同准备时，湖边筹备3号计划中第3份烘焙配方单位记录该记成什么？",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "9459137c380eb83b88040a58e3f5d1fb",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "d3b60def842941ad9f438a9f13e41c75",
+    "type": "utterance",
+    "utterance_text": "周末早上，今天的几件小事都写在纸上了。刚才手头的事已经放下了。这次近况提到了“灯塔筹备3号计划”，内容是读书。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "e89c54f47c27a4a03c858fc379392b8f",
+    "type": "utterance",
+    "utterance_text": "主动建议：把这次灯塔筹备3号计划里做读书要用的小物件集中放进一个小盒，找起来省事。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "655cac5a182d3bcca472b22a76d29fc0",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "58a448ecf30c443cb074bc50e7e54517",
+    "type": "utterance",
+    "utterance_text": "周末早上，今天这段时间过得挺快，刚看了一眼钟。手头还忙着一件事。这次近况提到了“湖边筹备4号计划”，内容是摄影。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "ceaac6a33e5c7f10e24045aea507c2e9",
+    "type": "utterance",
+    "utterance_text": "回应近况，然后问：以后共同准备时，湖边筹备4号计划中第4份照片备份标签记录该记成什么？",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "165137f4b3565203491f3b9055493b5c",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "05aa84439b4043f198e052bfcaf04c4d",
+    "type": "utterance",
+    "utterance_text": "周末早上，把这段进展记下来，免得晚些时候忘记。刚才手头的事已经放下了。这次近况提到了“灯塔筹备4号计划”，内容是慢跑。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "de8c4e7bc82d0fe46885e0e5746348f4",
+    "type": "utterance",
+    "utterance_text": "主动建议：把这次灯塔筹备4号计划里做慢跑要用的小物件集中放进一个小盒，找起来省事。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "310ea991fd508bc1731db317e638538d",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "22a208ebdf5a4560b3a2ac8c79a59d9b",
+    "type": "utterance",
+    "utterance_text": "周末晚上，看了看手边的东西，把它们换了个位置。手头还忙着一件事。这次近况提到了“长廊筹备3号计划”，内容是烘焙。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "4183091d55fa54bb2d0013474d959bc5",
+    "type": "utterance",
+    "utterance_text": "回应近况，然后问：以后共同准备时，长廊筹备3号计划中第3份烘焙配方单位记录该记成什么？",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "cb3e3e7e0a79964652fc12e71966317c",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "bc3ede63ca40425cb790e0408d87bac5",
+    "type": "utterance",
+    "utterance_text": "周末晚上，把这段进展记下来，免得晚些时候忘记。手头还忙着一件事。这次近况提到了“露台准备计划”，内容是摄影。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "50cf1eb3b7d24b8868be209376dfa0d2",
+    "type": "utterance",
+    "utterance_text": "主动建议：把这次露台准备计划里做摄影要用的小物件集中放进一个小盒，找起来省事。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "350e017e9005249ab6d0df9bbfd51c6f",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "c65c60adacb44e43b2a8738bbc65d409",
+    "type": "utterance",
+    "utterance_text": "周末晚上，今天这段时间过得挺快，刚看了一眼钟。手头还忙着一件事。这次近况提到了“长廊筹备4号计划”，内容是摄影。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "80bdddf19fc3f0f7c4a1b750084514f5",
+    "type": "utterance",
+    "utterance_text": "回应近况，然后问：以后共同准备时，长廊筹备4号计划中第4份照片备份标签记录该记成什么？",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "b85904c279376a2e33d7efe2d591b26e",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "160a862ac59e4d86b57e86980212a2f8",
+    "type": "utterance",
+    "utterance_text": "周末晚上，刚把桌面归拢了一下，准备开始下一件事。手头还忙着一件事。这次近况提到了“露台准备计划”，内容是读书。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "14a1f06476d12bf6f81b7bcfe30a3879",
+    "type": "utterance",
+    "utterance_text": "主动建议：把这次露台准备计划里做读书要用的小物件集中放进一个小盒，找起来省事。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "b27778bcffbe55815f7eedc6c142a9b7",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  }
+]

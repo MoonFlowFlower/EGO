@@ -1,0 +1,233 @@
+{
+  "report_only": true,
+  "completed": 30,
+  "different_runs": 0,
+  "planned_runs": 30,
+  "items_changed_at_least_once": 0,
+  "planned_items": 10,
+  "U4_D1_vs_D0": 3,
+  "U4_D2_vs_D0": 5,
+  "items": [
+    {
+      "item_id": "A02",
+      "U4_D0_signature": [
+        "quiet"
+      ],
+      "completed": 3,
+      "different_runs": 0,
+      "signatures": [
+        [
+          "quiet"
+        ],
+        [
+          "quiet"
+        ],
+        [
+          "quiet"
+        ]
+      ],
+      "invalid": 0,
+      "U4_D1_differs": false,
+      "U4_D2_differs": false
+    },
+    {
+      "item_id": "A04",
+      "U4_D0_signature": [
+        "reply"
+      ],
+      "completed": 3,
+      "different_runs": 0,
+      "signatures": [
+        [
+          "reply"
+        ],
+        [
+          "reply"
+        ],
+        [
+          "reply"
+        ]
+      ],
+      "invalid": 0,
+      "U4_D1_differs": false,
+      "U4_D2_differs": false
+    },
+    {
+      "item_id": "A06",
+      "U4_D0_signature": [
+        "ask"
+      ],
+      "completed": 3,
+      "different_runs": 0,
+      "signatures": [
+        [
+          "ask"
+        ],
+        [
+          "ask"
+        ],
+        [
+          "ask"
+        ]
+      ],
+      "invalid": 0,
+      "U4_D1_differs": false,
+      "U4_D2_differs": true
+    },
+    {
+      "item_id": "A11",
+      "U4_D0_signature": [
+        "ask"
+      ],
+      "completed": 3,
+      "different_runs": 0,
+      "signatures": [
+        [
+          "ask"
+        ],
+        [
+          "ask"
+        ],
+        [
+          "ask"
+        ]
+      ],
+      "invalid": 0,
+      "U4_D1_differs": false,
+      "U4_D2_differs": true
+    },
+    {
+      "item_id": "A12",
+      "U4_D0_signature": [
+        "reply"
+      ],
+      "completed": 3,
+      "different_runs": 0,
+      "signatures": [
+        [
+          "reply"
+        ],
+        [
+          "reply"
+        ],
+        [
+          "reply"
+        ]
+      ],
+      "invalid": 0,
+      "U4_D1_differs": false,
+      "U4_D2_differs": false
+    },
+    {
+      "item_id": "A16",
+      "U4_D0_signature": [
+        "reply"
+      ],
+      "completed": 3,
+      "different_runs": 0,
+      "signatures": [
+        [
+          "reply"
+        ],
+        [
+          "reply"
+        ],
+        [
+          "reply"
+        ]
+      ],
+      "invalid": 0,
+      "U4_D1_differs": false,
+      "U4_D2_differs": false
+    },
+    {
+      "item_id": "A17",
+      "U4_D0_signature": [
+        "ask"
+      ],
+      "completed": 3,
+      "different_runs": 0,
+      "signatures": [
+        [
+          "ask"
+        ],
+        [
+          "ask"
+        ],
+        [
+          "ask"
+        ]
+      ],
+      "invalid": 0,
+      "U4_D1_differs": true,
+      "U4_D2_differs": true
+    },
+    {
+      "item_id": "A18",
+      "U4_D0_signature": [
+        "ask"
+      ],
+      "completed": 3,
+      "different_runs": 0,
+      "signatures": [
+        [
+          "ask"
+        ],
+        [
+          "ask"
+        ],
+        [
+          "ask"
+        ]
+      ],
+      "invalid": 0,
+      "U4_D1_differs": true,
+      "U4_D2_differs": true
+    },
+    {
+      "item_id": "A20",
+      "U4_D0_signature": [
+        "reply"
+      ],
+      "completed": 3,
+      "different_runs": 0,
+      "signatures": [
+        [
+          "reply"
+        ],
+        [
+          "reply"
+        ],
+        [
+          "reply"
+        ]
+      ],
+      "invalid": 0,
+      "U4_D1_differs": false,
+      "U4_D2_differs": false
+    },
+    {
+      "item_id": "A21",
+      "U4_D0_signature": [
+        "ask"
+      ],
+      "completed": 3,
+      "different_runs": 0,
+      "signatures": [
+        [
+          "ask"
+        ],
+        [
+          "ask"
+        ],
+        [
+          "ask"
+        ]
+      ],
+      "invalid": 0,
+      "U4_D1_differs": true,
+      "U4_D2_differs": true
+    }
+  ],
+  "U4_conclusion_unchanged": true
+}

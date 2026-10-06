@@ -1,0 +1,15 @@
+{
+  "recorded_at_utc": "2026-10-06T07:15:09.743984+00:00",
+  "command": "python -m unittest u5.test_owner_reservation u5.test_owner_retry_policy -q",
+  "passed": true,
+  "tests": 10,
+  "cloud_calls": 0,
+  "checks": [
+    "reservation headroom alone changes",
+    "projection above $2 still stops",
+    "same input reaches original model caller",
+    "new reservation bound still stops excessive reservation",
+    "all seven prior retry boundary checks"
+  ],
+  "test_source_sha256": "08f614b81d66fc5cdd2c9dce317dbc948477cd73b6c1ecbf20fe570a8024b4c7"
+}
