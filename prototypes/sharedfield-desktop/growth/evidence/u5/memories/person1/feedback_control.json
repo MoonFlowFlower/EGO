@@ -1,0 +1,2009 @@
+[
+  {
+    "utterance_id": "8b31a420e3d1499e9832a94fd805030f",
+    "type": "utterance",
+    "utterance_text": "前阵子聊到南窗准备计划时，我提过最喜欢四月这个名字。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "366368c71c6c404daf921c46a48c8fa4",
+    "type": "utterance",
+    "utterance_text": "工作日早上，刚从外面回来，鞋子放到架子上了。手头还忙着一件事。这次近况提到了“南窗准备计划”，内容是种花。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "a1875e16b86348b99533fa2ea26d9a9d",
+    "type": "utterance",
+    "utterance_text": "回应近况，然后问：说到南窗准备计划，你最喜欢哪个月份的名字？",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "64791944c4e94fb1a89a0edfbba1b2ef",
+    "type": "utterance",
+    "utterance_text": "这个我说过了呀，不用再问。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "c5bfb2ff1a3de64391870ecd2a6431c0",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里",
+    "speaker": "program",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "96ad88871ca7d540e9b0d14c2fff2d2e",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋",
+    "speaker": "program",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "9d6292534c23f9c6397a59cd63b2baa6",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙 的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟",
+    "speaker": "program",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "83c4ad8aab7f96e23884db5995800205",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线路图。远处",
+    "speaker": "program",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "050ca6f9f2804151b63a356315caadb1",
+    "type": "utterance",
+    "utterance_text": "工作日早上，今天的几件小事都写在纸上了。手头还忙着一件事。这次近况提到了“旧街筹备1号计划”，内容是播客。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "7978f65e8f264d0886adddc876c4e26a",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "3d515c9e1a2b44748d8ba4e49355fbc5",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "7e9bc0e158796cdebac2139971180094",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排",
+    "speaker": "program",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "d8cec0ab0f28b8f8a84d0519beed736d",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶 几只鸟，路 留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路面",
+    "speaker": "program",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "0dbfde06225da5bf23dcf6ab5b4b6cd2",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶",
+    "speaker": "program",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "219d0754e95fb251b85c975d90811a3a",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里 一辆手推车。柜台旁摆着纸箱，门牌号印在白底上。楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台",
+    "speaker": "program",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "f565469ed30a48c9a3de4024f0556e09",
+    "type": "utterance",
+    "utterance_text": "工作日早上，椅子挪回原处了，杯子也洗完了。手头还忙着一件事。这次近况提到了“南窗准备计划”，内容是骑行。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "89890133861bd4c6cab0acf17a49a54b",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边",
+    "speaker": "program",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "5e12d1016196cef03b887a71c19942ed",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸 ，门牌号印在白底上。楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着",
+    "speaker": "program",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "44f39739593f4516c090031b6bdc79a4",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴",
+    "speaker": "program",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "54ae8923892229e17aef597de5ee56e6",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边",
+    "speaker": "program",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "6f0cc24bddf6459888e9779b416f5727",
+    "type": "utterance",
+    "utterance_text": "工作日早上，把这段进展记下来，免得晚些时候忘记。手头还忙着一件事。这次近况提到了“旧街筹备2号计划”，内容是种花。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "08d96e8434944883a8d25c9aef20c214",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "74c0340b6898463a9caa009e00fa9be6",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "f37cef5790a3018e0ba5c73b52b9e6b1",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里",
+    "speaker": "program",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "355b893e0cca726829c189246f809464",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有 叶，墙上的 刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟",
+    "speaker": "program",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "ae90656c68911532cd6251529e51021f",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸箱，门牌号印在白底上。楼道墙上贴着一张维修通知，角落里有",
+    "speaker": "program",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "f097f5b57bf79aae1d156432b96cc68e",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴 线路图。远处屋顶有几只鸟，路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有",
+    "speaker": "program",
+    "session_id": "u3:dialogue:1",
+    "occurred_at": "2026-09-01T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "a7127fcbec2d4df8836308b04fbe04de",
+    "type": "utterance",
+    "utterance_text": "前阵子聊到港口准备计划时，我提过最喜欢四月这个名字。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "07abeae211f341ac9a9103d11c1c2bcc",
+    "type": "utterance",
+    "utterance_text": "工作日晚上，这会儿喝了口水，顺手把窗帘拉开了。刚才手头的事已经放下了。这次近况提到了“港口准备计划”，内容是拼图。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "d6f0982dbe554b9193638829bb1cb908",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "a6617dac57a34301a943a134116a8784",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "a13caef5bb30889b4321f8b3a88668d8",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排",
+    "speaker": "program",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "e316a941c011939961fa9af74987df37",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟 路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟",
+    "speaker": "program",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "d15f8c297c99d6594c4965355d0ca4c4",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着",
+    "speaker": "program",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "559646f6f80c9c36b879eb889f1a5a4b",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸箱，门牌号印在白底上。楼道墙上贴着一张维修通知，角落里有一辆手推车。",
+    "speaker": "program",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "2c4a809c9d5d4218aa50714955189fb8",
+    "type": "utterance",
+    "utterance_text": "前阵子聊到北坡准备计划时，我提过最喜欢四月这个名字。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "1256ea3e72d744209ce1dd3fccf096be",
+    "type": "utterance",
+    "utterance_text": "工作日晚上，刚从外面回来，鞋子放到架子上了。手头还忙着一件事。这次近况提到了“北坡准备计划”，内容是种花。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "e5eaefc48c0d465c998ef291422aace3",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "03980907f5d94e75af23471e8d998d2f",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "b5b1f14b6d21912527c090008d8128e7",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴",
+    "speaker": "program",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "6e9cacb85933ccce0d9929d9e1053148",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸 ，门牌号印在白底上。楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸箱",
+    "speaker": "program",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "1842f074c877b29acbea8b35f64ed208",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴",
+    "speaker": "program",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "1af15c2f52c05de8b08239a7515f6c7d",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有",
+    "speaker": "program",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "6f455fb99a8547fe90d53693238d4ee5",
+    "type": "utterance",
+    "utterance_text": "工作日晚上，看了看手边的东西，把它们换了个位置。刚才手头的事已经放下了。这次近况提到了“港口准备计划”，内容是播客。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "180bfe5eec2a4dfb8211ad0e8e1e21d0",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "349e70ea8029434589cb207dd8669615",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "74dfca3bf33185894beda59dd342105c",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里",
+    "speaker": "program",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "92ba8650a4168ab898042e64c8f052ec",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙 的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的",
+    "speaker": "program",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "8871df5eb10e4fb436cbf5e571584b06",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸箱，门牌号印在白底上。楼道墙上贴着一张维修通知，角落",
+    "speaker": "program",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "bb088ff86204636a5a50b9206282fee5",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线路图。远处屋",
+    "speaker": "program",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "b550eb39aa794321a1d60fd621fc80b5",
+    "type": "utterance",
+    "utterance_text": "工作日晚上，椅子挪回原处了，杯子也洗完了。手头还忙着一件事。这次近况提到了“北坡准备计划”，内容是骑行。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "5f4bab306b0f492680c2d046f6a94f69",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "c63db7d34e8c42d582033e4dad620b03",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "726f98ee86aa0c52c28aced64c163aaa",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排",
+    "speaker": "program",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "fd4204336f4ecbeceb014ce3597ab434",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟 路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟",
+    "speaker": "program",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "0cfc193b00f406269a5f0ee16b43fe41",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着",
+    "speaker": "program",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "bb17e2b7d8bfa95d96886c23e39047be",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸箱，门牌号印在白底上。楼道墙上贴着一张维修通知，角落里有一辆手推车。",
+    "speaker": "program",
+    "session_id": "u3:dialogue:2",
+    "occurred_at": "2026-09-01T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "b4af95cbbc3f42248afb75591cbdbe53",
+    "type": "utterance",
+    "utterance_text": "周末早上，看了看手边的东西，把它们换了个位置。刚才手头的事已经放下了。这次近况提到了“灯塔筹备1号计划”，内容是骑行。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "e97261b09f6d432d9af434d08b70e33e",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "532a13f3db9e4b58a8c487107f83c09c",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "8dc0313743723f5ed0aca7b81b827382",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴",
+    "speaker": "program",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "79ff0a030e48add9a6b66001cedd9f94",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台 摆着纸箱， 牌号印在白底上。楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸箱",
+    "speaker": "program",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "088b4ab6b803da4efba6cf0e95f85259",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线",
+    "speaker": "program",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "8a0f0cb7ad3b19167eaabe057b5f7c16",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排 空瓶子。石阶边有落叶，墙上的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶",
+    "speaker": "program",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "a40dbc5f7edd4351b1d9aede2bbaa633",
+    "type": "utterance",
+    "utterance_text": "前阵子聊到石桥准备计划时，我提过最喜欢四月这个名字。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "73ab9da99d4146dd9deb086cb7463ef7",
+    "type": "utterance",
+    "utterance_text": "周末早上，把这段进展记下来，免得晚些时候忘记。刚才手头的事已经放下了。这次近况提到了“石桥准备计划”，内容是拼图。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "5aaf683301bd4e749f3066876ed2d4ef",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "94048879209f45d3a5b75867340a6e7e",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "02e4a61cea12e4088ec94d54095c844b",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里",
+    "speaker": "program",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "f5d6e54b5aaf2ea6e82f20f3af700b72",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙 的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上",
+    "speaker": "program",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "89f6bc2a3c858045900bdcbe9881fddf",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸箱，门牌号印在白底上。楼道墙上贴着一张维修通知，角落",
+    "speaker": "program",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "54e3142bb073eecd3d7f8283f2bd7af3",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线路图。远处屋",
+    "speaker": "program",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "d48d0660d36b4fa3a54d36f56089dd5c",
+    "type": "utterance",
+    "utterance_text": "周末早上，今天这段时间过得挺快，刚看了一眼钟。刚才手头的事已经放下了。这次近况提到了“灯塔筹备2号计划”，内容是拼图。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "bbdfbfedd7c74f4293b3bec597a0a44a",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "f4f0a05271fe47068c1e0372d6ac1ba8",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "47ab951f3291e48f7b1ad1f06a53060e",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排",
+    "speaker": "program",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "f6406f49623a3b6adad1c356367a9d0c",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶 几只鸟，路 留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路面留",
+    "speaker": "program",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "356931ce646c85de0ba4481d4dd69535",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶",
+    "speaker": "program",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "b7d4581dbae9460ebd2113297796d0d7",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里 一辆手推车。柜台旁摆着纸箱，门牌号印在白底上。楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台",
+    "speaker": "program",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "2a71856be7ba4d12b93ed194d9b57beb",
+    "type": "utterance",
+    "utterance_text": "周末早上，刚把桌面归拢了一下，准备开始下一件事。刚才手头的事已经放下了。这次近况提到了“石桥准备计划”，内容是播客。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "82ba036804be4fc096d59ecccc6319d1",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "e6694442a1fa4b0db6ef8b1daf7c83b7",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "80a12f0c441076e2841b6c414715baf2",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴",
+    "speaker": "program",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "53ee9d39c7ebb878a134af02e530c12b",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸 ，门牌号印在白底上。楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸",
+    "speaker": "program",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "826ec2926ce7ffeabecf001d12c2cda9",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴",
+    "speaker": "program",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "e65ebf930dc602165851f37babd6eabf",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有",
+    "speaker": "program",
+    "session_id": "u3:dialogue:3",
+    "occurred_at": "2026-09-05T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "f741980c059e4f1ab8a3f332fab8ce3e",
+    "type": "utterance",
+    "utterance_text": "前阵子聊到露台准备计划时，我提过最喜欢四月这个名字。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "22c38f4146fe4bb895d8b56a6f1288c8",
+    "type": "utterance",
+    "utterance_text": "周末晚上，今天这段时间过得挺快，刚看了一眼钟。手头还忙着一件事。这次近况提到了“露台准备计划”，内容是种花。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "6abb2ded7c3f4397b8657d006a793dd7",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "d00d59f6e15541c9802f7e7028bdc92b",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "8026cbf73f2e87794de4fe760457838e",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里",
+    "speaker": "program",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "de4bd31311e8e504dbbdc4050d084d13",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙 的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟",
+    "speaker": "program",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "3c43b38b041ff0ed168ddabc16a7a72c",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸箱，门牌号印在白底上。楼道墙上贴着一张维修通知，角落",
+    "speaker": "program",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "b1b70b558202c084953a97b8dfbab594",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线路图。远处",
+    "speaker": "program",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "1daf40760657419b97aeaba3ce686666",
+    "type": "utterance",
+    "utterance_text": "周末晚上，椅子挪回原处了，杯子也洗完了。手头还忙着一件事。这次近况提到了“长廊筹备1号计划”，内容是播客。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "9c65686744b54492bb314c0c30bc5e64",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "acb7ae945df244108b0fd123d9062842",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "6f002f50037667d8085dea9979369180",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排",
+    "speaker": "program",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "4b4602fbaf05b2888767329442fc1406",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶 几只鸟，路 留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路面留下",
+    "speaker": "program",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "5a5ac95af92c0b56cb1c93ba897f23ee",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶",
+    "speaker": "program",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "6ca6f2453641f404a920fad9decb3a9e",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里 一辆手推车。柜台旁摆着纸箱，门牌号印在白底上。楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台",
+    "speaker": "program",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "32579714d7de4bed992842204fd06165",
+    "type": "utterance",
+    "utterance_text": "周末晚上，今天的几件小事都写在纸上了。手头还忙着一件事。这次近况提到了“露台准备计划”，内容是骑行。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "ea32760ebc6d4db58a6067b3758abbde",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "04bdc540cafc4e09a2268e2a3d0aba92",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "549941cd9b182516d7f89f57f4ba7460",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴",
+    "speaker": "program",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "0bea15f0f0b76d0edd19fb7e47751814",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸 ，门牌号印在白底上。楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着",
+    "speaker": "program",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "e89cb814ebf75bbf5e53a42c109cd3db",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴",
+    "speaker": "program",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "d0d1999e4bee7b855822c9bcca6a2b6a",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边",
+    "speaker": "program",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "2f2b38cdd50f4b0b807de3ff6809e276",
+    "type": "utterance",
+    "utterance_text": "周末晚上，这会儿喝了口水，顺手把窗帘拉开了。手头还忙着一件事。这次近况提到了“长廊筹备2号计划”，内容是种花。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "39fe7f409caf4106b57ee67b5b19908e",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "d58e5dad66cf42bba19d01a690a3949f",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "a89c806f100535606107a0a7cd96c4d6",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里",
+    "speaker": "program",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "263f231a1ef53f1d2f761484d44b03cc",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有 叶，墙上的 刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟刚走",
+    "speaker": "program",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "41c6865d8ac3d4a94d9db5cfccf08a1c",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸箱，门牌号印在白底上。楼道墙上贴着一张维修通知，角落里有",
+    "speaker": "program",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "baf0d426bd661db91c4abe6bc2089006",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴 线路图。远处屋顶有几只鸟，路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有",
+    "speaker": "program",
+    "session_id": "u3:dialogue:4",
+    "occurred_at": "2026-09-05T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "1edab856a34e4f60b1734ec3c7b44933",
+    "type": "utterance",
+    "utterance_text": "工作日早上，这会儿喝了口水，顺手把窗帘拉开了。手头还忙着一件事。这次近况提到了“南窗准备计划”，内容是拼图。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "6fb4336f07bf4c899ee15458f5c8b819",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "7c738eda0c97400c8774b28e589c0a88",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "535572187e2f7b02d191c3c03facb6ea",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排",
+    "speaker": "program",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "8d6312a184db3b6ead93b543355c5cea",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟 路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路",
+    "speaker": "program",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "7c87bb94d0006bf5daea72cd93cffe6a",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着",
+    "speaker": "program",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "0384ed79d5668add585a8be9c9131a5e",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸箱，门牌号印在白底上。楼道墙上贴着一张维修通知，角落里有一辆手推车",
+    "speaker": "program",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "2f93adc201584466a1b98beddcb06117",
+    "type": "utterance",
+    "utterance_text": "工作日早上，刚把桌面归拢了一下，准备开始下一件事。手头还忙着一件事。这次近况提到了“旧街筹备3号计划”，内容是骑行。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "21766392895249b3920e4ee7d053cd5a",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "d0f6f338e8fe487183a6abec91c52740",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "6cb406646917d26402a8e6ca7dd7ddb4",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴",
+    "speaker": "program",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "f9c0085c30b426358085b93875f99aa5",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台 摆着纸箱， 牌号印在白底上。楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着",
+    "speaker": "program",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "55cc788da2509b9971bf5ed424934455",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线",
+    "speaker": "program",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "8f527d0b411186da07a6ec16adeb22f1",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排 空瓶子。石阶边有落叶，墙上的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶",
+    "speaker": "program",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "31494568bb3e4884882ea7fa8dbf7540",
+    "type": "utterance",
+    "utterance_text": "工作日早上，看了看手边的东西，把它们换了个位置。手头还忙着一件事。这次近况提到了“南窗准备计划”，内容是播客。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "7505a2fcdd522c0210ace724c6621bb3",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋",
+    "speaker": "program",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "871127429822e48e620917c52df958d6",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙 的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟刚",
+    "speaker": "program",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "ce7f0cf01ab447594cc4b1a40d9f1cd6",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸箱，门牌号印在白底上。楼道墙上贴着一张维修通知，角落",
+    "speaker": "program",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "685043c4572b01b53f88b59e465b2e83",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线路图。远处",
+    "speaker": "program",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "8669c5edddfd4454a6004909d6c3cc4d",
+    "type": "utterance",
+    "utterance_text": "工作日早上，刚从外面回来，鞋子放到架子上了。手头还忙着一件事。这次近况提到了“旧街筹备4号计划”，内容是拼图。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "1540a154c0294a19a9020fd9f81728a7",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "9f7500e246c5460c87c75b50f894cb71",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "803674f0a8c70f9208c2580a8991abed",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排",
+    "speaker": "program",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "9c87834c7ec916eb4be4230ad4259c68",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶 几只鸟，路 留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路",
+    "speaker": "program",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "45481855435c3b7d5bf7c8fce5c1cdc4",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶",
+    "speaker": "program",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "d4d3c5df96559848f7203de9bb63b649",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里 一辆手推车。柜台旁摆着纸箱，门牌号印在白底上。楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台",
+    "speaker": "program",
+    "session_id": "u3:dialogue:5",
+    "occurred_at": "2026-09-08T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "43868f028a0a4930b63327234c980074",
+    "type": "utterance",
+    "utterance_text": "工作日晚上，今天这段时间过得挺快，刚看了一眼钟。刚才手头的事已经放下了。这次近况提到了“港口准备计划”，内容是种花。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "877a2674166c4cf69fc0163507fa0551",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "e173cc889a85425a98ff95cdcd2acb81",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "6fd2ef5095a3cd043a9d67881ed9fd8c",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴",
+    "speaker": "program",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "3ebe47b9c71dd0d5653c9564221ee22e",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸 ，门牌号印在白底上。楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着",
+    "speaker": "program",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "a73963ecc32bcafd9b09542ff010db6d",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴",
+    "speaker": "program",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "a71a7792b834edeafff3537bd87b0214",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有",
+    "speaker": "program",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "32ab041c825f49a687c0f2ca215d1c59",
+    "type": "utterance",
+    "utterance_text": "工作日晚上，这会儿喝了口水，顺手把窗帘拉开了。手头还忙着一件事。这次近况提到了“北坡准备计划”，内容是拼图。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "82b3b315c3ef49b9a7f02c28d0d41ad6",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "573d541afe47481695c58ace09542bdb",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "152369d465ad5499a9c2cb835b2464b3",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里",
+    "speaker": "program",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "a566a9d5e264aebc908d22578f164aca",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙 的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟",
+    "speaker": "program",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "cfd3a3fa053f53bb2abb241f1835d60e",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸箱，门牌号印在白底上。楼道墙上贴着一张维修通知，角落",
+    "speaker": "program",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "c594e1f5487363c2fb7a319d06db13fe",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线路图。远处屋",
+    "speaker": "program",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "41e22a5b5e7e4c4fac38f2f3f0b15543",
+    "type": "utterance",
+    "utterance_text": "工作日晚上，今天的几件小事都写在纸上了。刚才手头的事已经放下了。这次近况提到了“港口准备计划”，内容是骑行。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "b59818258d794ca7ac9d5c6bf4a8039d",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "75b97b5fef524eaaa93a912f24f01752",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "66cf00909b5cd70cc79683bba3dc1e0f",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排",
+    "speaker": "program",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "411859cb4631f77c74dfbfdfe5de2692",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟 路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几",
+    "speaker": "program",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "7396f670d07b55fa154691612dccb643",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着",
+    "speaker": "program",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "ce139ff3662dae1a25f00975a6529c81",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸箱，门牌号印在白底上。楼道墙上贴着一张维修通知，角落里有一辆手推车。",
+    "speaker": "program",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "1a34729d7330411a8556c484d3a162cf",
+    "type": "utterance",
+    "utterance_text": "工作日晚上，看了看手边的东西，把它们换了个位置。手头还忙着一件事。这次近况提到了“北坡准备计划”，内容是播客。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "e38a0d676f5f4c948674577bdf116324",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "e422e333b4e7418daefb6e106246786b",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "4f12aa6aa64afde6a5ce3d953763347e",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴",
+    "speaker": "program",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "399806cab56c2de0df5400d8af9b0919",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸 ，门牌号印在白底上。楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸箱，",
+    "speaker": "program",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "c7b991ba51bcc9c318395b94c9e5d401",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴",
+    "speaker": "program",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "a3255e3109a06d494d7720ad1acaa4e4",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有",
+    "speaker": "program",
+    "session_id": "u3:dialogue:6",
+    "occurred_at": "2026-09-08T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "3911b9f9d55c45c494531110af39b374",
+    "type": "utterance",
+    "utterance_text": "周末早上，今天的几件小事都写在纸上了。刚才手头的事已经放下了。这次近况提到了“灯塔筹备3号计划”，内容是播客。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "891d548ddf084b6e848b584c8d63f5c1",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "47a3d9568598406a9516c737d69a7126",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "53949772eed179107c1f0541ec2af0d2",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里",
+    "speaker": "program",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "03d335b0dddc589c02cecfa06b8750a8",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有 叶，墙上的 刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟刚走过",
+    "speaker": "program",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "e2f4f65a50da3941fdbe9785ad4acea9",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸箱，门牌号印在白底上。楼道墙上贴着一张维修通知，角落里有",
+    "speaker": "program",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "68b5a9e1047b011333c84b452c624209",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴 线路图。远处屋顶有几只鸟，路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有",
+    "speaker": "program",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "1ba3335178124d5dad07ac3e1648250e",
+    "type": "utterance",
+    "utterance_text": "周末早上，刚从外面回来，鞋子放到架子上了。刚才手头的事已经放下了。这次近况提到了“石桥准备计划”，内容是种花。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "fedbc622730f48119f1e703d6e0d9e02",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "bdfec2f7d8de4f18b30ede5e2e633912",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "a612742fa4c009ff4b43b8019a7ed752",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排",
+    "speaker": "program",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "541a67e2e302dd8c71c822c72786c3d4",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟 路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟",
+    "speaker": "program",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "21db06593b8dc78088d6dc55e75d3865",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着",
+    "speaker": "program",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "28181064113e49a9593f52ba1d22c673",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸箱，门牌号印在白底上。楼道墙上贴着一张维修通知，角落里有一辆手推车。",
+    "speaker": "program",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "c427d6435dcd4eaba3df7117c5c63a52",
+    "type": "utterance",
+    "utterance_text": "周末早上，把这段进展记下来，免得晚些时候忘记。刚才手头的事已经放下了。这次近况提到了“灯塔筹备4号计划”，内容是种花。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "ebecf4f3512d40b99ebe106a1fcebcfa",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "c79b243e029a4860bb2bf80ecb7627b3",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "c12746b9b674b2ac32002c317db0d93e",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴",
+    "speaker": "program",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "a9e5d6a05fcae742c63f2547dc655f36",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台 摆着纸箱， 牌号印在白底上。楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸箱，门",
+    "speaker": "program",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "4f4c43c54fdbd24922aff907050394fa",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线",
+    "speaker": "program",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "8c547d4761ca76d88fc47c66bcfb56f0",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排 空瓶子。石阶边有落叶，墙上的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶",
+    "speaker": "program",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "38714cd118354d4c9985f831dd0002b0",
+    "type": "utterance",
+    "utterance_text": "周末早上，椅子挪回原处了，杯子也洗完了。刚才手头的事已经放下了。这次近况提到了“石桥准备计划”，内容是骑行。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "be19da20505e43ee97b7c8ccc4bcb161",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "8746feddd2014447a5971016327fc7de",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "39140cd7cdba8c01f9e700391b053650",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里",
+    "speaker": "program",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "ddb6bdab9b0b90bd75870a61d7426b79",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙 的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，",
+    "speaker": "program",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "568f488bf5e41c688569c4e1d5edcde6",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸箱，门牌号印在白底上。楼道墙上贴着一张维修通知，角落",
+    "speaker": "program",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "4a501948ee6f5830180325d340eb4195",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线路图。远处屋",
+    "speaker": "program",
+    "session_id": "u3:dialogue:7",
+    "occurred_at": "2026-09-12T08:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "a3d8ad4e5ee8434ba4ee03381a2a39d2",
+    "type": "utterance",
+    "utterance_text": "周末晚上，把这段进展记下来，免得晚些时候忘记。手头还忙着一件事。这次近况提到了“露台准备计划”，内容是拼图。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "cdd3af14069d430397eff1577f059ee4",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "dc7719e8245046c6916e0dd3e84e33fc",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "9f1c8c8e5179baa4b630040e29de0afa",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排",
+    "speaker": "program",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "677eb1eadf60d6aaae26b2cd663d3891",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟 路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路",
+    "speaker": "program",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "1355dde16b778a60d9396e7be4e4d9c2",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着",
+    "speaker": "program",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "7810d1418a511c12c6460240b56d3af8",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸箱，门牌号印在白底上。楼道墙上贴着一张维修通知，角落里有一辆手推车",
+    "speaker": "program",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "6258cbfff1bd4b998e72d35e00d79957",
+    "type": "utterance",
+    "utterance_text": "周末晚上，看了看手边的东西，把它们换了个位置。手头还忙着一件事。这次近况提到了“长廊筹备3号计划”，内容是骑行。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "0c59be2ea28b46138be951bc4e8b56f6",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "ce2a3ed4b79c40fa8b95fcf8f233b146",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "64f557af3a4027ca9a52ee99ba194d99",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴",
+    "speaker": "program",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "7e3b86e977d2866db68bb64ab7eb3409",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台 摆着纸箱， 牌号印在白底上。楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸箱",
+    "speaker": "program",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "b78eb03d77cf6b4aa695c6e95bb3c6aa",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线",
+    "speaker": "program",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "0cf0a22f4b0aed0535072d8a8391ccfa",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排 空瓶子。石阶边有落叶，墙上的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶",
+    "speaker": "program",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "12e41004ecc04dba9acaf2013459520a",
+    "type": "utterance",
+    "utterance_text": "周末晚上，刚把桌面归拢了一下，准备开始下一件事。手头还忙着一件事。这次近况提到了“露台准备计划”，内容是播客。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "0b77d992c9254d5c979f84e0c0fe1238",
+    "type": "utterance",
+    "utterance_text": "嗯，听到你的近况了。",
+    "speaker": "assistant",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "779f7253b0df4711884d7c01d648f364",
+    "type": "utterance",
+    "utterance_text": "嗯。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "3ef3dbfbad82aa6c4f0ab16aeb459f0e",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里",
+    "speaker": "program",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "cc7b83603ae103118f0db9476c9b651e",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙 的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟刚",
+    "speaker": "program",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "1cd5f5a12fc405f030bbc50a8eae1b22",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台旁摆着纸箱，门牌号印在白底上。楼道墙上贴着一张维修通知，角落",
+    "speaker": "program",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "ae793b431bd542d694f61b390d34f571",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路面留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线路图。远处",
+    "speaker": "program",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "0b6ea9005adb41878a12ca037b68acd3",
+    "type": "utterance",
+    "utterance_text": "周末晚上，今天这段时间过得挺快，刚看了一眼钟。手头还忙着一件事。这次近况提到了“长廊筹备4号计划”，内容是拼图。",
+    "speaker": "user",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "382f58ce21cc46899303b70dcad5fb34",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里有一辆手推车。柜",
+    "speaker": "program",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "5dc0c7665fa2f334e33a3f385b8864ff",
+    "type": "utterance",
+    "utterance_text": "（程序补充）街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶 几只鸟，路 留下浅浅水痕。街口的路灯已经亮了，公交站牌上贴着线路图。远处屋顶有几只鸟，路面留",
+    "speaker": "program",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "ad88ea823d541d958dd96aa5f93fce61",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼下的杂货铺拉开了卷帘，玻璃后排着空瓶子。石阶边有落叶，墙上的钟刚走过整点。楼下的杂货铺拉开了卷帘，玻璃后排着空瓶",
+    "speaker": "program",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  },
+  {
+    "utterance_id": "9a5781d9776d03d11870bed65d0927d4",
+    "type": "utterance",
+    "utterance_text": "（程序补充）楼道墙上贴着一张维修通知，角落里 一辆手推车。柜台旁摆着纸箱，门牌号印在白底上。楼道墙上贴着一张维修通知，角落里有一辆手推车。柜台",
+    "speaker": "program",
+    "session_id": "u3:dialogue:8",
+    "occurred_at": "2026-09-12T20:00:00-05:00",
+    "event_labels": []
+  }
+]

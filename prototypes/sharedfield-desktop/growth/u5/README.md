@@ -1,0 +1,23 @@
+# U5 只改记忆
+
+在 `growth/` 使用 `.venv/Scripts/python.exe`。只有 D0、D1，无 D2。源库只读，七臂话语列表从 U3 S0 R 存档派生到 JSON；未改变生产记忆 API，也没有重新学习。新增程序话语用 `speaker=program`，正文以“（程序补充）”开头。
+
+```powershell
+.venv/Scripts/python.exe -m unittest u5.test_u5 -q
+.venv/Scripts/python.exe -m u5.run freeze
+.venv/Scripts/python.exe -m u5.run verify
+.venv/Scripts/python.exe -m u5.run run --judge D0
+.venv/Scripts/python.exe -m u5.run run --judge D1
+.venv/Scripts/python.exe -m u5.report
+.venv/Scripts/python.exe -m u5.audit
+```
+
+首次付费前提交并推送冻结清单、源码、全部输入及其哈希。D0 复用 N 72、R 63；补齐 R 9，新增五臂 360、F1b 82、噪声补测 30，共 481 请求。D1 七臂 504、F1b 82，共 586 请求。D0 噪声补测排在其余新决定之后；其余按冻结种子打乱。
+
+单并发由运行锁及共享 DailyLedger 调用锁保证。配置、60 秒超时、一次同输入网络重试、两次连续无效停止沿用 U4。原始输出立即记录，导出每 10 条及退出时完成。`runs/u5/STOP` 可停止；一小时分段或当日预算恢复后以原命令加 `--resume` 继续，只处理没有完成输出的输入。开始标记无终止记录时停止，不盲重发。新配置或修正提示均不用于补救无效输出。
+
+每天共用 $4 账本；U5 费用包含未知预留。每条调用后及下一条之前，按判断者、任务和记忆臂分别外推剩余费用；外推超过 $2 就停止请求，须负责人决定。无新结果的层用负责人原估计，不把 D0 的低费用外推到 D1。冻结后构造、阈值和输入不变。
+
+判据见冻结清单与 `scoring.py`。重抽单位是每个人物内的测试时刻，20,000 次成对自助法，95% 区间，下限严格大于零。D5 关闭该判断者的解释；现象检查不成立时，C5/C1/C3 只报告。忙时开口包含普通回应；主动仅指问、问已知、建议。
+
+原 S0 R 没有获知任何答案，各臂使用加分皆为零。作用域处理涉及 4 条负反应，F1b 使用材料提供的精确话题关联。只说明这批合成输入上的机制和连带，不说明她学会了什么。
