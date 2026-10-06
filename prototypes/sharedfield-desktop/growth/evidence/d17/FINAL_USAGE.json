@@ -1,0 +1,35 @@
+{
+  "at_utc": "2026-10-06T00:11:10.977177+00:00",
+  "pilot_plus_U4": {
+    "calls": 592,
+    "input_tokens": 3693453,
+    "output_tokens": 96477,
+    "errors": 5,
+    "unknown_calls": 0,
+    "calls_without_usage": 1,
+    "billing": "subscription"
+  },
+  "U4_D2": {
+    "decisions": 567,
+    "historical": 0,
+    "new": 567,
+    "request_attempts": 567,
+    "response_events": 567,
+    "pending_request": null,
+    "invalid_decisions": 0,
+    "errors": {},
+    "usage": {
+      "input_tokens": 3687741,
+      "output_tokens": 94809,
+      "reasoning_tokens": 6994,
+      "calls_without_usage": 0,
+      "reported_cost_usd": null
+    },
+    "latency_s": {
+      "median": 7.111816000004183,
+      "p95_nearest_rank": 12.154095199992298
+    },
+    "billing": "subscription"
+  },
+  "live_quota_observed": false
+}

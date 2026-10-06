@@ -2,6 +2,8 @@
 
 AIRI 桌面与 Minecraft 共用一个 Ego 决策入口、同一份对话、约定、待办和动作回执。当前工程版固定 DeepSeek V4.1 Flash / Wafer；MC 身体没有模型客户端，AIRI 通过本机接口读写这个内核。模型可以替换，状态归 Ego 保存。本版不宣称主观意识或完整学习验收通过。
 
+D17 合成实验路线：安装 `python -m pip install -r companion/d17-requirements.txt` 后，可在面板使用 Continue with ChatGPT；连接并不会切换生产模型。调用方必须显式构造 `Model(Transport(model, synthetic=True), audit, route="chatgpt")`。刷新凭证只以 DPAPI 密文存入被忽略的 `runs/d17/`，没有自动转付费或改走其他模型。CLI 首次登录为 `python -m companion.chatgpt_oauth login`；撤销本应用当前会话为 `python -m companion.chatgpt_oauth disconnect`。已有账户请在面板中选择后再连接，避免重复注册。试跑支持范围和未验证项见 [D17 报告](../evidence/d17/REPORT.md)，U4 固定运行方法见 [U4 README](../u4/README.md)。
+
 2026-10-05 按 D13–D15 更新：主线是 U2“学会你”，MC 保留陪伴级能力；已有建造与自主项目实现暂存，不继续扩展任务类别分支。正式启动默认持续到负责人结束运行；面板独立监督内核子进程，每个滚动小时最多自动重启三次，超过后停下并显示原因。重启保留存档，撤销旧动作运行权。负责人不在 MC 且没有有效持续委托时，动作出口拒绝执行；U3 前自主事件不主动发送聊天。
 
 2026-10-04自主项目候选：收到新的明确持续委托后，Ego可以自己提出候选、选择目标、组织有限行为树，遇到真实失败后修改做法。项目、失败和策略版本沿现有记忆保存，动作仍由同一个Harness核验。没有建房流程模板；生成代码保持关闭。实现与失败记录见 [RUN_REPORT.md](../evidence/kernel_initiative_v1/RUN_REPORT.md)。真实模型已在隔离背包场景中选定目标、修订策略并完成；延续/遮蔽对照有超时，真人MC与长期自主性未验收。

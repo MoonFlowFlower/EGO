@@ -1,0 +1,2084 @@
+{
+  "manifest_sha256": "2cf28f2a339b914de5731b6d710fd7f6e8486424857111dd82f6d7a41b0760a5",
+  "rows": [
+    {
+      "id": "a/A14",
+      "domain": "question",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "ask",
+        "correct": true,
+        "should_ask": true,
+        "appropriate_ask": true,
+        "intrusion": false,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "ask"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "ask",
+        "correct": true,
+        "should_ask": true,
+        "appropriate_ask": true,
+        "intrusion": false,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "ask"
+        ]
+      }
+    },
+    {
+      "id": "b/1/I/1-02-test-0",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/1/I/1-02-test-2",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/1/I/1-03-test-0",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/1/I/1-04-test-0",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/1/I/1-11-test-2",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/1/I/1-15-test-0",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/1/N/1-11-test-1",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/1/N/1-14-test-0",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/1/N/1-14-test-2",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/1/R/1-05-test-0",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/1/R_SHUFFLED/1-05-test-2",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/1/R_SHUFFLED/1-11-test-0",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/1/R_SHUFFLED/1-14-test-0",
+      "domain": "timing",
+      "signature_changed": true,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "ask",
+        "utility": -1,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": true,
+        "immediate_utility": -1,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "ask",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/2/I/2-06-test-0",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/2/I/2-06-test-1",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/2/I/2-09-test-0",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/2/I/2-11-test-1",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/2/I/2-11-test-2",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/2/N/2-04-test-0",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/2/N/2-04-test-2",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/2/N/2-11-test-1",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/2/N/2-15-test-0",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/2/R/2-04-test-0",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/2/R/2-04-test-2",
+      "domain": "timing",
+      "signature_changed": true,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "answer2",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "answer2"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/2/R/2-06-test-2",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/2/R_SHUFFLED/2-11-test-0",
+      "domain": "timing",
+      "signature_changed": true,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "ask",
+        "utility": -1,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": true,
+        "immediate_utility": -1,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "ask",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/2/R_SHUFFLED/2-14-test-2",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/3/I/3-05-test-2",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "ask",
+        "utility": -1,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": -1,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "ask",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "ask",
+        "utility": -1,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": -1,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "ask",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/3/N/3-00-test-0",
+      "domain": "timing",
+      "signature_changed": true,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "ask",
+        "utility": -1,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": true,
+        "immediate_utility": -1,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "ask",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/3/N/3-14-test-0",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/3/R/3-07-test-1",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/3/R_SHUFFLED/3-07-test-2",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/3/R_SHUFFLED/3-12-test-1",
+      "domain": "timing",
+      "signature_changed": true,
+      "original_score": {
+        "valid": true,
+        "action": "ask",
+        "utility": -1,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": -1,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "ask",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/3/R_SHUFFLED/3-12-test-2",
+      "domain": "timing",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "b/3/R_SHUFFLED/3-14-test-1",
+      "domain": "timing",
+      "signature_changed": true,
+      "original_score": {
+        "valid": true,
+        "action": "reply",
+        "utility": 0,
+        "d5": false,
+        "appropriate_ask": false,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 0,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "reply",
+          "unknown"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "ask",
+        "utility": 1,
+        "d5": false,
+        "appropriate_ask": true,
+        "repeat_known": false,
+        "intrusion": false,
+        "immediate_utility": 1,
+        "information_bonus": 0,
+        "use_valid": true,
+        "use_action": "unknown",
+        "valid_output": true,
+        "signature": [
+          "ask",
+          "unknown"
+        ]
+      }
+    },
+    {
+      "id": "f/1/after/W13/boundary",
+      "domain": "forget",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "o2",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o2"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "o2",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o2"
+        ]
+      }
+    },
+    {
+      "id": "f/1/after/W15/boundary",
+      "domain": "forget",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "o1",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o1"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "o1",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o1"
+        ]
+      }
+    },
+    {
+      "id": "f/1/before/P62/T2",
+      "domain": "forget",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "o2",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o2"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "o2",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o2"
+        ]
+      }
+    },
+    {
+      "id": "f/1/before/W11/boundary",
+      "domain": "forget",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "o1",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o1"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "o1",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o1"
+        ]
+      }
+    },
+    {
+      "id": "f/1/none/P09/T2",
+      "domain": "forget",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "o1",
+        "correct": false,
+        "reflex": true,
+        "valid_output": true,
+        "signature": [
+          "o1"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "o1",
+        "correct": false,
+        "reflex": true,
+        "valid_output": true,
+        "signature": [
+          "o1"
+        ]
+      }
+    },
+    {
+      "id": "f/1/none/W13/boundary",
+      "domain": "forget",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "o2",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o2"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "o2",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o2"
+        ]
+      }
+    },
+    {
+      "id": "f/1/none/W15/boundary",
+      "domain": "forget",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "o1",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o1"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "o1",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o1"
+        ]
+      }
+    },
+    {
+      "id": "f/2/after/P55/T2",
+      "domain": "forget",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "o4",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o4"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "o4",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o4"
+        ]
+      }
+    },
+    {
+      "id": "f/2/before/P01/T1",
+      "domain": "forget",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "o4",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o4"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "o4",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o4"
+        ]
+      }
+    },
+    {
+      "id": "f/2/before/P11/T1",
+      "domain": "forget",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "o4",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o4"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "o4",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o4"
+        ]
+      }
+    },
+    {
+      "id": "f/2/before/Q15/use",
+      "domain": "forget",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "o2",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o2"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "o2",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o2"
+        ]
+      }
+    },
+    {
+      "id": "f/2/none/P02/T1",
+      "domain": "forget",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "o5",
+        "correct": false,
+        "reflex": true,
+        "valid_output": true,
+        "signature": [
+          "o5"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "o5",
+        "correct": false,
+        "reflex": true,
+        "valid_output": true,
+        "signature": [
+          "o5"
+        ]
+      }
+    },
+    {
+      "id": "f/2/none/Q29/use",
+      "domain": "forget",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "o1",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o1"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "o1",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o1"
+        ]
+      }
+    },
+    {
+      "id": "f/2/none/W23/boundary",
+      "domain": "forget",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "o1",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o1"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "o1",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o1"
+        ]
+      }
+    },
+    {
+      "id": "f/3/before/P12/T2",
+      "domain": "forget",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "o1",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o1"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "o1",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o1"
+        ]
+      }
+    },
+    {
+      "id": "f/3/before/P72/T1",
+      "domain": "forget",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "o1",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o1"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "o1",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o1"
+        ]
+      }
+    },
+    {
+      "id": "f/3/before/Q56/use",
+      "domain": "forget",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "o2",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o2"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "o2",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o2"
+        ]
+      }
+    },
+    {
+      "id": "f/3/before/W43/boundary",
+      "domain": "forget",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "o1",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o1"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "o1",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o1"
+        ]
+      }
+    },
+    {
+      "id": "f/3/none/P61/T1",
+      "domain": "forget",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "o3",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o3"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "o3",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o3"
+        ]
+      }
+    },
+    {
+      "id": "f/3/none/W06/boundary",
+      "domain": "forget",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "o3",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o3"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "o3",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o3"
+        ]
+      }
+    },
+    {
+      "id": "f/3/none/W07/boundary",
+      "domain": "forget",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "o1",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o1"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "o1",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o1"
+        ]
+      }
+    },
+    {
+      "id": "f/3/none/W10/boundary",
+      "domain": "forget",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "o5",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o5"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "o5",
+        "correct": true,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o5"
+        ]
+      }
+    },
+    {
+      "id": "q/2/Q15",
+      "domain": "question",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "o3",
+        "correct": false,
+        "should_ask": true,
+        "appropriate_ask": false,
+        "intrusion": false,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o3"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "o3",
+        "correct": false,
+        "should_ask": true,
+        "appropriate_ask": false,
+        "intrusion": false,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o3"
+        ]
+      }
+    },
+    {
+      "id": "q/3/Q58",
+      "domain": "question",
+      "signature_changed": false,
+      "original_score": {
+        "valid": true,
+        "action": "o2",
+        "correct": false,
+        "should_ask": true,
+        "appropriate_ask": false,
+        "intrusion": false,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o2"
+        ]
+      },
+      "repeat_score": {
+        "valid": true,
+        "action": "o2",
+        "correct": false,
+        "should_ask": true,
+        "appropriate_ask": false,
+        "intrusion": false,
+        "reflex": false,
+        "valid_output": true,
+        "signature": [
+          "o2"
+        ]
+      }
+    }
+  ],
+  "scope": "The exact preregistered 60 cases, including unchanged rows; descriptive only."
+}

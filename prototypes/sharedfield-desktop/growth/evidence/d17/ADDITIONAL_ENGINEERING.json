@@ -1,0 +1,30 @@
+{
+  "at_utc": "2026-10-05T22:17:30.984193+00:00",
+  "tests_passed": 27,
+  "command": "python -m unittest companion.test_daily u2.test_client companion.test_harness -q",
+  "scope": "Additional regression check for the unchanged DeepSeek default and daily budget",
+  "panel_construction": {
+    "passed": true,
+    "visible_visual_acceptance": false,
+    "model_calls": 0
+  },
+  "author_copy_cleanup": "Automatic approval rejected recursive cleanup with blocked by policy; draft duplicates preserved in claude_work/EGO. Canonical committed execution is .publish/EGO.",
+  "session_readiness": {
+    "at_utc": "2026-10-05T22:52:12.476071+00:00",
+    "connected_before": true,
+    "plan_enabled": true,
+    "expired_or_due": false,
+    "access_obtained": true,
+    "connected_after": true,
+    "refresh_performed": false
+  },
+  "automatic_session_update": {
+    "at_utc": "2026-10-05T23:30:32.733363+00:00",
+    "connected": true,
+    "plan_enabled": true,
+    "credentials_updated_during_D2": true,
+    "seconds_until_access_expiry": 2161,
+    "subsequent_inference_observed": true,
+    "scope": "Only encrypted-file modification time and non-secret session metadata were inspected; no additional login or model call."
+  }
+}

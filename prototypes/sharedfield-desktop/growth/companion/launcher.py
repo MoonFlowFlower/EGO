@@ -18,14 +18,16 @@ def main():
     args = parser.parse_args()
     window = tk.Tk()
     window.title('Ego 共享内核')
-    window.geometry('760x300')
+    window.geometry('760x520')
     panel = ttk.Frame(window,padding=18)
     panel.pack(fill='both',expand=True)
     ttk.Label(panel,text='AIRI 与 Minecraft 共用同一内核',font=('Microsoft YaHei UI',15)).pack(anchor='w')
     status = tk.StringVar(value='正在启动内核……')
     ttk.Label(panel,textvariable=status,wraplength=720).pack(anchor='w',pady=12)
     ttk.Label(panel,text='AIRI 地址：http://127.0.0.1:18787/v1/    模型：ego-companion').pack(anchor='w')
-    ttk.Label(panel,text='持续运行到你关闭；每日额度 $1，按温尼伯本地零点重置。').pack(anchor='w',pady=8)
+    ttk.Label(panel,text='DeepSeek：每日额度 $4，按温尼伯本地零点重置。').pack(anchor='w',pady=8)
+    from .d17_panel import add_panel
+    add_panel(panel)
     supplied = window.clipboard_get() if args.reuse_local_token else None
     token = persistent_token(supplied=supplied,rotate=args.rotate_local_token)
     token_value = tk.StringVar(value=token)

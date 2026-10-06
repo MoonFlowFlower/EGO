@@ -1,0 +1,16 @@
+{
+  "at_utc": "2026-10-05T22:02:44.840944+00:00",
+  "scope": "Only the app-owned Ego Companion renewable session",
+  "revocation": {
+    "disconnected_locally": true,
+    "remote_revocation_confirmed": true,
+    "error": null
+  },
+  "live_error": {
+    "code": "invalid_grant",
+    "http_status": 400,
+    "body": "{\n  \"error\": \"invalid_grant\",\n  \"error_reason\": \"refresh_token_invalidated\",\n  \"error_description\": \"The refresh token has been invalidated. A fresh sign-in is required.\"\n}",
+    "request_id": "5e872e50-cad4-4252-98e0-ab33b32e294b",
+    "retry_after": null
+  }
+}

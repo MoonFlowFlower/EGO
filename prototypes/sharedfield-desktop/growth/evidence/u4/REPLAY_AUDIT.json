@@ -1,0 +1,97 @@
+{
+  "at_utc": "2026-10-06T00:44:26.008954+00:00",
+  "manifest_sha256": "2cf28f2a339b914de5731b6d710fd7f6e8486424857111dd82f6d7a41b0760a5",
+  "scope": "Observed request bytes, raw outputs, mechanical regrading, single concurrency and resource use. No new outcome criteria.",
+  "integrity_pass": true,
+  "closed_request_intervals": 1207,
+  "judges": {
+    "D0": {
+      "decisions": 567,
+      "historical": 554,
+      "new": 13,
+      "request_attempts": 13,
+      "response_events": 13,
+      "pending_request": null,
+      "invalid_decisions": 0,
+      "errors": {},
+      "usage": {
+        "input_tokens": 5902,
+        "output_tokens": 2104,
+        "reasoning_tokens": 0,
+        "calls_without_usage": 0,
+        "reported_cost_usd": 0.00290843
+      },
+      "latency_s": {
+        "median": 1.1993069000018295,
+        "p95_nearest_rank": 3.671742799997446
+      },
+      "billing": "shared_daily_dollar_ledger"
+    },
+    "D0_repeat": {
+      "decisions": 60,
+      "historical": 0,
+      "new": 60,
+      "request_attempts": 60,
+      "response_events": 60,
+      "pending_request": null,
+      "invalid_decisions": 0,
+      "errors": {},
+      "usage": {
+        "input_tokens": 372805,
+        "output_tokens": 8808,
+        "reasoning_tokens": 0,
+        "calls_without_usage": 0,
+        "reported_cost_usd": 0.034087685000000006
+      },
+      "latency_s": {
+        "median": 1.041649149992736,
+        "p95_nearest_rank": 1.8187706000026083
+      },
+      "billing": "shared_daily_dollar_ledger"
+    },
+    "D1": {
+      "decisions": 567,
+      "historical": 0,
+      "new": 567,
+      "request_attempts": 567,
+      "response_events": 567,
+      "pending_request": null,
+      "invalid_decisions": 0,
+      "errors": {},
+      "usage": {
+        "input_tokens": 3544826,
+        "output_tokens": 575957,
+        "reasoning_tokens": 505789,
+        "calls_without_usage": 0,
+        "reported_cost_usd": 0.7989563650000009
+      },
+      "latency_s": {
+        "median": 5.306640499999048,
+        "p95_nearest_rank": 16.461095000006026
+      },
+      "billing": "shared_daily_dollar_ledger"
+    },
+    "D2": {
+      "decisions": 567,
+      "historical": 0,
+      "new": 567,
+      "request_attempts": 567,
+      "response_events": 567,
+      "pending_request": null,
+      "invalid_decisions": 0,
+      "errors": {},
+      "usage": {
+        "input_tokens": 3687741,
+        "output_tokens": 94809,
+        "reasoning_tokens": 6994,
+        "calls_without_usage": 0,
+        "reported_cost_usd": null
+      },
+      "latency_s": {
+        "median": 7.111816000004183,
+        "p95_nearest_rank": 12.154095199992298
+      },
+      "billing": "subscription"
+    }
+  }
+}

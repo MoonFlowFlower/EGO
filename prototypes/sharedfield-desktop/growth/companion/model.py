@@ -63,8 +63,13 @@ class DecisionError(ValueError):
 
 
 class Model:
-    def __init__(self, transport, audit):
+    def __init__(self, transport, audit, *, route='deepseek'):
+        if route not in ('deepseek', 'chatgpt'):
+            raise ValueError('unknown_model_route')
+        if (getattr(transport, 'route', None) == 'chatgpt') != (route == 'chatgpt'):
+            raise ValueError('explicit_chatgpt_route_required')
         self.transport, self.audit = transport, audit
+        self.route = route
         self.calls = 0
 
     def decide(self, system, context):
@@ -74,6 +79,9 @@ class Model:
 
     def complete(self, request, *, observer=None, allow_invalid=False):
         """Shared production/experiment entry. The observer never receives headers."""
+        if self.route == 'chatgpt':
+            self.calls += 1
+            return self.transport.complete(request, observer=observer, allow_invalid=allow_invalid)
         lock = getattr(self.transport.ledger, 'call_lock', nullcontext)
         with lock():
             return self._complete(request, observer=observer, allow_invalid=allow_invalid)
