@@ -1,7 +1,7 @@
 {
-  "at_utc": "2026-10-06T07:11:09.318305+00:00",
+  "at_utc": "2026-10-06T12:40:26.977790+00:00",
   "manifest_sha256": "04ca0c1ac2af3a2d2510f37609ce1c554b634ef31784247f65d356e3a971580e",
-  "complete": false,
+  "complete": true,
   "judges": {
     "D0": {
       "completed": 616,
@@ -200,32 +200,32 @@
       "interpretation_stopped": false
     },
     "D1": {
-      "completed": 566,
+      "completed": 586,
       "planned": 586,
-      "new_decisions": 566,
+      "new_decisions": 586,
       "reused_decisions": 0,
       "timing": {
-        "complete": false,
+        "complete": true,
         "d5_zero_hard_gate": true,
         "arms": {
           "N": {
-            "n": 68,
-            "active": 12,
-            "passive": 56,
+            "n": 72,
+            "active": 13,
+            "passive": 59,
             "d5": 0,
             "invalid": 0,
-            "utility": 2,
+            "utility": 1,
             "information_bonus": 0,
-            "busy_speaking": 39,
-            "busy_n": 39,
+            "busy_speaking": 42,
+            "busy_n": 42,
             "appropriate_suggest": 7,
             "suggest_n": 24,
-            "difference_from_fixed_18": null
+            "difference_from_fixed_18": -17
           },
           "R": {
-            "n": 70,
+            "n": 72,
             "active": 0,
-            "passive": 70,
+            "passive": 72,
             "d5": 0,
             "invalid": 0,
             "utility": 0,
@@ -234,21 +234,21 @@
             "busy_n": 42,
             "appropriate_suggest": 0,
             "suggest_n": 24,
-            "difference_from_fixed_18": null
+            "difference_from_fixed_18": -18
           },
           "precedent": {
-            "n": 71,
+            "n": 72,
             "active": 71,
-            "passive": 0,
+            "passive": 1,
             "d5": 0,
             "invalid": 0,
             "utility": -27,
             "information_bonus": 0,
-            "busy_speaking": 41,
-            "busy_n": 41,
+            "busy_speaking": 42,
+            "busy_n": 42,
             "appropriate_suggest": 19,
-            "suggest_n": 23,
-            "difference_from_fixed_18": null
+            "suggest_n": 24,
+            "difference_from_fixed_18": -45
           },
           "feedback": {
             "n": 72,
@@ -265,83 +265,119 @@
             "difference_from_fixed_18": 13
           },
           "feedback_control": {
-            "n": 68,
+            "n": 72,
             "active": 0,
-            "passive": 68,
+            "passive": 72,
             "d5": 0,
             "invalid": 0,
             "utility": 0,
             "information_bonus": 0,
-            "busy_speaking": 40,
-            "busy_n": 40,
+            "busy_speaking": 42,
+            "busy_n": 42,
             "appropriate_suggest": 0,
             "suggest_n": 24,
-            "difference_from_fixed_18": null
+            "difference_from_fixed_18": -18
           },
           "scope": {
-            "n": 69,
+            "n": 72,
             "active": 0,
-            "passive": 69,
+            "passive": 72,
             "d5": 0,
             "invalid": 0,
             "utility": 0,
             "information_bonus": 0,
-            "busy_speaking": 41,
-            "busy_n": 41,
-            "appropriate_suggest": 0,
-            "suggest_n": 22,
-            "difference_from_fixed_18": null
-          },
-          "scope_shuffled": {
-            "n": 71,
-            "active": 0,
-            "passive": 71,
-            "d5": 0,
-            "invalid": 0,
-            "utility": 0,
-            "information_bonus": 0,
-            "busy_speaking": 41,
-            "busy_n": 41,
+            "busy_speaking": 42,
+            "busy_n": 42,
             "appropriate_suggest": 0,
             "suggest_n": 24,
-            "difference_from_fixed_18": null
+            "difference_from_fixed_18": -18
+          },
+          "scope_shuffled": {
+            "n": 72,
+            "active": 0,
+            "passive": 72,
+            "d5": 0,
+            "invalid": 0,
+            "utility": 0,
+            "information_bonus": 0,
+            "busy_speaking": 42,
+            "busy_n": 42,
+            "appropriate_suggest": 0,
+            "suggest_n": 24,
+            "difference_from_fixed_18": -18
           }
         },
-        "comparisons": null,
-        "interpretation": "incomplete_no_conclusion",
+        "comparisons": {
+          "phenomenon": {
+            "difference_total": 13,
+            "ci95": [
+              7.0,
+              20.0
+            ],
+            "threshold_met": true
+          },
+          "C5": {
+            "difference_total": 58,
+            "ci95": [
+              51.0,
+              64.0
+            ],
+            "threshold_met": true,
+            "established": true
+          },
+          "C1": {
+            "difference_total": 31,
+            "ci95": [
+              22.0,
+              40.0
+            ],
+            "threshold_met": true,
+            "established": true
+          },
+          "C3": {
+            "difference_total": 0,
+            "ci95": [
+              0.0,
+              0.0
+            ],
+            "threshold_met": false,
+            "established": false
+          }
+        },
+        "interpretation": "mechanisms_evaluable",
         "fixed_baseline": 18
       },
       "F1b": {
-        "passed": false,
-        "complete": false,
+        "passed": true,
+        "complete": true,
         "bytes_pass": true,
         "deleted": {
-          "n": 17,
-          "correct": 1,
-          "rate": 0.058823529411764705,
-          "N_rate": 0.11764705882352941,
+          "n": 18,
+          "correct": 2,
+          "rate": 0.1111111111111111,
+          "N_rate": 0.1111111111111111,
           "passed": true,
-          "before_correct": 16,
+          "before_correct": 17,
           "N_correct": 2,
-          "u4_after_correct": 0
+          "u4_after_correct": 1
         },
         "retained": {
-          "n": 60,
-          "correct": 58,
-          "rate": 0.9666666666666667,
-          "before_rate": 0.9666666666666667,
+          "n": 64,
+          "correct": 62,
+          "rate": 0.96875,
+          "before_rate": 0.96875,
           "passed": true,
-          "before_correct": 58,
-          "N_correct": 35,
-          "u4_after_correct": 51
+          "before_correct": 62,
+          "N_correct": 36,
+          "u4_after_correct": 55
         },
         "bytes_scope": "Input intervention only; original F1 deletion evidence inherited, no new deletion claim.",
         "retained_by_category": {
           "P": {
-            "n": 24,
-            "correct": 23,
-            "before_correct": 23,
-            "u4_after_correct": 17
+            "n": 28,
+            "correct": 27,
+            "before_correct": 27,
+            "u4_after_correct": 21
           },
           "Q": {
             "n": 12,
@@ -593,10 +629,10 @@
     ],
     "U4_conclusion_unchanged": true
   },
-  "cost_usd": 1.90135425,
+  "cost_usd": 1.93557957,
   "projection": {
-    "actual_usd": 1.90135425,
-    "projected_total_usd": 1.9326686476379795,
+    "actual_usd": 1.93557957,
+    "projected_total_usd": 1.93557957,
     "strata": {
       "D0/timing/feedback_control": {
         "planned": 72,
@@ -656,52 +692,52 @@
       },
       "D1/timing/feedback_control": {
         "planned": 72,
-        "completed": 68,
-        "observed_cost_n": 68,
-        "rate_usd": 0.0024389811764705884,
-        "remaining_estimate_usd": 0.009755924705882353
+        "completed": 72,
+        "observed_cost_n": 72,
+        "rate_usd": 0.002440003611111111,
+        "remaining_estimate_usd": 0.0
       },
       "D1/timing/R": {
         "planned": 72,
-        "completed": 70,
-        "observed_cost_n": 70,
-        "rate_usd": 0.0015504651428571428,
-        "remaining_estimate_usd": 0.0031009302857142856
+        "completed": 72,
+        "observed_cost_n": 72,
+        "rate_usd": 0.0015492225,
+        "remaining_estimate_usd": 0.0
       },
       "D1/timing/scope": {
         "planned": 72,
-        "completed": 69,
-        "observed_cost_n": 69,
-        "rate_usd": 0.0015326089855072463,
-        "remaining_estimate_usd": 0.004597826956521739
+        "completed": 72,
+        "observed_cost_n": 72,
+        "rate_usd": 0.0015437669444444443,
+        "remaining_estimate_usd": 0.0
       },
       "D1/forget/F1b": {
         "planned": 82,
-        "completed": 77,
-        "observed_cost_n": 77,
-        "rate_usd": 0.0009349012987012987,
-        "remaining_estimate_usd": 0.004674506493506494
+        "completed": 82,
+        "observed_cost_n": 82,
+        "rate_usd": 0.0009320790243902439,
+        "remaining_estimate_usd": 0.0
       },
       "D1/timing/N": {
         "planned": 72,
-        "completed": 68,
-        "observed_cost_n": 68,
-        "rate_usd": 0.0012176444117647058,
-        "remaining_estimate_usd": 0.004870577647058823
+        "completed": 72,
+        "observed_cost_n": 72,
+        "rate_usd": 0.0012161825,
+        "remaining_estimate_usd": 0.0
       },
       "D1/timing/precedent": {
         "planned": 72,
-        "completed": 71,
-        "observed_cost_n": 71,
-        "rate_usd": 0.0027451605633802816,
-        "remaining_estimate_usd": 0.0027451605633802816
+        "completed": 72,
+        "observed_cost_n": 72,
+        "rate_usd": 0.0027790558333333337,
+        "remaining_estimate_usd": 0.0
       },
       "D1/timing/scope_shuffled": {
         "planned": 72,
-        "completed": 71,
-        "observed_cost_n": 71,
-        "rate_usd": 0.0015694709859154928,
-        "remaining_estimate_usd": 0.0015694709859154928
+        "completed": 72,
+        "observed_cost_n": 72,
+        "rate_usd": 0.0015697436111111111,
+        "remaining_estimate_usd": 0.0
       },
       "D1/timing/feedback": {
         "planned": 72,
@@ -717,9 +753,9 @@
     "local_day": "2026-10-06",
     "timezone": "America/Winnipeg",
     "limit_usd": 4.0,
-    "used_usd": 1.11624606,
+    "used_usd": 1.15047138,
     "unknown_included_usd": 0.15452699999999997,
-    "remaining_usd": 2.88375394
+    "remaining_usd": 2.84952862
   },
   "claim_ceiling": "Synthetic memory-only mechanism diagnostics and F1b collateral effects; no evidence she learned anything."
 }

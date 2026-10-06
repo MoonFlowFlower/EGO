@@ -1,0 +1,15 @@
+{
+  "at_utc": "2026-10-06T12:36:05.135711+00:00",
+  "commit": "4346de6c",
+  "committed_before_request": true,
+  "source_and_authorization_bytes_match_commit": {
+    "u5/owner_reservation.py": "67790da4eb039fc98842ff819345d5bcfc37c3b9510a552472a417f955c94705",
+    "u5/test_owner_reservation.py": "2655b28d483db9e2faa714fbd095a31dea6cf19a2bf08cd8833fd976cc55ada8",
+    "evidence/u5/OWNER_RESERVATION_LIMIT.json": "7b0d38b2066f226c13504519a2a40129555f651d360c9a2c5b5ff4eed32c4271"
+  },
+  "committed_unix_s": 1791289886,
+  "first_resumed_request_unix_s": 1791289905.4911208,
+  "prior_566_decisions_and_calls_prefix_byte_identical": true,
+  "reservation_limit_usd": 4.0,
+  "projection_stop_usd": 2.0
+}

@@ -32,4 +32,6 @@ D0 第 258 个新增请求因 `upstream_unavailable` 停止，没有收到输出
 
 负责人另明确“U5 按冻结配置继续，以后优先 OAuth”。已读到 OAuth 实时模型目录，但其中没有这批冻结的 DeepSeek；U5 不更换路线或判断者。
 
-D1 在 566/586 处因单次请求保守预留闸门停止，下一条尚未发出。原 $2.05 方案保留在 `RESERVATION_PROPOSAL.json`，未执行的源码与测试另存 `preflight_versions/reservation_2_05_proposal/`。负责人确认“确认 门槛调整至4刀”，`OWNER_RESERVATION_LIMIT.json` 在续跑前冻结请求预留门槛 $4；原清单的全批外推停止线仍为 $2，共享每日账本仍为 $4。10 项离线边界检查通过，包括外推刚超过 $2 仍停止。以 `python -m u5.owner_reservation run` 续跑；输入、重试次数和判分均不改。重试的完整字节/预留复核可运行 `python -m u5.recheck_retry_policy`。
+D1 曾在 566/586 处因单次请求保守预留闸门停止，当时下一条尚未发出。原 $2.05 方案保留在 `RESERVATION_PROPOSAL.json`，未执行的源码与测试另存 `preflight_versions/reservation_2_05_proposal/`。负责人确认“确认 门槛调整至4刀”，`OWNER_RESERVATION_LIMIT.json` 在续跑前冻结请求预留门槛 $4；原清单的全批外推停止线仍为 $2，共享每日账本仍为 $4。10 项离线边界检查通过，包括外推刚超过 $2 仍停止。以 `python -m u5.owner_reservation run` 续跑；输入、重试次数和判分均不改。重试的完整字节/预留复核可运行 `python -m u5.recheck_retry_policy`。
+
+U5 已完整结束，最后 20 次请求无新增失败。最终计入 $1.93557957（已结算 $1.59288257、未知预留 $0.342697）。结论见 [结果读本](../evidence/u5/READOUT.md)，各臂数据见 [程序报告](../evidence/u5/REPORT.md)。`python -m u5.recheck_reservation` 可离线复核最后 20 次调用、授权前字节、费用边界及统计复算与当前结果的一致性，不会发起模型调用。重跑 `u5.report` 会重建程序报告；结果读本单独保存解释及跨日费用说明。

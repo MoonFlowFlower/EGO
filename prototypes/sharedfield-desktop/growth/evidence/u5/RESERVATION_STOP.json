@@ -17,5 +17,9 @@
   "owner_authorization_verbatim": "确认 门槛调整至4刀",
   "reservation_limit_usd": 4.0,
   "projection_stop_usd": 2.0,
-  "amendment_sha256": "7b0d38b2066f226c13504519a2a40129555f651d360c9a2c5b5ff4eed32c4271"
+  "amendment_sha256": "7b0d38b2066f226c13504519a2a40129555f651d360c9a2c5b5ff4eed32c4271",
+  "resolved": true,
+  "resolved_at_utc": "2026-10-06T12:39:55.481849+00:00",
+  "resolution": "Owner-authorized $4 request reservation ceiling; all remaining 20 calls completed, no new failures; original $2 projection and $4 daily gates retained.",
+  "completion_recheck": "RESERVATION_COMPLETION_RECHECK.json"
 }
