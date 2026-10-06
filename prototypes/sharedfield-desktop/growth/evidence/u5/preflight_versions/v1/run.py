@@ -15,9 +15,7 @@ from u3.common import read, write, sha, utc, append, budget_snapshot, cost
 from u4.run import RESUMABLE
 from .corpus import BASE, OUT, SEED, prepare, rows, digest, validate
 from .scoring import grade
-from .client import Client, projection, request_bound
-from p7.proxy import prepare_request, MAX_REQUEST_BYTES
-from p7.routing_v2 import configuration
+from .client import Client, projection
 
 FROZEN = OUT / 'FROZEN.json'
 
@@ -41,23 +39,6 @@ def freeze():
     new_order = {j: [i for i in seq if not (j == 'D0' and by_id[i]['historical'])] for j, seq in plans.items()}
     assert {j: len(v) for j, v in new_order.items()} == {'D0': 481, 'D1': 586}
     u4 = read(ROOT / 'evidence/u4/FROZEN.json')
-    raw_sizes = []
-    provider = configuration()['policy']['provider']
-    with request_bound(1_000_000):
-        for judge in ('D0', 'D1'):
-            adapter = Client.__new__(Client)
-            adapter.config = u4['judges'][judge]
-            for identity in plans[judge]:
-                request = adapter.request(by_id[identity])
-                raw_sizes.append(len(prepare_request(request, model=adapter.config['model'], provider=provider)[1]))
-                routed = dict(provider, only=[adapter.config['route']])
-                raw_sizes.append(len(prepare_request(request, model=adapter.config['model'], provider=routed)[1]))
-    byte_cap = max(MAX_REQUEST_BYTES, max(raw_sizes))
-    with request_bound(byte_cap):
-        for judge in ('D0', 'D1'):
-            adapter.config = u4['judges'][judge]
-            for identity in plans[judge]:
-                prepare_request(adapter.request(by_id[identity]), model=adapter.config['model'], provider=provider)
     for manifest, names in [('evidence/u3/FROZEN.json', ['u3/protocol.py', 'u3/statistics.py', 'u3/study.py', 'u3/materials.py', 'u3/baselines.py']),
                             ('evidence/u4/FROZEN.json', ['u2/protocol.py', 'u3/f1.py', 'u4/client.py', 'u4/scoring.py'])]:
         old = read(ROOT / manifest)['source_sha256']
@@ -80,9 +61,7 @@ def freeze():
         for name in ('calls.jsonl', 'decisions.jsonl', 'learned.json'):
             evidence.add(f'evidence/u3/raw/b/S0/person{person}/R/learn/{name}')
     design = (ROOT/'GROWTH_DESIGN_v0.md').read_text(encoding='utf-8')
-    value = {'version': 2, 'frozen_at_utc': utc(), 'seed': SEED, 'synthetic_only': True,
-        'request_byte_cap': byte_cap, 'old_request_byte_cap': MAX_REQUEST_BYTES,
-        'request_bound_rule': 'U5 process only, exact maximum forwarded frozen request bytes across both judges. No truncation, no changed request, no route/output/budget relaxation. All planned requests validated offline before spending.',
+    value = {'version': 1, 'frozen_at_utc': utc(), 'seed': SEED, 'synthetic_only': True,
         'judges': {j: u4['judges'][j] for j in ('D0', 'D1')}, 'temperature': 0,
         'order': plans, 'new_order': new_order,
         'input_manifest': [{'id': i['id'], 'record_sha256': digest(i), 'messages_sha256': i['messages_sha256'],

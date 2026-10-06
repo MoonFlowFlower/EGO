@@ -12,9 +12,7 @@ from u3.f1 import DIRECTIVE
 from u4.corpus import rows, historical
 from .corpus import OUT, ARMS, PREFIX, NARROW, NOISE_IDS, prepare, interventions, label, validate
 from .scoring import grade, bootstrap, timing
-from .client import projection, Client, request_bound
-from p7 import proxy
-from p7.routing_v2 import configuration
+from .client import projection, Client
 
 
 class U5Tests(unittest.TestCase):
@@ -175,19 +173,6 @@ class U5Tests(unittest.TestCase):
             self.assertEqual(request['messages'], original['messages'])
             self.assertEqual(request['temperature'], 0)
             self.assertEqual(request['reasoning'], client.config['reasoning'])
-
-    def test_large_frozen_request_validation_is_scoped(self):
-        old_limit = proxy.MAX_REQUEST_BYTES
-        item = max(self.inputs, key=lambda i: len(i['messages'][1]['content']))
-        provider = configuration()['policy']['provider']
-        with self.assertRaises(proxy.ProxyError):
-            proxy.prepare_request(item['original_request'], model=item['original_request']['model'], provider=provider)
-        with request_bound(1_000_000):
-            payload, raw, reserve = proxy.prepare_request(item['original_request'], model=item['original_request']['model'], provider=provider)
-            self.assertEqual(payload['messages'], item['messages'])
-            self.assertGreater(reserve, 0)
-            self.assertGreater(len(raw), old_limit)
-        self.assertEqual(proxy.MAX_REQUEST_BYTES, old_limit)
 
 
 if __name__ == '__main__':

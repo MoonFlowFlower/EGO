@@ -1,11 +1,8 @@
 {
-  "version": 2,
-  "frozen_at_utc": "2026-10-06T03:29:04.769663+00:00",
+  "version": 1,
+  "frozen_at_utc": "2026-10-06T03:27:00.680064+00:00",
   "seed": 2026100525,
   "synthetic_only": true,
-  "request_byte_cap": 82946,
-  "old_request_byte_cap": 60000,
-  "request_bound_rule": "U5 process only, exact maximum forwarded frozen request bytes across both judges. No truncation, no changed request, no route/output/budget relaxation. All planned requests validated offline before spending.",
   "judges": {
     "D0": {
       "model": "deepseek/deepseek-v4.1-flash",
@@ -8567,12 +8564,12 @@
     "u4/test_u4.py": "71b647c73ec84ede882f634962a0f60fcbdf90bf00b7313fbe98277980939cca",
     "u5/__init__.py": "f8701b075221a5b7bb664f204f94c87d8331b5daffa706332807e5aec06e9dfb",
     "u5/audit.py": "c0242566ce412b4a3ab3e71dc1669557a6559b48caaf86424f7d1fa1eb3857d1",
-    "u5/client.py": "e9de58aae1745128a4cf43f26a1815aaaaecae3ce41e09e3baeb3585b07d7caa",
+    "u5/client.py": "c27d1aecc376cd480be02d55c3aa57081ffdd48a8bf495e891b1f0ddb6b44701",
     "u5/corpus.py": "47097bbc4f247c70fb553ead8fda2ec2ff6ffd6c6e480d99338a840342f07586",
     "u5/report.py": "e37f98d3e36f8ab9fd0b72e986d58b485d197092a0c2565564910255f9a36756",
-    "u5/run.py": "6d3bad3bb0d5f5e39a4522fce4665a776184840cf39619944e862bb956981d75",
+    "u5/run.py": "5b80956809f496be170a4918f310d086e51e2de7e9f8e194557f156579207200",
     "u5/scoring.py": "98b5381ddf6b1cb0522d1444da9246ac4eb5609dd064fe6110a11e97ebb61e4f",
-    "u5/test_u5.py": "2966b3c2e823af2202a594753698097cb98cf3109d59cbd552531fc41cd39b8e"
+    "u5/test_u5.py": "4e8707cfbc1cd417779b8f8e96ca8f2ae894772a8b3b2007d1d3f5feeaee1846"
   },
   "evidence_sha256": {
     "CODEX_KICKOFF_U5.md": "edf210f879e248436e1793c534ecb6668c838f1f3005e4e8708f0e3489a2e470",
@@ -8607,7 +8604,7 @@
     "evidence/u4/raw/D1/decisions.jsonl": "05e9057668adc35a77485c044f5c30b6ebfb16bf1867b7ff8472c2e17400af19",
     "evidence/u4/raw/D2/decisions.jsonl": "ebcb352a363416d98a80b416bfb43fa74feae4a8f9f1abcb8e43f91aa753a06d",
     "evidence/u5/CONSTRUCTION.json": "1523a0e956a17b32c5d0f2e5e1e66c6725491054847f5d08cf0da2c48137de37",
-    "evidence/u5/ENGINEERING.json": "0ea18cdeb30fed90cbf72f0dfd939243c0bee9250b03f0fe95b10b99053206a6",
+    "evidence/u5/ENGINEERING.json": "8fa26e5e186f5aedb2d68faaa762f7c608b6557cf16804a5fb262635a6e17e36",
     "evidence/u5/F1B_RELEVANCE.json": "c67653eb46e0cbb22234fb60034ecf933c9ca8001167bcf62d54aaf913882db9",
     "evidence/u5/INPUTS.jsonl": "d2b8a9c3f07a4e53ebf084bb0e7cec7981f5ea44b17d485bec61d3d3d2b6bce6",
     "evidence/u5/memories/person1/N.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",

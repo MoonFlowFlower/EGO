@@ -1,23 +1,11 @@
 """U4 transport/retry semantics, separate U5 attribution and cost projection."""
 import time
-from contextlib import contextmanager
-from unittest.mock import patch
 from collections import defaultdict
-from p7 import proxy
 from u2.client import Stop
 from u3.client import Client as DeepSeekClient
 from u3.common import append, cost
 from u4.client import Client as U4Client
 from .corpus import BASE, rows
-
-
-@contextmanager
-def request_bound(maximum):
-    # Only the single U5 runner process changes its validation ceiling. The
-    # caller bound is measured from frozen requests, never from an API result.
-    # All field validation, output limits, route and budget checks are retained.
-    with patch.object(proxy, 'MAX_REQUEST_BYTES', maximum):
-        yield
 
 
 def stratum(item):
@@ -52,10 +40,6 @@ class Client(U4Client):
         self.manifest, self.inputs, self.decisions = manifest, inputs, decisions
         self.deepseek = DeepSeekClient(self.folder, base=BASE, cap=self.cap)
         self.model, self.audit = self.deepseek.model, self.deepseek.audit
-
-    def call(self, item):
-        with request_bound(self.manifest['request_byte_cap']):
-            return super().call(item)
 
     def check(self):
         self.deepseek.check()

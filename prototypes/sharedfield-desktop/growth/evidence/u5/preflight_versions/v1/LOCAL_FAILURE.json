@@ -1,0 +1,19 @@
+{
+  "at_utc": "2026-10-06T03:28:47.697060+00:00",
+  "code": "prompt_size_stop",
+  "stage": "u4.client.Client.call initial prepare_request before model.complete",
+  "requests": 0,
+  "routing_attempts": 0,
+  "cost_usd": 0,
+  "daily_budget": {
+    "local_day": "2026-10-05",
+    "timezone": "America/Winnipeg",
+    "limit_usd": 4.0,
+    "used_usd": 1.80384094,
+    "unknown_included_usd": 0,
+    "remaining_usd": 2.1961590600000003
+  },
+  "claim_resolved": "No dispatch; traceback at prevalidation, zero request observer events, no routing audit or charges. Old run folder retained; no model decision replayed.",
+  "commit": "7277095f",
+  "repair": "U5-only temporary MAX_REQUEST_BYTES bound to maximum frozen forwarded input bytes. Inputs, judges, output limits, retry, scoring and cost gates unchanged."
+}
