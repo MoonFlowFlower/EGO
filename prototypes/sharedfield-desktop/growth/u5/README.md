@@ -27,3 +27,7 @@
 D0 第 258 个新增请求因 `upstream_unavailable` 停止，没有收到输出。负责人明确授权“允许这条重试一次，再继续”，单独的 `OWNER_RETRY_ONCE.json` 在续跑前冻结并提交；`owner_resume.py` 只为该输入提供第 2 次尝试，其他请求仍走原运行器。重试成功，原失败和 $0.086888 未知预留保留。`OWNER_RETRY_RECHECK.json` 核对授权前 392 条决定、失败日志字节未变，两次请求相同且只有一个完成输出。该授权已消费，不能再用来恢复新的未知异常。
 
 结果可用 `python -m u5.recheck --judge D0` / `D1` 独立复算：将四项差值分别映射到未修改的 `u3.statistics.comparisons`，逐一对照点估计、区间及严格正下限规则。
+
+负责人随后授权“可以都重试一次”，覆盖当前 D1 中断及后续 `upstream_unavailable`。`OWNER_RETRY_POLICY.json` 冻结补充驱动、测试和原记录前缀哈希；`python -m u5.owner_retry_policy run` 续跑 D1，每条最多两次总尝试，不重放完成输出或不明中断。7 项离线边界检查通过，未知预留、外推 $2 和每日 $4 上限不变。若再次出现底层异常，仅新增异常类名和整数 errno 日志，不记录异常文本或请求凭证。一小时段限可自动续段，其他停止条件照旧。
+
+负责人另明确“U5 按冻结配置继续，以后优先 OAuth”。已读到 OAuth 实时模型目录，但其中没有这批冻结的 DeepSeek；U5 不更换路线或判断者。
