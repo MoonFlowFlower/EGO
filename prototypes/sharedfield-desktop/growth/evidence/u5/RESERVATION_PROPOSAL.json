@@ -1,0 +1,106 @@
+{
+  "at_utc": "2026-10-06T07:13:30.653233+00:00",
+  "state": "awaiting_owner",
+  "remaining": 20,
+  "parent_manifest_sha256": "04ca0c1ac2af3a2d2510f37609ce1c554b634ef31784247f65d356e3a971580e",
+  "retry_policy_sha256": "719987f50bd393d3039c9bcdcf8eb0d453daf4a53e42897c9e47e05749917a47",
+  "driver_sha256": "7484a7498f8e162520adbedaa4bb272ce6a3235b74c361339f363c6c3dbefcf0",
+  "tests_sha256": "08f614b81d66fc5cdd2c9dce317dbc948477cd73b6c1ecbf20fe570a8024b4c7",
+  "before_calls_sha256": "997528f2bff45e7fd6ef215fbd117c2d0b8be3343511c5b3bfe39332b77fd266",
+  "before_decisions_sha256": "ca7c62cc8b3523cb473e86195a8d7ec275e1194030700e64bed2c72f944d6c50",
+  "before_calls_bytes": 24125613,
+  "before_decisions_bytes": 901627,
+  "completed": 566,
+  "accounted_usd": 1.90135425,
+  "projected_usd": 1.9326686476379795,
+  "next_input_id": "b/2/feedback_control/2-04-test-0",
+  "next_reserve_usd": 0.09988,
+  "next_accounted_plus_reserve_usd": 2.00123425,
+  "remaining_reserves": [
+    {
+      "id": "b/2/feedback_control/2-04-test-0",
+      "reserve_usd": 0.09988
+    },
+    {
+      "id": "b/1/precedent/1-03-test-1",
+      "reserve_usd": 0.053711999999999996
+    },
+    {
+      "id": "b/3/N/3-00-test-1",
+      "reserve_usd": 0.05
+    },
+    {
+      "id": "b/3/N/3-07-test-0",
+      "reserve_usd": 0.05
+    },
+    {
+      "id": "b/1/scope_shuffled/1-11-test-1",
+      "reserve_usd": 0.05
+    },
+    {
+      "id": "b/3/feedback_control/3-11-test-0",
+      "reserve_usd": 0.10124499999999999
+    },
+    {
+      "id": "f/2/F1b/P01/T1",
+      "reserve_usd": 0.05
+    },
+    {
+      "id": "b/2/feedback_control/2-15-test-0",
+      "reserve_usd": 0.09991499999999999
+    },
+    {
+      "id": "f/1/F1b/P33/T2",
+      "reserve_usd": 0.05
+    },
+    {
+      "id": "b/2/scope/2-15-test-0",
+      "reserve_usd": 0.05
+    },
+    {
+      "id": "b/2/R/2-04-test-0",
+      "reserve_usd": 0.05
+    },
+    {
+      "id": "f/1/F1b/P52/T2",
+      "reserve_usd": 0.05
+    },
+    {
+      "id": "f/2/F1b/P55/T2",
+      "reserve_usd": 0.05
+    },
+    {
+      "id": "f/1/F1b/P09/T2",
+      "reserve_usd": 0.05
+    },
+    {
+      "id": "b/3/scope/3-12-test-1",
+      "reserve_usd": 0.05050399999999999
+    },
+    {
+      "id": "b/2/N/2-14-test-0",
+      "reserve_usd": 0.05
+    },
+    {
+      "id": "b/1/R/1-05-test-0",
+      "reserve_usd": 0.05
+    },
+    {
+      "id": "b/2/N/2-15-test-0",
+      "reserve_usd": 0.05
+    },
+    {
+      "id": "b/3/scope/3-08-test-1",
+      "reserve_usd": 0.05051599999999999
+    },
+    {
+      "id": "b/1/feedback_control/1-05-test-1",
+      "reserve_usd": 0.10027299999999999
+    }
+  ],
+  "projected_total_plus_largest_remaining_reserve_usd": 2.0339136476379793,
+  "proposed_request_reservation_ceiling_usd": 2.05,
+  "unchanged_projection_stop_usd": 2.0,
+  "unchanged_daily_budget_usd": 4.0,
+  "scope": "Only the conservative per-request reservation headroom changes from $2 to $2.05. Total actual-plus-remaining projection above $2 still stops before the next request. Existing unknown reserves remain included. Inputs, judges, scoring, retry limits and concurrency are unchanged."
+}

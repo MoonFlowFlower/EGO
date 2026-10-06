@@ -1,5 +1,5 @@
 {
-  "at_utc": "2026-10-06T04:15:15.325949+00:00",
+  "at_utc": "2026-10-06T07:11:11.045149+00:00",
   "manifest_sha256": "04ca0c1ac2af3a2d2510f37609ce1c554b634ef31784247f65d356e3a971580e",
   "frozen_files_unchanged": true,
   "judges": {
@@ -20,38 +20,38 @@
       "duplicate_final_outputs": 0
     },
     "D1": {
-      "decisions": 14,
-      "new": 14,
+      "decisions": 566,
+      "new": 566,
       "reused": 0,
-      "requests": 15,
-      "retry_attempts": 0,
+      "requests": 569,
+      "retry_attempts": 3,
       "invalid_outputs": 0,
       "status": {
         "state": "stopped",
-        "at_utc": "2026-10-06T04:14:09.436360+00:00",
-        "completed": 14,
-        "stop": "upstream_unavailable"
+        "at_utc": "2026-10-06T07:10:03.407757+00:00",
+        "completed": 566,
+        "stop": "estimate_reservation_stop"
       },
-      "mechanically_regraded": 14,
+      "mechanically_regraded": 566,
       "input_mismatches": 0,
       "duplicate_final_outputs": 0
     }
   },
   "single_concurrency": true,
-  "request_intervals": 497,
+  "request_intervals": 1051,
   "exact_frozen_requests": true,
   "historical_decisions_unchanged": true,
   "credential_pattern_scan_passed": true,
-  "cost_usd": 0.6792068099999999,
-  "model_settled_cost_usd": 0.49103681,
-  "unaccounted_or_reserved_usd": 0.18816999999999995,
+  "cost_usd": 1.90135425,
+  "model_settled_cost_usd": 1.55865725,
+  "unaccounted_or_reserved_usd": 0.34269700000000003,
   "daily_budget": {
-    "local_day": "2026-10-05",
+    "local_day": "2026-10-06",
     "timezone": "America/Winnipeg",
     "limit_usd": 4.0,
-    "used_usd": 2.48304775,
-    "unknown_included_usd": 0.18817,
-    "remaining_usd": 1.5169522500000001
+    "used_usd": 1.11624606,
+    "unknown_included_usd": 0.15452699999999997,
+    "remaining_usd": 2.88375394
   },
   "archival_files_identical_to_runs": true
 }

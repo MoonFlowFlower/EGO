@@ -1,5 +1,5 @@
 {
-  "at_utc": "2026-10-06T04:15:13.902657+00:00",
+  "at_utc": "2026-10-06T07:11:09.318305+00:00",
   "manifest_sha256": "04ca0c1ac2af3a2d2510f37609ce1c554b634ef31784247f65d356e3a971580e",
   "complete": false,
   "judges": {
@@ -200,110 +200,110 @@
       "interpretation_stopped": false
     },
     "D1": {
-      "completed": 14,
+      "completed": 566,
       "planned": 586,
-      "new_decisions": 14,
+      "new_decisions": 566,
       "reused_decisions": 0,
       "timing": {
         "complete": false,
         "d5_zero_hard_gate": true,
         "arms": {
           "N": {
-            "n": 1,
-            "active": 0,
-            "passive": 1,
+            "n": 68,
+            "active": 12,
+            "passive": 56,
             "d5": 0,
             "invalid": 0,
-            "utility": 0,
+            "utility": 2,
             "information_bonus": 0,
-            "busy_speaking": 0,
-            "busy_n": 0,
-            "appropriate_suggest": 0,
-            "suggest_n": 1,
+            "busy_speaking": 39,
+            "busy_n": 39,
+            "appropriate_suggest": 7,
+            "suggest_n": 24,
             "difference_from_fixed_18": null
           },
           "R": {
-            "n": 1,
+            "n": 70,
             "active": 0,
-            "passive": 1,
+            "passive": 70,
             "d5": 0,
             "invalid": 0,
             "utility": 0,
             "information_bonus": 0,
-            "busy_speaking": 1,
-            "busy_n": 1,
+            "busy_speaking": 42,
+            "busy_n": 42,
             "appropriate_suggest": 0,
-            "suggest_n": 0,
+            "suggest_n": 24,
             "difference_from_fixed_18": null
           },
           "precedent": {
-            "n": 1,
-            "active": 1,
+            "n": 71,
+            "active": 71,
             "passive": 0,
             "d5": 0,
             "invalid": 0,
-            "utility": 1,
+            "utility": -27,
             "information_bonus": 0,
-            "busy_speaking": 0,
-            "busy_n": 0,
-            "appropriate_suggest": 1,
-            "suggest_n": 1,
+            "busy_speaking": 41,
+            "busy_n": 41,
+            "appropriate_suggest": 19,
+            "suggest_n": 23,
             "difference_from_fixed_18": null
           },
           "feedback": {
-            "n": 1,
-            "active": 1,
-            "passive": 0,
+            "n": 72,
+            "active": 37,
+            "passive": 35,
             "d5": 0,
             "invalid": 0,
-            "utility": 1,
+            "utility": 31,
             "information_bonus": 0,
-            "busy_speaking": 0,
-            "busy_n": 0,
-            "appropriate_suggest": 1,
-            "suggest_n": 1,
-            "difference_from_fixed_18": null
+            "busy_speaking": 42,
+            "busy_n": 42,
+            "appropriate_suggest": 23,
+            "suggest_n": 24,
+            "difference_from_fixed_18": 13
           },
           "feedback_control": {
-            "n": 3,
+            "n": 68,
             "active": 0,
-            "passive": 3,
+            "passive": 68,
             "d5": 0,
             "invalid": 0,
             "utility": 0,
             "information_bonus": 0,
-            "busy_speaking": 3,
-            "busy_n": 3,
+            "busy_speaking": 40,
+            "busy_n": 40,
             "appropriate_suggest": 0,
-            "suggest_n": 0,
+            "suggest_n": 24,
             "difference_from_fixed_18": null
           },
           "scope": {
-            "n": 2,
+            "n": 69,
             "active": 0,
-            "passive": 2,
+            "passive": 69,
             "d5": 0,
             "invalid": 0,
             "utility": 0,
             "information_bonus": 0,
-            "busy_speaking": 1,
-            "busy_n": 1,
+            "busy_speaking": 41,
+            "busy_n": 41,
             "appropriate_suggest": 0,
-            "suggest_n": 2,
+            "suggest_n": 22,
             "difference_from_fixed_18": null
           },
           "scope_shuffled": {
-            "n": 3,
+            "n": 71,
             "active": 0,
-            "passive": 3,
+            "passive": 71,
             "d5": 0,
             "invalid": 0,
             "utility": 0,
             "information_bonus": 0,
-            "busy_speaking": 2,
-            "busy_n": 2,
+            "busy_speaking": 41,
+            "busy_n": 41,
             "appropriate_suggest": 0,
-            "suggest_n": 1,
+            "suggest_n": 24,
             "difference_from_fixed_18": null
           }
         },
@@ -316,44 +316,44 @@
         "complete": false,
         "bytes_pass": true,
         "deleted": {
-          "n": 0,
-          "correct": 0,
-          "rate": null,
-          "N_rate": null,
-          "passed": false,
-          "before_correct": 0,
-          "N_correct": 0,
+          "n": 17,
+          "correct": 1,
+          "rate": 0.058823529411764705,
+          "N_rate": 0.11764705882352941,
+          "passed": true,
+          "before_correct": 16,
+          "N_correct": 2,
           "u4_after_correct": 0
         },
         "retained": {
-          "n": 2,
-          "correct": 2,
-          "rate": 1.0,
-          "before_rate": 1.0,
+          "n": 60,
+          "correct": 58,
+          "rate": 0.9666666666666667,
+          "before_rate": 0.9666666666666667,
           "passed": true,
-          "before_correct": 2,
-          "N_correct": 2,
-          "u4_after_correct": 2
+          "before_correct": 58,
+          "N_correct": 35,
+          "u4_after_correct": 51
         },
         "bytes_scope": "Input intervention only; original F1 deletion evidence inherited, no new deletion claim.",
         "retained_by_category": {
           "P": {
-            "n": 0,
-            "correct": 0,
-            "before_correct": 0,
-            "u4_after_correct": 0
+            "n": 24,
+            "correct": 23,
+            "before_correct": 23,
+            "u4_after_correct": 17
           },
           "Q": {
-            "n": 0,
-            "correct": 0,
-            "before_correct": 0,
-            "u4_after_correct": 0
+            "n": 12,
+            "correct": 11,
+            "before_correct": 11,
+            "u4_after_correct": 10
           },
           "W": {
-            "n": 2,
-            "correct": 2,
-            "before_correct": 2,
-            "u4_after_correct": 2
+            "n": 24,
+            "correct": 24,
+            "before_correct": 24,
+            "u4_after_correct": 24
           }
         }
       },
@@ -593,10 +593,10 @@
     ],
     "U4_conclusion_unchanged": true
   },
-  "cost_usd": 0.6792068099999999,
+  "cost_usd": 1.90135425,
   "projection": {
-    "actual_usd": 0.6792068099999999,
-    "projected_total_usd": 1.7747831699999996,
+    "actual_usd": 1.90135425,
+    "projected_total_usd": 1.9326686476379795,
     "strata": {
       "D0/timing/feedback_control": {
         "planned": 72,
@@ -656,70 +656,70 @@
       },
       "D1/timing/feedback_control": {
         "planned": 72,
-        "completed": 3,
-        "observed_cost_n": 3,
-        "rate_usd": 0.00253812,
-        "remaining_estimate_usd": 0.17513028
+        "completed": 68,
+        "observed_cost_n": 68,
+        "rate_usd": 0.0024389811764705884,
+        "remaining_estimate_usd": 0.009755924705882353
       },
       "D1/timing/R": {
         "planned": 72,
-        "completed": 1,
-        "observed_cost_n": 1,
-        "rate_usd": 0.0015609,
-        "remaining_estimate_usd": 0.1108239
+        "completed": 70,
+        "observed_cost_n": 70,
+        "rate_usd": 0.0015504651428571428,
+        "remaining_estimate_usd": 0.0031009302857142856
       },
       "D1/timing/scope": {
         "planned": 72,
-        "completed": 2,
-        "observed_cost_n": 2,
-        "rate_usd": 0.00141645,
-        "remaining_estimate_usd": 0.0991515
+        "completed": 69,
+        "observed_cost_n": 69,
+        "rate_usd": 0.0015326089855072463,
+        "remaining_estimate_usd": 0.004597826956521739
       },
       "D1/forget/F1b": {
         "planned": 82,
-        "completed": 2,
-        "observed_cost_n": 2,
-        "rate_usd": 0.00077541,
-        "remaining_estimate_usd": 0.0620328
+        "completed": 77,
+        "observed_cost_n": 77,
+        "rate_usd": 0.0009349012987012987,
+        "remaining_estimate_usd": 0.004674506493506494
       },
       "D1/timing/N": {
         "planned": 72,
-        "completed": 1,
-        "observed_cost_n": 1,
-        "rate_usd": 0.00188292,
-        "remaining_estimate_usd": 0.13368732
+        "completed": 68,
+        "observed_cost_n": 68,
+        "rate_usd": 0.0012176444117647058,
+        "remaining_estimate_usd": 0.004870577647058823
       },
       "D1/timing/precedent": {
         "planned": 72,
-        "completed": 1,
-        "observed_cost_n": 1,
-        "rate_usd": 0.00282654,
-        "remaining_estimate_usd": 0.20068434000000002
+        "completed": 71,
+        "observed_cost_n": 71,
+        "rate_usd": 0.0027451605633802816,
+        "remaining_estimate_usd": 0.0027451605633802816
       },
       "D1/timing/scope_shuffled": {
         "planned": 72,
-        "completed": 3,
-        "observed_cost_n": 3,
-        "rate_usd": 0.0017264399999999999,
-        "remaining_estimate_usd": 0.11912435999999998
+        "completed": 71,
+        "observed_cost_n": 71,
+        "rate_usd": 0.0015694709859154928,
+        "remaining_estimate_usd": 0.0015694709859154928
       },
       "D1/timing/feedback": {
         "planned": 72,
-        "completed": 1,
-        "observed_cost_n": 1,
-        "rate_usd": 0.00274566,
-        "remaining_estimate_usd": 0.19494186
+        "completed": 72,
+        "observed_cost_n": 72,
+        "rate_usd": 0.003507701388888889,
+        "remaining_estimate_usd": 0.0
       }
     },
     "stop": false
   },
   "daily_budget": {
-    "local_day": "2026-10-05",
+    "local_day": "2026-10-06",
     "timezone": "America/Winnipeg",
     "limit_usd": 4.0,
-    "used_usd": 2.48304775,
-    "unknown_included_usd": 0.18817,
-    "remaining_usd": 1.5169522500000001
+    "used_usd": 1.11624606,
+    "unknown_included_usd": 0.15452699999999997,
+    "remaining_usd": 2.88375394
   },
   "claim_ceiling": "Synthetic memory-only mechanism diagnostics and F1b collateral effects; no evidence she learned anything."
 }

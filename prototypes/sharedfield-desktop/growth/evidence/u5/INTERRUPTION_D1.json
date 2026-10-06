@@ -1,6 +1,6 @@
 {
   "at_utc": "2026-10-06T04:15:15.501419+00:00",
-  "state": "owner_authorized_retry_pending",
+  "state": "resolved_by_owner_retry_policy",
   "failed_input_id": "b/3/feedback_control/3-14-test-2",
   "error": {
     "code": "upstream_unavailable"
@@ -41,5 +41,6 @@
   "proposed_scope": "One additional unchanged-input retry for this request; optionally authorize the same bounded rule for later upstream_unavailable errors, while keeping original cost/daily gates and no third attempt.",
   "owner_authorization_verbatim": "可以都重试一次",
   "owner_route_clarification_verbatim": "U5 按冻结配置继续，以后优先 OAuth",
-  "retry_policy_sha256": "719987f50bd393d3039c9bcdcf8eb0d453daf4a53e42897c9e47e05749917a47"
+  "retry_policy_sha256": "719987f50bd393d3039c9bcdcf8eb0d453daf4a53e42897c9e47e05749917a47",
+  "resolution": "The original failed input completed on its second request. Later failures also completed after one retry. See OWNER_RETRY_POLICY_RECHECK.json; the new reservation stop is separate."
 }
