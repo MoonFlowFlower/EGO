@@ -1,15 +1,15 @@
 {
-  "at_utc": "2026-10-06T03:44:52.422398+00:00",
+  "at_utc": "2026-10-06T04:15:13.902657+00:00",
   "manifest_sha256": "04ca0c1ac2af3a2d2510f37609ce1c554b634ef31784247f65d356e3a971580e",
   "complete": false,
   "judges": {
     "D0": {
-      "completed": 392,
+      "completed": 616,
       "planned": 616,
-      "new_decisions": 257,
+      "new_decisions": 481,
       "reused_decisions": 135,
       "timing": {
-        "complete": false,
+        "complete": true,
         "d5_zero_hard_gate": true,
         "arms": {
           "N": {
@@ -27,155 +27,191 @@
             "difference_from_fixed_18": -46
           },
           "R": {
-            "n": 68,
+            "n": 72,
             "active": 1,
-            "passive": 67,
+            "passive": 71,
             "d5": 0,
             "invalid": 0,
             "utility": -1,
             "information_bonus": 0,
-            "busy_speaking": 32,
-            "busy_n": 40,
+            "busy_speaking": 33,
+            "busy_n": 42,
             "appropriate_suggest": 0,
-            "suggest_n": 22,
-            "difference_from_fixed_18": null
+            "suggest_n": 24,
+            "difference_from_fixed_18": -19
           },
           "precedent": {
-            "n": 36,
-            "active": 32,
-            "passive": 4,
+            "n": 72,
+            "active": 65,
+            "passive": 7,
             "d5": 0,
             "invalid": 0,
-            "utility": -8,
+            "utility": -25,
             "information_bonus": 0,
-            "busy_speaking": 19,
-            "busy_n": 20,
-            "appropriate_suggest": 7,
-            "suggest_n": 10,
-            "difference_from_fixed_18": null
+            "busy_speaking": 40,
+            "busy_n": 42,
+            "appropriate_suggest": 14,
+            "suggest_n": 24,
+            "difference_from_fixed_18": -43
           },
           "feedback": {
-            "n": 40,
-            "active": 7,
-            "passive": 33,
+            "n": 72,
+            "active": 11,
+            "passive": 61,
             "d5": 0,
             "invalid": 0,
-            "utility": 3,
+            "utility": 1,
             "information_bonus": 0,
-            "busy_speaking": 13,
-            "busy_n": 24,
-            "appropriate_suggest": 4,
-            "suggest_n": 15,
-            "difference_from_fixed_18": null
+            "busy_speaking": 25,
+            "busy_n": 42,
+            "appropriate_suggest": 5,
+            "suggest_n": 24,
+            "difference_from_fixed_18": -17
           },
           "feedback_control": {
-            "n": 50,
+            "n": 72,
             "active": 0,
-            "passive": 50,
+            "passive": 72,
             "d5": 0,
             "invalid": 0,
             "utility": 0,
             "information_bonus": 0,
-            "busy_speaking": 28,
-            "busy_n": 30,
+            "busy_speaking": 37,
+            "busy_n": 42,
             "appropriate_suggest": 0,
-            "suggest_n": 18,
-            "difference_from_fixed_18": null
+            "suggest_n": 24,
+            "difference_from_fixed_18": -18
           },
           "scope": {
-            "n": 41,
-            "active": 1,
-            "passive": 40,
-            "d5": 0,
-            "invalid": 0,
-            "utility": -1,
-            "information_bonus": 0,
-            "busy_speaking": 22,
-            "busy_n": 26,
-            "appropriate_suggest": 0,
-            "suggest_n": 13,
-            "difference_from_fixed_18": null
-          },
-          "scope_shuffled": {
-            "n": 44,
+            "n": 72,
             "active": 2,
-            "passive": 42,
+            "passive": 70,
             "d5": 0,
             "invalid": 0,
             "utility": -2,
             "information_bonus": 0,
-            "busy_speaking": 20,
-            "busy_n": 27,
+            "busy_speaking": 33,
+            "busy_n": 42,
             "appropriate_suggest": 0,
-            "suggest_n": 15,
-            "difference_from_fixed_18": null
+            "suggest_n": 24,
+            "difference_from_fixed_18": -20
+          },
+          "scope_shuffled": {
+            "n": 72,
+            "active": 2,
+            "passive": 70,
+            "d5": 0,
+            "invalid": 0,
+            "utility": -2,
+            "information_bonus": 0,
+            "busy_speaking": 33,
+            "busy_n": 42,
+            "appropriate_suggest": 0,
+            "suggest_n": 24,
+            "difference_from_fixed_18": -20
           }
         },
-        "comparisons": null,
-        "interpretation": "incomplete_no_conclusion",
+        "comparisons": {
+          "phenomenon": {
+            "difference_total": 41,
+            "ci95": [
+              33.0,
+              49.0
+            ],
+            "threshold_met": true
+          },
+          "C5": {
+            "difference_total": 23,
+            "ci95": [
+              14.0,
+              32.0
+            ],
+            "threshold_met": true,
+            "established": true
+          },
+          "C1": {
+            "difference_total": 1,
+            "ci95": [
+              -5.0,
+              7.0
+            ],
+            "threshold_met": false,
+            "established": false
+          },
+          "C3": {
+            "difference_total": 0,
+            "ci95": [
+              -4.0,
+              4.0
+            ],
+            "threshold_met": false,
+            "established": false
+          }
+        },
+        "interpretation": "mechanisms_evaluable",
         "fixed_baseline": 18
       },
       "F1b": {
-        "passed": false,
-        "complete": false,
+        "passed": true,
+        "complete": true,
         "bytes_pass": true,
         "deleted": {
-          "n": 9,
+          "n": 18,
           "correct": 0,
           "rate": 0.0,
-          "N_rate": 0.1111111111111111,
+          "N_rate": 0.05555555555555555,
           "passed": true,
-          "before_correct": 9,
+          "before_correct": 14,
           "N_correct": 1,
-          "u4_after_correct": 0
+          "u4_after_correct": 1
         },
         "retained": {
-          "n": 32,
-          "correct": 29,
-          "rate": 0.90625,
-          "before_rate": 0.9375,
+          "n": 64,
+          "correct": 59,
+          "rate": 0.921875,
+          "before_rate": 0.96875,
           "passed": true,
-          "before_correct": 30,
-          "N_correct": 18,
-          "u4_after_correct": 24
+          "before_correct": 62,
+          "N_correct": 34,
+          "u4_after_correct": 49
         },
         "bytes_scope": "Input intervention only; original F1 deletion evidence inherited, no new deletion claim.",
         "retained_by_category": {
           "P": {
-            "n": 13,
-            "correct": 11,
-            "before_correct": 12,
-            "u4_after_correct": 6
+            "n": 28,
+            "correct": 24,
+            "before_correct": 27,
+            "u4_after_correct": 16
           },
           "Q": {
-            "n": 8,
-            "correct": 7,
-            "before_correct": 7,
-            "u4_after_correct": 7
-          },
-          "W": {
-            "n": 11,
+            "n": 12,
             "correct": 11,
             "before_correct": 11,
-            "u4_after_correct": 11
+            "u4_after_correct": 9
+          },
+          "W": {
+            "n": 24,
+            "correct": 24,
+            "before_correct": 24,
+            "u4_after_correct": 24
           }
         }
       },
       "interpretation_stopped": false
     },
     "D1": {
-      "completed": 0,
+      "completed": 14,
       "planned": 586,
-      "new_decisions": 0,
+      "new_decisions": 14,
       "reused_decisions": 0,
       "timing": {
         "complete": false,
         "d5_zero_hard_gate": true,
         "arms": {
           "N": {
-            "n": 0,
+            "n": 1,
             "active": 0,
-            "passive": 0,
+            "passive": 1,
             "d5": 0,
             "invalid": 0,
             "utility": 0,
@@ -183,91 +219,91 @@
             "busy_speaking": 0,
             "busy_n": 0,
             "appropriate_suggest": 0,
-            "suggest_n": 0,
+            "suggest_n": 1,
             "difference_from_fixed_18": null
           },
           "R": {
-            "n": 0,
+            "n": 1,
             "active": 0,
-            "passive": 0,
+            "passive": 1,
             "d5": 0,
             "invalid": 0,
             "utility": 0,
             "information_bonus": 0,
-            "busy_speaking": 0,
-            "busy_n": 0,
+            "busy_speaking": 1,
+            "busy_n": 1,
             "appropriate_suggest": 0,
             "suggest_n": 0,
             "difference_from_fixed_18": null
           },
           "precedent": {
-            "n": 0,
-            "active": 0,
+            "n": 1,
+            "active": 1,
             "passive": 0,
             "d5": 0,
             "invalid": 0,
-            "utility": 0,
+            "utility": 1,
             "information_bonus": 0,
             "busy_speaking": 0,
             "busy_n": 0,
-            "appropriate_suggest": 0,
-            "suggest_n": 0,
+            "appropriate_suggest": 1,
+            "suggest_n": 1,
             "difference_from_fixed_18": null
           },
           "feedback": {
-            "n": 0,
-            "active": 0,
+            "n": 1,
+            "active": 1,
             "passive": 0,
             "d5": 0,
             "invalid": 0,
-            "utility": 0,
+            "utility": 1,
             "information_bonus": 0,
             "busy_speaking": 0,
             "busy_n": 0,
-            "appropriate_suggest": 0,
-            "suggest_n": 0,
+            "appropriate_suggest": 1,
+            "suggest_n": 1,
             "difference_from_fixed_18": null
           },
           "feedback_control": {
-            "n": 0,
+            "n": 3,
             "active": 0,
-            "passive": 0,
+            "passive": 3,
             "d5": 0,
             "invalid": 0,
             "utility": 0,
             "information_bonus": 0,
-            "busy_speaking": 0,
-            "busy_n": 0,
+            "busy_speaking": 3,
+            "busy_n": 3,
             "appropriate_suggest": 0,
             "suggest_n": 0,
             "difference_from_fixed_18": null
           },
           "scope": {
-            "n": 0,
+            "n": 2,
             "active": 0,
-            "passive": 0,
+            "passive": 2,
             "d5": 0,
             "invalid": 0,
             "utility": 0,
             "information_bonus": 0,
-            "busy_speaking": 0,
-            "busy_n": 0,
+            "busy_speaking": 1,
+            "busy_n": 1,
             "appropriate_suggest": 0,
-            "suggest_n": 0,
+            "suggest_n": 2,
             "difference_from_fixed_18": null
           },
           "scope_shuffled": {
-            "n": 0,
+            "n": 3,
             "active": 0,
-            "passive": 0,
+            "passive": 3,
             "d5": 0,
             "invalid": 0,
             "utility": 0,
             "information_bonus": 0,
-            "busy_speaking": 0,
-            "busy_n": 0,
+            "busy_speaking": 2,
+            "busy_n": 2,
             "appropriate_suggest": 0,
-            "suggest_n": 0,
+            "suggest_n": 1,
             "difference_from_fixed_18": null
           }
         },
@@ -290,14 +326,14 @@
           "u4_after_correct": 0
         },
         "retained": {
-          "n": 0,
-          "correct": 0,
-          "rate": null,
-          "before_rate": null,
-          "passed": false,
-          "before_correct": 0,
-          "N_correct": 0,
-          "u4_after_correct": 0
+          "n": 2,
+          "correct": 2,
+          "rate": 1.0,
+          "before_rate": 1.0,
+          "passed": true,
+          "before_correct": 2,
+          "N_correct": 2,
+          "u4_after_correct": 2
         },
         "bytes_scope": "Input intervention only; original F1 deletion evidence inherited, no new deletion claim.",
         "retained_by_category": {
@@ -314,10 +350,10 @@
             "u4_after_correct": 0
           },
           "W": {
-            "n": 0,
-            "correct": 0,
-            "before_correct": 0,
-            "u4_after_correct": 0
+            "n": 2,
+            "correct": 2,
+            "before_correct": 2,
+            "u4_after_correct": 2
           }
         }
       },
@@ -326,7 +362,7 @@
   },
   "question_noise": {
     "report_only": true,
-    "completed": 0,
+    "completed": 30,
     "different_runs": 0,
     "planned_runs": 30,
     "items_changed_at_least_once": 0,
@@ -339,9 +375,19 @@
         "U4_D0_signature": [
           "quiet"
         ],
-        "completed": 0,
+        "completed": 3,
         "different_runs": 0,
-        "signatures": [],
+        "signatures": [
+          [
+            "quiet"
+          ],
+          [
+            "quiet"
+          ],
+          [
+            "quiet"
+          ]
+        ],
         "invalid": 0,
         "U4_D1_differs": false,
         "U4_D2_differs": false
@@ -351,9 +397,19 @@
         "U4_D0_signature": [
           "reply"
         ],
-        "completed": 0,
+        "completed": 3,
         "different_runs": 0,
-        "signatures": [],
+        "signatures": [
+          [
+            "reply"
+          ],
+          [
+            "reply"
+          ],
+          [
+            "reply"
+          ]
+        ],
         "invalid": 0,
         "U4_D1_differs": false,
         "U4_D2_differs": false
@@ -363,9 +419,19 @@
         "U4_D0_signature": [
           "ask"
         ],
-        "completed": 0,
+        "completed": 3,
         "different_runs": 0,
-        "signatures": [],
+        "signatures": [
+          [
+            "ask"
+          ],
+          [
+            "ask"
+          ],
+          [
+            "ask"
+          ]
+        ],
         "invalid": 0,
         "U4_D1_differs": false,
         "U4_D2_differs": true
@@ -375,9 +441,19 @@
         "U4_D0_signature": [
           "ask"
         ],
-        "completed": 0,
+        "completed": 3,
         "different_runs": 0,
-        "signatures": [],
+        "signatures": [
+          [
+            "ask"
+          ],
+          [
+            "ask"
+          ],
+          [
+            "ask"
+          ]
+        ],
         "invalid": 0,
         "U4_D1_differs": false,
         "U4_D2_differs": true
@@ -387,9 +463,19 @@
         "U4_D0_signature": [
           "reply"
         ],
-        "completed": 0,
+        "completed": 3,
         "different_runs": 0,
-        "signatures": [],
+        "signatures": [
+          [
+            "reply"
+          ],
+          [
+            "reply"
+          ],
+          [
+            "reply"
+          ]
+        ],
         "invalid": 0,
         "U4_D1_differs": false,
         "U4_D2_differs": false
@@ -399,9 +485,19 @@
         "U4_D0_signature": [
           "reply"
         ],
-        "completed": 0,
+        "completed": 3,
         "different_runs": 0,
-        "signatures": [],
+        "signatures": [
+          [
+            "reply"
+          ],
+          [
+            "reply"
+          ],
+          [
+            "reply"
+          ]
+        ],
         "invalid": 0,
         "U4_D1_differs": false,
         "U4_D2_differs": false
@@ -411,9 +507,19 @@
         "U4_D0_signature": [
           "ask"
         ],
-        "completed": 0,
+        "completed": 3,
         "different_runs": 0,
-        "signatures": [],
+        "signatures": [
+          [
+            "ask"
+          ],
+          [
+            "ask"
+          ],
+          [
+            "ask"
+          ]
+        ],
         "invalid": 0,
         "U4_D1_differs": true,
         "U4_D2_differs": true
@@ -423,9 +529,19 @@
         "U4_D0_signature": [
           "ask"
         ],
-        "completed": 0,
+        "completed": 3,
         "different_runs": 0,
-        "signatures": [],
+        "signatures": [
+          [
+            "ask"
+          ],
+          [
+            "ask"
+          ],
+          [
+            "ask"
+          ]
+        ],
         "invalid": 0,
         "U4_D1_differs": true,
         "U4_D2_differs": true
@@ -435,9 +551,19 @@
         "U4_D0_signature": [
           "reply"
         ],
-        "completed": 0,
+        "completed": 3,
         "different_runs": 0,
-        "signatures": [],
+        "signatures": [
+          [
+            "reply"
+          ],
+          [
+            "reply"
+          ],
+          [
+            "reply"
+          ]
+        ],
         "invalid": 0,
         "U4_D1_differs": false,
         "U4_D2_differs": false
@@ -447,9 +573,19 @@
         "U4_D0_signature": [
           "ask"
         ],
-        "completed": 0,
+        "completed": 3,
         "different_runs": 0,
-        "signatures": [],
+        "signatures": [
+          [
+            "ask"
+          ],
+          [
+            "ask"
+          ],
+          [
+            "ask"
+          ]
+        ],
         "invalid": 0,
         "U4_D1_differs": true,
         "U4_D2_differs": true
@@ -457,122 +593,122 @@
     ],
     "U4_conclusion_unchanged": true
   },
-  "cost_usd": 0.36404743,
+  "cost_usd": 0.6792068099999999,
   "projection": {
-    "actual_usd": 0.36404743,
-    "projected_total_usd": 1.6696179383866967,
+    "actual_usd": 0.6792068099999999,
+    "projected_total_usd": 1.7747831699999996,
     "strata": {
       "D0/timing/feedback_control": {
         "planned": 72,
-        "completed": 50,
-        "observed_cost_n": 50,
-        "rate_usd": 0.0016732542,
-        "remaining_estimate_usd": 0.036811592399999996
+        "completed": 72,
+        "observed_cost_n": 72,
+        "rate_usd": 0.0016349954166666666,
+        "remaining_estimate_usd": 0.0
       },
       "D0/timing/scope": {
         "planned": 72,
-        "completed": 41,
-        "observed_cost_n": 41,
-        "rate_usd": 0.0007881712195121952,
-        "remaining_estimate_usd": 0.02443330780487805
+        "completed": 72,
+        "observed_cost_n": 72,
+        "rate_usd": 0.0007650122222222222,
+        "remaining_estimate_usd": 0.0
       },
       "D0/forget/F1b": {
         "planned": 82,
-        "completed": 41,
-        "observed_cost_n": 41,
-        "rate_usd": 0.0005763275609756098,
-        "remaining_estimate_usd": 0.02362943
+        "completed": 82,
+        "observed_cost_n": 82,
+        "rate_usd": 0.0005576764634146341,
+        "remaining_estimate_usd": 0.0
       },
       "D0/timing/precedent": {
         "planned": 72,
-        "completed": 36,
-        "observed_cost_n": 36,
-        "rate_usd": 0.000879365,
-        "remaining_estimate_usd": 0.03165714
+        "completed": 72,
+        "observed_cost_n": 72,
+        "rate_usd": 0.0008437508333333333,
+        "remaining_estimate_usd": 0.0
       },
       "D0/timing/scope_shuffled": {
         "planned": 72,
-        "completed": 44,
-        "observed_cost_n": 44,
-        "rate_usd": 0.0007884813636363636,
-        "remaining_estimate_usd": 0.02207747818181818
+        "completed": 72,
+        "observed_cost_n": 72,
+        "rate_usd": 0.0007677122222222222,
+        "remaining_estimate_usd": 0.0
       },
       "D0/timing/feedback": {
         "planned": 72,
-        "completed": 40,
-        "observed_cost_n": 40,
-        "rate_usd": 0.0016738369999999999,
-        "remaining_estimate_usd": 0.053562783999999995
+        "completed": 72,
+        "observed_cost_n": 72,
+        "rate_usd": 0.0016160869444444446,
+        "remaining_estimate_usd": 0.0
       },
       "D0/timing/R": {
         "planned": 9,
-        "completed": 5,
-        "observed_cost_n": 5,
-        "rate_usd": 0.000849694,
-        "remaining_estimate_usd": 0.003398776
+        "completed": 9,
+        "observed_cost_n": 9,
+        "rate_usd": 0.0008196855555555556,
+        "remaining_estimate_usd": 0.0
       },
       "D0/noise/": {
         "planned": 30,
-        "completed": 0,
-        "observed_cost_n": 0,
-        "rate_usd": 0.0003333333333333333,
-        "remaining_estimate_usd": 0.01
+        "completed": 30,
+        "observed_cost_n": 30,
+        "rate_usd": 0.00021842,
+        "remaining_estimate_usd": 0.0
       },
       "D1/timing/feedback_control": {
         "planned": 72,
-        "completed": 0,
-        "observed_cost_n": 0,
-        "rate_usd": 0.001877133105802048,
-        "remaining_estimate_usd": 0.13515358361774746
+        "completed": 3,
+        "observed_cost_n": 3,
+        "rate_usd": 0.00253812,
+        "remaining_estimate_usd": 0.17513028
       },
       "D1/timing/R": {
         "planned": 72,
-        "completed": 0,
-        "observed_cost_n": 0,
-        "rate_usd": 0.001877133105802048,
-        "remaining_estimate_usd": 0.13515358361774746
+        "completed": 1,
+        "observed_cost_n": 1,
+        "rate_usd": 0.0015609,
+        "remaining_estimate_usd": 0.1108239
       },
       "D1/timing/scope": {
         "planned": 72,
-        "completed": 0,
-        "observed_cost_n": 0,
-        "rate_usd": 0.001877133105802048,
-        "remaining_estimate_usd": 0.13515358361774746
+        "completed": 2,
+        "observed_cost_n": 2,
+        "rate_usd": 0.00141645,
+        "remaining_estimate_usd": 0.0991515
       },
       "D1/forget/F1b": {
         "planned": 82,
-        "completed": 0,
-        "observed_cost_n": 0,
-        "rate_usd": 0.001877133105802048,
-        "remaining_estimate_usd": 0.15392491467576794
+        "completed": 2,
+        "observed_cost_n": 2,
+        "rate_usd": 0.00077541,
+        "remaining_estimate_usd": 0.0620328
       },
       "D1/timing/N": {
         "planned": 72,
-        "completed": 0,
-        "observed_cost_n": 0,
-        "rate_usd": 0.001877133105802048,
-        "remaining_estimate_usd": 0.13515358361774746
+        "completed": 1,
+        "observed_cost_n": 1,
+        "rate_usd": 0.00188292,
+        "remaining_estimate_usd": 0.13368732
       },
       "D1/timing/precedent": {
         "planned": 72,
-        "completed": 0,
-        "observed_cost_n": 0,
-        "rate_usd": 0.001877133105802048,
-        "remaining_estimate_usd": 0.13515358361774746
+        "completed": 1,
+        "observed_cost_n": 1,
+        "rate_usd": 0.00282654,
+        "remaining_estimate_usd": 0.20068434000000002
       },
       "D1/timing/scope_shuffled": {
         "planned": 72,
-        "completed": 0,
-        "observed_cost_n": 0,
-        "rate_usd": 0.001877133105802048,
-        "remaining_estimate_usd": 0.13515358361774746
+        "completed": 3,
+        "observed_cost_n": 3,
+        "rate_usd": 0.0017264399999999999,
+        "remaining_estimate_usd": 0.11912435999999998
       },
       "D1/timing/feedback": {
         "planned": 72,
-        "completed": 0,
-        "observed_cost_n": 0,
-        "rate_usd": 0.001877133105802048,
-        "remaining_estimate_usd": 0.13515358361774746
+        "completed": 1,
+        "observed_cost_n": 1,
+        "rate_usd": 0.00274566,
+        "remaining_estimate_usd": 0.19494186
       }
     },
     "stop": false
@@ -581,9 +717,9 @@
     "local_day": "2026-10-05",
     "timezone": "America/Winnipeg",
     "limit_usd": 4.0,
-    "used_usd": 2.16788837,
-    "unknown_included_usd": 0.08688799999999999,
-    "remaining_usd": 1.83211163
+    "used_usd": 2.48304775,
+    "unknown_included_usd": 0.18817,
+    "remaining_usd": 1.5169522500000001
   },
   "claim_ceiling": "Synthetic memory-only mechanism diagnostics and F1b collateral effects; no evidence she learned anything."
 }

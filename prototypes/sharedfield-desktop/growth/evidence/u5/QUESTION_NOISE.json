@@ -1,6 +1,6 @@
 {
   "report_only": true,
-  "completed": 0,
+  "completed": 30,
   "different_runs": 0,
   "planned_runs": 30,
   "items_changed_at_least_once": 0,
@@ -13,9 +13,19 @@
       "U4_D0_signature": [
         "quiet"
       ],
-      "completed": 0,
+      "completed": 3,
       "different_runs": 0,
-      "signatures": [],
+      "signatures": [
+        [
+          "quiet"
+        ],
+        [
+          "quiet"
+        ],
+        [
+          "quiet"
+        ]
+      ],
       "invalid": 0,
       "U4_D1_differs": false,
       "U4_D2_differs": false
@@ -25,9 +35,19 @@
       "U4_D0_signature": [
         "reply"
       ],
-      "completed": 0,
+      "completed": 3,
       "different_runs": 0,
-      "signatures": [],
+      "signatures": [
+        [
+          "reply"
+        ],
+        [
+          "reply"
+        ],
+        [
+          "reply"
+        ]
+      ],
       "invalid": 0,
       "U4_D1_differs": false,
       "U4_D2_differs": false
@@ -37,9 +57,19 @@
       "U4_D0_signature": [
         "ask"
       ],
-      "completed": 0,
+      "completed": 3,
       "different_runs": 0,
-      "signatures": [],
+      "signatures": [
+        [
+          "ask"
+        ],
+        [
+          "ask"
+        ],
+        [
+          "ask"
+        ]
+      ],
       "invalid": 0,
       "U4_D1_differs": false,
       "U4_D2_differs": true
@@ -49,9 +79,19 @@
       "U4_D0_signature": [
         "ask"
       ],
-      "completed": 0,
+      "completed": 3,
       "different_runs": 0,
-      "signatures": [],
+      "signatures": [
+        [
+          "ask"
+        ],
+        [
+          "ask"
+        ],
+        [
+          "ask"
+        ]
+      ],
       "invalid": 0,
       "U4_D1_differs": false,
       "U4_D2_differs": true
@@ -61,9 +101,19 @@
       "U4_D0_signature": [
         "reply"
       ],
-      "completed": 0,
+      "completed": 3,
       "different_runs": 0,
-      "signatures": [],
+      "signatures": [
+        [
+          "reply"
+        ],
+        [
+          "reply"
+        ],
+        [
+          "reply"
+        ]
+      ],
       "invalid": 0,
       "U4_D1_differs": false,
       "U4_D2_differs": false
@@ -73,9 +123,19 @@
       "U4_D0_signature": [
         "reply"
       ],
-      "completed": 0,
+      "completed": 3,
       "different_runs": 0,
-      "signatures": [],
+      "signatures": [
+        [
+          "reply"
+        ],
+        [
+          "reply"
+        ],
+        [
+          "reply"
+        ]
+      ],
       "invalid": 0,
       "U4_D1_differs": false,
       "U4_D2_differs": false
@@ -85,9 +145,19 @@
       "U4_D0_signature": [
         "ask"
       ],
-      "completed": 0,
+      "completed": 3,
       "different_runs": 0,
-      "signatures": [],
+      "signatures": [
+        [
+          "ask"
+        ],
+        [
+          "ask"
+        ],
+        [
+          "ask"
+        ]
+      ],
       "invalid": 0,
       "U4_D1_differs": true,
       "U4_D2_differs": true
@@ -97,9 +167,19 @@
       "U4_D0_signature": [
         "ask"
       ],
-      "completed": 0,
+      "completed": 3,
       "different_runs": 0,
-      "signatures": [],
+      "signatures": [
+        [
+          "ask"
+        ],
+        [
+          "ask"
+        ],
+        [
+          "ask"
+        ]
+      ],
       "invalid": 0,
       "U4_D1_differs": true,
       "U4_D2_differs": true
@@ -109,9 +189,19 @@
       "U4_D0_signature": [
         "reply"
       ],
-      "completed": 0,
+      "completed": 3,
       "different_runs": 0,
-      "signatures": [],
+      "signatures": [
+        [
+          "reply"
+        ],
+        [
+          "reply"
+        ],
+        [
+          "reply"
+        ]
+      ],
       "invalid": 0,
       "U4_D1_differs": false,
       "U4_D2_differs": false
@@ -121,9 +211,19 @@
       "U4_D0_signature": [
         "ask"
       ],
-      "completed": 0,
+      "completed": 3,
       "different_runs": 0,
-      "signatures": [],
+      "signatures": [
+        [
+          "ask"
+        ],
+        [
+          "ask"
+        ],
+        [
+          "ask"
+        ]
+      ],
       "invalid": 0,
       "U4_D1_differs": true,
       "U4_D2_differs": true

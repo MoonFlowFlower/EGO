@@ -1,6 +1,6 @@
 {
   "at_utc": "2026-10-06T03:45:47.338961+00:00",
-  "state": "owner_authorized_one_retry_pending",
+  "state": "resolved_by_owner_authorized_single_retry",
   "judge": "D0",
   "failed_input_id": "b/3/feedback_control/3-07-test-2",
   "error": {
@@ -837,5 +837,8 @@
   "user_question": "Allow one unchanged-input retry, preserve missing and continue only unattempted inputs, or stop at partial results?",
   "full_experiment_conclusion": null,
   "owner_authorization": "允许这条重试一次，再继续",
-  "amendment": "OWNER_RETRY_ONCE.json"
+  "amendment": "OWNER_RETRY_ONCE.json",
+  "resolved_at_utc": "2026-10-06T04:09:02.656876+00:00",
+  "retry_recheck": "OWNER_RETRY_RECHECK.json",
+  "unknown_reserve_still_retained": true
 }

@@ -1,0 +1,15 @@
+{
+  "at_utc": "2026-10-06T04:05:49.574808+00:00",
+  "authorized_attempts": [
+    1,
+    2
+  ],
+  "failed_input_id": "b/3/feedback_control/3-07-test-2",
+  "requests_identical": true,
+  "prior_392_decisions_byte_identical": true,
+  "prior_failure_log_byte_identical": true,
+  "completed_outputs_for_retried_input": 1,
+  "retry_valid": true,
+  "unknown_reserve_preserved_usd": 0.08688799999999999,
+  "amendment_driver_unchanged": true
+}

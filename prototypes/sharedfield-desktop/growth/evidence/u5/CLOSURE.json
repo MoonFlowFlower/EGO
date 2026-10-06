@@ -1,53 +1,57 @@
 {
-  "at_utc": "2026-10-06T03:44:53.723758+00:00",
+  "at_utc": "2026-10-06T04:15:15.325949+00:00",
   "manifest_sha256": "04ca0c1ac2af3a2d2510f37609ce1c554b634ef31784247f65d356e3a971580e",
   "frozen_files_unchanged": true,
   "judges": {
     "D0": {
-      "decisions": 392,
-      "new": 257,
+      "decisions": 616,
+      "new": 481,
       "reused": 135,
-      "requests": 258,
-      "retry_attempts": 0,
+      "requests": 482,
+      "retry_attempts": 1,
       "invalid_outputs": 0,
       "status": {
-        "state": "stopped",
-        "at_utc": "2026-10-06T03:43:47.680289+00:00",
-        "completed": 392,
-        "stop": "upstream_unavailable"
+        "state": "complete",
+        "at_utc": "2026-10-06T04:04:15.103460+00:00",
+        "completed": 616
       },
-      "mechanically_regraded": 392,
+      "mechanically_regraded": 616,
       "input_mismatches": 0,
       "duplicate_final_outputs": 0
     },
     "D1": {
-      "decisions": 0,
-      "new": 0,
+      "decisions": 14,
+      "new": 14,
       "reused": 0,
-      "requests": 0,
+      "requests": 15,
       "retry_attempts": 0,
       "invalid_outputs": 0,
-      "status": null,
-      "mechanically_regraded": 0,
+      "status": {
+        "state": "stopped",
+        "at_utc": "2026-10-06T04:14:09.436360+00:00",
+        "completed": 14,
+        "stop": "upstream_unavailable"
+      },
+      "mechanically_regraded": 14,
       "input_mismatches": 0,
       "duplicate_final_outputs": 0
     }
   },
   "single_concurrency": true,
-  "request_intervals": 258,
+  "request_intervals": 497,
   "exact_frozen_requests": true,
   "historical_decisions_unchanged": true,
   "credential_pattern_scan_passed": true,
-  "cost_usd": 0.36404743,
-  "model_settled_cost_usd": 0.27715943,
-  "unaccounted_or_reserved_usd": 0.08688800000000002,
+  "cost_usd": 0.6792068099999999,
+  "model_settled_cost_usd": 0.49103681,
+  "unaccounted_or_reserved_usd": 0.18816999999999995,
   "daily_budget": {
     "local_day": "2026-10-05",
     "timezone": "America/Winnipeg",
     "limit_usd": 4.0,
-    "used_usd": 2.16788837,
-    "unknown_included_usd": 0.08688799999999999,
-    "remaining_usd": 1.83211163
+    "used_usd": 2.48304775,
+    "unknown_included_usd": 0.18817,
+    "remaining_usd": 1.5169522500000001
   },
   "archival_files_identical_to_runs": true
 }
